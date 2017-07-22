@@ -13,10 +13,6 @@ Kirigami.ScrollablePage {
 	title: qsTr("Settings")
 	anchors.margins: Kirigami.Units.gridUnit / 2
 	property real gridWidth: settingsPage.width - 2 * Kirigami.Units.gridUnit
-	property real col1Width: gridWidth * 0.25
-	property real col2Width: gridWidth * 0.25
-	property real col3Width: gridWidth * 0.25
-	property real col4Width: gridWidth * 0.25
 
 	ColumnLayout {
 		width: parent.width - Kirigami.Units.gridUnit
@@ -35,7 +31,7 @@ Kirigami.ScrollablePage {
 		}
 		GridLayout {
 			id: themeSettings
-			columns: 4
+			columns: 3
 			Layout.bottomMargin: Kirigami.Units.gridUnit
 
 			Kirigami.Heading {
@@ -44,16 +40,15 @@ Kirigami.ScrollablePage {
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 4
+				Layout.columnSpan: 3
 			}
 			Kirigami.Label {
 				text: qsTr("Blue")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: settingsPage.col1Width * 0.8
+				Layout.preferredWidth: gridWidth * 0.2
 			}
 			Row {
-				Layout.columnSpan: 2
 				Layout.preferredWidth: gridwidth * 0.6
 //				Layout.alignment: Qt.AlignLeft
 				Rectangle {
@@ -90,7 +85,7 @@ Kirigami.ScrollablePage {
 			}
 			RadioButton {
 				id: bluebutton
-				Layout.preferredWidth: settingsPage.col4Width * 0.5
+				Layout.preferredWidth: gridWidth * 0.125
 				Layout.alignment: Qt.AlignRight
 				checked: subsurfaceTheme.currentTheme === "Blue"
 				onClicked: {
@@ -123,10 +118,9 @@ Kirigami.ScrollablePage {
 				text: qsTr("Pink")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: settingsPage.col1Width * 0.5
+				Layout.preferredWidth: gridWidth * 0.125
 			}
 			Row {
-				Layout.columnSpan: 2
 				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
 				Rectangle {
 					id: pinkRect
@@ -164,7 +158,7 @@ Kirigami.ScrollablePage {
 			RadioButton {
 				id: pinkbutton
 				checked: subsurfaceTheme.currentTheme === "Pink"
-				Layout.preferredWidth: settingsPage.col4Width * 0.5
+				Layout.preferredWidth: gridWidth * 0.125
 				Layout.alignment: Qt.AlignRight
 				onClicked: {
 					pinkTheme()
@@ -196,10 +190,9 @@ Kirigami.ScrollablePage {
 				text: qsTr("Dark")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: settingsPage.col1Width * 0.5
+				Layout.preferredWidth: gridWidth * 0.125
 			}
 			Row {
-				Layout.columnSpan: 2
 				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
 				Rectangle {
 					id: blackRect
@@ -236,7 +229,7 @@ Kirigami.ScrollablePage {
 			RadioButton {
 				id: darkbutton
 				checked: subsurfaceTheme.currentTheme === "Dark"
-				Layout.preferredWidth: settingsPage.col4Width * 0.5
+				Layout.preferredWidth: gridWidth * 0.125
 				Layout.alignment: Qt.AlignRight
 				onClicked: {
 					darkTheme()
@@ -287,13 +280,13 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Distance threshold (meters)")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth:gridWidth * 0.75
 			}
 
 			TextField {
 				id: distanceThreshold
 				text: manager.distanceThreshold
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
 					manager.distanceThreshold = distanceThreshold.text
 					manager.savePreferences()
@@ -303,13 +296,13 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Time threshold (minutes)")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridWidth * 0.75
 			}
 
 			TextField {
 				id: timeThreshold
 				text: manager.timeThreshold
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
 					manager.timeThreshold = timeThreshold.text
 					manager.savePreferences()
@@ -319,11 +312,11 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Run location service")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridWidth * 0.75
 			}
 			Switch {
 				id: locationButton
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: gridWidth * 0.25
 				visible: manager.locationServiceAvailable
 				checked: manager.locationServiceEnabled
 				onClicked: {
@@ -360,7 +353,7 @@ Kirigami.ScrollablePage {
 		}
 		GridLayout {
 			id: libdclogprefs
-			columns: 4
+			columns: 2
 			width: parent.width
 			Kirigami.Heading {
 				text: qsTr("Dive computer")
@@ -368,17 +361,17 @@ Kirigami.ScrollablePage {
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 4
+				Layout.columnSpan: 2
 			}
 
 			Kirigami.Label {
 				text: qsTr("Save detailed log")
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridWidth * 0.75
 			}
 			Switch {
 				id: libdclogButton
 				checked: manager.libdcLog
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
 					manager.libdcLog = checked
 				}
@@ -413,7 +406,7 @@ Kirigami.ScrollablePage {
 		}
 		GridLayout {
 			id: developer
-			columns: 4
+			columns: 2
 			width: parent.width - Kirigami.Units.gridUnit
 			Kirigami.Heading {
 				text: qsTr("Developer")
@@ -421,17 +414,17 @@ Kirigami.ScrollablePage {
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 4
+				Layout.columnSpan: 2
 			}
 
 			Kirigami.Label {
 				text: qsTr("Display Developer menu")
-				Layout.preferredWidth: settingsPage.col1Width + settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridWidth * 0.75
 			}
 			Switch {
 				id: developerButton
 				checked: manager.developer
-				Layout.preferredWidth: settingsPage.col4Width
+				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
 					manager.developer = checked
 				}
