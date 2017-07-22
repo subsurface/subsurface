@@ -1,0 +1,32 @@
+Please note that many of the icons in the folder are under the Apache v2
+license, not the GPLv2.
+
+Usually, these two license are considered incompatible because of the
+patent termination clause in the Apache v2 license, however with icons
+that seems to be an entirely moot point. Based on that judgment call,
+I decided to include these icons in this project, but under the explicit
+provision that they are clearly NOT derived from our code and that they
+therefore remain under the Apache v2 license.
+
+This affects at least these icons:
+
+cloud_sync_24px.svg
+ic_adb_black_24px.svg
+ic_add_black_24px.svg
+ic_add_location_24px.svg
+ic_clear_black_24px.svg
+ic_cloud_done_black_24px.svg
+ic_cloud_download_24px.svg
+ic_cloud_off_black_24px.svg
+ic_cloud_upload_24px.svg
+ic_edit_24px.svg
+ic_edit_location_black_24px.svg
+ic_gps_fixed_24px.svg
+ic_help_outline_24px.svg
+ic_home_24px.svg
+ic_info_outline_24px.svg
+ic_keyboard_arrow_right_24px.svg
+ic_location_off_black_24px.svg
+ic_place_black_24px.svg
+ic_settings_24px.svg
+ic_sync_24px.svg
