@@ -76,12 +76,13 @@ Lorsqu'il est ouvert depuis _Subsurface_, ce manuel ne dispose pas de
 contrôles externes pour la pagination ou la sélection des pages
 précédentes. Cependant, deux options sont disponibles:
 
-The _SEARCH_ function is activated by pressing control-F or command-F on the
-keyboard. A text box appears at the bottom right-hand of the window (see
-image below).  For instance, typing the word "_weights_" into the search
-text box, searches throughout the user manual. To the right of the search
-text box are two arrows pointing up and down. These find the previous and
-the next occurrence of the search term.
+La fonction _RECHERCHE_ est activée avec le raccourci clavier Contrôle-F ou
+Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir
+image ci-dessous). Par exemple, entrer le mot "_weights_" dans la boîte de
+texte de recherche lancera  la recherche dans tout le manuel utilisateur. À
+droite de la boîte de recherche se trouvent deux flèches, l'une vers le haut
+l'autre vers le bas. Elles mènent respectivement vers l'occurence précédente
+et suivante du terme recherché.
 
 image::images/UserManualSearch.jpg["User manual functions", align="center"]
 
@@ -103,17 +104,20 @@ image::images/UserManualLinksBack.jpg["User manual functions", align="center"]
 [[S_UserSurvey]]
 Le sondage utilisateur
 ----------------------
-In order to develop _Subsurface_ to serve its users in the best possible
-way, it’s important to have user information. Upon launching _Subsurface_
-and using the software for a week or so, a one-box user survey pops up. It
-is entirely optional and the user controls what, if any, data are sent to
-the _Subsurface_ development team. All data the user sends is useful, and
-will only be used to steer future development and to customize the software
-to fit the needs of the _Subsurface_ users. If you complete the survey, or
-click the option not to be asked again, that should be the last
-communication of this type you receive.  However, if your diving and/or
-subsurface habits change and you wish to fill in another survey, just launch
-_Subsurface_ with the _--survey_ option on the command line.
+Dans le but de développer _Subsurface_ pour servir ses utilisateurs de la
+meilleur manière qui soit, il est important d'avoir des informations sur les
+utilisateurs. À l'ouverture de _Subsurface_ après avoir utilisé le logiciel
+pendant une semaine environ, une fenêtre de sondage apparait. Cela est
+complètement optionnel et l'utilisateur contrôle quelles informations sont
+envoyées ou non à l'équipe de développement de _Subsurface_. Toutes les
+données que l'utilisateur envoie sont utiles et ne seront utilisées que pour
+les futurs développements et modifications du logiciel pour coller au mieux
+aux besoins des utilisateurs de _Subsurface_. Si vous complétez le sondage
+ou cliquez sur l'option pour ne plus être sondé, cela devrait être la
+dernière communication de ce type que vous recevrez. Cependant, si vos
+habitudes de plongées ou d'utilisation de Subsurface changent, vous pouvez
+envoyer un nouveau sondage en démarrant _Subsurface_ avec l'option
+_--survey_ sur la ligne de commande.
 
 [[S_StartUsing]]
 Commencer à utiliser le programme
@@ -320,22 +324,25 @@ menu contextuel (voir image ci-dessous).
 
 image::images/DiveProfile3_f20.jpg["FIGURE: Gas composition context menu", align="center"]
 
-With the profile now defined, more details must be added to have a fuller
-record of the dive. To do this, the *Notes* and the *Equipment* tabs on the
-top left hand of the _Subsurface_ window should be used. Click on
-xref:S_Notes_dc[*this link*] for instructions on how to use these tabs.
+Une fois le profil déterminé, d'autres détails doivent être ajoutés pour
+obtenir un enregistrement complet de la plongée. Pour y arriver, les onglets
+*Notes* et *Équipement* en haut à gauche de la fenêtre de _Subsurface_
+doivent être utilisés. Cliquez sur xref:S_Notes_dc[*ce lien*] pour plus
+d'informations sur l'utilisation de ces onglets.
 [[S_ImportDiveComputer]]
 === Importer de nouvelles informations de plongée à partir de l'ordinateur de plongée
 
 ==== Connecter et importer des données depuis un ordinateur de plongée.
 
-The use of dive computers allows the collection of a large amount of
-information about each dive, e.g. a detailed record of depth, duration,
-rates of ascent/descent and of gas partial pressures. _Subsurface_ can
-capture this information, using dive details from a wide range of dive
-computers. The latest list of supported dive computers can be found at:
-link:https://subsurface-divelog.org/documentation/supported-dive-computers/[
-Supported dive computers].
+L'utilisation d'ordinateurs de plongée permet la collecte d'un grand nombre
+d'informations à propos de chaque plongée, comme un enregistrement détaillé
+de la profondeur, la durée, la vitesse de remontée ou de descente et les
+pression partielles des gaz. _Subsurface_ peut récupérer ces informations,
+en utilisant les données venant d'une grande variété d'ordinateurs de
+plongée. La liste la plus récente des ordinateurs supportés peut être trouvé
+ici:
+link:https://subsurface-divelog.org/documentation/supported-dive-computers/[Ordinateurs
+de plongée supportés].
 
 [icon="images/icons/warning2.png"]
 [WARNING]
@@ -544,34 +551,38 @@ Bluetooth"_, la boîte de dialogue ci-dessous apparaît.
 
 image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth", align="center"]
 
-On the _Linux_ or _MacOS_ platforms the name of the _Subsurface_ computer
-and its Bluetooth address are shown on the right hand side, On the left hand
-side, if the computer has connected more than one local Bluetooth devices
-you can use the list box to indicate which one needs to connect to
-_Subsurface_.  The power state (on/off) of the Bluetooth adapter is shown
-below the address and can be changed by checking the _Turn on/off_ box.  If
-the Bluetooth address is not shown, then _Subsurface_ does not see the local
-Bluetooth device. Ensure the Bluetooth driver is installed correctly on the
-_Subsurface_ computer and check if it can be used by other Bluetooth
-utilities like _bluetoothctl_ or _bluemoon_. This completes the first two
-steps above.  Ensure the Bluetooth-enabled dive computer is in PC-upload
-mode and it is discoverable by other Bluetooth devices. Consult the manual
-of the dive computer for more information. Now the third item in the list
-above has been finished.  Select the _Scan_ button towards the bottom left
-of the dialogue above. After searching, the dive computer should be listed
-(perhaps as one of a number of Bluetooth devices) in the main list box on
-the lefthand side of the dialogue (see image above). If this does not work,
-select the _Clear_ button, then scan again for Bluetooth devices using the
-_Scan_ button. After taking these actions _Subsurface_ should see the dive
-computer.  The label of the discovered dive computer contains the name of
-the device, its address and its pairing status. If the device is not paired
-and has a red background color, a context menu can be opened by selecting
-the item with a right-click.  Select the the _Pair_ option and wait for the
-task to complete. If this dive computer is being paired to Subsurface for
-the first time, it’s possible Subsurface will request a Pass Code or PIN
-number. The most commonly-used Pass Code is 0000, and this works for the
-Shearwater Petrel. If necessary, consult the user manual of the dive
-computer being used.
+Sur les plateformes _Linux_ ou -MacOS_, le nom de l'ordinateur utilisant
+Subsurface_ et son adresse Bluetooth sont affichées du côté droit. À gauche,
+si l'ordinateur a été connecté à plusieurs périphériques Bluetootj locaux,
+vous pouvez utiliser la liste pour indiquer lequel doit être connecté à
+°Subsurface_. L'état (allumé/éteint) de l'adaptateur Bluetooth est affiché
+sous l'adresse et peut être modifié en cliquer sur la case
+_Allumer/éteindre_. Si l'adresse Bluetooth n'est pas affichée, _Subsurface_
+ne détecte pas le périphérique Bluetooth local. Assurez-vous que le driver
+Bluetooth est installé correctement sur l'ordinateur utilisant _Subsurface_
+et vérifiez qu'il peut être utilisé par d'autres utilitaires Bluetooth comme
+_bluetoothctl_ ou _bluemoon_. Ceci clôture les deux premières étapes.
+Vérifiez que l'ordinateur de plongée avec Bluetooth est en mode Connection
+PC et est détactable pour d'autres périphériques Bluetooth. Consultez le
+manuel de l'ordinateur de plongée pour plus d'information. À présent, la
+troisième étape de notre liste est terminée.  Sélectionnez le bouton
+_Scannez_ en bas à gauche de la boîte de dialogue ci-dessus. Après la
+recherche, l'ordinateur de plongée devrait se trouver dans la liste
+(peut-être sous la norme d'un numéro de périphérique Bluetooth) dans la
+liste principale sur la gauche de la boîte de dialogue (voir image
+ci-dessus). Si cela ne fonctionne pas, sélectionnez le bouton _Effacer_,
+puis scannez à nouveau en utilisant le bouton _Scan_. Après avoir suivi
+cette procédure, _Subsurface_ devrait voir l'ordinateur de plongée.  La
+dénomination de l'ordinateur de plongée détecté contient le nom du
+périphérique, son adresse et son statut de jumelage. Si le périphérique
+n'est pas jumelé et que son nom est affiché avec un arrière-plan rouge, un
+menu contextuel peut être ouvert en sélectionnant ce nom avec un cli-droit.
+Sélectionnez l'option _Jumeler_ et attendez que la tâche soit terminée. Si
+l'ordinateur est jumelé à Subsurface pour la première fois, il est possible
+que Subsurface demande un nombre ou un code PIN. Le plus utilisé est 0000,
+et c'est celui qui fonctionne pour un Shearwater Petrel. Si nécessaire,
+consultez le manuel utilisateur de l'ordinateur de plongée que vous
+utilisez.
 
 ****
 [icon="images/icons/important.png"]
@@ -611,9 +622,9 @@ sont pas affichés comme dans les sytèmes Linux/Mac. Pour démarrer un scan
 sur l'ordinateur de _Subsurface_ est activé en sélectionnant l'ordinateur de
 plongée dans la liste des périphériques Bluetooth disponibles (voir image
 ci-dessus). Si l'ordinateur de plongée est connecté à Subsurface pour la
-première fois, il est possible que Subsurface demande code numérique ou un
-code PIN. Entrez le code indiqué dans le manuel utilisateur de l'ordinatuer
-de plongée. Un code ou PIN de 0000 est souvent le code par défaut.
+première fois, il est possible que Subsurface demande un nombre ou un code
+PIN. Entrez le code indiqué dans le manuel utilisateur de l'ordinatuer de
+plongée. Un code ou PIN de 0000 est souvent le code par défaut.
 
 L'étape de jumelage est vérifiée et réalisée automatiquement durant le
 processus de téléchargement. Si les périphériques n'ont pas encore été
@@ -633,39 +644,42 @@ _BlueSoleil_, cela ne fonctionnera pas. Cependant, les clés/dongles de ces
 fabricants (p. ex. iSonic) qui supportent le Microsoft Bluetooth Stack
 fonctionneront.
 
-A log message on the bottom left of the _Remote Bluetooth device selection_
-shows details about the current status of the Bluetooth agent. To select
-another dive computer for download using the "Remote Bluetooth selection
-dialogue" press the three-dots button from the _"Choose Bluetooth download
-mode"_ option.
+Un journal de message (log) en bas à gauche de la _sélection de périphérique
+Bluetooth distant_ affiche des détails sur le statut actuel du l'agent
+Bluetooth. Pour sélectionner un autre ordinateur de plongée utilisant la
+"boîte de dialogue de sélection Bluetooth distant", cliquez sur le bouton
+avec trois points à côté de l'option _"Choisir le mode de téléchargement
+Bluetooth"_.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-*IN CASE OF PROBLEMS*:  If the Bluetooth adapter from the _Subsurface_ computer
-gets stuck and the _Download_ process fails repeatedly,
- _unpair_ the devices and then repeat the above steps. If this is not successful,
- xref:S_HowFindBluetoothDeviceName[_Appendix A_] contains
-information for manually setting up and inspecting the Bluetooth connection
-with _Subsurface_.
+*EN CAS DE PROBLÈMES*: si l'adaptateur Bluetooth de l'ordinateur utilisant _Subsurface_
+se bloque et que le processus de _téléchargement_ échoue de façon répétée,
+ _dissociez_ les périphériques et répétez les étapes ci-dessus. Si cela ne fonctionne pas,
+ l' xref:S_HowFindBluetoothDeviceName[_Annexe A_] contient
+des informations sur la configuration manuelle et la vérification de la connection Bluetooth
+avec _Subsurface_.
 
 [[S_DeviceNames]]
 ==== Changement du nom d'un ordinateur de plongée
 
-It may be necessary to distinguish between different dive computers used to
-upload dive logs to _Subsurface_. For instance if a buddy’s dive computer is
-the same make and model as your own and dive logs are uploaded from both
-dive computers to the same _Subsurface_ computer, then you might like to
-call one "Alice's Suunto D4" and the other "Bob's Suunto D4". Alternatively,
-consider a technical diver who dives with two or more dive computers of the
-same model, the logs of both (or all) being uploaded.  In this case it might
-be prudent to call one of them "Suunto D4 (1)" and another "Suunto D4
-(2)". This is easily done in _Subsurface_.  On the *Main Menu*, select _Log
--> Edit device names_. A dialog box opens, showing the current Model, ID and
-Nickname of the dive computers used for upload. Edit the Nickname field for
-the appropriate dive computer. After saving the Nickname, the dive logs show
-the nickname for that particular device instead of the model name, allowing
-easy identification of devices.
+Il peut être nécessaire d'établir une distinction entre différents
+ordinateurs de plongée utilisés pour télécharger des données de plongée vers
+_Subsurface_. Par exemple, si l'ordinateur d'un équipier provient du même
+fabriquant et est dun même modèle que le votre et que les données sont
+téléchargées vers le même ordinateur utilisant _Subsurface_, vous voudirez
+sans doute en appeler un "Suunto D4 d'Alice" et l'autre "Suunto D4 de
+Bob". Ou encore, imaginez un plongeur Tek qui plonge avec deux ordinateurs
+ou plus; les données pourraient toutes être téléchargées. Dans ce cas, il
+serait prident de les appeler "Suunto D4 (1)" et "Suunto D4 (2)". Ceci est
+facilement réalisable dans _Subsurface_. Dans le *Menu principal*,
+sélectionnez _Journal -> Éditer les noms des ordinateurs de plongée_. Une
+boîte de dialogue s'ouvre, affichant le modèle actuel, son ID et le nom des
+ordinateurs utilisés pour le téléchargement. Éditez le champ Nom de
+l'ordinateur de plongée concerné. Après avoir sauvegardé le Nom, le journal
+de plongée affiche le nom de l'ordinateur concerné à la place du nom du
+modèle, permettant une identification plus facile des périphériques.
 
 [[S_MultipleDiveComputers]]
 ==== Chargement des données d'une plongée spécifique depuis plusieurs ordinateurs de plongée
@@ -712,98 +726,103 @@ en bas à gauche):
 
 image::images/AddDive3_f22.jpg["FIGURE: The Notes tab", align="center"]
 
-The right hand image, above, shows a *Notes tab* filled with dive
-information.  The *Date* and *Time* fields reflects the date and time of the
-dive. By clicking the date, a calendar is displayed for selecting the
-correct date. Press ESC to close the calendar.  The time values (hour and
-minutes) can also be edited directly by clicking on each of them in the text
-box and by over-typing the information displayed.
+L'image à droite, ci-dessus, montre l'onglet *Notes* complété avec des
+informations de plongée. Les champs *Date* et *Heure* indiquent la date et
+l'heure de la plongée. En cliquant sur la date, un calendrier est afficher
+pour sélectionner la date correcte. Appuyez sur la touche ESC pour fermer le
+calendrier. Les valeurs d'heure (heure et minutes) peuvent également être
+éditées directement en cliquant sur chacune d'entre elles dans la boîte de
+texte et en remplaçant l'information qui s'y trouve.
 
-*Air/water temperatures*: Air and water temperatures during the dive are shown
-in text boxes to the right of the Start time. Many dive computers supply water
-temperature information and this box may have information.
-If air temperature isn’t provided by the dive computer, the first temperature reading
-might be used for the air temperature. Generally this is close to the real air temperature.
-If editing is required, only a value is required, the units of temperature will be
-automatically supplied by
-_Subsurface_ (following the _Preferences_, metric or imperial units will
-be used).
+*Température de l'air/eau*: les températures de l'air et de l'eau pendant la plongée sont affichées
+dans des boîtes de texte à droite de l'heure de début de plongée. De nombreux ordinateurs de plongée 
+renseignent la température de l'eau, et cette boîte peut contenir cette information.
+Si la température de l'air n'est pas renseignée par l'ordinateur de plongée, la première température pour l'eau
+peut être utilisée comme température de l'air. En général, elle est proche de la température de l'air.
+S'il est nécessaire d'éditer ces informations, seule une valeur est nécessaire, l'unité de température étant
+automatiquement fournie par
+_Subsurface_ (sur base des _Préférences_, les unités métriques ou impériales
+seront utilisées).
 
 [[S_locations]]
 *Lieu*:
 [icon="images/icons/warning2.png"]
 [WARNING]
-Dive locations are managed as a *separate* part of the dive log.  The dive
-information in the *Notes* and *Equipment* tabs can therefore NOT be edited
-at the same time as the dive site information. Save all the other dive
-information (e.g.  divemaster, buddy, protective gear, notes about the dive)
-by selecting _Apply changes_ on the *Notes* tab BEFORE editing the dive site
-information. Then supply a dive site name in the textbox labelled _Location_
-on the *Notes* tab.
+Les lieux de plongée sont gérés comme une partie *séparée* du carnet de
+plongée.  Les informations de plongée dans les onglets *Notes* et
+*Équipement* ne peuvent donc PAS être édités en même temps que les
+informations sur le site de plongée. Enregistrez toutes les autres
+informations (p. ex. instructeur, équipier, équipement, notes à propos de la
+plongée) en sélectionnant _Appliquer les modifications_ dans l'onglet
+*Notes* AVANT d'éditer les informations sur le site de plongée. Ensuite,
+nommez le site de plongée dans la bpîte de texte _Lieu_ dans l'onglet
+*Notes*.
 
-Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".  If
-several dives are made at the same location, the site information for the
-first dive is re-used.  Existing dive locations can be edited by selecting
-(on the *Dive List* panel) a dive done at that site and by opening the
-location information. Click the globe button on the right of the location
-name (see image image *A* below).  When typing the name of a dive site, a
-dropdown list appears showing all sites with similar names. If the dive site
-has been used before, click on the already-existing name.  The dive site
-names in the dropdown list contain either a globe symbol (indicating
-existing dive sites in the _Subsurface_ database)  or a *+* symbol
-(indicating dive site names that appear consistent with the current dive
-site name but which haven’t been added to the dive site database).  If the
-present dive site has not been used before, a message appears as follows
-(image *A* below):
+Entrez le nom du site de plongée, p. ex. "Tihany, Lac Balaton, Hongrie".  Si
+plusieurs plongées ont été faites au même endroit, les informations de lieu
+de la première plongée sont ré-utilisées.  Les lieux de plongée existants
+peuvent être édités en sélectionnant (dans le panneau *Liste des plongées*)
+une plongée faite sur ce site et en ouvrant les informations de cet
+endroit. Cliquez sur le bouton avec une image de globe à droite du nom du
+lieu (voir l'image *A* ci-dessous).  Lorsque vous entrez le nom d'un site de
+plongée, une liste déroulante apparaît, affichant tous les sites comportant
+un nom similaire. Si le site de plongée a déjà été utilisé précédemment,
+cliquez sur le nom existant.  Les noms de sites de plongée présents dans la
+liste contiennent soit un symbole en forme de globe (indiquant qu'ils sont
+répertoriés comme lieux de plongée dans la base de données de _Subsurface_)
+ou un symbole *+* (qui indique des noms de lieux de plongée qui semblent
+consistant avec le nom du site courant mais qui n'ont pas encore été ajoutés
+à la base de données).  Si le site de plongée actuel n'a pas encore été
+utilisé, un message apparaît comme suit (voir image *A* ci-dessous):
 
 image::images/Locations1_f22.jpg["FIGURE:Location description panel", align="center"]
 
-Click the globe button and a panel appears to enter the coordinates and
-other information about the site (image *B*, above). The most important
-items are the coordinates of the site. There are three ways to specify
-coordinates:
+Cliquez sur le bouton contenant une image de globe; un panneau apparaît
+permettant d'entrer les coordonnées et d'autres informations concernant le
+site (voir image *B* ci-dessus). Les informations les plus importantes sont
+les coordonnées du site. Il y a trois façons de spécifier les coordonnées:
 
-a. Use the world map in the bottom right hand part of the _Subsurface_
-   window. The map displays an orange bar indicating "No location data - Move
-   the map and double-click to set the dive location". Doubleclick at the
-   appropriate place, and the orange bar disappears and the coordinates are
-   stored.
+a. Utilisez la carte du monde en bas à droite de la fenêtre de
+   _Subsurface_. Cette carte affiche une barre orange indiquant "Pas de données
+   de localisation - Bougez la carte et double-cliquez pour définir le lieu de
+   plongée". Double-cliquez à l'endroit requis; la barre orange disparaît alors
+   et les coordonnées sont stockées.
 
-b. Use eiher the Subsurface-Mobile App or the _Subsurface_ Companion App on an
-   Android or iPhone device with GPS and if the dive site coordinates were
-   stored using one of these apps.  xref:S_Companion[Click here for more
-   information]
+b. Utiliser l'application Subsurface-Mobile ou l'application _Subsurface_
+   Companion avec un périphérique Android ou un iPhone avec GPS si les
+   coordonnées du site de plongée ont été stockées en utilisant une de ces
+   applications.  xref:S_Companion[Cliquez ici pour plus d'information]
 c. Entrez les coordonnées manuellement si vous les connaissez, en utilisant un
    des quatre formats avec la latitude suivie de la longitude:
 
-	ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E Degrees and decimal
-	minutes, e.g. N30° 13.49760' , E30° 49.30788' Degrees minutes seconds,
-	e.g. N30° 13' 29.8" , E30° 49' 1.5" Decimal degrees, e.g. 30.22496 ,
+	Format ISO 6709 Annexe D p. ex. 30°13'28.9"N 30°49'1.5"E Degrés et minutes
+	décimales, p. ex. N30° 13.49760' , E30° 49.30788' Degrés minutes secondes,
+	p. ex. N30° 13' 29.8" , E30° 49' 1.5" Degrés décimaux, p. ex. 30.22496 ,
 	30.821798
 
-Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a
-negative value, e.g. -30.22496. Similarly western longitudes are given with
-a *W*, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
-don't have the degree sign (°). It can be replaced by a *d* like this: N30d
-W20d.  If both a dive site name and coordinates have been provided, save the
-dive site information by selecting the button _Apply changes_ at the top of
-the panel.
+Les latitudes dans l'hémisphère sud sont données avec un *S*, p. ex. S30°,
+ou avec une valeur négative, p. ex. -30.22496. De la même façon, les
+longitudes ouest sont données avec un *W*, p. ex. W07°, ou avec une valeur
+négative, p. ex. -7.34323. Certains claviers ne comportent par le signe
+degré (°). Il peut être remplacé par un *d* comme ceci: N30d W20d.  Si le
+nom du site de plongée et les coordonnées ont tous les deux été renseignés,
+enregistrez les informations du site de plongée en sélectionnant le bouton
+_Appliquer les modifications_ en haut du panneau.
 
-*Important*: GPS coordinates of a dive site are linked to the location
-name - so *saving* a dive site with only coordinates and no name
-causes problems. (Subsurface will think all of these
-dives have the same location and try to keep their GPS coordinates the
-same).
+*Important*: les coordonnées GPS d'un site de plongée sont liées au nom de
+lieu - ainsi, *enregistrer* un site de plongée avec uniquement les coordonnées mais aucun nom
+causera des problèmes. (Subsurface pensera que toutes ces
+plongées ont le même lieu et tentera de garder leurs coordonnées GPS
+identiques).
 
-*Dive site name lookup:* If you typed coordinates into the appropriate
-text box, you can do an automated name lookup based on the coordinates.
-This is done when _Subsurface_ uses the Internet to find the name of the dive site
-based on the coordinates that were typed. If a name has been found, it is
-automatically inserted into the tags box. The list box
-(Titled _Dive sites on same coordinates_") at the bottom
-of the dive site panel contains the names of other dives sites used at the
-current location. For instance if the dive site is "Blue Hole" and there are several
-sites named "Blue Hole", all of them are listed.
+*Recherche du nom d'un site de plongée*: si vous avez entré les coordonnées dans la boîte
+de texte appropriée, vous pouvez lancer une recherche de nom sur base des coordonnées.
+Ceci est réalisé lorsque _Subsurface_ utilise Internet pour trouver le nom d'un site de plongée
+sur base des coordonées que vous avez entrées. Si un nom est trouvé, il est
+automatiquement inséré dans la boîte Étiquettes. La liste (intitulée _"Sites de plongée situés aux mêmes coordonnées_") en bas
+du panneau du site de plongée contient les noms d'autres sites de plongée utilisés
+au même endroit. Par exemple, si le site de plongée est "Blue Hole" et qu'il y a plusieurs
+sites nommés "Blue Hole", ils seront tous listés.
 
 Entrez toute information contextuelle relative au site de plongée
 (Description et Notes) puis sélectionnez _Appliquer les modifications_ pour
@@ -811,10 +830,10 @@ enregistrer la géolocalisation du site de plongée. L'information concernant
 le site de plongée peut être éditée ultérieurement en cliquant sur l'icone
 en forme de globe à droite du nom du site de plongée dans l'onglet *Notes*.
 
-*Dive mode*: This is a dropdown box allowing you to choose the type of dive
-performed. The options are OC (Open Circuit SCUBA, the default setting, for most recreational dives),
-Freedive (dive without SCUBA equipment), CCR (Closed-circuit
-rebreather) and pSCR (Passive semi-closed rebreather).
+*Mode de plongée*: cette liste déroulante vous permet de choisir le type de plongée
+réalisée. Les options sont OC (scaphandre en circuit ouvert, le choix par défaut pour la plupart des plongées loisir),
+Apnée (plongée sans scaphandre), CCR (recycleur
+en circuit fermé) et pSCR (recycleur passif semi-fermé).
 
 *Moniteur/Guide de palanquée*: le nom du moniteur ou du guide de palanquée doit être
 entré dans ce champ
@@ -836,20 +855,21 @@ combinaison et souris ils ont utilisé.
 
 *Visibilité*: attribue une évaluation de la visibilité à une plongée sur une
 échelle de 5 points en cliquant sur l'étoile correspondante.
-*Tags*: Tags that describe the type of dive done can be entered
-here (separated by commas). Examples of common tags are boat, drift, training,
-cave, etc.
-_Subsurface_ has many built-in tags. By starting to type a tag, _Subsurface_ lists
-the tags that correspond to the typing. For instance, by typing
-+cav+, the tags *cave* and *cavern* are shown to choose from.
+*Étiquettes*: il est possible de définir ici des étiquettes qui décrivent le
+type de plongée (séparées par des virgules). Des exemples courants d'étiquettes sont bateau, 
+plongée dérivante, exercice, grotte, etc.
+_Subsurface_ contient de nombreuses étiquettes. En commençant à taper une étiquette, _Subsurface_ liste
+les étiquettes correspondant à la frappe. Par exemple, en entrant
++cav+, les étiquettes *cave* et *caverne* sont proposées.
 
 *Notes*: toute unformation supplémentaire concernant une plongée peut être entrée ici.
 
-The _Apply changes_ and _Discard changes_ buttons are used to save all the
-information for tabs in the *Info* panel and in the *Dive Profile*
-panel. Use them when *ALL* other information has been added. The image
-xref:S_Notes_dc[at the beginning of this section] shows an example of a
-*Notes tab* after completing the dive information.
+Les boutons _Appliquer les modifications_ et _Annuler les modifications_
+sont utilisés pour enregistrer toutes les informations des onglets du
+panneau *Informations* et du panneau *Profil de plongée*. Utilisez-les
+lorsque *TOUTES* les autres informations ont été ajoutées. L'image
+xref:S_Notes_dc[située au début de cette section] montre un exemple de
+l'onglet *Notes* après avoir complété les informations d'une plongée.
 
 ===== Équipement
 
@@ -1097,15 +1117,16 @@ seront importées dans _Subsurface_, le reste des données (équipiers,
 
 ==== Importation depuis Mares Dive Organizer V2.1
 
-Since Mares uses proprietary Windows software not compatible with
-multi-platform applications, these dive logs cannot be directly imported
-into _Subsurface_. Mares dive logs need to be imported using a three-step
-process, using _www.divelogs.de_ as a gateway to extract the dive log
-information.
+Vu que Mares utilise un logiciel Windows propriétaire non-compatible avec
+les applications multi-plateformes, ces carnets de plongée ne peuvent pas
+être importés directement dans _Subsurface_. Ceux-ci doivent être important
+en suivant une procédure en trois étapes, en utilisant _www.divelogs.de_
+comme passerelle pour extraire les informations du carnet de plongée.
 
-1. Export the dive log data from Mares Dive Organizer to your desktop, using a
-   _.sdf_ file name extension. Refer to xref:Mares_Export[Appendix C] for more
-   information.
+1. Exportez les données du carnet de plongée depuis le Mares Dive Organizer
+   vers votre bureau, en utilisant un fichier avec l'extension
+   _.sdf_. référez-vous à l'xref:Mares_Export[Annexe C] pour plus
+   d'information.
 2. Data should then be imported into _www.divelogs.de_. First, create a user
    account in _www.divelogs.de_ and Log into that web site, then select _Import
    Logbook -> Dive Organizer from the menu on the left hand side.  The
@@ -1225,8 +1246,8 @@ normally organized into a single line that provides the headers (or _field
 names_ or _column headings_) of the data columns, followed by the data, one
 record per line.
 
-There are two types of _CSV_ dive logs that can be imported into
-_Subsurface_:
+Il y a deux types de carnets de plongée au format _CSV_ pouvant être
+importées dans _Subsurface_:
 
 1. _CSV dive details_: This dive log format contains similar information to
    that of a typical written dive log, e.g. dive date and time, dive depth,
