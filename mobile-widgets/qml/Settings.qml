@@ -49,8 +49,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.2
 			}
 			Row {
-				Layout.preferredWidth: gridwidth * 0.6
-//				Layout.alignment: Qt.AlignLeft
+				Layout.preferredWidth: gridWidth * 0.6
 				Rectangle {
 					id: blueRect
 					color: subsurfaceTheme.blueBackgroundColor
