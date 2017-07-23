@@ -9,6 +9,8 @@
 #include "core/divesite.h"
 #include "qt-models/maplocationmodel.h"
 
+#define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
+
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
 	m_mapLocationModel = new MapLocationModel(this);
@@ -36,9 +38,20 @@ void MapWidgetHelper::reloadMapLocations()
 	for_each_dive_site(idx, ds) {
 		if (!dive_site_has_gps_location(ds))
 			continue;
-		const qreal longitude = ds->longitude.udeg / 1000000.0;
-		const qreal latitude = ds->latitude.udeg / 1000000.0;
-		locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude)));
+		const qreal latitude = ds->latitude.udeg * 0.000001;
+		const qreal longitude = ds->longitude.udeg * 0.000001;
+		QGeoCoordinate dsCoord(latitude, longitude);
+		// check if there are no locations too close to the current dive site
+		bool diveSiteTooClose = false;
+		foreach(MapLocation *location, locationList) {
+			QGeoCoordinate coord = qvariant_cast<QGeoCoordinate>(location->getRole(MapLocation::Roles::RoleCoordinate));
+			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M) {
+				diveSiteTooClose = true;
+				break;
+			}
+		}
+		if (!diveSiteTooClose)
+			locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude)));
 	}
 	m_mapLocationModel->addList(locationList);
 }
