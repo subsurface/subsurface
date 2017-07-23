@@ -3348,6 +3348,10 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	if (data[11])
 		cur_dive->suit = strdup(data[11]);
 
+	/* TODO: check what the visibility options are in Divinglog and map them to Subsurface's 0-5 scale */
+	if (data[14])
+		cur_dive->visibility = atoi(data[14]);
+
 	settings_start();
 	dc_settings_start();
 
@@ -3404,7 +3408,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID from Logbook where UUID not in (select UUID from DeletedRecords)";
+	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility from Logbook where UUID not in (select UUID from DeletedRecords)";
 
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
 
