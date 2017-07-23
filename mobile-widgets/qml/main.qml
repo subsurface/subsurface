@@ -132,7 +132,7 @@ Kirigami.ApplicationWindow {
 			},
 			Kirigami.Action {
 				iconName: "icons/ic_sync.svg"
-				text: qsTr("Dive managment")
+				text: qsTr("Dive management")
 				Kirigami.Action {
 					iconName: "icons/ic_add.svg"
 					text: qsTr("Add dive manually")
