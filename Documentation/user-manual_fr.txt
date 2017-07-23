@@ -855,6 +855,7 @@ combinaison et souris ils ont utilisé.
 
 *Visibilité*: attribue une évaluation de la visibilité à une plongée sur une
 échelle de 5 points en cliquant sur l'étoile correspondante.
+
 *Étiquettes*: il est possible de définir ici des étiquettes qui décrivent le
 type de plongée (séparées par des virgules). Des exemples courants d'étiquettes sont bateau, 
 plongée dérivante, exercice, grotte, etc.
@@ -862,7 +863,7 @@ _Subsurface_ contient de nombreuses étiquettes. En commençant à taper une ét
 les étiquettes correspondant à la frappe. Par exemple, en entrant
 +cav+, les étiquettes *cave* et *caverne* sont proposées.
 
-*Notes*: toute unformation supplémentaire concernant une plongée peut être entrée ici.
+*Notes*: toute information supplémentaire concernant une plongée peut être entrée ici.
 
 Les boutons _Appliquer les modifications_ et _Annuler les modifications_
 sont utilisés pour enregistrer toutes les informations des onglets du
@@ -881,53 +882,57 @@ image::images/BlueEditBar_f22.jpg["FIGURE: Blue edit bar", align="center"]
 
 indique que l'équipement a été édité. C'est une partie hautement interactive
 de _Subsurface_ et les informations sur les blocs et les gaz (entrées ici)
-déterminent les comportement du *Profil de plongée* (panneau en haut à
+déterminent le comportement du *Profil de plongée* (panneau en haut à
 droite).
 
 [[cylinder_definitions]]
-*Blocs*: l'information concernant les blocs est entrée via une boîte de dialogue ressemble à ceci:
+*Blocs*: les informations concernant les blocs sont entrées via une boîte de dialogue
+qui ressemble à ceci:
 
 image::images/DC_gas-dialogue1_f20.jpg["FIGURE: Initial cylinder dialogue", align="center"]
 
-For hand-entered dives, this information needs to be typed in. For dive
-computers, _Subsurface_ often gets the gas used from the dive computer and
-automatically inserts the gas composition(% oxygen or % helium) in the
-table. The + button at the top right allows adding more cylinders for this
-dive. The dark dustbin icon on the left allows you to delete information for
-a cylinder.  Note that it is not possible to delete a cylinder if it is used
-during the dive. A cylinder might be implicitly used in the dive, even
-without a gas change event.  Start by selecting a cylinder type on the
-left-hand side of the table.  To select a cylinder, the _Type_ box should be
-clicked. This brings up a list button that can be used to display a dropdown
-list of cylinders:
+Pour les plongées entrées manuellement, cette information doit être
+entrée. Pour les ordinateurs de plongée, _Subsurface_ reçoit souvent
+l'information concernant le gaz utilisé et insère automatiquement sa
+composition (% d'oxygène ou % d'hélium) dans le tableau. Le bouton + en haut
+à droite permet d'ajouter des blocs pour cette plongée. L'icone de corbeille
+noire à gauche permet de supprimer les informations d'un bloc. Notez qu'il
+n'est pas possible de supprimer un bloc s'il est utilisé durant la
+plongée. Un bloc doit être implicitement utilisé pour la plongée, même sans
+événement de changement de gaz.  Commencez par sélectionner un type de bloc
+dans la partie gauche du tableau.  Pour sélectionner un bloc, il faut
+cliquer sur la boîte _Type_. Cela fera apparaître un bouton permettant
+d'afficher une liste déroulante de blocs:
 
 image::images/DC_gas-dialogue2_f20.jpg["FIGURE: The cylinder drop-down list button", align="center"]
 
-The drop-down list can then be used to select the cylinder type that was
-used for this dive, or just start typing in the box which shows the
-available options for the entered characters. The *Size* of the cylinder as
-well as its working pressure (_Work.press_) will automatically be shown in
-the dialogue.
+La liste déroulante peut être utilisée pour sélectionner le type de bloc
+utilisé pour cette plongée, ou il suffit de commencer à taper dans la boîte
+pour afficher les options disponibles selon les lettres entrées. La *Taille*
+du bloc ainsi que sa pression de service (_Pression de service) seront
+automatiquement affichées dans la boîte de dialogue.
 
 Ensuite, indiquez la pression de déart et celle d'arrivée pour le gaz
 spécifié pendant la plongée. L'unité de pression (métrique/impériale)
 correspond au réglage choisi dans les _Préférences_.
 
-Finally, provide the gas mixture used. If air was used, the value of 21% can
-be entered into the oxygen box or this field can be left blank. If nitrox or
-trimix were used, their percentages of oxygen and/or helium should be
-entered.  Any inappropriate fields should be left empty. After typing the
-information for the cylinder, save the data either by pressing _ENTER_ on
-the keyboard or by clicking outside the cell containing the
-cursor. Information for any additional cylinders can be added by using the +
-button at the top right hand. Here is an example of a complete description
-for a dive using two cylinders (air and EAN50):
+Pour terminer, renseignez le mélange de gaz utilisé. S'il s'agit d'air, la
+valeur de 21% peut être entrée dans la case Oxygène, ou ce champ peut être
+laissé vide. Si du nitrox ou du trimix a été utilisé, les pourcentages
+d'oxygène et/ou d'hélium doivent être entrés.  Tout champ non requis
+concerné doit être laissé vide. Après avoir entré les informations du bloc,
+enregistrez les données soit en pressant la douche _ENTRÉE_, soit en
+cliquant hors de la case contenant le curseur. Les informatioins pour les
+blocs supplémentaires peuvent être ajoutées en utilisant le bouton + en haut
+à droite. Voici un exemple d'une description complète pour une plongée
+utilisant deux blocs (air et EAN50):
 
 image::images/CylinderDataEntry3_f20.jpg["FIGURE: a completed cylinder dive information table", align="center"]
 
 *Poids*: les informations à propos du système de lestage peuvent être entrés
 via une interface similaire à celles des blocs. Si vous cliquez
-sur le bouton + en haut à droite , le tableau apparaît comme suit:
+sur le bouton + en haut à droite , le tableau apparaît
+comme suit:
 
 image::images/WeightsDataEntry1_f20.jpg["FIGURE:The Weights dialogue", align="center"]
 
@@ -935,16 +940,17 @@ En cliquant sur le champ: _Type_, une liste déroulante devient accessible
 via une flèche vers le bas:
 
 image::images/WeightsDataEntry2_f20.jpg["FIGURE:Weights type drop-down list button", align="center"]
-This can be used to select the type of weight system used during the
-dive. You may start typing in the box to specify a different weighting
-mechanism that will be saved by _Subsurface_.  In the *Weight* field, type
-in the amount of weight used during the dive. After specifying the weight
-system, save the data by pressing _ENTER_ on the keyboard or by clicking
-outside the cell with the cursor.  It’s possible to enter information for
-more than one weight system by adding an additional system using the +
-button on the top right hand. Weight systems can be deleted using the dust
-bin icon on the left hand. Here is an example of information for a dive with
-two types of weights: integrated as well as a weight belt:
+Celle-ci peut être utilisée pour sélectionner le type de poids utilisé
+durant la plongée. Vous pouvez commencer à taper dans la case pour spécifier
+un mécanisme différent de lestage qui sera sauvegardé par _Subsurface_. Dans
+le champ *Poids*, entrez la quantité de poids utilisé durant la
+plongée. Après avoir spécifié le système de lestage, enregistrez les données
+avec la touche _ENTRÉE_ du clavier ou en cliquant hors de la case contenant
+le curseur.  Il est possible d'entrer des informations pour plusieurs
+systèmes de lestage en utilisant le pouton + en haut à droite. Les systèmes
+de lestage peuvent être supprimés en utilisant l'icone de corbeille sur la
+gauche. Voici un exemple d'informations pour une plongée avec deux systèmes
+de lestage: des poids intégrés et une ceinture:
 
 image::images/WeightsDataEntry3_f20.jpg["FIGURE: A completed weights information table", align="center"]
 
@@ -994,9 +1000,10 @@ De nombreux plongeurs désirent annonter leurs plongées avec du texte
 indiquant des événements particuliers, p. ex. "J'ai vu des dauphins", ou
 "Déploiement de parachute de palier". Ceci peut ^être facilement réalisé:
 
- - Right-click at the appropriate point on the dive profile.  This brings up
-   the dive profile context menu. Select _Add bookmark_. A red flag is placed
-   on the dive profile at that point (see *A* below).
+ - Cliquez-droit à l'endroit voulu dans le profil de plongée. Cela fait
+   apparaître le menu contextuel du profil de plongée. Sélectionnez _Ajouter un
+   signet_. Un drapeau rouge est alors placé à cet endroit sur le profil de
+   plongée (voir *A* ci-dessous).
 
  - Cliquez-droit sur le drapeau rouge. Ceci fait apparaître un menu contextuel
    (voir *B* ci-dessous). Sélectionnez _Modifier le nom_.
@@ -1326,7 +1333,8 @@ panel.
 
 [[S_CSV_Intro]]
 ****
-*Introduction aux fichiers _CSV_ pour la plongée*[icon="images/icons/important.png"]
+*Introduction aux fichiers _CSV_ pour la plongée*
+[icon="images/icons/important.png"]
 [IMPORTANT]
 
 _CSV_ is an abbreviation for a data file format: _Comma-Separated
@@ -2265,58 +2273,64 @@ B].
 
 == Obtaining more information about dives entered into the logbook
 
-=== The *Info* tab (for individual dives)
+=== L'onglet *Informations* (pour une seule plongée)
 
-The Info tab gives some summary information about a particular dive that has
-been selected in the *Dive List*. Useful information here includes the
-surface interval before the dive, the maximum and mean depths of the dive,
-the gas volume consumed, the surface air consumption (SAC) and the number of
-oxygen toxicity units (OTU) incurred.
+L'onglet Informations donnée des informations résumées sur une plongée
+sélectionnée dans la *Liste des plongées*. Les informations utiles
+comprennent l'intervalle de surface avant une plongée, les profondeurs
+maximale et moyenne de la plongée, le volume de gaz consommé, la
+consommation équivalente à l'air (SAC) et le nombre d'unités de toxicité de
+l'oxygène (OTU) atteint.
 
 [icon="images/icons/info.jpg"]
 [NOTE]
-Gas consumption and SAC calculations: _Subsurface_ calculates SAC and Gas
-consumption taking in account gas incompressibility, particularly at tank
-pressures above 200 bar, making them more accurate.  Refer to
-xref:SAC_CALCULATION[Appendix F] for more information.
+Consommation de gaz et calculs de la SAC (consommation équivalente à l'air):
+_Subsurface_ calcule la SAC et la consommation de gaz et tenant compte de
+l'incompressibilité du gaz, en particuliter pour des blocs à des pressions
+supérieures à 200 bar, les rendant plus précises. Référez-vous à
+xref:SAC_CALCULATION[l'Annexe F] pour plus d'information.
 
 [[S_ExtraDataTab]]
-=== L'onglet *Extra info* (généralement pour des plongées sparées)
+=== L'onglet *Extra info* (généralement pour des plongées séparées)
 
-When using a dive computer, it often reports several data items that cannot
-easily be presented in a standardised way because the nature of the
-information differs from one dive computer to another. These data often
-comprise setup information, metadata about a dive, battery levels, no fly
-times, or gradient factors used during the dive. When possible, this
-information is presented in the *Extra Data* tab. Below is an image showing
-extra data for a dive using a Poseidon rebreather.
+Lors de l'utilisation d'un ordinateur de plongée, celui-ci transmet souvent
+des données qui ne peuvent pas être facilement standardisées parce que la
+nature de ces  informations diffère d'un ordinateur à l'autre. Ces données
+conprennent souvent des informations de configuration, des métadonnées à
+propos d'une plongée, le niveau de batterie, le temps d'interdiction de vol
+(no fly) ou les gradient factor utilisés lors de la plongée. Quand cela est
+possible, ces informations sont présentées dans l'onglet *Extra
+Info*. Ci-dessous, vous trouverez une image affichant des données
+supplémentaires pour une plongée utilisant un recycleur Poseidon.
 
 image::images/ExtraDataTab_f20.jpg["FIGURE: Extra Data tab", align="center"]
 
 === L'onglet *Statistiques* (pour un groupe de plongées)
 
-The Stats tab gives summary statistics for more than one dive, assuming that
-more than one dive has been selected in the *Dive List* using the standard
-Ctrl-click or Shift-click of the mouse. If only one dive has been selected,
-figures for only that dive are given. This tab shows the number of dives
-selected, the total amount of dive time in these dives, as well as the
-minimum, maximum and mean for the dive duration, water temperature and
-surface air consumption (SAC). It also shows the depth of the shallowest and
-deepest dives of those selected.
+L'onglet Statistiques donne des statistiques résumées pour plusieurs
+plongées, pour autant que plusieurs plongées soient sélectionnées dans la
+*Liste des plongées* en utilisant les raccourcis standard Ctrl-clic ou
+Maj-clic avec la souris. So une seule plongée est sélectionnée, les données
+ne concernent que cette seule plongée. Cet onglet affiche le nombre de
+plongées sélectionnées, la durée totale de ces plongées ainsi que les durées
+minimale, maximale et moyenne parmi ces plongées, la température de l'eau et
+la consommation équivalente à l'air (SAC). L'onglet affiche également la
+plus petite et la plus grande profondeur atteinte pour ces plongées.
 
 [[S_DiveProfile]]
 === Le *Profil de plongée*
 
 image::images/Profile2.jpg["Typical dive profile", align="center"]
 
-Of all the panels in _Subsurface_, the Dive Profile contains the most
-detailed information about each dive. The Dive Profile has a *button bar* on
-the left hand side, allowing control of several display options. The
-functions of these buttons are described below. The main item in the Dive
-Profile is the graph of dive depth as a function of time. In addition to
-depth, it also shows the ascent and descent rates compared to the
-recommended speed of going up or down in the water column. This information
-is given using different colors:
+Parmi toutes les panneaux de _Subsurface_, le profil de plongée contient les
+informations les plus détaillées concernant chaque plongée. Le profil de
+plongée possède une *barre de boutons* sur el côté gauche, permettant le
+contrôle de nombreuses options d'affichage. Les fonctions de ces boutons
+sont décrites ci-dessous. L'objet principal du profil de plongée est le
+graphique de la profondeur de la plongée en fonction du temps. En plus de la
+profondeur, ce graphique affiche également les vitesses de descente et de
+remontée en comparaison avec la vitesse recommandée. Cette information est
+donnée en utilisant différentes couleurs:
 |====================
 |*Couleur*|*Vitesse de descente (m/min)*|*Vitesse de remontée (m/min)*
 |Rouge|> 30|> 18
@@ -2326,29 +2340,31 @@ is given using different colors:
 |Vert foncé|< 1.5|< 1.5
 |=====================
 
-The profile also includes depth readings for the peaks and troughs in the
-graph.  So users should see the depth of the deepest point and other
-peaks. Mean depth is plotted as a grey line, indicating mean dive depth up
-to a particular moment during the dive.
+Le profil permet également une lecture de la profondeur via les sommets et
+planchers sur le graphique.  Ainsi les utilisateurs, peuvent voir la
+profondeur du point le plus bas et d'autres sommets. La profondeur moyenne
+est affichée sous la forme d'une ligne grise, indiquant la moyenne de
+profondeur à un moment précis de la plongée.
 
 [icon="images/icons/scale.jpg"]
 [NOTE]
-In some cases the dive profile does not fill the whole area of the *Dive
-Profile* panel. Clicking the *Scale* button in the toolbar on the left of
-the dive profile increases the size of the dive profile to fill the area of
-the panel.
+Dans certains cas, le profil de plongée ne remplit pas toute la zone du
+panneau *Profil de plongée*. Cliquer sur le bouton *Ajuster l'échelle du
+graphique* dans la barre d'outils sur la gauche du profil de plongée
+augmente la taille du profil de plongée pour remplir la zone du panneau.
 
 La *température de l'eau* est indiquée par une ligne bleue avec des valeurs de
 température placées lors de changements significatifs.
 
 [[S_InfoBox]]
 ==== La boîte *Information*
-The Information box displays a large range of information about the dive
-profile. Normally the Information Box is located to the top left of the
-*Dive Profile* panel. The Information Box can be moved around in the *Dive
-Profile* panel by click-dragging it with the mouse so that it is not
-obstructing important detail. The position of the Information Box is saved
-and used again during subsequent dive analyses.
+La boîte Information affiche un grand nombre d'informations concernant le
+profil de plongée. Normalement, la boîte Information est située dans le coin
+supérieur gauche du panneau *Profil de plongée*. Elle peut être déplacée
+dans tout le panneau *Profil de plongée* en la cliquant-déplaçant avec la
+souris à un endroit où elle ne masquera pas d'information importante. La
+position de la boîte Information est enregistrée ré-utilisée pour les
+analyses de plongée suivantes.
 
 image::images/InfoBox2.jpg["Figure: Information Box", align="center"]
 
@@ -2371,13 +2387,13 @@ panel. These are:
 
 [icon="images/icons/MOD.jpg"]
 [NOTE]
-Show the *Maximum Operating Depth (MOD)* of the dive, given the gas mixture
-used. MOD is dependent on the oxygen concentration in the breathing gas.
-For air (21% oxygen) it is around 57 m if a maximum pO~2~ of 1.4 is
-specified in the *Preferences* section (select _File -> Preferences ->
-Profile_ and edit the text box _pO~2~ in calculating MOD_.  When diving
-below the MOD there is a markedly increased risk of exposure to the dangers
-of oxygen toxicity.
+Affiche la *Profondeur maximale d'utilisation (MOD)* d'une plongée, en
+fonction du mélange gazeux utilisé. La MOD dépend de la concentration en
+oxygène du gaz respiré. Pour l'air (21% d'oxygène), il vaut envuron 57m si
+une pO~2 maximale de 1.4 est choisie dans la section *Préférences*
+(sélectionnez _Fichier -> Préférences -> Profil_ et éditez le champ _pO~2
+dans le calcul de MOD_).  En plongeant sous la MOD, il y a un risque
+important d'exposition aux dangers liés à la toxicité de l'oxygène.
 
 [icon="images/icons/NDL.jpg"]
 [NOTE]
@@ -2421,7 +2437,7 @@ quasiment complet de données.
 
 
 [[S_gas_pressure_graph]]
-===== The Gas Pressure Bar Graph
+===== Le graphique de pression gazeuse
 
 On the left of the *Information Box* is a vertical bar graph showing the
 pressures of the nitrogen (and other inert gases, e.g. helium, if
@@ -2562,8 +2578,9 @@ the color is a representation of the breathing gas density.
 
 [icon="images/icons/Heartbutton.png"]
 [NOTE]
-Clicking on the heart rate button allows display of heart rate information
-during the dive if the dive computer was attached to a heart rate sensor.
+Cliquer sur le bouton Communter le rythme cardique permet d'afficher
+l'information de rythme cardiaque pendant la plongée si l'ordinateur de
+plongée est jumelé avec un détecteur de rythme cardique.
 
 It is possible to *zoom* into the profile graph. This is done either by
 using the scroll wheel / scroll gesture of the mouse or trackpad. By default
@@ -2583,10 +2600,10 @@ underneath the two red dots.
 
 [icon="images/icons/ShowPhotos.png"]
 [NOTE]
-Photographs that have been added to a dive can be shown on the profile by
-selecting the *Show-photo* button. The position of a photo on the profile
-shows the exact time when this photo was taken. If this button is not
-active, the photos are hidden.
+Les photos qui ont été ajoutées à une plongée peuvent être affichées sur le
+profil en sélectionnant le bouton *Communer l'affichage des images*. La
+position d'une photo sur le profil indique le moment exact où la photo a été
+prise. Si le bouton n'est pas actif, les photos sont masquées.
 
 
 The profile can also include the dive computer reported *ceiling* (more
@@ -2623,22 +2640,23 @@ par l'ordinateur de plongée" dans le panneau Profil.
 
 [icon="images/icons/ceiling1.jpg"]
 [NOTE]
-If the *Calculated ceiling* button on the Profile Panel is clicked, then a
-ceiling, calculated by _Subsurface_, is shown in green if it exists for a
-particular dive (*A* in figure below). This setting can be modified in two
-ways:
+Si le bouton *Communter le plafond calculé* du panneau Profil est cliqué, un
+plafond, calculé par _Subsurface_ est affiché en vert s'il existe pour une
+plongée donnée (*A* dans l'image ci-dessous). Ceci peut être modifié de deux
+façons:
 
 [icon="images/icons/ceiling2.jpg"]
 [NOTE]
-If, in addition, the *show all tissues* button on the Profile Panel is
-clicked, the ceiling is shown for the tissue compartments following the
-Bühlmann model (*B* in figure below).
+Si, en outre, le bouton *Commuter l'affichage de tous les tissus* est
+cliqué, le plafond est affiché pour les compartiments de tissus selon le
+modèle Bühlmann (*B* dans l'image ci-dessous).
 
 [icon="images/icons/ceiling3.jpg"]
 [NOTE]
 ===============================================================================================================
-If, in addition, the *3m increments* button on the Profile Panel is clicked,
-then the ceiling is indicated in 3 m increments (*C* in figure below).
+Si, en plus le bouton *Commuter le plafond calculé avec des incréments de
+3m* est cliqué, le plafond est affiché avec des incréments de 3m (*C* dans
+l'image ci-dessous).
 
 image::images/Ceilings2.jpg["Figure: Ceiling with 3m resolution", align="center"]
 

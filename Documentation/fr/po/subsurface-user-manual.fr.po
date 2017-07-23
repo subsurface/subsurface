@@ -2056,7 +2056,7 @@ msgid ""
 "dive on a 5-point scale by clicking the appropriate star.\n"
 msgstr ""
 "*Visibilité*: attribue une évaluation de la visibilité à une plongée sur une\n"
-"échelle de 5 points en cliquant sur l'étoile correspondante."
+"échelle de 5 points en cliquant sur l'étoile correspondante.\n"
 
 #. type: Plain text
 #: user-manual.txt:788
@@ -2080,7 +2080,7 @@ msgstr ""
 #: user-manual.txt:790
 #, no-wrap
 msgid "*Notes*: Any additional information for the dive can be entered here.\n"
-msgstr "*Notes*: toute unformation supplémentaire concernant une plongée peut être entrée ici.\n"
+msgstr "*Notes*: toute information supplémentaire concernant une plongée peut être entrée ici.\n"
 
 #. type: Plain text
 #: user-manual.txt:795
@@ -2124,7 +2124,7 @@ msgid ""
 msgstr ""
 "indique que l'équipement a été édité. C'est une partie hautement interactive "
 "de _Subsurface_ et les informations sur les blocs et les gaz (entrées ici) "
-"déterminent les comportement du *Profil de plongée* (panneau en haut à "
+"déterminent le comportement du *Profil de plongée* (panneau en haut à "
 "droite)."
 
 #. type: Plain text
@@ -2133,7 +2133,9 @@ msgstr ""
 msgid ""
 "*Cylinders*: The cylinder information is entered through a dialogue that looks\n"
 "like this:\n"
-msgstr "*Blocs*: l'information concernant les blocs est entrée via une boîte de dialogue ressemble à ceci:\n"
+msgstr ""
+"*Blocs*: les informations concernant les blocs sont entrées via une boîte de dialogue\n"
+"qui ressemble à ceci:\n"
 
 #. type: Target for macro image
 #: user-manual.txt:813
@@ -2156,6 +2158,18 @@ msgid ""
 "clicked. This brings up a list button that can be used to display a dropdown "
 "list of cylinders:"
 msgstr ""
+"Pour les plongées entrées manuellement, cette information doit être entrée. "
+"Pour les ordinateurs de plongée, _Subsurface_ reçoit souvent l'information "
+"concernant le gaz utilisé et insère automatiquement sa composition (% "
+"d'oxygène ou % d'hélium) dans le tableau. Le bouton + en haut à droite "
+"permet d'ajouter des blocs pour cette plongée. L'icone de corbeille noire à "
+"gauche permet de supprimer les informations d'un bloc. Notez qu'il n'est pas "
+"possible de supprimer un bloc s'il est utilisé durant la plongée. Un bloc "
+"doit être implicitement utilisé pour la plongée, même sans événement de "
+"changement de gaz.  Commencez par sélectionner un type de bloc dans la "
+"partie gauche du tableau.  Pour sélectionner un bloc, il faut cliquer sur la "
+"boîte _Type_. Cela fera apparaître un bouton permettant d'afficher une liste "
+"déroulante de blocs:"
 
 #. type: Target for macro image
 #: user-manual.txt:827
@@ -2172,6 +2186,11 @@ msgid ""
 "well as its working pressure (_Work.press_) will automatically be shown in "
 "the dialogue."
 msgstr ""
+"La liste déroulante peut être utilisée pour sélectionner le type de bloc "
+"utilisé pour cette plongée, ou il suffit de commencer à taper dans la boîte "
+"pour afficher les options disponibles selon les lettres entrées. La *Taille* "
+"du bloc ainsi que sa pression de service (_Pression de service) seront "
+"automatiquement affichées dans la boîte de dialogue."
 
 #. type: Plain text
 #: user-manual.txt:838
@@ -2197,6 +2216,16 @@ msgid ""
 "at the top right hand. Here is an example of a complete description for a "
 "dive using two cylinders (air and EAN50):"
 msgstr ""
+"Pour terminer, renseignez le mélange de gaz utilisé. S'il s'agit d'air, la "
+"valeur de 21% peut être entrée dans la case Oxygène, ou ce champ peut être "
+"laissé vide. Si du nitrox ou du trimix a été utilisé, les pourcentages "
+"d'oxygène et/ou d'hélium doivent être entrés.  Tout champ non requis "
+"concerné doit être laissé vide. Après avoir entré les informations du bloc, "
+"enregistrez les données soit en pressant la douche _ENTRÉE_, soit en "
+"cliquant hors de la case contenant le curseur. Les informatioins pour les "
+"blocs supplémentaires peuvent être ajoutées en utilisant le bouton + en haut "
+"à droite. Voici un exemple d'une description complète pour une plongée "
+"utilisant deux blocs (air et EAN50):"
 
 #. type: Target for macro image
 #: user-manual.txt:850
@@ -2215,7 +2244,8 @@ msgid ""
 msgstr ""
 "*Poids*: les informations à propos du système de lestage peuvent être entrés\n"
 "via une interface similaire à celles des blocs. Si vous cliquez\n"
-"sur le bouton + en haut à droite , le tableau apparaît comme suit:\n"
+"sur le bouton + en haut à droite , le tableau apparaît\n"
+"comme suit:\n"
 
 #. type: Target for macro image
 #: user-manual.txt:857
@@ -2252,6 +2282,17 @@ msgid ""
 "left hand. Here is an example of information for a dive with two types of "
 "weights: integrated as well as a weight belt:"
 msgstr ""
+"Celle-ci peut être utilisée pour sélectionner le type de poids utilisé "
+"durant la plongée. Vous pouvez commencer à taper dans la case pour spécifier "
+"un mécanisme différent de lestage qui sera sauvegardé par _Subsurface_. Dans "
+"le champ *Poids*, entrez la quantité de poids utilisé durant la plongée. "
+"Après avoir spécifié le système de lestage, enregistrez les données avec la "
+"touche _ENTRÉE_ du clavier ou en cliquant hors de la case contenant le "
+"curseur.  Il est possible d'entrer des informations pour plusieurs systèmes "
+"de lestage en utilisant le pouton + en haut à droite. Les systèmes de "
+"lestage peuvent être supprimés en utilisant l'icone de corbeille sur la "
+"gauche. Voici un exemple d'informations pour une plongée avec deux systèmes "
+"de lestage: des poids intégrés et une ceinture:"
 
 #. type: Target for macro image
 #: user-manual.txt:877
@@ -2337,6 +2378,10 @@ msgid ""
 "the dive profile context menu. Select _Add bookmark_. A red flag is placed "
 "on the dive profile at that point (see *A* below)."
 msgstr ""
+"Cliquez-droit à l'endroit voulu dans le profil de plongée. Cela fait "
+"apparaître le menu contextuel du profil de plongée. Sélectionnez _Ajouter un "
+"signet_. Un drapeau rouge est alors placé à cet endroit sur le profil de "
+"plongée (voir *A* ci-dessous)."
 
 #. type: Plain text
 #: user-manual.txt:927
@@ -3011,7 +3056,7 @@ msgstr ""
 #: user-manual.txt:1244
 #, no-wrap
 msgid "*A Diver's Introduction to _CSV_ Files*\n"
-msgstr "*Introduction aux fichiers _CSV_ pour la plongée*"
+msgstr "*Introduction aux fichiers _CSV_ pour la plongée*\n"
 
 #. type: delimited block *
 #: user-manual.txt:1258
@@ -4782,7 +4827,7 @@ msgstr ""
 #: user-manual.txt:2111
 #, no-wrap
 msgid "The *Info* tab (for individual dives)"
-msgstr ""
+msgstr "L'onglet *Informations* (pour une seule plongée)"
 
 #. type: Plain text
 #: user-manual.txt:2118
@@ -4793,6 +4838,12 @@ msgid ""
 "the gas volume consumed, the surface air consumption (SAC) and the number of "
 "oxygen toxicity units (OTU) incurred."
 msgstr ""
+"L'onglet Informations donnée des informations résumées sur une plongée "
+"sélectionnée dans la *Liste des plongées*. Les informations utiles "
+"comprennent l'intervalle de surface avant une plongée, les profondeurs "
+"maximale et moyenne de la plongée, le volume de gaz consommé, la "
+"consommation équivalente à l'air (SAC) et le nombre d'unités de toxicité de "
+"l'oxygène (OTU) atteint."
 
 #. type: Plain text
 #: user-manual.txt:2125
@@ -4802,12 +4853,17 @@ msgid ""
 "pressures above 200 bar, making them more accurate.  Refer to xref:"
 "SAC_CALCULATION[Appendix F] for more information."
 msgstr ""
+"Consommation de gaz et calculs de la SAC (consommation équivalente à l'air): "
+"_Subsurface_ calcule la SAC et la consommation de gaz et tenant compte de "
+"l'incompressibilité du gaz, en particuliter pour des blocs à des pressions "
+"supérieures à 200 bar, les rendant plus précises. Référez-vous à xref:"
+"SAC_CALCULATION[l'Annexe F] pour plus d'information."
 
 #. type: Title ===
 #: user-manual.txt:2127
 #, no-wrap
 msgid "The *Extra Data* tab (usually for individual dives)"
-msgstr "L'onglet *Extra info* (généralement pour des plongées sparées)"
+msgstr "L'onglet *Extra info* (généralement pour des plongées séparées)"
 
 #. type: Plain text
 #: user-manual.txt:2135
@@ -4820,6 +4876,15 @@ msgid ""
 "information is presented in the *Extra Data* tab. Below is an image showing "
 "extra data for a dive using a Poseidon rebreather."
 msgstr ""
+"Lors de l'utilisation d'un ordinateur de plongée, celui-ci transmet souvent "
+"des données qui ne peuvent pas être facilement standardisées parce que la "
+"nature de ces  informations diffère d'un ordinateur à l'autre. Ces données "
+"conprennent souvent des informations de configuration, des métadonnées à "
+"propos d'une plongée, le niveau de batterie, le temps d'interdiction de vol "
+"(no fly) ou les gradient factor utilisés lors de la plongée. Quand cela est "
+"possible, ces informations sont présentées dans l'onglet *Extra Info*. Ci-"
+"dessous, vous trouverez une image affichant des données supplémentaires pour "
+"une plongée utilisant un recycleur Poseidon."
 
 #. type: Target for macro image
 #: user-manual.txt:2136
@@ -4845,6 +4910,15 @@ msgid ""
 "surface air consumption (SAC). It also shows the depth of the shallowest and "
 "deepest dives of those selected."
 msgstr ""
+"L'onglet Statistiques donne des statistiques résumées pour plusieurs "
+"plongées, pour autant que plusieurs plongées soient sélectionnées dans la "
+"*Liste des plongées* en utilisant les raccourcis standard Ctrl-clic ou Maj-"
+"clic avec la souris. So une seule plongée est sélectionnée, les données ne "
+"concernent que cette seule plongée. Cet onglet affiche le nombre de plongées "
+"sélectionnées, la durée totale de ces plongées ainsi que les durées "
+"minimale, maximale et moyenne parmi ces plongées, la température de l'eau et "
+"la consommation équivalente à l'air (SAC). L'onglet affiche également la "
+"plus petite et la plus grande profondeur atteinte pour ces plongées."
 
 #. type: Title ===
 #: user-manual.txt:2151
@@ -4870,6 +4944,15 @@ msgid ""
 "recommended speed of going up or down in the water column. This information "
 "is given using different colors:"
 msgstr ""
+"Parmi toutes les panneaux de _Subsurface_, le profil de plongée contient les "
+"informations les plus détaillées concernant chaque plongée. Le profil de "
+"plongée possède une *barre de boutons* sur el côté gauche, permettant le "
+"contrôle de nombreuses options d'affichage. Les fonctions de ces boutons "
+"sont décrites ci-dessous. L'objet principal du profil de plongée est le "
+"graphique de la profondeur de la plongée en fonction du temps. En plus de la "
+"profondeur, ce graphique affiche également les vitesses de descente et de "
+"remontée en comparaison avec la vitesse recommandée. Cette information est "
+"donnée en utilisant différentes couleurs:"
 
 #. type: delimited block |
 #: user-manual.txt:2171
@@ -4897,6 +4980,11 @@ msgid ""
 "Mean depth is plotted as a grey line, indicating mean dive depth up to a "
 "particular moment during the dive."
 msgstr ""
+"Le profil permet également une lecture de la profondeur via les sommets et "
+"planchers sur le graphique.  Ainsi les utilisateurs, peuvent voir la "
+"profondeur du point le plus bas et d'autres sommets. La profondeur moyenne "
+"est affichée sous la forme d'une ligne grise, indiquant la moyenne de "
+"profondeur à un moment précis de la plongée."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2177
@@ -4912,6 +5000,10 @@ msgid ""
 "the dive profile increases the size of the dive profile to fill the area of "
 "the panel."
 msgstr ""
+"Dans certains cas, le profil de plongée ne remplit pas toute la zone du "
+"panneau *Profil de plongée*. Cliquer sur le bouton *Ajuster l'échelle du "
+"graphique* dans la barre d'outils sur la gauche du profil de plongée "
+"augmente la taille du profil de plongée pour remplir la zone du panneau."
 
 #. type: Plain text
 #: user-manual.txt:2185
@@ -4939,6 +5031,13 @@ msgid ""
 "obstructing important detail. The position of the Information Box is saved "
 "and used again during subsequent dive analyses."
 msgstr ""
+"La boîte Information affiche un grand nombre d'informations concernant le "
+"profil de plongée. Normalement, la boîte Information est située dans le coin "
+"supérieur gauche du panneau *Profil de plongée*. Elle peut être déplacée "
+"dans tout le panneau *Profil de plongée* en la cliquant-déplaçant avec la "
+"souris à un endroit où elle ne masquera pas d'information importante. La "
+"position de la boîte Information est enregistrée ré-utilisée pour les "
+"analyses de plongée suivantes."
 
 #. type: Target for macro image
 #: user-manual.txt:2195
@@ -4984,6 +5083,13 @@ msgid ""
 "below the MOD there is a markedly increased risk of exposure to the dangers "
 "of oxygen toxicity."
 msgstr ""
+"Affiche la *Profondeur maximale d'utilisation (MOD)* d'une plongée, en "
+"fonction du mélange gazeux utilisé. La MOD dépend de la concentration en "
+"oxygène du gaz respiré. Pour l'air (21% d'oxygène), il vaut envuron 57m si "
+"une pO~2 maximale de 1.4 est choisie dans la section *Préférences* "
+"(sélectionnez _Fichier -> Préférences -> Profil_ et éditez le champ _pO~2 "
+"dans le calcul de MOD_).  En plongeant sous la MOD, il y a un risque "
+"important d'exposition aux dangers liés à la toxicité de l'oxygène."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2220
@@ -5058,7 +5164,7 @@ msgstr ""
 # "graphique à barres"?
 #. type: Title =====
 #: user-manual.txt:2261
-#, fuzzy, no-wrap
+#, no-wrap
 msgid "The Gas Pressure Bar Graph"
 msgstr "Le graphique de pression gazeuse"
 
@@ -5326,6 +5432,9 @@ msgid ""
 "Clicking on the heart rate button allows display of heart rate information "
 "during the dive if the dive computer was attached to a heart rate sensor."
 msgstr ""
+"Cliquer sur le bouton Communter le rythme cardique permet d'afficher "
+"l'information de rythme cardiaque pendant la plongée si l'ordinateur de "
+"plongée est jumelé avec un détecteur de rythme cardique."
 
 #. type: Plain text
 #: user-manual.txt:2395
@@ -5373,6 +5482,10 @@ msgid ""
 "shows the exact time when this photo was taken. If this button is not "
 "active, the photos are hidden."
 msgstr ""
+"Les photos qui ont été ajoutées à une plongée peuvent être affichées sur le "
+"profil en sélectionnant le bouton *Communer l'affichage des images*. La "
+"position d'une photo sur le profil indique le moment exact où la photo a été "
+"prise. Si le bouton n'est pas actif, les photos sont masquées."
 
 #. type: Plain text
 #: user-manual.txt:2441
@@ -5429,6 +5542,10 @@ msgid ""
 "particular dive (*A* in figure below). This setting can be modified in two "
 "ways:"
 msgstr ""
+"Si le bouton *Communter le plafond calculé* du panneau Profil est cliqué, un "
+"plafond, calculé par _Subsurface_ est affiché en vert s'il existe pour une "
+"plongée donnée (*A* dans l'image ci-dessous). Ceci peut être modifié de deux "
+"façons:"
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2454
@@ -5443,6 +5560,9 @@ msgid ""
 "clicked, the ceiling is shown for the tissue compartments following the "
 "Bühlmann model (*B* in figure below)."
 msgstr ""
+"Si, en outre, le bouton *Commuter l'affichage de tous les tissus* est "
+"cliqué, le plafond est affiché pour les compartiments de tissus selon le "
+"modèle Bühlmann (*B* dans l'image ci-dessous)."
 
 #. type: Named 'icon' AttributeList argument for style 'icon'
 #: user-manual.txt:2459
@@ -5456,6 +5576,9 @@ msgid ""
 "If, in addition, the *3m increments* button on the Profile Panel is clicked, "
 "then the ceiling is indicated in 3 m increments (*C* in figure below)."
 msgstr ""
+"Si, en plus le bouton *Commuter le plafond calculé avec des incréments de "
+"3m* est cliqué, le plafond est affiché avec des incréments de 3m (*C* dans "
+"l'image ci-dessous)."
 
 #. type: Target for macro image
 #: user-manual.txt:2465
