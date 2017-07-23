@@ -194,7 +194,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				iconName: "icons/ic_place.svg"
 				text: qsTr("GPS")
-				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 				visible: (Qt.platform.os !== "ios")
 
 				Kirigami.Action {
