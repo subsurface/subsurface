@@ -3348,9 +3348,24 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	if (data[11])
 		cur_dive->suit = strdup(data[11]);
 
-	/* TODO: check what the visibility options are in Divinglog and map them to Subsurface's 0-5 scale */
-	if (data[14])
-		cur_dive->visibility = atoi(data[14]);
+	/* Divinglog has following visibility options: good, medium, bad */
+	if (data[14]) {
+		switch(data[14][0]) {
+		case '0':
+			break;
+		case '1':
+			cur_dive->visibility = 5;
+			break;
+		case '2':
+			cur_dive->visibility = 3;
+			break;
+		case '3':
+			cur_dive->visibility = 1;
+			break;
+		default:
+			break;
+		}
+	}
 
 	settings_start();
 	dc_settings_start();
