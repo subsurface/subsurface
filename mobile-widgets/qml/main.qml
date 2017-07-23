@@ -24,6 +24,7 @@ Kirigami.ApplicationWindow {
 	property QtObject notification: null
 	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
+	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias showPin: manager.showPin
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -227,6 +228,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Clear GPS cache")
 					onTriggered: {
 						manager.clearGpsData();
+					}
+				}
+
+				Kirigami.Action {
+					iconName: locationServiceEnabled ? "icons/ic_location_off.svg" : "icons/ic_place.svg"
+					text: locationServiceEnabled ? qsTr("Disable location service") : qsTr("Run location service")
+					onTriggered: {
+						locationServiceEnabled = !locationServiceEnabled
 					}
 				}
 			},

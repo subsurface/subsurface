@@ -1213,6 +1213,7 @@ void QMLManager::setLocationServiceEnabled(bool locationServiceEnabled)
 {
 	m_locationServiceEnabled = locationServiceEnabled;
 	locationProvider->serviceEnable(m_locationServiceEnabled);
+	emit locationServiceEnabledChanged();
 }
 
 bool QMLManager::locationServiceAvailable() const
