@@ -46,7 +46,7 @@
   <cylinder o2='50.0%' he='6.0%' />
   <cylinder o2='100.0%' />
   <divetemperature air='11.0 C'/>
-  <divecomputer model='OSTC' dctype='CCR'>
+  <divecomputer model='OSTC'>
   <depth max='81.5 m' mean='22.379 m' />
   <temperature water='5.0 C' />
   <event time='0:00 min' type='25' value='393266' name='gaschange' cylinder='0' o2='50.0%' he='6.0%' />
