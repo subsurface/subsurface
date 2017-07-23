@@ -46,7 +46,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Blue")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: gridWidth * 0.2
+				Layout.preferredWidth: gridWidth * 0.15
 			}
 			Row {
 				Layout.preferredWidth: gridWidth * 0.6
@@ -82,45 +82,47 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-			RadioButton {
-				id: bluebutton
-				Layout.preferredWidth: gridWidth * 0.125
-				Layout.alignment: Qt.AlignRight
+			Switch {
+				id: blueButton
+				Layout.preferredWidth: gridWidth * 0.25
 				checked: subsurfaceTheme.currentTheme === "Blue"
+				enabled: subsurfaceTheme.currentTheme !== "Blue"
 				onClicked: {
 					blueTheme()
 					manager.theme = subsurfaceTheme.currentTheme
 					manager.savePreferences()
 				}
 				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: bluebutton.leftPadding
+					implicitWidth: Kirigami.Units.largeSpacing * 3
+					implicitHeight: Kirigami.Units.largeSpacing
+					x: blueButton.leftPadding
 					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
+					radius: Kirigami.Units.largeSpacing * 0.5
+					color: blueButton.checked ?
+						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
+					border.color: subsurfaceTheme.darkerPrimaryColor
 
 					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: bluebutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: bluebutton.checked
+						x: blueButton.checked ? parent.width - width : 0
+						y: parent.height / 2 - height / 2
+						width: Kirigami.Units.largeSpacing * 1.5
+						height: Kirigami.Units.largeSpacing * 1.5
+						radius: height / 2
+						color: blueButton.down || blueButton.checked ?
+							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
+						border.color: subsurfaceTheme.darkerPrimaryColor
 					}
 				}
 			}
 
 			Kirigami.Label {
+				id: pinkLabel
 				text: qsTr("Pink")
-				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: gridWidth * 0.125
+				Layout.preferredWidth: gridWidth * 0.15
 			}
 			Row {
-				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridWidth * 0.6
 				Rectangle {
 					id: pinkRect
 					color: subsurfaceTheme.pinkBackgroundColor
@@ -154,33 +156,35 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			RadioButton {
-				id: pinkbutton
+			Switch {
+				id: pinkButton
+				Layout.preferredWidth: gridWidth * 0.25
 				checked: subsurfaceTheme.currentTheme === "Pink"
-				Layout.preferredWidth: gridWidth * 0.125
-				Layout.alignment: Qt.AlignRight
+				enabled: subsurfaceTheme.currentTheme !== "Pink"
 				onClicked: {
 					pinkTheme()
 					manager.theme = subsurfaceTheme.currentTheme
 					manager.savePreferences()
 				}
 				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: pinkbutton.leftPadding
+					implicitWidth: Kirigami.Units.largeSpacing * 3
+					implicitHeight: Kirigami.Units.largeSpacing
+					x: pinkButton.leftPadding
 					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
+					radius: Kirigami.Units.largeSpacing * 0.5
+					color: pinkButton.checked ?
+						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
+					border.color: subsurfaceTheme.darkerPrimaryColor
 
 					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: pinkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: pinkbutton.checked
+						x: pinkButton.checked ? parent.width - width : 0
+						y: parent.height / 2 - height / 2
+						width: Kirigami.Units.largeSpacing * 1.5
+						height: Kirigami.Units.largeSpacing * 1.5
+						radius: height / 2
+						color: pinkButton.down || pinkButton.checked ?
+							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
+						border.color: subsurfaceTheme.darkerPrimaryColor
 					}
 				}
 			}
@@ -189,10 +193,10 @@ Kirigami.ScrollablePage {
 				text: qsTr("Dark")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
-				Layout.preferredWidth: gridWidth * 0.125
+				Layout.preferredWidth: gridWidth * 0.15
 			}
 			Row {
-				Layout.preferredWidth: settingsPage.col2Width + settingsPage.col3Width
+				Layout.preferredWidth: gridWidth * 0.6
 				Rectangle {
 					id: blackRect
 					color: subsurfaceTheme.darkBackgroundColor
@@ -225,33 +229,35 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-			RadioButton {
-				id: darkbutton
+			Switch {
+				id: darkButton
+				Layout.preferredWidth: gridWidth * 0.25
 				checked: subsurfaceTheme.currentTheme === "Dark"
-				Layout.preferredWidth: gridWidth * 0.125
-				Layout.alignment: Qt.AlignRight
+				enabled: subsurfaceTheme.currentTheme !== "Dark"
 				onClicked: {
 					darkTheme()
 					manager.theme = subsurfaceTheme.currentTheme
 					manager.savePreferences()
 				}
 				indicator: Rectangle {
-					implicitWidth: 20
-					implicitHeight: 20
-					x: darkbutton.leftPadding
+					implicitWidth: Kirigami.Units.largeSpacing * 3
+					implicitHeight: Kirigami.Units.largeSpacing
+					x: darkButton.leftPadding
 					y: parent.height / 2 - height / 2
-					radius: 4
-					border.color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					color: subsurfaceTheme.backgroundColor
+					radius: Kirigami.Units.largeSpacing * 0.5
+					color: darkButton.checked ?
+						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
+					border.color: subsurfaceTheme.darkerPrimaryColor
 
 					Rectangle {
-						width: 12
-						height: 12
-						x: 4
-						y: 4
-						radius: 3
-						color: darkbutton.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-						visible: darkbutton.checked
+						x: darkButton.checked ? parent.width - width : 0
+						y: parent.height / 2 - height / 2
+						width: Kirigami.Units.largeSpacing * 1.5
+						height: Kirigami.Units.largeSpacing * 1.5
+						radius: height / 2
+						color: darkButton.down || darkButton.checked ?
+							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
+						border.color: subsurfaceTheme.darkerPrimaryColor
 					}
 				}
 			}
