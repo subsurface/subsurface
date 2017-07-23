@@ -3375,6 +3375,19 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		return 1;
 	}
 
+	if (data[15]) {
+		switch (data[15][0]) {
+		/* OC */
+		case '0':
+			break;
+		case '1':
+			cur_dive->dc.divemode = PSCR;
+			break;
+		case '2':
+			cur_dive->dc.divemode = CCR;
+			break;
+		}
+	}
 
 	dc_settings_end();
 	settings_end();
@@ -3408,7 +3421,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility from Logbook where UUID not in (select UUID from DeletedRecords)";
+	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";
 
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
 
