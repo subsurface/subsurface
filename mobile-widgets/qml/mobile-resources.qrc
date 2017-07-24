@@ -24,6 +24,7 @@
 		<file alias="nocloud.svg">icons/nocloud.svg</file>
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfCheckBox.qml</file>
+		<file>SsrfButton.qml</file>
 	</qresource>
 	<qresource prefix="/">
 		<file>qtquickcontrols2.conf</file>
