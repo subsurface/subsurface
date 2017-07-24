@@ -5,6 +5,8 @@ import QtPositioning 5.3
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
+	property int nSelectedDives: 0
+
 	Plugin {
 		id: mapPlugin
 		name: "esri"
@@ -15,7 +17,7 @@ Item {
 		map: map
 		onSelectedDivesChanged: {
 			// 'list' contains a list of dive list indexes
-			console.log("onSelectedDivesChanged: " + list.length);
+			nSelectedDives = list.length
 		}
 	}
 
