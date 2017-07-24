@@ -93,15 +93,12 @@ void MapLocationModel::clear()
 	endRemoveRows();
 }
 
-quint32 MapLocationModel::selectedUuid()
+void MapLocationModel::setSelectedUuid(QVariant uuid, QVariant fromClick)
 {
-	return m_selectedUuid;
-}
-
-void MapLocationModel::setSelectedUuid(quint32 uuid)
-{
-	m_selectedUuid = uuid;
-	emit selectedLocationChanged(getMapLocationForUuid(uuid));
+	m_selectedUuid = qvariant_cast<quint32>(uuid);
+	const bool fromClickBool = qvariant_cast<bool>(fromClick);
+	if (fromClickBool)
+		emit selectedLocationChanged(getMapLocationForUuid(m_selectedUuid));
 }
 
 MapLocation *MapLocationModel::getMapLocationForUuid(quint32 uuid)

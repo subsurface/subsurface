@@ -38,7 +38,7 @@ class MapLocationModel : public QAbstractListModel
 {
 	Q_OBJECT
 	Q_PROPERTY(int count READ count NOTIFY countChanged)
-	Q_PROPERTY(quint32 selectedUuid READ selectedUuid WRITE setSelectedUuid NOTIFY selectedLocationChanged)
+	Q_PROPERTY(quint32 selectedUuid MEMBER m_selectedUuid NOTIFY selectedLocationChanged)
 
 public:
 	MapLocationModel(QObject *parent = NULL);
@@ -57,9 +57,8 @@ public:
 protected:
 	QHash<int, QByteArray> roleNames() const;
 
-private:
-	quint32 selectedUuid();
-	void setSelectedUuid(quint32);
+public:
+	Q_INVOKABLE void setSelectedUuid(QVariant uuid, QVariant fromClick = true);
 
 	QVector<MapLocation *> m_mapLocations;
 	QHash<int, QByteArray> m_roles;
