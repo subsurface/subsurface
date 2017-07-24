@@ -73,8 +73,7 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 		if (locationCoord.distanceTo(dsCoord) < m_smallCircleRadius)
 			m_selectedDiveIds.append(idx);
 	}
-
-	qDebug() << "selectedDiveIds:" << m_selectedDiveIds;
+	emit selectedDivesChanged(m_selectedDiveIds);
 }
 
 /*
