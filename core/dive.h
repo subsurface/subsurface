@@ -184,6 +184,7 @@ static inline int interpolate(int a, int b, int part, int whole)
 void get_gas_string(const struct gasmix *gasmix, char *text, int len);
 const char *gasname(const struct gasmix *gasmix);
 
+#define MAX_SENSORS 2
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DESCRIPTION
 {                                     // --------- -----  -----    -----      -----------
 	duration_t time;               // uint32_t   4  seconds  (0-68 yrs)   elapsed dive time up to this sample
@@ -194,11 +195,11 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	depth_t depth;                 // int32_t    4    mm     (0-2000 km)  dive depth of this sample
 	depth_t stopdepth;             // int32_t    4    mm     (0-2000 km)  depth of next deco stop
 	temperature_t temperature;     // int32_t    4  mdegrK   (0-2 MdegK)  ambient temperature
-	pressure_t pressure[2];        // int32_t    4    mbar   (0-2 Mbar)   cylinder pressures (main and CCR o2)
+	pressure_t pressure[MAX_SENSORS]; // int32_t    4    mbar   (0-2 Mbar)   cylinder pressures (main and CCR o2)
 	o2pressure_t setpoint;         // uint16_t   2    mbar   (0-65 bar)   O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[3];      // uint16_t   6    mbar   (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing
-	uint8_t sensor[2];             // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
+	uint8_t sensor[MAX_SENSORS];   // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
 	uint8_t cns;                   // uint8_t    1     %     (0-255 %)    cns% accumulated
 	uint8_t heartbeat;             // uint8_t    1  beats/m  (0-255)      heart rate measurement
 	volume_t sac;                  //            4  ml/min                predefined SAC

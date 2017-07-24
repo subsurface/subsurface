@@ -648,6 +648,13 @@ struct sample *prepare_sample(struct divecomputer *dc)
 		}
 		sample = dc->sample + nr;
 		memset(sample, 0, sizeof(*sample));
+
+		// Copy the sensor numbers - but not the pressure values
+		// from the previous sample if any.
+		if (nr) {
+			sample->sensor[0] = sample[-1].sensor[0];
+			sample->sensor[1] = sample[-1].sensor[1];
+		}
 		return sample;
 	}
 	return NULL;
