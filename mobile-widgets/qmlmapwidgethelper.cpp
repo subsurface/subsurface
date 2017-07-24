@@ -59,7 +59,22 @@ void MapWidgetHelper::reloadMapLocations()
 
 void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 {
-	qDebug() << location;
+	int idx;
+	struct dive *dive;
+	m_selectedDiveIds.clear();
+	QGeoCoordinate locationCoord = qvariant_cast<QGeoCoordinate>(location->getRole(MapLocation::Roles::RoleCoordinate));
+	for_each_dive (idx, dive) {
+		struct dive_site *ds = get_dive_site_for_dive(dive);
+		if (!dive_site_has_gps_location(ds))
+			continue;
+		const qreal latitude = ds->latitude.udeg * 0.000001;
+		const qreal longitude = ds->longitude.udeg * 0.000001;
+		QGeoCoordinate dsCoord(latitude, longitude);
+		if (locationCoord.distanceTo(dsCoord) < m_smallCircleRadius)
+			m_selectedDiveIds.append(idx);
+	}
+
+	qDebug() << "selectedDiveIds:" << m_selectedDiveIds;
 }
 
 /*
