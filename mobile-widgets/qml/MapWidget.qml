@@ -60,7 +60,7 @@ Item {
 				MouseArea {
 					anchors.fill: parent
 					onClicked: {
-						mapHelper.model.selectedUuid = model.uuid
+						mapHelper.model.setSelectedUuid(model.uuid, true)
 						mapItemImageAnimation.restart()
 					}
 				}
@@ -106,12 +106,12 @@ Item {
 		}
 
 		function centerOnMapLocation(mapLocation) {
-			mapHelper.model.selectedUuid = mapLocation.uuid
+			mapHelper.model.setSelectedUuid(mapLocation.uuid, false)
 			animateMapZoomIn(mapLocation.coordinate)
 		}
 
 		function deselectMapLocation() {
-			mapHelper.model.selectedUuid = 0
+			mapHelper.model.setSelectedUuid(0, false)
 			animateMapZoomOut()
 		}
 	}
