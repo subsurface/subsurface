@@ -21,10 +21,12 @@ public:
 	void centerOnDiveSite(struct dive_site *);
 	void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
+	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
 
 private:
 	QObject *m_map;
 	MapLocationModel *m_mapLocationModel;
+	qreal m_smallCircleRadius;
 
 private slots:
 	void selectedLocationChanged(MapLocation *);

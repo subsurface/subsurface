@@ -10,6 +10,7 @@
 #include "qt-models/maplocationmodel.h"
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
+#define SMALL_CIRCLE_RADIUS_PX            26.0
 
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
@@ -59,6 +60,30 @@ void MapWidgetHelper::reloadMapLocations()
 void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 {
 	qDebug() << location;
+}
+
+/*
+ * Based on a 2D Map widget circle with center "coord" and radius SMALL_CIRCLE_RADIUS_PX,
+ * obtain a "small circle" with radius m_smallCircleRadius in meters:
+ *     https://en.wikipedia.org/wiki/Circle_of_a_sphere
+ *
+ * The idea behind this circle is to be able to select multiple nearby dives, when clicking on
+ * the map. This code can be in QML, but it is in C++ instead for performance reasons.
+ *
+ * This can be made faster with an exponential regression [a * exp(b * x)], with a pretty
+ * decent R-squared, but it becomes bound to map provider zoom level mappings and the
+ * SMALL_CIRCLE_RADIUS_PX value, which makes the code hard to maintain.
+ */
+void MapWidgetHelper::calculateSmallCircleRadius(QGeoCoordinate coord)
+{
+	QPointF point;
+	QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
+	                          Q_ARG(QGeoCoordinate, coord), Q_ARG(bool, false));
+	QPointF point2(point.x() + SMALL_CIRCLE_RADIUS_PX, point.y());
+	QGeoCoordinate coord2;
+	QMetaObject::invokeMethod(m_map, "toCoordinate", Q_RETURN_ARG(QGeoCoordinate, coord2),
+	                          Q_ARG(QPointF, point2), Q_ARG(bool, false));
+	m_smallCircleRadius = coord2.distanceTo(coord);
 }
 
 void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional)
