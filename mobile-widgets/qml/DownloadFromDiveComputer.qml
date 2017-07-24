@@ -23,8 +23,6 @@ Kirigami.Page {
 		id: downloadThread
 		deviceData.vendor : comboVendor.currentText
 		deviceData.product : comboProduct.currentText
-
-		//TODO: make this dynamic?
 		deviceData.devName : comboConnection.currentText
 
 		//TODO: Make this the default on the C++
