@@ -281,6 +281,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			}
 		] // end actions
+		Kirigami.Icon {
+			source: "icons/" + subsurfaceTheme.currentTheme + "_gps.svg"
+			enabled: false
+			visible: locationServiceEnabled
+		}
 
 	}
 
