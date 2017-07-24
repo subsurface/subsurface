@@ -57,5 +57,8 @@
 		<file alias="icons/ic_cloud_download.svg">icons/ic_cloud_download_24px.svg</file>
 		<file alias="icons/ic_clear.svg">icons/ic_clear_black_24px.svg</file>
 		<file alias="icons/ic_location_off.svg">icons/ic_location_off_black_24px.svg</file>
+		<file alias="icons/Blue_gps.svg">icons/Blue_gps.svg</file>
+		<file alias="icons/Pink_gps.svg">icons/Pink_gps.svg</file>
+		<file alias="icons/Dark_gps.svg">icons/Blue_gps.svg</file>
 	</qresource>
 </RCC>
