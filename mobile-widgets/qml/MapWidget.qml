@@ -32,6 +32,8 @@ Item {
 			activeMapType = mapType.SATELLITE
 		}
 
+		onZoomLevelChanged: mapHelper.calculateSmallCircleRadius(map.center)
+
 		MapItemView {
 			id: mapItemView
 			model: mapHelper.model
