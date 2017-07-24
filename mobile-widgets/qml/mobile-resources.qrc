@@ -22,6 +22,7 @@
 		<file alias="menu-edit.png">icons/menu-edit.png</file>
 		<file alias="menu-back.png">icons/menu-back.png</file>
 		<file alias="nocloud.svg">icons/nocloud.svg</file>
+		<file>SsrfSwitch.qml</file>
 	</qresource>
 	<qresource prefix="/">
 		<file>qtquickcontrols2.conf</file>
