@@ -34,6 +34,7 @@ private slots:
 
 signals:
 	void modelChanged();
+	void selectedDivesChanged(QList<int> list);
 };
 
 extern "C" const char *printGPSCoords(int lat, int lon);

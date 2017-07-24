@@ -13,6 +13,10 @@ Item {
 	MapWidgetHelper {
 		id: mapHelper
 		map: map
+		onSelectedDivesChanged: {
+			// 'list' contains a list of dive list indexes
+			console.log("onSelectedDivesChanged: " + list.length);
+		}
 	}
 
 	Map {
