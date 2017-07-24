@@ -12,6 +12,8 @@
 #include "mainwindow.h"
 #include "divelistview.h"
 
+static bool skipReload = false;
+
 MapWidget *MapWidget::m_instance = NULL;
 
 MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
@@ -50,7 +52,8 @@ void MapWidget::repopulateLabels()
 
 void MapWidget::reload()
 {
-	m_mapHelper->reloadMapLocations();
+	if (!skipReload)
+		m_mapHelper->reloadMapLocations();
 }
 
 void MapWidget::endGetDiveCoordinates()
@@ -66,11 +69,11 @@ void MapWidget::prepareForGetDiveCoordinates()
 void MapWidget::selectedDivesChanged(QList<int> list)
 {
 	qDebug() << "onSelectedDivesChanged:" << list.size();
-	/*
+	skipReload = true;
 	MainWindow::instance()->dive_list()->unselectDives();
 	if (!list.empty())
 		MainWindow::instance()->dive_list()->selectDives(list);
-	*/
+	skipReload = false;
 }
 
 MapWidget::~MapWidget()
