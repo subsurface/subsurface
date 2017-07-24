@@ -82,7 +82,7 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-			Switch {
+			SsrfSwitch {
 				id: blueButton
 				Layout.preferredWidth: gridWidth * 0.25
 				checked: subsurfaceTheme.currentTheme === "Blue"
@@ -91,27 +91,6 @@ Kirigami.ScrollablePage {
 					blueTheme()
 					manager.theme = subsurfaceTheme.currentTheme
 					manager.savePreferences()
-				}
-				indicator: Rectangle {
-					implicitWidth: Kirigami.Units.largeSpacing * 3
-					implicitHeight: Kirigami.Units.largeSpacing
-					x: blueButton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: Kirigami.Units.largeSpacing * 0.5
-					color: blueButton.checked ?
-						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
-					border.color: subsurfaceTheme.darkerPrimaryColor
-
-					Rectangle {
-						x: blueButton.checked ? parent.width - width : 0
-						y: parent.height / 2 - height / 2
-						width: Kirigami.Units.largeSpacing * 1.5
-						height: Kirigami.Units.largeSpacing * 1.5
-						radius: height / 2
-						color: blueButton.down || blueButton.checked ?
-							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
-						border.color: subsurfaceTheme.darkerPrimaryColor
-					}
 				}
 			}
 
@@ -156,7 +135,7 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Switch {
+			SsrfSwitch {
 				id: pinkButton
 				Layout.preferredWidth: gridWidth * 0.25
 				checked: subsurfaceTheme.currentTheme === "Pink"
@@ -165,27 +144,6 @@ Kirigami.ScrollablePage {
 					pinkTheme()
 					manager.theme = subsurfaceTheme.currentTheme
 					manager.savePreferences()
-				}
-				indicator: Rectangle {
-					implicitWidth: Kirigami.Units.largeSpacing * 3
-					implicitHeight: Kirigami.Units.largeSpacing
-					x: pinkButton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: Kirigami.Units.largeSpacing * 0.5
-					color: pinkButton.checked ?
-						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
-					border.color: subsurfaceTheme.darkerPrimaryColor
-
-					Rectangle {
-						x: pinkButton.checked ? parent.width - width : 0
-						y: parent.height / 2 - height / 2
-						width: Kirigami.Units.largeSpacing * 1.5
-						height: Kirigami.Units.largeSpacing * 1.5
-						radius: height / 2
-						color: pinkButton.down || pinkButton.checked ?
-							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
-						border.color: subsurfaceTheme.darkerPrimaryColor
-					}
 				}
 			}
 
@@ -229,7 +187,7 @@ Kirigami.ScrollablePage {
 					}
 				}
 			}
-			Switch {
+			SsrfSwitch {
 				id: darkButton
 				Layout.preferredWidth: gridWidth * 0.25
 				checked: subsurfaceTheme.currentTheme === "Dark"
@@ -239,29 +197,9 @@ Kirigami.ScrollablePage {
 					manager.theme = subsurfaceTheme.currentTheme
 					manager.savePreferences()
 				}
-				indicator: Rectangle {
-					implicitWidth: Kirigami.Units.largeSpacing * 3
-					implicitHeight: Kirigami.Units.largeSpacing
-					x: darkButton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: Kirigami.Units.largeSpacing * 0.5
-					color: darkButton.checked ?
-						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
-					border.color: subsurfaceTheme.darkerPrimaryColor
-
-					Rectangle {
-						x: darkButton.checked ? parent.width - width : 0
-						y: parent.height / 2 - height / 2
-						width: Kirigami.Units.largeSpacing * 1.5
-						height: Kirigami.Units.largeSpacing * 1.5
-						radius: height / 2
-						color: darkButton.down || darkButton.checked ?
-							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
-						border.color: subsurfaceTheme.darkerPrimaryColor
-					}
-				}
 			}
 		}
+
 		Rectangle {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
@@ -338,33 +276,12 @@ Kirigami.ScrollablePage {
 				text: qsTr("Save detailed log")
 				Layout.preferredWidth: gridWidth * 0.75
 			}
-			Switch {
+			SsrfSwitch {
 				id: libdclogButton
 				checked: manager.libdcLog
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
 					manager.libdcLog = checked
-				}
-				indicator: Rectangle {
-					implicitWidth: Kirigami.Units.largeSpacing * 3
-					implicitHeight: Kirigami.Units.largeSpacing
-					x: libdclogButton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: Kirigami.Units.largeSpacing * 0.5
-					color: libdclogButton.checked ?
-						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
-					border.color: subsurfaceTheme.darkerPrimaryColor
-
-					Rectangle {
-						x: libdclogButton.checked ? parent.width - width : 0
-						y: parent.height / 2 - height / 2
-						width: Kirigami.Units.largeSpacing * 1.5
-						height: Kirigami.Units.largeSpacing * 1.5
-						radius: height / 2
-						color: libdclogButton.down || libdclogButton.checked ?
-							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
-						border.color: subsurfaceTheme.darkerPrimaryColor
-					}
 				}
 			}
 		}
@@ -391,34 +308,13 @@ Kirigami.ScrollablePage {
 				text: qsTr("Display Developer menu")
 				Layout.preferredWidth: gridWidth * 0.75
 			}
-			Switch {
+			SsrfSwitch {
 				id: developerButton
 				checked: manager.developer
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
 					manager.developer = checked
-				}
-				indicator: Rectangle {
-					implicitWidth: Kirigami.Units.largeSpacing * 3
-					implicitHeight: Kirigami.Units.largeSpacing
-					x: developerButton.leftPadding
-					y: parent.height / 2 - height / 2
-					radius: Kirigami.Units.largeSpacing * 0.5
-					color: developerButton.checked ?
-						subsurfaceTheme.lightPrimaryColor : subsurfaceTheme.backgroundColor
-					border.color: subsurfaceTheme.darkerPrimaryColor
-
-					Rectangle {
-						x: developerButton.checked ? parent.width - width : 0
-						y: parent.height / 2 - height / 2
-						width: Kirigami.Units.largeSpacing * 1.5
-						height: Kirigami.Units.largeSpacing * 1.5
-						radius: height / 2
-						color: developerButton.down || developerButton.checked ?
-							subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
-						border.color: subsurfaceTheme.darkerPrimaryColor
-					}
-				}
+				}	
 			}
 		}
 		Item {
