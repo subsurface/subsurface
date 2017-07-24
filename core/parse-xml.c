@@ -3221,17 +3221,13 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		}
 
 		/*
-		 * My best guess is that if we have o2sensors, then it
-		 * is either CCR or PSCR dive. And the first time we
-		 * have O2 sensor readings, we can count them to get
-		 * the amount O2 sensors.
+		 * Count the number of o2 sensors
 		 */
 
 		if (!cur_dive->dc.no_o2sensors && (cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[0].mbar)) {
 			cur_dive->dc.no_o2sensors = cur_sample->o2sensor[0].mbar ? 1 : 0 +
 				 cur_sample->o2sensor[1].mbar ? 1 : 0 +
 				 cur_sample->o2sensor[2].mbar ? 1 : 0;
-			cur_dive->dc.divemode = CCR;
 		}
 
 		ptr += 12;
