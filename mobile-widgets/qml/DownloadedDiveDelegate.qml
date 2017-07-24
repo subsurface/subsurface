@@ -34,32 +34,12 @@ Kirigami.AbstractListItem {
 			NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 			NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
 		}
-		CheckBox {
+		SsrfCheckBox {
 			id: diveIsSelected
 			checked: innerListItem.selected;
 			width: childrenRect.width - Kirigami.Units.smallSpacing;
 			height: childrenRect.heigh - Kirigami.Units.smallSpacing;
 			anchors.verticalCenter: parent.verticalCenter
-			indicator: Rectangle {
-				visible: diveIsSelected
-				implicitWidth: 20
-				implicitHeight: 20
-				//x: isBluetooth.leftPadding
-				y: parent.height / 2 - height / 2
-				radius: 4
-				border.color: diveIsSelected.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-				color: subsurfaceTheme.backgroundColor
-
-				Rectangle {
-					width: 12
-					height: 12
-					x: 4
-					y: 4
-					radius: 3
-					color: diveIsSelected.down ? subsurfaceTheme.primaryColor : subsurfaceTheme.darkerPrimaryColor
-					visible: diveIsSelected && diveIsSelected.checked
-				}
-			}
 			onClicked: {
 				console.log("Clicked on the checkbox of item " + index)
 				importModel.selectRow(index)
