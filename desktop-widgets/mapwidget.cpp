@@ -9,6 +9,8 @@
 #include "core/divesite.h"
 #include "mobile-widgets/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
+#include "mainwindow.h"
+#include "divelistview.h"
 
 MapWidget *MapWidget::m_instance = NULL;
 
@@ -23,6 +25,8 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 
 	m_rootItem = qobject_cast<QQuickItem *>(rootObject());
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
+	connect(m_mapHelper, SIGNAL(selectedDivesChanged(QList<int>)),
+	        this, SLOT(selectedDivesChanged(QList<int>)));
 }
 
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
@@ -57,6 +61,16 @@ void MapWidget::endGetDiveCoordinates()
 void MapWidget::prepareForGetDiveCoordinates()
 {
 	// TODO;
+}
+
+void MapWidget::selectedDivesChanged(QList<int> list)
+{
+	qDebug() << "onSelectedDivesChanged:" << list.size();
+	/*
+	MainWindow::instance()->dive_list()->unselectDives();
+	if (!list.empty())
+		MainWindow::instance()->dive_list()->selectDives(list);
+	*/
 }
 
 MapWidget::~MapWidget()

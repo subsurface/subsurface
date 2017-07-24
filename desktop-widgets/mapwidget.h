@@ -3,6 +3,7 @@
 #define MAPWIDGET_H
 
 #include <QQuickWidget>
+#include <QList>
 
 #undef IGNORE
 
@@ -31,6 +32,7 @@ public slots:
 	void endGetDiveCoordinates();
 	void repopulateLabels();
 	void prepareForGetDiveCoordinates();
+	void selectedDivesChanged(QList<int>);
 
 private:
 	static MapWidget *m_instance;
