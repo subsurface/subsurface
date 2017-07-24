@@ -53,13 +53,12 @@ public:
 	void addList(QVector<MapLocation *>);
 	void clear();
 	MapLocation *getMapLocationForUuid(quint32 uuid);
+	Q_INVOKABLE void setSelectedUuid(QVariant uuid, QVariant fromClick = true);
 
 protected:
 	QHash<int, QByteArray> roleNames() const;
 
-public:
-	Q_INVOKABLE void setSelectedUuid(QVariant uuid, QVariant fromClick = true);
-
+private:
 	QVector<MapLocation *> m_mapLocations;
 	QHash<int, QByteArray> m_roles;
 	quint32 m_selectedUuid;
