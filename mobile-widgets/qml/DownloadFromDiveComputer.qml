@@ -169,6 +169,10 @@ Kirigami.Page {
 		}
 
 		RowLayout {
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.margins: Kirigami.Units.smallSpacing
+			spacing: Kirigami.Units.smallSpacing
 			Button {
 				id: download
 				background: Rectangle {
@@ -210,12 +214,12 @@ Kirigami.Page {
 					manager.appendTextToLog("exit DCDownload screen")
 				}
 			}
-		}
-		Kirigami.Label {
-			Layout.maximumWidth: diveComputerDownloadWindow.width - Kirigami.Units.gridUnit * 2
-			text: divesDownloaded ? qsTr(" Downloaded dives") :
-						(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : qsTr(" No dives"))
-			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			Kirigami.Label {
+				Layout.maximumWidth: parent.width - download.width - quitbutton.width
+				text: divesDownloaded ? qsTr(" Downloaded dives") :
+							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : qsTr(" No dives"))
+				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
+			}
 		}
 
 		ListView {
