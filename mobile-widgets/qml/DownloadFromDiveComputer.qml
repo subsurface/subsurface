@@ -18,6 +18,7 @@ Kirigami.Page {
 	property alias dcImportModel: importModel
 	property bool divesDownloaded: false
 	property bool btEnabled: manager.btEnabled()
+	property string btMessage: manager.btEnabled() ? "" : qsTr("Bluetooth is not enabled")
 
 	DCDownloadThread {
 		id: downloadThread
@@ -217,7 +218,7 @@ Kirigami.Page {
 			Kirigami.Label {
 				Layout.maximumWidth: parent.width - download.width - quitbutton.width
 				text: divesDownloaded ? qsTr(" Downloaded dives") :
-							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : qsTr(" No dives"))
+							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : btMessage)
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			}
 		}
