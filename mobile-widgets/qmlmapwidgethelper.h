@@ -27,6 +27,7 @@ private:
 	QObject *m_map;
 	MapLocationModel *m_mapLocationModel;
 	qreal m_smallCircleRadius;
+	QList<int> m_selectedDiveIds;
 
 private slots:
 	void selectedLocationChanged(MapLocation *);
