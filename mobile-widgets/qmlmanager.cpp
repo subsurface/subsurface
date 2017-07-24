@@ -372,7 +372,12 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		}
 		myTimer.stop();
 		setCloudPin("");
-		if (prefs.cloud_verification_status != CS_VERIFIED) {
+		if (prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD) {
+			appendTextToLog(QStringLiteral("Incorrect cloud credentials"));
+			setStartPageText(RED_FONT + tr("Incorrect cloud credentials") + END_FONT);
+			revertToNoCloudIfNeeded();
+			return;
+		} else if (prefs.cloud_verification_status != CS_VERIFIED) {
 			// here we need to enter the PIN
 			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN in desktop app"));
 			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
