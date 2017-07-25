@@ -1307,6 +1307,7 @@ int QMLManager::timeThreshold() const
 void QMLManager::setTimeThreshold(int time)
 {
 	m_timeThreshold = time;
+	locationProvider->setGpsTimeThreshold(m_timeThreshold * 60);
 	emit timeThresholdChanged();
 }
 
