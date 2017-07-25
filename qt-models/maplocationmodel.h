@@ -14,24 +14,28 @@ class MapLocation : public QObject
 	Q_OBJECT
 	Q_PROPERTY(quint32 uuid MEMBER m_uuid)
 	Q_PROPERTY(QGeoCoordinate coordinate MEMBER m_coordinate)
+	Q_PROPERTY(QString name MEMBER m_name)
 
 public:
 	static const char *PROPERTY_NAME_COORDINATE;
 	static const char *PROPERTY_NAME_UUID;
+	static const char *PROPERTY_NAME_NAME;
 
 	explicit MapLocation();
-	explicit MapLocation(quint32 uuid, QGeoCoordinate coord);
+	explicit MapLocation(quint32 uuid, QGeoCoordinate coord, QString name);
 
 	QVariant getRole(int role) const;
 
 	enum Roles {
 		RoleUuid = Qt::UserRole + 1,
-		RoleCoordinate
+		RoleCoordinate,
+		RoleName
 	};
 
 private:
 	quint32 m_uuid;
 	QGeoCoordinate m_coordinate;
+	QString m_name;
 };
 
 class MapLocationModel : public QAbstractListModel
