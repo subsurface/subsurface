@@ -31,6 +31,7 @@ Item {
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property real defaultZoomIn: 17.0
 		readonly property real defaultZoomOut: 1.0
+		readonly property real textVisibleZoom: 8.0
 		readonly property real zoomStep: 2.0
 		property var newCenter: defaultCenter
 		property real newZoom: 1.0
@@ -50,25 +51,43 @@ Item {
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
 				z: mapHelper.model.selectedUuid === model.uuid ? mapHelper.model.count - 1 : 0
-				sourceItem: Image {
-					id: mapItemImage
-					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "")
-
-					SequentialAnimation {
-						id: mapItemImageAnimation
-						PropertyAnimation {
-							target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120
+				sourceItem: Item {
+					Image {
+						id: mapItemImage
+						source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "")
+						SequentialAnimation {
+							id: mapItemImageAnimation
+							PropertyAnimation {
+								target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120
+							}
+							PropertyAnimation {
+								target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80
+							}
 						}
-						PropertyAnimation {
-							target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80
+						MouseArea {
+							anchors.fill: parent
+							onClicked: mapHelper.model.setSelectedUuid(model.uuid, true)
+							onDoubleClicked: map.doubleClickHandler(model.coordinate)
 						}
 					}
-				}
-
-				MouseArea {
-					anchors.fill: parent
-					onClicked: mapHelper.model.setSelectedUuid(model.uuid, true)
-					onDoubleClicked: map.doubleClickHandler(model.coordinate)
+					Item {
+						// Text with a duplicate for shadow. DropShadow as layer effect is kind of slow here.
+						y: mapItemImage.y + mapItemImage.height
+						visible: map.zoomLevel > map.textVisibleZoom
+						Text {
+							id: mapItemTextShadow
+							x: mapItemText.x + 2; y: mapItemText.y + 2
+							text: mapItemText.text
+							font.pointSize: mapItemText.font.pointSize
+							color: "black"
+						}
+						Text {
+							id: mapItemText
+							text: model.name
+							font.pointSize: 11.0
+							color: "white"
+						}
+					}
 				}
 			}
 		}
