@@ -13,6 +13,7 @@ Button {
 		height: buttonText.height * 2
 	}
 	contentItem: Text {
+		id: buttonText
 		text: root.text
 		anchors.centerIn: buttonBackground
 		color: root.pressed ? subsurfaceTheme.darkerPrimaryTextColor :subsurfaceTheme.primaryTextColor
