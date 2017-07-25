@@ -33,6 +33,7 @@ public:
 	QString getUserid(QString user, QString passwd);
 	bool hasLocationsSource();
 	QString currentPosition();
+	void setGpsTimeThreshold(int seconds);
 
 	QMap<qint64, gpsTracker> currentGPSInfo() const;
 
