@@ -31,8 +31,10 @@ Item {
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property var defaultZoomIn: 17.0
 		readonly property var defaultZoomOut: 1.0
+		readonly property var zoomStep: 2.0
 		property var newCenter: defaultCenter
 		property var newZoom: 1.0
+		property var clickCoord: QtPositioning.coordinate(0, 0);
 
 		Component.onCompleted: {
 			activeMapType = mapType.SATELLITE
@@ -65,10 +67,8 @@ Item {
 
 				MouseArea {
 					anchors.fill: parent
-					onClicked: {
-						mapHelper.model.setSelectedUuid(model.uuid, true)
-						mapItemImageAnimation.restart()
-					}
+					onClicked: mapHelper.model.setSelectedUuid(model.uuid, true)
+					onDoubleClicked: map.doubleClickHandler(model.coordinate)
 				}
 			}
 		}
@@ -94,6 +94,27 @@ Item {
 					target: map; property: "center"; to: map.newCenter; duration: 2000;
 				}
 			}
+		}
+
+		ParallelAnimation {
+			id: mapAnimationClick
+			CoordinateAnimation {
+				target: map; property: "center"; to: map.newCenter; duration: 500
+			}
+			NumberAnimation {
+				target: map; property: "zoomLevel"; to: map.newZoom; duration: 500
+			}
+		}
+
+		MouseArea {
+			anchors.fill: parent
+			onDoubleClicked: map.doubleClickHandler(map.toCoordinate(Qt.point(mouseX, mouseY)))
+		}
+
+		function doubleClickHandler(coord) {
+			newCenter = coord
+			newZoom = zoomLevel + zoomStep
+			mapAnimationClick.restart()
 		}
 
 		function animateMapZoomIn(coord) {
