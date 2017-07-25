@@ -16,7 +16,7 @@ Item {
 		{ idx: actions.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") }
 	]
 	readonly property real itemTextPadding: 10.0
-	readonly property real itemHeight: 30.0
+	readonly property real itemHeight: 34.0
 	readonly property int itemAnimationDuration: 100
 	readonly property color colorItemBackground: "#dedede"
 	readonly property color colorItemBackgroundSelected: "grey"
@@ -71,6 +71,7 @@ Item {
 				height: itemHeight
 				verticalAlignment: Text.AlignVCenter
 				text: model.itemText
+				font.pointSize: 10.0
 				color: model.idx === listModel.selectedIdx ? colorItemTextSelected : colorItemText
 				onWidthChanged: {
 					if (width + itemTextPadding * 2.0 > maxItemWidth)
