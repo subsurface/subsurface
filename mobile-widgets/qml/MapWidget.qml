@@ -114,6 +114,8 @@ Item {
 		function doubleClickHandler(coord) {
 			newCenter = coord
 			newZoom = zoomLevel + zoomStep
+			if (newZoom > maximumZoomLevel)
+				newZoom = maximumZoomLevel
 			mapAnimationClick.restart()
 		}
 
@@ -163,6 +165,56 @@ Item {
 			onClicked: {
 				map.activeMapType = map.activeMapType === map.mapType.SATELLITE ? map.mapType.STREET : map.mapType.SATELLITE
 				toggleImageAnimation.restart()
+			}
+		}
+	}
+
+	Image {
+		id: imageZoomIn
+		x: 10 + (toggleImage.width - imageZoomIn.width) * 0.5; y: toggleImage.y + toggleImage.height + 10
+		source: "qrc:///mapwidget-zoom-in"
+		SequentialAnimation {
+			id: imageZoomInAnimation
+			PropertyAnimation {
+				target: imageZoomIn; property: "scale"; from: 1.0; to: 0.8; duration: 120
+			}
+			PropertyAnimation {
+				target: imageZoomIn; property: "scale"; from: 0.8; to: 1.0; duration: 80
+			}
+		}
+		MouseArea {
+			anchors.fill: parent
+			onClicked: {
+				map.newCenter = map.center
+				map.newZoom = map.zoomLevel + map.zoomStep
+				if (map.newZoom > map.maximumZoomLevel)
+					map.newZoom = map.maximumZoomLevel
+				mapAnimationClick.restart()
+				imageZoomInAnimation.restart()
+			}
+		}
+	}
+
+	Image {
+		id: imageZoomOut
+		x: imageZoomIn.x; y: imageZoomIn.y + imageZoomIn.height + 10
+		source: "qrc:///mapwidget-zoom-out"
+		SequentialAnimation {
+			id: imageZoomOutAnimation
+			PropertyAnimation {
+				target: imageZoomOut; property: "scale"; from: 1.0; to: 0.8; duration: 120
+			}
+			PropertyAnimation {
+				target: imageZoomOut; property: "scale"; from: 0.8; to: 1.0; duration: 80
+			}
+		}
+		MouseArea {
+			anchors.fill: parent
+			onClicked: {
+				map.newCenter = map.center
+				map.newZoom = map.zoomLevel - map.zoomStep
+				mapAnimationClick.restart()
+				imageZoomOutAnimation.restart()
 			}
 		}
 	}
