@@ -174,18 +174,9 @@ Kirigami.Page {
 			anchors.right: parent.right
 			anchors.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			Button {
+			SsrfButton {
 				id: download
-				background: Rectangle {
-					color: subsurfaceTheme.darkerPrimaryColor
-					antialiasing: true
-					radius: Kirigami.Units.smallSpacing * 2
-				}
 				text: qsTr("Download")
-				contentItem: Text {
-					text: download.text
-					color: subsurfaceTheme.darkerPrimaryTextColor
-				}
 				onClicked: {
 					text = qsTr("Retry")
 					// strip any BT Name from the address
@@ -196,18 +187,9 @@ Kirigami.Page {
 					downloadThread.start()
 				}
 			}
-			Button {
+			SsrfButton {
 				id:quitbutton
-				background: Rectangle {
-					color: subsurfaceTheme.darkerPrimaryColor
-					antialiasing: true
-					radius: Kirigami.Units.smallSpacing * 2
-				}
 				text: progressBar.visible ? qsTr("Cancel") : qsTr("Quit")
-				contentItem: Text {
-					text: quitbutton.text
-					color: subsurfaceTheme.darkerPrimaryTextColor
-				}
 				onClicked: {
 					manager.cancelDownloadDC()
 					if (!progressBar.visible)
@@ -248,19 +230,10 @@ Kirigami.Page {
 				text: ""  // Spacer on the left for hamburger menu
 				Layout.fillWidth: true
 			}
-			Button {
+			SsrfButton {
 				id: acceptButton
 				enabled: divesDownloaded
-				background: Rectangle {
-					color: enabled ? subsurfaceTheme.darkerPrimaryColor : "gray"
-					antialiasing: true
-					radius: Kirigami.Units.smallSpacing * 2
-				}
 				text: qsTr("Accept")
-				contentItem: Text {
-					text: acceptButton.text
-					color: subsurfaceTheme.darkerPrimaryTextColor
-				}
 				onClicked: {
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					importModel.recordDives()
@@ -274,36 +247,18 @@ Kirigami.Page {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
-			Button {
+			SsrfButton {
 				id: select
 				enabled: divesDownloaded
-				background: Rectangle {
-					color: enabled ? subsurfaceTheme.darkerPrimaryColor : "gray"
-					antialiasing: true
-					radius: Kirigami.Units.smallSpacing * 2
-				}
 				text: qsTr("Select All")
-				contentItem: Text {
-					text: select.text
-					color: subsurfaceTheme.darkerPrimaryTextColor
-				}
 				onClicked : {
 					importModel.selectAll()
 				}
 			}
-			Button {
+			SsrfButton {
 				id: unselect
 				enabled: divesDownloaded
-				background: Rectangle {
-					color: enabled ? subsurfaceTheme.darkerPrimaryColor : "gray"
-					antialiasing: true
-					radius: Kirigami.Units.smallSpacing * 2
-				}
 				text: qsTr("Unselect All")
-				contentItem: Text {
-					text: unselect.text
-					color: subsurfaceTheme.darkerPrimaryTextColor
-				}
 				onClicked : {
 					importModel.selectNone()
 				}
