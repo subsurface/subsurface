@@ -29,12 +29,12 @@ Item {
 
 		readonly property var mapType: { "STREET": supportedMapTypes[0], "SATELLITE": supportedMapTypes[1] }
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
-		readonly property var defaultZoomIn: 17.0
-		readonly property var defaultZoomOut: 1.0
-		readonly property var zoomStep: 2.0
+		readonly property real defaultZoomIn: 17.0
+		readonly property real defaultZoomOut: 1.0
+		readonly property real zoomStep: 2.0
 		property var newCenter: defaultCenter
-		property var newZoom: 1.0
-		property var clickCoord: QtPositioning.coordinate(0, 0);
+		property real newZoom: 1.0
+		property var clickCoord: QtPositioning.coordinate(0, 0)
 
 		Component.onCompleted: {
 			activeMapType = mapType.SATELLITE
@@ -57,10 +57,10 @@ Item {
 					SequentialAnimation {
 						id: mapItemImageAnimation
 						PropertyAnimation {
-							target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120;
+							target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120
 						}
 						PropertyAnimation {
-							target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80;
+							target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80
 						}
 					}
 				}
@@ -76,22 +76,22 @@ Item {
 		ParallelAnimation {
 			id: mapAnimationZoomIn
 			CoordinateAnimation {
-				target: map; property: "center"; to: map.newCenter; duration: 2000;
+				target: map; property: "center"; to: map.newCenter; duration: 2000
 			}
 			NumberAnimation {
-				target: map; property: "zoomLevel"; to: map.newZoom ; duration: 3000; easing.type: Easing.InCubic;
+				target: map; property: "zoomLevel"; to: map.newZoom ; duration: 3000; easing.type: Easing.InCubic
 			}
 		}
 
 		ParallelAnimation {
 			id: mapAnimationZoomOut
 			NumberAnimation {
-				target: map; property: "zoomLevel"; from: map.zoomLevel; to: map.newZoom; duration: 3000;
+				target: map; property: "zoomLevel"; from: map.zoomLevel; to: map.newZoom; duration: 3000
 			}
 			SequentialAnimation {
 				PauseAnimation { duration: 2000 }
 				CoordinateAnimation {
-					target: map; property: "center"; to: map.newCenter; duration: 2000;
+					target: map; property: "center"; to: map.newCenter; duration: 2000
 				}
 			}
 		}
@@ -120,14 +120,14 @@ Item {
 		function animateMapZoomIn(coord) {
 			zoomLevel = defaultZoomOut
 			newCenter = coord
-			newZoom = map.defaultZoomIn
+			newZoom = defaultZoomIn
 			mapAnimationZoomIn.restart()
 			mapAnimationZoomOut.stop()
 		}
 
 		function animateMapZoomOut() {
-			newCenter = map.defaultCenter
-			newZoom = map.defaultZoomOut
+			newCenter = defaultCenter
+			newZoom = defaultZoomOut
 			mapAnimationZoomIn.stop()
 			mapAnimationZoomOut.restart()
 		}
@@ -151,10 +151,10 @@ Item {
 		SequentialAnimation {
 			id: toggleImageAnimation
 			PropertyAnimation {
-				target: toggleImage; property: "scale"; from: 1.0; to: 0.8; duration: 120;
+				target: toggleImage; property: "scale"; from: 1.0; to: 0.8; duration: 120
 			}
 			PropertyAnimation {
-				target: toggleImage; property: "scale"; from: 0.8; to: 1.0; duration: 80;
+				target: toggleImage; property: "scale"; from: 0.8; to: 1.0; duration: 80
 			}
 		}
 
@@ -182,10 +182,10 @@ Item {
 				openLocationInGoogleMaps(map.center.latitude, map.center.longitude)
 				break;
 			case contextMenu.actions.COPY_LOCATION_DECIMAL:
-				mapHelper.copyToClipboardCoordinates(map.center, false);
+				mapHelper.copyToClipboardCoordinates(map.center, false)
 				break;
 			case contextMenu.actions.COPY_LOCATION_SEXAGESIMAL:
-				mapHelper.copyToClipboardCoordinates(map.center, true);
+				mapHelper.copyToClipboardCoordinates(map.center, true)
 				break;
 			}
 		}
