@@ -291,7 +291,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	function blueTheme() {
 		Material.theme = Material.Light
-		Material.accent = subsurfaceTheme.blueDarkerPrimaryColor
+		Material.accent = subsurfaceTheme.bluePrimaryColor
 		subsurfaceTheme.currentTheme = "Blue"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
@@ -308,7 +308,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	function pinkTheme() {
 		Material.theme = Material.Light
-		Material.accent = subsurfaceTheme.pinkDarkerPrimaryColor
+		Material.accent = subsurfaceTheme.pinkPrimaryColor
 		subsurfaceTheme.currentTheme = "Pink"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
@@ -325,7 +325,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	function darkTheme() {
 		Material.theme = Material.Dark
-		Material.accent = subsurfaceTheme.darkDarkerPrimaryColor
+		Material.accent = subsurfaceTheme.darkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Dark"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
@@ -398,15 +398,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
-			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.highlightColor = Qt.binding(function() { return primaryColor })
 			Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
-			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return primaryColor })
 			Kirigami.Theme.viewBackgroundColor = Qt.binding(function() { return drawerColor })
 			Kirigami.Theme.viewTextColor = Qt.binding(function() { return textColor })
 			Kirigami.Theme.buttonBackgroundColor = Qt.binding(function() { return drawerColor })
 			Kirigami.Theme.buttonTextColor = Qt.binding(function() { return textColor })
+			Kirigami.Theme.buttonFocusColor = Qt.binding(function() { return "red" })
 
 			// this needs to pick the theme from persistent preference settings
 			var theme = manager.theme
