@@ -52,7 +52,7 @@ void MapWidgetHelper::reloadMapLocations()
 			}
 		}
 		if (!diveSiteTooClose)
-			locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude)));
+			locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude), QString(ds->name)));
 	}
 	m_mapLocationModel->addList(locationList);
 }

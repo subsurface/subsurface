@@ -3,13 +3,14 @@
 
 const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
 const char *MapLocation::PROPERTY_NAME_UUID       = "uuid";
+const char *MapLocation::PROPERTY_NAME_NAME       = "name";
 
 MapLocation::MapLocation()
 {
 }
 
-MapLocation::MapLocation(quint32 uuid, QGeoCoordinate coord) :
-    m_uuid(uuid), m_coordinate(coord)
+MapLocation::MapLocation(quint32 uuid, QGeoCoordinate coord, QString name) :
+    m_uuid(uuid), m_coordinate(coord), m_name(name)
 {
 }
 
@@ -20,6 +21,8 @@ QVariant MapLocation::getRole(int role) const
 		return QVariant::fromValue(m_uuid);
 	case Roles::RoleCoordinate:
 		return QVariant::fromValue(m_coordinate);
+	case Roles::RoleName:
+		return QVariant::fromValue(m_name);
 	default:
 		return QVariant();
 	}
@@ -29,6 +32,7 @@ MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
 	m_roles[MapLocation::Roles::RoleUuid] = MapLocation::PROPERTY_NAME_UUID;
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
+	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
 }
 
 MapLocationModel::~MapLocationModel()
