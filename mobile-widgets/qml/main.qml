@@ -18,11 +18,8 @@ Kirigami.ApplicationWindow {
 		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
 		maximumHeight: Kirigami.Units.gridUnit * 2
 	}
-	property bool fullscreen: true
 	property alias oldStatus: manager.oldStatus
 	property alias notificationText: manager.notificationText
-	property QtObject notification: null
-	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
 	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias showPin: manager.showPin
