@@ -760,6 +760,8 @@ extern void clear_table(struct dive_table *table);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
+extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
+extern int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc);
 
 extern bool has_hr_data(struct divecomputer *dc);
 

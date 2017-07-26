@@ -35,6 +35,89 @@ const char *cylinderuse_text[] = {
 };
 const char *divemode_text[] = { "OC", "CCR", "PSCR", "Freedive" };
 
+/*
+ * Adding a cylinder pressure sample field is not quite as trivial as it
+ * perhaps should be.
+ *
+ * We try to keep the same sensor index for the same sensor, so that even
+ * if the dive computer doesn't give pressure information for every sample,
+ * we don't move pressure information around between the different sensor
+ * indexes.
+ *
+ * The "prepare_sample()" function will always copy the sensor indices
+ * from the previous sample, so the indexes are pre-populated (but the
+ * pressures obviously are not)
+ */
+void add_sample_pressure(struct sample *sample, int sensor, int mbar)
+{
+	int idx;
+
+	if (!mbar)
+		return;
+
+	/* Do we already have a slot for this sensor */
+	for (idx = 0; idx < MAX_SENSORS; idx++) {
+		if (sensor != sample->sensor[idx])
+			continue;
+		sample->pressure[idx].mbar = mbar;
+		return;
+	}
+
+	/* Pick the first unused index if we couldn't reuse one */
+	for (idx = 0; idx < MAX_SENSORS; idx++) {
+		if (sample->pressure[idx].mbar)
+			continue;
+		sample->sensor[idx] = sensor;
+		sample->pressure[idx].mbar = mbar;
+		return;
+	}
+
+	/* We do not have enough slots for the pressure samples. */
+	/* Should we warn the user about dropping pressure data? */
+}
+
+/*
+ * The legacy format for sample pressures has a single pressure
+ * for each sample that can have any sensor, plus a possible
+ * "o2pressure" that is fixed to the Oxygen sensor for a CCR dive.
+ *
+ * For more complex pressure data, we have to use explicit
+ * cylinder indexes for each sample.
+ *
+ * This function returns a negative number for "no legacy mode",
+ * or a non-negative number that indicates the o2 sensor index.
+ */
+int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc)
+{
+	int i, o2sensor;
+
+	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(dive, OXYGEN) : -1;
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *s = dc->sample + i;
+		int seen_pressure = 0, idx;
+
+		for (idx = 0; idx < MAX_SENSORS; idx++) {
+			int sensor = s->sensor[idx];
+			pressure_t p = s->pressure[idx];
+
+			if (!p.mbar)
+				continue;
+			if (sensor == o2sensor)
+				continue;
+			if (seen_pressure)
+				return -1;
+			seen_pressure = 1;
+		}
+	}
+
+	/*
+	 * Use legacy mode: if we have no O2 sensor we return a
+	 * positive sensor index that is guaranmteed to not match
+	 * any sensor (we encode it as 8 bits).
+	 */
+	return o2sensor < 0 ? 256 : o2sensor;
+}
+
 int event_is_gaschange(struct event *ev)
 {
 	return ev->type == SAMPLE_EVENT_GASCHANGE ||
