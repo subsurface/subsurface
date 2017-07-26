@@ -79,32 +79,13 @@ Item {
 		TextField {
 			id: password
 			text: manager.cloudPassword
-			echoMode: TextInput.Password
+			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
 					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
 			onEditingFinished: {
 				saveCredentials()
-			}
-		}
-
-		GridLayout {
-			columns: 2
-
-			Kirigami.Label {
-				text: qsTr("Show password")
-				Layout.preferredWidth: col1Width
-			}
-			SsrfSwitch {
-				checked: false
-				id: showPassword
-				Layout.preferredWidth: col2Width
-				onCheckedChanged: {
-					if (checked)
-						password.text = "" // don't show a hidden password
-					password.echoMode = checked ? TextInput.Normal : TextInput.Password
-				}
 			}
 		}
 
