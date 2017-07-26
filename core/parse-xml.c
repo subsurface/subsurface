@@ -928,6 +928,7 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
 	int in_deco;
+	pressure_t p;
 
 	start_match("sample", name, buf);
 	if (MATCH("pressure.sample", pressure, &sample->pressure[0]))
@@ -938,6 +939,27 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("o2pressure.sample", pressure, &sample->pressure[1]))
 		return;
+	/* Christ, this is ugly */
+	if (MATCH("pressure0.sample", pressure, &p)) {
+		add_sample_pressure(sample, 0, p.mbar);
+		return;
+	}
+	if (MATCH("pressure1.sample", pressure, &p)) {
+		add_sample_pressure(sample, 1, p.mbar);
+		return;
+	}
+	if (MATCH("pressure2.sample", pressure, &p)) {
+		add_sample_pressure(sample, 2, p.mbar);
+		return;
+	}
+	if (MATCH("pressure3.sample", pressure, &p)) {
+		add_sample_pressure(sample, 3, p.mbar);
+		return;
+	}
+	if (MATCH("pressure4.sample", pressure, &p)) {
+		add_sample_pressure(sample, 4, p.mbar);
+		return;
+	}
 	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor[0]))
 		return;
 	if (MATCH("sensor.sample", get_sensor, &sample->sensor[0]))

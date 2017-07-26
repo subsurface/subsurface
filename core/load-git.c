@@ -560,6 +560,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 
 static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 {
+	unsigned int sensor;
 	char *end = unit, c;
 
 	/* Skip over the unit */
@@ -572,12 +573,16 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 	}
 
 	/* The units are "°C", "m" or "bar", so let's just look at the first character */
+	/* The cylinder pressure may also be of the form '123.0bar:4' to indicate sensor */
 	switch (*unit) {
 	case 'm':
 		sample->depth.mm = lrint(1000*val);
 		break;
 	case 'b':
-		sample->pressure[0].mbar = lrint(1000*val);
+		sensor = sample->sensor[0];
+		if (end > unit+4 && unit[3] == ':')
+			sensor = atoi(unit+4);
+		add_sample_pressure(sample, sensor, lrint(1000*val));
 		break;
 	default:
 		sample->temperature.mkelvin = C_to_mkelvin(val);
