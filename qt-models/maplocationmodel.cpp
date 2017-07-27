@@ -117,8 +117,14 @@ void MapLocationModel::setSelectedUuid(QVariant uuid, QVariant fromClick)
 {
 	m_selectedUuid = qvariant_cast<quint32>(uuid);
 	const bool fromClickBool = qvariant_cast<bool>(fromClick);
+	emit selectedUuidChanged();
 	if (fromClickBool)
 		emit selectedLocationChanged(getMapLocationForUuid(m_selectedUuid));
+}
+
+quint32 MapLocationModel::selectedUuid()
+{
+	return m_selectedUuid;
 }
 
 MapLocation *MapLocationModel::getMapLocationForUuid(quint32 uuid)
