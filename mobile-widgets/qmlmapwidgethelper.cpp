@@ -37,26 +37,38 @@ void MapWidgetHelper::reloadMapLocations()
 {
 	struct dive_site *ds;
 	int idx;
+	QMap<QString, MapLocation *> locationNameMap;
 	m_mapLocationModel->clear();
+	MapLocation *location;
 	QVector<MapLocation *> locationList;
+	qreal latitude, longitude;
 
+	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
+		latitude = displayed_dive_site.latitude.udeg * 0.000001;
+		longitude = displayed_dive_site.longitude.udeg * 0.000001;
+		location = new MapLocation(displayed_dive_site.uuid, QGeoCoordinate(latitude, longitude),
+		                           QString(displayed_dive_site.name));
+		locationList.append(location);
+		locationNameMap[QString(displayed_dive_site.name)] = location;
+	}
 	for_each_dive_site(idx, ds) {
-		if (!dive_site_has_gps_location(ds))
+		if (!dive_site_has_gps_location(ds) || ds->uuid == displayed_dive_site.uuid)
 			continue;
-		const qreal latitude = ds->latitude.udeg * 0.000001;
-		const qreal longitude = ds->longitude.udeg * 0.000001;
+		latitude = ds->latitude.udeg * 0.000001;
+		longitude = ds->longitude.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
-		// check if there are no locations too close to the current dive site
-		bool diveSiteTooClose = false;
-		foreach(MapLocation *location, locationList) {
-			QGeoCoordinate coord = qvariant_cast<QGeoCoordinate>(location->getRole(MapLocation::Roles::RoleCoordinate));
-			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M) {
-				diveSiteTooClose = true;
-				break;
-			}
+		QString name(ds->name);
+		// don't add dive locations with the same name, unless they are
+		// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
+		if (locationNameMap[name]) {
+			MapLocation *existingLocation = locationNameMap[name];
+			QGeoCoordinate coord = qvariant_cast<QGeoCoordinate>(existingLocation->getRole(MapLocation::Roles::RoleCoordinate));
+			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
+				continue;
 		}
-		if (!diveSiteTooClose)
-			locationList.append(new MapLocation(ds->uuid, QGeoCoordinate(latitude, longitude), QString(ds->name)));
+		location = new MapLocation(ds->uuid, dsCoord, name);
+		locationList.append(location);
+		locationNameMap[name] = location;
 	}
 	m_mapLocationModel->addList(locationList);
 }
