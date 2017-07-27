@@ -99,7 +99,7 @@ Item {
 							id: mapItemText
 							text: model.name
 							font.pointSize: 11.0
-							color: "white"
+							color: mapHelper.model.selectedUuid === model.uuid ? "white" : "lightgrey"
 						}
 					}
 				}
