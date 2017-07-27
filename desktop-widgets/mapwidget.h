@@ -33,8 +33,10 @@ public slots:
 	void repopulateLabels();
 	void prepareForGetDiveCoordinates();
 	void selectedDivesChanged(QList<int>);
+	void coordinatesChangedLocal();
 
 private:
+	void setEditMode(bool editMode);
 	static MapWidget *m_instance;
 	QQuickItem *m_rootItem;
 	MapWidgetHelper *m_mapHelper;
