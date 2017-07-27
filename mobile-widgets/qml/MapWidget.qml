@@ -15,10 +15,12 @@ Item {
 	MapWidgetHelper {
 		id: mapHelper
 		map: map
+		editMode: false
 		onSelectedDivesChanged: {
 			// 'list' contains a list of dive list indexes
 			nSelectedDives = list.length
 		}
+		onEditModeChanged: editMessage.isVisible = editMode === true ? 1 : 0
 	}
 
 	Map {
@@ -160,6 +162,37 @@ Item {
 		function deselectMapLocation() {
 			mapHelper.model.setSelectedUuid(0, false)
 			animateMapZoomOut()
+		}
+	}
+
+	Rectangle {
+		id: editMessage
+		radius: padding
+		color: "#b08000"
+		border.color: "white"
+		x: (map.width - width) * 0.5; y: padding
+		width: editMessageText.width + padding * 2.0
+		height: editMessageText.height + padding * 2.0
+		visible: false
+		opacity: 0.0
+		property int isVisible: -1
+		property real padding: 10.0
+
+		onOpacityChanged: visible = opacity != 0.0
+		states: [
+			State { when: editMessage.isVisible === 1; PropertyChanges { target: editMessage; opacity: 1.0 }},
+			State { when: editMessage.isVisible === 0; PropertyChanges { target: editMessage; opacity: 0.0 }}
+		]
+		transitions: Transition {
+			NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }
+		}
+		Text {
+			id: editMessageText
+			y: editMessage.padding; x: editMessage.padding
+			verticalAlignment: Text.AlignVCenter
+			color: "white"
+			font.pointSize: 11.0
+			text: qsTr("Drag the selected dive location")
 		}
 	}
 
