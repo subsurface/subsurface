@@ -16,6 +16,7 @@ Item {
 		id: mapHelper
 		map: map
 		editMode: false
+
 		onSelectedDivesChanged: {
 			// 'list' contains a list of dive list indexes
 			nSelectedDives = list.length
@@ -31,12 +32,13 @@ Item {
 
 		readonly property var mapType: { "STREET": supportedMapTypes[0], "SATELLITE": supportedMapTypes[1] }
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
-		readonly property real defaultZoomIn: 17.0
+		readonly property real defaultZoomIn: 12.0
 		readonly property real defaultZoomOut: 1.0
 		readonly property real textVisibleZoom: 8.0
 		readonly property real zoomStep: 2.0
 		property var newCenter: defaultCenter
 		property real newZoom: 1.0
+		property real newZoomOut: 1.0
 		property var clickCoord: QtPositioning.coordinate(0, 0)
 
 		Component.onCompleted: {
@@ -49,6 +51,7 @@ Item {
 			id: mapItemView
 			model: mapHelper.model
 			delegate: MapQuickItem {
+				id: mapItem
 				anchorPoint.x: 0
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
@@ -67,15 +70,24 @@ Item {
 							}
 						}
 						MouseArea {
+							drag.target: (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) ? mapItem : undefined
 							anchors.fill: parent
-							onClicked: mapHelper.model.setSelectedUuid(model.uuid, true)
-							onDoubleClicked: map.doubleClickHandler(model.coordinate)
+							onClicked: {
+								if (!mapHelper.editMode)
+									mapHelper.model.setSelectedUuid(model.uuid, true)
+							}
+							onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
+							onReleased: {
+								if (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) {
+									mapHelper.updateCurrentDiveSiteCoordinates(mapHelper.model.selectedUuid, mapItem.coordinate)
+								}
+							}
 						}
 					}
 					Item {
 						// Text with a duplicate for shadow. DropShadow as layer effect is kind of slow here.
 						y: mapItemImage.y + mapItemImage.height
-						visible: map.zoomLevel > map.textVisibleZoom
+						visible: map.zoomLevel >= map.textVisibleZoom
 						Text {
 							id: mapItemTextShadow
 							x: mapItemText.x + 2; y: mapItemText.y + 2
@@ -94,13 +106,18 @@ Item {
 			}
 		}
 
-		ParallelAnimation {
+		SequentialAnimation {
 			id: mapAnimationZoomIn
-			CoordinateAnimation {
-				target: map; property: "center"; to: map.newCenter; duration: 2000
-			}
 			NumberAnimation {
-				target: map; property: "zoomLevel"; to: map.newZoom ; duration: 3000; easing.type: Easing.InCubic
+				target: map; property: "zoomLevel"; to: map.newZoomOut; duration: Math.abs(map.newZoomOut - map.zoomLevel) * 200
+			}
+			ParallelAnimation {
+				CoordinateAnimation {
+					target: map; property: "center"; to: map.newCenter; duration: 1000
+				}
+				NumberAnimation {
+					target: map; property: "zoomLevel"; to: map.newZoom ; duration: 2000; easing.type: Easing.InCubic
+				}
 			}
 		}
 
@@ -140,14 +157,6 @@ Item {
 			mapAnimationClick.restart()
 		}
 
-		function animateMapZoomIn(coord) {
-			zoomLevel = defaultZoomOut
-			newCenter = coord
-			newZoom = defaultZoomIn
-			mapAnimationZoomIn.restart()
-			mapAnimationZoomOut.stop()
-		}
-
 		function animateMapZoomOut() {
 			newCenter = defaultCenter
 			newZoom = defaultZoomOut
@@ -156,11 +165,29 @@ Item {
 		}
 
 		function centerOnCoordinate(coord) {
-			animateMapZoomIn(coord)
+			newCenter = coord
+			if (coord.latitude === 0.0 && coord.longitude === 0.0) {
+				newZoom = 2.6
+				newZoomOut = newZoom
+			} else {
+				var zoomStored = zoomLevel
+				newZoomOut = zoomLevel
+				while (zoomLevel > minimumZoomLevel) {
+					var pt = fromCoordinate(coord, false)
+					if (pt.x > 0 && pt.y > 0 && pt.x < width && pt.y < height) {
+						newZoomOut = zoomLevel
+						break
+					}
+					zoomLevel--
+				}
+				zoomLevel = zoomStored
+				newZoom = defaultZoomIn
+			}
+			mapAnimationZoomIn.restart()
+			mapAnimationZoomOut.stop()
 		}
 
 		function deselectMapLocation() {
-			mapHelper.model.setSelectedUuid(0, false)
 			animateMapZoomOut()
 		}
 	}
