@@ -129,10 +129,10 @@ quint32 MapLocationModel::selectedUuid()
 
 MapLocation *MapLocationModel::getMapLocationForUuid(quint32 uuid)
 {
-	MapLocation *location = NULL;
+	MapLocation *location;
 	foreach(location, m_mapLocations) {
-		if (location->getRole(MapLocation::Roles::RoleUuid) == uuid)
-			break;
+		if (uuid == location->uuid())
+			return location;
 	}
-	return location;
+	return NULL;
 }
