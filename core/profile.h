@@ -21,15 +21,12 @@ struct divecomputer;
 struct plot_info;
 struct plot_data {
 	unsigned int in_deco : 1;
-	char sensor[2];
 	int sec;
-	/* pressure[0] is main sensor pressure (diluent for CCR)
-	 * pressure[1] is secondary sensor pressure (O2 for CCR)
-	 *
-	 * pressure[x][0] is sensor pressure
+	/*
+	 * pressure[x][0] is sensor pressure for cylinder x
 	 * pressure[x][1] is interpolated pressure
 	 */
-	int pressure[2][2];
+	int pressure[MAX_CYLINDERS][2];
 	int temperature;
 	/* Depth info */
 	int depth;

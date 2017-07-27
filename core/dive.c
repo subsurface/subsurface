@@ -1498,24 +1498,26 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 
 	/* Walk the samples from the beginning to find starting pressures.. */
 	for (i = 0; i < dc->samples; i++) {
+		int idx;
 		struct sample *sample = dc->sample + i;
 
 		if (sample->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		fixup_start_pressure(dive, sample->sensor[0], sample->pressure[0]);
-		fixup_start_pressure(dive, sample->sensor[1], sample->pressure[1]);
+		for (idx = 0; idx < MAX_SENSORS; idx++)
+			fixup_start_pressure(dive, sample->sensor[idx], sample->pressure[idx]);
 	}
 
 	/* ..and from the end for ending pressures */
 	for (i = dc->samples; --i >= 0; ) {
+		int idx;
 		struct sample *sample = dc->sample + i;
 
 		if (sample->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		fixup_end_pressure(dive, sample->sensor[0], sample->pressure[0]);
-		fixup_end_pressure(dive, sample->sensor[1], sample->pressure[1]);
+		for (idx = 0; idx < MAX_SENSORS; idx++)
+			fixup_end_pressure(dive, sample->sensor[idx], sample->pressure[idx]);
 	}
 
 	simplify_dc_pressures(dc);

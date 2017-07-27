@@ -64,18 +64,20 @@ static void list_free(pr_track_t *list)
 }
 
 #ifdef DEBUG_PR_TRACK
-static void dump_pr_track(pr_track_t **track_pr)
+static void dump_pr_track(int cyl, pr_track_t *track_pr)
 {
-	int cyl;
 	pr_track_t *list;
 
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		list = track_pr[cyl];
-		while (list) {
-			printf("cyl%d: start %d end %d t_start %d t_end %d pt %d\n", cyl,
-			       list->start, list->end, list->t_start, list->t_end, list->pressure_time);
-			list = list->next;
-		}
+	printf("cyl%d:\n", cyl);
+	list = track_pr;
+	while (list) {
+		printf("   start %d end %d t_start %d:%02d t_end %d:%02d pt %d\n",
+		       mbar_to_PSI(list->start),
+		       mbar_to_PSI(list->end),
+		       FRACTION(list->t_start, 60),
+		       FRACTION(list->t_end, 60),
+		       list->pressure_time);
+		list = list->next;
 	}
 }
 #endif
@@ -197,32 +199,28 @@ static struct pr_interpolate_struct get_pr_interpolate_data(pr_track_t *segment,
 	return interpolate;
 }
 
-static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t **track_pr, int sensoridx)
+static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi, pr_track_t *track_pr, int cyl)
 {
-	int cyl, i;
+	int i;
 	struct plot_data *entry;
 	pr_interpolate_t interpolate = { 0, 0, 0, 0 };
 	pr_track_t *last_segment = NULL;
-	int cur_pr[MAX_CYLINDERS]; // cur_pr[MAX_CYLINDERS] is the CCR diluent cylinder
+	int cur_pr;
+	enum interpolation_strategy strategy;
 
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
-		enum interpolation_strategy strategy;
-		if (!track_pr[cyl]) {
-			/* no segment where this cylinder is used */
-			cur_pr[cyl] = -1;
-			continue;
-		}
-		if (dive->cylinder[cyl].cylinder_use == OC_GAS)
-			strategy = SAC;
-		else
-			strategy = TIME;
-		fill_missing_segment_pressures(track_pr[cyl], strategy); // Interpolate the missing tank pressure values ..
-		cur_pr[cyl] = track_pr[cyl]->start;	       // in the pr_track_t lists of structures
-	}						       // and keep the starting pressure for each cylinder.
+	/* no segment where this cylinder is used */
+	if (!track_pr)
+		return;
 
+	if (dive->cylinder[cyl].cylinder_use == OC_GAS)
+		strategy = SAC;
+	else
+		strategy = TIME;
+	fill_missing_segment_pressures(track_pr, strategy); // Interpolate the missing tank pressure values ..
+	cur_pr = track_pr->start;			       // in the pr_track_t lists of structures
+							       // and keep the starting pressure for each cylinder.
 #ifdef DEBUG_PR_TRACK
-	/* another great debugging tool */
-	dump_pr_track(track_pr);
+	dump_pr_track(cyl, track_pr);
 #endif
 
 	/* Transfer interpolated cylinder pressures from pr_track strucktures to plotdata
@@ -243,27 +241,32 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 
 		entry = pi->entry + i;
 
-		cyl = entry->sensor[sensoridx];
-		if (cyl < 0)
-			continue;
-		save_pressure = &(entry->pressure[sensoridx][SENSOR_PR]);
-		save_interpolated = &(entry->pressure[sensoridx][INTERPOLATED_PR]);
+		save_pressure = &(entry->pressure[cyl][SENSOR_PR]);
+		save_interpolated = &(entry->pressure[cyl][INTERPOLATED_PR]);
 		pressure = *save_pressure ? *save_pressure : *save_interpolated;
 
 		if (pressure) {			// If there is a valid pressure value,
 			last_segment = NULL;	// get rid of interpolation data,
-			cur_pr[cyl] = pressure; // set current pressure
+			cur_pr = pressure; // set current pressure
 			continue;		// and skip to next point.
 		}
 		// If there is NO valid pressure value..
 		// Find the pressure segment corresponding to this entry..
-		segment = track_pr[cyl];
+		segment = track_pr;
 		while (segment && segment->t_end < entry->sec) // Find the track_pr with end time..
 			segment = segment->next;	       // ..that matches the plot_info time (entry->sec)
 
-		if (!segment || !segment->pressure_time) { // No (or empty) segment?
-			*save_pressure = cur_pr[cyl];      // Just use our current pressure
-			continue;			   // and skip to next point.
+		// After last segment? All done.
+		if (!segment)
+			break;
+
+		// Before first segment, or between segments.. Go on, no interpolation.
+		if (segment->t_start > entry->sec)
+			continue;
+
+		if (!segment->pressure_time) {		// Empty segment?
+			*save_pressure = cur_pr;	// Just use our current pressure
+			continue;			// and skip to next point.
 		}
 
 		// If there is a valid segment but no tank pressure ..
@@ -283,13 +286,13 @@ static void fill_missing_tank_pressures(struct dive *dive, struct plot_info *pi,
 				magic = (interpolate.end - interpolate.start) / (double)interpolate.pressure_time;
 
 				/* Use that overall pressure change to update the current pressure */
-				cur_pr[cyl] = lrint(interpolate.start + magic * interpolate.acc_pressure_time);
+				cur_pr = lrint(interpolate.start + magic * interpolate.acc_pressure_time);
 			}
 		} else {
 			magic = (interpolate.end - interpolate.start) /  (segment->t_end - segment->t_start);
-			cur_pr[cyl] = lrint(segment->start + magic * (entry->sec - segment->t_start));
+			cur_pr = lrint(segment->start + magic * (entry->sec - segment->t_start));
 		}
-		*save_interpolated = cur_pr[cyl]; // and store the interpolated data in plot_info
+		*save_interpolated = cur_pr; // and store the interpolated data in plot_info
 	}
 }
 
@@ -328,6 +331,8 @@ static void debug_print_pressures(struct plot_info *pi)
 }
 #endif
 
+extern bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx);
+
 /* This function goes through the list of tank pressures, either SENSOR_PRESSURE(entry) or O2CYLINDER_PRESSURE(entry),
  * of structure plot_info for the dive profile where each item in the list corresponds to one point (node) of the
  * profile. It finds values for which there are no tank pressures (pressure==0). For each missing item (node) of
@@ -338,78 +343,116 @@ static void debug_print_pressures(struct plot_info *pi)
  * in the pr_track_alloc structures. If diluent_flag = 1, then DILUENT_PRESSURE(entry) is used instead of SENSOR_PRESSURE.
  * This function is called by create_plot_info_new() in profile.c
  */
-void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int sensoridx)
+void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int sensor)
 {
 	(void) dc;
-	int i, cylinderid, cylinderindex = -1;
-	pr_track_t *track_pr[MAX_CYLINDERS] = { NULL, };
+	int first, last, cyl;
+	cylinder_t *cylinder = dive->cylinder + sensor;
+	pr_track_t *track = NULL;
 	pr_track_t *current = NULL;
-	bool missing_pr = false;
-	bool found_any_pr_data = false;
+	struct plot_data *entry;
+	struct event *ev;
+	int missing_pr = 0, dense = 1;
 
 	/* if we have no pressure data whatsoever, this is pointless, so let's just return */
-	for (i = 0; i < MAX_CYLINDERS; i++) {
-		if (dive->cylinder[i].start.mbar || dive->cylinder[i].sample_start.mbar ||
-		    dive->cylinder[i].end.mbar || dive->cylinder[i].sample_end.mbar) {
-			found_any_pr_data = true;
-			break;
-		}
-	}
-	if (!found_any_pr_data)
+	if (!cylinder->start.mbar && !cylinder->end.mbar &&
+	    !cylinder->sample_start.mbar && !cylinder->sample_end.mbar)
 		return;
 
-	for (i = 0; i < pi->nr; i++) {
+	/* Get a rough range of where we have any pressures at all */
+	first = last = -1;
+	for (int i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		unsigned pressure;
+		unsigned pressure = SENSOR_PRESSURE(entry, sensor);
 
-		pressure = SENSOR_PRESSURE(entry, sensoridx);
-		cylinderid = entry->sensor[sensoridx];
-		if (cylinderid < 0)
-			goto GIVE_UP;
+		if (!pressure)
+			continue;
+		if (first < 0)
+			first = i;
+		last = i;
+	}
 
-		/* If track_pr structure already exists, then update it: */
-		/* discrete integration of pressure over time to get the SAC rate equivalent */
+	/* No sensor data at all? */
+	if (first == last)
+		return;
+
+	/*
+	 * Split the range:
+	 *  - missing pressure data
+	 *  - gas change events to other cylinders
+	 *
+	 * Note that we only look at gas switches if this cylinder
+	 * itself has a gas change event.
+	 */
+	cyl = sensor;
+	ev = NULL;
+	if (has_gaschange_event(dive, dc, sensor))
+		ev = get_next_event(dc->events, "gaschange");
+
+	for (int i = first; i <= last; i++) {
+		struct plot_data *entry = pi->entry + i;
+		unsigned pressure = SENSOR_PRESSURE(entry, sensor);
+		int time = entry->sec;
+
+		while (ev && ev->time.seconds <= time) {
+			cyl = get_cylinder_index(dive, ev);
+			if (cyl < 0)
+				cyl = sensor;
+			ev = get_next_event(ev->next, "gaschange");
+		}
+
 		if (current) {
 			entry->pressure_time = calc_pressure_time(dive, entry - 1, entry);
 			current->pressure_time += entry->pressure_time;
 			current->t_end = entry->sec;
+			if (pressure)
+				current->end = pressure;
 		}
 
-		/* If 1st record or different cylinder: Create a new track_pr structure: */
-		/* track the segments per cylinder and their pressure/time integral */
-		if (cylinderid != cylinderindex) {
-			cylinderindex = entry->sensor[sensoridx];
-			current = pr_track_alloc(pressure, entry->sec);
-			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
-			continue;
-		}
-
+		// If we have no pressure information, we will need to
+		// continue with or without a tracking entry. Mark any
+		// existing tracking entry as non-dense, and remember
+		// to fill in interpolated data.
 		if (!pressure) {
 			missing_pr = 1;
+			dense = 0;
 			continue;
 		}
-		if (current)
-			current->end = pressure;
 
-		/* Was it continuous? */
-		if (SENSOR_PRESSURE(entry - 1, sensoridx))
+		// We have a final pressure for 'current'
+		// If a gas switch has occurred, finish the
+		// current pressure track entry and continue
+		// until we get back to this cylinder.
+		if (cyl != sensor) {
+			current = NULL;
+			SENSOR_PRESSURE(entry, sensor) = 0;
+			continue;
+		}
+
+		// If we already have a pressure tracking entry, and
+		// it has not had any missing samples, just continue
+		// using it - there's nothing to interpolate yet.
+		if (current && dense)
 			continue;
 
-		/* transmitter stopped transmitting cylinder pressure data */
+		// We need to start a new tracking entry, either
+		// because the previous was interrupted by a gas
+		// switch event, or because the previous one has
+		// missing entries that need to be interpolated.
+		// Or maybe we didn't have a previous one at all,
+		// and this is the first pressure entry.
 		current = pr_track_alloc(pressure, entry->sec);
-		if (cylinderindex >= 0)
-			track_pr[cylinderindex] = list_add(track_pr[cylinderindex], current);
+		track = list_add(track, current);
+		dense = 1;
 	}
 
 	if (missing_pr) {
-		fill_missing_tank_pressures(dive, pi, track_pr, sensoridx);
+		fill_missing_tank_pressures(dive, pi, track, sensor);
 	}
 
 #ifdef PRINT_PRESSURES_DEBUG
 	debug_print_pressures(pi);
 #endif
 
-GIVE_UP:
-	for (i = 0; i < MAX_CYLINDERS; i++)
-		list_free(track_pr[i]);
+	list_free(track);
 }

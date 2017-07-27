@@ -1407,8 +1407,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 			action->setData(event->globalPos());
-			if (i == entry->sensor[0])
-				action->setDisabled(true);
 			gasChange->addAction(action);
 		}
 	}

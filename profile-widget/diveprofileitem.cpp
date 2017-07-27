@@ -683,108 +683,99 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	// We don't have enougth data to calculate things, quit.
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
-	int last_index = -1;
-	QPolygonF boundingPoly, o2Poly; // This is the "Whole Item", but a pressure can be divided in N Polygons.
+
+	int plotted_cyl[MAX_CYLINDERS] = { false, };
+	int last_plotted[MAX_CYLINDERS] = { 0, };
+	QPolygonF poly[MAX_CYLINDERS];
+	QPolygonF boundingPoly;
 	polygons.clear();
-	polygons.append(o2Poly);
 
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
-		plot_data *entry = dataModel->data().entry + i;
-		int mbar = GET_PRESSURE(entry, 0);
-		int o2mbar = GET_PRESSURE(entry, 1);
+		struct plot_data *entry = dataModel->data().entry + i;
 
-		if ((int)entry->sensor[0] != last_index) {
-			polygons.append(QPolygonF()); // this is the polygon that will be actually drawn on screen.
-			last_index = entry->sensor[0];
-		}
-		if (!mbar) {
-			continue;
-		}
-		if (o2mbar) {
-			QPointF o2point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(o2mbar));
-			boundingPoly.push_back(o2point);
-			polygons.first().push_back(o2point);
-		}
+		for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+			int mbar = GET_PRESSURE(entry, cyl);
+			int time = entry->sec;
 
-		QPointF point(hAxis->posAtValue(entry->sec), vAxis->posAtValue(mbar));
-		boundingPoly.push_back(point);    // The BoundingRect
-		polygons.last().push_back(point); // The polygon thta will be plotted.
+			if (!mbar)
+				continue;
+
+			QPointF point(hAxis->posAtValue(time), vAxis->posAtValue(mbar));
+			boundingPoly.push_back(point);
+
+			if (plotted_cyl[cyl]) {
+				/* Have we used this culinder in the last two minutes? Continue */
+				if (time - last_plotted[cyl] <= 2*60) {
+					poly[cyl].push_back(point);
+					last_plotted[cyl] = time;
+					continue;
+				}
+
+				/* Finish the previous one, start a new one */
+				polygons.append(poly[cyl]);
+				poly[cyl] = QPolygonF();
+			}
+
+			plotted_cyl[cyl] = true;
+			last_plotted[cyl] = time;
+			poly[cyl].push_back(point);
+		}
 	}
+
+	for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		if (!plotted_cyl[cyl])
+			continue;
+		polygons.append(poly[cyl]);
+	}
+
 	setPolygon(boundingPoly);
 	qDeleteAll(texts);
 	texts.clear();
-	int mbar, cyl, lastcyl;
-	int o2mbar, o2cyl;
+
 	int seen_cyl[MAX_CYLINDERS] = { false, };
 	int last_pressure[MAX_CYLINDERS] = { 0, };
 	int last_time[MAX_CYLINDERS] = { 0, };
-	struct plot_data *entry;
-
-	cyl = o2cyl = lastcyl = -1;
-	mbar = o2mbar = 0;
 
 	double print_y_offset[8][2] = { { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 } ,{ 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 } };
-	// CCR dives: These are offset values used to print the gas lables and pressures on a CCR dive profile at
-	// appropriate Y-coordinates: One doublet of values for each of 8 cylinders.
+	// These are offset values used to print the gas lables and pressures on a
+	// dive profile at appropriate Y-coordinates: One doublet of values for each
+	// of 8 cylinders.
 	// Order of offsets within a doublet: gas lable offset; gas pressure offset.
 	// The array is initialised with default values that apply to non-CCR dives.
 
-	bool offsets_initialised = false;
-	QFlags<Qt::AlignmentFlag> alignVar= Qt::AlignTop, align_dil = Qt::AlignBottom, align_o2 = Qt::AlignTop;
+	QFlags<Qt::AlignmentFlag> alignVar = Qt::AlignTop;
+	QFlags<Qt::AlignmentFlag> align[MAX_CYLINDERS];
+
 	double axisRange = (vAxis->maximum() - vAxis->minimum())/1000;	// Convert axis pressure range to bar
 	double axisLog = log10(log10(axisRange));
+
 	for (int i = 0, count = dataModel->rowCount(); i < count; i++) {
-		entry = dataModel->data().entry + i;
+		struct plot_data *entry = dataModel->data().entry + i;
 
-		cyl = entry->sensor[0];
-		o2cyl = entry->sensor[1];
-		mbar = GET_PRESSURE(entry, 0);
-		o2mbar = GET_PRESSURE(entry, 1);
+		for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+			int mbar = GET_PRESSURE(entry, cyl);
 
-		if (o2mbar) {	//  Do we have a second cylinder pressure? If so, do
-				// The first time an o2 value is detected, see if the oxygen cyl pressure graph starts above or below the dil graph
-			if (!offsets_initialised) {	// Initialise the parameters for placing the text correctly near the graph line:
-				if ((o2mbar > mbar)) {	// If above, write o2 start cyl pressure above graph and diluent pressure below graph:
-					print_y_offset[o2cyl][0] = -7 * axisLog; // y offset for oxygen gas lable (above); pressure offsets=-0.5, already initialised
-					print_y_offset[cyl][0] = 5 * axisLog; // y offset for diluent gas lable (below)
-				} else {				// ... else write o2 start cyl pressure below graph:
-					print_y_offset[o2cyl][0]  = 5 * axisLog; // o2 lable & pressure below graph; pressure offsets=-0.5, already initialised
-					print_y_offset[cyl][0] = -7.8 * axisLog;  // and diluent lable above graph.
-					align_dil = Qt::AlignTop;
-					align_o2  = Qt::AlignBottom;
-				}
-				offsets_initialised = true;
-			}
+			if (!mbar)
+				continue;
 
-			if (!seen_cyl[o2cyl]) {	//For o2, on the left of profile, write lable and pressure
-				plotPressureValue(o2mbar, entry->sec, align_o2, print_y_offset[o2cyl][1]);
-				plotGasValue(o2mbar, entry->sec, displayed_dive.cylinder[o2cyl].gasmix, align_o2, print_y_offset[o2cyl][0]);
-				seen_cyl[o2cyl] = true;
-			}
-			last_pressure[o2cyl] = o2mbar;
-			last_time[o2cyl] = entry->sec;
-			alignVar = align_dil;
-		}
-
-		if (!mbar)
-			continue;
-
-		if (cyl != lastcyl) {		// Pressure value near the left hand edge of the profile - other cylinders:
-			lastcyl = cyl;		// For each other cylinder, write the gas lable and pressure
 			if (!seen_cyl[cyl]) {
 				plotPressureValue(mbar, entry->sec, alignVar, print_y_offset[cyl][1]);
-				plotGasValue(mbar, entry->sec, displayed_dive.cylinder[cyl].gasmix, align_dil, print_y_offset[cyl][0]);
+				plotGasValue(mbar, entry->sec, displayed_dive.cylinder[cyl].gasmix, alignVar, print_y_offset[cyl][0]);
 				seen_cyl[cyl] = true;
+
+				/* Alternate alignment as we see cylinder use.. */
+				align[cyl] = alignVar;
+				alignVar ^= Qt::AlignTop | Qt::AlignBottom;
 			}
+			last_pressure[cyl] = mbar;
+			last_time[cyl] = entry->sec;
 		}
-		last_pressure[cyl] = mbar;
-		last_time[cyl] = entry->sec;
 	}
 
-	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {	// For each cylinder, on right hand side of profile, write cylinder pressure
-		alignVar = ((o2cyl >= 0) && (cyl == o2cyl)) ? align_o2 : align_dil;
+	// For each cylinder, on right hand side of profile, write cylinder pressure
+	for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
-			plotPressureValue(last_pressure[cyl], last_time[cyl], (alignVar | Qt::AlignLeft), print_y_offset[cyl][1]);
+			plotPressureValue(last_pressure[cyl], last_time[cyl], align[cyl] | Qt::AlignLeft, print_y_offset[cyl][1]);
 		}
 	}
 }
