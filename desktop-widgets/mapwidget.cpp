@@ -29,11 +29,14 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
 	connect(m_mapHelper, SIGNAL(selectedDivesChanged(QList<int>)),
 	        this, SLOT(selectedDivesChanged(QList<int>)));
+	connect(m_mapHelper, SIGNAL(coordinatesChanged()),
+	        this, SLOT(coordinatesChangedLocal()));
 }
 
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
 {
-	m_mapHelper->centerOnDiveSite(ds);
+	if (!skipReload)
+		m_mapHelper->centerOnDiveSite(ds);
 }
 
 void MapWidget::centerOnIndex(const QModelIndex& idx)
@@ -52,28 +55,38 @@ void MapWidget::repopulateLabels()
 
 void MapWidget::reload()
 {
+	setEditMode(false);
 	if (!skipReload)
 		m_mapHelper->reloadMapLocations();
 }
 
+void MapWidget::setEditMode(bool editMode)
+{
+	m_mapHelper->setEditMode(editMode);
+}
+
 void MapWidget::endGetDiveCoordinates()
 {
-	// TODO;
+	setEditMode(false);
 }
 
 void MapWidget::prepareForGetDiveCoordinates()
 {
-	// TODO;
+	setEditMode(true);
 }
 
 void MapWidget::selectedDivesChanged(QList<int> list)
 {
-	qDebug() << "onSelectedDivesChanged:" << list.size();
 	skipReload = true;
 	MainWindow::instance()->dive_list()->unselectDives();
 	if (!list.empty())
 		MainWindow::instance()->dive_list()->selectDives(list);
 	skipReload = false;
+}
+
+void MapWidget::coordinatesChangedLocal()
+{
+	emit coordinatesChanged();
 }
 
 MapWidget::~MapWidget()
