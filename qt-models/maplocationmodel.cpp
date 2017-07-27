@@ -28,6 +28,22 @@ QVariant MapLocation::getRole(int role) const
 	}
 }
 
+QGeoCoordinate MapLocation::coordinate()
+{
+	return m_coordinate;
+}
+
+void MapLocation::setCoordinate(QGeoCoordinate coord)
+{
+	m_coordinate = coord;
+	emit coordinateChanged();
+}
+
+quint32 MapLocation::uuid()
+{
+	return m_uuid;
+}
+
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 {
 	m_roles[MapLocation::Roles::RoleUuid] = MapLocation::PROPERTY_NAME_UUID;

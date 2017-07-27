@@ -12,8 +12,8 @@
 class MapLocation : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(quint32 uuid MEMBER m_uuid)
-	Q_PROPERTY(QGeoCoordinate coordinate MEMBER m_coordinate)
+	Q_PROPERTY(quint32 uuid READ uuid)
+	Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
 	Q_PROPERTY(QString name MEMBER m_name)
 
 public:
@@ -25,6 +25,9 @@ public:
 	explicit MapLocation(quint32 uuid, QGeoCoordinate coord, QString name);
 
 	QVariant getRole(int role) const;
+	QGeoCoordinate coordinate();
+	void setCoordinate(QGeoCoordinate coord);
+	quint32 uuid();
 
 	enum Roles {
 		RoleUuid = Qt::UserRole + 1,
@@ -36,6 +39,9 @@ private:
 	quint32 m_uuid;
 	QGeoCoordinate m_coordinate;
 	QString m_name;
+
+signals:
+	void coordinateChanged();
 };
 
 class MapLocationModel : public QAbstractListModel
