@@ -48,7 +48,7 @@ class MapLocationModel : public QAbstractListModel
 {
 	Q_OBJECT
 	Q_PROPERTY(int count READ count NOTIFY countChanged)
-	Q_PROPERTY(quint32 selectedUuid MEMBER m_selectedUuid NOTIFY selectedLocationChanged)
+	Q_PROPERTY(quint32 selectedUuid READ selectedUuid NOTIFY selectedUuidChanged)
 
 public:
 	MapLocationModel(QObject *parent = NULL);
@@ -64,6 +64,7 @@ public:
 	void clear();
 	MapLocation *getMapLocationForUuid(quint32 uuid);
 	Q_INVOKABLE void setSelectedUuid(QVariant uuid, QVariant fromClick = true);
+	quint32 selectedUuid();
 
 protected:
 	QHash<int, QByteArray> roleNames() const;
@@ -75,6 +76,7 @@ private:
 
 signals:
 	void countChanged(int c);
+	void selectedUuidChanged();
 	void selectedLocationChanged(MapLocation *);
 
 };
