@@ -22,6 +22,7 @@ Item {
 			nSelectedDives = list.length
 		}
 		onEditModeChanged: editMessage.isVisible = editMode === true ? 1 : 0
+		onCoordinatesChanged: {}
 	}
 
 	Map {
