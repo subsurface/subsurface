@@ -153,9 +153,8 @@ Item {
 			mapAnimationZoomOut.restart()
 		}
 
-		function centerOnMapLocation(mapLocation) {
-			mapHelper.model.setSelectedUuid(mapLocation.uuid, false)
-			animateMapZoomIn(mapLocation.coordinate)
+		function centerOnCoordinate(coord) {
+			animateMapZoomIn(coord)
 		}
 
 		function deselectMapLocation() {

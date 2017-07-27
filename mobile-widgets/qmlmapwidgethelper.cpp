@@ -22,11 +22,15 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
 	if (!dive_site_has_gps_location(ds)) {
+		m_mapLocationModel->setSelectedUuid(ds ? ds->uuid : 0, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 		return;
 	}
-	MapLocation *location = m_mapLocationModel->getMapLocationForUuid(ds->uuid);
-	QMetaObject::invokeMethod(m_map, "centerOnMapLocation", Q_ARG(QVariant, QVariant::fromValue(location)));
+	m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+	const qreal latitude = ds->latitude.udeg * 0.000001;
+	const qreal longitude = ds->longitude.udeg * 0.000001;
+	QGeoCoordinate dsCoord(latitude, longitude);
+	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 }
 
 void MapWidgetHelper::reloadMapLocations()
