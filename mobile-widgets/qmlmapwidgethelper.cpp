@@ -78,7 +78,7 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 	int idx;
 	struct dive *dive;
 	m_selectedDiveIds.clear();
-	QGeoCoordinate locationCoord = qvariant_cast<QGeoCoordinate>(location->getRole(MapLocation::Roles::RoleCoordinate));
+	QGeoCoordinate locationCoord = location->coordinate();
 	for_each_dive (idx, dive) {
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
@@ -128,4 +128,34 @@ void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool form
 
 	free((void *)coordinates);
 	prefs.coordinates_traditional = savep;
+}
+
+void MapWidgetHelper::updateCurrentDiveSiteCoordinates(quint32 uuid, QGeoCoordinate coord)
+{
+	MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(uuid);
+	if (loc)
+		loc->setCoordinate(coord);
+	displayed_dive_site.latitude.udeg = llrint(coord.latitude() * 1000000.0);
+	displayed_dive_site.longitude.udeg = llrint(coord.longitude() * 1000000.0);
+	emit coordinatesChanged();
+}
+
+bool MapWidgetHelper::editMode()
+{
+	return m_editMode;
+}
+
+void MapWidgetHelper::setEditMode(bool editMode)
+{
+	m_editMode = editMode;
+	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(displayed_dive_site.uuid);
+	// if divesite uuid doesn't exist in the model, add a new MapLocation.
+	if (editMode && !exists) {
+		QGeoCoordinate coord(0.0, 0.0);
+		m_mapLocationModel->add(new MapLocation(displayed_dive_site.uuid, coord,
+		                                        QString(displayed_dive_site.name)));
+		QMetaObject::invokeMethod(m_map, "centerOnCoordinate",
+		                          Q_ARG(QVariant, QVariant::fromValue(coord)));
+	}
+	emit editModeChanged();
 }
