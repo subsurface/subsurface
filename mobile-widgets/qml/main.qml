@@ -299,7 +299,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.blueBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.primaryColor)
+		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
@@ -316,7 +316,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.pinkBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.primaryColor)
+		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
@@ -333,7 +333,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.backgroundColor = subsurfaceTheme.darkBackgroundColor
 		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
-		manager.setStatusbarColor(subsurfaceTheme.primaryColor)
+		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
 		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
 	}
 
