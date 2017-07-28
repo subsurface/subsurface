@@ -108,7 +108,7 @@ void DownloadFromDCWidget::updateProgressBar()
 		// if we get the first actual text after the download is finished
 		// (which happens for example on the OSTC), then don't bother
 		if (!same_string(progress_bar_text, "") && IS_FP_SAME(progress_bar_fraction, 1.0))
-			progress_bar_text = NULL;
+			progress_bar_text = "";
 	}
 	if (!same_string(progress_bar_text , "")) {
 		ui.progressBar->setFormat(progress_bar_text);
