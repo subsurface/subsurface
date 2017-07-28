@@ -91,6 +91,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtDate;
@@ -99,6 +100,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtLocation;
@@ -108,6 +110,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Coordinates:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtGps
@@ -118,6 +121,7 @@ Item {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			SsrfCheckBox {
 				id: checkboxGPS
@@ -131,6 +135,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Depth:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtDepth
@@ -140,6 +145,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Duration:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtDuration
@@ -159,6 +165,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Water Temp:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtWaterTemp
@@ -168,6 +175,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: suitBox
@@ -179,6 +187,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: buddyBox
@@ -190,6 +199,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: divemasterBox
@@ -201,6 +211,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Weight:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtWeight
@@ -211,6 +222,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: cylinderBox
@@ -222,6 +234,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtGasMix
@@ -232,6 +245,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtStartPressure
@@ -241,6 +255,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtEndPressure
@@ -250,6 +265,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Rating:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			SpinBox {
 				id: ratingPicker
@@ -262,6 +278,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Visibility:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			SpinBox {
 				id: visibilityPicker
@@ -275,6 +292,7 @@ Item {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("Notes:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextArea {
 				Layout.columnSpan: 2
