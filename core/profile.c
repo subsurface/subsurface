@@ -820,9 +820,8 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 #ifndef SUBSURFACE_MOBILE
 /* calculate DECO STOP / TTS / NDL */
-static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double surface_pressure)
+static void calculate_ndl_tts(struct dive *dive, struct plot_data *entry, struct gasmix *gasmix, double surface_pressure)
 {
-	int cylinderindex = 0;
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
 	const int ascent_s_per_step = 1;
@@ -852,7 +851,7 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 		while (entry->ndl_calc < MAX_PROFILE_DECO && deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, 1) <= 0) {
 			entry->ndl_calc += time_stepsize;
 			add_segment(depth_to_bar(entry->depth, dive),
-						       &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.bottomsac);
+						       gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.bottomsac);
 		}
 		/* we don't need to calculate anything else */
 		return;
@@ -864,7 +863,7 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
 		add_segment(depth_to_bar(ascent_depth, dive),
-			    &dive->cylinder[cylinderindex].gasmix, ascent_s_per_step, entry->o2pressure.mbar, dive, prefs.decosac);
+			    gasmix, ascent_s_per_step, entry->o2pressure.mbar, dive, prefs.decosac);
 		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(ascent_depth, dive)), surface_pressure, dive, 1), deco_stepsize);
 	}
 	ascent_depth = next_stop;
@@ -884,13 +883,13 @@ static void calculate_ndl_tts(struct plot_data *entry, struct dive *dive, double
 		if (entry->tts_calc > MAX_PROFILE_DECO)
 			break;
 		add_segment(depth_to_bar(ascent_depth, dive),
-			    &dive->cylinder[cylinderindex].gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
+			    gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
 
 		if (deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(ascent_depth,dive)), surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
 			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
 				add_segment(depth_to_bar(ascent_depth, dive),
-					    &dive->cylinder[cylinderindex].gasmix, ascent_s_per_deco_step, entry->o2pressure.mbar, dive, prefs.decosac);
+					    gasmix, ascent_s_per_deco_step, entry->o2pressure.mbar, dive, prefs.decosac);
 			ascent_depth = next_stop;
 			next_stop -= deco_stepsize;
 		}
@@ -913,10 +912,15 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	 * Set maximum number of iterations to 10 just in case */
 	while ((abs(prev_deco_time - deco_time) >= 30) && (count_iteration < 10)) {
 		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0;
+		struct gasmix *gasmix = NULL;
+		struct event *ev = NULL;
+
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
 			int j, t0 = (entry - 1)->sec, t1 = entry->sec;
 			int time_stepsize = 20;
+
+			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
 
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
 			entry->gfline = get_gf(entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
@@ -931,7 +935,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 				add_segment(depth_to_bar(depth, dive),
-					&dive->cylinder[0].gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+					gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
 				if ((t1 - j < time_stepsize) && (j < t1))
 					time_stepsize = t1 - j;
 			}
@@ -1000,7 +1004,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				/* We are going to mess up deco state, so store it for later restore */
 				struct deco_state *cache_data = NULL;
 				cache_deco_state(&cache_data);
-				calculate_ndl_tts(entry, dive, surface_pressure);
+				calculate_ndl_tts(dive, entry, gasmix, surface_pressure);
 				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
@@ -1077,19 +1081,22 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
 	}
 }
 
-static void calculate_gas_information_new(struct dive *dive, struct plot_info *pi)
+static void calculate_gas_information_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i;
 	double amb_pressure;
+	struct gasmix *gasmix = NULL;
+	struct event *ev = NULL;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
-		int cylinderindex = 0;
+
+		gasmix = get_gasmix(dive, dc, entry->sec, &ev, gasmix);
 
 		amb_pressure = depth_to_bar(entry->depth, dive);
 
-		fill_pressures(&entry->pressures, amb_pressure, &dive->cylinder[cylinderindex].gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
+		fill_pressures(&entry->pressures, amb_pressure, gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 
@@ -1098,7 +1105,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
-		entry->mod = (double)gas_mod(&dive->cylinder[cylinderindex].gasmix, modpO2, dive, 1).mm;
+		entry->mod = (double)gas_mod(gasmix, modpO2, dive, 1).mm;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * fn2 / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
@@ -1106,7 +1113,7 @@ static void calculate_gas_information_new(struct dive *dive, struct plot_info *p
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry->pressures.he / amb_pressure * HE_DENSITY) /
 				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
-		entry->density = gas_density(&dive->cylinder[cylinderindex].gasmix, depth_to_mbar(entry->depth, dive));
+		entry->density = gas_density(gasmix, depth_to_mbar(entry->depth, dive));
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)
@@ -1220,7 +1227,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 #ifndef SUBSURFACE_MOBILE
 	calculate_deco_information(dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
 #endif
-	calculate_gas_information_new(dive, pi);	 /* Calculate gas partial pressures */
+	calculate_gas_information_new(dive, dc, pi);	 /* Calculate gas partial pressures */
 
 #ifdef DEBUG_GAS
 	debug_print_profiledata(pi);
