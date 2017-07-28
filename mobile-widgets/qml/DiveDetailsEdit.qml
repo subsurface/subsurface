@@ -43,7 +43,8 @@ Item {
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.text, buddyBox.text,
 				      divemasterBox.text, detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.text)
+				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.text, detailsEdit.rating,
+				      detailsEdit.visibility)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
 
@@ -63,6 +64,8 @@ Item {
 		diveDetailsListView.currentItem.modelData.divemaster = divemasterBox.currentText
 		diveDetailsListView.currentItem.modelData.cylinder = cylinderBox.currentText
 		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
+		diveDetailsListView.currentItem.modelData.rating = detailsEdit.rating
+		diveDetailsListView.currentItem.modelData.visibility = detailsEdit.visibility
 		diveDetailsPage.state = "view"
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
@@ -242,6 +245,30 @@ Item {
 			TextField {
 				id: txtEndPressure
 				Layout.fillWidth: true
+			}
+
+			Kirigami.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Rating:")
+			}
+			SpinBox {
+				id: ratingPicker
+				from: 0
+				to: 5
+				value: rating
+				onValueChanged: rating = value
+			}
+
+			Kirigami.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Visibility:")
+			}
+			SpinBox {
+				id: visibilityPicker
+				from: 0
+				to: 5
+				value: visibility
+				onValueChanged: visibility = value
 			}
 
 			Kirigami.Label {

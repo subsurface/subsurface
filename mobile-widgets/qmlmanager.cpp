@@ -832,7 +832,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QString startpressure, QString endpressure, QString gasmix, QString cylinder)
+			       QString startpressure, QString endpressure, QString gasmix, QString cylinder, int rating, int visibility)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 	DiveObjectHelper *myDive = new DiveObjectHelper(d);
@@ -935,6 +935,14 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		diveChanged = true;
 		free(d->divemaster);
 		d->divemaster = strdup(qPrintable(diveMaster));
+	}
+	if (myDive->rating() != rating) {
+		diveChanged = true;
+		d->rating = rating;
+	}
+	if (myDive->visibility() != visibility) {
+		diveChanged = true;
+		d->visibility = visibility;
 	}
 	if (myDive->notes() != notes) {
 		diveChanged = true;
