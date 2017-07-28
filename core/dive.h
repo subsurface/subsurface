@@ -140,8 +140,7 @@ extern int gas_volume(cylinder_t *cyl, pressure_t p);
 extern double gas_compressibility_factor(struct gasmix *gas, double bar);
 extern double isothermal_pressure(struct gasmix *gas, double p1, int volume1, int volume2);
 extern double gas_density(struct gasmix *gas, int pressure);
-
-
+extern int same_gasmix(struct gasmix *a, struct gasmix *b);
 
 static inline int get_o2(const struct gasmix *mix)
 {

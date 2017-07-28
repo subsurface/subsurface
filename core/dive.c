@@ -2071,7 +2071,7 @@ static void cylinder_renumber(struct dive *dive, int mapping[])
 		dc_cylinder_renumber(dive, dc, mapping);
 }
 
-static int same_gasmix(struct gasmix *a, struct gasmix *b)
+int same_gasmix(struct gasmix *a, struct gasmix *b)
 {
 	if (gasmix_is_air(a) && gasmix_is_air(b))
 		return 1;
