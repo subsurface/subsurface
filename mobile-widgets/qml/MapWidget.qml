@@ -16,11 +16,7 @@ Item {
 		id: mapHelper
 		map: map
 		editMode: false
-
-		onSelectedDivesChanged: {
-			// 'list' contains a list of dive list indexes
-			nSelectedDives = list.length
-		}
+		onSelectedDivesChanged: nSelectedDives = list.length
 		onEditModeChanged: editMessage.isVisible = editMode === true ? 1 : 0
 		onCoordinatesChanged: {}
 	}
@@ -42,10 +38,7 @@ Item {
 		property real newZoomOut: 1.0
 		property var clickCoord: QtPositioning.coordinate(0, 0)
 
-		Component.onCompleted: {
-			activeMapType = mapType.SATELLITE
-		}
-
+		Component.onCompleted: activeMapType = mapType.SATELLITE
 		onZoomLevelChanged: mapHelper.calculateSmallCircleRadius(map.center)
 
 		MapItemView {
@@ -63,12 +56,8 @@ Item {
 						source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "")
 						SequentialAnimation {
 							id: mapItemImageAnimation
-							PropertyAnimation {
-								target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120
-							}
-							PropertyAnimation {
-								target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80
-							}
+							PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
+							PropertyAnimation { target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80 }
 						}
 						MouseArea {
 							drag.target: (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) ? mapItem : undefined
@@ -113,9 +102,7 @@ Item {
 				target: map; property: "zoomLevel"; to: map.newZoomOut; duration: Math.abs(map.newZoomOut - map.zoomLevel) * 200
 			}
 			ParallelAnimation {
-				CoordinateAnimation {
-					target: map; property: "center"; to: map.newCenter; duration: 1000
-				}
+				CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 1000 }
 				NumberAnimation {
 					target: map; property: "zoomLevel"; to: map.newZoom ; duration: 2000; easing.type: Easing.InCubic
 				}
@@ -124,25 +111,17 @@ Item {
 
 		ParallelAnimation {
 			id: mapAnimationZoomOut
-			NumberAnimation {
-				target: map; property: "zoomLevel"; from: map.zoomLevel; to: map.newZoom; duration: 3000
-			}
+			NumberAnimation { target: map; property: "zoomLevel"; from: map.zoomLevel; to: map.newZoom; duration: 3000 }
 			SequentialAnimation {
 				PauseAnimation { duration: 2000 }
-				CoordinateAnimation {
-					target: map; property: "center"; to: map.newCenter; duration: 2000
-				}
+				CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 2000 }
 			}
 		}
 
 		ParallelAnimation {
 			id: mapAnimationClick
-			CoordinateAnimation {
-				target: map; property: "center"; to: map.newCenter; duration: 500
-			}
-			NumberAnimation {
-				target: map; property: "zoomLevel"; to: map.newZoom; duration: 500
-			}
+			CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 500	}
+			NumberAnimation { target: map; property: "zoomLevel"; to: map.newZoom; duration: 500 }
 		}
 
 		MouseArea {
@@ -205,15 +184,12 @@ Item {
 		opacity: 0.0
 		property int isVisible: -1
 		property real padding: 10.0
-
 		onOpacityChanged: visible = opacity != 0.0
 		states: [
 			State { when: editMessage.isVisible === 1; PropertyChanges { target: editMessage; opacity: 1.0 }},
 			State { when: editMessage.isVisible === 0; PropertyChanges { target: editMessage; opacity: 0.0 }}
 		]
-		transitions: Transition {
-			NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }
-		}
+		transitions: Transition { NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }}
 		Text {
 			id: editMessageText
 			y: editMessage.padding; x: editMessage.padding
@@ -228,17 +204,11 @@ Item {
 		id: toggleImage
 		x: 10; y: x
 		source: "qrc:///mapwidget-toggle-" + (map.activeMapType === map.mapType.SATELLITE ? "street" : "satellite")
-
 		SequentialAnimation {
 			id: toggleImageAnimation
-			PropertyAnimation {
-				target: toggleImage; property: "scale"; from: 1.0; to: 0.8; duration: 120
-			}
-			PropertyAnimation {
-				target: toggleImage; property: "scale"; from: 0.8; to: 1.0; duration: 80
-			}
+			PropertyAnimation { target: toggleImage; property: "scale"; from: 1.0; to: 0.8; duration: 120 }
+			PropertyAnimation { target: toggleImage; property: "scale"; from: 0.8; to: 1.0; duration: 80 }
 		}
-
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
@@ -254,12 +224,8 @@ Item {
 		source: "qrc:///mapwidget-zoom-in"
 		SequentialAnimation {
 			id: imageZoomInAnimation
-			PropertyAnimation {
-				target: imageZoomIn; property: "scale"; from: 1.0; to: 0.8; duration: 120
-			}
-			PropertyAnimation {
-				target: imageZoomIn; property: "scale"; from: 0.8; to: 1.0; duration: 80
-			}
+			PropertyAnimation { target: imageZoomIn; property: "scale"; from: 1.0; to: 0.8; duration: 120 }
+			PropertyAnimation { target: imageZoomIn; property: "scale"; from: 0.8; to: 1.0; duration: 80 }
 		}
 		MouseArea {
 			anchors.fill: parent
@@ -280,12 +246,8 @@ Item {
 		source: "qrc:///mapwidget-zoom-out"
 		SequentialAnimation {
 			id: imageZoomOutAnimation
-			PropertyAnimation {
-				target: imageZoomOut; property: "scale"; from: 1.0; to: 0.8; duration: 120
-			}
-			PropertyAnimation {
-				target: imageZoomOut; property: "scale"; from: 0.8; to: 1.0; duration: 80
-			}
+			PropertyAnimation { target: imageZoomOut; property: "scale"; from: 1.0; to: 0.8; duration: 120 }
+			PropertyAnimation { target: imageZoomOut; property: "scale"; from: 0.8; to: 1.0; duration: 80 }
 		}
 		MouseArea {
 			anchors.fill: parent
@@ -311,13 +273,13 @@ Item {
 			switch (action) {
 			case contextMenu.actions.OPEN_LOCATION_IN_GOOGLE_MAPS:
 				openLocationInGoogleMaps(map.center.latitude, map.center.longitude)
-				break;
+				break
 			case contextMenu.actions.COPY_LOCATION_DECIMAL:
 				mapHelper.copyToClipboardCoordinates(map.center, false)
-				break;
+				break
 			case contextMenu.actions.COPY_LOCATION_SEXAGESIMAL:
 				mapHelper.copyToClipboardCoordinates(map.center, true)
-				break;
+				break
 			}
 		}
 	}

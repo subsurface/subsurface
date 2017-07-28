@@ -40,7 +40,6 @@ private:
 	static MapWidget *m_instance;
 	QQuickItem *m_rootItem;
 	MapWidgetHelper *m_mapHelper;
-
 };
 
 #endif // MAPWIDGET_H

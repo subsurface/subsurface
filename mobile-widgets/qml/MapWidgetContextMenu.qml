@@ -33,12 +33,8 @@ Item {
 
 		SequentialAnimation {
 			id:contextMenuImageAnimation
-			PropertyAnimation {
-				target: contextMenuImage; property: "scale"; from: 1.0; to: 0.8; duration: 80;
-			}
-			PropertyAnimation {
-				target: contextMenuImage; property: "scale"; from: 0.8; to: 1.0; duration: 60;
-			}
+			PropertyAnimation { target: contextMenuImage; property: "scale"; from: 1.0; to: 0.8; duration: 80 }
+			PropertyAnimation { target: contextMenuImage; property: "scale"; from: 0.8; to: 1.0; duration: 60 }
 		}
 
 		MouseArea {
@@ -121,8 +117,6 @@ Item {
 			State { when: listViewIsVisible === 1; PropertyChanges { target: listView; opacity: 1.0 }},
 			State { when: listViewIsVisible === 0; PropertyChanges { target: listView; opacity: 0.0 }}
 		]
-		transitions: Transition {
-			NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }
-		}
+		transitions: Transition { NumberAnimation { properties: "opacity"; easing.type: Easing.InOutQuad }}
 	}
 }
