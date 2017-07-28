@@ -38,6 +38,8 @@ Kirigami.Page {
 	property alias gasmix: detailsEdit.gasmixText
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
+	property alias rating: detailsEdit.rating
+	property alias visibility: detailsEdit.visibility
 
 	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
@@ -174,6 +176,8 @@ Kirigami.Page {
 		endpressure = currentItem.modelData.dive.endPressure
 		gasmix = currentItem.modelData.dive.firstGas
 		cylinderIndex = currentItem.modelData.dive.cylinderList.indexOf(currentItem.modelData.dive.getCylinder)
+		rating = currentItem.modelData.dive.rating
+		visibility = currentItem.modelData.dive.visibility
 
 		diveDetailsPage.state = "edit"
 	}

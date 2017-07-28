@@ -35,6 +35,8 @@ Item {
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
 	property alias cylinderModel: cylinderBox.model
+	property int rating
+	property int visibility
 
 	function saveData() {
 		// apply the changes to the dive_table
