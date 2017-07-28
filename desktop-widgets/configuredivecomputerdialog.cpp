@@ -122,6 +122,7 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 		this, SLOT(deviceDetailsReceived(DeviceDetails *)));
 	connect(ui.retrieveDetails, SIGNAL(clicked()), this, SLOT(readSettings()));
 	connect(ui.resetButton, SIGNAL(clicked()), this, SLOT(resetSettings()));
+	connect(ui.resetButton_4, SIGNAL(clicked()), this, SLOT(resetSettings()));
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	connect(ui.chooseLogFile, SIGNAL(clicked()), this, SLOT(pickLogFile()));
 	connect(ui.logToFile, SIGNAL(stateChanged(int)), this, SLOT(checkLogFile(int)));
@@ -1507,6 +1508,7 @@ void ConfigureDiveComputerDialog::dc_open()
 
 	ui.retrieveDetails->setEnabled(true);
 	ui.resetButton->setEnabled(true);
+	ui.resetButton_4->setEnabled(true);
 	ui.updateFirmwareButton->setEnabled(true);
 	ui.disconnectButton->setEnabled(true);
 	ui.restoreBackupButton->setEnabled(true);
@@ -1525,6 +1527,7 @@ void ConfigureDiveComputerDialog::dc_close()
 
 	ui.retrieveDetails->setEnabled(false);
 	ui.resetButton->setEnabled(false);
+	ui.resetButton_4->setEnabled(false);
 	ui.updateFirmwareButton->setEnabled(false);
 	ui.disconnectButton->setEnabled(false);
 	ui.connectButton->setEnabled(true);
