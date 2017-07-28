@@ -913,6 +913,23 @@ void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, const char *name);
 
+static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
+{
+	struct event *ev = *evp;
+
+	if (!gasmix) {
+		int cyl = explicit_first_cylinder(dive, dc);
+		gasmix = &dive->cylinder[cyl].gasmix;
+		ev = dc->events;
+	}
+	while (ev && ev->time.seconds < time) {
+		gasmix = get_gasmix_from_event(dive, ev);
+		ev = get_next_event(ev->next, "gaschange");
+	}
+	*evp = ev;
+	return gasmix;
+}
+
 
 /* these structs holds the information that
  * describes the cylinders / weight systems.
