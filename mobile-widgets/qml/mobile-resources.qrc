@@ -63,5 +63,7 @@
 		<file alias="icons/Blue_gps.svg">icons/Blue_gps.svg</file>
 		<file alias="icons/Pink_gps.svg">icons/Pink_gps.svg</file>
 		<file alias="icons/Dark_gps.svg">icons/Blue_gps.svg</file>
+		<file alias="icons/ic_star.svg">icons/ic_star_black_24px.svg</file>
+		<file alias="icons/ic_star_border.svg">icons/ic_star_border_black_24px.svg</file>
 	</qresource>
 </RCC>
