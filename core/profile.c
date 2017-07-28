@@ -822,6 +822,10 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 	unsigned int first[MAX_CYLINDERS] = { 0, };
 	unsigned int last[MAX_CYLINDERS] = { 0, };
 	struct divecomputer *secondary;
+	int endtime = dc->samples ? dc->sample[dc->samples-1].time.seconds : dive->duration.seconds;
+
+	for (i = 0; i < MAX_CYLINDERS; i++)
+		last[i] = endtime;
 
 	for (ev = get_next_event(dc->events, "gaschange"); ev != NULL; ev = get_next_event(ev->next, "gaschange")) {
 		int cyl = ev->gas.index;
@@ -836,27 +840,22 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 		last[cyl] = sec;
 		if (!seen[cyl]) {
-			int endtime = sec;
-			if (dc->samples)
-				endtime = dc->sample[dc->samples-1].time.seconds;
-
 			// The end time may be updated by a subsequent cylinder change
 			first[cyl] = sec;
-			last[cyl] = endtime;
 			seen[cyl] = 1;
 		}
 	}
+	if (prev >= 0)
+		last[prev] = endtime;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		if (seen[i]) {
-			cylinder_t *cyl = dive->cylinder + i;
-			int start = cyl->start.mbar;
-			int end = cyl->end.mbar;
+		cylinder_t *cyl = dive->cylinder + i;
+		int start = cyl->start.mbar;
+		int end = cyl->end.mbar;
 
-			if (start)
-				add_plot_pressure(pi, first[i], i, start);
-			if (end)
-				add_plot_pressure(pi, last[i], i, end);
+		if (start && end) {
+			add_plot_pressure(pi, first[i], i, start);
+			add_plot_pressure(pi, last[i], i, end);
 		}
 	}
 
