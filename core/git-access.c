@@ -700,6 +700,8 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 	merge_head = malloc(len);
 	snprintf(merge_head, len, "refs/heads/%s", branch);
 	git_config_set_string(conf, variable_name, merge_head);
+	free(variable_name);
+	free(merge_head);
 
 	/* finally create an empty commit and push it to the remote */
 	if (do_git_save(repo, branch, remote, false, true))
