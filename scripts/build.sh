@@ -22,20 +22,47 @@ exec 1> >(tee build.log) 2>&1
 SRC=$(pwd)
 PLATFORM=$(uname)
 
-# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
-# call this script with -build-deps
-if [ "$1" == "-build-deps" ] ; then
+# deal with all the command line arguments
+while [[ $# -gt 0 ]] ; do
+	arg="$1"
+	case $arg in
+		-build-deps)
+			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
+			# call this script with -build-deps
+			BUILD_DEPS="1"
+			;;
+		-build-with-webkit)
+			# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
+			# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
+			# is still available on Linux distros)
+			BUILD_WITH_WEBKIT="1"
+			;;
+		-build-with-marble)
+			# by default we build with QtLocation based maps
+			# in order to use the old maps, you need to enable this option but also have webkit (see previous option)
+			BUILD_WITH_MARBLE="1"
+			;;
+		-mobile)
+			# we are building Subsurface-mobile
+			BUILD_MOBILE="1"
+			;;
+		-desktop)
+			# we are building Subsurface
+			BUILD_DESKTOP="1"
+			;;
+		-both)
+			# we are building Subsurface and Subsurface-mobile
+			BUILD_MOBILE="1"
+			BUILD_DESKTOP="1"
+			;;
+		*)
+			echo "Unknown command line argument $arg"
+			;;
+	esac
 	shift
-	BUILD_DEPS="1"
-fi
+done
 
-# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
-# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
-# is still available on Linux distros)
-if [ "$1" == "-build-with-webkit" ] ; then
-	shift
-	BUILD_WITH_WEBKIT="1"
-fi
+# this may not be true - we should try to auto-detect this
 if [ $PLATFORM = Linux ] ; then
 	BUILD_WITH_WEBKIT="1"
 fi
@@ -77,28 +104,22 @@ fi
 # if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
 # if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
 BUILDGRANTLEE=0
-BUILDMARBLE=0
-if [ "$1" = "-mobile" ] ; then
+
+if [ "$BUILD_MOBILE" = "1" ] ; then
 	echo "building Subsurface-mobile in subsurface/build-mobile"
 	BUILDS=( "MobileExecutable" )
 	BUILDDIRS=( "build-mobile" )
-	shift
-elif [ "$1" = "-both" ] ; then
-	echo "building both Subsurface and Subsurface-mobile in subsurface/build and subsurface/build-mobile, respectively"
-	BUILDS=( "DesktopExecutable" "MobileExecutable" )
-	BUILDDIRS=( "build" "build-mobile" )
-	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
-		BUILDGRANTLEE=1
-		BUILDMARBLE=1
-	fi
-	shift
 else
+	# if no options are given, build Subsurface
+	BUILD_DESKTOP="1"
+fi
+
+if [ "$BUILD_DESKTOP" = "1" ] ; then
 	echo "building Subsurface in subsurface/build"
-	BUILDS=( "DesktopExecutable" )
-	BUILDDIRS=( "build" )
+	BUILDS+=( "DesktopExecutable" )
+	BUILDDIRS+=( "build" )
 	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
 		BUILDGRANTLEE=1
-		BUILDMARBLE=1
 	fi
 fi
 
@@ -331,12 +352,18 @@ fi
 
 cd $SRC
 
+if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
+	EXTRA_OPTS="-DNO_USERMANUAL=OFF -DFBSUPPORT=ON"
+else
+	EXTRA_OPTS="-DNO_USERMANUAL=ON -DFBSUPPORT=OFF"
+fi
+
 # build libssrfmarblewidget
 
-if [ $BUILDMARBLE = 1 ]; then
-	MARBLE_OPTS="-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
+if [ $BUILD_WITH_MARBLE = 1 ]; then
+	EXTRA_OPTS="-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
-		-DNO_MARBLE=OFF -DNO_USERMANUAL=OFF -DFBSUPPORT=ON"
+		-DNO_MARBLE=OFF $EXTRA_OPTS"
 	if [ ! -d marble-source ] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../marble-source marble-source
@@ -373,7 +400,7 @@ if [ $BUILDMARBLE = 1 ]; then
 		fi
 	fi
 else
-	MARBLE_OPTS="-DNO_MARBLE=ON -DNO_USERMANUAL=ON -DFBSUPPORT=OFF"
+	EXTRA_OPTS="-DNO_MARBLE=ON $EXTRA_OPTS"
 fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then
@@ -432,7 +459,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
-		$PRINTING $MARBLE_OPTS
+		$PRINTING $EXTRA_OPTS
 
 	if [ $PLATFORM = Darwin ] ; then
 		rm -rf Subsurface.app
