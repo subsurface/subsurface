@@ -737,9 +737,9 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		fprintf(stderr, "git storage: returned from git_clone() with error %d\n", error);
 	if (error) {
 		char *msg = giterr_last()->message;
-		int len = sizeof("Reference 'refs/remotes/origin/' not found") + strlen(branch);
+		int len = sizeof("reference 'refs/remotes/origin/' not found") + strlen(branch);
 		char *pattern = malloc(len);
-		snprintf(pattern, len, "Reference 'refs/remotes/origin/%s' not found", branch);
+		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", branch);
 		if (strstr(remote, prefs.cloud_git_url) && strstr(msg, pattern)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
