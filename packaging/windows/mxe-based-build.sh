@@ -4,7 +4,7 @@
 #
 # this file assumes that you have installed MXE on your system
 # and installed a number of dependencies as well. Latest MXE
-# version from git may not always work for Qt5 and Subsurface. 
+# version from git may not always work for Qt5 and Subsurface.
 # Try to select an older release version like build-2016-10-12.
 #
 # cd ~/src
@@ -261,11 +261,6 @@ $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/geoservices \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
 
-# for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
-# I need to figure out why and fix that, but for now just manually copy that as well
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Location$DLL_SUFFIX.dll"
-
 STAGING_DIR=$BUILDDIR/subsurface/staging
 STAGING_TESTS_DIR=$BUILDDIR/subsurface/staging_tests
 
@@ -290,6 +285,11 @@ do
 		fi
 	done
 done
+
+# for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
+# I need to figure out why and fix that, but for now just manually copy that as well
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Location$DLL_SUFFIX.dll"
 
 for f in $EXTRA_MANUAL_DEPENDENCIES
 do
