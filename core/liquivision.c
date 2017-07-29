@@ -310,8 +310,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 			if (log_version == 3) {
 				ps_ptr += handle_event_ver3(event_code, ps, ps_ptr, &event);
-				// Ignoring the buddy sensor for now as we cannot draw it on the profile.
-				if ((event_code != 0xf) || (event.pressure.sensor != 0))
+				if (event_code != 0xf)
 					continue;	// ignore all but pressure sensor event
 			} else {	// version 2
 				ps_ptr += handle_event_ver2(event_code, ps, ps_ptr, &event);
