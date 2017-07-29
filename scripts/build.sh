@@ -62,11 +62,6 @@ while [[ $# -gt 0 ]] ; do
 	shift
 done
 
-# this may not be true - we should try to auto-detect this
-if [ $PLATFORM = Linux ] ; then
-	BUILD_WITH_WEBKIT="1"
-fi
-
 # most of these will only be needed with -build-deps on a Mac
 CURRENT_LIBZIP="1.2.0"
 CURRENT_HIDAPI="hidapi-0.7.0"
