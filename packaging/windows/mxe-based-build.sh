@@ -258,6 +258,7 @@ rm -rf subsurface
 QT_PLUGIN_DIRECTORIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/geoservices \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
 
 # for some reason we aren't installing Qt5Xml.dll
@@ -276,6 +277,9 @@ do
 	mkdir -p $STAGING_TESTS_DIR/$(basename $d)
 	for f in $d/*
 	do
+		if [[ "$d" =~  geoservice ]] && [[ ! "$f" =~ esri ]] ; then
+			continue
+		fi
 		if [[ "$RELEASE" == "Release" ]] && ([[ ! -f ${f//d.dll/.dll} || "$f" == "${f//d.dll/.dll}" ]]) ; then
 			cp $f $STAGING_DIR/plugins/$(basename $d)
 			cp $f $STAGING_TESTS_DIR/$(basename $d)
