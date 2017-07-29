@@ -736,7 +736,9 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	if (verbose > 1)
 		fprintf(stderr, "git storage: returned from git_clone() with error %d\n", error);
 	if (error) {
-		char *msg = giterr_last()->message;
+		char *msg = "";
+		if (giterr_last())
+			 msg = giterr_last()->message;
 		int len = sizeof("reference 'refs/remotes/origin/' not found") + strlen(branch);
 		char *pattern = malloc(len);
 		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", branch);
@@ -784,12 +786,23 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 			return NULL;
 		}
 		return update_local_repo(localdir, remote, branch, rt);
+	} else {
+		/* we have no local cache yet */
+		if (is_subsurface_cloud) {
+			/* and take us temporarly online to create a local and
+			 * remote cloud repo.
+			 */
+			git_repository *ret;
+			bool glo = prefs.git_local_only;
+			prefs.git_local_only = false;
+			ret = create_local_repo(localdir, remote, branch, rt);
+			prefs.git_local_only = glo;
+			return ret;
+		}
 	}
-	if (!prefs.git_local_only)
-		return create_local_repo(localdir, remote, branch, rt);
-	else
-		return 0;
 
+	/* all normal cases are handled above */
+	return 0;
 }
 
 /*
