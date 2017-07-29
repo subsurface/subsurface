@@ -286,6 +286,18 @@ do
 	done
 done
 
+# next we need the QML modules
+QT_QML_MODULES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtQuick.2 \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtLocation \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtPositioning"
+
+mkdir -p $STAGING_DIR/qml
+
+for d in $QT_QML_MODULES
+do
+	cp -a $d $STAGING_DIR/qml
+done
+
 # for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
 EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \

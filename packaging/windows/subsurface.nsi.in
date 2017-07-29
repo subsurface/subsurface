@@ -150,6 +150,7 @@ Section
     File /r theme
     File /r images
     File /r plugins
+    File /r qml
     File /r Documentation
     File /r translations
     File /r printing_templates
