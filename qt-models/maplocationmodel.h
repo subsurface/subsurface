@@ -66,7 +66,7 @@ public:
 	quint32 selectedUuid();
 
 protected:
-	QHash<int, QByteArray> roleNames() const;
+	QHash<int, QByteArray> roleNames() const override;
 
 private:
 	QVector<MapLocation *> m_mapLocations;
