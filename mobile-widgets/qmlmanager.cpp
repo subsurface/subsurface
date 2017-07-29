@@ -379,7 +379,7 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 			return;
 		} else if (prefs.cloud_verification_status != CS_VERIFIED) {
 			// here we need to enter the PIN
-			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN in desktop app"));
+			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN"));
 			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
 			revertToNoCloudIfNeeded();
 			setShowPin(true);
