@@ -22,15 +22,25 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
 	qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
 
+	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
 	setSource(QUrl(QStringLiteral("qrc:/MapWidget.qml")));
+}
+
+void MapWidget::doneLoading(QQuickWidget::Status status)
+{
+	if (status != QQuickWidget::Ready) {
+		qDebug() << "MapWidget status" << status;
+		return;
+	}
+	qDebug() << "MapWidget ready";
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 
 	m_rootItem = qobject_cast<QQuickItem *>(rootObject());
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
 	connect(m_mapHelper, SIGNAL(selectedDivesChanged(QList<int>)),
-	        this, SLOT(selectedDivesChanged(QList<int>)));
+		this, SLOT(selectedDivesChanged(QList<int>)));
 	connect(m_mapHelper, SIGNAL(coordinatesChanged()),
-	        this, SLOT(coordinatesChangedLocal()));
+		this, SLOT(coordinatesChangedLocal()));
 }
 
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
