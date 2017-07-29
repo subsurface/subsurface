@@ -355,7 +355,7 @@ fi
 
 # build libssrfmarblewidget
 
-if [ $BUILD_WITH_MARBLE = 1 ]; then
+if [ "$BUILD_WITH_MARBLE" = "1" ]; then
 	EXTRA_OPTS="-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
 		-DNO_MARBLE=OFF $EXTRA_OPTS"
