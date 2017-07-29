@@ -47,7 +47,6 @@
 #      /libcurl                <- from git - 7.42.1 seems to work - rename folder!
 #      /subsurface             <- current subsurface git
 #      /libdivecomputer        <- appropriate libdc/Subsurface-branch branch
-#      /marble-source          <- appropriate marble/Subsurface-branch branch
 #      /libgit2                <- libgit2 0.23.1 or similar
 #
 # ~/src/win32                  <- build directory
@@ -245,29 +244,6 @@ else
 	echo ""
 fi
 
-# marble:
-
-cd "$BUILDDIR"
-if [[ ! -d marble || -f build.marble ]] ; then
-	rm -f build.marble
-	mkdir -p marble
-	cd marble
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-		-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5 \
-		-DQTONLY=ON -DQT5BUILD=ON \
-		-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
-		-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
-		-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
-		-DBUILD_WITH_DBUS=OFF \
-		-DCMAKE_BUILD_TYPE=$RELEASE \
-		"$BASEDIR"/marble-source
-	make $JOBS
-	make install
-	# what the heck is marble doing?
-	mv "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/libssrfmarblewidget"$DLL_SUFFIX".dll "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib
-	mv "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/libastro"$DLL_SUFFIX".dll "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib
-fi
-
 ###############
 # finally, Subsurface
 
@@ -284,13 +260,9 @@ $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
 
-# for some reason we aren't installing libssrfmarblewidget.dll and # Qt5Xml.dll
+# for some reason we aren't installing Qt5Xml.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll"
-
-
-
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll"
 
 STAGING_DIR=$BUILDDIR/subsurface/staging
 STAGING_TESTS_DIR=$BUILDDIR/subsurface/staging_tests
@@ -329,9 +301,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/sh
 	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
-	-DMARBLE_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
-	-DMARBLE_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget"$DLL_SUFFIX".dll \
-	-DMAKE_TESTS=OFF \
+	-DNO_MARBLE=ON -DMAKE_TESTS=OFF \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
