@@ -295,6 +295,7 @@ void QMLManager::saveCloudCredentials()
 		setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
 		return;
 	}
+	setOldStatus(credentialStatus());
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUser);
 	s.setValue("password", cloudPwd);
