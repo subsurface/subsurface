@@ -31,7 +31,7 @@ Item {
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property real defaultZoomIn: 12.0
 		readonly property real defaultZoomOut: 1.0
-		readonly property real textVisibleZoom: 8.0
+		readonly property real textVisibleZoom: 11.0
 		readonly property real zoomStep: 2.0
 		property var newCenter: defaultCenter
 		property real newZoom: 1.0
