@@ -156,6 +156,7 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Air Temp:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtAirTemp
