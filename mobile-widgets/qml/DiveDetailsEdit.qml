@@ -96,6 +96,9 @@ Item {
 			TextField {
 				id: txtDate;
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
@@ -105,6 +108,9 @@ Item {
 			TextField {
 				id: txtLocation;
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -115,6 +121,9 @@ Item {
 			TextField {
 				id: txtGps
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -141,6 +150,9 @@ Item {
 				id: txtDepth
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
+				onEditingFinished: {
+					focus = false
+				}
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
@@ -151,6 +163,9 @@ Item {
 				id: txtDuration
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -161,6 +176,9 @@ Item {
 			TextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -171,6 +189,9 @@ Item {
 			TextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -218,6 +239,9 @@ Item {
 				id: txtWeight
 				readOnly: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -241,6 +265,9 @@ Item {
 				id: txtGasMix
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -251,6 +278,9 @@ Item {
 			TextField {
 				id: txtStartPressure
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
@@ -261,6 +291,9 @@ Item {
 			TextField {
 				id: txtEndPressure
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
