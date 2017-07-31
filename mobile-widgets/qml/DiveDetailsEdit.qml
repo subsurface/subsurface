@@ -77,7 +77,7 @@ Item {
 	ColumnLayout {
 		id: editArea
 		spacing: Kirigami.Units.smallSpacing
-		width: parent.width - 2 * Kirigami.Units.gridUnit
+		width: parent.width
 
 		GridLayout {
 			id: editorDetails
