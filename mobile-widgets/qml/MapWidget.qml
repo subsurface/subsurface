@@ -203,6 +203,8 @@ Item {
 	Image {
 		id: toggleImage
 		x: 10; y: x
+		width: 40
+		height: 40
 		source: "qrc:///mapwidget-toggle-" + (map.activeMapType === map.mapType.SATELLITE ? "street" : "satellite")
 		SequentialAnimation {
 			id: toggleImageAnimation
@@ -221,6 +223,8 @@ Item {
 	Image {
 		id: imageZoomIn
 		x: 10 + (toggleImage.width - imageZoomIn.width) * 0.5; y: toggleImage.y + toggleImage.height + 10
+		width: 20
+		height: 20
 		source: "qrc:///mapwidget-zoom-in"
 		SequentialAnimation {
 			id: imageZoomInAnimation
@@ -244,6 +248,8 @@ Item {
 		id: imageZoomOut
 		x: imageZoomIn.x; y: imageZoomIn.y + imageZoomIn.height + 10
 		source: "qrc:///mapwidget-zoom-out"
+		width: 20
+		height: 20
 		SequentialAnimation {
 			id: imageZoomOutAnimation
 			PropertyAnimation { target: imageZoomOut; property: "scale"; from: 1.0; to: 0.8; duration: 120 }
