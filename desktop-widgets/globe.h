@@ -7,8 +7,10 @@
 #ifndef NO_MARBLE
 #include <marble/MarbleWidget.h>
 #include <marble/GeoDataCoordinates.h>
+#include <marble/GeoDataStyle.h>
 
 #include <QHash>
+#include <QSharedPointer>
 
 namespace Marble{
 	class GeoDataDocument;
@@ -39,6 +41,8 @@ private:
 	bool needResetZoom;
 	bool editingDiveLocation;
 	bool doubleClick;
+	QSharedPointer<GeoDataStyle> otherSite;
+	QSharedPointer<GeoDataStyle> currentSite;
 	GlobeGPS(QWidget *parent = 0);
 
 signals:
