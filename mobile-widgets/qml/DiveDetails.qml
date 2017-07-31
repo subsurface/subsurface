@@ -136,6 +136,7 @@ Kirigami.Page {
 			manager.addDiveAborted(dive_id)
 		// just cancel the edit/add state
 		state = "view";
+		focus = false;
 		Qt.inputMethod.hide();
 	}
 
