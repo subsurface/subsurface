@@ -816,13 +816,15 @@ static void add_plot_pressure(struct plot_info *pi, int time, int cyl, int mbar)
 
 static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	int prev = -1, i;
+	int prev, i;
 	struct event *ev;
 	unsigned int seen[MAX_CYLINDERS] = { 0, };
 	unsigned int first[MAX_CYLINDERS] = { 0, };
 	unsigned int last[MAX_CYLINDERS] = { 0, };
 	struct divecomputer *secondary;
 
+	prev = explicit_first_cylinder(dive, dc);
+	seen[prev] = 1;
 	for (i = 0; i < MAX_CYLINDERS; i++)
 		last[i] = INT_MAX;
 

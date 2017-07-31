@@ -409,16 +409,6 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 				current->end = pressure;
 		}
 
-		// If we have no pressure information, we will need to
-		// continue with or without a tracking entry. Mark any
-		// existing tracking entry as non-dense, and remember
-		// to fill in interpolated data.
-		if (!pressure) {
-			missing_pr = 1;
-			dense = 0;
-			continue;
-		}
-
 		// We have a final pressure for 'current'
 		// If a gas switch has occurred, finish the
 		// current pressure track entry and continue
@@ -426,6 +416,16 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 		if (cyl != sensor) {
 			current = NULL;
 			SENSOR_PRESSURE(entry, sensor) = 0;
+			continue;
+		}
+
+		// If we have no pressure information, we will need to
+		// continue with or without a tracking entry. Mark any
+		// existing tracking entry as non-dense, and remember
+		// to fill in interpolated data.
+		if (current && !pressure) {
+			missing_pr = 1;
+			dense = 0;
 			continue;
 		}
 
