@@ -173,9 +173,9 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
 	} else {
-		// if we can load from the cache, we know that we have at least a valid email
+		// if we can load from the cache, we know that we have a valid cloud account
 		if (credentialStatus() == UNKNOWN)
-			setCredentialStatus(VALID_EMAIL);
+			setCredentialStatus(VALID);
 		prefs.unit_system = git_prefs.unit_system;
 		if (git_prefs.unit_system == IMPERIAL)
 			git_prefs.units = IMPERIAL_units;

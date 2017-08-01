@@ -120,7 +120,7 @@ Kirigami.ApplicationWindow {
 					if (manager.credentialStatus == QMLManager.UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == QMLManager.VALID || oldStatus == QMLManager.VALID_EMAIL) {
+						if (oldStatus == QMLManager.VALID) {
 							manager.credentialStatus = oldStatus
 						}
 					}
@@ -134,7 +134,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					iconName: "icons/ic_add.svg"
 					text: qsTr("Add dive manually")
-					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
 						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
@@ -159,7 +159,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					iconName: "icons/cloud_sync.svg"
 					text: qsTr("Manual sync with cloud")
-					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
+					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
 						if (manager.credentialStatus === QMLManager.NOCLOUD) {
 							returnTopPage()
