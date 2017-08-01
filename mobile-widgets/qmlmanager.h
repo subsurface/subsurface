@@ -49,7 +49,6 @@ public:
 	~QMLManager();
 
 	enum credentialStatus_t {
-		INCOMPLETE,
 		UNKNOWN,
 		INVALID,
 		VALID,
