@@ -133,7 +133,7 @@ if [[ ! -d grantlee || -f build.grantlee ]] ; then
 	rm -f build.grantlee
 	mkdir -p grantlee
 	cd grantlee
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_TESTS=OFF \
 		"$BASEDIR"/grantlee
@@ -151,7 +151,7 @@ if [[ ! -d libssh2 || -f build.libssh2 ]] ; then
 	mkdir -p libssh2
 	cd libssh2
 
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_EXAMPLES=OFF \
 		-DBUILD_TESTING=OFF \
@@ -204,7 +204,7 @@ if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
 	rm -f build.libgit2
 	mkdir -p libgit2
 	cd libgit2
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DBUILD_CLAR=OFF -DTHREADSAFE=ON \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DDLLTOOL="$BASEDIR"/"$MXEDIR"/usr/bin/i686-w64-mingw32.shared-dlltool \
@@ -311,7 +311,7 @@ done
 
 cd "$BUILDDIR"/subsurface
 
-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 	-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5 \
 	-DCMAKE_BUILD_TYPE=$RELEASE \
 	-DQT_TRANSLATION_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/translations \
