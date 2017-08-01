@@ -52,7 +52,6 @@ public:
 		INCOMPLETE,
 		UNKNOWN,
 		INVALID,
-		VALID_EMAIL,
 		VALID,
 		NOCLOUD
 	};
