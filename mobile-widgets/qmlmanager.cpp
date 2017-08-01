@@ -573,7 +573,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		prefs.cloud_storage_password = NULL;
 		setCloudUserName("");
 		setCloudPassword("");
-		setCredentialStatus(INCOMPLETE);
+		setCredentialStatus(NOCLOUD);
 		set_filename(NOCLOUD_LOCALSTORAGE, true);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
