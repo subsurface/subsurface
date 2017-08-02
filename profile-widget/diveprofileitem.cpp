@@ -736,12 +736,13 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	int last_pressure[MAX_CYLINDERS] = { 0, };
 	int last_time[MAX_CYLINDERS] = { 0, };
 
-	double print_y_offset[8][2] = { { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 } ,{ 0, -0.5 }, { 0, -0.5 }, { 0, -0.5 } };
 	// These are offset values used to print the gas lables and pressures on a
-	// dive profile at appropriate Y-coordinates: One doublet of values for each
-	// of 8 cylinders.
-	// Order of offsets within a doublet: gas lable offset; gas pressure offset.
-	// The array is initialised with default values that apply to non-CCR dives.
+	// dive profile at appropriate Y-coordinates. We alternate aligning the
+	// label and the gas pressure above and under the pressure line.
+	// The values are historical, and we could try to pick the over/under
+	// depending on whether this pressure is higher or lower than the average.
+	// Right now it's just strictly alternating when you have multiple gas
+	// pressures.
 
 	QFlags<Qt::AlignmentFlag> alignVar = Qt::AlignTop;
 	QFlags<Qt::AlignmentFlag> align[MAX_CYLINDERS];
@@ -759,8 +760,19 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 				continue;
 
 			if (!seen_cyl[cyl]) {
-				plotPressureValue(mbar, entry->sec, alignVar, print_y_offset[cyl][1]);
-				plotGasValue(mbar, entry->sec, displayed_dive.cylinder[cyl].gasmix, alignVar, print_y_offset[cyl][0]);
+				double value_y_offset, label_y_offset;
+
+				// Magic Y offset depending on whether we're aliging
+				// the top of the text or the bottom of the text to
+				// the pressure line.
+				value_y_offset = -0.5;
+				if (alignVar & Qt::AlignTop) {
+					label_y_offset = 5 * axisLog;
+				} else {
+					label_y_offset = -7 * axisLog;
+				}
+				plotPressureValue(mbar, entry->sec, alignVar, value_y_offset);
+				plotGasValue(mbar, entry->sec, displayed_dive.cylinder[cyl].gasmix, alignVar, label_y_offset);
 				seen_cyl[cyl] = true;
 
 				/* Alternate alignment as we see cylinder use.. */
@@ -775,7 +787,8 @@ void DiveGasPressureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 	// For each cylinder, on right hand side of profile, write cylinder pressure
 	for (int cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		if (last_time[cyl]) {
-			plotPressureValue(last_pressure[cyl], last_time[cyl], align[cyl] | Qt::AlignLeft, print_y_offset[cyl][1]);
+			double value_y_offset = -0.5;
+			plotPressureValue(last_pressure[cyl], last_time[cyl], align[cyl] | Qt::AlignLeft, value_y_offset);
 		}
 	}
 }
