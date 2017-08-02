@@ -429,7 +429,22 @@ else
 fi
 
 
+# build the googlemaps map plugin
 
+cd $SRC
+if [ ! -d googlemaps ] ; then
+	if [[ $1 = local ]] ; then
+		git clone $SRC/../googlemaps googlemaps
+	else
+		git clone git@github.com:Subsurface-divelog/googlemaps.git
+	fi
+fi
+cd googlemaps
+git checkout master
+git pull --rebase
+qmake
+make -j4
+make install
 
 # finally, build Subsurface
 
