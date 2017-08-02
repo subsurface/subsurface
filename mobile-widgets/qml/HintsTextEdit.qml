@@ -14,7 +14,7 @@ TextField {
 	onTextChanged: {
 		textUpdateTimer.restart();
 	}
-	onFocusChanged: frame.shouldShow = focus
+	onFocusChanged: frame.shouldShow = false
 
 	onVisibleChanged: {
 		if (visible) {
