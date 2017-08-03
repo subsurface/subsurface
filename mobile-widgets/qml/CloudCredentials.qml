@@ -23,7 +23,7 @@ Item {
 
 	ColumnLayout {
 		id: outerLayout
-		width: loginWindow.width
+		width: loginWindow.width - Kirigami.Units.gridUnit // to ensure the full input fields are visible
 
 		function goToNext() {
 			for (var i = 0; i < children.length; ++i)

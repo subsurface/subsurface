@@ -11,16 +11,16 @@ Kirigami.ScrollablePage {
 	objectName: "Settings"
 	id: settingsPage
 	title: qsTr("Settings")
-	anchors.margins: Kirigami.Units.gridUnit / 2
-	property real gridWidth: settingsPage.width - 2 * Kirigami.Units.gridUnit
+
+	property real gridWidth: settingsPage.width - Kirigami.Units.gridUnit
 
 	ColumnLayout {
-		width: parent.width - Kirigami.Units.gridUnit
+		width: gridWidth
 		CloudCredentials {
 			id: cloudCredentials
 			Layout.fillWidth: true
 			Layout.rightMargin: Kirigami.Units.smallSpacing
-			Layout.topMargin: 0
+			Layout.topMargin: - Kirigami.Units.gridUnit
 			property int headingLevel: 4
 		}
 		Rectangle {
