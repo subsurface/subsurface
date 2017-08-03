@@ -16,7 +16,7 @@
 
 class QMLManager : public QObject {
 	Q_OBJECT
-	Q_ENUMS(credentialStatus_t)
+	Q_ENUMS(cloud_status_qml)
 	Q_PROPERTY(QString cloudUserName READ cloudUserName WRITE setCloudUserName NOTIFY cloudUserNameChanged)
 	Q_PROPERTY(QString cloudPassword READ cloudPassword WRITE setCloudPassword NOTIFY cloudPasswordChanged)
 	Q_PROPERTY(QString cloudPin READ cloudPin WRITE setCloudPin NOTIFY cloudPinChanged)
@@ -29,8 +29,8 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool loadFromCloud READ loadFromCloud WRITE setLoadFromCloud NOTIFY loadFromCloudChanged)
 	Q_PROPERTY(QString startPageText READ startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled READ verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
-	Q_PROPERTY(credentialStatus_t credentialStatus READ credentialStatus WRITE setCredentialStatus NOTIFY credentialStatusChanged)
-	Q_PROPERTY(credentialStatus_t oldStatus READ oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
+	Q_PROPERTY(cloud_status_qml credentialStatus READ credentialStatus WRITE setCredentialStatus NOTIFY credentialStatusChanged)
+	Q_PROPERTY(cloud_status_qml oldStatus READ oldStatus WRITE setOldStatus NOTIFY oldStatusChanged)
 	Q_PROPERTY(QString notificationText READ notificationText WRITE setNotificationText NOTIFY notificationTextChanged)
 	Q_PROPERTY(bool syncToCloud READ syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
 	Q_PROPERTY(int updateSelectedDive READ updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
@@ -48,11 +48,12 @@ public:
 	QMLManager();
 	~QMLManager();
 
-	enum credentialStatus_t {
-		UNKNOWN,
-		INVALID,
-		VALID,
-		NOCLOUD
+	enum cloud_status_qml {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
 	};
 
 	static QMLManager *instance();
@@ -91,11 +92,11 @@ public:
 	QString startPageText() const;
 	void setStartPageText(const QString& text);
 
-	credentialStatus_t credentialStatus() const;
-	void setCredentialStatus(const credentialStatus_t value);
+	cloud_status_qml credentialStatus() const;
+	void setCredentialStatus(const cloud_status_qml value);
 
-	credentialStatus_t oldStatus() const;
-	void setOldStatus(const credentialStatus_t value);
+	cloud_status_qml oldStatus() const;
+	void setOldStatus(const cloud_status_qml value);
 
 	QString logText() const;
 	void setLogText(const QString &logText);
@@ -207,8 +208,8 @@ private:
 	bool m_syncToCloud;
 	int m_updateSelectedDive;
 	int m_selectedDiveTimestamp;
-	credentialStatus_t m_credentialStatus;
-	credentialStatus_t m_oldStatus;
+	cloud_status_qml m_credentialStatus;
+	cloud_status_qml m_oldStatus;
 	qreal m_lastDevicePixelRatio;
 	QElapsedTimer timer;
 	bool alreadySaving;

@@ -84,7 +84,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	deletedTrip(0),
 	m_updateSelectedDive(-1),
 	m_selectedDiveTimestamp(0),
-	m_credentialStatus(UNKNOWN),
+	m_credentialStatus(CS_UNKNOWN),
 	alreadySaving(false),
 	m_device_data(new DCDeviceData(this)),
 	m_libdcLog(false)
@@ -174,8 +174,8 @@ void QMLManager::openLocalThenRemote(QString url)
 		setNotificationText(tr("Opening local data file failed"));
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
-		if (credentialStatus() == UNKNOWN)
-			setCredentialStatus(VALID);
+		if (credentialStatus() == CS_UNKNOWN)
+			setCredentialStatus(CS_VERIFIED);
 		prefs.unit_system = git_prefs.unit_system;
 		if (git_prefs.unit_system == IMPERIAL)
 			git_prefs.units = IMPERIAL_units;
@@ -193,8 +193,8 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
 	}
-	if (oldStatus() == NOCLOUD) {
-		// if we switch to credentials from NOCLOUD, we take things online temporarily
+	if (oldStatus() == CS_NOCLOUD) {
+		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
 		prefs.git_local_only = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
@@ -231,7 +231,7 @@ void QMLManager::finishSetup()
 		alreadySaving = true;
 		openLocalThenRemote(url);
 	} else if (!same_string(existing_filename, "")) {
-		setCredentialStatus(NOCLOUD);
+		setCredentialStatus(CS_NOCLOUD);
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename);
 		if (error) {
@@ -245,7 +245,7 @@ void QMLManager::finishSetup()
 			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
 		}
 	} else {
-		setCredentialStatus(UNKNOWN);
+		setCredentialStatus(CS_UNKNOWN);
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
@@ -414,7 +414,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
 		setStartPageText(RED_FONT + tr("Cloud credentials are invalid") + END_FONT);
-		setCredentialStatus(INVALID);
+		setCredentialStatus(CS_INCORRECT_USER_PASSWD);
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
@@ -455,7 +455,7 @@ void QMLManager::retrieveUserid()
 		revertToNoCloudIfNeeded();
 		return;
 	}
-	setCredentialStatus(VALID);
+	setCredentialStatus(CS_VERIFIED);
 	QString userid(prefs.userid);
 	if (userid.isEmpty()) {
 		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
@@ -474,7 +474,7 @@ void QMLManager::retrieveUserid()
 		s.setValue("subsurface_webservice_uid", prefs.userid);
 		s.sync();
 	}
-	setCredentialStatus(VALID);
+	setCredentialStatus(CS_VERIFIED);
 	setStartPageText(tr("Cloud credentials valid, loading dives..."));
 	// this only gets called with "alreadySaving" already locked
 	loadDivesWithValidCredentials();
@@ -529,7 +529,7 @@ successful_exit:
 	setLoadFromCloud(true);
 	// if we came from local storage mode, let's merge the local data into the local cache
 	// for the remote data - which then later gets merged with the remote data if necessary
-	if (oldStatus() == NOCLOUD) {
+	if (oldStatus() == CS_NOCLOUD) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		dive_table.preexisting = dive_table.nr;
 		mergeLocalRepo();
@@ -557,11 +557,11 @@ void QMLManager::revertToNoCloudIfNeeded()
 		currentGitLocalOnly = false;
 		prefs.git_local_only = true;
 	}
-	if (oldStatus() == NOCLOUD) {
+	if (oldStatus() == CS_NOCLOUD) {
 		// we tried to switch to a cloud account and had previously used local data,
 		// but connecting to the cloud account (and subsequently merging the local
 		// and cloud data) failed - so let's delete the cloud credentials and go
-		// back to NOCLOUD mode in order to prevent us from losing the locally stored
+		// back to CS_NOCLOUD mode in order to prevent us from losing the locally stored
 		// dives
 		if (syncToCloud() == false) {
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
@@ -573,7 +573,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		prefs.cloud_storage_password = NULL;
 		setCloudUserName("");
 		setCloudPassword("");
-		setCredentialStatus(NOCLOUD);
+		setCredentialStatus(CS_NOCLOUD);
 		set_filename(NOCLOUD_LOCALSTORAGE, true);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
@@ -1004,7 +1004,7 @@ void QMLManager::changesNeedSaving()
 void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
-		if (credentialStatus() == NOCLOUD) {
+		if (credentialStatus() == CS_NOCLOUD) {
 			if (same_string(existing_filename, "")) {
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				if (git_create_local_repo(filename))
@@ -1367,27 +1367,27 @@ void QMLManager::setStartPageText(const QString& text)
 	emit startPageTextChanged();
 }
 
-QMLManager::credentialStatus_t QMLManager::credentialStatus() const
+QMLManager::cloud_status_qml QMLManager::credentialStatus() const
 {
 	return m_credentialStatus;
 }
 
-void QMLManager::setCredentialStatus(const credentialStatus_t value)
+void QMLManager::setCredentialStatus(const cloud_status_qml value)
 {
 	if (m_credentialStatus != value) {
-		if (value == NOCLOUD)
+		if (value == CS_NOCLOUD)
 			appendTextToLog("Switching to no cloud mode");
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
 	}
 }
 
-QMLManager::credentialStatus_t QMLManager::oldStatus() const
+QMLManager::cloud_status_qml QMLManager::oldStatus() const
 {
 	return m_oldStatus;
 }
 
-void QMLManager::setOldStatus(const credentialStatus_t value)
+void QMLManager::setOldStatus(const cloud_status_qml value)
 {
 	if (m_oldStatus != value) {
 		m_oldStatus = value;
