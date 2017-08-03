@@ -19,7 +19,7 @@ Kirigami.ScrollablePage {
 		CloudCredentials {
 			id: cloudCredentials
 			Layout.fillWidth: true
-			Layout.margins: Kirigami.Units.gridUnit
+			Layout.rightMargin: Kirigami.Units.smallSpacing
 			Layout.topMargin: 0
 			property int headingLevel: 4
 		}
@@ -314,7 +314,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
 					manager.developer = checked
-				}	
+				}
 			}
 		}
 		Item {
