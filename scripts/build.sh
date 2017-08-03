@@ -442,7 +442,14 @@ fi
 cd googlemaps
 git checkout master
 git pull --rebase
-qmake
+mkdir -p build
+cd build
+if [ ! -z $CMAKE_PREFIX_PATH ] ; then
+	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
+else
+	QMAKE=qmake
+fi
+$QMAKE PREFIX=$INSTALL_ROOT ../googlemaps.pro
 make -j4
 make install
 
