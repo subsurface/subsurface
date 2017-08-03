@@ -436,7 +436,7 @@ if [ ! -d googlemaps ] ; then
 	if [[ $1 = local ]] ; then
 		git clone $SRC/../googlemaps googlemaps
 	else
-		git clone git@github.com:Subsurface-divelog/googlemaps.git
+		git clone https://github.com/Subsurface-divelog/googlemaps.git
 	fi
 fi
 cd googlemaps
