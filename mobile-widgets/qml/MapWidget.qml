@@ -9,7 +9,7 @@ Item {
 
 	Plugin {
 		id: mapPlugin
-		name: "esri"
+		name: "googlemaps"
 	}
 
 	MapWidgetHelper {
@@ -27,7 +27,7 @@ Item {
 		plugin: mapPlugin
 		zoomLevel: 1
 
-		readonly property var mapType: { "STREET": supportedMapTypes[0], "SATELLITE": supportedMapTypes[1] }
+		readonly property var mapType: { "STREET": supportedMapTypes[0], "SATELLITE": supportedMapTypes[3] }
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property real defaultZoomIn: 12.0
 		readonly property real defaultZoomOut: 1.0

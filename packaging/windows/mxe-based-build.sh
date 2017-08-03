@@ -273,7 +273,7 @@ do
 	mkdir -p $STAGING_TESTS_DIR/$(basename $d)
 	for f in $d/*
 	do
-		if [[ "$d" =~  geoservice ]] && [[ ! "$f" =~ esri ]] ; then
+		if [[ "$d" =~  geoservice ]] && [[ ! "$f" =~ googlemaps ]] ; then
 			continue
 		fi
 		if [[ "$RELEASE" == "Release" ]] && ([[ ! -f ${f//d.dll/.dll} || "$f" == "${f//d.dll/.dll}" ]]) ; then
