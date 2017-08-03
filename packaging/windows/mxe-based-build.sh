@@ -244,6 +244,19 @@ else
 	echo ""
 fi
 
+cd "$BUILDDIR"
+if [[ ! -d googlemaps || -f build.googlemaps ]] ; then
+	rm -f build.googlemaps
+	cd "$BASEDIR"/googlemaps
+	git pull
+	cd "$BUILDDIR"
+	mkdir -p googlemaps
+	cd googlemaps
+	"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/qmake PREFIX=$"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared "$BASEDIR"/googlemaps/googlemaps.pro
+	make $JOBS
+	make install
+fi
+
 ###############
 # finally, Subsurface
 
