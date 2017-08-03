@@ -23,7 +23,7 @@ Item {
 
 	ColumnLayout {
 		id: outerLayout
-		width: loginWindow.width - loginWindow.leftPadding - loginWindow.rightPadding - 2 * Kirigami.Units.gridUnit
+		width: loginWindow.width
 
 		function goToNext() {
 			for (var i = 0; i < children.length; ++i)
@@ -53,6 +53,8 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Email")
+			font.pointSize: subsurfaceTheme.smallPointSize
+			color: subsurfaceTheme.secondaryTextColor
 		}
 
 		TextField {
@@ -68,6 +70,8 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Password")
+			font.pointSize: subsurfaceTheme.smallPointSize
+			color: subsurfaceTheme.secondaryTextColor
 		}
 
 		TextField {
