@@ -174,7 +174,8 @@ enum cloud_status {
 	CS_UNKNOWN,
 	CS_INCORRECT_USER_PASSWD,
 	CS_NEED_TO_VERIFY,
-	CS_VERIFIED
+	CS_VERIFIED,
+	CS_NOCLOUD
 };
 
 extern struct preferences prefs, default_prefs, git_prefs;

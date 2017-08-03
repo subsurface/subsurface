@@ -117,10 +117,10 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
-					if (manager.credentialStatus == QMLManager.UNKNOWN) {
+					if (manager.credentialStatus == QMLManager.CS_UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == QMLManager.VALID) {
+						if (oldStatus == QMLManager.CS_VERIFIED) {
 							manager.credentialStatus = oldStatus
 						}
 					}
@@ -134,7 +134,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					iconName: "icons/ic_add.svg"
 					text: qsTr("Add dive manually")
-					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.NOCLOUD
+					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
 					onTriggered: {
 						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
@@ -159,13 +159,13 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 					iconName: "icons/cloud_sync.svg"
 					text: qsTr("Manual sync with cloud")
-					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.NOCLOUD
+					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
 					onTriggered: {
-						if (manager.credentialStatus === QMLManager.NOCLOUD) {
+						if (manager.credentialStatus === QMLManager.CS_NOCLOUD) {
 							returnTopPage()
 							oldStatus = manager.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
-							manager.credentialStatus = QMLManager.UNKNOWN
+							manager.credentialStatus = QMLManager.CS_UNKNOWN
 							globalDrawer.close()
 						} else {
 							globalDrawer.close()
@@ -178,7 +178,7 @@ Kirigami.ApplicationWindow {
 				Kirigami.Action {
 				iconName: syncToCloud ? "icons/ic_cloud_off.svg" : "icons/ic_cloud_done.svg"
 				text: syncToCloud ? qsTr("Offline mode") : qsTr("Enable auto cloud sync")
-					enabled: manager.credentialStatus !== QMLManager.NOCLOUD
+					enabled: manager.credentialStatus !== QMLManager.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {

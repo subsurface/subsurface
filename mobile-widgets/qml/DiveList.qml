@@ -24,7 +24,7 @@ Kirigami.ScrollablePage {
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
-			if (manager.credentialStatus === QMLManager.VALID) {
+			if (manager.credentialStatus === QMLManager.CS_VERIFIED) {
 				console.log("User pulled down dive list - syncing with cloud storage")
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
@@ -266,7 +266,7 @@ Kirigami.ScrollablePage {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: credentialStatus === QMLManager.NOCLOUD || (credentialStatus === QMLManager.VALID) ? 0 : 1
+		opacity: credentialStatus === QMLManager.CS_NOCLOUD || (credentialStatus === QMLManager.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
@@ -274,7 +274,7 @@ Kirigami.ScrollablePage {
 				page.actions.main = page.saveAction
 				page.actions.right = page.offlineAction
 				page.title = qsTr("Cloud credentials")
-			} else if(manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.NOCLOUD) {
+			} else if(manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.title = qsTr("Dive list")
@@ -289,6 +289,7 @@ Kirigami.ScrollablePage {
 		onVisibleChanged: {
 			setupActions();
 		}
+
 		Component.onCompleted: {
 			setupActions();
 		}
@@ -355,12 +356,12 @@ Kirigami.ScrollablePage {
 		iconName: "qrc:/qml/nocloud.svg"
 		onTriggered: {
 			manager.syncToCloud = false
-			manager.credentialStatus = QMLManager.NOCLOUD
+			manager.credentialStatus = QMLManager.CS_NOCLOUD
 		}
 	}
 
 	onBackRequested: {
-		if (startPage.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.INVALID) {
+		if (startPage.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.CS_INCORRECT_USER_PASSWD) {
 			manager.credentialStatus = oldStatus
 			event.accepted = true;
 		}
