@@ -450,6 +450,10 @@ else
 	QMAKE=qmake
 fi
 $QMAKE PREFIX=$INSTALL_ROOT ../googlemaps.pro
+# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+# since things compile fine with c++11, let's just hack that away
+# similarly, don't use -Wdata-time
+sed -i 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
 make -j4
 make install
 
