@@ -125,6 +125,7 @@ fi
 
 mkdir -p install-root
 INSTALL_ROOT=$SRC/install-root
+export INSTALL_ROOT
 
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -449,7 +450,7 @@ if [ ! -z $CMAKE_PREFIX_PATH ] ; then
 else
 	QMAKE=qmake
 fi
-$QMAKE PREFIX=$INSTALL_ROOT ../googlemaps.pro
+$QMAKE ../googlemaps.pro
 # on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 # since things compile fine with c++11, let's just hack that away
 # similarly, don't use -Wdata-time
