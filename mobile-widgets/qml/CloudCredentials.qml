@@ -14,10 +14,6 @@ Item {
 	property string username: login.text;
 	property string password: password.text;
 
-	property real gridWidth: loginWindow.width - Kirigami.Units.gridUnit
-	property real col1Width: gridWidth * 0.80
-	property real col2Width: gridWidth * 0.20
-
 	function saveCredentials() {
 		manager.cloudUserName = login.text
 		manager.cloudPassword = password.text
