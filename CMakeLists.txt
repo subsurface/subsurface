@@ -409,7 +409,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	endif()
 	if(NO_MARBLE)
 		install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
-		install(CODE "execute_process(COMMAND cp ${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_esri.dylib ${PLUGINDIR}/geoservices)")
+		install(CODE "execute_process(COMMAND cp ${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices)")
 	endif()
 	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
