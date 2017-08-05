@@ -10,8 +10,6 @@ import org.kde.kirigami 2.0 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: gpsListWindow
-	width: parent.width - Kirigami.Units.gridUnit
-	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "gpsList"
 	title: qsTr("GPS Fixes")
 
