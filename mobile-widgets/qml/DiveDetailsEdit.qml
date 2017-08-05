@@ -201,7 +201,8 @@ Item {
 			}
 			HintsTextEdit {
 				id: suitBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.suitList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -213,7 +214,8 @@ Item {
 			}
 			HintsTextEdit {
 				id: buddyBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.buddyList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -225,7 +227,8 @@ Item {
 			}
 			HintsTextEdit {
 				id: divemasterBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.divemasterList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -251,7 +254,8 @@ Item {
 			}
 			HintsTextEdit {
 				id: cylinderBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
