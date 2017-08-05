@@ -100,11 +100,5 @@ Kirigami.ScrollablePage {
 		cacheBuffer: Math.max(5000, parent.height * 5)
 		focus: true
 		clip: true
-		header: Kirigami.Heading {
-			x: Kirigami.Units.gridUnit / 2
-			height: paintedHeight + Kirigami.Units.gridUnit / 2
-			verticalAlignment: Text.AlignBottom
-			text: qsTr("List of stored GPS fixes")
-		}
 	}
 }
