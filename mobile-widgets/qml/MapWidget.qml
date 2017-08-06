@@ -10,6 +10,10 @@ Item {
 	Plugin {
 		id: mapPlugin
 		name: "googlemaps"
+		Component.onCompleted: {
+			if (availableServiceProviders.indexOf(name) === -1)
+				console.warn("MapWidget.qml: cannot find a plugin with the name '" + name + "'")
+		}
 	}
 
 	MapWidgetHelper {
