@@ -144,6 +144,33 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 	emit selectedDivesChanged(m_selectedDiveIds);
 }
 
+void MapWidgetHelper::selectVisibleLocations()
+{
+	int idx;
+	struct dive *dive;
+	bool selectedFirst = false;
+	m_selectedDiveIds.clear();
+	for_each_dive (idx, dive) {
+		struct dive_site *ds = get_dive_site_for_dive(dive);
+		if (!dive_site_has_gps_location(ds))
+			continue;
+		MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(ds->uuid);
+		if (loc) {
+			QPointF point;
+			QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
+			                          Q_ARG(QGeoCoordinate, loc->coordinate()));
+			if (!qIsNaN(point.x())) {
+				if (!selectedFirst) {
+					m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+					selectedFirst = true;
+				}
+				m_selectedDiveIds.append(idx);
+			}
+		}
+	}
+	emit selectedDivesChanged(m_selectedDiveIds);
+}
+
 /*
  * Based on a 2D Map widget circle with center "coord" and radius SMALL_CIRCLE_RADIUS_PX,
  * obtain a "small circle" with radius m_smallCircleRadius in meters:
