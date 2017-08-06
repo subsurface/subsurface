@@ -3,8 +3,7 @@
 #include <QShortcut>
 #include <QSettings>
 #include <QtConcurrent>
-#include <stdarg.h> // Used to allow use of NULL in functions
-#include <string.h> // Used to allow string comparisons and substitutions in TeX export
+#include <string.h> // Allows string comparisons and substitutions in TeX export
 
 #include "desktop-widgets/divelogexportdialog.h"
 #include "core/divelogexportlogic.h"
@@ -15,14 +14,14 @@
 #include "core/save-html.h"
 #include "desktop-widgets/mainwindow.h"
 #include "profile-widget/profilewidget2.h"
-#include "core/dive.h"  // added this in hopes that it lets me get access to helper functions.
+#include "core/dive.h"  // Allows access to helper functions in TeX export.
 
-
-#define GET_UNIT(name, field, f, t)                   \
-	v = settings.value(QString(name));            \
-	if (v.isValid())                              \
+// Retrieves the current unit settings defined in the Subsurface preferences.
+#define GET_UNIT(name, field, f, t)           \
+	v = settings.value(QString(name));        \
+	if (v.isValid())                          \
 		field = (v.toInt() == 0) ? (t) : (f); \
-	else                                          \
+	else                                      \
 		field = default_prefs.units.field
 
 DiveLogExportDialog::DiveLogExportDialog(QWidget *parent) : QDialog(parent),
@@ -251,7 +250,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 	put_format(&buf, "\\input subsurfacetemplate\n");
 	put_format(&buf, "%% This is a plain TeX file. Compile with pdftex, not pdflatex!\n");
 	put_format(&buf, "%% You will also need a subsurfacetemplate.tex in the current directory.\n");
-	put_format(&buf, "%% You can downlaod an example from http://www.atdotde.de/~robert/subsurfacetemplate\n%%\n");
+	put_format(&buf, "%% You can download an example from http://www.atdotde.de/~robert/subsurfacetemplate\n%%\n");
 	put_format(&buf, "%%\n");
 	put_format(&buf, "%% Notes: TeX/LaTex will not render the degree symbol correctly by default. In LaTeX, you may\n");
 	put_format(&buf, "%% add the following line to the end of the preamble of your template to ensure correct output:\n");
@@ -340,17 +339,13 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		      tm.tm_year, tm.tm_mon+1, tm.tm_mday);
 		put_format(&buf, "\\def\\number{%d}\n", dive->number);
 		put_format(&buf, "\\def\\sitename{%s}\n", site ? site->name : "");
-<<<<<<< HEAD
 		site ? put_format(&buf, "\\def\\gpslat{%f}\n", site->latitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslat{}\n");
 		site ? put_format(&buf, "\\def\\gpslon{%f}\n", site->longitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
-=======
 		put_format(&buf, "\\def\\gpslat{%f}\n", site ? site->latitude.udeg / 1000000.0 : 0);
 		put_format(&buf, "\\def\\gpslon{%f}\n", site ? site->longitude.udeg / 1000000.0 : 0);
->>>>>>> refs/remotes/origin/master
 		put_format(&buf, "\\def\\computer{%s}\n", dive->dc.model);
 		put_format(&buf, "\\def\\country{%s}\n", country.toUtf8().data());
 		put_format(&buf, "\\def\\time{%u:%02u}\n", FRACTION(dive->duration.seconds, 60));
-<<<<<<< HEAD
 
 		// Code has generally been reworked to use helper functions to access data, and to print a blank field "{}" if data is not plausible (i.e. 0 deg K)
 		put_format(&buf, "\n%% Dive Profile Details:\n");
@@ -363,7 +358,6 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 
 		//Code block for misc dive parameters
 		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : ""); // this currently prints only a single tag.
-=======
 		put_format(&buf, "\\def\\maxtemp{%.2f}\n", (dive->maxtemp.mkelvin) ? (dive->maxtemp.mkelvin / 1000.0) - 273.15 : 0);
 		put_format(&buf, "\\def\\mintemp{%.2f}\n", (dive->mintemp.mkelvin) ? (dive->mintemp.mkelvin / 1000.0) - 273.15 : 0);
 		put_format(&buf, "\\def\\watertemp{%.2f}\n", (dive->watertemp.mkelvin) ? (dive->watertemp.mkelvin / 1000.0) - 273.15 : 0);
@@ -409,7 +403,6 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\totalweight{%u.%01u kg}\n", FRACTION(total_weight, 1000));
 
 		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : "");
->>>>>>> refs/remotes/origin/master
 		put_format(&buf, "\\def\\viz{%s}\n", viz.toUtf8().data());
 		put_format(&buf, "\\def\\rating{%s}\n", rating.toUtf8().data());
 		put_format(&buf, "\\def\\plot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", dive->number);
@@ -417,7 +410,6 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\buddy{%s}\n", dive->buddy ? dive->buddy : "");
 		put_format(&buf, "\\def\\divemaster{%s}\n", dive->divemaster ? dive->divemaster : "");
 		put_format(&buf, "\\def\\suit{%s}\n", dive->suit ? dive->suit : "");
-<<<<<<< HEAD
 
 		//Code block prints start/end press. for all cylinders defined in dive, number of cyl. used, SAC, and total delta_p
 		put_format(&buf, "\n%% Gas use information:\n");
@@ -468,8 +460,6 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\place{%s} %% Deprecated - use \\sitename instead\n", site ? site->name : ""); // Deprecated - remains for use in legacy templates
 		get_depth_units(dive->maxdepth.mm, NULL, &unit) > 0 ? put_format(&buf, "\\def\\depth{%.1f \\depthunit}%% Deprecated - use \\maximumdepth instead\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\depth{} %% Deprecated - use \\maximumdepth instead\n");  // Deprecated - remains for use in legacy templates
 
-=======
->>>>>>> refs/remotes/origin/master
 		put_format(&buf, "\\page\n");
 	}
 
