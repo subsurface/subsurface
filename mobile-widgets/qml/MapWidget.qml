@@ -171,6 +171,10 @@ Item {
 			mapAnimationZoomOut.stop()
 		}
 
+		function centerOnRectangle(topLeft, bottomRight, center) {
+			// TODO
+		}
+
 		function deselectMapLocation() {
 			animateMapZoomOut()
 		}

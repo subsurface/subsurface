@@ -3,6 +3,7 @@
 #include <QClipboard>
 #include <QGeoCoordinate>
 #include <QDebug>
+#include <QVector>
 
 #include "qmlmapwidgethelper.h"
 #include "core/dive.h"
@@ -21,16 +22,67 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
-	if (!dive_site_has_gps_location(ds)) {
+	int idx;
+	struct dive *dive;
+	QVector<struct dive_site *> selDS;
+	QVector<QGeoCoordinate> selGC;
+	QGeoCoordinate dsCoord;
+
+	for_each_dive (idx, dive) {
+		struct dive_site *dss = get_dive_site_for_dive(dive);
+		if (!dive_site_has_gps_location(dss) || !dive->selected)
+			continue;
+		// only store dive sites with GPS
+		selDS.append(dss);
+		selGC.append(QGeoCoordinate(dss->latitude.udeg * 0.000001,
+		                            dss->longitude.udeg * 0.000001));
+	}
+	if (!dive_site_has_gps_location(ds) && !selDS.size()) {
+		// only a single dive site with no GPS selected
 		m_mapLocationModel->setSelectedUuid(ds ? ds->uuid : 0, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
-		return;
+
+	} else if (selDS.size() == 1) {
+		// a single dive site with GPS selected
+		ds = selDS.at(0);
+		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+		dsCoord.setLatitude(ds->latitude.udeg * 0.000001);
+		dsCoord.setLongitude(ds->longitude.udeg * 0.000001);
+		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
+	} else if (selDS.size() > 1) {
+		/* more than one dive sites with GPS selected.
+		 * find the most top-left and bottom-right dive sites on the map coordinate system. */
+		ds = selDS.at(0);
+		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+		qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
+		bool start = true;
+		foreach(QGeoCoordinate gc, selGC) {
+			qreal lat = gc.latitude();
+			qreal lon = gc.longitude();
+			if (start) {
+				minLat = maxLat = lat;
+				minLon = maxLon = lon;
+				start = false;
+				continue;
+			}
+			if (lat < minLat)
+				minLat = lat;
+			else if (lat > maxLat)
+				maxLat = lat;
+			if (lon < minLon)
+				minLon = lon;
+			else if (lon > maxLon)
+				maxLon = lon;
+		}
+		// pass rectangle coordinates to QML
+		QGeoCoordinate coordTopLeft(minLat, minLon);
+		QGeoCoordinate coordBottomRight(maxLat, maxLon);
+		QGeoCoordinate coordCenter(minLat + (maxLat - minLat) * 0.5, minLon + (maxLon - minLon) * 0.5);
+		QMetaObject::invokeMethod(m_map, "centerOnRectangle",
+		                          Q_ARG(QVariant, QVariant::fromValue(coordTopLeft)),
+		                          Q_ARG(QVariant, QVariant::fromValue(coordBottomRight)),
+		                          Q_ARG(QVariant, QVariant::fromValue(coordCenter)));
 	}
-	m_mapLocationModel->setSelectedUuid(ds->uuid, false);
-	const qreal latitude = ds->latitude.udeg * 0.000001;
-	const qreal longitude = ds->longitude.udeg * 0.000001;
-	QGeoCoordinate dsCoord(latitude, longitude);
-	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 }
 
 void MapWidgetHelper::reloadMapLocations()
