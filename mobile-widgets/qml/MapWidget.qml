@@ -148,7 +148,17 @@ Item {
 			mapAnimationZoomOut.restart()
 		}
 
+		function pointIsVisible(pt) {
+			return !isNaN(pt.x)
+		}
+
+		function stopZoomAnimations() {
+			mapAnimationZoomIn.stop()
+			mapAnimationZoomOut.stop()
+		}
+
 		function centerOnCoordinate(coord) {
+			stopZoomAnimations()
 			newCenter = coord
 			if (coord.latitude === 0.0 && coord.longitude === 0.0) {
 				newZoom = 2.6
@@ -157,8 +167,8 @@ Item {
 				var zoomStored = zoomLevel
 				newZoomOut = zoomLevel
 				while (zoomLevel > minimumZoomLevel) {
-					var pt = fromCoordinate(coord, false)
-					if (pt.x > 0 && pt.y > 0 && pt.x < width && pt.y < height) {
+					var pt = fromCoordinate(coord)
+					if (pointIsVisible(pt)) {
 						newZoomOut = zoomLevel
 						break
 					}
