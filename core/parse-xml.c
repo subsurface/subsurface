@@ -3589,11 +3589,17 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			switch (ptr[4]) {
 			case 1:
 				strcpy(cur_event.name, "Setpoint Manual");
-				// There is a setpoint value somewhere...
+				cur_event.value = ptr[6];
+				sample_start();
+				cur_sample->setpoint.mbar = ptr[6] * 10;
+				sample_end();
 				break;
 			case 2:
 				strcpy(cur_event.name, "Setpoint Auto");
-				// There is a setpoint value somewhere...
+				cur_event.value = ptr[6];
+				sample_start();
+				cur_sample->setpoint.mbar = ptr[6] * 10;
+				sample_end();
 				switch (ptr[7]) {
 				case 0:
 					strcat(cur_event.name, " Manual");
