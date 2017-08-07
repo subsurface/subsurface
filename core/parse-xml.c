@@ -3784,8 +3784,24 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			break;
 		case 7:
 			/* measure record */
-			/* Po2 sample? Solenoid inject? */
-			//fprintf(stderr, "%02X %02X%02X %02X%02X\n", ptr[5], ptr[6], ptr[7], ptr[8], ptr[9]);
+			switch (ptr[2] >> 5) {
+			case 1:
+				/* Measure Battery */
+				//printf("B1: %dmV %d% B2: %dmV %d%\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+			case 3:
+				/* Measure Oxygen */
+				//printf("o2 cells(0.01 mV): %d %d %d %d\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+				break;
+			case 4:
+				/* Measure GPS */
+				cur_latitude.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
+				cur_longitude.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
+				cur_dive->dive_site_uuid = create_dive_site_with_gps(NULL, cur_latitude, cur_longitude, cur_dive->when);
+				printf("gps: %s\n", printGPSCoords(cur_latitude.udeg, cur_longitude.udeg));
+				break;
+			default:
+				break;
+			}
 			break;
 		default:
 			/* Unknown... */
