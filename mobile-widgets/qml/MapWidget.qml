@@ -164,16 +164,20 @@ Item {
 				newZoom = 2.6
 				newZoomOut = newZoom
 			} else {
+				var newZoomOutFound = false
 				var zoomStored = zoomLevel
 				newZoomOut = zoomLevel
 				while (zoomLevel > minimumZoomLevel) {
 					var pt = fromCoordinate(coord)
 					if (pointIsVisible(pt)) {
 						newZoomOut = zoomLevel
+						newZoomOutFound = true
 						break
 					}
 					zoomLevel--
 				}
+				if (!newZoomOutFound)
+					newZoomOut = defaultZoomOut
 				zoomLevel = zoomStored
 				newZoom = defaultZoomIn
 			}
@@ -190,29 +194,30 @@ Item {
 			} else {
 				var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
 				var zoomStored = zoomLevel
-				var ptCenter
-				var ptTopLeft
-				var ptBottomRight
+				var newZoomOutFound = false
 				// calculate zoom out
 				newZoomOut = zoomLevel
 				while (zoomLevel > minimumZoomLevel) {
-					ptCenter = fromCoordinate(centerStored)
-					ptTopLeft = fromCoordinate(topLeft)
-					ptBottomRight = fromCoordinate(bottomRight)
-					if (pointIsVisible(ptCenter) && pointIsVisible(ptTopLeft) && pointIsVisible(ptBottomRight)) {
+					var ptCenter = fromCoordinate(centerStored)
+					var ptCenterRect = fromCoordinate(centerRect)
+					if (pointIsVisible(ptCenter) && pointIsVisible(ptCenterRect)) {
 						newZoomOut = zoomLevel
+						newZoomOutFound = true
 						break
 					}
 					zoomLevel--
 				}
+				if (!newZoomOutFound)
+					newZoomOut = defaultZoomOut
 				// calculate zoom in
 				center = newCenter
 				zoomLevel = maximumZoomLevel
+				var diagonalRect = topLeft.distanceTo(bottomRight)
 				while (zoomLevel > minimumZoomLevel) {
-					ptTopLeft = fromCoordinate(topLeft)
-					ptBottomRight = fromCoordinate(bottomRight)
-					if (pointIsVisible(ptTopLeft) && pointIsVisible(ptBottomRight)) {
-						newZoom = zoomLevel
+					var c0 = toCoordinate(Qt.point(0.0, 0.0))
+					var c1 = toCoordinate(Qt.point(width, height))
+					if (c0.distanceTo(c1) > diagonalRect) {
+						newZoom = zoomLevel - 2.0
 						break
 					}
 					zoomLevel--
