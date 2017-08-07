@@ -3549,7 +3549,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
 		cur_dc->no_o2sensors = 1;
 
-	while (ptr < buffer + size) {
+	for (; ptr < buffer + size; ptr += 16) {
 		time = ((ptr[0] >> 4) & 0x0f) +
 			((ptr[1] << 4) & 0xff0) +
 			((ptr[2] << 12) & 0x1f000);
@@ -3778,7 +3778,6 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			/* Unknown... */
 			break;
 		}
-		ptr += 16;
 	}
 	divecomputer_end();
 	dive_end();
