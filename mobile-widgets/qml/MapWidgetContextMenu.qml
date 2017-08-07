@@ -8,12 +8,14 @@ Item {
 	readonly property var actions: {
 		"OPEN_LOCATION_IN_GOOGLE_MAPS": 0,
 		"COPY_LOCATION_DECIMAL":        1,
-		"COPY_LOCATION_SEXAGESIMAL":    2
+		"COPY_LOCATION_SEXAGESIMAL":    2,
+		"SELECT_VISIBLE_LOCATIONS":     3
 	}
 	readonly property var menuItemData: [
 		{ idx: actions.OPEN_LOCATION_IN_GOOGLE_MAPS, itemText: qsTr("Open location in Google Maps") },
 		{ idx: actions.COPY_LOCATION_DECIMAL,        itemText: qsTr("Copy location to clipboard (decimal)") },
-		{ idx: actions.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") }
+		{ idx: actions.COPY_LOCATION_SEXAGESIMAL,    itemText: qsTr("Copy location to clipboard (sexagesimal)") },
+		{ idx: actions.SELECT_VISIBLE_LOCATIONS,     itemText: qsTr("Select visible dive locations") }
 	]
 	readonly property real itemTextPadding: 10.0
 	readonly property real itemHeight: 34.0

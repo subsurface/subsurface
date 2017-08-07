@@ -345,6 +345,9 @@ Item {
 			case contextMenu.actions.COPY_LOCATION_SEXAGESIMAL:
 				mapHelper.copyToClipboardCoordinates(map.center, true)
 				break
+			case contextMenu.actions.SELECT_VISIBLE_LOCATIONS:
+				mapHelper.selectVisibleLocations()
+				break
 			}
 		}
 	}
