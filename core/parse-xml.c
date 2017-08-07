@@ -3710,7 +3710,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				strcpy(cur_event.name, "Fatal");
 				break;
 			case 23:
-				strcpy(cur_event.name, "Diluent");
+				strcpy(cur_event.name, "gaschange");
+				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				cur_event.value = ptr[7] << 8 ^ ptr[6];
+				event_end();
 				break;
 			case 24:
 				strcpy(cur_event.name, "gaschange");
