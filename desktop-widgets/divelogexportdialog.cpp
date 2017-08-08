@@ -270,29 +270,12 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 	put_format(&buf, "%% respectively.  If you wish to display the original values, you may edit this\n");
 	put_format(&buf, "%% list and all calls to those units will be updated in your document.\n");
 
-	tmp = get_depth_units(1, NULL, &unit);
-	put_format(&buf, "\\def\\depthunit{%s}\n", unit);
-	tmp = get_weight_units(1, NULL, &unit);
-	put_format(&buf, "\\def\\weightunit{%s}\n", unit);
-	tmp = get_pressure_units(1, &unit);
-	put_format(&buf, "\\def\\pressureunit{%s}\n", unit);
-	tmp = get_temp_units(1, &unit);
-	put_format(&buf, "\\def\\temperatureunit{%s}\n", unit);
-	tmp = get_volume_units(1, NULL, &unit);
-	if (strcmp(unit, "ℓ") == 0)
-	{
-		put_format(&buf, "\\def\\volumeunit{L}\n");
-	}
-	else if (strcmp(unit, "cuft") == 0)
-	{
-		put_format(&buf, "\\def\\volumeunit{ft$^{3}$}\n");
-	}
-	else
-	{
-		put_format(&buf, "\\def\\volumeunit{%s}\n", unit);
-	}
-	tmp = get_vertical_speed_units(1, NULL, &unit);
-	put_format(&buf, "\\def\\verticalspeedunit{%s}\n", unit);
+	put_format(&buf, "\\def\\depthunit{\\unit%s}", units->length == units::METERS ? "meter" : "ft");
+	put_format(&buf, "\\def\\weightunit{\\unit%s}", units->weight == units::KG ? "kg" : "lb");
+	put_format(&buf, "\\def\\pressureunit{\\unit%s}", units->pressure == units::BAR ? "bar" : "psi");
+	put_format(&buf, "\\def\\temperatureunit{\\unit%s}", units->temperature == units::CELSIUS ? "celsius" : "fahrenheit");
+	put_format(&buf, "\\def\\volumeunit{\\unit%s}", units->volume == units::LITER ? "liter" : "cuft");
+	put_format(&buf, "\\def\\verticalspeedunit{\\unit%s}", units->length == units::METERS ? "meterpermin" : "ftpermin");
 
 	put_format(&buf, "\n%%%%%%%%%% Begin Dive Data: %%%%%%%%%%\n");
 
@@ -352,8 +335,8 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		dive->mintemp.mkelvin ? put_format(&buf, "\\def\\mintemp{%.1f\\temperatureunit}\n", get_temp_units(dive->mintemp.mkelvin, &unit)) : put_format(&buf, "\\def\\mintemp{}\n");
 		dive->watertemp.mkelvin ? put_format(&buf, "\\def\\watertemp{%.1f\\temperatureunit}\n", get_temp_units(dive->watertemp.mkelvin, &unit)) : put_format(&buf, "\\def\\watertemp{}\n");
 		dive->airtemp.mkelvin ? put_format(&buf, "\\def\\airtemp{%.1f\\temperatureunit}\n", get_temp_units(dive->airtemp.mkelvin, &unit)) : put_format(&buf, "\\def\\airtemp{}\n");
-		dive->maxdepth.mm ? put_format(&buf, "\\def\\maximumdepth{%.1f \\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\maximumdepth{}\n");
-		dive->meandepth.mm ? put_format(&buf, "\\def\\meandepth{%.1f \\depthunit}\n", get_depth_units(dive->meandepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\meandepth{}\n");
+		dive->maxdepth.mm ? put_format(&buf, "\\def\\maximumdepth{%.1f\\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\maximumdepth{}\n");
+		dive->meandepth.mm ? put_format(&buf, "\\def\\meandepth{%.1f\\depthunit}\n", get_depth_units(dive->meandepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\meandepth{}\n");
 
 		put_format(&buf, "\\def\\qtyweights{%d}\n", qty_weight);
 		put_format(&buf, "\\def\\totalweight{%u.%01u kg}\n", FRACTION(total_weight, 1000));
@@ -393,8 +376,8 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 			}
 		}
 		put_format(&buf, "\\def\\qtycyl{%d}\n", qty_cyl);
-		put_format(&buf, "\\def\\gasuse{%.1f \\pressureunit}\n", get_pressure_units(delta_p.mbar, &unit)/1.0);
-		put_format(&buf, "\\def\\sac{%.2f \\volumeunit/min}\n", get_volume_units(dive->sac, NULL, &unit));
+		put_format(&buf, "\\def\\gasuse{%.1f\\pressureunit}\n", get_pressure_units(delta_p.mbar, &unit)/1.0);
+		put_format(&buf, "\\def\\sac{%.2f\\volumeunit/min}\n", get_volume_units(dive->sac, NULL, &unit));
 
 		//Code block prints all weights listed in dive.
 		put_format(&buf, "\n%% Weighting information:\n");
@@ -403,7 +386,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		for (i = 0; i < MAX_WEIGHTSYSTEMS; i++){
 			if (dive->weightsystem[i].weight.grams){
 				put_format(&buf, "\\def\\weight%ctype{%s}\n", 'a' + i, dive->weightsystem[i].description);
-				put_format(&buf, "\\def\\weight%camt{%.3f \\weightunit}\n", 'a' + i, get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit));
+				put_format(&buf, "\\def\\weight%camt{%.3f\\weightunit}\n", 'a' + i, get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit));
 				qty_weight += 1;
 				total_weight += get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit);
 			} else {
@@ -412,14 +395,14 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 			}
 		}
 		put_format(&buf, "\\def\\qtyweights{%d}\n", qty_weight);
-		put_format(&buf, "\\def\\totalweight{%.2f \\weightunit}\n", total_weight);
+		put_format(&buf, "\\def\\totalweight{%.2f\\weightunit}\n", total_weight);
 		unit = "";
 
 		// Legacy fields
 		put_format(&buf, "\\def\\spot{}\n");
 		put_format(&buf, "\\def\\entrance{}\n");
 		put_format(&buf, "\\def\\place{%s}\n", site ? site->name : "");
-		dive->maxdepth.mm ? put_format(&buf, "\\def\\depth{%.1f \\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\depth{}\n");
+		dive->maxdepth.mm ? put_format(&buf, "\\def\\depth{%.1f\\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\depth{}\n");
 
 		put_format(&buf, "\\page\n");
 	}
