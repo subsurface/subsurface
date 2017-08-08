@@ -256,7 +256,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 	put_format(&buf, "%% add the following line to the end of the preamble of your template to ensure correct output:\n");
 	put_format(&buf, "%% \\usepackage[utf8]{inputenc}\n");
 	put_format(&buf, "%% \\usepackage{gensymb}\n");
-	put_format(&buf, "%% \\DeclareUnicodeCharacter{00B0}{\degree}\n"); //replaces ° with \degree
+	put_format(&buf, "%% \\DeclareUnicodeCharacter{00B0}{\\degree}\n"); //replaces ° with \degree
 	put_format(&buf, "%%\n");
 
 	/* Define text fields with the units used for export.  These values are set in the Subsurface Preferences
@@ -343,64 +343,17 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\sitename{%s}\n", site ? site->name : "");
 		site ? put_format(&buf, "\\def\\gpslat{%f}\n", site->latitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslat{}\n");
 		site ? put_format(&buf, "\\def\\gpslon{%f}\n", site->longitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
-		put_format(&buf, "\\def\\gpslat{%f}\n", site ? site->latitude.udeg / 1000000.0 : 0);
-		put_format(&buf, "\\def\\gpslon{%f}\n", site ? site->longitude.udeg / 1000000.0 : 0);
 		put_format(&buf, "\\def\\computer{%s}\n", dive->dc.model);
 		put_format(&buf, "\\def\\country{%s}\n", country.toUtf8().data());
 		put_format(&buf, "\\def\\time{%u:%02u}\n", FRACTION(dive->duration.seconds, 60));
 
-		// Code has generally been reworked to use helper functions to access data, and to print a blank field "{}" if data is not plausible (i.e. 0 deg K)
 		put_format(&buf, "\n%% Dive Profile Details:\n");
-		get_temp_units(dive->maxtemp.mkelvin, &unit) > 0 ? put_format(&buf, "\\def\\maxtemp{%.1f\\temperatureunit}\n", get_temp_units(dive->maxtemp.mkelvin, &unit)) : put_format(&buf, "\\def\\maxtemp{}\n");
-		get_temp_units(dive->mintemp.mkelvin, &unit) > 0 ? put_format(&buf, "\\def\\mintemp{%.1f\\temperatureunit}\n", get_temp_units(dive->mintemp.mkelvin, &unit)) : put_format(&buf, "\\def\\mintemp{}\n");
-		get_temp_units(dive->watertemp.mkelvin, &unit) > 0 ? put_format(&buf, "\\def\\watertemp{%.1f\\temperatureunit}\n", get_temp_units(dive->watertemp.mkelvin, &unit)) : put_format(&buf, "\\def\\watertemp{}\n");
-		get_temp_units(dive->airtemp.mkelvin, &unit) > 0 ? put_format(&buf, "\\def\\airtemp{%.1f\\temperatureunit}\n", get_temp_units(dive->airtemp.mkelvin, &unit)) : put_format(&buf, "\\def\\airtemp{}\n");
-		get_depth_units(dive->maxdepth.mm, NULL, &unit) > 0 ? put_format(&buf, "\\def\\maximumdepth{%.1f \\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\maximumdepth{}\n");
-		get_depth_units(dive->meandepth.mm, NULL, &unit) > 0 ? put_format(&buf, "\\def\\meandepth{%.1f \\depthunit}\n", get_depth_units(dive->meandepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\meandepth{}\n");
-
-		// HERE BE TROUBLE
-		//Code block for misc dive parameters
-		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : ""); // this currently prints only a single tag.
-		put_format(&buf, "\\def\\maxtemp{%.2f}\n", (dive->maxtemp.mkelvin) ? (dive->maxtemp.mkelvin / 1000.0) - 273.15 : 0);
-		put_format(&buf, "\\def\\mintemp{%.2f}\n", (dive->mintemp.mkelvin) ? (dive->mintemp.mkelvin / 1000.0) - 273.15 : 0);
-		put_format(&buf, "\\def\\watertemp{%.2f}\n", (dive->watertemp.mkelvin) ? (dive->watertemp.mkelvin / 1000.0) - 273.15 : 0);
-		put_format(&buf, "\\def\\airtemp{%.2f}\n", (dive->airtemp.mkelvin) ? (dive->airtemp.mkelvin / 1000.0) - 273.15 : 0);
-		put_format(&buf, "\\def\\maxdepth{%u.%01u m}\n", FRACTION(dive->maxdepth.mm / 100, 10));
-		put_format(&buf, "\\def\\avedepth{%u.%01u m}\n", FRACTION(dive->meandepth.mm / 100, 10));
-
-		//Code block prints start/end press. for all cylinders used, number of cyl. used, SAC, and total delta_p
-		qty_cyl = 0;
-		for (i = 0; i < MAX_CYLINDERS; i++)
-			if (is_cylinder_used(dive, i)){
-				put_format(&buf, "\\def\\cyl%ddescription{%s}\n", i + 1, dive->cylinder[i].type.description);
-				if (dive->cylinder[i].gasmix.o2.permille > 0){ //This code assumes that all gas must have oxygen, so a zero value indicated that the gas in question is AIR
-					put_format(&buf, "\\def\\cyl%dmixO2{%u\%}\n", i + 1, FRACTION(dive->cylinder[i].gasmix.o2.permille, 10));
-					put_format(&buf, "\\def\\cyl%dmixN2{%u\%}\n", i + 1, FRACTION(1000 - dive->cylinder[i].gasmix.o2.permille - dive->cylinder[i].gasmix.he.permille, 10));
-					put_format(&buf, "\\def\\cyl%dmixHe{%u\%}\n", i + 1, FRACTION(dive->cylinder[i].gasmix.he.permille, 10));
-				} else {
-					put_format(&buf, "\\def\\cyl%dmixO2{21\%}\n", i + 1);
-					put_format(&buf, "\\def\\cyl%dmixN2{79\%}\n", i + 1);
-					put_format(&buf, "\\def\\cyl%dmixHe{0\%}\n", i + 1);
-				}
-				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
-				put_format(&buf, "\\def\\cyl%dstartpress{%u.%01u bar}\n", i + 1, FRACTION(dive->cylinder[i].start.mbar / 100, 10));
-				put_format(&buf, "\\def\\cyl%dendpress{%u.%01u bar}\n", i + 1, FRACTION(dive->cylinder[i].end.mbar / 100, 10));
-				qty_cyl += 1;
-			}
-		put_format(&buf, "\\def\\qtycyl{%d}\n", qty_cyl);
-		put_format(&buf, "\\def\\gasuse{%u.%01u bar}\n", FRACTION(delta_p.mbar / 100, 10));
-		put_format(&buf, "\\def\\sac{%u.%01u l/min}\n", FRACTION(dive->sac/100,10));
-
-		//Code block prints all weights used.
-		qty_weight = 0;
-		total_weight = 0;
-		for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-			if (dive->weightsystem[i].weight.grams != NULL){
-				put_format(&buf, "\\def\\weight%dtype{%s}\n", i + 1, dive->weightsystem[i].description);
-				put_format(&buf, "\\def\\weight%damt{%u.%01u kg}\n", i + 1, FRACTION(dive->weightsystem[i].weight.grams, 1000));
-				qty_weight += 1;
-				total_weight += dive->weightsystem[i].weight.grams;
-			}
+		dive->maxtemp.mkelvin ? put_format(&buf, "\\def\\maxtemp{%.1f\\temperatureunit}\n", get_temp_units(dive->maxtemp.mkelvin, &unit)) : put_format(&buf, "\\def\\maxtemp{}\n");
+		dive->mintemp.mkelvin ? put_format(&buf, "\\def\\mintemp{%.1f\\temperatureunit}\n", get_temp_units(dive->mintemp.mkelvin, &unit)) : put_format(&buf, "\\def\\mintemp{}\n");
+		dive->watertemp.mkelvin ? put_format(&buf, "\\def\\watertemp{%.1f\\temperatureunit}\n", get_temp_units(dive->watertemp.mkelvin, &unit)) : put_format(&buf, "\\def\\watertemp{}\n");
+		dive->airtemp.mkelvin ? put_format(&buf, "\\def\\airtemp{%.1f\\temperatureunit}\n", get_temp_units(dive->airtemp.mkelvin, &unit)) : put_format(&buf, "\\def\\airtemp{}\n");
+		dive->maxdepth.mm ? put_format(&buf, "\\def\\maximumdepth{%.1f \\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\maximumdepth{}\n");
+		dive->meandepth.mm ? put_format(&buf, "\\def\\meandepth{%.1f \\depthunit}\n", get_depth_units(dive->meandepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\meandepth{}\n");
 
 		put_format(&buf, "\\def\\qtyweights{%d}\n", qty_weight);
 		put_format(&buf, "\\def\\totalweight{%u.%01u kg}\n", FRACTION(total_weight, 1000));
@@ -414,22 +367,28 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\divemaster{%s}\n", dive->divemaster ? dive->divemaster : "");
 		put_format(&buf, "\\def\\suit{%s}\n", dive->suit ? dive->suit : "");
 
-		//Code block prints start/end press. for all cylinders defined in dive, number of cyl. used, SAC, and total delta_p
+		// Print cylinder data
 		put_format(&buf, "\n%% Gas use information:\n");
 		qty_cyl = 0;
 		for (i = 0; i < MAX_CYLINDERS; i++){
 
-			/* Previously, this IF statement used "is_cylinder_used(...)" to print only the cylinders where pressure
-			 * identified by Subsurface as being used.  Now it prints all cylinders that are associated with the
-			 * dive. This way, bailout cylinders that are not needed are still shown, rather than disappearing,*/
-			if (dive->cylinder[i].type.description != NULL){
+			if (is_cylinder_used(dive, i) || (prefs.display_unused_tanks && dive->cylinder[i].type.description)){
 				put_format(&buf, "\\def\\cyl%ddescription{%s}\n", i + 1, dive->cylinder[i].type.description);
-				put_format(&buf, "\\def\\cyl%dmixO2{%.1f\\%}\n", i + 1, get_o2(&dive->cylinder[i].gasmix)/10.0);
-				put_format(&buf, "\\def\\cyl%dmixHe{%.1f\\%}\n", i + 1, get_he(&dive->cylinder[i].gasmix)/10.0);
-				put_format(&buf, "\\def\\cyl%dmixN2{%.1f\\%}\n", i + 1, (100.0 - (get_o2(&dive->cylinder[i].gasmix)/10.0) - (get_he(&dive->cylinder[i].gasmix)/10.0)));
+				put_format(&buf, "\\def\\cyl%dmixO2{%.1f\\%%}\n", i + 1, get_o2(&dive->cylinder[i].gasmix)/10.0);
+				put_format(&buf, "\\def\\cyl%dmixHe{%.1f\\%%}\n", i + 1, get_he(&dive->cylinder[i].gasmix)/10.0);
+				put_format(&buf, "\\def\\cyl%dmixN2{%.1f\\%%}\n", i + 1, (100.0 - (get_o2(&dive->cylinder[i].gasmix)/10.0) - (get_he(&dive->cylinder[i].gasmix)/10.0)));
 				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
 				put_format(&buf, "\\def\\cyl%dstartpress{%.1f \\pressureunit}\n", i + 1, get_pressure_units(dive->cylinder[i].start.mbar, &unit)/1.0);
 				put_format(&buf, "\\def\\cyl%dendpress{%.1f \\pressureunit}\n", i + 1, get_pressure_units(dive->cylinder[i].end.mbar, &unit)/1.0);
+				qty_cyl += 1;
+			} else {
+				put_format(&buf, "\\def\\cyl%ddescription{}\n", i + 1);
+				put_format(&buf, "\\def\\cyl%dmixO2{}\n", i + 1);
+				put_format(&buf, "\\def\\cyl%dmixHe{}\n", i + 1);
+				put_format(&buf, "\\def\\cyl%dmixN2{}\n", i + 1);
+				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
+				put_format(&buf, "\\def\\cyl%dstartpress{}\n", i + 1);
+				put_format(&buf, "\\def\\cyl%dendpress{}\n", i + 1);
 				qty_cyl += 1;
 			}
 		}
@@ -442,26 +401,25 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		qty_weight = 0;
 		total_weight = 0;
 		for (i = 0; i < MAX_WEIGHTSYSTEMS; i++){
-			if (dive->weightsystem[i].weight.grams != NULL){
+			if (dive->weightsystem[i].weight.grams){
 				put_format(&buf, "\\def\\weight%dtype{%s}\n", i + 1, dive->weightsystem[i].description);
 				put_format(&buf, "\\def\\weight%damt{%.3f \\weightunit}\n", i + 1, get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit));
 				qty_weight += 1;
 				total_weight += get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit);
+			} else {
+				put_format(&buf, "\\def\\weight%dtype{}\n", i + 1);
+				put_format(&buf, "\\def\\weight%damt{}\n", i + 1);
 			}
 		}
 		put_format(&buf, "\\def\\qtyweights{%d}\n", qty_weight);
 		put_format(&buf, "\\def\\totalweight{%.2f \\weightunit}\n", total_weight);
 		unit = "";
 
-		// Deprecated fields
-		put_format(&buf, "\n%% Deprecated Fields - kept to maintain compatibility with legacy templates:\n");
-		put_format(&buf, "%% The following fields are deprecated and may not return any value!\n");
-		put_format(&buf, "%% They have been let here to preserve functionality in legacy templates.");
-		put_format(&buf, "%% Do not use these fields in future templates.\n");
-		put_format(&buf, "\\def\\spot{} %% Deprecated - does not return a value\n"); // Deprecated - remains for use in legacy templates
-		put_format(&buf, "\\def\\entrance{} %% Deprecated - does not return a value\n"); // Deprecated - remains for use in legacy templates
-		put_format(&buf, "\\def\\place{%s} %% Deprecated - use \\sitename instead\n", site ? site->name : ""); // Deprecated - remains for use in legacy templates
-		get_depth_units(dive->maxdepth.mm, NULL, &unit) > 0 ? put_format(&buf, "\\def\\depth{%.1f \\depthunit}%% Deprecated - use \\maximumdepth instead\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\depth{} %% Deprecated - use \\maximumdepth instead\n");  // Deprecated - remains for use in legacy templates
+		// Legacy fields
+		put_format(&buf, "\\def\\spot{}\n");
+		put_format(&buf, "\\def\\entrance{}\n");
+		put_format(&buf, "\\def\\place{%s}\n", site ? site->name : "");
+		dive->maxdepth.mm ? put_format(&buf, "\\def\\depth{%.1f \\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\depth{}\n");
 
 		put_format(&buf, "\\page\n");
 	}
