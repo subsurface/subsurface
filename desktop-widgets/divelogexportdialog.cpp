@@ -373,22 +373,22 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		for (i = 0; i < MAX_CYLINDERS; i++){
 
 			if (is_cylinder_used(dive, i) || (prefs.display_unused_tanks && dive->cylinder[i].type.description)){
-				put_format(&buf, "\\def\\cyl%ddescription{%s}\n", i + 1, dive->cylinder[i].type.description);
-				put_format(&buf, "\\def\\cyl%dmixO2{%.1f\\%%}\n", i + 1, get_o2(&dive->cylinder[i].gasmix)/10.0);
-				put_format(&buf, "\\def\\cyl%dmixHe{%.1f\\%%}\n", i + 1, get_he(&dive->cylinder[i].gasmix)/10.0);
-				put_format(&buf, "\\def\\cyl%dmixN2{%.1f\\%%}\n", i + 1, (100.0 - (get_o2(&dive->cylinder[i].gasmix)/10.0) - (get_he(&dive->cylinder[i].gasmix)/10.0)));
+				put_format(&buf, "\\def\\cyl%cdescription{%s}\n", 'a' + i, dive->cylinder[i].type.description);
+				put_format(&buf, "\\def\\cyl%cmixO2{%.1f\\%%}\n", 'a' + i, get_o2(&dive->cylinder[i].gasmix)/10.0);
+				put_format(&buf, "\\def\\cyl%cmixHe{%.1f\\%%}\n", 'a' + i, get_he(&dive->cylinder[i].gasmix)/10.0);
+				put_format(&buf, "\\def\\cyl%cmixN2{%.1f\\%%}\n", 'a' + i, (100.0 - (get_o2(&dive->cylinder[i].gasmix)/10.0) - (get_he(&dive->cylinder[i].gasmix)/10.0)));
 				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
-				put_format(&buf, "\\def\\cyl%dstartpress{%.1f \\pressureunit}\n", i + 1, get_pressure_units(dive->cylinder[i].start.mbar, &unit)/1.0);
-				put_format(&buf, "\\def\\cyl%dendpress{%.1f \\pressureunit}\n", i + 1, get_pressure_units(dive->cylinder[i].end.mbar, &unit)/1.0);
+				put_format(&buf, "\\def\\cyl%cstartpress{%.1f \\pressureunit}\n", 'a' + i, get_pressure_units(dive->cylinder[i].start.mbar, &unit)/1.0);
+				put_format(&buf, "\\def\\cyl%cendpress{%.1f \\pressureunit}\n", 'a' + i, get_pressure_units(dive->cylinder[i].end.mbar, &unit)/1.0);
 				qty_cyl += 1;
 			} else {
-				put_format(&buf, "\\def\\cyl%ddescription{}\n", i + 1);
-				put_format(&buf, "\\def\\cyl%dmixO2{}\n", i + 1);
-				put_format(&buf, "\\def\\cyl%dmixHe{}\n", i + 1);
-				put_format(&buf, "\\def\\cyl%dmixN2{}\n", i + 1);
+				put_format(&buf, "\\def\\cyl%cdescription{}\n", 'a' + i);
+				put_format(&buf, "\\def\\cyl%cmixO2{}\n", 'a' + i);
+				put_format(&buf, "\\def\\cyl%cmixHe{}\n", 'a' + i);
+				put_format(&buf, "\\def\\cyl%cmixN2{}\n", 'a' + i);
 				delta_p.mbar += dive->cylinder[i].start.mbar - dive->cylinder[i].end.mbar;
-				put_format(&buf, "\\def\\cyl%dstartpress{}\n", i + 1);
-				put_format(&buf, "\\def\\cyl%dendpress{}\n", i + 1);
+				put_format(&buf, "\\def\\cyl%cstartpress{}\n", 'a' + i);
+				put_format(&buf, "\\def\\cyl%cendpress{}\n", 'a' + i);
 				qty_cyl += 1;
 			}
 		}
@@ -402,13 +402,13 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		total_weight = 0;
 		for (i = 0; i < MAX_WEIGHTSYSTEMS; i++){
 			if (dive->weightsystem[i].weight.grams){
-				put_format(&buf, "\\def\\weight%dtype{%s}\n", i + 1, dive->weightsystem[i].description);
-				put_format(&buf, "\\def\\weight%damt{%.3f \\weightunit}\n", i + 1, get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit));
+				put_format(&buf, "\\def\\weight%ctype{%s}\n", 'a' + i, dive->weightsystem[i].description);
+				put_format(&buf, "\\def\\weight%camt{%.3f \\weightunit}\n", 'a' + i, get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit));
 				qty_weight += 1;
 				total_weight += get_weight_units(dive->weightsystem[i].weight.grams, NULL, &unit);
 			} else {
-				put_format(&buf, "\\def\\weight%dtype{}\n", i + 1);
-				put_format(&buf, "\\def\\weight%damt{}\n", i + 1);
+				put_format(&buf, "\\def\\weight%ctype{}\n", 'a' + i);
+				put_format(&buf, "\\def\\weight%camt{}\n", 'a' + i);
 			}
 		}
 		put_format(&buf, "\\def\\qtyweights{%d}\n", qty_weight);
