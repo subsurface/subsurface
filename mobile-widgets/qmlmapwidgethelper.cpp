@@ -154,18 +154,18 @@ void MapWidgetHelper::selectVisibleLocations()
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
 			continue;
-		MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(ds->uuid);
-		if (loc) {
-			QPointF point;
-			QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
-			                          Q_ARG(QGeoCoordinate, loc->coordinate()));
-			if (!qIsNaN(point.x())) {
-				if (!selectedFirst) {
-					m_mapLocationModel->setSelectedUuid(ds->uuid, false);
-					selectedFirst = true;
-				}
-				m_selectedDiveIds.append(idx);
+		const qreal latitude = ds->latitude.udeg * 0.000001;
+		const qreal longitude = ds->longitude.udeg * 0.000001;
+		QGeoCoordinate dsCoord(latitude, longitude);
+		QPointF point;
+		QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
+		                          Q_ARG(QGeoCoordinate, dsCoord));
+		if (!qIsNaN(point.x())) {
+			if (!selectedFirst) {
+				m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+				selectedFirst = true;
 			}
+			m_selectedDiveIds.append(idx);
 		}
 	}
 	emit selectedDivesChanged(m_selectedDiveIds);
