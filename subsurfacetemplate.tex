@@ -4,6 +4,7 @@
 \font\klein=cmr9
 \font\winzig=cmr5
 \def\slinie{\hrulefill\hskip 3em}
+\def\leer{}
 \overfullrule=0pt
 \def\p{\hskip 0.5cm}  % typical horizontal room
 \parindent=1cm
@@ -43,10 +44,26 @@ $\vbox to 15cm{    % height of box
 \bigskip
 \hbox to 10cm{\hss\breit\strut \time \p@\p\hbox to 1.5cm{\hss\depth}\hss}
 \bigskip
-\hbox to 10cm{\klein\p $\Delta p$:\hbox to 1cm{\hrulefill\gasuse}\hss
-SAC:\hbox to 1.5cm{\hrulefill\sac}\hss
-Type:\hbox to 1.2cm{\hrulefill\type}\hss Viz.:
+\hbox to 10cm{\klein\p $\Delta p$: \hbox to 1cm{\hrulefill\gasuse}\hss
+SAC: \hbox to 1.5cm{\hrulefill\sac}\hss
+Type: \hbox to 1.2cm{\hrulefill\type}\hss Viz.:
 \hbox to 0.8cm{\hrulefill\viz}\p}
+
+\ifx\cylagasname\leer\else
+\hbox to 10cm{\p\klein
+\cyladescription\ \cylagasname: \cylastartpress\ -- \cylaendpress
+\hss}
+\fi
+\ifx\cylbgasname\leer\else
+\hbox to 10cm{\p\klein
+\cylbdescription\ \cylbgasname: \cylbstartpress\ -- \cylbendpress
+\hss}
+\fi
+\ifx\cylcgasname\leer\else
+\hbox to 10cm{\p\klein
+\cylcdescription\ \cylcgasname: \cylcstartpress\ -- \cylcendpress
+\hss}
+\fi
 \bigskip
 \hbox{\p\hsize = 9cm
 \vbox{\noindent
