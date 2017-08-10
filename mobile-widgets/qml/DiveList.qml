@@ -162,6 +162,7 @@ Kirigami.ScrollablePage {
 						onClicked: {
 							parent.visible = false
 							timer.stop()
+							detailsWindow.showDiveIndex(index)
 							manager.deleteDive(dive.id)
 						}
 					}
