@@ -5,16 +5,8 @@ import QtPositioning 5.3
 import org.subsurfacedivelog.mobile 1.0
 
 Item {
+	id: rootItem
 	property int nSelectedDives: 0
-
-	Plugin {
-		id: mapPlugin
-		name: "googlemaps"
-		Component.onCompleted: {
-			if (availableServiceProviders.indexOf(name) === -1)
-				console.warn("MapWidget.qml: cannot find a plugin with the name '" + name + "'")
-		}
-	}
 
 	MapWidgetHelper {
 		id: mapHelper
@@ -23,15 +15,19 @@ Item {
 		onSelectedDivesChanged: nSelectedDives = list.length
 		onEditModeChanged: editMessage.isVisible = editMode === true ? 1 : 0
 		onCoordinatesChanged: {}
+		Component.onCompleted: {
+			map.plugin = Qt.createQmlObject(pluginObject, rootItem)
+			map.mapType = { "STREET": map.supportedMapTypes[0], "SATELLITE": map.supportedMapTypes[1] }
+			map.activeMapType = map.mapType.SATELLITE
+		}
 	}
 
 	Map {
 		id: map
 		anchors.fill: parent
-		plugin: mapPlugin
 		zoomLevel: 1
 
-		readonly property var mapType: { "STREET": supportedMapTypes[0], "SATELLITE": supportedMapTypes[1] }
+		property var mapType
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
 		readonly property real defaultZoomIn: 12.0
 		readonly property real defaultZoomOut: 1.0
@@ -42,7 +38,6 @@ Item {
 		property real newZoomOut: 1.0
 		property var clickCoord: QtPositioning.coordinate(0, 0)
 
-		Component.onCompleted: activeMapType = mapType.SATELLITE
 		onZoomLevelChanged: mapHelper.calculateSmallCircleRadius(map.center)
 
 		MapItemView {
