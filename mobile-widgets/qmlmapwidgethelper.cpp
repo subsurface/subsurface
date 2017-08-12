@@ -8,6 +8,7 @@
 #include "qmlmapwidgethelper.h"
 #include "core/dive.h"
 #include "core/divesite.h"
+#include "core/helpers.h"
 #include "qt-models/maplocationmodel.h"
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0
@@ -237,4 +238,24 @@ void MapWidgetHelper::setEditMode(bool editMode)
 		                          Q_ARG(QVariant, QVariant::fromValue(coord)));
 	}
 	emit editModeChanged();
+}
+
+QString MapWidgetHelper::pluginObject()
+{
+	QString str;
+	str += "import QtQuick 2.0;";
+	str += "import QtLocation 5.3;";
+	str += "Plugin {";
+	str += "    id: mapPlugin;";
+	str += "    name: 'googlemaps';";
+	str += "    PluginParameter { name: 'googlemaps.maps.language'; value: '%lang%' }";
+	str += "    Component.onCompleted: {";
+	str += "        if (availableServiceProviders.indexOf(name) === -1) {";
+	str += "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);";
+	str += "        }";
+	str += "    }";
+	str += "}";
+	QString lang = uiLanguage(NULL).replace('_', '-');
+	str.replace("%lang%", lang);
+	return str;
 }

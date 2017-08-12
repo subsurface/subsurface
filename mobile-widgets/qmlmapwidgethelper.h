@@ -15,6 +15,7 @@ class MapWidgetHelper : public QObject {
 	Q_PROPERTY(QObject *map MEMBER m_map)
 	Q_PROPERTY(MapLocationModel *model MEMBER m_mapLocationModel NOTIFY modelChanged)
 	Q_PROPERTY(bool editMode READ editMode WRITE setEditMode NOTIFY editModeChanged)
+	Q_PROPERTY(QString pluginObject READ pluginObject NOTIFY pluginObjectChanged)
 
 public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
@@ -27,6 +28,7 @@ public:
 	Q_INVOKABLE void selectVisibleLocations();
 	bool editMode();
 	void setEditMode(bool editMode);
+	QString pluginObject();
 
 private:
 	QObject *m_map;
@@ -43,6 +45,7 @@ signals:
 	void editModeChanged();
 	void selectedDivesChanged(QList<int> list);
 	void coordinatesChanged();
+	void pluginObjectChanged();
 };
 
 extern "C" const char *printGPSCoords(int lat, int lon);
