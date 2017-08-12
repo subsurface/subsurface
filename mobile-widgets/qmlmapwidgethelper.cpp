@@ -249,6 +249,7 @@ QString MapWidgetHelper::pluginObject()
 	str += "    id: mapPlugin;";
 	str += "    name: 'googlemaps';";
 	str += "    PluginParameter { name: 'googlemaps.maps.language'; value: '%lang%' }";
+	str += "    PluginParameter { name: 'googlemaps.cachefolder'; value: '%cacheFolder%' }";
 	str += "    Component.onCompleted: {";
 	str += "        if (availableServiceProviders.indexOf(name) === -1) {";
 	str += "            console.warn('MapWidget.qml: cannot find a plugin named: ' + name);";
@@ -257,5 +258,7 @@ QString MapWidgetHelper::pluginObject()
 	str += "}";
 	QString lang = uiLanguage(NULL).replace('_', '-');
 	str.replace("%lang%", lang);
+	QString cacheFolder = QString(system_default_directory()).append("/googlemaps");
+	str.replace("%cacheFolder%", cacheFolder.replace("\\", "/"));
 	return str;
 }
