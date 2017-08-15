@@ -3589,7 +3589,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 		case 4: /* internal error */
 		case 5: /* device activity log */
 			//Event 18 is a button press. Lets ingore that event. 	 
-		    if (ptr[4] == 18)
+			if (ptr[4] == 18)
 				continue;
 			
 			event_start();
