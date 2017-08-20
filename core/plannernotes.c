@@ -411,8 +411,12 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					mingas_pressure = get_pressure_units(lastbottomdp->minimum_gas.mbar, &pressure_unit);
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
+					bool minok = (mingasv.mliter <=
+							cyl->deco_gas_used.mliter +
+							lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)));
 					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) snprintf(mingas, sizeof(mingas),
-						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: green;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s"),
+						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: %s;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s"),
+						minok ? "green" :"red",
 						prefs.sacfactor / 100.0, prefs.problemsolvingtime,
 						mingas_depth, depth_unit,
 						mingas_volume, unit,
