@@ -1113,7 +1113,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 		INFO(0, "dc_deveice_open error value of %d", rc);
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
-			err = translate("gettextFromC", "Insufficient privileges to open the device %s %s (%s)");
+			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 	}
 
 	if (rc == DC_STATUS_SUCCESS) {
