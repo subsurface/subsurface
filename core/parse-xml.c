@@ -2817,7 +2817,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			cur_settings.dc.model = strdup("Shearwater Petrel");
+			cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
 			break;
 		case 4:
 			cur_settings.dc.model = strdup("Shearwater Predator");
@@ -2836,7 +2836,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			cur_dive->dc.model = strdup("Shearwater Petrel");
+			cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
 			break;
 		case 4:
 			cur_dive->dc.model = strdup("Shearwater Predator");
