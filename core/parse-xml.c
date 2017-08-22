@@ -2735,6 +2735,41 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	return 0;
 }
 
+extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, char **column)
+{
+	(void) handle;
+	(void) columns;
+	(void) column;
+
+	sample_start();
+	if (data[0])
+		cur_sample->time.seconds = atoi(data[0]);
+	if (data[1])
+		cur_sample->depth.mm = metric ? lrint(atof(data[1]) * 1000) : feet_to_mm(atof(data[1]));
+	if (data[2])
+		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
+	if (data[3]) {
+		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
+		cur_dive->dc.divemode = CCR;
+	}
+	if (data[4])
+		cur_sample->ndl.seconds = atoi(data[4]) * 60;
+	if (data[5])
+		cur_sample->cns = atoi(data[5]);
+	if (data[6])
+		cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+
+	/* Weird unit conversion but seems to produce correct results */
+	if (data[7]) {
+		cur_sample->pressure[0].mbar = psi_to_mbar(atoi(data[7])) * 2;
+	}
+	if (data[8])
+		cur_sample->pressure[1].mbar = psi_to_mbar(atoi(data[8])) * 2;
+	sample_end();
+
+	return 0;
+}
+
 extern int shearwater_dive(void *param, int columns, char **data, char **column)
 {
 	(void) columns;
@@ -2744,6 +2779,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
 	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where diveLogId = %d";
+	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where number = %d";
 	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %d group by fractionO2,fractionHe";
 	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where a.diveLogId = %d and b.diveLogId = %d and (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) union select min(currentTime),fractionO2,fractionHe from dive_log_records";
 	char get_buffer[1024];
@@ -2825,11 +2861,15 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &shearwater_ai_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
-		return 1;
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
+		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
+		if (retval != SQLITE_OK) {
+			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
+			return 1;
+		}
 	}
 
 	dive_end();
