@@ -842,7 +842,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	dump_plan(&diveplan);
 #endif
 	if (recalcQ() && !diveplan_empty(&diveplan)) {
-		plan(&diveplan, &cache, isPlanner(), false);
+		plan(&diveplan, &displayed_dive, DECOTIMESTEP, &cache, isPlanner(), false);
 		emit calculatedPlanNotes();
 	}
 	// throw away the cache
@@ -878,7 +878,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	setRecalc(oldRecalc);
 
 	//TODO: C-based function here?
-	plan(&diveplan, &cache, isPlanner(), true);
+	plan(&diveplan, &displayed_dive, DECOTIMESTEP, &cache, isPlanner(), true);
 	free(cache);
 	if (!current_dive || displayed_dive.id != current_dive->id) {
 		// we were planning a new dive, not re-planning an existing on

@@ -835,6 +835,8 @@ extern void subsurface_command_line_exit(int *, char ***);
 
 #define FRACTION(n, x) ((unsigned)(n) / (x)), ((unsigned)(n) % (x))
 
+#define DECOTIMESTEP 60 /* seconds. Unit of deco stop times */
+
 struct deco_state {
 	double tissue_n2_sat[16];
 	double tissue_he_sat[16];
@@ -903,10 +905,11 @@ struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif
-bool plan(struct diveplan *diveplan, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
+bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 void calc_crushing_pressure(double pressure);
 void vpmb_start_gradient();
 void clear_vpmb_state();
+
 
 void delete_single_dive(int idx);
 
