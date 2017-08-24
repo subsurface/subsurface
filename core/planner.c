@@ -674,6 +674,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	bool decodive = false;
 	int first_stop_depth = 0;
 	int laststoptime = timestep;
+	bool o2breaking = false;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
@@ -974,38 +975,39 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				}
 
 				int new_clock = wait_until(dive, clock, clock, laststoptime * 2, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
-				add_segment(depth_to_bar(depth, dive), &dive->cylinder[current_cylinder].gasmix,
-					    new_clock - clock, po2, dive, prefs.decosac);
 				laststoptime = new_clock - clock;
-				clock = new_clock;
 				/* Finish infinite deco */
 				if (clock >= 48 * 3600 && depth >= 6000) {
 					error = LONGDECO;
 					break;
 				}
+
+				o2breaking = false;
 				if (prefs.doo2breaks) {
 					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
 					 * backgas (first defined gas).  This could be customized if there were demand.
 					 */
 					if (get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000) {
-						o2time += timestep;
-						if (o2time >= 12 * 60) {
+						if (laststoptime >= 12 * 60) {
+							laststoptime = 12 * 60;
+							o2breaking = true;
 							breaktime = 0;
 							breakcylinder = current_cylinder;
 							if (is_final_plan)
-								plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
-							previous_point_time = clock;
+								plan_add_segment(diveplan, clock + laststoptime - previous_point_time, depth, current_cylinder, po2, false);
+							previous_point_time = clock + laststoptime;
 							current_cylinder = 0;
 							gas = dive->cylinder[current_cylinder].gasmix;
 						}
 					} else {
 						if (breaktime >= 0) {
-							breaktime += timestep;
-							if (breaktime >= 6 * 60) {
+							if (laststoptime >= 6 * 60) {
+								laststoptime = 6 * 60;
+								o2breaking  = true;
 								o2time = 0;
 								if (is_final_plan)
-									plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
-								previous_point_time = clock;
+									plan_add_segment(diveplan, clock + laststoptime - previous_point_time, depth, current_cylinder, po2, false);
+								previous_point_time = clock + laststoptime;
 								current_cylinder = breakcylinder;
 								gas = dive->cylinder[current_cylinder].gasmix;
 								breaktime = -1;
@@ -1013,6 +1015,11 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						}
 					}
 				}
+				add_segment(depth_to_bar(depth, dive), &dive->cylinder[current_cylinder].gasmix,
+					    laststoptime, po2, dive, prefs.decosac);
+				clock = new_clock;
+				if (!o2breaking)
+					break;
 			}
 			if (stopping) {
 				/* Next we will ascend again. Add a waypoint if we have spend deco time */
