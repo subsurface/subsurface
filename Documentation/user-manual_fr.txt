@@ -1020,14 +1020,16 @@ image::images/Bookmarks.jpg["FIGURE: Bookmark dialog", align="center"]
 
 ==== Enregistrer les informations de plongée mises à jour
 
-The information entered in the *Notes* tab and the *Equipment* tab can be
-saved by using the two buttons on the top right hand of the *Notes* tab. If
-the _Apply changes_ button is clicked, the dive data are saved in the memory
-image of the dive. If the _Discard changes_ button is clicked, the newly
-entered dive data are erased from the computer memory, although the dive
-profile is retained. When the user exits _Subsurface_ there is a final
-prompt to confirm the new data should now be saved permanently on the
-computer disk.
+Les informations entrées dans les onglets *Notes* et *Équipement* peuvent
+être enregistrées en utilisant les deux boutons en haut à droite de l'onglet
+*Notes*. Si vous cliquez sur le bouton _Appliquer les modifications_, les
+données de la plongée sont enregistrées dans l'image mémoire de la
+plongée. Si le bouton _Annuler les modifications_ est cliqué, les données de
+plongées nouvellement entrées sont effacées de la mémoire de l'ordinateur,
+bien que le profil de plongée soit conservé. Lorsque l'utilisateur quitte
+_Subsurface_, il y a une dernière notificatioin pour confirmer que les
+nouvelles données doivent être enregistrées de manière permanente sur le
+disque de l'ordinateur.
 
 === Importer les informations à partir d'autres sources de données numériques ou d'autres formats de données
 
@@ -1071,33 +1073,34 @@ apparaître la boîte de dialogue *A*, comme ci-dessous.
 
 image::images/Import1_f20.jpg["FIGURE: Import dialogue: step 1", align="center"]
 
-Towards the bottom right is a dropdown selector with a default label of
-_Dive Log Files_ which accesses different types of direct imports available,
-as in dialogue *B*, above. Currently these are:
+En bas à droite se trouve la liste déroulante avec la mention par défaut
+_Dive Log Files_ qui permet d'accéder aux différents types d'importations
+directes disponibles, comme dans le dialogue *B* ci-dessus. Actuellement, il
+s'agit de:
 
  - Carnet de plongée formatés en XML (DivingLog 5.0, MacDive et divers autres
    systèmes de carnet de plongée)
  - Carnets de plongée Cochran
  - Carnets de plongée formatés en UDDF (p. ex. Kenozooid)
  - Carnets de plongée formatés en UDCF
- - Poseidon MkVI CCR logs
- - APD Inspiration/Evolution CCR logs
- - LiquiVision logs
- - divelogs.de logs
- - OSTC Tools logs
+ - Logs Poseidon MkVI CCR
+ - Logs APD Inspiration/Evolution CCR
+ - Logs LiquiVision
+ - Logs divelogs.de
+ - Logs OSTC Tools
  - JDiveLog
  - Suunto Dive Manager (DM3, DM4, DM5)
  - Fichers DL7 utilisés par Diver's Alert network (DAN)
- - Underwater technologies AV1 dive logs
- - Divesoft dive logs
- - Poseidon MK VI eCCR dive logs
+ - Logs Underwater technologies AV1
+ - Logs Divesoft
+ - Logs Poseidon MK VI eCCR
  - Carnet de plongée CSV (format texte ou tableau), y compris les logs APD CCR
 
-Selecting the appropriate format and then the specific log file in the large
-window containing the file list on the right of the dialogue, opens the
-imported dive log in the _Subsurface_ *Dive List*. Some other formats not
-accessible through the Import dialogue are also supported, as explained
-below.
+Sélectionner le format voulu puis le fichier recherché dans la fenêtre
+contenant la liste des fichiers sur la droite de la boîte de dialogue,
+ouvrira le carnet de plongée importé dans la *Liste des plongées* de
+_Subsurface_. Certains autres formats, non accessible depuis la boîte de
+dialogue d'importation, sont également supportés, comme expliqué ci-dessous.
 
 ==== Importation depuis OSTCTools
 

@@ -2435,6 +2435,16 @@ msgid ""
 "prompt to confirm the new data should now be saved permanently on the "
 "computer disk."
 msgstr ""
+"Les informations entrées dans les onglets *Notes* et *Équipement* peuvent "
+"être enregistrées en utilisant les deux boutons en haut à droite de l'onglet "
+"*Notes*. Si vous cliquez sur le bouton _Appliquer les modifications_, les "
+"données de la plongée sont enregistrées dans l'image mémoire de la plongée. "
+"Si le bouton _Annuler les modifications_ est cliqué, les données de plongées "
+"nouvellement entrées sont effacées de la mémoire de l'ordinateur, bien que "
+"le profil de plongée soit conservé. Lorsque l'utilisateur quitte "
+"_Subsurface_, il y a une dernière notificatioin pour confirmer que les "
+"nouvelles données doivent être enregistrées de manière permanente sur le "
+"disque de l'ordinateur."
 
 #. type: Title ===
 #: user-manual.txt:949
@@ -2509,6 +2519,10 @@ msgid ""
 "_Dive Log Files_ which accesses different types of direct imports available, "
 "as in dialogue *B*, above. Currently these are:"
 msgstr ""
+"En bas à droite se trouve la liste déroulante avec la mention par défaut "
+"_Dive Log Files_ qui permet d'accéder aux différents types d'importations "
+"directes disponibles, comme dans le dialogue *B* ci-dessus. Actuellement, il "
+"s'agit de:"
 
 #. type: Plain text
 #: user-manual.txt:999
@@ -2537,27 +2551,27 @@ msgstr "Carnets de plongée formatés en UDCF"
 #. type: Plain text
 #: user-manual.txt:1003
 msgid "Poseidon MkVI CCR logs"
-msgstr ""
+msgstr "Logs Poseidon MkVI CCR"
 
 #. type: Plain text
 #: user-manual.txt:1004
 msgid "APD Inspiration/Evolution CCR logs"
-msgstr ""
+msgstr "Logs APD Inspiration/Evolution CCR"
 
 #. type: Plain text
 #: user-manual.txt:1005
 msgid "LiquiVision logs"
-msgstr ""
+msgstr "Logs LiquiVision"
 
 #. type: Plain text
 #: user-manual.txt:1006
 msgid "divelogs.de logs"
-msgstr ""
+msgstr "Logs divelogs.de"
 
 #. type: Plain text
 #: user-manual.txt:1007
 msgid "OSTC Tools logs"
-msgstr ""
+msgstr "Logs OSTC Tools"
 
 #. type: Plain text
 #: user-manual.txt:1008
@@ -2577,17 +2591,17 @@ msgstr "Fichers DL7 utilisés par Diver's Alert network (DAN)"
 #. type: Plain text
 #: user-manual.txt:1011
 msgid "Underwater technologies AV1 dive logs"
-msgstr ""
+msgstr "Logs Underwater technologies AV1"
 
 #. type: Plain text
 #: user-manual.txt:1012
 msgid "Divesoft dive logs"
-msgstr ""
+msgstr "Logs Divesoft"
 
 #. type: Plain text
 #: user-manual.txt:1013
 msgid "Poseidon MK VI eCCR dive logs"
-msgstr ""
+msgstr "Logs Poseidon MK VI eCCR"
 
 #. type: Plain text
 #: user-manual.txt:1014
@@ -2605,6 +2619,11 @@ msgid ""
 "accessible through the Import dialogue are also supported, as explained "
 "below."
 msgstr ""
+"Sélectionner le format voulu puis le fichier recherché dans la fenêtre "
+"contenant la liste des fichiers sur la droite de la boîte de dialogue, "
+"ouvrira le carnet de plongée importé dans la *Liste des plongées* de "
+"_Subsurface_. Certains autres formats, non accessible depuis la boîte de "
+"dialogue d'importation, sont également supportés, comme expliqué ci-dessous."
 
 #. type: Title ====
 #: user-manual.txt:1020
