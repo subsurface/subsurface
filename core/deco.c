@@ -321,46 +321,34 @@ double tissue_tolerance_calc(const struct dive *dive, double pressure)
 /*
  * Return buelman factor for a particular period and tissue index.
  *
- * We cache the last factor, since we commonly call this with the
+ * We cache the factor, since we commonly call this with the
  * same values... We have a special "fixed cache" for the one second
  * case, although I wonder if that's even worth it considering the
  * more general-purpose cache.
  */
-struct factor_cache {
-	int last_period;
-	double last_factor;
-};
 
-double n2_factor(int period_in_seconds, int ci)
+
+double factor(int period_in_seconds, int ci, enum inertgas gas)
 {
-	static struct factor_cache cache[16];
-
-	if (period_in_seconds == 1)
-		return buehlmann_N2_factor_expositon_one_second[ci];
-
-	if (period_in_seconds != cache[ci].last_period) {
-		cache[ci].last_period = period_in_seconds;
-		// ln(2)/60 = 1.155245301e-02
-		cache[ci].last_factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_N2_t_halflife[ci]);
+	double factor;
+	if (period_in_seconds == 1) {
+		if (gas == N2)
+			return buehlmann_N2_factor_expositon_one_second[ci];
+		else
+			return buehlmann_He_factor_expositon_one_second[ci];
 	}
 
-	return cache[ci].last_factor;
-}
-
-double he_factor(int period_in_seconds, int ci)
-{
-	static struct factor_cache cache[16];
-
-	if (period_in_seconds == 1)
-		return buehlmann_He_factor_expositon_one_second[ci];
-
-	if (period_in_seconds != cache[ci].last_period) {
-		cache[ci].last_period = period_in_seconds;
+	factor = cache_value(ci, period_in_seconds, gas);
+	if (!factor) {
 		// ln(2)/60 = 1.155245301e-02
-		cache[ci].last_factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_He_t_halflife[ci]);
+		if (gas == N2)
+			factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_N2_t_halflife[ci]);
+		else
+			factor = 1 - exp(-period_in_seconds * 1.155245301e-02 / buehlmann_He_t_halflife[ci]);
+		cache_insert(ci, period_in_seconds, gas, factor);
 	}
 
-	return cache[ci].last_factor;
+	return factor;
 }
 
 double calc_surface_phase(double surface_pressure, double he_pressure, double n2_pressure, double he_time_constant, double n2_time_constant)
@@ -515,8 +503,8 @@ void add_segment(double pressure, const struct gasmix *gasmix, int period_in_sec
 	for (ci = 0; ci < 16; ci++) {
 		double pn2_oversat = pressures.n2 - deco_state->tissue_n2_sat[ci];
 		double phe_oversat = pressures.he - deco_state->tissue_he_sat[ci];
-		double n2_f = n2_factor(period_in_seconds, ci);
-		double he_f = he_factor(period_in_seconds, ci);
+		double n2_f = factor(period_in_seconds, ci, N2);
+		double he_f = factor(period_in_seconds, ci, HE);
 		double n2_satmult = pn2_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
 		double he_satmult = phe_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
 
