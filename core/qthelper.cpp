@@ -1714,3 +1714,21 @@ char *intdup(int index)
 	tmpbuf[20] = 0;
 	return strdup(tmpbuf);
 }
+
+QHash<int, double> factor_cache;
+
+extern "C" double cache_value(int tissue, int timestep, enum inertgas inertgas)
+{
+	int key = (timestep << 5) + (tissue << 1);
+	if (inertgas == HE)
+		++key;
+	return factor_cache.value(key);
+}
+
+extern "C" void cache_insert(int tissue, int timestep, enum inertgas inertgas, double value)
+{
+	int key = (timestep << 5) + (tissue << 1);
+	if (inertgas == HE)
+		++key;
+	factor_cache.insert(key, value);
+}

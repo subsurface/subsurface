@@ -627,7 +627,6 @@ int wait_until(struct dive *dive, int clock, int min, int leap, int stepsize, in
 {
 	// Round min + leap up to the next multiple of stepsize
 	int upper = min + leap + stepsize - 1 - (min + leap - 1) % stepsize;
-	printf("clock: %d min: %d leap: %d, depth %d\n", clock / 60, min / 60, leap, depth);
 	// Is the upper boundary too small?
 	if (!trial_ascent(upper - clock, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure, dive))
 		return wait_until(dive, clock, upper, leap, stepsize, depth, target_depth, avg_depth, bottom_time, gasmix, po2, surface_pressure);
