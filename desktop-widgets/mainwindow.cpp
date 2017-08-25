@@ -63,6 +63,8 @@
 #include "plugins/facebook/facebookconnectwidget.h"
 #endif
 
+#include "desktop-widgets/mapwidget.h"
+
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
 
@@ -104,9 +106,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
 
 #ifndef NO_MARBLE
-	GlobeGPS *globeGps = GlobeGPS::instance();
+	GlobeGPS *mapWidget = GlobeGPS::instance();
 #else
-	QWidget *globeGps = NULL;
+	MapWidget *mapWidget = MapWidget::instance();
 #endif
 
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
@@ -157,12 +159,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	enabledList.push_back(enabled);
 	disabledList.push_back(disabled);
 
-	registerApplicationState("Default", mainTab, profileContainer, diveListView, globeGps );
-	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, globeGps );
+	registerApplicationState("Default", mainTab, profileContainer, diveListView, mapWidget );
+	registerApplicationState("AddDive", mainTab, profileContainer, diveListView, mapWidget );
+	registerApplicationState("EditDive", mainTab, profileContainer, diveListView, mapWidget );
 	registerApplicationState("PlanDive", plannerWidget, profileContainer, plannerSettings, plannerDetails );
-	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, globeGps );
-	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveListView, globeGps);
+	registerApplicationState("EditPlannedDive", plannerWidget, profileContainer, diveListView, mapWidget );
+	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveListView, mapWidget);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
@@ -197,10 +199,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
+	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), mapWidget, SLOT(centerOnDiveSite(struct dive_site *)));
 
-#ifndef NO_MARBLE
-	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), globeGps, SLOT(centerOnDiveSite(struct dive_site *)));
-#endif
 	wtu = new WindowTitleUpdate();
 	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));
 #ifdef NO_PRINTING
@@ -216,14 +216,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->reload(DiveTripModel::TREE);
 	diveListView->reloadHeaderActions();
 	diveListView->setFocus();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget()->settingsChanged();
 	divePlannerSettingsWidget()->settingsChanged();
-#ifdef NO_MARBLE
-	ui.menuView->removeAction(ui.actionViewGlobe);
-#endif
 #ifdef NO_USERMANUAL
 	ui.menuHelp->removeAction(ui.actionUserManual);
 #endif
@@ -428,7 +429,11 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	information()->reload();
 	TankInfoModel::instance()->update();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 	if (doRecreateDiveList)
 		recreateDiveList();
 
@@ -499,7 +504,11 @@ void MainWindow::current_dive_changed(int divenr)
 	graphics()->plotDive();
 	information()->updateDiveInfo();
 	configureToolbar();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -655,7 +664,11 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->reload();
+#else
+	MapWidget::instance()->reload();
+#endif
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
 	disableShortcuts();
@@ -1019,7 +1032,11 @@ void MainWindow::on_actionEditDive_triggered()
 	disableShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	graphics()->setAddState();
+#ifndef NO_MARBLE
 	GlobeGPS::instance()->endGetDiveCoordinates();
+#else
+	MapWidget::instance()->endGetDiveCoordinates();
+#endif
 	setApplicationState("EditDive");
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
@@ -1097,10 +1114,10 @@ void MainWindow::on_actionViewInfo_triggered()
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
-void MainWindow::on_actionViewGlobe_triggered()
+void MainWindow::on_actionViewMap_triggered()
 {
 	TOGGLE_COLLAPSABLE( true );
-	beginChangeState(GLOBE_MAXIMIZED);
+	beginChangeState(MAP_MAXIMIZED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.bottomSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 }
@@ -1321,8 +1338,8 @@ void MainWindow::initialUiSetup()
 	case VIEWALL:
 		on_actionViewAll_triggered();
 		break;
-	case GLOBE_MAXIMIZED:
-		on_actionViewGlobe_triggered();
+	case MAP_MAXIMIZED:
+		on_actionViewMap_triggered();
 		break;
 	case INFO_MAXIMIZED:
 		on_actionViewInfo_triggered();

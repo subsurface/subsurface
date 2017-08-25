@@ -10,6 +10,7 @@
 #include <QThread>
 #include <QTimer>
 #include <QDebug>
+#include <QLoggingCategory>
 
 #include <libdivecomputer/version.h>
 
@@ -21,10 +22,14 @@
 #include <libdivecomputer/custom_io.h>
 
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
+#define DEBUG_THRESHOLD 20
+static int debugCounter;
 
 #define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
 #define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
-#define IS_EON_STEEL(_d) same_string((_d)->product, "EON Steel")
+
+#define MAXIMAL_HW_CREDIT	255
+#define MINIMAL_HW_CREDIT	32
 
 extern "C" {
 
@@ -61,34 +66,37 @@ void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, con
 {
 	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
+			hw_credit--;
 			receivedPackets.append(value);
+			if (hw_credit == MINIMAL_HW_CREDIT)
+				setHwCredit(MAXIMAL_HW_CREDIT - MINIMAL_HW_CREDIT);
 		} else {
 			qDebug() << "ignore packet from" << c.uuid() << value.toHex();
 		}
 	} else {
 		receivedPackets.append(value);
 	}
-	//qDebug() << ".. incoming packet count" << receivedPackets.length();
 }
 
 void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
 	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_CREDITS_RX]) {
-			qDebug() << "HW_OSTC_BLE_CREDITS_RX confirmed" << c.uuid() << value.toHex();
+			bool ok;
+			hw_credit += value.toHex().toInt(&ok, 16);
 			isCharacteristicWritten = true;
 		}
 	} else {
-		qDebug() << "BLEObject::characteristicWritten";
+		if (debugCounter < DEBUG_THRESHOLD)
+			qDebug() << "BLEObject::characteristicWritten";
 	}
 }
 
 void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
 {
-	Q_UNUSED(d)
 	Q_UNUSED(value)
-
-	qDebug() << "BLE write completed on" << d.name() <<  d.value();
+	Q_UNUSED(d)
+	qDebug() << "BLE write completed";
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
@@ -104,8 +112,7 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 		 */
 		if (newService != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
 			return; // skip all services except the right one
-	} else
-	if (isStandardUuid) {
+	} else if (isStandardUuid) {
 		qDebug () << " .. ignoring standard service";
 		return;
 	}
@@ -126,6 +133,7 @@ BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 {
 	controller = c;
 	device = d;
+	debugCounter = 0;
 }
 
 BLEObject::~BLEObject()
@@ -164,7 +172,8 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 {
-	*actual = 0;
+	if (actual)
+		*actual = 0;
 	if (receivedPackets.isEmpty()) {
 		QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
 		if (list.isEmpty())
@@ -181,38 +190,48 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (receivedPackets.isEmpty())
 		return DC_STATUS_IO;
 
-	int offset = 0;
-	while (!receivedPackets.isEmpty()) {
-		/*
-		 * Yes, to while loops with same condition seems strange. The inner one
-		 * does the real work, but it prevents the QtEventloop to do its thing.
-		 * As the incoming packets arrive based on signals and slots, that
-		 * stuff is not handeled during the inner loop. So, add a short waitFor
-		 * between the inner and outer while loop.
-		 */
-		while (!receivedPackets.isEmpty()) {
-			QByteArray packet = receivedPackets.takeFirst();
+	QByteArray packet = receivedPackets.takeFirst();
 
-			if (IS_SHEARWATER(device))
-				packet.remove(0,2);
+	if (IS_SHEARWATER(device))
+		packet.remove(0,2);
 
-			//qDebug() << ".. read (packet.length, contents, size)" << packet.size() << packet.toHex() << size;
+	if (packet.size() > size)
+		return DC_STATUS_NOMEMORY;
 
-			if ((offset + packet.size()) > size) {
-				qDebug() << "BLE read trouble, receive buffer too small";
-				return DC_STATUS_NOMEMORY;
-			}
+	memcpy((char *)data, packet.data(), packet.size());
+	if (actual)
+		*actual += packet.size();
 
-			memcpy((char *)data + offset, packet.data(), packet.size());
-			offset += packet.size();
-			*actual += packet.size();
-			// EON Steel wants to read only one packet at a time
-			if (IS_EON_STEEL(device))
-				goto we_are_done;
-		}
-		waitFor(50); // and process some Qt events to see if there is more data coming in.
-	}
-we_are_done:
+	return DC_STATUS_SUCCESS;
+}
+
+dc_status_t BLEObject::setHwCredit(unsigned int c)
+{
+	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5).
+	 *
+	 * Notice that we have to write to the characteristic here, and not to its
+	 * descriptor as for the enabeling of notifications or indications.
+	 *
+	 * Futher notice that this function has the implicit effect of processing the
+	 * event loop (due to waiting for the confirmation of the credit request).
+	 * So, as characteristcStateChanged will be triggered, while receiving
+	 * data from the OSTC, these are processed too.
+	 */
+
+	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
+	isCharacteristicWritten = false;
+	preferredService()->writeCharacteristic(list[HW_OSTC_BLE_CREDITS_RX],
+						QByteArray(1, c),
+						QLowEnergyService::WriteWithResponse);
+
+	/* And wait for the answer*/
+	int msec = BLE_TIMEOUT;
+	while (msec > 0 && !isCharacteristicWritten) {
+		waitFor(100);
+		msec -= 100;
+	};
+	if (!isCharacteristicWritten)
+		return DC_STATUS_TIMEOUT;
 	return DC_STATUS_SUCCESS;
 }
 
@@ -248,31 +267,16 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 	d = allC[HW_OSTC_BLE_DATA_TX].descriptors().first();
 	preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 
-	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5).
-	 *
-	 * Notice that we have to write to the characteristic here, and not to its
-	 * descriptor as for the enabeling of notifications or indications.
-	 */
-	isCharacteristicWritten = false;
-	preferredService()->writeCharacteristic(allC[HW_OSTC_BLE_CREDITS_RX],
-						QByteArray(1, 255),
-						QLowEnergyService::WriteWithResponse);
-
-	/* And give to OSTC some time to get initialized */
-	int msec = BLE_TIMEOUT;
-	while (msec > 0 && !isCharacteristicWritten) {
-		waitFor(100);
-		msec -= 100;
-	};
-	if (!isCharacteristicWritten)
-		return DC_STATUS_TIMEOUT;
-
-	return DC_STATUS_SUCCESS;
+	/* The Terminal I/O client transmits initial UART credits to the server (see 6.5). */
+	return setHwCredit(MAXIMAL_HW_CREDIT);
 }
 
 dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *devaddr)
 {
 	Q_UNUSED(context)
+	debugCounter = 0;
+	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+
 	/*
 	 * LE-only devices get the "LE:" prepended by the scanning
 	 * code, so that the rfcomm code can see they only do LE.
@@ -400,15 +404,24 @@ dc_status_t qt_ble_close(dc_custom_io_t *io)
 
 	return DC_STATUS_SUCCESS;
 }
+static void checkThreshold()
+{
+	if (++debugCounter == DEBUG_THRESHOLD) {
+		QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = false"));
+		qDebug() << "turning off further BT debug output";
+	}
+}
 
 dc_status_t qt_ble_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual)
 {
+	checkThreshold();
 	BLEObject *ble = (BLEObject *) io->userdata;
 	return ble->read(data, size, actual);
 }
 
 dc_status_t qt_ble_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual)
 {
+	checkThreshold();
 	BLEObject *ble = (BLEObject *) io->userdata;
 	return ble->write(data, size, actual);
 }

@@ -8,6 +8,7 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/globe.h"
+#include "desktop-widgets/mapwidget.h"
 #include "core/helpers.h"
 #include "core/statistics.h"
 #include "desktop-widgets/modeldelegates.h"
@@ -74,6 +75,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 #ifndef NO_MARBLE
 	connect(ui.location, &DiveLocationLineEdit::entered, GlobeGPS::instance(), &GlobeGPS::centerOnIndex);
 	connect(ui.location, &DiveLocationLineEdit::currentChanged, GlobeGPS::instance(), &GlobeGPS::centerOnIndex);
+#else
+	connect(ui.location, &DiveLocationLineEdit::entered, MapWidget::instance(), &MapWidget::centerOnIndex);
+	connect(ui.location, &DiveLocationLineEdit::currentChanged, MapWidget::instance(), &MapWidget::centerOnIndex);
 #endif
 
 	QAction *action = new QAction(tr("Apply changes"), this);
@@ -907,7 +911,11 @@ void MainTab::acceptChanges()
 				qDebug() << "delete now unused dive site" << ((ds && ds->name) ? ds->name : "without name");
 			}
 			delete_dive_site(oldUuid);
+#ifndef NO_MARBLE
 			GlobeGPS::instance()->reload();
+#else
+			MapWidget::instance()->reload();
+#endif
 		}
 		// the code above can change the correct uuid for the displayed dive site - and the
 		// code below triggers an update of the display without re-initializing displayed_dive
@@ -1041,6 +1049,8 @@ void MainTab::rejectChanges()
 	// let's get the correct location back in view
 #ifndef NO_MARBLE
 	GlobeGPS::instance()->centerOnDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
+#else
+	MapWidget::instance()->centerOnDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
 #endif
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();

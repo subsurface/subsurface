@@ -849,7 +849,6 @@ carnet en cours.
 Une sélection automatique est disponible.
 Certains utilisateurs de vêtement étanche peuvent utiliser ce champ pour enregistrer quelle ensemble de
 combinaison et souris ils ont utilisé.
-
 *Évaluation*: attribue une évaluation subjective à une plongée sur une
 échelle de 5 points en cliquant sur l'étoile correspondante.
 

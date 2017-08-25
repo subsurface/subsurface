@@ -17,6 +17,7 @@ Kirigami.ScrollablePage {
 
 	ListView {
 		anchors.fill: parent
+		anchors.topMargin: Kirigami.Units.gridUnit * 2
 		model: logModel
 		currentIndex: -1
 		boundsBehavior: Flickable.StopAtBounds
@@ -24,9 +25,6 @@ Kirigami.ScrollablePage {
 		cacheBuffer: Math.max(5000, parent.height * 5)
 		focus: true
 		clip: true
-		header : Kirigami.Heading {
-			text: qsTr("Application Log")
-		}
 		delegate : Text {
 			width: logWindow.width
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere

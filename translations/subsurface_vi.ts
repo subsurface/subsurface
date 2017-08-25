@@ -152,133 +152,138 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="226"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
         <source>UNPAIRED</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="345"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
         <source>PAIRED</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="233"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="350"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="237"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="240"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="254"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="257"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="263"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="266"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="287"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="271"/>
+        <source>A device needs a non-zero address for a connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="294"/>
         <source>The local device was changed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="314"/>
         <source>Pair</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="308"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
         <source>Remove pairing</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="324"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <source>Trying to pair device %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="328"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
         <source>Trying to unpair device %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
         <source>Device %1 was unpaired.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
         <source>Device %1 was paired.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="398"/>
         <source>Local device error: %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="392"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="399"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="394"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
         <source>Unknown error</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="403"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="406"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="413"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="412"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
         <source>An unknown error has occurred.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="417"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
         <source>Device discovery error: %1.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="445"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="453"/>
         <source>Not available</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="452"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="460"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation type="unfinished"/>
     </message>
@@ -308,7 +313,7 @@
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
@@ -1934,67 +1939,67 @@ GPS location:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="128"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
         <source>Depth:</source>
         <translation>Độ sâu:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
         <source>Duration:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="166"/>
         <source>Air Temp:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="175"/>
         <source>Water Temp:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="184"/>
         <source>Suit:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="195"/>
         <source>Buddy:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
         <source>Divemaster:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="198"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="217"/>
         <source>Weight:</source>
         <translation>Cân nặng:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="227"/>
         <source>Cylinder:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="219"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
         <source>Gas mix:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
         <source>Start Pressure:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="257"/>
         <source>End Pressure:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="267"/>
         <source>Notes:</source>
         <translation type="unfinished"/>
     </message>
@@ -2114,23 +2119,23 @@ GPS location:</source>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="251"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="257"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Dive list</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="275"/>
         <source>Cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="253"/>
-        <source>Please tap the &apos;+&apos; button to add a dive</source>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="281"/>
+        <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="304"/>
         <source>No dives in dive list</source>
         <translation type="unfinished"/>
     </message>
@@ -2855,7 +2860,7 @@ GPS location:</source>
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="443"/>
         <source>Multiple Buddies</source>
         <translation type="unfinished"/>
     </message>
@@ -3503,7 +3508,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="94"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="129"/>
         <source>Download</source>
         <translation type="unfinished"/>
     </message>
@@ -3538,47 +3543,57 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="56"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="64"/>
         <source> Vendor name: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="77"/>
         <source> Dive Computer:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="80"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="88"/>
         <source>Bluetooth download:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="135"/>
         <source>Retry</source>
         <translation>Thử lại</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="116"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="161"/>
         <source>Quit</source>
         <translation>Thoát</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="174"/>
         <source> Downloaded dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="175"/>
+        <source>Info:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="175"/>
+        <source> No dives</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="214"/>
         <source>Accept</source>
         <translation>Chấp nhậ</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="169"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="240"/>
         <source>Select All</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="258"/>
         <source>Unselect All</source>
         <translation type="unfinished"/>
     </message>
@@ -3712,7 +3727,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation type="unfinished"/>
     </message>
@@ -3928,7 +3943,6 @@ p, li { white-space: pre-wrap; }
     <name>Log</name>
     <message>
         <location filename="../mobile-widgets/qml/Log.qml" line="16"/>
-        <location filename="../mobile-widgets/qml/Log.qml" line="28"/>
         <source>Application Log</source>
         <translation type="unfinished"/>
     </message>
@@ -4859,28 +4873,71 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <name>Preferences</name>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="12"/>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="38"/>
         <source>Preferences</source>
         <translation>Tùy biến</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="15"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="17"/>
         <source>Save</source>
         <translation>Lưu lại</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="44"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="35"/>
+        <source>Theme</source>
+        <translation>Giao diện</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="71"/>
+        <source>Blue</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="84"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="216"/>
+        <source>regular text</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="99"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="231"/>
+        <source>Highlight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="137"/>
+        <source>Pink</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="203"/>
+        <source>Dark</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="247"/>
         <source>Subsurface GPS data webservice</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="52"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="256"/>
         <source>Distance threshold (meters)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="63"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="267"/>
         <source>Time threshold (minutes)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="286"/>
+        <source>Debug log for download from divecomputer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="321"/>
+        <source>Save detailed log of interaction with the dive computer</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -5832,131 +5889,131 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="91"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="110"/>
         <source>Starting...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="134"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="160"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="142"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="168"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="162"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="188"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="203"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="229"/>
         <source>working in no-cloud mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="208"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="234"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="243"/>
         <source>no cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="270"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="244"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="300"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="315"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="336"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="350"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="359"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="391"/>
         <source>Cloud credentials are invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="404"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="417"/>
         <source>Cannot open cloud storage: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="429"/>
         <source>Cannot connect to cloud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="423"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="435"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="465"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="478"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="508"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="548"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="578"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="749"/>
         <source>h</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="749"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="750"/>
         <source>min</source>
         <translation>nhỏ nhất</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
         <source>sec</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1094"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1124"/>
         <source>Unknown GPS location</source>
         <translation type="unfinished"/>
     </message>
@@ -6120,20 +6177,14 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/btdiscovery.cpp" line="144"/>
-        <location filename="../core/btdiscovery.cpp" line="148"/>
-        <location filename="../core/btdiscovery.cpp" line="149"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="98"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="253"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="259"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="276"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="282"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="300"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="308"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="328"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="336"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="356"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="364"/>
+        <location filename="../core/btdiscovery.cpp" line="166"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="164"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="318"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="335"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="341"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="353"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="380"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="400"/>
         <source>Paired Bluetooth Devices</source>
         <translation type="unfinished"/>
     </message>
@@ -7633,8 +7684,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="525"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="556"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="533"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="564"/>
         <source>No error</source>
         <translation type="unfinished"/>
     </message>
@@ -7748,7 +7799,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="790"/>
+        <location filename="../core/libdivecomputer.c" line="798"/>
         <source>Error parsing the header</source>
         <translation type="unfinished"/>
     </message>
@@ -7768,7 +7819,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="246"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>deco stop</source>
         <translation>dừng lại deco</translation>
     </message>
@@ -7776,7 +7827,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="779"/>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>ascent</source>
         <translation>đường dốc</translation>
     </message>
@@ -7788,20 +7839,20 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>maxdepth</source>
         <translation>độ sâu tối đa</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>pO₂</source>
         <translation type="unfinished"/>
     </message>
@@ -7810,28 +7861,28 @@ Maximum</source>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="870"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="276"/>
         <source>gaschange</source>
         <translation>thay đổi dưỡng khí</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="247"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>ceiling</source>
         <translation>trần</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>transmitter</source>
         <translation>máy phát radio</translation>
     </message>
@@ -8410,200 +8461,205 @@ Maximum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="232"/>
+        <location filename="../core/libdivecomputer.c" line="238"/>
         <location filename="../core/parse-xml.c" line="3326"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>chưa rõ</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="245"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>none</source>
         <translation>không</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>workload</source>
         <translation>tải công việc</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>violation</source>
         <translation>độ xâm phạm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>bookmark</source>
         <translation>đánh dấu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
         <source>surface</source>
         <translation>bề mặt</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
         <source>safety stop</source>
         <translation>dừng an toàn</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>safety stop (voluntary)</source>
         <translation>dừng an toàn (tự nguyện)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>safety stop (mandatory)</source>
         <translation>dừng an toàn (bắt buộc)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>deepstop</source>
         <translation>deepstop</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>ceiling (safety stop)</source>
         <translation>trần (độ an toàn)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>divetime</source>
         <translation>thời gian lặn</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>airtime</source>
         <translation>thời gian không khí</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>heading</source>
         <translation>thẳng tiến</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="275"/>
         <source>tissue level warning</source>
         <translation>cảnh báo cấp độ mô</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="279"/>
+        <location filename="../core/libdivecomputer.c" line="285"/>
         <source>invalid event number</source>
         <translation>chỉ số sự kiện không hợp lệ</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="614"/>
         <source>Error parsing the datetime</source>
         <translation>Lỗi khi chuyển thông số thời gian</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="632"/>
         <source>Dive %d: %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="630"/>
+        <location filename="../core/libdivecomputer.c" line="638"/>
         <source>Error parsing the divetime</source>
         <translation>Lỗi khi chuyển thông số thời gian lặn</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="640"/>
+        <location filename="../core/libdivecomputer.c" line="648"/>
         <source>Error parsing the maxdepth</source>
         <translation>Lỗi khi chuyển thông số độ sâu tối đa</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="659"/>
+        <location filename="../core/libdivecomputer.c" line="667"/>
         <source>Error parsing temperature</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="679"/>
+        <location filename="../core/libdivecomputer.c" line="687"/>
         <source>Error parsing the gas mix count</source>
         <translation>Lỗi khi chuyển tiếp thông số số lượng hỗn hợp dưỡng khí</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="691"/>
+        <location filename="../core/libdivecomputer.c" line="699"/>
         <source>Error obtaining water salinity</source>
         <translation>Lỗi khi thu nhận độ mặn của nước</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.c" line="708"/>
         <source>Error obtaining surface pressure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="725"/>
+        <location filename="../core/libdivecomputer.c" line="733"/>
         <source>Error obtaining dive mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="745"/>
+        <location filename="../core/libdivecomputer.c" line="753"/>
         <source>Error parsing the gas mix</source>
         <translation>Lỗi khi chuyển thông số hỗn hợp dưỡng khí</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="770"/>
+        <location filename="../core/libdivecomputer.c" line="778"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Không thể tạo việc chuyển thông số cho %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="776"/>
+        <location filename="../core/libdivecomputer.c" line="784"/>
         <source>Error registering the data</source>
         <translation>Lỗi khi đăng ký dữ liệu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="797"/>
+        <location filename="../core/libdivecomputer.c" line="805"/>
         <source>Error parsing the samples</source>
         <translation>Lỗi khi chuyển thông số các mẫu</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="935"/>
+        <location filename="../core/libdivecomputer.c" line="812"/>
+        <source>Already downloaded dive at %s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.c" line="946"/>
         <source>Event: waiting for user action</source>
         <translation>Sự kiện: đang đợi thao tác từ người dùng</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
-        <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
-        <translation>mô hình=%u (0x%08x), firmware=%u (0x%08x), số hiệu=%u (0x%08x)</translation>
+        <location filename="../core/libdivecomputer.c" line="965"/>
+        <source>model=%s firmware=%u serial=%u</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1007"/>
+        <location filename="../core/libdivecomputer.c" line="1027"/>
         <source>Error registering the event handler.</source>
         <translation>Lỗi khi đăng ký quản lý sự kiện.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1012"/>
+        <location filename="../core/libdivecomputer.c" line="1032"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Lỗi khi đăng ký việc hủy bỏ quản lý.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1033"/>
+        <location filename="../core/libdivecomputer.c" line="1053"/>
         <source>Dive data import error</source>
         <translation>Lỗi khi nhập dữ liệu lặn</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1072"/>
+        <location filename="../core/libdivecomputer.c" line="1092"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Không thể tạo nội dung cho thiết bị đo lặn</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1079"/>
+        <location filename="../core/libdivecomputer.c" line="1099"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Không thể mở %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1104"/>
+        <location filename="../core/libdivecomputer.c" line="1124"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation type="unfinished"/>
     </message>
@@ -9168,6 +9224,11 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/qthelper.cpp" line="640"/>
         <source>F</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="969"/>
+        <source>more than %1 days</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -9980,121 +10041,116 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="132"/>
+        <source>Settings</source>
+        <translation>Thiết lập</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
         <source>Manage dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="148"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="157"/>
         <source>Add dive manually</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="165"/>
         <source>Download from DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="173"/>
         <source>Manual sync with cloud</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Offline mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Enable auto cloud sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="199"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
+        <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>GPS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="203"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
         <source>GPS-tag dives</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="210"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="215"/>
         <source>Upload GPS data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Download GPS data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="229"/>
         <source>Show GPS fixes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Clear GPS cache</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Preferences</source>
         <translation>Tùy biến</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="245"/>
         <source>Developer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
         <source>App log</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
-        <source>Switch to pink theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="263"/>
-        <source>Switch to blue theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="270"/>
-        <source>Switch to dark theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="254"/>
         <source>Theme information</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="284"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
         <source>User manual</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="267"/>
         <source>About</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>Run location service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>No GPS source available</source>
         <translation type="unfinished"/>
     </message>

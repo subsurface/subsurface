@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.3
+import QtQuick 2.6
+import QtQuick.Controls 2.0
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -9,8 +10,6 @@ import org.kde.kirigami 2.0 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: gpsListWindow
-	width: parent.width - Kirigami.Units.gridUnit
-	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "gpsList"
 	title: qsTr("GPS Fixes")
 
@@ -26,40 +25,48 @@ Kirigami.ScrollablePage {
 				width: parent.width
 				Kirigami.Label {
 					text: qsTr('Date: ')
+					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: date
+					color: subsurfaceTheme.textColor
 					Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: qsTr('Name: ')
+					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: name
+					color: subsurfaceTheme.textColor
 					Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: qsTr('Latitude: ')
+					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: latitude
+					color: subsurfaceTheme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: qsTr('Longitude: ')
+					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 				Kirigami.Label {
 					text: longitude
+					color: subsurfaceTheme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
 			}
@@ -93,11 +100,5 @@ Kirigami.ScrollablePage {
 		cacheBuffer: Math.max(5000, parent.height * 5)
 		focus: true
 		clip: true
-		header: Kirigami.Heading {
-			x: Kirigami.Units.gridUnit / 2
-			height: paintedHeight + Kirigami.Units.gridUnit / 2
-			verticalAlignment: Text.AlignBottom
-			text: qsTr("List of stored GPS fixes")
-		}
 	}
 }

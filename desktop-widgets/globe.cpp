@@ -395,38 +395,4 @@ void GlobeGPS::centerOnIndex(const QModelIndex& idx)
 	else
 		centerOnDiveSite(ds);
 }
-#else
-
-GlobeGPS *GlobeGPS::instance()
-{
-	static GlobeGPS *self = new GlobeGPS();
-	return self;
-}
-
-GlobeGPS::GlobeGPS(QWidget *parent)
-{
-	setText("MARBLE DISABLED AT BUILD TIME");
-}
-void GlobeGPS::repopulateLabels()
-{
-}
-void GlobeGPS::centerOnCurrentDive()
-{
-}
-bool GlobeGPS::eventFilter(QObject *obj, QEvent *ev)
-{
-	return QObject::eventFilter(obj, ev);
-}
-void GlobeGPS::prepareForGetDiveCoordinates()
-{
-}
-void GlobeGPS::endGetDiveCoordinates()
-{
-}
-void GlobeGPS::reload()
-{
-}
-void GlobeGPS::centerOnIndex(const QModelIndex& idx)
-{
-}
 #endif

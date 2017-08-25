@@ -92,11 +92,11 @@ static dc_status_t ble_serial_open(dc_custom_io_t *io, dc_context_t *context, co
 	return qt_ble_open(&ble_serial_ops, context, devaddr);
 }
 
-#define BUFSZ 1024
+#define BT_BLE_BUFSIZE 4096
 static struct {
 	unsigned int out_bytes, in_bytes, in_pos;
-	unsigned char in[BUFSIZ];
-	unsigned char out[BUFSIZ];
+	unsigned char in[BT_BLE_BUFSIZE];
+	unsigned char out[BT_BLE_BUFSIZE];
 } buffer;
 
 static dc_status_t ble_serial_flush_write(void)
@@ -126,19 +126,34 @@ static dc_status_t ble_serial_read(dc_custom_io_t *io, void* data, size_t size, 
 {
 	Q_UNUSED(io)
 	size_t len;
+	size_t received = 0;
 
 	if (buffer.in_pos >= buffer.in_bytes) {
-		dc_status_t rc;
-		size_t received;
-
 		ble_serial_flush_write();
-		rc = ble_serial_ops.packet_read(&ble_serial_ops, buffer.in, sizeof(buffer.in), &received);
+	}
+
+	/* There is still unused/unread data in the input steam.
+	 * So preseve it at the start of a new read.
+	 */
+	if (buffer.in_pos > 0) {
+		len = buffer.in_bytes - buffer.in_pos;
+		memcpy(buffer.in, buffer.in + buffer.in_pos, len);
+		buffer.in_pos = 0;
+		buffer.in_bytes = len;
+	}
+
+	/* Read a long as requested in the size parameter */
+	while ((buffer.in_bytes - buffer.in_pos) < size) {
+		dc_status_t rc;
+
+		rc = ble_serial_ops.packet_read(&ble_serial_ops, buffer.in + buffer.in_bytes,
+						sizeof(buffer.in) - buffer.in_bytes, &received);
 		if (rc != DC_STATUS_SUCCESS)
 			return rc;
 		if (!received)
 			return DC_STATUS_IO;
-		buffer.in_pos = 0;
-		buffer.in_bytes = received;
+
+		buffer.in_bytes += received;
 	}
 
 	len = buffer.in_bytes - buffer.in_pos;

@@ -155,133 +155,138 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="226"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
         <source>UNPAIRED</source>
         <translation>ΜΗ ΣΥΖΕΥΓΜΕΝΟ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="345"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
         <source>PAIRED</source>
         <translation>ΣΥΖΕΥΓΜΕΝΟ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="233"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="350"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation>ΕΞΟΥΣΙΟΔΟΤΗΜΕΝΟ_ΣΥΖΕΥΓΜΕΝΟ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="237"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="240"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation>%1 (%2) [Κατάσταση: %3]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="254"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="257"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation>Η συσκευή %1 μπορεί να χρησιμοποιηθεί για σύνδεση. Μπορείτε να πιέσετε το κουμπί Αποθήκευση.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="263"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="266"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation>Η συσκευή %1 πρέπει να συζευχθεί ώστε να χρησιμοποιηθεί. Παρακαλώ χρησιμοποιείστε τον αρχικό κατάλογο για επιλογές σύζευξης.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="287"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="271"/>
+        <source>A device needs a non-zero address for a connection.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="294"/>
         <source>The local device was changed.</source>
         <translation>Η τοπική συσκευή τροποποιήθηκε. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="314"/>
         <source>Pair</source>
         <translation>Σύζευξη</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="308"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
         <source>Remove pairing</source>
         <translation>Απομάκρυνση σύζευξης</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="324"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <source>Trying to pair device %1</source>
         <translation>Προσπάθεια σύζευξης συσκευής %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="328"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
         <source>Trying to unpair device %1</source>
         <translation>Προσπάθεια αποσύζευξης συσκευής %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
         <source>Device %1 was unpaired.</source>
         <translation>Η συσκευή %1 αποσυζεύχθηκε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
         <source>Device %1 was paired.</source>
         <translation>Η συσκευή %1 συζεύχθηκε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation>Η συσκευή %1 συζεύχθηκε και έχει εξουσιοδοτηθεί</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation>Η συσκευή %1 μπορεί πλέον να χρησιμοποιηθεί για σύνδεση. Μπορείτε να πιέσετε το κουμπί Αποθήκευση.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="398"/>
         <source>Local device error: %1.</source>
         <translation>Σφάλμα τοπικής συσκευής: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="392"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="399"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation>Σφάλμα σύζευξης. Αν η απομακρυσμένη συσκευή απαιτεί έναν συγκεκριμένο κωδικό PIN, προσπαθήστε να συζεύξετε την συσκευή χρησιμοποιώντας το λειτουργικό σας σύστημα.        </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="394"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
         <source>Unknown error</source>
         <translation>Άγνωστο σφάλμα</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="403"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation>Ο προσαρμογέας Bluetooth είναι κλειστός, ανοίξτε τον πριν προβείτε σε εύρεση.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="406"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="413"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation>Η εγγραφή ή η ανάγνωση από την συσκευή οδήγησε σε σφάλμα.  </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="412"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
         <source>An unknown error has occurred.</source>
         <translation>Προέκυψε ένα άγνωστο σφάλμα.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="417"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
         <source>Device discovery error: %1.</source>
         <translation>Σφάλμα εύρεσης συσκευής: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="445"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="453"/>
         <source>Not available</source>
         <translation>Μη διαθέσιμο</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="452"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="460"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation>Ο τοπικός προσαρμογέας Bluetooth δεν είναι προσβάσιμος.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation>Ο παράγοντας εύρεσης της συσκευής δεν δημιουργήθηκε διότι η διεύθυνση %1 δεν συμπίπτει με την φυσική διεύθυνση προσαρμογέα οποιασδήποτε τοπικής συσκευής Bluetooth.    </translation>
     </message>
@@ -311,7 +316,7 @@
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
@@ -1936,67 +1941,67 @@ GPS location:</source>
         <translation>Χρήση τρέχουσας θέσης GPS:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="128"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
         <source>Depth:</source>
         <translation>Βάθος:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
         <source>Duration:</source>
         <translation>Διάρκεια:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="166"/>
         <source>Air Temp:</source>
         <translation>Θερμοκρασία Ατμόσφαιρας:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="175"/>
         <source>Water Temp:</source>
         <translation>Θερμοκρασία Νερού:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="184"/>
         <source>Suit:</source>
         <translation>Στολή:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="195"/>
         <source>Buddy:</source>
         <translation>Καταδυτικό ζευγάρι:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
         <source>Divemaster:</source>
         <translation>Divemaster:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="198"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="217"/>
         <source>Weight:</source>
         <translation>Βάρος:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="227"/>
         <source>Cylinder:</source>
         <translation>Φιάλη:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="219"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
         <source>Gas mix:</source>
         <translation>Μείγμα αερίου:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
         <source>Start Pressure:</source>
         <translation>Πίεση στην αρχή:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="257"/>
         <source>End Pressure:</source>
         <translation>Πίεση στο τέλος:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="267"/>
         <source>Notes:</source>
         <translation>Σημειώσεις:</translation>
     </message>
@@ -2116,23 +2121,23 @@ GPS location:</source>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="251"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="257"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Dive list</source>
         <translation>Κατάλογος καταδύσεων</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="275"/>
         <source>Cloud credentials</source>
         <translation>Διαπιστευτήρια νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="253"/>
-        <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation>Παρακαλώ πατήστε το &apos;+&apos; για να προσθέσετε μία κατάδυση </translation>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="281"/>
+        <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="304"/>
         <source>No dives in dive list</source>
         <translation>Δεν υπάρχουν καταδύσεις στον κατάλογο καταδύσεων</translation>
     </message>
@@ -2857,7 +2862,7 @@ GPS location:</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="443"/>
         <source>Multiple Buddies</source>
         <translation>Πολλαπλοί καταδυτικοί σύντροφοι  </translation>
     </message>
@@ -3510,7 +3515,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="94"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="122"/>
         <source>Download</source>
         <translation>Λήψη</translation>
     </message>
@@ -3545,47 +3550,47 @@ p, li { white-space: pre-wrap; }
         <translation>Υπολογιστής Κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="56"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="57"/>
         <source> Vendor name: </source>
         <translation>Επωνυμία προμηθευτή:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="70"/>
         <source> Dive Computer:</source>
         <translation>Καταδυτικός υπολογιστής:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="80"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="81"/>
         <source>Bluetooth download:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="128"/>
         <source>Retry</source>
         <translation>Επαναπροσπάθεια</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="116"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="154"/>
         <source>Quit</source>
         <translation>Παραίτηση</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="167"/>
         <source> Downloaded dives</source>
         <translation>Ληφθείσες καταδύσεις</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="204"/>
         <source>Accept</source>
         <translation>Αποδοχή</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="169"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="230"/>
         <source>Select All</source>
         <translation>Επιλογή όλων</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="247"/>
         <source>Unselect All</source>
         <translation>Αποεπιλογή Όλων</translation>
     </message>
@@ -3721,7 +3726,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation>Πίσω</translation>
     </message>
@@ -3938,7 +3943,6 @@ p, li { white-space: pre-wrap; }
     <name>Log</name>
     <message>
         <location filename="../mobile-widgets/qml/Log.qml" line="16"/>
-        <location filename="../mobile-widgets/qml/Log.qml" line="28"/>
         <source>Application Log</source>
         <translation>Αρχεία καταγραφής εφαρμογής</translation>
     </message>
@@ -4872,7 +4876,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <name>Preferences</name>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="12"/>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="38"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="39"/>
         <source>Preferences</source>
         <translation>Προτιμήσεις</translation>
     </message>
@@ -4882,17 +4886,51 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation>Αποθήκευση</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="44"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="46"/>
+        <source>Theme</source>
+        <translation>Θέμα</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="82"/>
+        <source>Blue</source>
+        <translation>Μπλε</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="95"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="161"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="227"/>
+        <source>regular text</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="110"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="242"/>
+        <source>Highlight</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="148"/>
+        <source>Pink</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="214"/>
+        <source>Dark</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="261"/>
         <source>Subsurface GPS data webservice</source>
         <translation>Υπηρεσία δικτύου Subsurface δεδομένων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="52"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="270"/>
         <source>Distance threshold (meters)</source>
         <translation>Όριο απόστασης (μέτρα)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="63"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="281"/>
         <source>Time threshold (minutes)</source>
         <translation>Όριο χρόνου (minutes)</translation>
     </message>
@@ -5847,131 +5885,131 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="91"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="86"/>
         <source>Starting...</source>
         <translation>Έναρξη...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="134"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="135"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="142"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="143"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="162"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="163"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="203"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="204"/>
         <source>working in no-cloud mode</source>
         <translation>εργασία εκτός αποθηκευτικού νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="208"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="209"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
         <source>no cloud credentials</source>
         <translation>Δεν υπάρχουν διαπιστευτήρια νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="270"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="219"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Παρακαλώ εισάγετε έγκυρα διαπιστευτήρια νέφους </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Προσπάθεια ανοίγματος αποθήκευσης νέφους με νέα διαπιστευτήρια </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="307"/>
         <source>Testing cloud credentials</source>
         <translation>Έλεγχος διαπιστευτηρίων νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="321"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Καμία απόκριση από τον διαμεσολαβητή του αποθηκευτικού νέφους για έλεγχο εγκυρότητας των διαπιστευτηρίων  </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="330"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>Δεν μπορεί να συνδεθεί με το αποθηκευτικό νέφος - ο λογαριασμός αποθηκευτικού νέφους δεν έχει επιβεβαιωθεί   </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="362"/>
         <source>Cloud credentials are invalid</source>
         <translation>Λανθασμένα διαπιστευτήρια αποθηκευτικού νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="375"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>Δεν μπορεί να ανοιχθεί το αποθηκευτικό νέφος: Σφάλμα στη δημιουργία συνδέσεων https  </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="388"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>Δεν μπορεί να ανοιχθεί το αποθηκευτικό νέφος: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="400"/>
         <source>Cannot connect to cloud storage</source>
         <translation>Δεν μπορεί να συνδεθεί με το αποθηκευτικό νέφος</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="423"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="424"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="435"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="436"/>
         <source>Cloud storage error: %1</source>
         <translation>Σφάλμα αποθήκευσης στο αποθηκευτικό νέφος: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="478"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="479"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Αποτυχία σύνδεσης με τον διακομιστή του αποθηκευτικού νέφους, επαναφορά σε καθεστώς λειτουργίας χωρίς αποθηκευτικό νέφος </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="548"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="549"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Το αποθηκευτικό νέφος ανοίχθηκε με επιτυχία. Δεν υπάρχουν καταδύσεις στον κατάλογο καταδύσεων. </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>h</source>
         <translation>ώρα</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="721"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <source>sec</source>
         <translation>δευτερόλεπτα</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1094"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1095"/>
         <source>Unknown GPS location</source>
         <translation>Άγνωστη θέση GPS</translation>
     </message>
@@ -6135,20 +6173,14 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>Παραμορφωμένη απάντηση XML. Γραμμή %1: %2</translation>
     </message>
     <message>
-        <location filename="../core/btdiscovery.cpp" line="144"/>
-        <location filename="../core/btdiscovery.cpp" line="148"/>
-        <location filename="../core/btdiscovery.cpp" line="149"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="98"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="253"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="259"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="276"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="282"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="300"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="308"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="328"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="336"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="356"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="364"/>
+        <location filename="../core/btdiscovery.cpp" line="166"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="142"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="296"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="313"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="319"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="331"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="358"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="378"/>
         <source>Paired Bluetooth Devices</source>
         <translation type="unfinished"/>
     </message>
@@ -7664,8 +7696,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="525"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="556"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="533"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="564"/>
         <source>No error</source>
         <translation>Χωρίς σφάλμα</translation>
     </message>
@@ -7788,7 +7820,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="790"/>
+        <location filename="../core/libdivecomputer.c" line="840"/>
         <source>Error parsing the header</source>
         <translation>Σφάλμα στην ανάλυση της κεφαλίδας</translation>
     </message>
@@ -7808,7 +7840,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="246"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>deco stop</source>
         <translation>στάση αποσυμπίεσης</translation>
     </message>
@@ -7816,7 +7848,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="779"/>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>ascent</source>
         <translation>άνοδος</translation>
     </message>
@@ -7828,20 +7860,20 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>maxdepth</source>
         <translation>μέγιστο βάθος</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -7850,28 +7882,28 @@ Maximum</source>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="870"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="275"/>
         <source>gaschange</source>
         <translation>αλλαγή αερίου</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="247"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>ceiling</source>
         <translation>Βάθος ασφαλούς ανάδυσης</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>transmitter</source>
         <translation>πομπός</translation>
     </message>
@@ -8450,200 +8482,200 @@ Maximum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="232"/>
+        <location filename="../core/libdivecomputer.c" line="237"/>
         <location filename="../core/parse-xml.c" line="3326"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>άγνωστο</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="245"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>none</source>
         <translation>κανένα</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>workload</source>
         <translation>φόρτο εργασίας</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>violation</source>
         <translation>παράβαση</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>bookmark</source>
         <translation>σελιδοδείκτης</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>surface</source>
         <translation>επιφάνεια</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
         <source>safety stop</source>
         <translation>στάση ασφαλείας</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
         <source>safety stop (voluntary)</source>
         <translation>στάση ασφαλείας (προληπτική)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>safety stop (mandatory)</source>
         <translation>στάση ασφαλείας (υποχρεωτική)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>deepstop</source>
         <translation>βαθιά στάση</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>ceiling (safety stop)</source>
         <translation>Βάθος ασφαλούς ανάδυσης (στάση ασφαλείας)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>below floor</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>divetime</source>
         <translation>διάρκεια</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>airtime</source>
         <translation>airtime</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>heading</source>
         <translation>κεφαλίδα</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>tissue level warning</source>
         <translation>προειδοποίηση επιπέδου ιστών</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="279"/>
+        <location filename="../core/libdivecomputer.c" line="284"/>
         <source>invalid event number</source>
         <translation>άκυρος αριθμός συμβάντος</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="656"/>
         <source>Error parsing the datetime</source>
         <translation>Σφάλμα στην ημερομηνία</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="674"/>
         <source>Dive %d: %s</source>
         <translation>Κατάδυση %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="630"/>
+        <location filename="../core/libdivecomputer.c" line="680"/>
         <source>Error parsing the divetime</source>
         <translation>Σφάλμα στην διάρκεια της κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="640"/>
+        <location filename="../core/libdivecomputer.c" line="690"/>
         <source>Error parsing the maxdepth</source>
         <translation>Σφάλμα στο μέγιστο βάθος</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="659"/>
+        <location filename="../core/libdivecomputer.c" line="709"/>
         <source>Error parsing temperature</source>
         <translation>Σφάλμα στην ανάλυση της θερμοκρασίας</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="679"/>
+        <location filename="../core/libdivecomputer.c" line="729"/>
         <source>Error parsing the gas mix count</source>
         <translation>Σφάλμα στον αριθμό των αερίων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="691"/>
+        <location filename="../core/libdivecomputer.c" line="741"/>
         <source>Error obtaining water salinity</source>
         <translation>Σφάλμα στην πρόσκτηση της αλατότητας</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.c" line="750"/>
         <source>Error obtaining surface pressure</source>
         <translation>Σφάλμα στην πρόσκτηση της πίεσης επιφανείας</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="725"/>
+        <location filename="../core/libdivecomputer.c" line="775"/>
         <source>Error obtaining dive mode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="745"/>
+        <location filename="../core/libdivecomputer.c" line="795"/>
         <source>Error parsing the gas mix</source>
         <translation>Σφάλμα στο μίγμα αερίων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="770"/>
+        <location filename="../core/libdivecomputer.c" line="820"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Αδύνατον να αναλυθεί το %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="776"/>
+        <location filename="../core/libdivecomputer.c" line="826"/>
         <source>Error registering the data</source>
         <translation>Σφάλμα στην καταχώρηση των δεδομένων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="797"/>
+        <location filename="../core/libdivecomputer.c" line="847"/>
         <source>Error parsing the samples</source>
         <translation>Σφάλμα στα δείγματα</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="935"/>
+        <location filename="../core/libdivecomputer.c" line="985"/>
         <source>Event: waiting for user action</source>
         <translation>Συμβάν: Περιμένοντας για ενέργεια από τον χρήστη</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
+        <location filename="../core/libdivecomputer.c" line="993"/>
         <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
         <translation>τύπος=%u (0x%08x), υλικολογισμικό=%u (0x%08x), σειριακός αριθμός=%u (0x%08x)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1007"/>
+        <location filename="../core/libdivecomputer.c" line="1068"/>
         <source>Error registering the event handler.</source>
         <translation>Σφάλμα στην καταχώρηση του συμβάντος</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1012"/>
+        <location filename="../core/libdivecomputer.c" line="1073"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Σφάλμα στην καταχώρηση της ακύρωσης</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1033"/>
+        <location filename="../core/libdivecomputer.c" line="1094"/>
         <source>Dive data import error</source>
         <translation>Σφάλμα στην εισαγωγή δεδομένων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1072"/>
+        <location filename="../core/libdivecomputer.c" line="1133"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Unable to create libdivecomputer context</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1079"/>
+        <location filename="../core/libdivecomputer.c" line="1140"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Αδύνατον να ανοιχθεί το %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1104"/>
+        <location filename="../core/libdivecomputer.c" line="1165"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Ανεπαρκή δικαιώματα για να ανοιχθεί η συσκευή  %s %s (%s)</translation>
     </message>
@@ -9239,6 +9271,11 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="640"/>
         <source>F</source>
         <translation>F</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="969"/>
+        <source>more than %1 days</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/save-html.c" line="472"/>
@@ -10053,121 +10090,116 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="132"/>
+        <source>Settings</source>
+        <translation>Ρυθμίσεις</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Cloud credentials</source>
         <translation>Διαπιστευτήρια νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
         <source>Manage dives</source>
         <translation>Διαχείριση καταδύσεων</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="148"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="157"/>
         <source>Add dive manually</source>
         <translation>Προσθήκη κατάδυσης μη αυτόματα</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="165"/>
         <source>Download from DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="173"/>
         <source>Manual sync with cloud</source>
         <translation>Μη αυτόματος συγχρονισμός με το αποθηκευτικό νέφος</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Offline mode</source>
         <translation>Λειτουργία χωρίς σύνδεση</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Enable auto cloud sync</source>
         <translation>Ενεργοποίηση αυτόματου συγχρονισμού αποθηκευτικού νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="199"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
+        <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="203"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
         <source>GPS-tag dives</source>
         <translation>Καταδύσεις με ετικέτες GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="210"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="215"/>
         <source>Upload GPS data</source>
         <translation>Μεταφόρτωση δεδομένων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Download GPS data</source>
         <translation>Λήψη δεδομένων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="229"/>
         <source>Show GPS fixes</source>
         <translation>Προβολή στοιχείων θέσεων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Clear GPS cache</source>
         <translation>Εκκαθάριση τοπικής κρυφής μνήμης GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Preferences</source>
         <translation>Προτιμήσεις</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="245"/>
         <source>Developer</source>
         <translation>Υπεύθυνος ανάπτυξης </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
         <source>App log</source>
         <translation>Αρχείο καταγραφής δεδομένων εφαρμογής </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
-        <source>Switch to pink theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="263"/>
-        <source>Switch to blue theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="270"/>
-        <source>Switch to dark theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="254"/>
         <source>Theme information</source>
         <translation>Πληροφορίες θέματος εμφάνισης</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="284"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
         <source>User manual</source>
         <translation>Εγχειρίδιο χρήσης</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="267"/>
         <source>About</source>
         <translation>Σχετικά</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>Run location service</source>
         <translation>Εκτέλεση υπηρεσίας τοποθεσίας</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>No GPS source available</source>
         <translation>Δεν υπάρχουν διαθεσιμες πηγές GPS </translation>
     </message>

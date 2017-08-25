@@ -106,7 +106,7 @@ SQLITE_VERSION=3190200
 LIBXML2_VERSION=2.9.4
 LIBXSLT_VERSION=1.1.29
 LIBZIP_VERSION=1.1.3
-LIBGIT2_VERSION=0.25.1
+LIBGIT2_VERSION=0.26.0
 LIBUSB_VERSION=1.0.20
 OPENSSL_VERSION=1.0.2l
 LIBFTDI_VERSION=1.3
@@ -126,7 +126,7 @@ fi
 export QT5_ANDROID_CMAKE
 if [ -d "${QT5_ANDROID}/android_${QT_ARCH}/lib/cmake" ] ; then
 	export QT5_ANDROID_CMAKE=$QT5_ANDROID/android_${QT_ARCH}/lib/cmake
-elif [ -d "${QT5_ANDROID}lib/cmake" ] ; then
+elif [ -d "${QT5_ANDROID}/lib/cmake" ] ; then
 	export QT5_ANDROID_CMAKE=$QT5_ANDROID/lib/cmake
 else
 	echo "Cannot find Qt cmake configuration"

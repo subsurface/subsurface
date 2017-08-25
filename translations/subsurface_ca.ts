@@ -156,133 +156,138 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="226"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
         <source>UNPAIRED</source>
         <translation>SENSE APARELLAR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="345"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="358"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
         <source>PAIRED</source>
         <translation>APARELLAT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="233"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="350"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation>AUTORITZAT_EMPARELLAR</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="237"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="240"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation>%1 (%2)   [Estat: %3]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="254"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="257"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation>El dispositiu %1 es pot emprar per a connectar. Podeu prémer el botó «Desa».</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="263"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="266"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation>S&apos;ha d&apos;aparellar amb el dispositiu %1 per a poder-lo emprar. Useu el menú contextual per a les opcions d&apos;aparellament.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="287"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="271"/>
+        <source>A device needs a non-zero address for a connection.</source>
+        <translation>Per a una connexió, el dispositiu necessita una adreça que no sigui zero.</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="294"/>
         <source>The local device was changed.</source>
         <translation>El dispositiu local ha canviat.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="307"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="314"/>
         <source>Pair</source>
         <translation>Aparella</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="308"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
         <source>Remove pairing</source>
         <translation>Elimina l&apos;aparellament</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="324"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
         <source>Trying to pair device %1</source>
         <translation>S&apos;està provant aparellar amb el dispositiu %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="328"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
         <source>Trying to unpair device %1</source>
         <translation>S&apos;està provant desaparellar amb el dispositiu %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="341"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
         <source>Device %1 was unpaired.</source>
         <translation>El dispositiu %1 ha estat desaparellat.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
         <source>Device %1 was paired.</source>
         <translation>El dispositiu %1 ha estat aparellat.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation>S&apos;ha aparellat i autoritzat al dispositiu %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation>El dispositiu %1 es pot emprar per a connectar. Podeu prémer el botó «Desa».</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="398"/>
         <source>Local device error: %1.</source>
         <translation>Error del dispositiu local: %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="392"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="399"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation>Error en aparellar. Si el dispositiu remot requereix un codi PIN, proveu d&apos;aparellar-los emprant el vostre sistema operatiu.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="394"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
         <source>Unknown error</source>
         <translation>Error desconegut</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="403"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation>L&apos;adaptador de Bluetooth està desactivat, activeu-lo abans de reprendre la cerca.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="406"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="413"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation>En escriure o llegir des del dispositiu ha resultat en un error.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="412"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
         <source>An unknown error has occurred.</source>
         <translation>S&apos;ha produït un error desconegut.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="417"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
         <source>Device discovery error: %1.</source>
         <translation>Error en cercar dispositius: %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="445"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="453"/>
         <source>Not available</source>
         <translation>No disponible</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="452"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="460"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation>No es pot accedir a l&apos;adaptador de Bluetooth local.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation>No s&apos;ha creat l&apos;agent de cerca de dispositius perquè l&apos;adreça %1 no coincideix amb l&apos;adreça de l&apos;adaptador físic de cap dispositiu de Bluetooth.</translation>
     </message>
@@ -312,13 +317,13 @@
     <name>CheckCloudConnection</name>
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
-        <source>Waiting for cloud connetion (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <source>Waiting for cloud connection (%n second(s) passed)</source>
+        <translation><numerusform>S&apos;està esperant la connexió amb el núvol (han passat %n segons)</numerusform><numerusform>S&apos;està esperant la connexió amb el núvol (ha passat %n segon)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Ha fallat la connexió amb el núvol</translation>
     </message>
 </context>
 <context>
@@ -660,7 +665,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
         <source>OSTC 4</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="262"/>
@@ -1577,22 +1582,22 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3267"/>
         <source>Travel gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Consum de gas del viatge</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3290"/>
         <source>Button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Sensibilitat del botó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3420"/>
         <source>VPM</source>
-        <translation type="unfinished"/>
+        <translation>VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3560"/>
         <source>VPM conservatism</source>
-        <translation type="unfinished"/>
+        <translation>Conservadorisme del VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3567"/>
@@ -1941,67 +1946,67 @@ GPS location:</source>
 GPS actual:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="128"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
         <source>Depth:</source>
         <translation>Profunditat:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
         <source>Duration:</source>
         <translation>Durada:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="166"/>
         <source>Air Temp:</source>
         <translation>Temp. de l&apos;aire:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="175"/>
         <source>Water Temp:</source>
         <translation>Temp. de l&apos;aigua:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="184"/>
         <source>Suit:</source>
         <translation>Vestit:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="195"/>
         <source>Buddy:</source>
         <translation>Company:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="206"/>
         <source>Divemaster:</source>
         <translation>Líder de busseig:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="198"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="217"/>
         <source>Weight:</source>
         <translation>Llast:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="227"/>
         <source>Cylinder:</source>
         <translation>Ampolla:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="219"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
         <source>Gas mix:</source>
         <translation>Barreja de gas:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
         <source>Start Pressure:</source>
         <translation>Pressió inicial:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="238"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="257"/>
         <source>End Pressure:</source>
         <translation>Pressió final:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="267"/>
         <source>Notes:</source>
         <translation>Notes:</translation>
     </message>
@@ -2036,7 +2041,7 @@ GPS actual:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="72"/>
         <source>Map it</source>
-        <translation type="unfinished"/>
+        <translation>Situa-lo</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="265"/>
@@ -2121,23 +2126,23 @@ GPS actual:</translation>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="251"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="257"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="285"/>
         <source>Dive list</source>
         <translation>Llista d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="275"/>
         <source>Cloud credentials</source>
         <translation>Credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="253"/>
-        <source>Please tap the &apos;+&apos; button to add a dive</source>
-        <translation>Premeu el botó «+» per afegir una immersió</translation>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="281"/>
+        <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
+        <translation>Toqueu el botó «+» per afegir una immersió (o baixeu les immersions des d&apos;un ordinador de busseig admès)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="304"/>
         <source>No dives in dive list</source>
         <translation>No hi ha cap immersió a la llista</translation>
     </message>
@@ -2232,7 +2237,7 @@ GPS actual:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="924"/>
         <source>Image files (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Fitxers d&apos;imatge (%1)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="980"/>
@@ -2477,7 +2482,7 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="85"/>
         <source>Send the dive data to dive-share.appspot.com website.</source>
-        <translation>Envia les dades de la immersió a la pàgina web dive-share.appspot.com.</translation>
+        <translation>Envia les dades de busseig a la pàgina web dive-share.appspot.com.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
@@ -2861,10 +2866,10 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
     <message numerus="yes">
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="336"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n immersions)</numerusform><numerusform>(%n immersió)</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="441"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="443"/>
         <source>Multiple Buddies</source>
         <translation>Múltiples companys</translation>
     </message>
@@ -3519,7 +3524,7 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="94"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="129"/>
         <source>Download</source>
         <translation>Baixa</translation>
     </message>
@@ -3554,47 +3559,57 @@ a la llista d&apos;immersions.</translation>
         <translation>Ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="56"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="64"/>
         <source> Vendor name: </source>
         <translation> Nom del venedor: </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="69"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="77"/>
         <source> Dive Computer:</source>
         <translation>Ordinador de busseig:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="80"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="88"/>
         <source>Bluetooth download:</source>
-        <translation type="unfinished"/>
+        <translation>Baixada per Bluetooth:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="96"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="135"/>
         <source>Retry</source>
         <translation>Torna a intentar-ho</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="116"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="161"/>
         <source>Quit</source>
         <translation>Surt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="125"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="174"/>
         <source> Downloaded dives</source>
         <translation>Immersions baixades</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="153"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="175"/>
+        <source>Info:</source>
+        <translation>Info:rmació</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="175"/>
+        <source> No dives</source>
+        <translation>Sense immmersions</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="214"/>
         <source>Accept</source>
         <translation>Accepta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="169"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="240"/>
         <source>Select All</source>
         <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="176"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="258"/>
         <source>Unselect All</source>
         <translation>Desselecciona-ho tot</translation>
     </message>
@@ -3728,7 +3743,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>GlobalDrawer</name>
     <message>
-        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="362"/>
+        <location filename="../mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml" line="361"/>
         <source>Back</source>
         <translation>Enrere</translation>
     </message>
@@ -3945,7 +3960,6 @@ Segur que voleu continuar?</translation>
     <name>Log</name>
     <message>
         <location filename="../mobile-widgets/qml/Log.qml" line="16"/>
-        <location filename="../mobile-widgets/qml/Log.qml" line="28"/>
         <source>Application Log</source>
         <translation>Registre de l&apos;aplicació</translation>
     </message>
@@ -4879,29 +4893,72 @@ Si el vostre dispositiu usa Bluetooth, feu els mateixos preparatius que per a ba
     <name>Preferences</name>
     <message>
         <location filename="../mobile-widgets/qml/Preferences.qml" line="12"/>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="38"/>
         <source>Preferences</source>
         <translation>Preferències</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="15"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="17"/>
         <source>Save</source>
         <translation>Desa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="44"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="35"/>
+        <source>Theme</source>
+        <translation>Tema</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="71"/>
+        <source>Blue</source>
+        <translation>Blau</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="84"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="216"/>
+        <source>regular text</source>
+        <translation>text normal</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="99"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="165"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="231"/>
+        <source>Highlight</source>
+        <translation>Ressaltat</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="137"/>
+        <source>Pink</source>
+        <translation>Rosa</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="203"/>
+        <source>Dark</source>
+        <translation>Fosc</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="247"/>
         <source>Subsurface GPS data webservice</source>
         <translation>Servei web de dades del Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="52"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="256"/>
         <source>Distance threshold (meters)</source>
         <translation>Llindar de la distància (metres)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Preferences.qml" line="63"/>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="267"/>
         <source>Time threshold (minutes)</source>
         <translation>Llindar del temps (minuts)</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="286"/>
+        <source>Debug log for download from divecomputer</source>
+        <translation>Registre de depuració per a descarregar des de divecomputer</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Preferences.qml" line="321"/>
+        <source>Save detailed log of interaction with the dive computer</source>
+        <translation>Desa un registre detallat de la interacció amb l&apos;ordinador de busseig</translation>
     </message>
 </context>
 <context>
@@ -5577,27 +5634,27 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="237"/>
         <source>Duration units</source>
-        <translation type="unfinished"/>
+        <translation>Unitats de durada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="243"/>
         <source>Show hours in duration</source>
-        <translation type="unfinished"/>
+        <translation>Mostra les hores en la durada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="250"/>
         <source>hh:mm (always)</source>
-        <translation type="unfinished"/>
+        <translation>hh:mm (sempre)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="257"/>
         <source>mm (always)</source>
-        <translation type="unfinished"/>
+        <translation>mm (sempre)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="264"/>
         <source>mm (for dives shorter than 1 hour), hh:mm (otherwise)</source>
-        <translation type="unfinished"/>
+        <translation>mm (per a immersions inferiors a 1 hora), hh:mm (altrament)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
@@ -5762,12 +5819,12 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="778"/>
         <source>Planned dive</source>
-        <translation type="unfinished"/>
+        <translation>Immersió planificada</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="780"/>
         <source>Manually added dive</source>
-        <translation type="unfinished"/>
+        <translation>Immersió afegida manualment</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1390"/>
@@ -5854,131 +5911,131 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="91"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="110"/>
         <source>Starting...</source>
         <translation>S&apos;està començant...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="134"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="160"/>
         <source>Open local dive data file</source>
-        <translation type="unfinished"/>
+        <translation>Obre un fitxer de dades de busseig local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="142"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="168"/>
         <source>Opening local data file failed</source>
-        <translation type="unfinished"/>
+        <translation>Ha fallat en obrir el fitxer de dades local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="162"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="188"/>
         <source>%1 dives loaded from local dive data file</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;han carregat %1 immersions des del fitxer de dades de busseig local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="203"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="229"/>
         <source>working in no-cloud mode</source>
         <translation>Es treballa en el mode sense el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="208"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="234"/>
         <source>Error parsing local storage, giving up</source>
-        <translation type="unfinished"/>
+        <translation>Error en analitzar l&apos;emmagatzematge local i s&apos;abandona</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="243"/>
         <source>no cloud credentials</source>
         <translation>Sense les credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="218"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="270"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="244"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="300"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Introduïu unes credencials vàlides pel núvol.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="315"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>S&apos;està intentant obrir l&apos;emmagatzematge en el núvol amb les credencials noves</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="306"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="336"/>
         <source>Testing cloud credentials</source>
         <translation>S&apos;estan provant les credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="350"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>No hi ha resposta del servidor al núvol per a validar les credencials</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="359"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge al núvol -el compte al núvol no ha estat verificat-</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="391"/>
         <source>Cloud credentials are invalid</source>
         <translation>Les credencials del núvol no són vàlides</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="404"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge al núvol: un error en crear la connexió HTTPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="387"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="417"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge al núvol: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="429"/>
         <source>Cannot connect to cloud storage</source>
         <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge al núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="423"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
         <source>Cloud credentials valid, loading dives...</source>
-        <translation type="unfinished"/>
+        <translation>Les credencials del núvol són vàlides, s&apos;estan carregant les immersions...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="435"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="465"/>
         <source>Cloud storage error: %1</source>
         <translation>Error amb l&apos;emmagatzematge al núvol: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="478"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="508"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;estan carregant les immersions des de l&apos;emmagatzematge local (mode «sense núvol»)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="523"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Ha fallat en connectar amb el servidor del núvol, no s&apos;ha rebut l&apos;estat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="548"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="578"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>L&apos;emmagatzematge al núvol s&apos;ha obert amb èxit. No hi ha immersions a la llista de busseig.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="749"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="749"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="750"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="718"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="748"/>
         <source>sec</source>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1094"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1124"/>
         <source>Unknown GPS location</source>
         <translation>Ubicació GPS desconeguda</translation>
     </message>
@@ -6142,22 +6199,16 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation>Resposta en XML amb format incorrecte. Línia %1: %2</translation>
     </message>
     <message>
-        <location filename="../core/btdiscovery.cpp" line="144"/>
-        <location filename="../core/btdiscovery.cpp" line="148"/>
-        <location filename="../core/btdiscovery.cpp" line="149"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="98"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="253"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="259"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="276"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="282"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="300"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="308"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="328"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="336"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="356"/>
-        <location filename="../core/downloadfromdcthread.cpp" line="364"/>
+        <location filename="../core/btdiscovery.cpp" line="166"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="164"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="318"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="335"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="341"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="353"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="380"/>
+        <location filename="../core/downloadfromdcthread.cpp" line="400"/>
         <source>Paired Bluetooth Devices</source>
-        <translation type="unfinished"/>
+        <translation>Dispositius Bluetooth emparellats</translation>
     </message>
 </context>
 <context>
@@ -6306,33 +6357,34 @@ començament i 30 minuts després del final de qualsevol de les immersions selec
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="313"/>
         <source>Image files (*.jpg *.jpeg)</source>
-        <translation type="unfinished"/>
+        <translation>Fitxers d&apos;imatge (*.jpg *.jpeg)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="391"/>
         <source>Selected dive date/time</source>
-        <translation type="unfinished"/>
+        <translation>Data/hora de la immersió seleccionada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="393"/>
         <source>First selected dive date/time</source>
-        <translation type="unfinished"/>
+        <translation>Primer la data/hora de la immersió seleccionada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="394"/>
         <source>Last selected dive date/time</source>
-        <translation type="unfinished"/>
+        <translation>Últim la data/hora de la immersió seleccionada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="396"/>
         <source>
 Files with inappropriate date/time</source>
-        <translation type="unfinished"/>
+        <translation>
+Fitxers amb una data/hora inapropiada</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="406"/>
         <source>No Exif date/time found</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha trobat cap data/hora Exif</translation>
     </message>
 </context>
 <context>
@@ -6791,7 +6843,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="84"/>
         <source>d</source>
-        <translation type="unfinished"/>
+        <translation>d</translation>
     </message>
 </context>
 <context>
@@ -6976,7 +7028,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="133"/>
         <source>and</source>
-        <translation type="unfinished"/>
+        <translation>i</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="135"/>
@@ -7669,8 +7721,8 @@ Idioma: %1</translation>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="525"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="556"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="533"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="564"/>
         <source>No error</source>
         <translation>Cap error</translation>
     </message>
@@ -7794,7 +7846,7 @@ Màxim</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="790"/>
+        <location filename="../core/libdivecomputer.c" line="798"/>
         <source>Error parsing the header</source>
         <translation>Error en analitzar la capçalera</translation>
     </message>
@@ -7805,7 +7857,8 @@ Màxim</translation>
         <location filename="../core/profile.c" line="1343"/>
         <source>Density: %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>Densitat: %.1fg/ℓ
+</translation>
     </message>
 </context>
 <context>
@@ -7814,7 +7867,7 @@ Màxim</translation>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="246"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>deco stop</source>
         <translation>parada descompressió</translation>
     </message>
@@ -7822,7 +7875,7 @@ Màxim</translation>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="779"/>
-        <location filename="../core/libdivecomputer.c" line="248"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>ascent</source>
         <translation>ascens</translation>
     </message>
@@ -7834,20 +7887,20 @@ Màxim</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>maxdepth</source>
         <translation>profunditat màx.</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -7856,28 +7909,28 @@ Màxim</translation>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="870"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="276"/>
         <source>gaschange</source>
         <translation>canvi de mescla</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="247"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="249"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>ceiling</source>
         <translation>sostre</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="251"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>transmitter</source>
         <translation>transmissor</translation>
     </message>
@@ -8064,17 +8117,18 @@ Màxim</translation>
         <location filename="../core/datatrak.c" line="513"/>
         <source>[Warning] Manual dive # %d
 </source>
-        <translation type="unfinished"/>
+        <translation>[Avís] Immersió manual núm. %d
+</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="539"/>
         <source>[Error] Out of memory for dive %d. Abort parsing.</source>
-        <translation type="unfinished"/>
+        <translation>[Error] S&apos;ha esgotat la memòria per a la immersió %d. S&apos;ha interromput l&apos;anàlisi.</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="585"/>
         <source>[Error] File is not a DataTrak file. Aborted</source>
-        <translation type="unfinished"/>
+        <translation>[Error] El fitxer no és un fitxer DataTrak. S&apos;ha interromput</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="598"/>
@@ -8337,17 +8391,17 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="56"/>
         <source>Checkout from storage (%lu/%lu)</source>
-        <translation type="unfinished"/>
+        <translation>Obtén des de l&apos;emmagatzematge (%lu/%lu)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="87"/>
         <source>Transfer from storage (%d/%d)</source>
-        <translation type="unfinished"/>
+        <translation>Transfereix des de l&apos;emmagatzematge (%d/%d)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="99"/>
         <source>Transfer to storage (%d/%d)</source>
-        <translation type="unfinished"/>
+        <translation>Transfereix a l&apos;emmagatzematge (%d/%d)</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="135"/>
@@ -8403,42 +8457,42 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="469"/>
         <source>Update local storage to match cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Actualitza l&apos;emmagatzematge local per fer-lo coincidir amb l&apos;emmagatzematge al núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="477"/>
         <source>Push local changes to cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Entrega els canvis locals a l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="495"/>
         <source>Try to merge local changes into cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Intenta fussionar els canvis locals en l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="537"/>
         <source>Store data into cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Emmagatzema les dades a l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="561"/>
         <source>Sync with cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>Sincronitza amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="588"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
-        <translation type="unfinished"/>
+        <translation>No s&apos;ha pogut abastar el servidor en el núvol, s&apos;està treballant amb les dades locals</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="601"/>
         <source>Successful cloud connection, fetch remote</source>
-        <translation type="unfinished"/>
+        <translation>Connexió amb el núvol exitosa, s&apos;estan recuperant les dades remotes</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="616"/>
         <source>Done syncing with cloud storage</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha realitzat la incronització amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="748"/>
@@ -8453,203 +8507,208 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="774"/>
         <source>Synchronising data file</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està sincronitzant el fitxer de dades</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="232"/>
+        <location filename="../core/libdivecomputer.c" line="238"/>
         <location filename="../core/parse-xml.c" line="3326"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>Desconegut</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="245"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>none</source>
         <translation>cap</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="250"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>workload</source>
         <translation>esforç</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>violation</source>
         <translation>violació</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>bookmark</source>
         <translation>adreça d&apos;interès</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
         <source>surface</source>
         <translation>superfície</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
         <source>safety stop</source>
         <translation>parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>safety stop (voluntary)</source>
         <translation>parada de seguretat (voluntària)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>safety stop (mandatory)</source>
         <translation>parada de seguretat (obligatòria)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>deepstop</source>
         <translation>parada profunda</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>ceiling (safety stop)</source>
         <translation>sostre (parada de seguretat)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>per sota del sostre</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>divetime</source>
         <translation>durada de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>airtime</source>
         <translation>temps d&apos;aire</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>heading</source>
         <translation>encapçalament</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="275"/>
         <source>tissue level warning</source>
         <translation>Avís del nivell dels teixits</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="279"/>
+        <location filename="../core/libdivecomputer.c" line="285"/>
         <source>invalid event number</source>
         <translation>el número de l&apos;esdeveniment no és vàlid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="606"/>
+        <location filename="../core/libdivecomputer.c" line="614"/>
         <source>Error parsing the datetime</source>
         <translation>Error en analitzar la data</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="624"/>
+        <location filename="../core/libdivecomputer.c" line="632"/>
         <source>Dive %d: %s</source>
         <translation>Immersió %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="630"/>
+        <location filename="../core/libdivecomputer.c" line="638"/>
         <source>Error parsing the divetime</source>
         <translation>Error en analitzar el temps de busseig</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="640"/>
+        <location filename="../core/libdivecomputer.c" line="648"/>
         <source>Error parsing the maxdepth</source>
         <translation>Error en analitzar la profunditat màxima</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="659"/>
+        <location filename="../core/libdivecomputer.c" line="667"/>
         <source>Error parsing temperature</source>
         <translation>Error en llegir la temperatura</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="679"/>
+        <location filename="../core/libdivecomputer.c" line="687"/>
         <source>Error parsing the gas mix count</source>
         <translation>Error en analitzar el contingut de la mescla de gas</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="691"/>
+        <location filename="../core/libdivecomputer.c" line="699"/>
         <source>Error obtaining water salinity</source>
         <translation>Error en obtenir la salinitat de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="700"/>
+        <location filename="../core/libdivecomputer.c" line="708"/>
         <source>Error obtaining surface pressure</source>
         <translation>Error en obtenir la pressió en superfície</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="725"/>
+        <location filename="../core/libdivecomputer.c" line="733"/>
         <source>Error obtaining dive mode</source>
         <translation>Error en obtenir el mode de busseig</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="745"/>
+        <location filename="../core/libdivecomputer.c" line="753"/>
         <source>Error parsing the gas mix</source>
         <translation>Error en analitzar la mescla de gas</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="770"/>
+        <location filename="../core/libdivecomputer.c" line="778"/>
         <source>Unable to create parser for %s %s</source>
         <translation>No s&apos;ha pogut crear l&apos;analitzador per a %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="776"/>
+        <location filename="../core/libdivecomputer.c" line="784"/>
         <source>Error registering the data</source>
         <translation>Error en enregistrar les dades</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="797"/>
+        <location filename="../core/libdivecomputer.c" line="805"/>
         <source>Error parsing the samples</source>
         <translation>Error en analitzar les mostres</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="935"/>
+        <location filename="../core/libdivecomputer.c" line="812"/>
+        <source>Already downloaded dive at %s</source>
+        <translation>La immersió ja s&apos;ha baixat a %s</translation>
+    </message>
+    <message>
+        <location filename="../core/libdivecomputer.c" line="946"/>
         <source>Event: waiting for user action</source>
         <translation>Esdeveniment: s&apos;està a l&apos;espera d&apos;una acció de l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
-        <source>model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)</source>
-        <translation>model=%u (0x%08x), microprogramari=%u (0x%08x), núm. de sèrie=%u (0x%08x)</translation>
+        <location filename="../core/libdivecomputer.c" line="965"/>
+        <source>model=%s firmware=%u serial=%u</source>
+        <translation>model=%s microprogramari=%u sèrie=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1007"/>
+        <location filename="../core/libdivecomputer.c" line="1027"/>
         <source>Error registering the event handler.</source>
         <translation>Error en enregistrar el manegador d&apos;esdeveniments.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1012"/>
+        <location filename="../core/libdivecomputer.c" line="1032"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Error en enregistrar el manegador de cancel·lació.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1033"/>
+        <location filename="../core/libdivecomputer.c" line="1053"/>
         <source>Dive data import error</source>
         <translation>Error en importar les dades de les immersions</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1072"/>
+        <location filename="../core/libdivecomputer.c" line="1092"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>No s&apos;ha pogut crear un context de «libdivecomputer»</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1079"/>
+        <location filename="../core/libdivecomputer.c" line="1099"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>No s&apos;ha pogut obrir %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1104"/>
+        <location filename="../core/libdivecomputer.c" line="1124"/>
         <source>Insufficient privileges to open the device %s %s (%s)</source>
         <translation>Privilegis insuficients per obrir el dispositiu %s %s (%s)</translation>
     </message>
@@ -8670,12 +8729,12 @@ Màxim</translation>
     <message>
         <location filename="../core/load-git.c" line="1683"/>
         <source>Load dives from local cache</source>
-        <translation type="unfinished"/>
+        <translation>Carrega les immersions des del cau local</translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="1687"/>
         <source>Successfully opened dive data</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;han obert amb èxit les dades de busseig</translation>
     </message>
     <message>
         <location filename="../core/ostctools.c" line="93"/>
@@ -9023,14 +9082,18 @@ D: %.1f%s
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s / %.1fg/ℓ
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1340"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>PNE: %d%s
+EADD: %d%s / %.1fg/ℓ
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1357"/>
@@ -9239,6 +9302,11 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/qthelper.cpp" line="640"/>
         <source>F</source>
         <translation>F</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="969"/>
+        <source>more than %1 days</source>
+        <translation>més de %1 dies</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="472"/>
@@ -10018,22 +10086,22 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../core/save-git.c" line="940"/>
         <source>Start saving data</source>
-        <translation type="unfinished"/>
+        <translation>Comença a desar les dades</translation>
     </message>
     <message>
         <location filename="../core/save-git.c" line="949"/>
         <source>Start saving dives</source>
-        <translation type="unfinished"/>
+        <translation>Comença a desar les immersions</translation>
     </message>
     <message>
         <location filename="../core/save-git.c" line="982"/>
         <source>Done creating local cache</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;ha realitzat la creació del cau local</translation>
     </message>
     <message>
         <location filename="../core/save-git.c" line="1213"/>
         <source>Preparing to save data</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;està realitzant la preparació per a desar les dades</translation>
     </message>
 </context>
 <context>
@@ -10055,121 +10123,116 @@ Està connectat correctament el Uemis Zurich?</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="132"/>
+        <source>Settings</source>
+        <translation>Ajustaments</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Cloud credentials</source>
         <translation>Credencials del núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
         <source>Manage dives</source>
         <translation>Gestiona les immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="148"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="157"/>
         <source>Add dive manually</source>
         <translation>Afegeix una immersió manualment</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="165"/>
         <source>Download from DC</source>
-        <translation type="unfinished"/>
+        <translation>Baixa des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="164"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="173"/>
         <source>Manual sync with cloud</source>
         <translation>Sincronitza manualment amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Offline mode</source>
         <translation>Mode dedconnectat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="191"/>
         <source>Enable auto cloud sync</source>
         <translation>Habilita la sincronització automàtica amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="199"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
+        <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
+        <translation>Desactivar la sincronització automàtica amb el núvol fa que totes les dades només es puguin emmagatzemar localment. Això pot ser molt útil en situacions amb accés limitat o sense a la xarxa. Si us plau, seleccioneu «Sincronitza manualment amb el núvol» si teniu connectivitat a la xarxa i voleu sincronitzar les vostres dades amb l&apos;emmagatzematge en el núvol.</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="203"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
         <source>GPS-tag dives</source>
         <translation>Immersions etiquetades amb el GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="210"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="215"/>
         <source>Upload GPS data</source>
         <translation>Puja les dades del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Download GPS data</source>
         <translation>Baixa les dades del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="224"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="229"/>
         <source>Show GPS fixes</source>
         <translation>Mostra les correccions del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Clear GPS cache</source>
         <translation>Neteja el cau del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Preferences</source>
         <translation>Preferències</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="245"/>
         <source>Developer</source>
         <translation>Desenvolupador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="249"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
         <source>App log</source>
         <translation>Registre de l&apos;aplicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
-        <source>Switch to pink theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="263"/>
-        <source>Switch to blue theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="270"/>
-        <source>Switch to dark theme</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="254"/>
         <source>Theme information</source>
         <translation>Informació sobre el tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="284"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
         <source>User manual</source>
         <translation>Manual de l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="267"/>
         <source>About</source>
         <translation>Quant a</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>Run location service</source>
         <translation>Executa el servei d&apos;ubicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="321"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
         <source>No GPS source available</source>
         <translation>Cap font GPS disponible</translation>
     </message>

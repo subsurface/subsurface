@@ -48,7 +48,7 @@
 #define OSTC3_SETPOINT_FALLBACK	0x38
 #define OSTC3_FLIP_SCREEN	0x39
 #define OSTC3_LEFT_BUTTON_SENSIVITY	0x3A
-#define OSTC3_RIGHT_BUTTON_SENSIVITY	0x3A
+#define OSTC3_RIGHT_BUTTON_SENSIVITY	0x3B
 #define OSTC4_BUTTON_SENSIVITY		0x3A
 #define OSTC3_BOTTOM_GAS_CONSUMPTION	0x3C
 #define OSTC3_DECO_GAS_CONSUMPTION	0x3D
@@ -85,7 +85,6 @@
 // Fake io to ostc memory banks
 #define hw_ostc_device_eeprom_read local_hw_ostc_device_eeprom_read
 #define hw_ostc_device_eeprom_write local_hw_ostc_device_eeprom_write
-#define hw_ostc_device_clock local_hw_ostc_device_clock
 #define OSTC_FILE "../OSTC-data-dump.bin"
 
 // Fake the open function.
@@ -125,10 +124,6 @@ static dc_status_t local_hw_ostc_device_eeprom_write(void *ignored, unsigned cha
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t local_hw_ostc_device_clock(void *ignored, dc_datetime_t *time)
-{
-	return DC_STATUS_SUCCESS;
-}
 #endif
 
 static int read_ostc_cf(unsigned char data[], unsigned char cf)
@@ -892,7 +887,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 		dc_datetime_t now;
 		dc_datetime_localtime(&now, dc_datetime_now());
 
-		rc = hw_ostc3_device_clock(device, &now);
+		rc = dc_device_timesync(device, &now);
 	}
 
 	EMIT_PROGRESS();
@@ -1435,7 +1430,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 		dc_datetime_t now;
 		dc_datetime_localtime(&now, dc_datetime_now());
 
-		rc = hw_ostc3_device_clock(device, &now);
+		rc = dc_device_timesync(device, &now);
 	}
 	EMIT_PROGRESS();
 
@@ -2079,14 +2074,15 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	//sync date and time
 	if (m_deviceDetails->syncTime) {
 		QDateTime timeToSet = QDateTime::currentDateTime();
-		dc_datetime_t time;
+		dc_datetime_t time = { 0 };
 		time.year = timeToSet.date().year();
 		time.month = timeToSet.date().month();
 		time.day = timeToSet.date().day();
 		time.hour = timeToSet.time().hour();
 		time.minute = timeToSet.time().minute();
 		time.second = timeToSet.time().second();
-		rc = hw_ostc_device_clock(device, &time);
+		time.timezone == DC_TIMEZONE_NONE;
+		rc = dc_device_timesync(device, &time);
 	}
 	EMIT_PROGRESS();
 	return rc;

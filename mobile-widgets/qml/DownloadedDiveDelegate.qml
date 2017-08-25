@@ -17,72 +17,46 @@ Kirigami.AbstractListItem {
 	enabled: true
 	supportsMouseEvents: true
 	width: parent.width
+	height: Math.round(Kirigami.Units.gridUnit * 1.8)
+	padding: 0
 
 	property real detailsOpacity : 0
-	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
-	property color textColor: subsurfaceTheme.textColor
+	property color textColor: subsurfaceTheme.secondaryTextColor
 
 	Row {
+		id: downloadedDive
 		width: parent.width
-		height: childrenRect.height + Kirigami.Units.smallSpacing
-		spacing: horizontalPadding
-
+		spacing: Kirigami.Units.largeSpacing
+		padding: 0
+		anchors.leftMargin: Math.round (Kirigami.Units.largeSpacing / 2)
+		anchors.fill: parent
 		add: Transition {
 			NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 400 }
 			NumberAnimation { property: "scale"; from: 0; to: 1.0; duration: 400 }
 		}
-		CheckBox {
+		SsrfCheckBox {
 			id: diveIsSelected
 			checked: innerListItem.selected;
-			width: childrenRect.heigh - Kirigami.Units.smallSpacing;
+			width: childrenRect.width - Kirigami.Units.smallSpacing;
 			height: childrenRect.heigh - Kirigami.Units.smallSpacing;
+			anchors.verticalCenter: parent.verticalCenter
+			onClicked: {
+				console.log("Clicked on the checkbox of item " + index)
+				importModel.selectRow(index)
+			}
 		}
-		Item {
-			id: diveListEntry
-			width: parent.width - diveIsSelected.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
-			height: childrenRect.height - Kirigami.Units.smallSpacing
-
-			Kirigami.Label {
-				id: depthLabel
-				text: "Depth " + innerListItem.depth
-				font.weight: Font.Light
-				elide: Text.ElideRight
-				maximumLineCount: 1 // needed for elide to work at all
-				anchors {
-					left: parent.left
-					leftMargin: horizontalPadding
-					top: parent.top
-					right: dateLabel.left
-				}
-			}
-			Kirigami.Label {
-				id: dateLabel
-				text: innerListItem.datetime
-				font.pointSize: subsurfaceTheme.smallPointSize
-				anchors {
-					bottom: parent.bottom
-					right: parent.right
-					top: parent.top
-				}
-			}
-			Row {
-				anchors {
-					top: depthLabel.bottom
-					left: parent.left
-					leftMargin: horizontalPadding
-					right: parent.right
-					rightMargin: horizontalPadding
-					topMargin: - Kirigami.Units.smallSpacing * 2
-				}
-				Kirigami.Label {
-					text: qsTr('Duration: ')
-					font.pointSize: subsurfaceTheme.smallPointSize
-				}
-				Kirigami.Label {
-					text: innerListItem.duration
-					font.pointSize: subsurfaceTheme.smallPointSize
-				}
-			}
+		Kirigami.Label {
+			id: dateLabel
+			text: innerListItem.datetime
+			width: Math.round(parent.width * 0.35)
+			font.pointSize: subsurfaceTheme.smallPointSize
+			color: textColor
+		}
+		Kirigami.Label {
+			text: innerListItem.depth + ' / ' + innerListItem.duration
+			width: Math.round(parent.width * 0.35)
+			font.pointSize: subsurfaceTheme.smallPointSize
+			color: textColor
 		}
 	}
 }

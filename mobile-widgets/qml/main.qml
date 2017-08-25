@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.4
 import QtQuick.Controls 2.0
+import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -17,12 +18,10 @@ Kirigami.ApplicationWindow {
 		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
 		maximumHeight: Kirigami.Units.gridUnit * 2
 	}
-	property bool fullscreen: true
 	property alias oldStatus: manager.oldStatus
 	property alias notificationText: manager.notificationText
-	property QtObject notification: null
-	property bool showingDiveList: false
 	property alias syncToCloud: manager.syncToCloud
+	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias showPin: manager.showPin
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -114,6 +113,7 @@ Kirigami.ApplicationWindow {
 
 		actions: [
 			Kirigami.Action {
+				iconName: "icons/ic_home.svg"
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
@@ -129,31 +129,10 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
-				text: qsTr("Settings")
+				iconName: "icons/ic_sync.svg"
+				text: qsTr("Dive management")
 				Kirigami.Action {
-					text: qsTr("Cloud credentials")
-					onTriggered: {
-						returnTopPage()
-						oldStatus = manager.credentialStatus
-						if (diveList.numDives > 0) {
-							manager.startPageText = "Enter different credentials or return to dive list"
-						} else {
-							manager.startPageText = "Enter valid cloud storage credentials"
-						}
-						manager.credentialStatus = QMLManager.UNKNOWN
-					}
-				}
-				Kirigami.Action {
-					text: qsTr("Preferences")
-					onTriggered: {
-						stackView.push(prefsWindow)
-						detailsWindow.endEditMode()
-					}
-				}
-			},
-			Kirigami.Action {
-				text: qsTr("Manage dives")
-				Kirigami.Action {
+					iconName: "icons/ic_add.svg"
 					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
@@ -162,6 +141,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+					iconName: "icons/downloadDC.svg"
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
@@ -170,6 +150,14 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+					iconName: "icons/ic_add_location.svg"
+					text: qsTr("Apply GPS Fixes")
+					onTriggered: {
+						manager.applyGpsData();
+					}
+				}
+				Kirigami.Action {
+					iconName: "icons/cloud_sync.svg"
 					text: qsTr("Manual sync with cloud")
 					enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL || manager.credentialStatus === QMLManager.NOCLOUD
 					onTriggered: {
@@ -188,6 +176,7 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
+				iconName: syncToCloud ? "icons/ic_cloud_off.svg" : "icons/ic_cloud_done.svg"
 				text: syncToCloud ? qsTr("Offline mode") : qsTr("Enable auto cloud sync")
 					enabled: manager.credentialStatus !== QMLManager.NOCLOUD
 					onTriggered: {
@@ -201,17 +190,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_place.svg"
 				text: qsTr("GPS")
-				enabled: manager.credentialStatus === QMLManager.VALID || manager.credentialStatus === QMLManager.VALID_EMAIL
 				visible: (Qt.platform.os !== "ios")
-				Kirigami.Action {
-					text: qsTr("GPS-tag dives")
-					onTriggered: {
-						manager.applyGpsData();
-					}
-				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_cloud_upload.svg"
 					text: qsTr("Upload GPS data")
 					onTriggered: {
 						manager.sendGpsData();
@@ -219,6 +203,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_cloud_download.svg"
 					text: qsTr("Download GPS data")
 					onTriggered: {
 						manager.downloadGpsData();
@@ -226,6 +211,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_gps_fixed.svg"
 					text: qsTr("Show GPS fixes")
 					onTriggered: {
 						returnTopPage()
@@ -235,14 +221,41 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
+					iconName: "icons/ic_clear.svg"
 					text: qsTr("Clear GPS cache")
 					onTriggered: {
 						manager.clearGpsData();
 					}
 				}
+
+				Kirigami.Action {
+					iconName: locationServiceEnabled ? "icons/ic_location_off.svg" : "icons/ic_place.svg"
+					text: locationServiceEnabled ? qsTr("Disable location service") : qsTr("Run location service")
+					onTriggered: {
+						locationServiceEnabled = !locationServiceEnabled
+					}
+				}
 			},
 			Kirigami.Action {
+				iconName: "icons/ic_info_outline.svg"
+				text: qsTr("About")
+				onTriggered: {
+					stackView.push(aboutWindow)
+					detailsWindow.endEditMode()
+				}
+			},
+			Kirigami.Action {
+				iconName: "icons/ic_settings.svg"
+				text: qsTr("Settings")
+				onTriggered: { 
+					stackView.push(settingsWindow) 
+					detailsWindow.endEditMode() 
+				}
+			},
+			Kirigami.Action {
+				iconName: "icons/ic_adb.svg"
 				text: qsTr("Developer")
+				visible: manager.developer
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
@@ -258,53 +271,24 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				text: qsTr("User manual")
+				iconName: "icons/ic_help_outline.svg"
+				text: qsTr("Help")
 				onTriggered: {
 					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/")
 				}
-			},
-			Kirigami.Action {
-				text: qsTr("About")
-				onTriggered: {
-					stackView.push(aboutWindow)
-					detailsWindow.endEditMode()
-				}
 			}
 		] // end actions
-
-		MouseArea {
-			height: childrenRect.height
-			width: Kirigami.Units.gridUnit * 10
-			CheckBox {
-				//text: qsTr("Run location service")
-				id: locationCheckbox
-				visible: manager.locationServiceAvailable
-				anchors {
-					left: parent.left
-					top: parent.top
-				}
-				checked: manager.locationServiceEnabled
-				onCheckedChanged: {
-					manager.locationServiceEnabled = checked;
-				}
-			}
-			Kirigami.Label {
-				x: Kirigami.Units.gridUnit * 1.5
-				anchors {
-					left: locationCheckbox.right
-					//leftMargin: units.smallSpacing
-					verticalCenter: locationCheckbox.verticalCenter
-				}
-				text: Qt.platform.os == "ios" ? "" : manager.locationServiceAvailable ? qsTr("Run location service") : qsTr("No GPS source available")
-			}
-			onClicked: {
-				print("Click.")
-				locationCheckbox.checked = !locationCheckbox.checked
-			}
+		Kirigami.Icon {
+			source: "icons/" + subsurfaceTheme.currentTheme + "_gps.svg"
+			enabled: false
+			visible: locationServiceEnabled
 		}
+
 	}
 
 	function blueTheme() {
+		Material.theme = Material.Light
+		Material.accent = subsurfaceTheme.bluePrimaryColor
 		subsurfaceTheme.currentTheme = "Blue"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.blueDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.blueDarkerPrimaryTextColor
@@ -316,9 +300,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.blueTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.blueSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
 	function pinkTheme() {
+		Material.theme = Material.Light
+		Material.accent = subsurfaceTheme.pinkPrimaryColor
 		subsurfaceTheme.currentTheme = "Pink"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.pinkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor = subsurfaceTheme.pinkDarkerPrimaryTextColor
@@ -330,9 +317,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.pinkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.pinkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.lightDrawerColor
 	}
 
 	function darkTheme() {
+		Material.theme = Material.Dark
+		Material.accent = subsurfaceTheme.darkerPrimaryColor
 		subsurfaceTheme.currentTheme = "Dark"
 		subsurfaceTheme.darkerPrimaryColor = subsurfaceTheme.darkDarkerPrimaryColor
 		subsurfaceTheme.darkerPrimaryTextColor= subsurfaceTheme.darkDarkerPrimaryTextColor
@@ -344,12 +334,14 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		subsurfaceTheme.textColor = subsurfaceTheme.darkTextColor
 		subsurfaceTheme.secondaryTextColor = subsurfaceTheme.darkSecondaryTextColor
 		manager.setStatusbarColor(subsurfaceTheme.darkerPrimaryColor)
+		subsurfaceTheme.drawerColor = subsurfaceTheme.darkDrawerColor
 	}
 
 	QtObject {
 		id: subsurfaceTheme
-		property int titlePointSize: Math.round(fontMetrics.font.pointSize * 1.5)
-		property int smallPointSize: Math.round(fontMetrics.font.pointSize * 0.8)
+		property int regularPointSize: fontMetrics.font.pointSize
+		property int titlePointSize: Math.round(regularPointSize * 1.5)
+		property int smallPointSize: Math.round(regularPointSize * 0.8)
 
 		// colors currently in use
 		property string currentTheme
@@ -362,6 +354,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color backgroundColor
 		property color textColor
 		property color secondaryTextColor
+		property color drawerColor
 
 		// colors for the blue theme
 		property color blueDarkerPrimaryColor: "#303F9f"
@@ -375,7 +368,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color blueSecondaryTextColor: "#757575"
 
 		// colors for the pink theme
-		property color pinkDarkerPrimaryColor: "#FF1493"
+		property color pinkDarkerPrimaryColor: "#C2185B"
 		property color pinkDarkerPrimaryTextColor: "#ECECEC"
 		property color pinkPrimaryColor: "#FF69B4"
 		property color pinkPrimaryTextColor: "#212121"
@@ -392,19 +385,26 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property color darkPrimaryTextColor: "#ECECEC"
 		property color darkLightPrimaryColor: "#C5CAE9"
 		property color darkLightPrimaryTextColor: "#212121"
-		property color darkBackgroundColor: "#000000"
+		property color darkBackgroundColor: "#303030"
 		property color darkTextColor: darkPrimaryTextColor
 		property color darkSecondaryTextColor: "#757575"
 
 		property color contrastAccentColor: "#FF5722" // used for delete button
+		property color lightDrawerColor: "#FFFFFF"
+		property color darkDrawerColor: "#424242"
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
-			Kirigami.Theme.highlightColor = Qt.binding(function() { return darkerPrimaryColor })
-			Kirigami.Theme.highlighedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
+			Kirigami.Theme.highlightColor = Qt.binding(function() { return primaryColor })
+			Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
 			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
 			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
-			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return darkerPrimaryColor })
+			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return primaryColor })
+			Kirigami.Theme.viewBackgroundColor = Qt.binding(function() { return drawerColor })
+			Kirigami.Theme.viewTextColor = Qt.binding(function() { return textColor })
+			Kirigami.Theme.buttonBackgroundColor = Qt.binding(function() { return drawerColor })
+			Kirigami.Theme.buttonTextColor = Qt.binding(function() { return textColor })
+			Kirigami.Theme.buttonFocusColor = Qt.binding(function() { return "red" })
 
 			// this needs to pick the theme from persistent preference settings
 			var theme = manager.theme
@@ -433,8 +433,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		id: manager
 	}
 
-	Preferences {
-		id: prefsWindow
+	Settings {
+		id: settingsWindow
 		visible: false
 	}
 

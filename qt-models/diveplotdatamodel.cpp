@@ -32,7 +32,7 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 		case TIME:
 			return item.sec;
 		case PRESSURE:
-			return item.pressure[0];
+			return item.pressure[0][0];
 		case TEMPERATURE:
 			return item.temperature;
 		case COLOR:
@@ -40,11 +40,11 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 		case USERENTERED:
 			return false;
 		case CYLINDERINDEX:
-			return item.cylinderindex;
+			return 0;
 		case SENSOR_PRESSURE:
-			return item.pressure[0];
+			return item.pressure[0][0];
 		case INTERPOLATED_PRESSURE:
-			return item.pressure[1];
+			return item.pressure[0][1];
 		case CEILING:
 			return item.ceiling;
 		case SAC:

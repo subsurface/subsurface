@@ -67,6 +67,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/time.c \
     ../../../core/uemis.c \
     ../../../core/btdiscovery.cpp \
+    ../../../core/qt-ble.cpp \
     ../../../core/subsurface-qt/CylinderObjectHelper.cpp \
     ../../../core/subsurface-qt/DiveObjectHelper.cpp \
     ../../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -185,6 +186,7 @@ HEADERS += \
     ../../../core/worldmap-save.h \
     ../../../core/downloadfromdcthread.h \
     ../../../core/btdiscovery.h \
+    ../../../core/qt-ble.h \
     ../../../core/subsurface-qt/CylinderObjectHelper.h \
     ../../../core/subsurface-qt/DiveObjectHelper.h \
     ../../../core/subsurface-qt/SettingsObjectWrapper.h \

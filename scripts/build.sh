@@ -19,15 +19,48 @@
 # create a log file of the build
 exec 1> >(tee build.log) 2>&1
 
-# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
-# call this script with -build-deps
-if [ "$1" == "-build-deps" ] ; then
-	shift
-	BUILD_DEPS="1"
-fi
-
 SRC=$(pwd)
 PLATFORM=$(uname)
+
+# deal with all the command line arguments
+while [[ $# -gt 0 ]] ; do
+	arg="$1"
+	case $arg in
+		-build-deps)
+			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
+			# call this script with -build-deps
+			BUILD_DEPS="1"
+			;;
+		-build-with-webkit)
+			# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
+			# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
+			# is still available on Linux distros)
+			BUILD_WITH_WEBKIT="1"
+			;;
+		-build-with-marble)
+			# by default we build with QtLocation based maps
+			# in order to use the old maps, you need to enable this option but also have webkit (see previous option)
+			BUILD_WITH_MARBLE="1"
+			;;
+		-mobile)
+			# we are building Subsurface-mobile
+			BUILD_MOBILE="1"
+			;;
+		-desktop)
+			# we are building Subsurface
+			BUILD_DESKTOP="1"
+			;;
+		-both)
+			# we are building Subsurface and Subsurface-mobile
+			BUILD_MOBILE="1"
+			BUILD_DESKTOP="1"
+			;;
+		*)
+			echo "Unknown command line argument $arg"
+			;;
+	esac
+	shift
+done
 
 # most of these will only be needed with -build-deps on a Mac
 CURRENT_LIBZIP="1.2.0"
@@ -40,8 +73,18 @@ CURRENT_LIBGIT2="v0.26.0"
 
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
-	OLDER_MAC="-mmacosx-version-min=10.10 -isysroot/Developer/SDKs/MacOSX10.10.sdk"
-	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=10.10 -DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.10.sdk/"
+	if [ -d /Developer/SDKs ] ; then
+		SDKROOT=/Developer/SDKs
+	elif [ -d /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs ] ; then
+		SDKROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+	else
+		echo "Cannot find SDK sysroot (usually /Developer/SDKs or"
+		echo "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs)"
+		exit 1;
+	fi
+	BASESDK=$(ls $SDKROOT | grep "MacOSX10\.1.\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
+	OLDER_MAC="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
 	if [ ! -d /usr/include ] ; then
 		echo "Error: Xcode Command Line Tools are not installed"
 		echo ""
@@ -56,25 +99,23 @@ fi
 # if the first argument is "-mobile" then build Subsurface-mobile in subsurface/build-mobile
 # if the first argument is "-both" then build both in subsurface/build and subsurface/build-mobile
 BUILDGRANTLEE=0
-BUILDMARBLE=0
-if [ "$1" = "-mobile" ] ; then
+
+if [ "$BUILD_MOBILE" = "1" ] ; then
 	echo "building Subsurface-mobile in subsurface/build-mobile"
 	BUILDS=( "MobileExecutable" )
 	BUILDDIRS=( "build-mobile" )
-	shift
-elif [ "$1" = "-both" ] ; then
-	echo "building both Subsurface and Subsurface-mobile in subsurface/build and subsurface/build-mobile, respectively"
-	BUILDS=( "DesktopExecutable" "MobileExecutable" )
-	BUILDDIRS=( "build" "build-mobile" )
-	BUILDGRANTLEE=1
-	BUILDMARBLE=1
-	shift
 else
+	# if no options are given, build Subsurface
+	BUILD_DESKTOP="1"
+fi
+
+if [ "$BUILD_DESKTOP" = "1" ] ; then
 	echo "building Subsurface in subsurface/build"
-	BUILDS=( "DesktopExecutable" )
-	BUILDDIRS=( "build" )
-	BUILDGRANTLEE=1
-	BUILDMARBLE=1
+	BUILDS+=( "DesktopExecutable" )
+	BUILDDIRS+=( "build" )
+	if [ "$BUILD_WITH_WEBKIT" = "1" ] ; then
+		BUILDGRANTLEE=1
+	fi
 fi
 
 if [[ ! -d "subsurface" ]] ; then
@@ -84,6 +125,7 @@ fi
 
 mkdir -p install-root
 INSTALL_ROOT=$SRC/install-root
+export INSTALL_ROOT
 
 # make sure we find our own packages first (e.g., libgit2 only uses pkg_config to find libssh2)
 export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
@@ -201,6 +243,12 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
 		make -j4
 		make install
+	else
+		# we are getting libusb and hidapi from pkg-config and that goes wrong
+		# or more specifically, the way libdivecomputer references
+		# the include files goes wrong
+		pkg-config --exists libusb-1.0 && LIBDC_CFLAGS=-I$(dirname $(pkg-config --cflags libusb-1.0 | sed -e 's/^-I//'))
+		pkg-config --exists hidapi && LIBDC_CFLAGS="${LIBDC_CFLAGS} -I$(dirname $(pkg-config --cflags hidapi | sed -e 's/^-I//'))"
 	fi
 
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
@@ -266,15 +314,52 @@ if [ ! -f ../configure ] ; then
 	autoreconf --install ..
 	autoreconf --install ..
 fi
-CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include" ../configure --prefix=$INSTALL_ROOT --disable-examples
+CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" ../configure --prefix=$INSTALL_ROOT --disable-examples
 make -j4
 make install
 
+if [ $PLATFORM = Darwin ] ; then
+	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
+		# qmake in PATH?
+		libdir=`qmake -query QT_INSTALL_LIBS`
+		if [ $? -eq 0 ]; then
+			export CMAKE_PREFIX_PATH=$libdir/cmake
+		elif [ -d "$HOME/Qt/5.9.1" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.9.1/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.9" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.9/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.8" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.8/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.7" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.7/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.6" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
+		elif [ -d "$HOME/Qt/5.5" ] ; then
+			export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
+		elif [ -d /usr/local/opt/qt5/lib ] ; then
+			# Homebrew location for qt5 package
+			export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
+		else
+			echo "cannot find Qt 5.5 or newer in ~/Qt"
+			exit 1
+		fi
+	fi
+fi
+
 cd $SRC
+
+if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
+	EXTRA_OPTS="-DNO_USERMANUAL=OFF -DFBSUPPORT=ON"
+else
+	EXTRA_OPTS="-DNO_USERMANUAL=ON -DFBSUPPORT=OFF"
+fi
 
 # build libssrfmarblewidget
 
-if [ $BUILDMARBLE = 1 ]; then
+if [ "$BUILD_WITH_MARBLE" = "1" ]; then
+	EXTRA_OPTS="-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
+		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
+		-DNO_MARBLE=OFF $EXTRA_OPTS"
 	if [ ! -d marble-source ] ; then
 		if [[ $1 = local ]] ; then
 			git clone $SRC/../marble-source marble-source
@@ -290,33 +375,6 @@ if [ $BUILDMARBLE = 1 ]; then
 	fi
 	mkdir -p build
 	cd build
-	if [ $PLATFORM = Darwin ] ; then
-		if [ -z "$CMAKE_PREFIX_PATH" ] ; then
-			# qmake in PATH?
-			libdir=`qmake -query QT_INSTALL_LIBS`
-			if [ $? -eq 0 ]; then
-				export CMAKE_PREFIX_PATH=$libdir/cmake
-			elif [ -d "$HOME/Qt/5.9.1" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.9.1/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.9" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.9/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.8" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.8/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.7" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.7/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.6" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.6/clang_64/lib/cmake
-			elif [ -d "$HOME/Qt/5.5" ] ; then
-				export CMAKE_PREFIX_PATH=~/Qt/5.5/clang_64/lib/cmake
-			elif [ -d /usr/local/opt/qt5/lib ] ; then
-				# Homebrew location for qt5 package
-				export CMAKE_PREFIX_PATH=/usr/local/opt/qt5/lib/cmake
-			else
-				echo "cannot find Qt 5.5 or newer in ~/Qt"
-				exit 1
-			fi
-		fi
-	fi
 
 	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
@@ -337,10 +395,13 @@ if [ $BUILDMARBLE = 1 ]; then
 			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 		fi
 	fi
+else
+	EXTRA_OPTS="-DNO_MARBLE=ON $EXTRA_OPTS"
 fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then
 	# build grantlee
+	PRINTING="-DNO_PRINTING=OFF"
 
 	cd $SRC
 
@@ -364,10 +425,38 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 		$SRC/grantlee
 	make -j4
 	make install
+else
+	PRINTING="-DNO_PRINTING=ON"
 fi
 
 
+# build the googlemaps map plugin
 
+cd $SRC
+if [ ! -d googlemaps ] ; then
+	if [[ $1 = local ]] ; then
+		git clone $SRC/../googlemaps googlemaps
+	else
+		git clone https://github.com/Subsurface-divelog/googlemaps.git
+	fi
+fi
+cd googlemaps
+git checkout master
+git pull --rebase
+mkdir -p build
+cd build
+if [ ! -z $CMAKE_PREFIX_PATH ] ; then
+	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
+else
+	QMAKE=qmake
+fi
+$QMAKE ../googlemaps.pro
+# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+# since things compile fine with c++11, let's just hack that away
+# similarly, don't use -Wdata-time
+sed -i 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
+make -j4
+make install
 
 # finally, build Subsurface
 
@@ -391,10 +480,8 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		${LIBGIT_ARGS} \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
-		-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
-		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
-		-DNO_PRINTING=OFF
+		$PRINTING $EXTRA_OPTS
 
 	if [ $PLATFORM = Darwin ] ; then
 		rm -rf Subsurface.app

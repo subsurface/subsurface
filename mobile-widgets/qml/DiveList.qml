@@ -115,21 +115,21 @@ Kirigami.ScrollablePage {
 							text: dive.date + " " + dive.time
 							width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
-							color: secondaryTextColor
+							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						}
 						// let's try to show the depth / duration very compact
 						Kirigami.Label {
 							text: dive.depth + ' / ' + dive.duration
 							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
-							color: secondaryTextColor
+							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						}
 					}
 					Kirigami.Label {
 						id: numberText
 						text: "#" + dive.number
 						font.pointSize: subsurfaceTheme.smallPointSize
-						color: secondaryTextColor
+						color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						anchors {
 							right: parent.right
 							rightMargin: horizontalPadding
@@ -162,6 +162,7 @@ Kirigami.ScrollablePage {
 						onClicked: {
 							parent.visible = false
 							timer.stop()
+							detailsWindow.showDiveIndex(index)
 							manager.deleteDive(dive.id)
 						}
 					}
@@ -328,7 +329,7 @@ Kirigami.ScrollablePage {
 	}
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
-		iconName: "document-import"
+		iconName: "downloadDC"
 		onTriggered: {
 			downloadFromDc.dcImportModel.clearTable()
 			stackView.push(downloadFromDc)

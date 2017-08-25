@@ -56,6 +56,14 @@ GpsLocation::~GpsLocation()
 	m_Instance = NULL;
 }
 
+void GpsLocation::setGpsTimeThreshold(int seconds)
+{
+	if (m_GpsSource) {
+		m_GpsSource->setUpdateInterval(seconds * 1000);
+		status(QString("Set GPS service update interval to %1").arg(m_GpsSource->updateInterval()));
+	}
+}
+
 QGeoPositionInfoSource *GpsLocation::getGpsSource()
 {
 	if (haveSource == NOGPS)
@@ -86,7 +94,7 @@ QGeoPositionInfoSource *GpsLocation::getGpsSource()
 			connect(m_GpsSource, SIGNAL(positionUpdated(QGeoPositionInfo)), this, SLOT(newPosition(QGeoPositionInfo)));
 			connect(m_GpsSource, SIGNAL(updateTimeout()), this, SLOT(updateTimeout()));
 			connect(m_GpsSource, SIGNAL(error(QGeoPositionInfoSource::Error)), this, SLOT(positionSourceError(QGeoPositionInfoSource::Error)));
-			m_GpsSource->setUpdateInterval(5 * 60 * 1000); // 5 minutes so the device doesn't drain the battery
+			setGpsTimeThreshold(prefs.time_threshold);
 		} else {
 #ifdef SUBSURFACE_MOBILE
 			status("don't have GPS source");

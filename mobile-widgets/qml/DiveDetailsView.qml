@@ -55,37 +55,18 @@ Item {
 				}
 			}
 		}
-		Rectangle {
+		SsrfButton {
 			id: gpsButton
-			height: Math.round(1.5 * Kirigami.Units.gridUnit)
-			width: dive.gps == "" ? 0 : buttonText.width + Kirigami.Units.gridUnit
-			color: subsurfaceTheme.darkPrimaryColor
-			antialiasing: true
-			radius: Kirigami.Units.smallSpacing * 2
-			anchors {
-				right: parent.right
-				top: parent.top
-				topMargin: Math.round(Kirigami.Units.gridUnit / 2)
-			}
-			Kirigami.Label {
-				id: buttonText
-				text: qsTr("Map it")
-				color: subsurfaceTheme.darkPrimaryTextColor
-				anchors {
-					horizontalCenter: parent.horizontalCenter
-					verticalCenter: parent.verticalCenter
-				}
-			}
-			MouseArea {
-				anchors.fill: parent
-				enabled: dive.gps_decimal !== ""
-				onClicked: {
-					if (dive.gps_decimal !== "")
-						showMap(dive.gps_decimal)
-				}
+			anchors.right: parent.right
+			enabled: dive.gps !== ""
+			text: qsTr("Map it")
+			onClicked: {
+				if (dive.gps_decimal !== "")
+					showMap(dive.gps_decimal)
 			}
 		}
 		Row {
+			id: dateRow
 			anchors {
 				left: locationText.left
 				top: locationText.bottom
@@ -116,6 +97,91 @@ Item {
 				top: locationText.bottom
 			}
 		}
+		Row {
+			anchors {
+				left: dateRow.left
+				top: numberText.bottom
+			}
+			Kirigami.Label {
+				id: ratingText
+				text: qsTr("Rating:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: ratingText.verticalCenter 
+				source: (dive.rating >= 1) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: ratingText.verticalCenter 
+				source: (dive.rating >= 2) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: ratingText.verticalCenter 
+				source: (dive.rating >= 3) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: ratingText.verticalCenter 
+				source: (dive.rating >= 4) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: ratingText.verticalCenter 
+				source: (dive.rating === 5) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+		}
+		Row {
+			anchors {
+				right: numberText.right
+				top: numberText.bottom
+			}
+			Kirigami.Label {
+				id: visibilityText
+				text: qsTr("Visibility:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+				color: subsurfaceTheme.textColor
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: visibilityText.verticalCenter 
+				source: (dive.visibility >= 1) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: visibilityText.verticalCenter 
+				source: (dive.visibility >= 2) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}	
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: visibilityText.verticalCenter 
+				source: (dive.visibility >= 3) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: visibilityText.verticalCenter 
+				source: (dive.visibility >= 4) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+			Kirigami.Icon {
+				width: height
+				height: subsurfaceTheme.regularPointSize
+				anchors.verticalCenter: visibilityText.verticalCenter 
+				source: (dive.visibility === 5) ? "icons/ic_star.svg" : "icons/ic_star_border.svg"
+			}
+		}
+
 	}
 	GridLayout {
 		id: bottomLayout
@@ -124,7 +190,7 @@ Item {
 			left: parent.left
 			right: parent.right
 			margins: Math.round(Kirigami.Units.gridUnit / 2)
-			topMargin: Kirigami.Units.gridUnit * 2
+			topMargin: Kirigami.Units.gridUnit
 		}
 		columns: 3
 		rowSpacing: Kirigami.Units.smallSpacing * 2
@@ -142,7 +208,7 @@ Item {
 				color: "transparent"
 				opacity: 0.6
 				border.width: 1
-				border.color: subsurfaceTheme.darkPrimaryColor
+				border.color: subsurfaceTheme.primaryColor
 				anchors.fill: parent
 			}
 		}
@@ -199,7 +265,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.primaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
@@ -252,7 +318,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.primaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3
@@ -294,7 +360,7 @@ Item {
 		}
 
 		Rectangle {
-			color: subsurfaceTheme.darkPrimaryColor
+			color: subsurfaceTheme.primaryColor
 			height: 1
 			opacity: 0.5
 			Layout.columnSpan: 3

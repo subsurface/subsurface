@@ -35,6 +35,89 @@ const char *cylinderuse_text[] = {
 };
 const char *divemode_text[] = { "OC", "CCR", "PSCR", "Freedive" };
 
+/*
+ * Adding a cylinder pressure sample field is not quite as trivial as it
+ * perhaps should be.
+ *
+ * We try to keep the same sensor index for the same sensor, so that even
+ * if the dive computer doesn't give pressure information for every sample,
+ * we don't move pressure information around between the different sensor
+ * indexes.
+ *
+ * The "prepare_sample()" function will always copy the sensor indices
+ * from the previous sample, so the indexes are pre-populated (but the
+ * pressures obviously are not)
+ */
+void add_sample_pressure(struct sample *sample, int sensor, int mbar)
+{
+	int idx;
+
+	if (!mbar)
+		return;
+
+	/* Do we already have a slot for this sensor */
+	for (idx = 0; idx < MAX_SENSORS; idx++) {
+		if (sensor != sample->sensor[idx])
+			continue;
+		sample->pressure[idx].mbar = mbar;
+		return;
+	}
+
+	/* Pick the first unused index if we couldn't reuse one */
+	for (idx = 0; idx < MAX_SENSORS; idx++) {
+		if (sample->pressure[idx].mbar)
+			continue;
+		sample->sensor[idx] = sensor;
+		sample->pressure[idx].mbar = mbar;
+		return;
+	}
+
+	/* We do not have enough slots for the pressure samples. */
+	/* Should we warn the user about dropping pressure data? */
+}
+
+/*
+ * The legacy format for sample pressures has a single pressure
+ * for each sample that can have any sensor, plus a possible
+ * "o2pressure" that is fixed to the Oxygen sensor for a CCR dive.
+ *
+ * For more complex pressure data, we have to use explicit
+ * cylinder indexes for each sample.
+ *
+ * This function returns a negative number for "no legacy mode",
+ * or a non-negative number that indicates the o2 sensor index.
+ */
+int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc)
+{
+	int i, o2sensor;
+
+	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(dive, OXYGEN) : -1;
+	for (i = 0; i < dc->samples; i++) {
+		struct sample *s = dc->sample + i;
+		int seen_pressure = 0, idx;
+
+		for (idx = 0; idx < MAX_SENSORS; idx++) {
+			int sensor = s->sensor[idx];
+			pressure_t p = s->pressure[idx];
+
+			if (!p.mbar)
+				continue;
+			if (sensor == o2sensor)
+				continue;
+			if (seen_pressure)
+				return -1;
+			seen_pressure = 1;
+		}
+	}
+
+	/*
+	 * Use legacy mode: if we have no O2 sensor we return a
+	 * positive sensor index that is guaranmteed to not match
+	 * any sensor (we encode it as 8 bits).
+	 */
+	return o2sensor < 0 ? 256 : o2sensor;
+}
+
 int event_is_gaschange(struct event *ev)
 {
 	return ev->type == SAMPLE_EVENT_GASCHANGE ||
@@ -648,6 +731,13 @@ struct sample *prepare_sample(struct divecomputer *dc)
 		}
 		sample = dc->sample + nr;
 		memset(sample, 0, sizeof(*sample));
+
+		// Copy the sensor numbers - but not the pressure values
+		// from the previous sample if any.
+		if (nr) {
+			sample->sensor[0] = sample[-1].sensor[0];
+			sample->sensor[1] = sample[-1].sensor[1];
+		}
 		return sample;
 	}
 	return NULL;
@@ -1207,12 +1297,6 @@ unsigned int dc_airtemp(struct divecomputer *dc)
 	return (sum + nr / 2) / nr;
 }
 
-static void fixup_cylinder_use(struct dive *dive) // for CCR dives, store the indices
-{						  // of the oxygen and diluent cylinders
-	dive->oxygen_cylinder_index = get_cylinder_idx_by_use(dive, OXYGEN);
-	dive->diluent_cylinder_index = get_cylinder_idx_by_use(dive, DILUENT);
-}
-
 static void fixup_airtemp(struct dive *dive)
 {
 	if (!dive->airtemp.mkelvin)
@@ -1354,26 +1438,25 @@ static void fixup_dc_temp(struct dive *dive, struct divecomputer *dc)
 static void simplify_dc_pressures(struct divecomputer *dc)
 {
 	int i;
-	int lastindex = -1;
-	int lastpressure = 0, lasto2pressure = 0;
+	int lastindex[2] = { -1, -1 };
+	int lastpressure[2] = { 0 };
 
 	for (i = 0; i < dc->samples; i++) {
+		int j;
 		struct sample *sample = dc->sample + i;
-		int pressure = sample->cylinderpressure.mbar;
-		int o2_pressure = sample->o2cylinderpressure.mbar;
-		int index;
 
-		index = sample->sensor;
-		if (index == lastindex) {
-			/* Remove duplicate redundant pressure information */
-			if (pressure == lastpressure)
-				sample->cylinderpressure.mbar = 0;
-			if (o2_pressure == lasto2pressure)
-				sample->o2cylinderpressure.mbar = 0;
+		for (j = 0; j < 2; j++) {
+			int pressure = sample->pressure[j].mbar;
+			int index = sample->sensor[j];
+
+			if (index == lastindex[j]) {
+				/* Remove duplicate redundant pressure information */
+				if (pressure == lastpressure[j])
+					sample->pressure[j].mbar = 0;
+			}
+			lastindex[j] = index;
+			lastpressure[j] = pressure;
 		}
-		lastindex = index;
-		lastpressure = pressure;
-		lasto2pressure = o2_pressure;
 	}
 }
 
@@ -1411,31 +1494,30 @@ static void fixup_end_pressure(struct dive *dive, int idx, pressure_t p)
  */
 static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 {
-	int i, o2index = -1;
-
-	if (dive->dc.divemode == CCR)
-		o2index = get_cylinder_idx_by_use(dive, OXYGEN);
+	int i;
 
 	/* Walk the samples from the beginning to find starting pressures.. */
 	for (i = 0; i < dc->samples; i++) {
+		int idx;
 		struct sample *sample = dc->sample + i;
 
 		if (sample->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		fixup_start_pressure(dive, sample->sensor, sample->cylinderpressure);
-		fixup_start_pressure(dive, o2index, sample->o2cylinderpressure);
+		for (idx = 0; idx < MAX_SENSORS; idx++)
+			fixup_start_pressure(dive, sample->sensor[idx], sample->pressure[idx]);
 	}
 
 	/* ..and from the end for ending pressures */
 	for (i = dc->samples; --i >= 0; ) {
+		int idx;
 		struct sample *sample = dc->sample + i;
 
 		if (sample->depth.mm < SURFACE_THRESHOLD)
 			continue;
 
-		fixup_end_pressure(dive, sample->sensor, sample->cylinderpressure);
-		fixup_end_pressure(dive, o2index, sample->o2cylinderpressure);
+		for (idx = 0; idx < MAX_SENSORS; idx++)
+			fixup_end_pressure(dive, sample->sensor[idx], sample->pressure[idx]);
 	}
 
 	simplify_dc_pressures(dc);
@@ -1575,7 +1657,6 @@ struct dive *fixup_dive(struct dive *dive)
 	fixup_duration(dive);
 	fixup_watertemp(dive);
 	fixup_airtemp(dive);
-	fixup_cylinder_use(dive); // store indices for CCR oxygen and diluent cylinders
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		add_cylinder_description(&cyl->type);
@@ -1713,10 +1794,14 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 			sample.depth = as->depth;
 		if (as->temperature.mkelvin)
 			sample.temperature = as->temperature;
-		if (as->cylinderpressure.mbar)
-			sample.cylinderpressure = as->cylinderpressure;
-		if (as->sensor)
-			sample.sensor = as->sensor;
+		if (as->pressure[0].mbar)
+			sample.pressure[0] = as->pressure[0];
+		if (as->sensor[0])
+			sample.sensor[0] = as->sensor[0];
+		if (as->pressure[1].mbar)
+			sample.pressure[1] = as->pressure[1];
+		if (as->sensor[1])
+			sample.sensor[1] = as->sensor[1];
 		if (as->cns)
 			sample.cns = as->cns;
 		if (as->setpoint.mbar)
@@ -1950,11 +2035,15 @@ void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mappin
 	/* Remap the sensor indexes */
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *s = dc->sample + i;
-		int sensor;
+		int j;
 
-		sensor = mapping[s->sensor];
-		if (sensor >= 0)
-			s->sensor = sensor;
+		for (j = 0; j < 2; j++) {
+			int sensor;
+
+			sensor = mapping[s->sensor[j]];
+			if (sensor >= 0)
+				s->sensor[j] = sensor;
+		}
 	}
 
 	/* Remap the gas change indexes */
@@ -1982,7 +2071,7 @@ static void cylinder_renumber(struct dive *dive, int mapping[])
 		dc_cylinder_renumber(dive, dc, mapping);
 }
 
-static int same_gasmix(struct gasmix *a, struct gasmix *b)
+int same_gasmix(struct gasmix *a, struct gasmix *b)
 {
 	if (gasmix_is_air(a) && gasmix_is_air(b))
 		return 1;
@@ -2625,9 +2714,9 @@ static int same_sample(struct sample *a, struct sample *b)
 		return 0;
 	if (a->temperature.mkelvin != b->temperature.mkelvin)
 		return 0;
-	if (a->cylinderpressure.mbar != b->cylinderpressure.mbar)
+	if (a->pressure[0].mbar != b->pressure[0].mbar)
 		return 0;
-	return a->sensor == b->sensor;
+	return a->sensor[0] == b->sensor[0];
 }
 
 static int same_dc(struct divecomputer *a, struct divecomputer *b)

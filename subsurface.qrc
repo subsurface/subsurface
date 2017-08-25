@@ -1,5 +1,14 @@
 <RCC>
     <qresource prefix="/">
+        <file alias="MapWidget.qml">mobile-widgets/qml/MapWidget.qml</file>
+        <file alias="MapWidgetContextMenu.qml">mobile-widgets/qml/MapWidgetContextMenu.qml</file>
+        <file alias="mapwidget-marker">mobile-widgets/qml/icons/mapwidget-marker.png</file>
+        <file alias="mapwidget-marker-selected">mobile-widgets/qml/icons/mapwidget-marker-selected.png</file>
+        <file alias="mapwidget-toggle-satellite">mobile-widgets/qml/icons/mapwidget-toggle-satellite.png</file>
+        <file alias="mapwidget-toggle-street">mobile-widgets/qml/icons/mapwidget-toggle-street.png</file>
+        <file alias="mapwidget-context-menu">mobile-widgets/qml/icons/mapwidget-context-menu.png</file>
+        <file alias="mapwidget-zoom-in">mobile-widgets/qml/icons/mapwidget-zoom-in.png</file>
+        <file alias="mapwidget-zoom-out">mobile-widgets/qml/icons/mapwidget-zoom-out.png</file>
         <file alias="star">icons/star.svg</file>
         <file alias="subsurface-icon">icons/subsurface-icon.png</file>
         <file alias="subsurface-mobile-icon">icons/subsurface-mobile-icon.png</file>

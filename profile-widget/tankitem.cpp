@@ -98,20 +98,24 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 	// walk the list and figure out which tanks go where
 	struct plot_data *entry = pInfoEntry;
 	struct plot_data *lastentry = pInfoEntry;
-	int cylIdx = entry->cylinderindex;
+	int cylIdx = 0; // explicit_first_cylinder(dive, dc)
 	int i = -1;
 	int startTime = 0;
 	struct gasmix *gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
 	qreal width, left;
+
+	// FIXME! This used to depend on the sensor indexes that we no longer have
+	// We should use gaschange events or something
 	while (++i < pInfoNr) {
+		int newIdx = 0;	// get_next_event(dc->events, "gaschange");
 		entry = &pInfoEntry[i];
 		lastentry = &pInfoEntry[i-1];
-		if (entry->cylinderindex == cylIdx)
+		if (newIdx == cylIdx)
 			continue;
 		width = hAxis->posAtValue(lastentry->sec) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
 		createBar(left, width, gas);
-		cylIdx = entry->cylinderindex;
+		cylIdx = newIdx;
 		gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
 		startTime = lastentry->sec;
 	}

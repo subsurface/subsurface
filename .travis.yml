@@ -29,11 +29,11 @@ addons:
             - mesa-common-dev
 
 before_install:
-    - if [ ! -e Qt/5.9 ] ; then
+    - if [ ! -e Qt/5.9.1 ] ; then
           rm -rf Qt ;
-          wget http://download.qt.io/official_releases/qt/5.9/5.9.0/qt-opensource-linux-x64-5.9.0.run ;
-          chmod +x ./qt-opensource-linux-x64-5.9.0.run ;
-          ./qt-opensource-linux-x64-5.9.0.run -platform minimal --script qt-installer-noninteractive.qs --no-force-installations ;
+          wget http://download.qt.io/official_releases/qt/5.9/5.9.1/qt-opensource-linux-x64-5.9.1.run ;
+          chmod +x ./qt-opensource-linux-x64-5.9.1.run ;
+          ./qt-opensource-linux-x64-5.9.1.run --platform minimal --script qt-installer-noninteractive.qs --no-force-installations ;
       fi
       # TestPreferences uses gui calls, so run a xvfb so it has something to talk to
     - "export DISPLAY=:99.0"
@@ -41,10 +41,7 @@ before_install:
 
 
 script:
-    - perl -pi -e 's/BUILDGRANTLEE=1/BUILDGRANTLEE=0/' scripts/build.sh
-    - perl -pi -e 's/BUILDMARBLE=1/BUILDMARBLE=0/' scripts/build.sh
-    - perl -pi -e 's/-DNO_PRINTING=OFF/-DNO_PRINTING=ON -DNO_MARBLE=ON -DUSE_WEBENGINE=ON/' scripts/build.sh
-    - export CMAKE_PREFIX_PATH=$PWD/Qt/5.9/gcc_64/lib/cmake ;
+    - export CMAKE_PREFIX_PATH=$PWD/Qt/5.9.1/gcc_64/lib/cmake ;
       cd .. ;
       bash -e ./subsurface/scripts/build.sh -both
     - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check

@@ -147,10 +147,10 @@ Section
     # now that we install into the staging directory and try to only have
     # the DLLs there that we depend on, this is much easier
     File subsurface.exe
-    File /r data
     File /r theme
     File /r images
     File /r plugins
+    File /r qml
     File /r Documentation
     File /r translations
     File /r printing_templates

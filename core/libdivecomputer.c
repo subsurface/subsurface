@@ -37,6 +37,7 @@
 char *dumpfile_name;
 char *logfile_name;
 const char *progress_bar_text = "";
+void (*progress_callback)(const char *text) = NULL;
 double progress_bar_fraction = 0.0;
 
 static int stoptime, stopdepth, ndl, po2, cns;
@@ -352,15 +353,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		sample->depth.mm = lrint(value.depth * 1000);
 		break;
 	case DC_SAMPLE_PRESSURE:
-		/* Do we already have a pressure reading? */
-		if (sample->cylinderpressure.mbar) {
-			/* Do we prefer the one we already have? */
-			/* If so, just ignore the new one */
-			if (sample->sensor == current_gas_index)
-				break;
-		}
-		sample->sensor = value.pressure.tank;
-		sample->cylinderpressure.mbar = lrint(value.pressure.value * 1000);
+		add_sample_pressure(sample, value.pressure.tank, lrint(value.pressure.value * 1000));
 		break;
 	case DC_SAMPLE_GASMIX:
 		handle_gasmix(dc, sample, value.gasmix);
@@ -439,6 +432,8 @@ static void dev_info(device_data_t *devdata, const char *fmt, ...)
 	vsnprintf(buffer, sizeof(buffer), fmt, ap);
 	va_end(ap);
 	progress_bar_text = buffer;
+	if (progress_callback)
+		(*progress_callback)(buffer);
 }
 
 static int import_dive_number = 0;
@@ -600,7 +595,7 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 }
 #endif
 
-static dc_status_t libdc_header_parser(dc_parser_t *parser, dc_user_device_t *devdata, struct dive *dive)
+static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devdata, struct dive *dive)
 {
 	dc_status_t rc = 0;
 	dc_datetime_t dt = { 0 };
@@ -804,8 +799,11 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	}
 
 	/* If we already saw this dive, abort. */
-	if (!devdata->force_download && find_dive(&dive->dc))
+	if (!devdata->force_download && find_dive(&dive->dc)) {
+		const char *date_string = get_dive_date_c_string(dive->when);
+		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string);
 		goto error_exit;
+	}
 
 	dc_parser_destroy(parser);
 
@@ -945,10 +943,19 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		progress_bar_fraction = (double)progress->current / (double)progress->maximum;
 		break;
 	case DC_EVENT_DEVINFO:
-		dev_info(devdata, translate("gettextFromC", "model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)"),
-			 devinfo->model, devinfo->model,
-			 devinfo->firmware, devinfo->firmware,
-			 devinfo->serial, devinfo->serial);
+		if (dc_descriptor_get_model(devdata->descriptor) != devinfo->model) {
+			fprintf(stderr, "EVENT_DEVINFO gave us the correct detected product (model %d instead of %d)\n",
+				devinfo->model, dc_descriptor_get_model(devdata->descriptor));
+			dc_descriptor_t *better_descriptor = get_descriptor(dc_descriptor_get_type(devdata->descriptor), devinfo->model);
+			if (better_descriptor != NULL) {
+				devdata->descriptor = better_descriptor;
+				devdata->product = dc_descriptor_get_product(better_descriptor);
+				devdata->vendor = dc_descriptor_get_vendor(better_descriptor);
+				devdata->model = str_printf("%s %s", devdata->vendor, devdata->product);
+			}
+		}
+		dev_info(devdata, translate("gettextFromC", "model=%s firmware=%u serial=%u"),
+			 devdata->product, devinfo->firmware, devinfo->serial);
 		if (devdata->libdc_logfile) {
 			fprintf(devdata->libdc_logfile, "Event: model=%u (0x%08x), firmware=%u (0x%08x), serial=%u (0x%08x)\n",
 				devinfo->model, devinfo->model,
@@ -1106,7 +1113,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->devname);
 		INFO(0, "dc_deveice_open error value of %d", rc);
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
-			err = translate("gettextFromC", "Insufficient privileges to open the device %s %s (%s)");
+			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 	}
 
 	if (rc == DC_STATUS_SUCCESS) {

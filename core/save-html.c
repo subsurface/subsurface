@@ -175,7 +175,7 @@ void put_HTML_samples(struct membuffer *b, struct dive *dive)
 
 	char *separator = "\"samples\":[";
 	for (i = 0; i < dive->dc.samples; i++) {
-		put_format(b, "%s[%d,%d,%d,%d]", separator, s->time.seconds, s->depth.mm, s->cylinderpressure.mbar, s->temperature.mkelvin);
+		put_format(b, "%s[%d,%d,%d,%d]", separator, s->time.seconds, s->depth.mm, s->pressure[0].mbar, s->temperature.mkelvin);
 		separator = ", ";
 		s++;
 	}

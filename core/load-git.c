@@ -354,6 +354,7 @@ static char *parse_keyvalue_entry(void (*fn)(void *, const char *, const char *)
 }
 
 static int cylinder_index, weightsystem_index;
+static int o2pressure_sensor;
 
 static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char *value)
 {
@@ -397,7 +398,6 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive)
 	struct dive *dive = _dive;
 	cylinder_t *cylinder = dive->cylinder + cylinder_index;
 
-	cylinder_index++;
 	cylinder->type.description = get_utf8(str);
 	for (;;) {
 		char c;
@@ -407,6 +407,9 @@ static void parse_dive_cylinder(char *line, struct membuffer *str, void *_dive)
 			break;
 		line = parse_keyvalue_entry(parse_cylinder_keyvalue, cylinder, line);
 	}
+	if (cylinder->cylinder_use == OXYGEN)
+		o2pressure_sensor = cylinder_index;
+	cylinder_index++;
 }
 
 static void parse_weightsystem_keyvalue(void *_ws, const char *key, const char *value)
@@ -485,7 +488,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	struct sample *sample = _sample;
 
 	if (!strcmp(key, "sensor")) {
-		sample->sensor = atoi(value);
+		sample->sensor[0] = atoi(value);
 		return;
 	}
 	if (!strcmp(key, "ndl")) {
@@ -540,7 +543,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 	}
 	if (!strcmp(key, "o2pressure")) {
 		pressure_t p = get_pressure(value);
-		sample->o2cylinderpressure.mbar = p.mbar;
+		sample->pressure[1].mbar = p.mbar;
 		return;
 	}
 	if (!strcmp(key, "heartbeat")) {
@@ -557,6 +560,7 @@ static void parse_sample_keyvalue(void *_sample, const char *key, const char *va
 
 static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 {
+	unsigned int sensor;
 	char *end = unit, c;
 
 	/* Skip over the unit */
@@ -569,12 +573,16 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
 	}
 
 	/* The units are "°C", "m" or "bar", so let's just look at the first character */
+	/* The cylinder pressure may also be of the form '123.0bar:4' to indicate sensor */
 	switch (*unit) {
 	case 'm':
 		sample->depth.mm = lrint(1000*val);
 		break;
 	case 'b':
-		sample->cylinderpressure.mbar = lrint(1000*val);
+		sensor = sample->sensor[0];
+		if (end > unit+4 && unit[3] == ':')
+			sensor = atoi(unit+4);
+		add_sample_pressure(sample, sensor, lrint(1000*val));
 		break;
 	default:
 		sample->temperature.mkelvin = C_to_mkelvin(val);
@@ -594,13 +602,24 @@ static char *parse_sample_unit(struct sample *sample, double val, char *unit)
  * missing sample pressure doesn't mean "same as last
  * time", but "interpolate". We clear those ones
  * explicitly.
+ *
+ * NOTE! We default sensor use to 0, 1 respetively for
+ * the two sensors, but for CCR dives with explicit
+ * OXYGEN bottles we set the secondary sensor to that.
+ * Then the primary sensor will be either the first
+ * or the second cylinder depending on what isn't an
+ * oxygen cylinder.
  */
 static struct sample *new_sample(struct divecomputer *dc)
 {
 	struct sample *sample = prepare_sample(dc);
 	if (sample != dc->sample) {
 		memcpy(sample, sample-1, sizeof(struct sample));
-		sample->cylinderpressure.mbar = 0;
+		sample->pressure[0].mbar = 0;
+		sample->pressure[1].mbar = 0;
+	} else {
+		sample->sensor[0] = !o2pressure_sensor;
+		sample->sensor[1] = o2pressure_sensor;
 	}
 	return sample;
 }
@@ -1497,6 +1516,7 @@ static int parse_dive_entry(git_repository *repo, const git_tree_entry *entry, c
 	if (*suffix)
 		dive->number = atoi(suffix+1);
 	cylinder_index = weightsystem_index = 0;
+	o2pressure_sensor = 1;
 	for_each_line(blob, dive_parser, active_dive);
 	git_blob_free(blob);
 	return 0;

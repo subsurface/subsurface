@@ -310,8 +310,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 			if (log_version == 3) {
 				ps_ptr += handle_event_ver3(event_code, ps, ps_ptr, &event);
-				// Ignoring the buddy sensor for now as we cannot draw it on the profile.
-				if ((event_code != 0xf) || (event.pressure.sensor != 0))
+				if (event_code != 0xf)
 					continue;	// ignore all but pressure sensor event
 			} else {	// version 2
 				ps_ptr += handle_event_ver2(event_code, ps, ps_ptr, &event);
@@ -334,8 +333,8 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					sample->time.seconds = event.time;
 					sample->depth.mm = array_uint16_le(ds + (d - 1) * 2) * 10; // cm->mm
 					sample->temperature.mkelvin = C_to_mkelvin((float) array_uint16_le(ts + (d - 1) * 2) / 10); // dC->mK
-					sample->sensor = event.pressure.sensor;
-					sample->cylinderpressure.mbar = event.pressure.mbar;
+					sample->sensor[0] = event.pressure.sensor;
+					sample->pressure[0].mbar = event.pressure.mbar;
 					finish_sample(dc);
 
 					break;
@@ -352,16 +351,16 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 					sample->time.seconds = sample_time;
 					sample->depth.mm = depth_mm;
 					sample->temperature.mkelvin = temp_mk;
-					sample->sensor = event.pressure.sensor;
-					sample->cylinderpressure.mbar = event.pressure.mbar;
+					sample->sensor[0] = event.pressure.sensor;
+					sample->pressure[0].mbar = event.pressure.mbar;
 					finish_sample(dc);
 					d++;
 
 					break;
 				} else {	// Event is prior to sample
 					sample->time.seconds = event.time;
-					sample->sensor = event.pressure.sensor;
-					sample->cylinderpressure.mbar = event.pressure.mbar;
+					sample->sensor[0] = event.pressure.sensor;
+					sample->pressure[0].mbar = event.pressure.mbar;
 					if (last_time == sample_time) {
 						sample->depth.mm = depth_mm;
 						sample->temperature.mkelvin = temp_mk;

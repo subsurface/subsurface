@@ -35,13 +35,16 @@ Item {
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
 	property alias cylinderModel: cylinderBox.model
+	property int rating
+	property int visibility
 
 	function saveData() {
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.text, buddyBox.text,
 				      divemasterBox.text, detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.text)
+				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.text, detailsEdit.rating,
+				      detailsEdit.visibility)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
 
@@ -61,6 +64,8 @@ Item {
 		diveDetailsListView.currentItem.modelData.divemaster = divemasterBox.currentText
 		diveDetailsListView.currentItem.modelData.cylinder = cylinderBox.currentText
 		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
+		diveDetailsListView.currentItem.modelData.rating = detailsEdit.rating
+		diveDetailsListView.currentItem.modelData.visibility = detailsEdit.visibility
 		diveDetailsPage.state = "view"
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
@@ -72,7 +77,7 @@ Item {
 	ColumnLayout {
 		id: editArea
 		spacing: Kirigami.Units.smallSpacing
-		width: parent.width - 2 * Kirigami.Units.gridUnit
+		width: parent.width
 
 		GridLayout {
 			id: editorDetails
@@ -86,35 +91,48 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtDate;
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtLocation;
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Coordinates:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtGps
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			CheckBox {
+			SsrfCheckBox {
 				id: checkboxGPS
 				visible: manager.locationServiceAvailable
 				onCheckedChanged: {
@@ -126,47 +144,65 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Depth:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtDepth
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
+				onEditingFinished: {
+					focus = false
+				}
 			}
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Duration:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtDuration
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Air Temp:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Water Temp:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: suitBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.suitList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -174,10 +210,12 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: buddyBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.buddyList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -185,10 +223,12 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: divemasterBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.divemasterList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -196,20 +236,26 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Weight:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtWeight
 				readOnly: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			HintsTextEdit {
 				id: cylinderBox
-				model: diveDetailsListView.currentItem ? diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}
@@ -217,35 +263,74 @@ Item {
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtGasMix
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtStartPressure
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
 			}
 
 			Kirigami.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextField {
 				id: txtEndPressure
 				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Kirigami.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Rating:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			SpinBox {
+				id: ratingPicker
+				from: 0
+				to: 5
+				value: rating
+				onValueChanged: rating = value
+			}
+
+			Kirigami.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Visibility:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			SpinBox {
+				id: visibilityPicker
+				from: 0
+				to: 5
+				value: visibility
+				onValueChanged: visibility = value
 			}
 
 			Kirigami.Label {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("Notes:")
+				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			TextArea {
 				Layout.columnSpan: 2

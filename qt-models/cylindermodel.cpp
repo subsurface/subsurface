@@ -484,15 +484,33 @@ void CylindersModel::clear()
 	}
 }
 
+static bool show_cylinder(struct dive *dive, int i)
+{
+	cylinder_t *cyl = dive->cylinder + i;
+
+	if (is_cylinder_used(dive, i))
+		return true;
+	if (cylinder_none(cyl))
+		return false;
+	if (cyl->start.mbar || cyl->sample_start.mbar ||
+	    cyl->end.mbar || cyl->sample_end.mbar)
+		return true;
+	if (cyl->manually_added)
+		return true;
+
+	/*
+	 * The cylinder has some data, but none of it is very interesting,
+	 * it has no pressures and no gas switches. Do we want to show it?
+	 */
+	return prefs.display_unused_tanks;
+}
+
 void CylindersModel::updateDive()
 {
 	clear();
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(&displayed_dive.cylinder[i]) &&
-				(prefs.display_unused_tanks ||
-				 is_cylinder_used(&displayed_dive, i) ||
-				 displayed_dive.cylinder[i].manually_added))
+		if (show_cylinder(&displayed_dive, i))
 			rows = i + 1;
 	}
 	if (rows > 0) {
@@ -507,10 +525,8 @@ void CylindersModel::copyFromDive(dive *d)
 		return;
 	rows = 0;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (!cylinder_none(&d->cylinder[i]) &&
-				(is_cylinder_used(d, i) || prefs.display_unused_tanks)) {
+		if (show_cylinder(d, i))
 			rows = i + 1;
-		}
 	}
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows - 1);

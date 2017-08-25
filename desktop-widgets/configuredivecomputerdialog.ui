@@ -3274,13 +3274,13 @@
                <string>%</string>
               </property>
               <property name="minimum">
-               <number>50</number>
+               <number>70</number>
               </property>
               <property name="maximum">
-               <number>100</number>
+               <number>110</number>
               </property>
               <property name="value">
-               <number>70</number>
+               <number>100</number>
               </property>
              </widget>
             </item>

@@ -14,7 +14,8 @@ TextField {
 	onTextChanged: {
 		textUpdateTimer.restart();
 	}
-	onFocusChanged: frame.shouldShow = focus
+	onFocusChanged: frame.shouldShow = false
+
 	onVisibleChanged: {
 		if (visible) {
 			focus = false
@@ -26,6 +27,9 @@ TextField {
 	}
 	Keys.onDownPressed: {
 		hintsView.currentIndex++;
+	}
+	Keys.onReturnPressed: {
+		focus = false
 	}
 	Timer {
 		id: textUpdateTimer
@@ -107,7 +111,7 @@ TextField {
 				onClicked: {
 					hintsView.currentIndex = index
 					root.text = modelData
-					frame.shouldShow = false;
+					root.focus = false;
 				}
 			}
 			ScrollBar.vertical: ScrollBar { }

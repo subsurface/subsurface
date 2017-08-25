@@ -24,7 +24,7 @@ LIBRARY_PATH=${DIR}/install-root/lib make install
 
 # now adjust a few references that macdeployqt appears to miss
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
-for i in libssh libssrfmarblewidget libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
+for i in libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
 	OLD=$(otool -L ${EXECUTABLE} | grep $i | cut -d\  -f1 | tr -d "\t")
 	if [ ! -z ${OLD} ] ; then
 		# copy the library into the bundle and make sure its id and the reference to it are correct
@@ -32,13 +32,18 @@ for i in libssh libssrfmarblewidget libgit2 libGrantlee_TextDocument.dylib libGr
 		SONAME=$(basename $OLD)
 		install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
 		install_name_tool -id @executable_path/../Frameworks/${SONAME} Subsurface.app/Contents/Frameworks/${SONAME}
-		# also fix one incorrect reference inside of libgit2
+		# also fix incorrect references inside of libgit2
 		if [[ "$i" = "libgit2" ]] ; then
 			CURLLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libcurl | cut -d\  -f1 | tr -d "\t")
 			install_name_tool -change ${CURLLIB} @executable_path/../Frameworks/$(basename ${CURLLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
+			SSHLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libssh2 | cut -d\  -f1 | tr -d "\t")
+			install_name_tool -change ${SSHLIB} @executable_path/../Frameworks/$(basename ${SSHLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
 		fi
 	fi
 done
+
+# next, copy libssh2.1
+cp ${DIR}/install-root/lib/libssh2.1.dylib Subsurface.app/Contents/Frameworks
 
 # next, replace @rpath references with @executable_path references in Subsurface
 RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
@@ -46,12 +51,13 @@ for i in ${RPATH}; do
 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${EXECUTABLE}
 done
 
-# and now replace @rpath references in libssrfmarblewidget
-MARBLELIB=$(ls Subsurface.app/Contents/Frameworks/libssrfmarblewidget*dylib)
-RPATH=$(otool -L ${MARBLELIB} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
-for i in ${RPATH}; do
-	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${MARBLELIB}
-done
+# no more Marble
+# # and now replace @rpath references in libssrfmarblewidget
+# MARBLELIB=$(ls Subsurface.app/Contents/Frameworks/libssrfmarblewidget*dylib)
+# RPATH=$(otool -L ${MARBLELIB} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
+# for i in ${RPATH}; do
+# 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${MARBLELIB}
+# done
 
 # next deal with libGrantlee
 LIBG=$(ls Subsurface.app/Contents/Frameworks/libGrantlee_Templates*dylib)

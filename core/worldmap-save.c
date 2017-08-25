@@ -19,7 +19,7 @@
 char *getGoogleApi()
 {
 	/* google maps api auth*/
-	return "https://maps.googleapis.com/maps/api/js?key=AIzaSyDzo9PWsqYDDSddVswg_13rpD9oH_dLuoQ";
+	return "https://maps.googleapis.com/maps/api/js?";
 }
 
 void writeMarkers(struct membuffer *b, const bool selected_only)

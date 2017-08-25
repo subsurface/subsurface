@@ -241,21 +241,45 @@ static void show_index(struct membuffer *b, int value, const char *pre, const ch
  *
  * For parsing, look at the units to figure out what the numbers are.
  */
-static void save_sample(struct membuffer *b, struct sample *sample, struct sample *old)
+static void save_sample(struct membuffer *b, struct sample *sample, struct sample *old, int o2sensor)
 {
+	int idx;
+
 	put_format(b, "%3u:%02u", FRACTION(sample->time.seconds, 60));
 	put_milli(b, " ", sample->depth.mm, "m");
 	put_temperature(b, sample->temperature, " ", "°C");
-	put_pressure(b, sample->cylinderpressure, " ", "bar");
-	put_pressure(b, sample->o2cylinderpressure," o2pressure=","bar");
 
-	/*
-	 * We only show sensor information for samples with pressure, and only if it
-	 * changed from the previous sensor we showed.
-	 */
-	if (sample->cylinderpressure.mbar && sample->sensor != old->sensor) {
-		put_format(b, " sensor=%d", sample->sensor);
-		old->sensor = sample->sensor;
+	for (idx = 0; idx < MAX_SENSORS; idx++) {
+		pressure_t p = sample->pressure[idx];
+		int sensor = sample->sensor[idx];
+
+		if (!p.mbar)
+			continue;
+
+		/* Old-style "o2sensor" syntax for CCR dives? */
+		if (o2sensor >= 0) {
+			if (sensor == o2sensor) {
+				put_pressure(b, sample->pressure[1]," o2pressure=","bar");
+				continue;
+			}
+
+			put_pressure(b, p, " ", "bar");
+
+			/*
+			 * Note: regardless of which index we used for the non-O2
+			 * sensor, we know there is only one non-O2 sensor in legacy
+			 * mode, and "old->sensor[0]" contains that index.
+			 */
+			if (sensor != old->sensor[0]) {
+				put_format(b, " sensor=%d", sensor);
+				old->sensor[0] = sensor;
+			}
+			continue;
+		}
+
+		/* The new-style format is much simpler: the sensor is always encoded */
+		put_pressure(b, p, " ", "bar");
+		put_format(b, ":%d", sensor);
 	}
 
 	/* the deco/ndl values are stored whenever they change */
@@ -286,8 +310,10 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->cns = sample->cns;
 	}
 
-	if (sample->rbt.seconds)
+	if (sample->rbt.seconds != old->rbt.seconds) {
 		put_format(b, " rbt=%u:%02u", FRACTION(sample->rbt.seconds, 60));
+		old->rbt.seconds = sample->rbt.seconds;
+	}
 
 	if (sample->o2sensor[0].mbar != old->o2sensor[0].mbar) {
 		put_milli(b, " sensor1=", sample->o2sensor[0].mbar, "bar");
@@ -308,17 +334,35 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		put_milli(b, " po2=", sample->setpoint.mbar, "bar");
 		old->setpoint = sample->setpoint;
 	}
-	show_index(b, sample->heartbeat, "heartbeat=", "");
-	show_index(b, sample->bearing.degrees, "bearing=", "°");
+	if (sample->heartbeat != old->heartbeat) {
+		show_index(b, sample->heartbeat, "heartbeat=", "");
+		old->heartbeat = sample->heartbeat;
+	}
+	if (sample->bearing.degrees != old->bearing.degrees) {
+		show_index(b, sample->bearing.degrees, "bearing=", "°");
+		old->bearing.degrees = sample->bearing.degrees;
+	}
 	put_format(b, "\n");
 }
 
-static void save_samples(struct membuffer *b, int nr, struct sample *s)
+static void save_samples(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
+	int nr;
+	int o2sensor, legacy;
+	struct sample *s;
 	struct sample dummy = {};
 
+	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
+	o2sensor = legacy_format_o2pressures(dive, dc);
+	if (o2sensor >= 0) {
+		dummy.sensor[0] = !o2sensor;
+		dummy.sensor[1] = o2sensor;
+	}
+
+	s = dc->sample;
+	nr = dc->samples;
 	while (--nr >= 0) {
-		save_sample(b, s, &dummy);
+		save_sample(b, s, &dummy, o2sensor);
 		s++;
 	}
 }
@@ -371,7 +415,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 
 	save_extra_data(b, dc->extra_data);
 	save_events(b, dive, dc->events);
-	save_samples(b, dc->samples, dc->sample);
+	save_samples(b, dive, dc);
 }
 
 /*

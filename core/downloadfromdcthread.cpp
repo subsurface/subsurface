@@ -1,5 +1,6 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QDebug>
 #include <QRegularExpression>
 
@@ -7,6 +8,7 @@ QStringList vendorList;
 QHash<QString, QStringList> productList;
 static QHash<QString, QStringList> mobileProductList;	// BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
+ConnectionListModel connectionListModel;
 
 static QString str_error(const char *fmt, ...)
 {
@@ -49,43 +51,68 @@ void DownloadThread::run()
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
 
 	qDebug() << "Finishing the thread" << errorText << "dives downloaded" << downloadTable.nr;
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	dcs->setVendor(internalData->vendor);
+	dcs->setProduct(internalData->product);
+	dcs->setDevice(internalData->devname);
 }
 
 static void fill_supported_mobile_list()
 {
-	/* currently no BLE devices added as BLE backend is not ready yet */
+	// This segment of the source is automatically generated
+	// please edit scripts/dcTransport.pl , regenerated the code and copy it here
 
 #if defined(Q_OS_ANDROID)
 	/* BT, BLE and FTDI devices */
+	mobileProductList["Aeris"] =
+			QStringList({{"500 AI"}, {"A300"}, {"A300 AI"}, {"A300CS"}, {"Atmos 2"}, {"Atmos AI"}, {"Atmos AI 2"}, {"Compumask"}, {"Elite"}, {"Elite T3"}, {"Epic"}, {"F10"}, {"F11"}, {"Manta"}, {"XR-1 NX"}, {"XR-2"}});
+	mobileProductList["Aqualung"] =
+			QStringList({{"i300"}, {"i450T"}, {"i550"}, {"i750TC"}});
+	mobileProductList["Beuchat"] =
+			QStringList({{"Mundial 2"}, {"Mundial 3"}, {"Voyager 2G"}});
+	mobileProductList["Genesis"] =
+			QStringList({{"React Pro"}, {"React Pro White"}});
 	mobileProductList["Heinrichs Weikamp"] =
-			QStringList({{"OSTC Sport"}, {"OSTC 2N"}, {"OSTC 3"},
-				     {"OSTC 3+"}, {"OSTC 4"}});
-	mobileProductList["Shearwater"] =
-			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}});
-	mobileProductList["Suunto"] =
-			QStringList({"EON Steel"});
+			QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Sport"}, {"OSTC cR"}});
+	mobileProductList["Hollis"] =
+			QStringList({{"DG02"}, {"DG03"}, {"TX1"}});
+	mobileProductList["Oceanic"] =
+			QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
 	mobileProductList["Scubapro"] =
 			QStringList({{"G2"}});
+	mobileProductList["Seemann"] =
+			QStringList({{"XP5"}});
+	mobileProductList["Shearwater"] =
+			QStringList({{"Nerd"}, {"Perdix"}, {"Perdix AI"}, {"Petrel"}, {"Petrel 2"}, {"Predator"}});
+	mobileProductList["Sherwood"] =
+			QStringList({{"Amphos"}, {"Amphos Air"}, {"Insight"}, {"Insight 2"}, {"Vision"}, {"Wisdom"}, {"Wisdom 2"}, {"Wisdom 3"}});
+	mobileProductList["Subgear"] =
+			QStringList({{"XP-Air"}});
+	mobileProductList["Suunto"] =
+			QStringList({{"Cobra"}, {"Cobra 2"}, {"Cobra 3"}, {"D3"}, {"D4"}, {"D4i"}, {"D6"}, {"D6i"}, {"D9"}, {"D9tx"}, {"DX"}, {"EON Steel"}, {"Eon"}, {"Gekko"}, {"HelO2"}, {"Mosquito"}, {"Solution"}, {"Solution Alpha"}, {"Solution Nitrox"}, {"Spyder"}, {"Stinger"}, {"Vyper"}, {"Vyper 2"}, {"Vyper Air"}, {"Vyper Novo"}, {"Vytec"}, {"Zoop"}, {"Zoop Novo"}});
+	mobileProductList["Tusa"] =
+			QStringList({{"Element II (IQ-750)"}, {"Zen (IQ-900)"}, {"Zen Air (IQ-950)"}});
+	mobileProductList["Uwatec"] =
+			QStringList({{"Aladin Air Twin"}, {"Aladin Air Z"}, {"Aladin Air Z Nitrox"}, {"Aladin Air Z O2"}, {"Aladin Pro"}, {"Aladin Pro Ultra"}, {"Aladin Sport Plus"}, {"Memomouse"}});
 
 #endif
 #if defined(Q_OS_IOS)
 	/* BLE only, Qt does not support classic BT on iOS */
-	mobileProductList["Heinrichs Weikamp"] =
-			QStringList({{"OSTC 4"}});
-	mobileProductList["Shearwater"] =
-			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}});
-	mobileProductList["Suunto"] =
-			QStringList({"EON Steel"});
 	mobileProductList["Scubapro"] =
 			QStringList({{"G2"}});
+	mobileProductList["Shearwater"] =
+			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}, {"Perdix AI"}});
+	mobileProductList["Suunto"] =
+			QStringList({{"EON Steel"}});
+
 #endif
+	// end of the automatically generated code
 }
 
 void fill_computer_list()
 {
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
-	struct mydescriptor *mydescriptor;
 
 	fill_supported_mobile_list();
 
@@ -121,8 +148,7 @@ void fill_computer_list()
 	  happens to match a data structure that is internal to libdivecomputer;
 	  this WILL BREAK if libdivecomputer changes the dc_descriptor struct...
 	  eventually the UEMIS code needs to move into libdivecomputer, I guess */
-
-	mydescriptor = (struct mydescriptor *)malloc(sizeof(struct mydescriptor));
+	struct mydescriptor *mydescriptor = (struct mydescriptor *)malloc(sizeof(struct mydescriptor));
 	mydescriptor->vendor = "Uemis";
 	mydescriptor->product = "Zurich";
 	mydescriptor->type = DC_FAMILY_NULL;
@@ -138,9 +164,6 @@ void fill_computer_list()
 #endif
 
 	qSort(vendorList);
-#if defined(SUBSURFACE_MOBILE) && defined(BT_SUPPORT)
-	vendorList.append(QObject::tr("Paired Bluetooth Devices"));
-#endif
 }
 
 DCDeviceData *DCDeviceData::m_instance = NULL;
@@ -169,6 +192,27 @@ DCDeviceData *DCDeviceData::instance()
 QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 {
 	return productList[vendor];
+}
+
+int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
+{
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (dcs->dc_vendor() == vendor &&
+	    dcs->dc_product() == product) {
+		// we are trying to show the last dive computer selected
+		for (int i = 0; i < connectionListModel.rowCount(); i++) {
+			QString address = connectionListModel.address(i);
+			if (address.contains(dcs->dc_device()))
+				return i;
+		}
+	}
+
+	for (int i = 0; i < connectionListModel.rowCount(); i++) {
+		QString address = connectionListModel.address(i);
+		if (address.contains(product))
+			return i;
+	}
+	return -1;
 }
 
 DCDeviceData * DownloadThread::data()
@@ -288,15 +332,21 @@ device_data_t* DCDeviceData::internalData()
 
 int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 {
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (!dcs->dc_vendor().isEmpty()) {
+		// use the last one
+		for (int i = 0; i < vendorList.length(); i++) {
+			if (vendorList[i] == dcs->dc_vendor())
+				return i;
+		}
+	}
+
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
-	// Pick the vendor of the first confirmed find of a DC (if any), but
-	// only return a true vendor, and not our virtual one
-	if (!btDCs.isEmpty() && currentText != QObject::tr("Paired Bluetooth Devices")) {
-		qDebug() << "getDetectedVendorIndex" << currentText << btDCs.first().vendorIdx;
+	// Pick the vendor of the first confirmed find of a DC (if any)
+	if (!btDCs.isEmpty())
 		return btDCs.first().vendorIdx;
-	}
 #endif
 	return -1;
 }
@@ -304,22 +354,25 @@ int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText,
 					  const QString &currentProductText)
 {
+	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	if (!dcs->dc_vendor().isEmpty()) {
+		if (dcs->dc_vendor() == currentVendorText) {
+			// we are trying to show the last dive computer selected
+			for (int i = 0; i < productList[currentVendorText].length(); i++) {
+				if (productList[currentVendorText][i] == dcs->dc_product())
+					return i;
+			}
+		}
+	}
+
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
 	// Display in the QML UI, the first found dive computer that is been
 	// detected as a possible real dive computer (and not some other paired
-	// BT device
-	if (currentVendorText != QObject::tr("Paired Bluetooth Devices") && !btDCs.isEmpty()) {
-		qDebug() << "getDetectedProductIndex" << btDCs.first().productIdx;
+	// BT device)
+	if (!btDCs.isEmpty())
 		return btDCs.first().productIdx;
-	}
-
-	// if the above fails, display the selected paired device
-	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
-		qDebug() << "getDetectedProductIndex" << productList[currentVendorText].indexOf(currentProductText);
-		return productList[currentVendorText].indexOf(currentProductText);
-	}
 #endif
 	return -1;
 }
@@ -328,19 +381,9 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 					       const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
-	if (currentVendorText == QObject::tr("Paired Bluetooth Devices")) {
-		// simply get the address from the product text
-		QRegularExpression extractAddr(".*\\(([0-9A-FL:]*)\\)");
-		QRegularExpressionMatch m = extractAddr.match(currentProductText);
-		if (m.hasMatch()) {
-			qDebug() << "matched" << m.captured(1);
-			return m.captured(1);
-		}
-	}
-	// Otherwise, pull the vendor from the found devices that are possible real dive computers
+	// Pull the vendor from the found devices that are possible real dive computers
 	// HACK: this assumes that dive computer names are unique across vendors
-	//       and will only give you the first of multiple identically named dive computers - use
-	//       the Paired Bluetooth Devices vendor in cases like that
+	//       and will only give you the first of multiple identically named dive computers
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 	BTDiscovery::btVendorProduct btDC;
 	Q_FOREACH(btDC, btDCs) {
@@ -349,44 +392,4 @@ QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
 	}
 #endif
 	return QStringLiteral("cannot determine address of dive computer");
-}
-
-QString DCDeviceData::getDeviceDescriptorVendor(const QString &currentVendorText,
-						const QString &currentProductText)
-{
-#if defined(BT_SUPPORT)
-	if (currentVendorText != QObject::tr("Paired Bluetooth Devices"))
-		return currentVendorText;
-
-	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-
-	// Pull the vendor from the found devices that are possible real dive computers
-	// HACK: this assumes that dive computer names are unique across vendors
-	BTDiscovery::btVendorProduct btDC;
-	Q_FOREACH(btDC, btDCs) {
-		if (currentProductText.startsWith(dc_descriptor_get_product(btDC.dcDescriptor)))
-			return dc_descriptor_get_vendor(btDC.dcDescriptor);
-	}
-#endif
-	return QStringLiteral("failed to detect vendor");
-}
-
-QString DCDeviceData::getDeviceDescriptorProduct(const QString &currentVendorText,
-						 const QString &currentProductText)
-{
-#if defined(BT_SUPPORT)
-	if (currentVendorText != QObject::tr("Paired Bluetooth Devices"))
-		return currentProductText;
-
-	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-
-	// Pull the canonical product from the found devices that are possible real dive computers
-	// HACK: this assumes that dive computer names are unique across vendors
-	BTDiscovery::btVendorProduct btDC;
-	Q_FOREACH(btDC, btDCs) {
-		if (currentProductText.startsWith(dc_descriptor_get_product(btDC.dcDescriptor)))
-			return dc_descriptor_get_product(btDC.dcDescriptor);
-	}
-#endif
-	return QStringLiteral("failed to detect product");
 }

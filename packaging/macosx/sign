@@ -30,6 +30,8 @@ for i in \
 	./Subsurface.app//Contents/Frameworks/QtDbus.framework/Versions/5/QtDbus \
 	./Subsurface.app//Contents/Frameworks/QtXml.framework/Versions/5/QtXml \
 	./Subsurface.app//Contents/Frameworks/QtWebChannel.framework/Versions/5/QtWebChannel \
+	./Subsurface.app//Contents/Frameworks/QtLocation.framework/Versions/5/QtLocation \
+	./Subsurface.app//Contents/Frameworks/QtQuickWidgets.framework/Versions/5/QtQuickWidgets \
 	./Subsurface.app//Contents/Frameworks/*.dylib
 do
 	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" $i

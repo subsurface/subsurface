@@ -9,7 +9,7 @@ import org.subsurfacedivelog.mobile 1.0
 
 Item {
 	id: loginWindow
-	height: outerLayout.height + 2 * Kirigami.Units.gridUnit
+	height: outerLayout.height
 
 	property string username: login.text;
 	property string password: password.text;
@@ -23,7 +23,7 @@ Item {
 
 	ColumnLayout {
 		id: outerLayout
-		width: loginWindow.width - loginWindow.leftPadding - loginWindow.rightPadding - 2 * Kirigami.Units.gridUnit
+		width: loginWindow.width - Kirigami.Units.gridUnit // to ensure the full input fields are visible
 
 		function goToNext() {
 			for (var i = 0; i < children.length; ++i)
@@ -38,11 +38,9 @@ Item {
 
 		onVisibleChanged: {
 			if (visible && manager.accessingCloud < 0) {
-				manager.appendTextToLog("Credential scrn: show kbd was: " + (Qt.inputMethod.isVisible ? "visible" : "invisible"))
 				Qt.inputMethod.show()
 				login.forceActiveFocus()
 			} else {
-				manager.appendTextToLog("Credential scrn: hide kbd was: " + (Qt.inputMethod.isVisible ? "visible" : "invisible"))
 				Qt.inputMethod.hide()
 			}
 		}
@@ -55,6 +53,8 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Email")
+			font.pointSize: subsurfaceTheme.smallPointSize
+			color: subsurfaceTheme.secondaryTextColor
 		}
 
 		TextField {
@@ -63,34 +63,27 @@ Item {
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
+			onEditingFinished: {
+				saveCredentials()
+			}
 		}
 
 		Kirigami.Label {
 			text: qsTr("Password")
+			font.pointSize: subsurfaceTheme.smallPointSize
+			color: subsurfaceTheme.secondaryTextColor
 		}
 
 		TextField {
 			id: password
 			text: manager.cloudPassword
-			echoMode: TextInput.Password
+			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
 					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
-		}
-
-		GridLayout {
-			columns: 2
-
-			CheckBox {
-				checked: false
-				id: showPassword
-				onCheckedChanged: {
-					password.echoMode = checked ? TextInput.Normal : TextInput.Password
-				}
-			}
-			Kirigami.Label {
-				text: qsTr("Show password")
+			onEditingFinished: {
+				saveCredentials()
 			}
 		}
 
@@ -104,7 +97,5 @@ Item {
 			Layout.fillWidth: true
 			visible: rootItem.showPin
 		}
-
-		Item { width: Kirigami.Units.gridUnit; height: width }
 	}
 }

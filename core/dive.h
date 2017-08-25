@@ -140,8 +140,7 @@ extern int gas_volume(cylinder_t *cyl, pressure_t p);
 extern double gas_compressibility_factor(struct gasmix *gas, double bar);
 extern double isothermal_pressure(struct gasmix *gas, double p1, int volume1, int volume2);
 extern double gas_density(struct gasmix *gas, int pressure);
-
-
+extern int same_gasmix(struct gasmix *a, struct gasmix *b);
 
 static inline int get_o2(const struct gasmix *mix)
 {
@@ -184,6 +183,7 @@ static inline int interpolate(int a, int b, int part, int whole)
 void get_gas_string(const struct gasmix *gasmix, char *text, int len);
 const char *gasname(const struct gasmix *gasmix);
 
+#define MAX_SENSORS 2
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DESCRIPTION
 {                                     // --------- -----  -----    -----      -----------
 	duration_t time;               // uint32_t   4  seconds  (0-68 yrs)   elapsed dive time up to this sample
@@ -194,12 +194,11 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	depth_t depth;                 // int32_t    4    mm     (0-2000 km)  dive depth of this sample
 	depth_t stopdepth;             // int32_t    4    mm     (0-2000 km)  depth of next deco stop
 	temperature_t temperature;     // int32_t    4  mdegrK   (0-2 MdegK)  ambient temperature
-	pressure_t cylinderpressure;   // int32_t    4    mbar   (0-2 Mbar)   main cylinder pressure
-	pressure_t o2cylinderpressure; // int32_t    4    mbar   (0-2 Mbar)   CCR o2 cylinder pressure (rebreather)
+	pressure_t pressure[MAX_SENSORS]; // int32_t    4    mbar   (0-2 Mbar)   cylinder pressures (main and CCR o2)
 	o2pressure_t setpoint;         // uint16_t   2    mbar   (0-65 bar)   O2 partial pressure (will be setpoint)
 	o2pressure_t o2sensor[3];      // uint16_t   6    mbar   (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing
-	uint8_t sensor;                // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
+	uint8_t sensor[MAX_SENSORS];   // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
 	uint8_t cns;                   // uint8_t    1     %     (0-255 %)    cns% accumulated
 	uint8_t heartbeat;             // uint8_t    1  beats/m  (0-255)      heart rate measurement
 	volume_t sac;                  //            4  ml/min                predefined SAC
@@ -353,7 +352,6 @@ struct dive {
 	struct divecomputer dc;
 	int id; // unique ID for this dive
 	struct picture *picture_list;
-	int oxygen_cylinder_index, diluent_cylinder_index; // CCR dive cylinder indices
 	unsigned char git_id[20];
 };
 
@@ -761,6 +759,8 @@ extern void clear_table(struct dive_table *table);
 
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
+extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
+extern int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc);
 
 extern bool has_hr_data(struct divecomputer *dc);
 
@@ -911,6 +911,23 @@ void clear_vpmb_state();
 void delete_single_dive(int idx);
 
 struct event *get_next_event(struct event *event, const char *name);
+
+static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
+{
+	struct event *ev = *evp;
+
+	if (!gasmix) {
+		int cyl = explicit_first_cylinder(dive, dc);
+		gasmix = &dive->cylinder[cyl].gasmix;
+		ev = dc->events;
+	}
+	while (ev && ev->time.seconds < time) {
+		gasmix = get_gasmix_from_event(dive, ev);
+		ev = get_next_event(ev->next, "gaschange");
+	}
+	*evp = ev;
+	return gasmix;
+}
 
 
 /* these structs holds the information that

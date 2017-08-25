@@ -53,7 +53,7 @@ public:
 
 	enum CurrentState {
 		VIEWALL,
-		GLOBE_MAXIMIZED,
+		MAP_MAXIMIZED,
 		INFO_MAXIMIZED,
 		PROFILE_MAXIMIZED,
 		LIST_MAXIMIZED
@@ -121,7 +121,7 @@ slots:
 	void on_actionViewList_triggered();
 	void on_actionViewProfile_triggered();
 	void on_actionViewInfo_triggered();
-	void on_actionViewGlobe_triggered();
+	void on_actionViewMap_triggered();
 	void on_actionViewAll_triggered();
 	void on_actionPreviousDC_triggered();
 	void on_actionNextDC_triggered();

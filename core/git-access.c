@@ -700,6 +700,8 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 	merge_head = malloc(len);
 	snprintf(merge_head, len, "refs/heads/%s", branch);
 	git_config_set_string(conf, variable_name, merge_head);
+	free(variable_name);
+	free(merge_head);
 
 	/* finally create an empty commit and push it to the remote */
 	if (do_git_save(repo, branch, remote, false, true))
@@ -734,10 +736,12 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	if (verbose > 1)
 		fprintf(stderr, "git storage: returned from git_clone() with error %d\n", error);
 	if (error) {
-		char *msg = giterr_last()->message;
-		int len = sizeof("Reference 'refs/remotes/origin/' not found") + strlen(branch);
+		char *msg = "";
+		if (giterr_last())
+			 msg = giterr_last()->message;
+		int len = sizeof("reference 'refs/remotes/origin/' not found") + strlen(branch);
 		char *pattern = malloc(len);
-		snprintf(pattern, len, "Reference 'refs/remotes/origin/%s' not found", branch);
+		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", branch);
 		if (strstr(remote, prefs.cloud_git_url) && strstr(msg, pattern)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
@@ -782,12 +786,23 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 			return NULL;
 		}
 		return update_local_repo(localdir, remote, branch, rt);
+	} else {
+		/* we have no local cache yet */
+		if (is_subsurface_cloud) {
+			/* and take us temporarly online to create a local and
+			 * remote cloud repo.
+			 */
+			git_repository *ret;
+			bool glo = prefs.git_local_only;
+			prefs.git_local_only = false;
+			ret = create_local_repo(localdir, remote, branch, rt);
+			prefs.git_local_only = glo;
+			return ret;
+		}
 	}
-	if (!prefs.git_local_only)
-		return create_local_repo(localdir, remote, branch, rt);
-	else
-		return 0;
 
+	/* all normal cases are handled above */
+	return 0;
 }
 
 /*

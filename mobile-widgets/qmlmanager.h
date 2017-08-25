@@ -40,6 +40,9 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin READ showPin WRITE setShowPin NOTIFY showPinChanged)
+	Q_PROPERTY(QString progressMessage READ progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
+	Q_PROPERTY(bool libdcLog READ libdcLog WRITE setLibdcLog NOTIFY libdcLogChanged)
+	Q_PROPERTY(bool developer READ developer WRITE setDeveloper NOTIFY developerChanged)
 
 public:
 	QMLManager();
@@ -111,6 +114,15 @@ public:
 	int selectedDiveTimestamp() const;
 	void setSelectedDiveTimestamp(int when);
 
+	QString progressMessage() const;
+	void setProgressMessage(QString text);
+
+	bool libdcLog() const;
+	void setLibdcLog(bool value);
+
+	bool developer() const;
+	void setDeveloper(bool value);
+
 	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
 
@@ -121,6 +133,11 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE void setStatusbarColor(QColor color);
+	Q_INVOKABLE bool btEnabled() const;
+
+#if defined(Q_OS_ANDROID)
+	void writeToAppLogFile(QString logText);
+#endif
 
 public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
@@ -137,7 +154,7 @@ public slots:
 			   QString duration, QString depth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
 			   QString diveMaster, QString weight, QString notes, QString startpressure,
-			   QString endpressure, QString gasmix, QString cylinder);
+			   QString endpressure, QString gasmix, QString cylinder, int rating, int visibility);
 	void changesNeedSaving();
 	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
@@ -149,6 +166,7 @@ public slots:
 	void sendGpsData();
 	void downloadGpsData();
 	void populateGpsData();
+	void cancelDownloadDC();
 	void clearGpsData();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
@@ -203,6 +221,16 @@ private:
 	bool currentGitLocalOnly;
 	bool m_showPin;
 	DCDeviceData *m_device_data;
+	QString m_progressMessage;
+	bool m_libdcLog;
+	bool m_developer;
+	bool m_btEnabled;
+
+#if defined(Q_OS_ANDROID)
+	QString appLogFileName;
+	QFile appLogFile;
+	bool appLogFileOpen;
+#endif
 
 signals:
 	void cloudUserNameChanged();
@@ -225,6 +253,9 @@ signals:
 	void selectedDiveTimestampChanged();
 	void showPinChanged();
 	void sendScreenChanged(QScreen *screen);
+	void progressMessageChanged();
+	void libdcLogChanged();
+	void developerChanged();
 };
 
 #endif

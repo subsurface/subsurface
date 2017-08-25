@@ -305,7 +305,8 @@ void get_selected_dives_text(char *buffer, size_t size)
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
 
-bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx) {
+bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx)
+{
 	bool first_gas_explicit = false;
 	struct event *event = get_next_event(dc->events, "gaschange");
 	while (event) {
@@ -316,8 +317,12 @@ bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx) {
 			return true;
 		event = get_next_event(event->next, "gaschange");
 	}
-	if (dc->divemode == CCR && (idx == dive->diluent_cylinder_index || idx == dive->oxygen_cylinder_index))
-		return true;
+	if (dc->divemode == CCR) {
+		if (idx == get_cylinder_idx_by_use(dive, DILUENT))
+			return true;
+		if (idx == get_cylinder_idx_by_use(dive, OXYGEN))
+			return true;
+	}
 	return !first_gas_explicit && idx == 0;
 }
 
@@ -340,22 +345,10 @@ void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 {
 	int idx;
 	struct divecomputer *dc;
-	bool used;
 
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
-		used = false;
 		cylinder_t *cyl = &dive->cylinder[idx];
 		pressure_t start, end;
-
-		for_each_dc(dive, dc) {
-			if (same_string(dc->model, "planned dive"))
-				continue;
-			if (has_gaschange_event(dive, dc, idx))
-				used = true;
-		}
-
-		if (!used)
-			continue;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;

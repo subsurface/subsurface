@@ -69,6 +69,8 @@ set(SUBSURFACE_INTERFACE
 	globe.cpp
 	kmessagewidget.cpp
 	mainwindow.cpp
+	mapwidget.cpp
+	../mobile-widgets/qmlmapwidgethelper.cpp
 	modeldelegates.cpp
 	notificationwidget.cpp
 	simplewidgets.cpp

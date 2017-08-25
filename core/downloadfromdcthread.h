@@ -45,15 +45,13 @@ public:
 	device_data_t* internalData();
 
 	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
+	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
+
 	Q_INVOKABLE int getDetectedVendorIndex(const QString &currentText);
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText,
 						const QString &currentProductText);
 	Q_INVOKABLE QString getDetectedDeviceAddress(const QString &currentVendorText,
 						     const QString &currentProductText);
-	Q_INVOKABLE QString getDeviceDescriptorVendor(const QString &currentVendorText,
-						      const QString &currentProductText);
-	Q_INVOKABLE QString getDeviceDescriptorProduct(const QString &currentVendorText,
-						       const QString &currentProductText);
 
 public slots:
 	void setVendor(const QString& vendor);
@@ -102,5 +100,6 @@ void fill_computer_list();
 extern QStringList vendorList;
 extern QHash<QString, QStringList> productList;
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
+extern ConnectionListModel connectionListModel;
 
 #endif

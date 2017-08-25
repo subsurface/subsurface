@@ -3,11 +3,53 @@
 #include "btdiscovery.h"
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include <QTimer>
 #include <QDebug>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
 BTDiscovery *BTDiscovery::m_instance = NULL;
+
+ConnectionListModel::ConnectionListModel(QObject *parent) :
+	QAbstractListModel(parent)
+{
+}
+
+QHash <int, QByteArray> ConnectionListModel::roleNames() const
+{
+	QHash<int, QByteArray> roles;
+	roles[AddressRole] = "address";
+	return roles;
+}
+
+QVariant ConnectionListModel::data(const QModelIndex &index, int role) const
+{
+	if (index.row() < 0 || index.row() >= m_addresses.count())
+		return QVariant();
+	if (role != AddressRole)
+		return QVariant();
+	return m_addresses[index.row()];
+}
+
+QString ConnectionListModel::address(int idx) const
+{
+	if (idx < 0 || idx >> m_addresses.count())
+		return QString();
+	return m_addresses[idx];
+}
+
+int ConnectionListModel::rowCount(const QModelIndex &parent) const
+{
+	Q_UNUSED(parent)
+	return m_addresses.count();
+}
+
+void ConnectionListModel::addAddress(const QString address)
+{
+	beginInsertRows(QModelIndex(), rowCount(), rowCount());
+	m_addresses.append(address);
+	endInsertRows();
+}
 
 static dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
@@ -19,6 +61,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		if (btName.mid(4,2) == "3#") product = "OSTC 3";
 		else if (btName.mid(4,2) == "3+") product = "OSTC 3+";
 		else if (btName.mid(4,2) == "s#") product = "OSTC Sport";
+		else if (btName.mid(4,2) == "s ") product = "OSTC Sport";
 		else if (btName.mid(4,2) == "4-") product = "OSTC 4";
 		else if (btName.mid(4,2) == "2-") product = "OSTC 2N";
 		// all OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
@@ -26,10 +69,11 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		else product = "OSTC 3"; // all OSTCs are HW_FAMILY_OSTC_3
 	}
 
-	if (btName.startsWith("Petrel") || btName.startsWith("Perdix")) {
+	if (btName.startsWith("Petrel") || btName.startsWith("Perdix") || btName.startsWith("Predator")) {
 		vendor = "Shearwater";
 		if (btName.startsWith("Petrel")) product = "Petrel"; // or petrel 2?
 		if (btName.startsWith("Perdix")) product = "Perdix";
+		if (btName.startsWith("Predator")) product = "Predator";
 	}
 
 	if (btName.startsWith("EON Steel")) {
@@ -57,13 +101,19 @@ BTDiscovery::BTDiscovery(QObject *parent)
 	}
 	m_instance = this;
 #if defined(BT_SUPPORT)
+#if !defined(Q_OS_IOS)
 	if (localBtDevice.isValid() &&
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
 		btPairedDevices.clear();
 		qDebug() <<  "localDevice " + localBtDevice.name() + " is valid, starting discovery";
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
+		m_btValid = true;
+#else
+	m_btValid = false;
+#endif
+#if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+		qDebug() << "starting BLE discovery";
 		discoveryAgent->start();
 #endif
 #if defined(Q_OS_ANDROID) && defined(BT_SUPPORT)
@@ -79,12 +129,18 @@ BTDiscovery::BTDiscovery(QObject *parent)
 		for (int i = 0; i < btPairedDevices.length(); i++) {
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
 		}
-#if defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)
-		discoveryAgent->stop();
+#if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
+		QTimer timer;
+		timer.setSingleShot(true);
+		connect(&timer, &QTimer::timeout, discoveryAgent, &QBluetoothDeviceDiscoveryAgent::stop);
+		timer.start(3000);
 #endif
+#if !defined(Q_OS_IOS)
 	} else {
 		qDebug() << "localBtDevice isn't valid";
+		m_btValid = false;
 	}
+#endif
 #endif
 }
 
@@ -118,8 +174,11 @@ QString markBLEAddress(const QBluetoothDeviceInfo *device)
 	flags = device->coreConfigurations();
 	if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
 		prefix = "LE:";
-
+#if defined(Q_OS_IOS)
+	return prefix + device->deviceUuid().toString();
+#else
 	return prefix + device->address().toString();
+#endif
 }
 
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
@@ -148,31 +207,34 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 	dc_descriptor_t *newDC = getDeviceType(device.name);
 	if (newDC)
 		newDevice = dc_descriptor_get_product(newDC);
-	 else
+	else
 		newDevice = device.name;
 
 	qDebug() << "Found new device:" << newDevice << device.address;
-	QString vendor;
-	if (newDC) foreach (vendor, productList.keys()) {
-		if (productList[vendor].contains(newDevice)) {
-			qDebug() << "this could be a " + vendor + " " +
-					(newDevice == "OSTC 3" ? "OSTC family" : newDevice);
-			btVP.btpdi = device;
-			btVP.dcDescriptor = newDC;
-			btVP.vendorIdx = vendorList.indexOf(vendor);
-			btVP.productIdx = productList[vendor].indexOf(newDevice);
-			qDebug() << "adding new btDCs entry (detected DC)" << newDevice << btVP.vendorIdx << btVP.productIdx << btVP.btpdi.address;;
-			btDCs << btVP;
-			productList[QObject::tr("Paired Bluetooth Devices")].append(device.name + " (" + device.address + ")");
-			return;
-		}
+	if (newDC) {
+		QString vendor = dc_descriptor_get_vendor(newDC);
+		qDebug() << "this could be a " + vendor + " " + newDevice;
+		btVP.btpdi = device;
+		btVP.dcDescriptor = newDC;
+		btVP.vendorIdx = vendorList.indexOf(vendor);
+		btVP.productIdx = productList[vendor].indexOf(newDevice);
+		btDCs << btVP;
+		connectionListModel.addAddress(device.address + " (" + newDevice + ")");
+		return;
 	}
+	connectionListModel.addAddress(device.address);
 	qDebug() << "Not recognized as dive computer";
 }
 
 QList<BTDiscovery::btVendorProduct> BTDiscovery::getBtDcs()
 {
 	return btDCs;
+}
+
+bool BTDiscovery::btAvailable() const
+{
+	return m_btValid;
+
 }
 
 // Android: As Qt is not able to pull the pairing data from a device, i

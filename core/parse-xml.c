@@ -150,8 +150,8 @@ static bool in_settings = false;
 static bool in_userid = false;
 static struct tm cur_tm;
 static int cur_cylinder_index, cur_ws_index;
-static int lastndl, laststoptime, laststopdepth, lastcns, lastpo2, lastindeco;
-static int lastcylinderindex, lastsensor, next_o2_sensor;
+static int lastcylinderindex, next_o2_sensor;
+static int o2pressure_sensor;
 static struct extra_data cur_extra_data;
 
 /*
@@ -352,8 +352,12 @@ static void pressure(char *buffer, pressure_t *pressure)
 
 static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
 {
-	if (trimspace(buffer))
-		*cyl_use = cylinderuse_from_text(buffer);
+	if (trimspace(buffer)) {
+		int use = cylinderuse_from_text(buffer);
+		*cyl_use = use;
+		if (use == OXYGEN)
+			o2pressure_sensor = cur_cylinder_index;
+	}
 }
 
 static void salinity(char *buffer, int *salinity)
@@ -397,7 +401,7 @@ static void extra_data_end(void)
 {
 	// don't save partial structures - we must have both key and value
 	if (cur_extra_data.key && cur_extra_data.value)
-		add_extra_data(cur_dc, cur_extra_data.key, cur_extra_data.value);
+		add_extra_data(get_dc(), cur_extra_data.key, cur_extra_data.value);
 }
 
 static void weight(char *buffer, weight_t *weight)
@@ -712,7 +716,7 @@ static int divinglog_fill_sample(struct sample *sample, const char *name, char *
 	return MATCH("time.p", sampletime, &sample->time) ||
 	       MATCH("depth.p", depth, &sample->depth) ||
 	       MATCH("temp.p", fahrenheit, &sample->temperature) ||
-	       MATCH("press1.p", psi_or_bar, &sample->cylinderpressure) ||
+	       MATCH("press1.p", psi_or_bar, &sample->pressure[0]) ||
 	       0;
 }
 
@@ -731,7 +735,7 @@ static int uddf_fill_sample(struct sample *sample, const char *name, char *buf)
 	return MATCH("divetime", sampletime, &sample->time) ||
 	       MATCH("depth", depth, &sample->depth) ||
 	       MATCH("temperature", temperature, &sample->temperature) ||
-	       MATCH("tankpressure", pressure, &sample->cylinderpressure) ||
+	       MATCH("tankpressure", pressure, &sample->pressure[0]) ||
 	       MATCH("ref.switchmix", uddf_gasswitch, sample) ||
 	       0;
 }
@@ -790,7 +794,6 @@ static void get_cylinderindex(char *buffer, uint8_t *i)
 static void get_sensor(char *buffer, uint8_t *i)
 {
 	*i = atoi(buffer);
-	lastsensor = *i;
 }
 
 static void parse_libdc_deco(char *buffer, struct sample *s)
@@ -925,19 +928,41 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
 {
 	int in_deco;
+	pressure_t p;
 
 	start_match("sample", name, buf);
-	if (MATCH("pressure.sample", pressure, &sample->cylinderpressure))
+	if (MATCH("pressure.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("cylpress.sample", pressure, &sample->cylinderpressure))
+	if (MATCH("cylpress.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("pdiluent.sample", pressure, &sample->cylinderpressure))
+	if (MATCH("pdiluent.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("o2pressure.sample", pressure, &sample->o2cylinderpressure))
+	if (MATCH("o2pressure.sample", pressure, &sample->pressure[1]))
 		return;
-	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor))
+	/* Christ, this is ugly */
+	if (MATCH("pressure0.sample", pressure, &p)) {
+		add_sample_pressure(sample, 0, p.mbar);
 		return;
-	if (MATCH("sensor.sample", get_sensor, &sample->sensor))
+	}
+	if (MATCH("pressure1.sample", pressure, &p)) {
+		add_sample_pressure(sample, 1, p.mbar);
+		return;
+	}
+	if (MATCH("pressure2.sample", pressure, &p)) {
+		add_sample_pressure(sample, 2, p.mbar);
+		return;
+	}
+	if (MATCH("pressure3.sample", pressure, &p)) {
+		add_sample_pressure(sample, 3, p.mbar);
+		return;
+	}
+	if (MATCH("pressure4.sample", pressure, &p)) {
+		add_sample_pressure(sample, 4, p.mbar);
+		return;
+	}
+	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor[0]))
+		return;
+	if (MATCH("sensor.sample", get_sensor, &sample->sensor[0]))
 		return;
 	if (MATCH("depth.sample", depth, &sample->depth))
 		return;
@@ -1522,8 +1547,7 @@ static void reset_dc_info(struct divecomputer *dc)
 {
 	/* WARN: reset dc info does't touch the dc? */
 	(void) dc;
-	lastcns = lastpo2 = lastndl = laststoptime = laststopdepth = lastindeco = 0;
-	lastsensor = lastcylinderindex = 0;
+	lastcylinderindex = 0;
 }
 
 static void reset_dc_settings(void)
@@ -1601,6 +1625,7 @@ static void dive_start(void)
 		add_dive_to_trip(cur_dive, cur_trip);
 		cur_dive->tripflag = IN_TRIP;
 	}
+	o2pressure_sensor = 1;
 }
 
 static void dive_end(void)
@@ -1709,16 +1734,38 @@ static void ws_end(void)
 	cur_ws_index++;
 }
 
+/*
+ * By default the sample data does not change unless the
+ * save-file gives an explicit new value. So we copy the
+ * data from the previous sample if one exists, and then
+ * the parsing will update it as necessary.
+ *
+ * There are a few exceptions, like the sample pressure:
+ * missing sample pressure doesn't mean "same as last
+ * time", but "interpolate". We clear those ones
+ * explicitly.
+ *
+ * NOTE! We default sensor use to 0, 1 respetively for
+ * the two sensors, but for CCR dives with explicit
+ * OXYGEN bottles we set the secondary sensor to that.
+ * Then the primary sensor will be either the first
+ * or the second cylinder depending on what isn't an
+ * oxygen cylinder.
+ */
 static void sample_start(void)
 {
-	cur_sample = prepare_sample(get_dc());
-	cur_sample->ndl.seconds = lastndl;
-	cur_sample->in_deco = lastindeco;
-	cur_sample->stoptime.seconds = laststoptime;
-	cur_sample->stopdepth.mm = laststopdepth;
-	cur_sample->cns = lastcns;
-	cur_sample->setpoint.mbar = lastpo2;
-	cur_sample->sensor = lastsensor;
+	struct divecomputer *dc = get_dc();
+	struct sample *sample = prepare_sample(dc);
+
+	if (sample != dc->sample) {
+		memcpy(sample, sample-1, sizeof(struct sample));
+		sample->pressure[0].mbar = 0;
+		sample->pressure[1].mbar = 0;
+	} else {
+		sample->sensor[0] = !o2pressure_sensor;
+		sample->sensor[1] = o2pressure_sensor;
+	}
+	cur_sample = sample;
 	next_o2_sensor = 0;
 }
 
@@ -1728,12 +1775,6 @@ static void sample_end(void)
 		return;
 
 	finish_sample(get_dc());
-	lastndl = cur_sample->ndl.seconds;
-	lastindeco = cur_sample->in_deco;
-	laststoptime = cur_sample->stoptime.seconds;
-	laststopdepth = cur_sample->stopdepth.mm;
-	lastcns = cur_sample->cns;
-	lastpo2 = cur_sample->setpoint.mbar;
 	cur_sample = NULL;
 }
 
@@ -2364,7 +2405,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 		if (data[18] && data[18][0])
 			cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
 		if (data[19] && data[19][0])
-			cur_sample->cylinderpressure.mbar = pressureBlob[i];
+			cur_sample->pressure[0].mbar = pressureBlob[i];
 		sample_end();
 	}
 
@@ -2498,7 +2539,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 		if (temp >= -10 && temp < 50)
 			cur_sample->temperature.mkelvin = C_to_mkelvin(temp);
 		if (pressure >= 0 && pressure < 350000)
-			cur_sample->cylinderpressure.mbar = pressure;
+			cur_sample->pressure[0].mbar = pressure;
 		sample_end();
 	}
 
@@ -2526,7 +2567,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 			if (data[18] && data[18][0])
 				cur_sample->temperature.mkelvin = C_to_mkelvin(tempBlob[i]);
 			if (data[19] && data[19][0])
-				cur_sample->cylinderpressure.mbar = pressureBlob[i];
+				cur_sample->pressure[0].mbar = pressureBlob[i];
 			sample_end();
 		}
 	}
@@ -2687,8 +2728,43 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	/* We don't actually have data[3], but it should appear in the
 	 * SQL query at some point.
 	if (data[3])
-		cur_sample->cylinderpressure.mbar = metric ? atoi(data[3]) * 1000 : psi_to_mbar(atoi(data[3]));
+		cur_sample->pressure[0].mbar = metric ? atoi(data[3]) * 1000 : psi_to_mbar(atoi(data[3]));
 	 */
+	sample_end();
+
+	return 0;
+}
+
+extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, char **column)
+{
+	(void) handle;
+	(void) columns;
+	(void) column;
+
+	sample_start();
+	if (data[0])
+		cur_sample->time.seconds = atoi(data[0]);
+	if (data[1])
+		cur_sample->depth.mm = metric ? lrint(atof(data[1]) * 1000) : feet_to_mm(atof(data[1]));
+	if (data[2])
+		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
+	if (data[3]) {
+		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
+		cur_dive->dc.divemode = CCR;
+	}
+	if (data[4])
+		cur_sample->ndl.seconds = atoi(data[4]) * 60;
+	if (data[5])
+		cur_sample->cns = atoi(data[5]);
+	if (data[6])
+		cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+
+	/* Weird unit conversion but seems to produce correct results */
+	if (data[7]) {
+		cur_sample->pressure[0].mbar = psi_to_mbar(atoi(data[7])) * 2;
+	}
+	if (data[8])
+		cur_sample->pressure[1].mbar = psi_to_mbar(atoi(data[8])) * 2;
 	sample_end();
 
 	return 0;
@@ -2702,7 +2778,8 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records where diveLogId = %d";
+	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where diveLogId = %d";
+	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where number = %d";
 	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %d group by fractionO2,fractionHe";
 	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where a.diveLogId = %d and b.diveLogId = %d and (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) union select min(currentTime),fractionO2,fractionHe from dive_log_records";
 	char get_buffer[1024];
@@ -2740,7 +2817,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			cur_settings.dc.model = strdup("Shearwater Petrel");
+			cur_settings.dc.model = strdup("Shearwater Petrel/Perdix");
 			break;
 		case 4:
 			cur_settings.dc.model = strdup("Shearwater Predator");
@@ -2759,7 +2836,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	if (data[10]) {
 		switch (atoi(data[10])) {
 		case 2:
-			cur_dive->dc.model = strdup("Shearwater Petrel");
+			cur_dive->dc.model = strdup("Shearwater Petrel/Perdix");
 			break;
 		case 4:
 			cur_dive->dc.model = strdup("Shearwater Predator");
@@ -2784,11 +2861,15 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, cur_dive->number);
+	retval = sqlite3_exec(handle, get_buffer, &shearwater_ai_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
-		return 1;
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
+		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
+		if (retval != SQLITE_OK) {
+			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
+			return 1;
+		}
 	}
 
 	dive_end();
@@ -2989,7 +3070,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select i.diveId,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
+	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, handle, &err);
 
@@ -3137,7 +3218,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 		if (data[2]) {
 			memcpy(pres, &data[2][i * 11 + 3], 4);
-			cur_sample->cylinderpressure.mbar = atoi(pres) * 100;
+			cur_sample->pressure[0].mbar = atoi(pres) * 100;
 		}
 
 		if (data[3] && strlen(data[3])) {
@@ -3202,17 +3283,13 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		}
 
 		/*
-		 * My best guess is that if we have o2sensors, then it
-		 * is either CCR or PSCR dive. And the first time we
-		 * have O2 sensor readings, we can count them to get
-		 * the amount O2 sensors.
+		 * Count the number of o2 sensors
 		 */
 
-		if (!cur_dive->dc.no_o2sensors) {
+		if (!cur_dive->dc.no_o2sensors && (cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[0].mbar)) {
 			cur_dive->dc.no_o2sensors = cur_sample->o2sensor[0].mbar ? 1 : 0 +
 				 cur_sample->o2sensor[1].mbar ? 1 : 0 +
 				 cur_sample->o2sensor[2].mbar ? 1 : 0;
-			cur_dive->dc.divemode = CCR;
 		}
 
 		ptr += 12;
@@ -3329,6 +3406,25 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	if (data[11])
 		cur_dive->suit = strdup(data[11]);
 
+	/* Divinglog has following visibility options: good, medium, bad */
+	if (data[14]) {
+		switch(data[14][0]) {
+		case '0':
+			break;
+		case '1':
+			cur_dive->visibility = 5;
+			break;
+		case '2':
+			cur_dive->visibility = 3;
+			break;
+		case '3':
+			cur_dive->visibility = 1;
+			break;
+		default:
+			break;
+		}
+	}
+
 	settings_start();
 	dc_settings_start();
 
@@ -3352,6 +3448,19 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		return 1;
 	}
 
+	if (data[15]) {
+		switch (data[15][0]) {
+		/* OC */
+		case '0':
+			break;
+		case '1':
+			cur_dive->dc.divemode = PSCR;
+			break;
+		case '2':
+			cur_dive->dc.divemode = CCR;
+			break;
+		}
+	}
 
 	dc_settings_end();
 	settings_end();
@@ -3385,7 +3494,7 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID from Logbook where UUID not in (select UUID from DeletedRecords)";
+	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";
 
 	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
 
@@ -3480,7 +3589,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
 		cur_dc->no_o2sensors = 1;
 
-	while (ptr < buffer + size) {
+	for (; ptr < buffer + size; ptr += 16) {
 		time = ((ptr[0] >> 4) & 0x0f) +
 			((ptr[1] << 4) & 0xff0) +
 			((ptr[2] << 12) & 0x1f000);
@@ -3496,18 +3605,22 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			// because we rather calculate ppo2 our selfs.
 			if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
 				cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
-			// NDL in minutes, 10 bit
-			cur_sample->ndl.seconds = (((ptr[9] & 0x03) << 8) + ptr[8]) * 60;
-			// TTS in minutes, 10 bit
-			cur_sample->tts.seconds = (((ptr[10] & 0x0F) << 6) + (ptr[9] >> 2)) * 60;
-			// Temperature in 1/10 C, 10 bit signed
-			cur_sample->temperature.mkelvin = ((ptr[11] & 0x20) ? -1 : 1)  * (((ptr[11] & 0x1F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
-			// ptr[11] & 0xF0 is unknown, and always 0xC in all checked files
+
+			// In some test files, ndl / tts / temp is bogus if this bits are 1
+			// flag bits in ptr[11] & 0xF0 is probably involved to,
+			if ((ptr[2] >> 5) != 1) {
+				// NDL in minutes, 10 bit
+				cur_sample->ndl.seconds = (((ptr[9] & 0x03) << 8) + ptr[8]) * 60;
+				// TTS in minutes, 10 bit
+				cur_sample->tts.seconds = (((ptr[10] & 0x0F) << 6) + (ptr[9] >> 2)) * 60;
+				// Temperature in 1/10 C, 10 bit signed
+				cur_sample->temperature.mkelvin = ((ptr[11] & 0x20) ? -1 : 1)  * (((ptr[11] & 0x1F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
+			}
 			cur_sample->stopdepth.mm = ((ptr[13] << 8) + ptr[12]) * 10;
 			if (cur_sample->stopdepth.mm)
 				cur_sample->in_deco = true;
 			//ptr[14] is helium content, always zero?
-			//ptr[15] is setpoint, always zero?
+			//ptr[15] is setpoint, what the computer thinks you should aim for?
 			sample_end();
 			break;
 		case 1: /* dive event */
@@ -3520,11 +3633,17 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			switch (ptr[4]) {
 			case 1:
 				strcpy(cur_event.name, "Setpoint Manual");
-				// There is a setpoint value somewhere...
+				cur_event.value = ptr[6];
+				sample_start();
+				cur_sample->setpoint.mbar = ptr[6] * 10;
+				sample_end();
 				break;
 			case 2:
 				strcpy(cur_event.name, "Setpoint Auto");
-				// There is a setpoint value somewhere...
+				cur_event.value = ptr[6];
+				sample_start();
+				cur_sample->setpoint.mbar = ptr[6] * 10;
+				sample_end();
 				switch (ptr[7]) {
 				case 0:
 					strcat(cur_event.name, " Manual");
@@ -3635,7 +3754,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				strcpy(cur_event.name, "Fatal");
 				break;
 			case 23:
-				strcpy(cur_event.name, "Diluent");
+				strcpy(cur_event.name, "gaschange");
+				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				cur_event.value = ptr[7] << 8 ^ ptr[6];
+				event_end();
 				break;
 			case 24:
 				strcpy(cur_event.name, "gaschange");
@@ -3702,14 +3824,29 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 			break;
 		case 7:
 			/* measure record */
-			/* Po2 sample? Solenoid inject? */
-			//fprintf(stderr, "%02X %02X%02X %02X%02X\n", ptr[5], ptr[6], ptr[7], ptr[8], ptr[9]);
+			switch (ptr[2] >> 5) {
+			case 1:
+				/* Measure Battery */
+				//printf("B1: %dmV %d% B2: %dmV %d%\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+			case 3:
+				/* Measure Oxygen */
+				//printf("o2 cells(0.01 mV): %d %d %d %d\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+				break;
+			case 4:
+				/* Measure GPS */
+				cur_latitude.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
+				cur_longitude.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
+				cur_dive->dive_site_uuid = create_dive_site_with_gps(NULL, cur_latitude, cur_longitude, cur_dive->when);
+				printf("gps: %s\n", printGPSCoords(cur_latitude.udeg, cur_longitude.udeg));
+				break;
+			default:
+				break;
+			}
 			break;
 		default:
 			/* Unknown... */
 			break;
 		}
-		ptr += 16;
 	}
 	divecomputer_end();
 	dive_end();

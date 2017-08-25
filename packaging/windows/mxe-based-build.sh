@@ -4,7 +4,7 @@
 #
 # this file assumes that you have installed MXE on your system
 # and installed a number of dependencies as well. Latest MXE
-# version from git may not always work for Qt5 and Subsurface. 
+# version from git may not always work for Qt5 and Subsurface.
 # Try to select an older release version like build-2016-10-12.
 #
 # cd ~/src
@@ -47,7 +47,6 @@
 #      /libcurl                <- from git - 7.42.1 seems to work - rename folder!
 #      /subsurface             <- current subsurface git
 #      /libdivecomputer        <- appropriate libdc/Subsurface-branch branch
-#      /marble-source          <- appropriate marble/Subsurface-branch branch
 #      /libgit2                <- libgit2 0.23.1 or similar
 #
 # ~/src/win32                  <- build directory
@@ -134,7 +133,7 @@ if [[ ! -d grantlee || -f build.grantlee ]] ; then
 	rm -f build.grantlee
 	mkdir -p grantlee
 	cd grantlee
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_TESTS=OFF \
 		"$BASEDIR"/grantlee
@@ -152,7 +151,7 @@ if [[ ! -d libssh2 || -f build.libssh2 ]] ; then
 	mkdir -p libssh2
 	cd libssh2
 
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_EXAMPLES=OFF \
 		-DBUILD_TESTING=OFF \
@@ -205,7 +204,7 @@ if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
 	rm -f build.libgit2
 	mkdir -p libgit2
 	cd libgit2
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+	i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 		-DBUILD_CLAR=OFF -DTHREADSAFE=ON \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DDLLTOOL="$BASEDIR"/"$MXEDIR"/usr/bin/i686-w64-mingw32.shared-dlltool \
@@ -245,27 +244,17 @@ else
 	echo ""
 fi
 
-# marble:
-
 cd "$BUILDDIR"
-if [[ ! -d marble || -f build.marble ]] ; then
-	rm -f build.marble
-	mkdir -p marble
-	cd marble
-	cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
-		-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5 \
-		-DQTONLY=ON -DQT5BUILD=ON \
-		-DBUILD_MARBLE_APPS=OFF -DBUILD_MARBLE_EXAMPLES=OFF \
-		-DBUILD_MARBLE_TESTS=OFF -DBUILD_MARBLE_TOOLS=OFF \
-		-DBUILD_TESTING=OFF -DWITH_DESIGNER_PLUGIN=OFF \
-		-DBUILD_WITH_DBUS=OFF \
-		-DCMAKE_BUILD_TYPE=$RELEASE \
-		"$BASEDIR"/marble-source
+if [[ ! -d googlemaps || -f build.googlemaps ]] ; then
+	rm -f build.googlemaps
+	cd "$BASEDIR"/googlemaps
+	git pull
+	cd "$BUILDDIR"
+	mkdir -p googlemaps
+	cd googlemaps
+	"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/qmake PREFIX=$"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared "$BASEDIR"/googlemaps/googlemaps.pro
 	make $JOBS
 	make install
-	# what the heck is marble doing?
-	mv "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/libssrfmarblewidget"$DLL_SUFFIX".dll "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib
-	mv "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/libastro"$DLL_SUFFIX".dll "$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib
 fi
 
 ###############
@@ -282,15 +271,8 @@ rm -rf subsurface
 QT_PLUGIN_DIRECTORIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/geoservices \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
-
-# for some reason we aren't installing libssrfmarblewidget.dll and # Qt5Xml.dll
-# I need to figure out why and fix that, but for now just manually copy that as well
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll"
-
-
-
 
 STAGING_DIR=$BUILDDIR/subsurface/staging
 STAGING_TESTS_DIR=$BUILDDIR/subsurface/staging_tests
@@ -304,6 +286,9 @@ do
 	mkdir -p $STAGING_TESTS_DIR/$(basename $d)
 	for f in $d/*
 	do
+		if [[ "$d" =~  geoservice ]] && [[ ! "$f" =~ googlemaps ]] ; then
+			continue
+		fi
 		if [[ "$RELEASE" == "Release" ]] && ([[ ! -f ${f//d.dll/.dll} || "$f" == "${f//d.dll/.dll}" ]]) ; then
 			cp $f $STAGING_DIR/plugins/$(basename $d)
 			cp $f $STAGING_TESTS_DIR/$(basename $d)
@@ -314,6 +299,23 @@ do
 	done
 done
 
+# next we need the QML modules
+QT_QML_MODULES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtQuick.2 \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtLocation \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtPositioning"
+
+mkdir -p $STAGING_DIR/qml
+
+for d in $QT_QML_MODULES
+do
+	cp -a $d $STAGING_DIR/qml
+done
+
+# for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
+# I need to figure out why and fix that, but for now just manually copy that as well
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Location$DLL_SUFFIX.dll"
+
 for f in $EXTRA_MANUAL_DEPENDENCIES
 do
     cp $f $STAGING_DIR
@@ -322,16 +324,14 @@ done
 
 cd "$BUILDDIR"/subsurface
 
-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
+i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/share/cmake/mxe-conf.cmake \
 	-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5 \
 	-DCMAKE_BUILD_TYPE=$RELEASE \
 	-DQT_TRANSLATION_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/translations \
 	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
-	-DMARBLE_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
-	-DMARBLE_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libssrfmarblewidget"$DLL_SUFFIX".dll \
-	-DMAKE_TESTS=OFF \
+	-DNO_MARBLE=ON -DMAKE_TESTS=OFF \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"

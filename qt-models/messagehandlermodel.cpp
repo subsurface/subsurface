@@ -2,11 +2,12 @@
 #include "messagehandlermodel.h"
 
 /* based on logging bits from libdivecomputer */
-#ifndef __ANDROID__
+#if !defined(Q_OS_ANDROID)
 #define INFO(fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
 #else
+extern void writeToAppLogFile(QString logText);
 #include <android/log.h>
-#define INFO(fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__)
+#define INFO(fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__);
 #endif
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -42,6 +43,9 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	m_data.append({message, type});
 	endInsertRows();
 	INFO("%s", message.toUtf8().constData());
+#if defined (Q_OS_ANDROID)
+	writeToAppLogFile(message);
+#endif
 }
 
 QVariant MessageHandlerModel::data(const QModelIndex& idx, int role) const
