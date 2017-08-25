@@ -480,6 +480,12 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	if(NOT NO_MARBLE)
 		install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
 		install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
+	else()
+		add_custom_target(link_googlemaps_plugin ALL COMMAND
+			rm -rf ./geoservices &&
+			mkdir -p geoservices &&
+			ln -sf
+			${CMAKE_SOURCE_DIR}/../install-root/usr/lib/qt/plugins/geoservices/libqtgeoservices_googlemaps.so ${CMAKE_BINARY_DIR}/geoservices)
 	endif()
 	install(FILES subsurface.debug DESTINATION bin)
 	install(FILES subsurface.desktop DESTINATION share/applications)
