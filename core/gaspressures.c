@@ -391,7 +391,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	for (int i = first; i <= last; i++) {
 		struct plot_data *entry = pi->entry + i;
 		unsigned pressure = SENSOR_PRESSURE(entry, sensor);
-		int time = entry->sec;
+		unsigned int time = entry->sec;
 
 		while (ev && ev->time.seconds <= time) {
 			cyl = get_cylinder_index(dive, ev);
