@@ -481,11 +481,18 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 		install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
 		install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
 	else()
-		add_custom_target(link_googlemaps_plugin ALL COMMAND
-			rm -rf ./geoservices &&
-			mkdir -p geoservices &&
-			ln -sf
-			${CMAKE_SOURCE_DIR}/../install-root/usr/lib/qt/plugins/geoservices/libqtgeoservices_googlemaps.so ${CMAKE_BINARY_DIR}/geoservices)
+		# the syntax is odd, but this searches for libqtgeoservices_googlemaps.so
+		# in the filesystem below our install-root
+		# different Linux flavors put the plugin in different directories
+		file(GLOB_RECURSE GOOGLEMAPS ${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
+		if ("${GOOGLEMAPS}" STREQUAL "")
+			message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
+		else()
+			add_custom_target(link_googlemaps_plugin ALL COMMAND
+				rm -rf ${CMAKE_BINARY_DIR}/geoservices &&
+				mkdir -p ${CMAKE_BINARY_DIR}/geoservices &&
+				ln -sf ${GOOGLEMAPS} ${CMAKE_BINARY_DIR}/geoservices)
+		endif()
 	endif()
 	install(FILES subsurface.debug DESTINATION bin)
 	install(FILES subsurface.desktop DESTINATION share/applications)
