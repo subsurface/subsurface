@@ -139,6 +139,41 @@ else
 	QMAKE=qmake
 fi
 
+# on Debian and Ubuntu based systems, the private QtLocation and
+# QtPositioning headers aren't bundled. Download them if necessary.
+if [ $PLATFORM = Linux ] ; then
+	QT_HEADERS_PATH=`$QMAKE -query QT_INSTALL_HEADERS`
+	QT_VERSION=`$QMAKE -v | grep "Qt" | cut -d" " -f4`
+
+	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$qt_version/QtLocation/private" ] &&
+           [ ! -d $INSTALL_ROOT/include/QtLocation/private ] ; then
+		echo "Missing private Qt headers for $qt_version; downloading them..."
+
+		QTLOC_GIT=./qtlocation_git
+		QTLOC_PRIVATE=$INSTALL_ROOT/include/QtLocation/private
+		QTPOS_PRIVATE=$INSTALL_ROOT/include/QtPositioning/private
+
+		rm -rf $QTLOC_GIT > /dev/null 2>&1
+		rm -rf $INSTALL_ROOT/include/QtLocation > /dev/null 2>&1
+		rm -rf $INSTALL_ROOT/include/QtPositioning > /dev/null 2>&1
+
+		git clone --branch v$QT_VERSION git://code.qt.io/qt/qtlocation.git --depth=1 $QTLOC_GIT
+
+		mkdir -p $QTLOC_PRIVATE
+		cd $QTLOC_GIT/src/location
+		find -name '*_p.h' | xargs cp -t $QTLOC_PRIVATE
+		cd $SRC
+
+		mkdir -p $QTPOS_PRIVATE
+		cd $QTLOC_GIT/src/positioning
+		find -name '*_p.h' | xargs cp -t $QTPOS_PRIVATE
+		cd $SRC
+
+		echo "* cleanup..."
+		rm -rf $QTLOC_GIT > /dev/null 2>&1
+	fi
+fi
+
 # set up the right file name extensions
 if [ $PLATFORM = Darwin ] ; then
 	SH_LIB_EXT=dylib
@@ -451,7 +486,7 @@ git checkout master
 git pull --rebase
 mkdir -p build
 cd build
-$QMAKE ../googlemaps.pro
+$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
 # on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 # since things compile fine with c++11, let's just hack that away
 # similarly, don't use -Wdata-time
