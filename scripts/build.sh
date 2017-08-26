@@ -132,6 +132,13 @@ export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 
 echo Building in $SRC, installing in $INSTALL_ROOT
 
+# find qmake
+if [ ! -z $CMAKE_PREFIX_PATH ] ; then
+	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
+else
+	QMAKE=qmake
+fi
+
 # set up the right file name extensions
 if [ $PLATFORM = Darwin ] ; then
 	SH_LIB_EXT=dylib
@@ -320,8 +327,7 @@ make install
 
 if [ $PLATFORM = Darwin ] ; then
 	if [ -z "$CMAKE_PREFIX_PATH" ] ; then
-		# qmake in PATH?
-		libdir=`qmake -query QT_INSTALL_LIBS`
+		libdir=`$QMAKE -query QT_INSTALL_LIBS`
 		if [ $? -eq 0 ]; then
 			export CMAKE_PREFIX_PATH=$libdir/cmake
 		elif [ -d "$HOME/Qt/5.9.1" ] ; then
@@ -445,11 +451,6 @@ git checkout master
 git pull --rebase
 mkdir -p build
 cd build
-if [ ! -z $CMAKE_PREFIX_PATH ] ; then
-	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
-else
-	QMAKE=qmake
-fi
 $QMAKE ../googlemaps.pro
 # on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 # since things compile fine with c++11, let's just hack that away
