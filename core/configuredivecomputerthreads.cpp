@@ -2081,7 +2081,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 		time.hour = timeToSet.time().hour();
 		time.minute = timeToSet.time().minute();
 		time.second = timeToSet.time().second();
-		time.timezone == DC_TIMEZONE_NONE;
+		time.timezone = DC_TIMEZONE_NONE;
 		rc = dc_device_timesync(device, &time);
 	}
 	EMIT_PROGRESS();
