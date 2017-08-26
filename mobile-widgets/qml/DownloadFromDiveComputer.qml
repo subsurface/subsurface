@@ -61,7 +61,7 @@ Kirigami.Page {
 		GridLayout {
 			columns: 2
 			Kirigami.Label { text: qsTr(" Vendor name: ") }
-			property var vendoridx: downloadThread.data().getDetectedVendorIndex("")
+			property var vendoridx: downloadThread.data().getDetectedVendorIndex()
 			ComboBox {
 				id: comboVendor
 				Layout.fillWidth: true
@@ -87,14 +87,14 @@ Kirigami.Page {
 				}
 				onCurrentTextChanged: {
 					comboProduct.model = downloadThread.data().getProductListFromVendor(currentText)
-					if (currentIndex == downloadThread.data().getDetectedVendorIndex(currentText))
-						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(currentText, comboProduct.currentText)
+					if (currentIndex == downloadThread.data().getDetectedVendorIndex())
+						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(currentText)
 				}
 			}
 			Kirigami.Label { text: qsTr(" Dive Computer:") }
 			ComboBox {
 				id: comboProduct
-				property var productidx: downloadThread.data().getDetectedProductIndex(comboVendor.currentText, currentText)
+				property var productidx: downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
 				Layout.fillWidth: true
 				model: null
 				currentIndex: productidx

@@ -330,7 +330,7 @@ device_data_t* DCDeviceData::internalData()
 	return &data;
 }
 
-int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
+int DCDeviceData::getDetectedVendorIndex()
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
 	if (!dcs->dc_vendor().isEmpty()) {
@@ -351,8 +351,7 @@ int DCDeviceData::getDetectedVendorIndex(const QString &currentText)
 	return -1;
 }
 
-int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText,
-					  const QString &currentProductText)
+int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
 	if (!dcs->dc_vendor().isEmpty()) {
@@ -377,8 +376,7 @@ int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText,
 	return -1;
 }
 
-QString DCDeviceData::getDetectedDeviceAddress(const QString &currentVendorText,
-					       const QString &currentProductText)
+QString DCDeviceData::getDetectedDeviceAddress(const QString &currentProductText)
 {
 #if defined(BT_SUPPORT)
 	// Pull the vendor from the found devices that are possible real dive computers

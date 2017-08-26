@@ -47,11 +47,9 @@ public:
 	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
 	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
 
-	Q_INVOKABLE int getDetectedVendorIndex(const QString &currentText);
-	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText,
-						const QString &currentProductText);
-	Q_INVOKABLE QString getDetectedDeviceAddress(const QString &currentVendorText,
-						     const QString &currentProductText);
+	Q_INVOKABLE int getDetectedVendorIndex();
+	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
+	Q_INVOKABLE QString getDetectedDeviceAddress(const QString &currentProductText);
 
 public slots:
 	void setVendor(const QString& vendor);
