@@ -338,9 +338,6 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		dive->maxdepth.mm ? put_format(&buf, "\\def\\maximumdepth{%.1f\\depthunit}\n", get_depth_units(dive->maxdepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\maximumdepth{}\n");
 		dive->meandepth.mm ? put_format(&buf, "\\def\\meandepth{%.1f\\depthunit}\n", get_depth_units(dive->meandepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\meandepth{}\n");
 
-		put_format(&buf, "\\def\\qtyweights{%d}\n", qty_weight);
-		put_format(&buf, "\\def\\totalweight{%u.%01u kg}\n", FRACTION(total_weight, 1000));
-
 		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : "");
 		put_format(&buf, "\\def\\viz{%s}\n", viz.toUtf8().data());
 		put_format(&buf, "\\def\\rating{%s}\n", rating.toUtf8().data());
