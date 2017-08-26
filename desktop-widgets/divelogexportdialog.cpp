@@ -242,7 +242,6 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 	struct units *units = get_units();
 	const char *unit;
 	int i;
-	int tmp;
 	bool need_pagebreak = false;
 
 	struct membuffer buf = {};
