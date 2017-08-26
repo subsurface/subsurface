@@ -1394,8 +1394,6 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		}
 	}
 	// create the profile context menu
-	QPointF scenePos = mapToScene(event->pos());
-	struct plot_data *entry = getEntryFromPos(scenePos);
 	GasSelectionModel *model = GasSelectionModel::instance();
 	model->repopulate();
 	int rowCount = model->rowCount();
@@ -1438,6 +1436,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 			m.addAction(action);
 		}
 #if 0 // FIXME::: FINISH OR DISABLE
+		QPointF scenePos = mapToScene(event->pos());
+		struct plot_data *entry = getEntryFromPos(scenePos);
 		// this shows how to figure out if we should ask the user if they want adjust interpolated pressures
 		// at either side of a gas change
 		if (dcEvent->type == SAMPLE_EVENT_GASCHANGE || dcEvent->type == SAMPLE_EVENT_GASCHANGE2) {
