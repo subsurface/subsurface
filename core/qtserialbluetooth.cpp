@@ -26,11 +26,6 @@
 
 QList<QBluetoothUuid> registeredUuids;
 
-static QBluetoothUuid getBtUuid()
-{
-	return registeredUuids.first();
-}
-
 void addBtUuid(QBluetoothUuid uuid)
 {
 	registeredUuids << uuid;
