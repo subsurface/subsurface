@@ -195,7 +195,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	if (IS_SHEARWATER(device))
 		packet.remove(0,2);
 
-	if (packet.size() > size)
+	if ((size_t)packet.size() > size)
 		return DC_STATUS_NOMEMORY;
 
 	memcpy((char *)data, packet.data(), packet.size());
