@@ -1460,7 +1460,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	char *buf2 = malloc(bufsize);
 	int avg_speed, max_asc_speed, max_desc_speed;
 	int delta_depth, avg_depth, max_depth, min_depth;
-	int bar_used, last_pressure, pressurevalue, last_cylidx;
+	int bar_used, last_pressure, pressurevalue;
 	int count, last_sec, delta_time;
 	bool crossed_tankchange = false;
 

@@ -350,7 +350,6 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	cylinder_t *cylinder = dive->cylinder + sensor;
 	pr_track_t *track = NULL;
 	pr_track_t *current = NULL;
-	struct plot_data *entry;
 	struct event *ev;
 	int missing_pr = 0, dense = 1;
 

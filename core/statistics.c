@@ -344,7 +344,6 @@ bool is_cylinder_used(struct dive *dive, int idx)
 void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 {
 	int idx;
-	struct divecomputer *dc;
 
 	for (idx = 0; idx < MAX_CYLINDERS; idx++) {
 		cylinder_t *cyl = &dive->cylinder[idx];

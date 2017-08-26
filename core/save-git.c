@@ -348,7 +348,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 static void save_samples(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
 	int nr;
-	int o2sensor, legacy;
+	int o2sensor;
 	struct sample *s;
 	struct sample dummy = {};
 
