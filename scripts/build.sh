@@ -430,6 +430,37 @@ else
 fi
 
 
+# fetch the QtLocation private headers
+cd $SRC
+qt_headers_path=`qmake -query QT_INSTALL_HEADERS`
+qt_version=`qmake -v | grep "Qt" | cut -d" " -f4`
+if [ -d "$qt_headers_path/QtLocation/$qt_version/QtLocation/private" ]; then
+	echo "private headers for QtLocation $qt_version exist in QT_INSTALL_HEADERS. skipping..."
+else
+	QTLOC_GIT=./QtLocation-source
+	QTLOC_PRIVATE=QtLocation/private
+	QTPOS_PRIVATE=QtPositioning/private
+
+	rm -rf $QTLOC_GIT > /dev/null 2>&1
+	rm -rf ./QtLocation > /dev/null 2>&1
+	rm -rf ./QtPositioning /dev/null 2>&1
+
+	echo "* fetching private headers for QtLocation $qt_version..."
+	git clone --branch v$qt_version git://code.qt.io/qt/qtlocation.git --depth=1 $QTLOC_GIT
+
+	mkdir -p $QTLOC_PRIVATE
+	cd $QTLOC_GIT/src/location
+	find -name '*_p.h' | xargs cp -t $SRC/$QTLOC_PRIVATE
+	cd $SRC
+
+	mkdir -p $QTPOS_PRIVATE
+	cd $QTLOC_GIT/src/positioning
+	find -name '*_p.h' | xargs cp -t $SRC/$QTPOS_PRIVATE
+	cd $SRC
+
+	rm -rf $QTLOC_GIT > /dev/null 2>&1
+fi
+
 # build the googlemaps map plugin
 
 cd $SRC
