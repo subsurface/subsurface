@@ -905,11 +905,14 @@ struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
 #endif
-bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
+struct decostop {
+	int depth;
+	int time;
+};
+bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 void calc_crushing_pressure(double pressure);
 void vpmb_start_gradient();
 void clear_vpmb_state();
-
 
 void delete_single_dive(int idx);
 

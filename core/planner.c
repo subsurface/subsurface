@@ -639,7 +639,16 @@ int wait_until(struct dive *dive, int clock, int min, int leap, int stepsize, in
 
 // Work out the stops. Return value is if there were any mandatory stops.
 
-bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
+
+void printdecotable(struct decostop *table)
+{
+	while (table->depth) {
+		printf("depth=%d time=%d\n", table->depth, table->time);
+		++table;
+	}
+}
+
+bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer)
 {
 	int bottom_depth;
 	int bottom_gi;
@@ -674,6 +683,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	int first_stop_depth = 0;
 	int laststoptime = timestep;
 	bool o2breaking = false;
+	int decostopcounter = 0;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
@@ -830,6 +840,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 	//CVA
 	do {
+		decostopcounter = 0;
 		is_final_plan = (decoMode() == BUEHLMANN) || (previous_deco_time - deco_time < 10);  // CVA time converges
 		if (deco_time != 10000000)
 			vpmb_next_gradient(deco_time, diveplan->surface_pressure / 1000.0);
@@ -975,6 +986,9 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 				int new_clock = wait_until(dive, clock, clock, laststoptime * 2, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
 				laststoptime = new_clock - clock;
+				decostoptable[decostopcounter].depth = depth;
+				decostoptable[decostopcounter].time = laststoptime;
+				++decostopcounter;
 				/* Finish infinite deco */
 				if (clock >= 48 * 3600 && depth >= 6000) {
 					error = LONGDECO;
@@ -1031,6 +1045,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 		deco_time = clock - bottom_time;
 	} while (!is_final_plan);
+	decostoptable[decostopcounter].depth = 0;
 
 	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
 	if (decoMode() == VPMB) {

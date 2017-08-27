@@ -10,7 +10,8 @@
 #define DEBUG  1
 
 // testing the dive plan algorithm
-extern bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
+struct decostop stoptable[60];
+extern bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
 
 extern pressure_t first_ceiling_pressure;
 
@@ -364,7 +365,7 @@ void TestPlan::testMetric()
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -404,7 +405,7 @@ void TestPlan::testImperial()
 	struct diveplan testPlan = {};
 	setupPlan(&testPlan);
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -444,7 +445,7 @@ void TestPlan::testVpmbMetric45m30minTx()
 	setupPlanVpmb45m30mTx(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -474,7 +475,7 @@ void TestPlan::testVpmbMetric60m10minTx()
 	setupPlanVpmb60m10mTx(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -504,7 +505,7 @@ void TestPlan::testVpmbMetric60m30minAir()
 	setupPlanVpmb60m30minAir(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -534,7 +535,7 @@ void TestPlan::testVpmbMetric60m30minEan50()
 	setupPlanVpmb60m30minEan50(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -570,7 +571,7 @@ void TestPlan::testVpmbMetric60m30minTx()
 	setupPlanVpmb60m30minTx(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -606,7 +607,7 @@ void TestPlan::testVpmbMetric100m60min()
 	setupPlanVpmb100m60min(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -648,7 +649,7 @@ void TestPlan::testVpmbMetricMultiLevelAir()
 	setupPlanVpmbMultiLevelAir(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -678,7 +679,7 @@ void TestPlan::testVpmbMetric100m10min()
 	setupPlanVpmb100m10min(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -724,7 +725,7 @@ void TestPlan::testVpmbMetricRepeat()
 	setupPlanVpmb30m20min(&testPlan);
 	setCurrentAppState("PlanDive");
 
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -744,7 +745,7 @@ void TestPlan::testVpmbMetricRepeat()
 	int firstDiveRunTimeSeconds = displayed_dive.dc.duration.seconds;
 
 	setupPlanVpmb100mTo70m30min(&testPlan);
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
@@ -780,7 +781,7 @@ void TestPlan::testVpmbMetricRepeat()
 	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 127u * 60u + 20u, 127u * 60u + 20u));
 
 	setupPlanVpmb30m20min(&testPlan);
-	plan(&testPlan, &displayed_dive, 60, &cache, 1, 0);
+	plan(&testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
 
 #if DEBUG
 	free(displayed_dive.notes);
