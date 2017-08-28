@@ -913,6 +913,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 void calc_crushing_pressure(double pressure);
 void vpmb_start_gradient();
 void clear_vpmb_state();
+void printdecotable(struct decostop *table);
 
 void delete_single_dive(int idx);
 

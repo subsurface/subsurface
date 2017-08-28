@@ -107,6 +107,9 @@ private:
 	explicit DivePlannerPointsModel(QObject *parent = 0);
 	void createPlan(bool replanCopy);
 	struct diveplan diveplan;
+	struct divedatapoint *cloneDiveplan(struct diveplan *plan_copy);
+	void computeVariations();
+	void analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit);
 	Mode mode;
 	bool recalc;
 	QVector<divedatapoint> divepoints;
