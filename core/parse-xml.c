@@ -3741,8 +3741,8 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				strcpy(cur_event.name, "Inconsistent");
 				break;
 			case 18:
-				// key pressed - probably not
-				// interesting to view on profile
+				// key pressed - It should never get in here
+				// as we ingored it at the parent 'case 5'. 
 				break;
 			case 19:
 				// obsolete
