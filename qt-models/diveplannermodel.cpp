@@ -844,6 +844,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 	if (recalcQ() && !diveplan_empty(&diveplan)) {
 		struct decostop stoptable[60];
 		plan(&diveplan, &displayed_dive, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
+		computeVariations();
 		emit calculatedPlanNotes();
 	}
 	// throw away the cache
@@ -867,6 +868,103 @@ void DivePlannerPointsModel::savePlan()
 void DivePlannerPointsModel::saveDuplicatePlan()
 {
 	createPlan(true);
+}
+
+struct divedatapoint * DivePlannerPointsModel::cloneDiveplan(struct diveplan *plan_copy)
+{
+	divedatapoint *src, *last_segment;
+	divedatapoint **dp;
+
+	src = diveplan.dp;
+	*plan_copy = diveplan;
+	dp = &plan_copy->dp;
+	while (src && (!src->time || src->entered)) {
+		*dp = (struct divedatapoint *)malloc(sizeof(struct divedatapoint));
+		**dp = *src;
+		dp = &(*dp)->next;
+		src = src->next;
+	}
+	(*dp) = NULL;
+
+	last_segment = plan_copy->dp;
+	while (last_segment->next->next)
+		last_segment = last_segment->next;
+	return last_segment;
+}
+
+void DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit)
+{
+	int leftsum = 0;
+	int rightsum = 0;
+	while (mid->depth > min->depth)
+		++mid;
+	while (max->depth > mid->depth)
+		++max;
+
+	while (mid->depth) {
+		int left = mid->time - min->time;
+		leftsum += left;
+		int right = max->time - mid->time;
+		rightsum += right;
+		if (min->time + mid->time + max->time)
+			printf("%dm: %dmin + %ds/%s +- %ds/%s\n", mid->depth / 1000,
+			       (mid->time + 1)/60,
+			       (left + right) / 2, unit,
+			       (right - left) / 2, unit);
+		++min;
+		++mid;
+		++max;
+	}
+	printf("Total + %d:%02d/%s +- %d:%02d/%s\n\n", FRACTION((leftsum + rightsum) / 2, 60), unit,
+						       FRACTION((rightsum - leftsum) / 2, 60), unit);
+}
+
+void DivePlannerPointsModel::computeVariations()
+{
+	bool oldRecalc = setRecalc(false);
+	struct dive *dive = alloc_dive();
+	copy_dive(&displayed_dive, dive);
+	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
+	struct deco_state *cache = NULL, *save = NULL;
+	struct diveplan plan_copy;
+	struct divedatapoint *last_segment;
+
+	cache_deco_state(&save);
+	cloneDiveplan(&plan_copy);
+	plan(&plan_copy, dive, 1, original, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, false);
+
+	last_segment = cloneDiveplan(&plan_copy);
+	last_segment->depth.mm += 1000;
+	last_segment->next->depth.mm += 1000;
+	plan(&plan_copy, dive, 1, deeper, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, false);
+
+	last_segment = cloneDiveplan(&plan_copy);
+	last_segment->depth.mm -= 1000;
+	last_segment->next->depth.mm -= 1000;
+	plan(&plan_copy, dive, 1, shallower, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, false);
+
+	last_segment = cloneDiveplan(&plan_copy);
+	last_segment->next->time += 60;
+	plan(&plan_copy, dive, 1, longer, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, false);
+
+	last_segment = cloneDiveplan(&plan_copy);
+	last_segment->next->time -= 60;
+	plan(&plan_copy, dive, 1, shorter, &cache, true, false);
+	free_dps(&plan_copy);
+	restore_deco_state(save, false);
+
+	printf("\n\n");
+	analyzeVariations(shallower, original, deeper, "m");
+	analyzeVariations(shorter, original, longer, "min");
+	setRecalc(oldRecalc);
 }
 
 void DivePlannerPointsModel::createPlan(bool replanCopy)

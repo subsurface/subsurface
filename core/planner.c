@@ -253,7 +253,7 @@ static void update_cylinder_pressure(struct dive *d, int old_depth, int new_dept
 
 /* simply overwrite the data in the displayed_dive
  * return false if something goes wrong */
-static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
+static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, bool track_gas)
 {
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
@@ -264,7 +264,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	int lasttime = 0;
 	depth_t lastdepth = {.mm = 0};
 	int lastcylid = 0;
-	enum dive_comp_type type = displayed_dive.dc.divemode;
+	enum dive_comp_type type = dive->dc.divemode;
 
 	if (!diveplan || !diveplan->dp)
 		return;
@@ -272,12 +272,12 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 	printf("in create_dive_from_plan\n");
 	dump_plan(diveplan);
 #endif
-	displayed_dive.salinity = diveplan->salinity;
+	dive->salinity = diveplan->salinity;
 	// reset the cylinders and clear out the samples and events of the
 	// displayed dive so we can restart
-	reset_cylinders(&displayed_dive, track_gas);
-	dc = &displayed_dive.dc;
-	dc->when = displayed_dive.when = diveplan->when;
+	reset_cylinders(dive, track_gas);
+	dc = &dive->dc;
+	dc->when = dive->when = diveplan->when;
 	dc->surface_pressure.mbar = diveplan->surface_pressure;
 	dc->salinity = diveplan->salinity;
 	free(dc->sample);
@@ -289,7 +289,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		free(ev);
 	}
 	dp = diveplan->dp;
-	cyl = &displayed_dive.cylinder[lastcylid];
+	cyl = &dive->cylinder[lastcylid];
 	sample = prepare_sample(dc);
 	sample->setpoint.mbar = dp->setpoint;
 	sample->sac.mliter = prefs.bottomsac;
@@ -324,8 +324,8 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		/* Make sure we have the new gas, and create a gas change event */
 		if (dp->cylinderid != lastcylid) {
 			/* need to insert a first sample for the new gas */
-			add_gas_switch_event(&displayed_dive, dc, lasttime + 1, dp->cylinderid);
-			cyl = &displayed_dive.cylinder[dp->cylinderid];
+			add_gas_switch_event(dive, dc, lasttime + 1, dp->cylinderid);
+			cyl = &dive->cylinder[dp->cylinderid];
 			sample = prepare_sample(dc);
 			sample[-1].setpoint.mbar = po2;
 			sample->time.seconds = lasttime + 1;
@@ -348,7 +348,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, bool track_gas)
 		sample->manually_entered = dp->entered;
 		sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
 		if (track_gas && !sample[-1].setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
-			update_cylinder_pressure(&displayed_dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
+			update_cylinder_pressure(dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
 					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
 			if (cyl->type.workingpressure.mbar)
 				sample->pressure[0].mbar = cyl->end.mbar;
@@ -692,7 +692,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	dive->surface_pressure.mbar = diveplan->surface_pressure;
 	clear_deco(dive->surface_pressure.mbar / 1000.0);
 	max_bottom_ceiling_pressure.mbar = first_ceiling_pressure.mbar = 0;
-	create_dive_from_plan(diveplan, is_planner);
+	create_dive_from_plan(diveplan, dive, is_planner);
 
 	// Do we want deco stop array in metres or feet?
 	if (prefs.units.length == METERS ) {
@@ -726,7 +726,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	if (!is_planner) {
 		transitiontime = depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false);
-		create_dive_from_plan(diveplan, is_planner);
+		create_dive_from_plan(diveplan, dive, is_planner);
 		return false;
 	}
 
@@ -809,7 +809,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 			}
 		} while (depth > 0);
 		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
-		create_dive_from_plan(diveplan, is_planner);
+		create_dive_from_plan(diveplan, dive, is_planner);
 		add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 		fixup_dc_duration(&dive->dc);
 
@@ -947,8 +947,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 			while (1) {
 				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
 				if (trial_ascent(0, depth, stoplevels[stopidx], avg_depth, bottom_time,
-						&dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive))
+						&dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive)) {
+					decostoptable[decostopcounter].depth = depth;
+					decostoptable[decostopcounter].time = 0;
+					decostopcounter++;
 					break; /* We did not hit the ceiling */
+				}
 
 				/* Add a minute of deco time and then try again */
 				if (!decodive) {
@@ -1053,7 +1057,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
 	}
 
-	create_dive_from_plan(diveplan, is_planner);
+	create_dive_from_plan(diveplan, dive, is_planner);
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 	fixup_dc_duration(&dive->dc);
 
