@@ -1713,11 +1713,13 @@ char *intdup(int index)
 
 QHash<int, double> factor_cache;
 
+QMutex factorCacheLock;
 extern "C" double cache_value(int tissue, int timestep, enum inertgas inertgas)
 {
 	int key = (timestep << 5) + (tissue << 1);
 	if (inertgas == HE)
 		++key;
+	QMutexLocker locker(&factorCacheLock);
 	return factor_cache.value(key);
 }
 
@@ -1726,10 +1728,23 @@ extern "C" void cache_insert(int tissue, int timestep, enum inertgas inertgas, d
 	int key = (timestep << 5) + (tissue << 1);
 	if (inertgas == HE)
 		++key;
+	QMutexLocker locker(&factorCacheLock);
 	factor_cache.insert(key, value);
 }
 
 extern "C" void print_qt_versions()
 {
 	printf("%s\n", QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()).toUtf8().data());
+}
+
+QMutex planLock;
+
+extern "C" void lock_planner()
+{
+	planLock.lock();
+}
+
+extern "C" void unlock_planner()
+{
+	planLock.unlock();
 }
