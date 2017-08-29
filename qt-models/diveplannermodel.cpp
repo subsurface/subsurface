@@ -892,7 +892,7 @@ struct divedatapoint * DivePlannerPointsModel::cloneDiveplan(struct diveplan *pl
 	return last_segment;
 }
 
-void DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit)
+int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit)
 {
 	int leftsum = 0;
 	int rightsum = 0;
@@ -906,17 +906,22 @@ void DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct deco
 		leftsum += left;
 		int right = max->time - mid->time;
 		rightsum += right;
+#ifdef SHOWSTOPVARIATIONS
 		if (min->time + mid->time + max->time)
 			printf("%dm: %dmin + %ds/%s +- %ds/%s\n", mid->depth / 1000,
 			       (mid->time + 1)/60,
 			       (left + right) / 2, unit,
 			       (right - left) / 2, unit);
+#endif
 		++min;
 		++mid;
 		++max;
 	}
-	printf("Total + %d:%02d/%s +- %d:%02d/%s\n\n", FRACTION((leftsum + rightsum) / 2, 60), unit,
-						       FRACTION((rightsum - leftsum) / 2, 60), unit);
+#ifdef SHOWSTOPVARIATIONS
+	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION((leftsum + rightsum) / 2, 60), unit,
+						       (rightsum - leftsum) / 2, unit);
+#endif
+	return (leftsum + rightsum) / 2;
 }
 
 void DivePlannerPointsModel::computeVariations()
@@ -961,9 +966,18 @@ void DivePlannerPointsModel::computeVariations()
 	free_dps(&plan_copy);
 	restore_deco_state(save, false);
 
+#ifdef SHOWSTOPVARIATIONS
 	printf("\n\n");
-	analyzeVariations(shallower, original, deeper, "m");
-	analyzeVariations(shorter, original, longer, "min");
+#endif
+
+	QString notes(displayed_dive.notes);
+	free(displayed_dive.notes);
+
+	char buf[200];
+	sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
+		FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
+
+	displayed_dive.notes = strdup(notes.replace("VARIATIONS", QString(buf)).toUtf8().data());
 	setRecalc(oldRecalc);
 }
 
