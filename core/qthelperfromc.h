@@ -26,5 +26,7 @@ enum inertgas {N2, HE};
 double cache_value(int tissue, int timestep, enum inertgas gas);
 void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 void print_qt_versions();
+void lock_planner();
+void unlock_planner();
 
 #endif // QTHELPERFROMC_H
