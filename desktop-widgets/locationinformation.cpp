@@ -4,7 +4,6 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/qthelper.h"
-#include "desktop-widgets/globe.h"
 #include "desktop-widgets/mapwidget.h"
 #include "qt-models/filtermodels.h"
 #include "qt-models/divelocationmodel.h"
@@ -45,16 +44,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
 	ui.diveSiteListView->installEventFilter(this);
 	// Map Management Code.
-#ifndef NO_MARBLE
-	connect(this, &LocationInformationWidget::requestCoordinates,
-		GlobeGPS::instance(), &GlobeGPS::prepareForGetDiveCoordinates);
-	connect(this, &LocationInformationWidget::endRequestCoordinates,
-		GlobeGPS::instance(), &GlobeGPS::endGetDiveCoordinates);
-	connect(GlobeGPS::instance(), &GlobeGPS::coordinatesChanged,
-		this, &LocationInformationWidget::updateGpsCoordinates);
-	connect(this, &LocationInformationWidget::endEditDiveSite,
-		GlobeGPS::instance(), &GlobeGPS::repopulateLabels);
-#else
 	connect(this, &LocationInformationWidget::requestCoordinates,
 		MapWidget::instance(), &MapWidget::prepareForGetDiveCoordinates);
 	connect(this, &LocationInformationWidget::endRequestCoordinates,
@@ -63,7 +52,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 		this, &LocationInformationWidget::updateGpsCoordinates);
 	connect(this, &LocationInformationWidget::endEditDiveSite,
 		MapWidget::instance(), &MapWidget::repopulateLabels);
-#endif
 }
 
 bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)

@@ -5,7 +5,6 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/usersurvey.h"
 #include "core/divelist.h"
-#include "desktop-widgets/globe.h"
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/display.h"
@@ -482,13 +481,8 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		// finally now that all the extra GPS fixes that weren't used have been deleted
 		// we can update the map
 		if (changed) {
-#ifndef NO_MARBLE
-			GlobeGPS::instance()->repopulateLabels();
-			GlobeGPS::instance()->centerOnDiveSite(get_dive_site_by_uuid(current_dive->dive_site_uuid));
-#else
 			MapWidget::instance()->repopulateLabels();
 			MapWidget::instance()->centerOnDiveSite(get_dive_site_by_uuid(current_dive->dive_site_uuid));
-#endif
 		}
 
 	} break;
