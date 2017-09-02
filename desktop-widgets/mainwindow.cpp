@@ -23,7 +23,6 @@
 #include "core/planner.h"
 #include "qt-models/filtermodels.h"
 #include "profile-widget/profilewidget2.h"
-#include "desktop-widgets/globe.h"
 #include "core/divecomputer.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/diveplanner.h"
@@ -104,12 +103,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	MainTab *mainTab = new MainTab();
 	DiveListView *diveListView = new DiveListView();
 	ProfileWidget2 *profileWidget = new ProfileWidget2();
-
-#ifndef NO_MARBLE
-	GlobeGPS *mapWidget = GlobeGPS::instance();
-#else
 	MapWidget *mapWidget = MapWidget::instance();
-#endif
 
 	PlannerSettingsWidget *plannerSettings = new PlannerSettingsWidget();
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
@@ -216,11 +210,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	diveListView->reload(DiveTripModel::TREE);
 	diveListView->reloadHeaderActions();
 	diveListView->setFocus();
-#ifndef NO_MARBLE
-	GlobeGPS::instance()->reload();
-#else
 	MapWidget::instance()->reload();
-#endif
 	diveListView->expand(dive_list()->model()->index(0, 0));
 	diveListView->scrollTo(dive_list()->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget()->settingsChanged();
@@ -429,11 +419,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	information()->reload();
 	TankInfoModel::instance()->update();
-#ifndef NO_MARBLE
-	GlobeGPS::instance()->reload();
-#else
 	MapWidget::instance()->reload();
-#endif
 	if (doRecreateDiveList)
 		recreateDiveList();
 
@@ -504,11 +490,7 @@ void MainWindow::current_dive_changed(int divenr)
 	graphics()->plotDive();
 	information()->updateDiveInfo();
 	configureToolbar();
-#ifndef NO_MARBLE
-	GlobeGPS::instance()->reload();
-#else
 	MapWidget::instance()->reload();
-#endif
 }
 
 void MainWindow::on_actionNew_triggered()
@@ -664,11 +646,7 @@ void MainWindow::cleanUpEmpty()
 	information()->updateDiveInfo(true);
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
-#ifndef NO_MARBLE
-	GlobeGPS::instance()->reload();
-#else
 	MapWidget::instance()->reload();
-#endif
 	if (!existing_filename)
 		setTitle(MWTF_DEFAULT);
 	disableShortcuts();
@@ -1032,11 +1010,7 @@ void MainWindow::on_actionEditDive_triggered()
 	disableShortcuts();
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 	graphics()->setAddState();
-#ifndef NO_MARBLE
-	GlobeGPS::instance()->endGetDiveCoordinates();
-#else
 	MapWidget::instance()->endGetDiveCoordinates();
-#endif
 	setApplicationState("EditDive");
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);

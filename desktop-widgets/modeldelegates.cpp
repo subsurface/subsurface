@@ -12,9 +12,6 @@
 #include "qt-models/weightmodel.h"
 #include "qt-models/divetripmodel.h"
 #include "core/qthelper.h"
-#ifndef NO_MARBLE
-#include "desktop-widgets/globe.h"
-#endif
 
 #include <QCompleter>
 #include <QKeyEvent>
