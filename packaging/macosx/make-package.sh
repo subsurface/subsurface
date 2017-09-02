@@ -51,14 +51,6 @@ for i in ${RPATH}; do
 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${EXECUTABLE}
 done
 
-# no more Marble
-# # and now replace @rpath references in libssrfmarblewidget
-# MARBLELIB=$(ls Subsurface.app/Contents/Frameworks/libssrfmarblewidget*dylib)
-# RPATH=$(otool -L ${MARBLELIB} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
-# for i in ${RPATH}; do
-# 	install_name_tool -change @rpath/$i @executable_path/../Frameworks/$i ${MARBLELIB}
-# done
-
 # next deal with libGrantlee
 LIBG=$(ls Subsurface.app/Contents/Frameworks/libGrantlee_Templates*dylib)
 for i in QtScript.framework/Versions/5/QtScript QtCore.framework/Versions/5/QtCore ; do

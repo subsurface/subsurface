@@ -18,14 +18,12 @@ MACRO_ENSURE_OUT_OF_SOURCE_BUILD(
 option(LIBGIT2_FROM_PKGCONFIG "use pkg-config to retrieve libgit2" OFF)
 option(LIBDC_FROM_PKGCONFIG "use pkg-config to retrieve libdivecomputer" OFF)
 option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
-option(LIBMARBLE_FROM_PKGCONFIG "use pkg-config to retrieve marble" OFF)
 
 #Library Handling
 option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
 option(LIBGIT2_DYNAMIC "search for libgit2.so before libgit2.a" OFF)
 
 #Options regarding disabling parts of subsurface.
-option(NO_MARBLE "disable the marble widget" OFF)
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" OFF)
 option(NO_USERMANUAL "don't include a viewer for the user manual" OFF)
@@ -111,7 +109,6 @@ include(cmake/Modules/pkgconfig_helper.cmake)
 include(cmake/Modules/HandleFindGit2.cmake)
 include(cmake/Modules/HandleFindLibDiveComputer.cmake)
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
-	include(cmake/Modules/HandleFindMarble.cmake)
 	include(cmake/Modules/HandleFindGrantlee.cmake)
 	include(cmake/Modules/HandleUserManual.cmake)
 endif()
@@ -391,10 +388,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(MACDEPLOY_ARGS "${EXTRA_MACDEPLOY_ARGS}-executable=${APP_BUNDLE_DIR}/Contents/MacOS/${SUBSURFACE_TARGET} -always-overwrite")
 	set(RESOURCEDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources)
 	set(PLUGINDIR ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/PlugIns)
-	if(NOT NO_MARBLE)
-		install(DIRECTORY marbledata/maps DESTINATION ${RESOURCEDIR}/data)
-		install(DIRECTORY marbledata/bitmaps DESTINATION ${RESOURCEDIR}/data)
-	endif()
 	install(DIRECTORY Documentation/images DESTINATION ${RESOURCEDIR}/share/Documentation)
 	install(FILES ${DOCFILES} DESTINATION ${RESOURCEDIR}/share/Documentation)
 	install(DIRECTORY theme DESTINATION ${RESOURCEDIR})
@@ -407,10 +400,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	if((${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable") AND (NOT NO_PRINTING))
 		install(DIRECTORY ${Grantlee5_DIR}/../../grantlee DESTINATION ${PLUGINDIR})
 	endif()
-	if(NO_MARBLE)
-		install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
-		install(CODE "execute_process(COMMAND cp ${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices)")
-	endif()
+	install(CODE "execute_process(COMMAND mkdir -p ${PLUGINDIR}/geoservices)")
+	install(CODE "execute_process(COMMAND cp ${_qt5Core_install_prefix}/plugins/geoservices/libqtgeoservices_googlemaps.dylib ${PLUGINDIR}/geoservices)")
 	# this is a hack - but I don't know how else to find the macdeployqt program if it's not in the PATH
 	string(REPLACE moc macdeployqt MACDEPLOYQT ${QT_MOC_EXECUTABLE})
 	install(CODE "execute_process(COMMAND ${MACDEPLOYQT} ${APP_BUNDLE_DIR} ${MACDEPLOY_ARGS})")
@@ -419,18 +410,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtQuick.2 ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtLocation ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
-	if(NOT NO_MARBLE)
-		# more hackery - this time for QtXml which is needed by libssrfmarblewidget
-		install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/lib/QtXml.framework ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/Versions/5/Headers)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/Headers)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml.prl)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/Versions/5/QtXml_debug)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml_debug)")
-		install(CODE "execute_process(COMMAND rm -rf ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml_debug.prl)")
-		install(CODE "execute_process(COMMAND install_name_tool -id @executable_path/../Frameworks/QtXml ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml)")
-		install(CODE "execute_process(COMMAND install_name_tool -change @rpath/QtCore.framework/Versions/5/QtCore @executable_path/../Frameworks/QtCore.framework/QtCore ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Frameworks/QtXml.framework/QtXml)")
-	endif()
 	install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# Windows bundling rules
@@ -439,10 +418,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	# "make install", copies everything into a staging area
 	# "make installer", uses makensis to create an installer executable
 	set(WINDOWSSTAGING ${CMAKE_BINARY_DIR}/staging)
-	if(NOT NO_MARBLE)
-		install(DIRECTORY marbledata/maps DESTINATION ${WINDOWSSTAGING}/data)
-		install(DIRECTORY marbledata/bitmaps DESTINATION ${WINDOWSSTAGING}/data)
-	endif()
 	install(DIRECTORY Documentation/images DESTINATION ${WINDOWSSTAGING}/Documentation)
 	install(FILES ${DOCFILES} DESTINATION ${WINDOWSSTAGING}/Documentation)
 	install(DIRECTORY theme DESTINATION ${WINDOWSSTAGING})
@@ -477,22 +452,17 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		DEPENDS fake_install
 	)
 elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	if(NOT NO_MARBLE)
-		install(DIRECTORY marbledata/maps DESTINATION share/subsurface/data)
-		install(DIRECTORY marbledata/bitmaps DESTINATION share/subsurface/data)
+	# the syntax is odd, but this searches for libqtgeoservices_googlemaps.so
+	# in the filesystem below our install-root
+	# different Linux flavors put the plugin in different directories
+	file(GLOB_RECURSE GOOGLEMAPS ${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
+	if ("${GOOGLEMAPS}" STREQUAL "")
+		message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
 	else()
-		# the syntax is odd, but this searches for libqtgeoservices_googlemaps.so
-		# in the filesystem below our install-root
-		# different Linux flavors put the plugin in different directories
-		file(GLOB_RECURSE GOOGLEMAPS ${CMAKE_SOURCE_DIR}/../install-root/libqtgeoservices_googlemaps.so)
-		if ("${GOOGLEMAPS}" STREQUAL "")
-			message(STATUS "Cannot find libqtgeoservices_googlemaps.so")
-		else()
-			add_custom_target(link_googlemaps_plugin ALL COMMAND
-				rm -rf ${CMAKE_BINARY_DIR}/geoservices &&
-				mkdir -p ${CMAKE_BINARY_DIR}/geoservices &&
-				ln -sf ${GOOGLEMAPS} ${CMAKE_BINARY_DIR}/geoservices)
-		endif()
+		add_custom_target(link_googlemaps_plugin ALL COMMAND
+			rm -rf ${CMAKE_BINARY_DIR}/geoservices &&
+			mkdir -p ${CMAKE_BINARY_DIR}/geoservices &&
+			ln -sf ${GOOGLEMAPS} ${CMAKE_BINARY_DIR}/geoservices)
 	endif()
 	install(FILES subsurface.debug DESTINATION bin)
 	install(FILES subsurface.desktop DESTINATION share/applications)
@@ -503,12 +473,6 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 	install(DIRECTORY printing_templates DESTINATION share/subsurface)
 	install(FILES ${TRANSLATIONS} DESTINATION share/subsurface/translations)
         install(TARGETS ${SUBSURFACE_TARGET} DESTINATION bin)
-	if(DEFINED LIBMARBLEDEVEL)
-		install(
-			CODE "file(GLOB SSRFMARBLE_SHLIBS \"${LIBMARBLEDEVEL}/lib/libssrfmarblewidget.so*\")"
-			CODE "file(INSTALL \${SSRFMARBLE_SHLIBS} DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)"
-		)
-	endif()
 endif()
 
 if (MAKE_TESTS)

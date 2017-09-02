@@ -3,7 +3,6 @@
 # this should be run from the src directory, the layout is supposed to
 # look like this:
 #.../src/subsurface
-#       /marble-source
 #       /libdivecomputer
 #
 # the script will build these three libraries from source, even if
@@ -36,11 +35,6 @@ while [[ $# -gt 0 ]] ; do
 			# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
 			# is still available on Linux distros)
 			BUILD_WITH_WEBKIT="1"
-			;;
-		-build-with-marble)
-			# by default we build with QtLocation based maps
-			# in order to use the old maps, you need to enable this option but also have webkit (see previous option)
-			BUILD_WITH_MARBLE="1"
 			;;
 		-mobile)
 			# we are building Subsurface-mobile
@@ -395,51 +389,6 @@ if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
 	EXTRA_OPTS="-DNO_USERMANUAL=OFF -DFBSUPPORT=ON"
 else
 	EXTRA_OPTS="-DNO_USERMANUAL=ON -DFBSUPPORT=OFF"
-fi
-
-# build libssrfmarblewidget
-
-if [ "$BUILD_WITH_MARBLE" = "1" ]; then
-	EXTRA_OPTS="-DMARBLE_INCLUDE_DIR=$INSTALL_ROOT/include \
-		-DMARBLE_LIBRARIES=$INSTALL_ROOT/lib/libssrfmarblewidget.$SH_LIB_EXT \
-		-DNO_MARBLE=OFF $EXTRA_OPTS"
-	if [ ! -d marble-source ] ; then
-		if [[ $1 = local ]] ; then
-			git clone $SRC/../marble-source marble-source
-		else
-			git clone -b Subsurface-branch https://github.com/Subsurface-divelog/marble.git marble-source
-		fi
-	fi
-	cd marble-source
-	git pull --rebase
-	if ! git checkout Subsurface-branch ; then
-		echo "can't check out the Subsurface-branch branch of marble -- giving up"
-		exit 1
-	fi
-	mkdir -p build
-	cd build
-
-	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release -DQTONLY=TRUE -DQT5BUILD=ON \
-		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
-		-DBUILD_MARBLE_TESTS=NO \
-		-DWITH_DESIGNER_PLUGIN=NO \
-		-DBUILD_MARBLE_APPS=NO \
-		$SRC/marble-source
-	cd src/lib/marble
-	make -j4
-	make install
-
-	if [ $PLATFORM = Darwin ] ; then
-		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
-		cd $INSTALL_ROOT/lib
-		NAME=$(otool -L libssrfmarblewidget.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t' | cut -f3 -d/ )
-		echo $NAME | grep / > /dev/null 2>&1
-		if [ $? -eq 1 ] ; then
-			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
-		fi
-	fi
-else
-	EXTRA_OPTS="-DNO_MARBLE=ON $EXTRA_OPTS"
 fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then

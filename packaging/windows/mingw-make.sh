@@ -31,7 +31,6 @@ if [[ $1 == "Qt5-64" ]] ; then
 		QMAKE_MOC=/usr/x86_64-w64-mingw32/bin/qt5/moc \
 		QMAKE_UIC=/usr/x86_64-w64-mingw32/bin/qt5/uic \
 		QMAKE_RCC=/usr/x86_64-w64-mingw32/bin/qt5/rcc \
-		LIBMARBLEDEVEL=../marble \
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
 		QMAKE_LIBDIR+=../openssl \
 		CONFIG+=win64target \
@@ -47,7 +46,6 @@ elif [[ $1 == "Qt5" ]] ; then
 		QMAKE_UIC=/usr/i686-w64-mingw32/bin/qt5/uic \
 		QMAKE_RCC=/usr/i686-w64-mingw32/bin/qt5/rcc \
 		LIBDCDEVEL=../libdivecomputer \
-		LIBMARBLEDEVEL=../marble \
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
 		$BASEDIR/../../subsurface.pro
 
@@ -62,7 +60,6 @@ elif [[ $1 == "Qt5debug" ]] ; then
 		QMAKE_CFLAGS_RELEASE='$$QMAKE_CFLAGS_DEBUG -O0 -g' \
 		QMAKE_CXXFLAGS_RELEASE='$$QMAKE_CXXFLAGS_DEBUG -O0 -g' \
 		LIBDCDEVEL=../libdivecomputer \
-		LIBMARBLEDEVEL=../marble \
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
 		V=1 \
 		$BASEDIR/../../subsurface.pro
@@ -71,7 +68,6 @@ else
 
 	mingw32-qmake-qt4 \
 		CROSS_PATH=/usr/i686-w64-mingw32/sys-root/mingw \
-		LIBMARBLEDEVEL=../marble \
 		LIBGIT2DEVEL=../libgit2 CONFIG+=libgit21-api \
 		$BASEDIR/../../subsurface.pro
 fi
