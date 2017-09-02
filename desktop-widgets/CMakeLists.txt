@@ -66,7 +66,6 @@ set(SUBSURFACE_INTERFACE
 	diveplanner.cpp
 	diveshareexportdialog.cpp
 	downloadfromdivecomputer.cpp
-	globe.cpp
 	kmessagewidget.cpp
 	mainwindow.cpp
 	mapwidget.cpp

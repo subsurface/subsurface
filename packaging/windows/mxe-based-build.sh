@@ -331,7 +331,7 @@ i686-w64-mingw32.shared-cmake -DCMAKE_TOOLCHAIN_FILE="$BASEDIR"/"$MXEDIR"/usr/i6
 	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
-	-DNO_MARBLE=ON -DMAKE_TESTS=OFF \
+	-DMAKE_TESTS=OFF \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
