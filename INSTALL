@@ -2,9 +2,8 @@ Building Subsurface from Source
 ===============================
 
 Subsurface uses quite a few open source libraries and frameworks to do its
-job. The most important ones include libdivecomputer, Qt, Marble
-(more precisely libmarblewidget), libxml2, libxslt, libsqlite3, libzip,
-libgrantlee5 and libgit2.
+job. The most important ones include libdivecomputer, Qt, libxml2, libxslt,
+libsqlite3, libzip, libgrantlee5 and libgit2.
 
 Below are instructions for building Subsurface under some popular
 Linux distributions, for building Subsurface using Homebrew on a Mac,
@@ -14,10 +13,8 @@ Subsurface natively under Windows, so we don't support that at all.
 
 All of the prebuilt binaries that we provide (right now Windows, Mac,
 Ubuntu/Debian/LinuxMint, and openSUSE/Fedora) are built using our own
-custom "flavors" of libdivecomputer and libmarblewidget. You can get
-these from
+custom "flavors" of libdivecomputer. You can get these from
 
-git://git.subsurface-divelog.org/marble (in the Subsurface-branch branch)
 git://git.subsurface-divelog.org/libdc (in the Subsurface-branch branch)
 
 Those branches won't have a pretty history and will include ugly merges,

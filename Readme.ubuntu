@@ -57,8 +57,8 @@ Current dependencies are the following:
 
 Build-Depends: debhelper (>= 8.0.0), cmake, libdivecomputer-dev (>=
 0.4.2), cdbs, libqt4-dev, qt4-qmake, libxml2-dev, libxslt1-dev,
-zlib1g-dev, libusb-1.0-0-dev, libzip-dev, libmarble-dev, libsqlite3-dev,
-libqtwebkit-dev, pkg-config, libgit2-dev, asciidoc
+zlib1g-dev, libusb-1.0-0-dev, libzip-dev, libsqlite3-dev, libqtwebkit-dev,
+pkg-config, libgit2-dev, asciidoc
 
 Depends: ${shlibs:Depends}, ${misc:Depends}, libdivecomputer0 (>= 0.4.2)
 
