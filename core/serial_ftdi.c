@@ -404,7 +404,7 @@ static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size
 			slept += backoff;
 			backoff *= 2;
 			if (backoff + slept > timeout)
-				backoff = timeout - slept;
+				backoff = timeout - backoff;
 		} else {
 			// Reset backoff to 1 on success.
 			backoff = 1;
