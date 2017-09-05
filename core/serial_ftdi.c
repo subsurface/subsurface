@@ -395,19 +395,12 @@ static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO; //Error during read call.
 		} else if (n == 0) {
-			// Exponential backoff.
 			if (slept >= timeout) {
 				ERROR(device->context, "%s", "FTDI read timed out.");
 				return DC_STATUS_TIMEOUT;
 			}
 			serial_ftdi_sleep (device, backoff);
 			slept += backoff;
-			backoff *= 2;
-			if (backoff + slept > timeout)
-				backoff = timeout - slept;
-		} else {
-			// Reset backoff to 1 on success.
-			backoff = 1;
 		}
 
 		nbytes += n;
