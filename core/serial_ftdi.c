@@ -69,6 +69,9 @@ typedef struct ftdi_serial_t {
 	int halfduplex;
 	unsigned int baudrate;
 	unsigned int nbits;
+	unsigned int databits;
+	unsigned int stopbits;
+	unsigned int parity;
 } ftdi_serial_t;
 
 static dc_status_t serial_ftdi_get_received (dc_custom_io_t *io, size_t *value)
@@ -172,6 +175,9 @@ static dc_status_t serial_ftdi_open (dc_custom_io_t *io, dc_context_t *context, 
 	device->halfduplex = 0;
 	device->baudrate = 0;
 	device->nbits = 0;
+	device->databits = 0;
+	device->stopbits = 0;
+	device->parity = 0;
 
 	// Initialize device ftdi context
 	INFO(0, "initialize ftdi_ctx");
@@ -334,6 +340,9 @@ static dc_status_t serial_ftdi_configure (dc_custom_io_t *io, unsigned int baudr
 
 	device->baudrate = baudrate;
 	device->nbits = 1 + databits + stopbits + (parity ? 1 : 0);
+	device->databits = databits;
+	device->stopbits = stopbits;
+	device->parity = parity;
 
 	return DC_STATUS_SUCCESS;
 }
@@ -535,7 +544,7 @@ static dc_status_t serial_ftdi_send_break (dc_custom_io_t *io)
 	return DC_STATUS_UNSUPPORTED;
 }
 
-static dc_status_t serial_ftdi_set_break (dc_custom_io_t *io, int level)
+static dc_status_t serial_ftdi_set_break (dc_custom_io_t *io, unsigned int level)
 {
 	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
 
@@ -544,7 +553,10 @@ static dc_status_t serial_ftdi_set_break (dc_custom_io_t *io, int level)
 
 	INFO (device->context, "Break: value=%i", level);
 
-	// Not implemented in libftdi yet. Research it further.
+	if (ftdi_set_line_property2(device->ftdi_ctx, device->databits, device->stopbits, device->parity, level)) {
+		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
+		return DC_STATUS_IO;
+	}
 
 	return DC_STATUS_UNSUPPORTED;
 }
@@ -598,6 +610,5 @@ dc_custom_io_t serial_ftdi_ops = {
 	.serial_set_halfduplex = serial_ftdi_set_halfduplex,
 // Can't be done in ftdi?
 // only used in vyper2
-// NULL means NOP
-	.serial_set_break = NULL
+	.serial_set_break = serial_ftdi_set_break,
 };
