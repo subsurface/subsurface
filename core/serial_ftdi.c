@@ -508,7 +508,7 @@ static dc_status_t serial_ftdi_flush (dc_custom_io_t *io, dc_direction_t queue)
 		break;
 	case DC_DIRECTION_ALL: /**< All directions */
 	default:
-		if (ftdi_usb_purge_buffers(device->ftdi_ctx)) {
+		if (ftdi_usb_reset(device->ftdi_ctx)) {
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO;
 		}
