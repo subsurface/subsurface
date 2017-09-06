@@ -926,7 +926,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 
 				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
 			} else {
-				char *params[49];
+				char *params[51];
 				int pnr = 0;
 
 				QRegExp apdRe("^.*[/\\][0-9a-zA-Z]*_([0-9]{6})_([0-9]{6})\\.apd");

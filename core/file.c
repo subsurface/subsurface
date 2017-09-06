@@ -911,6 +911,15 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		mem_csv.buffer = malloc(mem.size + 1);
 		mem_csv.size = mem.size;
 
+		iter = ptr + 4;
+		iter = strchr(iter, '|');
+		if (iter) {
+			memcpy(tmpbuf, ptr + 4, iter - ptr - 4);
+			tmpbuf[iter - ptr - 4] = 0;
+			params[pnr] = "diveNro";
+			params[pnr + 1] = strdup(tmpbuf);
+		}
+
 		//fprintf(stderr, "DEBUG: BEGIN end_ptr %d round %d <%s>\n", end_ptr, j++, ptr);
 		iter = ptr + 1;
 		for (i = 0; i <= 4 && iter; ++i) {
@@ -922,8 +931,8 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		/* Setting date */
 		memcpy(tmpbuf, iter, 8);
 		tmpbuf[8] = 0;
-		params[pnr] = "date";
-		params[pnr + 1] = strdup(tmpbuf);
+		params[pnr + 2] = "date";
+		params[pnr + 3] = strdup(tmpbuf);
 
 		/* Setting time, gotta prepend it with 1 to
 		 * avoid octal parsing (this is stripped out in
@@ -931,9 +940,9 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		tmpbuf[0] = '1';
 		memcpy(tmpbuf + 1, iter + 8, 6);
 		tmpbuf[7] = 0;
-		params[pnr + 2] = "time";
-		params[pnr + 3] = strdup(tmpbuf);
-		params[pnr + 4] = NULL;
+		params[pnr + 4] = "time";
+		params[pnr + 5] = strdup(tmpbuf);
+		params[pnr + 6] = NULL;
 
 		ptr = strstr(ptr, "ZDP{");
 		if (ptr)
