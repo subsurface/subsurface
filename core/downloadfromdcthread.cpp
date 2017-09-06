@@ -70,6 +70,8 @@ static void fill_supported_mobile_list()
 			QStringList({{"i300"}, {"i450T"}, {"i550"}, {"i750TC"}});
 	mobileProductList["Beuchat"] =
 			QStringList({{"Mundial 2"}, {"Mundial 3"}, {"Voyager 2G"}});
+	mobileProductList["Cochran"] =
+			QStringList({{"Commander TM"}, {"Commander I"}, {"Commander II"}, {"EMC-14"}, {"EMC-16"}, {"EMC-20H"}});
 	mobileProductList["Genesis"] =
 			QStringList({{"React Pro"}, {"React Pro White"}});
 	mobileProductList["Heinrichs Weikamp"] =
