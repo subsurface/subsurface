@@ -291,6 +291,7 @@ Kirigami.ScrollablePage {
 		}
 
 		Component.onCompleted: {
+			manager.finishSetup();
 			setupActions();
 		}
 	}

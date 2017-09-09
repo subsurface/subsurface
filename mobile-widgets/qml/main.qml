@@ -470,7 +470,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	Component.onCompleted: {
-		manager.finishSetup();
 		rootItem.visible = true
 		diveList.opacity = 1
 		rootItem.opacity = 1
