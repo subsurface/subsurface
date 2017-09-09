@@ -221,6 +221,7 @@ void QMLManager::finishSetup()
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
 	setSyncToCloud(!prefs.git_local_only);
+	setCredentialStatus((cloud_status_qml) prefs.cloud_verification_status);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
 	if (!cloudUserName().isEmpty() &&
