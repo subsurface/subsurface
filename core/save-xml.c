@@ -457,8 +457,11 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive)
 			fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site_uuid);
 	}
 	show_date(b, dive->when);
-	put_format(b, " duration='%u:%02u min'>\n",
-		   FRACTION(dive->dc.duration.seconds, 60));
+	if (dive->dc.duration.seconds > 0)
+		put_format(b, " duration='%u:%02u min'>\n",
+			   FRACTION(dive->dc.duration.seconds, 60));
+	else
+		put_format(b, ">\n");
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
