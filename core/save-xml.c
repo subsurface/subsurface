@@ -283,7 +283,10 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 		old->setpoint = sample->setpoint;
 	}
 	show_index(b, sample->heartbeat, "heartbeat='", "'");
-	show_index(b, sample->bearing.degrees, "bearing='", "'");
+	if (sample->bearing.degrees != old->bearing.degrees) {
+		show_index(b, sample->bearing.degrees, "bearing='", "'");
+		old->bearing.degrees = sample->bearing.degrees;
+	}
 	put_format(b, " />\n");
 }
 
