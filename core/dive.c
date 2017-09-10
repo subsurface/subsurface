@@ -2645,6 +2645,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	 */
 	if (!similar(a->maxdepth.mm, b->maxdepth.mm, 1000) ||
 	    (a->meandepth.mm && b->meandepth.mm && !similar(a->meandepth.mm, b->meandepth.mm, 1000)) ||
+	    !a->duration.seconds || !b->duration.seconds ||
 	    !similar(a->duration.seconds, b->duration.seconds, 5 * 60))
 		return 0;
 
