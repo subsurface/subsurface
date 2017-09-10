@@ -424,7 +424,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
  */
 static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 {
-	put_format(b, "duration %u:%02u min\n", FRACTION(dive->dc.duration.seconds, 60));
+	if (dive->dc.duration.seconds > 0)
+		put_format(b, "duration %u:%02u min\n", FRACTION(dive->dc.duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
 	cond_put_format(dive->tripflag == NO_TRIP, b, "notrip\n");
