@@ -945,6 +945,10 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		params[pnr + 6] = NULL;
 
 		ptr = strstr(ptr, "ZDP{");
+		if (ptr && ptr[4] == '}') {
+			end_ptr += ptr - (char *)mem_csv.buffer;
+			return report_error(translate("gettextFromC", "No dive profile found from '%s'"), filename);
+		}
 		if (ptr)
 			ptr = strstr(ptr, NL);
 		if (ptr)
