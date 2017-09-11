@@ -737,7 +737,9 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 		fileColumns.append(currColumns);
 		rows += 1;
 	}
-	resultModel->setColumnValues(fileColumns);
+
+	if (rows > 0)
+		resultModel->setColumnValues(fileColumns);
 	for (int i = 0; i < headers.count(); i++)
 		if (!headers.at(i).isEmpty())
 			resultModel->setData(resultModel->index(0, i),headers.at(i),Qt::EditRole);
