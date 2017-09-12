@@ -2847,14 +2847,14 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		}
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, atoi(data[11]));
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query shearwater_cylinders failed.\n");
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, atoi(data[11]), atoi(data[11]));
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
@@ -3070,7 +3070,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
+	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,l.diveId FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, handle, &err);
 
