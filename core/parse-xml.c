@@ -2799,6 +2799,18 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 	return 0;
 }
 
+extern int shearwater_mode(void *handle, int columns, char **data, char **column)
+{
+	(void) handle;
+	(void) columns;
+	(void) column;
+
+	if (data[0])
+		cur_dive->dc.divemode = atoi(data[0]) == 0 ? CCR : OC;
+
+	return 0;
+}
+
 extern int shearwater_dive(void *param, int columns, char **data, char **column)
 {
 	(void) columns;
@@ -2811,6 +2823,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where number = %d";
 	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records as r join dive_logs as l on r.diveLogId=l.diveId where number = %d group by fractionO2,fractionHe";
 	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a join dive_logs as l on a.diveLogId=l.diveId,dive_log_records as b where l.number = %d and (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId";
+	char get_mode_template[] = "select distinct currentCircuitSetting from dive_log_records where diveLogId = %d";
 	char get_buffer[1024];
 
 	dive_start();
@@ -2873,6 +2886,15 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		default:
 			cur_dive->dc.model = strdup("Shearwater import");
 			break;
+		}
+	}
+
+	if (data[11]) {
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_mode_template, atoi(data[11]));
+		retval = sqlite3_exec(handle, get_buffer, &shearwater_mode, 0, &err);
+		if (retval != SQLITE_OK) {
+			fprintf(stderr, "%s", "Database query shearwater_mode failed.\n");
+			return 1;
 		}
 	}
 
@@ -3099,7 +3121,7 @@ int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer
 	char *err = NULL;
 	target_table = table;
 
-	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
+	char get_dives[] = "select l.number,timestamp,location||' / '||site,buddy,notes,imperialUnits,maxDepth,maxTime,startSurfacePressure,computerSerial,computerModel,i.diveId FROM dive_info AS i JOIN dive_logs AS l ON i.diveId=l.diveId";
 
 	retval = sqlite3_exec(handle, get_dives, &shearwater_dive, handle, &err);
 
