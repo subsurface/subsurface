@@ -2746,7 +2746,6 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
 	if (data[3]) {
 		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
-		cur_dive->dc.divemode = CCR;
 	}
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -2780,7 +2779,6 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
 	if (data[3]) {
 		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
-		cur_dive->dc.divemode = CCR;
 	}
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
