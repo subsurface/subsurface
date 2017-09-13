@@ -1309,14 +1309,19 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
 	double depthvalue, tempvalue, speedvalue, sacvalue;
-	int decimals;
+	int decimals, cyl;
 	const char *unit;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
 	put_format(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
-	if (GET_PRESSURE(entry, 0)) {
-		pressurevalue = get_pressure_units(GET_PRESSURE(entry, 0), &pressure_unit);
-		put_format(b, translate("gettextFromC", "P: %d%s\n"), pressurevalue, pressure_unit);
+	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
+		struct gasmix *mix;
+		int mbar = GET_PRESSURE(entry, cyl);
+		if (!mbar)
+			continue;
+		mix = &displayed_dive.cylinder[cyl].gasmix;
+		pressurevalue = get_pressure_units(mbar, &pressure_unit);
+		put_format(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
 	}
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
