@@ -149,8 +149,13 @@
               </xsl:attribute>
             </xsl:if>
             <xsl:if test="tank0pressurePSI != '' and tank0pressurePSI &gt; 0 and tank0pressurePSI &lt; 4092">
-              <xsl:attribute name="pressure">
+              <xsl:attribute name="pressure0">
                 <xsl:value-of select="concat(format-number((tank0pressurePSI * 2 div 14.5037738007), '#.##'), ' bar')"/>
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="tank1pressurePSI != '' and tank1pressurePSI &gt; 0 and tank1pressurePSI &lt; 4092">
+              <xsl:attribute name="pressure1">
+                <xsl:value-of select="concat(format-number((tank1pressurePSI * 2 div 14.5037738007), '#.##'), ' bar')"/>
               </xsl:attribute>
             </xsl:if>
             <xsl:if test="currentNdl != ''">
