@@ -2675,15 +2675,39 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 	(void) columns;
 	(void) column;
 
-	event_start();
-	if (data[0])
-		cur_event.time.seconds = atoi(data[0]);
-	if (data[1]) {
-		strcpy(cur_event.name, "gaschange");
-		cur_event.value = lrint(atof(data[1]) * 100);
+	if (columns != 3) {
+		return 1;
 	}
-	event_end();
+	if (!data[0] || !data[1] || !data[2]) {
+		return 2;
+	}
+	int o2 = lrint(atof(data[1]) * 1000);
+	int he = lrint(atof(data[2]) * 1000);
 
+	/* Shearwater allows entering only 99%, not 100%
+	 * so assume 99% to be pure oxygen */
+	if (o2 == 990 && he == 0)
+		o2 = 1000;
+
+	// Find the cylinder index
+	int i;
+	bool found = false;
+	for (i = 0; i < cur_cylinder_index; ++i) {
+		if (cur_dive->cylinder[i].gasmix.o2.permille == o2 && cur_dive->cylinder[i].gasmix.he.permille == he) {
+			found = true;
+			break;
+		}
+	}
+	if (!found) {
+		// Cylinder not found, creating a new one
+		cylinder_start();
+		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = o2;
+		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = he;
+		cylinder_end();
+		i = cur_cylinder_index;
+	}
+
+	add_gas_switch_event(cur_dive, get_dc(), atoi(data[0]), i);
 	return 0;
 }
 
@@ -2788,7 +2812,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where diveLogId = %d";
 	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where number = %d";
 	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records as r join dive_logs as l on r.diveLogId=l.diveId where number = %d group by fractionO2,fractionHe";
-	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where a.diveLogId = %d and b.diveLogId = %d and (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) union select min(currentTime),fractionO2,fractionHe from dive_log_records where diveLogId = %d";
+	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a join dive_logs as l on a.diveLogId=l.diveId,dive_log_records as b where l.number = %d and (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId";
 	char get_buffer[1024];
 
 	dive_start();
@@ -2861,7 +2885,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number, cur_dive->number, cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
