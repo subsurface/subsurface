@@ -2759,11 +2759,12 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 	if (data[6])
 		cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
 
-	/* Weird unit conversion but seems to produce correct results */
-	if (data[7]) {
+	/* Weird unit conversion but seems to produce correct results.
+	 * Also missing values seems to be reported as a 4092 (564 bar) */
+	if (data[7] && atoi(data[7]) != 4092) {
 		cur_sample->pressure[0].mbar = psi_to_mbar(atoi(data[7])) * 2;
 	}
-	if (data[8])
+	if (data[8] && atoi(data[8]) != 4092)
 		cur_sample->pressure[1].mbar = psi_to_mbar(atoi(data[8])) * 2;
 	sample_end();
 
