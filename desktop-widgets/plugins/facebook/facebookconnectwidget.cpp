@@ -51,6 +51,8 @@ FacebookManager::FacebookManager(QObject *parent) : QObject(parent)
 {
 }
 
+static QString graphApi = QStringLiteral("https://graph.facebook.com/v2.10/");
+
 QUrl FacebookManager::connectUrl() {
 	return QUrl("https://www.facebook.com/dialog/oauth?"
 		"client_id=427722490709000"
@@ -178,7 +180,7 @@ void FacebookManager::sendDive()
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);
 	pix.save(&buffer, "PNG");
-	QUrl url("https://graph.facebook.com/v2.2/" + QString(prefs.facebook.album_id) + "/photos?" +
+	QUrl url(graphApi + QString(prefs.facebook.album_id) + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
 		 "&message=" + dialog.text().replace("&quot;", "%22"));
@@ -191,7 +193,7 @@ void FacebookManager::sendDive()
 	//according to rfc 1867 we need to put this string here:
 	QByteArray data(QString("--" + bound + "\r\n").toLocal8Bit());
 	data.append("Content-Disposition: form-data; name=\"action\"\r\n\r\n");
-	data.append("https://graph.facebook.com/v2.2/\r\n");
+	data.append(graphApi + "\r\n");
 	data.append("--" + bound + "\r\n");   //according to rfc 1867
 	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");  //name of the input is "uploaded" in my form, next one is a file name.
 	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
