@@ -334,6 +334,10 @@ bool is_cylinder_used(struct dive *dive, int idx)
 
 	if ((dive->cylinder[idx].start.mbar - dive->cylinder[idx].end.mbar) > SOME_GAS)
 		return true;
+
+	if ((dive->cylinder[idx].sample_start.mbar - dive->cylinder[idx].sample_end.mbar) > SOME_GAS)
+		return true;
+
 	for_each_dc(dive, dc) {
 		if (has_gaschange_event(dive, dc, idx))
 			return true;
