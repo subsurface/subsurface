@@ -220,7 +220,7 @@ static void save_sample(struct membuffer *b, struct sample *sample, struct sampl
 				put_pressure(b, p, " o2pressure='", " bar'");
 				continue;
 			}
-			put_pressure(b, sample->pressure[0], " pressure='", " bar'");
+			put_pressure(b, p, " pressure='", " bar'");
 			if (sensor != old->sensor[0]) {
 				put_format(b, " sensor='%d'", sensor);
 				old->sensor[0] = sensor;
