@@ -97,6 +97,9 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 
 	qreal width, left;
 
+	// Find correct end of the dive plot for correct end of the tankbar
+	struct plot_data *last_entry = &pInfoEntry[pInfoNr-1];
+
 	// get the information directly from the displayed_dive (the dc always exists)
 	struct divecomputer *dc = get_dive_dc(&displayed_dive, dc_number);
 
@@ -107,7 +110,7 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	struct event *ev = get_next_event(dc->events, "gaschange");
-	while (ev && ev->time.seconds < dc->duration.seconds) {
+	while (ev && ev->time.seconds < last_entry->sec) {
 		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
 		createBar(left, width, gasmix);
@@ -115,7 +118,7 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 		gasmix = get_gasmix_from_event(&displayed_dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
-	width = hAxis->posAtValue(dc->duration.seconds) - hAxis->posAtValue(startTime);
+	width = hAxis->posAtValue(last_entry->sec) - hAxis->posAtValue(startTime);
 	left = hAxis->posAtValue(startTime);
 	createBar(left, width, gasmix);
 }
