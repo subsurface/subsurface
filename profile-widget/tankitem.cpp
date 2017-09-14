@@ -95,33 +95,29 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 	}
 	rects.clear();
 
-	// walk the list and figure out which tanks go where
-	struct plot_data *entry = pInfoEntry;
-	struct plot_data *lastentry = pInfoEntry;
-	int cylIdx = 0; // explicit_first_cylinder(dive, dc)
-	int i = -1;
-	int startTime = 0;
-	struct gasmix *gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
 	qreal width, left;
 
-	// FIXME! This used to depend on the sensor indexes that we no longer have
-	// We should use gaschange events or something
-	while (++i < pInfoNr) {
-		int newIdx = 0;	// get_next_event(dc->events, "gaschange");
-		entry = &pInfoEntry[i];
-		lastentry = &pInfoEntry[i-1];
-		if (newIdx == cylIdx)
-			continue;
-		width = hAxis->posAtValue(lastentry->sec) - hAxis->posAtValue(startTime);
+	// get the information directly from the displayed_dive (the dc always exists)
+	struct divecomputer *dc = get_dive_dc(&displayed_dive, dc_number);
+
+	// start with the first gasmix and at the start of the dive
+	int cyl = explicit_first_cylinder(&displayed_dive, dc);
+	struct gasmix *gasmix = &displayed_dive.cylinder[cyl].gasmix;
+	int startTime = 0;
+
+	// work through all the gas changes and add the rectangle for each gas while it was used
+	struct event *ev = get_next_event(dc->events, "gaschange");
+	while (ev && ev->time.seconds < dc->duration.seconds) {
+		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
-		createBar(left, width, gas);
-		cylIdx = newIdx;
-		gas = &diveCylinderStore.cylinder[cylIdx].gasmix;
-		startTime = lastentry->sec;
+		createBar(left, width, gasmix);
+		startTime = ev->time.seconds;
+		gasmix = get_gasmix_from_event(&displayed_dive, ev);
+		ev = get_next_event(ev->next, "gaschange");
 	}
-	width = hAxis->posAtValue(entry->sec) - hAxis->posAtValue(startTime);
+	width = hAxis->posAtValue(dc->duration.seconds) - hAxis->posAtValue(startTime);
 	left = hAxis->posAtValue(startTime);
-	createBar(left, width, gas);
+	createBar(left, width, gasmix);
 }
 
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)
