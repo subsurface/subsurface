@@ -46,6 +46,7 @@
 #      /subsurface             <- current subsurface git
 #      /libdivecomputer        <- appropriate libdc/Subsurface-branch branch
 #      /libgit2                <- libgit2 0.23.1 or similar
+#      /googlemaps             <- Google Maps plugin for QtLocation from git
 #
 # ~/src/win32                  <- build directory
 #
