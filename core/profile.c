@@ -494,7 +494,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	entry->sec = _time;         \
 	entry->depth = _depth;      \
 	entry->running_sum = (entry - 1)->running_sum + (_time - (entry - 1)->sec) * (_depth + (entry - 1)->depth) / 2; \
-	SENSOR_PRESSURE(entry, 0) = 0; \
+	memset(entry->pressure, 0, sizeof(entry->pressure)); \
 	entry->sac = _sac;          \
 	entry++;                    \
 	idx++
