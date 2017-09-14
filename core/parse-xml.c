@@ -2263,10 +2263,10 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 		/* DM5 shows tank size of 12 liters when the actual
 		 * value is 0 (and using metric units). So we just use
 		 * the same 12 liters when size is not available */
-		if (atof(data[6]) == 0.0 && cur_dive->cylinder[cur_cylinder_index].start.mbar)
+		if (strtod_flags(data[6], NULL, 0) == 0.0 && cur_dive->cylinder[cur_cylinder_index].start.mbar)
 			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = 12000;
 		else
-			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = lrint((atof(data[6])) * 1000);
+			cur_dive->cylinder[cur_cylinder_index].type.size.mliter = lrint((strtod_flags(data[6], NULL, 0)) * 1000);
 	}
 	if (data[2])
 		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atoi(data[2]) * 10;
@@ -2287,12 +2287,12 @@ extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 		cur_event.time.seconds = atoi(data[0]);
 	if (data[1]) {
 		strcpy(cur_event.name, "gaschange");
-		cur_event.value = lrint(atof(data[1]));
+		cur_event.value = lrint(strtod_flags(data[1], NULL, 0));
 	}
 
 	/* He part of the mix */
 	if (data[2])
-		cur_event.value += lrint(atof(data[2])) << 16;
+		cur_event.value += lrint(strtod_flags(data[2], NULL, 0)) << 16;
 	event_end();
 
 	return 0;
@@ -2359,7 +2359,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	settings_end();
 
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = lrint(atof(data[6]) * 1000);
+		cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[6], NULL, 0) * 1000);
 	if (data[8])
 		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
@@ -2378,7 +2378,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 	if (data[11] && atoi(data[11]) > 0)
 		cur_dive->cylinder[cur_cylinder_index].end.mbar = (atoi(data[11]));
 	if (data[12])
-		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = lrint((atof(data[12])) * 1000);
+		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = lrint((strtod_flags(data[12], NULL, 0)) * 1000);
 	if (data[13])
 		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = (atoi(data[13]));
 	if (data[20])
@@ -2482,7 +2482,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	settings_end();
 
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = lrint(atof(data[6]) * 1000);
+		cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[6], NULL, 0) * 1000);
 	if (data[8])
 		cur_dive->dc.airtemp.mkelvin = C_to_mkelvin(atoi(data[8]));
 	if (data[9])
@@ -2653,8 +2653,8 @@ extern int shearwater_cylinders(void *handle, int columns, char **data, char **c
 	(void) columns;
 	(void) column;
 
-	int o2 = lrint(atof(data[0]) * 1000);
-	int he = lrint(atof(data[1]) * 1000);
+	int o2 = lrint(strtod_flags(data[0], NULL, 0) * 1000);
+	int he = lrint(strtod_flags(data[1], NULL, 0) * 1000);
 
 	/* Shearwater allows entering only 99%, not 100%
 	 * so assume 99% to be pure oxygen */
@@ -2681,8 +2681,8 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 	if (!data[0] || !data[1] || !data[2]) {
 		return 2;
 	}
-	int o2 = lrint(atof(data[1]) * 1000);
-	int he = lrint(atof(data[2]) * 1000);
+	int o2 = lrint(strtod_flags(data[1], NULL, 0) * 1000);
+	int he = lrint(strtod_flags(data[2], NULL, 0) * 1000);
 
 	/* Shearwater allows entering only 99%, not 100%
 	 * so assume 99% to be pure oxygen */
@@ -2724,7 +2724,7 @@ extern int cobalt_profile_sample(void *handle, int columns, char **data, char **
 	if (data[1])
 		cur_sample->depth.mm = atoi(data[1]);
 	if (data[2])
-		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
+		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
 	sample_end();
 
 	return 0;
@@ -2741,11 +2741,11 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	if (data[0])
 		cur_sample->time.seconds = atoi(data[0]);
 	if (data[1])
-		cur_sample->depth.mm = metric ? lrint(atof(data[1]) * 1000) : feet_to_mm(atof(data[1]));
+		cur_sample->depth.mm = metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
 	if (data[2])
-		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
+		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
 	if (data[3]) {
-		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
+		cur_sample->setpoint.mbar = lrint(strtod_flags(data[3], NULL, 0) * 1000);
 	}
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -2774,11 +2774,11 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 	if (data[0])
 		cur_sample->time.seconds = atoi(data[0]);
 	if (data[1])
-		cur_sample->depth.mm = metric ? lrint(atof(data[1]) * 1000) : feet_to_mm(atof(data[1]));
+		cur_sample->depth.mm = metric ? lrint(strtod_flags(data[1], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[1], NULL, 0));
 	if (data[2])
-		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(atof(data[2])) : F_to_mkelvin(atof(data[2]));
+		cur_sample->temperature.mkelvin = metric ? C_to_mkelvin(strtod_flags(data[2], NULL, 0)) : F_to_mkelvin(strtod_flags(data[2], NULL, 0));
 	if (data[3]) {
-		cur_sample->setpoint.mbar = lrint(atof(data[3]) * 1000);
+		cur_sample->setpoint.mbar = lrint(strtod_flags(data[3], NULL, 0) * 1000);
 	}
 	if (data[4])
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
@@ -2842,7 +2842,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 
 	/* TODO: verify that metric calculation is correct */
 	if (data[6])
-		cur_dive->dc.maxdepth.mm = metric ? lrint(atof(data[6]) * 1000) : feet_to_mm(atof(data[6]));
+		cur_dive->dc.maxdepth.mm = metric ? lrint(strtod_flags(data[6], NULL, 0) * 1000) : feet_to_mm(strtod_flags(data[6], NULL, 0));
 
 	if (data[7])
 		cur_dive->dc.duration.seconds = atoi(data[7]) * 60;
@@ -3435,7 +3435,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		utf8_string(data[4], &cur_dive->notes);
 
 	if (data[5])
-		cur_dive->dc.maxdepth.mm = lrint(atof(data[5]) * 1000);
+		cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[5], NULL, 0) * 1000);
 
 	if (data[6])
 		cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
