@@ -2819,10 +2819,10 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where diveLogId = %d";
-	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records AS r join dive_logs as l on r.diveLogId=l.diveId where number = %d";
-	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records as r join dive_logs as l on r.diveLogId=l.diveId where number = %d group by fractionO2,fractionHe";
-	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a join dive_logs as l on a.diveLogId=l.diveId,dive_log_records as b where l.number = %d and (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId";
+	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records where diveLogId=%d";
+	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records where diveLogId = %d";
+	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %d group by fractionO2,fractionHe";
+	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId and a.diveLogId = %d";
 	char get_mode_template[] = "select distinct currentCircuitSetting from dive_log_records where diveLogId = %d";
 	char get_buffer[1024];
 
@@ -2830,6 +2830,8 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	cur_dive->number = atoi(data[0]);
 
 	cur_dive->when = (time_t)(atol(data[1]));
+
+	int dive_id = atoi(data[11]);
 
 	if (data[2])
 		add_dive_site(data[2], cur_dive);
@@ -2890,7 +2892,7 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	}
 
 	if (data[11]) {
-		snprintf(get_buffer, sizeof(get_buffer) - 1, get_mode_template, atoi(data[11]));
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_mode_template, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_mode, 0, &err);
 		if (retval != SQLITE_OK) {
 			fprintf(stderr, "%s", "Database query shearwater_mode failed.\n");
@@ -2898,24 +2900,24 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 		}
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_cylinders, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query shearwater_cylinders failed.\n");
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, cur_dive->number, cur_dive->number, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_changes_template, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_changes, 0, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query shearwater_changes failed.\n");
 		return 1;
 	}
 
-	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, cur_dive->number);
+	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template_ai, dive_id);
 	retval = sqlite3_exec(handle, get_buffer, &shearwater_ai_profile_sample, 0, &err);
 	if (retval != SQLITE_OK) {
-		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, cur_dive->number);
+		snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, dive_id);
 		retval = sqlite3_exec(handle, get_buffer, &shearwater_profile_sample, 0, &err);
 		if (retval != SQLITE_OK) {
 			fprintf(stderr, "%s", "Database query shearwater_profile_sample failed.\n");
