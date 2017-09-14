@@ -3,12 +3,10 @@
 # build Subsurface for Win32
 #
 # this file assumes that you have installed MXE on your system
-# and installed a number of dependencies as well. Latest MXE
-# version from git may not always work for Qt5 and Subsurface.
-# Try to select an older release version like build-2016-10-12.
+# and installed a number of dependencies as well.
 #
 # cd ~/src
-# git clone --branch build-2016-10-12 https://github.com/mxe/mxe
+# git clone https://github.com/mxe/mxe
 # cd mxe
 #
 # now create a file settings.mk
