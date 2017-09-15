@@ -934,6 +934,8 @@ void DivePlannerPointsModel::computeVariations()
 	struct diveplan plan_copy;
 	struct divedatapoint *last_segment;
 
+	if(!in_planner())
+		return;
 	cache_deco_state(&save);
 	cloneDiveplan(&plan_copy);
 	plan(&plan_copy, dive, 1, original, &cache, true, false);
