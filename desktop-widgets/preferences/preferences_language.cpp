@@ -51,7 +51,7 @@ void PreferencesLanguage::syncSettings()
 
 	if (useSystemLang != ui->languageSystemDefault->isChecked() ||
 		(!useSystemLang && currentText != prefs.locale.language)) {
-		// remove the marble cache folder on language change
+		// remove the googlemaps cache folder on language change
 		QDir googlecachedir(QString(system_default_directory()).append("/googlemaps"));
 		googlecachedir.removeRecursively();
 
