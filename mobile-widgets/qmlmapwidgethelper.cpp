@@ -188,11 +188,11 @@ void MapWidgetHelper::calculateSmallCircleRadius(QGeoCoordinate coord)
 {
 	QPointF point;
 	QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
-	                          Q_ARG(QGeoCoordinate, coord), Q_ARG(bool, false));
+	                          Q_ARG(QGeoCoordinate, coord));
 	QPointF point2(point.x() + SMALL_CIRCLE_RADIUS_PX, point.y());
 	QGeoCoordinate coord2;
 	QMetaObject::invokeMethod(m_map, "toCoordinate", Q_RETURN_ARG(QGeoCoordinate, coord2),
-	                          Q_ARG(QPointF, point2), Q_ARG(bool, false));
+	                          Q_ARG(QPointF, point2));
 	m_smallCircleRadius = coord2.distanceTo(coord);
 }
 
