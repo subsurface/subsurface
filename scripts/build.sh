@@ -141,9 +141,9 @@ if [ $PLATFORM = Linux ] ; then
 	QT_HEADERS_PATH=`$QMAKE -query QT_INSTALL_HEADERS`
 	QT_VERSION=`$QMAKE -v | grep "Qt" | cut -d" " -f4`
 
-	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$qt_version/QtLocation/private" ] &&
+	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$QT_VERSION/QtLocation/private" ] &&
            [ ! -d $INSTALL_ROOT/include/QtLocation/private ] ; then
-		echo "Missing private Qt headers for $qt_version; downloading them..."
+		echo "Missing private Qt headers for $QT_VERSION; downloading them..."
 
 		QTLOC_GIT=./qtlocation_git
 		QTLOC_PRIVATE=$INSTALL_ROOT/include/QtLocation/private
