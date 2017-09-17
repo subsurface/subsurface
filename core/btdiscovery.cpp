@@ -174,11 +174,10 @@ QString markBLEAddress(const QBluetoothDeviceInfo *device)
 	flags = device->coreConfigurations();
 	if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
 		prefix = "LE:";
-#if defined(Q_OS_IOS)
-	return prefix + device->deviceUuid().toString();
-#else
-	return prefix + device->address().toString();
-#endif
+	if (device->address().isNull())
+		return prefix + device->deviceUuid().toString();
+	else
+		return prefix + device->address().toString();
 }
 
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
