@@ -152,7 +152,9 @@ void BtDeviceSelectionDialog::on_save_clicked()
 
 	// Save the selected device
 	selectedRemoteDeviceInfo = QSharedPointer<QBluetoothDeviceInfo>(new QBluetoothDeviceInfo(remoteDeviceInfo));
-
+	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
+								remoteDeviceInfo.address().toString();
+	saveBtDeviceInfo(address.toUtf8().constData(), remoteDeviceInfo);
 	if (remoteDeviceDiscoveryAgent->isActive()) {
 		// Stop the SDP agent if the clear button is pressed and enable the Scan button
 		remoteDeviceDiscoveryAgent->stop();
