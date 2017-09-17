@@ -382,8 +382,19 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 				qDebug() << "Descriptor:" << d.name() << "uuid:" << d.uuid().toString();
 
 			if (!l.isEmpty()) {
-				d = l.first();
-				qDebug() << "now writing \"0x0100\" to the first descriptor";
+				bool foundCCC = false;
+				foreach (d, l) {
+					if (d.type() == QBluetoothUuid::ClientCharacteristicConfiguration) {
+						// pick the correct characteristic
+						foundCCC = true;
+						break;
+					}
+				}
+				if (!foundCCC)
+					// if we didn't find a ClientCharacteristicConfiguration, try the first one
+					d = l.first();
+
+				qDebug() << "now writing \"0x0100\" to the descriptor" << d.uuid().toString();
 
 				ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 			}
