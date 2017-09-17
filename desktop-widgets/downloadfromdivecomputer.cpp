@@ -113,7 +113,10 @@ void DownloadFromDCWidget::updateProgressBar()
 	if (!same_string(progress_bar_text , "")) {
 		ui.progressBar->setFormat(progress_bar_text);
 	} else {
-		ui.progressBar->setFormat("%p%");
+		if (IS_FP_SAME(progress_bar_fraction, 0.0))
+			ui.progressBar->setFormat(tr("Connecting to dive computer"));
+		else
+			ui.progressBar->setFormat("%p%");
 	}
 	ui.progressBar->setValue(lrint(progress_bar_fraction * 100));
 	free(last_text);
