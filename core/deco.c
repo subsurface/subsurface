@@ -35,8 +35,6 @@
 extern bool in_planner();
 extern int plot_depth;
 
-extern pressure_t first_ceiling_pressure;
-
 //! Option structure for Buehlmann decompression.
 struct buehlmann_config {
 	double satmult;			//! safety at inert gas accumulation as percentage of effect (more than 100).
@@ -198,7 +196,7 @@ double solve_cubic2(double B, double C)
 
 double update_gradient(double next_stop_pressure, double first_gradient)
 {
-	double B = cube(first_gradient) / (first_ceiling_pressure.mbar / 1000.0 + first_gradient);
+	double B = cube(first_gradient) / (deco_state->first_ceiling_pressure.mbar / 1000.0 + first_gradient);
 	double C = next_stop_pressure * B;
 
 	double new_gradient = solve_cubic2(B, C);
@@ -212,7 +210,7 @@ double vpmb_tolerated_ambient_pressure(double reference_pressure, int ci)
 {
 	double n2_gradient, he_gradient, total_gradient;
 
-	if (reference_pressure >= first_ceiling_pressure.mbar / 1000.0 || !first_ceiling_pressure.mbar) {
+	if (reference_pressure >= deco_state->first_ceiling_pressure.mbar / 1000.0 || !deco_state->first_ceiling_pressure.mbar) {
 		n2_gradient = deco_state->bottom_n2_gradient[ci];
 		he_gradient = deco_state->bottom_he_gradient[ci];
 	} else {
@@ -531,6 +529,8 @@ void clear_vpmb_state() {
 		deco_state->max_he_crushing_pressure[ci] = 0.0;
 	}
 	deco_state->max_ambient_pressure = 0;
+	deco_state->first_ceiling_pressure.mbar = 0;
+	deco_state->max_bottom_ceiling_pressure.mbar = 0;
 }
 
 void clear_deco(double surface_pressure)
@@ -571,6 +571,8 @@ void restore_deco_state(struct deco_state *data, bool keep_vpmb_state)
 			data->initial_n2_gradient[ci] = deco_state->initial_n2_gradient[ci];
 			data->initial_he_gradient[ci] = deco_state->initial_he_gradient[ci];
 		}
+		data->first_ceiling_pressure = deco_state->first_ceiling_pressure;
+		data->max_bottom_ceiling_pressure = deco_state->max_bottom_ceiling_pressure;
 	}
 	*deco_state = *data;
 

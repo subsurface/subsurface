@@ -39,8 +39,6 @@ extern double regressiona();
 extern double regressionb();
 extern void reset_regression();
 
-pressure_t first_ceiling_pressure, max_bottom_ceiling_pressure = {};
-
 char *disclaimer;
 int plot_depth = 0;
 #if DEBUG_PLAN
@@ -184,8 +182,8 @@ unsigned int tissue_at_end(struct dive *dive, struct deco_state **cached_datap)
 										dive,
 										1),
 								dive);
-			if (ceiling_pressure.mbar > max_bottom_ceiling_pressure.mbar)
-				max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
+			if (ceiling_pressure.mbar > deco_state->max_bottom_ceiling_pressure.mbar)
+				deco_state->max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
 		}
 
 		interpolate_transition(dive, t0, t1, lastdepth, sample->depth, &gas, setpoint);
@@ -691,7 +689,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		diveplan->surface_pressure = SURFACE_PRESSURE;
 	dive->surface_pressure.mbar = diveplan->surface_pressure;
 	clear_deco(dive->surface_pressure.mbar / 1000.0);
-	max_bottom_ceiling_pressure.mbar = first_ceiling_pressure.mbar = 0;
+	deco_state->max_bottom_ceiling_pressure.mbar = deco_state->first_ceiling_pressure.mbar = 0;
 	create_dive_from_plan(diveplan, dive, is_planner);
 
 	// Do we want deco stop array in metres or feet?
@@ -859,14 +857,14 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		breaktime = -1;
 		breakcylinder = 0;
 		o2time = 0;
-		first_ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance_calc(dive,
+		deco_state->first_ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance_calc(dive,
 												     depth_to_bar(depth, dive)),
 									    diveplan->surface_pressure / 1000.0,
 									    dive,
 									    1),
 							 dive);
-		if (max_bottom_ceiling_pressure.mbar > first_ceiling_pressure.mbar)
-			first_ceiling_pressure.mbar = max_bottom_ceiling_pressure.mbar;
+		if (deco_state->max_bottom_ceiling_pressure.mbar > deco_state->first_ceiling_pressure.mbar)
+			deco_state->first_ceiling_pressure.mbar = deco_state->max_bottom_ceiling_pressure.mbar;
 
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
