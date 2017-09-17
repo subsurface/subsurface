@@ -18,6 +18,9 @@
 #include <QAndroidJniEnvironment>
 #endif
 
+void saveBtDeviceInfo(const char* devaddr, QBluetoothDeviceInfo deviceInfo);
+QBluetoothDeviceInfo getBtDeviceInfo(const char* devaddr);
+
 class ConnectionListModel : public QAbstractListModel {
 	Q_OBJECT
 public:

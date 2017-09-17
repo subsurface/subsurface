@@ -307,4 +307,18 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 }
 #endif // Q_OS_ANDROID
 
+QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+
+void saveBtDeviceInfo(const char* devaddr, QBluetoothDeviceInfo deviceInfo)
+{
+	btDeviceInfo[devaddr] = deviceInfo;
+}
+
+QBluetoothDeviceInfo getBtDeviceInfo(const char* devaddr)
+{
+	if (btDeviceInfo.contains(devaddr))
+		return btDeviceInfo[devaddr];
+	qDebug() << "need to scan for" << devaddr;
+	return QBluetoothDeviceInfo();
+}
 #endif // BT_SUPPORT
