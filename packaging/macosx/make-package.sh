@@ -71,6 +71,10 @@ pushd Subsurface.app/Contents/PlugIns/grantlee
 ln -s . 5.0
 popd
 
+if [ "$1" = "-nodmg" ] ; then
+	exit 0
+fi
+
 # copy things into staging so we can create a nice DMG
 rm -rf ./staging
 mkdir ./staging
