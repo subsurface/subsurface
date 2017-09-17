@@ -112,11 +112,24 @@ void DownloadFromDCWidget::updateProgressBar()
 	}
 	if (!same_string(progress_bar_text , "")) {
 		ui.progressBar->setFormat(progress_bar_text);
+#if defined(Q_OS_MAC)
+		// on mac the progress bar doesn't show its text
+		ui.progressText->setText(progress_bar_text);
+#endif
 	} else {
-		if (IS_FP_SAME(progress_bar_fraction, 0.0))
+		if (IS_FP_SAME(progress_bar_fraction, 0.0)) {
 			ui.progressBar->setFormat(tr("Connecting to dive computer"));
-		else
+#if defined(Q_OS_MAC)
+		// on mac the progress bar doesn't show its text
+		ui.progressText->setText(tr("Connecting to dive computer"));
+#endif
+		} else {
 			ui.progressBar->setFormat("%p%");
+#if defined(Q_OS_MAC)
+			// on mac the progress bar doesn't show its text
+			ui.progressText->setText(QString("%1%").arg(lrint(progress_bar_fraction * 100)));
+#endif
+		}
 	}
 	ui.progressBar->setValue(lrint(progress_bar_fraction * 100));
 	free(last_text);
@@ -134,6 +147,10 @@ void DownloadFromDCWidget::updateState(states state)
 		markChildrenAsEnabled();
 		timer->stop();
 		progress_bar_text = "";
+#if defined(Q_OS_MAC)
+		// on mac we show the text in a label
+		ui.progressText->setText(progress_bar_text);
+#endif
 	}
 
 	// tries to cancel an on going download
@@ -156,6 +173,10 @@ void DownloadFromDCWidget::updateState(states state)
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		progress_bar_text = "";
+#if defined(Q_OS_MAC)
+		// on mac we show the text in a label
+		ui.progressText->setText(progress_bar_text);
+#endif
 	}
 
 	// DOWNLOAD is finally done, but we don't know if there was an error as libdivecomputer doesn't pass
@@ -173,6 +194,10 @@ void DownloadFromDCWidget::updateState(states state)
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
 		}
+#if defined(Q_OS_MAC)
+		// on mac we show the text in a label
+		ui.progressText->setText(progress_bar_text);
+#endif
 	}
 
 	// DOWNLOAD is started.
@@ -192,6 +217,10 @@ void DownloadFromDCWidget::updateState(states state)
 		markChildrenAsEnabled();
 		progress_bar_text = "";
 		ui.progressBar->hide();
+#if defined(Q_OS_MAC)
+		// on mac we show the text in a label
+		ui.progressText->setText(progress_bar_text);
+#endif
 	}
 
 	// properly updating the widget state
