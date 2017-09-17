@@ -220,9 +220,8 @@ if (BTSUPPORT AND "${Qt5Core_VERSION}" VERSION_LESS 5.4.0)
 endif()
 
 # Windows Qt doesn't support BLE at all
-# Mac hasn't been tested, yet - so far it's disabled
 # the rest of them need at least 5.6 to be reasonable but really, you want 5.9.1
-if (BTSUPPORT AND (ANDROID OR CMAKE_SYSTEM_NAME STREQUAL "Linux"))
+if (BTSUPPORT AND NOT CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	if ("${Qt5Core_VERSION}" VERSION_LESS 5.6.0)
 		message(STATUS "Turning off BLE support as Qt version ${Qt5Core_VERSION} is insufficient for that")
 	else()

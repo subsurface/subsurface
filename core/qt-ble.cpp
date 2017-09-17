@@ -16,6 +16,7 @@
 
 #include "libdivecomputer.h"
 #include "core/qt-ble.h"
+#include "core/btdiscovery.h"
 
 #if defined(SSRF_CUSTOM_IO)
 
@@ -287,12 +288,11 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	if (!strncmp(devaddr, "LE:", 3))
 		devaddr += 3;
 
-	QBluetoothAddress remoteDeviceAddress(devaddr);
-
 	// HACK ALERT! Qt 5.9 needs this for proper Bluez operation
 	qputenv("QT_DEFAULT_CENTRAL_SERVICES", "1");
 
-	QLowEnergyController *controller = new QLowEnergyController(remoteDeviceAddress);
+	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(devaddr);
+	QLowEnergyController *controller = QLowEnergyController::createCentral(remoteDevice);
 
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
@@ -382,8 +382,19 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 				qDebug() << "Descriptor:" << d.name() << "uuid:" << d.uuid().toString();
 
 			if (!l.isEmpty()) {
-				d = l.first();
-				qDebug() << "now writing \"0x0100\" to the first descriptor";
+				bool foundCCC = false;
+				foreach (d, l) {
+					if (d.type() == QBluetoothUuid::ClientCharacteristicConfiguration) {
+						// pick the correct characteristic
+						foundCCC = true;
+						break;
+					}
+				}
+				if (!foundCCC)
+					// if we didn't find a ClientCharacteristicConfiguration, try the first one
+					d = l.first();
+
+				qDebug() << "now writing \"0x0100\" to the descriptor" << d.uuid().toString();
 
 				ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 			}

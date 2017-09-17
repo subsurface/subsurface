@@ -190,6 +190,13 @@
         </widget>
        </item>
        <item>
+        <widget class="QLabel" name="progressText">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
         <spacer name="aboveOKCancelSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>

@@ -3,6 +3,9 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMenu>
+#include "core/btdiscovery.h"
+
+#include <QBluetoothUuid>
 
 #include "ui_btdeviceselectiondialog.h"
 #include "btdeviceselectiondialog.h"
@@ -149,7 +152,9 @@ void BtDeviceSelectionDialog::on_save_clicked()
 
 	// Save the selected device
 	selectedRemoteDeviceInfo = QSharedPointer<QBluetoothDeviceInfo>(new QBluetoothDeviceInfo(remoteDeviceInfo));
-
+	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
+								remoteDeviceInfo.address().toString();
+	saveBtDeviceInfo(address.toUtf8().constData(), remoteDeviceInfo);
 	if (remoteDeviceDiscoveryAgent->isActive()) {
 		// Stop the SDP agent if the clear button is pressed and enable the Scan button
 		remoteDeviceDiscoveryAgent->stop();
@@ -236,8 +241,16 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	if (remoteDeviceInfo.address().isNull())
 		pairingColor = QColor(Qt::gray);
 
+	QString deviceLabel;
 
-	QString deviceLabel = tr("%1 (%2)   [State: %3]").arg(remoteDeviceInfo.name(),
+#if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
+	if (!remoteDeviceInfo.deviceUuid().isNull()) {
+		// we have only a Uuid, no address, so show that and reset the pairing color
+		deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),remoteDeviceInfo.deviceUuid().toString());
+		pairingColor = QColor(Qt::white);
+	} else
+#endif
+	deviceLabel = tr("%1 (%2)   [State: %3]").arg(remoteDeviceInfo.name(),
 							      remoteDeviceInfo.address().toString(),
 							      pairingStatusLabel);
 #endif
@@ -255,19 +268,24 @@ void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
 	// By default we assume that the devices are paired
 	QBluetoothDeviceInfo remoteDeviceInfo = item->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
 	QString statusMessage = tr("The device %1 can be used for connection. You can press the Save button.")
-				  .arg(remoteDeviceInfo.address().toString());
+				  .arg(remoteDeviceInfo.address().isNull() ?
+					       remoteDeviceInfo.deviceUuid().toString() :
+					       remoteDeviceInfo.address().toString());
 	bool enableSaveButton = true;
 
 #if !defined(Q_OS_WIN)
 	// On other platforms than Windows we can obtain the pairing status so if the devices are not paired we disable the button
-	QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
+	// except on MacOS for those devices that only give us a Uuid and not and address (as we have no pairing status for those, either)
+	if (!remoteDeviceInfo.address().isNull()) {
+		QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 
-	if (pairingStatus == QBluetoothLocalDevice::Unpaired) {
-		statusMessage = tr("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
-				  .arg(remoteDeviceInfo.address().toString());
-		enableSaveButton = false;
+		if (pairingStatus == QBluetoothLocalDevice::Unpaired) {
+			statusMessage = tr("The device %1 must be paired in order to be used. Please use the context menu for pairing options.")
+					.arg(remoteDeviceInfo.address().toString());
+			enableSaveButton = false;
+		}
 	}
-	if (remoteDeviceInfo.address().isNull()) {
+	if (remoteDeviceInfo.address().isNull() && remoteDeviceInfo.deviceUuid().isNull()) {
 		statusMessage = tr("A device needs a non-zero address for a connection.");
 		enableSaveButton = false;
 	}

@@ -174,11 +174,10 @@ QString markBLEAddress(const QBluetoothDeviceInfo *device)
 	flags = device->coreConfigurations();
 	if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
 		prefix = "LE:";
-#if defined(Q_OS_IOS)
-	return prefix + device->deviceUuid().toString();
-#else
-	return prefix + device->address().toString();
-#endif
+	if (device->address().isNull())
+		return prefix + device->deviceUuid().toString();
+	else
+		return prefix + device->address().toString();
 }
 
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
@@ -308,4 +307,18 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 }
 #endif // Q_OS_ANDROID
 
+QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+
+void saveBtDeviceInfo(const char* devaddr, QBluetoothDeviceInfo deviceInfo)
+{
+	btDeviceInfo[devaddr] = deviceInfo;
+}
+
+QBluetoothDeviceInfo getBtDeviceInfo(const char* devaddr)
+{
+	if (btDeviceInfo.contains(devaddr))
+		return btDeviceInfo[devaddr];
+	qDebug() << "need to scan for" << devaddr;
+	return QBluetoothDeviceInfo();
+}
 #endif // BT_SUPPORT
