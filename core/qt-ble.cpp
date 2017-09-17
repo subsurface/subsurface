@@ -291,9 +291,17 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	// HACK ALERT! Qt 5.9 needs this for proper Bluez operation
 	qputenv("QT_DEFAULT_CENTRAL_SERVICES", "1");
 
+#if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
 	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(devaddr);
 	QLowEnergyController *controller = QLowEnergyController::createCentral(remoteDevice);
-
+#else
+	// this is deprecated but given that we don't use Qt to scan for
+	// devices on Android, we don't have QBluetoothDeviceInfo for the
+	// paired devices and therefore cannot use the newer interfaces
+	// that are preferred starting with Qt 5.7
+	QBluetoothAddress remoteDeviceAddress(devaddr);
+	QLowEnergyController *controller = new QLowEnergyController(remoteDeviceAddress);
+#endif
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
 	if (IS_SHEARWATER(io->user_device))
