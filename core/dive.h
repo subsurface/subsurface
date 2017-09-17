@@ -858,6 +858,8 @@ struct deco_state {
 
 	double initial_n2_gradient[16];
 	double initial_he_gradient[16];
+	pressure_t first_ceiling_pressure;
+	pressure_t max_bottom_ceiling_pressure;
 	int ci_pointing_to_guiding_tissue;
 	double gf_low_pressure_this_dive;
 

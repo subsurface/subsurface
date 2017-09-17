@@ -31,7 +31,6 @@ static struct plot_data *last_pi_entry_new = NULL;
 void populate_pressure_information(struct dive *, struct divecomputer *, struct plot_info *, int);
 
 extern bool in_planner();
-extern pressure_t first_ceiling_pressure;
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
@@ -1015,7 +1014,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 					if  (current_ceiling > first_ceiling) {
 						time_deep_ceiling = t1;
 						first_ceiling = current_ceiling;
-						first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
+						deco_state->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 						if (first_iteration) {
 							nuclear_regeneration(t1);
 							vpmb_start_gradient();
