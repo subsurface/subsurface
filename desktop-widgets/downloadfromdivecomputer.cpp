@@ -165,7 +165,8 @@ void DownloadFromDCWidget::updateState(states state)
 			markChildrenAsEnabled();
 			progress_bar_text = "";
 		} else {
-			progress_bar_text = "";
+			if (downloadTable.nr != 0)
+				progress_bar_text = "";
 			ui.progressBar->setValue(100);
 			markChildrenAsEnabled();
 		}
