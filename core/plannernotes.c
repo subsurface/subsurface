@@ -101,8 +101,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				get_current_date());
 	}
 
-	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin VARIATIONS<br></div>"),
-			diveplan_duration(diveplan));
+	if (prefs.display_variations)
+		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin VARIATIONS<br></div>"),
+				diveplan_duration(diveplan));
+	else
+		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin<br></div>"),
+				diveplan_duration(diveplan));
+
 
 	if (!plan_verbatim) {
 		len += snprintf(buffer + len, sz_buffer - len, "<table><thead><tr><th></th><th>%s</th>",

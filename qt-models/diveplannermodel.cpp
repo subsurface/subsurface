@@ -522,6 +522,13 @@ void DivePlannerPointsModel::setDisplayTransitions(bool value)
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::setDisplayVariations(bool value)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDisplayVariations(value);
+	emitDataChanged();
+}
+
 void DivePlannerPointsModel::setDecoMode(int mode)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
@@ -934,52 +941,51 @@ void DivePlannerPointsModel::computeVariations()
 	struct diveplan plan_copy;
 	struct divedatapoint *last_segment;
 
-	if(!in_planner())
-		return;
-	cache_deco_state(&save);
-	cloneDiveplan(&plan_copy);
-	plan(&plan_copy, dive, 1, original, &cache, true, false);
-	free_dps(&plan_copy);
-	restore_deco_state(save, false);
+	if(in_planner() && prefs.display_variations) {
+		cache_deco_state(&save);
+		cloneDiveplan(&plan_copy);
+		plan(&plan_copy, dive, 1, original, &cache, true, false);
+		free_dps(&plan_copy);
+		restore_deco_state(save, false);
 
-	last_segment = cloneDiveplan(&plan_copy);
-	last_segment->depth.mm += 1000;
-	last_segment->next->depth.mm += 1000;
-	plan(&plan_copy, dive, 1, deeper, &cache, true, false);
-	free_dps(&plan_copy);
-	restore_deco_state(save, false);
+		last_segment = cloneDiveplan(&plan_copy);
+		last_segment->depth.mm += 1000;
+		last_segment->next->depth.mm += 1000;
+		plan(&plan_copy, dive, 1, deeper, &cache, true, false);
+		free_dps(&plan_copy);
+		restore_deco_state(save, false);
 
-	last_segment = cloneDiveplan(&plan_copy);
-	last_segment->depth.mm -= 1000;
-	last_segment->next->depth.mm -= 1000;
-	plan(&plan_copy, dive, 1, shallower, &cache, true, false);
-	free_dps(&plan_copy);
-	restore_deco_state(save, false);
+		last_segment = cloneDiveplan(&plan_copy);
+		last_segment->depth.mm -= 1000;
+		last_segment->next->depth.mm -= 1000;
+		plan(&plan_copy, dive, 1, shallower, &cache, true, false);
+		free_dps(&plan_copy);
+		restore_deco_state(save, false);
 
-	last_segment = cloneDiveplan(&plan_copy);
-	last_segment->next->time += 60;
-	plan(&plan_copy, dive, 1, longer, &cache, true, false);
-	free_dps(&plan_copy);
-	restore_deco_state(save, false);
+		last_segment = cloneDiveplan(&plan_copy);
+		last_segment->next->time += 60;
+		plan(&plan_copy, dive, 1, longer, &cache, true, false);
+		free_dps(&plan_copy);
+		restore_deco_state(save, false);
 
-	last_segment = cloneDiveplan(&plan_copy);
-	last_segment->next->time -= 60;
-	plan(&plan_copy, dive, 1, shorter, &cache, true, false);
-	free_dps(&plan_copy);
-	restore_deco_state(save, false);
-
+		last_segment = cloneDiveplan(&plan_copy);
+		last_segment->next->time -= 60;
+		plan(&plan_copy, dive, 1, shorter, &cache, true, false);
+		free_dps(&plan_copy);
+		restore_deco_state(save, false);
 #ifdef SHOWSTOPVARIATIONS
-	printf("\n\n");
+		printf("\n\n");
 #endif
 
-	QString notes(displayed_dive.notes);
-	free(displayed_dive.notes);
+		QString notes(displayed_dive.notes);
+		free(displayed_dive.notes);
 
-	char buf[200];
-	sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
-		FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
+		char buf[200];
+		sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
+			FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
 
-	displayed_dive.notes = strdup(notes.replace("VARIATIONS", QString(buf)).toUtf8().data());
+		displayed_dive.notes = strdup(notes.replace("VARIATIONS", QString(buf)).toUtf8().data());
+	}
 	setRecalc(oldRecalc);
 }
 

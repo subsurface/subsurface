@@ -398,6 +398,7 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(bool display_runtime     READ displayRuntime       WRITE setDisplayRuntime       NOTIFY displayRuntimeChanged)
 	Q_PROPERTY(bool display_duration    READ displayDuration      WRITE setDisplayDuration      NOTIFY displayDurationChanged)
 	Q_PROPERTY(bool display_transitions READ displayTransitions   WRITE setDisplayTransitions   NOTIFY displayTransitionsChanged)
+	Q_PROPERTY(bool display_variations  READ displayVariations    WRITE setDisplayVariations    NOTIFY displayVariationsChanged)
 	Q_PROPERTY(bool doo2breaks          READ doo2breaks           WRITE setDoo2breaks           NOTIFY doo2breaksChanged)
 	Q_PROPERTY(bool drop_stone_mode     READ dropStoneMode        WRITE setDropStoneMode        NOTIFY dropStoneModeChanged)
 	Q_PROPERTY(bool safetystop          READ safetyStop           WRITE setSafetyStop           NOTIFY safetyStopChanged)
@@ -425,6 +426,7 @@ public:
 	bool displayRuntime() const;
 	bool displayDuration() const;
 	bool displayTransitions() const;
+	bool displayVariations() const;
 	bool doo2breaks() const;
 	bool dropStoneMode() const;
 	bool safetyStop() const;
@@ -451,6 +453,7 @@ public slots:
 	void setDisplayRuntime(bool value);
 	void setDisplayDuration(bool value);
 	void setDisplayTransitions(bool value);
+	void setDisplayVariations(bool value);
 	void setDoo2breaks(bool value);
 	void setDropStoneMode(bool value);
 	void setSafetyStop(bool value);
@@ -477,6 +480,7 @@ signals:
 	void displayRuntimeChanged(bool value);
 	void displayDurationChanged(bool value);
 	void displayTransitionsChanged(bool value);
+	void displayVariationsChanged(bool value);
 	void doo2breaksChanged(bool value);
 	void dropStoneModeChanged(bool value);
 	void safetyStopChanged(bool value);
