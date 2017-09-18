@@ -685,6 +685,23 @@
              <property name="spacing">
               <number>2</number>
              </property>
+             <item row="3" column="0">
+              <widget class="QCheckBox" name="verbatim_plan">
+               <property name="text">
+                <string>Verbatim dive plan</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QCheckBox" name="display_transitions">
+               <property name="toolTip">
+                <string>In diveplan, list transitions or treat them as implicit</string>
+               </property>
+               <property name="text">
+                <string>Display transitions in deco</string>
+               </property>
+              </widget>
+             </item>
              <item row="0" column="0">
               <widget class="QCheckBox" name="display_runtime">
                <property name="toolTip">
@@ -708,20 +725,16 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QCheckBox" name="display_transitions">
+             <item row="4" column="0">
+              <widget class="QCheckBox" name="display_variations">
+               <property name="enabled">
+                <bool>true</bool>
+               </property>
                <property name="toolTip">
-                <string>In diveplan, list transitions or treat them as implicit</string>
+                <string>Compute variations of plan (performance cost)</string>
                </property>
                <property name="text">
-                <string>Display transitions in deco</string>
-               </property>
-              </widget>
-             </item>
-             <item row="3" column="0">
-              <widget class="QCheckBox" name="verbatim_plan">
-               <property name="text">
-                <string>Verbatim dive plan</string>
+                <string>Display plan variations</string>
                </property>
               </widget>
              </item>

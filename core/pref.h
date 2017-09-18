@@ -126,6 +126,7 @@ struct preferences {
 	bool display_runtime;
 	bool display_duration;
 	bool display_transitions;
+	bool display_variations;
 	bool safetystop;
 	bool switch_at_req_stop;
 	int reserve_gas;

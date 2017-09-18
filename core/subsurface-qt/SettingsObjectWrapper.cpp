@@ -1214,6 +1214,11 @@ bool DivePlannerSettings::displayTransitions() const
 	return prefs.display_transitions;
 }
 
+bool DivePlannerSettings::displayVariations() const
+{
+	return prefs.display_variations;
+}
+
 bool DivePlannerSettings::doo2breaks() const
 {
 	return prefs.doo2breaks;
@@ -1366,6 +1371,18 @@ void DivePlannerSettings::setDisplayTransitions(bool value)
 	s.setValue("display_transitions", value);
 	prefs.display_transitions = value;
 	emit displayTransitionsChanged(value);
+}
+
+void DivePlannerSettings::setDisplayVariations(bool value)
+{
+	if (value == prefs.display_variations)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("display_variations", value);
+	prefs.display_variations = value;
+	emit displayVariationsChanged(value);
 }
 
 void DivePlannerSettings::setDoo2breaks(bool value)
@@ -2339,6 +2356,7 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("display_duration", display_duration);
 	GET_BOOL("display_runtime", display_runtime);
 	GET_BOOL("display_transitions", display_transitions);
+	GET_BOOL("display_variations", display_variations);
 	GET_BOOL("safetystop", safetystop);
 	GET_BOOL("doo2breaks", doo2breaks);
 	GET_BOOL("switch_at_req_stop",switch_at_req_stop);
@@ -2397,6 +2415,7 @@ void SettingsObjectWrapper::sync()
 	s.setValue("display_duration", prefs.display_duration);
 	s.setValue("display_runtime", prefs.display_runtime);
 	s.setValue("display_transitions", prefs.display_transitions);
+	s.setValue("display_variations", prefs.display_variations);
 	s.setValue("safetystop", prefs.safetystop);
 	s.setValue("reserve_gas", prefs.reserve_gas);
 	s.setValue("ascrate75", prefs.ascrate75);

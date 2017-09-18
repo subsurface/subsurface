@@ -66,6 +66,7 @@ struct preferences default_prefs = {
 	.display_runtime = true,
 	.display_duration = true,
 	.display_transitions = true,
+	.display_variations = false,
 	.safetystop = true,
 	.bottomsac = 20000,
 	.decosac = 17000,

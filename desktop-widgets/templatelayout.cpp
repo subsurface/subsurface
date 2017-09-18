@@ -12,7 +12,7 @@ int getTotalWork(print_options *printOptions)
 	if (printOptions->print_selected) {
 		// return the correct number depending on all/selected dives
 		// but don't return 0 as we might divide by this number
-		return amount_selected ? amount_selected : 1;
+		return amount_selected && !in_planner() ? amount_selected : 1;
 	}
 	return dive_table.nr;
 }
@@ -98,15 +98,21 @@ QString TemplateLayout::generate()
 	QVariantList diveList;
 
 	struct dive *dive;
-	int i;
-	for_each_dive (i, dive) {
-		//TODO check for exporting selected dives only
-		if (!dive->selected && PrintOptions->print_selected)
-			continue;
-		DiveObjectHelper *d = new DiveObjectHelper(dive);
+	if (in_planner()) {
+		DiveObjectHelper *d = new DiveObjectHelper(&displayed_dive);
 		diveList.append(QVariant::fromValue(d));
-		progress++;
-		emit progressUpdated(lrint(progress * 100.0 / totalWork));
+		emit progressUpdated(100.0);
+	} else {
+		int i;
+		for_each_dive (i, dive) {
+			//TODO check for exporting selected dives only
+			if (!dive->selected && PrintOptions->print_selected)
+				continue;
+			DiveObjectHelper *d = new DiveObjectHelper(dive);
+			diveList.append(QVariant::fromValue(d));
+			progress++;
+			emit progressUpdated(lrint(progress * 100.0 / totalWork));
+		}
 	}
 	Grantlee::Context c;
 	c.insert("dives", diveList);
