@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>650</width>
+    <width>655</width>
     <height>634</height>
    </rect>
   </property>
@@ -178,23 +178,23 @@
       <string>Ceiling display setup</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="1">
-       <widget class="QLabel" name="label_VPMB">
+      <item row="3" column="3">
+       <widget class="QLabel" name="label_GFhigh">
         <property name="text">
-         <string>Conservatism level</string>
+         <string>GFHigh</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_22">
-        <property name="enabled">
-         <bool>true</bool>
+      <item row="4" column="4">
+       <widget class="QSpinBox" name="pscrfactor">
+        <property name="suffix">
+         <string/>
         </property>
-        <property name="text">
-         <string>Algorithm for calculated ceiling:</string>
+        <property name="prefix">
+         <string>1:</string>
         </property>
        </widget>
       </item>
@@ -208,43 +208,23 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="2">
-       <widget class="QCheckBox" name="red_ceiling">
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_22">
         <property name="enabled">
          <bool>true</bool>
         </property>
         <property name="text">
-         <string>Draw dive computer reported ceiling red</string>
+         <string>Algorithm for calculated ceiling:</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="4">
-       <widget class="QSpinBox" name="pscrfactor">
-        <property name="suffix">
-         <string/>
-        </property>
-        <property name="prefix">
-         <string>1:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="3">
-       <widget class="QLabel" name="label_GFhigh">
+      <item row="4" column="3">
+       <widget class="QLabel" name="label_28">
         <property name="text">
-         <string>GFHigh</string>
+         <string>Dilution ratio</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <widget class="QDoubleSpinBox" name="psro2rate">
-        <property name="suffix">
-         <string>ℓ/min</string>
-        </property>
-        <property name="decimals">
-         <number>3</number>
         </property>
        </widget>
       </item>
@@ -261,30 +241,13 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QLabel" name="MetabolicRate">
+      <item row="2" column="1">
+       <widget class="QLabel" name="label_VPMB">
         <property name="text">
-         <string>Metabolic rate O₂</string>
+         <string>Conservatism level</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="3">
-       <widget class="QLabel" name="label_28">
-        <property name="text">
-         <string>Dilution ratio</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2" colspan="2">
-       <widget class="QCheckBox" name="gf_low_at_maxdepth">
-        <property name="text">
-         <string>GFLow at max. depth</string>
         </property>
        </widget>
       </item>
@@ -301,10 +264,33 @@
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="pSCR">
+      <item row="4" column="1">
+       <widget class="QLabel" name="MetabolicRate">
         <property name="text">
-         <string>pSCR options:</string>
+         <string>Metabolic rate O₂</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="2">
+       <widget class="QCheckBox" name="red_ceiling">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="text">
+         <string>Draw dive computer reported ceiling red</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QDoubleSpinBox" name="psro2rate">
+        <property name="suffix">
+         <string>ℓ/min</string>
+        </property>
+        <property name="decimals">
+         <number>3</number>
         </property>
        </widget>
       </item>
@@ -325,6 +311,13 @@
         </property>
         <property name="maximum">
          <number>150</number>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="pSCR">
+        <property name="text">
+         <string>pSCR options:</string>
         </property>
        </widget>
       </item>
@@ -394,7 +387,6 @@
   <tabstop>buehlmann</tabstop>
   <tabstop>gflow</tabstop>
   <tabstop>gfhigh</tabstop>
-  <tabstop>gf_low_at_maxdepth</tabstop>
   <tabstop>psro2rate</tabstop>
   <tabstop>pscrfactor</tabstop>
   <tabstop>display_unused_tanks</tabstop>

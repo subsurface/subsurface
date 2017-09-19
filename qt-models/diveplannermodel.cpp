@@ -208,7 +208,7 @@ void DivePlannerPointsModel::setPlanMode(Mode m)
 	// the planner may reset our GF settings that are used to show deco
 	// reset them to what's in the preferences
 	if (m != PLAN) {
-		set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+		set_gf(prefs.gflow, prefs.gfhigh);
 		set_vpmb_conservatism(prefs.vpmb_conservatism);
 	}
 }

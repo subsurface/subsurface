@@ -133,7 +133,6 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool show_ccr_sensors  READ showCCRSensors  WRITE setShowCCRSensors  NOTIFY showCCRSensorsChanged)
 	Q_PROPERTY(bool zoomed_plot      READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
 	Q_PROPERTY(bool show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
-	Q_PROPERTY(bool gf_low_at_maxdepth    READ gfLowAtMaxDepth    WRITE setGfLowAtMaxDepth    NOTIFY gfLowAtMaxDepthChanged)
 	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
 	Q_PROPERTY(bool show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
 	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
@@ -163,7 +162,6 @@ public:
 	bool showCCRSensors() const;
 	bool zoomedPlot() const;
 	bool showSac() const;
-	bool gfLowAtMaxDepth() const;
 	bool displayUnusedTanks() const;
 	bool showAverageDepth() const;
 	bool showPicturesInProfile() const;
@@ -191,7 +189,6 @@ public slots:
 	void setShowCCRSensors(bool value);
 	void setZoomedPlot(bool value);
 	void setShowSac(bool value);
-	void setGfLowAtMaxDepth(bool value);
 	void setDisplayUnusedTanks(bool value);
 	void setShowAverageDepth(bool value);
 	void setShowPicturesInProfile(bool value);

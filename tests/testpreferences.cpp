@@ -132,8 +132,6 @@ void TestPreferences::testPreferences()
 	TEST(tecDetails->zoomedPlot(), true);
 	tecDetails->setShowSac(true);
 	TEST(tecDetails->showSac(), true);
-	tecDetails->setGfLowAtMaxDepth(true);
-	TEST(tecDetails->gfLowAtMaxDepth(), true);
 	tecDetails->setDisplayUnusedTanks(true);
 	TEST(tecDetails->displayUnusedTanks(), true);
 	tecDetails->setShowAverageDepth(true);
@@ -175,8 +173,6 @@ void TestPreferences::testPreferences()
 	TEST(tecDetails->zoomedPlot(), false);
 	tecDetails->setShowSac(false);
 	TEST(tecDetails->showSac(), false);
-	tecDetails->setGfLowAtMaxDepth(false);
-	TEST(tecDetails->gfLowAtMaxDepth(), false);
 	tecDetails->setDisplayUnusedTanks(false);
 	TEST(tecDetails->displayUnusedTanks(), false);
 	tecDetails->setShowAverageDepth(false);

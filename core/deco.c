@@ -45,7 +45,6 @@ struct buehlmann_config {
 	double gf_high;			//! gradient factor high (at surface).
 	double gf_low;			//! gradient factor low (at bottom/start of deco calculation).
 	double gf_low_position_min;	//! gf_low_position below surface_min_shallow.
-	bool gf_low_at_maxdepth;	//! if true, gf_low applies at max. depth instead of at deepest ceiling.
 };
 
 struct buehlmann_config buehlmann_config = {
@@ -55,7 +54,6 @@ struct buehlmann_config buehlmann_config = {
 	.gf_high = 0.75,
 	.gf_low = 0.35,
 	.gf_low_position_min = 1.0,
-	.gf_low_at_maxdepth = false
 };
 
 //! Option structure for VPM-B decompression.
@@ -252,10 +250,8 @@ double tissue_tolerance_calc(const struct dive *dive, double pressure)
 						     ((1.0 - deco_state->buehlmann_inertgas_b[ci]) * gf_low + deco_state->buehlmann_inertgas_b[ci]);
 			if (tissue_lowest_ceiling[ci] > lowest_ceiling)
 				lowest_ceiling = tissue_lowest_ceiling[ci];
-			if (!buehlmann_config.gf_low_at_maxdepth) {
-				if (lowest_ceiling > deco_state->gf_low_pressure_this_dive)
-					deco_state->gf_low_pressure_this_dive = lowest_ceiling;
-			}
+			if (lowest_ceiling > deco_state->gf_low_pressure_this_dive)
+				deco_state->gf_low_pressure_this_dive = lowest_ceiling;
 		}
 		for (ci = 0; ci < 16; ci++) {
 			double tolerated;
@@ -498,9 +494,6 @@ void add_segment(double pressure, const struct gasmix *gasmix, int period_in_sec
 	fill_pressures(&pressures, pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
 		       gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
 
-	if (buehlmann_config.gf_low_at_maxdepth && pressure > deco_state->gf_low_pressure_this_dive)
-		deco_state->gf_low_pressure_this_dive = pressure;
-
 	for (ci = 0; ci < 16; ci++) {
 		double pn2_oversat = pressures.n2 - deco_state->tissue_n2_sat[ci];
 		double phe_oversat = pressures.he - deco_state->tissue_he_sat[ci];
@@ -553,7 +546,6 @@ void clear_deco(double surface_pressure)
 		deco_state->he_regen_radius[ci] = get_crit_radius_He();
 	}
 	deco_state->gf_low_pressure_this_dive = surface_pressure;
-	if (!buehlmann_config.gf_low_at_maxdepth)
 		deco_state->gf_low_pressure_this_dive += buehlmann_config.gf_low_position_min;
 	deco_state->max_ambient_pressure = 0.0;
 }
@@ -603,13 +595,12 @@ int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct
 	return depth;
 }
 
-void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth)
+void set_gf(short gflow, short gfhigh)
 {
 	if (gflow != -1)
 		buehlmann_config.gf_low = (double)gflow / 100.0;
 	if (gfhigh != -1)
 		buehlmann_config.gf_high = (double)gfhigh / 100.0;
-	buehlmann_config.gf_low_at_maxdepth = gf_low_at_maxdepth;
 }
 
 void set_vpmb_conservatism(short conservatism)

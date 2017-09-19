@@ -396,11 +396,6 @@ bool TechnicalDetailsSettings::showSac() const
 	return prefs.show_sac;
 }
 
-bool TechnicalDetailsSettings::gfLowAtMaxDepth() const
-{
-	return prefs.gf_low_at_maxdepth;
-}
-
 bool TechnicalDetailsSettings::displayUnusedTanks() const
 {
 	return prefs.display_unused_tanks;
@@ -561,7 +556,7 @@ void TechnicalDetailsSettings::setGflow(int value)
 	s.beginGroup(group);
 	s.setValue("gflow", value);
 	prefs.gflow = value;
-	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	set_gf(prefs.gflow, prefs.gfhigh);
 	emit gflowChanged(value);
 }
 
@@ -574,7 +569,7 @@ void TechnicalDetailsSettings::setGfhigh(int value)
 	s.beginGroup(group);
 	s.setValue("gfhigh", value);
 	prefs.gfhigh = value;
-	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	set_gf(prefs.gflow, prefs.gfhigh);
 	emit gfhighChanged(value);
 }
 
@@ -682,18 +677,6 @@ void TechnicalDetailsSettings::setShowSac(bool value)
 	s.setValue("show_sac", value);
 	prefs.show_sac = value;
 	emit showSacChanged(value);
-}
-
-void TechnicalDetailsSettings::setGfLowAtMaxDepth(bool value)
-{
-	if (value == prefs.gf_low_at_maxdepth)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("gf_low_at_maxdepth", value);
-	prefs.gf_low_at_maxdepth = value;
-	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
-	emit gfLowAtMaxDepthChanged(value);
 }
 
 void TechnicalDetailsSettings::setDisplayUnusedTanks(bool value)
@@ -2244,7 +2227,7 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("show_ccr_setpoint",show_ccr_setpoint);
 	GET_BOOL("show_ccr_sensors",show_ccr_sensors);
 	GET_BOOL("zoomed_plot", zoomed_plot);
-	set_gf(prefs.gflow, prefs.gfhigh, prefs.gf_low_at_maxdepth);
+	set_gf(prefs.gflow, prefs.gfhigh);
 	set_vpmb_conservatism(prefs.vpmb_conservatism);
 	GET_BOOL("show_sac", show_sac);
 	GET_BOOL("display_unused_tanks", display_unused_tanks);
