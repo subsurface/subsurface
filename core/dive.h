@@ -866,7 +866,7 @@ struct deco_state {
 extern void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
 extern void clear_deco(double surface_pressure);
 extern void dump_tissues(void);
-extern void set_gf(short gflow, short gfhigh, bool gf_low_at_maxdepth);
+extern void set_gf(short gflow, short gfhigh);
 extern void set_vpmb_conservatism(short conservatism);
 extern void cache_deco_state(struct deco_state **datap);
 extern void restore_deco_state(struct deco_state *data, bool keep_vpmb_state);

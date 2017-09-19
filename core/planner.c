@@ -685,7 +685,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	bool o2breaking = false;
 	int decostopcounter = 0;
 
-	set_gf(diveplan->gflow, diveplan->gfhigh, prefs.gf_low_at_maxdepth);
+	set_gf(diveplan->gflow, diveplan->gfhigh);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
