@@ -1121,7 +1121,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		/* TODO: Show the logfile to the user on error. */
 		dc_device_close(data->device);
 		data->device = NULL;
-		dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
+		if (!downloadTable.nr)
+			dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
 	}
 
 	dc_context_free(data->context);
