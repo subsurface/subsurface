@@ -151,24 +151,24 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 	}
 
 	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
+
+	if (list.isEmpty())
+		return DC_STATUS_IO;
+
 	QByteArray bytes((const char *)data, (int) size);
 
-	if (!list.isEmpty()) {
-		const QLowEnergyCharacteristic &c = list.constFirst();
-		QLowEnergyService::WriteMode mode;
+	const QLowEnergyCharacteristic &c = list.constFirst();
+	QLowEnergyService::WriteMode mode;
 
-		mode = (c.properties() & QLowEnergyCharacteristic::WriteNoResponse) ?
+	mode = (c.properties() & QLowEnergyCharacteristic::WriteNoResponse) ?
 			QLowEnergyService::WriteWithoutResponse :
 			QLowEnergyService::WriteWithResponse;
 
-		if (IS_SHEARWATER(device))
-			bytes.prepend("\1\0", 2);
+	if (IS_SHEARWATER(device))
+		bytes.prepend("\1\0", 2);
 
-		preferredService()->writeCharacteristic(c, bytes, mode);
-		return DC_STATUS_SUCCESS;
-	}
-
-	return DC_STATUS_IO;
+	preferredService()->writeCharacteristic(c, bytes, mode);
+	return DC_STATUS_SUCCESS;
 }
 
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
