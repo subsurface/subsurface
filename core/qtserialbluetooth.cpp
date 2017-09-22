@@ -169,15 +169,26 @@ static dc_status_t ble_serial_write(dc_custom_io_t *io, const void* data, size_t
 	size_t transferred = 0;
 
 	ble_serial_flush_read();
-	while (size) {
-		size_t len = sizeof(buffer.out) - buffer.out_bytes;
 
+	/*
+	 * Most writes to a connected DC are small, typically some command bytes to get
+	 * DC in download mode, or to set some parameter. All this just worked over BLE,
+	 * however, sending a full firmware update (on an OSTC device) failed, as the
+	 * underlying BLE interface can only handle small 20 byte BLE packets at once.
+	 *
+	 * So, send max ble->packet_size chuncks at once.
+	 */
+	while (size) {
+		size_t len = sizeof(buffer.out) - transferred;
+
+		if (len > io->packet_size)
+			len = io->packet_size;
 		if (len > size)
 			len = size;
 		memcpy(buffer.out + buffer.out_bytes, data, len);
 		buffer.out_bytes += len;
 
-		if (buffer.out_bytes == sizeof(buffer.out)) {
+		if (buffer.out_bytes <= io->packet_size || buffer.out_bytes == size) {
 			rc = ble_serial_flush_write();
 			if (rc != DC_STATUS_SUCCESS)
 				break;
