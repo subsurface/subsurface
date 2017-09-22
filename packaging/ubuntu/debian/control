@@ -35,7 +35,7 @@ Homepage: http://subsurface-divelog.org
 
 Package: subsurface
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, qml-module-qtlocation, qml-module-qtpositioning
 Description: Dive log program
  Subsurface is an open source divelog program that runs on Windows, Mac and Linux.
  Subsurface is able to track single- and multi-tank dives using air, Nitrox or
