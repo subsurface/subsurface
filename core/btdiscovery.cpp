@@ -71,17 +71,20 @@ void BTDiscovery::BTDiscoveryReDiscover()
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
 		btPairedDevices.clear();
 		qDebug() <<  "localDevice " + localBtDevice.name() + " is valid, starting discovery";
-		m_btValid = true;
 #else
-	m_btValid = false;
+	// for iOS we can't use the localBtDevice as iOS is BLE only
+	// we need to find some other way to test if Bluetooth is enabled, though
+	// for now just hard-code it
+	if (1) {
 #endif
+		m_btValid = true;
 #if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
 		qDebug() << "starting BLE discovery";
 		discoveryAgent->start();
 #endif
-#if defined(Q_OS_ANDROID) && defined(BT_SUPPORT)
+#if defined(Q_OS_ANDROID)
 		getBluetoothDevices();
 		// and add the paired devices to the internal data
 		// So behaviour is same on Linux/Bluez stack and
@@ -100,12 +103,10 @@ void BTDiscovery::BTDiscoveryReDiscover()
 		connect(&timer, &QTimer::timeout, discoveryAgent, &QBluetoothDeviceDiscoveryAgent::stop);
 		timer.start(3000);
 #endif
-#if !defined(Q_OS_IOS)
 	} else {
-		qDebug() << "localBtDevice isn't valid";
+		qDebug() << "localBtDevice isn't valid or not connectable";
 		m_btValid = false;
 	}
-#endif
 }
 
 BTDiscovery::~BTDiscovery()

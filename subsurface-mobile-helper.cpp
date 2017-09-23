@@ -59,7 +59,7 @@ void run_ui()
 
 	QQmlApplicationEngine engine;
 	KirigamiPlugin::getInstance().registerTypes();
-#if __APPLE__
+#if defined(__APPLE__) && !defined(Q_OS_IOS)
 	// when running the QML UI on a Mac the deployment of the QML Components seems
 	// to fail and the search path for the components is rather odd - simply the
 	// same directory the executable was started from <bundle>/Contents/MacOS/
