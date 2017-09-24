@@ -108,6 +108,26 @@
         <extradata key="gfMax" value="{gfMax}"/>
 
         <xsl:for-each select="diveLogRecords/diveLogRecord">
+          <xsl:if test="(fractionO2 != preceding-sibling::diveLogRecord[1]/fractionO2) or (fractionHe != preceding-sibling::diveLogRecord[1]/fractionHe)">
+            <event name="gaschange">
+              <xsl:attribute name="time">
+                <xsl:call-template name="sec2time">
+                  <xsl:with-param name="timeSec">
+                    <xsl:value-of select="currentTime"/>
+                  </xsl:with-param>
+                </xsl:call-template>
+              </xsl:attribute>
+              <xsl:attribute name="o2">
+                <xsl:value-of select="fractionO2"/>
+              </xsl:attribute>
+              <xsl:attribute name="he">
+                <xsl:value-of select="fractionHe"/>
+              </xsl:attribute>
+            </event>
+          </xsl:if>
+        </xsl:for-each>
+
+        <xsl:for-each select="diveLogRecords/diveLogRecord">
           <sample>
             <xsl:attribute name="time">
               <xsl:call-template name="sec2time">
