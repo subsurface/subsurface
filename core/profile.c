@@ -966,6 +966,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	 * Set maximum number of iterations to 10 just in case */
 	while ((abs(prev_deco_time - deco_time) >= 30) && (count_iteration < 10)) {
 		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0;
+		deco_state->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
 		struct event *ev = NULL;
 
