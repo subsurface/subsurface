@@ -231,7 +231,7 @@ void QMLManager::finishSetup()
 		// but we need to make sure we stay the only ones accessing git storage
 		alreadySaving = true;
 		openLocalThenRemote(url);
-	} else if (!same_string(existing_filename, "")) {
+	} else if (!same_string(existing_filename, "") && credentialStatus() != CS_UNKNOWN) {
 		setCredentialStatus(CS_NOCLOUD);
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename);
