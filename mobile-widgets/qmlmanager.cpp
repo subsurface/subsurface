@@ -172,6 +172,9 @@ void QMLManager::openLocalThenRemote(QString url)
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
+		// have cloud credentials, but there is no local repo (yet).
+		// this implies that the PIN verify is still to be done
+		setCredentialStatus(CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
 		if (credentialStatus() == CS_UNKNOWN)
@@ -192,6 +195,10 @@ void QMLManager::openLocalThenRemote(QString url)
 		DiveListModel::instance()->addAllDives();
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
+	}
+	if (credentialStatus() == CS_NEED_TO_VERIFY) {
+		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
+		setShowPin(true);
 	}
 	if (oldStatus() == CS_NOCLOUD) {
 		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
