@@ -1413,6 +1413,7 @@ QMLManager::cloud_status_qml QMLManager::credentialStatus() const
 void QMLManager::setCredentialStatus(const cloud_status_qml value)
 {
 	if (m_credentialStatus != value) {
+		setOldStatus(m_credentialStatus);
 		if (value == CS_NOCLOUD) {
 			appendTextToLog("Switching to no cloud mode");
 			set_filename(NOCLOUD_LOCALSTORAGE, true);
