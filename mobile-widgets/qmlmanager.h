@@ -167,6 +167,7 @@ public slots:
 	void populateGpsData();
 	void cancelDownloadDC();
 	void clearGpsData();
+	void cancelCredentialsPinSetup();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
 	void mergeLocalRepo();

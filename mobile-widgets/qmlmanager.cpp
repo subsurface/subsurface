@@ -222,6 +222,33 @@ void QMLManager::mergeLocalRepo()
 	process_dives(true, false);
 }
 
+void QMLManager::cancelCredentialsPinSetup()
+{
+	/*
+	 * The user selected <cancel> on the final stage of the
+	 * cloud account generation (entering the emailed PIN).
+	 *
+	 * For now, just reset all the cloud data. This brings the app
+	 * back to its initial state, and the user can startover again.
+	 *
+	 * Notice that this function is also used to switch to NOCLOUD
+	 * mode. So the name is not perfect.
+	 */
+	QSettings s;
+
+	setCloudUserName(NULL);
+	setCloudPassword(NULL);
+	setCredentialStatus(CS_UNKNOWN);
+	s.beginGroup("CloudStorage");
+	s.setValue("email", cloudUserName());
+	s.setValue("password", cloudPassword());
+	s.setValue("cloud_verification_status", credentialStatus());
+	s.sync();
+	setStartPageText(tr("Starting..."));
+
+	setShowPin(false);
+}
+
 void QMLManager::finishSetup()
 {
 	// Initialize cloud credentials.
