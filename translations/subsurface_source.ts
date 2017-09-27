@@ -38,37 +38,37 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="32"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="36"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="39"/>
         <source>Discovered devices</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="41"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="39"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="42"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="54"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="40"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="43"/>
         <source>Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="83"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="37"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="40"/>
         <source>Scan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="96"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="38"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="41"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="119"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="30"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
         <source>Local Bluetooth device details</source>
         <translation type="unfinished"></translation>
     </message>
@@ -79,213 +79,213 @@
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="142"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="32"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
         <source>Address:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="171"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="37"/>
         <source>Bluetooth powered on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="38"/>
         <source>Turn on/off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="203"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="31"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
         <source>Select device:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="36"/>
         <source>Name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="57"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="60"/>
         <source>Could not initialize Winsock version 2.2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="135"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="138"/>
         <source>Trying to turn on the local Bluetooth device...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="138"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="141"/>
         <source>Trying to turn off the local Bluetooth device...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="168"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="173"/>
         <source>Remote devices list was cleared.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="184"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="189"/>
         <source>Scanning for remote devices...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="193"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="198"/>
         <source>Scanning finished successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="209"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="214"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="210"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
         <source>turned on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="210"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
         <source>turned off</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="226"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="347"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="385"/>
         <source>UNPAIRED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="352"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="365"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="235"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="370"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
         <source>PAIRED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="233"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="357"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="238"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="375"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="384"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="240"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="257"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="270"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="266"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="383"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="283"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="271"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="289"/>
         <source>A device needs a non-zero address for a connection.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="294"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="312"/>
         <source>The local device was changed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="314"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="332"/>
         <source>Pair</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="315"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="333"/>
         <source>Remove pairing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="331"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="349"/>
         <source>Trying to pair device %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="335"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="353"/>
         <source>Trying to unpair device %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="348"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="366"/>
         <source>Device %1 was unpaired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="373"/>
         <source>Device %1 was paired.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="378"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="386"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="404"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="398"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="416"/>
         <source>Local device error: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="399"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="417"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="401"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
         <source>Unknown error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="428"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="413"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="431"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="419"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="437"/>
         <source>An unknown error has occurred.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="442"/>
         <source>Device discovery error: %1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="453"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="471"/>
         <source>Not available</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="460"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="478"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="528"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3413,52 +3413,58 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="187"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="121"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="124"/>
+        <source>Connecting to dive computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="216"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="235"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="268"/>
         <source>Find Uemis dive computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="260"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="293"/>
         <source>Cancel download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="343"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="376"/>
         <source>Choose file for dive computer download logfile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="369"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="402"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="395"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="428"/>
         <source>Retry download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="344"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="377"/>
         <source>Log files (*.log)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="357"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="390"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="358"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="391"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="370"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="403"/>
         <source>Dump files (*.bin)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3535,27 +3541,27 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="226"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="233"/>
         <source>Downloaded dives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="236"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="243"/>
         <source>Select all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="243"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="250"/>
         <source>Unselect all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="284"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="291"/>
         <source>OK</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="291"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="298"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="192"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
@@ -4836,89 +4842,89 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 <context>
     <name>PlannerSettingsWidget</name>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="340"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="341"/>
         <source>Open circuit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="340"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="341"/>
         <source>CCR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="340"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="341"/>
         <source>pSCR</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="428"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
         <source>ft/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="429"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="431"/>
         <source>Last stop at 20ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="432"/>
         <source>50% avg. depth to 20ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="431"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
         <source>20ft to surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="432"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
         <source>ft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
         <source>m/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="435"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
         <source>Last stop at 6m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="438"/>
         <source>50% avg. depth to 6m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
         <source>6m to surface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="438"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="440"/>
         <source>m</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="441"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="442"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="443"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="444"/>
         <source>cuft/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="450"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="451"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="452"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="453"/>
         <source>ℓ/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="460"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="462"/>
         <source>bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
         <source>psi</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5113,47 +5119,42 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="217"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="283"/>
         <source>Draw dive computer reported ceiling red</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="197"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="217"/>
         <source>Algorithm for calculated ceiling:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="294"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="257"/>
         <source>+</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="234"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
         <source>GFHigh</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="334"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="327"/>
         <source>GFLow</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="287"/>
-        <source>GFLow at max. depth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="307"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="320"/>
         <source>pSCR options:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="277"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="224"/>
         <source>Dilution ratio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="227"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="197"/>
         <source>1:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5193,7 +5194,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="184"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="247"/>
         <source>Conservatism level</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5203,38 +5204,38 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="244"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="290"/>
         <source>ℓ/min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="254"/>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="321"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="234"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="307"/>
         <source>%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="267"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="270"/>
         <source>Metabolic rate O₂</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="300"/>
         <source>&amp;VPM-B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="347"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="340"/>
         <source>Misc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="353"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="346"/>
         <source>Show unused cylinders in Equipment tab</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="360"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="353"/>
         <source>Show mean depth in Profile</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6590,7 +6591,7 @@ Files with inappropriate date/time</source>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="25"/>
-        <source>The text to the right will be posted as the description with your profile picture to Facebook. The album name is required (the profile picture will be posted to that album).</source>
+        <source>The text to the right will be posted as the description with your dive profile graph to Facebook. The album name is required (the profile graph will be posted to that album).</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7744,8 +7745,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="533"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="564"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="551"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="582"/>
         <source>No error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8731,6 +8732,11 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../core/libdivecomputer.c" line="1125"/>
+        <source>No new dives downloaded from dive computer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../core/load-git.c" line="197"/>
         <location filename="../core/parse-xml.c" line="1270"/>
         <source>multiple GPS locations for this dive site; also %s
@@ -8793,16 +8799,16 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="78"/>
-        <location filename="../core/plannernotes.c" line="387"/>
-        <location filename="../core/plannernotes.c" line="393"/>
-        <location filename="../core/plannernotes.c" line="425"/>
-        <location filename="../core/plannernotes.c" line="460"/>
-        <location filename="../core/plannernotes.c" line="472"/>
+        <location filename="../core/plannernotes.c" line="392"/>
+        <location filename="../core/plannernotes.c" line="398"/>
+        <location filename="../core/plannernotes.c" line="430"/>
+        <location filename="../core/plannernotes.c" line="465"/>
+        <location filename="../core/plannernotes.c" line="477"/>
         <source>Warning:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="328"/>
+        <location filename="../core/plannernotes.c" line="333"/>
         <source>, effective GF=%d/%d</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8823,89 +8829,94 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="109"/>
+        <location filename="../core/plannernotes.c" line="108"/>
+        <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.c" line="114"/>
         <source>depth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="112"/>
+        <location filename="../core/plannernotes.c" line="117"/>
         <source>duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="115"/>
+        <location filename="../core/plannernotes.c" line="120"/>
         <source>runtime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="118"/>
+        <location filename="../core/plannernotes.c" line="123"/>
         <source>gas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="165"/>
+        <location filename="../core/plannernotes.c" line="170"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="173"/>
+        <location filename="../core/plannernotes.c" line="178"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="186"/>
+        <location filename="../core/plannernotes.c" line="191"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="193"/>
+        <location filename="../core/plannernotes.c" line="198"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="239"/>
+        <location filename="../core/plannernotes.c" line="244"/>
         <source>%3.0f%s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="242"/>
-        <location filename="../core/plannernotes.c" line="246"/>
+        <location filename="../core/plannernotes.c" line="247"/>
+        <location filename="../core/plannernotes.c" line="251"/>
         <source>%3dmin</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="255"/>
-        <location filename="../core/plannernotes.c" line="267"/>
+        <location filename="../core/plannernotes.c" line="260"/>
+        <location filename="../core/plannernotes.c" line="272"/>
         <source>(SP = %.1fbar)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="290"/>
+        <location filename="../core/plannernotes.c" line="295"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="292"/>
+        <location filename="../core/plannernotes.c" line="297"/>
         <source>Switch gas to %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="312"/>
+        <location filename="../core/plannernotes.c" line="317"/>
         <source>CNS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="314"/>
+        <location filename="../core/plannernotes.c" line="319"/>
         <source>OTU</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="324"/>
+        <location filename="../core/plannernotes.c" line="329"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="418"/>
+        <location filename="../core/plannernotes.c" line="423"/>
         <source>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: %s;&apos;&gt;Minimum gas&lt;/span&gt; (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8931,72 +8942,72 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="104"/>
+        <location filename="../core/plannernotes.c" line="105"/>
         <source>Runtime: %dmin VARIATIONS&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="319"/>
+        <location filename="../core/plannernotes.c" line="324"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="326"/>
+        <location filename="../core/plannernotes.c" line="331"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="332"/>
+        <location filename="../core/plannernotes.c" line="337"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="340"/>
+        <location filename="../core/plannernotes.c" line="345"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="358"/>
+        <location filename="../core/plannernotes.c" line="363"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="360"/>
+        <location filename="../core/plannernotes.c" line="365"/>
         <source>Gas consumption (based on SAC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="388"/>
+        <location filename="../core/plannernotes.c" line="393"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="394"/>
+        <location filename="../core/plannernotes.c" line="399"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="426"/>
+        <location filename="../core/plannernotes.c" line="431"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="429"/>
+        <location filename="../core/plannernotes.c" line="434"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="432"/>
+        <location filename="../core/plannernotes.c" line="437"/>
         <source>%.0f%s (%.0f%s during planned ascent) of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="457"/>
+        <location filename="../core/plannernotes.c" line="462"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="469"/>
+        <location filename="../core/plannernotes.c" line="474"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9608,97 +9619,97 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Sun</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Mon</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Tue</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Wed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Thu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Fri</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="133"/>
+        <location filename="../core/subsurfacestartup.c" line="134"/>
         <source>Sat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="142"/>
+        <location filename="../core/subsurfacestartup.c" line="143"/>
         <source>Jan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="142"/>
+        <location filename="../core/subsurfacestartup.c" line="143"/>
         <source>Feb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="142"/>
+        <location filename="../core/subsurfacestartup.c" line="143"/>
         <source>Mar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="142"/>
+        <location filename="../core/subsurfacestartup.c" line="143"/>
         <source>Apr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="142"/>
+        <location filename="../core/subsurfacestartup.c" line="143"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="142"/>
+        <location filename="../core/subsurfacestartup.c" line="143"/>
         <source>Jun</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="144"/>
         <source>Jul</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="144"/>
         <source>Aug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="144"/>
         <source>Sep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="144"/>
         <source>Oct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="144"/>
         <source>Nov</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="144"/>
         <source>Dec</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10349,7 +10360,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="370"/>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="780"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="793"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10410,22 +10421,32 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="734"/>
+        <source>Compute variations of plan (performance cost)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="737"/>
+        <source>Display plan variations</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="754"/>
         <source>SAC factor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="748"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="761"/>
         <source>Used to calculate minimum gas. Consider two divers with possibly increased SAC after OoG event.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="770"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="783"/>
         <source>Problem solving time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="777"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="790"/>
         <source>Used to calculate minimum gas. Additional time at max. depth after OoG event.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10465,42 +10486,42 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="691"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="708"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="694"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="711"/>
         <source>Display runtime</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="704"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="721"/>
         <source>In dive plan, show duration (relative time) of stops</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="707"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="724"/>
         <source>Display segment duration</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="714"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="698"/>
         <source>In diveplan, list transitions or treat them as implicit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="717"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="701"/>
         <source>Display transitions in deco</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="724"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="691"/>
         <source>Verbatim dive plan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plannerSettings.ui" line="734"/>
+        <location filename="../desktop-widgets/plannerSettings.ui" line="747"/>
         <source>Deco pO₂</source>
         <translation type="unfinished"></translation>
     </message>
