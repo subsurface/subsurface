@@ -22,7 +22,7 @@
      <item row="1" column="0" colspan="2">
       <widget class="QLabel" name="label_4">
        <property name="text">
-        <string>The text to the right will be posted as the description with your profile picture to Facebook. The album name is required (the profile picture will be posted to that album).</string>
+        <string>The text to the right will be posted as the description with your dive profile graph to Facebook. The album name is required (the profile graph will be posted to that album).</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
