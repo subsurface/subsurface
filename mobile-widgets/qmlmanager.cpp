@@ -320,15 +320,18 @@ void QMLManager::saveCloudCredentials()
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
 	QString cloudPwd = cloudPassword();
 	QString cloudUser = cloudUserName();
-	if (cloudPwd.isEmpty() || !regExp.match(cloudPwd).hasMatch() || !regExp.match(cloudUser).hasMatch()) {
-		setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
-		return;
-	}
-	// use the same simplistic regex as the backend to check email addresses
-	regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
-	if (!regExp.match(cloudUser).hasMatch()) {
-		setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
-		return;
+	if (credentialStatus() != CS_NOCLOUD) {
+		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
+		if (cloudPwd.isEmpty() || !regExp.match(cloudPwd).hasMatch() || !regExp.match(cloudUser).hasMatch()) {
+			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
+			return;
+		}
+		// use the same simplistic regex as the backend to check email addresses
+		regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
+		if (!regExp.match(cloudUser).hasMatch()) {
+			setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
+			return;
+		}
 	}
 	setOldStatus(credentialStatus());
 	s.beginGroup("CloudStorage");
