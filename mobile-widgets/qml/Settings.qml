@@ -13,16 +13,62 @@ Kirigami.ScrollablePage {
 	title: qsTr("Settings")
 
 	property real gridWidth: settingsPage.width - Kirigami.Units.gridUnit
+	property var describe: [qsTr("Undefined"),
+		qsTr("Incorrect username/password combination"),
+		qsTr("Credentials need to be verified"),
+		qsTr("Credentials verified"),
+		qsTr("No cloud mode")]
 
 	ColumnLayout {
 		width: gridWidth
-		CloudCredentials {
-			id: cloudCredentials
-			Layout.fillWidth: true
-			Layout.rightMargin: Kirigami.Units.smallSpacing
-			Layout.topMargin: - Kirigami.Units.gridUnit
-			property int headingLevel: 4
+		GridLayout {
+			id: cloudSetting
+			columns: 3
+			Layout.bottomMargin: Kirigami.Units.gridUnit
+
+			Kirigami.Heading {
+				text: qsTr("Cloud status")
+				color: subsurfaceTheme.textColor
+				level: 4
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 3
+			}
+			Kirigami.Label {
+				text: qsTr("Email")
+				Layout.alignment: Qt.AlignRight
+				Layout.preferredWidth:gridWidth * 0.15
+				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+			}
+			Kirigami.Label {
+				text: manager.credentialStatus === QMLManager.CS_NOCLOUD?qsTr("Not applicable"):manager.cloudUserName
+				Layout.alignment: Qt.AlignRight
+				Layout.preferredWidth:gridWidth * 0.60
+				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+			}
+			SsrfButton {
+				id:changeCloudSettings
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Change")
+				onClicked: {
+					manager.cancelCredentialsPinSetup()
+					rootItem.returnTopPage()
+				}
+			}
+			Kirigami.Label {
+				text: qsTr("Status")
+				Layout.alignment: Qt.AlignRight
+				Layout.preferredWidth:gridWidth * 0.15
+				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+			}
+			Kirigami.Label {
+				text: describe[manager.credentialStatus]
+				Layout.alignment: Qt.AlignRight
+				Layout.preferredWidth:gridWidth * 0.60
+				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+			}
 		}
+
 		Rectangle {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
