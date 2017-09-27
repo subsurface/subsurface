@@ -267,6 +267,7 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else if (!same_string(existing_filename, "") && credentialStatus() != CS_UNKNOWN) {
 		setCredentialStatus(CS_NOCLOUD);
+		saveCloudCredentials();
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename);
 		if (error) {
@@ -337,6 +338,7 @@ void QMLManager::saveCloudCredentials()
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUser);
 	s.setValue("password", cloudPwd);
+	s.setValue("cloud_verification_status", credentialStatus());
 	s.sync();
 	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUser))) {
 		free(prefs.cloud_storage_email);

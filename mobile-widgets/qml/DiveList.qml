@@ -271,8 +271,8 @@ Kirigami.ScrollablePage {
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
 			if (visible) {
-				page.actions.main = page.saveAction
-				page.actions.right = page.offlineAction
+				page.actions.main = null
+				page.actions.right = null
 				page.title = qsTr("Cloud credentials")
 			} else if(manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
@@ -358,6 +358,7 @@ Kirigami.ScrollablePage {
 		onTriggered: {
 			manager.syncToCloud = false
 			manager.credentialStatus = QMLManager.CS_NOCLOUD
+			manager.saveCloudCredentials()
 		}
 	}
 

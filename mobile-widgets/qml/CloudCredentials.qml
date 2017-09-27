@@ -53,6 +53,7 @@ Item {
 
 		Kirigami.Label {
 			text: qsTr("Email")
+			visible: !rootItem.showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -60,16 +61,15 @@ Item {
 		TextField {
 			id: login
 			text: manager.cloudUserName
+			visible: !rootItem.showPin
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
-			onEditingFinished: {
-				saveCredentials()
-			}
 		}
 
 		Kirigami.Label {
 			text: qsTr("Password")
+			visible: !rootItem.showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -77,14 +77,12 @@ Item {
 		TextField {
 			id: password
 			text: manager.cloudPassword
+			visible: !rootItem.showPin
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
 					  Qt.ImhNoAutoUppercase
 			Layout.fillWidth: true
-			onEditingFinished: {
-				saveCredentials()
-			}
 		}
 
 		Kirigami.Label {
@@ -96,6 +94,62 @@ Item {
 			text: ""
 			Layout.fillWidth: true
 			visible: rootItem.showPin
+		}
+
+		RowLayout {
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.margins: Kirigami.Units.smallSpacing
+			spacing: Kirigami.Units.smallSpacing
+			visible: rootItem.showPin
+			SsrfButton {
+				id:registerpin
+				text: qsTr("Register") 
+				onClicked: {
+					saveCredentials()
+				}
+			}
+			Kirigami.Label {
+				text: ""  // Spacer between 2 button groups
+				Layout.fillWidth: true
+			}
+			SsrfButton {
+				id: cancelpin
+				text: qsTr("Cancel")
+				onClicked: {
+					manager.cancelCredentialsPinSetup()
+					rootItem.returnTopPage()
+				}
+			}
+		}
+
+		RowLayout {
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.margins: Kirigami.Units.smallSpacing
+			spacing: Kirigami.Units.smallSpacing
+			visible: !rootItem.showPin
+
+			SsrfButton {
+				id:signin_register_normal
+				text: qsTr("Sign-in or Register")
+				onClicked: {
+					saveCredentials()
+				}
+			}
+			Kirigami.Label {
+				text: ""  // Spacer between 2 button groups
+				Layout.fillWidth: true
+			}
+			SsrfButton {
+				id: toNoCloudMode
+				text: qsTr("No cloud mode")
+				onClicked: {
+					manager.syncToCloud = false
+					manager.credentialStatus = QMLManager.CS_NOCLOUD
+					manager.saveCloudCredentials()
+				}
+			}
 		}
 	}
 }
