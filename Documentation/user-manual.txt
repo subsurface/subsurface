@@ -3568,6 +3568,17 @@ dive durations than the Bühlmann model, albeit at the cost of higher tissue com
 When selecting one of these models, keep in mind they are NOT exact physiological models but
 only mathematical models that appear to work in practice.
 
+Please note as well that there is an intrinsic assumption of the VPM-B
+model that off-gassing only happens during the ascent phase of the
+dive (which is the part controlled by the planner). Thus it is
+possible to get misleading results if you manually enter waypoints
+well in the decompression phase of your dive. This is particularly
+relevant when editing a dive read from disk in the planner since that
+will have waypoints up to the surface. Thus for those dives, first
+delete all waypoints during the ascent phase. This is most easily done by
+holding the Ctrl- or Command-key while clicking on the trash can icon
+next to the first ascent waypoint in the table on the left hand side.
+
 For more information external to this manual see:
 
  * link:http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
