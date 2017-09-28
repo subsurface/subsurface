@@ -16,6 +16,7 @@
 
 #include <libdivecomputer/version.h>
 #include "libdivecomputer.h"
+#include "core/version.h"
 
 #if !defined(SSRF_LIBDC_VERSION) || SSRF_LIBDC_VERSION < 2
 #pragma message "Subsurface requires a reasonably current version of the Subsurface-branch"
@@ -1086,6 +1087,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	if (fp) {
 		dc_context_set_loglevel(data->context, DC_LOGLEVEL_ALL);
 		dc_context_set_logfunc(data->context, logfunc, fp);
+		fprintf(data->libdc_logfile, "Subsurface: v%s, ", subsurface_git_version());
+		fprintf(data->libdc_logfile, "built with libdivecomputer v%s\n", dc_version(NULL));
 	}
 
 	err = translate("gettextFromC", "Unable to open %s %s (%s)");

@@ -8,6 +8,7 @@
 #include <libxslt/transform.h>
 #include <QStringList>
 #include <QXmlStreamWriter>
+#include "core/version.h"
 
 ConfigureDiveComputer::ConfigureDiveComputer() : readThread(0),
 	writeThread(0),
@@ -630,6 +631,8 @@ QString ConfigureDiveComputer::dc_open(device_data_t *data)
 	if (fp) {
 		dc_context_set_loglevel(data->context, DC_LOGLEVEL_ALL);
 		dc_context_set_logfunc(data->context, logfunc, fp);
+		fprintf(data->libdc_logfile, "Subsurface: v%s, ", subsurface_git_version());
+		fprintf(data->libdc_logfile, "built with libdivecomputer v%s\n", dc_version(NULL));
 	}
 
 #if defined(SSRF_CUSTOM_IO)
