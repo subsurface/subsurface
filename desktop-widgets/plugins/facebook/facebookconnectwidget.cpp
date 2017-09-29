@@ -61,12 +61,12 @@ QUrl FacebookManager::albumListUrl()
 
 QUrl FacebookManager::connectUrl() {
 	return QUrl("https://www.facebook.com/dialog/oauth?"
-		"client_id=427722490709000"
-		"&redirect_uri=http://www.facebook.com/connect/login_success.html"
-		"&response_type=token,granted_scopes"
-		"&display=popup"
-		"&scope=publish_actions,user_photos"
-	);
+		    "client_id=427722490709000"
+		    "&redirect_uri=http://www.facebook.com/connect/login_success.html"
+		    "&response_type=token,granted_scopes"
+		    "&display=popup"
+		    "&scope=publish_actions,user_photos"
+		    );
 }
 
 bool FacebookManager::loggedIn() {
@@ -194,10 +194,9 @@ void FacebookManager::sendDive()
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
 
-	QSize size = dialog.profileSize() == SocialNetworkDialog::SMALL  ? QSize(800,600)
-		: dialog.profileSize() == SocialNetworkDialog::MEDIUM ? QSize(1024,760)
-		: dialog.profileSize() == SocialNetworkDialog::BIG    ? QSize(1280,1024)
-		: QSize();
+	QSize size = dialog.profileSize() == SocialNetworkDialog::SMALL  ? QSize(800,600) :
+		     dialog.profileSize() == SocialNetworkDialog::MEDIUM ? QSize(1024,760) :
+		     dialog.profileSize() == SocialNetworkDialog::BIG ? QSize(1280,1024) : QSize();
 
 	auto currSize = profile->size();
 	profile->resize(size);
@@ -250,15 +249,15 @@ void FacebookManager::uploadFinished()
 
 	if (obj.keys().contains("id")){
 		QMessageBox::information(qApp->activeWindow(),
-			tr("Photo upload sucessfull"),
-			tr("Your dive profile was updated to Facebook."),
+					 tr("Photo upload sucessfull"),
+					 tr("Your dive profile was updated to Facebook."),
 		QMessageBox::Ok);
 	} else {
 		QMessageBox::information(qApp->activeWindow(),
-			tr("Photo upload failed"),
-			tr("Your dive profile was not updated to Facebook, \n "
-			   "please send the following to the developer. \n"
-			   + response),
+					 tr("Photo upload failed"),
+					 tr("Your dive profile was not updated to Facebook, \n "
+					    "please send the following to the developer. \n"
+					    + response),
 		QMessageBox::Ok);
 	}
 }
@@ -328,9 +327,9 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 SocialNetworkDialog::Size SocialNetworkDialog::profileSize() const
 {
 	QString currText = ui->profileSize->currentText();
-	return currText.startsWith(tr("Small"))  ? SMALL :
-		currText.startsWith(tr("Medium")) ?  MEDIUM :
-		/* currText.startsWith(tr("Big")) ? */ BIG;
+	return currText.startsWith(tr("Small")) ? SMALL :
+	       currText.startsWith(tr("Medium")) ?  MEDIUM :
+	       /* currText.startsWith(tr("Big")) ? */ BIG;
 }
 
 
