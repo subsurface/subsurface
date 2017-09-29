@@ -66,9 +66,13 @@ private:
 class SocialNetworkDialog : public QDialog {
 	Q_OBJECT
 public:
+	enum Size {SMALL, MEDIUM, BIG};
+
 	SocialNetworkDialog(QWidget *parent = 0);
 	QString text() const;
 	QString album() const;
+    Size profileSize() const;
+
 public slots:
 	void selectionChanged();
 	void albumChanged();

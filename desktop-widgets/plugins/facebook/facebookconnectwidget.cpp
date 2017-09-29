@@ -194,8 +194,13 @@ void FacebookManager::sendDive()
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
 
+    QSize size = dialog.profileSize() == SocialNetworkDialog::SMALL  ? QSize(800,600)
+               : dialog.profileSize() == SocialNetworkDialog::MEDIUM ? QSize(1024,760)
+               : dialog.profileSize() == SocialNetworkDialog::BIG    ? QSize(1280,1024)
+               : QSize();
+
 	auto currSize = profile->size();
-	profile->resize(1024,768);
+	profile->resize(size);
 	profile->setToolTipVisibile(false);
 	QPixmap pix = profile->grab();
 	profile->setToolTipVisibile(true);
@@ -319,6 +324,15 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 	connect(ui->Notes, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
 	connect(ui->album, &QLineEdit::editingFinished, this, &SocialNetworkDialog::albumChanged);
 }
+
+SocialNetworkDialog::Size SocialNetworkDialog::profileSize() const
+{
+    QString currText = ui->profileSize->currentText();
+    return currText.startsWith(tr("Small"))  ? SMALL
+     :     currText.startsWith(tr("Medium")) ? MEDIUM
+     :  /* currText.startsWith(tr("Big")) ? */ BIG;
+}
+
 
 void SocialNetworkDialog::albumChanged()
 {
