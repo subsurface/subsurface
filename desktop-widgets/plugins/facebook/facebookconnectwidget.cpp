@@ -205,13 +205,13 @@ void FacebookManager::sendDive()
 	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
 	QNetworkReply *reply = am->post(request,data);
 
-    // Why I'm blocking here?
-    // TODO: Move this so it's unblocking.
-	QEventLoop loop;
-	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-	loop.exec();
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::uploadFinished);
+}
 
-	QByteArray response = reply->readAll();
+void FacebookManager::uploadFinished()
+{
+    auto reply = qobject_cast<QNetworkReply*>(sender());
+    QByteArray response = reply->readAll();
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){

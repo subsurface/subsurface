@@ -8,6 +8,8 @@ class QWebEngineView;
 #else
 class QWebView;
 #endif
+class QNetworkReply;
+
 namespace Ui {
   class FacebookConnectWidget;
   class SocialnetworksDialog;
@@ -31,7 +33,7 @@ public slots:
 	void logout();
 	void setDesiredAlbumName(const QString& albumName);
 	void sendDive();
-
+    void uploadFinished();
 private:
 	explicit FacebookManager(QObject *parent = 0);
 	QString albumName;
