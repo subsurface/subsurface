@@ -37,17 +37,17 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Email")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth:gridWidth * 0.15
+				Layout.preferredWidth: gridWidth * 0.15
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Kirigami.Label {
-				text: manager.credentialStatus === QMLManager.CS_NOCLOUD?qsTr("Not applicable"):manager.cloudUserName
+				text: manager.credentialStatus === QMLManager.CS_NOCLOUD ? qsTr("Not applicable") : manager.cloudUserName
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth:gridWidth * 0.60
+				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			SsrfButton {
-				id:changeCloudSettings
+				id: changeCloudSettings
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Change")
 				onClicked: {
@@ -58,13 +58,13 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Status")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth:gridWidth * 0.15
+				Layout.preferredWidth: gridWidth * 0.15
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Kirigami.Label {
 				text: describe[manager.credentialStatus]
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth:gridWidth * 0.60
+				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 		}
@@ -269,7 +269,7 @@ Kirigami.ScrollablePage {
 			Kirigami.Label {
 				text: qsTr("Distance threshold (meters)")
 				Layout.alignment: Qt.AlignRight
-				Layout.preferredWidth:gridWidth * 0.75
+				Layout.preferredWidth: gridWidth * 0.75
 			}
 
 			TextField {
