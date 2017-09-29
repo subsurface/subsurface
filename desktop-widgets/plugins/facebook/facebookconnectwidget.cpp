@@ -49,6 +49,7 @@ FacebookManager *FacebookManager::instance()
 
 FacebookManager::FacebookManager(QObject *parent) : QObject(parent)
 {
+	albumListUrl = QUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
 }
 
 static QString graphApi = QStringLiteral("https://graph.facebook.com/v2.10/");
@@ -98,14 +99,14 @@ void FacebookManager::logout()
 
 void FacebookManager::requestAlbumId()
 {
-	QUrl albumListUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
 	QNetworkAccessManager *manager = new QNetworkAccessManager();
 	QNetworkReply *reply = manager->get(QNetworkRequest(albumListUrl));
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::albumListReceived);
+}
 
-	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
-
+void FacebookManager::albumListReceived()
+{
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
 	auto fb = SettingsObjectWrapper::instance()->facebook;
@@ -117,7 +118,12 @@ void FacebookManager::requestAlbumId()
 			return;
 		}
 	}
+	// No album with the name we requested, create a new one.
+	createFacebookAlbum();
+}
 
+void FacebookManager::createFacebookAlbum()
+{
 	QUrlQuery params;
 	params.addQueryItem("name", albumName );
 	params.addQueryItem("description", "Subsurface Album");
@@ -125,13 +131,19 @@ void FacebookManager::requestAlbumId()
 
 	QNetworkRequest request(albumListUrl);
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
-	reply = manager->post(request, params.query().toLocal8Bit());
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
 
-	albumsDoc = QJsonDocument::fromJson(reply->readAll());
+	QNetworkAccessManager *manager = new QNetworkAccessManager();
+	QNetworkReply *reply = manager->post(request, params.query().toLocal8Bit());
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::facebookAlbumCreated);
+}
+
+void FacebookManager::facebookAlbumCreated()
+{
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject album = albumsDoc.object();
 	if (album.contains("id")) {
+		auto fb = SettingsObjectWrapper::instance()->facebook;
 		fb->setAlbumId(album.value("id").toString());
 		return;
 	}
@@ -195,7 +207,9 @@ void FacebookManager::sendDive()
 	data.append("Content-Disposition: form-data; name=\"action\"\r\n\r\n");
 	data.append(graphApi + "\r\n");
 	data.append("--" + bound + "\r\n");   //according to rfc 1867
-	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");  //name of the input is "uploaded" in my form, next one is a file name.
+
+	//name of the input is "uploaded" in my form, next one is a file name.
+	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");
 	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
 	data.append(bytes);   //let's read the file
 	data.append("\r\n");
@@ -210,8 +224,8 @@ void FacebookManager::sendDive()
 
 void FacebookManager::uploadFinished()
 {
-    auto reply = qobject_cast<QNetworkReply*>(sender());
-    QByteArray response = reply->readAll();
+	auto reply = qobject_cast<QNetworkReply*>(sender());
+	QByteArray response = reply->readAll();
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){
@@ -282,13 +296,13 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->duration, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Notes, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->album, SIGNAL(textChanged(QString)), this, SLOT(albumChanged()));
+	connect(ui->date, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->duration, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Buddy, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Divemaster, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Location, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Notes, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->album, &QLineEdit::editingFinished, this, &SocialNetworkDialog::albumChanged);
 }
 
 void SocialNetworkDialog::albumChanged()
