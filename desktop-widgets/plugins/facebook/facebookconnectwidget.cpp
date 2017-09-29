@@ -282,13 +282,13 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->duration, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Notes, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->album, SIGNAL(textChanged(QString)), this, SLOT(albumChanged()));
+	connect(ui->date, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->duration, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Buddy, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Divemaster, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Location, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Notes, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->album, &QLineEdit::editingFinished, this, &SocialNetworkDialog::albumChanged);
 }
 
 void SocialNetworkDialog::albumChanged()
