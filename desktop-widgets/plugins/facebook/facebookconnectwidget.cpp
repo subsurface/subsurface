@@ -205,10 +205,12 @@ void FacebookManager::sendDive()
 	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
 	QNetworkReply *reply = am->post(request,data);
 
-	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::uploadFinished);
+}
 
+void FacebookManager::uploadFinished()
+{
+	auto reply = qobject_cast<QNetworkReply*>(sender());
 	QByteArray response = reply->readAll();
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 	QJsonObject obj = jsonDoc.object();
