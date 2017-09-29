@@ -116,6 +116,7 @@ void FacebookManager::albumListReceived()
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
 	auto fb = SettingsObjectWrapper::instance()->facebook;
 
+	reply->deleteLater();
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == albumName) {
@@ -146,6 +147,9 @@ void FacebookManager::facebookAlbumCreated()
 	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject album = albumsDoc.object();
+
+	reply->deleteLater();
+
 	if (album.contains("id")) {
 		auto fb = SettingsObjectWrapper::instance()->facebook;
 		fb->setAlbumId(album.value("id").toString());
@@ -230,6 +234,9 @@ void FacebookManager::uploadFinished()
 	QByteArray response = reply->readAll();
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 	QJsonObject obj = jsonDoc.object();
+
+	reply->deleteLater();
+
 	if (obj.keys().contains("id")){
 		QMessageBox::information(qApp->activeWindow(),
 			tr("Photo upload sucessfull"),
