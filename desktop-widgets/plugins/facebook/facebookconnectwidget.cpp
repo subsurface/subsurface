@@ -10,7 +10,6 @@
 #include <QNetworkCookieJar>
 
 #include <QUrlQuery>
-#include <QEventLoop>
 #include <QHttpMultiPart>
 #include <QFile>
 #include <QBuffer>
@@ -47,11 +46,18 @@ FacebookManager *FacebookManager::instance()
 	return self;
 }
 
-FacebookManager::FacebookManager(QObject *parent) : QObject(parent)
+FacebookManager::FacebookManager(QObject *parent) :
+    QObject(parent),
+    manager(new QNetworkAccessManager(this))
 {
 }
 
 static QString graphApi = QStringLiteral("https://graph.facebook.com/v2.10/");
+
+QUrl FacebookManager::albumListUrl()
+{
+	return QUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
+}
 
 QUrl FacebookManager::connectUrl() {
 	return QUrl("https://www.facebook.com/dialog/oauth?"
@@ -84,7 +90,6 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	auto fb = SettingsObjectWrapper::instance()->facebook;
 	fb->setAccessToken(securityToken);
 	requestUserId();
-	emit justLoggedIn(true);
 }
 
 void FacebookManager::logout()
@@ -98,18 +103,18 @@ void FacebookManager::logout()
 
 void FacebookManager::requestAlbumId()
 {
-	QUrl albumListUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
-	QNetworkAccessManager *manager = new QNetworkAccessManager();
-	QNetworkReply *reply = manager->get(QNetworkRequest(albumListUrl));
+	QNetworkReply *reply = manager->get(QNetworkRequest(albumListUrl()));
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::albumListReceived);
+}
 
-	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
-
+void FacebookManager::albumListReceived()
+{
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
 	auto fb = SettingsObjectWrapper::instance()->facebook;
 
+	reply->deleteLater();
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == albumName) {
@@ -117,21 +122,34 @@ void FacebookManager::requestAlbumId()
 			return;
 		}
 	}
+	// No album with the name we requested, create a new one.
+	createFacebookAlbum();
+}
 
+void FacebookManager::createFacebookAlbum()
+{
 	QUrlQuery params;
 	params.addQueryItem("name", albumName );
 	params.addQueryItem("description", "Subsurface Album");
 	params.addQueryItem("privacy", "{'value': 'SELF'}");
 
-	QNetworkRequest request(albumListUrl);
+	QNetworkRequest request(albumListUrl());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
-	reply = manager->post(request, params.query().toLocal8Bit());
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
 
-	albumsDoc = QJsonDocument::fromJson(reply->readAll());
+	QNetworkReply *reply = manager->post(request, params.query().toLocal8Bit());
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::facebookAlbumCreated);
+}
+
+void FacebookManager::facebookAlbumCreated()
+{
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject album = albumsDoc.object();
+
+	reply->deleteLater();
+
 	if (album.contains("id")) {
+		auto fb = SettingsObjectWrapper::instance()->facebook;
 		fb->setAlbumId(album.value("id").toString());
 		return;
 	}
@@ -140,19 +158,21 @@ void FacebookManager::requestAlbumId()
 void FacebookManager::requestUserId()
 {
 	QUrl userIdRequest("https://graph.facebook.com/me?fields=id&access_token=" + QString(prefs.facebook.access_token));
-	QNetworkAccessManager *getUserID = new QNetworkAccessManager();
-	QNetworkReply *reply = getUserID->get(QNetworkRequest(userIdRequest));
+	QNetworkReply *reply = manager->get(QNetworkRequest(userIdRequest));
 
-	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::userIdReceived);
+}
 
-	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
+void FacebookManager::userIdReceived()
+{
+    QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject obj = jsonDoc.object();
-	if (obj.keys().contains("id")){
+	if (obj.keys().contains("id")) {
 		SettingsObjectWrapper::instance()->facebook->setUserId(obj.value("id").toString());
-		return;
-	}
+        emit justLoggedIn(true);
+    }
+	reply->deleteLater();
 }
 
 void FacebookManager::setDesiredAlbumName(const QString& a)
@@ -173,9 +193,19 @@ void FacebookManager::sendDive()
 	requestAlbumId();
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
+
+    QSize size = dialog.profileSize() == SocialNetworkDialog::SMALL  ? QSize(800,600)
+               : dialog.profileSize() == SocialNetworkDialog::MEDIUM ? QSize(1024,760)
+               : dialog.profileSize() == SocialNetworkDialog::BIG    ? QSize(1280,1024)
+               : QSize();
+
+	auto currSize = profile->size();
+	profile->resize(size);
 	profile->setToolTipVisibile(false);
-	QPixmap pix = QPixmap::grabWidget(profile);
+	QPixmap pix = profile->grab();
 	profile->setToolTipVisibile(true);
+	profile->resize(currSize);
+
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);
@@ -185,7 +215,6 @@ void FacebookManager::sendDive()
 		 "&source=image" +
 		 "&message=" + dialog.text().replace("&quot;", "%22"));
 
-	QNetworkAccessManager *am = new QNetworkAccessManager(this);
 	QNetworkRequest request(url);
 
 	QString bound="margin";
@@ -195,23 +224,30 @@ void FacebookManager::sendDive()
 	data.append("Content-Disposition: form-data; name=\"action\"\r\n\r\n");
 	data.append(graphApi + "\r\n");
 	data.append("--" + bound + "\r\n");   //according to rfc 1867
-	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");  //name of the input is "uploaded" in my form, next one is a file name.
+
+	//name of the input is "uploaded" in my form, next one is a file name.
+	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");
 	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
 	data.append(bytes);   //let's read the file
 	data.append("\r\n");
 	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
 
-	request.setRawHeader(QString("Content-Type").toLocal8Bit(),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
-	request.setRawHeader(QString("Content-Length").toLocal8Bit(), QString::number(data.length()).toLocal8Bit());
-	QNetworkReply *reply = am->post(request,data);
+	request.setRawHeader(QByteArray("Content-Type"),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
+	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
+	QNetworkReply *reply = manager->post(request,data);
 
-	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::uploadFinished);
+}
 
+void FacebookManager::uploadFinished()
+{
+	auto reply = qobject_cast<QNetworkReply*>(sender());
 	QByteArray response = reply->readAll();
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
 	QJsonObject obj = jsonDoc.object();
+
+	reply->deleteLater();
+
 	if (obj.keys().contains("id")){
 		QMessageBox::information(qApp->activeWindow(),
 			tr("Photo upload sucessfull"),
@@ -280,14 +316,23 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 {
 	ui->setupUi(this);
 	ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(false);
-	connect(ui->date, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->duration, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Buddy, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Divemaster, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Location, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->Notes, SIGNAL(clicked()), this, SLOT(selectionChanged()));
-	connect(ui->album, SIGNAL(textChanged(QString)), this, SLOT(albumChanged()));
+	connect(ui->date, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->duration, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Buddy, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Divemaster, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Location, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->Notes, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
+	connect(ui->album, &QLineEdit::editingFinished, this, &SocialNetworkDialog::albumChanged);
 }
+
+SocialNetworkDialog::Size SocialNetworkDialog::profileSize() const
+{
+    QString currText = ui->profileSize->currentText();
+    return currText.startsWith(tr("Small"))  ? SMALL
+     :     currText.startsWith(tr("Medium")) ? MEDIUM
+     :  /* currText.startsWith(tr("Big")) ? */ BIG;
+}
+
 
 void SocialNetworkDialog::albumChanged()
 {

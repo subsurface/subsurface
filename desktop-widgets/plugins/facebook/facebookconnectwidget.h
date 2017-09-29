@@ -3,14 +3,18 @@
 #define FACEBOOKCONNECTWIDGET_H
 
 #include <QDialog>
+#include <QUrl>
 #ifdef USE_WEBENGINE
 class QWebEngineView;
 #else
 class QWebView;
 #endif
+class QNetworkReply;
+class QNetworkAccessManager;
+
 namespace Ui {
-  class FacebookConnectWidget;
-  class SocialnetworksDialog;
+	class FacebookConnectWidget;
+	class SocialnetworksDialog;
 }
 
 class FacebookManager : public QObject
@@ -21,6 +25,7 @@ public:
 	void requestAlbumId();
 	void requestUserId();
 	QUrl connectUrl();
+    QUrl albumListUrl();
 	bool loggedIn();
 signals:
 	void justLoggedIn(bool triggererd);
@@ -31,10 +36,15 @@ public slots:
 	void logout();
 	void setDesiredAlbumName(const QString& albumName);
 	void sendDive();
-
+	void uploadFinished();
+	void albumListReceived();
+    void userIdReceived();
+	void createFacebookAlbum();
+	void facebookAlbumCreated();
 private:
 	explicit FacebookManager(QObject *parent = 0);
 	QString albumName;
+    QNetworkAccessManager *manager;
 };
 
 
@@ -56,9 +66,13 @@ private:
 class SocialNetworkDialog : public QDialog {
 	Q_OBJECT
 public:
+	enum Size {SMALL, MEDIUM, BIG};
+
 	SocialNetworkDialog(QWidget *parent = 0);
 	QString text() const;
 	QString album() const;
+    Size profileSize() const;
+
 public slots:
 	void selectionChanged();
 	void albumChanged();
