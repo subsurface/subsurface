@@ -32,10 +32,10 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
-			text: qsTr("To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.\n\n") +
-				qsTr("If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) " +
-				"and a password of your choice (letters and numbers).\n\n") +
-				qsTr("To use Subsurface-mobile only with local data on this device, select " +
+			text: qsTr("To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.<br/><br/>" +
+				"If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) " +
+				"and a password of your choice (letters and numbers).<br/><br/>" +
+				"To use Subsurface-mobile only with local data on this device, select " +
 				"the no cloud buttton above.")
 			wrapMode: Text.WordWrap
 		}
@@ -45,12 +45,12 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
-			text: qsTr("Thank you for registering with Subsurface. We sent ") + manager.cloudUserName +
-				qsTr(" a PIN code to complete the registration. ") +
-				qsTr("If you do not receive an email from us within 15 minutes, please check " +
-					 "the correct spelling of your email address and your spam box first.\n\n" +
-					 "In case of any problems regarding cloud account setup, please contact us " +
-					 "at our user forum \(https://subsurface-divelog.org/user-forum/\).\n\n")
+			text: qsTr("Thank you for registering with Subsurface. We sent <b>%1</b>" +
+				" a PIN code to complete the registration. " +
+				"If you do not receive an email from us within 15 minutes, please check " +
+				"the correct spelling of your email address and your spam box first.<br/><br/>" +
+				"In case of any problems regarding cloud account setup, please contact us " +
+				"at our user forum \(https://subsurface-divelog.org/user-forum/\).<br/><br/>").arg(manager.cloudUserName)
 			wrapMode: Text.WordWrap
 		}
 		Item { width: Kirigami.Units.gridUnit; height: 3 * Kirigami.Units.gridUnit}

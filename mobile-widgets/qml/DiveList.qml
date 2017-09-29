@@ -274,7 +274,7 @@ Kirigami.ScrollablePage {
 				page.actions.main = null
 				page.actions.right = null
 				page.title = qsTr("Cloud credentials")
-			} else if(manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD) {
+			} else if (manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.title = qsTr("Dive list")

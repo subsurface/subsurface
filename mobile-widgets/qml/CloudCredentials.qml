@@ -103,7 +103,7 @@ Item {
 			spacing: Kirigami.Units.smallSpacing
 			visible: rootItem.showPin
 			SsrfButton {
-				id:registerpin
+				id: registerpin
 				text: qsTr("Register") 
 				onClicked: {
 					saveCredentials()
@@ -131,7 +131,7 @@ Item {
 			visible: !rootItem.showPin
 
 			SsrfButton {
-				id:signin_register_normal
+				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
 					saveCredentials()
