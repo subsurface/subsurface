@@ -201,8 +201,8 @@ void FacebookManager::sendDive()
 	data.append("\r\n");
 	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
 
-	request.setRawHeader(QString("Content-Type").toLocal8Bit(),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
-	request.setRawHeader(QString("Content-Length").toLocal8Bit(), QString::number(data.length()).toLocal8Bit());
+	request.setRawHeader(QByteArray("Content-Type"),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
+	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
 	QNetworkReply *reply = am->post(request,data);
 
 	QEventLoop loop;
