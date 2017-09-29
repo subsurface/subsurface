@@ -91,7 +91,6 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	auto fb = SettingsObjectWrapper::instance()->facebook;
 	fb->setAccessToken(securityToken);
 	requestUserId();
-	emit justLoggedIn(true);
 }
 
 void FacebookManager::logout()
@@ -170,9 +169,10 @@ void FacebookManager::userIdReceived()
     QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
     QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject obj = jsonDoc.object();
-	if (obj.keys().contains("id")){
+	if (obj.keys().contains("id")) {
 		SettingsObjectWrapper::instance()->facebook->setUserId(obj.value("id").toString());
-	}
+        emit justLoggedIn(true);
+    }
 	reply->deleteLater();
 }
 
