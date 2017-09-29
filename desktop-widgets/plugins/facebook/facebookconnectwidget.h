@@ -10,6 +10,7 @@ class QWebEngineView;
 class QWebView;
 #endif
 class QNetworkReply;
+class QNetworkAccessManager;
 
 namespace Ui {
 	class FacebookConnectWidget;
@@ -24,6 +25,7 @@ public:
 	void requestAlbumId();
 	void requestUserId();
 	QUrl connectUrl();
+	QUrl albumListUrl();
 	bool loggedIn();
 signals:
 	void justLoggedIn(bool triggererd);
@@ -41,12 +43,12 @@ public slots:
 private:
 	explicit FacebookManager(QObject *parent = 0);
 	QString albumName;
-	QUrl albumListUrl;
+	QNetworkAccessManager *manager;
 };
 
 
 class FacebookConnectWidget : public QDialog {
-  Q_OBJECT
+	Q_OBJECT
 public:
 	explicit FacebookConnectWidget(QWidget* parent = 0);
 	void facebookLoggedIn();
