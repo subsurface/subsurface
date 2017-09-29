@@ -162,16 +162,18 @@ void FacebookManager::requestUserId()
 	QUrl userIdRequest("https://graph.facebook.com/me?fields=id&access_token=" + QString(prefs.facebook.access_token));
 	QNetworkReply *reply = manager->get(QNetworkRequest(userIdRequest));
 
-	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
-	loop.exec();
+	connect(reply, &QNetworkReply::finished, this, &FacebookManager::userIdReceived);
+}
 
+void FacebookManager::userIdReceived()
+{
+	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	QJsonDocument jsonDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")){
 		SettingsObjectWrapper::instance()->facebook->setUserId(obj.value("id").toString());
-		return;
 	}
+	reply->deleteLater();
 }
 
 void FacebookManager::setDesiredAlbumName(const QString& a)

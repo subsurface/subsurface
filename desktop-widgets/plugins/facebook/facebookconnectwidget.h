@@ -38,6 +38,7 @@ public slots:
 	void sendDive();
 	void uploadFinished();
 	void albumListReceived();
+	void userIdReceived();
 	void createFacebookAlbum();
 	void facebookAlbumCreated();
 private:
