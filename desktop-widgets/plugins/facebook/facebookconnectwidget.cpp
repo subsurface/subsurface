@@ -205,8 +205,10 @@ void FacebookManager::sendDive()
 	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
 	QNetworkReply *reply = am->post(request,data);
 
+    // Why I'm blocking here?
+    // TODO: Move this so it's unblocking.
 	QEventLoop loop;
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 	loop.exec();
 
 	QByteArray response = reply->readAll();
