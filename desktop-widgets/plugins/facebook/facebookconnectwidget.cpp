@@ -10,7 +10,6 @@
 #include <QNetworkCookieJar>
 
 #include <QUrlQuery>
-#include <QEventLoop>
 #include <QHttpMultiPart>
 #include <QFile>
 #include <QBuffer>
@@ -194,9 +193,14 @@ void FacebookManager::sendDive()
 	requestAlbumId();
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
+
+	auto currSize = profile->size();
+	profile->resize(1024,768);
 	profile->setToolTipVisibile(false);
 	QPixmap pix = profile->grab();
 	profile->setToolTipVisibile(true);
+	profile->resize(currSize);
+
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);
