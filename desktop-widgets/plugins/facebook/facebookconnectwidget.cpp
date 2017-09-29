@@ -174,7 +174,7 @@ void FacebookManager::sendDive()
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
 	profile->setToolTipVisibile(false);
-	QPixmap pix = QPixmap::grabWidget(profile);
+	QPixmap pix = profile->grab();
 	profile->setToolTipVisibile(true);
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
