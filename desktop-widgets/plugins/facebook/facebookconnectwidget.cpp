@@ -47,12 +47,18 @@ FacebookManager *FacebookManager::instance()
 	return self;
 }
 
-FacebookManager::FacebookManager(QObject *parent) : QObject(parent)
+FacebookManager::FacebookManager(QObject *parent) :
+    QObject(parent),
+    manager(new QNetworkAccessManager(this))
 {
-	albumListUrl = QUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
 }
 
 static QString graphApi = QStringLiteral("https://graph.facebook.com/v2.10/");
+
+QUrl FacebookManager::albumListUrl()
+{
+	return QUrl("https://graph.facebook.com/me/albums?access_token=" + QString(prefs.facebook.access_token));
+}
 
 QUrl FacebookManager::connectUrl() {
 	return QUrl("https://www.facebook.com/dialog/oauth?"
@@ -99,8 +105,7 @@ void FacebookManager::logout()
 
 void FacebookManager::requestAlbumId()
 {
-	QNetworkAccessManager *manager = new QNetworkAccessManager();
-	QNetworkReply *reply = manager->get(QNetworkRequest(albumListUrl));
+	QNetworkReply *reply = manager->get(QNetworkRequest(albumListUrl()));
 	connect(reply, &QNetworkReply::finished, this, &FacebookManager::albumListReceived);
 }
 
@@ -129,10 +134,9 @@ void FacebookManager::createFacebookAlbum()
 	params.addQueryItem("description", "Subsurface Album");
 	params.addQueryItem("privacy", "{'value': 'SELF'}");
 
-	QNetworkRequest request(albumListUrl);
+	QNetworkRequest request(albumListUrl());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
-	QNetworkAccessManager *manager = new QNetworkAccessManager();
 	QNetworkReply *reply = manager->post(request, params.query().toLocal8Bit());
 	connect(reply, &QNetworkReply::finished, this, &FacebookManager::facebookAlbumCreated);
 }
@@ -152,8 +156,7 @@ void FacebookManager::facebookAlbumCreated()
 void FacebookManager::requestUserId()
 {
 	QUrl userIdRequest("https://graph.facebook.com/me?fields=id&access_token=" + QString(prefs.facebook.access_token));
-	QNetworkAccessManager *getUserID = new QNetworkAccessManager();
-	QNetworkReply *reply = getUserID->get(QNetworkRequest(userIdRequest));
+	QNetworkReply *reply = manager->get(QNetworkRequest(userIdRequest));
 
 	QEventLoop loop;
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
@@ -197,7 +200,6 @@ void FacebookManager::sendDive()
 		 "&source=image" +
 		 "&message=" + dialog.text().replace("&quot;", "%22"));
 
-	QNetworkAccessManager *am = new QNetworkAccessManager(this);
 	QNetworkRequest request(url);
 
 	QString bound="margin";
@@ -217,7 +219,7 @@ void FacebookManager::sendDive()
 
 	request.setRawHeader(QByteArray("Content-Type"),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
 	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
-	QNetworkReply *reply = am->post(request,data);
+	QNetworkReply *reply = manager->post(request,data);
 
 	connect(reply, &QNetworkReply::finished, this, &FacebookManager::uploadFinished);
 }
