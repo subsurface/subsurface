@@ -229,7 +229,7 @@ static int calculate_cns(struct dive *dive)
 	if (divenr) {
 		prev_dive = get_dive(divenr - 1);
 		if (prev_dive) {
-			endtime = prev_dive->when + prev_dive->duration.seconds;
+			endtime = dive_endtime(prev_dive);
 			if (dive->when < (endtime + 3600 * 12)) {
 				cns = calculate_cns(prev_dive);
 				cns = cns * 1 / pow(2, (dive->when - endtime) / (90.0 * 60.0));
@@ -395,13 +395,12 @@ unsigned int init_decompression(struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip)
 			continue;
-		if (!pdive || pdive->when >= when || pdive->when + pdive->duration.seconds + 48 * 60 * 60 < when)
+		if (!pdive || pdive->when >= when || dive_endtime(pdive) + 48 * 60 * 60 < when)
 			break;
 		/* For simultaneous dives, only consider the first */
 		if (pdive->when == laststart)
 			continue;
-		when = pdive->when;
-		lasttime = when + pdive->duration.seconds;
+		lasttime = dive_endtime(pdive);
 	}
 	while (++i < (divenr >= 0 ? divenr : dive_table.nr)) {
 		struct dive *pdive = get_dive(i);
@@ -421,7 +420,7 @@ unsigned int init_decompression(struct dive *dive)
 		}
 		if (pdive->when > lasttime) {
 			surface_time = pdive->when - lasttime;
-			lasttime = pdive->when + pdive->duration.seconds;
+			lasttime = dive_endtime(pdive);
 			add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 			printf("after surface intervall of %d:%02u\n", FRACTION(surface_time, 60));
@@ -1136,7 +1135,7 @@ void process_dives(bool is_imported, bool prefer_imported)
 		/* only try to merge overlapping dives - or if one of the dives has
 		 * zero duration (that might be a gps marker from the webservice) */
 		if (prev->duration.seconds && dive->duration.seconds &&
-		    prev->when + prev->duration.seconds < dive->when)
+		    dive_endtime(prev) < dive->when)
 			continue;
 
 		merged = try_to_merge(prev, dive, prefer_imported);

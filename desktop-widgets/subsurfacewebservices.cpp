@@ -12,6 +12,7 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <errno.h>
 #include "core/cloudstorage.h"
+#include "core/dive.h"
 
 #include <QDir>
 #include <QHttpMultiPart>
@@ -70,7 +71,7 @@ static bool merge_locations_into_dives(void)
 						qDebug() << "processing gpsfix @" << get_dive_date_string(gpsfix->when) <<
 							    "which is withing six hours of dive from" <<
 							    get_dive_date_string(dive->when) << "until" <<
-							    get_dive_date_string(dive->when + dive->duration.seconds);
+							    get_dive_date_string(dive_endtime(dive));
 					/*
 					 * If position is fixed during dive. This is the good one.
 					 * Asign and mark position, and end gps_location loop
@@ -106,7 +107,7 @@ static bool merge_locations_into_dives(void)
 								if (verbose)
 									qDebug() << "which is closer to the start of the dive, do continue with that";
 								continue;
-							} else if (gpsfix->when > dive->when + dive->duration.seconds) {
+							} else if (gpsfix->when > dive_endtime(dive)) {
 								if (verbose)
 									qDebug() << "which is even later after the end of the dive, so pick the previous one";
 								copy_gps_location(gpsfix, dive);
@@ -115,7 +116,7 @@ static bool merge_locations_into_dives(void)
 								break;
 							} else {
 								/* ok, gpsfix is before, nextgpsfix is after */
-								if (dive->when - gpsfix->when <= nextgpsfix->when - (dive->when + dive->duration.seconds)) {
+								if (dive->when - gpsfix->when <= nextgpsfix->when - dive_endtime(dive)) {
 									if (verbose)
 										qDebug() << "pick the one before as it's closer to the start";
 									copy_gps_location(gpsfix, dive);
@@ -147,7 +148,7 @@ static bool merge_locations_into_dives(void)
 					/* If position is out of SAME_GROUP range and in the future, mark position for
 					 * next dive iteration and end the gps_location loop
 					 */
-					if (gpsfix->when >= dive->when + dive->duration.seconds + SAME_GROUP) {
+					if (gpsfix->when >= dive_endtime(dive) + SAME_GROUP) {
 						tracer = j;
 						break;
 					}

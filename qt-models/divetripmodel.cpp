@@ -4,6 +4,7 @@
 #include "core/metrics.h"
 #include "core/divelist.h"
 #include "core/helpers.h"
+#include "core/dive.h"
 #include <QIcon>
 
 static int nitrox_sort_value(struct dive *dive)
@@ -325,12 +326,12 @@ QString DiveItem::displayDepthWithUnit() const
 int DiveItem::countPhotos(dive *dive) const
 {	// Determine whether dive has pictures, and whether they were taken during or before/after dive.
 	const int bufperiod = 120; // A 2-min buffer period. Photos within 2 min of dive are assumed as
-	int diveDuration = dive->duration.seconds;	// taken during the dive, not before/after.
+	int diveTotaltime = dive_endtime(dive) - dive->when;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
 	FOR_EACH_PICTURE (dive) {		// Step through each of the pictures for this dive:
 		if (!picture) break;		// if there are no pictures for this dive, return 0
 		pic_offset = picture->offset.seconds;
-		if  ((pic_offset < -bufperiod) | (pic_offset > diveDuration+bufperiod)) {
+		if  ((pic_offset < -bufperiod) | (pic_offset > diveTotaltime+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
 		}				//  then set the appropriate bit ...
 		else {
