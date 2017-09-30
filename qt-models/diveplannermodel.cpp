@@ -58,7 +58,7 @@ void DivePlannerPointsModel::setupStartTime()
 	startTime = QDateTime::currentDateTimeUtc().addSecs(3600 + gettimezoneoffset());
 	if (dive_table.nr) {
 		struct dive *d = get_dive(dive_table.nr - 1);
-		time_t ends = d->when + d->duration.seconds;
+		time_t ends = dive_endtime(d);
 		time_t diff = ends - startTime.toTime_t();
 		if (diff > 0) {
 			startTime = startTime.addSecs(diff + 3600);

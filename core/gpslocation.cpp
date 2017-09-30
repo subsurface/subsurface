@@ -275,7 +275,7 @@ bool GpsLocation::applyLocations()
 					qDebug() << "processing gpsFix @" << get_dive_date_string(gpsTable[j].when) <<
 						    "which is withing six hours of dive from" <<
 						    get_dive_date_string(d->when) << "until" <<
-						    get_dive_date_string(d->when + d->duration.seconds);
+						    get_dive_date_string(dive_endtime(d));
 				/*
 				 * If position is fixed during dive. This is the good one.
 				 * Asign and mark position, and end gps_location loop
@@ -310,7 +310,7 @@ bool GpsLocation::applyLocations()
 							if (verbose)
 								qDebug() << "which is closer to the start of the dive, do continue with that";
 							continue;
-						} else if (gpsTable[j].when > d->when + d->duration.seconds) {
+						} else if (gpsTable[j].when > dive_endtime(d)) {
 							if (verbose)
 								qDebug() << "which is even later after the end of the dive, so pick the previous one";
 							copy_gps_location(gpsTable[j], d);
@@ -319,7 +319,7 @@ bool GpsLocation::applyLocations()
 							break;
 						} else {
 							/* ok, gpsFix is before, nextgpsFix is after */
-							if (d->when - gpsTable[j].when <= gpsTable[j+1].when - (d->when + d->duration.seconds)) {
+							if (d->when - gpsTable[j].when <= gpsTable[j+1].when - dive_endtime(d)) {
 								if (verbose)
 									qDebug() << "pick the one before as it's closer to the start";
 								copy_gps_location(gpsTable[j], d);
@@ -351,7 +351,7 @@ bool GpsLocation::applyLocations()
 				/* If position is out of SAME_GROUP range and in the future, mark position for
 				 * next dive iteration and end the gps_location loop
 				 */
-				if (gpsTable[j].when >= d->when + d->duration.seconds + SAME_GROUP) {
+				if (gpsTable[j].when >= dive_endtime(d) + SAME_GROUP) {
 					last = j;
 					break;
 				}

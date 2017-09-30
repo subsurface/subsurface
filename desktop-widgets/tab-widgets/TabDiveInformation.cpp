@@ -6,6 +6,7 @@
 #include <core/helpers.h>
 #include <core/statistics.h>
 #include <core/display.h>
+#include <core/dive.h>
 
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {
@@ -81,7 +82,7 @@ void TabDiveInformation::updateData()
 	process_all_dives(&displayed_dive, &prevd);
 
 	if (prevd)
-		ui->surfaceIntervalText->setText(get_dive_surfint_string(displayed_dive.when - (prevd->when + prevd->duration.seconds), tr("d"), tr("h"), tr("min")));
+		ui->surfaceIntervalText->setText(get_dive_surfint_string(displayed_dive.when - (dive_endtime(prevd)), tr("d"), tr("h"), tr("min")));
 
 	else
 		ui->surfaceIntervalText->clear();
