@@ -2155,6 +2155,11 @@ static void merge_one_cylinder(cylinder_t *a, cylinder_t *b)
 		a->start.mbar = b->start.mbar;
 	if (!a->end.mbar)
 		a->end.mbar = b->end.mbar;
+
+	if (a->sample_start.mbar && b->sample_start.mbar)
+		a->sample_start.mbar = a->sample_start.mbar > b->sample_start.mbar ?  a->sample_start.mbar : b->sample_start.mbar;
+	if (a->sample_end.mbar && b->sample_end.mbar)
+		a->sample_end.mbar = a->sample_end.mbar < b->sample_end.mbar ?  a->sample_end.mbar : b->sample_end.mbar;
 }
 
 /*
