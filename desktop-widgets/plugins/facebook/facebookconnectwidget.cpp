@@ -182,9 +182,11 @@ void FacebookManager::userIdReceived()
 	if (obj.keys().contains("id")) {
 		qCDebug(lcFacebook) << "User id requested successfully:" << obj.value("id").toString();
 		SettingsObjectWrapper::instance()->facebook->setUserId(obj.value("id").toString());
+		emit sendMessage(tr("Facebook logged in successfully"));
 		emit justLoggedIn(true);
 	} else {
-		qCDebug(lcFacebook) << "Error, user id unknown, cannot login.";
+		emit sendMessage(tr("Error, unknown user id, cannot login."));
+		qCDebug(lcFacebook) << "Error, unknown user id, cannot login.";
 	}
 	reply->deleteLater();
 }
@@ -281,17 +283,10 @@ void FacebookManager::uploadFinished()
 	reply->deleteLater();
 
 	if (obj.keys().contains("id")){
-		QMessageBox::information(qApp->activeWindow(),
-					 tr("Photo upload sucessfull"),
-					 tr("Your dive profile was updated to Facebook."),
-		QMessageBox::Ok);
+		emit sendMessage(tr("Dive uploaded successfully to Facebook"));
 	} else {
-		QMessageBox::information(qApp->activeWindow(),
-					 tr("Photo upload failed"),
-					 tr("Your dive profile was not updated to Facebook, \n "
-					    "please send the following to the developer. \n"
-					    + response),
-		QMessageBox::Ok);
+		emit sendMessage(tr("Dive upload failed. Please see debug output and send to Subsurface mailing list"));
+		qCDebug(lcFacebook) << "Dive upload failed" << response;
 	}
 
 	emit sendDiveFinished();
@@ -325,6 +320,7 @@ void FacebookConnectWidget::facebookLoggedIn()
 	ui->fbWebviewContainer->hide();
 	ui->fbWebviewContainer->setEnabled(false);
 	ui->FBLabel->setText(tr("To disconnect Subsurface from your Facebook account, use the 'Share on' menu entry."));
+	close();
 }
 
 void FacebookConnectWidget::facebookDisconnect()
