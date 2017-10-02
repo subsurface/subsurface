@@ -1506,6 +1506,8 @@ static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, cha
 		return;
 	if (MATCH("name", utf8_string, &ds->name))
 		return;
+	if (MATCH("country", utf8_string, &ds->country))
+		return;
 	if (MATCH("description", utf8_string, &ds->description))
 		return;
 	if (MATCH("notes", utf8_string, &ds->notes))
@@ -3681,10 +3683,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 		case 3: /* diver error */
 		case 4: /* internal error */
 		case 5: /* device activity log */
-			//Event 18 is a button press. Lets ingore that event. 	 
+			//Event 18 is a button press. Lets ingore that event.
 			if (ptr[4] == 18)
 				continue;
-			
+
 			event_start();
 			cur_event.time.seconds = time;
 			switch (ptr[4]) {
@@ -3795,7 +3797,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				break;
 			case 18:
 				// key pressed - It should never get in here
-				// as we ingored it at the parent 'case 5'. 
+				// as we ingored it at the parent 'case 5'.
 				break;
 			case 19:
 				// obsolete
