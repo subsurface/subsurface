@@ -353,7 +353,7 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 	connect(ui->Divemaster, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
 	connect(ui->Location, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
 	connect(ui->Notes, &QCheckBox::clicked, this, &SocialNetworkDialog::selectionChanged);
-	connect(ui->album, &QLineEdit::editingFinished, this, &SocialNetworkDialog::albumChanged);
+	connect(ui->album, &QLineEdit::textChanged, this, &SocialNetworkDialog::albumChanged);
 }
 
 FacebookInfo::Size SocialNetworkDialog::profileSize() const
