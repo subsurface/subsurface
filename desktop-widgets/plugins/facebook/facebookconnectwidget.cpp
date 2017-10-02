@@ -185,9 +185,9 @@ void FacebookManager::sendDive()
 
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
 
-	QSize size = dialog.profileSize() == SocialNetworkDialog::SMALL  ? QSize(800,600) :
-		     dialog.profileSize() == SocialNetworkDialog::MEDIUM ? QSize(1024,760) :
-		     dialog.profileSize() == SocialNetworkDialog::BIG ? QSize(1280,1024) : QSize();
+	QSize size = dialog.profileSize() == FacebookInfo::SMALL  ? QSize(800,600) :
+		     dialog.profileSize() == FacebookInfo::MEDIUM ? QSize(1024,760) :
+		     dialog.profileSize() == FacebookInfo::BIG ? QSize(1280,1024) : QSize();
 
 	auto currSize = profile->size();
 	profile->resize(size);
@@ -315,12 +315,12 @@ SocialNetworkDialog::SocialNetworkDialog(QWidget *parent) :
 	connect(ui->album, &QLineEdit::editingFinished, this, &SocialNetworkDialog::albumChanged);
 }
 
-SocialNetworkDialog::Size SocialNetworkDialog::profileSize() const
+FacebookInfo::Size SocialNetworkDialog::profileSize() const
 {
 	QString currText = ui->profileSize->currentText();
-	return currText.startsWith(tr("Small")) ? SMALL :
-	       currText.startsWith(tr("Medium")) ?  MEDIUM :
-	       /* currText.startsWith(tr("Big")) ? */ BIG;
+	return currText.startsWith(tr("Small")) ? FacebookInfo::SMALL :
+	       currText.startsWith(tr("Medium")) ?  FacebookInfo::MEDIUM :
+	       /* currText.startsWith(tr("Big")) ? */ FacebookInfo::BIG;
 }
 
 

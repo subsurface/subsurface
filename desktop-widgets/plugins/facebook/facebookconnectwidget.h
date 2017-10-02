@@ -17,6 +17,15 @@ namespace Ui {
 	class SocialnetworksDialog;
 }
 
+struct FacebookInfo {
+    enum Size {SMALL, MEDIUM, BIG};
+
+    QString bodyText;
+    QString albumId;
+    Size profileSize;
+    QPixmap profileData;
+};
+
 class FacebookManager : public QObject
 {
 	Q_OBJECT
@@ -66,12 +75,11 @@ private:
 class SocialNetworkDialog : public QDialog {
 	Q_OBJECT
 public:
-	enum Size {SMALL, MEDIUM, BIG};
 
 	SocialNetworkDialog(QWidget *parent = 0);
 	QString text() const;
 	QString album() const;
-	Size profileSize() const;
+	FacebookInfo::Size profileSize() const;
 
 public slots:
 	void selectionChanged();
