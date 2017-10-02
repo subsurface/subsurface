@@ -110,6 +110,7 @@ void FacebookManager::albumListReceived()
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == albumName) {
 			fb->setAlbumId(obj.value("id").toString());
+			emit albumIdReceived(fb->albumId());
 			return;
 		}
 	}
@@ -142,6 +143,7 @@ void FacebookManager::facebookAlbumCreated()
 	if (album.contains("id")) {
 		auto fb = SettingsObjectWrapper::instance()->facebook;
 		fb->setAlbumId(album.value("id").toString());
+		emit albumIdReceived(fb->albumId());
 		return;
 	}
 }

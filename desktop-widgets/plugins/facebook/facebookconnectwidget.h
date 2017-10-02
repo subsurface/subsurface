@@ -40,6 +40,7 @@ public:
 signals:
 	void justLoggedIn(bool triggererd);
 	void justLoggedOut(bool triggered);
+	void albumIdReceived(const QString& albumId);
 
 public slots:
 	void tryLogin(const QUrl& loginResponse);
