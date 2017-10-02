@@ -168,11 +168,6 @@ void FacebookManager::userIdReceived()
 	reply->deleteLater();
 }
 
-void FacebookManager::setDesiredAlbumName(const QString& a)
-{
-	albumName = a;
-}
-
 QPixmap FacebookManager::grabProfilePixmap()
 {
 	ProfileWidget2 *profile = MainWindow::instance()->graphics();
@@ -201,7 +196,6 @@ void FacebookManager::sendDive()
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
-	setDesiredAlbumName(dialog.album());
 	requestAlbumId();
 
 	QUrl url(graphApi + QString(prefs.facebook.album_id) + "/photos?" +
