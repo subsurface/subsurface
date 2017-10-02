@@ -38,11 +38,13 @@ public:
 	QUrl albumListUrl();
 	bool loggedIn();
 	QPixmap grabProfilePixmap();
+
 signals:
 	void justLoggedIn(bool triggererd);
 	void justLoggedOut(bool triggered);
 	void albumIdReceived(const QString& albumId);
 	void sendDiveFinished();
+	void sendMessage(const QString& message);
 
 public slots:
 	void tryLogin(const QUrl& loginResponse);

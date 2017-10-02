@@ -12,6 +12,7 @@
 #include <QSettings>
 #include <QShortcut>
 #include <QToolBar>
+#include <QStatusBar>
 
 #include "core/version.h"
 #include "desktop-widgets/divelistview.h"
@@ -334,6 +335,9 @@ void MainWindow::setupSocialNetworkMenu()
 	FacebookManager *fb = FacebookManager::instance();
 	connect(fb, &FacebookManager::justLoggedIn, this, &MainWindow::facebookLoggedIn);
 	connect(fb, &FacebookManager::justLoggedOut, this, &MainWindow::facebookLoggedOut);
+	connect(fb, &FacebookManager::sendMessage, [this](const QString& msg) {
+		statusBar()->showMessage(msg, 10000); // show message for 10 secs on the statusbar.
+	});
 	share_on_fb = new QAction(this);
 	share_on_fb->setText(facebookPlugin->socialNetworkName());
 	share_on_fb->setIcon(QIcon(facebookPlugin->socialNetworkIcon()));
