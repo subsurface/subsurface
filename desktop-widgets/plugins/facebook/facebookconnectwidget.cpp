@@ -120,9 +120,9 @@ void FacebookManager::albumListReceived()
 	reply->deleteLater();
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
-		if (obj.value("name").toString() == albumName) {
+		if (obj.value("name").toString() == fbInfo.albumName) {
 			fb->setAlbumId(obj.value("id").toString());
-			qCDebug(lcFacebook) << "Album" << albumName << "already exists, using id" << obj.value("id").toString();
+			qCDebug(lcFacebook) << "Album" << fbInfo.albumName << "already exists, using id" << obj.value("id").toString();
 			emit albumIdReceived(fb->albumId());
 			return;
 		}
@@ -134,9 +134,9 @@ void FacebookManager::albumListReceived()
 
 void FacebookManager::createFacebookAlbum()
 {
-	qCDebug(lcFacebook) << "Album with name" << albumName << "doesn't exists, creating it.";
+	qCDebug(lcFacebook) << "Album with name" << fbInfo.albumName << "doesn't exists, creating it.";
 	QUrlQuery params;
-	params.addQueryItem("name", albumName );
+	params.addQueryItem("name", fbInfo.albumName );
 	params.addQueryItem("description", "Subsurface Album");
 	params.addQueryItem("privacy", "{'value': 'SELF'}");
 
@@ -156,13 +156,13 @@ void FacebookManager::facebookAlbumCreated()
 	reply->deleteLater();
 
 	if (album.contains("id")) {
-		qCDebug(lcFacebook) << "Album" << albumName << "created successfully with id" << album.value("id").toString();
+		qCDebug(lcFacebook) << "Album" << fbInfo.albumName << "created successfully with id" << album.value("id").toString();
 		auto fb = SettingsObjectWrapper::instance()->facebook;
 		fb->setAlbumId(album.value("id").toString());
 		emit albumIdReceived(fb->albumId());
 		return;
 	} else {
-		qCDebug(lcFacebook) << "It was not possible to create the album with name" << albumName;
+		qCDebug(lcFacebook) << "It was not possible to create the album with name" << fbInfo.albumName;
 	}
 }
 
@@ -226,6 +226,7 @@ void FacebookManager::sendDiveInit()
 	fbInfo.bodyText = dialog.text();
 	fbInfo.profileSize = dialog.profileSize();
 	fbInfo.profileData = grabProfilePixmap();
+	fbInfo.albumName = dialog.album();
 	fbInfo.albumId = QString(); // request Album Id wil handle that.
 
 	// will emit albumIdReceived, that's connected to sendDiveToAlbum
@@ -234,7 +235,7 @@ void FacebookManager::sendDiveInit()
 
 void FacebookManager::sendDiveToAlbum(const QString& albumId)
 {
-	qCDebug(lcFacebook) << "Starting to upload the dive to album" << albumName << "id" << albumId;
+	qCDebug(lcFacebook) << "Starting to upload the dive to album" << fbInfo.albumName << "id" << albumId;
 	QUrl url(graphApi + albumId + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
