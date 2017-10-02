@@ -31,15 +31,6 @@
 #include "ui_socialnetworksdialog.h"
 #include "ui_facebookconnectwidget.h"
 
-#if SAVE_FB_CREDENTIALS
-#define GET_TXT(name, field)                                             \
-	v = s.value(QString(name));                                      \
-	if (v.isValid())                                                 \
-		prefs.field = strdup(v.toString().toUtf8().constData()); \
-	else                                                             \
-		prefs.field = default_prefs.field
-#endif
-
 FacebookManager *FacebookManager::instance()
 {
 	static FacebookManager *self = new FacebookManager();
