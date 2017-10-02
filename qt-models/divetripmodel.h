@@ -24,6 +24,7 @@ public:
 		OTU,
 		MAXCNS,
 		PHOTOS,
+		COUNTRY,
 		LOCATION,
 		COLUMNS
 	};
@@ -69,6 +70,7 @@ public:
 		OTU,
 		MAXCNS,
 		PHOTOS,
+		COUNTRY,
 		LOCATION,
 		COLUMNS
 	};

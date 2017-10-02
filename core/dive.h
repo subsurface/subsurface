@@ -570,6 +570,14 @@ static inline struct dive_site *get_dive_site_for_dive(struct dive *dive)
 	return NULL;
 }
 
+static inline char *get_dive_country(struct dive *dive)
+{
+	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	if (ds && ds->country)
+		return ds->country;
+	return NULL;
+}
+
 static inline char *get_dive_location(struct dive *dive)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
