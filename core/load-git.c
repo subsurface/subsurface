@@ -293,6 +293,9 @@ static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
 	struct dive *dive = _dive; dive->tripflag = NO_TRIP;
 }
 
+static void parse_site_country(char *line, struct membuffer *str, void *_ds)
+{ (void) line; struct dive_site *ds = _ds; ds->country = strdup(mb_cstring(str)); }
+
 static void parse_site_description(char *line, struct membuffer *str, void *_ds)
 { (void) line; struct dive_site *ds = _ds; ds->description = strdup(mb_cstring(str)); }
 
@@ -994,7 +997,7 @@ static void dive_parser(char *line, struct membuffer *str, void *_dive)
 struct keyword_action site_action[] = {
 #undef D
 #define D(x) { #x, parse_site_ ## x }
-	D(description), D(geo), D(gps), D(name), D(notes)
+	D(country), D(description), D(geo), D(gps), D(name), D(notes)
 };
 
 static void site_parser(char *line, struct membuffer *str, void *_ds)
