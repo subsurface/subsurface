@@ -204,11 +204,6 @@ void FacebookManager::sendDive()
 	setDesiredAlbumName(dialog.album());
 	requestAlbumId();
 
-	QPixmap pix = grabProfilePixmap();
-	QByteArray bytes;
-	QBuffer buffer(&bytes);
-	buffer.open(QIODevice::WriteOnly);
-	pix.save(&buffer, "PNG");
 	QUrl url(graphApi + QString(prefs.facebook.album_id) + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
@@ -227,6 +222,12 @@ void FacebookManager::sendDive()
 	//name of the input is "uploaded" in my form, next one is a file name.
 	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");
 	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
+
+	QPixmap pix = grabProfilePixmap();
+	QByteArray bytes;
+	QBuffer buffer(&bytes);
+	buffer.open(QIODevice::WriteOnly);
+	pix.save(&buffer, "PNG");
 	data.append(bytes);   //let's read the file
 	data.append("\r\n");
 	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
