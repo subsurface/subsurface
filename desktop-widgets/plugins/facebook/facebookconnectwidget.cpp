@@ -171,6 +171,25 @@ void FacebookManager::setDesiredAlbumName(const QString& a)
 	albumName = a;
 }
 
+QPixmap FacebookManager::grabProfilePixmap()
+{
+	ProfileWidget2 *profile = MainWindow::instance()->graphics();
+
+	QSize size = fbInfo.profileSize == FacebookInfo::SMALL  ? QSize(800,600) :
+		     fbInfo.profileSize == FacebookInfo::MEDIUM ? QSize(1024,760) :
+		     fbInfo.profileSize == FacebookInfo::BIG ? QSize(1280,1024) : QSize();
+
+	auto currSize = profile->size();
+	profile->resize(size);
+	profile->setToolTipVisibile(false);
+	QPixmap pix = profile->grab();
+	profile->setToolTipVisibile(true);
+	profile->resize(currSize);
+
+	return pix;
+}
+
+
 /* to be changed to export the currently selected dive as shown on the profile.
  * Much much easier, and its also good to people do not select all the dives
  * and send erroniously *all* of them to facebook. */
@@ -183,19 +202,7 @@ void FacebookManager::sendDive()
 	setDesiredAlbumName(dialog.album());
 	requestAlbumId();
 
-	ProfileWidget2 *profile = MainWindow::instance()->graphics();
-
-	QSize size = dialog.profileSize() == FacebookInfo::SMALL  ? QSize(800,600) :
-		     dialog.profileSize() == FacebookInfo::MEDIUM ? QSize(1024,760) :
-		     dialog.profileSize() == FacebookInfo::BIG ? QSize(1280,1024) : QSize();
-
-	auto currSize = profile->size();
-	profile->resize(size);
-	profile->setToolTipVisibile(false);
-	QPixmap pix = profile->grab();
-	profile->setToolTipVisibile(true);
-	profile->resize(currSize);
-
+	QPixmap pix = grabProfilePixmap();
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);

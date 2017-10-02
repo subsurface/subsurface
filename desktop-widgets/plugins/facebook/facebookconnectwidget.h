@@ -36,6 +36,7 @@ public:
 	QUrl connectUrl();
 	QUrl albumListUrl();
 	bool loggedIn();
+	QPixmap grabProfilePixmap();
 signals:
 	void justLoggedIn(bool triggererd);
 	void justLoggedOut(bool triggered);
@@ -53,6 +54,7 @@ public slots:
 private:
 	explicit FacebookManager(QObject *parent = 0);
 	QString albumName;
+	FacebookInfo fbInfo;
 	QNetworkAccessManager *manager;
 };
 
