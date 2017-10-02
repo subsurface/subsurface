@@ -205,42 +205,19 @@ int const cns_table[][3] = {
 	{ 600, 720 * 60, 720 * 60 }
 };
 
-/* this only gets called if dive->maxcns == 0 which means we know that
- * none of the divecomputers has tracked any CNS for us
- * so we calculated it "by hand" */
-static int calculate_cns(struct dive *dive)
+/* Calculate the CNS for a single dive */
+double calculate_cns_dive(struct dive *dive)
 {
-	int i, divenr;
+	int n;
 	size_t j;
-	double cns = 0.0;
 	struct divecomputer *dc = &dive->dc;
-	struct dive *prev_dive;
-	timestamp_t endtime;
-
-	/* shortcut */
-	if (dive->cns)
-		return dive->cns;
-	/*
-	 * Do we start with a cns loading from a previous dive?
-	 * Check if we did a dive 12 hours prior, and what cns we had from that.
-	 * Then apply ha 90min halftime to see whats left.
-	 */
-	divenr = get_divenr(dive);
-	if (divenr) {
-		prev_dive = get_dive(divenr - 1);
-		if (prev_dive) {
-			endtime = dive_endtime(prev_dive);
-			if (dive->when < (endtime + 3600 * 12)) {
-				cns = calculate_cns(prev_dive);
-				cns = cns * 1 / pow(2, (dive->when - endtime) / (90.0 * 60.0));
-			}
-		}
-	}
-	/* Caclulate the cns for each sample in this dive and sum them */
-	for (i = 1; i < dc->samples; i++) {
+	double cns = 0.0;
+	
+	/* Caclulate the CNS for each sample in this dive and sum them */
+	for (n = 1; n < dc->samples; n++) {
 		int t;
 		int po2;
-		struct sample *sample = dc->sample + i;
+		struct sample *sample = dc->sample + n;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
 		if (sample->setpoint.mbar) {
@@ -259,6 +236,135 @@ static int calculate_cns(struct dive *dive)
 		j--;
 		cns += ((double)t) / ((double)cns_table[j][1]) * 100;
 	}
+	
+	return cns;
+}
+
+/* this only gets called if dive->maxcns == 0 which means we know that
+ * none of the divecomputers has tracked any CNS for us
+ * so we calculated it "by hand" */
+static int calculate_cns(struct dive *dive)
+{
+	int i, divenr;
+	double cns = 0.0;
+	timestamp_t last_starttime, last_endtime = 0;
+
+	/* shortcut */
+	if (dive->cns)
+		return dive->cns;
+
+	divenr = get_divenr(dive);
+	i = divenr >= 0 ? divenr : dive_table.nr;
+#if DECO_CALC_DEBUG & 2
+	if (i >= 0 && i < dive_table.nr) 
+		printf("\n\n*** CNS for dive #%d %d\n", i, get_dive(i)->number);
+	else 
+		printf("\n\n*** CNS for dive #%d\n", i);
+#endif
+	/* Look at next dive in dive list table and correct i when needed */
+	while (i < dive_table.nr - 1) {
+		struct dive *pdive = get_dive(i);
+		if (!pdive || pdive->when > dive->when)
+			break;
+		i++;
+	}
+	/* Look at previous dive in dive list table and correct i when needed */
+	while (i > 0) {
+		struct dive *pdive = get_dive(i - 1);
+		if (!pdive || pdive->when < dive->when)
+			break;
+		i--;
+	}
+#if DECO_CALC_DEBUG & 2
+	printf("Dive number corrected to #%d\n", i);
+#endif
+	last_starttime = dive->when;
+	/* Walk backwards to check previous dives - how far do we need to go back? */
+	while (i--) {
+		if (i == divenr && i > 0)
+			i--;
+#if DECO_CALC_DEBUG & 2
+		printf("Check if dive #%d %d has to be considered as prev dive: ", i, get_dive(i)->number);
+#endif
+		struct dive *pdive = get_dive(i);
+		/* we don't want to mix dives from different trips as we keep looking
+		 * for how far back we need to go */
+		if (dive->divetrip && pdive->divetrip != dive->divetrip) {
+#if DECO_CALC_DEBUG & 2
+			printf("No - other dive trip\n"); 
+#endif
+			continue;
+		}
+		if (!pdive || pdive->when >= dive->when || dive_endtime(pdive) + 12 * 60 * 60 < last_starttime) {
+#if DECO_CALC_DEBUG & 2
+			printf("No\n");
+#endif
+			break;
+		}
+		last_starttime = pdive->when;
+#if DECO_CALC_DEBUG & 2
+		printf("Yes\n");
+#endif
+	}
+	/* Walk forward and add dives and surface intervals to CNS */
+	while (++i < dive_table.nr) {
+#if DECO_CALC_DEBUG & 2
+		printf("Check if dive #%d %d will be really added to CNS calc: ", i, get_dive(i)->number);
+#endif
+		struct dive *pdive = get_dive(i);
+		/* again skip dives from different trips */
+		if (dive->divetrip && dive->divetrip != pdive->divetrip) {
+#if DECO_CALC_DEBUG & 2
+			printf("No - other dive trip\n"); 
+#endif
+			continue;
+		}
+		/* Don't add future dives */
+		if (pdive->when >= dive->when) {
+#if DECO_CALC_DEBUG & 2
+			printf("No - future or same dive\n");
+#endif
+			break;
+		}
+		/* Don't add the copy of the dive itself */
+		if (i == divenr) {
+#if DECO_CALC_DEBUG & 2
+			printf("No - copy of dive\n");
+#endif
+			continue;
+		}
+#if DECO_CALC_DEBUG & 2
+		printf("Yes\n");
+#endif
+
+		/* CNS reduced with 90min halftime during surface interval */
+		if (last_endtime) 
+			cns /= pow(2, (pdive->when - last_endtime) / (90.0 * 60.0));
+#if DECO_CALC_DEBUG & 2
+		printf("CNS after surface interval: %f\n", cns);
+#endif
+
+		cns += calculate_cns_dive(pdive);
+#if DECO_CALC_DEBUG & 2
+		printf("CNS after previous dive: %f\n", cns);
+#endif
+
+		last_starttime = pdive->when;
+		last_endtime = dive_endtime(pdive);
+	}
+	
+	/* CNS reduced with 90min halftime during surface interval */
+	if (last_endtime)
+		cns /= pow(2, (dive->when - last_endtime) / (90.0 * 60.0));
+#if DECO_CALC_DEBUG & 2
+	printf("CNS after last surface interval: %f\n", cns);
+#endif
+
+	cns += calculate_cns_dive(dive);
+#if DECO_CALC_DEBUG & 2
+	printf("CNS after dive: %f\n", cns);
+#endif
+
 	/* save calculated cns in dive struct */
 	dive->cns = lrint(cns);
 	return dive->cns;
