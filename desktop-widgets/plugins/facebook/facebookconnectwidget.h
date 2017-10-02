@@ -18,12 +18,13 @@ namespace Ui {
 }
 
 struct FacebookInfo {
-    enum Size {SMALL, MEDIUM, BIG};
+	enum Size {SMALL, MEDIUM, BIG};
 
-    QString bodyText;
-    QString albumId;
-    Size profileSize;
-    QPixmap profileData;
+	QString bodyText;
+	QString albumId;
+	QString albumName;
+	Size profileSize;
+	QPixmap profileData;
 };
 
 class FacebookManager : public QObject
@@ -56,7 +57,6 @@ public slots:
 	void facebookAlbumCreated();
 private:
 	explicit FacebookManager(QObject *parent = 0);
-	QString albumName;
 	FacebookInfo fbInfo;
 	QNetworkAccessManager *manager;
 };
