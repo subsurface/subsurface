@@ -127,13 +127,13 @@ export PKG_CONFIG_PATH=$INSTALL_ROOT/lib/pkgconfig:$PKG_CONFIG_PATH
 echo Building in $SRC, installing in $INSTALL_ROOT
 
 # find qmake
-if [ ! -z $CMAKE_PREFIX_PATH ] ; then
-	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
-else
+#if [ ! -z $CMAKE_PREFIX_PATH ] ; then
+#	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
+#else
 	hash qmake > /dev/null && QMAKE=qmake
 	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null && QMAKE=qmake-qt5
 	[ -z $QMAKE ] && echo "cannot find qmake" && exit 1
-fi
+#fi
 
 # on Debian and Ubuntu based systems, the private QtLocation and
 # QtPositioning headers aren't bundled. Download them if necessary.
