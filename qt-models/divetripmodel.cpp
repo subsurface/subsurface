@@ -36,6 +36,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModel::CYLINDER:
 	case DiveTripModel::GAS:
 	case DiveTripModel::PHOTOS:
+	case DiveTripModel::COUNTRY:
 	case DiveTripModel::LOCATION:
 		retVal = int(Qt::AlignLeft | Qt::AlignVCenter);
 		break;
@@ -137,6 +138,9 @@ QVariant DiveItem::data(int column, int role) const
 		case PHOTOS:
 			retVal = countPhotos(dive);
 			break;
+		case COUNTRY:
+			retVal = QString(get_dive_country(dive));
+			break;
 		case LOCATION:
 			retVal = QString(get_dive_location(dive));
 			break;
@@ -180,6 +184,9 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case PHOTOS:
 			break;
+		case COUNTRY:
+			retVal = QString(get_dive_country(dive));
+			break;
 		case LOCATION:
 			retVal = QString(get_dive_location(dive));
 			break;
@@ -192,6 +199,10 @@ QVariant DiveItem::data(int column, int role) const
 		break;
 	case Qt::DecorationRole:
 		switch (column) {
+		//TODO: ADD A FLAG
+		case COUNTRY:
+			retVal = QVariant();
+			break;
 		case LOCATION:
 			if (dive_has_gps_location(dive)) {
 				IconMetrics im = defaultIconMetrics();
@@ -252,6 +263,9 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case PHOTOS:
 			retVal = tr("Photos before/during/after dive");
+			break;
+		case COUNTRY:
+			retVal = tr("Country");
 			break;
 		case LOCATION:
 			retVal = tr("Location");
@@ -460,6 +474,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			break;
 		case PHOTOS:
 			ret = tr("Photos");
+			break;
+		case COUNTRY:
+			ret = tr("Country");
 			break;
 		case LOCATION:
 			ret = tr("Location");
