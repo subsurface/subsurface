@@ -85,19 +85,28 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	len = show_disclaimer ? snprintf(buffer, sz_buffer, "<div><b>%s</b><br></div>", disclaimer) : 0;
 
-	if (diveplan->surface_interval > 60) {
+	if (diveplan->surface_interval < 0) {
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s<br>",
+				translate("gettextFromC", "Subsurface"),
+				subsurface_canonical_version(),
+				translate("gettextFromC", "dive plan</b> (Overlapping dives detected)"));
+				dive->notes = strdup(buffer);
+				free((void *)buffer);
+				free((void *)temp);
+				return;
+	} else if (diveplan->surface_interval >= 48 * 60 *60) {
+		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
+				translate("gettextFromC", "Subsurface"),
+				subsurface_canonical_version(),
+				translate("gettextFromC", "dive plan</b> created on"),
+				get_current_date());
+	} else {
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %d:%02d) %s %s<br>",
 				translate("gettextFromC", "Subsurface"),
 				subsurface_canonical_version(),
 				translate("gettextFromC", "dive plan</b> (surface interval "),
 				FRACTION(diveplan->surface_interval / 60, 60),
 				translate("gettextFromC", "created on"),
-				get_current_date());
-	} else {
-		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
-				translate("gettextFromC", "Subsurface"),
-				subsurface_canonical_version(),
-				translate("gettextFromC", "dive plan</b> created on"),
 				get_current_date());
 	}
 

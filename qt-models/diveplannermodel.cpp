@@ -1101,6 +1101,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		copy_dive(&displayed_dive, current_dive);
 	}
 	mark_divelist_changed(true);
+	sort_table(&dive_table);
 
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.

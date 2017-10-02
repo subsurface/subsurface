@@ -127,7 +127,7 @@ void interpolate_transition(struct dive *dive, duration_t t0, duration_t t1, dep
 }
 
 /* returns the tissue tolerance at the end of this (partial) dive */
-unsigned int tissue_at_end(struct dive *dive, struct deco_state **cached_datap)
+int tissue_at_end(struct dive *dive, struct deco_state **cached_datap)
 {
 	struct divecomputer *dc;
 	struct sample *sample, *psample;
@@ -135,7 +135,7 @@ unsigned int tissue_at_end(struct dive *dive, struct deco_state **cached_datap)
 	depth_t lastdepth = {};
 	duration_t t0 = {}, t1 = {};
 	struct gasmix gas;
-	unsigned int surface_interval = 0;
+	int surface_interval = 0;
 
 	if (!dive)
 		return 0;
