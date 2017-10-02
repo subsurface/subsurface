@@ -45,7 +45,6 @@ signals:
 public slots:
 	void tryLogin(const QUrl& loginResponse);
 	void logout();
-	void setDesiredAlbumName(const QString& albumName);
 	void sendDive();
 	void uploadFinished();
 	void albumListReceived();
