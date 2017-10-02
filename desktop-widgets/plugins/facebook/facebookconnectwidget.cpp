@@ -70,8 +70,7 @@ bool FacebookManager::loggedIn() {
 
 void FacebookManager::tryLogin(const QUrl& loginResponse)
 {
-	qCDebug(lcFacebook) << "Response from login call" << loginResponse;
-
+	qCDebug(lcFacebook) << "Current url call" << loginResponse;
 	QString result = loginResponse.toString();
 	if (!result.contains("access_token")) {
 		qCDebug(lcFacebook) << "Response without access token!";
@@ -330,6 +329,7 @@ void FacebookConnectWidget::facebookLoggedIn()
 
 void FacebookConnectWidget::facebookDisconnect()
 {
+	qCDebug(lcFacebook) << "Disconnecting from facebook";
 	// remove the connect/disconnect button
 	// and instead add the login view
 	ui->fbWebviewContainer->show();

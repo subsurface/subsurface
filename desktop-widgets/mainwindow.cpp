@@ -362,6 +362,7 @@ void MainWindow::facebookLoggedOut()
 
 void MainWindow::socialNetworkRequestConnect()
 {
+	qDebug() << "Requesting connect on the social network";
 	QAction *action = qobject_cast<QAction*>(sender());
 	ISocialNetworkIntegration *plugin = qobject_cast<ISocialNetworkIntegration*>(action->data().value<QObject*>());
 	if (plugin->isConnected())
