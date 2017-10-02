@@ -40,5 +40,5 @@ void FacebookPlugin::requestUpload()
 {
 	FacebookManager *instance = FacebookManager::instance();
 	if (instance->loggedIn())
-		instance->sendDive();
+		instance->sendDiveInit();
 }

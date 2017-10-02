@@ -41,6 +41,7 @@ FacebookManager::FacebookManager(QObject *parent) :
 	QObject(parent),
 	manager(new QNetworkAccessManager(this))
 {
+	connect(this, &FacebookManager::albumIdReceived, this, &FacebookManager::sendDiveToAlbum);
 }
 
 static QString graphApi = QStringLiteral("https://graph.facebook.com/v2.10/");
@@ -190,7 +191,7 @@ QPixmap FacebookManager::grabProfilePixmap()
 /* to be changed to export the currently selected dive as shown on the profile.
  * Much much easier, and its also good to people do not select all the dives
  * and send erroniously *all* of them to facebook. */
-void FacebookManager::sendDive()
+void FacebookManager::sendDiveInit()
 {
 	SocialNetworkDialog dialog(qApp->activeWindow());
 	if (dialog.exec() != QDialog::Accepted)
@@ -201,12 +202,16 @@ void FacebookManager::sendDive()
 	fbInfo.profileData = grabProfilePixmap();
 	fbInfo.albumId = QString(); // request Album Id wil handle that.
 
+	// will emit albumIdReceived, that's connected to sendDiveToAlbum
 	requestAlbumId();
+}
 
-	QUrl url(graphApi + QString(prefs.facebook.album_id) + "/photos?" +
+void FacebookManager::sendDiveToAlbum(const QString& album)
+{
+	QUrl url(graphApi + album + "/photos?" +
 		 "&access_token=" + QString(prefs.facebook.access_token) +
 		 "&source=image" +
-		 "&message=" + dialog.text().replace("&quot;", "%22"));
+		 "&message=" + fbInfo.bodyText.replace("&quot;", "%22"));
 
 	QNetworkRequest request(url);
 
@@ -222,11 +227,11 @@ void FacebookManager::sendDive()
 	data.append("Content-Disposition: form-data; name=\"uploaded\"; filename=\"" + QString::number(qrand()) + ".png\"\r\n");
 	data.append("Content-Type: image/jpeg\r\n\r\n"); //data type
 
-	QPixmap pix = grabProfilePixmap();
 	QByteArray bytes;
 	QBuffer buffer(&bytes);
 	buffer.open(QIODevice::WriteOnly);
-	pix.save(&buffer, "PNG");
+	fbInfo.profileData.save(&buffer, "PNG");
+
 	data.append(bytes);   //let's read the file
 	data.append("\r\n");
 	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
@@ -260,6 +265,8 @@ void FacebookManager::uploadFinished()
 					    + response),
 		QMessageBox::Ok);
 	}
+
+	emit sendDiveFinished();
 }
 
 FacebookConnectWidget::FacebookConnectWidget(QWidget *parent) : QDialog(parent), ui(new Ui::FacebookConnectWidget) {

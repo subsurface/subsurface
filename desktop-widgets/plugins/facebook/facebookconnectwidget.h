@@ -41,11 +41,14 @@ signals:
 	void justLoggedIn(bool triggererd);
 	void justLoggedOut(bool triggered);
 	void albumIdReceived(const QString& albumId);
+	void sendDiveFinished();
 
 public slots:
 	void tryLogin(const QUrl& loginResponse);
 	void logout();
-	void sendDive();
+	void sendDiveInit();
+	void sendDiveToAlbum(const QString& album);
+
 	void uploadFinished();
 	void albumListReceived();
 	void userIdReceived();
