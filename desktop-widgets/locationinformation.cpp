@@ -93,6 +93,10 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteName->setText(displayed_dive_site.name);
 	else
 		ui.diveSiteName->clear();
+	if (displayed_dive_site.country)
+		ui.diveSiteCountry->setText(displayed_dive_site.country);
+	else
+		ui.diveSiteCountry->clear();
 	if (displayed_dive_site.description)
 		ui.diveSiteDescription->setText(displayed_dive_site.description);
 	else
@@ -146,6 +150,11 @@ void LocationInformationWidget::acceptChanges()
 	if (!same_string(uiString, currentDs->description)) {
 		free(currentDs->description);
 		currentDs->description = copy_string(uiString);
+	}
+	uiString = ui.diveSiteCountry->text().toUtf8().data();
+	if (!same_string(uiString, currentDs->country)) {
+		free(currentDs->country);
+		currentDs->country = copy_string(uiString);
 	}
 	uiString = ui.diveSiteNotes->document()->toPlainText().toUtf8().data();
 	if (!same_string(uiString, currentDs->notes)) {
@@ -243,6 +252,12 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 	free((void *)coords);
 }
 
+void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& text)
+{
+	if (!same_string(qPrintable(text), displayed_dive_site.country))
+		markChangedWidget(ui.diveSiteCountry);
+}
+
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString &text)
 {
 	if (!same_string(qPrintable(text), displayed_dive_site.description))
@@ -266,6 +281,7 @@ void LocationInformationWidget::resetPallete()
 	QPalette p;
 	ui.diveSiteCoordinates->setPalette(p);
 	ui.diveSiteDescription->setPalette(p);
+	ui.diveSiteCountry->setPalette(p);
 	ui.diveSiteName->setPalette(p);
 	ui.diveSiteNotes->setPalette(p);
 }
