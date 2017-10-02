@@ -196,6 +196,11 @@ void FacebookManager::sendDive()
 	if (dialog.exec() != QDialog::Accepted)
 		return;
 
+	fbInfo.bodyText = dialog.text();
+	fbInfo.profileSize = dialog.profileSize();
+	fbInfo.profileData = grabProfilePixmap();
+	fbInfo.albumId = QString(); // request Album Id wil handle that.
+
 	requestAlbumId();
 
 	QUrl url(graphApi + QString(prefs.facebook.album_id) + "/photos?" +
