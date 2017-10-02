@@ -205,6 +205,7 @@ uint32_t create_dive_site(const char *name, timestamp_t divetime)
 	uint32_t uuid = create_divesite_uuid(name, divetime);
 	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
+	ds->country = NULL;
 	return uuid;
 }
 
@@ -239,6 +240,7 @@ bool dive_site_is_empty(struct dive_site *ds)
 	return same_string(ds->name, "") &&
 	       same_string(ds->description, "") &&
 	       same_string(ds->notes, "") &&
+	       same_string(ds->country, "") &&
 	       ds->latitude.udeg == 0 &&
 	       ds->longitude.udeg == 0;
 }
@@ -247,6 +249,7 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 {
 	free(copy->name);
 	free(copy->notes);
+	free(copy->country);
 	free(copy->description);
 
 	copy->latitude = orig->latitude;
@@ -254,6 +257,7 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	copy->name = copy_string(orig->name);
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
+	copy->country = copy_string(orig->country);
 	copy->uuid = orig->uuid;
 	if (orig->taxonomy.category == NULL) {
 		free_taxonomy(&copy->taxonomy);
@@ -298,6 +302,7 @@ void merge_dive_site(struct dive_site *a, struct dive_site *b)
 	merge_string(&a->name, &b->name);
 	merge_string(&a->notes, &b->notes);
 	merge_string(&a->description, &b->description);
+	merge_string(&a->country, &b->country);
 
 	if (!a->taxonomy.category) {
 		a->taxonomy = b->taxonomy;
@@ -310,6 +315,7 @@ void clear_dive_site(struct dive_site *ds)
 	free(ds->name);
 	free(ds->notes);
 	free(ds->description);
+	free(ds->name);
 	ds->name = 0;
 	ds->notes = 0;
 	ds->description = 0;
@@ -317,6 +323,7 @@ void clear_dive_site(struct dive_site *ds)
 	ds->longitude.udeg = 0;
 	ds->uuid = 0;
 	ds->taxonomy.nr = 0;
+	ds->country = 0;
 	free_taxonomy(&ds->taxonomy);
 }
 
