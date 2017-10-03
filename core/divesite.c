@@ -245,20 +245,8 @@ bool dive_site_is_empty(struct dive_site *ds)
 	       ds->longitude.udeg == 0;
 }
 
-void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
+void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy)
 {
-	free(copy->name);
-	free(copy->notes);
-	free(copy->country);
-	free(copy->description);
-
-	copy->latitude = orig->latitude;
-	copy->longitude = orig->longitude;
-	copy->name = copy_string(orig->name);
-	copy->notes = copy_string(orig->notes);
-	copy->description = copy_string(orig->description);
-	copy->country = copy_string(orig->country);
-	copy->uuid = orig->uuid;
 	if (orig->taxonomy.category == NULL) {
 		free_taxonomy(&copy->taxonomy);
 	} else {
@@ -274,6 +262,20 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 		}
 		copy->taxonomy.nr = orig->taxonomy.nr;
 	}
+}
+void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
+{
+	free(copy->name);
+	free(copy->notes);
+	free(copy->description);
+
+	copy->latitude = orig->latitude;
+	copy->longitude = orig->longitude;
+	copy->name = copy_string(orig->name);
+	copy->notes = copy_string(orig->notes);
+	copy->description = copy_string(orig->description);
+	copy->uuid = orig->uuid;
+	copy_dive_site_taxonomy(orig, copy);
 }
 
 static void merge_string(char **a, char **b)
