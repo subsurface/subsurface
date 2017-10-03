@@ -17,7 +17,6 @@ struct dive_site
 {
 	uint32_t uuid;
 	char *name;
-	char *country;
 	degrees_t latitude, longitude;
 	char *description;
 	char *notes;

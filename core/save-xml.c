@@ -598,7 +598,6 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
 		show_utf8(b, ds->name, " name='", "'", 1);
-		show_utf8(b, ds->country, " country='", "'", 1);
 		if (ds->latitude.udeg || ds->longitude.udeg) {
 			put_degrees(b, ds->latitude, " gps='", " ");
 			put_degrees(b, ds->longitude, "", "'");
