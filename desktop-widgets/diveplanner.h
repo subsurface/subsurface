@@ -74,11 +74,11 @@ slots:
 	void bottomSacChanged(const double bottomSac);
 	void decoSacChanged(const double decosac);
 	void printDecoPlan();
-	void setAscRate75(int rate);
-	void setAscRate50(int rate);
-	void setAscRateStops(int rate);
-	void setAscRateLast6m(int rate);
-	void setDescRate(int rate);
+	void setAscrate75(int rate);
+	void setAscrate50(int rate);
+	void setAscratestops(int rate);
+	void setAscratelast6m(int rate);
+	void setDescrate(int rate);
 	void sacFactorChanged(const double factor);
 	void problemSolvingTimeChanged(const int min);
 	void setBottomPo2(double po2);

@@ -359,16 +359,16 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.display_variations, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayVariations(bool)));
 	connect(ui.safetystop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSafetyStop(bool)));
 	connect(ui.reserve_gas, SIGNAL(valueChanged(int)), plannerModel, SLOT(setReserveGas(int)));
-	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRate75, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRate50, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRateStops, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.ascRateLast6m, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
-	connect(ui.descRate, SIGNAL(editingFinished()), plannerModel, SLOT(emitDataChanged()));
+	connect(ui.ascRate75, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate75(int)));
+	connect(ui.ascRate50, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscrate50(int)));
+	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratestops(int)));
+	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratelast6m(int)));
+	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(setDescrate(int)));
+	connect(ui.ascRate75, SIGNAL(editingFinished()), plannerModel, SLOT(setAscrate75(int)));
+	connect(ui.ascRate50, SIGNAL(editingFinished()), plannerModel, SLOT(setAscrate50(int)));
+	connect(ui.ascRateStops, SIGNAL(editingFinished()), plannerModel, SLOT(setAscratestops(int)));
+	connect(ui.ascRateLast6m, SIGNAL(editingFinished()), plannerModel, SLOT(setAscratelast6m(int)));
+	connect(ui.descRate, SIGNAL(editingFinished()), plannerModel, SLOT(setDescrate(int)));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
@@ -384,11 +384,11 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.bestmixEND, SIGNAL(valueChanged(int)), CylindersModel::instance(), SLOT(updateBestMixes()));
 
 	connect(modeMapper, SIGNAL(mapped(int)), this, SLOT(disableDecoElements(int)));
-	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscRate75(int)));
-	connect(ui.ascRate50, SIGNAL(valueChanged(int)), this, SLOT(setAscRate50(int)));
-	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescRate(int)));
-	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), this, SLOT(setAscRateStops(int)));
-	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), this, SLOT(setAscRateLast6m(int)));
+	connect(ui.ascRate75, SIGNAL(valueChanged(int)), this, SLOT(setAscrate75(int)));
+	connect(ui.ascRate50, SIGNAL(valueChanged(int)), this, SLOT(setAscrate50(int)));
+	connect(ui.descRate, SIGNAL(valueChanged(int)), this, SLOT(setDescrate(int)));
+	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), this, SLOT(setAscratestops(int)));
+	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), this, SLOT(setAscratelast6m(int)));
 	connect(ui.sacfactor, SIGNAL(valueChanged(double)), this, SLOT(sacFactorChanged(double)));
 	connect(ui.problemsolvingtime, SIGNAL(valueChanged(int)), this, SLOT(problemSolvingTimeChanged(int)));
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), this, SLOT(setBottomPo2(double)));
@@ -484,27 +484,27 @@ void PlannerSettingsWidget::printDecoPlan()
 {
 }
 
-void PlannerSettingsWidget::setAscRate75(int rate)
+void PlannerSettingsWidget::setAscrate75(int rate)
 {
 	SettingsObjectWrapper::instance()->planner_settings->setAscrate75(lrint(rate * UNIT_FACTOR));
 }
 
-void PlannerSettingsWidget::setAscRate50(int rate)
+void PlannerSettingsWidget::setAscrate50(int rate)
 {
 	SettingsObjectWrapper::instance()->planner_settings->setAscrate50(lrint(rate * UNIT_FACTOR));
 }
 
-void PlannerSettingsWidget::setAscRateStops(int rate)
+void PlannerSettingsWidget::setAscratestops(int rate)
 {
 	SettingsObjectWrapper::instance()->planner_settings->setAscratestops(lrint(rate * UNIT_FACTOR));
 }
 
-void PlannerSettingsWidget::setAscRateLast6m(int rate)
+void PlannerSettingsWidget::setAscratelast6m(int rate)
 {
 	SettingsObjectWrapper::instance()->planner_settings->setAscratelast6m(lrint(rate * UNIT_FACTOR));
 }
 
-void PlannerSettingsWidget::setDescRate(int rate)
+void PlannerSettingsWidget::setDescrate(int rate)
 {
 	SettingsObjectWrapper::instance()->planner_settings->setDescrate(lrint(rate * UNIT_FACTOR));
 }
