@@ -32,8 +32,8 @@ if [ "$NOPULL" = "" ] ; then
 	pushd kirigami
 	git checkout master
 	git pull origin master
-	# let's go back to building against master
-	# git checkout v2.1.0
+	# building against master breaks after 23ca2077027b214189ba72ca8dab1590a163c955
+	git checkout v2.2.0
 	popd
 fi
 if [ ! -d breeze-icons ] ; then
