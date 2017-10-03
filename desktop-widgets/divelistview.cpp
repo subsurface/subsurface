@@ -25,9 +25,6 @@
 #include "core/metrics.h"
 #include "core/helpers.h"
 
-//                                #  Date  Rtg Dpth  Dur  Tmp Wght Suit  Cyl  Gas  SAC  OTU  CNS  Px  Loc
-static int defaultWidth[] =    {  70, 140, 90,  50,  50,  50,  50,  70,  50,  50,  70,  50,  50,  5, 500};
-
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
 	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false)
 {
@@ -58,7 +55,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 	// TODO FIXME we need this to get the header names
 	// can we find a smarter way?
-	DiveTripModel *tripModel = new DiveTripModel(this);
+	tripModel = new DiveTripModel(this);
 
 	// set the default width as a minimum between the hard-coded defaults,
 	// the header text width and the (assumed) content width, calculated
@@ -94,8 +91,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 		if (sw > width)
 			width = sw;
 		width += zw; // small padding
-		if (width > defaultWidth[col])
-			defaultWidth[col] = width;
+		if (width > tripModel->columnWidth(col))
+			tripModel->setColumnWidth(col, width);
 	}
 	delete tripModel;
 
@@ -114,7 +111,7 @@ DiveListView::~DiveListView()
 		if (isColumnHidden(i))
 			continue;
 		// we used to hardcode them all to 100 - so that might still be in the settings
-		if (columnWidth(i) == 100 || columnWidth(i) == defaultWidth[i])
+		if (columnWidth(i) == 100 || columnWidth(i) == tripModel->columnWidth(i))
 			settings.remove(QString("colwidth%1").arg(i));
 		else
 			settings.setValue(QString("colwidth%1").arg(i), columnWidth(i));
@@ -140,7 +137,7 @@ void DiveListView::setupUi()
 		if (width.isValid())
 			setColumnWidth(i, width.toInt());
 		else
-			setColumnWidth(i, defaultWidth[i]);
+			setColumnWidth(i, tripModel->columnWidth(i));
 	}
 	settings.endGroup();
 	if (firstRun)
