@@ -2,6 +2,7 @@
 #include "taxonomy.h"
 #include "gettext.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 char *taxonomy_category_names[TC_NR_CATEGORIES] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "None"),
@@ -46,4 +47,32 @@ int taxonomy_index_for_category(struct taxonomy_data *t, enum taxonomy_category 
 		if (t->category[i].category == cat)
 			return i;
 	return -1;
+}
+
+const char *taxonomy_get_country(struct taxonomy_data *t)
+{
+	for (int i = 0; i < t->nr; i++)
+		if (t->category[i].category == TC_COUNTRY)
+			return t->category[i].value;
+	return NULL;
+}
+
+void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum taxonomy_origin origin)
+{
+	int idx = -1;
+	for (int i = 0; i < t->nr; i++)
+		if (t->category[i].category == TC_COUNTRY) {
+			idx = i;
+			break;
+		}
+	if (idx == -1) {
+		if (t->nr == TC_NR_CATEGORIES - 1) {
+			// can't add another one
+			fprintf(stderr, "Error adding country taxonomy\n");
+			return;
+		}
+		idx = ++t->nr;
+	}
+	t->category[idx].value = country;
+	t->category[idx].origin = origin;
 }
