@@ -2,10 +2,9 @@
 #include "divesite.h"
 #include "pref.h"
 
-QString constructLocationTags(uint32_t ds_uuid)
+QString constructLocationTags(struct dive_site *ds)
 {
 	QString locationTag;
-	struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
 
 	if (!ds || !ds->taxonomy.nr)
 		return locationTag;

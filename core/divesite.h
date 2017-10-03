@@ -76,7 +76,7 @@ void merge_dive_sites(uint32_t ref, uint32_t *uuids, int count);
 
 #ifdef __cplusplus
 }
-QString constructLocationTags(uint32_t ds_uuid);
+QString constructLocationTags(struct dive_site *ds);
 
 #endif
 
