@@ -368,7 +368,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	/* Print gas consumption: This loop covers all cylinders */
 	for (int gasidx = 0; gasidx < MAX_CYLINDERS; gasidx++) {
-		double volume, pressure, deco_volume, deco_pressure, mingas_volume, mingas_pressure, mingas_depth;
+		double volume, pressure, deco_volume, deco_pressure, mingas_volume, mingas_pressure, mingas_d_pressure, mingas_depth;
 		const char *unit, *pressure_unit, *depth_unit;
 		char warning[1000] = "";
 		char mingas[1000] = "";
@@ -380,9 +380,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
 			int remaining_gas = lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0));
-			double deco_pressure_bar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter, cyl->type.size.mliter)
-					- cyl->end.mbar / 1000.0;
-			deco_pressure = get_pressure_units(lrint(1000.0 * deco_pressure_bar), &pressure_unit);
+			double deco_pressure_mbar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter, cyl->type.size.mliter) * 1000
+					- cyl->end.mbar;
+			deco_pressure = get_pressure_units(lrint(deco_pressure_mbar), &pressure_unit);
 			pressure = get_pressure_units(cyl->start.mbar - cyl->end.mbar, &pressure_unit);
 			/* Warn if the plan uses more gas than is available in a cylinder
 			 * This only works if we have working pressure for the cylinder
@@ -414,18 +414,19 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					/* Translate all results into correct units */
 					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
 					mingas_pressure = get_pressure_units(lastbottomdp->minimum_gas.mbar, &pressure_unit);
+					mingas_d_pressure = get_pressure_units(lrint((double)cyl->end.mbar + deco_pressure_mbar - lastbottomdp->minimum_gas.mbar), &pressure_unit);
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
-					bool minok = (mingasv.mliter <=
-							cyl->deco_gas_used.mliter +
-							lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)));
 					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) snprintf(mingas, sizeof(mingas),
-						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: %s;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): %.0f%s/%.0f%s"),
-						minok ? "green" :"red",
+						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: %s;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): \
+							%.0f%s/%.0f%s/<span style='color: %s;'>&Delta;:%+.0f%s</span>"),
+						mingas_d_pressure > 0 ? "green" :"red",
 						prefs.sacfactor / 100.0, prefs.problemsolvingtime,
 						mingas_depth, depth_unit,
 						mingas_volume, unit,
-						mingas_pressure, pressure_unit);
+						mingas_pressure, pressure_unit,
+						mingas_d_pressure > 0 ? "green" :"red",
+						mingas_d_pressure, pressure_unit);
 					else snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
