@@ -330,8 +330,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 			sample->depth = lastdepth;
 			sample->manually_entered = dp->entered;
 			sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
-			if (track_gas && cyl->type.workingpressure.mbar)
-				sample->pressure[0].mbar = cyl->sample_end.mbar;
 			finish_sample(dc);
 			lastcylid = dp->cylinderid;
 		}
