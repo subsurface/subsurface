@@ -65,6 +65,7 @@ uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, stru
 uint32_t get_dive_site_uuid_by_gps_and_name(char *name, degrees_t latitude, degrees_t longitude);
 uint32_t get_dive_site_uuid_by_gps_proximity(degrees_t latitude, degrees_t longitude, int distance, struct dive_site **dsp);
 bool dive_site_is_empty(struct dive_site *ds);
+void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy);
 void copy_dive_site(struct dive_site *orig, struct dive_site *copy);
 void merge_dive_site(struct dive_site *a, struct dive_site *b);
 void clear_dive_site(struct dive_site *ds);
