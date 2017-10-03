@@ -93,8 +93,9 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteName->setText(displayed_dive_site.name);
 	else
 		ui.diveSiteName->clear();
-	if (displayed_dive_site.country)
-		ui.diveSiteCountry->setText(displayed_dive_site.country);
+	const char *country = taxonomy_get_country(&displayed_dive_site.taxonomy);
+	if (country)
+		ui.diveSiteCountry->setText(country);
 	else
 		ui.diveSiteCountry->clear();
 	if (displayed_dive_site.description)
@@ -151,11 +152,15 @@ void LocationInformationWidget::acceptChanges()
 		free(currentDs->description);
 		currentDs->description = copy_string(uiString);
 	}
-	uiString = ui.diveSiteCountry->text().toUtf8().data();
-	if (!same_string(uiString, currentDs->country)) {
-		free(currentDs->country);
-		currentDs->country = copy_string(uiString);
-	}
+	uiString = copy_string(ui.diveSiteCountry->text().toUtf8().data());
+	// if the user entered a different contriy, first update the taxonomy
+	// for the displayed dive site; this below will get copied into the currentDs
+	if (!same_string(uiString, taxonomy_get_country(&displayed_dive_site.taxonomy)) &&
+	    !same_string(uiString, ""))
+		taxonomy_set_country(&displayed_dive_site.taxonomy, copy_string(uiString), taxonomy_origin::GEOMANUAL);
+	// now update the currentDs (which we then later copy back ontop of displayed_dive_site
+	copy_dive_site_taxonomy(&displayed_dive_site, currentDs);
+
 	uiString = ui.diveSiteNotes->document()->toPlainText().toUtf8().data();
 	if (!same_string(uiString, currentDs->notes)) {
 		free(currentDs->notes);
@@ -254,7 +259,7 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 
 void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& text)
 {
-	if (!same_string(qPrintable(text), displayed_dive_site.country))
+	if (!same_string(qPrintable(text), taxonomy_get_country(&displayed_dive_site.taxonomy)))
 		markChangedWidget(ui.diveSiteCountry);
 }
 

@@ -1057,6 +1057,7 @@ static void divinglog_place(char *place, uint32_t *uuid)
 	if (*uuid == 0)
 		*uuid = create_dive_site(buffer, cur_dive->when);
 
+	// TODO: capture the country / city info in the taxonomy instead
 	city = NULL;
 	country = NULL;
 }
@@ -1505,8 +1506,6 @@ static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, cha
 	if (MATCH("uuid", hex_value, &ds->uuid))
 		return;
 	if (MATCH("name", utf8_string, &ds->name))
-		return;
-	if (MATCH("country", utf8_string, &ds->country))
 		return;
 	if (MATCH("description", utf8_string, &ds->description))
 		return;

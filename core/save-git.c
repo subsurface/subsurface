@@ -961,7 +961,6 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		}
 		struct membuffer site_file_name = { 0 };
 		put_format(&site_file_name, "Site-%08x", ds->uuid);
-		show_utf8(&b, "country ", ds->country, "\n");
 		show_utf8(&b, "name ", ds->name, "\n");
 		show_utf8(&b, "description ", ds->description, "\n");
 		show_utf8(&b, "notes ", ds->notes, "\n");
