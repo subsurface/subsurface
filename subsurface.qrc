@@ -9,6 +9,7 @@
         <file alias="mapwidget-context-menu">mobile-widgets/qml/icons/mapwidget-context-menu.png</file>
         <file alias="mapwidget-zoom-in">mobile-widgets/qml/icons/mapwidget-zoom-in.png</file>
         <file alias="mapwidget-zoom-out">mobile-widgets/qml/icons/mapwidget-zoom-out.png</file>
+        <file alias="satellite.svg">icons/satellite.svg</file>
         <file alias="star">icons/star.svg</file>
         <file alias="subsurface-icon">icons/subsurface-icon.png</file>
         <file alias="subsurface-mobile-icon">icons/subsurface-mobile-icon.png</file>
