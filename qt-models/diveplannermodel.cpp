@@ -10,6 +10,8 @@
 #include <QApplication>
 #include <QTextDocument>
 
+#define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
+
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
  * use the signal warningMessage() to communicate errors to the MainWindow.
  */
@@ -491,6 +493,41 @@ void DivePlannerPointsModel::setLastStop6m(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setLastStop(value);
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::setAscrate75(int rate)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setAscrate75(lrint(rate * UNIT_FACTOR));
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::setAscrate50(int rate)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setAscrate50(lrint(rate * UNIT_FACTOR));
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::setAscratestops(int rate)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setAscratestops(lrint(rate * UNIT_FACTOR));
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::setAscratelast6m(int rate)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setAscratelast6m(lrint(rate * UNIT_FACTOR));
+	emitDataChanged();
+}
+
+void DivePlannerPointsModel::setDescrate(int rate)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setDescrate(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
