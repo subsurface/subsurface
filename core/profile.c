@@ -965,7 +965,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
 	 * Set maximum number of iterations to 10 just in case */
 	while ((abs(prev_deco_time - deco_time) >= 30) && (count_iteration < 10)) {
-		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0;
+		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling, final_tts = 0 , time_clear_ceiling = 0, time_deep_ceiling = 0;
 		deco_state->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
 		struct event *ev = NULL;
@@ -998,7 +998,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				entry->ceiling = (entry - 1)->ceiling;
 			} else {
 				/* Keep updating the VPM-B gradients until the start of the ascent phase of the dive. */
-				if (decoMode() == VPMB && !in_planner() && (entry - 1)->ceiling >= first_ceiling && first_iteration == true) {
+				if (decoMode() == VPMB && !in_planner() && last_ceiling >= first_ceiling && first_iteration == true) {
 					nuclear_regeneration(t1);
 					vpmb_start_gradient();
 					/* For CVA calculations, start by guessing deco time = dive time remaining */
@@ -1010,6 +1010,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 					current_ceiling = deco_allowed_depth(tissue_tolerance_calc(dive, depth_to_bar(entry->depth, dive)), surface_pressure, dive, true);
 				else
 					current_ceiling = entry->ceiling;
+				last_ceiling = current_ceiling;
 				/* If using VPM-B outside the planner, take first_ceiling_pressure as the deepest ceiling */
 				if (decoMode() == VPMB && !in_planner()) {
 					if  (current_ceiling > first_ceiling) {
