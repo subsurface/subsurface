@@ -105,7 +105,7 @@ void ReverseGeoLookupThread::run() {
 				for (int j = TC_COUNTRY; j < TC_NR_CATEGORIES; j++) {
 					if (firstData[taxonomy_api_names[j]].isValid()) {
 						ds->taxonomy.category[ri].category = j;
-						ds->taxonomy.category[ri].origin = taxonomy::GEOCODED;
+						ds->taxonomy.category[ri].origin = taxonomy_origin::GEOCODED;
 						free((void*)ds->taxonomy.category[ri].value);
 						ds->taxonomy.category[ri].value = copy_string(qPrintable(firstData[taxonomy_api_names[j]].toString()));
 						ri++;
@@ -119,7 +119,7 @@ void ReverseGeoLookupThread::run() {
 					// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
 					// then we copy the town into the city
 					ds->taxonomy.category[ri].value = copy_string(ds->taxonomy.category[lt].value);
-					ds->taxonomy.category[ri].origin = taxonomy::COPIED;
+					ds->taxonomy.category[ri].origin = taxonomy_origin::GEOCOPIED;
 					ds->taxonomy.category[ri].category = TC_ADMIN_L3;
 					ds->taxonomy.nr++;
 				}
@@ -167,7 +167,7 @@ void ReverseGeoLookupThread::run() {
 					idx = ds->taxonomy.nr;
 				if (idx < TC_NR_CATEGORIES) {
 					ds->taxonomy.category[idx].category = TC_OCEAN;
-					ds->taxonomy.category[idx].origin = taxonomy::GEOCODED;
+					ds->taxonomy.category[idx].origin = taxonomy_origin::GEOCODED;
 					ds->taxonomy.category[idx].value = copy_string(qPrintable(oceanName["name"].toString()));
 					if (idx == ds->taxonomy.nr)
 						ds->taxonomy.nr++;
