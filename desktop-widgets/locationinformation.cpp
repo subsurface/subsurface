@@ -292,7 +292,7 @@ void LocationInformationWidget::resetPallete()
 void LocationInformationWidget::reverseGeocode()
 {
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
-	geoLookup->lookup(&displayed_dive_site);
+	geoLookup->run();
 	updateLabels();
 }
 

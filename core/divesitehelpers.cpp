@@ -19,14 +19,6 @@
 #include <QEventLoop>
 #include <QTimer>
 
-struct GeoLookupInfo {
-	degrees_t lat;
-	degrees_t lon;
-	uint32_t uuid;
-};
-
-QVector<GeoLookupInfo> geo_lookup_data;
-
 ReverseGeoLookupThread* ReverseGeoLookupThread::instance() {
 	static ReverseGeoLookupThread* self = new ReverseGeoLookupThread();
 	return self;
@@ -37,8 +29,6 @@ ReverseGeoLookupThread::ReverseGeoLookupThread(QObject *obj) : QThread(obj)
 }
 
 void ReverseGeoLookupThread::run() {
-	if (geo_lookup_data.isEmpty())
-		return;
 
 	QNetworkRequest request;
 	QNetworkAccessManager *rgl = new QNetworkAccessManager();
@@ -53,11 +43,10 @@ void ReverseGeoLookupThread::run() {
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
-	Q_FOREACH (const GeoLookupInfo& info, geo_lookup_data ) {
-		struct dive_site *ds = info.uuid ? get_dive_site_by_uuid(info.uuid) : &displayed_dive_site;
+		struct dive_site *ds = &displayed_dive_site;
 
 		// first check the findNearbyPlaces API from geonames - that should give us country, state, city
-		request.setUrl(geonamesURL.arg(uiLanguage(NULL)).arg(info.lat.udeg / 1000000.0).arg(info.lon.udeg / 1000000.0));
+		request.setUrl(geonamesURL.arg(uiLanguage(NULL)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 
 		QNetworkReply *reply = rgl->get(request);
 		timer.setSingleShot(true);
@@ -134,7 +123,7 @@ void ReverseGeoLookupThread::run() {
 			reply->abort();
 		}
 		// next check the oceans API to figure out the body of water
-		request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL)).arg(info.lat.udeg / 1000000.0).arg(info.lon.udeg / 1000000.0));
+		request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 		reply = rgl->get(request);
 		connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 		timer.start(5000);   // 5 secs. timeout
@@ -182,29 +171,6 @@ void ReverseGeoLookupThread::run() {
 
 clear_reply:
 		reply->deleteLater();
-	}
+
 	rgl->deleteLater();
-}
-
-void ReverseGeoLookupThread::lookup(dive_site *ds)
-{
-	if (!ds)
-		return;
-	GeoLookupInfo info;
-	info.lat = ds->latitude;
-	info.lon = ds->longitude;
-	info.uuid = ds->uuid;
-
-	geo_lookup_data.clear();
-	geo_lookup_data.append(info);
-	run();
-}
-
-extern "C" void add_geo_information_for_lookup(degrees_t latitude, degrees_t longitude, uint32_t uuid) {
-	GeoLookupInfo info;
-	info.lat = latitude;
-	info.lon = longitude;
-	info.uuid = uuid;
-
-	geo_lookup_data.append(info);
 }
