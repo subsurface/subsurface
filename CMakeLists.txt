@@ -262,9 +262,13 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
 		mobile-widgets/qml/kirigami/src/settings.cpp
 		mobile-widgets/qml/kirigami/src/enums.cpp
+		mobile-widgets/qml/kirigami/src/libkirigami/basictheme.cpp
+		mobile-widgets/qml/kirigami/src/libkirigami/kirigamipluginfactory.cpp
+		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
 	)
+	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/src/libkirigami)
 	if(NOT ANDROID AND NOT iOS)
 		set(MOBILE_SRC ${MOBILE_SRC} mobile-widgets/qml/kirigami/src/desktopicon.cpp)
 	endif()

@@ -32,8 +32,8 @@ if [ "$NOPULL" = "" ] ; then
 	pushd kirigami
 	git checkout master
 	git pull origin master
-	# building against master breaks after 23ca2077027b214189ba72ca8dab1590a163c955
-	git checkout v2.2.0
+	# if we want to pin a specific Kirigami version, we can do this here
+	# git checkout v2.2.0
 	popd
 fi
 if [ ! -d breeze-icons ] ; then
