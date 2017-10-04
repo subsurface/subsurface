@@ -58,18 +58,26 @@ Kirigami.Page {
 					left: currentItem ? (currentItem.modelData && currentItem.modelData.dive.gps !== "" ? mapAction : null) : null
 				}
 			}
-			PropertyChanges { target: detailsEditScroll; sheetOpen: false }
-			PropertyChanges { target: pageStack.contentItem; interactive: true }
 		},
 		State {
 			name: "edit"
-			PropertyChanges { target: detailsEditScroll; sheetOpen: true }
-			PropertyChanges { target: pageStack.contentItem; interactive: false }
+			PropertyChanges {
+				target: diveDetailsPage;
+				actions {
+					right: cancelAction
+					left: null
+				}
+			}
 		},
 		State {
 			name: "add"
-			PropertyChanges { target: detailsEditScroll; sheetOpen: true }
-			PropertyChanges { target: pageStack.contentItem; interactive: false }
+			PropertyChanges {
+				target: diveDetailsPage;
+				actions {
+					right: cancelAction
+					left: null
+				}
+			}
 		}
 
 	]
@@ -86,6 +94,14 @@ Kirigami.Page {
 						function() {
 							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
 						});
+		}
+	}
+
+	property QtObject cancelAction: Kirigami.Action {
+		text: qsTr("Cancel edit")
+		iconName: "dialog-cancel"
+		onTriggered: {
+			endEditMode()
 		}
 	}
 
@@ -183,10 +199,9 @@ Kirigami.Page {
 		diveDetailsPage.state = "edit"
 	}
 
-	//onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
-
 	Item {
 		anchors.fill: parent
+		visible: diveDetailsPage.state == "view"
 		ListView {
 			id: diveDetailsListView
 			anchors.fill: parent
@@ -198,7 +213,6 @@ Kirigami.Page {
 			highlightFollowsCurrentItem: true
 			focus: true
 			clip: false
-			//cacheBuffer: parent.width * 3 // cache one item on either side (this is in pixels)
 			snapMode: ListView.SnapOneItem
 			highlightRangeMode: ListView.StrictlyEnforceRange
 			onMovementEnded: {
@@ -219,18 +233,10 @@ Kirigami.Page {
 			}
 			ScrollIndicator.horizontal: ScrollIndicator { }
 		}
-		Kirigami.OverlaySheet {
-			id: detailsEditScroll
-			parent: diveDetailsPage
-			rootItem.z: 0
-			onSheetOpenChanged: {
-				if (!sheetOpen) {
-					endEditMode()
-				}
-			}
-			DiveDetailsEdit {
-				id: detailsEdit
-			}
-		}
+	}
+
+	DiveDetailsEdit {
+		id: detailsEdit
+		visible: diveDetailsPage.state != "view" ? true : false
 	}
 }
