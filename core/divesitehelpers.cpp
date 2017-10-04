@@ -19,7 +19,8 @@
 #include <QEventLoop>
 #include <QTimer>
 
-ReverseGeoLookupThread* ReverseGeoLookupThread::instance() {
+ReverseGeoLookupThread* ReverseGeoLookupThread::instance()
+{
 	static ReverseGeoLookupThread* self = new ReverseGeoLookupThread();
 	return self;
 }
@@ -28,8 +29,8 @@ ReverseGeoLookupThread::ReverseGeoLookupThread(QObject *obj) : QThread(obj)
 {
 }
 
-void ReverseGeoLookupThread::run() {
-
+void ReverseGeoLookupThread::run()
+{
 	QNetworkRequest request;
 	QNetworkAccessManager *rgl = new QNetworkAccessManager();
 	QEventLoop loop;
@@ -54,9 +55,9 @@ void ReverseGeoLookupThread::run() {
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
 
-	if(timer.isActive()) {
+	if (timer.isActive()) {
 		timer.stop();
-		if(reply->error() > 0) {
+		if (reply->error() > 0) {
 			report_error("got error accessing geonames.org: %s", qPrintable(reply->errorString()));
 			goto clear_reply;
 		}
@@ -95,7 +96,7 @@ void ReverseGeoLookupThread::run() {
 				if (firstData[taxonomy_api_names[j]].isValid()) {
 					ds->taxonomy.category[ri].category = j;
 					ds->taxonomy.category[ri].origin = taxonomy_origin::GEOCODED;
-					free((void*)ds->taxonomy.category[ri].value);
+					free((void *)ds->taxonomy.category[ri].value);
 					ds->taxonomy.category[ri].value = copy_string(qPrintable(firstData[taxonomy_api_names[j]].toString()));
 					ri++;
 				}
@@ -128,9 +129,9 @@ void ReverseGeoLookupThread::run() {
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
-	if(timer.isActive()) {
+	if (timer.isActive()) {
 		timer.stop();
-		if(reply->error() > 0) {
+		if (reply->error() > 0) {
 			report_error("got error accessing oceans API of geonames.org: %s", qPrintable(reply->errorString()));
 			goto clear_reply;
 		}
