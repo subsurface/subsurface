@@ -427,7 +427,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 	if (oldModel) {
 		oldModel->deleteLater();
 	}
-	DiveTripModel *tripModel = new DiveTripModel(this);
+	tripModel = new DiveTripModel(this);
 	tripModel->setLayout(layout);
 
 	m->setSourceModel(tripModel);
