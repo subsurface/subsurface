@@ -234,9 +234,16 @@ Kirigami.Page {
 			ScrollIndicator.horizontal: ScrollIndicator { }
 		}
 	}
-
-	DiveDetailsEdit {
-		id: detailsEdit
+	Flickable {
+		id: detailsEditFlickable
 		visible: diveDetailsPage.state != "view" ? true : false
+		anchors.fill: parent
+		leftMargin: Kirigami.Units.smallSpacing
+		rightMargin: Kirigami.Units.smallSpacing
+		contentHeight: detailsEdit.height
+		DiveDetailsEdit {
+			id: detailsEdit
+		}
+		ScrollBar.vertical: ScrollBar { }
 	}
 }
