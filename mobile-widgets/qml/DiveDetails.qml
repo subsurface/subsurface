@@ -84,6 +84,7 @@ Kirigami.Page {
 		Transition {
 			from: "view"
 			to: "*"
+			ParallelAnimation {
 			SequentialAnimation {
 				NumberAnimation {
 					target: detailsEditFlickable
@@ -99,6 +100,15 @@ Kirigami.Page {
 					duration: 400
 					easing.type: Easing.InOutQuad
 				}
+			}
+
+			NumberAnimation {
+				target: detailsEditFlickable
+				property: "contentY"
+				to: 0
+				duration: 200
+				easing.type: Easing.InOutQuad
+			}
 			}
 		},
 		Transition {
