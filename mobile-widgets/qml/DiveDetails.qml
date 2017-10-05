@@ -79,7 +79,49 @@ Kirigami.Page {
 				}
 			}
 		}
+	]
+	transitions: [
+		Transition {
+			from: "view"
+			to: "*"
+			SequentialAnimation {
+				NumberAnimation {
+					target: detailsEditFlickable
+					properties: "visible"
+					from: 0
+					to: 1
+					duration: 10
+				}
+				ScaleAnimator {
+					target: detailsEditFlickable
+					from: 0.3
+					to: 1
+					duration: 400
+					easing.type: Easing.InOutQuad
+				}
+			}
+		},
+		Transition {
+			from: "*"
+			to: "view"
+			SequentialAnimation {
+				ScaleAnimator {
+					target: detailsEditFlickable
+					from: 1
+					to: 0.3
+					duration: 400
+					easing.type: Easing.InOutQuad
+				}
+				NumberAnimation {
+					target: detailsEditFlickable
+					properties: "visible"
+					from: 1
+					to: 0
+					duration: 10
+				}
+			}
 
+		}
 	]
 
 	property QtObject deleteAction: Kirigami.Action {
@@ -236,11 +278,14 @@ Kirigami.Page {
 	}
 	Flickable {
 		id: detailsEditFlickable
-		visible: diveDetailsPage.state != "view" ? true : false
 		anchors.fill: parent
 		leftMargin: Kirigami.Units.smallSpacing
 		rightMargin: Kirigami.Units.smallSpacing
 		contentHeight: detailsEdit.height
+		// start invisible and scaled down, to get the transition
+		// off to the right start
+		visible: false
+		scale: 0.3
 		DiveDetailsEdit {
 			id: detailsEdit
 		}

@@ -39,6 +39,7 @@ Item {
 	property int visibility
 
 	function saveData() {
+		diveDetailsPage.state = "view" // run the transition
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.text, buddyBox.text,
@@ -66,7 +67,6 @@ Item {
 		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
 		diveDetailsListView.currentItem.modelData.rating = detailsEdit.rating
 		diveDetailsListView.currentItem.modelData.visibility = detailsEdit.visibility
-		diveDetailsPage.state = "view"
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
 		showDiveIndex(newIdx)
