@@ -314,7 +314,6 @@ void clear_dive_site(struct dive_site *ds)
 	free(ds->name);
 	free(ds->notes);
 	free(ds->description);
-	free(ds->name);
 	ds->name = 0;
 	ds->notes = 0;
 	ds->description = 0;
