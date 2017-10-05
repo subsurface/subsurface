@@ -43,6 +43,7 @@
 		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
 		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
 		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
+		<file alias="icons/downloadDC-black.svg">../../icons/button-download-dc-black_icon.svg</file>
 		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
 		<file alias="icons/ic_info_outline.svg">icons/ic_info_outline_24px.svg</file>
 		<file alias="icons/ic_help_outline.svg">icons/ic_help_outline_24px.svg</file>
