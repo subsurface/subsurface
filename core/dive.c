@@ -670,7 +670,7 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
 	}
 	for (i = j = 0; i < MAX_CYLINDERS; i++) {
-		if (!used_only || is_cylinder_used(s, i)) {
+		if (!used_only || is_cylinder_used(s, i) || s->cylinder[i].cylinder_use == NOT_USED) {
 			d->cylinder[j].type = s->cylinder[i].type;
 			d->cylinder[j].type.description = copy_string(s->cylinder[i].type.description);
 			d->cylinder[j].gasmix = s->cylinder[i].gasmix;
