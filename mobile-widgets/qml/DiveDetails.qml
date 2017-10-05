@@ -44,7 +44,7 @@ Kirigami.Page {
 	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
-	topPadding: 0
+	topPadding: Kirigami.Units.gridUnit * 2 // make room for the title bar
 	rightPadding: 0
 	bottomPadding: 0
 
@@ -58,20 +58,27 @@ Kirigami.Page {
 					left: currentItem ? (currentItem.modelData && currentItem.modelData.dive.gps !== "" ? mapAction : null) : null
 				}
 			}
-			PropertyChanges { target: detailsEditScroll; sheetOpen: false }
-			PropertyChanges { target: pageStack.contentItem; interactive: true }
 		},
 		State {
 			name: "edit"
-			PropertyChanges { target: detailsEditScroll; sheetOpen: true }
-			PropertyChanges { target: pageStack.contentItem; interactive: false }
+			PropertyChanges {
+				target: diveDetailsPage;
+				actions {
+					right: cancelAction
+					left: null
+				}
+			}
 		},
 		State {
 			name: "add"
-			PropertyChanges { target: detailsEditScroll; sheetOpen: true }
-			PropertyChanges { target: pageStack.contentItem; interactive: false }
+			PropertyChanges {
+				target: diveDetailsPage;
+				actions {
+					right: cancelAction
+					left: null
+				}
+			}
 		}
-
 	]
 
 	property QtObject deleteAction: Kirigami.Action {
@@ -86,6 +93,14 @@ Kirigami.Page {
 						function() {
 							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
 						});
+		}
+	}
+
+	property QtObject cancelAction: Kirigami.Action {
+		text: qsTr("Cancel edit")
+		iconName: "dialog-cancel"
+		onTriggered: {
+			endEditMode()
 		}
 	}
 
@@ -183,10 +198,9 @@ Kirigami.Page {
 		diveDetailsPage.state = "edit"
 	}
 
-	//onWidthChanged: diveDetailsListView.positionViewAtIndex(diveDetailsListView.currentIndex, ListView.Beginning);
-
 	Item {
 		anchors.fill: parent
+		visible: diveDetailsPage.state == "view"
 		ListView {
 			id: diveDetailsListView
 			anchors.fill: parent
@@ -198,7 +212,6 @@ Kirigami.Page {
 			highlightFollowsCurrentItem: true
 			focus: true
 			clip: false
-			//cacheBuffer: parent.width * 3 // cache one item on either side (this is in pixels)
 			snapMode: ListView.SnapOneItem
 			highlightRangeMode: ListView.StrictlyEnforceRange
 			onMovementEnded: {
@@ -219,17 +232,32 @@ Kirigami.Page {
 			}
 			ScrollIndicator.horizontal: ScrollIndicator { }
 		}
-		Kirigami.OverlaySheet {
-			id: detailsEditScroll
-			parent: diveDetailsPage
-			rootItem.z: 0
-			onSheetOpenChanged: {
-				if (!sheetOpen) {
-					endEditMode()
-				}
+	}
+	Flickable {
+		id: detailsEditFlickable
+		visible: diveDetailsPage.state != "view" ? true : false
+		anchors.fill: parent
+		leftMargin: Kirigami.Units.smallSpacing
+		rightMargin: Kirigami.Units.smallSpacing
+		contentHeight: detailsEdit.height
+		DiveDetailsEdit {
+			id: detailsEdit
+		}
+		ScrollBar.vertical: ScrollBar { }
+		scale: 0
+		ParallelAnimation {
+			id: scaleInAnimation
+			ScaleAnimator {
+				id: animator
+				target: detailsEditFlickable
+				from: 0.3
+				to: 1
+				duration: 300
 			}
-			DiveDetailsEdit {
-				id: detailsEdit
+		}
+		onVisibleChanged: {
+			if (visible) {
+				scaleInAnimation.running = true
 			}
 		}
 	}

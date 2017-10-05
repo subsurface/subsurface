@@ -73,7 +73,7 @@ Item {
 	}
 
 	height: editArea.height
-	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding
+	width: diveDetailsPage.width - diveDetailsPage.leftPadding - diveDetailsPage.rightPadding - Kirigami.Units.smallSpacing * 2
 	ColumnLayout {
 		id: editArea
 		spacing: Kirigami.Units.smallSpacing

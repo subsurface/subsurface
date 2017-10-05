@@ -73,6 +73,8 @@ cp $BREEZE/icons/actions/22/handle-right.svg $MC/icons
 pushd $MC
 ln -s $SRC/$BREEZE .
 sed -i -e "s/visible: root.action/visible: root.action \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
+sed -i -e "s/visible: root.leftAction/visible: root.leftAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
+sed -i -e "s/visible: root.rightAction/visible: root.rightAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
 popd
 
 echo org.kde.plasma.kirigami synced from upstream

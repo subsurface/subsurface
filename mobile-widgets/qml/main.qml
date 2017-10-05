@@ -141,7 +141,8 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					iconName: "icons/downloadDC.svg"
+					// this of course assumes a white background - theming means this needs to change again
+					iconName: "icons/downloadDC-black.svg"
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
@@ -247,9 +248,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				iconName: "icons/ic_settings.svg"
 				text: qsTr("Settings")
-				onTriggered: { 
-					stackView.push(settingsWindow) 
-					detailsWindow.endEditMode() 
+				onTriggered: {
+					stackView.push(settingsWindow)
+					detailsWindow.endEditMode()
 				}
 			},
 			Kirigami.Action {
@@ -279,7 +280,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			}
 		] // end actions
 		Kirigami.Icon {
-			source: "icons/" + subsurfaceTheme.currentTheme + "_gps.svg"
+			source: "icons/" + (subsurfaceTheme.currentTheme != "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
 			enabled: false
 			visible: locationServiceEnabled
 		}

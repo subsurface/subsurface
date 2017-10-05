@@ -28,8 +28,8 @@
 	</qresource>
 	<qresource prefix="/">
 		<file>qtquickcontrols2.conf</file>
-		<file alias="icons/go-next.svg">kirigami/icons/go-next.svg</file>
-		<file alias="icons/go-previous.svg">kirigami/icons/go-previous.svg</file>
+		<file alias="icons/go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
+		<file alias="icons/go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>
 		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
 		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
 		<file alias="icons/handle-right.svg">kirigami/icons/handle-right.svg</file>
@@ -43,6 +43,7 @@
 		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
 		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
 		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
+		<file alias="icons/downloadDC-black.svg">../../icons/button-download-dc-black_icon.svg</file>
 		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
 		<file alias="icons/ic_info_outline.svg">icons/ic_info_outline_24px.svg</file>
 		<file alias="icons/ic_help_outline.svg">icons/ic_help_outline_24px.svg</file>
