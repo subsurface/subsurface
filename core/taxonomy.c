@@ -61,6 +61,11 @@ const char *taxonomy_get_country(struct taxonomy_data *t)
 void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum taxonomy_origin origin)
 {
 	int idx = -1;
+
+	// make sure we have taxonomy data allocated
+	if (!t->category)
+		t->category = alloc_taxonomy();
+
 	for (int i = 0; i < t->nr; i++) {
 		if (t->category[i].category == TC_COUNTRY) {
 			idx = i;
