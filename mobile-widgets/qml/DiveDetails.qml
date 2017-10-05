@@ -79,7 +79,6 @@ Kirigami.Page {
 				}
 			}
 		}
-
 	]
 
 	property QtObject deleteAction: Kirigami.Action {
@@ -245,5 +244,21 @@ Kirigami.Page {
 			id: detailsEdit
 		}
 		ScrollBar.vertical: ScrollBar { }
+		scale: 0
+		ParallelAnimation {
+			id: scaleInAnimation
+			ScaleAnimator {
+				id: animator
+				target: detailsEditFlickable
+				from: 0.3
+				to: 1
+				duration: 300
+			}
+		}
+		onVisibleChanged: {
+			if (visible) {
+				scaleInAnimation.running = true
+			}
+		}
 	}
 }
