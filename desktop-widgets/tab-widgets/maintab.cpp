@@ -589,6 +589,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.locationTags->hide();
 		else
 			ui.locationTags->show();
+		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		/* unset the special value text for date and time, just in case someone dove at midnight */
 		ui.dateEdit->setSpecialValueText(QString(""));
 		ui.timeEdit->setSpecialValueText(QString(""));
@@ -969,7 +970,7 @@ void MainTab::acceptChanges()
 	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
 	acceptingEdit = false;
-	ui.editDiveSiteButton->setEnabled(true);
+	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
 void MainTab::resetPallete()
@@ -1045,7 +1046,7 @@ void MainTab::rejectChanges()
 	weightModel->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive();
-	ui.editDiveSiteButton->setEnabled(true);
+	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 #undef EDIT_TEXT2
 
