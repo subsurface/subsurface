@@ -118,6 +118,16 @@ void LocationInformationWidget::updateLabels()
 
 }
 
+void LocationInformationWidget::clearLabels()
+{
+	ui.diveSiteName->clear();
+	ui.diveSiteCountry->clear();
+	ui.diveSiteDescription->clear();
+	ui.diveSiteNotes->clear();
+	ui.diveSiteCoordinates->clear();
+	ui.locationTags->clear();
+}
+
 void LocationInformationWidget::updateGpsCoordinates()
 {
 	QString oldText = ui.diveSiteCoordinates->text();
@@ -201,6 +211,8 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 		emit startFilterDiveSite(displayed_dive_site.uuid);
 		if (m)
 			m->invalidate();
+	} else {
+		clearLabels();
 	}
 	emit requestCoordinates();
 
