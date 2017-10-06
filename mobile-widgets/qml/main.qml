@@ -275,7 +275,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				iconName: "icons/ic_help_outline.svg"
 				text: qsTr("Help")
 				onTriggered: {
-					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual/")
+					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v2-user-manual/")
 				}
 			}
 		] // end actions
