@@ -6,13 +6,11 @@
 #include <QString>
 #include <QLoggingCategory>
 #include <QAbstractListModel>
-#if defined(BT_SUPPORT)
 #include <QBluetoothLocalDevice>
 #include <QBluetoothDeviceDiscoveryAgent>
 #include <QBluetoothUuid>
 #include "core/libdivecomputer.h"
 
-#endif
 #if defined(Q_OS_ANDROID)
 #include <QAndroidJniObject>
 #include <QAndroidJniEnvironment>
@@ -29,7 +27,6 @@ public:
 	~BTDiscovery();
 	static BTDiscovery *instance();
 
-#if defined(BT_SUPPORT)
 	struct btPairedDevice {
 		QString address;
 		QString name;
@@ -49,28 +46,25 @@ public:
 	void getBluetoothDevices();
 #endif
 	QList<btVendorProduct> getBtDcs();
-#endif
+
 private:
 	static BTDiscovery *m_instance;
 	bool m_btValid;
-#if defined(BT_SUPPORT)
+
 	QList<struct btVendorProduct> btDCs;		// recognized DCs
 	QList<struct btVendorProduct> btAllDevices;	// all paired BT stuff
-#endif
+
 #if defined(Q_OS_ANDROID)
 	bool checkException(const char* method, const QAndroidJniObject* obj);
 #endif
 
-#if defined(BT_SUPPORT)
 	QList<struct btPairedDevice> btPairedDevices;
 	QBluetoothLocalDevice localBtDevice;
 	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
-#endif
 
 signals:
 	void dcVendorChanged();
 	void dcProductChanged();
 	void dcBtChanged();
 };
-
 #endif // BTDISCOVERY_H

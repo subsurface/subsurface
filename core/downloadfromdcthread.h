@@ -9,8 +9,9 @@
 #include "dive.h"
 #include "libdivecomputer.h"
 #include "connectionlistmodel.h"
+#if BT_SUPPORT
 #include "core/btdiscovery.h"
-
+#endif
 /* Helper object for access of Device Data in QML */
 class DCDeviceData : public QObject {
 	Q_OBJECT
@@ -100,5 +101,4 @@ extern QStringList vendorList;
 extern QHash<QString, QStringList> productList;
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 extern ConnectionListModel connectionListModel;
-
 #endif
