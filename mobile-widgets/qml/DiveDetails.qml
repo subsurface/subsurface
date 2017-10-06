@@ -84,19 +84,29 @@ Kirigami.Page {
 		Transition {
 			from: "view"
 			to: "*"
-			SequentialAnimation {
+			ParallelAnimation {
+				SequentialAnimation {
+					NumberAnimation {
+						target: detailsEditFlickable
+						properties: "visible"
+						from: 0
+						to: 1
+						duration: 10
+					}
+					ScaleAnimator {
+						target: detailsEditFlickable
+						from: 0.3
+						to: 1
+						duration: 400
+						easing.type: Easing.InOutQuad
+					}
+				}
+
 				NumberAnimation {
 					target: detailsEditFlickable
-					properties: "visible"
-					from: 0
-					to: 1
-					duration: 10
-				}
-				ScaleAnimator {
-					target: detailsEditFlickable
-					from: 0.3
-					to: 1
-					duration: 400
+					property: "contentY"
+					to: 0
+					duration: 200
 					easing.type: Easing.InOutQuad
 				}
 			}
