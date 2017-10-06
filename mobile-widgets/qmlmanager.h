@@ -9,7 +9,9 @@
 #include <QElapsedTimer>
 #include <QColor>
 
+#if BT_SUPPORT
 #include "core/btdiscovery.h"
+#endif
 #include "core/gpslocation.h"
 #include "core/downloadfromdcthread.h"
 #include "qt-models/divelistmodel.h"
