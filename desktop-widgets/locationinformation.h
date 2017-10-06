@@ -43,6 +43,7 @@ signals:
 	void endRequestCoordinates();
 
 private:
+	void clearLabels();
 	Ui::LocationInformation ui;
 	bool modified;
 	QAction *acceptAction, *rejectAction;
