@@ -8,6 +8,7 @@
 
 #include "dive.h"
 #include "libdivecomputer.h"
+#include "connectionlistmodel.h"
 #include "core/btdiscovery.h"
 
 /* Helper object for access of Device Data in QML */
