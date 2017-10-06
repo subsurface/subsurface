@@ -22,6 +22,7 @@
 #include "qt-models/gpslistmodel.h"
 #include "mobile-widgets/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
+#include "core/connectionlistmodel.h"
 #include "qt-models/diveimportedmodel.h"
 #include "qt-models/messagehandlermodel.h"
 
