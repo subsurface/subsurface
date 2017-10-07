@@ -278,6 +278,15 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 			algorithm = *(buf + ptr++);	// 0=ZH-L16C+GF
 			sample_count = array_uint32_le(buf + ptr);
 		}
+
+		if (sample_count == 0) {
+			fprintf(stderr, "DEBUG: sample count 0 - terminating parser\n");
+			break;
+		}
+		if (ptr + sample_count * 4 + 4 > buf_size) {
+			fprintf(stderr, "DEBUG: BOF - terminating parser\n");
+			break;
+		}
 		// we aren't using the start_cns, dive_mode, and algorithm, yet
 		(void)start_cns;
 		(void)dive_mode;
