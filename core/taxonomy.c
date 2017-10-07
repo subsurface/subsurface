@@ -78,8 +78,10 @@ void taxonomy_set_country(struct taxonomy_data *t, const char *country, enum tax
 			fprintf(stderr, "Error adding country taxonomy\n");
 			return;
 		}
-		idx = ++t->nr;
+		idx = t->nr++;
 	}
 	t->category[idx].value = country;
 	t->category[idx].origin = origin;
+	t->category[idx].category = TC_COUNTRY;
+	fprintf(stderr, "%s: set the taxonomy country to %s\n", __func__, country);
 }
