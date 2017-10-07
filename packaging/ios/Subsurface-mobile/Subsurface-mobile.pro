@@ -127,7 +127,8 @@ INCLUDEPATH += ../install-root/include/ \
                ../install-root/include/libexstl \
                ../install-root/include/openssl \
                ../../.. \
-               ../../../core
+	       ../../../core \
+	       ../../../mobile-widgets/qml/kirigami/src/libkirigami
 
 HEADERS += \
     ../../../core/libdivecomputer.h \
