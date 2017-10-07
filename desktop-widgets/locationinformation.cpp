@@ -143,12 +143,13 @@ void LocationInformationWidget::acceptChanges()
 	char *uiString;
 	struct dive_site *currentDs;
 	uiString = ui.diveSiteName->text().toUtf8().data();
-
-	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL)
+	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL) {
 		currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
-	else
+	} else {
+		qWarning() << "did not have valid dive site in LocationInformationWidget";
 		currentDs = get_dive_site_by_uuid(create_dive_site_from_current_dive(uiString));
-
+		displayed_dive.dive_site_uuid = currentDs->uuid;
+	}
 	currentDs->latitude = displayed_dive_site.latitude;
 	currentDs->longitude = displayed_dive_site.longitude;
 	if (!same_string(uiString, currentDs->name)) {
