@@ -134,10 +134,16 @@ void LocationInformationWidget::acceptChanges()
 	struct dive_site *currentDs;
 	uiString = ui.diveSiteName->text().toUtf8().data();
 
-	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL)
+	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL) {
 		currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
-	else
-		currentDs = get_dive_site_by_uuid(create_dive_site_from_current_dive(uiString));
+	} else {
+		uint32_t new_uuid = create_dive_site_from_current_dive(uiString);
+		displayed_dive.dive_site_uuid = new_uuid;
+		struct dive *dive_in_table = get_dive_by_uniq_id(displayed_dive.id);
+		if (dive_in_table)
+			dive_in_table->dive_site_uuid = new_uuid;
+		currentDs = get_dive_site_by_uuid(new_uuid);
+	}
 
 	currentDs->latitude = displayed_dive_site.latitude;
 	currentDs->longitude = displayed_dive_site.longitude;
