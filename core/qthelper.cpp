@@ -1290,8 +1290,8 @@ extern "C" void picture_load_exif_data(struct picture *p)
 		goto picture_load_exit;
 	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
 		goto picture_load_exit;
-	p->longitude.udeg= llrint(1000000.0 * exif.GeoLocation.Longitude);
-	p->latitude.udeg  = llrint(1000000.0 * exif.GeoLocation.Latitude);
+	p->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
+	p->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
 
 picture_load_exit:
 	free(mem.buffer);
