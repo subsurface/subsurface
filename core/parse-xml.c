@@ -43,9 +43,13 @@ struct dive_table *target_table = NULL;
  * Return value: length of the trimmed string, excluding the terminal 0x0 byte
  * The original pointer (buffer) remains valid after this function has been called
  * and points to the trimmed string */
-int trimspace(char *buffer) {
+int trimspace(char *buffer)
+{
 	int i, size, start, end;
 	size = strlen(buffer);
+
+	if (!size)
+		return 0;
 	for(start = 0; isspace(buffer[start]); start++)
 		if (start >= size) return 0;	// Find 1st character following leading whitespace
 	for(end = size - 1; isspace(buffer[end]); end--) // Find last character before trailing whitespace
@@ -3204,6 +3208,18 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 	return 0;
 }
 
+static int atoi_n(char *ptr, unsigned int len)
+{
+	if (len < 10) {
+		char buf[10];
+
+		memcpy(buf, ptr, len);
+		buf[len] = 0;
+		return atoi(buf);
+	}
+	return 0;
+}
+
 extern int divinglog_profile(void *handle, int columns, char **data, char **column)
 {
 	(void) handle;
@@ -3211,8 +3227,9 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 	(void) column;
 
 	int sinterval = 0;
-	unsigned long i, len, lenprofile2 = 0;
-	char *ptr, temp[4], pres[5], hbeat[4], stop[4], stime[4], ndl[4], ppo2_1[4], ppo2_2[4], ppo2_3[4], cns[5], setpoint[3];
+	unsigned long time;
+	int len1, len2, len3, len4, len5;
+	char *ptr1, *ptr2, *ptr3, *ptr4, *ptr5;
 	short oldcyl = -1;
 
 	/* We do not have samples */
@@ -3252,54 +3269,74 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 	 *
 	 */
 
-	len = strlen(data[1]);
+	ptr1 = data[1];
+	ptr2 = data[2];
+	ptr3 = data[3];
+	ptr4 = data[4];
+	ptr5 = data[5];
+	len1 = strlen(ptr1);
+	len2 = ptr2 ? strlen(ptr2) : 0;
+	len3 = ptr3 ? strlen(ptr3) : 0;
+	len4 = ptr4 ? strlen(ptr4) : 0;
+	len5 = ptr5 ? strlen(ptr5) : 0;
 
-	if (data[2])
-		lenprofile2 = strlen(data[2]);
-
-	for (i = 0, ptr = data[1]; i * 12 < len; ++i) {
+	time = 0;
+	while (len1 >= 12) {
 		sample_start();
 
-		cur_sample->time.seconds = sinterval * i;
-		cur_sample->in_deco = ptr[5] - '0' ? true : false;
-		ptr[5] = 0;
-		cur_sample->depth.mm = atoi(ptr) * 10;
+		cur_sample->time.seconds = time;
+		cur_sample->in_deco = ptr1[5] - '0' ? true : false;
+		cur_sample->depth.mm = atoi_n(ptr1, 5) * 10;
 
-		if (i * 11 < lenprofile2) {
-			memcpy(temp, &data[2][i * 11], 3);
-			cur_sample->temperature.mkelvin = C_to_mkelvin(atoi(temp) / 10);
+		if (len2 >= 11) {
+			int temp = atoi_n(ptr2, 3);
+			int pressure = atoi_n(ptr2+3, 4);
+			int tank = atoi_n(ptr2+7, 1);
+			int rbt = atoi_n(ptr2+8, 3) * 60;
+
+			cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10);
+			cur_sample->pressure[0].mbar = pressure * 100;
+			if (oldcyl != tank) {
+				struct gasmix *mix = &cur_dive->cylinder[tank].gasmix;
+				int o2 = get_o2(mix);
+				int he = get_he(mix);
+
+				event_start();
+				cur_event.time.seconds = time;
+				strcpy(cur_event.name, "gaschange");
+
+				o2 = (o2 + 5) / 10;
+				he = (he + 5) / 10;
+				cur_event.value = o2 + (he << 16);
+
+				event_end();
+				oldcyl = tank;
+			}
+
+			ptr2 += 11; len2 -= 11;
 		}
 
-		if (data[2]) {
-			memcpy(pres, &data[2][i * 11 + 3], 4);
-			cur_sample->pressure[0].mbar = atoi(pres) * 100;
+		if (len3 >= 14) {
+			cur_sample->heartbeat = atoi_n(ptr3+8, 3);
+			ptr3 += 14; len3 -= 14;
 		}
 
-		if (data[3] && strlen(data[3])) {
-			memcpy(hbeat, &data[3][i * 14 + 8], 3);
-			cur_sample->heartbeat = atoi(hbeat);
-		}
-
-		if (data[4] && strlen(data[4])) {
-			memcpy(stop, &data[4][i * 9 + 6], 3);
-			cur_sample->stopdepth.mm = atoi(stop) * 1000;
-
-			memcpy(stime, &data[4][i * 9 + 3], 3);
-			cur_sample->stoptime.seconds = atoi(stime) * 60;
-
+		if (len4 >= 9) {
 			/*
 			 * Following value is NDL when not in deco, and
 			 * either 0 or TTS when in deco.
 			 */
-
-			memcpy(ndl, &data[4][i * 9 + 0], 3);
-			if (cur_sample->in_deco == false)
-				cur_sample->ndl.seconds = atoi(ndl) * 60;
-			else if (atoi(ndl))
-				cur_sample->tts.seconds = atoi(ndl) * 60;
-
-			if (cur_sample->in_deco == true)
+			int val = atoi_n(ptr4, 3);
+			if (cur_sample->in_deco) {
 				cur_sample->ndl.seconds = 0;
+				if (val)
+					cur_sample->tts.seconds = val * 60;
+			} else {
+				cur_sample->ndl.seconds = val * 60;
+			}
+			cur_sample->stoptime.seconds = atoi_n(ptr4+3, 3) * 60;
+			cur_sample->stopdepth.mm = atoi_n(ptr4+6, 3) * 1000;
+			ptr4 += 9; len4 -= 9;
 		}
 
 		/*
@@ -3316,24 +3353,25 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		 * 1.12 bar, 1.13 bar, 1.14 bar, OTU = 154.8, CNS = 26.4, Setpoint = 1.1
 		 */
 
-		if (data[5] && strlen(data[5])) {
-			memcpy(ppo2_1, &data[5][i * 19 + 0], 3);
-			memcpy(ppo2_2, &data[5][i * 19 + 3], 3);
-			memcpy(ppo2_3, &data[5][i * 19 + 6], 3);
-			memcpy(cns, &data[5][i * 19 + 13], 4);
-			memcpy(setpoint, &data[5][i * 19 + 17], 2);
+		if (len5 >= 19) {
+			int ppo2_1 = atoi_n(ptr5 + 0, 3);
+			int ppo2_2 = atoi_n(ptr5 + 3, 3);
+			int ppo2_3 = atoi_n(ptr5 + 6, 3);
+			int otu = atoi_n(ptr5 + 9, 4);
+			int cns = atoi_n(ptr5 + 13, 4);
+			int setpoint = atoi_n(ptr5 + 17, 2);
 
-			if (atoi(ppo2_1) > 0)
-				cur_sample->o2sensor[0].mbar = atoi(ppo2_1) * 100;
-			if (atoi(ppo2_2) > 0)
-				cur_sample->o2sensor[1].mbar = atoi(ppo2_2) * 100;
-			if (atoi(ppo2_3) > 0)
-				cur_sample->o2sensor[2].mbar = atoi(ppo2_3) * 100;
-			if (atoi(cns) > 0)
-				cur_sample->cns = lrintf(atoi(cns) / 10.0f);
-			if (atoi(setpoint) > 0)
-				cur_sample->setpoint.mbar = atoi(setpoint) * 100;
-
+			if (ppo2_1 > 0)
+				cur_sample->o2sensor[0].mbar = ppo2_1 * 100;
+			if (ppo2_2 > 0)
+				cur_sample->o2sensor[1].mbar = ppo2_2 * 100;
+			if (ppo2_3 > 0)
+				cur_sample->o2sensor[2].mbar = ppo2_3 * 100;
+			if (cns > 0)
+				cur_sample->cns = lrintf(cns / 10.0f);
+			if (setpoint > 0)
+				cur_sample->setpoint.mbar = setpoint * 100;
+			ptr5 += 19; len5 -= 19;
 		}
 
 		/*
@@ -3346,63 +3384,42 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 				 cur_sample->o2sensor[2].mbar ? 1 : 0;
 		}
 
-		ptr += 12;
 		sample_end();
-	}
 
-	for (i = 0, ptr = data[1]; i * 12 < len; ++i) {
 		/* Remaining bottom time warning */
-		if (ptr[6] - '0') {
+		if (ptr1[6] - '0') {
 			event_start();
-			cur_event.time.seconds = sinterval * i;
+			cur_event.time.seconds = time;
 			strcpy(cur_event.name, "rbt");
 			event_end();
 		}
 
 		/* Ascent warning */
-		if (ptr[7] - '0') {
+		if (ptr1[7] - '0') {
 			event_start();
-			cur_event.time.seconds = sinterval * i;
+			cur_event.time.seconds = time;
 			strcpy(cur_event.name, "ascent");
 			event_end();
 		}
 
 		/* Deco stop ignored */
-		if (ptr[8] - '0') {
+		if (ptr1[8] - '0') {
 			event_start();
-			cur_event.time.seconds = sinterval * i;
+			cur_event.time.seconds = time;
 			strcpy(cur_event.name, "violation");
 			event_end();
 		}
 
 		/* Workload warning */
-		if (ptr[9] - '0') {
+		if (ptr1[9] - '0') {
 			event_start();
-			cur_event.time.seconds = sinterval * i;
+			cur_event.time.seconds = time;
 			strcpy(cur_event.name, "workload");
 			event_end();
 		}
-		ptr += 12;
-	}
 
-	for (i = 0; i * 11 < lenprofile2; ++i) {
-		short tank = data[2][i * 11 + 7] - '0';
-		if (oldcyl != tank) {
-			struct gasmix *mix = &cur_dive->cylinder[tank].gasmix;
-			int o2 = get_o2(mix);
-			int he = get_he(mix);
-
-			event_start();
-			cur_event.time.seconds = sinterval * i;
-			strcpy(cur_event.name, "gaschange");
-
-			o2 = (o2 + 5) / 10;
-			he = (he + 5) / 10;
-			cur_event.value = o2 + (he << 16);
-
-			event_end();
-			oldcyl = tank;
-		}
+		ptr1 += 12; len1 -= 12;
+		time += sinterval;
 	}
 
 	return 0;
