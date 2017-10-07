@@ -364,11 +364,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.ascRateStops, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratestops(int)));
 	connect(ui.ascRateLast6m, SIGNAL(valueChanged(int)), plannerModel, SLOT(setAscratelast6m(int)));
 	connect(ui.descRate, SIGNAL(valueChanged(int)), plannerModel, SLOT(setDescrate(int)));
-	connect(ui.ascRate75, SIGNAL(editingFinished()), plannerModel, SLOT(setAscrate75(int)));
-	connect(ui.ascRate50, SIGNAL(editingFinished()), plannerModel, SLOT(setAscrate50(int)));
-	connect(ui.ascRateStops, SIGNAL(editingFinished()), plannerModel, SLOT(setAscratestops(int)));
-	connect(ui.ascRateLast6m, SIGNAL(editingFinished()), plannerModel, SLOT(setAscratelast6m(int)));
-	connect(ui.descRate, SIGNAL(editingFinished()), plannerModel, SLOT(setDescrate(int)));
 	connect(ui.drop_stone_mode, SIGNAL(toggled(bool)), plannerModel, SLOT(setDropStoneMode(bool)));
 	connect(ui.gfhigh, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFHigh(int)));
 	connect(ui.gflow, SIGNAL(valueChanged(int)), plannerModel, SLOT(setGFLow(int)));
@@ -401,6 +396,14 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.gflow->setValue(prefs.gflow);
 	ui.gfhigh->setValue(prefs.gfhigh);
 	ui.vpmb_conservatism->setValue(prefs.vpmb_conservatism);
+
+	ui.ascRate75->setKeyboardTracking(false);
+	ui.ascRate50->setKeyboardTracking(false);
+	ui.ascRateLast6m->setKeyboardTracking(false);
+	ui.ascRateStops->setKeyboardTracking(false);
+	ui.descRate->setKeyboardTracking(false);
+	ui.gfhigh->setKeyboardTracking(false);
+	ui.gflow->setKeyboardTracking(false);
 
 	setMinimumWidth(0);
 	setMinimumHeight(0);
