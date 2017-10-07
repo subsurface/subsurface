@@ -59,7 +59,7 @@ void dump_plan(struct diveplan *diveplan)
 	       diveplan->surface_pressure);
 	dp = diveplan->dp;
 	while (dp) {
-		printf("\t%3u:%02u: %dmm gas: %d o2 %d h2\n", FRACTION(dp->time, 60), dp->depth, get_o2(&dp->gasmix), get_he(&dp->gasmix));
+		printf("\t%3u:%02u: %6dmm cylid: %2d setpoint: %d\n", FRACTION(dp->time, 60), dp->depth, dp->cylinderid, dp->setpoint);
 		dp = dp->next;
 	}
 }
