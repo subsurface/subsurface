@@ -3294,7 +3294,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			int tank = atoi_n(ptr2+7, 1);
 			int rbt = atoi_n(ptr2+8, 3) * 60;
 
-			cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10);
+			cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10.0f);
 			cur_sample->pressure[0].mbar = pressure * 100;
 			if (oldcyl != tank) {
 				struct gasmix *mix = &cur_dive->cylinder[tank].gasmix;
