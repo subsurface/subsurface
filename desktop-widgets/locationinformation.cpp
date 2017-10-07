@@ -187,8 +187,8 @@ void LocationInformationWidget::acceptChanges()
 	if (!ui.diveSiteCoordinates->text().isEmpty()) {
 		double lat, lon;
 		parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon);
-		currentDs->latitude.udeg = (int)(lat * 1000000.0);
-		currentDs->longitude.udeg = (int)(lon * 1000000.0);
+		currentDs->latitude.udeg = lrint(lat * 1000000.0);
+		currentDs->longitude.udeg = lrint(lon * 1000000.0);
 	}
 	if (dive_site_is_empty(currentDs)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
@@ -265,8 +265,8 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 	if (!same_string(qPrintable(text), coords)) {
 		double latitude, longitude;
 		if (parseGpsText(text, &latitude, &longitude)) {
-			displayed_dive_site.latitude.udeg = (int)(latitude * 1000000);
-			displayed_dive_site.longitude.udeg = (int)(longitude * 1000000);
+			displayed_dive_site.latitude.udeg = lrint(latitude * 1000000);
+			displayed_dive_site.longitude.udeg = lrint(longitude * 1000000);
 			markChangedWidget(ui.diveSiteCoordinates);
 			emit coordinatesChanged();
 			ui.geoCodeButton->setEnabled(latitude != 0 && longitude != 0);
