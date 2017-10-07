@@ -55,7 +55,11 @@
     </widget>
    </item>
    <item row="7" column="2" rowspan="2" colspan="2">
-    <widget class="QPlainTextEdit" name="diveSiteNotes"/>
+    <widget class="QPlainTextEdit" name="diveSiteNotes">
+     <property name="focusPolicy">
+      <enum>Qt::ClickFocus</enum>
+     </property>
+    </widget>
    </item>
    <item row="1" column="2" colspan="2">
     <widget class="QLineEdit" name="diveSiteName"/>
@@ -100,6 +104,9 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="focusPolicy">
+         <enum>Qt::ClickFocus</enum>
         </property>
         <property name="selectionMode">
          <enum>QAbstractItemView::MultiSelection</enum>
@@ -159,6 +166,15 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>diveSiteName</tabstop>
+  <tabstop>diveSiteCountry</tabstop>
+  <tabstop>diveSiteCoordinates</tabstop>
+  <tabstop>geoCodeButton</tabstop>
+  <tabstop>diveSiteDescription</tabstop>
+  <tabstop>diveSiteNotes</tabstop>
+  <tabstop>diveSiteListView</tabstop>
+ </tabstops>
  <resources>
   <include location="../subsurface.qrc"/>
  </resources>
