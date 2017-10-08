@@ -242,7 +242,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 				if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
 					same_gas = i;
 			}
-			if (same_gas == -1 &&
+			if ((in_planner() || same_gas == -1) &&
 				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 				(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
@@ -265,7 +265,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 				if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
 					same_gas = i;
 			}
-			if (same_gas == -1 &&
+			if ((in_planner() || same_gas == -1) &&
 				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 				(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
@@ -569,7 +569,7 @@ void CylindersModel::remove(const QModelIndex &index)
 		if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
 			same_gas = i;
 	}
-	if (same_gas == -1 &&
+	if ((in_planner() || same_gas == -1) &&
 			((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
 			(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
