@@ -261,7 +261,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	int oldpo2 = 0;
 	int lasttime = 0;
 	depth_t lastdepth = {.mm = 0};
-	int lastcylid = 0;
+	int lastcylid;
 	enum dive_comp_type type = dive->dc.divemode;
 
 	if (!diveplan || !diveplan->dp)
@@ -287,15 +287,17 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		free(ev);
 	}
 	dp = diveplan->dp;
-	cyl = &dive->cylinder[lastcylid];
+	/* Create first sample at time = 0, not based on dp because 
+	 * there is no real dp for time = 0, set first cylinder to 0
+	 * O2 setpoint for this sample will be filled later from next dp */
+	cyl = &dive->cylinder[0];
 	sample = prepare_sample(dc);
-	sample->setpoint.mbar = dp->setpoint;
 	sample->sac.mliter = prefs.bottomsac;
-	oldpo2 = dp->setpoint;
 	if (track_gas && cyl->type.workingpressure.mbar)
 		sample->pressure[0].mbar = cyl->end.mbar;
 	sample->manually_entered = true;
 	finish_sample(dc);
+	lastcylid = 0;
 	while (dp) {
 		int po2 = dp->setpoint;
 		if (dp->setpoint)
