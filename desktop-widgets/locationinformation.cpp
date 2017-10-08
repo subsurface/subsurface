@@ -142,7 +142,7 @@ void LocationInformationWidget::acceptChanges()
 {
 	char *uiString;
 	struct dive_site *currentDs;
-	uiString = ui.diveSiteName->text().toUtf8().data();
+	uiString = copy_string(ui.diveSiteName->text().toUtf8().data());
 	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL) {
 		currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
 	} else {
@@ -154,27 +154,36 @@ void LocationInformationWidget::acceptChanges()
 	currentDs->longitude = displayed_dive_site.longitude;
 	if (!same_string(uiString, currentDs->name)) {
 		free(currentDs->name);
-		currentDs->name = copy_string(uiString);
+		currentDs->name = uiString;
+	} else {
+		free(uiString);
 	}
-	uiString = ui.diveSiteDescription->text().toUtf8().data();
+	uiString = copy_string(ui.diveSiteDescription->text().toUtf8().data());
 	if (!same_string(uiString, currentDs->description)) {
 		free(currentDs->description);
-		currentDs->description = copy_string(uiString);
+		currentDs->description = uiString;
+	} else {
+		free(uiString);
 	}
 	uiString = copy_string(ui.diveSiteCountry->text().toUtf8().data());
 	// if the user entered a different contriy, first update the taxonomy
 	// for the displayed dive site; this below will get copied into the currentDs
 	if (!same_string(uiString, taxonomy_get_country(&displayed_dive_site.taxonomy)) &&
 	    !same_string(uiString, ""))
-		taxonomy_set_country(&displayed_dive_site.taxonomy, copy_string(uiString), taxonomy_origin::GEOMANUAL);
+		taxonomy_set_country(&displayed_dive_site.taxonomy, uiString, taxonomy_origin::GEOMANUAL);
+	else
+		free(uiString);
 	// now update the currentDs (which we then later copy back ontop of displayed_dive_site
 	copy_dive_site_taxonomy(&displayed_dive_site, currentDs);
 
-	uiString = ui.diveSiteNotes->document()->toPlainText().toUtf8().data();
+	uiString = copy_string(ui.diveSiteNotes->document()->toPlainText().toUtf8().data());
 	if (!same_string(uiString, currentDs->notes)) {
 		free(currentDs->notes);
-		currentDs->notes = copy_string(uiString);
+		currentDs->notes = uiString;
+	} else {
+		free(uiString);
 	}
+
 	if (!ui.diveSiteCoordinates->text().isEmpty()) {
 		double lat, lon;
 		parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon);
