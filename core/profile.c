@@ -998,7 +998,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				entry->ceiling = (entry - 1)->ceiling;
 			} else {
 				/* Keep updating the VPM-B gradients until the start of the ascent phase of the dive. */
-				if (decoMode() == VPMB && !in_planner() && last_ceiling >= first_ceiling && first_iteration == true) {
+				if (decoMode() == VPMB && last_ceiling >= first_ceiling && first_iteration == true) {
 					nuclear_regeneration(t1);
 					vpmb_start_gradient();
 					/* For CVA calculations, start by guessing deco time = dive time remaining */
@@ -1012,7 +1012,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 					current_ceiling = entry->ceiling;
 				last_ceiling = current_ceiling;
 				/* If using VPM-B outside the planner, take first_ceiling_pressure as the deepest ceiling */
-				if (decoMode() == VPMB && !in_planner()) {
+				if (decoMode() == VPMB) {
 					if  (current_ceiling > first_ceiling) {
 						time_deep_ceiling = t1;
 						first_ceiling = current_ceiling;
