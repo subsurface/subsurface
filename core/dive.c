@@ -1858,7 +1858,7 @@ static int sort_event(struct event *a, struct event *b)
 static int same_gas(struct event *a, struct event *b)
 {
 	if (a->type == b->type && a->flags == b->flags && a->value == b->value && !strcmp(a->name, b->name) &&
-			a->gas.mix.o2.permille == b->gas.mix.o2.permille && a->gas.mix.he.permille == b->gas.mix.he.permille) {
+			same_gasmix(&a->gas.mix, &b->gas.mix)) {
 		return true;
 	}
 	return false;
@@ -2076,6 +2076,19 @@ int same_gasmix(struct gasmix *a, struct gasmix *b)
 	if (gasmix_is_air(a) && gasmix_is_air(b))
 		return 1;
 	return a->o2.permille == b->o2.permille && a->he.permille == b->he.permille;
+}
+
+int same_gasmix_cylinder(cylinder_t *cyl, int cylid, struct dive *dive, bool check_unused)
+{
+	struct gasmix *mygas = &cyl->gasmix;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (i == cylid || cylinder_none(&dive->cylinder[i]))
+			continue;
+		struct gasmix *gas2 = &dive->cylinder[i].gasmix;
+		if (gasmix_distance(mygas, gas2) == 0 && (is_cylinder_used(dive, i) || check_unused))
+			return i;
+	}
+	return -1;
 }
 
 static int pdiff(pressure_t a, pressure_t b)

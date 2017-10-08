@@ -181,7 +181,14 @@ QStringList &DivePlannerPointsModel::getGasList()
 		cylinder_t *cyl = &displayed_dive.cylinder[i];
 		if (cylinder_nodata(cyl))
 			break;
-		list.push_back(get_gas_string(cyl->gasmix));
+		/* Check if we have the same gasmix two or more times
+		 * If yes return more verbose string */
+		int same_gas = same_gasmix_cylinder(cyl, i, &displayed_dive, true);
+		if (same_gas == -1)
+			list.push_back(get_gas_string(cyl->gasmix));
+		else
+			list.push_back(get_gas_string(cyl->gasmix) + QString(" (%1 %2 ").arg(tr("cyl.")).arg(i + 1) +
+				cyl->type.description + ")");
 	}
 	return list;
 }
@@ -258,7 +265,15 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 			else
 				return p.time / 60;
 		case GAS:
-			return get_gas_string(displayed_dive.cylinder[p.cylinderid].gasmix);
+			/* Check if we have the same gasmix two or more times
+			 * If yes return more verbose string */
+			int same_gas = same_gasmix_cylinder(&displayed_dive.cylinder[p.cylinderid], p.cylinderid, &displayed_dive, true);
+			if (same_gas == -1)
+				return get_gas_string(displayed_dive.cylinder[p.cylinderid].gasmix);
+			else
+				return get_gas_string(displayed_dive.cylinder[p.cylinderid].gasmix) +
+					QString(" (%1 %2 ").arg(tr("cyl.")).arg(p.cylinderid + 1) +
+						displayed_dive.cylinder[p.cylinderid].type.description + ")";
 		}
 	} else if (role == Qt::DecorationRole) {
 		switch (index.column()) {
