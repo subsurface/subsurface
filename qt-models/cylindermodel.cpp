@@ -139,7 +139,6 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	int mapping[MAX_CYLINDERS];
 	int same_gas = -1;
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
-	struct gasmix *mygas = &cyl->gasmix;
 	
 	switch (role) {
 	case Qt::BackgroundRole: {
@@ -233,15 +232,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::DecorationRole:
 	case Qt::SizeHintRole:
 		if (index.column() == REMOVE) {
-			same_gas = -1;
-			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				mapping[i] = i;
-				if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
-					continue;
-				struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
-				if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
-					same_gas = i;
-			}
+			same_gas = same_gasmix_cylinder(cyl, index.row(), &displayed_dive, false);
+
 			if ((in_planner() || same_gas == -1) &&
 				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
@@ -256,15 +248,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 	case Qt::ToolTipRole:
 		switch (index.column()) {
 		case REMOVE:
-			same_gas = -1;
-			for (int i = 0; i < MAX_CYLINDERS; i++) {
-				mapping[i] = i;
-				if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
-					continue;
-				struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
-				if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
-					same_gas = i;
-			}
+			same_gas = same_gasmix_cylinder(cyl, index.row(), &displayed_dive, false);
+
 			if ((in_planner() || same_gas == -1) &&
 				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
@@ -558,17 +543,9 @@ void CylindersModel::remove(const QModelIndex &index)
 	if (index.column() != REMOVE) {
 		return;
 	}
-	int same_gas = -1;
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
-	struct gasmix *mygas = &cyl->gasmix;
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		mapping[i] = i;
-		if (i == index.row() || cylinder_none(&displayed_dive.cylinder[i]))
-			continue;
-		struct gasmix *gas2 = &displayed_dive.cylinder[i].gasmix;
-		if (gasmix_distance(mygas, gas2) == 0 && is_cylinder_used(&displayed_dive, i))
-			same_gas = i;
-	}
+	int same_gas = same_gasmix_cylinder(cyl, index.row(), &displayed_dive, false);
+
 	if ((in_planner() || same_gas == -1) &&
 			((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
 				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
@@ -604,6 +581,7 @@ void CylindersModel::remove(const QModelIndex &index)
 		dc_cylinder_renumber(&displayed_dive, dc, mapping);
 		dc = dc->next;
 	}
+	dataChanged(index, index);
 }
 
 void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
