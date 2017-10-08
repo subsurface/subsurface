@@ -334,7 +334,6 @@ void QMLManager::saveCloudCredentials()
 			return;
 		}
 	}
-	setOldStatus(credentialStatus());
 	s.beginGroup("CloudStorage");
 	s.setValue("email", cloudUser);
 	s.setValue("password", cloudPwd);
