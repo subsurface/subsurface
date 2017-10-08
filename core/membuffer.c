@@ -213,7 +213,7 @@ void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_
 {
 	const char *p = text;
 
-	for (;;) {
+	for (;text;) {
 		const char *escape;
 
 		switch (*p++) {
