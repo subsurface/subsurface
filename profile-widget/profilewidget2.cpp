@@ -1756,6 +1756,9 @@ void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
 void ProfileWidget2::repositionDiveHandlers()
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	#define HIDE_ALL(TYPE, CONTAINER) \
+		Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
+	HIDE_ALL(QGraphicsSimpleTextItem, gases);
 	// Re-position the user generated dive handlers
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		struct divedatapoint datapoint = plannerModel->at(i);
