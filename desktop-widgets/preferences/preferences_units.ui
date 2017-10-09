@@ -64,7 +64,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label">
+       <widget class="QLabel" name="label_1">
         <property name="text">
          <string>Depth</string>
         </property>
@@ -202,13 +202,13 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBox_time">
      <property name="title">
       <string>Time units</string>
      </property>
      <layout class="QGridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" name="label13">
+       <widget class="QLabel" name="label_13">
         <property name="text">
          <string>Ascent/descent speed denominator</string>
         </property>
@@ -232,13 +232,13 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox">
+    <widget class="QGroupBox" name="groupBox_duration">
      <property name="title">
       <string>Duration units</string>
      </property>
      <layout class="QGridLayout">
       <item row="0" column="0">
-       <widget class="QLabel" >
+       <widget class="QLabel" name="label_7">
         <property name="text">
          <string>Show hours in duration</string>
         </property>
@@ -329,6 +329,29 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>metric</tabstop>
+  <tabstop>imperial</tabstop>
+  <tabstop>personalize</tabstop>
+  <tabstop>meter</tabstop>
+  <tabstop>feet</tabstop>
+  <tabstop>bar</tabstop>
+  <tabstop>psi</tabstop>
+  <tabstop>liter</tabstop>
+  <tabstop>cuft</tabstop>
+  <tabstop>celsius</tabstop>
+  <tabstop>fahrenheit</tabstop>
+  <tabstop>kg</tabstop>
+  <tabstop>lbs</tabstop>
+  <tabstop>vertical_speed_minutes</tabstop>
+  <tabstop>vertical_speed_seconds</tabstop>
+  <tabstop>duration_show_hours</tabstop>
+  <tabstop>duration_no_hours</tabstop>
+  <tabstop>duration_mixed</tabstop>
+  <tabstop>show_units_table</tabstop>
+  <tabstop>gpsTraditional</tabstop>
+  <tabstop>gpsDecimal</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
