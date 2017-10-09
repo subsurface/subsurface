@@ -867,7 +867,13 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 			deco_state->first_ceiling_pressure.mbar = deco_state->max_bottom_ceiling_pressure.mbar;
 
 		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
-		if ((current_cylinder = get_gasidx(dive, &gas)) == -1) {
+		/* Always prefer the best_first_ascend_cylinder if it has the right gasmix.
+		 * Otherwise take first cylinder from list with rightgasmix  */
+		if (same_gasmix(&gas, &dive->cylinder[best_first_ascend_cylinder].gasmix))
+			current_cylinder = best_first_ascend_cylinder;
+		else
+			current_cylinder = get_gasidx(dive, &gas);
+		if (current_cylinder == -1) {
 			report_error(translate("gettextFromC", "Can't find gas %s"), gasname(&gas));
 			current_cylinder = 0;
 		}
