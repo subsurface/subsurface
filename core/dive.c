@@ -2023,7 +2023,7 @@ static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
 	add_gas_switch_event(dive, dc, 0, 0);
 }
 
-void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
+static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mapping[])
 {
 	int i;
 	struct event *ev;
@@ -2064,7 +2064,7 @@ void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int mappin
  * Also note that we assume that the initial cylinder is cylinder 0,
  * so if that got renamed, we need to create a fake gas change event
  */
-static void cylinder_renumber(struct dive *dive, int mapping[])
+void cylinder_renumber(struct dive *dive, int mapping[])
 {
 	struct divecomputer *dc;
 	for_each_dc (dive, dc)
