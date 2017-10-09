@@ -513,6 +513,7 @@ class UnitsSettings : public QObject {
 	Q_PROPERTY(bool coordinates_traditional   READ coordinatesTraditional WRITE setCoordinatesTraditional NOTIFY coordinatesTraditionalChanged)
 	Q_PROPERTY(int vertical_speed_time READ verticalSpeedTime    WRITE setVerticalSpeedTime    NOTIFY verticalSpeedTimeChanged)
 	Q_PROPERTY(int duration_units          READ durationUnits        WRITE setDurationUnits         NOTIFY durationUnitChanged)
+	Q_PROPERTY(int show_units_table          READ showUnitsTable        WRITE setShowUnitsTable         NOTIFY showUnitsTableChanged)
 
 public:
 	UnitsSettings(QObject *parent = 0);
@@ -523,6 +524,7 @@ public:
 	int weight() const;
 	int verticalSpeedTime() const;
 	int durationUnits() const;
+	int showUnitsTable() const;
 	QString unitSystem() const;
 	bool coordinatesTraditional() const;
 
@@ -534,6 +536,7 @@ public slots:
 	void setWeight(int value);
 	void setVerticalSpeedTime(int value);
 	void setDurationUnits(int value);
+	void setShowUnitsTable(int value);
 	void setUnitSystem(const QString& value);
 	void setCoordinatesTraditional(bool value);
 
@@ -547,6 +550,7 @@ signals:
 	void unitSystemChanged(const QString& value);
 	void coordinatesTraditionalChanged(bool value);
 	void durationUnitChanged(int value);
+	void showUnitsTableChanged(int value);
 private:
 	const QString group = QStringLiteral("Units");
 };

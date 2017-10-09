@@ -269,7 +269,23 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_11">
+    <widget class="QGroupBox" name="groupBox_divelist">
+     <property name="title">
+      <string>Dive list table</string>
+     </property>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="show_units_table">
+        <property name="text">
+         <string>Show units in dive list table</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox_gps">
      <property name="title">
       <string>GPS coordinates</string>
      </property>

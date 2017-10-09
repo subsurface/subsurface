@@ -43,6 +43,7 @@ void PreferencesUnits::refreshSettings()
 	ui->duration_mixed->setChecked(prefs.units.duration_units == units::MIXED);
 	ui->duration_no_hours->setChecked(prefs.units.duration_units == units::MINUTES_ONLY);
 	ui->duration_show_hours->setChecked(prefs.units.duration_units == units::ALWAYS_HOURS);
+	ui->show_units_table->setChecked(prefs.units.show_units_table);
 }
 
 void PreferencesUnits::syncSettings()
@@ -60,4 +61,5 @@ void PreferencesUnits::syncSettings()
 	units->setVerticalSpeedTime(ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
 	units->setCoordinatesTraditional(ui->gpsTraditional->isChecked());
 	units->setDurationUnits(ui->duration_mixed->isChecked() ? units::MIXED : (ui->duration_no_hours->isChecked() ? units::MINUTES_ONLY : units::ALWAYS_HOURS));
+	units->setShowUnitsTable(ui->show_units_table->isChecked());
 }

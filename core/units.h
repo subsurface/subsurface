@@ -260,6 +260,7 @@ struct units {
 		MINUTES_ONLY,
 		ALWAYS_HOURS
 	} duration_units;
+	int show_units_table;
 };
 
 /*
@@ -272,13 +273,13 @@ struct units {
 #define SI_UNITS                                                                                           \
         {                                                                                                  \
 	        .length = METERS, .volume = LITER, .pressure = BAR, .temperature = CELSIUS, .weight = KG,  \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED                                    \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false              \
         }
 
 #define IMPERIAL_UNITS                                                                                     \
         {                                                                                                  \
 	        .length = FEET, .volume = CUFT, .pressure = PSI, .temperature = FAHRENHEIT, .weight = LBS, \
-		.vertical_speed_time = MINUTES, .duration_units = MIXED                                    \
+		.vertical_speed_time = MINUTES, .duration_units = MIXED, .show_units_table = false              \
         }
 
 #ifdef __cplusplus
