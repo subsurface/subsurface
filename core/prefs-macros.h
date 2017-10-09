@@ -18,6 +18,13 @@
 	else                                                        \
 		prefs.units.field = default_prefs.units.field
 
+#define GET_UNIT_INT(name, field)             \
+	v = s.value(QString(name));      \
+	if (v.isValid())                 \
+		prefs.units.field = v.toInt(); \
+	else                             \
+		prefs.units.field = default_prefs.units.field
+
 #define GET_BOOL(name, field)                           \
 	v = s.value(QString(name));                     \
 	if (v.isValid())                                \
