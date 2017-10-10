@@ -675,7 +675,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	struct gasmix gas, bottom_gas;
 	int o2time = 0;
 	int breaktime = -1;
-	int breakcylinder = 0;
+	int break_cylinder = -1, breakfrom_cylinder = 0;
 	int error = 0;
 	bool decodive = false;
 	int first_stop_depth = 0;
@@ -855,7 +855,6 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		first_stop_depth = 0;
 		stopidx = bottom_stopidx;
 		breaktime = -1;
-		breakcylinder = 0;
 		o2time = 0;
 		deco_state->first_ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance_calc(dive,
 												     depth_to_bar(depth, dive)),
@@ -1006,18 +1005,24 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				o2breaking = false;
 				if (prefs.doo2breaks) {
 					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
-					 * backgas (first defined gas).  This could be customized if there were demand.
+					 * backgas.  This could be customized if there were demand.
 					 */
+					if (break_cylinder == -1) {
+						if (get_o2(&dive->cylinder[best_first_ascend_cylinder].gasmix) <= 320)
+							break_cylinder = best_first_ascend_cylinder;
+						else
+							break_cylinder = 0;
+					}
 					if (get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000) {
 						if (laststoptime >= 12 * 60) {
 							laststoptime = 12 * 60;
 							o2breaking = true;
 							breaktime = 0;
-							breakcylinder = current_cylinder;
+							breakfrom_cylinder = current_cylinder;
 							if (is_final_plan)
 								plan_add_segment(diveplan, clock + laststoptime - previous_point_time, depth, current_cylinder, po2, false);
 							previous_point_time = clock + laststoptime;
-							current_cylinder = 0;
+							current_cylinder = break_cylinder;
 							gas = dive->cylinder[current_cylinder].gasmix;
 						}
 					} else {
@@ -1029,7 +1034,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 								if (is_final_plan)
 									plan_add_segment(diveplan, clock + laststoptime - previous_point_time, depth, current_cylinder, po2, false);
 								previous_point_time = clock + laststoptime;
-								current_cylinder = breakcylinder;
+								current_cylinder = breakfrom_cylinder;
 								gas = dive->cylinder[current_cylinder].gasmix;
 								breaktime = -1;
 							}
