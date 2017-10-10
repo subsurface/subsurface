@@ -68,6 +68,7 @@ cp $BREEZE/icons/actions/24/trash-empty.svg $MC/icons
 cp $BREEZE/icons/actions/24/list-add.svg $MC/icons
 cp $BREEZE/icons/actions/22/handle-left.svg $MC/icons
 cp $BREEZE/icons/actions/22/handle-right.svg $MC/icons
+cp $BREEZE/icons/actions/22/overflow-menu.svg $MC/icons
 
 # kirigami now needs the breeze-icons internally as well
 pushd $MC

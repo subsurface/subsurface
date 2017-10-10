@@ -42,6 +42,7 @@
 		<file alias="icons/gps.svg">kirigami/icons/gps.svg</file>
 		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
 		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
+		<file alias="icons/overflow-menu.svg">kirigami/icons/overflow-menu.svg</file>
 		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
 		<file alias="icons/downloadDC-black.svg">../../icons/button-download-dc-black_icon.svg</file>
 		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
@@ -66,5 +67,6 @@
 		<file alias="icons/Dark_gps.svg">icons/Blue_gps.svg</file>
 		<file alias="icons/ic_star.svg">icons/ic_star_black_24px.svg</file>
 		<file alias="icons/ic_star_border.svg">icons/ic_star_border_black_24px.svg</file>
+
 	</qresource>
 </RCC>
