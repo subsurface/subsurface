@@ -40,6 +40,7 @@ public:
 	void copyFromDive(struct dive *d);
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
+	void moveAtFirst(int cylid);
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
