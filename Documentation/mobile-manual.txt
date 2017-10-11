@@ -39,10 +39,11 @@ on a dive trip, useful for proving dive experience to dive shops or to review
 previous dives. _Subsurface-mobile_ for Android allows
 the gathering of GPS locations where dives are performed
 (Subsurface-mobile for iOS currently does not have full functionality).
+
 Users of _Subsurface-mobile_ typically use the
 mobile app as a companion to the laptop/desktop version of _Subsurface_,  sharing dive information
 between the mobile and the desktop versions. However _Subsurface-mobile_ can
-also be used independently of the desktop version and is not dependent on the use of
+also be used independently of the desktop version and does not require the use of
 cloud storage.
 
 _Subsurface-mobile_ allows:
@@ -66,11 +67,11 @@ are accessible by _Subsurface-mobile_.
 == Installing _Subsurface-mobile_ on your mobile device
 
 Find _Subsurface-mobile_ in the _Google Play Store_ or the _iTunes Store_
-and install it.
+and install it. Please note that both stores also contain the older _Subsurface_ companion app (used only for tracking GPS positions) - make sure you actually install _Subsurface-mobile_.
 
 == Using _Subsurface-mobile_ for the first time
 
-Upon starting _Subsurface-mobile_ for the first time, a Subsurface
+When you start _Subsurface-mobile_ for the first time, a Subsurface
 splash screen is shown while the program loads. On some devices this
 may take several seconds. After loading, the _Cloud Credentials screen_ appears
 (see image below on left).
@@ -85,13 +86,14 @@ stored on the mobile device only. If no dives have been entered into the dive lo
 yet (the usual case), then a an empty dive log is created.
 
 === Using Cloud Storage
-A free Internet cloud storage account is created for
-storing dive log information in future. One can create a new cloud storage account
-using a mobile device: there is no need to have credentials created
-using the _Subsurface_ desktop application in order to use cloud storage and one can
-do full maintenance of a dive log from _Subsurface-mobile_. On the other hand, if one
-shares credentials between _Subsurface-mobile_ and _Subsurface_ for desktop, one's dive
+A free Internet cloud storage account can be used for
+storing dive log information. This cloud storage account can be created either from _Subsurface_ on the desktop or _Subsurface-mobile_
+using a mobile device; in fact, you can
+do full maintenance of a dive log from _Subsurface-mobile_ alone. On the other hand, if you
+share credentials between _Subsurface-mobile_ and _Subsurface_ for desktop, through the _Subsurface_ cloud storage your dive
 log can be shared by both devices.
+
+The dive data are cached both on the mobile device as well as on the desktop - it is easy to create backups of the data (for example in XML format) on the desktop, and both mobile device and desktop keep a local copy of the data so that the dive log is always accessible, even without Internet connection. The Subsurface team never accesses a user's dive data without explicit permission to do so, the data are not used for any purpose other than providing them to the user who created them. There are no ads and no harvesting / analysis of the data stored in the Subsurface cloud storage.
 
 1) Enter an e-mail address and a password in the fields indicated on the screen.
 The e-mail address should be in lower case and the password should contain a combination of
@@ -99,18 +101,15 @@ letters from the alphabet (upper and lower case) and/or numbers.
 Tap the "Sign-in or Register" button. If you have already set
 up an account from the _Subsurface_ desktop application, enter the same credentials here.
 Once the dive
-list has been downloaded from the cloud, _Subsurface-mobile_ keeps a local
-copy on the mobile device. This means that even if there is no Internet connection
-at a dive site, one can still access the local copy and view and manipulate
-dive information.
+list has been downloaded from the cloud, _Subsurface-mobile_ usually works only with the the local
+copy on the mobile device. This avoids long delays or even failure of operations if there is a bad (or no) internet connection, a situation fairly common at many dive sites.
 
 3) If this is a new account, a PIN screen will open (see image on right, above). A PIN is e-mailed
 to the email address entered in the previous step. Enter this PIN into the field indicated
 and tap the _Register_ button. The user
 information is stored on the cloud server and access to the cloud is enabled. In this case
 the dive list is initially empty. Start entering dives in the dive
-log or download dive information from either a _Subsurface_ cloud
-storage account or from a dive computer.
+log or download dive information from a supported dive computer.
 
 The dive log can be updated automatically. If there is Internet connectivity, _Subsurface-mobile_ accesses
 the cloud-based dive log to verify that the local copy of the dive log is still the
@@ -119,13 +118,13 @@ the server are synchronized.
 
 === Changing the existing login credentials on the _Subsurface_ cloud
 
-The login credentials can be changed, for example to work with
+The login credentials can be changed, for an example in order to work with
 multiple accounts. See the section on xref:S_ChangeCloudAccount[Changing to a different _Subsurface_ cloud account].
 
 == Menu Structure and User Interface
 
 At the bottom of many Subsurface-mobile screens is a round button that provides for
-several actions (see image below). The most appropriate choice is indicated in a round blue _action button_ (in the case below, edit a dive). Alternative actions are indicated in a white _action bar_.
+several actions (see image below). The most common choice is indicated in a round colored _action button_ (in the case below, edit a dive). Alternative actions are indicated in a white _action bar_.
 On Android devices, use the Android Back
 button for "cancel", "discard" or "back" actions. For example, when
 editing dive information, tapping the action button saves the changes while the
@@ -184,13 +183,16 @@ on iOS; tap the GPS icon on the Action Bar.).
 == Editing dive details
 
 At the bottom of the dive details screen the action button is a pencil (image on right, above).
-Tapping the pencil button brings up a panel with edit boxes that allows
-changing the existing dive information, e.g. adding text to the dive notes
+Tapping the pencil button changes the page and enables edit boxes that allow
+modifying the existing dive information, e.g. adding text to the dive notes
 or changing the names or values of some of the information (see image below).
 It may be necessary to scroll the window to access all the information.
 At the bottom of the edit screen is a _Save_ action button. Tap this to save
 the new information, after which the dive list screen is
 updated and shown. To cancel any edits, tap the Android _Back_ Button.
+
+When the virtual keyboard is shown, to avoid screen clutter, the action button is hidden.
+Once you close the keyboard it is drawn again.
 
 image::mobile-images/Editdive.jpg["FIGURE: Dive edit screen",align="center"]
 
@@ -235,13 +237,15 @@ Download of dives is possible from dive computers with a FTDI USB interface, or 
 First, establish a link between the dive computer and the mobile device.
 
 For USB dive computers, USB cables "normally" used
-for uploading dives to a desktop/laptop computer do NOT work: these cables often have a full-sized male USB plug
+for uploading dives to a desktop/laptop computer do NOT work: these cables usually have a full-sized ("Type A") male USB plug
 on one end which plugs into the USB port of a desktop/laptop computer. For downloads to a mobile device
 one needs a USB OTG (USB On-The-Go) cable. In most cases it is required to plug the USB
-cable "normally" used with the dive computer into a USB OTG cable which, in turn, plugs into the mini-USB
+cable "normally" used with the dive computer into a USB OTG cable which, in turn, plugs into the mini-USB (or sometimes a USB "Type C")
 receptacle of the mobile device. The
-OTG cable often has a full-size female receptacle at one end which accommodates the full-sized male plug
+OTG cable usually has a full-size ("Type A") female receptacle at one end which accommodates the full-sized male plug
 of the USB cable "normally" used (see image below). This means that two cables are used to connect the dive computer to the mobile device.
+
+Please note that not all Android devices support OTG cables. And even on some devices that do support those cables in general, _Subsurface-mobile_ still in some cases cannot access a dive computer through a serial port.
 
 image::mobile-images/USB-OTG.jpg["FIGURE: USB-OTG cable",align="center"]
 
@@ -260,7 +264,9 @@ at the top of the screen, select the correct vendor and dive computer names (see
 
 Now tap the button labeled _Download_. The downloaded dives appear in the bottom part of the screen, the
 most recent dive at the top (see image on right, below). Be patient because the download can take a few minutes.
-Each dive has a check-box on the left hand side, used for selecting which dives need to be added to the
+As a matter of fact, a complete first download from some dive computers has been shown to take 45 minutes and longer.
+
+After the download, each dive has a check-box on the left hand side, used for selecting which dives you want to be added to the
 _Subsurface-mobile_ dive list: dives that are not checked are ignored. With the appropriate downloaded dives
 having been checked, tap the button at the bottom left labeled _Accept_. All the selected dives appear on
 the _Subsurface-mobile_ dive list. The downloaded dive information can now be edited as described in the section
@@ -423,11 +429,11 @@ The Settings screen allows one to set up the way in which GPS positions are coll
 
 === Saving a detailed dive computer dive log
 
-The Settings screen has a section with heading _Dive computer_, containing a switch to save a detailed log each time dives are downloaded from a dive computer. This is important for solving problems in downloading dives from the dive computer.
+Under the heading _Dive computer_, you will find a switch to save a detailed log each time dives are downloaded from a dive computer. This is important for solving problems in downloading dives from the dive computer. When contacting the developers with download problems, you will usually be asked to provide the information in this log, which can be found in the root folder of your local storage device as +libdivecomputer.log+. In the same location you can also find a +subsurfacel.log+ which is always created and which include more information which can be helpful when debugging problems with Subsurface-mobile.
 
 === Activating the Developer submenu
 
-Information is available useful for understanding the screen rendering of dive information as well as the way in which _Subsurface-mobile_ processed information during a specific occasion while running the app (see section below). Activate (or deactivate) this menu item on the Main Menu by dragging the slider switch in the Settings screen.
+The information in subsurface.log plus some additional information for understanding the screen rendering of dive information as well as the way in which _Subsurface-mobile_ processed information during a specific occasion while running the app (see section below) is available through a _Developer_ menu at run time. Activate (or deactivate) this menu item on the Main Menu by dragging the slider switch in the Settings screen.
 
 == Developer submenu
 
