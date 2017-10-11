@@ -576,11 +576,8 @@ void CylindersModel::remove(const QModelIndex &index)
 	}
 	changed = true;
 	endRemoveRows();
-	struct divecomputer *dc = &displayed_dive.dc;
-	while (dc) {
-		dc_cylinder_renumber(&displayed_dive, dc, mapping);
-		dc = dc->next;
-	}
+	cylinder_renumber(&displayed_dive, mapping);
+	DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
 	dataChanged(index, index);
 }
 

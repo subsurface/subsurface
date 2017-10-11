@@ -353,6 +353,13 @@ void DivePlannerPointsModel::gaschange(const QModelIndex &index, int newcylinder
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::cylinderRenumber(int mapping[])
+{
+	for (int i = 0; i < rowCount(); i++)
+		divepoints[i].cylinderid = mapping[divepoints[i].cylinderid];
+	emitDataChanged();
+}
+
 QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
 	if (role == Qt::DisplayRole && orientation == Qt::Horizontal) {
