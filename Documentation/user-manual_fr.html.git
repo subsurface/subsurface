@@ -442,10 +442,10 @@ asciidoc.install(3);
 </div>
 </div>
 <div class="paragraph"><p><span class="big">MANUEL UTILISATEUR</span></p></div>
-<div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
+<div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.6, March 2017</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.6, mars 2017</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -513,18 +513,20 @@ Souhaitez-vous pouvoir accéder ou modifier votre carnet de plongée en
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p><em>Subsurface</em> binaries are available for Windows PCs (Win 7 or later from
-version 4.6 of <em>Subsurface</em> onwards), Intel based Macs (OS/X) and many Linux
-distributions. <em>Subsurface</em> can be built for many more hardware platforms
-and software environments where Qt and libdivecomputer are available.</p></div>
-<div class="paragraph"><p>This manual explains how to use the <em>Subsurface</em> program. To install the
-software, consult the <em>Downloads</em> page on the
-<a href="https://subsurface-divelog.org/"><em>Subsurface</em> web site</a>.  Please discuss
-issues with this program by sending an email to
-<a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a> and report bugs
-at <a href="https://github.com/Subsurface-divelog/subsurface/issues">our bugtracker</a>.
-For instructions on how to build the software and (if needed) its
-dependencies please consult the INSTALL file included with the source code.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> est disponible pour Windows (Win 7 ou plus récent, à partir de
+la version 4.6 de <em>Subsurface</em>), les Macs basés sur processeurs Intel (OS/X)
+et de nombreuses distributions Linux.  <em>Subsurface</em> peut être compilé pour
+bien plus de plateformes matérielles et d&#8217;environnements logiciels où Qt et
+libdivecomputer sont disponibles.</p></div>
+<div class="paragraph"><p>Ce manuel explique comment utiliser le programme <em>Subsurface</em>. Pour
+installer le logiciel, consultez la page <em>Téléchargement</em> sur le
+<a href="https://subsurface-divelog.org/">site web de <em>Subsurface</em></a>. En cas de
+problème, vous pouvez envoyer un e-mail sur
+<a href="mailto:subsurface@subsurface-divelog.org">notre liste de diffusion</a> et
+rapportez les bogues sur <a href="http://trac.hohndel.org">notre bugtracker</a>.  Pour
+des instructions de compilation du logiciel et (si besoin) de ses
+dépendances, merci de consulter le fichier INSTALL inclus dans les sources
+logicielles.</p></div>
 <div class="paragraph"><p><strong>Public</strong> : Plongeurs loisirs, apnéistes, plongeurs Tek et plongeurs
 professionnels</p></div>
 <div id="toc">
@@ -534,28 +536,31 @@ professionnels</p></div>
 <div class="sect1">
 <h2 id="_utilisation_de_ce_manuel">1. Utilisation de ce manuel</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>When opened from within <em>Subsurface</em>, this manual does not have external
-controls for paging or selecting previous pages. However, two facilities are
-provided:</p></div>
-<div class="paragraph"><p>The <em>SEARCH</em> function is activated by pressing control-F or command-F on the
-keyboard. A text box appears at the bottom right-hand of the window (see
-image below).  For instance, typing the word "<em>weights</em>" into the search
-text box, searches throughout the user manual. To the right of the search
-text box are two arrows pointing up and down. These find the previous and
-the next occurrence of the search term.</p></div>
+<div class="paragraph"><p>Lorsqu&#8217;il est ouvert depuis <em>Subsurface</em>, ce manuel ne dispose pas de
+contrôles externes pour la pagination ou la sélection des pages
+précédentes. Cependant, deux options sont disponibles:</p></div>
+<div class="paragraph"><p>La fonction <em>RECHERCHE</em> est activée avec le raccourci clavier Contrôle-F ou
+Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir
+image ci-dessous). Par exemple, entrer le mot "<em>weights</em>" dans la boîte de
+texte de recherche lancera  la recherche dans tout le manuel utilisateur. À
+droite de la boîte de recherche se trouvent deux flèches, l&#8217;une vers le haut
+l&#8217;autre vers le bas. Elles mènent respectivement vers l&#8217;occurence précédente
+et suivante du terme recherché.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/UserManualSearch.jpg" alt="User manual functions" />
 </div>
 </div>
-<div class="paragraph"><p><em>PREVIOUS/NEXT LINK</em>. Move between links (underlined words that jump to
-specific sections in the user manual) by right-clicking on the text of the
-manual.  This brings up a context menu to PREVIOUS links selected.  (see
-image below). For instance if a link has been selected, then the option to
-<em>Go Back</em> shows the text at the previous link selected (similar to the
-Previous Page button in a browser). Conversely the <em>Go Forward</em> option jumps
-to the text seen before selecting the <em>Go Back</em> option. The <em>Reload</em> option
-reloads the complete user manual into the window.</p></div>
+<div class="paragraph"><p><em>LIEN PRÉCÉDENT/SUIVANT</em>. Naviguez entre les liens (les mots soulignés qui
+vous conduisent vers des sections précises du manuel utilisateur) en
+cliquant-droit sur le texte du manuel. Cela fera apparaître un menu
+contextuel vers les liens PRÉCÉDENTS sélectionnés (voir image
+ci-dessous). Par exemple, si un lien a été sélectionné, l&#8217;option <em>Retour
+lien précédent</em> affiche le texte au lien précédent sélectionné (comme le
+fait le bouton Page Précédente d&#8217;un navigateur). Inversement, l&#8217;option
+<em>Aller au lien suivant</em> navigue vers le texte vu avant l&#8217;utilisation de
+l&#8217;option <em>Retour lien précédent</em>. L&#8217;option <em>Recharger</em> recharge le manuel
+utilisateur complet dans la fenêtre.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/UserManualLinksBack.jpg" alt="User manual functions" />
@@ -567,11 +572,11 @@ reloads the complete user manual into the window.</p></div>
 <h2 id="S_UserSurvey">2. Le sondage utilisateur</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Dans le but de développer <em>Subsurface</em> pour servir ses utilisateurs de la
-meilleur manière qu&#8217;il soit, il est important d&#8217;avoir des informations sur
-les utilisateurs. À l&#8217;ouverture de <em>Subsurface</em> après avoir utilisé le
-logiciel pendant une semaine environ, une fenêtre de sondage apparait. Cela
-est complètement optionnel et l&#8217;utilisateur contrôle quelles informations
-sont envoyées ou non à l'équipe de développement de <em>Subsurface</em>. Toutes les
+meilleur manière qui soit, il est important d&#8217;avoir des informations sur les
+utilisateurs. À l&#8217;ouverture de <em>Subsurface</em> après avoir utilisé le logiciel
+pendant une semaine environ, une fenêtre de sondage apparait. Cela est
+complètement optionnel et l&#8217;utilisateur contrôle quelles informations sont
+envoyées ou non à l'équipe de développement de <em>Subsurface</em>. Toutes les
 données que l&#8217;utilisateur envoie sont utiles et ne seront utilisées que pour
 les futurs développements et modifications du logiciel pour coller au mieux
 aux besoins des utilisateurs de <em>Subsurface</em>. Si vous complétez le sondage
@@ -585,14 +590,14 @@ envoyer un nouveau sondage en démarrant <em>Subsurface</em> avec l&#8217;option
 <div class="sect1">
 <h2 id="S_StartUsing">3. Commencer à utiliser le programme</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The <em>Subsurface</em> window is usually divided into four panels with a <strong>Main
-Menu</strong> (File Edit Import Log View Share Help) at the top of the window (for
-Windows and Linux) or the top of the screen (for Mac and Ubuntu Unity). The
-four panels are:</p></div>
+<div class="paragraph"><p>La fenêtre <em>Subsurface</em> est généralement divisée en 4 panneaux avec un <strong>Menu
+principal</strong> (Fichier Édition Importer Journal Vue Partager Aide) en haut de
+la fenêtre (pour Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu
+Unity). Les quatre panneaux sont :</p></div>
 <div class="paragraph"><p>La <strong>liste des plongées</strong> en bas à gauche, affichant toutes les plongées du
 journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut être
 sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans
-la plupart des cas, les touches haut/bas peuvent être utilisée pour passer
+la plupart des cas, les touches haut/bas peuvent être utilisées pour passer
 d&#8217;une plongée à l&#8217;autre. La <strong>liste des plongées</strong> est un outil important pour
 manipuler un journal (carnet) de plongée.</p></div>
 <div class="paragraph"><p>La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
@@ -615,8 +620,8 @@ l&#8217;emplacement de la plongée, les informations détaillées et le profil d
 <em>plongée sélectionnée</em> sont affichées dans les panneaux respectifs. Si
 plusieurs plongées sont sélectionnées, la dernière mise en surbrillance est
 la <em>plongée sélectionnée</em>, mais les données de <em>toutes les plongées mises en
-surbrillances</em> sont affichées dans l&#8217;onglet <strong>Stats</strong> du panneau
-<strong>informations</strong> (profondeur maximale, minimale et moyenne, les durées, les
+surbrillances</em> sont affichées dans l&#8217;onglet <strong>Statistiques</strong> du panneau
+<strong>Informations</strong> (profondeur maximale, minimale et moyenne, les durées, les
 températures de l&#8217;eau et le SAC (air consommé); temps total et nombre de
 plongées sélectionnées).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
@@ -633,13 +638,15 @@ permet plusieurs choix d&#8217;affichage :</p></div>
 <div class="paragraph"><p><strong>Info</strong> : affiche uniquement les notes de plongées de la dernière plongée sélectionnée et les statistiques pour
 toutes les plongées mises en surbrillance.</p></div>
 <div class="paragraph"><p><strong>Globe</strong> : affiche uniquement la carte mondiale, centrée sur la dernière plongée sélectionnée.</p></div>
-<div class="paragraph"><p>Like other functions that can be accessed via the Main Menu, these options
-can also be triggered using keyboard shortcuts. The shortcuts are shown with
-an underline in the main menu entries, with the Alt-key pressed, or are
-denoted after the menu item.</p></div>
+<div class="paragraph"><p>Comme d&#8217;autres fonctions auxquelles on peut accéder via le menu principal,
+ces options peuvent aussi être activées par des raccourcis clavier. Les
+raccourcis pour un système particulier sont affichés avec un souligné dans
+les entrées de menu. À cause des différents systèmes d&#8217;exploitation et
+langues, <em>Subsurface</em> peut utiliser différentes touches de raccourcis et ne
+sont donc pas détaillées ici.</p></div>
 <div class="paragraph"><p>Lorsque le programme est lancé pour la première fois, il n&#8217;affiche aucune
 information, parce qu&#8217;il n&#8217;a aucune information de plongée disponible. Dans
-les sections suivantes, le procédure pour créer a nouveau carnet de plongée
+les sections suivantes, la procédure pour créer un nouveau carnet de plongée
 sera détaillée.</p></div>
 </div>
 </div>
@@ -711,148 +718,166 @@ Tableur ou de fichiers CSV contenant les profils de plongées.
 </ul></div>
 <div class="sect2">
 <h3 id="S_EnterData">5.1. Entrer les informations de plongée à la main</h3>
-<div class="paragraph"><p>This is usually the approach for dives without a dive computer. The basic
-record of information within <em>Subsurface</em> is a dive. The most important
-information in a simple dive logbook usually includes dive type, date, time,
-duration, depth, the names of your dive buddy and the divemaster or dive
-guide, and some remarks about the dive. <em>Subsurface</em> can store much more
-information for each dive.  To add a dive to a dive log, select <em>Log &#8594; Add
-Dive</em> from the Main Menu. The program then shows three panels on which to
-enter information for a dive: two tabs in the <strong>Info</strong> panel (<strong>Notes</strong> and
-<strong>Equipment</strong>), as well as the <strong>Dive Profile</strong> panel that displays a graphical
-profile of each dive. These panels are respectively marked <span class="red">A</span>,
-<span class="red">B</span> and <span class="red">C</span> in the figure below. Each of these tabs will now be
-explained for data entry.</p></div>
+<div class="paragraph"><p>C&#8217;est en général l&#8217;approche des plongées sans ordinateur. L&#8217;enregistrement
+de l&#8217;information de base dans <em>Subsurface</em> est une plongée. L&#8217;information la
+plus importante dans un simple carnet de plongée inclut généralement le type
+de plongée, la date et l&#8217;heure, la durée, la profondeur, le nom des
+équipiers et du moniteur ou du guide de palanquée, et quelques remarques à
+propos de la plongée. <em>Subsurface</em> peut stocker bien plus d&#8217;informations
+pour chaque plongée. Pour ajouter une plongée au carnet, sélectionner
+<em>Journal &#8594; Ajouter une plongée</em> depuis le menu principal. Le logiciel
+affiche alors trois panneaux sur lesquels on peut entrer des informations
+pour une plongée: deux onglets dans le panneau <strong>Informations</strong> (<strong>Notes</strong> et
+<strong>Équipement</strong>), ainsi que le panneau <strong>Profil de plongée</strong> qui affiche un
+profil graphique pour chaque ploingée. Ces panneaux sont respectivement
+marqués <span class="red">A</span>, <span class="red">B</span> et <span class="red">C</span> dans l&#8217;llustration ci-dessous. Chaque
+de ces onglets sera expliqué pour l&#8217;entrée de données.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/AddDive1_f22.jpg" alt="FIGURE: Add dive" />
 </div>
 </div>
-<div class="paragraph"><p>When you edit a field in Notes or Equipment panels, <em>Subsurface</em> enters
-<strong>Editing Mode</strong>, indicated by the message in the blue box at the top of the
-<strong>Notes</strong> panel (see the image below). This message is displayed in all the
-panels under Notes and Equipment when in <strong>Editing Mode</strong>.</p></div>
+<div class="paragraph"><p>Lorsque vous éditez un champ dans Notes ou Équipement, <em>Subsurface</em> entre en
+<strong>Mode édition</strong>, indiqué par un message dans une boîte bleue en haut du
+panneau <strong>Notes</strong> (voir image ci-dessous). Ce message est affiché dans tous
+les panneau sous Notes et Équipement en <strong>Mode édition</strong>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/BlueEditBar_f22.jpg" alt="Blue edit bar" />
 </div>
 </div>
-<div class="paragraph"><p>The <em>Apply changes</em> button should only be selected after all the parts of a
-dive have been entered.  When entering dives by hand, the <em>Info</em>,
-<em>Equipment</em> and <em>Profile</em> tabs should be completed before applying the
-information. By selecting the <em>Apply changes</em> button, a local copy of the
-information for this specific dive is saved in memory but NOT written to
-disk.  The <em>Apply changes</em> button should ONLY be selected after all parts of
-a dive have been entered. When closing Subsurface, the program will ask
-again, this time whether the complete dive log should be saved on disk or
-not.</p></div>
+<div class="paragraph"><p>Le bouton <em>Appliquer les modifications</em> ne doit être cliqué qu&#8217;après avoir
+complété toutes les parties d&#8217;une plongée. Lors de l&#8217;entrée manuelle d&#8217;une
+plongée, les onglets <em>Informations</em>, <em>Équipement</em> et <em>Profil</em> doivent être
+complétés avant d&#8217;appliquer les modifications. En cliquant le bouton
+<em>Appliquer les modifications</em>, une copie locale des informations d&#8217;une
+plongée sont sauvegardées dans la mémoire, mais ne sont pas écrites sur le
+disque. Le bouton <em>Appliquer lesmodifications</em> ne devrait UNIQUEMENT être
+utilisé qu&#8217;après avoir entré toutes les informations d&#8217;une plongée. En
+quittant Subsurface, le logiciel demandera si les carnet de plongée complet
+doit être enregistré sur le disque ou non.</p></div>
 <div class="sect3">
-<h4 id="S_CreateProfile">5.1.1. Creating a Dive Profile</h4>
-<div class="paragraph"><p>The <strong>Dive Profile</strong> (a graphical representation of the depth of the dive as a
-function of time) is shown in the panel on the top right hand of the
-<em>Subsurface</em> window. When a dive is manually added to a logbook,
-<em>Subsurface</em> presents a default dive profile that needs to be modified to
-best represent the dive described:</p></div>
+<h4 id="S_CreateProfile">5.1.1. Création d&#8217;un profil de plongée</h4>
+<div class="paragraph"><p>Le <strong>Profil de plongée</strong> (une représentation graphique de la profondeur d&#8217;une
+plongée en fonction du temps) est affiché dans le panneau en haut à droite
+de la fenêtre de <em>Subsurface</em>. Lorsqu&#8217;il est ajouté manuellement au carnet,
+<em>Subsurface</em> affiche un profil de plongée par défaut qui nécessite d'être
+modifié pour représenter au mieux la plongée décrite:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile1_f20.jpg" alt="FIGURE: Initial dive profile" />
 </div>
 </div>
-<div class="paragraph"><p><em>Modifying the dive profile</em>: When the cursor is moved around the dive
-profile, its position is shown by two right-angled red lines as seen below.
-The time and depth represented by the cursor are indicated at the top of the
-black information box (@ and D). The units (metric/imperial) on the axes are
-determined by the <strong>Preference</strong> settings. The dive profile itself comprises
-several line segments demarcated by waypoints (white dots on the profile, as
-shown above). The default dive depth is 15 m.  If the dive depth was 20 m
-then you need to drag the appropriate waypoints downward to 20 m. To add a
-waypoint, double-click on any line segment. To move an additional waypoint,
-drag it. Moving can also be done by selecting the waypoint and using the
-arrow keys.  To remove a waypoint, right-click on it and choose "Remove this
-point" from the context menu. Drag the waypoints to represent an accurate
-time duration for the dive. Below is a dive profile for a dive to 20 m for
-30 min, followed by a 5 minute safety stop at 5 m.</p></div>
+<div class="paragraph"><p><em>Modifier le profile de plongée</em>: lorsque le curseur est déplacé dans la
+zone du profil, sa position est affichée par deux lignes rouges à angle
+droit, comme illustré ci-dessous. Le temps et la profondeur sont représentés
+en haut de la boîte noire d&#8217;information (@ et D). Les unités
+(métriques/impériales) sur les axes sont déterminées dans les réglages des
+<strong>Préférences</strong>. Le profil de plongée lui-même comporte plusieurs segments de
+ligne séparés par des points de passage (les points blancs sur le profil,
+voir ci-dessous). La profondeur par défaut d&#8217;une plongée est de 15m. Si la
+prfondeur de votre plongée était de 20m, vous devez glisser le point de
+passage approprié jusqu'à 20m. Pour ajouter un point de passage,
+double-cliquez sur n&#8217;importe quel segment de la ligne. Pour bouger un point
+de passage supplémentaire, glissez-le. Le bouger peut également être réalisé
+en le sélectionnant et en utilisant les flèches du clavier. Pour supprimer
+un point de passage, faites un clic-droit dessus et choisissez "Supprimer ce
+point" dans le menu contextuel. Glissez les points de passage pour
+représenter une durée correspondante à celle de votre plongée. Ci-dessous se
+trouve un profil pour une plongée à 20m durant 30min, suivie d&#8217;un palier de
+sécurité de 5 minutes à 5 m.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile2_f20.jpg" alt="FIGURE: Edited dive profile" />
 </div>
 </div>
-<div class="paragraph"><p><em>Specifying the gas composition:</em> The gas composition used is indicated
-along the line segments of the dive profile. This defaults to the first gas
-mixture specified in the <strong>Equipment</strong> tab, which was air in the case of the
-profile above. The gas mixtures of segments of the dive profile can be
-changed by right-clicking on the particular waypoint and selecting the
-appropriate gas from the context menu. Changing the gas for a waypoint
-affects the gas shown in the segment <em>to the right</em> of that waypoint. Note
-that only the gases defined in the <strong>Equipment</strong> tab appear in the context
-menu (see image below).</p></div>
+<div class="paragraph"><p><em>Spécifier la composition du gaz:</em> la composition du gaz utilisé est
+indiquée le long des segments de ligne du profil de plongée. Ceci est le
+réglage par défaut pour le premier mélange gazeux spécifié dans l&#8217;ongle
+<strong>Équipement</strong>, qui était de l&#8217;air dans le cas du profil ci-dessus. Les
+mélanges gazeux des segments du profil peuvent être modifiés dans
+cliquant-droit sur un point de passage précis et en sélectionnant le gaz
+approprié dans le menu contextuel. Changer un gaz à un point de passage
+modifie le gaz affiché dans le segment <em>à droite</em> du point de passage. Notez
+que seuls les gaz définis dans l&#8217;onglet <strong>Équipement</strong> apparaissent dans le
+menu contextuel (voir image ci-dessous).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveProfile3_f20.jpg" alt="FIGURE: Gas composition context menu" />
 </div>
 </div>
-<div class="paragraph"><p>With the profile now defined, more details must be added to have a fuller
-record of the dive. To do this, the <strong>Notes</strong> and the <strong>Equipment</strong> tabs on the
-top left hand of the <em>Subsurface</em> window should be used. Click on
-<a href="#S_Notes_dc"><strong>this link</strong></a> for instructions on how to use these tabs.</p></div>
+<div class="paragraph"><p>Une fois le profil déterminé, d&#8217;autres détails doivent être ajoutés pour
+obtenir un enregistrement complet de la plongée. Pour y arriver, les onglets
+<strong>Notes</strong> et <strong>Équipement</strong> en haut à gauche de la fenêtre de <em>Subsurface</em>
+doivent être utilisés. Cliquez sur <a href="#S_Notes_dc"><strong>ce lien</strong></a> pour plus
+d&#8217;informations sur l&#8217;utilisation de ces onglets.</p></div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="S_ImportDiveComputer">5.2. Importer de nouvelles informations de plongée à partir de l&#8217;ordinateur de plongée</h3>
 <div class="sect3">
-<h4 id="_connecting_and_importing_data_from_a_dive_computer">5.2.1. Connecting and importing data from a dive computer.</h4>
-<div class="paragraph"><p>The use of dive computers allows the collection of a large amount of
-information about each dive, e.g. a detailed record of depth, duration,
-rates of ascent/descent and of gas partial pressures. <em>Subsurface</em> can
-capture this information, using dive details from a wide range of dive
-computers. The latest list of supported dive computers can be found at:
-<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">
-Supported dive computers</a>.</p></div>
+<h4 id="_connecter_et_importer_des_données_depuis_un_ordinateur_de_plongée">5.2.1. Connecter et importer des données depuis un ordinateur de plongée.</h4>
+<div class="paragraph"><p>L&#8217;utilisation d&#8217;ordinateurs de plongée permet la collecte d&#8217;un grand nombre
+d&#8217;informations à propos de chaque plongée, comme un enregistrement détaillé
+de la profondeur, la durée, la vitesse de remontée ou de descente et les
+pression partielles des gaz. <em>Subsurface</em> peut récupérer ces informations,
+en utilisant les données venant d&#8217;une grande variété d&#8217;ordinateurs de
+plongée. La liste la plus récente des ordinateurs supportés peut être trouvé
+ici:
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">Ordinateurs
+de plongée supportés</a>.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">Several dive computers consume more power when they are in PC-Communication
-mode. <strong>This could drain the dive computer&#8217;s battery</strong>. We recommend the
-user checks to be sure the dive computer is charged when connected to the
-USB port of a PC. For example, several Suunto and Mares dive computers do
-not recharge through the USB connection. Users should refer to the dive
-computer&#8217;s manual if they are unsure whether the dive computer recharges its
-batteries while connected to the USB port.</td>
+<td class="content">Certains ordinateurs de plongée consomme plus d'énergie lorsqu&#8217;ils sont en
+mode Communication PC. <strong>Ceci peut consommer une grande partie de la
+batterie de votre ordinateur de plongée</strong>. Nous recommandons à l&#8217;utilisateur
+de vérifier que l&#8217;ordinateur de plongée est chargé lorsqu&#8217;il est conneté au
+port USB du PC. Par exemple, certains ordinateurs Suunto et Mares ne se
+rechargent pas via la connection USB. Les utilisateurs doivent se reporter
+au manuel de leur ordinateur de plongée s&#8217;ils ne savent pas si leur
+ordinateur de plongée recharge ou non ses batteries lorsqu&#8217;il est connecté
+au port USB.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>To import dive information from a dive computer to a computer with
-<em>Subsurface</em>, the two pieces of equipment must communicate with one
-another.  This involves setting up the communications port (or mount point)
-of the computer with <em>Subsurface</em> that communicates with the dive
-computer. To set up this communication, users need to find the appropriate
-information to instruct <em>Subsurface</em> where and how to import the dive
-information.
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix
-A</a> provides the technical information to help the user achieve this for
-different operating systems and
-<a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix
-B</a> has dive computer specific information.</p></div>
-<div class="paragraph"><p>After this, the dive computer can be hooked up to the user&#8217;s PC using these
-steps:</p></div>
+<div class="paragraph"><p>Pour importer les informations depuis un ordinateur de plongée vers un
+ordinateur utilisant <em>Subsurface</em>, les deux pièces d'équipement doivent
+communiquer entre elles. Ceci implique la configuration des ports de
+communication (ou point de montage) de l&#8217;ordinateur sur lequel tourne
+<em>Subsurface</em> qui communique avec l&#8217;ordinateur de plongée. Pour configurer
+cette communication, les utilisateurs doivent trouver l&#8217;information
+appropriée pour renseigner à <em>Subsurface</em> d&#8217;où et comment importer les
+informations de
+plongée.
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
+ceci pour les différents systèmes d&#8217;exploitation et
+<a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
+B</a> contient des informations spécifiques à chaque ordinateur de plongée.</p></div>
+<div class="paragraph"><p>Après ceci, l&#8217;ordinateur de plongée peut être branché au PC de l&#8217;utilisateur
+en suivant ces étapes:</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-The interface cable should be connected to a free USB port (or the Infra-red
-        or Bluetooth connection set up as described later in this manual)
+Le cable d&#8217;interface doit être connecté à un port USB libre (ou une
+   connection infrarouge
+        ou Bluetooth doit être configurée comme décrit ultérieurement dans ce
+        manuel)
 </p>
 </li>
 <li>
 <p>
-The dive computer should be placed into PC Communication mode.
+L&#8217;ordinateur de plongée doit être placé en mode Communication PC.
         (Se reporter au manuel de l&#8217;ordinateur de plongée)
 </p>
 </li>
 <li>
 <p>
-In <em>Subsurface</em>, from the Main Menu, select <em>Import &#8594; Import From Dive
-   Computer</em>.  Dialogue <strong>A</strong> in the figure below appears:
+Dans <em>Subsurface</em>, depuis le menu principal, sélectionner <em>Importer &#8594;
+   Importer depuis l&#8217;ordinateur de plongée</em>. La boîte de dialogue <strong>A</strong> apparaît
+   comme sur la figure ci-dessous:
 </p>
 </li>
 </ol></div>
@@ -861,208 +886,225 @@ In <em>Subsurface</em>, from the Main Menu, select <em>Import &#8594; Import Fro
 <img src="images/DC_import_f20.jpg" alt="FIGURE: Download dialogue 1" />
 </div>
 </div>
-<div class="paragraph"><p>Dive computers tend to keep a certain number of dives in memory, even though
-these dives have already been imported to <em>Subsurface</em>. For that reason, if
-the dive computer allows this, <em>Subsurface</em> only imports dives that have not
-been downloaded before. This makes the download process faster on most dive
-computers and also saves battery power of the dive computer (at least for
-those not charging while connected via USB).</p></div>
+<div class="paragraph"><p>Les ordinateurs de plongée gardent généralement un certain nombre de
+plongées en mémoire, même si ces plongées ont déjà été importées dans
+<em>Subsurface</em>. Pour cette raison, si l&#8217;ordinateur de plongée le permet,
+<em>Subsurface</em> importe uniquement les plongées qui n&#8217;ont pas été téléchargées
+précédemment. Cela accélère le processus de téléchargement sur la plupart
+des ordinateurs de plongée et cela économise la batterie de l&#8217;ordinateur de
+plongée (en tout cas pour ceux qui ne se rechargent pas via USB).</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-The dialogue has two drop-down lists, <strong>Vendor</strong> and <strong>Dive Computer</strong>. On the
-   <strong>vendor</strong> drop-down list select the make of the computer, e.g.  Suunto,
-   Oceanic, Uwatec, Mares. On the <strong>Dive Computer</strong> drop-down list, the model
-   name of the dive computer must be selected, e.g. D4 (Suunto), Veo200
-   (Oceanic), or Puck (Mares).
+La boîte de dialogue propose deux menus déroulants, <strong>Fournisseur</strong> et
+   <strong>Ordinateur de plongée</strong>. Dans le menu déroulant <strong>Fournisseur</strong>, sélectionnez
+   la marque de l&#8217;ordinateur, p. ex. Suunto, Oceanic, Uwatec, Mares. Dans le
+   menu déroulant <strong>Ordinateur de plongée</strong>, le nom du modèle doit être
+   sélectionné, p. ex. D4 (Suunto), Veo200 (Oceanic), ou Puck (Mares).
 </p>
 </li>
 <li>
 <p>
-The <strong>Device or Mount Point</strong> drop-down list contains the USB or Bluetooth
-   port name that <em>Subsurface</em> needs in order to communicate with the dive
-   computer.  The appropriate port name must be selected. Consult
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix
-   A</a> and
-   <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix
-   B</a> for technical details on how to find the appropriate port information for
-   a specific dive computer and, in some cases, how to do the correct settings
-   to the operating system of the computer on which <em>Subsurface</em> is running.
+Le menu déroulant <strong>Périphérique ou point de montage</strong> le nom du port USB ou
+   Bluetooth dont <em>Subsurface</em> a besoin pour communiquer avec l&#8217;ordinateur de
+   plongée. Le port approprié doit être sélectionné. Consultez
+   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+   A</a> et
+   <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
+   B</a> pour obtenir des détails techniques sur la façon de trouver des
+   informations sur le port approprié à chaque ordinateur de plongée et, dans
+   certains cas, sur les réglages requis pour le système d&#8217;exploitation de
+   l&#8217;ordinateur sur lequel <em>Subsurface</em> fonctionne.
 </p>
 </li>
 <li>
 <p>
-If all the dives on the dive computer need to be downloaded, check the
-   checkbox <em>Force download of all dives</em>. Normally, <em>Subsurface</em> only
-   downloads dives after the date-time of the last dive in the <strong>Dive List</strong>
-   panel. If one or more of your dives in <em>Subsurface</em> has been accidentally
-   deleted or if there are older dives that still need to be downloaded from
-   the dive computer, this box needs to be checked. Some dive computers
-   (e.g. Mares Puck) do not provide a contents list to <em>Subsurface</em> before the
-   download in order to select only new dives.  Consequently, for these dive
-   computers, all dives are downloaded irrespective of the status of this check
-   box.
+Si toutes les plongées de l&#8217;ordinateur de plongée doivent être téléchargées,
+   cochez la case <em>Forcer le téléchargement de toutes les
+   plongées</em>. Normalement, <em>Subsurface</em> télécharge uniquement les plongées
+   postérieures à la date et heure de la dernière plongée du panneau <strong>Liste des
+   plongées</strong>. Si une ou plusieurs de vos plongées ont été accidentellement
+   effacées de <em>Subsurface</em> ou si des plongées plus anciennes doivent encore
+   être téléchargées depuis l&#8217;ordinateur de plongée, cette case doit être
+   cochée. Certains ordinateurs de plongée (p. ex. Mares Puck) ne proposent pas
+   de liste à <em>Subsurface</em> avant le téléchargement qui permettrait de n&#8217;en
+   sélectionner que certaines. Par conséquent, pour ces ordinateurs de
+   plongées, toutes les plongées sont téléchargées quel que soit le statut de
+   cette case à cocher.
 </p>
 </li>
 <li>
 <p>
-If the checkbox <em>Always prefer downloaded dives</em> has been checked and,
-   during download, dives with identical date-times exist on the dive computer
-   and on the <em>Subsurface</em> <strong>Dive List</strong> panel, the dive in the <em>Subsurface</em>
-   divelog will be overwritten by the dive record from the computer.
+Si la case <em>Toujours préférer les plongées téléchargées</em> a été cochée et
+   que, durant le téléchargement, des plongées avec date et heure identiques se
+   trouvent sur l&#8217;ordinateur de plongée et dans le panneau <strong>Liste des plongées</strong>
+   de <em>Subsurface</em>, la plongée dans le carnet de <em>Subsurface</em> sera écrasée par
+   l&#8217;enregistrement de l&#8217;ordinateur de plongée.
 </p>
 </li>
 <li>
 <p>
-The checkbox marked <em>Download into new trip</em> ensures that, after upload, the
-   downloaded dives are grouped together as a new trip(s) in the <strong>Dive List</strong>.
+La case à cocher <em>Télécharger dans un nouveau voyage</em> assure que, après
+   l&#8217;importation, les plongées téléchargées seront regroupées ensemble dans un
+   nouveau voyage dans la <strong>Liste des plongées</strong>.
 </p>
 </li>
 <li>
 <p>
-Do <strong>not</strong> check the checkboxes labelled <em>Save libdivecomputer logfile</em> and
-   <em>Save libdivecomputer dumpfile</em>. These are only used as diagnostic tools
-   when there are problems with downloads(see below).
+Ne cochez <strong>pas</strong> les cases nommées <em>Sauvegarder le fichier log de
+   libdivecomputer</em> et <em>Sauvegarder le fichier de données brutes de
+   libdivecomputer</em>. Elles sont uniquement utilisées comme outils de diagnostic
+   lorsque des problèmes de téléchargement se présentent (voir ci-dessous).
 </p>
 </li>
 <li>
 <p>
-Then select the <em>Download</em> button.  With communication established, you can
-   see how the data are retrieved from the dive computer.  Depending on the
-   make of the dive computer and/or number of recorded dives, this could take
-   some time. Be patient. The <em>Download</em> dialogue shows a progress bar at the
-   bottom of the dialogue. Remember for some dive computers progress
-   information could be inaccurate since <em>Subsurface</em> doesn’t know how much
-   downloadable data there are until the download is complete.  After the dives
-   have been downloaded, they appear in a tabular format on the right-hand side
-   of the dialogue (see image <strong>B</strong>, above). Each dive comprises a row in the
-   table, showing the date, duration and depth. Next to each dive is a
-   checkbox: check all the dives that need to be transferred to the <strong>Dive
-   List</strong>. In the case of the image above, the last six dives are checked and
-   will be transferred to the <strong>Dive List</strong>. Then click the <em>OK</em> button at the
-   bottom of the dialogue. All the imported dives appear in the <strong>Dive List</strong>,
-   sorted by date and time. Disconnect and switch off the dive computer to
-   conserve its battery power.
+Ensuite, cliquez sur le bouton <em>Télécharger</em>. Une fois la communication
+   établie, vous pouvez voir comment les données sont récupérées depuis
+   l&#8217;ordinateur de plongée. Selon la marque de l&#8217;ordinateur de plongée et/ou le
+   nombre de plongées enregistrées, cela peut prendre un certain temps. Soyez
+   patient. En bas de la boîte de dialogue de <em>Téléchargement</em>, vous trouverez
+   une barre de progression. Rappelez-vous que pour certains ordinateurs de
+   plongée, l&#8217;information de progression peut être incorrecte, puisque
+   <em>Subsurface</em> ne connait pas la quantité de données à télécharger tant que le
+   téléchargement n&#8217;est pas terminé. Après le téléchargement des plongées,
+   elles apparaissent sous forme de tableau dans la partie droite de la boîte
+   de dialogue (voir image <strong>B</strong>, ci-dessus). Chaque plongée comporte une rangée
+   dans le tableau, montrant la date, la durée et la profoneur. À côté de
+   chaque plongée se trouve une case à cocher: cochez toutes les plongées qui
+   doivent être transférées vers la <strong>Liste des plongées</strong>. Dans le cas de
+   l&#8217;image ci-dessus, les six dernières plongées sont cochées et seront
+   transférées vers la <strong>Liste des plongées</strong>. Cliquez ensuite sur le bouton <em>OK</em>
+   en bas de la boîte de dialogue. Toutes les plongées importées apparaissent
+   dans la <strong>Liste des plongées</strong>, classées par date et heure. Déconnectez et
+   éteignez l&#8217;ordinateur de plongée pour économiser sa batterie.
 </p>
 </li>
 <li>
 <p>
-If there is a problem in communicating with the dive computer, an error
-   message is shown, similar to this text: "Unable to open /dev/ttyUSB0 Mares
-   (Puck Pro)". Refer to the text in the box below.
+S&#8217;il y a un problème de communication avec l&#8217;ordinateur de plongée, un
+   message d&#8217;erreur s&#8217;affiche, semblable à ce texte: "Impossible d&#8217;ouvrir
+   /dev/ttyUSB0 Mares (Puck Pro)". Rapportez-vous au texte dans le boîte de
+   dialogue ci-dessous.
 </p>
 </li>
 </ul></div>
 <div class="sidebarblock">
 <div class="content">
-<div class="paragraph"><p><strong>PROBLEMS WITH DATA DOWNLOAD FROM A DIVE COMPUTER?</strong></p></div>
+<div class="paragraph"><p><strong>PROBLÈMES AVEC LE TÉLÉCHARGEMENT DES DONNÉS DE L&#8217;ORDINATEUR DE PLONGÉE?</strong></p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Check the following:</td>
+<td class="content">Vérifiez les éléments suivants:</td>
 </tr></table>
 </div>
 <div class="ulist"><ul>
 <li>
 <p>
-Is the dive computer still in PC-communication or Upload mode?
+L&#8217;ordinateur de plongée est-il en mode Communication PC ou Téléchargement?
 </p>
 </li>
 <li>
 <p>
-Is the dive computer’s battery fully charged? If not then charge or replace
-   it.
+La batterie de l&#8217;ordinateur de plongée est-elle complètement chargée? Si ce
+   n&#8217;est pas le cas, chargez-la ou remplacez-la.
 </p>
 </li>
 <li>
 <p>
-Is the connecting cable faulty? Does the cable work using other software?
-   Has it worked before, or is this the first time the cable is being used? Are
-   the contacts on the dive computer and the cable clean?
+Le câble de connection est-il fautif? Le câble fonctionne-t-il avec d&#8217;autres
+   logiciels? A-t-il fonctionné précédemment, ou est-ce la première fois que ce
+   câble est utilisé? Les contacts sur l&#8217;ordinateur de plongée et le câble
+   sont-ils propres?
 </p>
 </li>
 <li>
 <p>
-Consult
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix
-   A</a> to be sure the correct Mount Point was specified (see above).
+Consultez
+   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+   A</a> pour être certain que le point de montage correct a été spécifié (voir
+   ci-dessus).
 </p>
 </li>
 <li>
 <p>
-On Unix-like operating systems, does the user have write permission to the
-   USB port? If not, consult
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Appendix
+Sur les systèmes d&#8217;exploitation de type Unix, l&#8217;utilisateur a-t-il les
+   droits d'écriture sur le port USB? Si non, consultez
+   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
    A</a>
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>If the <em>Subsurface</em> computer does not recognize the USB adaptor by showing
-an appropriate device name next to the Mount Point, then there is a
-possibility the cable or USB adaptor is faulty. A faulty cable is the most
-common cause of communication failure between a dive computer and
-<em>Subsurface</em>.  It’s also possible <em>Subsurface</em> cannot interpret the
-data. Perform a download for diagnostic purposes with the following two
-boxes checked in the download dialogue discussed above:</p></div>
+<div class="paragraph"><p>Si l&#8217;ordinateur utilisant <em>Subsurface</em> ne reconnaît pas l&#8217;adaptateur USB en
+ne montrant pas le bon nom de périphérique à côté du Point de monage, il est
+possible que le câble ou l&#8217;adaptateur USB soit fautif. Un câble défectueux
+est la cause la plus courante de problème de communication entre un
+ordinateur de plongée et <em>Subsurface</em>. Il est également possible que
+<em>Subsurface</em> ne puisse pas interpréter les données. Réalisez un
+téléchargement de diagnostic en cochant les deux cases suivantes dans la
+boîte de dialogue de téléchargement décrite ci-dessus:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>Save libdivecomputer logfile
 Save libdivecomputer dumpfile</code></pre>
 </div></div>
-<div class="paragraph"><p><strong>Important</strong>: These check boxes are only used when problems are encountered
-during the download process. Under normal circumstances they should not be checked.
-When checking these boxes, the user is prompted to select a folder where the information will be saved. The default folder is the one in which the
-<em>Subsurface</em>
-dive log is kept.</p></div>
-<div class="paragraph"><p><strong>Important:</strong> <em>After downloading with the above checkboxes
-checked, no dives are added to the
-<strong>Dive List</strong> but two files are created in the folder selected above</em>:</p></div>
+<div class="paragraph"><p><strong>Important</strong>: ces cases à cocher ne doivent être utilisées qu&#8217;en cas de problème
+durant le processus de téléchargement. En temps normal, elles ne doivent pas être cochées.
+En cochant ces cases, l&#8217;utilisateur doit sélectionner un dossier où l&#8217;information sera enregistrée. Le dossier par défaut est celui dans lequel
+le carnet de
+<em>Subsurface</em> est stocké.</p></div>
+<div class="paragraph"><p><strong>Important:</strong> <em>après un téléchargement avec les cases ci-dessus
+cochées, aucune plongée n&#8217;est ajoutée à la
+<strong>Liste des plongées</strong> mais deux fichiers sont créés dans le dossier sélectionné précédemment</em>:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>subsurface.log
 subsurface.bin</code></pre>
 </div></div>
-<div class="paragraph"><p>These files should be send to the <em>Subsurface</em> mail list:
-<em>subsurface@subsurface-divelog.org</em> with a request for the files to be
-analyzed. Provide the dive computer make and model as well as contextual
-information about the dives recorded on the dive computer.</p></div>
+<div class="paragraph"><p>Ces fichiers doivent être envoyés à la liste de diffusion de <em>Subsurface</em>:
+<em>subsurface@subsurface-divelog.org</em> avec une demande d&#8217;analyse des
+fichieres. Précisez la marque et le modèle de l&#8217;ordinateur ainsi que des
+informations relatives aux plongées enregistrées sur l&#8217;ordinateur de
+plongée.</p></div>
 </div></div>
 </div>
 <div class="sect3">
-<h4 id="S_Bluetooth">5.2.2. Connecting <em>Subsurface</em> to a Bluetooth-enabled dive computer</h4>
-<div class="paragraph"><p>Bluetooth is becoming a more common way of communication between dive
-computers and <em>Subsurface</em>, for or instance, the Shearwater Petrel Mk2 and
-the OSTC Mk3. <em>Subsurface</em> provides a largely operating system independent
-Bluetooth interface. Setting up <em>Subsurface</em> for Bluetooth communication
-requires four steps:</p></div>
+<h4 id="S_Bluetooth">5.2.2. Connection de <em>Subsurface</em> à un ordinateur de plongée équipé de Bluetooth</h4>
+<div class="paragraph"><p>Bluetooth devient un protocole de communication de plus en plus courant pour
+relier des ordinateurs de plongée à <em>Subsurface</em>, par exemple le Shearwater
+Petrel Mk2 et l&#8217;OSTC Mk3. <em>Subsurface</em> propose une interface Bluetooth
+largement indépendante du système d&#8217;exploitation. La configuration de
+<em>Subsurface</em> pour la liaison Bluetootj nécessite quatre étapes:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Ensure Bluetooth is activated on the host computer running <em>Subsurface</em>.
+Vérifiez que Blutooth est activé sur l&#8217;ordinateur sur lequel <em>Subsurface</em>
+  est actif.
 </p>
 </li>
 <li>
 <p>
-Ensure <em>Subsurface</em> sees the Bluetooth adapter on the host computer.
+Vérifiez que <em>Subsurface</em> détecte l&#8217;adaptateur Bluetooth de l&#8217;ordinateur.
 </p>
 </li>
 <li>
 <p>
-Ensure the Bluetooth-enabled dive computer is Bluetooth-discoverable and in
-  PC upload mode.
+Vérifiez que l&#8217;ordinateur de plongée Bluetooth est détectable et en mode
+  Connection PC.
 </p>
 </li>
 <li>
 <p>
-Ensure <em>Subsurface</em> is paired with the Bluetooth-enabled dive computer.
+Vérifiez que <em>Subsurface</em> est jumelé avec l&#8217;ordinateur de plongée Bluetooth.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Select the Download dialogue by selecting <em>Import &#8594; Import from dive
-computer</em> from the <strong>Main Menu</strong>. After checking the box labelled <em>"Choose
-Bluetooth download mode"</em>, the dialogue below appears.</p></div>
+<div class="paragraph"><p>Faites apparaître la boîte de dialogue de téléchargement en sélectionnant
+<em>Importer &#8594; Importer depuis l&#8217;ordinateur de plongée</em> depuis le <strong>Menu
+principal</strong>. Après avoir coché la case <em>"Choisir le mode de téléchargement
+Bluetooth"</em>, la boîte de dialogue ci-dessous apparaît.</p></div>
 <div class="sect4">
 <h5 id="_sur_linux_ou_macos">Sur Linux ou MacOS :</h5>
 <div class="imageblock" style="text-align:center;">
@@ -1070,34 +1112,38 @@ Bluetooth download mode"</em>, the dialogue below appears.</p></div>
 <img src="images/DC_import_Bluetooth.jpg" alt="FIGURE: Download Bluetooth" />
 </div>
 </div>
-<div class="paragraph"><p>On the <em>Linux</em> or <em>MacOS</em> platforms the name of the <em>Subsurface</em> computer
-and its Bluetooth address are shown on the right hand side, On the left hand
-side, if the computer has connected more than one local Bluetooth devices
-you can use the list box to indicate which one needs to connect to
-<em>Subsurface</em>.  The power state (on/off) of the Bluetooth adapter is shown
-below the address and can be changed by checking the <em>Turn on/off</em> box.  If
-the Bluetooth address is not shown, then <em>Subsurface</em> does not see the local
-Bluetooth device. Ensure the Bluetooth driver is installed correctly on the
-<em>Subsurface</em> computer and check if it can be used by other Bluetooth
-utilities like <em>bluetoothctl</em> or <em>bluemoon</em>. This completes the first two
-steps above.  Ensure the Bluetooth-enabled dive computer is in PC-upload
-mode and it is discoverable by other Bluetooth devices. Consult the manual
-of the dive computer for more information. Now the third item in the list
-above has been finished.  Select the <em>Scan</em> button towards the bottom left
-of the dialogue above. After searching, the dive computer should be listed
-(perhaps as one of a number of Bluetooth devices) in the main list box on
-the lefthand side of the dialogue (see image above). If this does not work,
-select the <em>Clear</em> button, then scan again for Bluetooth devices using the
-<em>Scan</em> button. After taking these actions <em>Subsurface</em> should see the dive
-computer.  The label of the discovered dive computer contains the name of
-the device, its address and its pairing status. If the device is not paired
-and has a red background color, a context menu can be opened by selecting
-the item with a right-click.  Select the the <em>Pair</em> option and wait for the
-task to complete. If this dive computer is being paired to Subsurface for
-the first time, it’s possible Subsurface will request a Pass Code or PIN
-number. The most commonly-used Pass Code is 0000, and this works for the
-Shearwater Petrel. If necessary, consult the user manual of the dive
-computer being used.</p></div>
+<div class="paragraph"><p>Sur les plateformes <em>Linux</em> ou -MacOS_, le nom de l&#8217;ordinateur utilisant
+Subsurface_ et son adresse Bluetooth sont affichées du côté droit. À gauche,
+si l&#8217;ordinateur a été connecté à plusieurs périphériques Bluetootj locaux,
+vous pouvez utiliser la liste pour indiquer lequel doit être connecté à
+°Subsurface_. L'état (allumé/éteint) de l&#8217;adaptateur Bluetooth est affiché
+sous l&#8217;adresse et peut être modifié en cliquer sur la case
+<em>Allumer/éteindre</em>. Si l&#8217;adresse Bluetooth n&#8217;est pas affichée, <em>Subsurface</em>
+ne détecte pas le périphérique Bluetooth local. Assurez-vous que le driver
+Bluetooth est installé correctement sur l&#8217;ordinateur utilisant <em>Subsurface</em>
+et vérifiez qu&#8217;il peut être utilisé par d&#8217;autres utilitaires Bluetooth comme
+<em>bluetoothctl</em> ou <em>bluemoon</em>. Ceci clôture les deux premières étapes.
+Vérifiez que l&#8217;ordinateur de plongée avec Bluetooth est en mode Connection
+PC et est détactable pour d&#8217;autres périphériques Bluetooth. Consultez le
+manuel de l&#8217;ordinateur de plongée pour plus d&#8217;information. À présent, la
+troisième étape de notre liste est terminée.  Sélectionnez le bouton
+<em>Scannez</em> en bas à gauche de la boîte de dialogue ci-dessus. Après la
+recherche, l&#8217;ordinateur de plongée devrait se trouver dans la liste
+(peut-être sous la norme d&#8217;un numéro de périphérique Bluetooth) dans la
+liste principale sur la gauche de la boîte de dialogue (voir image
+ci-dessus). Si cela ne fonctionne pas, sélectionnez le bouton <em>Effacer</em>,
+puis scannez à nouveau en utilisant le bouton <em>Scan</em>. Après avoir suivi
+cette procédure, <em>Subsurface</em> devrait voir l&#8217;ordinateur de plongée.  La
+dénomination de l&#8217;ordinateur de plongée détecté contient le nom du
+périphérique, son adresse et son statut de jumelage. Si le périphérique
+n&#8217;est pas jumelé et que son nom est affiché avec un arrière-plan rouge, un
+menu contextuel peut être ouvert en sélectionnant ce nom avec un cli-droit.
+Sélectionnez l&#8217;option <em>Jumeler</em> et attendez que la tâche soit terminée. Si
+l&#8217;ordinateur est jumelé à Subsurface pour la première fois, il est possible
+que Subsurface demande un nombre ou un code PIN. Le plus utilisé est 0000,
+et c&#8217;est celui qui fonctionne pour un Shearwater Petrel. Si nécessaire,
+consultez le manuel utilisateur de l&#8217;ordinateur de plongée que vous
+utilisez.</p></div>
 <div class="sidebarblock">
 <div class="content">
 <div class="admonitionblock">
@@ -1105,12 +1151,13 @@ computer being used.</p></div>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Currently <em>Subsurface</em> does not support Bluetooth pairing with dive
-computers that require a custom PIN code. In order to pair the devices, use
-other OS utilities as suggested below.</td>
+<td class="content">Actuellement, <em>Subsurface</em> ne supporte par le jumelage Bluetooth avec les
+ordinateurs de plongée qui nécessitent un code PIN personnalisé. Pour
+jumeler ces périphériques, utiliser les utilitaires du système
+d&#8217;exploitation comme suggéré ci-dessous.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>One way to achieve this is to use <code>bluetoothctl</code>:</p></div>
+<div class="paragraph"><p>Une façon d&#8217;y parvenir est d&#8217;utiliser <code>bluetoothctl</code>:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>$ bluetoothctl
@@ -1125,10 +1172,12 @@ Request PIN code
 [agent] Enter PIN code: 0000</code></pre>
 </div></div>
 </div></div>
-<div class="paragraph"><p>After the devices are paired, press the <em>Save</em> button of the dialogue.  This
-closes the Bluetooth dialogue. Now select <em>Download</em> in the <em>Download from
-dive computer</em> dialogue which should still be open. The downloaded dives are
-shown on the righthand side of the download dialogue.</p></div>
+<div class="paragraph"><p>Une fois que les péréphériques sont jumelés, cliquer sur le bouton
+<em>Enregistrer</em> de la boîte de dialogue. Ceci fermera la boîte de dialogue
+Bluetooth. Ensuite, sélectionnez <em>Télécharger</em> dans la boîte de dialogue
+<em>Télécharger depuis l&#8217;ordinateur de plongée</em> qui devrait encore être
+ouverte. Les plongées téléchargées sont affichées dans la partie droite de
+la boîte de dialogue de téléchargement.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_sur_windows">Sur Windows :</h5>
@@ -1137,335 +1186,356 @@ shown on the righthand side of the download dialogue.</p></div>
 <img src="images/DC_import_Bluetooth_Windows.png" alt="FIGURE: Download Bluetooth on Windows" />
 </div>
 </div>
-<div class="paragraph"><p>On <em>Windows</em> platforms the <em>Local Bluetooth device details section</em> on the
-right is not displayed as is the case on the Linux/Mac systems.  To start a
-scan (by pressing the <em>Scan</em> button)  check that the Bluetooth device on the
-<em>Subsurface</em> computer is turned on by selecting the dive computer from the
-list of available Bluetooth devices (see image above). If the dive computer
-is being accessed by Subsurface for the first time, it’s possible Subsurface
-will request a Pass Code or PIN number. Supply the Pass Code recommended in
-the user manual of the dive computer.  A Pass Code or PIN of 0000 is often
-the default.</p></div>
-<div class="paragraph"><p>The pairing step is checked and done automatically during the download
-process. If the devices have never been paired the system will ask
-permission and put a message on the right side of the screen: <em>Add a device,
-Tap to set up your DC device</em>. Always allow this pairing. After a discovered
-item is selected, select the <em>Save</em> button.  Finally select the <em>Download</em>
-button on the <em>Download</em> dialogue and wait for the process to complete.</p></div>
+<div class="paragraph"><p>Sous <em>Windows</em>, les <em>Détails du périphérique Bluetooth local</em> à droite ne
+sont pas affichés comme dans les sytèmes Linux/Mac. Pour démarrer un scan
+(en appuyant sur le bouton <em>Scan</em>), vérifiez que le périphérique Bluetooth
+sur l&#8217;ordinateur de <em>Subsurface</em> est activé en sélectionnant l&#8217;ordinateur de
+plongée dans la liste des périphériques Bluetooth disponibles (voir image
+ci-dessus). Si l&#8217;ordinateur de plongée est connecté à Subsurface pour la
+première fois, il est possible que Subsurface demande un nombre ou un code
+PIN. Entrez le code indiqué dans le manuel utilisateur de l&#8217;ordinatuer de
+plongée. Un code ou PIN de 0000 est souvent le code par défaut.</p></div>
+<div class="paragraph"><p>L'étape de jumelage est vérifiée et réalisée automatiquement durant le
+processus de téléchargement. Si les périphériques n&#8217;ont pas encore été
+jumelés, le système demandera l&#8217;autorisation de le faire et affichera un
+message sur la partie droite de l'écran. <em>Ajouter un périphérique</em>, <em>Tapez
+pour configurer votre périphérique</em>. <em>Toujours autoriser le jumelage. Après
+la sélection d&#8217;un item découvert, cliquez sur le bouton
+_Enregistrer</em>. Enfin, sélectionnez le bouton "Télécharger_ dans la boîte de
+dialogue de téléchargement et attendez la fin du processus.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content">Currently <em>Subsurface</em> works only with local Bluetooth adapters which use
-Microsoft Bluetooth Stack. If the local device uses <em>Widcomm</em>, <em>Stonestreet
-One Bluetopia Bluetooth</em> or <em>BlueSoleil</em> drivers it will not work. However,
-Bluetooth hardware/dongles from these manufacturers (e.g. iSonic) that
-support the Microsoft Bluetooth Stack do work.</td>
+<td class="content">Actuellement, <em>Subsurface</em> ne fonctionne qu&#8217;avec les adaptateurs Bluetooth
+locaux qui utilisent Microsoft Bluetooth Stack. Si le périphérique local
+utilise des drivers <em>Widcomm</em>, <em>Stonestreet One Bluetopia Bluetooth</em> ou
+<em>BlueSoleil</em>, cela ne fonctionnera pas. Cependant, les clés/dongles de ces
+fabricants (p. ex. iSonic) qui supportent le Microsoft Bluetooth Stack
+fonctionneront.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>A log message on the bottom left of the <em>Remote Bluetooth device selection</em>
-shows details about the current status of the Bluetooth agent. To select
-another dive computer for download using the "Remote Bluetooth selection
-dialogue" press the three-dots button from the <em>"Choose Bluetooth download
-mode"</em> option.</p></div>
+<div class="paragraph"><p>Un journal de message (log) en bas à gauche de la <em>sélection de périphérique
+Bluetooth distant</em> affiche des détails sur le statut actuel du l&#8217;agent
+Bluetooth. Pour sélectionner un autre ordinateur de plongée utilisant la
+"boîte de dialogue de sélection Bluetooth distant", cliquez sur le bouton
+avec trois points à côté de l&#8217;option <em>"Choisir le mode de téléchargement
+Bluetooth"</em>.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
-<td class="content"><strong>IN CASE OF PROBLEMS</strong>:  If the Bluetooth adapter from the <em>Subsurface</em> computer
-gets stuck and the <em>Download</em> process fails repeatedly,
- <em>unpair</em> the devices and then repeat the above steps. If this is not successful,
- <a href="#S_HowFindBluetoothDeviceName"><em>Appendix A</em></a> contains
-information for manually setting up and inspecting the Bluetooth connection
-with <em>Subsurface</em>.</td>
+<td class="content"><strong>EN CAS DE PROBLÈMES</strong>: si l&#8217;adaptateur Bluetooth de l&#8217;ordinateur utilisant <em>Subsurface</em>
+se bloque et que le processus de <em>téléchargement</em> échoue de façon répétée,
+ <em>dissociez</em> les périphériques et répétez les étapes ci-dessus. Si cela ne fonctionne pas,
+ l' <a href="#S_HowFindBluetoothDeviceName"><em>Annexe A</em></a> contient
+des informations sur la configuration manuelle et la vérification de la connection Bluetooth
+avec <em>Subsurface</em>.</td>
 </tr></table>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_DeviceNames">5.2.3. Changing the name of a dive computer</h4>
-<div class="paragraph"><p>It may be necessary to distinguish between different dive computers used to
-upload dive logs to <em>Subsurface</em>. For instance if a buddy’s dive computer is
-the same make and model as your own and dive logs are uploaded from both
-dive computers to the same <em>Subsurface</em> computer, then you might like to
-call one "Alice&#8217;s Suunto D4" and the other "Bob&#8217;s Suunto D4". Alternatively,
-consider a technical diver who dives with two or more dive computers of the
-same model, the logs of both (or all) being uploaded.  In this case it might
-be prudent to call one of them "Suunto D4 (1)" and another "Suunto D4
-(2)". This is easily done in <em>Subsurface</em>.  On the <strong>Main Menu</strong>, select <em>Log
-&#8594; Edit device names</em>. A dialog box opens, showing the current Model, ID and
-Nickname of the dive computers used for upload. Edit the Nickname field for
-the appropriate dive computer. After saving the Nickname, the dive logs show
-the nickname for that particular device instead of the model name, allowing
-easy identification of devices.</p></div>
+<h4 id="S_DeviceNames">5.2.3. Changement du nom d&#8217;un ordinateur de plongée</h4>
+<div class="paragraph"><p>Il peut être nécessaire d'établir une distinction entre différents
+ordinateurs de plongée utilisés pour télécharger des données de plongée vers
+<em>Subsurface</em>. Par exemple, si l&#8217;ordinateur d&#8217;un équipier provient du même
+fabriquant et est dun même modèle que le votre et que les données sont
+téléchargées vers le même ordinateur utilisant <em>Subsurface</em>, vous voudirez
+sans doute en appeler un "Suunto D4 d&#8217;Alice" et l&#8217;autre "Suunto D4 de
+Bob". Ou encore, imaginez un plongeur Tek qui plonge avec deux ordinateurs
+ou plus; les données pourraient toutes être téléchargées. Dans ce cas, il
+serait prident de les appeler "Suunto D4 (1)" et "Suunto D4 (2)". Ceci est
+facilement réalisable dans <em>Subsurface</em>. Dans le <strong>Menu principal</strong>,
+sélectionnez <em>Journal &#8594; Éditer les noms des ordinateurs de plongée</em>. Une
+boîte de dialogue s&#8217;ouvre, affichant le modèle actuel, son ID et le nom des
+ordinateurs utilisés pour le téléchargement. Éditez le champ Nom de
+l&#8217;ordinateur de plongée concerné. Après avoir sauvegardé le Nom, le journal
+de plongée affiche le nom de l&#8217;ordinateur concerné à la place du nom du
+modèle, permettant une identification plus facile des périphériques.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_MultipleDiveComputers">5.2.4. Uploading data for a specific dive from more than one dive computer</h4>
-<div class="paragraph"><p>Some divers use more than one dive computer at the same time, e.g. during
-technical diving.  If you import the dive profiles from these different dive
-computers into <em>Subsurface</em>, the profiles can be viewed
-independently. During upload the data from the dive computers are
-automatically merged into a single dive. The different profiles are
-presented on the <em>Profile</em> panel with the name of each dive computer
-indicated at the bottom left.  <strong>While the dive is highlighted in the <em>Dive
-List</em></strong>, switch between the profiles of the different dive computers by using
-either the left/right arrow keyboard keys or by selecting <em>View &#8594; Previous
-DC</em> or <em>View &#8594; Next DC</em>. The data in the <em>Notes</em> panel are not affected by
-the specific dive computer that is selected.</p></div>
+<h4 id="S_MultipleDiveComputers">5.2.4. Chargement des données d&#8217;une plongée spécifique depuis plusieurs ordinateurs de plongée</h4>
+<div class="paragraph"><p>Certains plongeurs utilisent plus d&#8217;un ordinateur de plongée en même,temps,
+par exemple en plongée technique. Si vous importez les profils de ces
+différents ordinateurs de plongée dans <em>Subsurface</em>, les profils peuvent
+être vu indépendemment. Pendant le téléchargement, les données de ces
+ordinateurs de plongée sont automatiquement fusionnées en une seule
+plongée. Les différents profils sont présentés dans le panneau <em>Profil</em> avec
+le nom de chaque ordinateur de plongée indiqué en bas à gauche. <strong>Lorsque la
+plongée est en surbrillance dans la <em>Liste des plongées</em></strong>, passez du profil
+d&#8217;un ordinateur de plongée à l&#8217;autre en utilisant soit les flèches
+gauche/droite du clavier, soit en sélectionnant <em>Vue Ordinateur précédent</em>
+ou <em>Vue &#8594; Ordinateur suivant</em>. Les données du panneau <em>Notes</em> ne sont pas
+affectées par le choix de l&#8217;un ou l&#8217;autre ordinateur de plongée.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_EditDiveInfo">5.2.5. Updating the dive information imported from the dive computer.</h4>
-<div class="paragraph"><p>With the uploaded dives in the <strong>Dive List</strong>, the information from the dive
-computer is not complete and more details must be added to have a full
-record of the dives. To do this, the <strong>Notes</strong> and the <strong>Equipment</strong> tabs on the
-top left hand of the <em>Subsurface</em> window should be used.</p></div>
+<h4 id="S_EditDiveInfo">5.2.5. Mise à jour de l&#8217;information importée depuis un ordinateur de plongée.</h4>
+<div class="paragraph"><p>Une fois les plongées chargées dans la Liste des plongées, l&#8217;information
+extraite de l&#8217;ordinateur de plongée n&#8217;est pas complète et d&#8217;autres détails
+doivent être ajoutés pour obtenir un enregistrement complet des
+plongées. Pour ce faire, les onglets <strong>Notes</strong> et <strong>Équipement</strong> et haut à
+gauche de la fenêtre de <em>Subsurface</em> doivent être utilisés.</p></div>
 <div class="sect4">
 <h5 id="S_Notes_dc">Notes</h5>
-<div class="paragraph"><p>To have a more complete dive record, the user needs to add additional
-information by hand. The procedure below is virtually identical for
-hand-entered dives and for dives downloaded from a dive computer.</p></div>
-<div class="paragraph"><p>In some cases, you must provide the date and time of the dive, for example
-when entering a dive by hand or when a dive computer doesn’t provide the
-date and time of the dive.  (Usually the date and time of the dive, gas
-mixture and water temperature are shown as obtained from the dive computer)
-If the contents of the <strong>Notes tab</strong> is changed or edited in any way, the
-message in a blue box at the top of the panel shows the dive is being
-edited. If you click on the <strong>Notes</strong> tab, the following fields are visible
-(left hand image, below):</p></div>
+<div class="paragraph"><p>Pour obtenir un enregistrement plus comple de la plongée, l&#8217;utilisateur doit
+ajouter manuellement certaines informations. La procédure expliquée
+ci-dessous est quasiment identique pour les plongées entrées manuellement et
+celles qui sont téléchargées depuis un ordinateur de plongée.</p></div>
+<div class="paragraph"><p>Dans certains cas, vous devrez préciser la date et l&#8217;heure de la plongée,
+par exemple lorsque vous entrez une plongée manuellement ou qu&#8217;un ordinateur
+de plongée ne précise pas la date et l&#8217;heure de cette plongée. (D&#8217;habitude,
+la date et l&#8217;heure d&#8217;une plongée, le mélange de gaz et la température de
+l&#8217;eau sont obtenues via l&#8217;ordinateur de plongée). Si le contenu de l&#8217;onglet
+<strong>Notes</strong> est modifié ou édité d&#8217;une quelconque manière, le message dans la
+boîte bleue en haut du panneau affiche que la plongée a été éditée. Si vous
+cliquez sur l&#8217;onglet <strong>Notes</strong>, les champs suivants sont visibles (voir image
+en bas à gauche):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/AddDive3_f22.jpg" alt="FIGURE: The Notes tab" />
 </div>
 </div>
-<div class="paragraph"><p>The right hand image, above, shows a <strong>Notes tab</strong> filled with dive
-information.  The <strong>Date</strong> and <strong>Time</strong> fields reflects the date and time of the
-dive. By clicking the date, a calendar is displayed for selecting the
-correct date. Press ESC to close the calendar.  The time values (hour and
-minutes) can also be edited directly by clicking on each of them in the text
-box and by over-typing the information displayed.</p></div>
-<div class="paragraph"><p><strong>Air/water temperatures</strong>: Air and water temperatures during the dive are shown
-in text boxes to the right of the Start time. Many dive computers supply water
-temperature information and this box may have information.
-If air temperature isn’t provided by the dive computer, the first temperature reading
-might be used for the air temperature. Generally this is close to the real air temperature.
-If editing is required, only a value is required, the units of temperature will be
-automatically supplied by
-<em>Subsurface</em> (following the <em>Preferences</em>, metric or imperial units will
-be used).</p></div>
-<div class="paragraph" id="S_locations"><p><strong>Location</strong>:</p></div>
+<div class="paragraph"><p>L&#8217;image à droite, ci-dessus, montre l&#8217;onglet <strong>Notes</strong> complété avec des
+informations de plongée. Les champs <strong>Date</strong> et <strong>Heure</strong> indiquent la date et
+l&#8217;heure de la plongée. En cliquant sur la date, un calendrier est afficher
+pour sélectionner la date correcte. Appuyez sur la touche ESC pour fermer le
+calendrier. Les valeurs d&#8217;heure (heure et minutes) peuvent également être
+éditées directement en cliquant sur chacune d&#8217;entre elles dans la boîte de
+texte et en remplaçant l&#8217;information qui s&#8217;y trouve.</p></div>
+<div class="paragraph"><p><strong>Température de l&#8217;air/eau</strong>: les températures de l&#8217;air et de l&#8217;eau pendant la plongée sont affichées
+dans des boîtes de texte à droite de l&#8217;heure de début de plongée. De nombreux ordinateurs de plongée
+renseignent la température de l&#8217;eau, et cette boîte peut contenir cette information.
+Si la température de l&#8217;air n&#8217;est pas renseignée par l&#8217;ordinateur de plongée, la première température pour l&#8217;eau
+peut être utilisée comme température de l&#8217;air. En général, elle est proche de la température de l&#8217;air.
+S&#8217;il est nécessaire d'éditer ces informations, seule une valeur est nécessaire, l&#8217;unité de température étant
+automatiquement fournie par
+<em>Subsurface</em> (sur base des <em>Préférences</em>, les unités métriques ou impériales
+seront utilisées).</p></div>
+<div class="paragraph" id="S_locations"><p><strong>Lieu</strong>:</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">Dive locations are managed as a <strong>separate</strong> part of the dive log.  The dive
-information in the <strong>Notes</strong> and <strong>Equipment</strong> tabs can therefore NOT be edited
-at the same time as the dive site information. Save all the other dive
-information (e.g.  divemaster, buddy, protective gear, notes about the dive)
-by selecting <em>Apply changes</em> on the <strong>Notes</strong> tab BEFORE editing the dive site
-information. Then supply a dive site name in the textbox labelled <em>Location</em>
-on the <strong>Notes</strong> tab.</td>
+<td class="content">Les lieux de plongée sont gérés comme une partie <strong>séparée</strong> du carnet de
+plongée.  Les informations de plongée dans les onglets <strong>Notes</strong> et
+<strong>Équipement</strong> ne peuvent donc PAS être édités en même temps que les
+informations sur le site de plongée. Enregistrez toutes les autres
+informations (p. ex. instructeur, équipier, équipement, notes à propos de la
+plongée) en sélectionnant <em>Appliquer les modifications</em> dans l&#8217;onglet
+<strong>Notes</strong> AVANT d'éditer les informations sur le site de plongée. Ensuite,
+nommez le site de plongée dans la bpîte de texte <em>Lieu</em> dans l&#8217;onglet
+<strong>Notes</strong>.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".  If
-several dives are made at the same location, the site information for the
-first dive is re-used.  Existing dive locations can be edited by selecting
-(on the <strong>Dive List</strong> panel) a dive done at that site and by opening the
-location information. Click the globe button on the right of the location
-name (see image image <strong>A</strong> below).  When typing the name of a dive site, a
-dropdown list appears showing all sites with similar names. If the dive site
-has been used before, click on the already-existing name.  The dive site
-names in the dropdown list contain either a globe symbol (indicating
-existing dive sites in the <em>Subsurface</em> database)  or a <strong>+</strong> symbol
-(indicating dive site names that appear consistent with the current dive
-site name but which haven’t been added to the dive site database).  If the
-present dive site has not been used before, a message appears as follows
-(image <strong>A</strong> below):</p></div>
+<div class="paragraph"><p>Entrez le nom du site de plongée, p. ex. "Tihany, Lac Balaton, Hongrie".  Si
+plusieurs plongées ont été faites au même endroit, les informations de lieu
+de la première plongée sont ré-utilisées.  Les lieux de plongée existants
+peuvent être édités en sélectionnant (dans le panneau <strong>Liste des plongées</strong>)
+une plongée faite sur ce site et en ouvrant les informations de cet
+endroit. Cliquez sur le bouton avec une image de globe à droite du nom du
+lieu (voir l&#8217;image <strong>A</strong> ci-dessous).  Lorsque vous entrez le nom d&#8217;un site de
+plongée, une liste déroulante apparaît, affichant tous les sites comportant
+un nom similaire. Si le site de plongée a déjà été utilisé précédemment,
+cliquez sur le nom existant.  Les noms de sites de plongée présents dans la
+liste contiennent soit un symbole en forme de globe (indiquant qu&#8217;ils sont
+répertoriés comme lieux de plongée dans la base de données de <em>Subsurface</em>)
+ou un symbole <strong>+</strong> (qui indique des noms de lieux de plongée qui semblent
+consistant avec le nom du site courant mais qui n&#8217;ont pas encore été ajoutés
+à la base de données).  Si le site de plongée actuel n&#8217;a pas encore été
+utilisé, un message apparaît comme suit (voir image <strong>A</strong> ci-dessous):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Locations1_f22.jpg" alt="FIGURE:Location description panel" />
 </div>
 </div>
-<div class="paragraph"><p>Click the globe button and a panel appears to enter the coordinates and
-other information about the site (image <strong>B</strong>, above). The most important
-items are the coordinates of the site. There are three ways to specify
-coordinates:</p></div>
+<div class="paragraph"><p>Cliquez sur le bouton contenant une image de globe; un panneau apparaît
+permettant d&#8217;entrer les coordonnées et d&#8217;autres informations concernant le
+site (voir image <strong>B</strong> ci-dessus). Les informations les plus importantes sont
+les coordonnées du site. Il y a trois façons de spécifier les coordonnées:</p></div>
 <div class="olist loweralpha"><ol class="loweralpha">
 <li>
 <p>
-Use the world map in the bottom right hand part of the <em>Subsurface</em>
-   window. The map displays an orange bar indicating "No location data - Move
-   the map and double-click to set the dive location". Doubleclick at the
-   appropriate place, and the orange bar disappears and the coordinates are
-   stored.
+Utilisez la carte du monde en bas à droite de la fenêtre de
+   <em>Subsurface</em>. Cette carte affiche une barre orange indiquant "Pas de données
+   de localisation - Bougez la carte et double-cliquez pour définir le lieu de
+   plongée". Double-cliquez à l&#8217;endroit requis; la barre orange disparaît alors
+   et les coordonnées sont stockées.
 </p>
 </li>
 <li>
 <p>
-Use eiher the Subsurface-Mobile App or the <em>Subsurface</em> Companion App on an
-   Android or iPhone device with GPS and if the dive site coordinates were
-   stored using one of these apps.  <a href="#S_Companion">Click here for more
-   information</a>
+Utiliser l&#8217;application Subsurface-Mobile ou l&#8217;application <em>Subsurface</em>
+   Companion avec un périphérique Android ou un iPhone avec GPS si les
+   coordonnées du site de plongée ont été stockées en utilisant une de ces
+   applications.  <a href="#S_Companion">Cliquez ici pour plus d&#8217;information</a>
 </p>
 </li>
 <li>
 <p>
-Enter coordiantes by hand if they are known, using one of four formats with
-   latitude followed by longitude:
+Entrez les coordonnées manuellement si vous les connaissez, en utilisant un
+   des quatre formats avec la latitude suivie de la longitude:
 </p>
 <div class="literalblock">
 <div class="content">
-<pre><code>ISO 6709 Annex D format e.g. 30°13'28.9"N 30°49'1.5"E Degrees and decimal
-minutes, e.g. N30° 13.49760' , E30° 49.30788' Degrees minutes seconds,
-e.g. N30° 13' 29.8" , E30° 49' 1.5" Decimal degrees, e.g. 30.22496 ,
+<pre><code>Format ISO 6709 Annexe D p. ex. 30°13'28.9"N 30°49'1.5"E Degrés et minutes
+décimales, p. ex. N30° 13.49760' , E30° 49.30788' Degrés minutes secondes,
+p. ex. N30° 13' 29.8" , E30° 49' 1.5" Degrés décimaux, p. ex. 30.22496 ,
 30.821798</code></pre>
 </div></div>
 </li>
 </ol></div>
-<div class="paragraph"><p>Southern hemisphere latitudes are given with a <strong>S</strong>, e.g. S30°, or with a
-negative value, e.g. -30.22496. Similarly western longitudes are given with
-a <strong>W</strong>, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
-don&#8217;t have the degree sign (°). It can be replaced by a <strong>d</strong> like this: N30d
-W20d.  If both a dive site name and coordinates have been provided, save the
-dive site information by selecting the button <em>Apply changes</em> at the top of
-the panel.</p></div>
-<div class="paragraph"><p><strong>Important</strong>: GPS coordinates of a dive site are linked to the location
-name - so <strong>saving</strong> a dive site with only coordinates and no name
-causes problems. (Subsurface will think all of these
-dives have the same location and try to keep their GPS coordinates the
-same).</p></div>
-<div class="paragraph"><p><strong>Dive site name lookup:</strong> If you typed coordinates into the appropriate
-text box, you can do an automated name lookup based on the coordinates.
-This is done when <em>Subsurface</em> uses the Internet to find the name of the dive site
-based on the coordinates that were typed. If a name has been found, it is
-automatically inserted into the tags box. The list box
-(Titled <em>Dive sites on same coordinates</em>") at the bottom
-of the dive site panel contains the names of other dives sites used at the
-current location. For instance if the dive site is "Blue Hole" and there are several
-sites named "Blue Hole", all of them are listed.</p></div>
-<div class="paragraph"><p>Enter any other contextual information about the dive site (Description and
-Notes), then select <em>Apply Changes</em> to save the geolocation for this dive
-site.  The dive site information can later be edited by clicking the globe
-icon to the right of the dive site name in the <strong>Notes tab</strong>.</p></div>
-<div class="paragraph"><p><strong>Dive mode</strong>: This is a dropdown box allowing you to choose the type of dive
-performed. The options are OC (Open Circuit SCUBA, the default setting, for most recreational dives),
-Freedive (dive without SCUBA equipment), CCR (Closed-circuit
-rebreather) and pSCR (Passive semi-closed rebreather).</p></div>
-<div class="paragraph"><p><strong>Divemaster</strong>: The name of the divemaster or dive guide should be
-entered in this field
-which offers auto selection based on the list of divemasters in
-the current logbook.</p></div>
-<div class="paragraph"><p><strong>Buddy</strong>: In this field, enter the name(s) of the buddy or buddies
-(separated with commas) who were on the
-dive. Auto selection based on the list of buddies in the current logbook is
-offered.</p></div>
-<div class="paragraph"><p><strong>Suit</strong>: Here the type of dive suit used can be entered.
-Auto selection of the suit description is available.
-Some dry-suit users may choose to use this field to record what combination of
-suit and thermal under suit was used.</p></div>
-<div class="paragraph"><p><strong>Rating</strong>: Provide a subjective overall rating of the dive on a
-5-point scale by clicking the appropriate star on the rating scale.</p></div>
-<div class="paragraph"><p><strong>Visibility</strong>: Provide a rating of visibility during the
-dive on a 5-point scale by clicking the appropriate star.</p></div>
-<div class="paragraph"><p><strong>Tags</strong>: Tags that describe the type of dive done can be entered
-here (separated by commas). Examples of common tags are boat, drift, training,
-cave, etc.
-<em>Subsurface</em> has many built-in tags. By starting to type a tag, <em>Subsurface</em> lists
-the tags that correspond to the typing. For instance, by typing
-<code>cav</code>, the tags <strong>cave</strong> and <strong>cavern</strong> are shown to choose from.</p></div>
-<div class="paragraph"><p><strong>Notes</strong>: Any additional information for the dive can be entered here.</p></div>
-<div class="paragraph"><p>The <em>Apply changes</em> and <em>Discard changes</em> buttons are used to save all the
-information for tabs in the <strong>Info</strong> panel and in the <strong>Dive Profile</strong>
-panel. Use them when <strong>ALL</strong> other information has been added. The image
-<a href="#S_Notes_dc">at the beginning of this section</a> shows an example of a
-<strong>Notes tab</strong> after completing the dive information.</p></div>
+<div class="paragraph"><p>Les latitudes dans l&#8217;hémisphère sud sont données avec un <strong>S</strong>, p. ex. S30°,
+ou avec une valeur négative, p. ex. -30.22496. De la même façon, les
+longitudes ouest sont données avec un <strong>W</strong>, p. ex. W07°, ou avec une valeur
+négative, p. ex. -7.34323. Certains claviers ne comportent par le signe
+degré (°). Il peut être remplacé par un <strong>d</strong> comme ceci: N30d W20d.  Si le
+nom du site de plongée et les coordonnées ont tous les deux été renseignés,
+enregistrez les informations du site de plongée en sélectionnant le bouton
+<em>Appliquer les modifications</em> en haut du panneau.</p></div>
+<div class="paragraph"><p><strong>Important</strong>: les coordonnées GPS d&#8217;un site de plongée sont liées au nom de
+lieu - ainsi, <strong>enregistrer</strong> un site de plongée avec uniquement les coordonnées mais aucun nom
+causera des problèmes. (Subsurface pensera que toutes ces
+plongées ont le même lieu et tentera de garder leurs coordonnées GPS
+identiques).</p></div>
+<div class="paragraph"><p><strong>Recherche du nom d&#8217;un site de plongée</strong>: si vous avez entré les coordonnées dans la boîte
+de texte appropriée, vous pouvez lancer une recherche de nom sur base des coordonnées.
+Ceci est réalisé lorsque <em>Subsurface</em> utilise Internet pour trouver le nom d&#8217;un site de plongée
+sur base des coordonées que vous avez entrées. Si un nom est trouvé, il est
+automatiquement inséré dans la boîte Étiquettes. La liste (intitulée <em>"Sites de plongée situés aux mêmes coordonnées</em>") en bas
+du panneau du site de plongée contient les noms d&#8217;autres sites de plongée utilisés
+au même endroit. Par exemple, si le site de plongée est "Blue Hole" et qu&#8217;il y a plusieurs
+sites nommés "Blue Hole", ils seront tous listés.</p></div>
+<div class="paragraph"><p>Entrez toute information contextuelle relative au site de plongée
+(Description et Notes) puis sélectionnez <em>Appliquer les modifications</em> pour
+enregistrer la géolocalisation du site de plongée. L&#8217;information concernant
+le site de plongée peut être éditée ultérieurement en cliquant sur l&#8217;icone
+en forme de globe à droite du nom du site de plongée dans l&#8217;onglet <strong>Notes</strong>.</p></div>
+<div class="paragraph"><p><strong>Mode de plongée</strong>: cette liste déroulante vous permet de choisir le type de plongée
+réalisée. Les options sont OC (scaphandre en circuit ouvert, le choix par défaut pour la plupart des plongées loisir),
+Apnée (plongée sans scaphandre), CCR (recycleur
+en circuit fermé) et pSCR (recycleur passif semi-fermé).</p></div>
+<div class="paragraph"><p><strong>Moniteur/Guide de palanquée</strong>: le nom du moniteur ou du guide de palanquée doit être
+entré dans ce champ
+qui permet une sélection automatique basé sur la liste des moniteurs
+déjà présents dans le carnet en cours.</p></div>
+<div class="paragraph"><p><strong>Équipier</strong>: dans ce champ, entrez le(s) nom(s) de votre/vos équipier(s)
+(sparés par des virgules) qui participaient à la
+plongée. Une sélection automatique se base sur la liste des équipiers déjà présents dans le
+carnet en cours.</p></div>
+<div class="paragraph"><p><strong>Combinaison</strong>: le type de combinaison peut être entré ici.
+Une sélection automatique est disponible.
+Certains utilisateurs de vêtement étanche peuvent utiliser ce champ pour enregistrer quelle ensemble de
+combinaison et souris ils ont utilisé.</p></div>
+<div class="paragraph"><p><strong>Évaluation</strong>: attribue une évaluation subjective à une plongée sur une
+échelle de 5 points en cliquant sur l'étoile correspondante.</p></div>
+<div class="paragraph"><p><strong>Visibilité</strong>: attribue une évaluation de la visibilité à une plongée sur une
+échelle de 5 points en cliquant sur l'étoile correspondante.</p></div>
+<div class="paragraph"><p><strong>Étiquettes</strong>: il est possible de définir ici des étiquettes qui décrivent le
+type de plongée (séparées par des virgules). Des exemples courants d'étiquettes sont bateau,
+plongée dérivante, exercice, grotte, etc.
+<em>Subsurface</em> contient de nombreuses étiquettes. En commençant à taper une étiquette, <em>Subsurface</em> liste
+les étiquettes correspondant à la frappe. Par exemple, en entrant
+<code>cav</code>, les étiquettes <strong>cave</strong> et <strong>caverne</strong> sont proposées.</p></div>
+<div class="paragraph"><p><strong>Notes</strong>: toute information supplémentaire concernant une plongée peut être entrée ici.</p></div>
+<div class="paragraph"><p>Les boutons <em>Appliquer les modifications</em> et <em>Annuler les modifications</em>
+sont utilisés pour enregistrer toutes les informations des onglets du
+panneau <strong>Informations</strong> et du panneau <strong>Profil de plongée</strong>. Utilisez-les
+lorsque <strong>TOUTES</strong> les autres informations ont été ajoutées. L&#8217;image
+<a href="#S_Notes_dc">située au début de cette section</a> montre un exemple de
+l&#8217;onglet <strong>Notes</strong> après avoir complété les informations d&#8217;une plongée.</p></div>
 </div>
 <div class="sect4">
-<h5 id="_equipment">Equipment</h5>
-<div class="paragraph"><p>The Equipment tab allow entering information about the type of cylinder and
-gas used, as well as the weights used for the dive. The message in the blue
-box at the top of the panel:</p></div>
+<h5 id="_équipement">Équipement</h5>
+<div class="paragraph"><p>L&#8217;onglet Équipement permet d&#8217;entrer les informations concernant le type de
+bloc et le gaz utilisé, ainsi que le lestage utilisé pour la plongée. Le
+message dans la boîte bleue en haut du panneau:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/BlueEditBar_f22.jpg" alt="FIGURE: Blue edit bar" />
 </div>
 </div>
-<div class="paragraph"><p>shows the equipment is being edited. This is a highly interactive part of
-<em>Subsurface</em> and the information on cylinders and gases (entered here)
-determines the behavior of the <strong>Dive profile</strong> (top right-hand panel).</p></div>
-<div class="paragraph" id="cylinder_definitions"><p><strong>Cylinders</strong>: The cylinder information is entered through a dialogue that looks
-like this:</p></div>
+<div class="paragraph"><p>indique que l'équipement a été édité. C&#8217;est une partie hautement interactive
+de <em>Subsurface</em> et les informations sur les blocs et les gaz (entrées ici)
+déterminent le comportement du <strong>Profil de plongée</strong> (panneau en haut à
+droite).</p></div>
+<div class="paragraph" id="cylinder_definitions"><p><strong>Blocs</strong>: les informations concernant les blocs sont entrées via une boîte de dialogue
+qui ressemble à ceci:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DC_gas-dialogue1_f20.jpg" alt="FIGURE: Initial cylinder dialogue" />
 </div>
 </div>
-<div class="paragraph"><p>For hand-entered dives, this information needs to be typed in. For dive
-computers, <em>Subsurface</em> often gets the gas used from the dive computer and
-automatically inserts the gas composition(% oxygen or % helium) in the
-table. The + button at the top right allows adding more cylinders for this
-dive. The dark dustbin icon on the left allows you to delete information for
-a cylinder.  Note that it is not possible to delete a cylinder if it is used
-during the dive. A cylinder might be implicitly used in the dive, even
-without a gas change event.  Start by selecting a cylinder type on the
-left-hand side of the table.  To select a cylinder, the <em>Type</em> box should be
-clicked. This brings up a list button that can be used to display a dropdown
-list of cylinders:</p></div>
+<div class="paragraph"><p>Pour les plongées entrées manuellement, cette information doit être
+entrée. Pour les ordinateurs de plongée, <em>Subsurface</em> reçoit souvent
+l&#8217;information concernant le gaz utilisé et insère automatiquement sa
+composition (% d&#8217;oxygène ou % d&#8217;hélium) dans le tableau. Le bouton + en haut
+à droite permet d&#8217;ajouter des blocs pour cette plongée. L&#8217;icone de corbeille
+noire à gauche permet de supprimer les informations d&#8217;un bloc. Notez qu&#8217;il
+n&#8217;est pas possible de supprimer un bloc s&#8217;il est utilisé durant la
+plongée. Un bloc doit être implicitement utilisé pour la plongée, même sans
+événement de changement de gaz.  Commencez par sélectionner un type de bloc
+dans la partie gauche du tableau.  Pour sélectionner un bloc, il faut
+cliquer sur la boîte <em>Type</em>. Cela fera apparaître un bouton permettant
+d&#8217;afficher une liste déroulante de blocs:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DC_gas-dialogue2_f20.jpg" alt="FIGURE: The cylinder drop-down list button" />
 </div>
 </div>
-<div class="paragraph"><p>The drop-down list can then be used to select the cylinder type that was
-used for this dive, or just start typing in the box which shows the
-available options for the entered characters. The <strong>Size</strong> of the cylinder as
-well as its working pressure (<em>Work.press</em>) will automatically be shown in
-the dialogue.</p></div>
-<div class="paragraph"><p>Next, indicate the starting pressure and the ending pressure of the
-specified gas during the dive. The unit of pressure (metric/imperial)
-corresponds to the settings chosen in the <em>Preferences</em>.</p></div>
-<div class="paragraph"><p>Finally, provide the gas mixture used. If air was used, the value of 21% can
-be entered into the oxygen box or this field can be left blank. If nitrox or
-trimix were used, their percentages of oxygen and/or helium should be
-entered.  Any inappropriate fields should be left empty. After typing the
-information for the cylinder, save the data either by pressing <em>ENTER</em> on
-the keyboard or by clicking outside the cell containing the
-cursor. Information for any additional cylinders can be added by using the<br />
-button at the top right hand. Here is an example of a complete description
-for a dive using two cylinders (air and EAN50):</p></div>
+<div class="paragraph"><p>La liste déroulante peut être utilisée pour sélectionner le type de bloc
+utilisé pour cette plongée, ou il suffit de commencer à taper dans la boîte
+pour afficher les options disponibles selon les lettres entrées. La <strong>Taille</strong>
+du bloc ainsi que sa pression de service (_Pression de service) seront
+automatiquement affichées dans la boîte de dialogue.</p></div>
+<div class="paragraph"><p>Ensuite, indiquez la pression de déart et celle d&#8217;arrivée pour le gaz
+spécifié pendant la plongée. L&#8217;unité de pression (métrique/impériale)
+correspond au réglage choisi dans les <em>Préférences</em>.</p></div>
+<div class="paragraph"><p>Pour terminer, renseignez le mélange de gaz utilisé. S&#8217;il s&#8217;agit d&#8217;air, la
+valeur de 21% peut être entrée dans la case Oxygène, ou ce champ peut être
+laissé vide. Si du nitrox ou du trimix a été utilisé, les pourcentages
+d&#8217;oxygène et/ou d&#8217;hélium doivent être entrés.  Tout champ non requis
+concerné doit être laissé vide. Après avoir entré les informations du bloc,
+enregistrez les données soit en pressant la douche <em>ENTRÉE</em>, soit en
+cliquant hors de la case contenant le curseur. Les informatioins pour les
+blocs supplémentaires peuvent être ajoutées en utilisant le bouton + en haut
+à droite. Voici un exemple d&#8217;une description complète pour une plongée
+utilisant deux blocs (air et EAN50):</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/CylinderDataEntry3_f20.jpg" alt="FIGURE: a completed cylinder dive information table" />
 </div>
 </div>
-<div class="paragraph"><p><strong>Weights</strong>: Information about the weight system used can be entered
-using a dialogue similar to that of the cylinder information. If you click
-the + button on the top right of the weights dialogue, the table looks like
-this:</p></div>
+<div class="paragraph"><p><strong>Poids</strong>: les informations à propos du système de lestage peuvent être entrés
+via une interface similaire à celles des blocs. Si vous cliquez
+sur le bouton + en haut à droite , le tableau apparaît
+comme suit:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/WeightsDataEntry1_f20.jpg" alt="FIGURE:The Weights dialogue" />
 </div>
 </div>
-<div class="paragraph"><p>By clicking on the <em>Type</em> field, a drop-down list becomes accessible through
-a down-arrow:</p></div>
+<div class="paragraph"><p>En cliquant sur le champ: <em>Type</em>, une liste déroulante devient accessible
+via une flèche vers le bas:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/WeightsDataEntry2_f20.jpg" alt="FIGURE:Weights type drop-down list button" />
 </div>
 </div>
-<div class="paragraph"><p>This can be used to select the type of weight system used during the
-dive. You may start typing in the box to specify a different weighting
-mechanism that will be saved by <em>Subsurface</em>.  In the <strong>Weight</strong> field, type
-in the amount of weight used during the dive. After specifying the weight
-system, save the data by pressing <em>ENTER</em> on the keyboard or by clicking
-outside the cell with the cursor.  It’s possible to enter information for
-more than one weight system by adding an additional system using the<br />
-button on the top right hand. Weight systems can be deleted using the dust
-bin icon on the left hand. Here is an example of information for a dive with
-two types of weights: integrated as well as a weight belt:</p></div>
+<div class="paragraph"><p>Celle-ci peut être utilisée pour sélectionner le type de poids utilisé
+durant la plongée. Vous pouvez commencer à taper dans la case pour spécifier
+un mécanisme différent de lestage qui sera sauvegardé par <em>Subsurface</em>. Dans
+le champ <strong>Poids</strong>, entrez la quantité de poids utilisé durant la
+plongée. Après avoir spécifié le système de lestage, enregistrez les données
+avec la touche <em>ENTRÉE</em> du clavier ou en cliquant hors de la case contenant
+le curseur.  Il est possible d&#8217;entrer des informations pour plusieurs
+systèmes de lestage en utilisant le pouton + en haut à droite. Les systèmes
+de lestage peuvent être supprimés en utilisant l&#8217;icone de corbeille sur la
+gauche. Voici un exemple d&#8217;informations pour une plongée avec deux systèmes
+de lestage: des poids intégrés et une ceinture:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/WeightsDataEntry3_f20.jpg" alt="FIGURE: A completed weights information table" />
@@ -1474,7 +1544,7 @@ two types of weights: integrated as well as a weight belt:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_editing_several_selected_dives_simultaneously">5.2.6. Editing several selected dives simultaneously</h4>
+<h4 id="_éditer_simultanément_une_sélection_de_plusieurs_plongées">5.2.6. Éditer simultanément une sélection de plusieurs plongées</h4>
 <div class="paragraph"><p><em>METHOD 1</em>: After downloading dives from a dive computer, the dive profiles
 of each is shown in the <strong>Dive profile</strong> tab, as well as a few items of
 information in the <strong>Notes</strong> tab (e.g. water temperature) and in the
@@ -1510,34 +1580,36 @@ dives now contain the data initially selected in the original source dive
 log.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_Bookmarks">5.2.7. Adding Bookmarks to a dive</h4>
-<div class="paragraph"><p>Many divers wish to annotate dives with text that indicate particular
-events, e.g. "Saw dolphins", or "Released surface buoy". This is easily
-done:</p></div>
+<h4 id="S_Bookmarks">5.2.7. Ajout des signets à une plongée</h4>
+<div class="paragraph"><p>De nombreux plongeurs désirent annonter leurs plongées avec du texte
+indiquant des événements particuliers, p. ex. "J&#8217;ai vu des dauphins", ou
+"Déploiement de parachute de palier". Ceci peut ^être facilement réalisé:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Right-click at the appropriate point on the dive profile.  This brings up
-   the dive profile context menu. Select <em>Add bookmark</em>. A red flag is placed
-   on the dive profile at that point (see <strong>A</strong> below).
+Cliquez-droit à l&#8217;endroit voulu dans le profil de plongée. Cela fait
+   apparaître le menu contextuel du profil de plongée. Sélectionnez <em>Ajouter un
+   signet</em>. Un drapeau rouge est alors placé à cet endroit sur le profil de
+   plongée (voir <strong>A</strong> ci-dessous).
 </p>
 </li>
 <li>
 <p>
-Right-click on the red flag. This brings up the context menu (see <strong>B</strong>
-   below). Select <em>Edit name</em>.
+Cliquez-droit sur le drapeau rouge. Ceci fait apparaître un menu contextuel
+   (voir <strong>B</strong> ci-dessous). Sélectionnez <em>Modifier le nom</em>.
 </p>
 </li>
 <li>
 <p>
-A text box is shown. Type the explanatory text for the bookmark (see <strong>C</strong>
-   below). Select <em>OK</em>.  This saves the text associated with the bookmark.
+Une boîte de texte s&#8217;affiche. Entrez le texte explicatif pour le signet
+   (voir <strong>C</strong> ci-dessous). Sélectionnez <em>OK</em>. Ceci enregistrera le texte associé
+   au signet.
 </p>
 </li>
 <li>
 <p>
-Hovering the mouse over the red bookmark, the appropriate text is shown at
-   the bottom of the information box (see <strong>D</strong> below).
+En survolant le signet rouge avec la souris, le texte associé est affiché
+   dans le bas de la boîte d&#8217;information (voir <strong>D</strong> ci-dessous).
 </p>
 </li>
 </ul></div>
@@ -1548,15 +1620,17 @@ Hovering the mouse over the red bookmark, the appropriate text is shown at
 </div>
 </div>
 <div class="sect3">
-<h4 id="_saving_the_updated_dive_information">5.2.8. Saving the updated dive information</h4>
-<div class="paragraph"><p>The information entered in the <strong>Notes</strong> tab and the <strong>Equipment</strong> tab can be
-saved by using the two buttons on the top right hand of the <strong>Notes</strong> tab. If
-the <em>Apply changes</em> button is clicked, the dive data are saved in the memory
-image of the dive. If the <em>Discard changes</em> button is clicked, the newly
-entered dive data are erased from the computer memory, although the dive
-profile is retained. When the user exits <em>Subsurface</em> there is a final
-prompt to confirm the new data should now be saved permanently on the
-computer disk.</p></div>
+<h4 id="_enregistrer_les_informations_de_plongée_mises_à_jour">5.2.8. Enregistrer les informations de plongée mises à jour</h4>
+<div class="paragraph"><p>Les informations entrées dans les onglets <strong>Notes</strong> et <strong>Équipement</strong> peuvent
+être enregistrées en utilisant les deux boutons en haut à droite de l&#8217;onglet
+<strong>Notes</strong>. Si vous cliquez sur le bouton <em>Appliquer les modifications</em>, les
+données de la plongée sont enregistrées dans l&#8217;image mémoire de la
+plongée. Si le bouton <em>Annuler les modifications</em> est cliqué, les données de
+plongées nouvellement entrées sont effacées de la mémoire de l&#8217;ordinateur,
+bien que le profil de plongée soit conservé. Lorsque l&#8217;utilisateur quitte
+<em>Subsurface</em>, il y a une dernière notificatioin pour confirmer que les
+nouvelles données doivent être enregistrées de manière permanente sur le
+disque de l&#8217;ordinateur.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -1588,63 +1662,65 @@ issues (or other reasons that would cause the beginning time of the dives to
 be significantly different) <em>Subsurface</em> will not create duplicate
 entries. Below is more specific information to import data to <em>Subsurface</em>.</p></div>
 <div class="sect3">
-<h4 id="_using_the_universal_import_dialogue">5.3.1. Using the universal import dialogue</h4>
-<div class="paragraph" id="Unified_import"><p>Importing dives from other software is done through a universal interface
-activated by selecting <em>Import</em> from the Main Menu, then clicking on <em>Import
-Log Files</em>. This brings up dialogue <strong>A</strong>, below.</p></div>
+<h4 id="_utilisation_de_la_boîte_de_dialogue_universelle_d_8217_importation">5.3.1. Utilisation de la boîte de dialogue universelle d&#8217;importation</h4>
+<div class="paragraph" id="Unified_import"><p>L&#8217;importation de plongées depuis d&#8217;autres logiciels se fait au travers d&#8217;une
+interface universelle en sélectionnant <em>Importer</em> depuis le menu principal,
+puis en cliquant sur <em>Importer des fichiers de plongée</em>. Ceci fera
+apparaître la boîte de dialogue <strong>A</strong>, comme ci-dessous.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Import1_f20.jpg" alt="FIGURE: Import dialogue: step 1" />
 </div>
 </div>
-<div class="paragraph"><p>Towards the bottom right is a dropdown selector with a default label of
-<em>Dive Log Files</em> which accesses different types of direct imports available,
-as in dialogue <strong>B</strong>, above. Currently these are:</p></div>
+<div class="paragraph"><p>En bas à droite se trouve la liste déroulante avec la mention par défaut
+<em>Dive Log Files</em> qui permet d&#8217;accéder aux différents types d&#8217;importations
+directes disponibles, comme dans le dialogue <strong>B</strong> ci-dessus. Actuellement, il
+s&#8217;agit de:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-XML-formatted dive logs (DivingLog 5.0, MacDive and several other dive log
-   systems)
+Carnet de plongée formatés en XML (DivingLog 5.0, MacDive et divers autres
+   systèmes de carnet de plongée)
 </p>
 </li>
 <li>
 <p>
-Cochran dive logs
+Carnets de plongée Cochran
 </p>
 </li>
 <li>
 <p>
-UDDF-formatted dive logs (e.g. Kenozooid)
+Carnets de plongée formatés en UDDF (p. ex. Kenozooid)
 </p>
 </li>
 <li>
 <p>
-UDCF-formatted dive logs
+Carnets de plongée formatés en UDCF
 </p>
 </li>
 <li>
 <p>
-Poseidon MkVI CCR logs
+Logs Poseidon MkVI CCR
 </p>
 </li>
 <li>
 <p>
-APD Inspiration/Evolution CCR logs
+Logs APD Inspiration/Evolution CCR
 </p>
 </li>
 <li>
 <p>
-LiquiVision logs
+Logs LiquiVision
 </p>
 </li>
 <li>
 <p>
-divelogs.de logs
+Logs divelogs.de
 </p>
 </li>
 <li>
 <p>
-OSTC Tools logs
+Logs OSTC Tools
 </p>
 </li>
 <li>
@@ -1659,38 +1735,38 @@ Suunto Dive Manager (DM3, DM4, DM5)
 </li>
 <li>
 <p>
-DL7 files used by Diver&#8217;s Alert network (DAN)
+Fichers DL7 utilisés par Diver&#8217;s Alert network (DAN)
 </p>
 </li>
 <li>
 <p>
-Underwater technologies AV1 dive logs
+Logs Underwater technologies AV1
 </p>
 </li>
 <li>
 <p>
-Divesoft dive logs
+Logs Divesoft
 </p>
 </li>
 <li>
 <p>
-Poseidon MK VI eCCR dive logs
+Logs Poseidon MK VI eCCR
 </p>
 </li>
 <li>
 <p>
-CSV (text-based and spreadsheet-based) dive logs, including APD CCR logs
+Carnet de plongée CSV (format texte ou tableau), y compris les logs APD CCR
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Selecting the appropriate format and then the specific log file in the large
-window containing the file list on the right of the dialogue, opens the
-imported dive log in the <em>Subsurface</em> <strong>Dive List</strong>. Some other formats not
-accessible through the Import dialogue are also supported, as explained
-below.</p></div>
+<div class="paragraph"><p>Sélectionner le format voulu puis le fichier recherché dans la fenêtre
+contenant la liste des fichiers sur la droite de la boîte de dialogue,
+ouvrira le carnet de plongée importé dans la <strong>Liste des plongées</strong> de
+<em>Subsurface</em>. Certains autres formats, non accessible depuis la boîte de
+dialogue d&#8217;importation, sont également supportés, comme expliqué ci-dessous.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_ostctools">5.3.2. Importing from  OSTCTools</h4>
+<h4 id="_importation_depuis_ostctools">5.3.2. Importation depuis OSTCTools</h4>
 <div class="paragraph"><p><em>OSTC Tools</em> is a Microsoft-based suite of dive download and dive management
 tools for the OSTC family of dive computers. <em>OSTC Tools</em> downloads dive
 data from the dive computer and stores it as a binary file with file
@@ -1699,27 +1775,30 @@ the universal import dialogue. From the dropdown list at the bottom right
 select <em>OSTCTools Files (.dive .DIVE)</em>. This makes the <em>OSTC Tools</em> dive
 logs visible in the file list panel. Select one or more dive, then click the
 <em>Open</em> button. The OSTC dives are shown in the <strong>Dive List</strong> panel.</p></div>
-<div class="paragraph"><p>All H&amp;W devices supported by OSTCTools can be imported to <em>Subsurface</em>. This
-includes OSTC, OSTC Mk2, OSTC 2N/2C, OSTC3, OSTC Sport, and probably
-although untested, Frog, OSTC2 and OSTC CR.</p></div>
-<div class="paragraph"><p>Please remember that OSTCTools is <strong>not</strong> true diving log software, but rather
-a useful set of tools for analysis and management of OSTC devices. Only raw
-dive computer data will be imported to <em>Subsurface</em>; the rest of the data
-(buddies, equipment, notes, etc) need to be completed manually.</p></div>
+<div class="paragraph"><p>Tous les périphériques H&amp;W supportés par OSTCTools peuvent être importés
+dans <em>Subsurface</em>. Ceci comprend les modèles OSTC, OSTC Mk2, OSTC 2N/2C,
+OSTC3, OSTC Sport, et probablement, bien que non testés, Frog, OSTC2 et OSTC
+CR.</p></div>
+<div class="paragraph"><p>Ne perdez pas de vue qu&#8217;OSTCTools n&#8217;est <strong>pas</strong> un vrai logiciel de carnet de
+plongée, mais plutôt un ensemble d&#8217;outils pour l&#8217;analyse et la gestion des
+périphériques OSTC. Seules les données brutes de l&#8217;ordinateur de plongée
+seront importées dans <em>Subsurface</em>, le reste des données (équipiers,
+équipement, notes, etc.) doit être complété manuellement.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_importing_from_mares_dive_organizer_v2_1">5.3.3. Importing from Mares Dive Organizer V2.1</h4>
-<div class="paragraph"><p>Since Mares uses proprietary Windows software not compatible with
-multi-platform applications, these dive logs cannot be directly imported
-into <em>Subsurface</em>. Mares dive logs need to be imported using a three-step
-process, using <em>www.divelogs.de</em> as a gateway to extract the dive log
-information.</p></div>
+<h4 id="_importation_depuis_mares_dive_organizer_v2_1">5.3.3. Importation depuis Mares Dive Organizer V2.1</h4>
+<div class="paragraph"><p>Vu que Mares utilise un logiciel Windows propriétaire non-compatible avec
+les applications multi-plateformes, ces carnets de plongée ne peuvent pas
+être importés directement dans <em>Subsurface</em>. Ceux-ci doivent être important
+en suivant une procédure en trois étapes, en utilisant <em>www.divelogs.de</em>
+comme passerelle pour extraire les informations du carnet de plongée.</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
-Export the dive log data from Mares Dive Organizer to your desktop, using a
-   <em>.sdf</em> file name extension. Refer to <a href="#Mares_Export">Appendix C</a> for more
-   information.
+Exportez les données du carnet de plongée depuis le Mares Dive Organizer
+   vers votre bureau, en utilisant un fichier avec l&#8217;extension
+   <em>.sdf</em>. référez-vous à l&#8217;<a href="#Mares_Export">Annexe C</a> pour plus
+   d&#8217;information.
 </p>
 </li>
 <li>
@@ -1733,14 +1812,14 @@ Data should then be imported into <em>www.divelogs.de</em>. First, create a user
 </li>
 <li>
 <p>
-Finally, import the dives from <em>divelogs.de</em> to <em>Subsurface</em>, using the
-   instructions below.
+Enfin, importez les plongées depuis <em>divelogs.de</em> vers <em>Subsurface</em>, en
+   suivant les instructions ci-dessous.
 </p>
 </li>
 </ol></div>
 </div>
 <div class="sect3">
-<h4 id="S_SmartTrakImport">5.3.4. Importing Scubapro <em>SmartTrak</em> divelogs</h4>
+<h4 id="S_SmartTrakImport">5.3.4. Importer les logs Scubapro <em>SmartTrak</em></h4>
 <div class="paragraph"><p><em>SmartTrak</em> stores the raw data from a Uwatec/Scubapro dive computer along
 with a plethora of other data manually added by the user, ranging from dive
 points to buddies data or DAN survey info. However, this is Microsoft
@@ -1751,13 +1830,13 @@ Microsoft Access databases, preventing the integration the importer into the
 generated by SmartTrak to Subsurface&#8217;s <em>.xml</em> format. It can be built
 together with <em>Subsurface</em> for Linux systems. Two dependencies need to be
 installed in your system before building: <em>libglib2.0</em> and <em>libmdb2</em>.</p></div>
-<div class="paragraph"><p>Feel free to contact the <em>Subsurface</em> development team on
-<a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a> for assistance in
-importing <em>SmartTrak</em> dive logs.</p></div>
+<div class="paragraph"><p>N&#8217;hésitez pas à contacter l'équipe de développement de <em>Subsurface</em> via
+<a href="mailto:subsurface@subsurface-divelog.org">notre liste de diffusion</a> pour de
+l&#8217;aide à l&#8217;importation des lofs <em>SmartTrak</em>.</p></div>
 <div class="paragraph"><p>Assuming the above dependencies have been installed and the <em>Subsurface</em>
 source tree is in the directory <em>~/src/subsurface</em>, then:</p></div>
 <div class="sect4">
-<h5 id="_building_em_smtk2ssrf_em">Building <em>smtk2ssrf</em></h5>
+<h5 id="_compiler_em_smtk2ssrf_em">Compiler <em>smtk2ssrf</em></h5>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1791,7 +1870,7 @@ After a successful build, there will be an executable named <em>smtk2ssrf</em> i
 </ul></div>
 </div>
 <div class="sect4">
-<h5 id="_running">Running</h5>
+<h5 id="_utilisation">Utilisation</h5>
 <div class="paragraph"><p><em>smtk2ssrf</em> accepts 0, 2 or more parameters. If it is launched without
 parameters in a graphical user interface, a simple window opens for choosing
 the <em>.slg</em> file(s) to import and a destination file to store the
@@ -1825,7 +1904,7 @@ messages in the console or in the graphical window: some may be relevant as
 support for Galileo family of dive computers is still a work in progress.</p></div>
 </div>
 <div class="sect4">
-<h5 id="_merging_the_imported_dives_with_the_existing_divelog">Merging the imported dives with the existing divelog</h5>
+<h5 id="_fusionner_les_plongées_importées_dans_un_carnet_de_plongée_existant">Fusionner les plongées importées dans un carnet de plongée existant</h5>
 <div class="paragraph"><p>Open the new file (generated in the previous steps) using <em>Subsurface</em> and
 check the dives and data.  If everything is fine, close the <em>.xml</em> file and
 open your regular divelog.  Then from the <strong>Main Menu</strong> select <em>Import &#8594;
@@ -1837,7 +1916,7 @@ from <em>SmartTrak</em>, so a renumbering action is needed. See the section on
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_ImportingDivelogsDe">5.3.5. Importing dives from <strong>divelogs.de</strong></h4>
+<h4 id="S_ImportingDivelogsDe">5.3.5. Importer des plongées depuis <strong>divelogs.de</strong></h4>
 <div class="paragraph"><p>Importing dive information from <em>divelogs.de</em> is simple, using a single
 dialogue box. The <em>Import &#8594; Import from Divelogs.de</em> option should be
 selected from the Main Menu. This brings up a dialogue box (see image <strong>A</strong>
@@ -1872,8 +1951,8 @@ information that may be helpful for importing spreadsheet-based data into
 normally organized into a single line that provides the headers (or <em>field
 names</em> or <em>column headings</em>) of the data columns, followed by the data, one
 record per line.</p></div>
-<div class="paragraph"><p>There are two types of <em>CSV</em> dive logs that can be imported into
-<em>Subsurface</em>:</p></div>
+<div class="paragraph"><p>Il y a deux types de carnets de plongée au format <em>CSV</em> pouvant être
+importées dans <em>Subsurface</em>:</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
@@ -1923,7 +2002,8 @@ Which data columns need to be imported into <em>Subsurface</em>? Is it a <em>CSV
 </li>
 <li>
 <p>
-Is the numeric information (e.g. dive depth) in metric or in imperial units?
+Les données numériques (p. ex. la profondeur de plongée) sont-elles en
+   système métrique ou mesures impériales?
 </p>
 </li>
 </ol></div>
@@ -1970,7 +2050,7 @@ The data from the <em>CSV</em> file are imported and shown in the <strong>Dive L
 panel.</p></div>
 <div class="sidebarblock" id="S_CSV_Intro">
 <div class="content">
-<div class="paragraph"><p><strong>A Diver&#8217;s Introduction to <em>CSV</em> Files</strong></p></div>
+<div class="paragraph"><p><strong>Introduction aux fichiers <em>CSV</em> pour la plongée</strong></p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2008,8 +2088,9 @@ Key Largo,2012-11-24,09:12,34:15,20.4,Jason McDonald
 Wismar Baltic,2012-12-01,10:13,35:27,15.4,Dieter Albrecht
 Pulau Weh,2012-12-20,09:46,55:56,38.6,Karaeng Bontonompo</code></pre>
 </div></div>
-<div class="paragraph"><p>The above data are not easily read by a human. Here is the same information
-in TAB-delimited format:</p></div>
+<div class="paragraph"><p>Les données ci-dessus ne sont pas aisément lisible pour un être
+humain. Voici les mêmes informations dans un format séparé par des
+tabulations :</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>Dive site       Dive date       Time    Dive_duration   Dive_depth      Dive buddy
@@ -2066,25 +2147,25 @@ smaller file to make sure everything works.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_importing_dive_coordinates_from_a_mobile_device_with_gps">5.4. Importing Dive coordinates from a mobile device with GPS.</h3>
-<div class="paragraph"><p>A smartphone with built-in GPS facilities can be used to store the locations
-of dives.  This is performed by:</p></div>
+<h3 id="_importation_des_coordonnées_de_plongée_depuis_un_appareil_mobile_avec_gps">5.4. Importation des coordonnées de plongée depuis un appareil mobile avec GPS.</h3>
+<div class="paragraph"><p>Un smartphone avec GPS peut être utilisé pour stocker les lieux de
+plongées. Ceci est réalisé comme suit:</p></div>
 <div class="paragraph"><p>Taking the mobile device along on the dive boat / liveabord while
 automatically collecting dive site coordinate information.</p></div>
 <div class="paragraph"><p>2) Uploading the coordinates from the mobile device to the <em>Subsurface</em>
    Internet server.</p></div>
 <div class="paragraph"><p>Syncronising the dives in the <em>Subsurface</em> dive list with the coordinates
 stored on the <em>Subsurface</em> Internet server.</p></div>
-<div class="paragraph"><p>_Subsurface has two tools for achieving this:</p></div>
+<div class="paragraph"><p><em>Subsurface</em> comporte deux outils pour réaliser cela:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-The <em>Subsurface Companion App</em> (Android and iOS).
+L&#8217;application <em>Subsurface Companion</em> (Android et iOS).
 </p>
 </li>
 <li>
 <p>
-The <em>Subsurface-mobile</em> app (Android and iOS)
+L&#8217;application <em>Subsurface-mobile</em> (Android et iOS)
 </p>
 </li>
 </ul></div>
@@ -2097,8 +2178,8 @@ the <em>Subsurface</em> desktop version, <em>Subsurface-mobile</em> performs man
 functions of the desktop version, including the management and viewing of
 dive information. Below, we describe how to perform the above three steps
 using each of the two mobile apps.</p></div>
-<div class="paragraph"><p>For information on using the <em>Subsurface Companion App</em>, click
-<a href="#S_Companion"><em>here</em></a>.</p></div>
+<div class="paragraph"><p>Pour plus d&#8217;information sur l&#8217;utilisation de l&#8217;application <em>Subsurface
+Companion</em>, cliquez <a href="#S_Companion"><em>ici</em></a>.</p></div>
 <div class="sect3">
 <h4 id="_storing_and_and_using_gps_locations_using_em_subsurface_mobile_em">5.4.1. Storing and and using GPS locations using  <em>Subsurface-mobile</em></h4>
 <div class="sect4">
@@ -2306,7 +2387,7 @@ Import local GPX file: The Android device searches for .gpx files and
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p><strong>List of dive locations</strong></p></div>
+<div class="paragraph"><p><strong>Liste des emplacements de plongée</strong></p></div>
 <div class="paragraph"><p>The main screen shows a list of dive locations, each with a name, date and
 time (see <strong>A</strong> below). Some locations may have an arrow-up icon over the
 selection box to the left showing they need to be uploaded to the
@@ -2520,7 +2601,7 @@ then to change the date-time back again <strong>after</strong> downloading GPS d
 <td class="icon">
 <img src="images/icons/info.jpg" alt="Note" />
 </td>
-<td class="content">TIPS:</td>
+<td class="content">CONSEILS:</td>
 </tr></table>
 </div>
 <div class="ulist"><ul>
@@ -2550,13 +2631,13 @@ It may also be useful to give informative names to the locations sent to the
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_LoadImage">5.5. Adding photographs to dives</h3>
+<h3 id="S_LoadImage">5.5. Ajouter des photos aux plongées</h3>
 <div class="paragraph"><p>Many (if not most) divers take photographs during a dive. <em>Subsurface</em>
 allows the storage and display of photographs for each dive. Photos are
 superimposed on the dive profile at the times during the dive when they were
 taken. They can also be viewed from the dive profile.</p></div>
 <div class="sect3">
-<h4 id="_loading_photos_and_synchronizing_between_dive_computer_and_camera">5.5.1. Loading photos and synchronizing between dive computer and camera</h4>
+<h4 id="_chargement_des_photos_et_synchronisation_entre_l_8217_ordinateur_de_plongée_et_l_8217_appareil_photo">5.5.1. Chargement des photos et synchronisation entre l&#8217;ordinateur de plongée et l&#8217;appareil photo</h4>
 <div class="paragraph"><p>Right-click on a dive or on a group of dives on the dive list, bringing up
 the <a href="#S_DiveListContextMenu">Dive list context Menu</a>.  Select the
 appropriate option to import images either from file or from the
@@ -2579,7 +2660,8 @@ used during that same dive. These two devices often differ by several
 minutes. <em>Subsurface</em> attempts to synchronize these two devices so that the
 exact times of photographs can be used to position photographs on the dive
 profile.</p></div>
-<div class="paragraph"><p><em>Subsurface</em> synchronizes camera with dive computer in three ways:</p></div>
+<div class="paragraph"><p><em>Subsurface</em> synchronise l&#8217;appareil photo avec l&#8217;ordinateur de plongée de
+trois façons:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2642,8 +2724,8 @@ that all photos associated with a dive are visible, including photos taken
 before or after the dive.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_viewing_the_photos">5.5.2. Viewing the photos</h4>
-<div class="paragraph"><p>After the images have been loaded, they appear in two places:</p></div>
+<h4 id="_visualiser_les_photos">5.5.2. Visualiser les photos</h4>
+<div class="paragraph"><p>Après avoir été chargées, les images apparaissent à deux endroits:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2690,7 +2772,7 @@ deleted using the <em>Photos</em> tab (see text below).</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_the_em_photos_em_tab">5.5.3. The <em>Photos</em> tab</h4>
+<h4 id="_l_8217_onglet_em_photos_em">5.5.3. L&#8217;onglet <em>Photos</em></h4>
 <div class="paragraph"><p>Photographs associated with a dive are shown as thumbnails in the <em>Photos</em>
 tab of the <em>Notes</em> panel. Photos taken in rapid succession during a dive
 (therefore sometimes with large overlap on the dive profile) can easily be
@@ -2704,7 +2786,7 @@ the <em>Photos</em> panel by selecting it (single-click) and then by pressing th
 as well as the dive profile.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_photos_on_an_external_hard_disk">5.5.4. Photos on an external hard disk</h4>
+<h4 id="_photos_stockées_sur_un_disque_dur_externe">5.5.4. Photos stockées sur un disque dur externe</h4>
 <div class="paragraph"><p>Most underwater photographers store photos on an external drive. If such a
 drive can be mapped by the operating system (almost always the case) the
 photos can be directly accessed by <em>Subsurface</em>. This eases the interaction
@@ -2719,7 +2801,7 @@ only the file names of the photos.  If the external drive with the photos is
 re-connected, the photos can be seen in the normal way.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_finding_out_which_dives_have_associated_photos">5.5.5. Finding out which dives have associated photos.</h4>
+<h4 id="_trouver_quelles_plongées_ont_des_photos_associées">5.5.5. Trouver quelles plongées ont des photos associées.</h4>
 <div class="paragraph"><p>Inspecting each individual dive in order to determine whether there are
 associated photos can be time consuming. There is a rapid way of seeing
 which dives have associated photos and which not: activate the <em>Photos</em>
@@ -2730,7 +2812,7 @@ just before/after the dive or both during and before/after the dive. More
 information is provided in the section dealing with <a href="#S_Divelist_columns">photo icons on the <strong>Divelist</strong></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_FindMovedImages">5.5.6. Moving photographs among directories, hard disks or computers</h4>
+<h4 id="S_FindMovedImages">5.5.6. Déplacer des photos entre dossiers, disques durs ou ordinateurs</h4>
 <div class="paragraph"><p>After a photograph has been loaded into <em>Subsurface</em> and associated with a specific dive,
 <em>Subsurface</em> saves the directory path where the photo lies as well as the file name of the photo,
 in order to find it when the dive is opened again.
@@ -2847,7 +2929,7 @@ decompression.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sidemount_dives">5.6.2. Sidemount dives</h4>
+<h4 id="_plongées_sidemount">5.6.2. Plongées Sidemount</h4>
 <div class="paragraph"><p>Sidemount diving is just another form of multi-cylinder diving, often with
 both or all cylinders having the same gas mixture. Although it’s a popular
 configuration for cave divers, sidemount diving can be done by recreational
@@ -2942,7 +3024,7 @@ over two hours.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="S_CCR_dives">5.6.4. Closed circuit rebreather (CCR) dives</h4>
+<h4 id="S_CCR_dives">5.6.4. Plongées en recycleur circuit fermé (CCR)</h4>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -2965,7 +3047,7 @@ databases: one dive at a time.</td>
 </tr></table>
 </div>
 <div class="sect4">
-<h5 id="_import_a_ccr_dive">Import a CCR dive</h5>
+<h5 id="_importer_une_plongée_ccr">Importer une plongée CCR</h5>
 <div class="paragraph"><p>See the section dealing with <a href="#S_ImportingAlienDiveLogs">Importing dive
 information from other digital sources</a>. CCR dive data are currently
 obtained from the proprietary software provided when purchasing CCR dice
@@ -3125,33 +3207,37 @@ B</a>.</p></div>
 <h2 id="_obtaining_more_information_about_dives_entered_into_the_logbook">6. Obtaining more information about dives entered into the logbook</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_the_strong_info_strong_tab_for_individual_dives">6.1. The <strong>Info</strong> tab (for individual dives)</h3>
-<div class="paragraph"><p>The Info tab gives some summary information about a particular dive that has
-been selected in the <strong>Dive List</strong>. Useful information here includes the
-surface interval before the dive, the maximum and mean depths of the dive,
-the gas volume consumed, the surface air consumption (SAC) and the number of
-oxygen toxicity units (OTU) incurred.</p></div>
+<h3 id="_l_8217_onglet_strong_informations_strong_pour_une_seule_plongée">6.1. L&#8217;onglet <strong>Informations</strong> (pour une seule plongée)</h3>
+<div class="paragraph"><p>L&#8217;onglet Informations donnée des informations résumées sur une plongée
+sélectionnée dans la <strong>Liste des plongées</strong>. Les informations utiles
+comprennent l&#8217;intervalle de surface avant une plongée, les profondeurs
+maximale et moyenne de la plongée, le volume de gaz consommé, la
+consommation équivalente à l&#8217;air (SAC) et le nombre d&#8217;unités de toxicité de
+l&#8217;oxygène (OTU) atteint.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/info.jpg" alt="Note" />
 </td>
-<td class="content">Gas consumption and SAC calculations: <em>Subsurface</em> calculates SAC and Gas
-consumption taking in account gas incompressibility, particularly at tank
-pressures above 200 bar, making them more accurate.  Refer to
-<a href="#SAC_CALCULATION">Appendix F</a> for more information.</td>
+<td class="content">Consommation de gaz et calculs de la SAC (consommation équivalente à l&#8217;air):
+<em>Subsurface</em> calcule la SAC et la consommation de gaz et tenant compte de
+l&#8217;incompressibilité du gaz, en particuliter pour des blocs à des pressions
+supérieures à 200 bar, les rendant plus précises. Référez-vous à
+<a href="#SAC_CALCULATION">l&#8217;Annexe F</a> pour plus d&#8217;information.</td>
 </tr></table>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ExtraDataTab">6.2. The <strong>Extra Data</strong> tab (usually for individual dives)</h3>
-<div class="paragraph"><p>When using a dive computer, it often reports several data items that cannot
-easily be presented in a standardised way because the nature of the
-information differs from one dive computer to another. These data often
-comprise setup information, metadata about a dive, battery levels, no fly
-times, or gradient factors used during the dive. When possible, this
-information is presented in the <strong>Extra Data</strong> tab. Below is an image showing
-extra data for a dive using a Poseidon rebreather.</p></div>
+<h3 id="S_ExtraDataTab">6.2. L&#8217;onglet <strong>Extra info</strong> (généralement pour des plongées séparées)</h3>
+<div class="paragraph"><p>Lors de l&#8217;utilisation d&#8217;un ordinateur de plongée, celui-ci transmet souvent
+des données qui ne peuvent pas être facilement standardisées parce que la
+nature de ces  informations diffère d&#8217;un ordinateur à l&#8217;autre. Ces données
+conprennent souvent des informations de configuration, des métadonnées à
+propos d&#8217;une plongée, le niveau de batterie, le temps d&#8217;interdiction de vol
+(no fly) ou les gradient factor utilisés lors de la plongée. Quand cela est
+possible, ces informations sont présentées dans l&#8217;onglet <strong>Extra
+Info</strong>. Ci-dessous, vous trouverez une image affichant des données
+supplémentaires pour une plongée utilisant un recycleur Poseidon.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/ExtraDataTab_f20.jpg" alt="FIGURE: Extra Data tab" />
@@ -3159,31 +3245,33 @@ extra data for a dive using a Poseidon rebreather.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_the_strong_stats_strong_tab_for_groups_of_dives">6.3. The <strong>Stats</strong> tab (for groups of dives)</h3>
-<div class="paragraph"><p>The Stats tab gives summary statistics for more than one dive, assuming that
-more than one dive has been selected in the <strong>Dive List</strong> using the standard
-Ctrl-click or Shift-click of the mouse. If only one dive has been selected,
-figures for only that dive are given. This tab shows the number of dives
-selected, the total amount of dive time in these dives, as well as the
-minimum, maximum and mean for the dive duration, water temperature and
-surface air consumption (SAC). It also shows the depth of the shallowest and
-deepest dives of those selected.</p></div>
+<h3 id="_l_8217_onglet_strong_statistiques_strong_pour_un_groupe_de_plongées">6.3. L&#8217;onglet <strong>Statistiques</strong> (pour un groupe de plongées)</h3>
+<div class="paragraph"><p>L&#8217;onglet Statistiques donne des statistiques résumées pour plusieurs
+plongées, pour autant que plusieurs plongées soient sélectionnées dans la
+<strong>Liste des plongées</strong> en utilisant les raccourcis standard Ctrl-clic ou
+Maj-clic avec la souris. So une seule plongée est sélectionnée, les données
+ne concernent que cette seule plongée. Cet onglet affiche le nombre de
+plongées sélectionnées, la durée totale de ces plongées ainsi que les durées
+minimale, maximale et moyenne parmi ces plongées, la température de l&#8217;eau et
+la consommation équivalente à l&#8217;air (SAC). L&#8217;onglet affiche également la
+plus petite et la plus grande profondeur atteinte pour ces plongées.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_DiveProfile">6.4. The <strong>Dive Profile</strong></h3>
+<h3 id="S_DiveProfile">6.4. Le <strong>Profil de plongée</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Profile2.jpg" alt="Typical dive profile" />
 </div>
 </div>
-<div class="paragraph"><p>Of all the panels in <em>Subsurface</em>, the Dive Profile contains the most
-detailed information about each dive. The Dive Profile has a <strong>button bar</strong> on
-the left hand side, allowing control of several display options. The
-functions of these buttons are described below. The main item in the Dive
-Profile is the graph of dive depth as a function of time. In addition to
-depth, it also shows the ascent and descent rates compared to the
-recommended speed of going up or down in the water column. This information
-is given using different colors:</p></div>
+<div class="paragraph"><p>Parmi toutes les panneaux de <em>Subsurface</em>, le profil de plongée contient les
+informations les plus détaillées concernant chaque plongée. Le profil de
+plongée possède une <strong>barre de boutons</strong> sur el côté gauche, permettant le
+contrôle de nombreuses options d&#8217;affichage. Les fonctions de ces boutons
+sont décrites ci-dessous. L&#8217;objet principal du profil de plongée est le
+graphique de la profondeur de la plongée en fonction du temps. En plus de la
+profondeur, ce graphique affiche également les vitesses de descente et de
+remontée en comparaison avec la vitesse recommandée. Cette information est
+donnée en utilisant différentes couleurs:</p></div>
 <div class="tableblock">
 <table rules="all"
 width="100%"
@@ -3226,31 +3314,33 @@ cellspacing="0" cellpadding="4">
 </tbody>
 </table>
 </div>
-<div class="paragraph"><p>The profile also includes depth readings for the peaks and troughs in the
-graph.  So users should see the depth of the deepest point and other
-peaks. Mean depth is plotted as a grey line, indicating mean dive depth up
-to a particular moment during the dive.</p></div>
+<div class="paragraph"><p>Le profil permet également une lecture de la profondeur via les sommets et
+planchers sur le graphique.  Ainsi les utilisateurs, peuvent voir la
+profondeur du point le plus bas et d&#8217;autres sommets. La profondeur moyenne
+est affichée sous la forme d&#8217;une ligne grise, indiquant la moyenne de
+profondeur à un moment précis de la plongée.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/scale.jpg" alt="Note" />
 </td>
-<td class="content">In some cases the dive profile does not fill the whole area of the <strong>Dive
-Profile</strong> panel. Clicking the <strong>Scale</strong> button in the toolbar on the left of
-the dive profile increases the size of the dive profile to fill the area of
-the panel.</td>
+<td class="content">Dans certains cas, le profil de plongée ne remplit pas toute la zone du
+panneau <strong>Profil de plongée</strong>. Cliquer sur le bouton <strong>Ajuster l'échelle du
+graphique</strong> dans la barre d&#8217;outils sur la gauche du profil de plongée
+augmente la taille du profil de plongée pour remplir la zone du panneau.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p><strong>Water temperature</strong> is shown as a blue line with temperature values
-placed adjacent to significant changes.</p></div>
+<div class="paragraph"><p>La <strong>température de l&#8217;eau</strong> est indiquée par une ligne bleue avec des valeurs de
+température placées lors de changements significatifs.</p></div>
 <div class="sect3">
-<h4 id="S_InfoBox">6.4.1. The <strong>Information Box</strong></h4>
-<div class="paragraph"><p>The Information box displays a large range of information about the dive
-profile. Normally the Information Box is located to the top left of the
-<strong>Dive Profile</strong> panel. The Information Box can be moved around in the <strong>Dive
-Profile</strong> panel by click-dragging it with the mouse so that it is not
-obstructing important detail. The position of the Information Box is saved
-and used again during subsequent dive analyses.</p></div>
+<h4 id="S_InfoBox">6.4.1. La boîte <strong>Information</strong></h4>
+<div class="paragraph"><p>La boîte Information affiche un grand nombre d&#8217;informations concernant le
+profil de plongée. Normalement, la boîte Information est située dans le coin
+supérieur gauche du panneau <strong>Profil de plongée</strong>. Elle peut être déplacée
+dans tout le panneau <strong>Profil de plongée</strong> en la cliquant-déplaçant avec la
+souris à un endroit où elle ne masquera pas d&#8217;information importante. La
+position de la boîte Information est enregistrée ré-utilisée pour les
+analyses de plongée suivantes.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
@@ -3277,13 +3367,13 @@ panel. These are:</p></div>
 <td class="icon">
 <img src="images/icons/MOD.jpg" alt="Note" />
 </td>
-<td class="content">Show the <strong>Maximum Operating Depth (MOD)</strong> of the dive, given the gas mixture
-used. MOD is dependent on the oxygen concentration in the breathing gas.
-For air (21% oxygen) it is around 57 m if a maximum pO<sub>2</sub> of 1.4 is
-specified in the <strong>Preferences</strong> section (select <em>File &#8594; Preferences &#8594;
-Profile</em> and edit the text box <em>pO<sub>2</sub> in calculating MOD</em>.  When diving
-below the MOD there is a markedly increased risk of exposure to the dangers
-of oxygen toxicity.</td>
+<td class="content">Affiche la <strong>Profondeur maximale d&#8217;utilisation (MOD)</strong> d&#8217;une plongée, en
+fonction du mélange gazeux utilisé. La MOD dépend de la concentration en
+oxygène du gaz respiré. Pour l&#8217;air (21% d&#8217;oxygène), il vaut envuron 57m si
+une pO<sub>2 maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
+(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO</sub>2
+dans le calcul de MOD</em>).  En plongeant sous la MOD, il y a un risque
+important d&#8217;exposition aux dangers liés à la toxicité de l&#8217;oxygène.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3335,8 +3425,8 @@ trimix diver can expect the same narcotic effect as a diver breathing air
 diving at a depth equalling the END.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of
-data.</p></div>
+<div class="paragraph"><p>La figure (<strong>B</strong>) ci-dessous affiche une boîte d&#8217;information avec un ensemble
+quasiment complet de données.</p></div>
 <div class="sect4">
 <h5 id="S_gas_pressure_graph">The Gas Pressure Bar Graph</h5>
 <div class="paragraph"><p>On the left of the <strong>Information Box</strong> is a vertical bar graph showing the
@@ -3445,7 +3535,7 @@ Graph <strong>E</strong> indicates the situation after remaining at 4.5 meters f
 </div>
 </div>
 <div class="sect3">
-<h4 id="_computer_reported_events_during_dive">6.4.2. Computer-reported events during dive</h4>
+<h4 id="_événements_rapportés_par_l_8217_ordinateur_durant_la_plongée">6.4.2. Événements rapportés par l&#8217;ordinateur durant la plongée</h4>
 <div class="paragraph"><p>Many dive computers record events during a dive. For instance, most dive
 computers report alarms relating to high partial pressures of oxygen, to
 rapid ascents or the exceeding of no-deco limits (NDL).  On the other hand,
@@ -3476,7 +3566,7 @@ dive. These are indicated as a small red flag on the profile and are
 discussed more fully in the section on <a href="#S_Bookmarks"><em>inserting bookmarks</em></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_the_profile_toolbar">6.4.3. The Profile Toolbar</h4>
+<h4 id="_la_barre_d_8217_outils_du_profil">6.4.3. La barre d&#8217;outils du profil</h4>
 <div class="paragraph"><p>The dive profile can include graphs of the <strong>partial pressures</strong> of O<sub>2</sub>,
 N<sub>2</sub>, and He during the dive (see figure above) as well as a calculated and
 dive computer reported deco ceilings (only visible for deep, long, or
@@ -3488,8 +3578,8 @@ shown below the profile data.</p></div>
 <td class="icon">
 <img src="images/icons/O2.jpg" alt="Note" />
 </td>
-<td class="content">Show the partial pressure of <strong>oxygen</strong> during the dive. This is shown below
-the dive depth and water temperature graphs.</td>
+<td class="content">Affiche la pression partielle d'<strong>oxygène</strong> durant la plongée. Ceci est
+affiché sous les graphiques de profondeur et de température de l&#8217;eau.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3497,7 +3587,7 @@ the dive depth and water temperature graphs.</td>
 <td class="icon">
 <img src="images/icons/N2.jpg" alt="Note" />
 </td>
-<td class="content">Show the partial pressure of <strong>nitrogen</strong> during the dive.</td>
+<td class="content">Affiche la pression partielle d'<strong>azote</strong> durant la plongée.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3505,8 +3595,9 @@ the dive depth and water temperature graphs.</td>
 <td class="icon">
 <img src="images/icons/He.jpg" alt="Note" />
 </td>
-<td class="content">Display of the partial pressure of <strong>helium</strong> during the dive.  This is only
-important to divers using Trimix, Helitrox or similar breathing gasses.</td>
+<td class="content">Affiche la pression partielle d'<strong>hélium</strong> durant la plongée. Ceci n&#8217;est
+important que pour les plongeurs qui utilisent du Trimix, du Triox
+(Helitrox) ou d&#8217;autres mélanges gazeux similaires.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The <strong>air consumption</strong> graph displays the tank pressure and its change during
@@ -3527,8 +3618,9 @@ the color is a representation of the breathing gas density.</p></div>
 <td class="icon">
 <img src="images/icons/Heartbutton.png" alt="Note" />
 </td>
-<td class="content">Clicking on the heart rate button allows display of heart rate information
-during the dive if the dive computer was attached to a heart rate sensor.</td>
+<td class="content">Cliquer sur le bouton Communter le rythme cardique permet d&#8217;afficher
+l&#8217;information de rythme cardiaque pendant la plongée si l&#8217;ordinateur de
+plongée est jumelé avec un détecteur de rythme cardique.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>It is possible to <strong>zoom</strong> into the profile graph. This is done either by
@@ -3558,10 +3650,10 @@ underneath the two red dots.</td>
 <td class="icon">
 <img src="images/icons/ShowPhotos.png" alt="Note" />
 </td>
-<td class="content">Photographs that have been added to a dive can be shown on the profile by
-selecting the <strong>Show-photo</strong> button. The position of a photo on the profile
-shows the exact time when this photo was taken. If this button is not
-active, the photos are hidden.</td>
+<td class="content">Les photos qui ont été ajoutées à une plongée peuvent être affichées sur le
+profil en sélectionnant le bouton <strong>Communer l&#8217;affichage des images</strong>. La
+position d&#8217;une photo sur le profil indique le moment exact où la photo a été
+prise. Si le bouton n&#8217;est pas actif, les photos sont masquées.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The profile can also include the dive computer reported <strong>ceiling</strong> (more
@@ -3593,9 +3685,10 @@ computers offer longer non-stop bottom times.</p></div>
 <td class="icon">
 <img src="images/icons/cceiling.jpg" alt="Note" />
 </td>
-<td class="content">If the dive computer itself calculates a ceiling and makes it available to
-<em>Subsurface</em> during upload of dives, this can be shown as a red area by
-checking <strong>Dive computer reported ceiling</strong> button on the Profile Panel.</td>
+<td class="content">Si l&#8217;ordinateur de plongée calcule une palier et le rend disponible à
+<em>Subsurface</em> durant le chargement des plongées, il peut être affiché sous la
+forme d&#8217;une zone rouge en cochant le bouton "Commuter le plafond rapporté
+par l&#8217;ordinateur de plongée" dans le panneau Profil.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3603,10 +3696,10 @@ checking <strong>Dive computer reported ceiling</strong> button on the Profile P
 <td class="icon">
 <img src="images/icons/ceiling1.jpg" alt="Note" />
 </td>
-<td class="content">If the <strong>Calculated ceiling</strong> button on the Profile Panel is clicked, then a
-ceiling, calculated by <em>Subsurface</em>, is shown in green if it exists for a
-particular dive (<strong>A</strong> in figure below). This setting can be modified in two
-ways:</td>
+<td class="content">Si le bouton <strong>Communter le plafond calculé</strong> du panneau Profil est cliqué, un
+plafond, calculé par <em>Subsurface</em> est affiché en vert s&#8217;il existe pour une
+plongée donnée (<strong>A</strong> dans l&#8217;image ci-dessous). Ceci peut être modifié de deux
+façons:</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3614,9 +3707,9 @@ ways:</td>
 <td class="icon">
 <img src="images/icons/ceiling2.jpg" alt="Note" />
 </td>
-<td class="content">If, in addition, the <strong>show all tissues</strong> button on the Profile Panel is
-clicked, the ceiling is shown for the tissue compartments following the
-Bühlmann model (<strong>B</strong> in figure below).</td>
+<td class="content">Si, en outre, le bouton <strong>Commuter l&#8217;affichage de tous les tissus</strong> est
+cliqué, le plafond est affiché pour les compartiments de tissus selon le
+modèle Bühlmann (<strong>B</strong> dans l&#8217;image ci-dessous).</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3625,8 +3718,9 @@ Bühlmann model (<strong>B</strong> in figure below).</td>
 <img src="images/icons/ceiling3.jpg" alt="Note" />
 </td>
 <td class="content">
-<div class="paragraph"><p>If, in addition, the <strong>3m increments</strong> button on the Profile Panel is clicked,
-then the ceiling is indicated in 3 m increments (<strong>C</strong> in figure below).</p></div>
+<div class="paragraph"><p>Si, en plus le bouton <strong>Commuter le plafond calculé avec des incréments de
+3m</strong> est cliqué, le plafond est affiché avec des incréments de 3m (<strong>C</strong> dans
+l&#8217;image ci-dessous).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Ceilings2.jpg" alt="Figure: Ceiling with 3m resolution" />
@@ -3797,7 +3891,7 @@ tissues at the end of the dive.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_the_dive_profile_context_menu">6.4.4. The Dive Profile context menu</h4>
+<h4 id="_le_menu_contextuel_du_profil_de_plongée">6.4.4. Le menu contextuel du Profil de plongée</h4>
 <div class="paragraph"><p>The context menu for the Dive Profile is accessed by right-clicking while
 the mouse cursor is over the Dive Profile panel. The menu allows creating
 Bookmarks, Gas Change Event markers, or manual CCR set-point changes other
@@ -3819,10 +3913,10 @@ from the context menu.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_organizing_the_logbook_manipulating_groups_of_dives">7. Organizing the logbook (Manipulating groups of dives)</h2>
+<h2 id="_organiser_le_carnet_de_plongée_manipuler_des_groupes_de_plongées">7. Organiser le carnet de plongée (manipuler des groupes de plongées)</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_DiveListContextMenu">7.1. The Dive List context menu</h3>
+<h3 id="S_DiveListContextMenu">7.1. Le menu contextuel de la Liste des plongées</h3>
 <div class="paragraph"><p>Several actions on either a single dive, or a group of dives, can be
 performed using the Dive List Context Menu.  It is found by selecting either
 a single dive or a group of dives and then right-clicking.</p></div>
@@ -3831,9 +3925,10 @@ a single dive or a group of dives and then right-clicking.</p></div>
 <img src="images/ContextMenu.jpg" alt="Figure: Context Menu" />
 </div>
 </div>
-<div class="paragraph"><p>The context menu is used in many functions described below.</p></div>
+<div class="paragraph"><p>Le menu contextuel est utilisé pour de nombreuses fonctions décrites
+ci-dessous.</p></div>
 <div class="sect3">
-<h4 id="S_Divelist_columns">7.1.1. Customizing the columns showed in the <strong>Dive List</strong> panel</h4>
+<h4 id="S_Divelist_columns">7.1.1. Personnaliser les colonnes affichées dans le panneau <strong>Liste des plongées</strong></h4>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/DiveListOptions.jpg" alt="Example: Dive list info options" />
@@ -3854,8 +3949,8 @@ are three icons:</p></div>
 <td class="icon">
 <img src="images/icons/duringPhoto.png" alt="Note" />
 </td>
-<td class="content">This dive has photographs taken during the dive, typically using an
-underwater camera.</td>
+<td class="content">Cette plongée contient des photos prises durant la plongée, généralement
+prises avec un appareil ou caméra submersible.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -3881,7 +3976,7 @@ or after the dive.</td>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Renumber">7.2. Renumbering the dives</h3>
+<h3 id="S_Renumber">7.2. Renuméroter les plongées</h3>
 <div class="paragraph"><p>Dives are normally numbered incrementally from non-recent dives (low
 sequence numbers) to recent dives (higher sequence numbers).  Numbering of
 dives is not always consistent. For instance, when non-recent dives are
@@ -3897,7 +3992,7 @@ List Context Menu to perform the renumbering. A popup window appears letting
 the user specify the starting number for the process.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Group">7.3. Grouping dives into trips and manipulating trips</h3>
+<h3 id="S_Group">7.3. Grouper des plongées en voyages et manipuler les voyages</h3>
 <div class="paragraph"><p>For regular divers, the dive list can rapidly become very long. <em>Subsurface</em>
 can group dives into <em>trips</em>. It does this by grouping dives that have
 date/times not separated by more than two days and creating a single heading
@@ -3914,7 +4009,7 @@ having to scan a long lists of dives. To group the dives in a dive list,
 (from the Main Menu) select <em>Log &#8594; Auto group</em>. The <strong>Dive List</strong> panel now
 shows only the titles for the trips.</p></div>
 <div class="sect3">
-<h4 id="_editing_the_title_and_associated_information_for_a_particular_trip">7.3.1. Editing the title and associated information for a particular trip</h4>
+<h4 id="_éditer_le_titre_et_l_8217_information_associée_à_un_voyage_déterminé">7.3.1. Éditer le titre et l&#8217;information associée à un voyage déterminé</h4>
 <div class="paragraph"><p>Normally, in the dive list, minimal information is included in the trip
 title.  More information about a trip can be added by selecting its trip
 title bar from the <strong>Dive List</strong>. This shows a <strong>Trip Notes</strong> tab in the <strong>Notes</strong>
@@ -3926,20 +4021,20 @@ the buttons at the top right of the <strong>Trip Notes</strong> tab. The trip ti
 <strong>Dive List</strong> panel should now reflect the edited information.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_viewing_the_dives_during_a_particular_trip">7.3.2. Viewing the dives during a particular trip</h4>
+<h4 id="_visualiser_les_plongées_d_8217_un_voyage_déterminé">7.3.2. Visualiser les plongées d&#8217;un voyage déterminé</h4>
 <div class="paragraph"><p>Once the dives have been grouped into trips, you can expand one or more
 trips by clicking the expansion button [+/-] on the left of each trip
 title. This expands the selected trip, revealing individual dives during the
 trip.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_merging_dives_from_more_than_one_trip_into_a_single_trip">7.3.3. Merging dives from more than one trip into a single trip</h4>
+<h4 id="_fusionner_des_plongées_venant_des_voyages_différents_en_un_seul_voyage">7.3.3. Fusionner des plongées venant des voyages différents en un seul voyage</h4>
 <div class="paragraph"><p>After selecting a trip title, the context menu allows the merging of trips
 by either merging the selected trip with the trip below or with the trip
 above. (Merge trip with trip below; Merge trip with trip above)</p></div>
 </div>
 <div class="sect3">
-<h4 id="_splitting_a_single_trip_into_more_than_one_trip">7.3.4. Splitting a single trip into more than one trip</h4>
+<h4 id="_diviser_un_voyage_en_plusieurs_voyages">7.3.4. Diviser un voyage en plusieurs voyages</h4>
 <div class="paragraph"><p>If a trip includes, for example, ten dives, you can split this trip into two
 trips (trip 1: top four dives; trip 2: bottom six dives) by selecting and
 right-clicking the top four dives. The resulting context menu lets the user
@@ -3955,9 +4050,9 @@ right (B):</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_manipulating_single_dives">7.4. Manipulating single dives</h3>
+<h3 id="_manipuler_des_plongées_uniques">7.4. Manipuler des plongées uniques</h3>
 <div class="sect3">
-<h4 id="_delete_a_dive_from_the_dive_log">7.4.1. Delete a dive from the dive log</h4>
+<h4 id="_effacer_une_plongée_du_carnet_de_plongée">7.4.1. Effacer une plongée du carnet de plongée</h4>
 <div class="paragraph"><p>Dives can be permanently deleted from the dive log by selecting and
 right-clicking them to bring up the context menu, then selecting <strong>Delete
 dive(s)</strong>. Typically this would apply to a case where a user wishes to delete
@@ -3979,7 +4074,7 @@ within a separate trip. To do this, select and right-click the dive(s) to
 bring up the context menu, and then select <strong>Create new trip above</strong>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_shift_the_start_time_of_dive_s">7.4.4. Shift the start time of dive(s)</h4>
+<h4 id="_décaler_l_8217_heure_de_début_d_8217_une_ou_plusieurs_plongées">7.4.4. Décaler l&#8217;heure de début d&#8217;une ou plusieurs plongées</h4>
 <div class="paragraph"><p>Sometimes it’s necessary to adjust the start time of a dive. This may apply
 to situations where dives are done in different time zones or when the dive
 computer has a wrong time. To do this, select and right-click the dive(s) to
@@ -3989,7 +4084,7 @@ minutes) by which the dives should be adjusted and click on the option of
 whether the time adjustment should be earlier or later.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_merge_dives_into_a_single_dive">7.4.5. Merge dives into a single dive</h4>
+<h4 id="_fusionner_plusieurs_plongées_en_une_seule">7.4.5. Fusionner plusieurs plongées en une seule</h4>
 <div class="paragraph"><p>Sometimes a dive is briefly interrupted, for example, if a diver returns to
 the surface for a few minutes, resulting in two or more dives being recorded
 by the dive computer and appearing as different dives in the <strong>Dive List</strong>
@@ -4006,7 +4101,7 @@ merged:</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_split_selected_dives">7.4.6. Split selected dives</h4>
+<h4 id="_diviser_les_plongées_sélectionnées">7.4.6. Diviser les plongées sélectionnées</h4>
 <div class="paragraph"><p>On some occasions, a diver reaches the surface and immediately dives
 again. However, it may happen that the dive computer does not register a new
 dive, but continues the previous dive due to the brief surface interval. In
@@ -4026,7 +4121,7 @@ to dives</a>.</p></div>
 to dives</a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_undo_dive_manipulations">7.4.9. Undo dive manipulations</h4>
+<h4 id="_annuler_les_manipuations_sur_les_plongées">7.4.9. Annuler les manipuations sur les plongées</h4>
 <div class="paragraph"><p>Important actions on dives or trips, described above, can be undone or
 redone.  This includes: <em>delete dives</em>, <em>merge dives</em>, <em>split selected
 dives</em>, <em>renumber dives</em> and <em>shift dive times</em>.  To do this after
@@ -4035,7 +4130,7 @@ brings up the possibility to <em>Undo</em> or <em>Redo</em> an action.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_Filter">7.5. Filtering the dive list</h3>
+<h3 id="S_Filter">7.5. Filtrer la liste des plongées</h3>
 <div class="paragraph"><p>The dives in the <strong>Dive List</strong> panel can be filtered, selecting only some of
 the dives based on their attributes, e.g. dive tags, dive site, divemaster,
 buddy or protective clothing. For instance, filtering lets you list the deep
@@ -4074,9 +4169,9 @@ those dives that have either one OR both of these tags.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_ExportLog">8. Exporting the dive log or parts of the dive log</h2>
+<h2 id="S_ExportLog">8. Export le carnet de plongée ou des parties de celui-ci</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>There are two ways to export dive information from Subsurface:</p></div>
+<div class="paragraph"><p>Il y a deux façons d&#8217;exporter des informations de plongée depuis Subsurface:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4111,20 +4206,21 @@ entry</em>." Close this message panel.</p></div>
 <img src="images/facebook1.jpg" alt="Figure: Facebook login" />
 </div>
 </div>
-<div class="paragraph"><p>Having established a login to <em>Facebook</em>, transferring a dive profile to a
-<em>Facebook</em> timeline is easy.  In the <em>Subsurface</em> <strong>Dive List</strong> panel,
-highlight the dive to be transferred.  Then, from the <strong>Main Menu</strong>, select
-<em>Share on &#8594; Facebook</em>. A dialogue box is shown, determining the amount of
-additional information to be transferred with the dive profile (image <strong>A</strong>,
-below). To transfer a dive profile to <em>Facebook</em>, the name of a <em>Facebook</em>
-album is needed. The checkboxes on the left hand side determine how much
-additional information is added to the dive profile, shown in the text box
-on the right hand side of the panel (image <strong>A</strong>, below). Customise the
-message that will be posted with the dive profile by editing any of the
-information. After specifying additional information and verifying the text,
-select the <em>OK</em> button that triggers the transfer to <em>Facebook</em>. After the
-transfer is done, an acknowledgement dialogue appears, indicating it was
-successful.</p></div>
+<div class="paragraph"><p>Une fois qu&#8217;une connexion à <em>Facebook</em> est établie, transférer un profil de
+plongée vers <em>Facebook</em> est facile. Dans le panneau <strong>Liste des plongées</strong> de
+<em>Subsurface</em>, sélectionnez la plongée à transférer. Ensuite, à partir du
+<strong>menu principal</strong>, sélectionnez <em>Partager sur &#8594; Facebook</em>. Une fenêtre
+s&#8217;affiche, pour déterminer quelles informations seront transférées avec le
+profil de plongée (image <strong>A</strong> ci-dessous). Pour transférer un profil de
+plongée vers <em>Facebook</em>, le nom d&#8217;un album <em>Facebook</em> doit être fourni. Les
+cases à cocher sur la partie gauche permettent de sélectionner des
+informations supplémentaires à transférer avec le profil de plongée. Ces
+informations sont affichées dans le champs de texte sur la partie droite du
+panneau. (image <strong>A</strong> ci dessous). Personnalisez le message qui sera envoyé
+avec le profil de plongée en modifiant les informations. Une fois les
+informations supplémentaires ajoutées et vérifiées, sélectionner le bouton
+<em>OK</em> qui effectue le transfert vers <em>Facebook</em>. Après le transfert, une
+fenêtre de confirmation apparait ,indiquant le succès du transfert.</p></div>
 <div class="paragraph"><p>À la fois l&#8217;album créé et la publication sur votre ligne temporelle seront
 marquées comme privés. Pour que vos amis puissent la voir, connectez-vous à
 <em>Facebook</em> depuis un navigateur ou l&#8217;application Facebook et modifiez les
@@ -4149,11 +4245,13 @@ below).</p></div>
 <img src="images/Export_f20.jpg" alt="Figure: Export dialog" />
 </div>
 </div>
-<div class="paragraph"><p>A dive log or part of it can be saved in several formats:</p></div>
+<div class="paragraph"><p>Un carnet de plongée ou une partie de celui-ci peut être enregistré dans
+différents formats:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<em>Subsurface XML</em> format. This is the native format used by <em>Subsurface</em>.
+Format <em>Subsurface XML</em>. C&#8217;est le format utilisé nativement par
+  <em>Subsurface</em>.
 </p>
 </li>
 <li>
@@ -4454,11 +4552,11 @@ user profile and settings, including unique cloud and <em>Subsurface-Mobile</em>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_PrintDivelog">11. Printing a dive log</h2>
+<h2 id="S_PrintDivelog">11. Imprimer un carnet de plongée</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> provides a simple and flexible way to print a whole dive log or only a few selected dives.
   Pre-installed templates or a custom written template can be used to choose where the data are fitted into the page.</p></div>
-<div class="paragraph"><p>Some decisions need to be made before printing:</p></div>
+<div class="paragraph"><p>Certains choix doivent être fait avant l&#8217;impression:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4611,14 +4709,15 @@ information on how to write or modify a template.</p></div>
 <div class="sect1">
 <h2 id="S_Configure">12. Configurer un ordinateur de plongée</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface</em> lets you configure a dive computer. Currently, the
-Heinrichs-Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) and Suunto Vyper (Stinger,
-Mosquito, D3, Vyper, Vytec, Cobra, Gekko and Zoop) family of dive computers
-are supported. A large number of settings of these dive computers can be
-read and changed to different values. To begin, be sure the appropriate
-hardware driver is installed for the dive computer (also required for
-downloading dives) and the device name of the dive computer is known.  See
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">APPENDIX A</a> for information on how to do this.</p></div>
+<div class="paragraph"><p><em>Subsurface</em> vous permet de configurer un ordinateur de
+plongée. Actuellement, les familles d&#8217;ordinateurs supportés sont
+Heinrichs-Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) et Suunto Vyper (Stinger,
+Mosquito, D3, Vyper, Vytec, Cobra, Gekko et Zoop). De nombreux paramètres de
+ces ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
+assurez vous que les pilotes pour votre ordinateur de plongée sont installés
+(également nécessaire pour télécharger les plongées) et que le nom de
+périphérique de l&#8217;ordinateur de plongée est connu. Voir
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
 <div class="paragraph"><p>Une fois que l&#8217;ordinateur de plongée est connecté à <em>Subsurface</em>,
 sélectionner <em>Fichier &#8594; Configurer l&#8217;ordinateur de plongée</em>, à partir du
 menu principal. Sélectionner le nom du périphérique (ou le point de montage)
@@ -4772,8 +4871,8 @@ represented either as traditional coordinates (degrees, minutes, seconds) or
 as decimal degrees Choose the appropriate option.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_profile">13.3. Profile</h3>
-<div class="paragraph"><p>This panel has three sections:</p></div>
+<h3 id="_profil">13.3. Profil</h3>
+<div class="paragraph"><p>Ce panneau comporte trois sections:</p></div>
 <div class="imageblock" id="S_CCR_options" style="text-align:center;">
 <div class="content">
 <img src="images/Pref4_f23.jpg" alt="FIGURE: Preferences Graph page" />
@@ -4923,8 +5022,8 @@ was no gas switch to such a cylinder), then these cylinders are omitted from tha
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_language">13.4. Language</h3>
-<div class="paragraph"><p>Choose a language that <em>Subsurface</em> will use.</p></div>
+<h3 id="_langue">13.4. Langue</h3>
+<div class="paragraph"><p>Choisissez une langue que <em>Subsurface</em> utilisera.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref3_f23.jpg" alt="FIGURE: Preferences Language page" />
@@ -4937,11 +5036,11 @@ country combination from the list of locations. The <em>Filter</em> text box to
 list similar languages. For instance there are several system variants of
 English or French. <strong>This particular preference requires a restart of
 <em>Subsurface</em> to take effect</strong>.</p></div>
-<div class="paragraph"><p>In this section also specify appropriate date and time formats for showing
-dive details.</p></div>
+<div class="paragraph"><p>Dans cette section, spécifiez également les formats de date et d&#8217;heure pour
+l&#8217;affiche des détails de plongée.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_network">13.5. Network</h3>
+<h3 id="_réseau">13.5. Réseau</h3>
 <div class="paragraph"><p>This panel facilitates communication between <em>Subsurface</em> and data sources
 on the Internet.  This is important, for instance, when <em>Subsurface</em> needs
 to communicate with web services such as Cloud storage, the
@@ -4997,7 +5096,7 @@ from your ISP.
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_georeference">13.6. Georeference</h3>
+<h3 id="_géoréférencement">13.6. Géoréférencement</h3>
 <div class="paragraph"><p><em>Subsurface</em> provides a geo-lookup service (that is, given the coordinates
 of a dive site) derived from a click on the <strong>Dive Map panel</strong> at the bottom
 right of the <em>Subsurface</em> window, or from a GPS instrument or from the
@@ -5015,7 +5114,7 @@ below).</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_DivePlanner">14. The <em>Subsurface</em> dive planner</h2>
+<h2 id="S_DivePlanner">14. Le planificateur de plongée de <em>Subsurface</em></h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Dive planning is an advanced feature of <em>Subsurface</em>, accessed by selecting
 <em>Log &#8594; Plan Dive</em> from the main menu. It allows calculation of inert gas
@@ -5028,51 +5127,52 @@ of gradient factors as implemented by Erik Baker, or using the VPM-B model.</p><
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">The <em>Subsurface</em> dive planner IS CURRENTLY EXPERIMENTAL and assumes the user
-is already familiar with the <em>Subsurface</em> user interface. It is explicitly
-used under the following conditions:</td>
+<td class="content">Le planificateur de plongée de <em>Subsurface</em> EST POUR L&#8217;INSTANT EN PHASE
+EXPÉRIMENTALE et suppose que l&#8217;utilisateur est déjà familier avec
+l&#8217;interface utilisateur de <em>Subsurface</em>. Il est utilisé explicitement aux
+conditions suivantes:</td>
 </tr></table>
 </div>
 <div class="ulist"><ul>
 <li>
 <p>
-The user is conversant with dive planning and has the necessary training to
-  perform dive planning.
+L&#8217;utilisateur est bien informé au sujet de la planification de plongée et a
+  la formation nécessaire pour faire une planification de plongée.
 </p>
 </li>
 <li>
 <p>
-The user plans dives within his/her certification limits.
+L&#8217;utilisateur planifie des plongées dans les limites de sa certification.
 </p>
 </li>
 <li>
 <p>
-Dive planning makes large assumptions about the characteristics of the
-  <em>average person</em> and cannot compensate for individual physiology or health
-  or personal history or life style characteristics.
+La planification de plongée se base sur les caractéristiques d&#8217;une <em>personne
+  normale</em> et ne peut compenser les caractéristiques physiologiques, l'état de
+  santé, l&#8217;historique personnel et les caractéristiques du mode de vie.
 </p>
 </li>
 <li>
 <p>
-The safety of a dive plan depends heavily on the way in which the planner is
-  used.
+La sécurité d&#8217;une planification de plongée dépend en grande partie de la
+  façon dont le planificateur est utilisé.
 </p>
 </li>
 <li>
 <p>
-The user is familiar with the user interface of <em>Subsurface</em>.
+L&#8217;utilisateur est familier avec l&#8217;interface de <em>Subsurface</em>.
 </p>
 </li>
 <li>
 <p>
-A user who is not absolutely sure about any of the above requirements should
-  not use this feature.
+Un utilisateur qui n&#8217;est pas absolument certain d&#8217;un des prérequis ci-dessus
+  ne devrait pas utiliser cette fonction.
 </p>
 </li>
 </ul></div>
 </div></div>
 <div class="sect2">
-<h3 id="_the_em_subsurface_em_dive_planner_screen">14.1. The <em>Subsurface</em> dive planner screen</h3>
+<h3 id="_l_écran_du_planificateur_de_plongée_em_subsurface_em">14.1. L'écran du planificateur de plongée <em>Subsurface</em></h3>
 <div class="paragraph"><p>Like the <em>Subsurface</em> dive log, the planner screen is divided into several
 sections (see image below). The <strong>setup</strong> parameters for a dive are entered
 into the sections on the left hand and bottom side of the screen.  They are:
@@ -5092,7 +5192,7 @@ messages about the dive plan are printed.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_open_circuit_dives">14.2. Open circuit dives</h3>
+<h3 id="_plongées_en_circuit_ouvert">14.2. Plongées en circuit ouvert</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5102,7 +5202,7 @@ Towards the center bottom of the planner (circled in blue in the image
 <div class="ulist"><ul>
 <li>
 <p>
-Open Circuit (the default)
+Circuit ouvert (option par défaut)
 </p>
 </li>
 <li>
@@ -5119,7 +5219,7 @@ pSCR
 </li>
 <li>
 <p>
-Choose the Open Circuit option.
+Choisissez l&#8217;option Circuit ouvert.
 </p>
 </li>
 <li>
@@ -5147,7 +5247,8 @@ In the table labelled <em>Available Gases</em>, add the information of the
 </li>
 <li>
 <p>
-The <em>Available Gases</em> table includes three gas depth fields, labelled:
+Le tableau <em>Gaz disponibles</em> inclut trois champs de profondeur de gaz,
+  nommés:
 </p>
 <div class="ulist"><ul>
 <li>
@@ -5174,7 +5275,7 @@ MND: the gas Maximum Narcotic Depth (MND). Automatically calculated based on the
 </li>
 <li>
 <p>
-The profile of the planned dive can be created in two ways:
+Le profil d&#8217;une plongée planifiée peut être créé de deux façons:
 </p>
 <div class="ulist"><ul>
 <li>
@@ -5203,7 +5304,7 @@ The most efficient way to create a dive profile is to enter the appropriate
 </li>
 </ul></div>
 <div class="sect3">
-<h4 id="_recreational_dives">14.2.1. Recreational dives</h4>
+<h4 id="_plongées_loisir">14.2.1. Plongées loisir</h4>
 <div class="paragraph"><p>Recreational mode is what comes closest to planning a dive based on the non-decompression limit (NDL).
 It computes the maximum time a diver can stay at the current depth without needing mandatory decompression
 stops and without using more than the existing gas (minus a reserve). The planner automatically takes
@@ -5274,8 +5375,9 @@ Define the depth of the dive by dragging the waypoints (white dots) on the
 </li>
 <li>
 <p>
-The ascent speed can be changed. The default ascent speeds are those
-  considered safe for recreational divers.
+La vitesse de remontée peut être modifiée. Les vitesses de remontée par
+  défaut sont celles qui sont considérées comme sûres pour les plongées
+  loisir.
 </p>
 </li>
 </ul></div>
@@ -5324,7 +5426,17 @@ at the cost of higher tissue compartment pressures in the slow tissues.
 When selecting one of these models, keep in mind they are NOT exact
 physiological models but only mathematical models that appear to work in
 practice.</p></div>
-<div class="paragraph"><p>For more information external to this manual see:</p></div>
+<div class="paragraph"><p>Please note as well that there is an intrinsic assumption of the VPM-B model
+that off-gassing only happens during the ascent phase of the dive (which is
+the part controlled by the planner). Thus it is possible to get misleading
+results if you manually enter waypoints well in the decompression phase of
+your dive. This is particularly relevant when editing a dive read from disk
+in the planner since that will have waypoints up to the surface. Thus for
+those dives, first delete all waypoints during the ascent phase. This is
+most easily done by holding the Ctrl- or Command-key while clicking on the
+trash can icon next to the first ascent waypoint in the table on the left
+hand side.</p></div>
+<div class="paragraph"><p>Pour plus d&#8217;information en dehors de ce manuel, voir:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5338,8 +5450,8 @@ practice.</p></div>
    factors for dummies, by Kevin Watts</a>
 <a href="https://www.amazon.com/Deco-Divers-Decompression-Theory-Physiology/dp/1905492073/ref=sr_1_1?s=books&amp;ie=UTF8&amp;qid=1403932320&amp;sr=1-1&amp;keywords=deco+for+divers"><em>Deco
 for Divers</em>, by Mark Powell (2008). Aquapress</a> Southend-on-Sea, UK. ISBN 10:
-1-905492-07-3.  An excellent non-technical review that discusses both the
-Bühlmann deco model and the VPM-B model.
+1-905492-07-3.  Un excellent livre non technique qui traite à la fois des
+modèles de décompression Bühlmann et VPM-B.
 </p>
 </li>
 </ul></div>
@@ -5427,8 +5539,9 @@ computed assuming the diver uses a CCR with the specified set-point. If the
 last segment (however short) is on open circuit (OC, indicated by a zero
 set-point) the decompression is computed in OC mode and the planner only
 considers gas changes in OC mode.</p></div>
-<div class="paragraph"><p>Below is an example of a dive plan to 45m using Tx21/35, followed by an
-ascent using EAN50 and oxygen and using the settings as described above.</p></div>
+<div class="paragraph"><p>Ci-dessous, vous trouverez un exemple d&#8217;une planification de plongée
+utilisant du Tx21/35, suivie d&#8217;une remontée utilisant de l&#8217;EAN50 et de
+l&#8217;oxygène, et utilisant les réglages décrits ci-dessous.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Planner_OC_deco_VPM.jpg" alt="FIGURE: Planning a dive: setup" />
@@ -5437,7 +5550,7 @@ ascent using EAN50 and oxygen and using the settings as described above.</p></di
 <div class="paragraph"><p>Once the above steps have been completed, save by clicking the <em>Save</em> button
 towards the top middle of the planner. The saved dive plan will appear in
 the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
-<div class="paragraph"><p><strong>The dive plan details</strong></p></div>
+<div class="paragraph"><p><strong>Les détails du plan de plongée</strong></p></div>
 <div class="paragraph"><p>On the bottom right of the dive planner, under <em>Dive Plan Details</em>, the
 exact details of the dive plan are provided. These details may be modified
 by checking any of the options under the <em>Notes</em> section of the dive
@@ -5477,7 +5590,7 @@ in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.<
 </div>
 </div>
 <div class="sect2">
-<h3 id="_planning_ccr_dives">14.4. Planning CCR dives</h3>
+<h3 id="_planifier_des_plongées_ccr_recycleur">14.4. Planifier des plongées CCR (recycleur)</h3>
 <div class="paragraph"><p>To plan a dive using a closed circuit rebreather, select the <em>CCR</em> option in
 the dropdown list, circled in blue in the image below.</p></div>
 <div class="paragraph"><p><strong>Available gases</strong>: In the <em>Available gases</em> table, enter the cylinder information for the
@@ -5502,7 +5615,7 @@ this is calculated for bail out ascents.</p></div>
 is not calculated, so gas consumptions of 0 liters are the norm.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_Replan">14.5. Modifying an existing dive plan</h3>
+<h3 id="S_Replan">14.5. Modifier une planification existante</h3>
 <div class="paragraph"><p>Normally, when a dive plan has been saved, it is accessible from the <strong>Dive
 List</strong>, like any other dive log. Within the <strong>Dive List</strong> there is no way to
 change a saved dive plan.  To change a dive plan, select it on the <strong>Dive
@@ -5517,7 +5630,7 @@ dive and do not influence other each during decompression calculation (see
 next section).</p></div>
 </div>
 <div class="sect2">
-<h3 id="_planning_for_repetitive_dives">14.6. Planning for repetitive dives</h3>
+<h3 id="_planifier_des_plongées_successives">14.6. Planifier des plongées successives</h3>
 <div class="paragraph"><p>Repetitive dives can easily be planned if the dates and start times of the
 repetitive dive set are specified appropriately in the top left-hand <em>Start
 Time</em> field. <em>Subsurface</em> calculates the gas loading figures and the affect
@@ -5534,7 +5647,7 @@ the <strong>Dive List</strong> and activate the planner: the planner takes into 
 configuration in the highlighted dive.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_printing_the_dive_plan">14.7. Printing the dive plan</h3>
+<h3 id="_imprimer_un_plan_de_plongée">14.7. Imprimer un plan de plongée</h3>
 <div class="paragraph"><p>Selecting the <em>Print</em> button in the planner allows printing of the <em>Dive
 Plan Details</em> for wet notes. You can also cut and paste the <em>Dive Plan
 Details</em> to include in a text file or word processing document.</p></div>
@@ -5545,7 +5658,7 @@ is to use the <em>File &#8594; Print</em> function on the main menu in the same 
 for dive logs or by copy and paste to a word processor.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_MergeDivePlan">14.8. Saving a dive with its dive plan</h3>
+<h3 id="S_MergeDivePlan">14.8. Enregistrer une plongée avec sa planification</h3>
 <div class="paragraph"><p>In the section dealing with <a href="#S_MultipleDiveComputers">dives using more than one dive computer</a> we discussed the way in which multiple profiles for a
 single dive can be viewed using the left-arrow and right-arrow keyboard
 keys. A similar method can be used for saving a dive plan with the profile
@@ -5584,7 +5697,7 @@ righ-arrow/left-arrow keyboard keys.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_running_em_subsurface_em_from_the_command_line">15. Running <em>Subsurface</em> from the command-line</h2>
+<h2 id="_lancer_em_subsurface_em_depuis_la_ligne_de_commande">15. Lancer <em>Subsurface</em> depuis la ligne de commande</h2>
 <div class="sectionbody">
 <div class="paragraph"><p><em>Subsurface</em> can be launched from the command-line to set some specialised
 settings or as part of an script-based automated process for manipulating a
@@ -5593,7 +5706,7 @@ dive log. The format for launching <em>Subsurface</em> from the command-line is:
 <div class="content">
 <pre><code>subsurface [options] [logfile ...] [--import logfile ...]</code></pre>
 </div></div>
-<div class="paragraph"><p>The options include:</p></div>
+<div class="paragraph"><p>Ces options incluent:</p></div>
 <div class="tableblock">
 <table rules="all"
 width="100%"
@@ -5753,7 +5866,7 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </ul></div>
 </div>
 <div class="sect2">
-<h3 id="_edit">16.2. Edit</h3>
+<h3 id="_édition">16.2. Édition</h3>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5939,8 +6052,9 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 </li>
 <li>
 <p>
-<em>Check for updates</em> - Find out whether a newer version of Subsurface is
-  available on the <a href="https://subsurface-divelog.org/"><em>Subsurface</em> web site</a>.
+<em>Vérifier les mises à jour</em>  - Vérifier si une nouvelle version de
+  Subsurface est disponible sur le <a href="https://subsurface-divelog.org/">site web de
+  <em>Subsurface</em> </a>.
 </p>
 </li>
 <li>
@@ -5992,12 +6106,13 @@ Sous Windows, le bon pilote devrait être téléchargé automatiquement la
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>On a Mac users sometimes have to manually hunt for the correct driver. For
-example the correct driver for the Mares Puck devices or any other dive
-computer using a USB-to-serial interface based on the Silicon Labs CP2101 or
-similar chip can be found as <em>Mac_OSX_VCP_Driver.zip</em> at the
-<a href="https://www.silabs.com/support/pages/document-library.aspx?p=Interface&amp;f=USB%20Bridges&amp;pn=CP2101">Silicon
-Labs document and software repository</a>.</p></div>
+<div class="paragraph"><p>Sous Mac, les utilisateurs peuvent parfois avoir besoin d&#8217;installer
+manuellement le bon pilote. Par exemple, pour le Mares Puck ou n&#8217;importe
+quel autre ordinateur de plongée utilisant une interface USB-série basé sur
+le composant Silicon Labs CP2101 ou similaire, le bon pilote est disponible
+sous <em>Mac_OSX_VCP_Driver.zip</em> sur le
+<a href="https://www.silabs.com/support/pages/document-library.aspx?p=Interface&amp;f=USB%20Bridges&amp;pn=CP2101">dépôt
+de documents et logiciels Silicon Labs</a>.</p></div>
 </div>
 <div class="sect2">
 <h3 id="S_HowFindDeviceName">17.2. Comment trouver le nom du périphérique branché sur USB et paramétrer les permissions en écriture</h3>
@@ -6119,7 +6234,7 @@ Upload Log</em> and wait for the <em>Wait PC</em> message.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-<strong>Pair the <em>Subsurface</em> computer with the dive computer.</strong>
+<strong>Jumeler l&#8217;ordinateur utilisant <em>Subsurface</em> avec l&#8217;ordinateur de plongée.</strong>
 </p>
 </li>
 </ul></div>
@@ -6162,7 +6277,7 @@ process.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Enable the Bluetooth controller and pair your dive computer
+Activez le contrôleur Bluetooth et jumelez votre ordinateur de plongée
 </p>
 </li>
 <li>
@@ -6438,8 +6553,8 @@ available from some Internet web sites e.g.
 Windows-based IrDA drivers for the Uwatec can also be downloaded from the
 ScubaPro web site, with drivers located on the download page for the
 ScubaPro SmartTrak software.</p></div>
-<div class="paragraph"><p>For the Apple Mac, IrDA communication via the MCS7780 link is not available
-for OSX 10.6 or higher.</p></div>
+<div class="paragraph"><p>Pour les ordinateurs Apple Mac, la connection IrDA via l&#8217;interface MCS7780
+n&#8217;est plus disponible depuis OSX 10.6 ou supérieur.</p></div>
 </div>
 <div class="sect2">
 <h3 id="S_ImportingDR5">18.3. Importing from Heinrichs Weikamp DR5</h3>
@@ -6934,11 +7049,12 @@ pour convertir un carnet de plongée enregistrée sous forme de tableur vers
 un fichier CSV qui pourra ensuite être importé dans <em>Subsurface</em>. Créer un
 fichier CSV est simple malgré que la procédure soit différente selon le
 tableur utilisé.</p></div>
-<div class="paragraph"><p>Organize the diving data in the spreadsheet, so the first row contains the
-names (or titles) of each column and the information for each dive is stored
-in a single row.  <em>Subsurface</em> supports many data items (Dive number, Date,
-Time, Duration, Location, GPS, Max. Depth, Mean Depth, Buddy, Notes, Weight
-and Tags).  Organize dive data following a few simple rules:</p></div>
+<div class="paragraph"><p>Organiser les données de plongées dans le tableur pour que la première ligne
+contienne le nom (ou le titre) de chaque colonne et que les informations de
+chaque plongée soient contenues sur une seule ligne. <em>Subsurface</em> supporte
+de nombreux éléments (Dive #, Date, Time, Duration, Location, GPS,
+Max. Depth, Mean Depth, Buddy, Notes, Weight et Tags).  Organiser les
+données de plongées selon quelques règles simples :</p></div>
 <div class="olist arabic"><ol class="arabic">
 <li>
 <p>
@@ -7465,7 +7581,7 @@ page size.</td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_appendix_f_faqs">22. APPENDIX F: FAQs.</h2>
+<h2 id="_annexe_f_faqs">22. ANNEXE F: FAQs.</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="S_APPENDIX_F">22.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
@@ -7541,7 +7657,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2017-07-04 13:38:54 CEST
+ 2017-10-11 10:34:39 CEST
 </div>
 </div>
 </body>

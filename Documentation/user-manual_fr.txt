@@ -849,6 +849,7 @@ carnet en cours.
 Une sélection automatique est disponible.
 Certains utilisateurs de vêtement étanche peuvent utiliser ce champ pour enregistrer quelle ensemble de
 combinaison et souris ils ont utilisé.
+
 *Évaluation*: attribue une évaluation subjective à une plongée sur une
 échelle de 5 points en cliquant sur l'étoile correspondante.
 
@@ -1369,8 +1370,9 @@ using a comma as a field separator:
 	Wismar Baltic,2012-12-01,10:13,35:27,15.4,Dieter Albrecht
 	Pulau Weh,2012-12-20,09:46,55:56,38.6,Karaeng Bontonompo
 
-The above data are not easily read by a human. Here is the same information
-in TAB-delimited format:
+Les données ci-dessus ne sont pas aisément lisible pour un être
+humain. Voici les mêmes informations dans un format séparé par des
+tabulations :
 
 	Dive site	Dive date	Time	Dive_duration	Dive_depth	Dive buddy
 	Illovo Beach	2012-11-23	10:45	46:15	18.4	John Smith
@@ -2439,7 +2441,7 @@ quasiment complet de données.
 
 
 [[S_gas_pressure_graph]]
-===== Le graphique de pression gazeuse
+===== The Gas Pressure Bar Graph
 
 On the left of the *Information Box* is a vertical bar graph showing the
 pressures of the nitrogen (and other inert gases, e.g. helium, if
@@ -3870,6 +3872,17 @@ at the cost of higher tissue compartment pressures in the slow tissues.
 When selecting one of these models, keep in mind they are NOT exact
 physiological models but only mathematical models that appear to work in
 practice.
+
+Please note as well that there is an intrinsic assumption of the VPM-B model
+that off-gassing only happens during the ascent phase of the dive (which is
+the part controlled by the planner). Thus it is possible to get misleading
+results if you manually enter waypoints well in the decompression phase of
+your dive. This is particularly relevant when editing a dive read from disk
+in the planner since that will have waypoints up to the surface. Thus for
+those dives, first delete all waypoints during the ascent phase. This is
+most easily done by holding the Ctrl- or Command-key while clicking on the
+trash can icon next to the first ascent waypoint in the table on the left
+hand side.
 
 Pour plus d'information en dehors de ce manuel, voir:
 

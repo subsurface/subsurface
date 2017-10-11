@@ -2,52 +2,52 @@
 # Copyright (C) 2016 Free Software Foundation, Inc.
 # This file is distributed under the same license as the subsurface-manual package.
 #
-# Guillaume GARDET <guillaume.gardet@free.fr>, 2016.
+# Guillaume GARDET <guillaume.gardet@free.fr>, 2016, 2017.
 msgid ""
 msgstr ""
 "Project-Id-Version: subsurface-manual VERSION\n"
 "Report-Msgid-Bugs-To: subsurface@subsurface-divelog.org\n"
-"POT-Creation-Date: 2016-11-30 13:40+0100\n"
-"PO-Revision-Date: 2016-11-30 13:42+0100\n"
-"Last-Translator: Guillaume GARDET <guillaume.gardet@opensuse.org>\n"
-"Language-Team: French <opensuse-fr@opensuse.org>\n"
+"POT-Creation-Date: 2017-10-11 10:20+0200\n"
+"PO-Revision-Date: 2017-10-11 10:33+0100\n"
+"Last-Translator: Guillaume GARDET <guillaume.gardet@free.fr>\n"
+"Language-Team: French <kde-i18n-doc@kde.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Lokalize 1.5\n"
+"X-Generator: Lokalize 2.0\n"
 
 #.  :website: http://subsurface-divelog.org
 #. type: Target for macro image
-#: mobile-manual.txt:12
+#: mobile-manual.txt:13
 #, no-wrap
 msgid "mobile-images/banner.jpg"
 msgstr "mobile-images/banner.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:15
+#: mobile-manual.txt:16
 msgid "[big]#Subsurface-mobile USER MANUAL#"
 msgstr "[big]#MANUEL UTILISATEUR de Subsurface-mobile#"
 
 #. type: Plain text
-#: mobile-manual.txt:17
+#: mobile-manual.txt:18
 #, no-wrap
-msgid "*Manual author*: Willem Ferguson\n"
-msgstr "*Auteur du manuel* : Willem Ferguson\n"
+msgid "*Manual authors*: Willem Ferguson, Dirk Hohndel\n"
+msgstr "*Auteurs du manuel* : Willem Ferguson, Dirk Hohndel\n"
 
 #. type: Plain text
-#: mobile-manual.txt:19
+#: mobile-manual.txt:20
 msgid "toc::[]"
 msgstr "toc::[]"
 
 #. type: Plain text
-#: mobile-manual.txt:21
-msgid "[blue]#_Version 1.1, September 2016_#"
-msgstr "[blue]#_Version 1.1, Septembre 2016_#"
+#: mobile-manual.txt:22
+msgid "[blue]#_Version 2, July 2017_#"
+msgstr "[blue]#_Version 2, juillet 2017_#"
 
 #. type: Plain text
-#: mobile-manual.txt:29
+#: mobile-manual.txt:30
 msgid ""
 "Welcome as a user of _Subsurface_, advanced dive logging software with "
 "extensive infrastructure to describe, organize, interpret and print scuba "
@@ -59,117 +59,123 @@ msgid ""
 msgstr ""
 
 #. type: Title -
-#: mobile-manual.txt:31
+#: mobile-manual.txt:32
 #, no-wrap
 msgid "Introducing Subsurface-mobile"
 msgstr "Présentation de Subsurface-mobile"
 
 #. type: Plain text
-#: mobile-manual.txt:39
+#: mobile-manual.txt:40
 msgid ""
 "_Subsurface-mobile_ is an extension of _Subsurface_ which runs on Android "
-"smartphone and tablet devices and is a tool for viewing or sharing dive "
-"information at dive sites where a larger computer is not useful. _Subsurface-"
-"mobile_ for Android also allows the gathering of GPS locations where dives "
-"are performed (Subsurface-mobile for iOS currently does not support GPS "
-"functionality)."
+"and iOS smartphone and tablet devices and is a tool for viewing or sharing "
+"dive information at dive sites where a larger computer is not useful. "
+"_Subsurface-mobile_ for Android also allows the gathering of GPS locations "
+"where dives are performed (Subsurface-mobile for iOS currently does not have "
+"full functionality)."
 msgstr ""
 "_Subsurface-mobile_ est une extension de _Subsurface_ qui fonctionne sur les "
-"smartphones et les tablettes Android et c'est un outil pour visualiser et "
-"partager des informations de plongées sur des sites de plongées où un "
-"ordinateur n'est pas utile. _Subsurface-mobile_ permet également de "
-"collecter des positions GPS où sont effectuées les plongées. (Subsurface-"
-"mobile pour iOS ne supporte pas les fonctions GPS pour le moment)."
+"smartphones Android et iOS et sur les tablettes. C'est un outil pour "
+"visualiser et partager des informations de plongées sur des sites de "
+"plongées où un ordinateur n'est pas utile. _Subsurface-mobile_ permet "
+"également de collecter des positions GPS où sont effectuées les plongées. "
+"(Subsurface-mobile pour iOS ne supporte pas toutes les fonctions pour le "
+"moment)."
 
 #. type: Plain text
-#: mobile-manual.txt:51
+#: mobile-manual.txt:52
 msgid ""
 "_Subsurface-mobile_ allows you to enter and save dive information using a "
-"mobile device. Most users of _Subsurface-mobile_ typically use the mobile "
-"app as an extension to the laptop/desktop version of _Subsurface_.  This "
-"allows the storage of dive logs on the Internet sharing them between the "
-"mobile and the desktop versions. But _Subsurface-mobile_ can be used "
-"independently of _Subsurface_ and does not require the use of cloud "
-"storage.  While the desktop version of _Subsurface_ shows much more detailed "
-"information for each dive, the mobile version allows a more accessible dive "
-"log on a dive trip, useful for proving dive experience to dive shops or to "
-"review previous dives."
+"mobile device. Users of _Subsurface-mobile_ typically use the mobile app as "
+"an extension to the laptop/desktop version of _Subsurface_ that allows the "
+"storage of dive logs on the Internet and sharing them between the mobile and "
+"the desktop versions. But _Subsurface-mobile_ can also be used independently "
+"of _Subsurface_ and does not require the use of cloud storage.  While the "
+"desktop version of _Subsurface_ shows much more detailed information for "
+"each dive, the mobile version allows a more accessible dive log on a dive "
+"trip, useful for proving dive experience to dive shops or to review previous "
+"dives."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:53
+#: mobile-manual.txt:54
 msgid "_Subsurface-mobile_ allows you to:"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:55
+#: mobile-manual.txt:56
 msgid "Download existing dive log information from the Internet."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:56
+#: mobile-manual.txt:57
 msgid "View this information on a mobile device."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:58
+#: mobile-manual.txt:59
 msgid ""
 "Edit many of the dive log data fields, e.g. divemaster, buddy, equipment or "
 "notes about a dive."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:59
+#: mobile-manual.txt:60
 msgid "Manually create and add new dive records to your dive log."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:60
+#: mobile-manual.txt:61
+msgid "Download dive data directly from many dive computers."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:62
 msgid "Store the updated dive log in the _Subsurface_ cloud storage."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:61
+#: mobile-manual.txt:63
 msgid "Record, store and apply GPS positions of dives (Android only)."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:63
+#: mobile-manual.txt:65
 msgid "View the localities of recorded GPS positions and of dives on a map."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:70
+#: mobile-manual.txt:71
 msgid ""
-"These items are discussed in greater detail in the following text.  What "
-"_Subsurface-mobile_ does not support (at this time) is downloading dive data "
-"directly from a dive computer. That still needs to be done using "
-"_Subsurface_ on a desktop or laptop computer. We are investigating ways to "
-"support downloading from a subset of the supported dive computers on Android "
-"devices, but this is not yet ready for testing."
+"These items are discussed in greater detail in the following text.  "
+"_Subsurface-mobile_ does not yet support download of dive data from all the "
+"dive computers that the desktop/laptop version can: that still needs to be "
+"done using _Subsurface_ on a desktop or laptop computer. Only a subset of "
+"dive computers that use a FTDI USB interface or a Bluetooth/BTLE interface "
+"are accessible by _Subsurface-mobile_."
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:71
+#: mobile-manual.txt:72
 #, no-wrap
 msgid "Installing _Subsurface-mobile_ on your mobile device"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:75
+#: mobile-manual.txt:76
 msgid ""
 "Find _Subsurface-mobile_ in the _Google Play Store_ or the _iTunes Store_ "
 "and install it."
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:76
+#: mobile-manual.txt:77
 #, no-wrap
 msgid "Using _Subsurface-mobile_ for the first time"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:82
+#: mobile-manual.txt:83
 msgid ""
 "Upon starting _Subsurface-mobile_ for the first time, a Subsurface splash "
 "screen is shown while the program loads. On some devices this may take "
@@ -178,34 +184,34 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:84
+#: mobile-manual.txt:85
 msgid ""
 "Select whether _Subsurface-mobile_ should access the Internet for dive log "
-"information."
+"information as follows:"
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:85
+#: mobile-manual.txt:86
 #, no-wrap
 msgid "When NOT Using Cloud Storage"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:90
+#: mobile-manual.txt:91
 msgid ""
 "Tap the striked-out cloud icon. The app will not access the _Subsurface_ "
 "cloud storage server to obtain dive log information. This means that dive "
-"log information is manually entered and stored on the mobile device only."
+"log information is stored on the mobile device only."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:91
+#: mobile-manual.txt:92
 #, no-wrap
 msgid "Using Cloud Storage"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:95
+#: mobile-manual.txt:96
 msgid ""
 "In order to use the _Subsurface_ cloud storage, an account on the cloud "
 "server is required. If you have already set up an account from the "
@@ -213,18 +219,19 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:97
-msgid "You can also create a new account from your mobile device."
+#: mobile-manual.txt:98
+msgid ""
+"You can also create a new cloud storage account from your mobile device."
 msgstr ""
 
 #. type: Title ====
-#: mobile-manual.txt:98
+#: mobile-manual.txt:99
 #, no-wrap
 msgid "Using the desktop version of _Subsurface_:"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:109
+#: mobile-manual.txt:110
 #, no-wrap
 msgid ""
 "Open the desktop version of _Subsurface_ and\n"
@@ -239,7 +246,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:118
+#: mobile-manual.txt:119
 msgid ""
 "Once the dive list has been downloaded from the Internet, _Subsurface-"
 "mobile_ keeps a local copy on the mobile device. This means that even if "
@@ -251,19 +258,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:120
+#: mobile-manual.txt:121
 #, no-wrap
 msgid "mobile-images/Credentials.jpg"
 msgstr "mobile-images/Credentials.jpg"
 
 #. type: Title ====
-#: mobile-manual.txt:123
+#: mobile-manual.txt:124
 #, no-wrap
 msgid "Using _Subsurface-mobile_:"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:131
+#: mobile-manual.txt:132
 msgid ""
 "Enter an e-mail address and a password in the fields indicated on the "
 "screen.  The e-mail should be in lower case and the password should contain "
@@ -276,14 +283,14 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:134
+#: mobile-manual.txt:135
 msgid ""
 "Tap the Disk (Save) icon at the bottom of the screen. A PIN is sent to the e-"
 "mail address provided."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:137
+#: mobile-manual.txt:138
 msgid ""
 "Enter the PIN into the field indicated and tap the _Save_ icon again. The "
 "user information is stored on the cloud server and access to the cloud is "
@@ -291,21 +298,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:141
+#: mobile-manual.txt:142
 msgid ""
-"The dive list is initially empty. You can now start entering dives in the "
-"dive log or you can download existing dives from your _Subsurface_ cloud "
-"storage account."
+"The dive list is initially empty. Start entering dives in the dive log or "
+"download dive information from either a _Subsurface_ cloud storage account "
+"or from a dive computer."
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:143
+#: mobile-manual.txt:144
 #, no-wrap
-msgid "A Few Remarks About The User Interface"
+msgid "Menu Structure and User Interface"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:152
+#: mobile-manual.txt:153
 msgid ""
 "At the bottom of many Subsurface-mobile screens is a round button that "
 "provides for several actions and which allows the selection of the main "
@@ -317,20 +324,20 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:155
+#: mobile-manual.txt:156
 msgid ""
 "On iOS devices, on screens where a \"back\" action is enabled, a back arrow "
 "is shown in the top left corner of the screen."
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:156
+#: mobile-manual.txt:157
 #, no-wrap
 msgid "mobile-images/actionbutton.jpg"
 msgstr "mobile-images/actionbutton.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:164
+#: mobile-manual.txt:165
 msgid ""
 "In order to have a consistent experience between iOS and Android, "
 "_Subsurface-mobile_ on Android does not use the traditional \"hamburger\" "
@@ -341,40 +348,40 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:167
+#: mobile-manual.txt:168
 msgid ""
 "Tap the \"hamburger\" symbol in the lower left corner of the screen (easy to "
 "reach for hand held devices)"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:168
+#: mobile-manual.txt:169
 msgid "Swipe towards the right across the left edge of the screen"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:170
+#: mobile-manual.txt:171
 msgid "Drag the action button visible on most screens to the right"
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:171
+#: mobile-manual.txt:172
 #, no-wrap
-msgid "mobile-images/menu.jpg"
-msgstr "mobile-images/menu.jpg"
+msgid "mobile-images/MainMenu2.jpg"
+msgstr "mobile-images/MainMenu2.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:177
+#: mobile-manual.txt:179
 msgid ""
 "The images above indicate some of the important features of the menu "
-"system.  On the left is the main menu that is activated as described above. "
-"In the middle is the menu that opens if you tap the _GPS_ option on the main "
-"menu. On the right is the menu that opens if you tap the _Manage Dives_ "
-"option on the main menu."
+"system.  On the left is the main menu, activated as described above. On the "
+"right, above, is a representation of the menu items of all the submenus "
+"accessible from the main menu: the main menu items are shown on the left "
+"while the submenu contents are shown on a blue background on the right."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:181
+#: mobile-manual.txt:183
 msgid ""
 "All screenshots in this user manual are currently from the Android version. "
 "As indicated earlier, the iOS version currently doesn't support _GPS_ "
@@ -382,31 +389,31 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:182
+#: mobile-manual.txt:184
 #, no-wrap
 msgid "Viewing the Dive List"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:190
+#: mobile-manual.txt:193
 msgid ""
 "Most of the actions of _Subsurface-mobile_ center around the dives on the "
 "dive list. While the dive list is loading from the cloud, a message appears "
-"at the bottom of the screen, indicating that the cloud is being accessed "
-"(see image on left, below). Once the list is loaded you can scroll up and "
-"down.  Tapping a dive on the list brings up a display of _Details View_ for "
-"that dive (see image on right below).  This includes the dive profile as "
-"well as additional information and notes."
+"at the bottom of the screen, indicating that the cloud is being accessed. "
+"Once the list is loaded you can scroll up and down.  Tapping a dive on the "
+"list brings up a display of _Details View_ for that dive (see image on right "
+"below). This includes the dive profile as well as additional information and "
+"notes."
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:191
+#: mobile-manual.txt:194
 #, no-wrap
 msgid "mobile-images/DiveList.jpg"
 msgstr "mobile-images/DiveList.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:199
+#: mobile-manual.txt:202
 msgid ""
 "You can view other dives by swiping the _Details view_ to the right (for the "
 "previous dive) or to the left (following dive).  Using the Action Bar, it is "
@@ -416,13 +423,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:200
+#: mobile-manual.txt:204
 #, no-wrap
 msgid "Editing dive details"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:211
+#: mobile-manual.txt:215
 msgid ""
 "At the bottom of the dive details screen the _Action Button_ contains a "
 "pencil (image on right, above).  Tapping the pencil button brings up a panel "
@@ -436,19 +443,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:212
+#: mobile-manual.txt:216
 #, no-wrap
 msgid "mobile-images/EditDive.jpg"
 msgstr "mobile-images/EditDive.jpg"
 
 #. type: Title ==
-#: mobile-manual.txt:214
+#: mobile-manual.txt:219
 #, no-wrap
 msgid "Adding a new dive to the dive list"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:226
+#: mobile-manual.txt:231
 msgid ""
 "You can manually add a dive to the existing dive list. On the dive list tap "
 "the \"plus\" sign in the _Action Button_, or use the main menu and tap "
@@ -464,19 +471,19 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:227
+#: mobile-manual.txt:232
 #, no-wrap
 msgid "mobile-images/ManuallyEnterDive.jpg"
 msgstr "mobile-images/ManuallyEnterDive.jpg"
 
 #. type: Title ==
-#: mobile-manual.txt:229
+#: mobile-manual.txt:234
 #, no-wrap
 msgid "Deleting a dive"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:235
+#: mobile-manual.txt:240
 msgid ""
 "The _Details View_ of a dive has an Action Bar, including a dustbin. If this "
 "is tapped, the dive shown in the _Details View_ is deleted. You have a brief "
@@ -485,13 +492,13 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:236
+#: mobile-manual.txt:241
 #, no-wrap
 msgid "mobile-images/Delete_undo.jpg"
 msgstr "mobile-images/Delete_undo.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:243
+#: mobile-manual.txt:248
 msgid ""
 "You can also delete a dive from the dive list by long-pressing a specific "
 "dive until a red dustbin appears on the right-hand side (see image below). "
@@ -502,65 +509,183 @@ msgid ""
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:244
+#: mobile-manual.txt:249
 #, no-wrap
 msgid "mobile-images/RedDustbin.jpg"
 msgstr "mobile-images/RedDustbin.jpg"
 
 #. type: Title ==
-#: mobile-manual.txt:246
+#: mobile-manual.txt:251
+#, no-wrap
+msgid "Download dives from a dive computer"
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:254
+msgid ""
+"Download of dives is possible from dive computers with a FTDI USB interface, "
+"or with a Bluetooth interface."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:256
+msgid ""
+"First, establish a link between the dive computer and the mobile device."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:265
+msgid ""
+"For USB dive computers, USB cables \"normally\" used for uploading dives to "
+"a desktop/laptop computer do NOT work: these cables often have a full-sized "
+"male USB plug on one end which plugs into the USB port of a desktop/laptop "
+"computer. For downloads to a mobile device one needs a USB OTG (USB On-The-"
+"Go) cable. In most cases it is required to plug the USB cable \"normally\" "
+"used with the dive computer into a USB OTG cable which, in turn, plugs into "
+"the mini-USB receptacle of the mobile device. The OTG cable often has a full-"
+"size female receptacle at one end which accommodates the full-sized male "
+"plug of the USB cable \"normally\" used (see image below). This means that "
+"two cables are used to connect the dive computer to the mobile device."
+msgstr ""
+
+#. type: Target for macro image
+#: mobile-manual.txt:266
+#, no-wrap
+msgid "mobile-images/USB-OTG.jpg"
+msgstr "mobile-images/USB-OTG.jpg"
+
+#. type: Plain text
+#: mobile-manual.txt:273
+msgid ""
+"For Bluetooth-equipped dive computers, establish a Bluetooth connection "
+"between the dive computer and the mobile device. Use the tools on the mobile "
+"device to achieve this. For of Android mobile devices, the Settings -> "
+"Bluetooth tool is probably appropriate. Ensure pairing of the dive computer "
+"and mobile device.  _Subsurface-mobile_ performs communication using both "
+"Bluetooth and Bluetooth-low-energy (BTLE).  The appropriate choice of "
+"Bluetooth communication is made by the software and the user need not be "
+"concerned with this."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:280
+msgid ""
+"With propper communication between dive computer and _Subsurface-mobile_ "
+"having been set up, dive download is simple.  From the main menu, tap "
+"_Manage dives -> Download from DC_. A screen is shown requiring that the "
+"user specify the names of the vendor and model of the dive computer. For "
+"instance, when using a Shearwater Petrel 2 dive computer, the vendor is "
+"_Shearwater_ and the Dive computer name is _Petrel 2_. From the two dropdown "
+"lists at the top of the screen, select the correct vendor and dive computer "
+"names (see image on the left, below). If using a dive computer using a "
+"Bluetooth connection, then tap the check box labelled _Bluetooth download_."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:288
+msgid ""
+"Now tap the button labled _DOWNLOAD_. The downloaded dives appear in the "
+"bottom part of the screen, the most recent dive at the top (see image on "
+"right, below). Be patient because the download can sometimes take a few "
+"mimnutes.  Each dive has a check-box on the left hand side, used for "
+"selecting which dives need to be added to the _Subsurface-mobile_ dive list: "
+"dives that are not checked are ignored. With the appropriate downloaded "
+"dives having been checked, tap the button at the bottom left labled "
+"_ACCEPT_. All the selected dives appear on the _Subsurface-mobile_ dive "
+"list. The downloaded dive information can now be edited as described in the "
+"section above xref:S_Edit_Dive[Edit a dive]."
+msgstr ""
+
+#. type: Target for macro image
+#: mobile-manual.txt:289
+#, no-wrap
+msgid "mobile-images/DC-Download.jpg"
+msgstr "mobile-images/DC-Download.jpg"
+
+#. type: Title ==
+#: mobile-manual.txt:291
+#, no-wrap
+msgid "Viewing the dive location on Google Maps"
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:296
+msgid ""
+"The site of a specific dive can be viewed in two ways using the _Details "
+"View_.  The Action Bar at the bottom has a GPS pin on the left hand side. "
+"Tap that pin and the dive site is shown in Google Maps. Close Google Maps by "
+"using the Android _Back_ button."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:299
+msgid ""
+"Alternatively, the _Details View_ has a button at the top right hand marked "
+"_Map it_. Tap this button to open Google Maps showing the dive site."
+msgstr ""
+
+#. type: Target for macro image
+#: mobile-manual.txt:300
+#, no-wrap
+msgid "mobile-images/Map.jpg"
+msgstr "mobile-images/Map.jpg"
+
+#. type: Title ==
+#: mobile-manual.txt:302
 #, no-wrap
 msgid "Dive log management"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:256
+#: mobile-manual.txt:312
 msgid ""
 "A central part of _Subsurface-mobile_ is the ability to store the dive log "
 "using the _Subsurface_ cloud storage.  This provides security against loss "
 "or damage to the dive information contained in a local copy of the dive log "
 "and allows the desktop version of _Subsurface_ to access changes made using "
 "the mobile device. This ability is accessed through the main menu (by "
-"dragging the Action Button to the right, or alternatively tappping the "
+"dragging the Action Button to the right, or alternatively tapping the "
 "\"Hamburger\" icon at the bottom left of the screen).  Tap the option "
 "_Manage dives_, enabling a number of options:"
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:257
+#: mobile-manual.txt:313
 #, no-wrap
 msgid "Add new dive manually"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:260
-msgid "This is described above under the section dealing with the dive list."
+#: mobile-manual.txt:316
+msgid ""
+"This is described above under the section dealing with xref:"
+"S_Add_Dive[Adding a new dive to the dive list]."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:261
+#: mobile-manual.txt:317
 #, no-wrap
 msgid "Sync the dive log with the _Subsurface_ cloud storage"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:268
+#: mobile-manual.txt:324
 msgid ""
-"You can upload the dives contained on the mobile device to the _Subsurface_ "
-"cloud storage by tapping the option _Manual sync with coud_.  This "
-"synchronizes the local changes to the dive log with the cloud storage. It "
-"also downloads changes made on another device or computer and stored in "
+"Upload the dives contained on the mobile device to the _Subsurface_ cloud "
+"storage by tapping the option _Manual sync with cloud_.  This synchronizes "
+"the local changes to the dive log with the cloud storage. It also downloads "
+"changes made to the dive log using another device or computer and stored in "
 "cloud storage."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:269
+#: mobile-manual.txt:325
 #, no-wrap
 msgid "Working offline or online"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:278
+#: mobile-manual.txt:334
 msgid ""
 "By default _Subsurface-mobile_ runs offline and only syncs the dive list "
 "with cloud storage when explicily told to do so (see above).  You can choose "
@@ -571,27 +696,49 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:279
+#: mobile-manual.txt:335
 #, no-wrap
 msgid "Changing the login credentials on the _Subsurface_ cloud"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:285
+#: mobile-manual.txt:341
 msgid ""
-"If you need to change your login credentials (for example to work with "
-"multiple accounts) you can open the main menu and tap _Cloud credentials_. "
-"This opens the setup screen for specifying new credentials."
+"The login credentials (for example to work with multiple accounts) can be "
+"changed by opening the main menu and by tapping _Settings -> Cloud "
+"credentials_. This opens the screen for specifying new credentials."
 msgstr ""
 
+#. type: Title ===
+#: mobile-manual.txt:342
+#, no-wrap
+msgid "Changing the colour scheme of _Subsurface-mobile_"
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:349
+msgid ""
+"_Subsurface-mobile_ has three colour schemes to please users with different "
+"tastes. This user manual shows the default colour scheme, comprising blue "
+"colours. Change to a pink or a dark colour scheme by opening the main menu "
+"and tap Settings -> Preferences. This opens the Preferences screen that "
+"includes the three colour schemes (see image below)."
+msgstr ""
+
+#. type: Target for macro image
+#: mobile-manual.txt:350
+#, no-wrap
+msgid "mobile-images/ColourSchemes.jpg"
+msgstr "mobile-images/ColourSchemes.jpg"
+
 #. type: Title ==
-#: mobile-manual.txt:287
+#: mobile-manual.txt:352
 #, no-wrap
 msgid "Recording dive locations using GPS (Android only)."
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:294
+#: mobile-manual.txt:359
 msgid ""
 "The fact that most smartphones have GPS facilities allows _Subsurface-"
 "mobile_ on Android to record the locations of dives. You can take the "
@@ -601,111 +748,109 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:295
+#: mobile-manual.txt:360
 #, no-wrap
 msgid "Setting up the GPS"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:304
+#: mobile-manual.txt:368
 msgid ""
 "Open the main menu and tap _GPS -> Preferences_. Now specify the way in "
-"which GPS data need to be automatically collected (image on right, below). "
-"You can specify that data are collected at regular intervals, e.g.  every 10 "
-"minutes, or at regular distances, e.g. after the boat has moved more than "
-"200m, or a combination of both of the above approaches. Provide the "
-"appropriate information and tap the _Save_ action button. The program is now "
-"ready to collect GPS positions."
+"which GPS data need to be automatically collected (image above). Data are "
+"collected at regular intervals, e.g. every 5 minutes, or at regular "
+"distances, e.g. after the boat has moved more than 200m, or a combination of "
+"both of these approaches. Provide the appropriate information and tap the "
+"_Save_ action button. The program is now ready to collect GPS positions."
 msgstr ""
 
-#. type: Target for macro image
-#: mobile-manual.txt:305
-#, no-wrap
-msgid "mobile-images/gpssetup.jpg"
-msgstr "mobile-images/gpssetup.jpg"
-
 #. type: Title ===
-#: mobile-manual.txt:307
+#: mobile-manual.txt:369
 #, no-wrap
 msgid "Collecting GPS positions"
 msgstr ""
 
+#. type: Target for macro image
+#: mobile-manual.txt:371
+#, no-wrap
+msgid "mobile-images/Mainmenu.jpg"
+msgstr "mobile-images/Mainmenu.jpg"
+
 #. type: Plain text
-#: mobile-manual.txt:316
+#: mobile-manual.txt:380
 msgid ""
 "Ensure that the GPS on the Android device has been activated. At the bottom "
-"of the GPS submenu is a check box _Run location service_ (image on left, "
-"above).  Check this box and _Subsurface-mobile_ starts to collect GPS "
-"locations automatically, following the preferences specified as described "
-"above. After return from the dive trip you can deactivate the collection of "
-"GPS data by de-activating the same check box at the bottom of the main menu."
+"of the GPS submenu is a check box _Run location service_ (image above).  "
+"Check this box and _Subsurface-mobile_ starts to collect GPS locations "
+"automatically, following the preferences specified as described above. After "
+"return from the dive trip you can deactivate the collection of GPS data by "
+"de-activating the same check box at the bottom of the main menu."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:317
+#: mobile-manual.txt:381
 #, no-wrap
 msgid "Storing the GPS data on the _Subsurface_ cloud"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:324
+#: mobile-manual.txt:388
 msgid ""
 "Activate the main menu and select the _GPS_ option that brings up the "
-"submenu of GPS-related actions (image on left, above). Tap _Upload GPS data_ "
-"that saves the GPS data on the _Subsurface_ cloud server. These GPS data are "
-"saved *separately* from the other dive log data. All collected GPS data are "
-"kept on the Android device, independent of whether they have been uploaded "
-"or not."
+"submenu of GPS-related actions. Tap _Upload GPS data_ that saves the GPS "
+"data on the _Subsurface_ cloud server. These GPS data are saved *separately* "
+"from the other dive log data. All collected GPS data are kept on the Android "
+"device, independent of whether they have been uploaded or not."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:325
+#: mobile-manual.txt:389
 #, no-wrap
 msgid "Downloading GPS data from the _Subsurface_ cloud"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:330
+#: mobile-manual.txt:394
 msgid ""
 "Download the GPS data that have been saved on the cloud (possibly by a "
 "different device) by selecting _Download GPS Data_ from the GPS subpanel."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:331
+#: mobile-manual.txt:395
 #, no-wrap
 msgid "Viewing GPS data"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:342
+#: mobile-manual.txt:406
 msgid ""
-"From the GPS submenu (image on left, above) select _Show GPS fixes_. This "
-"brings up a list of GPS positions obtained using the location service (image "
-"on left, below). Two actions are possible for each of the locations, enabled "
-"if you tap the handle (the three horisontal stripes on the right, see image "
-"on left, below) and then drags the specific item to the left (image on "
-"right, below). This exposes two options. Tapping the dustbin deletes this "
-"particular GPS location. Tapping the teardrop-shaped icon (actually a Google "
-"Maps pin) opens up Google Maps with a pin indicating the exact map position "
-"of the GPS record being viewed. The two above options can be hidden by "
-"drawing the GPS record to the right, again using the handle."
+"From the GPS submenu select _Show GPS fixes_. This brings up a list of GPS "
+"positions obtained using the location service (image on left, below). Two "
+"actions are possible for each of the locations, enabled if you tap the "
+"handle (the three horisontal stripes on the right, see image on left, below) "
+"and then drags the specific item to the left (image on right, below). This "
+"exposes two options. Tapping the dustbin deletes this particular GPS "
+"location. Tapping the teardrop-shaped icon (actually a Google Maps pin) "
+"opens up Google Maps with a pin indicating the exact map position of the GPS "
+"record being viewed. The two above options can be hidden by drawing the GPS "
+"record to the right, again using the handle."
 msgstr ""
 
 #. type: Target for macro image
-#: mobile-manual.txt:343
+#: mobile-manual.txt:407
 #, no-wrap
 msgid "mobile-images/gpsmanagement.jpg"
 msgstr "mobile-images/gpsmanagement.jpg"
 
 #. type: Title ===
-#: mobile-manual.txt:345
+#: mobile-manual.txt:409
 #, no-wrap
 msgid "Applying GPS data to dives in the dive log"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:353
+#: mobile-manual.txt:417
 msgid ""
 "Assuming that all the dives have been entered into the dive log or have been "
 "downloaded from the _Subsurface_ cloud, you can apply the GPS positions to "
@@ -716,6 +861,9 @@ msgid ""
 "dive. This results in a GPS position for each dive that is saved as part of "
 "the dive log."
 msgstr ""
+
+#~ msgid "mobile-images/gpssetup.jpg"
+#~ msgstr "mobile-images/gpssetup.jpg"
 
 #~ msgid ""
 #~ "Because of the restrictions of iOS, _Subsurface-mobile_ for iOS does not "
