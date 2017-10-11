@@ -31,7 +31,7 @@ public:
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
-	void gaschange(const QModelIndex &index, int newcylinderid);
+	void gasChange(const QModelIndex &index, int newcylinderid);
 	void cylinderRenumber(int mapping[]);
 	void removeSelectedPoints(const QVector<int> &rows);
 	void setPlanMode(Mode mode);
