@@ -115,7 +115,7 @@ storage account or from a dive computer.
 The dive log can be updated automatically. If there is Internet connectivity, _Subsurface-mobile_ accesses
 the cloud-based dive log to verify that the local copy of the dive log is still the
 same as the log in the cloud server. If not, the local copy and the copy on
-the server are synchronised.
+the server are synchronized.
 
 === Changing the existing login credentials on the _Subsurface_ cloud
 
@@ -149,7 +149,7 @@ developed by the Plasma developers. There are three ways to open the main menu:
 - Drag the action button visible on most screens to
   the right
 
-image::mobile-images/Menusystem.jpg["FIGURE: Dive management subpanel",align="center"]
+image::mobile-images/Menusystem.jpg["FIGURE: Dive management sub-panel",align="center"]
 
 The image above indicates some of the important features of the menu system.
 On the left is the main menu, activated as described above. On the right of the image
@@ -258,11 +258,11 @@ the names of the vendor and model of the dive computer. For instance, when using
 computer, the vendor is _Shearwater_ and the Dive computer name is _Petrel 2_. From the two dropdown lists
 at the top of the screen, select the correct vendor and dive computer names (see image on the left, below).
 
-Now tap the button labled _Download_. The downloaded dives appear in the bottom part of the screen, the
+Now tap the button labeled _Download_. The downloaded dives appear in the bottom part of the screen, the
 most recent dive at the top (see image on right, below). Be patient because the download can take a few minutes.
 Each dive has a check-box on the left hand side, used for selecting which dives need to be added to the
 _Subsurface-mobile_ dive list: dives that are not checked are ignored. With the appropriate downloaded dives
-having been checked, tap the button at the bottom left labled _Accept_. All the selected dives appear on
+having been checked, tap the button at the bottom left labeled _Accept_. All the selected dives appear on
 the _Subsurface-mobile_ dive list. The downloaded dive information can now be edited as described in the section
 above xref:S_Edit_Dive[Edit a dive].
 
@@ -275,7 +275,7 @@ left hand side. Tap that pin and the dive site is shown in Google Maps. Close Go
 
 Alternatively, the _Details View_ has a button at the top right hand marked
 _Map it_. Tap this button to open Google Maps showing the dive site (image below).
-Afterwards, use the Adroid _Back_ button to return to _Subsurface-mobile_.
+Afterwards, use the Android _Back_ button to return to _Subsurface-mobile_.
 
 image::mobile-images/Map.jpg["FIGURE: Map of dive site",align="center"]
 
@@ -294,7 +294,7 @@ Tap the option _Dive management_, enabling a number of options:
 
 This is described above under the section dealing with xref:S_Add_Dive[Manually adding a new dive to the dive list].
 
-=== Dowload from DC
+=== Download from DC
 
 This is described above under the section dealing with xref:S_Download[Download dives from a dive computer].
 
@@ -313,13 +313,13 @@ the dive log using another device or computer and stored in shared cloud storage
 === Enable cloud auto sync
 
 By default _Subsurface-mobile_ runs offline and only syncs the dive list
-with cloud storage when explicily told to do so (see above).
+with cloud storage when explicitly told to do so (see above).
 You can choose to always sync with the cloud servers after every
 modification of the dive list. This is not recommended unless you are in
 an area with fast and reliable internet connection, as otherwise
 _Subsurface-mobile_ might appear to hang between operations as it tries to
 connect to the cloud server. Selecting _Enable cloud auto sync_ causes
-the local dive log to be synchronised with the copy in the cloud every time that
+the local dive log to be synchronized with the copy in the cloud every time that
 _Subsurface-mobile_ is closed. This option is a switch that allows auto
 sync to be either activated or to be switched off.
 
@@ -371,7 +371,7 @@ Android device, independent of whether they have been uploaded or not.
 
 Download the GPS data that have been saved on the cloud (possibly by a
 different device) by
-selecting _Download GPS Data_ from the GPS subpanel.
+selecting _Download GPS Data_ from the GPS sub-panel.
 
 === Viewing GPS data
 
@@ -391,14 +391,14 @@ image::mobile-images/gpsmanagement.jpg["FIGURE: GPS management",align="center"]
 Assuming that all the dives have been entered into the dive log or have
 been downloaded from the _Subsurface_ cloud, apply the GPS positions to
 these dives. GPS positions can therefore only be applied to dives in the dive list.
-From the _Dive management_ subpanel, tap _Apply GPS fixes_. The dive list contains the start
+From the _Dive management_ sub-panel, tap _Apply GPS fixes_. The dive list contains the start
 and end times of each dive. Now, _Subsurface-mobile_ applies the first
 GPS position that falls within the dive period of each dive. This results
 in a GPS position for each dive that is saved as part of the dive log.
 
 == Using the settings for _Subsurface-mobile_.
 
-The Settings screen allows the customisation of _Subsurface-mobile_. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.
+The Settings screen allows the customization of _Subsurface-mobile_. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.
 
 [[S_ChangeCloudAccount]]
 === Changing to a different _Subsurface_ cloud account
@@ -409,13 +409,13 @@ change the credential information, then tap the button _Sign-in or register_. Th
 
 image::mobile-images/SettingsCloudTheme.jpg["FIGURE: Settings: Cloud & Theme",align="center"]
 
-=== Changing the colour theme of _Subsurface-mobile_
+=== Changing the color theme of _Subsurface-mobile_
 
-_Subsurface-mobile_ has three colour schemes to please users with different
-tastes. This user manual shows the default colour scheme, comprising blue
-colours. Change to a pink or a dark colour scheme by opening the main menu,
+_Subsurface-mobile_ has three color schemes to please users with different
+tastes. This user manual shows the default color scheme, comprising blue
+colors. Change to a pink or a dark color scheme by opening the main menu,
 tap _Settings_, and scroll to the section with heading _Theme_ (see image above).
-Select the appropriate colour theme by dragging the appropriate slider on the righthand.
+Select the appropriate color theme by dragging the appropriate slider on the righthand.
 
 === Configuring the GPS webservice
 
@@ -438,7 +438,7 @@ the context of program development and debugging.
 
 This option shows the messages that _Subsurface-mobile_ generates while running. While
 most users are not aware of these messages, they are often crucial in detecting any
-abnormal behaviour of the app. The App log can be found in the root directory of the local storage of the mobile device.
+abnormal behavior of the app. The App log can be found in the root directory of the local storage of the mobile device.
 
 === Theme information
 
