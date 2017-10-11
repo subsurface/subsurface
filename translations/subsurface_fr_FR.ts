@@ -36,7 +36,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml" line="54"/>
         <source>Navigate Back</source>
-        <translation type="unfinished"/>
+        <translation>Retour</translation>
     </message>
 </context>
 <context>
@@ -359,7 +359,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="107"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;enregistrer</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="118"/>
@@ -369,12 +369,12 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="135"/>
         <source>Sign-in or Register</source>
-        <translation type="unfinished"/>
+        <translation>S&apos;identifier ou s&apos;enregistrer</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="146"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Pas de mode cloud</translation>
     </message>
 </context>
 <context>
@@ -1931,7 +1931,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="153"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"/>
+        <translation>Annuler les modifications</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="161"/>
@@ -3712,22 +3712,22 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="185"/>
         <source>Facebook logged in successfully</source>
-        <translation type="unfinished"/>
+        <translation>Connexion à Facebook réussie</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="188"/>
         <source>Error, unknown user id, cannot login.</source>
-        <translation type="unfinished"/>
+        <translation>Erreur, identifiant inconnu, impossible de se connecter.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="286"/>
         <source>Dive uploaded successfully to Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Plongée envoyée avec succès à Facebook</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="288"/>
         <source>Dive upload failed. Please see debug output and send to Subsurface mailing list</source>
-        <translation type="unfinished"/>
+        <translation>Échec de l&apos;envoi de la plongée. Veuillez vérifier les informations de débogage et les envoyer à liste de diffusion de Subsurface</translation>
     </message>
 </context>
 <context>
@@ -3792,7 +3792,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/ForwardButton.qml" line="50"/>
         <source>Navigate Forward</source>
-        <translation type="unfinished"/>
+        <translation>Avancer</translation>
     </message>
 </context>
 <context>
@@ -4833,7 +4833,8 @@ Subsurface a déjà essayé de pré-remplir les données mais il est préférabl
         <location filename="../mobile-widgets/qml/MapWidgetError.qml" line="10"/>
         <source>MapWidget.qml failed to load!
 The QML modules QtPositioning and QtLocation could be missing!</source>
-        <translation type="unfinished"/>
+        <translation>Échec du chargement de MapWidget.qml !
+Les modules QML QtPositionning et QtLocation pourrait être manquant !</translation>
     </message>
 </context>
 <context>
@@ -6325,32 +6326,32 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="16"/>
         <source>Undefined</source>
-        <translation type="unfinished"/>
+        <translation>Non défini</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="17"/>
         <source>Incorrect username/password combination</source>
-        <translation type="unfinished"/>
+        <translation>Couple identifiant / mot de passe incorrect</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="18"/>
         <source>Credentials need to be verified</source>
-        <translation type="unfinished"/>
+        <translation>Les informations de connexion doivent être vérifiées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
         <source>Credentials verified</source>
-        <translation type="unfinished"/>
+        <translation>Informations de connexion vérifiées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="20"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Pas de mode cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="30"/>
         <source>Cloud status</source>
-        <translation type="unfinished"/>
+        <translation>État du cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="38"/>
@@ -6360,12 +6361,12 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="44"/>
         <source>Not applicable</source>
-        <translation type="unfinished"/>
+        <translation>Non applicable</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="52"/>
         <source>Change</source>
-        <translation type="unfinished"/>
+        <translation>Modifier</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="59"/>
@@ -6654,7 +6655,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="362"/>
         <source>Small</source>
-        <translation type="unfinished"/>
+        <translation>Petit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="363"/>
@@ -6726,7 +6727,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="26"/>
         <source>Small</source>
-        <translation type="unfinished"/>
+        <translation>Petit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="31"/>
@@ -6736,7 +6737,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="36"/>
         <source>Big</source>
-        <translation type="unfinished"/>
+        <translation>Grand</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="44"/>
@@ -6796,7 +6797,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="136"/>
         <source>Image Size</source>
-        <translation type="unfinished"/>
+        <translation>Taille de l&apos;image</translation>
     </message>
 </context>
 <context>
@@ -8869,7 +8870,7 @@ Maximum</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="958"/>
         <source>model=%s firmware=%u serial=%u</source>
-        <translation type="unfinished"/>
+        <translation>modèle=%s firmware=%s port série=%s</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1020"/>

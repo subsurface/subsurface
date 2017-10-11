@@ -9156,7 +9156,7 @@ Die kann durch Setzen einen Häkchens im Download-Dialog erstellt werden.</trans
     <message>
         <location filename="../core/plannernotes.c" line="421"/>
         <source>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: %s;&apos;&gt;Minimum gas&lt;/span&gt; (based on %.1fxSAC/+%dmin@%.0f%s): 							%.0f%s/%.0f%s/&lt;span style=&apos;color: %s;&apos;&gt;&amp;Delta;:%+.0f%s&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;&amp;nbsp;&amp;mdash; &lt;span style=&apos;color: %s;&apos;&gt;Minimum Gas&lt;/span&gt; (basierend auf %.1fxAMV/+%dmin@%.0f%s): %.0f%s/%.0f%s/&lt;span style=&apos;color: %s;&apos;&gt;&amp;Delta;:%+.0f%s&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="432"/>
