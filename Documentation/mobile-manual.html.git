@@ -427,11 +427,11 @@ for each dive, the mobile version allows a more accessible dive log
 on a dive trip, useful for proving dive experience to dive shops or to review
 previous dives. <em>Subsurface-mobile</em> for Android allows
 the gathering of GPS locations where dives are performed
-(Subsurface-mobile for iOS currently does not have full functionality).
-Users of <em>Subsurface-mobile</em> typically use the
+(Subsurface-mobile for iOS currently does not have full functionality).</p></div>
+<div class="paragraph"><p>Users of <em>Subsurface-mobile</em> typically use the
 mobile app as a companion to the laptop/desktop version of <em>Subsurface</em>,  sharing dive information
 between the mobile and the desktop versions. However <em>Subsurface-mobile</em> can
-also be used independently of the desktop version and is not dependent on the use of
+also be used independently of the desktop version and does not require the use of
 cloud storage.</p></div>
 <div class="paragraph"><p><em>Subsurface-mobile</em> allows:</p></div>
 <div class="ulist"><ul>
@@ -484,13 +484,13 @@ are accessible by <em>Subsurface-mobile</em>.</p></div>
 <h2 id="_installing_em_subsurface_mobile_em_on_your_mobile_device">2. Installing <em>Subsurface-mobile</em> on your mobile device</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Find <em>Subsurface-mobile</em> in the <em>Google Play Store</em> or the <em>iTunes Store</em>
-and install it.</p></div>
+and install it. Please note that both stores also contain the older <em>Subsurface</em> companion app (used only for tracking GPS positions) - make sure you actually install <em>Subsurface-mobile</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="_using_em_subsurface_mobile_em_for_the_first_time">3. Using <em>Subsurface-mobile</em> for the first time</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Upon starting <em>Subsurface-mobile</em> for the first time, a Subsurface
+<div class="paragraph"><p>When you start <em>Subsurface-mobile</em> for the first time, a Subsurface
 splash screen is shown while the program loads. On some devices this
 may take several seconds. After loading, the <em>Cloud Credentials screen</em> appears
 (see image below on left).</p></div>
@@ -509,38 +509,35 @@ yet (the usual case), then a an empty dive log is created.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_using_cloud_storage">3.2. Using Cloud Storage</h3>
-<div class="paragraph"><p>A free Internet cloud storage account is created for
-storing dive log information in future. One can create a new cloud storage account
-using a mobile device: there is no need to have credentials created
-using the <em>Subsurface</em> desktop application in order to use cloud storage and one can
-do full maintenance of a dive log from <em>Subsurface-mobile</em>. On the other hand, if one
-shares credentials between <em>Subsurface-mobile</em> and <em>Subsurface</em> for desktop, one&#8217;s dive
+<div class="paragraph"><p>A free Internet cloud storage account can be used for
+storing dive log information. This cloud storage account can be created either from <em>Subsurface</em> on the desktop or <em>Subsurface-mobile</em>
+using a mobile device; in fact, you can
+do full maintenance of a dive log from <em>Subsurface-mobile</em> alone. On the other hand, if you
+share credentials between <em>Subsurface-mobile</em> and <em>Subsurface</em> for desktop, through the <em>Subsurface</em> cloud storage your dive
 log can be shared by both devices.</p></div>
+<div class="paragraph"><p>The dive data are cached both on the mobile device as well as on the desktop - it is easy to create backups of the data (for example in XML format) on the desktop, and both mobile device and desktop keep a local copy of the data so that the dive log is always accessible, even without Internet connection. The Subsurface team never accesses a user&#8217;s dive data without explicit permission to do so, the data are not used for any purpose other than providing them to the user who created them. There are no ads and no harvesting / analysis of the data stored in the Subsurface cloud storage.</p></div>
 <div class="paragraph"><p>1) Enter an e-mail address and a password in the fields indicated on the screen.
 The e-mail address should be in lower case and the password should contain a combination of
 letters from the alphabet (upper and lower case) and/or numbers.
 Tap the "Sign-in or Register" button. If you have already set
 up an account from the <em>Subsurface</em> desktop application, enter the same credentials here.
 Once the dive
-list has been downloaded from the cloud, <em>Subsurface-mobile</em> keeps a local
-copy on the mobile device. This means that even if there is no Internet connection
-at a dive site, one can still access the local copy and view and manipulate
-dive information.</p></div>
+list has been downloaded from the cloud, <em>Subsurface-mobile</em> usually works only with the the local
+copy on the mobile device. This avoids long delays or even failure of operations if there is a bad (or no) internet connection, a situation fairly common at many dive sites.</p></div>
 <div class="paragraph"><p>3) If this is a new account, a PIN screen will open (see image on right, above). A PIN is e-mailed
 to the email address entered in the previous step. Enter this PIN into the field indicated
 and tap the <em>Register</em> button. The user
 information is stored on the cloud server and access to the cloud is enabled. In this case
 the dive list is initially empty. Start entering dives in the dive
-log or download dive information from either a <em>Subsurface</em> cloud
-storage account or from a dive computer.</p></div>
+log or download dive information from a supported dive computer.</p></div>
 <div class="paragraph"><p>The dive log can be updated automatically. If there is Internet connectivity, <em>Subsurface-mobile</em> accesses
 the cloud-based dive log to verify that the local copy of the dive log is still the
 same as the log in the cloud server. If not, the local copy and the copy on
-the server are synchronised.</p></div>
+the server are synchronized.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_changing_the_existing_login_credentials_on_the_em_subsurface_em_cloud">3.3. Changing the existing login credentials on the <em>Subsurface</em> cloud</h3>
-<div class="paragraph"><p>The login credentials can be changed, for example to work with
+<div class="paragraph"><p>The login credentials can be changed, for an example in order to work with
 multiple accounts. See the section on <a href="#S_ChangeCloudAccount">Changing to a different <em>Subsurface</em> cloud account</a>.</p></div>
 </div>
 </div>
@@ -549,7 +546,7 @@ multiple accounts. See the section on <a href="#S_ChangeCloudAccount">Changing t
 <h2 id="_menu_structure_and_user_interface">4. Menu Structure and User Interface</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>At the bottom of many Subsurface-mobile screens is a round button that provides for
-several actions (see image below). The most appropriate choice is indicated in a round blue <em>action button</em> (in the case below, edit a dive). Alternative actions are indicated in a white <em>action bar</em>.
+several actions (see image below). The most common choice is indicated in a round colored <em>action button</em> (in the case below, edit a dive). Alternative actions are indicated in a white <em>action bar</em>.
 On Android devices, use the Android Back
 button for "cancel", "discard" or "back" actions. For example, when
 editing dive information, tapping the action button saves the changes while the
@@ -588,7 +585,7 @@ Drag the action button visible on most screens to
 </ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/Menusystem.jpg" alt="FIGURE: Dive management subpanel" />
+<img src="mobile-images/Menusystem.jpg" alt="FIGURE: Dive management sub-panel" />
 </div>
 </div>
 <div class="paragraph"><p>The image above indicates some of the important features of the menu system.
@@ -628,13 +625,15 @@ on iOS; tap the GPS icon on the Action Bar.).</p></div>
 <h2 id="S_Edit_Dive">6. Editing dive details</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>At the bottom of the dive details screen the action button is a pencil (image on right, above).
-Tapping the pencil button brings up a panel with edit boxes that allows
-changing the existing dive information, e.g. adding text to the dive notes
+Tapping the pencil button changes the page and enables edit boxes that allow
+modifying the existing dive information, e.g. adding text to the dive notes
 or changing the names or values of some of the information (see image below).
 It may be necessary to scroll the window to access all the information.
 At the bottom of the edit screen is a <em>Save</em> action button. Tap this to save
 the new information, after which the dive list screen is
 updated and shown. To cancel any edits, tap the Android <em>Back</em> Button.</p></div>
+<div class="paragraph"><p>When the virtual keyboard is shown, to avoid screen clutter, the action button is hidden.
+Once you close the keyboard it is drawn again.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/Editdive.jpg" alt="FIGURE: Dive edit screen" />
@@ -692,13 +691,14 @@ instruction to delete the dive.</p></div>
 <div class="paragraph"><p>Download of dives is possible from dive computers with a FTDI USB interface, or with a Bluetooth/BTLE interface.</p></div>
 <div class="paragraph"><p>First, establish a link between the dive computer and the mobile device.</p></div>
 <div class="paragraph"><p>For USB dive computers, USB cables "normally" used
-for uploading dives to a desktop/laptop computer do NOT work: these cables often have a full-sized male USB plug
+for uploading dives to a desktop/laptop computer do NOT work: these cables usually have a full-sized ("Type A") male USB plug
 on one end which plugs into the USB port of a desktop/laptop computer. For downloads to a mobile device
 one needs a USB OTG (USB On-The-Go) cable. In most cases it is required to plug the USB
-cable "normally" used with the dive computer into a USB OTG cable which, in turn, plugs into the mini-USB
+cable "normally" used with the dive computer into a USB OTG cable which, in turn, plugs into the mini-USB (or sometimes a USB "Type C")
 receptacle of the mobile device. The
-OTG cable often has a full-size female receptacle at one end which accommodates the full-sized male plug
+OTG cable usually has a full-size ("Type A") female receptacle at one end which accommodates the full-sized male plug
 of the USB cable "normally" used (see image below). This means that two cables are used to connect the dive computer to the mobile device.</p></div>
+<div class="paragraph"><p>Please note that not all Android devices support OTG cables. And even on some devices that do support those cables in general, <em>Subsurface-mobile</em> still in some cases cannot access a dive computer through a serial port.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/USB-OTG.jpg" alt="FIGURE: USB-OTG cable" />
@@ -715,11 +715,12 @@ From the main menu, tap <em>Manage dives &#8594;  Download from DC</em>. A scree
 the names of the vendor and model of the dive computer. For instance, when using a Shearwater Petrel 2 dive
 computer, the vendor is <em>Shearwater</em> and the Dive computer name is <em>Petrel 2</em>. From the two dropdown lists
 at the top of the screen, select the correct vendor and dive computer names (see image on the left, below).</p></div>
-<div class="paragraph"><p>Now tap the button labled <em>Download</em>. The downloaded dives appear in the bottom part of the screen, the
+<div class="paragraph"><p>Now tap the button labeled <em>Download</em>. The downloaded dives appear in the bottom part of the screen, the
 most recent dive at the top (see image on right, below). Be patient because the download can take a few minutes.
-Each dive has a check-box on the left hand side, used for selecting which dives need to be added to the
+As a matter of fact, a complete first download from some dive computers has been shown to take 45 minutes and longer.</p></div>
+<div class="paragraph"><p>After the download, each dive has a check-box on the left hand side, used for selecting which dives you want to be added to the
 <em>Subsurface-mobile</em> dive list: dives that are not checked are ignored. With the appropriate downloaded dives
-having been checked, tap the button at the bottom left labled <em>Accept</em>. All the selected dives appear on
+having been checked, tap the button at the bottom left labeled <em>Accept</em>. All the selected dives appear on
 the <em>Subsurface-mobile</em> dive list. The downloaded dive information can now be edited as described in the section
 above <a href="#S_Edit_Dive">Edit a dive</a>.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -736,7 +737,7 @@ above <a href="#S_Edit_Dive">Edit a dive</a>.</p></div>
 left hand side. Tap that pin and the dive site is shown in Google Maps. Close Google Maps by using the Android <em>Back</em> button.</p></div>
 <div class="paragraph"><p>Alternatively, the <em>Details View</em> has a button at the top right hand marked
 <em>Map it</em>. Tap this button to open Google Maps showing the dive site (image below).
-Afterwards, use the Adroid <em>Back</em> button to return to <em>Subsurface-mobile</em>.</p></div>
+Afterwards, use the Android <em>Back</em> button to return to <em>Subsurface-mobile</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/Map.jpg" alt="FIGURE: Map of dive site" />
@@ -760,7 +761,7 @@ Tap the option <em>Dive management</em>, enabling a number of options:</p></div>
 <div class="paragraph"><p>This is described above under the section dealing with <a href="#S_Add_Dive">Manually adding a new dive to the dive list</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_dowload_from_dc">11.2. Dowload from DC</h3>
+<h3 id="_download_from_dc">11.2. Download from DC</h3>
 <div class="paragraph"><p>This is described above under the section dealing with <a href="#S_Download">Download dives from a dive computer</a>.</p></div>
 </div>
 <div class="sect2">
@@ -778,13 +779,13 @@ the dive log using another device or computer and stored in shared cloud storage
 <div class="sect2">
 <h3 id="_enable_cloud_auto_sync">11.5. Enable cloud auto sync</h3>
 <div class="paragraph"><p>By default <em>Subsurface-mobile</em> runs offline and only syncs the dive list
-with cloud storage when explicily told to do so (see above).
+with cloud storage when explicitly told to do so (see above).
 You can choose to always sync with the cloud servers after every
 modification of the dive list. This is not recommended unless you are in
 an area with fast and reliable internet connection, as otherwise
 <em>Subsurface-mobile</em> might appear to hang between operations as it tries to
 connect to the cloud server. Selecting <em>Enable cloud auto sync</em> causes
-the local dive log to be synchronised with the copy in the cloud every time that
+the local dive log to be synchronized with the copy in the cloud every time that
 <em>Subsurface-mobile</em> is closed. This option is a switch that allows auto
 sync to be either activated or to be switched off.</p></div>
 </div>
@@ -842,7 +843,7 @@ Android device, independent of whether they have been uploaded or not.</p></div>
 <h3 id="_downloading_gps_data_from_the_em_subsurface_em_cloud">12.4. Downloading GPS data from the <em>Subsurface</em> cloud</h3>
 <div class="paragraph"><p>Download the GPS data that have been saved on the cloud (possibly by a
 different device) by
-selecting <em>Download GPS Data</em> from the GPS subpanel.</p></div>
+selecting <em>Download GPS Data</em> from the GPS sub-panel.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_viewing_gps_data">12.5. Viewing GPS data</h3>
@@ -865,7 +866,7 @@ options can be hidden by drawing the GPS record to the right, again using the ha
 <div class="paragraph"><p>Assuming that all the dives have been entered into the dive log or have
 been downloaded from the <em>Subsurface</em> cloud, apply the GPS positions to
 these dives. GPS positions can therefore only be applied to dives in the dive list.
-From the <em>Dive management</em> subpanel, tap <em>Apply GPS fixes</em>. The dive list contains the start
+From the <em>Dive management</em> sub-panel, tap <em>Apply GPS fixes</em>. The dive list contains the start
 and end times of each dive. Now, <em>Subsurface-mobile</em> applies the first
 GPS position that falls within the dive period of each dive. This results
 in a GPS position for each dive that is saved as part of the dive log.</p></div>
@@ -875,7 +876,7 @@ in a GPS position for each dive that is saved as part of the dive log.</p></div>
 <div class="sect1">
 <h2 id="_using_the_settings_for_em_subsurface_mobile_em">13. Using the settings for <em>Subsurface-mobile</em>.</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>The Settings screen allows the customisation of <em>Subsurface-mobile</em>. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.</p></div>
+<div class="paragraph"><p>The Settings screen allows the customization of <em>Subsurface-mobile</em>. Many of the settings involve dragging a slider switch to activate or deactivate a particular setting.</p></div>
 <div class="sect2">
 <h3 id="S_ChangeCloudAccount">13.1. Changing to a different <em>Subsurface</em> cloud account</h3>
 <div class="paragraph"><p>Some users have more than one <em>Subsurface</em> cloud account and with a need to switch between accounts. Tap <em>Settings</em> on the Main menu and scroll to the section titled <em>Cloud status</em> (see image below).
@@ -888,12 +889,12 @@ change the credential information, then tap the button <em>Sign-in or register</
 </div>
 </div>
 <div class="sect2">
-<h3 id="_changing_the_colour_theme_of_em_subsurface_mobile_em">13.2. Changing the colour theme of <em>Subsurface-mobile</em></h3>
-<div class="paragraph"><p><em>Subsurface-mobile</em> has three colour schemes to please users with different
-tastes. This user manual shows the default colour scheme, comprising blue
-colours. Change to a pink or a dark colour scheme by opening the main menu,
+<h3 id="_changing_the_color_theme_of_em_subsurface_mobile_em">13.2. Changing the color theme of <em>Subsurface-mobile</em></h3>
+<div class="paragraph"><p><em>Subsurface-mobile</em> has three color schemes to please users with different
+tastes. This user manual shows the default color scheme, comprising blue
+colors. Change to a pink or a dark color scheme by opening the main menu,
 tap <em>Settings</em>, and scroll to the section with heading <em>Theme</em> (see image above).
-Select the appropriate colour theme by dragging the appropriate slider on the righthand.</p></div>
+Select the appropriate color theme by dragging the appropriate slider on the righthand.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_configuring_the_gps_webservice">13.3. Configuring the GPS webservice</h3>
@@ -901,11 +902,11 @@ Select the appropriate colour theme by dragging the appropriate slider on the ri
 </div>
 <div class="sect2">
 <h3 id="_saving_a_detailed_dive_computer_dive_log">13.4. Saving a detailed dive computer dive log</h3>
-<div class="paragraph"><p>The Settings screen has a section with heading <em>Dive computer</em>, containing a switch to save a detailed log each time dives are downloaded from a dive computer. This is important for solving problems in downloading dives from the dive computer.</p></div>
+<div class="paragraph"><p>Under the heading <em>Dive computer</em>, you will find a switch to save a detailed log each time dives are downloaded from a dive computer. This is important for solving problems in downloading dives from the dive computer. When contacting the developers with download problems, you will usually be asked to provide the information in this log, which can be found in the root folder of your local storage device as <code>libdivecomputer.log</code>. In the same location you can also find a <code>subsurfacel.log</code> which is always created and which include more information which can be helpful when debugging problems with Subsurface-mobile.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_activating_the_developer_submenu">13.5. Activating the Developer submenu</h3>
-<div class="paragraph"><p>Information is available useful for understanding the screen rendering of dive information as well as the way in which <em>Subsurface-mobile</em> processed information during a specific occasion while running the app (see section below). Activate (or deactivate) this menu item on the Main Menu by dragging the slider switch in the Settings screen.</p></div>
+<div class="paragraph"><p>The information in subsurface.log plus some additional information for understanding the screen rendering of dive information as well as the way in which <em>Subsurface-mobile</em> processed information during a specific occasion while running the app (see section below) is available through a <em>Developer</em> menu at run time. Activate (or deactivate) this menu item on the Main Menu by dragging the slider switch in the Settings screen.</p></div>
 </div>
 </div>
 </div>
@@ -918,7 +919,7 @@ the context of program development and debugging.</p></div>
 <h3 id="_app_log">14.1. App log</h3>
 <div class="paragraph"><p>This option shows the messages that <em>Subsurface-mobile</em> generates while running. While
 most users are not aware of these messages, they are often crucial in detecting any
-abnormal behaviour of the app. The App log can be found in the root directory of the local storage of the mobile device.</p></div>
+abnormal behavior of the app. The App log can be found in the root directory of the local storage of the mobile device.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_theme_information">14.2. Theme information</h3>
@@ -931,7 +932,7 @@ device and the font characteristics used by <em>Subsurface-mobile</em>.</p></div
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-11 05:56:06 PDT
+Last updated 2017-10-11 16:47:09 PDT
 </div>
 </div>
 </body>
