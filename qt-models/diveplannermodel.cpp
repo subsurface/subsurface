@@ -348,7 +348,7 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 	return QAbstractItemModel::setData(index, value, role);
 }
 
-void DivePlannerPointsModel::gaschange(const QModelIndex &index, int newcylinderid)
+void DivePlannerPointsModel::gasChange(const QModelIndex &index, int newcylinderid)
 {
 	int i = index.row(), oldcylinderid = divepoints[i].cylinderid;
 	while (i < rowCount() && oldcylinderid == divepoints[i].cylinderid)

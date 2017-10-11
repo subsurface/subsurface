@@ -76,7 +76,7 @@ void DiveHandler::changeGas()
 {
 	QAction *action = qobject_cast<QAction *>(sender());
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
-	plannerModel->gaschange(index.sibling(index.row() + 1, index.column()), action->data().toInt());
+	plannerModel->gasChange(index.sibling(index.row() + 1, index.column()), action->data().toInt());
 }
 
 void DiveHandler::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
