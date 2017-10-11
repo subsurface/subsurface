@@ -112,15 +112,12 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
 
 RESOURCES += qml.qrc ../../../subsurface.qrc ../../../mobile-widgets/qml/mobile-resources.qrc translations.qrc
 
-LIBS += ../install-root/lib/libcrypto.a \
-        ../install-root/lib/libdivecomputer.a \
+LIBS += ../install-root/lib/libdivecomputer.a \
         ../install-root/lib/libgit2.a \
         ../install-root/lib/libsqlite3.a \
         ../install-root/lib/libzip.a \
         ../install-root/lib/libxslt.a \
         ../install-root/lib/libxml2.a \
-        ../install-root/lib/libssh2.a \
-        ../install-root/lib/libssl.a \
         -liconv
 
 INCLUDEPATH += ../install-root/include/ \

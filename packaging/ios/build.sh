@@ -16,8 +16,6 @@ LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=0.11.2
 LIBGIT2_VERSION=0.23.4
-LIBSSH2_VERSION=1.6.0
-OPENSSL_VERSION=1.0.1p
 
 # not on iOS so far, but kept here for completeness
 LIBUSB_VERSION=1.0.19
@@ -118,7 +116,7 @@ echo next building for $ARCH
 		# so let's hack around that
 		make libsqlite3.la
 		touch sqlite3
-		make install
+		make install-libLTLIBRARIES
 		popd
 	fi
 
@@ -175,79 +173,6 @@ echo next building for $ARCH
 		popd
 	fi
 
-	configure_openssl() {
-	    OS=$1
-	    ARCH=$2
-	    PLATFORM=$3
-	    SDK_VERSION=$4
-	    DEPLOYMENT_VERSION=$5
-
-	    export CROSS_TOP="${PLATFORM}/Developer"
-	    export CROSS_SDK="${OS}${SDK_VERSION}.sdk"
-	    if [ "$ARCH_NAME" == "x86_64" ]; then
-	      ./Configure darwin64-${ARCH}-cc --openssldir="${PREFIX}" --prefix="${PREFIX}"
-	      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -mios-simulator-version-min=${DEPLOYMENT_VERSION} -fembed-bitcode !" "Makefile"
-	    else
-	      ./Configure iphoneos-cross -no-asm --openssldir="${PREFIX}"
-	      sed -ie "s!^CFLAG=!CFLAG=-isysroot ${CROSS_TOP}/SDKs/${CROSS_SDK} -arch $ARCH -miphoneos-version-min=${DEPLOYMENT_VERSION} -fembed-bitcode !" "Makefile"
-	      perl -i -pe 's|static volatile sig_atomic_t intr_signal|static volatile int intr_signal|' crypto/ui/ui_openssl.c
-	    fi
-	}
-
-	build_openssl()
-	{
-	   ARCH=$1
-	   SDK=$2
-	   TYPE=$3
-	   export BUILD_TOOLS="${DEVELOPER}"
-	   mkdir -p "lib-${TYPE}"
-
-	   rm -rf openssl-${OPENSSL_VERSION}
-	   tar xfz openssl-${OPENSSL_VERSION}.tar.gz
-	   pushd .
-	   cd "openssl-${OPENSSL_VERSION}"
-	   #fix header for Swift
-	   sed -ie "s/BIGNUM \*I,/BIGNUM \*i,/g" crypto/rsa/rsa.h
-	   if [ "$TYPE" == "ios" ]; then
-	     if [ "$ARCH" == "x86_64" ]; then
-		 configure_openssl "iPhoneSimulator" $ARCH ${IPHONESIMULATOR_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
-	     else
-		 configure_openssl "iPhoneOS" $ARCH ${IPHONEOS_PLATFORM} ${IPHONEOS_SDK_VERSION} ${IPHONEOS_DEPLOYMENT_VERSION}
-	     fi
-	   fi
-	   make
-	   make install_sw
-	   popd
-	}
-
-	if [ ! -e openssl-${OPENSSL_VERSION}.tar.gz ] ; then
-		wget -O openssl-${OPENSSL_VERSION}.tar.gz http://www.openssl.org/source/openssl-${OPENSSL_VERSION}.tar.gz
-	fi
-	if [ ! -e openssl-build-$ARCH ] ; then
-		tar -zxf openssl-${OPENSSL_VERSION}.tar.gz
-		mv openssl-${OPENSSL_VERSION} openssl-build-$ARCH
-	fi
-	if [ ! -e $PKG_CONFIG_LIBDIR/libssl.pc ] ; then
-		build_openssl "$ARCH" "${IPHONESIMULATOR_SDK}" "ios"
-	fi
-
-	if [ ! -e libssh2-${LIBSSH2_VERSION}.tar.gz ] ; then
-		wget http://www.libssh2.org/download/libssh2-${LIBSSH2_VERSION}.tar.gz
-	fi
-	if [ ! -e libssh2-${LIBSSH2_VERSION} ] ; then
-		tar -zxf libssh2-${LIBSSH2_VERSION}.tar.gz
-	fi
-	if [ ! -e $PKG_CONFIG_LIBDIR/libssh2.pc ] ; then
-		mkdir -p libssh2-build-$ARCH
-		pushd libssh2-build-$ARCH
-		../libssh2-${LIBSSH2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
-		make
-		make install
-		# Patch away pkg-config dependency to zlib, its there, i promise
-		perl -pi -e 's/^(Requires.private:.*),zlib$/$1 $2/' $PKG_CONFIG_LIBDIR/libssh2.pc
-		popd
-	fi
-
 	if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
 		wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
 	fi
@@ -266,11 +191,7 @@ echo next building for $ARCH
 			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
 			-DCMAKE_PREFIX_PATH=${PREFIX} \
 			-DCURL=OFF \
-			-DUSE_SSH=ON \
-			-DOPENSSL_SSL_LIBRARY=${PREFIX}/lib/libssl.a \
-			-DOPENSSL_CRYPTO_LIBRARY=${PREFIX}/lib/libcrypto.a \
-			-DOPENSSL_INCLUDE_DIR=${PREFIX}/include/openssl \
-			-D_OPENSSL_VERSION=1.0.1p \
+			-DUSE_SSH=OFF \
 			../libgit2-${LIBGIT2_VERSION}/
 		make
 		make install
