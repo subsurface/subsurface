@@ -45,6 +45,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString progressMessage READ progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
 	Q_PROPERTY(bool libdcLog READ libdcLog WRITE setLibdcLog NOTIFY libdcLogChanged)
 	Q_PROPERTY(bool developer READ developer WRITE setDeveloper NOTIFY developerChanged)
+	Q_PROPERTY(bool btEnabled READ btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
 
 public:
 	QMLManager();
@@ -124,6 +125,9 @@ public:
 	bool developer() const;
 	void setDeveloper(bool value);
 
+	bool btEnabled() const;
+	void setBtEnabled(bool value);
+
 	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
 
@@ -134,7 +138,7 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE void setStatusbarColor(QColor color);
-	Q_INVOKABLE bool btEnabled() const;
+	void btHostModeChange(QBluetoothLocalDevice::HostMode state);
 
 #if defined(Q_OS_ANDROID)
 	void writeToAppLogFile(QString logText);
@@ -258,6 +262,7 @@ signals:
 	void progressMessageChanged();
 	void libdcLogChanged();
 	void developerChanged();
+	void btEnabledChanged();
 };
 
 #endif
