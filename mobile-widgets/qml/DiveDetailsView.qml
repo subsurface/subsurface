@@ -5,6 +5,7 @@ import QtWebView 1.0
 */
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.0 as Controls
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.0 as Kirigami
 
@@ -33,7 +34,7 @@ Item {
 		width: parent.width - Kirigami.Units.gridUnit
 		height: childrenRect.height - Kirigami.Units.smallSpacing
 		anchors.left: parent.left
-		Kirigami.Label {
+		Controls.Label {
 			id: locationText
 			text: dive.location
 			font.weight: Font.Bold
@@ -73,21 +74,21 @@ Item {
 				bottom: numberText.bottom
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				text: dive.date + " " + dive.time
 				width: Math.max(locationText.width * 0.45, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
 			// let's try to show the depth / duration very compact
-			Kirigami.Label {
+			Controls.Label {
 				text: dive.depth + ' / ' + dive.duration
 				width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth)
 				font.pointSize: subsurfaceTheme.smallPointSize
 				color: subsurfaceTheme.textColor
 			}
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: numberText
 			text: "#" + dive.number
 			font.pointSize: subsurfaceTheme.smallPointSize
@@ -102,7 +103,7 @@ Item {
 				left: dateRow.left
 				top: numberText.bottom
 			}
-			Kirigami.Label {
+			Controls.Label {
 				id: ratingText
 				text: qsTr("Rating:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -144,7 +145,7 @@ Item {
 				right: numberText.right
 				top: numberText.bottom
 			}
-			Kirigami.Label {
+			Controls.Label {
 				id: visibilityText
 				text: qsTr("Visibility:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -212,7 +213,7 @@ Item {
 				anchors.fill: parent
 			}
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: noProfile
 			visible: dive.noDive
 			Layout.fillWidth: true
@@ -224,19 +225,19 @@ Item {
 
 		// first row
 		//-----------
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Suit:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Air Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Water Temp:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -245,19 +246,19 @@ Item {
 
 		// second row
 		//------------
-		Kirigami.Label {
+		Controls.Label {
 			id: txtSuit
 			text: dive.suit
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: txtAirTemp
 			text: dive.airTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: txtWaterTemp
 			text: dive.waterTemp
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -274,21 +275,21 @@ Item {
 
 		// thrid row
 		//------------
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Cylinder:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.bottomMargin: 0
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Weight:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 			Layout.bottomMargin: 0
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("SAC:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -298,19 +299,19 @@ Item {
 
 		// fourth row
 		//------------
-		Kirigami.Label {
+		Controls.Label {
 			id: txtCylinder
 			text: dive.getCylinder
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: txtWeight
 			text: dive.sumWeight
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col2Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: txtSAC
 			text: dive.sac
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -327,14 +328,14 @@ Item {
 
 		// fifth row
 		//-----------
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Divemaster:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 			Layout.bottomMargin: 0
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Buddy:")
 			opacity: 0.6
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -345,13 +346,13 @@ Item {
 
 		// sixth row
 		//-----------
-		Kirigami.Label {
+		Controls.Label {
 			id: txtDiveMaster
 			text: dive.divemaster
 			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: txtBuddy
 			text: dive.buddy
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
@@ -368,7 +369,7 @@ Item {
 		}
 
 
-		Kirigami.Label {
+		Controls.Label {
 			Layout.fillWidth: true
 			opacity: 0.6
 			text: qsTr("Notes")
@@ -376,7 +377,7 @@ Item {
 			Layout.columnSpan: 3
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			id: txtNotes
 			text: dive.notes
 			focus: true

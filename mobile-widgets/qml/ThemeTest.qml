@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.5
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Window 2.2
 import org.kde.kirigami 2.0 as Kirigami
 
@@ -27,31 +28,31 @@ Kirigami.Page {
 			id: fm
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Geometry (pixels):"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: rootItem.width + "x" + rootItem.height
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Geometry (gridUnits):"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: Math.round(rootItem.width / Kirigami.Units.gridUnit) + "x" + Math.round(rootItem.height / Kirigami.Units.gridUnit)
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Units.gridUnit:"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: Kirigami.Units.gridUnit
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Units.devicePixelRatio:"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: Screen.devicePixelRatio
 		}
 
@@ -61,56 +62,56 @@ Kirigami.Page {
 			Layout.columnSpan: 2
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "FontMetrics pointSize:"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: fm.font.pointSize
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "FontMetrics pixelSize:"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: Number(fm.height).toFixed(2)
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "FontMetrics devicePixelRatio:"
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: Number(fm.height / fm.font.pointSize).toFixed(2)
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Text item pixelSize:"
 		}
 		Text {
 			text: font.pixelSize
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Text item pointSize:"
 		}
 		Text {
 			text: font.pointSize
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Pixel density:"
 		}
 		Text {
 			text: Number(Screen.pixelDensity).toFixed(2)
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "Height of default font:"
 		}
 		Text {
 			text: Number(font.pixelSize / Screen.pixelDensity).toFixed(2) + "mm"
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: "2cm x 2cm square:"
 		}
 		Rectangle {
@@ -119,7 +120,7 @@ Kirigami.Page {
 			color: "black"
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			Layout.columnSpan: 2
 			Layout.fillHeight: true
 		}

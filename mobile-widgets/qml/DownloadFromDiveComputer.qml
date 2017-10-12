@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.2 as Controls
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
@@ -60,14 +60,14 @@ Kirigami.Page {
 		Layout.fillWidth: true
 		GridLayout {
 			columns: 2
-			Kirigami.Label { text: qsTr(" Vendor name: ") }
+			Controls.Label { text: qsTr(" Vendor name: ") }
 			property var vendoridx: downloadThread.data().getDetectedVendorIndex()
-			ComboBox {
+			Controls.ComboBox {
 				id: comboVendor
 				Layout.fillWidth: true
 				model: vendorList
 				currentIndex: parent.vendoridx
-				delegate: ItemDelegate {
+				delegate: Controls.ItemDelegate {
 					width: comboVendor.width
 					contentItem: Text {
 						text: modelData
@@ -91,14 +91,14 @@ Kirigami.Page {
 						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(currentText)
 				}
 			}
-			Kirigami.Label { text: qsTr(" Dive Computer:") }
-			ComboBox {
+			Controls.Label { text: qsTr(" Dive Computer:") }
+			Controls.ComboBox {
 				id: comboProduct
 				property var productidx: downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
 				Layout.fillWidth: true
 				model: null
 				currentIndex: productidx
-				delegate: ItemDelegate {
+				delegate: Controls.ItemDelegate {
 					width: comboProduct.width
 					contentItem: Text {
 						text: modelData
@@ -126,13 +126,13 @@ Kirigami.Page {
 					currentIndex = productidx
 				}
 			}
-			Kirigami.Label { text: qsTr(" Connection:") }
-			ComboBox {
+			Controls.Label { text: qsTr(" Connection:") }
+			Controls.ComboBox {
 				id: comboConnection
 				Layout.fillWidth: true
 				model: connectionListModel
 				currentIndex: -1
-				delegate: ItemDelegate {
+				delegate: Controls.ItemDelegate {
 					width: comboConnection.width
 					contentItem: Text {
 						text: modelData
@@ -162,7 +162,7 @@ Kirigami.Page {
 			}
 		}
 
-		ProgressBar {
+		Controls.ProgressBar {
 			id: progressBar
 			Layout.fillWidth: true
 			indeterminate: true
@@ -197,7 +197,7 @@ Kirigami.Page {
 					manager.appendTextToLog("exit DCDownload screen")
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				Layout.maximumWidth: parent.width - download.width - quitbutton.width
 				text: divesDownloaded ? qsTr(" Downloaded dives") :
 							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : btMessage)
@@ -226,7 +226,7 @@ Kirigami.Page {
 
 		RowLayout {
 			Layout.fillWidth: true
-			Kirigami.Label {
+			Controls.Label {
 				text: ""  // Spacer on the left for hamburger menu
 				Layout.fillWidth: true
 			}
@@ -243,7 +243,7 @@ Kirigami.Page {
 					stackView.pop();
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}

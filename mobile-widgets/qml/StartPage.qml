@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.5
 import QtQuick.Layouts 1.1
+import QtQuick.Controls 2.0 as Controls
 import org.kde.kirigami 2.0 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
@@ -18,7 +19,7 @@ Kirigami.ScrollablePage {
 			Layout.topMargin: 0
 			property int headingLevel: 3
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: messageArea
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
@@ -26,7 +27,7 @@ Kirigami.ScrollablePage {
 			text: manager.startPageText
 			wrapMode: Text.WordWrap
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: explanationTextBasic
 			visible: !showPin
 			Layout.fillWidth: true
@@ -39,7 +40,7 @@ Kirigami.ScrollablePage {
 				"the no cloud buttton above.")
 			wrapMode: Text.WordWrap
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: explanationTextPin
 			visible: showPin
 			Layout.fillWidth: true

@@ -1,5 +1,5 @@
 import QtQuick 2.6
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.3
@@ -45,14 +45,14 @@ Kirigami.AbstractListItem {
 				importModel.selectRow(index)
 			}
 		}
-		Kirigami.Label {
+		Controls.Label {
 			id: dateLabel
 			text: innerListItem.datetime
 			width: Math.round(parent.width * 0.35)
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: textColor
 		}
-		Kirigami.Label {
+		Controls.Label {
 			text: innerListItem.depth + ' / ' + innerListItem.duration
 			width: Math.round(parent.width * 0.35)
 			font.pointSize: subsurfaceTheme.smallPointSize
