@@ -12,6 +12,7 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QDateTime>
+#include <QBluetoothLocalDevice>
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
@@ -77,6 +78,23 @@ extern "C" int gitProgressCB(const char *text)
 	return 0;
 }
 
+void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
+{
+	BTDiscovery *btDiscovery = BTDiscovery::instance();
+
+	qDebug() << "btHostModeChange to " << state;
+	if (state != QBluetoothLocalDevice::HostPoweredOff) {
+		connectionListModel.removeAllAddresses();
+		btDiscovery->BTDiscoveryReDiscover();
+		m_btEnabled = btDiscovery->btAvailable();
+	} else {
+		connectionListModel.removeAllAddresses();
+		set_non_bt_addresses();
+		m_btEnabled = false;
+	}
+	emit btEnabledChanged();
+}
+
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	reply(0),
@@ -117,6 +135,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// to QML, but that doesn't seem to always work
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 	m_btEnabled = btDiscovery->btAvailable();
+	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
+		this, &QMLManager::btHostModeChange);
 #else
 	m_btEnabled = false;
 #endif
@@ -1657,6 +1677,11 @@ void QMLManager::setDeveloper(bool value)
 bool QMLManager::btEnabled() const
 {
 	return m_btEnabled;
+}
+
+void QMLManager::setBtEnabled(bool value)
+{
+	m_btEnabled = value;
 }
 
 #if defined (Q_OS_ANDROID)

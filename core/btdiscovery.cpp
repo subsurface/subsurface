@@ -60,6 +60,12 @@ BTDiscovery::BTDiscovery(QObject *parent)
 	}
 	m_instance = this;
 #if defined(BT_SUPPORT)
+	BTDiscoveryReDiscover();
+#endif
+}
+
+void BTDiscovery::BTDiscoveryReDiscover()
+{
 #if !defined(Q_OS_IOS)
 	if (localBtDevice.isValid() &&
 	    localBtDevice.hostMode() == QBluetoothLocalDevice::HostConnectable) {
@@ -99,7 +105,6 @@ BTDiscovery::BTDiscovery(QObject *parent)
 		qDebug() << "localBtDevice isn't valid";
 		m_btValid = false;
 	}
-#endif
 #endif
 }
 

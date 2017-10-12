@@ -46,6 +46,8 @@ public:
 	void getBluetoothDevices();
 #endif
 	QList<btVendorProduct> getBtDcs();
+	QBluetoothLocalDevice localBtDevice;
+	void BTDiscoveryReDiscover();
 
 private:
 	static BTDiscovery *m_instance;
@@ -59,7 +61,6 @@ private:
 #endif
 
 	QList<struct btPairedDevice> btPairedDevices;
-	QBluetoothLocalDevice localBtDevice;
 	QBluetoothDeviceDiscoveryAgent *discoveryAgent;
 
 signals:
