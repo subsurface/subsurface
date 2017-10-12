@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.3
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -51,14 +51,14 @@ Item {
 			Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Email")
 			visible: !rootItem.showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		TextField {
+		Controls.TextField {
 			id: login
 			text: manager.cloudUserName
 			visible: !rootItem.showPin
@@ -67,14 +67,14 @@ Item {
 					  Qt.ImhNoAutoUppercase
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("Password")
 			visible: !rootItem.showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
-		TextField {
+		Controls.TextField {
 			id: password
 			text: manager.cloudPassword
 			visible: !rootItem.showPin
@@ -85,11 +85,11 @@ Item {
 			Layout.fillWidth: true
 		}
 
-		Kirigami.Label {
+		Controls.Label {
 			text: qsTr("PIN")
 			visible: rootItem.showPin
 		}
-		TextField {
+		Controls.TextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
@@ -109,7 +109,7 @@ Item {
 					saveCredentials()
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}
@@ -137,7 +137,7 @@ Item {
 					saveCredentials()
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: ""  // Spacer between 2 button groups
 				Layout.fillWidth: true
 			}

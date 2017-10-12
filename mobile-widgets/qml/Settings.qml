@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.3
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -34,13 +34,13 @@ Kirigami.ScrollablePage {
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Email")
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.15
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: manager.credentialStatus === QMLManager.CS_NOCLOUD ? qsTr("Not applicable") : manager.cloudUserName
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
@@ -55,13 +55,13 @@ Kirigami.ScrollablePage {
 					rootItem.returnTopPage()
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Status")
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.15
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: describe[manager.credentialStatus]
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
@@ -88,7 +88,7 @@ Kirigami.ScrollablePage {
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
 			}
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Blue")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
@@ -140,7 +140,7 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				id: pinkLabel
 				text: qsTr("Pink")
 				rightPadding: Kirigami.Units.gridUnit
@@ -193,7 +193,7 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Dark")
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
@@ -266,13 +266,13 @@ Kirigami.ScrollablePage {
 				Layout.columnSpan: 2
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Distance threshold (meters)")
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 
-			TextField {
+			Controls.TextField {
 				id: distanceThreshold
 				text: manager.distanceThreshold
 				Layout.preferredWidth: gridWidth * 0.25
@@ -282,13 +282,13 @@ Kirigami.ScrollablePage {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Time threshold (minutes)")
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 
-			TextField {
+			Controls.TextField {
 				id: timeThreshold
 				text: manager.timeThreshold
 				Layout.preferredWidth: gridWidth * 0.25
@@ -318,7 +318,7 @@ Kirigami.ScrollablePage {
 				Layout.columnSpan: 2
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Save detailed log")
 				Layout.preferredWidth: gridWidth * 0.75
 			}
@@ -350,7 +350,7 @@ Kirigami.ScrollablePage {
 				Layout.columnSpan: 2
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				text: qsTr("Display Developer menu")
 				Layout.preferredWidth: gridWidth * 0.75
 			}

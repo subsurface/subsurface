@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
@@ -88,7 +88,7 @@ Kirigami.ScrollablePage {
 					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
 					height: childrenRect.height - Kirigami.Units.smallSpacing
 					anchors.left: leftBarDive.right
-					Kirigami.Label {
+					Controls.Label {
 						id: locationText
 						text: dive.location
 						font.weight: Font.Bold
@@ -110,7 +110,7 @@ Kirigami.ScrollablePage {
 							bottom: numberText.bottom
 						}
 
-						Kirigami.Label {
+						Controls.Label {
 							id: dateLabel
 							text: dive.date + " " + dive.time
 							width: Math.max(locationText.width * 0.45, paintedWidth) // helps vertical alignment throughout listview
@@ -118,14 +118,14 @@ Kirigami.ScrollablePage {
 							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						}
 						// let's try to show the depth / duration very compact
-						Kirigami.Label {
+						Controls.Label {
 							text: dive.depth + ' / ' + dive.duration
 							width: Math.max(Kirigami.Units.gridUnit * 3, paintedWidth) // helps vertical alignment throughout listview
 							font.pointSize: subsurfaceTheme.smallPointSize
 							color: innerListItem.checked ? subsurfaceTheme.darkerPrimaryTextColor : secondaryTextColor
 						}
 					}
-					Kirigami.Label {
+					Controls.Label {
 						id: numberText
 						text: "#" + dive.number
 						font.pointSize: subsurfaceTheme.smallPointSize
@@ -208,7 +208,7 @@ Kirigami.ScrollablePage {
 						left: parent.left
 						leftMargin: Kirigami.Units.smallSpacing
 					}
-					Label {
+					Controls.Label {
 						text: {	section.replace(/.*\+\+/, "").replace(/::.*/, "").replace("@", "\n'") }
 						color: subsurfaceTheme.primaryTextColor
 						font.pointSize: subsurfaceTheme.smallPointSize
@@ -222,7 +222,7 @@ Kirigami.ScrollablePage {
 					}
 				}
 
-				Kirigami.Label {
+				Controls.Label {
 					id: sectionText
 					text: {
 						// if the tripMeta (which we get as "section") ends in ::-- we know
@@ -298,7 +298,7 @@ Kirigami.ScrollablePage {
 
 	Text {
 		// make sure this gets pushed far enough down so that it's not obscured by the page title
-		// it would be nicer to use Kirigami.Label, but due to a QML bug that isn't possible with a
+		// it would be nicer to use Controls.Label, but due to a QML bug that isn't possible with a
 		// weird "component versioning" error
 		// using this property means that we require Qt 5.6 / QtQuick2.6
 		topPadding: Kirigami.Units.iconSizes.large

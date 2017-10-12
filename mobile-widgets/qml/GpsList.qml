@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
@@ -23,48 +23,48 @@ Kirigami.ScrollablePage {
 				columns: 4
 				id: timeAndName
 				width: parent.width
-				Kirigami.Label {
+				Controls.Label {
 					text: qsTr('Date: ')
 					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: date
 					color: subsurfaceTheme.textColor
 					Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: qsTr('Name: ')
 					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: name
 					color: subsurfaceTheme.textColor
 					Layout.preferredWidth: Math.max(parent.width / 5, paintedWidth)
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: qsTr('Latitude: ')
 					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: latitude
 					color: subsurfaceTheme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: qsTr('Longitude: ')
 					color: subsurfaceTheme.textColor
 					opacity: 0.6
 					font.pointSize: subsurfaceTheme.smallPointSize
 				}
-				Kirigami.Label {
+				Controls.Label {
 					text: longitude
 					color: subsurfaceTheme.textColor
 					font.pointSize: subsurfaceTheme.smallPointSize

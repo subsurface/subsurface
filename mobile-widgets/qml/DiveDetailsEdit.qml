@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.3
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.0 as Controls
 import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.1
 import org.subsurfacedivelog.mobile 1.0
@@ -88,24 +88,24 @@ Item {
 				Layout.columnSpan: 2
 				text: qsTr("Dive %1").arg(number)
 			}
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Date:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtDate;
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Location:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtLocation;
 				Layout.fillWidth: true
 				onEditingFinished: {
@@ -113,12 +113,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Coordinates:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtGps
 				Layout.fillWidth: true
 				onEditingFinished: {
@@ -126,7 +126,7 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Use current\nGPS location:")
 				visible: manager.locationServiceAvailable
@@ -141,12 +141,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Depth:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtDepth
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
@@ -154,12 +154,12 @@ Item {
 					focus = false
 				}
 			}
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Duration:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtDuration
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /[^-]*/ }
@@ -168,12 +168,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Air Temp:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtAirTemp
 				Layout.fillWidth: true
 				onEditingFinished: {
@@ -181,12 +181,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Water Temp:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtWaterTemp
 				Layout.fillWidth: true
 				onEditingFinished: {
@@ -194,7 +194,7 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Suit:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -207,7 +207,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Buddy:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -220,7 +220,7 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Divemaster:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -233,12 +233,12 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Weight:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtWeight
 				readOnly: text === "cannot edit multiple weight systems"
 				Layout.fillWidth: true
@@ -247,7 +247,7 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder:")
 				font.pointSize: subsurfaceTheme.smallPointSize
@@ -260,12 +260,12 @@ Item {
 				Layout.fillWidth: true
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Gas mix:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtGasMix
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
@@ -274,12 +274,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Start Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtStartPressure
 				Layout.fillWidth: true
 				onEditingFinished: {
@@ -287,12 +287,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("End Pressure:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextField {
+			Controls.TextField {
 				id: txtEndPressure
 				Layout.fillWidth: true
 				onEditingFinished: {
@@ -300,12 +300,12 @@ Item {
 				}
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Rating:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			SpinBox {
+			Controls.SpinBox {
 				id: ratingPicker
 				from: 0
 				to: 5
@@ -313,12 +313,12 @@ Item {
 				onValueChanged: rating = value
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Visibility:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			SpinBox {
+			Controls.SpinBox {
 				id: visibilityPicker
 				from: 0
 				to: 5
@@ -326,13 +326,13 @@ Item {
 				onValueChanged: visibility = value
 			}
 
-			Kirigami.Label {
+			Controls.Label {
 				Layout.columnSpan: 2
 				Layout.alignment: Qt.AlignLeft
 				text: qsTr("Notes:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			TextArea {
+			Controls.TextArea {
 				Layout.columnSpan: 2
 				width: parent.width
 				id: txtNotes
