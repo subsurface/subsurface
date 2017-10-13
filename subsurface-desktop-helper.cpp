@@ -22,7 +22,6 @@
 #include "mobile-widgets/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "mobile-widgets/qmlprofile.h"
-QObject *qqWindowObject = NULL;
 #endif
 
 static MainWindow *window = NULL;
