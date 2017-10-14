@@ -17,8 +17,8 @@ Kirigami.Page {
 
 	property alias dcImportModel: importModel
 	property bool divesDownloaded: false
-	property bool btEnabled: manager.btEnabled()
-	property string btMessage: manager.btEnabled() ? "" : qsTr("Bluetooth is not enabled")
+	property bool btEnabled: manager.btEnabled
+	property string btMessage: manager.btEnabled ? "" : qsTr("Bluetooth is not enabled")
 
 	DCDownloadThread {
 		id: downloadThread

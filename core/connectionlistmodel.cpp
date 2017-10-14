@@ -42,3 +42,10 @@ void ConnectionListModel::addAddress(const QString address)
 	m_addresses.append(address);
 	endInsertRows();
 }
+
+void ConnectionListModel::removeAllAddresses()
+{
+	beginRemoveRows(QModelIndex(), 0, rowCount());
+	m_addresses.clear();
+	endRemoveRows();
+}
