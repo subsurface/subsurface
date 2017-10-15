@@ -4,6 +4,7 @@
         <file alias="MapWidgetError.qml">mobile-widgets/qml/MapWidgetError.qml</file>
         <file alias="MapWidgetContextMenu.qml">mobile-widgets/qml/MapWidgetContextMenu.qml</file>
         <file alias="mapwidget-marker">mobile-widgets/qml/icons/mapwidget-marker.png</file>
+        <file alias="mapwidget-marker-gray">mobile-widgets/qml/icons/mapwidget-marker-gray.png</file>
         <file alias="mapwidget-marker-selected">mobile-widgets/qml/icons/mapwidget-marker-selected.png</file>
         <file alias="mapwidget-toggle-satellite">mobile-widgets/qml/icons/mapwidget-toggle-satellite.png</file>
         <file alias="mapwidget-toggle-street">mobile-widgets/qml/icons/mapwidget-toggle-street.png</file>
