@@ -51,7 +51,7 @@ Item {
 				z: mapHelper.model.selectedUuid === model.uuid ? mapHelper.model.count - 1 : 0
 				sourceItem: Image {
 					id: mapItemImage
-					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "")
+					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : (mapHelper.editMode ? "-gray" : ""))
 					SequentialAnimation {
 						id: mapItemImageAnimation
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
