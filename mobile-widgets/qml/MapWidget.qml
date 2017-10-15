@@ -49,27 +49,25 @@ Item {
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
 				z: mapHelper.model.selectedUuid === model.uuid ? mapHelper.model.count - 1 : 0
-				sourceItem: Item {
-					Image {
-						id: mapItemImage
-						source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "")
-						SequentialAnimation {
-							id: mapItemImageAnimation
-							PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
-							PropertyAnimation { target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80 }
+				sourceItem: Image {
+					id: mapItemImage
+					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : "")
+					SequentialAnimation {
+						id: mapItemImageAnimation
+						PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
+						PropertyAnimation { target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80 }
+					}
+					MouseArea {
+						drag.target: (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) ? mapItem : undefined
+						anchors.fill: parent
+						onClicked: {
+							if (!mapHelper.editMode)
+								mapHelper.model.setSelectedUuid(model.uuid, true)
 						}
-						MouseArea {
-							drag.target: (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) ? mapItem : undefined
-							anchors.fill: parent
-							onClicked: {
-								if (!mapHelper.editMode)
-									mapHelper.model.setSelectedUuid(model.uuid, true)
-							}
-							onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
-							onReleased: {
-								if (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) {
-									mapHelper.updateCurrentDiveSiteCoordinates(mapHelper.model.selectedUuid, mapItem.coordinate)
-								}
+						onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
+						onReleased: {
+							if (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) {
+								mapHelper.updateCurrentDiveSiteCoordinates(mapHelper.model.selectedUuid, mapItem.coordinate)
 							}
 						}
 					}
