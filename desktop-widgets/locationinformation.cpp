@@ -114,7 +114,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->clear();
 	}
 
-	ui.locationTags->setText(constructLocationTags(&displayed_dive_site));
+	ui.locationTags->setText(constructLocationTags(&displayed_dive_site, false));
 
 }
 

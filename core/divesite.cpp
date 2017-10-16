@@ -2,14 +2,32 @@
 #include "divesite.h"
 #include "pref.h"
 
-QString constructLocationTags(struct dive_site *ds)
+QString constructLocationTags(struct dive_site *ds, bool for_maintab)
 {
 	QString locationTag;
 
 	if (!ds || !ds->taxonomy.nr)
 		return locationTag;
 
-	locationTag = "<small><small>(tags: ";
+	/* Check if the user set any of the 3 geocoding categories */
+	bool prefs_set = false;
+	for (int i = 0; i < 3; i++) {
+		if (prefs.geocoding.category[i] != TC_NONE)
+			prefs_set = true;
+	}
+
+	if (!prefs_set && !for_maintab) {
+		locationTag = QString("<small><small>") + QObject::tr("No dive site layout categories set in preferences!") +
+			QString("</small></small>");
+		return locationTag;
+	}
+	else if (!prefs_set)
+		return locationTag;
+
+	if (for_maintab)
+		locationTag = QString("<small><small>(") + QObject::tr("Tags") + QString(": ");
+	else 
+		locationTag = QString("<small><small>");
 	QString connector;
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
@@ -26,6 +44,9 @@ QString constructLocationTags(struct dive_site *ds)
 		}
 	}
 
-	locationTag += ")</small></small>";
+	if (for_maintab)
+		locationTag += ")</small></small>";
+	else
+		locationTag += "</small></small>";
 	return locationTag;
 }

@@ -8,6 +8,7 @@
 
 #ifdef __cplusplus
 #include <QString>
+#include <QObject>
 extern "C" {
 #else
 #include <stdbool.h>
@@ -76,7 +77,7 @@ void merge_dive_sites(uint32_t ref, uint32_t *uuids, int count);
 
 #ifdef __cplusplus
 }
-QString constructLocationTags(struct dive_site *ds);
+QString constructLocationTags(struct dive_site *ds, bool for_maintab);
 
 #endif
 
