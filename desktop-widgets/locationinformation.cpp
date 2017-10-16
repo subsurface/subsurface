@@ -133,6 +133,7 @@ void LocationInformationWidget::updateGpsCoordinates()
 	QString oldText = ui.diveSiteCoordinates->text();
 	const char *coords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
 	ui.diveSiteCoordinates->setText(coords);
+	ui.geoCodeButton->setEnabled(dive_site_has_gps_location(&displayed_dive_site));
 	free((void *)coords);
 	if (oldText != ui.diveSiteCoordinates->text())
 		markChangedWidget(ui.diveSiteCoordinates);
