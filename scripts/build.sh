@@ -30,6 +30,7 @@ while [[ $# -gt 0 ]] ; do
 		-no-bt)
 			# force Bluetooth support off
 			BTSUPPORT="OFF"
+			;;
 		-build-deps)
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
 			# call this script with -build-deps

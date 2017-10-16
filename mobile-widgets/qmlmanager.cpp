@@ -81,7 +81,7 @@ extern "C" int gitProgressCB(const char *text)
 	return 0;
 }
 
-#if defined(BT_SUPPOR)
+#if defined(BT_SUPPORT)
 void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 {
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
