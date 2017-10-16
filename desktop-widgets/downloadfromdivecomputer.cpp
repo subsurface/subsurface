@@ -71,6 +71,13 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(close, SIGNAL(activated()), this, SLOT(close()));
 	connect(quit, SIGNAL(activated()), parent, SLOT(close()));
 
+	connect(&thread, SIGNAL(finished()),
+		this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
+
+	//TODO: Don't call mainwindow.
+	MainWindow *w = MainWindow::instance();
+	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
+
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
 	if (!dc->dc_vendor().isEmpty()) {
 		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->dc_vendor()));
@@ -329,13 +336,6 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
 	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
-
-	connect(&thread, SIGNAL(finished()),
-		this, SLOT(onDownloadThreadFinished()), Qt::QueuedConnection);
-
-	//TODO: Don't call mainwindow.
-	MainWindow *w = MainWindow::instance();
-	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
 	// before we start, remember where the dive_table ended
 	previousLast = dive_table.nr;
