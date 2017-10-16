@@ -4,31 +4,71 @@
 # Uncomment this to turn on verbose mode.
 export DH_VERBOSE=1
 export DEB_BUILD_OPTIONS+=nocheck
-export DEB_CMAKE_INSTALL_PREFIX=/usr
+export DEB_BUILD+OPTIONS+="parallel=12"
+export MY_INSTALL_ROOT=$(CURDIR)/install-root
+export QTVERSION=$(shell qmake -query QT_VERSION)
 
 %:
 	dh $@ --buildsystem=cmake --builddirectory=subsurface-build --parallel
 
 override_dh_auto_clean:
 	(cd libdivecomputer ; make clean || true)
-	make clean || true
+	rm -f Documentation/user-manual.html
+	rm -f libdivecomputer/Makefile.in
+	rm -f libdivecomputer/aclocal.m4
+	rm -f libdivecomputer/ar-lib
+	rm -f libdivecomputer/compile
+	rm -f libdivecomputer/config.guess
+	rm -f libdivecomputer/config.h.in
+	rm -f libdivecomputer/config.sub
+	rm -f libdivecomputer/configure
+	rm -f libdivecomputer/depcomp
+	rm -f libdivecomputer/examples/Makefile.in
+	rm -f libdivecomputer/include/Makefile.in
+	rm -f libdivecomputer/include/libdivecomputer/Makefile.in
+	rm -f libdivecomputer/install-sh
+	rm -f libdivecomputer/ltmain.sh
+	rm -f libdivecomputer/m4/libtool.m4
+	rm -f libdivecomputer/m4/ltoptions.m4
+	rm -f libdivecomputer/m4/ltsugar.m4
+	rm -f libdivecomputer/m4/ltversion.m4
+	rm -f libdivecomputer/m4/lt~obsolete.m4
+	rm -f libdivecomputer/missing
+	rm -f libdivecomputer/src/Makefile.in
+	rm -rf install-root
 	rm -rf libgit2/build
-	rm -f ssrf-version.h
-	rm -f subsurface
-	rm -f Makefile
+	rm -rf googlemaps/build
+	rm -rf subsurface-build
 
 override_dh_auto_configure:
-	(cd libdivecomputer ; autoreconf --install ; ./configure --disable-shared ; make -j8 )
+	mkdir -p install-root
+	(mkdir -p googlemaps/build ; cd googlemaps/build ; \
+		qmake "INCLUDEPATH=../../QtHeaders/$(QTVERSION)/include" ../googlemaps.pro ; \
+		rm -rf $(QTLOC_GIT) > /dev/null 2>&1 ; \
+		make -j8 ; \
+		INSTALL_ROOT=$(MY_INSTALL_ROOT) make install ; \
+		ln -sf $(MY_INSTALL_ROOT)/usr/lib/x86_64-linux-gnu/qt5/plugins/geoservices/*.so $(MY_INSTALL_ROOT))
+	(cd libdivecomputer ; \
+		 autoreconf --install ; \
+		./configure --disable-examples --prefix=$(MY_INSTALL_ROOT) --disable-shared ; \
+		make -j8 ; \
+		make install)
 	(mkdir libgit2/build ; cd libgit2/build ; \
-		cmake -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DBUILD_EXAMPLES=OFF .. ; \
-		sed -i 's/.so$/.a/' CMakeCache.txt ; make -j8 )
-	(mkdir subsurface-build ; cd subsurface-build ; \
+		cmake -DCMAKE_INSTALL_PREFIX=$(MY_INSTALL_ROOT) -DBUILD_SHARED_LIBS=OFF -DBUILD_CLAR=OFF -DBUILD_EXAMPLES=OFF .. ; \
+		make -j8 ; \
+		make install)
+	(mkdir subsurface-build ; cd subsurface-build ;  \
 		cmake -DCMAKE_BUILD_TYPE=Release \
-			-DPREFER_GIT_FROMSOURCE=1 \
-			-DLIBGIT2_INCLUDE_DIR=$$(pwd)/../libgit2/include \
-			-DLIBGIT2_LIBRARIES=$$(pwd)/../libgit2/build/libgit2.a \
-			-DLIBDIVECOMPUTER_INCLUDE_DIR=$$(pwd)/../libdivecomputer/include \
-			-DLIBDIVECOMPUTER_LIBRARIES=$$(pwd)/../libdivecomputer/src/.libs/libdivecomputer.a \
+			-DCMAKE_INSTALL_PREFIX=/usr \
+			-DLIBGIT2_INCLUDE_DIR=$(MY_INSTALL_ROOT)/include \
+			-DLIBGIT2_LIBRARIES=$(MY_INSTALL_ROOT)/lib/libgit2.a \
+			-DLIBDIVECOMPUTER_INCLUDE_DIR=$(MY_INSTALL_ROOT)/include \
+			-DLIBDIVECOMPUTER_LIBRARIES=$(MY_INSTALL_ROOT)/lib/libdivecomputer.a \
+			-DUSE_LIBGIT23_API=1 \
+			-DFORCE_LIBSSH=1 \
+			-DNO_PRINTING=OFF \
+			-DMAKE_TESTS=OFF \
+			-DNO_MARBLE=ON \
 			$$(pwd)/.. ; )
 
 override_dh_installchangelogs:
@@ -38,3 +78,10 @@ override_dh_installchangelogs:
 	mkdir -p debian/subsurface/usr/share/doc/subsurface
 	cp Documentation/user-manual.txt debian/subsurface/usr/share/doc/subsurface/
 	cp Documentation/user-manual.html debian/subsurface/usr/share/doc/subsurface/html
+
+override_dh_auto_build:
+	(cd subsurface-build ; make -j8)
+
+override_dh_auto_install:
+	(cd subsurface-build ; DESTDIR=$(CURDIR)/debian/subsurface $(MAKE) install)
+	(cd googlemaps/build ; INSTALL_ROOT=$(CURDIR)/debian/subsurface $(MAKE) install)

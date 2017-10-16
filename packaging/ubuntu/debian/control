@@ -21,13 +21,22 @@ Build-Depends: asciidoc,
                dh-autoreconf,
                libz-dev,
                libssl-dev,
+               libssh2-1-dev,
                git,
                qttools5-dev-tools,
                qt5-qmake,
                libqt5svg5-dev,
                libqt5webkit5-dev,
                qtscript5-dev,
-               qt5-default
+               qttools5-dev,
+               qt5-default,
+               qtlocation5-dev,
+               qtpositioning5-dev,
+               qml-module-qtpositioning,
+               qml-module-qtlocation,
+               libcurl4-openssl-dev,
+               qtconnectivity5-dev,
+               libgrantlee5-dev
 Standards-Version: 3.9.5
 Homepage: http://subsurface-divelog.org
 #Vcs-Git: git://git.debian.org/collab-maint/subsurface-4.2.90.git
