@@ -43,6 +43,7 @@ before_install:
 script:
     - export CMAKE_PREFIX_PATH=$PWD/Qt/5.9.1/gcc_64/lib/cmake ;
       cd .. ;
+      bash -e ./subsurface/scripts/build.sh -both -no-bt
       bash -e ./subsurface/scripts/build.sh -both
     - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
 #    - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build-mobile check
