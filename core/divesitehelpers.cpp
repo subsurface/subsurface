@@ -35,8 +35,8 @@ void ReverseGeoLookupThread::run()
 	QNetworkAccessManager *rgl = new QNetworkAccessManager();
 	QEventLoop loop;
 	QString mapquestURL("http://open.mapquestapi.com/nominatim/v1/reverse.php?format=json&accept-language=%1&lat=%2&lon=%3");
-	QString geonamesURL("http://api.geonames.org/findNearbyPlaceNameJSON?language=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
-	QString geonamesOceanURL("http://api.geonames.org/oceanJSON?language=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
+	QString geonamesURL("http://api.geonames.org/findNearbyPlaceNameJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
+	QString geonamesOceanURL("http://api.geonames.org/oceanJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
 	QString divelogsURL("https://www.divelogs.de/mapsearch_divespotnames.php?lat=%1&lng=%2&radius=50");
 	QTimer timer;
 
@@ -47,7 +47,7 @@ void ReverseGeoLookupThread::run()
 	struct dive_site *ds = &displayed_dive_site;
 
 	// first check the findNearbyPlaces API from geonames - that should give us country, state, city
-	request.setUrl(geonamesURL.arg(uiLanguage(NULL)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
+	request.setUrl(geonamesURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 
 	QNetworkReply *reply = rgl->get(request);
 	timer.setSingleShot(true);
@@ -124,7 +124,7 @@ void ReverseGeoLookupThread::run()
 		reply->abort();
 	}
 	// next check the oceans API to figure out the body of water
-	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
+	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 	reply = rgl->get(request);
 	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
