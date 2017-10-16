@@ -12,7 +12,10 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QDateTime>
+
+#if defined(BT_SUPPORT)
 #include <QBluetoothLocalDevice>
+#endif
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
@@ -78,6 +81,7 @@ extern "C" int gitProgressCB(const char *text)
 	return 0;
 }
 
+#if defined(BT_SUPPOR)
 void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 {
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
@@ -94,6 +98,7 @@ void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 	}
 	emit btEnabledChanged();
 }
+#endif
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),

@@ -9,7 +9,7 @@
 #include <QElapsedTimer>
 #include <QColor>
 
-#if BT_SUPPORT
+#if defined(BT_SUPPORT)
 #include "core/btdiscovery.h"
 #endif
 #include "core/gpslocation.h"
@@ -138,7 +138,9 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 	Q_INVOKABLE void setStatusbarColor(QColor color);
+#if defined(BT_SUPPORT)
 	void btHostModeChange(QBluetoothLocalDevice::HostMode state);
+#endif
 
 #if defined(Q_OS_ANDROID)
 	void writeToAppLogFile(QString logText);
