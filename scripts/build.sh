@@ -21,10 +21,15 @@ exec 1> >(tee build.log) 2>&1
 SRC=$(pwd)
 PLATFORM=$(uname)
 
+BTSUPPORT="ON"
+
 # deal with all the command line arguments
 while [[ $# -gt 0 ]] ; do
 	arg="$1"
 	case $arg in
+		-no-bt)
+			# force Bluetooth support off
+			BTSUPPORT="OFF"
 		-build-deps)
 			# in order to build the dependencies on Mac for release builds (to deal with the macosx-version-min for those
 			# call this script with -build-deps
@@ -468,6 +473,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
+		-DBTSUPPORT=${BTSUPPORT} \
 		$PRINTING $EXTRA_OPTS
 
 	if [ $PLATFORM = Darwin ] ; then
