@@ -163,6 +163,7 @@ public slots:
 			   QString diveMaster, QString weight, QString notes, QString startpressure,
 			   QString endpressure, QString gasmix, QString cylinder, int rating, int visibility);
 	void changesNeedSaving();
+	void openNoCloudRepo();
 	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
 	void deleteDive(int id);
@@ -175,6 +176,7 @@ public slots:
 	void populateGpsData();
 	void cancelDownloadDC();
 	void clearGpsData();
+	void clearCredentials();
 	void cancelCredentialsPinSetup();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
