@@ -32,7 +32,7 @@ QString constructLocationTags(struct dive_site *ds, bool for_maintab)
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
 			continue;
-		for (int j = 0; j < TC_NR_CATEGORIES; j++) {
+		for (int j = 0; j < ds->taxonomy.nr; j++) {
 			if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
 				QString tag = ds->taxonomy.category[j].value;
 				if (!tag.isEmpty()) {
