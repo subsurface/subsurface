@@ -97,7 +97,7 @@ static void fill_supported_mobile_list()
 	mobileProductList["Uwatec"] =
 			QStringList({{"Aladin Air Twin"}, {"Aladin Air Z"}, {"Aladin Air Z Nitrox"}, {"Aladin Air Z O2"}, {"Aladin Pro"}, {"Aladin Pro Ultra"}, {"Aladin Sport Plus"}, {"Memomouse"}});
 	mobileProductList["Atomic Aquatics"] =
-			QStringList({{"Cobalt"}, {"Cobalt 2"}})
+			QStringList({{"Cobalt"}, {"Cobalt 2"}});
 #endif
 #if defined(Q_OS_IOS)
 	/* BLE only, Qt does not support classic BT on iOS */
