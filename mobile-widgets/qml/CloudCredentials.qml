@@ -148,6 +148,7 @@ Item {
 					manager.syncToCloud = false
 					manager.credentialStatus = QMLManager.CS_NOCLOUD
 					manager.saveCloudCredentials()
+					manager.openNoCloudRepo()
 				}
 			}
 		}

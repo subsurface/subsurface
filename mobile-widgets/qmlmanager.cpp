@@ -247,6 +247,13 @@ void QMLManager::mergeLocalRepo()
 	process_dives(true, false);
 }
 
+void QMLManager::clearCredentials()
+{
+	setCloudUserName(NULL);
+	setCloudPassword(NULL);
+	setCloudPin(NULL);
+}
+
 void QMLManager::cancelCredentialsPinSetup()
 {
 	/*
@@ -374,7 +381,7 @@ void QMLManager::saveCloudCredentials()
 
 	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(cloudPwd));
 
-	if (!cloudCredentialsChanged) {
+	if (credentialStatus() != CS_NOCLOUD && !cloudCredentialsChanged) {
 		// just go back to the dive list
 		setCredentialStatus(oldStatus());
 	}
@@ -1067,6 +1074,32 @@ void QMLManager::changesNeedSaving()
 	saveChangesCloud(false);
 #endif
 }
+
+void QMLManager::openNoCloudRepo()
+/*
+ * Open the No Cloud repo. In case this repo does not (yet)
+ * exists, create one first. When done, open the repo, which
+ * is obviously empty when just created.
+ */
+{
+	char *filename = NOCLOUD_LOCALSTORAGE;
+	const char *branch;
+	struct git_repository *git;
+
+	git = is_git_repository(filename, &branch, NULL, false);
+
+	if (git == dummy_git_repository) {
+		if (git_create_local_repo(filename))
+			appendTextToLog(get_error_string());
+		set_filename(filename, true);
+		GeneralSettingsObjectWrapper s(this);
+		s.setDefaultFilename(filename);
+		s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
+	}
+
+	openLocalThenRemote(filename);
+}
+
 void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
@@ -1445,6 +1478,7 @@ void QMLManager::setCredentialStatus(const cloud_status_qml value)
 		if (value == CS_NOCLOUD) {
 			appendTextToLog("Switching to no cloud mode");
 			set_filename(NOCLOUD_LOCALSTORAGE, true);
+			clearCredentials();
 		}
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
