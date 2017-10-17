@@ -197,9 +197,18 @@ void QMLManager::openLocalThenRemote(QString url)
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
-		// have cloud credentials, but there is no local repo (yet).
-		// this implies that the PIN verify is still to be done
-		setCredentialStatus(CS_NEED_TO_VERIFY);
+		/* there can be 2 reasons for this:
+		 * 1) we have cloud credentials, but there is no local repo (yet).
+		 *    This implies that the PIN verify is still to be done.
+		 * 2) we are in a very clean state after installing the app, and
+		 *    want to use a NO CLOUD setup. The intial repo has no initial
+		 *    commit in it, so its master branch does not yet exist. We do not
+		 *    care about this, as the very first commit of dive data to the
+		 *    no cloud repo solves this.
+		 */
+
+		if (credentialStatus() != CS_NOCLOUD)
+			setCredentialStatus(CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
 		if (credentialStatus() == CS_UNKNOWN)
