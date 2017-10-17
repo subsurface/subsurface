@@ -2301,12 +2301,12 @@ GPS curenta:</translation>
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="361"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="370"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
         <translation>Crearea unei noi locații de scufundare prin copierea informațiilor relevante din cea curentă.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="362"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="371"/>
         <source>Create a new dive site with this name</source>
         <translation>Crearea unei noi locații de scufundare cu numele curent</translation>
     </message>
@@ -3191,142 +3191,142 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="502"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="478"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="530"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="453"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="505"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="481"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="533"/>
         <source>Date</source>
         <translation>Dată</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="508"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="484"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="536"/>
         <source>Rating</source>
         <translation>Rating</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="487"/>
         <source>Depth</source>
         <translation>Adâncime</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="462"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="514"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="490"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="542"/>
         <source>Duration</source>
         <translation>Durată</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="468"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="496"/>
         <source>Weight</source>
         <translation>Greutate</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="471"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="523"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="499"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="551"/>
         <source>Suit</source>
         <translation>Costum</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="465"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="493"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="474"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="526"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="502"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="554"/>
         <source>Cylinder</source>
         <translation>Butelie</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="529"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="505"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="557"/>
         <source>Gas</source>
         <translation>Gaz</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="480"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="508"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="483"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="537"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="565"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="486"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="540"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="514"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="568"/>
         <source>Max CNS</source>
         <translation>CNS maxim</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="489"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="517"/>
         <source>Photos</source>
         <translation>Fotografii</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="492"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
         <source>Country</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="495"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="546"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="523"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="574"/>
         <source>Location</source>
         <translation>Locație</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
         <source>Depth(%1)</source>
         <translation>Adâncime(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
         <source>ft</source>
         <translation>picioare</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="517"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="545"/>
         <source>Temp.(%1%2)</source>
         <translation>Temp.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
         <source>Weight(%1)</source>
         <translation>Greutate(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
         <source>lbs</source>
         <translation>livre</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="534"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="534"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="543"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="571"/>
         <source>Photos before/during/after dive</source>
         <translation>Fotografii înainte/în timpul/după scufundare</translation>
     </message>
@@ -3929,27 +3929,27 @@ p, li { white-space: pre-wrap; }
         <translation>Coordonate</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="69"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="73"/>
         <source>Reverse geo lookup</source>
         <translation>Căutare geo inversă</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="72"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="76"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="93"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="97"/>
         <source>Dive sites on same coordinates</source>
         <translation>Locații de scufundări cu aceleași coordonate</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="131"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="138"/>
         <source>Tags</source>
         <translation>Etichete</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="145"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="152"/>
         <source>Country</source>
         <translation type="unfinished"/>
     </message>
@@ -3976,7 +3976,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="32"/>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="241"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="250"/>
         <source>Dive site management</source>
         <translation>Administrarea locației pentru scufundare</translation>
     </message>
@@ -3998,7 +3998,7 @@ p, li { white-space: pre-wrap; }
  Sigur doriți să continuați?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="248"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="257"/>
         <source>You are editing a dive site</source>
         <translation>Sunteți in modul de editare a locației de scufundare</translation>
     </message>
@@ -4922,74 +4922,74 @@ Dacă dispozitivul dvs. folosește Bluetooth, faceți aceleași pregatiri ca și
         <translation>pSCR</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="431"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
         <source>Last stop at 20ft</source>
         <translation>Ultima oprire la 20ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="432"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="435"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% adâncime medie până la 20ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
         <source>20ft to surface</source>
         <translation>20ft pană la suprafață</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
         <source>ft</source>
         <translation>picioare</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="440"/>
         <source>Last stop at 6m</source>
         <translation>Ultima oprire la 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="438"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="441"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% adâncime medie pană la 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="442"/>
         <source>6m to surface</source>
         <translation>6m pană la suprafață</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="440"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="443"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="443"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="444"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="446"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="447"/>
         <source>cuft/min</source>
         <translation>metri cubi/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="452"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="453"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="455"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="456"/>
         <source>ℓ/min</source>
         <translation>ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="462"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="470"/>
         <source>psi</source>
         <translation>livre pe inch pătrat</translation>
     </message>
@@ -5686,21 +5686,31 @@ A se vedea http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
+        <source>Dive list table</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
+        <source>Show units in dive list table</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
         <source>GPS coordinates</source>
         <translation>Coordonate GPS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="296"/>
         <source>Location Display</source>
         <translation>Afișare Locație</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="287"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="303"/>
         <source>traditional (dms)</source>
         <translation>tradițional (dms)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="294"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="310"/>
         <source>decimal</source>
         <translation>zecimal</translation>
     </message>
@@ -5939,147 +5949,147 @@ A se vedea http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="113"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="247"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="131"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
         <source>Starting...</source>
         <translation>Se incarcă...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="166"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="186"/>
         <source>Open local dive data file</source>
         <translation>Deschide fișier local cu scufundări</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="174"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="194"/>
         <source>Opening local data file failed</source>
         <translation>Eroare deschidere fișier cu scufundări local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="197"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 scufundări încărcate din fișier local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="293"/>
         <source>working in no-cloud mode</source>
         <translation>operare în mod local</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="276"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="298"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="307"/>
         <source>no cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="308"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="382"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="327"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="349"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>E-mailul și parola de cloud pot conține doar litere, numere și  &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, și &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="333"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="355"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="375"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="396"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="396"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="417"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="410"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="431"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="439"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="424"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="456"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="477"/>
         <source>Cloud credentials are invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="469"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="490"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="482"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="503"/>
         <source>Cannot open cloud storage: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="494"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
         <source>Cannot connect to cloud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="530"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="551"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="573"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="618"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="643"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="664"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="813"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="814"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="834"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="835"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="813"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="814"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="815"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="834"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="835"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="836"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="813"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="834"/>
         <source>sec</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1202"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1223"/>
         <source>Unknown GPS location</source>
         <translation>Locatie GPS necunoscuta</translation>
     </message>
@@ -7449,107 +7459,120 @@ mixate cu aer și folosite:</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="228"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="228"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
         <source>Date</source>
         <translation>Dată</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
         <source>Rating</source>
         <translation>Rating</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
         <source>Depth(%1)</source>
         <translation>Adâncime(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
         <source>ft</source>
         <translation>picioare</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="240"/>
         <source>Duration</source>
         <translation>Durată</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="240"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
         <source>Temp.(%1%2)</source>
         <translation>Temp.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="252"/>
         <source>Cylinder</source>
         <translation>Butelie</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="263"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="266"/>
         <source>Max. CNS</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <source>h</source>
+        <translation>h</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <source>min</source>
+        <translation>min</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
         <source>Weight(%1)</source>
         <translation>Greutate(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
         <source>lbs</source>
         <translation>livre</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
         <source>Suit</source>
         <translation>Costum</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="252"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="255"/>
         <source>Gas</source>
         <translation>Gaz</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="260"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="260"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="260"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="263"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="266"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="269"/>
         <source>Photos before/during/after dive</source>
         <translation>Fotografii înainte/în timpul/după scufundare</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="269"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="272"/>
         <source>Country</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="272"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="275"/>
         <source>Location</source>
         <translation>Locație</translation>
     </message>
@@ -8691,7 +8714,7 @@ Medie</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="239"/>
-        <location filename="../core/parse-xml.c" line="3457"/>
+        <location filename="../core/parse-xml.c" line="3475"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>necunoscut</translation>
@@ -8901,14 +8924,14 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/load-git.c" line="197"/>
-        <location filename="../core/parse-xml.c" line="1271"/>
+        <location filename="../core/parse-xml.c" line="1275"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/load-git.c" line="225"/>
-        <location filename="../core/parse-xml.c" line="1333"/>
+        <location filename="../core/parse-xml.c" line="1337"/>
         <source>additional name for site: %s
 </source>
         <translation type="unfinished"/>
@@ -8935,19 +8958,19 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="524"/>
+        <location filename="../core/parse-xml.c" line="528"/>
         <source>Strange percentage reading %s
 </source>
         <translation>Valoare procentuală neobișnuită %s
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2095"/>
+        <location filename="../core/parse-xml.c" line="2099"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Nu s-a putut parsa &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="3979"/>
+        <location filename="../core/parse-xml.c" line="3997"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Nu s-a putut deschide stylesheet-ul %s</translation>
     </message>

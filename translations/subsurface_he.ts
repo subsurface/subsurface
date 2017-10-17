@@ -2300,12 +2300,12 @@ GPS הנוכחי:</translation>
 <context>
     <name>DiveLocationModel</name>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="361"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="370"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
         <translation>יצירת אתר צלילה חדש, העתקת מידע רלוונטי מהצלילה הנוכחית.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="362"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="371"/>
         <source>Create a new dive site with this name</source>
         <translation>יצירת אתר צלילה חדש בשם זה</translation>
     </message>
@@ -3191,142 +3191,142 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="450"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="502"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="478"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="530"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="453"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="505"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="481"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="533"/>
         <source>Date</source>
         <translation>תאריך</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="456"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="508"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="484"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="536"/>
         <source>Rating</source>
         <translation>דירוג</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="459"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="487"/>
         <source>Depth</source>
         <translation>עומק</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="462"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="514"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="490"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="542"/>
         <source>Duration</source>
         <translation>משך הצלילה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="468"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="496"/>
         <source>Weight</source>
         <translation>משקל</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="471"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="523"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="499"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="551"/>
         <source>Suit</source>
         <translation>חליפה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="465"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="493"/>
         <source>Temp.</source>
         <translation>טמפ</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="474"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="526"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="502"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="554"/>
         <source>Cylinder</source>
         <translation>מיכל</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="529"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="505"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="557"/>
         <source>Gas</source>
         <translation>גז</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="480"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="508"/>
         <source>SAC</source>
         <translation>צריכת אויר</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="483"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="537"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="565"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="486"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="540"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="514"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="568"/>
         <source>Max CNS</source>
         <translation>רעילות שייורית מקסימלית</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="489"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="517"/>
         <source>Photos</source>
         <translation>תמונות</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="492"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
         <source>Country</source>
         <translation>מדינה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="495"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="546"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="523"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="574"/>
         <source>Location</source>
         <translation>מיקום</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
         <source>Depth(%1)</source>
         <translation>עומק (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
         <source>m</source>
         <translation>מטר</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
         <source>ft</source>
         <translation>רגל</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="517"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="545"/>
         <source>Temp.(%1%2)</source>
         <translation>טמפ.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
         <source>Weight(%1)</source>
         <translation>משקל(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
         <source>kg</source>
         <translation>קילוגרם</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
         <source>lbs</source>
         <translation>ליברות</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="534"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
         <source>SAC(%1)</source>
         <translation>צריכת גז (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="534"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
         <source>/min</source>
         <translation>לדקה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="543"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="571"/>
         <source>Photos before/during/after dive</source>
         <translation>תמונות לפני / במהלך / אחרי צלילה</translation>
     </message>
@@ -3929,27 +3929,27 @@ p, li { white-space: pre-wrap; }
         <translation>קואורדינטות</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="69"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="73"/>
         <source>Reverse geo lookup</source>
         <translation>בדיקה גיאוגרפית הפוכה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="72"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="76"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="93"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="97"/>
         <source>Dive sites on same coordinates</source>
         <translation>אתרי צלילה באותה נ&quot;צ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="131"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="138"/>
         <source>Tags</source>
         <translation>תגיות</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationInformation.ui" line="145"/>
+        <location filename="../desktop-widgets/locationInformation.ui" line="152"/>
         <source>Country</source>
         <translation>מדינה</translation>
     </message>
@@ -3976,7 +3976,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="32"/>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="241"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="250"/>
         <source>Dive site management</source>
         <translation>ניהול אתרי צלילה</translation>
     </message>
@@ -3998,7 +3998,7 @@ p, li { white-space: pre-wrap; }
 האם אתה בטוח שאתה רוצה להמשיך?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/locationinformation.cpp" line="248"/>
+        <location filename="../desktop-widgets/locationinformation.cpp" line="257"/>
         <source>You are editing a dive site</source>
         <translation>הנך עורך אתר צלילה</translation>
     </message>
@@ -4922,74 +4922,74 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation>מערכת חצי סגורה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="430"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
         <source>ft/min</source>
         <translation>רגל לדקה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="431"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
         <source>Last stop at 20ft</source>
         <translation>תחנה אחרונה ב-20 רגל</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="432"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="435"/>
         <source>50% avg. depth to 20ft</source>
         <translation>50% עומק ממוצע ל-20 רגל</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="433"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
         <source>20ft to surface</source>
         <translation>20 רגל לפני המים</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="434"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
         <source>ft</source>
         <translation>רגל</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
         <source>m/min</source>
         <translation>מטרים לדקה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="437"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="440"/>
         <source>Last stop at 6m</source>
         <translation>עצירה אחרונה ב6 מ&apos;</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="438"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="441"/>
         <source>50% avg. depth to 6m</source>
         <translation>50% עומק ממוצע ל-6 מטר</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="439"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="442"/>
         <source>6m to surface</source>
         <translation>6 מטר לפני המים</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="440"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="443"/>
         <source>m</source>
         <translation>מטר</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="443"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="444"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="446"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="447"/>
         <source>cuft/min</source>
         <translation>רגל מעוקב לדקה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="452"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="453"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="455"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="456"/>
         <source>ℓ/min</source>
         <translation>ליטר לדקה</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="462"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="465"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="467"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="470"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -5686,21 +5686,31 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
+        <source>Dive list table</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
+        <source>Show units in dive list table</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
         <source>GPS coordinates</source>
         <translation>נ&quot;צ</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="296"/>
         <source>Location Display</source>
         <translation>תצוגת מיקום</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="287"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="303"/>
         <source>traditional (dms)</source>
         <translation>מסורתיות (מעלות דקות שניות)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="294"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.ui" line="310"/>
         <source>decimal</source>
         <translation>עשרוני</translation>
     </message>
@@ -5939,147 +5949,147 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="113"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="247"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="131"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="269"/>
         <source>Starting...</source>
         <translation>מתחיל...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="166"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="186"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="174"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="194"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="197"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="217"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="271"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="293"/>
         <source>working in no-cloud mode</source>
         <translation>עובד במצב של חוסר תקשורת עם הענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="276"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="298"/>
         <source>Error parsing local storage, giving up</source>
         <translation>שגיאה בקריאת קובץ מקומי, מבטל</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="285"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="307"/>
         <source>no cloud credentials</source>
         <translation>אין פרטי זיהוי לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="286"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="361"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="308"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="382"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>נא להזין פרטי זיהוי חוקיים לענן.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="327"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="349"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>דואר אלקטרוני וסיסמא לאחסון בענן יכולים רק מורכבים מאותיות, מספרים, ו, &apos;.&apos; &apos;-&apos;, &apos;_&apos;, ו &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="333"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="355"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="375"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="396"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>מנסה להתחבר לענן עם זיהוי חדש</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="396"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="417"/>
         <source>Testing cloud credentials</source>
         <translation>בודק זיהוי לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="410"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="431"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>אין תגובה משרת ענן כדי לאמת את האישורים</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="439"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="424"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>אין אפשרות להתחבר לענן - חשבון ענן לא מאומת</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="456"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="477"/>
         <source>Cloud credentials are invalid</source>
         <translation>זיהוי לענן לא חוקי</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="469"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="490"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>אין אפשרות להתחבר לענן: תקלה ביצירת קשר https</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="482"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="503"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>אין אפשרות להתחבר לענן: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="494"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
         <source>Cannot connect to cloud storage</source>
         <translation>אין אפשרות להתחבר לענן</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="518"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="530"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="551"/>
         <source>Cloud storage error: %1</source>
         <translation>שגיאת איחסון ענן: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="573"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="618"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>שגיאה בחיבור לשרת ענן, חוזר למצב של עבודה מקומית</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="643"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="664"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>חיבור לענן נוצר בהצלחה. אין צלילות ברשימת הצלילות.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="813"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="814"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="834"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="835"/>
         <source>h</source>
         <translation>שעה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="813"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="814"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="815"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="834"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="835"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="836"/>
         <source>min</source>
         <translation>דקה</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="813"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="834"/>
         <source>sec</source>
         <translation>שניות</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1202"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1223"/>
         <source>Unknown GPS location</source>
         <translation>נ&quot;צ לא מוכר</translation>
     </message>
@@ -7452,107 +7462,120 @@ mixed from Air and using:
         <translation>(%1 מוצג)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="225"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="228"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="228"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
         <source>Date</source>
         <translation>תאריך</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="231"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
         <source>Rating</source>
         <translation>דירוג</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
         <source>Depth(%1)</source>
         <translation>עומק (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
         <source>m</source>
         <translation>מטר</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="234"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
         <source>ft</source>
         <translation>רגל</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="237"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="240"/>
         <source>Duration</source>
         <translation>משך הצלילה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="240"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
         <source>Temp.(%1%2)</source>
         <translation>טמפ.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="252"/>
         <source>Cylinder</source>
         <translation>מיכל</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="263"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="266"/>
         <source>Max. CNS</source>
         <translation>רעילות שייורית מקסימלית</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <source>h</source>
+        <translation>שעה</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <source>min</source>
+        <translation>דקה</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
         <source>Weight(%1)</source>
         <translation>משקל(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
         <source>kg</source>
         <translation>קילוגרם</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="243"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
         <source>lbs</source>
         <translation>ליברה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="246"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="249"/>
         <source>Suit</source>
         <translation>חליפה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="252"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="255"/>
         <source>Gas</source>
         <translation>גז</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="260"/>
         <source>SAC(%1)</source>
         <translation>צריכת גז (%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="257"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="260"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
         <source>/min</source>
         <translation>לדקה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="260"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="263"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="266"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="269"/>
         <source>Photos before/during/after dive</source>
         <translation>תמונות לפני / במהלך / אחרי צלילה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="269"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="272"/>
         <source>Country</source>
         <translation>מדינה</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="272"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="275"/>
         <source>Location</source>
         <translation>מיקום</translation>
     </message>
@@ -8695,7 +8718,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="239"/>
-        <location filename="../core/parse-xml.c" line="3457"/>
+        <location filename="../core/parse-xml.c" line="3475"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>לא ידוע</translation>
@@ -8905,7 +8928,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/load-git.c" line="197"/>
-        <location filename="../core/parse-xml.c" line="1271"/>
+        <location filename="../core/parse-xml.c" line="1275"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation>מיקומי GPS מרובים לאתר צלילה זה; גם %s
@@ -8913,7 +8936,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/load-git.c" line="225"/>
-        <location filename="../core/parse-xml.c" line="1333"/>
+        <location filename="../core/parse-xml.c" line="1337"/>
         <source>additional name for site: %s
 </source>
         <translation>שם נוסף לאתר: %s
@@ -8941,19 +8964,19 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>תקלה - %s - בקריאת צלילה %d</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="524"/>
+        <location filename="../core/parse-xml.c" line="528"/>
         <source>Strange percentage reading %s
 </source>
         <translation>קריאת אחוז מוזרה %s
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2095"/>
+        <location filename="../core/parse-xml.c" line="2099"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>נכשל ניסיון לנתח &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="3979"/>
+        <location filename="../core/parse-xml.c" line="3997"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>לא ניתן לפתוח את גיליון העיצוב %s</translation>
     </message>
