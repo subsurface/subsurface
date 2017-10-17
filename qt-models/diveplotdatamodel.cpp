@@ -39,8 +39,8 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return item.velocity;
 		case USERENTERED:
 			return false;
-		case CYLINDERINDEX:
-			return 0;
+		case GASMIX:
+			return gasmix_to_int(&item.gasmix);
 		case SENSOR_PRESSURE:
 			return item.pressure[0][0];
 		case INTERPOLATED_PRESSURE:
@@ -123,8 +123,8 @@ QVariant DivePlotDataModel::headerData(int section, Qt::Orientation orientation,
 		return tr("Color");
 	case USERENTERED:
 		return tr("User entered");
-	case CYLINDERINDEX:
-		return tr("Cylinder index");
+	case GASMIX:
+		return tr("Gasmix");
 	case SENSOR_PRESSURE:
 		return tr("Pressure S");
 	case INTERPOLATED_PRESSURE:
