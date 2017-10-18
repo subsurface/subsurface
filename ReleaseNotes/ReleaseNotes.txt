@@ -1,6 +1,6 @@
 // _Subsurface_ 4.7 Release Notes
 
-_Subsurface_ 4.7 - late 2017
+_Subsurface_ 4.7 - October 2017
 ------------------------------------------
 
 Some of the changes since _Subsurface_ 4.6.4
@@ -10,11 +10,12 @@ Some of the changes since _Subsurface_ 4.6.4
   Currently BLE isn't supported at all on Windows due to lack of support
   for Windows in the underlying toolkit that we use. BLE appears to work
   reasonably well on Mac and works on Linux if Subsurface is built against
-  the latest Qt - unfortunately even Qt 5.9.1 is still missing one
-  critical patch that is needed for some of the BLE dive computers.
+  Qt 5.9.2 or newer. Older versions of Qt will give you mixed results,
+  depending on the specific dive computer you use.
   Side note for those on Windows or a Linux distro that doesn't allow BLE
-  support just yet: you can use Subsurface-mobile 2.x or later on Android
-  and download from your BLE dive computer there.
+  support just yet: you can use Subsurface-mobile 2.0 or later on Android
+  and download from your BLE dive computer there and then transfer the
+  dive data via Subsurface cloud storage.
 - New map widget. No more rotating globe, but much better support for
   the underlying widget - so overall an improvement.
 - Many small UI fixes
@@ -30,7 +31,14 @@ Some of the changes since _Subsurface_ 4.6.4
 - Updated Facebook support to use a newer, still actively supported API.
 - Many bug fixes
 - Added support for the following dive computers:
+  - Aqualung i200
+  - Cochran Commander II, Commander TM
+  - Dive Systems/Ratio iDive2 Deep, iDive2 Easy, iDive2 Free,
+    iDive2 Tech+, iX3M Deep, iX3M Easy, iX3M Pro Deep, iX3M Pro Easy,
+    iX3M Pro Tech+, iX3M Reb, iX3M Tech+
+  - Heinrichs Weikamp OSTC+
   - Shearwater Perdix AI (only available where BLE is supported)
+  - Suunto D4f
 
 
 Some of the changes since _Subsurface_ 4.6.3
