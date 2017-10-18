@@ -994,9 +994,6 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 				int new_clock = wait_until(dive, clock, clock, laststoptime * 2, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
 				laststoptime = new_clock - clock;
-				decostoptable[decostopcounter].depth = depth;
-				decostoptable[decostopcounter].time = laststoptime;
-				++decostopcounter;
 				/* Finish infinite deco */
 				if (clock >= 48 * 3600 && depth >= 6000) {
 					error = LONGDECO;
@@ -1017,11 +1014,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 					if (get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000) {
 						if (laststoptime >= 12 * 60) {
 							laststoptime = 12 * 60;
+							new_clock = clock + laststoptime;
 							o2breaking = true;
 							breaktime = 0;
 							breakfrom_cylinder = current_cylinder;
 							if (is_final_plan)
-								plan_add_segment(diveplan, clock + laststoptime - previous_point_time, depth, current_cylinder, po2, false);
+								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = break_cylinder;
 							gas = dive->cylinder[current_cylinder].gasmix;
@@ -1030,10 +1028,11 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						if (breaktime >= 0) {
 							if (laststoptime >= 6 * 60) {
 								laststoptime = 6 * 60;
+								new_clock = clock + laststoptime;
 								o2breaking  = true;
 								o2time = 0;
 								if (is_final_plan)
-									plan_add_segment(diveplan, clock + laststoptime - previous_point_time, depth, current_cylinder, po2, false);
+									plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
 								previous_point_time = clock + laststoptime;
 								current_cylinder = breakfrom_cylinder;
 								gas = dive->cylinder[current_cylinder].gasmix;
@@ -1044,6 +1043,10 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				}
 				add_segment(depth_to_bar(depth, dive), &dive->cylinder[current_cylinder].gasmix,
 					    laststoptime, po2, dive, prefs.decosac);
+				decostoptable[decostopcounter].depth = depth;
+				decostoptable[decostopcounter].time = laststoptime;
+				++decostopcounter;
+
 				clock = new_clock;
 				if (!o2breaking)
 					break;
