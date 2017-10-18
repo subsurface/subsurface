@@ -86,18 +86,20 @@ Kirigami.ScrollablePage {
 				Item {
 					id: diveListEntry
 					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
-					height: childrenRect.height - Kirigami.Units.smallSpacing
+					height: childrenRect.height + Kirigami.Units.smallSpacing
 					anchors.left: leftBarDive.right
 					Controls.Label {
 						id: locationText
 						text: dive.location
 						font.weight: Font.Bold
+						font.pointSize: subsurfaceTheme.regularPointSize
 						elide: Text.ElideRight
 						maximumLineCount: 1 // needed for elide to work at all
 						color: textColor
 						anchors {
 							left: parent.left
 							leftMargin: horizontalPadding * 2
+							topMargin: Kirigami.Units.smallSpacing
 							top: parent.top
 							right: parent.right
 						}
@@ -106,7 +108,7 @@ Kirigami.ScrollablePage {
 						anchors {
 							left: locationText.left
 							top: locationText.bottom
-							topMargin: - Kirigami.Units.smallSpacing * 2
+							topMargin: Kirigami.Units.smallSpacing
 							bottom: numberText.bottom
 						}
 
@@ -134,7 +136,7 @@ Kirigami.ScrollablePage {
 							right: parent.right
 							rightMargin: horizontalPadding
 							top: locationText.bottom
-							topMargin: - Kirigami.Units.smallSpacing * 2
+							topMargin: Kirigami.Units.smallSpacing
 						}
 					}
 				}
