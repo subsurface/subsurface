@@ -320,7 +320,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	len += snprintf(buffer + len, sz_buffer - len, "<br>%s: %i<br></div>", temp, dive->otu);
 
 	/* Print the settings for the diveplan next. */
-	if (decoMode() == BUEHLMANN){
+	if (decoMode() == BUEHLMANN) {
 		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%"),
 			diveplan->gflow, diveplan->gfhigh);
 	} else if (decoMode() == VPMB){
@@ -417,24 +417,26 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					mingas_d_pressure = get_pressure_units(lrint((double)cyl->end.mbar + deco_pressure_mbar - lastbottomdp->minimum_gas.mbar), &pressure_unit);
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
-					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) snprintf(mingas, sizeof(mingas),
-						"<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): \
+					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) {
+						snprintf(mingas, sizeof(mingas), "<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): \
 							%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
-						mingas_d_pressure > 0 ? "green" :"red",
-						translate("gettextFromC", "Minimum gas"),
-						translate("gettextFromC", "based on"),
-						prefs.sacfactor / 100.0,
-						translate("gettextFromC", "SAC"),
-						prefs.problemsolvingtime,
-						translate("gettextFromC", "min"),
-						mingas_depth, depth_unit,
-						mingas_volume, unit,
-						mingas_pressure, pressure_unit,
-						mingas_d_pressure > 0 ? "grey" :"indianred",
-						mingas_d_pressure, pressure_unit);
-					else snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
-						translate("gettextFromC", "Warning:"),
-						translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
+							mingas_d_pressure > 0 ? "green" :"red",
+							translate("gettextFromC", "Minimum gas"),
+							translate("gettextFromC", "based on"),
+							prefs.sacfactor / 100.0,
+							translate("gettextFromC", "SAC"),
+							prefs.problemsolvingtime,
+							translate("gettextFromC", "min"),
+							mingas_depth, depth_unit,
+							mingas_volume, unit,
+							mingas_pressure, pressure_unit,
+							mingas_d_pressure > 0 ? "grey" :"indianred",
+							mingas_d_pressure, pressure_unit);
+					} else {
+						snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
+							translate("gettextFromC", "Warning:"),
+							translate("gettextFromC", "required minimum gas for ascent already exceeding start pressure of cylinder!"));
+					}
 				}
 			/* Print the gas consumption for every cylinder here to temp buffer. */
 			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
