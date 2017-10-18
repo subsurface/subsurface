@@ -106,6 +106,8 @@ void DiveEventItem::setupPixmap()
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeTrimix"));
 		else if (gasmix_is_air(mix))
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeAir"));
+		else if (mix->o2.permille == 1000)
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeOxy"));
 		else
 			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeNitrox"));
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
