@@ -756,12 +756,15 @@ void DivePlannerPointsModel::editStop(int row, divedatapoint newData)
 	 * When moving divepoints rigorously, we might end up with index
 	 * out of range, thus returning the last one instead.
 	 */
+	int old_first_cylid = divepoints[0].cylinderid;
 	if (row >= divepoints.count())
 		return;
 	divepoints[row] = newData;
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
 	if (updateMaxDepth())
 		CylindersModel::instance()->updateBestMixes();
+	if (divepoints[0].cylinderid != old_first_cylid)
+		CylindersModel::instance()->moveAtFirst(divepoints[0].cylinderid);
 	emitDataChanged();
 }
 
@@ -790,6 +793,8 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	if (!dp.entered)
 		return;
 
+	int old_first_cylid = divepoints[0].cylinderid;
+
 /* TODO: this seems so wrong.
  * We can't do this here if we plan to use QML on mobile
  * as mobile has no ControlModifier.
@@ -809,6 +814,8 @@ void DivePlannerPointsModel::remove(const QModelIndex &index)
 	}
 	endRemoveRows();
 	CylindersModel::instance()->updateTrashIcon();
+	if (divepoints[0].cylinderid != old_first_cylid)
+		CylindersModel::instance()->moveAtFirst(divepoints[0].cylinderid);
 }
 
 struct diveplan &DivePlannerPointsModel::getDiveplan()
