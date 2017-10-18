@@ -418,14 +418,19 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
 					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) snprintf(mingas, sizeof(mingas),
-						translate("gettextFromC", "<br>&nbsp;&mdash; <span style='color: %s;'>Minimum gas</span> (based on %.1fxSAC/+%dmin@%.0f%s): \
-							%.0f%s/%.0f%s/<span style='color: %s;'>&Delta;:%+.0f%s</span>"),
+						"<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): \
+							%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
 						mingas_d_pressure > 0 ? "green" :"red",
-						prefs.sacfactor / 100.0, prefs.problemsolvingtime,
+						translate("gettextFromC", "Minimum gas"),
+						translate("gettextFromC", "based on"),
+						prefs.sacfactor / 100.0,
+						translate("gettextFromC", "SAC"),
+						prefs.problemsolvingtime,
+						translate("gettextFromC", "min"),
 						mingas_depth, depth_unit,
 						mingas_volume, unit,
 						mingas_pressure, pressure_unit,
-						mingas_d_pressure > 0 ? "green" :"red",
+						mingas_d_pressure > 0 ? "grey" :"indianred",
 						mingas_d_pressure, pressure_unit);
 					else snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
