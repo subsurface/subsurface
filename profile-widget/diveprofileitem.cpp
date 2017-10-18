@@ -11,6 +11,7 @@
 #endif
 #include "qt-models/diveplannermodel.h"
 #include "core/helpers.h"
+#include "core/dive.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
@@ -424,8 +425,11 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	for (int i = 1, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		if (i < poly.count()) {
 			double value = dataModel->index(i, vDataColumn).data().toDouble();
-			int cyl = dataModel->index(i, DivePlotDataModel::CYLINDERINDEX).data().toInt();
-			int inert = 1000 - get_o2(&displayed_dive.cylinder[cyl].gasmix);
+			struct gasmix *gasmix = NULL;
+			struct event *ev = NULL;
+			int sec = dataModel->index(i, DivePlotDataModel::TIME).data().toInt();
+			gasmix = get_gasmix(&displayed_dive, current_dc, sec, &ev, gasmix);
+			int inert = 1000 - get_o2(gasmix);
 			mypen.setBrush(QBrush(ColorScale(value, inert)));
 			painter->setPen(mypen);
 			painter->drawLine(poly[i - 1], poly[i]);
