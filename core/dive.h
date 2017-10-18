@@ -169,6 +169,17 @@ static inline bool gasmix_is_air(const struct gasmix *gasmix)
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
 
+inline uint32_t gasmix_to_int(struct gasmix *gasmix)
+{
+	return (gasmix->he.permille << 16) | gasmix->o2.permille;
+}
+
+inline void int_to_gasmix(uint32_t packed, struct gasmix *gasmix)
+{
+	gasmix->he.permille = packed >> 16;
+	gasmix->o2.permille = packed & 0xffff;
+}
+
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
 {

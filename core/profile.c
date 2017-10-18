@@ -976,6 +976,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			int time_stepsize = 20;
 
 			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
+			entry->gasmix = *gasmix;
 
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
 			entry->gfline = get_gf(entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
@@ -990,7 +991,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 				add_segment(depth_to_bar(depth, dive),
-					gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+					&entry->gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
 				if ((t1 - j < time_stepsize) && (j < t1))
 					time_stepsize = t1 - j;
 			}
@@ -1060,7 +1061,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				/* We are going to mess up deco state, so store it for later restore */
 				struct deco_state *cache_data = NULL;
 				cache_deco_state(&cache_data);
-				calculate_ndl_tts(dive, entry, gasmix, surface_pressure);
+				calculate_ndl_tts(dive, entry, &entry->gasmix, surface_pressure);
 				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
@@ -1141,18 +1142,15 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 {
 	int i;
 	double amb_pressure;
-	struct gasmix *gasmix = NULL;
 	struct event *ev = NULL;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 
-		gasmix = get_gasmix(dive, dc, entry->sec, &ev, gasmix);
-
 		amb_pressure = depth_to_bar(entry->depth, dive);
 
-		fill_pressures(&entry->pressures, amb_pressure, gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
+		fill_pressures(&entry->pressures, amb_pressure, &entry->gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 
@@ -1161,7 +1159,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
-		entry->mod = (double)gas_mod(gasmix, modpO2, dive, 1).mm;
+		entry->mod = (double)gas_mod(&entry->gasmix, modpO2, dive, 1).mm;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * fn2 / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
@@ -1169,7 +1167,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry->pressures.he / amb_pressure * HE_DENSITY) /
 				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
-		entry->density = gas_density(gasmix, depth_to_mbar(entry->depth, dive));
+		entry->density = gas_density(&entry->gasmix, depth_to_mbar(entry->depth, dive));
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)

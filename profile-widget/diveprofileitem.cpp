@@ -424,8 +424,9 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 	for (int i = 1, modelDataCount = dataModel->rowCount(); i < modelDataCount; i++) {
 		if (i < poly.count()) {
 			double value = dataModel->index(i, vDataColumn).data().toDouble();
-			int cyl = dataModel->index(i, DivePlotDataModel::CYLINDERINDEX).data().toInt();
-			int inert = 1000 - get_o2(&displayed_dive.cylinder[cyl].gasmix);
+			struct gasmix gasmix;
+			int_to_gasmix(dataModel->index(i, DivePlotDataModel::GASMIX).data().toUInt(), &gasmix);
+			int inert = 1000 - get_o2(&gasmix);
 			mypen.setBrush(QBrush(ColorScale(value, inert)));
 			painter->setPen(mypen);
 			painter->drawLine(poly[i - 1], poly[i]);

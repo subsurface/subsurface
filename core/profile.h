@@ -28,6 +28,7 @@ struct plot_data {
 	 */
 	int pressure[MAX_CYLINDERS][2];
 	int temperature;
+	struct gasmix gasmix;
 	/* Depth info */
 	int depth;
 	int ceiling;
