@@ -53,13 +53,15 @@ void PrintOptions::setupTemplates()
 	QStringList currList = printOptions->type == print_options::DIVELIST ?
 		grantlee_templates : grantlee_statistics_templates;
 
+	// temp. store the template from options, as addItem() updates it via:
+	// on_printTemplate_currentIndexChanged()
+	QString storedTemplate = printOptions->p_template;
 	qSort(currList);
 	int current_index = 0;
 	ui.printTemplate->clear();
 	Q_FOREACH(const QString& theme, currList) {
-		if (theme == printOptions->p_template){
+		if (theme == storedTemplate) // find the stored template in the list
 			current_index = currList.indexOf(theme);
-		}
 		ui.printTemplate->addItem(theme.split('.')[0], theme);
 	}
 	ui.printTemplate->setCurrentIndex(current_index);
