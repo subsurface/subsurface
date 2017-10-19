@@ -59,6 +59,11 @@ Kirigami.Page {
 		width: parent.width
 		Layout.fillWidth: true
 		GridLayout {
+			id: buttonGrid
+			anchors {
+				top: parent.top
+				topMargin: Kirigami.Units.smallSpacing * 4
+			}
 			columns: 2
 			Controls.Label { text: qsTr(" Vendor name: ") }
 			property var vendoridx: downloadThread.data().getDetectedVendorIndex()
@@ -163,6 +168,10 @@ Kirigami.Page {
 		}
 
 		Controls.ProgressBar {
+			anchors {
+				top: buttonGrid.bottom
+				topMargin: Kirigami.Units.smallSpacing * 4
+			}
 			id: progressBar
 			Layout.fillWidth: true
 			indeterminate: true
@@ -170,9 +179,13 @@ Kirigami.Page {
 		}
 
 		RowLayout {
-			anchors.left: parent.left
-			anchors.right: parent.right
-			anchors.margins: Kirigami.Units.smallSpacing
+			id: buttonBar
+			anchors {
+				left: parent.left
+				right: parent.right
+				top: progressBar.bottom
+				topMargin: Kirigami.Units.smallSpacing * 2
+			}
 			spacing: Kirigami.Units.smallSpacing
 			SsrfButton {
 				id: download
@@ -206,6 +219,11 @@ Kirigami.Page {
 		}
 
 		ListView {
+			id: dlList
+			anchors {
+				top: buttonBar.bottom
+				topMargin: Kirigami.Units.smallSpacing * 4
+			}
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 
