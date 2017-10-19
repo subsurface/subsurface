@@ -663,9 +663,17 @@ int nr_weightsystems(struct dive *dive)
 void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 {
 	int i,j;
+	cylinder_t t[MAX_CYLINDERS];
 	if (!s || !d)
 		return;
+
 	for (i = 0; i < MAX_CYLINDERS; i++) {
+		// Store the original start and end pressures
+		t[i].start.mbar = d->cylinder[i].start.mbar;
+		t[i].end.mbar = d->cylinder[i].end.mbar;
+		t[i].sample_start.mbar = d->cylinder[i].sample_start.mbar;
+		t[i].sample_end.mbar = d->cylinder[i].sample_end.mbar;
+
 		free((void *)d->cylinder[i].type.description);
 		memset(&d->cylinder[i], 0, sizeof(cylinder_t));
 	}
@@ -677,6 +685,13 @@ void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
 			d->cylinder[j].depth = s->cylinder[i].depth;
 			d->cylinder[j].cylinder_use = s->cylinder[i].cylinder_use;
 			d->cylinder[j].manually_added = true;
+
+			// Restore the start and end pressures from original cylinder
+			d->cylinder[i].start.mbar = t[i].start.mbar;
+			d->cylinder[i].end.mbar = t[i].end.mbar;
+			d->cylinder[i].sample_start.mbar = t[i].sample_start.mbar;
+			d->cylinder[i].sample_end.mbar = t[i].sample_end.mbar;
+
 			j++;
 		}
 	}
