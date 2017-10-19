@@ -71,7 +71,9 @@ Item {
 			anchors {
 				left: locationText.left
 				top: locationText.bottom
+				topMargin: Kirigami.Units.smallSpacing
 				bottom: numberText.bottom
+
 			}
 
 			Controls.Label {
@@ -96,12 +98,14 @@ Item {
 			anchors {
 				right: parent.right
 				top: locationText.bottom
+				topMargin: Kirigami.Units.smallSpacing
 			}
 		}
 		Row {
 			anchors {
 				left: dateRow.left
 				top: numberText.bottom
+				topMargin: Kirigami.Units.smallSpacing
 			}
 			Controls.Label {
 				id: ratingText
@@ -144,6 +148,7 @@ Item {
 			anchors {
 				right: numberText.right
 				top: numberText.bottom
+				topMargin: Kirigami.Units.smallSpacing
 			}
 			Controls.Label {
 				id: visibilityText
