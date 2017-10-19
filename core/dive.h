@@ -549,6 +549,7 @@ extern int selected_dive;
 extern unsigned int dc_number;
 #define current_dive (get_dive(selected_dive))
 #define current_dc (get_dive_dc(current_dive, dc_number))
+#define displayed_dc (get_dive_dc(&displayed_dive, dc_number))
 
 static inline struct dive *get_dive(int nr)
 {
