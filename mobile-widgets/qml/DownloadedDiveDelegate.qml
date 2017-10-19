@@ -48,12 +48,14 @@ Kirigami.AbstractListItem {
 		Controls.Label {
 			id: dateLabel
 			text: innerListItem.datetime
+			anchors.verticalCenter: parent.verticalCenter
 			width: Math.round(parent.width * 0.35)
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: textColor
 		}
 		Controls.Label {
 			text: innerListItem.depth + ' / ' + innerListItem.duration
+			anchors.verticalCenter: parent.verticalCenter
 			width: Math.round(parent.width * 0.35)
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: textColor
