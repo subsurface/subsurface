@@ -428,7 +428,7 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 			struct gasmix *gasmix = NULL;
 			struct event *ev = NULL;
 			int sec = dataModel->index(i, DivePlotDataModel::TIME).data().toInt();
-			gasmix = get_gasmix(&displayed_dive, current_dc, sec, &ev, gasmix);
+			gasmix = get_gasmix(&displayed_dive, displayed_dc, sec, &ev, gasmix);
 			int inert = 1000 - get_o2(gasmix);
 			mypen.setBrush(QBrush(ColorScale(value, inert)));
 			painter->setPen(mypen);

@@ -798,7 +798,6 @@ void MainTab::acceptChanges()
 			addedId = displayed_dive.id;
 		}
 		struct dive *cd = current_dive;
-		struct divecomputer *displayed_dc = get_dive_dc(&displayed_dive, dc_number);
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
 		if (!same_string(displayed_dive.suit, cd->suit))
@@ -1145,7 +1144,6 @@ void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE)
 		return;
-	struct divecomputer *displayed_dc = get_dive_dc(&displayed_dive, dc_number);
 	displayed_dc->divemode = (enum dive_comp_type) index;
 	update_setpoint_events(&displayed_dive, displayed_dc);
 	markChangedWidget(ui.DiveType);
