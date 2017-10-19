@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.6
-// :revdate: March 2017
+// :revnumber: 4.7
+// :revdate:October 2017
 :icons:
 :toc2:
 :toc-placement: manual
@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.6, March 2017_#
+[blue]#_Version 4.7, October 2017_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -479,9 +479,17 @@ as well as contextual information about the dives recorded on the dive computer.
 [icon="images/icons/bluetooth.jpg"]
 
 Bluetooth is becoming a more common way of communication between dive computers
-and _Subsurface_, for or instance, the Shearwater Petrel
-Mk2 and the OSTC Mk3. _Subsurface_ provides a largely operating system independent
-Bluetooth interface. Setting up _Subsurface_ for Bluetooth communication requires
+and _Subsurface_. _Subsurface_ provides a largely operating system independent
+Bluetooth interface. An increasing number of dive computers use Bluetooth Low Energy (BTLE)
+as a means of communication. However, BTLE is not a standardised protocol,
+consequently adaptations need to be made for communicating with each different dive computer model. See the
+link:https://subsurface-divelog.org/documentation/supported-dive-computers/[list of supported dive computers].
+Bluetooth communication is often more reliable if all Bluetooth devices seen by the
+_Subsurface_ computer are removed and pairing with the Bluetooth dive computer
+is performed from afresh. The Bluetooth and BTLE interfaces are under active development
+with respect to new dive computers that use this mechanism of communication.
+
+Setting up _Subsurface_ for Bluetooth communication requires
 four steps:
 
 - Ensure Bluetooth is activated on the host computer running _Subsurface_.
@@ -498,10 +506,7 @@ box labelled _"Choose Bluetooth download mode"_, the dialogue below appears.
 image::images/DC_import_Bluetooth.jpg["FIGURE: Download Bluetooth",align="center"]
 
 On the _Linux_ or _MacOS_ platforms the name
-of the _Subsurface_ computer and its Bluetooth address are shown on the right hand side,
-On the left hand side, if the
-computer has connected more than one local Bluetooth devices you can use
-the list box to indicate which one needs to connect to _Subsurface_.
+of the _Subsurface_ computer and its Bluetooth address are shown on the right hand side.
 The power state (on/off) of the Bluetooth adapter is shown below
 the address and can be changed by checking the _Turn on/off_ box.
 If the Bluetooth address is not shown, then _Subsurface_ does not see the local
@@ -517,8 +522,12 @@ searching, the dive computer should be listed
 lefthand side of the dialogue (see image above). If this does not work, select
 the _Clear_ button, then scan again for Bluetooth devices using the _Scan_
 button. After taking these actions _Subsurface_ should see the dive computer.
+On the left hand side, if the
+computer has more than one local Bluetooth devices connected, use
+the list box to indicate which one needs to connect to _Subsurface_.
 The label of the discovered dive computer contains the name of the device, its
-address and its pairing status. If the device is not paired and has a red
+address and its pairing status. For BTLE devices the address often starts with "LE".
+If the device is not paired and has a red
 background color, a context menu can be opened by selecting the item with a
 right-click.
 Select the the _Pair_ option and wait for the task to complete. If this dive computer
@@ -683,7 +692,7 @@ divemaster, buddy, protective gear, notes about the dive) by selecting _Apply ch
 *Notes* tab BEFORE editing the dive site information. Then supply a dive site name in the
 textbox labelled _Location_ on the *Notes* tab.
 
-Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
+*Using existing dive locations:* Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
 If several dives are
 made at the same location, the site information for the first dive is re-used.
 Existing dive locations
@@ -728,9 +737,32 @@ Southern hemisphere latitudes are given with a *S*, e.g. S30°, or with a
 negative value, e.g. -30.22496. Similarly western longitudes are given with a
 *W*, e.g. W07°, or with a negative value, e.g. -7.34323. Some keyboards
 don't have the degree sign (°). It can be replaced by a *d* like this: N30d W20d.
-If both a dive site name and coordinates have been provided, save the
-dive site information by selecting the button _Apply changes_ at the top of
-the panel.
+Enter any other contextual information about the dive site (Description and Notes),
+then select _Apply Changes_ to save the geolocation for this dive site.
+The dive site information can later be edited by clicking the globe icon to the right of the
+dive site name in the *Notes tab*.
+
+*(2):* Use the Dive Map to specify the coordinates. The Dive map now shows
+all the existing dive lications in grey as well as an additional marker in red
+(image B above). Drag the red marker to the location of the dive site being entered.
+The map can be dragged and zoomed using the mouse wheel. Position the red marker
+by dragging it on the map, zooming in on the appropriate part of the map and placing
+the marker at an appropriate position (image B below). The coordinates of the dive
+location are automatically inserted into the appropriate text box in the dive location
+information window (image A below). Enter any other contextual information about the dive site (Description and Notes),
+then select _Apply Changes_ to save the geolocation for this dive site.
+The dive site information can later be edited by clicking the globe icon to the right of the
+dive site name in the *Notes tab*.
+
+image::images/Globe_image3.jpg["FIGURE:Location creation panel",align="center"]
+
+Once the dive location data have been saved, the dive on the Dive List has
+a globe icon immediately to the left of the location name of a particular dive.
+
+*(3):* Use eiher the Subsurface-Mobile App or the _Subsurface_ Companion App on an
+   Android or iPhone device with GPS and if the dive site coordinates
+   were stored using one of these apps.
+   xref:S_Companion[Click here for more information]
 
 *Important*: GPS coordinates of a dive site are linked to the location
 name - so *saving* a dive site with only coordinates and no name
@@ -741,7 +773,7 @@ same).
 *Dive site name lookup:* If you typed coordinates into the appropriate
 text box, you can do an automated name lookup based on the coordinates.
 This is done when _Subsurface_ uses the Internet to find the name of the dive site
-based on the coordinates that were typed. If a name has been found, it is
+based on the coordinates that were given. If a name has been found, it is
 automatically inserted into the tags box. The list box
 (Titled _Dive sites on same coordinates_") at the bottom
 of the dive site panel contains the names of other dives sites used at the
@@ -1128,6 +1160,16 @@ ordered, along with the existing dives.
 The new dives, although time ordered, will keep the numbering system from
 _SmartTrak_, so a renumbering action is needed. See the section on xref:S_Renumber[Renumbering
 the dives] for instructions on this topic.
+
+===== For the lazy: a web service to convert _SmartTrak_ to _Subsurface_
+
+Open the website _https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl_. This is a no-frills
+web service for converting _SmartTrak_ dive logs to _Subsurface_. Select the browse button. This allows
+you to browse your computer and to select the _SmartTrak_ dive log to be converted. Once it has been selected,
+click the _Submit query_ button. After a short while, a dialog box appears (image below) for saving the converted file to
+the local computer.
+
+image::images/strk2ssrf_web.jpg["FIGURE:Web service to convert SmartTrak divelog",align="center"]
 
 [[S_ImportingDivelogsDe]]
 ==== Importing dives from *divelogs.de*
@@ -1916,12 +1958,21 @@ for decompression.
 
 image::images/multicylinder_dive.jpg["FIGURE: Multicylinder profile",align="center"]
 
+Several dive computers perform automatic recording of cylinder pressure. In this case no manual intervention is needed.
+Older dive computers (e.g. Uwatec Galileo, several Suunto models) handle more than one pressure transducer on cylinders,
+switching from one sensor to another as the diver switches among cylinders and providing a sequential record of cylinders pressures during a dive. Some of the latest models (e.g. Shearwater Perdix AI, Scubapro G2) record two or more pressure transducers concurrently and continuously during the whole dive. In these cases the same situation applied as for the older technology.
+There is continuous effort within the _Subsurface_ development team to add new dive computer models to those that can be
+downloaded from and to represent cylinder pressures correctly. Regardless of the type of sensor handling of dive computers, technical divers are likely to use both automated and manual methods of cylinder pressure logging when more than two gases are used. However,
+automated recording of cylinder pressure makes logging of sidemount dives (where two cylinders are used) much more simple. See the
+link:https://subsurface-divelog.org/documentation/supported-dive-computers/[list of supported dive computers].
+
 ==== Sidemount dives
 
 Sidemount diving is just another form of multi-cylinder diving, often with both or all cylinders having
 the same gas mixture. Although it’s a popular configuration for cave divers, sidemount
-diving can be done by recreational divers who’ve completed the appropriate training. Sidemount
-dive logging involves three steps, exactly as with multi-cylinder dives above:
+diving can be done by recreational divers who???ve completed the appropriate training. See the comments in the
+last paragraph, above, about automated recording of cylinder pressures. Manual
+logging of cylinder pressures during sidemount involves three steps, exactly as with multi-cylinder dives above:
 
 - *During the dive, record cylinder switch events*. Since sidemount diving normally involves two
   cylinders with air or with the same gas mixture, _Subsurface_ distinguishes between these different
@@ -1955,11 +2006,11 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 Passive semi-closed rebreathers (pSCR) are a technical advance in diving equipment that
 recirculates the breathing gas a diver uses, while removing carbon dioxide from
 the exhaled gas. While a small amount (typically a tenth) of the exhaled breathing gas is released into the water,
-a small amount of fresh gas is released from the driving gas cylinder.
+a small amount of fresh gas is released from the diving gas cylinder.
 A diver using a single cylinder of breathing gas can therefore dive for much longer periods than
 using a recreational open-circuit configuration. With pSCR equipment, a very small amount of breathing
-gas is released every time the diver inhales. With active SCR (aSCR) equipment, in contrast, a small amount of
-breathing gas is released continuously from the driving cylinder.
+gas is released every time the diver exhales. With active SCR (aSCR) equipment, in contrast, a small amount of
+breathing gas is released continuously from the diving cylinder.
 
 To log pSCR dives, no special procedures are required. Use the normal steps outlined above:
 
@@ -1983,25 +2034,29 @@ image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 
 [icon="images/APD.jpg"]
 [NOTE]
-Closed system rebreathers use advanced technology to recirculate
-gas that has been breathed. They also do two things to maintain a
+Closed system rebreathers also recirculate
+gas that has been breathed. However, they use advanced technology to maintain a
 breathable oxygen concentration:
-a) remove carbon dioxide from the exhaled gas
+a) remove carbon dioxide from the exhaled gas.
 b) regulate the oxygen concentration to remain within safe diving limits.
 The CCR interface of _Subsurface_ is currently experimental
 and under active development. Subsurface currently supports Poseidon MkVI
-and APD Discovery/Evolution dive computers. In contrast to a conventional recreational
+and APD Discovery/Evolution dive computers, as well as Shearwater dive computers connected
+to CCR systems. In contrast to a conventional recreational
 dive computer, a CCR system computer does not allow the download of a log
 containing multiple dives. Rather, each dive is stored independently. This
 means that _Subsurface_ cannot download a dive log directly from a CCR
 dive computer, but that it imports individual CCR dive profiles in the same way it
-imports dive log data from other digital databases: one dive at a time.
+imports dive log data from other digital databases: one dive at a time. However, the Shearwater
+based CCR systems are different in this respect and allow multi-dive downloads.
 
 ===== Import a CCR dive
 
-See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
-digital sources]. CCR dive data are currently obtained from the proprietary software
-provided when purchasing CCR dice equipment. See <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
+For Shearwater CCR controllers, or independent Shearwater CCR logs, just download the dive log as would
+be the case for non-CCR dives. _Subsurface_ interprets the CCR dive lig correctly.
+Except for Shearwater CCR dive computers, CCR dive data are currently obtained from the proprietary software
+provided when purchasing CCR dice equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
+digital sources] and <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
 log files_ to bring up the xref:Unified_import[universal import dialogue]. As
@@ -3428,7 +3483,7 @@ At the bottom right is a text panel with a heading of _Dive Plan Details_. This 
 the dive plan are provided in a way that can easily be copied to other software. This is also where
 any warning messages about the dive plan are printed.
 
-image::images/PlannerWindow1_f20.jpg["FIGURE: Dive planner startup window",align="center"]
+image::images/PlannerWindow1.jpg["FIGURE: Dive planner startup window",align="center"]
 
 
 === Open circuit dives
@@ -3540,8 +3595,7 @@ true no-deco limit (NDL) without taking into account gas used during the dive. I
 it means that recreational dive limits are exceeded and either the dive duration or the dive depth needs to be reduced.
 
 Below is an image of a dive plan for a recreational dive at 30 meters. Although the no-deco limit (NDL) is 23
-minutes, the duration of the dive is limited by the amount of air in the cylinder. That is shown in the
-text box at the bottom right of the panel, requiring sufficient air for buddy-sharing during ascent.
+minutes, the duration of the dive is limited by the amount of air in the cylinder.
 
 image::images/Planner_OC_rec.jpg["FIGURE: A recreational dive plan: setup",align="center"]
 
@@ -3638,8 +3692,8 @@ level dive profiles. For multi level dives one would need to check every leg of 
 Now you can start the detailed time-depth planning of the dive. _Subsurface_ offers an unique
 graphical interface for doing planning. The mechanics are
 similar to hand-entering a dive profile in the dive log part of _Subsurface_. Upon activating the
-planner, a default dive of depth 15 m for 20 min is offered in the blue design surface to the top
-right hand of the screen. The white dots (waypoints) on the
+planner, a default dive of depth 15 m for 20 min is offered in the blue design surface in the top
+right hand part of the planner window. The white dots (waypoints) on the
 profile can be dragged with a mouse. Create more waypoints by double-clicking on the profile
 line and ensuring the profile reflects the intended dive. Drag the waypoints to represent
 the depth and duration of the dive. It is NOT necessary to specify the ascent part of the dive
@@ -3664,7 +3718,12 @@ reflect the cylinders and gas compositions defined in the table with _Available 
 If two or more gases are used, automatic gas switches will be planned during the ascent to
 the surface.
 
-A non-zero value in the "CC setpoint" column of the table of dive planner points
+Cylinders used for the plan need to be entered in the table of _Available gases_. In the column
+_Type_ select the appropriate cylinder size by using the dropdown list that appears when
+double-clicking a cell in this column. By default, a large number of sizes are listed,
+and a new cylinder size can be created by typing this into the text box. The cylinder size, start pressure
+and default switch depths are initialised automatically. Specify the gas composition
+(e.g. helium and oxygen content). A non-zero value in the "CC setpoint" column of the table of dive planner points
 indicates a valid setpoint for oxygen partial pressure and that the segment
 is dived using a closed circuit rebreather (CCR). If the last manually entered
 segment is a CCR segment, the decompression phase is computed assuming the diver
@@ -3673,10 +3732,22 @@ short) is on open circuit (OC, indicated by a zero set-point) the
 decompression is computed in OC mode and the planner only considers gas
 changes in OC mode.
 
-Below is an example of a dive plan to 45m using Tx21/35, followed by an ascent using EAN50
-and oxygen and using the settings as described above.
+Enter dive profile segments in the _Dive planner points_ table by providing a time duration for
+a segment as well as its final depth. If more than one cylinder is used during the dive, ensure that
+the appropriate cylinder is selected for each segment of the dive plan by double-clicking the
+cell and selecting the appropriate cylinder from the dropdown list in the _Used gas_ column.
+If required, insert a row in the _Dive planner points_ table by adding a new line and then setting the
+_Run time_ value appropriately. In image A below, a segment (using an EAN50 cylinder) has been added and
+you wish to use this gas during the very start of the dive (the other gas is not breathable at the surface).
+Upon pressing Enter on the keyboard, that segment is moved to the top of that table and the plan is adjusted
+automatically to take into account this new segment of the dive plan (image B below).
 
-image::images/Planner_OC_deco_VPM.jpg["FIGURE: Planning a dive: setup",align="center"]
+image::images/planner1.jpg["FIGURE: Planning a dive: segments",align="center"]
+
+Below is an example of a dive plan to 55m using Tx20/30 and the B??hlmann algorithm,
+followed by an ascent using EAN50 and using the settings as described above.
+
+image::images/Planner_OC_deco.jpg["FIGURE: Planning a dive: setup",align="center"]
 
 Once the above steps have been completed, save by clicking the _Save_ button
 towards the top middle of the planner. The saved dive plan will appear
@@ -3684,8 +3755,8 @@ in the *Dive List* panel of _Subsurface_.
 
 *The dive plan details*
 
-On the bottom right of the dive planner, under _Dive Plan Details_, the exact details
-of the dive plan are provided. These details may be modified by checking any of the
+On the bottom right of the dive planner, under _Dive Plan Details_, the details
+of the dive plan are provided. These may be modified by checking any of the
 options under the _Notes_ section of the dive planner, immediately to the left
 of the _Dive Plan Details_. If a _Verbatim dive plan_
 is requested, a detailed sentence-level explanation of the dive plan is given. If any
@@ -3696,6 +3767,55 @@ If the option _Display segment duration_ is checked, then the duration of each d
 level is indicated in the _Dive Plan Details_. This duration INCLUDES the transition
 time to get to that level. However, if the _Display transition in deco_ option is checked,
 the transitions are shown separately from the segment durations at a particular level.
+
+The planner has a check box _Display plan variations_. By checking this box, the planner
+provides information about a dive that is a little deeper or slightly
+longer than the planned dive. This can be found near the top of the _Dive plan details_
+where the dive duration is indicated. Checking this option creates a lot of additional computation,
+to such a degree that the planner is slower than otherwise. The information is typically
+given as:
+
+    Runtime: 53min + 0:52 /m + 4:21 /min
+
+This indicates:
+
+ * Calculated dive duration is 53 min.
+ * For each extra meter in depth during the bottom phase of the dive, the duration increases by 52 seconds.
+ * For each extra minute of bottom time, the duration increases by 4 min 21 sec. Thus, if the bottom time is
+   two minutes longer than planned, the dive duration will be (2+2*4min 21 sec) = 10 minutes 42 sec longer and
+   would probably require that each deco stop is 10:42/53:00 = 20% longer than planned. These calculations
+   are only applicable for small deviations from the dive plan, not for larger deviations.
+
+The planner also estimates the *minimum gas* pressure required for safe ascent after an event that causes the dive
+to be aborted. There are two selector boxes on the left of the _Dive plan details_:
+
+ * *SAC factor*. This is your estimate of the degree to which your SAC increases if a critical problem arises underwater,
+   e.g. gas sharing or entanglement. Realistic values probably range from 1.5 to 3.
+ * *Problem solving time*. This is your estimate of how long you would take to solve the problem before starting the ascent
+   to terminate the dive. The default value is 2 minutes.
+
+Using the above information, the planner then estimates what the minimum botoom gas cylinder pressure needs to be for a
+safe ascent. This information is given near the bottom of the _Dive plan details_, following the calculation of
+bottom gas used during the dive if it exactly follows the plan. the minimum gas is typically given as:
+
+  Minimum gas (based on 2.0xSAC/+1min@81m): 2130???/90bar/??:+80bar
+
+This indicates:
+
+ * Within parentheses, the *SAC factor* and *Problem solving time* specified.
+ * The number of liters of back gas required for a safe ascent (2130??? in the example above)
+ * The number of bars of back gas required for a safe ascent (90 bars in the example above).
+ * The number of bars of back gas available at the end of the bottom section of the dive, _over and above_ the minimum
+   gas requirement (80 bars in the above example).
+
+****
+[icon="images/icons/warning2.png"]
+[WARNING]
+The *plan variations* and *minimum gas* estimates are only guidelines for a diver performing dive planning, intended to
+enhance the safety of executing a particular dive plan. They are NOT precise
+and should NOT be relied upon as the only safety features in dive planning. Interpret these esimates
+within the framework of your formal training to perform dive planning.
+****
 
 === Planning pSCR dives
 
@@ -3715,7 +3835,7 @@ are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is 
 to that of the CCR dive below, but note the longer ascent duration due to the lower oxygen
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
 
-image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
 
 
 === Planning CCR dives
@@ -3739,7 +3859,7 @@ this is calculated for bail out ascents.
 
 The dive profile for a CCR dive may look something like the image below.
 
-image::images/Planner_CCR1_f20.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
+image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
 
 Note that, in the _Dive plan details_, the gas consumption for a CCR segment is not calculated,
 so gas consumptions of 0 liters are the norm.
