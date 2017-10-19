@@ -582,6 +582,10 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 void MainWindow::on_actionCloudstoragesave_triggered()
 {
 	QString filename;
+	if (!dive_table.nr) {
+		getNotificationWidget()->showNotification(tr("Don't save an empty log to the cloud"), KMessageWidget::Error);
+		return;
+	}
 	if (getCloudURL(filename)) {
 		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		return;
