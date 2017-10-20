@@ -233,11 +233,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		if (index.column() == REMOVE) {
 			same_gas = same_gasmix_cylinder(cyl, index.row(), &displayed_dive, false);
 
-			if ((in_planner() || same_gas == -1) &&
-				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
-				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-				is_cylinder_used(&displayed_dive, index.row())))) {
+			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(!in_planner() && is_cylinder_used(&displayed_dive, index.row()) && same_gas == -1)) {
 					ret = trashForbiddenIcon();
 			}
 			else ret = trashIcon();
@@ -249,11 +246,8 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 		case REMOVE:
 			same_gas = same_gasmix_cylinder(cyl, index.row(), &displayed_dive, false);
 
-			if ((in_planner() || same_gas == -1) &&
-				((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
-				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-				(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-				is_cylinder_used(&displayed_dive, index.row())))) {
+			if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+				(!in_planner() && is_cylinder_used(&displayed_dive, index.row()) && same_gas == -1)) {
 					ret = tr("This gas is in use. Only cylinders that are not used in the dive can be removed.");
 			}
 			else ret = tr("Clicking here will remove this cylinder.");
@@ -546,12 +540,9 @@ void CylindersModel::remove(const QModelIndex &index)
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
 	int same_gas = same_gasmix_cylinder(cyl, index.row(), &displayed_dive, false);
 
-	if ((in_planner() || same_gas == -1) &&
-			((DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING &&
-				DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
-			(DivePlannerPointsModel::instance()->currentMode() == DivePlannerPointsModel::NOTHING &&
-				is_cylinder_used(&displayed_dive, index.row()))))
-		return;
+	if ((in_planner() && DivePlannerPointsModel::instance()->tankInUse(index.row())) ||
+		(!in_planner() && is_cylinder_used(&displayed_dive, index.row()) && same_gas == -1))
+			return;
 
 	beginRemoveRows(QModelIndex(), index.row(), index.row()); // yah, know, ugly.
 	rows--;
