@@ -302,6 +302,7 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 
 	if(FBSUPPORT)
 		set(FACEBOOK_INTEGRATION facebook_integration)
+		add_dependencies(facebook_integration subsurface_generated_ui)
 	endif()
 	target_link_libraries(
 		${SUBSURFACE_TARGET}
@@ -314,6 +315,7 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 		subsurface_corelib
 		${SUBSURFACE_LINK_LIBRARIES}
 	)
+	add_dependencies(subsurface_desktop_preferences subsurface_generated_ui)
 	add_dependencies(subsurface_statistics subsurface_generated_ui)
 	add_dependencies(subsurface_interface subsurface_generated_ui)
 	add_dependencies(subsurface_profile subsurface_generated_ui)
