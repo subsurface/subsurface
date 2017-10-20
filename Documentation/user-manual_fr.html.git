@@ -445,7 +445,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.6, mars 2017</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.7, octobre 2017</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -834,7 +834,7 @@ de plongée supportés</a>.</p></div>
 <td class="content">Certains ordinateurs de plongée consomme plus d'énergie lorsqu&#8217;ils sont en
 mode Communication PC. <strong>Ceci peut consommer une grande partie de la
 batterie de votre ordinateur de plongée</strong>. Nous recommandons à l&#8217;utilisateur
-de vérifier que l&#8217;ordinateur de plongée est chargé lorsqu&#8217;il est conneté au
+de vérifier que l&#8217;ordinateur de plongée est chargé lorsqu&#8217;il est connecté au
 port USB du PC. Par exemple, certains ordinateurs Suunto et Mares ne se
 rechargent pas via la connection USB. Les utilisateurs doivent se reporter
 au manuel de leur ordinateur de plongée s&#8217;ils ne savent pas si leur
@@ -862,7 +862,7 @@ en suivant ces étapes:</p></div>
 <li>
 <p>
 Le cable d&#8217;interface doit être connecté à un port USB libre (ou une
-   connection infrarouge
+   connection infra-rouge
         ou Bluetooth doit être configurée comme décrit ultérieurement dans ce
         manuel)
 </p>
@@ -1014,10 +1014,10 @@ La batterie de l&#8217;ordinateur de plongée est-elle complètement chargée? S
 </li>
 <li>
 <p>
-Le câble de connection est-il fautif? Le câble fonctionne-t-il avec d&#8217;autres
+Le câble de connexion est-il fautif ? Le câble fonctionne-t-il avec d&#8217;autres
    logiciels? A-t-il fonctionné précédemment, ou est-ce la première fois que ce
    câble est utilisé? Les contacts sur l&#8217;ordinateur de plongée et le câble
-   sont-ils propres?
+   sont-ils propres ?
 </p>
 </li>
 <li>
@@ -1071,12 +1071,21 @@ plongée.</p></div>
 </div></div>
 </div>
 <div class="sect3">
-<h4 id="S_Bluetooth">5.2.2. Connection de <em>Subsurface</em> à un ordinateur de plongée équipé de Bluetooth</h4>
-<div class="paragraph"><p>Bluetooth devient un protocole de communication de plus en plus courant pour
-relier des ordinateurs de plongée à <em>Subsurface</em>, par exemple le Shearwater
-Petrel Mk2 et l&#8217;OSTC Mk3. <em>Subsurface</em> propose une interface Bluetooth
-largement indépendante du système d&#8217;exploitation. La configuration de
-<em>Subsurface</em> pour la liaison Bluetootj nécessite quatre étapes:</p></div>
+<h4 id="S_Bluetooth">5.2.2. Connexion de <em>Subsurface</em> à un ordinateur de plongée équipé de Bluetooth</h4>
+<div class="paragraph"><p>Bluetooth is becoming a more common way of communication between dive
+computers and <em>Subsurface</em>. <em>Subsurface</em> provides a largely operating system
+independent Bluetooth interface. An increasing number of dive computers use
+Bluetooth Low Energy (BTLE)  as a means of communication. However, BTLE is
+not a standardised protocol, consequently adaptations need to be made for
+communicating with each different dive computer model. See the
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">list
+of supported dive computers</a>.  Bluetooth communication is often more
+reliable if all Bluetooth devices seen by the <em>Subsurface</em> computer are
+removed and pairing with the Bluetooth dive computer is performed from
+afresh. The Bluetooth and BTLE interfaces are under active development with
+respect to new dive computers that use this mechanism of communication.</p></div>
+<div class="paragraph"><p>La configuration de  <em>Subsurface</em> pour une communication Bluetooth nécessite
+4 étapes :</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1112,38 +1121,43 @@ Bluetooth"</em>, la boîte de dialogue ci-dessous apparaît.</p></div>
 <img src="images/DC_import_Bluetooth.jpg" alt="FIGURE: Download Bluetooth" />
 </div>
 </div>
+<div class="paragraph"><p>Although the <em>Subsurface</em> Bluetooth interface is intended to function
+without Bluetooth pairing at the operating system level, it is always
+prudent to follow up initial Bluetooth pairing problems by pairing the
+Bluetooth dive computer with the <em>Subsurface</em> computer using the operating
+system services of the desktop computer. Delete all existing pairings and
+start by scanning for Bluetooth devices from an empty list (on the desktop)
+of Bluetooth devices. Once <em>Subsurface</em> has recognised the Bluetooth dive
+computer, subsequent divelog downloads are likely to be simple.</p></div>
 <div class="paragraph"><p>Sur les plateformes <em>Linux</em> ou -MacOS_, le nom de l&#8217;ordinateur utilisant
-Subsurface_ et son adresse Bluetooth sont affichées du côté droit. À gauche,
-si l&#8217;ordinateur a été connecté à plusieurs périphériques Bluetootj locaux,
-vous pouvez utiliser la liste pour indiquer lequel doit être connecté à
-°Subsurface_. L'état (allumé/éteint) de l&#8217;adaptateur Bluetooth est affiché
-sous l&#8217;adresse et peut être modifié en cliquer sur la case
-<em>Allumer/éteindre</em>. Si l&#8217;adresse Bluetooth n&#8217;est pas affichée, <em>Subsurface</em>
-ne détecte pas le périphérique Bluetooth local. Assurez-vous que le driver
-Bluetooth est installé correctement sur l&#8217;ordinateur utilisant <em>Subsurface</em>
-et vérifiez qu&#8217;il peut être utilisé par d&#8217;autres utilitaires Bluetooth comme
-<em>bluetoothctl</em> ou <em>bluemoon</em>. Ceci clôture les deux premières étapes.
-Vérifiez que l&#8217;ordinateur de plongée avec Bluetooth est en mode Connection
-PC et est détactable pour d&#8217;autres périphériques Bluetooth. Consultez le
-manuel de l&#8217;ordinateur de plongée pour plus d&#8217;information. À présent, la
-troisième étape de notre liste est terminée.  Sélectionnez le bouton
-<em>Scannez</em> en bas à gauche de la boîte de dialogue ci-dessus. Après la
-recherche, l&#8217;ordinateur de plongée devrait se trouver dans la liste
-(peut-être sous la norme d&#8217;un numéro de périphérique Bluetooth) dans la
-liste principale sur la gauche de la boîte de dialogue (voir image
-ci-dessus). Si cela ne fonctionne pas, sélectionnez le bouton <em>Effacer</em>,
-puis scannez à nouveau en utilisant le bouton <em>Scan</em>. Après avoir suivi
-cette procédure, <em>Subsurface</em> devrait voir l&#8217;ordinateur de plongée.  La
-dénomination de l&#8217;ordinateur de plongée détecté contient le nom du
-périphérique, son adresse et son statut de jumelage. Si le périphérique
-n&#8217;est pas jumelé et que son nom est affiché avec un arrière-plan rouge, un
-menu contextuel peut être ouvert en sélectionnant ce nom avec un cli-droit.
-Sélectionnez l&#8217;option <em>Jumeler</em> et attendez que la tâche soit terminée. Si
-l&#8217;ordinateur est jumelé à Subsurface pour la première fois, il est possible
-que Subsurface demande un nombre ou un code PIN. Le plus utilisé est 0000,
-et c&#8217;est celui qui fonctionne pour un Shearwater Petrel. Si nécessaire,
-consultez le manuel utilisateur de l&#8217;ordinateur de plongée que vous
-utilisez.</p></div>
+Subsurface_ et son adresse Bluetooth sont affichées du côté droit. L'état
+(allumé/éteint) de l&#8217;adaptateur Bluetooth est affiché sous l&#8217;adresse et peut
+être modifié en cliquer sur la case <em>Allumer/éteindre</em>. Si l&#8217;adresse
+Bluetooth n&#8217;est pas affichée, <em>Subsurface</em> ne détecte pas le périphérique
+Bluetooth local. Assurez-vous que le driver Bluetooth est installé
+correctement sur l&#8217;ordinateur utilisant <em>Subsurface</em> et vérifiez qu&#8217;il peut
+être utilisé par d&#8217;autres utilitaires Bluetooth comme <em>bluetoothctl</em> ou
+<em>bluemoon</em>. Ceci clôture les deux premières étapes.  Vérifiez que
+l&#8217;ordinateur de plongée avec Bluetooth est en mode Connexion PC et est
+détectable pour d&#8217;autres périphériques Bluetooth. Consultez le manuel de
+l&#8217;ordinateur de plongée pour plus d&#8217;information. À présent, la troisième
+étape de notre liste est terminée.  Sélectionnez le bouton <em>Scannez</em> en bas
+à gauche de la boîte de dialogue ci-dessus. Après la recherche, l&#8217;ordinateur
+de plongée devrait se trouver dans la liste (peut-être sous la norme d&#8217;un
+numéro de périphérique Bluetooth) dans la liste principale sur la gauche de
+la boîte de dialogue (voir image ci-dessus). Si cela ne fonctionne pas,
+sélectionnez le bouton <em>Effacer</em>, puis scannez à nouveau en utilisant le
+bouton <em>Scan</em>. Après avoir suivi cette procédure, <em>Subsurface</em> devrait voir
+l&#8217;ordinateur de plongée.  La dénomination de l&#8217;ordinateur de plongée détecté
+contient le nom du périphérique, son adresse et son statut de jumelage. Si
+le périphérique n&#8217;est pas jumelé et que son nom est affiché avec un
+arrière-plan rouge, un menu contextuel peut être ouvert en sélectionnant ce
+nom avec un cli-droit.  Sélectionnez l&#8217;option <em>Jumeler</em> et attendez que la
+tâche soit terminée. Si l&#8217;ordinateur est jumelé à Subsurface pour la
+première fois, il est possible que Subsurface demande un nombre ou un code
+PIN. Le plus utilisé est 0000, et c&#8217;est celui qui fonctionne pour un
+Shearwater Petrel. Si nécessaire, consultez le manuel utilisateur de
+l&#8217;ordinateur de plongée que vous utilisez.</p></div>
 <div class="sidebarblock">
 <div class="content">
 <div class="admonitionblock">
@@ -1331,71 +1345,84 @@ nommez le site de plongée dans la bpîte de texte <em>Lieu</em> dans l&#8217;on
 <strong>Notes</strong>.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>Entrez le nom du site de plongée, p. ex. "Tihany, Lac Balaton, Hongrie".  Si
-plusieurs plongées ont été faites au même endroit, les informations de lieu
-de la première plongée sont ré-utilisées.  Les lieux de plongée existants
-peuvent être édités en sélectionnant (dans le panneau <strong>Liste des plongées</strong>)
-une plongée faite sur ce site et en ouvrant les informations de cet
-endroit. Cliquez sur le bouton avec une image de globe à droite du nom du
-lieu (voir l&#8217;image <strong>A</strong> ci-dessous).  Lorsque vous entrez le nom d&#8217;un site de
-plongée, une liste déroulante apparaît, affichant tous les sites comportant
-un nom similaire. Si le site de plongée a déjà été utilisé précédemment,
-cliquez sur le nom existant.  Les noms de sites de plongée présents dans la
-liste contiennent soit un symbole en forme de globe (indiquant qu&#8217;ils sont
-répertoriés comme lieux de plongée dans la base de données de <em>Subsurface</em>)
-ou un symbole <strong>+</strong> (qui indique des noms de lieux de plongée qui semblent
-consistant avec le nom du site courant mais qui n&#8217;ont pas encore été ajoutés
-à la base de données).  Si le site de plongée actuel n&#8217;a pas encore été
-utilisé, un message apparaît comme suit (voir image <strong>A</strong> ci-dessous):</p></div>
+<div class="paragraph"><p><strong>Using existing dive locations:</strong> Type in the name of the dive site, e.g. "Tihany, Lake Balaton, Hungary".
+If several dives are
+made at the same location, the site information for the first dive is re-used.
+Therefore, if a dive site has been used before, the name of that site (and sometimes
+the names of similar sites) appears below the dive site text box (image below). Double-click on
+the appropriate dive site name and the dive location will be associated with the
+dive being entered. Then select <em>Apply Changes</em> (image below) to save the geolocation for this dive site.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Locations1_f22.jpg" alt="FIGURE:Location description panel" />
+<img src="images/Location1.jpg" alt="FIGURE:Location choice panel" />
 </div>
 </div>
-<div class="paragraph"><p>Cliquez sur le bouton contenant une image de globe; un panneau apparaît
-permettant d&#8217;entrer les coordonnées et d&#8217;autres informations concernant le
-site (voir image <strong>B</strong> ci-dessus). Les informations les plus importantes sont
-les coordonnées du site. Il y a trois façons de spécifier les coordonnées:</p></div>
-<div class="olist loweralpha"><ol class="loweralpha">
-<li>
-<p>
-Utilisez la carte du monde en bas à droite de la fenêtre de
-   <em>Subsurface</em>. Cette carte affiche une barre orange indiquant "Pas de données
-   de localisation - Bougez la carte et double-cliquez pour définir le lieu de
-   plongée". Double-cliquez à l&#8217;endroit requis; la barre orange disparaît alors
-   et les coordonnées sont stockées.
-</p>
-</li>
-<li>
-<p>
-Utiliser l&#8217;application Subsurface-Mobile ou l&#8217;application <em>Subsurface</em>
-   Companion avec un périphérique Android ou un iPhone avec GPS si les
-   coordonnées du site de plongée ont été stockées en utilisant une de ces
-   applications.  <a href="#S_Companion">Cliquez ici pour plus d&#8217;information</a>
-</p>
-</li>
-<li>
-<p>
-Entrez les coordonnées manuellement si vous les connaissez, en utilisant un
-   des quatre formats avec la latitude suivie de la longitude:
-</p>
+<div class="paragraph"><p><strong>Entering a new dive location:</strong> On the other hand, having dived at a new dive location,
+a new record needs to be created
+that could be used for the new and for later dives at this new site. Type the name of the new dive site into the text box
+(image A below).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image1.jpg" alt="FIGURE:Location creation panel" />
+</div>
+</div>
+<div class="paragraph"><p>Double-click on the blue bar below the new dive location name. The blue bar
+disappears (image B above) and the globe icon on the right-hand of the
+location name text box turns blue.  In the Dive Map part of the <em>Subsurface</em>
+window, a world map appears (image C above). Click on the blue globe icon to
+the right of the dive site name in the <em>Notes</em> panel (image B above). This
+opens a window for entering the details of the new dive location (image A
+below).  The globe icon changes to indicate that the location data are being
+edited. The only important data here are the geographic coordinates of the
+dive location.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image2.jpg" alt="FIGURE:Location creation panel" />
+</div>
+</div>
+<div class="paragraph"><p>There are three ways of adding the the coordinates:</p></div>
+<div class="paragraph"><p><strong>(1):</strong> Entrer les coordonnées manuellement si vous les connaissez,
+   en utilisant un des quatre formats avec la latitude suivie de la longitude :</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>Format ISO 6709 Annexe D p. ex. 30°13'28.9"N 30°49'1.5"E Degrés et minutes
-décimales, p. ex. N30° 13.49760' , E30° 49.30788' Degrés minutes secondes,
-p. ex. N30° 13' 29.8" , E30° 49' 1.5" Degrés décimaux, p. ex. 30.22496 ,
-30.821798</code></pre>
+<pre><code>Format ISO 6709 Annexe D, ex. 30°13'28.9"N 30°49'1.5"E
+Degrés et minutes décimales, ex. N30° 13.49760' , E30° 49.30788'
+Degrés minutes secondes, ex. N30° 13' 29.8" , E30° 49' 1.5"
+Degrés décimaux, ex. 30.22496 , 30.821798</code></pre>
 </div></div>
-</li>
-</ol></div>
-<div class="paragraph"><p>Les latitudes dans l&#8217;hémisphère sud sont données avec un <strong>S</strong>, p. ex. S30°,
-ou avec une valeur négative, p. ex. -30.22496. De la même façon, les
-longitudes ouest sont données avec un <strong>W</strong>, p. ex. W07°, ou avec une valeur
-négative, p. ex. -7.34323. Certains claviers ne comportent par le signe
-degré (°). Il peut être remplacé par un <strong>d</strong> comme ceci: N30d W20d.  Si le
-nom du site de plongée et les coordonnées ont tous les deux été renseignés,
-enregistrez les informations du site de plongée en sélectionnant le bouton
-<em>Appliquer les modifications</em> en haut du panneau.</p></div>
+<div class="paragraph"><p>Les latitudes dans l&#8217;hémisphère sud sont données avec un <strong>S</strong>, ex. S30°, ou
+avec une valeur négative, ex. -30.22496. De la même façon, les longitudes
+ouest sont données avec un <strong>W</strong>, ex. W07°, ou avec une valeur négative,
+ex. -7.34323. Certains claviers ne comportent par le signe degré (°). Il
+peut être remplacé par un <strong>d</strong> comme ceci: N30d W20d. Entrer tout autre
+informations à propos du site de plongée (Description et notes), puis
+sélectionner <em>Appliquer les modifications</em> pour sauvegarder la
+géolocalisation de ce site. Les informations du site de plongée pourront
+être modifiées ultérieurement, en cliquant sur l&#8217;icône de globe à droite du
+nom du site de plongée, dans l'"onglet notes".</p></div>
+<div class="paragraph"><p><strong>(2):</strong> Use the Dive Map to specify the coordinates. The Dive map now shows
+all the existing dive lications in grey as well as an additional marker in red
+(image B above). Drag the red marker to the location of the dive site being entered.
+The map can be dragged and zoomed using the mouse wheel. Position the red marker
+by dragging it on the map, zooming in on the appropriate part of the map and placing
+the marker at an appropriate position (image B below). The coordinates of the dive
+location are automatically inserted into the appropriate text box in the dive location
+information window (image A below). Enter any other contextual information about the dive site (Description and Notes),
+then select <em>Apply Changes</em> to save the geolocation for this dive site.
+The dive site information can later be edited by clicking the globe icon to the right of the
+dive site name in the <strong>Notes tab</strong>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image3.jpg" alt="FIGURE:Location creation panel" />
+</div>
+</div>
+<div class="paragraph"><p>Once the dive location data have been saved, the dive on the Dive List has a
+globe icon immediately to the left of the location name of a particular
+dive.</p></div>
+<div class="paragraph"><p><strong>(3):</strong> Utiliser l&#8217;application Subsurface-Mobile ou l&#8217;application <em>Subsurface</em> Companion avec un
+périphérique Android ou un iPhone avec GPS si les coordonnées du site de plongée ont été stockées
+en utilisant une de ces applications.
+<a href="#S_Companion">Cliquez ici pour plus d&#8217;information</a></p></div>
 <div class="paragraph"><p><strong>Important</strong>: les coordonnées GPS d&#8217;un site de plongée sont liées au nom de
 lieu - ainsi, <strong>enregistrer</strong> un site de plongée avec uniquement les coordonnées mais aucun nom
 causera des problèmes. (Subsurface pensera que toutes ces
@@ -1404,7 +1431,7 @@ identiques).</p></div>
 <div class="paragraph"><p><strong>Recherche du nom d&#8217;un site de plongée</strong>: si vous avez entré les coordonnées dans la boîte
 de texte appropriée, vous pouvez lancer une recherche de nom sur base des coordonnées.
 Ceci est réalisé lorsque <em>Subsurface</em> utilise Internet pour trouver le nom d&#8217;un site de plongée
-sur base des coordonées que vous avez entrées. Si un nom est trouvé, il est
+sur base des coordonnées que vous avez entrées. Si un nom est trouvé, il est
 automatiquement inséré dans la boîte Étiquettes. La liste (intitulée <em>"Sites de plongée situés aux mêmes coordonnées</em>") en bas
 du panneau du site de plongée contient les noms d&#8217;autres sites de plongée utilisés
 au même endroit. Par exemple, si le site de plongée est "Blue Hole" et qu&#8217;il y a plusieurs
@@ -1830,13 +1857,15 @@ Microsoft Access databases, preventing the integration the importer into the
 generated by SmartTrak to Subsurface&#8217;s <em>.xml</em> format. It can be built
 together with <em>Subsurface</em> for Linux systems. Two dependencies need to be
 installed in your system before building: <em>libglib2.0</em> and <em>libmdb2</em>.</p></div>
+<div class="paragraph"><p>In addition, a web service is available for divelog convertions from
+SmartTrak to <em>Subsurface</em> (see below).</p></div>
 <div class="paragraph"><p>N&#8217;hésitez pas à contacter l'équipe de développement de <em>Subsurface</em> via
 <a href="mailto:subsurface@subsurface-divelog.org">notre liste de diffusion</a> pour de
 l&#8217;aide à l&#8217;importation des lofs <em>SmartTrak</em>.</p></div>
-<div class="paragraph"><p>Assuming the above dependencies have been installed and the <em>Subsurface</em>
-source tree is in the directory <em>~/src/subsurface</em>, then:</p></div>
 <div class="sect4">
 <h5 id="_compiler_em_smtk2ssrf_em">Compiler <em>smtk2ssrf</em></h5>
+<div class="paragraph"><p>Assuming the above dependencies have been installed and the <em>Subsurface</em>
+source tree is in the directory <em>~/src/subsurface</em>, then:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1902,6 +1931,22 @@ the directory where the <em>Subsurface</em>-formatted output is written to.  Fil
 stored in <em>file3.xml</em> in the <em>output</em> directory. Check any warning and error
 messages in the console or in the graphical window: some may be relevant as
 support for Galileo family of dive computers is still a work in progress.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_for_the_lazy_a_web_service_to_convert_em_smarttrak_em_to_em_subsurface_em">For the lazy: a web service to convert <em>SmartTrak</em> to <em>Subsurface</em></h5>
+<div class="paragraph"><p>Open the website at:</p></div>
+<div class="paragraph"><p><em>https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl</em></p></div>
+<div class="paragraph"><p>This is a no-frills web service for converting <em>SmartTrak</em> dive logs to
+<em>Subsurface</em>. Select the browse button. This allows you to browse your
+computer directories and to select the <em>SmartTrak</em> divelog to be
+converted. Once it has been selected, click the <em>Submit query</em> button. After
+a short while, a dialog box appears (image below) for saving the converted
+file to the local computer.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/strk2ssrf_web.jpg" alt="FIGURE:Web service to convert SmartTrak divelog" />
+</div>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_fusionner_les_plongées_importées_dans_un_carnet_de_plongée_existant">Fusionner les plongées importées dans un carnet de plongée existant</h5>
@@ -2156,7 +2201,7 @@ automatically collecting dive site coordinate information.</p></div>
    Internet server.</p></div>
 <div class="paragraph"><p>Syncronising the dives in the <em>Subsurface</em> dive list with the coordinates
 stored on the <em>Subsurface</em> Internet server.</p></div>
-<div class="paragraph"><p><em>Subsurface</em> comporte deux outils pour réaliser cela:</p></div>
+<div class="paragraph"><p><em>Subsurface</em> comporte deux outils pour réaliser cela :</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2927,14 +2972,34 @@ decompression.</p></div>
 <img src="images/multicylinder_dive.jpg" alt="FIGURE: Multicylinder profile" />
 </div>
 </div>
+<div class="paragraph"><p>Several dive computers perform automatic recording of cylinder pressure. In
+this case no manual intervention is needed.  Older dive computers
+(e.g. Uwatec Galileo, several Suunto models) handle more than one pressure
+transducer on cylinders, switching from one sensor to another as the diver
+switches among cylinders and providing a sequential record of cylinders
+pressures during a dive. Some of the latest models (e.g. Shearwater Perdix
+AI, Scubapro G2) record two or more pressure transducers concurrently and
+continuously during the whole dive. In these cases <em>Suburface correctly
+interprets the data.  There is continuous effort within the _Subsurface</em>
+development team to add new dive computer models to those that can be
+downloaded from and to represent cylinder pressures correctly. Regardless of
+the type of sensor handling of dive computers, technical divers are likely
+to use both automated and manual methods of cylinder pressure logging when
+more than two gases are used. However, automated recording of cylinder
+pressure simplifies logging of sidemount dives (where two cylinders are
+used). See the
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">list
+of supported dive computers</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_plongées_sidemount">5.6.2. Plongées Sidemount</h4>
 <div class="paragraph"><p>Sidemount diving is just another form of multi-cylinder diving, often with
 both or all cylinders having the same gas mixture. Although it’s a popular
 configuration for cave divers, sidemount diving can be done by recreational
-divers who’ve completed the appropriate training. Sidemount dive logging
-involves three steps, exactly as with multi-cylinder dives above:</p></div>
+divers who have completed the appropriate training. See the comments in the
+last paragraph, above, about automated recording of cylinder
+pressures. Manual logging of cylinder pressures during sidemount involves
+three steps, exactly as with multi-cylinder dives above:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3030,28 +3095,33 @@ over two hours.</p></div>
 <td class="icon">
 <img src="images/APD.jpg" alt="Note" />
 </td>
-<td class="content">Closed system rebreathers use advanced technology to recirculate gas that
-has been breathed. They also do two things to maintain a breathable oxygen
-concentration:
-a) remove carbon dioxide from the exhaled gas
+<td class="content">Closed system rebreathers also recirculate gas that has been
+breathed. However, they use advanced technology to maintain a breathable
+oxygen concentration:
+a) remove carbon dioxide from the exhaled gas.
 regulate the oxygen concentration to remain within safe diving limits.  The
 CCR interface of <em>Subsurface</em> is currently experimental and under active
 development. Subsurface currently supports Poseidon MkVI and APD
-Discovery/Evolution dive computers. In contrast to a conventional
-recreational dive computer, a CCR system computer does not allow the
-download of a log containing multiple dives. Rather, each dive is stored
-independently. This means that <em>Subsurface</em> cannot download a dive log
-directly from a CCR dive computer, but that it imports individual CCR dive
-profiles in the same way it imports dive log data from other digital
-databases: one dive at a time.</td>
+Discovery/Evolution dive computers, as well as Shearwater dive computers
+connected to CCR systems. In contrast to a conventional recreational dive
+computer, a CCR system computer usually does not allow the download of a log
+containing multiple dives. Rather, each dive is stored independently. This
+means that <em>Subsurface</em> cannot download a dive log directly from a CCR dive
+computer, but that it imports individual CCR dive profiles in the same way
+it imports dive log data from other digital databases: one dive at a
+time. However, the Shearwater based CCR systems are different in this
+respect and allow multi-dive downloads.</td>
 </tr></table>
 </div>
 <div class="sect4">
 <h5 id="_importer_une_plongée_ccr">Importer une plongée CCR</h5>
-<div class="paragraph"><p>See the section dealing with <a href="#S_ImportingAlienDiveLogs">Importing dive
-information from other digital sources</a>. CCR dive data are currently
-obtained from the proprietary software provided when purchasing CCR dice
-equipment. See
+<div class="paragraph"><p>For Shearwater CCR controllers, or independent Shearwater CCR logs, just
+download the dive log as would be the case for non-CCR dives. <em>Subsurface</em>
+interprets the CCR dive log correctly.  Except for Shearwater CCR dive
+computers, CCR dive data are currently obtained from the proprietary
+software provided when purchasing CCR dive equipment. See the section
+dealing with <a href="#S_ImportingAlienDiveLogs">Importing dive information from
+other digital sources</a> and
 <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix B</a> for more complete information. Use that software to download the dive
 data into a known directory. From the main menu of <em>Subsurface</em>, select
 <em>Import &#8594; Import log files</em> to bring up the <a href="#Unified_import">universal
@@ -3207,7 +3277,73 @@ B</a>.</p></div>
 <h2 id="_obtaining_more_information_about_dives_entered_into_the_logbook">6. Obtaining more information about dives entered into the logbook</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_l_8217_onglet_strong_informations_strong_pour_une_seule_plongée">6.1. L&#8217;onglet <strong>Informations</strong> (pour une seule plongée)</h3>
+<h3 id="_utiliser_la_carte_des_plongées_pour_obtenir_plus_d_8217_informations_sur_les_plongées">6.1. Utiliser la carte des plongées pour obtenir plus d&#8217;informations sur les plongées</h3>
+<div class="paragraph"><p>The Dive Map has a number of buttons useful for manipulation several aspects
+of a dive. These are:</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewMode.jpg" alt="Note" />
+</td>
+<td class="content">Select this button to show the Dive Map as a satellite image or as a Google
+Maps representation.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewPlus.jpg" alt="Note" />
+</td>
+<td class="content">Zoom in. Select a smaller area of the map.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewMinus.jpg" alt="Note" />
+</td>
+<td class="content">Zoom out. Select a larger area of the map.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/MapMenu.jpg" alt="FIGURE: Map menu" />
+</div>
+</div>
+<div class="paragraph"><p>The "Hamburger" button on the top right-hand of the Dive Map activates the
+Map menu. The items are:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Open location in <em>Google Maps</em>. Open the location of the active dive in a
+  separate Google Maps window with the dive site indicated by a Google Maps
+  teardrop marker.
+</p>
+</li>
+<li>
+<p>
+Copy location to clipboard (decimal). Copy the coordinates of the active
+  dive to the clipboard in decimal degrees e.g. -25.933905 30.710572
+</p>
+</li>
+<li>
+<p>
+Copy location to clipboard (sexagesimal). Copy the coordinates of the active
+  dive to the clipboard in sexagecimal, e.g. 25°56&#8217;02.058"S 30°42&#8217;38.059"E
+</p>
+</li>
+<li>
+<p>
+Select visible dive locations. In the Dive List panel, highlight all the
+  dive sites visible in the Dive Map. This allows easy selection of the dives
+  within a particular geographical area to inspect them or to calculate
+  statistics for them.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_l_8217_onglet_strong_informations_strong_pour_une_seule_plongée">6.2. L&#8217;onglet <strong>Informations</strong> (pour une seule plongée)</h3>
 <div class="paragraph"><p>L&#8217;onglet Informations donnée des informations résumées sur une plongée
 sélectionnée dans la <strong>Liste des plongées</strong>. Les informations utiles
 comprennent l&#8217;intervalle de surface avant une plongée, les profondeurs
@@ -3228,7 +3364,7 @@ supérieures à 200 bar, les rendant plus précises. Référez-vous à
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ExtraDataTab">6.2. L&#8217;onglet <strong>Extra info</strong> (généralement pour des plongées séparées)</h3>
+<h3 id="S_ExtraDataTab">6.3. L&#8217;onglet <strong>Extra info</strong> (généralement pour des plongées séparées)</h3>
 <div class="paragraph"><p>Lors de l&#8217;utilisation d&#8217;un ordinateur de plongée, celui-ci transmet souvent
 des données qui ne peuvent pas être facilement standardisées parce que la
 nature de ces  informations diffère d&#8217;un ordinateur à l&#8217;autre. Ces données
@@ -3245,7 +3381,7 @@ supplémentaires pour une plongée utilisant un recycleur Poseidon.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_l_8217_onglet_strong_statistiques_strong_pour_un_groupe_de_plongées">6.3. L&#8217;onglet <strong>Statistiques</strong> (pour un groupe de plongées)</h3>
+<h3 id="_l_8217_onglet_strong_statistiques_strong_pour_un_groupe_de_plongées">6.4. L&#8217;onglet <strong>Statistiques</strong> (pour un groupe de plongées)</h3>
 <div class="paragraph"><p>L&#8217;onglet Statistiques donne des statistiques résumées pour plusieurs
 plongées, pour autant que plusieurs plongées soient sélectionnées dans la
 <strong>Liste des plongées</strong> en utilisant les raccourcis standard Ctrl-clic ou
@@ -3257,7 +3393,7 @@ la consommation équivalente à l&#8217;air (SAC). L&#8217;onglet affiche égale
 plus petite et la plus grande profondeur atteinte pour ces plongées.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_DiveProfile">6.4. Le <strong>Profil de plongée</strong></h3>
+<h3 id="S_DiveProfile">6.5. Le <strong>Profil de plongée</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Profile2.jpg" alt="Typical dive profile" />
@@ -3333,7 +3469,7 @@ augmente la taille du profil de plongée pour remplir la zone du panneau.</td>
 <div class="paragraph"><p>La <strong>température de l&#8217;eau</strong> est indiquée par une ligne bleue avec des valeurs de
 température placées lors de changements significatifs.</p></div>
 <div class="sect3">
-<h4 id="S_InfoBox">6.4.1. La boîte <strong>Information</strong></h4>
+<h4 id="S_InfoBox">6.5.1. La boîte <strong>Information</strong></h4>
 <div class="paragraph"><p>La boîte Information affiche un grand nombre d&#8217;informations concernant le
 profil de plongée. Normalement, la boîte Information est située dans le coin
 supérieur gauche du panneau <strong>Profil de plongée</strong>. Elle peut être déplacée
@@ -3535,7 +3671,7 @@ Graph <strong>E</strong> indicates the situation after remaining at 4.5 meters f
 </div>
 </div>
 <div class="sect3">
-<h4 id="_événements_rapportés_par_l_8217_ordinateur_durant_la_plongée">6.4.2. Événements rapportés par l&#8217;ordinateur durant la plongée</h4>
+<h4 id="_événements_rapportés_par_l_8217_ordinateur_durant_la_plongée">6.5.2. Événements rapportés par l&#8217;ordinateur durant la plongée</h4>
 <div class="paragraph"><p>Many dive computers record events during a dive. For instance, most dive
 computers report alarms relating to high partial pressures of oxygen, to
 rapid ascents or the exceeding of no-deco limits (NDL).  On the other hand,
@@ -3566,7 +3702,7 @@ dive. These are indicated as a small red flag on the profile and are
 discussed more fully in the section on <a href="#S_Bookmarks"><em>inserting bookmarks</em></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_la_barre_d_8217_outils_du_profil">6.4.3. La barre d&#8217;outils du profil</h4>
+<h4 id="_la_barre_d_8217_outils_du_profil">6.5.3. La barre d&#8217;outils du profil</h4>
 <div class="paragraph"><p>The dive profile can include graphs of the <strong>partial pressures</strong> of O<sub>2</sub>,
 N<sub>2</sub>, and He during the dive (see figure above) as well as a calculated and
 dive computer reported deco ceilings (only visible for deep, long, or
@@ -3891,7 +4027,7 @@ tissues at the end of the dive.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_le_menu_contextuel_du_profil_de_plongée">6.4.4. Le menu contextuel du Profil de plongée</h4>
+<h4 id="_le_menu_contextuel_du_profil_de_plongée">6.5.4. Le menu contextuel du Profil de plongée</h4>
 <div class="paragraph"><p>The context menu for the Dive Profile is accessed by right-clicking while
 the mouse cursor is over the Dive Profile panel. The menu allows creating
 Bookmarks, Gas Change Event markers, or manual CCR set-point changes other
@@ -4192,7 +4328,7 @@ d&#8217;export car une connexion vers <em>Facebook</em> est nécessaire, nécess
 identifiant et un mot de passe. À partir du menu principal, sélectionnez
 <em>Partager sur &#8594; Connecter à &#8594; Facebook</em> (image <strong>A</strong> ci-dessous). Un écran
 de connexion s&#8217;affiche (image <strong>B</strong> ci dessous). Entrez l&#8217;identifiant et le
-mot de passe <em>Facebook</em>. Depuis la fentre <em>Subsurface</em>, il est facile de
+mot de passe <em>Facebook</em>. Depuis la fenêtre <em>Subsurface</em>, il est facile de
 vérifier si <em>Subsurface</em> a une connection valide vers <em>Facebook</em> : Depuis le
 "Menu principal", sélectionnez <em>Partager sur</em> (image <strong>A</strong>
 ci-dessous). Normalement, l&#8217;option <em>Facebook</em> est grisée. Mais si une
@@ -5127,10 +5263,9 @@ of gradient factors as implemented by Erik Baker, or using the VPM-B model.</p><
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">Le planificateur de plongée de <em>Subsurface</em> EST POUR L&#8217;INSTANT EN PHASE
-EXPÉRIMENTALE et suppose que l&#8217;utilisateur est déjà familier avec
-l&#8217;interface utilisateur de <em>Subsurface</em>. Il est utilisé explicitement aux
-conditions suivantes:</td>
+<td class="content">Le planificateur de plongée de <em>Subsurface</em> EST EN PHASE EXPÉRIMENTALE et
+suppose que l&#8217;utilisateur est déjà familier avec l&#8217;interface utilisateur de
+<em>Subsurface</em>. Il est utilisé explicitement aux conditions suivantes :</td>
 </tr></table>
 </div>
 <div class="ulist"><ul>
@@ -5187,7 +5322,7 @@ that can easily be copied to other software. This is also where any warning
 messages about the dive plan are printed.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/PlannerWindow1_f20.jpg" alt="FIGURE: Dive planner startup window" />
+<img src="images/PlannerWindow1.jpg" alt="FIGURE: Dive planner startup window" />
 </div>
 </div>
 </div>
@@ -5394,9 +5529,7 @@ means that recreational dive limits are exceeded and either the dive
 duration or the dive depth needs to be reduced.</p></div>
 <div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30
 meters. Although the no-deco limit (NDL) is 23 minutes, the duration of the
-dive is limited by the amount of air in the cylinder. That is shown in the
-text box at the bottom right of the panel, requiring sufficient air for
-buddy-sharing during ascent.</p></div>
+dive is limited by the amount of air in the cylinder.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Planner_OC_rec.jpg" alt="FIGURE: A recreational dive plan: setup" />
@@ -5404,7 +5537,7 @@ buddy-sharing during ascent.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_non_recreational_open_circuit_dives_including_decompression">14.2.2. Non-recreational open circuit dives, including decompression</h4>
+<h4 id="_plongées_en_circuit_ouvert_non_loisir_incluant_une_décompression">14.2.2. Plongées en circuit ouvert non loisir, incluant une décompression</h4>
 <div class="paragraph"><p>Non-recreational dive planning involves exceeding the no-deco limits and/or
 using multiple breathing gases.  These dives are planned in three stages:</p></div>
 <div class="paragraph"><p><strong>a) Nitrogen management</strong>: This is done by specifying the rates for descent and ascent,
@@ -5491,24 +5624,15 @@ In addition to calculating the total gas consumption for every cylinder the plan
 of calculating the recommended volume of bottom gas which is needed for safe asscent to the
 first deco gas change depth or the surface. This procedure is called the "minimum gas" or "rock bottom"
 consideration and it is used by various (but not all)
-technical diving organisations. The calculation assumes that in worst case an out of gas (OoG)
-situation could occur at the end of the planned bottom time at maximum depth. This OoG event forces
-the buddy team the share the gas of one diver and to stay at maximum depth for an additional
-time of n minutes (preferences option "problem solving time").
-At the same moment the combined SAC of both divers is increased by a estimated factor (preferences option
-"SAC factor") compared to the SAC factor of a single diver under normal conditions.
-The result of the minimum gas calculation for the bottom gas is printed to the planner output as an
-additional information. No automatic checks are performed based on this result.
-Please take care that the feature only gives valid results for simple, rectengular shaped single
-level dive profiles. For multi level dives one would need to check every leg of the profile independently.</p></div>
+technical diving organisations. See the text below for a detailed explanation.</p></div>
 <div class="paragraph"><p>Now you can start the detailed time-depth planning of the dive. <em>Subsurface</em>
 offers an unique graphical interface for doing planning. The mechanics are
 similar to hand-entering a dive profile in the dive log part of
 <em>Subsurface</em>. Upon activating the planner, a default dive of depth 15 m for
-20 min is offered in the blue design surface to the top right hand of the
-screen. The white dots (waypoints) on the profile can be dragged with a
-mouse. Create more waypoints by double-clicking on the profile line and
-ensuring the profile reflects the intended dive. Drag the waypoints to
+20 min is offered in the blue design surface in the top right hand part of
+the planner window. The white dots (waypoints) on the profile can be dragged
+with a mouse. Create more waypoints by double-clicking on the profile line
+and ensuring the profile reflects the intended dive. Drag the waypoints to
 represent the depth and duration of the dive. It is NOT necessary to specify
 the ascent part of the dive since the planner calculates this, based on the
 existing settings.  If any of the management limits (for nitrogen, oxygen or
@@ -5531,20 +5655,45 @@ in the section <a href="#S_CreateProfile">hand-creating a dive profile</a>. Thes
 changes should reflect the cylinders and gas compositions defined in the
 table with <em>Available Gases</em>.  If two or more gases are used, automatic gas
 switches will be planned during the ascent to the surface.</p></div>
-<div class="paragraph"><p>A non-zero value in the "CC setpoint" column of the table of dive planner
-points indicates a valid setpoint for oxygen partial pressure and that the
-segment is dived using a closed circuit rebreather (CCR). If the last
-manually entered segment is a CCR segment, the decompression phase is
+<div class="paragraph"><p>Cylinders used for the plan need to be entered in the table of <em>Available
+gases</em>. In the column <em>Type</em> select the appropriate cylinder size by using
+the dropdown list that appears when double-clicking a cell in this
+column. By default, a large number of sizes are listed, and a new cylinder
+size can be created by typing this into the text box. The cylinder size,
+start pressure and default switch depths are initialised
+automatically. Specify the gas composition (e.g. helium and oxygen
+content). A non-zero value in the "CC setpoint" column of the table of dive
+planner points indicates a valid setpoint for oxygen partial pressure and
+that the segment is dived using a closed circuit rebreather (CCR). If the
+last manually entered segment is a CCR segment, the decompression phase is
 computed assuming the diver uses a CCR with the specified set-point. If the
 last segment (however short) is on open circuit (OC, indicated by a zero
 set-point) the decompression is computed in OC mode and the planner only
 considers gas changes in OC mode.</p></div>
-<div class="paragraph"><p>Ci-dessous, vous trouverez un exemple d&#8217;une planification de plongée
-utilisant du Tx21/35, suivie d&#8217;une remontée utilisant de l&#8217;EAN50 et de
-l&#8217;oxygène, et utilisant les réglages décrits ci-dessous.</p></div>
+<div class="paragraph"><p>Enter dive profile segments in the <em>Dive planner points</em> table by providing
+a time duration for a segment as well as its final depth. If more than one
+cylinder is used during the dive, ensure that the appropriate cylinder is
+selected for each segment of the dive plan by double-clicking the cell and
+selecting the appropriate cylinder from the dropdown list in the <em>Used gas</em>
+column.  If required, insert a row in the <em>Dive planner points</em> table by
+adding a new line and then setting the <em>Run time</em> value appropriately. In
+image A below, a segment (using an EAN50 cylinder) has been added and you
+wish to use this gas during the very start of the dive (the other gas is not
+breathable at the surface).  Upon pressing Enter on the keyboard, that
+segment is moved to the top of that table and the plan is adjusted
+automatically to take into account this new segment of the dive plan (image
+B below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_deco_VPM.jpg" alt="FIGURE: Planning a dive: setup" />
+<img src="images/planner1.jpg" alt="FIGURE: Planning a dive: segments" />
+</div>
+</div>
+<div class="paragraph"><p>Ci-dessous, vous trouverez un exemple d&#8217;une planification de plongée
+utilisant du Tx20/30 et l&#8217;algorithme Bühlmann, suivie d&#8217;une remontée
+utilisant du EAN50 et utilisant les réglages décrits ci-dessous.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_deco.jpg" alt="FIGURE: Planning a dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Once the above steps have been completed, save by clicking the <em>Save</em> button
@@ -5552,18 +5701,137 @@ towards the top middle of the planner. The saved dive plan will appear in
 the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p><strong>Les détails du plan de plongée</strong></p></div>
 <div class="paragraph"><p>On the bottom right of the dive planner, under <em>Dive Plan Details</em>, the
-exact details of the dive plan are provided. These details may be modified
-by checking any of the options under the <em>Notes</em> section of the dive
-planner, immediately to the left of the <em>Dive Plan Details</em>. If a <em>Verbatim
-dive plan</em> is requested, a detailed sentence-level explanation of the dive
-plan is given. If any of the management specifications have been exceeded
-during the planning, a warning message is printed underneath the dive plan
-information.</p></div>
+details of the dive plan are provided. These may be modified by checking any
+of the options under the <em>Notes</em> section of the dive planner, immediately to
+the left of the <em>Dive Plan Details</em>. If a <em>Verbatim dive plan</em> is requested,
+a detailed sentence-level explanation of the dive plan is given. If any of
+the management specifications have been exceeded during the planning, a
+warning message is printed underneath the dive plan information.</p></div>
 <div class="paragraph"><p>If the option <em>Display segment duration</em> is checked, then the duration of
 each depth level is indicated in the <em>Dive Plan Details</em>. This duration
 INCLUDES the transition time to get to that level. However, if the <em>Display
 transition in deco</em> option is checked, the transitions are shown separately
 from the segment durations at a particular level.</p></div>
+<div class="paragraph"><p>The planner has a check box <em>Display plan variations</em>. By checking this box,
+the planner provides information about a dive that is a little deeper or
+slightly longer than the planned dive. This can be found near the top of the
+<em>Dive plan details</em> where the dive duration is indicated. Checking this
+option creates a lot of additional computation, to such a degree that the
+planner is slower than otherwise. The information is typically given as:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Runtime: 53min + 0:52/m + 4:21/min</code></pre>
+</div></div>
+<div class="paragraph"><p>This indicates:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Calculated dive duration is 53 min.
+</p>
+</li>
+<li>
+<p>
+For each extra meter in depth during the bottom phase of the dive, the
+   duration increases by 52 seconds.
+</p>
+</li>
+<li>
+<p>
+For each extra minute of bottom time, the duration increases by 4 min 21
+   sec. Thus, if the bottom time is two minutes longer than planned, the dive
+   duration will be (2+2*4min 21 sec) = 10 minutes 42 sec longer and would
+   probably require that each deco stop is 10:42/53:00 = 20% longer than
+   planned. These calculations are only applicable for small deviations from
+   the dive plan, not for larger deviations.
+</p>
+</li>
+<li>
+<p>
+Minimum gas requirements*
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>The planner also estimates the <strong>minimum gas</strong> pressure required for safe
+ascent after an event that causes the dive to be aborted. The calculation
+assumes that in worst case an out of gas (OoG)  situation could occur at the
+end of the planned bottom time at maximum depth. This OoG event forces the
+buddy team the share the gas of one diver and to stay at maximum depth for
+an additional number of minutes.  At the same moment the combined SAC of
+both divers is increased by a estimated factor compared to the SAC factor of
+a single diver under normal conditions.  The result of the minimum gas
+calculation for the bottom gas is printed to the planner output. No
+automatic checks are performed based on this result.  The feature only gives
+valid results for simple, rectengular shaped single level dive profiles. For
+multi level dives one would need to check every leg of the profile
+independently.</p></div>
+<div class="paragraph"><p>There are two selector boxes on the left of the <em>Dive plan details</em>:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>SAC factor</strong>. This is your estimate of the degree to which your SAC increases if a critical problem arises underwater,
+   e.g. gas sharing or entanglement. Realistic values range from 2 to 5, reflecting the gas use of two divers sharing
+   a single gas cylinder after an OoG situation.
+</p>
+</li>
+<li>
+<p>
+<strong>Problem solving time</strong>. This is your estimate of how long you would take to solve the problem before starting the ascent
+   to terminate the dive. The default value is 2 minutes.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Using the above information, the planner then estimates what the minimum
+botom gas cylinder pressure needs to be for a safe ascent. This information
+is given near the bottom of the <em>Dive plan details</em>, following the
+calculation of bottom gas used during the dive if it exactly follows the
+plan. the minimum gas is typically given as:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Minimum gas (based on 2.0xSAC/+1min@81m): 2130 l/90bar/Δ:+80bar</code></pre>
+</div></div>
+<div class="paragraph"><p>This indicates:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Within parentheses, the <strong>SAC factor</strong> and <strong>Problem solving time</strong> specified.
+</p>
+</li>
+<li>
+<p>
+The number of liters of back gas required for a safe ascent (2130 litres in
+   the example above)
+</p>
+</li>
+<li>
+<p>
+The number of bars of back gas required for a safe ascent (90 bars in the
+   example above).
+</p>
+</li>
+<li>
+<p>
+The delta-value: number of bars of back gas available at the end of the
+   bottom section of the dive, <em>over and above</em> the minimum gas requirement (80
+   bars in the above example). A positive delta reflects a safe plan; a
+   negative delta indicates insufficient gas for a safe ascent.
+</p>
+</li>
+</ul></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">The <strong>plan variations</strong> and <strong>minimum gas</strong> estimates are only guidelines for a
+diver performing dive planning, intended to enhance the safety of executing
+a particular dive plan. They are NOT precise and should NOT be relied upon
+as the only safety features in dive planning. Interpret these estimates
+within the framework of your formal training to perform dive planning.</td>
+</tr></table>
+</div>
+</div></div>
 </div>
 </div>
 <div class="sect2">
@@ -5585,7 +5853,7 @@ to that of the CCR dive below, but note the longer ascent duration due to the lo
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_pSCR1_f20.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
 </div>
 </div>
 </div>
@@ -5608,7 +5876,7 @@ this is calculated for bail out ascents.</p></div>
 <div class="paragraph"><p>The dive profile for a CCR dive may look something like the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_CCR1_f20.jpg" alt="FIGURE: Planning a CCR dive: setup" />
+<img src="images/Planner_CCR.jpg" alt="FIGURE: Planning a CCR dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Note that, in the <em>Dive plan details</em>, the gas consumption for a CCR segment
@@ -6553,7 +6821,7 @@ available from some Internet web sites e.g.
 Windows-based IrDA drivers for the Uwatec can also be downloaded from the
 ScubaPro web site, with drivers located on the download page for the
 ScubaPro SmartTrak software.</p></div>
-<div class="paragraph"><p>Pour les ordinateurs Apple Mac, la connection IrDA via l&#8217;interface MCS7780
+<div class="paragraph"><p>Pour les ordinateurs Apple Mac, la connexion IrDA via l&#8217;interface MCS7780
 n&#8217;est plus disponible depuis OSX 10.6 ou supérieur.</p></div>
 </div>
 <div class="sect2">
@@ -7082,10 +7350,11 @@ Système d&#8217;unité : un seul système d&#8217;unité doit être utilisé (p
 <p>
 Position GPS : utilisez les degrés décimaux, par exemple : 30.22496
    30.821798
-=== <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em>
 </p>
 </li>
 </ol></div>
+<div class="sect2">
+<h3 id="_em_libreoffice_calc_em_et_em_openoffice_calc_em">20.1. <em>LibreOffice Calc</em> et <em>OpenOffice Calc</em></h3>
 <div class="paragraph"><p>These are open source spreadsheet applications forming parts of larger open
 source office suite applications. The user interaction with <em>LibreOffice</em>
 and <em>OpenOffice</em> is very similar.  In Libreoffice Calc the time format
@@ -7116,8 +7385,9 @@ then select <em>OK</em>.</p></div>
 <div class="paragraph"><p>Double check the .CSV file by opening it with a text editor, and then import
 the dive data as explained on the section <a href="#S_ImportingCSVDives">Importing
 CSV dives</a>.</p></div>
+</div>
 <div class="sect2">
-<h3 id="_microsoft_em_excel_em">20.1. Microsoft <em>Excel</em></h3>
+<h3 id="_microsoft_em_excel_em">20.2. Microsoft <em>Excel</em></h3>
 <div class="paragraph"><p>The field delimiter (called "<em>list separator</em>" in Microsoft manuals) is not
 accessible from within <em>Excel</em> and needs to be set through the <em>Microsoft
 Control Panel</em>. After changing the separator character, all software on the
@@ -7657,7 +7927,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2017-10-16 10:45:06 CEST
+ 2017-10-20 22:56:42 CEST
 </div>
 </div>
 </body>

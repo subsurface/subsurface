@@ -514,3 +514,5 @@ found in the root directory of the local storage of the mobile device.
 This option provides a wealth of information about the screen
 characteristics of the mobile device and the font characteristics used by
 _Subsurface-mobile_.
+
+
