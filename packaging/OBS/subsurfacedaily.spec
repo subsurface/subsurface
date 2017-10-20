@@ -4,11 +4,9 @@
 # Copyright (c) 2014 Dirk Hohndel
 #
 
-%define latestVersion 4.5.2.1475
+%define latestVersion 4.6.4.1031
 
-
-%define gitVersion 1475
-
+%define gitVersion 1031
 
 
 Name:           subsurfacedaily
@@ -73,6 +71,7 @@ BuildRequires:	libqt5-qtscript-devel
 BuildRequires:	libqt5-qtdeclarative-devel
 BuildRequires:	libqt5-qtconnectivity-devel
 BuildRequires:	libqt5-qtlocation-devel
+BuildRequires:	libqt5-qtlocation-private-headers-devel
 %endif
 # Recommends Qt5 translations package
 %if 0%{?suse_version}
@@ -84,7 +83,7 @@ Recommends:     qt5-qttranslations
 BuildRoot:      %{_tmppath}/subsurface%{version}-build
 
 %description
-This is the official Subsurface build, including our own custom libdivecomputer
+This is the official Subsurface test build, including our own custom libdivecomputer
 
 %prep
 %setup -q
@@ -98,11 +97,14 @@ mkdir -p install-root
 	make install)
 (cd libgit2; mkdir build; cd build; \
 	cmake -DCMAKE_INSTALL_PREFIX=$RPM_BUILD_DIR/install-root -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF \
-	-DCMAKE_C_FLAGS:STRING="%optflags" \
+    	-DCMAKE_C_FLAGS:STRING="%optflags" \
 		-DCMAKE_CXX_FLAGS:STRING="%optflags" \
         .. ; \
 	make %{?_smp_mflags} ; \
 	make install)
+( cd googlemaps ; mkdir -p build ; cd build ; \
+	qmake-qt5 "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro ; \
+	make -j4 )
 (mkdir subsurface-build ; cd subsurface-build ; \
 	cmake -DCMAKE_BUILD_TYPE=Release \
 		-DLRELEASE=lrelease-qt5 \
@@ -115,13 +117,14 @@ mkdir -p install-root
 		-DCMAKE_C_FLAGS:STRING="%optflags" \
 		-DCMAKE_CXX_FLAGS:STRING="%optflags" \
 		-DNO_PRINTING=OFF \
+		-DNO_MARBLE=ON \
 		.. ; \
 	make VERBOSE=1 %{?_smp_mflags} subsurface)
 
 %install
 mkdir -p %{buildroot}/%{_libdir}
+(cd googlemaps/build ; make install_target INSTALL_ROOT=$RPM_BUILD_ROOT )
 (cd subsurface-build ; make VERBOSE=1 install )
-install $RPM_BUILD_DIR/install-root/lib/libssrf* %{buildroot}/%{_libdir}
 %if 0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desktop
 %else
@@ -141,6 +144,7 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desk
 %defattr(-,root,root)
 %doc gpl-2.0.txt README ReleaseNotes/ReleaseNotes.txt
 %{_bindir}/subsurface*
+%{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
 %{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
 %{_datadir}/subsurface/
