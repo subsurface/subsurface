@@ -55,14 +55,15 @@ print_crash_report()
   echo >> $FILE
   echo "############### STACK TRACE #################" >> $FILE
   if command_exists gdb; then
-# TODO: systemd needs more test (systemd-coredumpctl exist on openSUSE 13.1 but does not find any core)
-#     if command_exists systemd-coredumpctl; then
-#       systemd-coredumpctl dump -o core ${prefix}/bin/${bin_name} > /dev/null 2>&1
-#     elif command_exists coredumpctl; then
-#       coredumpctl dump -o core ${prefix}/bin/${bin_name} > /dev/null 2>&1
-#     fi
-    # Find in current directory
-    single_stacktrace "$PWD" 1
+    if command_exists coredumpctl; then
+      # Generate core
+      core=$(mktemp -p /tmp/ core.subsurface.XXXXXXXXXX)
+      coredumpctl dump ${prefix}/bin/${bin_name} > $core
+      single_stacktrace "/tmp/" 1
+    else
+      # Find in current directory
+      single_stacktrace "$PWD" 1
+    fi
     # Find in plugins directories
     if [ $KODI_HOME ]; then
       BASEDIR=$KODI_HOME
