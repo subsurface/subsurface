@@ -577,7 +577,8 @@ void CylindersModel::remove(const QModelIndex &index)
 	changed = true;
 	endRemoveRows();
 	cylinder_renumber(&displayed_dive, mapping);
-	DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+	if (in_planner())
+		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
 	dataChanged(index, index);
 }
 
@@ -599,7 +600,8 @@ void CylindersModel::moveAtFirst(int cylid)
 	changed = true;
 	endMoveRows();
 	cylinder_renumber(&displayed_dive, mapping);
-	DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+	if (in_planner())
+		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
 }
 
 void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
