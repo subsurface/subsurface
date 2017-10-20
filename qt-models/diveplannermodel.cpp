@@ -988,6 +988,8 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 			       (mid->time + 1)/60,
 			       (left + right) / 2, unit,
 			       (right - left) / 2, unit);
+#else
+		(void) unit;
 #endif
 		++min;
 		++mid;

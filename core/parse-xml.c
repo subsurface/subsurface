@@ -3359,6 +3359,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			int ppo2_2 = atoi_n(ptr5 + 3, 3);
 			int ppo2_3 = atoi_n(ptr5 + 6, 3);
 			int otu = atoi_n(ptr5 + 9, 4);
+			(void) otu; // we seem to not store this? Do we understand its format?
 			int cns = atoi_n(ptr5 + 13, 4);
 			int setpoint = atoi_n(ptr5 + 17, 2);
 

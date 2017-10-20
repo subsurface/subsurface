@@ -181,14 +181,14 @@ static dc_status_t ble_serial_write(dc_custom_io_t *io, const void* data, size_t
 	while (size) {
 		size_t len = sizeof(buffer.out) - transferred;
 
-		if (len > io->packet_size)
+		if ((int)len > io->packet_size)
 			len = io->packet_size;
 		if (len > size)
 			len = size;
 		memcpy(buffer.out + buffer.out_bytes, data, len);
 		buffer.out_bytes += len;
 
-		if (buffer.out_bytes <= io->packet_size || buffer.out_bytes == size) {
+		if ((int)buffer.out_bytes <= io->packet_size || buffer.out_bytes == size) {
 			rc = ble_serial_flush_write();
 			if (rc != DC_STATUS_SUCCESS)
 				break;

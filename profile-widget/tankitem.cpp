@@ -110,7 +110,7 @@ void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &b
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
 	struct event *ev = get_next_event(dc->events, "gaschange");
-	while (ev && ev->time.seconds < last_entry->sec) {
+	while (ev && (int)ev->time.seconds < last_entry->sec) {
 		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
 		createBar(left, width, gasmix);

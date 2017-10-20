@@ -135,11 +135,10 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 
 	if (!index.isValid() || index.row() >= MAX_CYLINDERS)
 		return ret;
-	
-	int mapping[MAX_CYLINDERS];
+
 	int same_gas = -1;
 	cylinder_t *cyl = &displayed_dive.cylinder[index.row()];
-	
+
 	switch (role) {
 	case Qt::BackgroundRole: {
 		switch (index.column()) {
