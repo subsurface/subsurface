@@ -44,6 +44,8 @@ FacebookManager::FacebookManager(QObject *parent) :
 	QObject(parent),
 	manager(new QNetworkAccessManager(this))
 {
+	// log only in verbose mode
+	QLoggingCategory::setFilterRules(QStringLiteral("subsurface.facebook=%1").arg(verbose ? "true" : "false"));
 	connect(this, &FacebookManager::albumIdReceived, this, &FacebookManager::sendDiveToAlbum);
 }
 
