@@ -563,6 +563,8 @@ void CylindersModel::remove(const QModelIndex &index)
 		// as first gas
 		memmove(cyl, &displayed_dive.cylinder[same_gas], sizeof(*cyl));
 		remove_cylinder(&displayed_dive, same_gas);
+		for (int i = 0; i < same_gas - 1; i++)
+			mapping[i] = i;
 		mapping[same_gas] = 0;
 		for (int i = same_gas + 1; i < MAX_CYLINDERS; i++)
 			mapping[i] = i - 1;
@@ -570,15 +572,17 @@ void CylindersModel::remove(const QModelIndex &index)
 		remove_cylinder(&displayed_dive, index.row());
 		if (same_gas > index.row())
 			same_gas--;
+		for (int i = 0; i < index.row(); i++)
+			mapping[i] = i;
 		mapping[index.row()] = same_gas;
 		for (int i = index.row() + 1; i < MAX_CYLINDERS; i++)
 			mapping[i] = i - 1;
 	}
-	changed = true;
-	endRemoveRows();
 	cylinder_renumber(&displayed_dive, mapping);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+	changed = true;
+	endRemoveRows();
 	dataChanged(index, index);
 }
 
@@ -597,11 +601,11 @@ void CylindersModel::moveAtFirst(int cylid)
 	mapping[cylid] = 0;
 	for (int i = cylid + 1; i < MAX_CYLINDERS; i++)
 		mapping[i] = i;
-	changed = true;
-	endMoveRows();
 	cylinder_renumber(&displayed_dive, mapping);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+	changed = true;
+	endMoveRows();
 }
 
 void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
