@@ -719,7 +719,7 @@ Double-click on the blue bar below the new dive location name. The blue bar disa
 the globe icon on the right-hand of the location name text box turns blue.  In the Dive Map part of the _Subsurface_ window, a world map appears (image C above). Click on the
 blue globe icon to the right of the dive site name in the _Notes_ panel (image B above). This opens a window for entering the details of the new dive location (image A below).
 The globe icon changes to indicate that the location data are being edited. The only important
-data here are the geographic coordinates of the dive location. 
+data here are the geographic coordinates of the dive location.
 
 image::images/Globe_image2.jpg["FIGURE:Location creation panel",align="center"]
 
@@ -1156,7 +1156,7 @@ progress.
 
 Open the website at:
 
-_https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl_ 
+_https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl_
 
 This is a no-frills
 web service for converting _SmartTrak_ dive logs to _Subsurface_. Select the browse button. This allows
@@ -2059,9 +2059,9 @@ based CCR systems are different in this respect and allow multi-dive downloads.
 ===== Import a CCR dive
 
 For Shearwater CCR controllers, or independent Shearwater CCR logs, just download the dive log as would
-be the case for non-CCR dives. _Subsurface_ interprets the CCR dive lig correctly.
+be the case for non-CCR dives. _Subsurface_ interprets the CCR dive log correctly.
 Except for Shearwater CCR dive computers, CCR dive data are currently obtained from the proprietary software
-provided when purchasing CCR dice equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
+provided when purchasing CCR dive equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
 digital sources] and <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
@@ -2173,7 +2173,7 @@ Poseidon MkVI and APD equipment can be found in xref:_appendix_b_dive_computer_s
 
 The Dive Map has a number of buttons useful for manipulation several aspects of a dive. These are:
 
-[icon="images/icons/MapViewMode.jpg"]  
+[icon="images/icons/MapViewMode.jpg"]
 [NOTE]
 Select this button to show the Dive Map as a satellite image or as a Google Maps
 representation.
@@ -2473,7 +2473,7 @@ indicate
 times of increased normalized air consumption while dark green reflects times
 when the diver was using less gas than average.
 
-When in planner mode, the SAC is set to be constant during the bottom part 
+When in planner mode, the SAC is set to be constant during the bottom part
 of the dive as well during decompression. Therefore, when planning a dive,
 the color is a representation of the breathing gas density.
 
@@ -3836,7 +3836,7 @@ There are two selector boxes on the left of the _Dive plan details_:
  * *Problem solving time*. This is your estimate of how long you would take to solve the problem before starting the ascent
    to terminate the dive. The default value is 2 minutes.
 
-Using the above information, the planner then estimates what the minimum botoom gas cylinder pressure needs to be for a
+Using the above information, the planner then estimates what the minimum botom gas cylinder pressure needs to be for a
 safe ascent. This information is given near the bottom of the _Dive plan details_, following the calculation of
 bottom gas used during the dive if it exactly follows the plan. the minimum gas is typically given as:
 
@@ -3849,14 +3849,14 @@ This indicates:
  * The number of bars of back gas required for a safe ascent (90 bars in the example above).
  * The delta-value: number of bars of back gas available at the end of the bottom section of the dive, _over and above_ the minimum
    gas requirement (80 bars in the above example). A positive delta reflects a safe plan; a negative delta indicates insufficient gas for a
-   safe ascent. 
+   safe ascent.
 
 ****
 [icon="images/icons/warning2.png"]
 [WARNING]
 The *plan variations* and *minimum gas* estimates are only guidelines for a diver performing dive planning, intended to
 enhance the safety of executing a particular dive plan. They are NOT precise
-and should NOT be relied upon as the only safety features in dive planning. Interpret these esimates
+and should NOT be relied upon as the only safety features in dive planning. Interpret these estimates
 within the framework of your formal training to perform dive planning.
 ****
 
