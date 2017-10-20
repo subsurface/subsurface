@@ -80,6 +80,13 @@ Recommends:     libqt5-qttranslations
 %if  0%{?fedora_version} >= 21
 Recommends:     qt5-qttranslations
 %endif
+# Recommends debug info (and debug sources, for openSUSE) for daily build
+%if %{name} == "subsurfacedaily"
+Recommends:     %{name}-debuginfo
+%if 0%{?suse_version}
+Recommends:     %{name}-debugsource
+%endif
+%endif
 BuildRoot:      %{_tmppath}/subsurface%{version}-build
 
 %description
@@ -125,6 +132,7 @@ mkdir -p install-root
 mkdir -p %{buildroot}/%{_libdir}
 (cd googlemaps/build ; make install_target INSTALL_ROOT=$RPM_BUILD_ROOT )
 (cd subsurface-build ; make VERBOSE=1 install )
+install subsurface.debug %{buildroot}%{_bindir}
 %if 0%{?fedora_version} || 0%{?rhel_version} || 0%{?centos_version}
 desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desktop
 %else
