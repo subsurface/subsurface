@@ -608,7 +608,10 @@ static inline unsigned int number_of_computers(struct dive *dive)
 
 static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
 {
-	struct divecomputer *dc = &dive->dc;
+	struct divecomputer *dc;
+	if (!dive)
+		return NULL;
+	dc = &dive->dc;
 
 	while (nr-- > 0) {
 		dc = dc->next;
@@ -941,7 +944,7 @@ static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *
 	if (!gasmix) {
 		int cyl = explicit_first_cylinder(dive, dc);
 		gasmix = &dive->cylinder[cyl].gasmix;
-		ev = dc->events;
+		ev = dc ? dc->events : NULL;
 	}
 	while (ev && ev->time.seconds < (unsigned int)time) {
 		gasmix = get_gasmix_from_event(dive, ev);
