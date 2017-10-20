@@ -459,6 +459,7 @@ void CylindersModel::add()
 	rows++;
 	changed = true;
 	endInsertRows();
+	emit dataChanged(createIndex(row, 0), createIndex(row, COLUMNS - 1));
 }
 
 void CylindersModel::clear()
