@@ -2120,7 +2120,7 @@ mean measured oxygen partial pressure and the setpoint values, as shown below.
 image::images/CCR_setpoint_f20.jpg["FIGURE: CCR setpoint and pO~2~ graph",align="center"]
 
 The second checkbox allows the display of the data from each individual oxygen sensor
-of the CCR equipment. The data for each sensor is colour-coded as follows:
+of the CCR equipment. The data for each sensor is color-coded as follows:
 
 - Sensor 1: grey
 - Sensor 2: blue
@@ -2587,7 +2587,7 @@ image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph",align="center"]
 [NOTE]
 ====================================================================================
 Display the tissue heat-map. The heat map summarises, for the duration of the dive, the inert gas tissue pressures
-for each of the 16 tissue compartments of the Bühlmann model. Blue colours mean low gas pressures in a tissue compartment
+for each of the 16 tissue compartments of the Bühlmann model. Blue colors mean low gas pressures in a tissue compartment
 and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
 top to bottom. The figure below explains in greater detail how the heat map can be interpreted.
 
@@ -2600,15 +2600,15 @@ bars with the quick tissue compartments on the left and the slow tissue compartm
 on the right. Refer to the section on the xref:S_gas_pressure_graph[Gas Pressure Graph]
 for more details on the different elements of this graph.
 
-Image *B* shows a gradient of unique colours, spanning the whole range of inert gas pressures.
+Image *B* shows a gradient of unique colors, spanning the whole range of inert gas pressures.
 It is possible to map the height of each of the dark green vertical bars of *A* to a
-colour in *B*. For instance, the fastest (leftmost) dark green vertical bar in *A* has
+color in *B*. For instance, the fastest (leftmost) dark green vertical bar in *A* has
 a height corresponding to the medium green part of *B*. The height of this bar can therefore be summarised
-using a medium green colour. Similarly, the highest dark green bar in *A* is as high
+using a medium green color. Similarly, the highest dark green bar in *A* is as high
 as the yellow part of *B*. The 14 remaining tissue pressure bars in *A* can also be
-translated to colours. The colours represent three ranges of tissue inert gas pressure:
+translated to colors. The colors represent three ranges of tissue inert gas pressure:
 
- -  The bottom range in *B* (marked _On-gassing_) includes colours from light blue to black, representing tissue gas pressures
+ -  The bottom range in *B* (marked _On-gassing_) includes colors from light blue to black, representing tissue gas pressures
     below the equilibrium pressure of inert gas (bottom horizontal line in *A*). The measurement
     unit is the % of inert gas pressure, relative to the equilibrium inert gas pressure. In this range
     on-gassing of inert gas takes place because the inert gas pressure in the tissue compartment is lower than
@@ -2616,43 +2616,43 @@ translated to colours. The colours represent three ranges of tissue inert gas pr
     the equilibrium inert gas pressure, i.e. the inert gas pressure in the tissue compartment equals that
     of the water in which the diver is. The equilibrium pressure changes according to depth.
 
- -  The central range in *B* includes the colours from black to light green, when the inert gas pressure of a tissue
+ -  The central range in *B* includes the colors from black to light green, when the inert gas pressure of a tissue
     compartment is higher than the equilibrium pressure but less than the ambient pressure.
     In this zone decompression is not very efficient
     because the gradient of inert gas pressure from tissue to the environment is relatively small
     and indicated by dark green areas of the heat map.
 
- -  The top range in *B* (marked _Off-gassing_) includes colours from light green to red and white, repesenting tissue gas
+ -  The top range in *B* (marked _Off-gassing_) includes colors from light green to red and white, repesenting tissue gas
     pressures above that of the total ambient pressure (top of light green area of *A*). The measurement
     unit is the % of inert gas pressure above ambient pressure, relative to the Bühlmann M-value gradient (bottom of red area
     in *A*). These tissue pressures are normally reached while ascending to a shallower depth.
     Below a value of 100%, this range indicates efficient off-gassing of inert gas from the tissue compartment into the
-    environment. Usually, efficient off-gassing is indicated by light green, yellow or orange colours.
+    environment. Usually, efficient off-gassing is indicated by light green, yellow or orange colors.
     Above 100% (red to white in *B*) the M-value gradient is exceeded and the probability of decompression sickness
     increases markedly.
 
-Image *C* shows the colour mapping of each of the vertical bars in *A*, the fast
+Image *C* shows the color mapping of each of the vertical bars in *A*, the fast
 tissues (on the left in *A*) depicted at the top
 and the slow tissue compartments at the bottom of *C*. The highest vertical bar in *A*
 (vertical bar 3rd from the left) is presented as the yellow rectangle 3rd from the top
 in *C*. The 16 vertical bars in *A* are now presented as a vertical
-column of 16 coloured rectangles, representing a snapshot of tissue compartment gas pressures
+column of 16 colored rectangles, representing a snapshot of tissue compartment gas pressures
 at a particular instant during the dive.
 
-Image *D* is a compilation of similar colour mappings of 16 tissue compartments
-during a 10-minute period of a dive, the colours representing the
+Image *D* is a compilation of similar color mappings of 16 tissue compartments
+during a 10-minute period of a dive, the colors representing the
 inert gas loading of a tissue compartment at a point in time during the dive. Faster tissues
 are shown at the top and slower tissues at the bottom, with time
 forming the horizontal axis of the graph. The column of rectangles in *C* can be found
 on the horizontal axis between 9 and 10 minutes.
 
-The colours of the heat map are not affected by the gradient factor settings.
+The colors of the heat map are not affected by the gradient factor settings.
 This is because the heat map indicates tissue pressures relative to the Bühlmann M-value gradient, and
 not relative to any specific gradient factor. For more information external to this manual see:
 
 http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
-Since the colours of the heat map are not affected by the gradient factor(s), the heat map is also
+Since the colors of the heat map are not affected by the gradient factor(s), the heat map is also
 applicable when using the VPM-B decompression model.
 
 The image below compares the profiles and heat maps for two planned decompression dives to 60m:
