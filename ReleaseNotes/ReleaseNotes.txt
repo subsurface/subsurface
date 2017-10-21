@@ -30,6 +30,7 @@ Some of the changes since _Subsurface_ 4.6.4
   - Print delta pressure for minimum gas calculation in results
   - Identify overlapping dives when calculating dive plan
 - Option in user preferences to display units in main dive list table
+- Show green tank change icon when switching to EAN100
 - Better support for importing dive data from Shearwater desktop, DL7,
   Datatrak and other 3rd party formats.
 - Support for OSTC 4 configuration
