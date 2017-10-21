@@ -313,6 +313,14 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.profTankbar->setChecked(sWrapper->techDetails->tankBar());
 	ui.profTissues->setChecked(sWrapper->techDetails->percentageGraph());
 	ui.profScaled->setChecked(sWrapper->techDetails->zoomedPlot());
+
+// full screen support is buggy on Windows and Ubuntu.
+// require the FULLSCREEN_SUPPORT macro to enable it!
+#ifndef FULLSCREEN_SUPPORT
+	ui.actionFullScreen->setEnabled(false);
+	ui.actionFullScreen->setVisible(false);
+	setWindowState(windowState() & ~Qt::WindowFullScreen);
+#endif
 }
 
 MainWindow::~MainWindow()
