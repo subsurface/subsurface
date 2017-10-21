@@ -68,7 +68,6 @@ override_dh_auto_configure:
 			-DFORCE_LIBSSH=1 \
 			-DNO_PRINTING=OFF \
 			-DMAKE_TESTS=OFF \
-			-DNO_MARBLE=ON \
 			$$(pwd)/.. ; )
 
 override_dh_installchangelogs:
