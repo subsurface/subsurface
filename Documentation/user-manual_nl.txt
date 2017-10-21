@@ -1324,16 +1324,16 @@ vastlegt.
 
 ===== Automatisch verzamelen van GPS coördinaten aanzetten
 
-Het hoofdmenu van _Subsurface-mobile_ heeft linksonder een keuzevakje
+Het GPS menu van _Subsurface-mobile_ heeft onderaan een optie
 _Draai locatie service_ (zie figuur hieronder). Op moment dat deze wordt
 geselecteerd, start het automatisch verzamelen van GPS coördinaten.
 
-image::images/MobileMenu.jpg["Figuur: Subsurface-mobile hoofdmenu",align="center"]
+image::images/MobileGpsMenu.jpg["Figuur: Subsurface-mobile GPS menu",align="center"]
 
 
 ===== Automatisch verzamelen van GPS coördinaten uitzetten na de duik
 
-De-selelecteer het keuzevakje linksonder in het _Subsurface-mobile_ hoofdmenu.
+Kies de optie _Stop locatie service_ onderaan het _Subsurface-mobile_ GPS menu.
 
 
 ===== GPS coördinaten naar de _Subsurface_ Internet server sturen.
