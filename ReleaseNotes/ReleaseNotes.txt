@@ -25,6 +25,11 @@ Some of the changes since _Subsurface_ 4.6.4
   divers. We now correctly download these data from the dive computers
   that support it, store and retrieve the pressure data, and visualize
   multiple tank pressure readings at the same time.
+- Dive planner
+  - Improved and more user friendly cylinder handling
+  - Print delta pressure for minimum gas calculation in results
+  - Identify overlapping dives when calculating dive plan
+- Option in user preferences to display units in main dive list table
 - Better support for importing dive data from Shearwater desktop, DL7,
   Datatrak and other 3rd party formats.
 - Support for OSTC 4 configuration
