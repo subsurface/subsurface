@@ -1,18 +1,23 @@
-This is the README file for Subsurface 4.6.4
+This is the README file for Subsurface 4.7
 
 Please check the ReleaseNotes.txt for details about new features and
-changes since Subsurface 4.6.3 (and earlier versions).
+changes since Subsurface 4.6.4 (and earlier versions).
 
 Subsurface can be found at http://subsurface-divelog.org
 
 Our user forum is at http://subsurface-divelog.org/user-forum/
-We also try to respond to questions in the ScubaBoard.com dive software
-forum at http://www.scubaboard.com/forums/dive-software/
 
 Report bugs and issues at
 https://github.com/Subsurface-divelog/subsurface/issues
 
 License: GPLv2
+
+
+We frequently make new test versions of Subsurface avilable at
+http://subsurface-divelog.org/downloads/test/
+These tend to contain the latest bug fixes and features, but also
+occasionally the latest bugs and issues. Please understand when using them
+that these are primarily intended for testing.
 
 You can get the sources to the latest development version from the git
 repository:
@@ -26,11 +31,11 @@ If you want the latest release (instead of the bleeding edge
 development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
-git checkout v4.6.4  (or whatever the last release is)
+git checkout v4.7.0  (or whatever the last release is)
 
 or download a tar ball from:
 
-http://subsurface-divelog.org/downloads/Subsurface-4.6.4.tgz
+http://subsurface-divelog.org/downloads/Subsurface-4.7.0.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 
