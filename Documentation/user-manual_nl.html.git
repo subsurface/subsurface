@@ -445,7 +445,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Auteurs van de handleiding</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel,
 Reinout Hoornweg,Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,
 Salvador Cuñat, Pedro Neves, Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue">Versie 4.6, maart 2017</span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Versie 4.7, oktober 2017</em></span></p></div>
 <div class="paragraph"><p>Welkom als gebruiker van <em>Subsurface</em>, een geavanceerd duiklogboek programma
 met een breed scala aan functionaliteiten om je duiken vast te leggen, organiseren,
 interpreteren, printen en plannen van duiken van welke aard dan ook. <em>Subsurface</em>
@@ -985,10 +985,16 @@ alsmede informatie over de duiken die niet gedownload konden worden.</p></div>
 </div>
 <div class="sect3">
 <h4 id="S_Bluetooth">5.2.2. <em>Subsurface</em> verbinden met een duikcomputer met Bluetooth</h4>
-<div class="paragraph"><p>Bluetooth wordt een steeds normalere manier om met een duikcomputer te communiceren,
-bijvoorbeeld de Shearwater Petrel 2 en de Heinrichs Weikamp OSTC3, Sport en OSTC4.
+<div class="paragraph"><p>Bluetooth wordt een steeds normalere manier om met een duikcomputer te communiceren.
 <em>Subsurface</em> biedt een grotendeels besturingssysteem onafhankelijke wijze van
-koppeling met duikcomputers met Bluetooth.</p></div>
+koppeling met duikcomputers met Bluetooth. Een toenemend aantal duikcomputers
+gebruikt Bluetooth Low Energy (BTLE) als manier van communiceren. Helaas is BTLE
+geen gestandaardiseerd protocol, en bij gevolg moeten voor ieder type duikcomputer
+specifieke aanpassingen worden gedaan. Zie de
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">lijst van ondersteunde duikcomputers</a>.</p></div>
+<div class="paragraph"><p>Bluetooth communicatie is vaak meer betrouwbaar na het opnieuw koppelen met de
+<em>Subsurface</em> host computer. Bluetooth en BTLE interfaces worden actief ontwikkeld,
+inclusief het toevoegen van nieuwe modellen.</p></div>
 <div class="paragraph"><p>De volgende vier stappen zijn nodig om Bluetooth communicatie op te zetten:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -1022,6 +1028,10 @@ scherm.</p></div>
 <img src="images/DC_import_Bluetooth.jpg" alt="Figuur: Download Bluetooth" />
 </div>
 </div>
+<div class="paragraph"><p>Hoewel de <em>Subsurface</em> Bluetooth interface bedoeld is te werken zonder eerst
+op niveau van het besturingssysteem de pairing uit te voeren, is het verstandig
+dit toch te doen. Verwijder eerst de bestaande pairing, en pair opnieuw. De kans
+groot dat het laden over Bluetooth van duikdata dan goed verloopt.</p></div>
 <div class="paragraph"><p>Op Linux en OS/X verschijnt rechts op het scherm staat de naam van de <em>Subsurface</em>
 computer, het Bluetooth adres (van de Bluetooth controller), een melding of Bluetooth
 aan of uit staat, en een knop om aan en uit te zetten. Aan de linkerzijde
@@ -1036,9 +1046,10 @@ voor andere Bluetooth apparatuur. Zie de handleiding van de duikcomputer
 hoe dit te doen. Stap 3 is nu ook doorlopen.</p></div>
 <div class="paragraph"><p>Selecteer de <em>Scan</em> knop en in de keuzelijst dient nu ook de duikcomputer
 te verschijnen, naast alle andere Bluetooth apparatuur die binnen bereik is
-(en vindbaar is). Als dit niet werkt, kies <em>Wissen</em> en scan opnieuw. Een label
-van de gevonden duikcomputer bevat de naam van de computer, zijn adres, en zijn
-koppeling status. Als hij in rood wordt getoond, is de duikcomputer nog niet
+(en vindbaar is). Als dit niet werkt, kies <em>Wissen</em> en scan opnieuw.
+Een label van de gevonden duikcomputer bevat de naam van de computer, zijn adres, en zijn
+koppeling status. Adressen van BTLE apparatuur beginnen met "LE".
+Als hij in rood wordt getoond, is de duikcomputer nog niet
 gekoppeld. Met de rechter muisknop kan met het context menu een verzoek tot koppeling
 worden gedaan, en wacht op afronding van dit proces. Mogelijk komt er een vraag
 een PIN code of Pass Code. Meestal is deze 0000, maar raadpleeg de handleiding van je
@@ -1203,47 +1214,38 @@ de locatie bewerkt gaat worden. Een bestaande locatie kiezen kan overigens wel
 tegelijkertijd toegevoegd worden.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>Tik de naam in van de locatie, bijvoorbeeld "Tihany, Lake Balaton, Hungary".
+<div class="paragraph"><p><strong>Bestaande locaties gebruiken:</strong> Tik de naam in van de locatie, bijvoorbeeld "Tihany, Lake Balaton, Hungary".
 Als er meerdere duiken op dezelfde locatie worden gemaakt, wordt de locatie
-informatie van de eerste duik hergebruikt. Bestaande duik locaties kunnen worden
-bewerkt door een duik uit de <strong>Duiklijst</strong> te selecteren op die locatie, en dan op het
-wereldbol icoon te klikken, rechts van de locatie naam. (zie figuur <strong>A</strong> hieronder).
-Bij het invoeren van een locatie (op het <strong>Notities</strong> paneel) wordt een lijst met
-opties getoond, corresponderend met de reeds ingetypte letters. Als de duik
-op een bekende locatie is, kan deze uit de lijst geselecteerd worden. Deze duiken
-hebben een groen wereldbol icoon. Als er een <strong>+</strong> symbool staat betekent dit de
-mogelijkheid een nieuwe duik locatie toe te voegen met hergebruik van de bijna
-gelijknamige locatie.</p></div>
+informatie van de eerste duik hergebruikt.
+Als een locatie eerder is gebruikt verschijnt bij intikken van de eerste letters
+een lijst met mogelijke locaties. Kies de gewenste, en deze locatie is dan van
+toepassing op de duik die wordt bewerkt. Klik dan <em>Wijzigingen toepassen</em> (figuur beneden)
+om de informatie op te slaan.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Locations1_f22.jpg" alt="Figuur:Locatie beschrijving" />
+<img src="images/Location1.jpg" alt="FIGURE:Locatie keuze panel" />
 </div>
 </div>
-<div class="paragraph"><p>Na het klikken op het wereldbol icoon, verschijnt het figuur <strong>B</strong> zoals hierboven
-om coördinaat en andere informatie over de duiklocatie in te voeren.</p></div>
+<div class="paragraph"><p><strong>Nieuwe locatie invoeren:</strong> Wanneer er op een nieuwe locatie is gedoken, dient deze
+te worden ingevoerd voor deze duik en later gebruik. Voer de naam in (figuur A
+hieronder)</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image1.jpg" alt="FIGURE:Locatie creatie panel" />
+</div>
+</div>
+<div class="paragraph"><p>Klik op het plus (+) symbool rechts (of dubbelklik) in de blauwe balk om de
+nieuwe locatie vast te leggen. Bewaar de duik om de nieuwe locatie verder te bewerken.
+Bewerken kan door op het globe icoon te klikken (image B hierboven), achtereenvolgens
+verschijnt dan figuur A (zie hieronder)</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image2.jpg" alt="FIGURE:Locatie creatie panel" />
+</div>
+</div>
 <div class="paragraph"><p>Er zijn drie manieren om coördinaten in te voeren:</p></div>
-<div class="olist loweralpha"><ol class="loweralpha">
-<li>
-<p>
-Gebruik de wereldkaart rechtsonder. De kaart bevat een oranje balk, met de
-tekst "Geen locatie data - Verplaats de kaart en dubbelklik om de duiklocatie
-te selecteren". Dubbelklik op de gewenste locatie op de kaart, en de coordinaat
-is opgeslagen.
-</p>
-</li>
-<li>
-<p>
-Gebruik de <em>Subsurface-mobile App</em> or the <em>Subsurface</em> Companion App_ op een
-Android of iPhone op de duiklocatie om met de GPS van de telefoon de locatie op
-te slaan. Importeer ze achtereenvolgens in <em>Subsurface</em>
-<a href="#S_Companion">Klik hier voor meer informatie over de Companion app</a>
-</p>
-</li>
-<li>
-<p>
-Voer de coördinaten met de hand in, volgens één van de volgende vier
-formaten (latitude gevolgd door longitude):
-</p>
+<div class="paragraph"><p><strong>(1):</strong> Voer de coördinaten met de hand in, volgens één van de volgende vier
+formaten (latitude gevolgd door longitude):</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>ISO 6709 Annex D formaat: 30°13'28.9"N 30°49'1.5"E
@@ -1251,19 +1253,39 @@ Graden en decimale minuten:  N30° 13.49760' , E30° 49.30788'
 Graden minuten seconden: N30° 13' 29.8" , E30° 49' 1.5"
 Decimale graden: 30.22496 , 30.821798</code></pre>
 </div></div>
-</li>
-</ol></div>
 <div class="paragraph"><p>Latitudes op het zuidelijk halfrond worden weergegeven met S*, zoals in S30°, of
 met een negatieve waarde, zoals -30.22496. Op vergelijkbare wijze met westelijke
 longitudes met <strong>W</strong>, zoals in W07°, negatieve waarde, als in 7.34323. Sommige
 toetsenborden hebben geen graden (°) symbool. Een <strong>d</strong> zoals in N30d, W20d kan
 ook worden gebruikt.</p></div>
-<div class="paragraph"><p>Als zowel coördinaat als naam van de locatie is ingevoerd, kan de locatie worden
-opgeslagen met de <em>Wijzigingen toepassen</em> knop, bovenaan het scherm.</p></div>
+<div class="paragraph"><p>Voer verdere informatie over de duikplek in onder de Beschrijving en Notities
+velden, en kies <em>Wijzigingen toepassen</em> om alles op te slaan. De duikplek kan
+later bewerkt worden door het wereldbol icoon te klikken, rechts naast de naam
+van de duikplek in het <strong>Notities</strong> tabblad.</p></div>
+<div class="paragraph"><p><strong>(2):</strong> Gebruik de kaart om coördinaten in te voeren. De kaart toont alle bestaande
+locaties in grijs, en een extra marker in rood (figuur B hierboven). Versleep
+de rode marker naar de gewenste locatie. De kaart kan in- en uitgezoomd worden met
+het wieltje van de muis. De coördinaten van de rode marker worden automatisch in
+het juiste veld opgeslagen (figuur A hieronder).</p></div>
+<div class="paragraph"><p>Voer verdere informatie over de duikplek in onder de Beschrijving en Notities
+velden, en kies <em>Wijzigingen toepassen</em> om alles op te slaan. De duikplek kan
+later bewerkt worden door het wereldbol icoon te klikken, rechts naast de naam
+van de duikplek in het <strong>Notities</strong> tabblad.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image3.jpg" alt="FIGURE:Locatie aanmaak panel" />
+</div>
+</div>
+<div class="paragraph"><p>Op moment dat de duikplek is opgeslagen verschijnt het globe symbool in de duiklijst
+(voor de duiken op deze duikplek).</p></div>
+<div class="paragraph"><p><strong>(3):</strong> Gebruik de <em>Subsurface-mobile App</em> or the <em>Subsurface</em> Companion App_ op een
+Android of iPhone op de duiklocatie om met de GPS van de telefoon de locatie op
+te slaan. Importeer ze achtereenvolgens in <em>Subsurface</em>
+<a href="#S_Companion">Klik hier voor meer informatie over de Companion app</a></p></div>
 <div class="paragraph"><p><strong>Belangrijk</strong>: GPS coördinaten van duik locaties zijn gekoppeld
 aan de locatie naam. Daarom levert het problemen op als er een
 locatie wordt aangemaakt zonder naam en met locatie. (Subsurface denkt dan
-dat al deze duiken dezelfde locatie hebben en probeert de GPS coördiaat gelijk
+dat al deze duiken dezelfde locatie hebben en probeert de GPS coördinaat gelijk
 te houden).</p></div>
 <div class="paragraph"><p><strong>Locatie naam opzoeken</strong>: Op moment dat er een geldige coördiaat is ingevoerd,
 kan er een automatische, Internet gebaseerde, zoekactie gestart worden om een
@@ -1619,13 +1641,15 @@ het kan derhalve niet met (open source) <em>Subsurface</em> worden geïntegreerd
 te converteren naar Subsurface&#8217;s <em>.xml</em> format. Het kan samen met <em>Subsurface</em>
 op Linux systemen worden gecompileerd. Twee extra softwarebibliotheken dienen
 aanwezig te zijn: <em>libglib2.0</em> en <em>libmdb2</em>.</p></div>
+<div class="paragraph"><p>Daarnaast is er een webservice beschikbaar om <em>SmartTrak</em> duiklogs te converteren
+naar <em>Subsurface</em> formaat (zie hieronder).</p></div>
 <div class="paragraph"><p>Neem gerust contact op met het <em>Subsurface</em> ontwikkelteam via
 <a href="mailto:subsurface@subsurface-divelog.org">onze mailinglijst</a> voor assistentie op
 het gebied van importeren van <em>SmartTrak</em> data.</p></div>
-<div class="paragraph"><p>Aangenomen dat de bovenstaande twee biliotheken zijn geïnstalleerd, en de
-<em>Subsurface</em> broncode staat in <em>~/src/subsurface</em>, dan:</p></div>
 <div class="sect4">
 <h5 id="_compileren_van_em_smtk2ssrf_em">Compileren van <em>smtk2ssrf</em></h5>
+<div class="paragraph"><p>Aangenomen dat de bovenstaande twee biliotheken zijn geïnstalleerd, en de
+<em>Subsurface</em> broncode staat in <em>~/src/subsurface</em>, dan:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1690,6 +1714,18 @@ terecht komt. Hier <em>file_1.slg</em> en <em>file_2.slg</em> als invoer en <em>
 Controleer op waarschuwingen en foutmeldingen in de console, of in het grafische scherm:
 sommige meldingen kunnen erop duiden dat de conversie niet succesvol is geweest;
 ondersteuning voor de Galileo familie duikcomputers is nog in ontwikkeling.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_voor_de_luie_gebruiker_een_web_service_om_em_smarttrak_em_naar_em_subsurface_em_te_converteren">Voor de luie gebruiker: een web service om <em>SmartTrak</em> naar <em>Subsurface</em> te converteren</h5>
+<div class="paragraph"><p>Open de website <em>https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl</em>. Dit is een eenvoudige
+pagina om <em>SmartTrak</em> bestanden naar <em>Subsurface</em> formaat te converteren. Met de browse knop
+kan het <em>SmartTrak</em> bestand worden ingevoerd, en na klikken van <em>Submit query</em> verschijnt snel
+een dialoog box (figuur hieronder) om de geconverteerde data op te slaan op de lokale computer.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/strk2ssrf_web.jpg" alt="FIGURE:Web service om SmartTrak divelog te converteren" />
+</div>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_de_geïmporteerde_duiken_samenvoegen_met_een_bestaand_logboek">De geïmporteerde duiken samenvoegen met een bestaand logboek</h5>
@@ -1986,18 +2022,18 @@ vastlegt.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_automatisch_verzamelen_van_gps_coördinaten_aanzetten">Automatisch verzamelen van GPS coördinaten aanzetten</h5>
-<div class="paragraph"><p>Het hoofdmenu van <em>Subsurface-mobile</em> heeft linksonder een keuzevakje
+<div class="paragraph"><p>Het GPS menu van <em>Subsurface-mobile</em> heeft onderaan een optie
 <em>Draai locatie service</em> (zie figuur hieronder). Op moment dat deze wordt
 geselecteerd, start het automatisch verzamelen van GPS coördinaten.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/MobileMenu.jpg" alt="Figuur: Subsurface-mobile hoofdmenu" />
+<img src="images/MobileGpsMenu.jpg" alt="Figuur: Subsurface-mobile GPS menu" />
 </div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_automatisch_verzamelen_van_gps_coördinaten_uitzetten_na_de_duik">Automatisch verzamelen van GPS coördinaten uitzetten na de duik</h5>
-<div class="paragraph"><p>De-selelecteer het keuzevakje linksonder in het <em>Subsurface-mobile</em> hoofdmenu.</p></div>
+<div class="paragraph"><p>Kies de optie <em>Stop locatie service</em> onderaan het <em>Subsurface-mobile</em> GPS menu.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_gps_coördinaten_naar_de_em_subsurface_em_internet_server_sturen">GPS coördinaten naar de <em>Subsurface</em> Internet server sturen.</h5>
@@ -2612,6 +2648,20 @@ gevolgd door EAN50 na 26 minuten voor decompressie.</p></div>
 <img src="images/multicylinder_dive.jpg" alt="Figuur: Multicilinder profiel" />
 </div>
 </div>
+<div class="paragraph"><p>Diverse duikcomputers kunnen automatisch cilinder drukken opslaan, zonder handmatige
+interactie. Oudere duikcomputers (Uwatec Galileo, diverse Suunto modellen) kunnen soms ook
+meerdere druk sensoren aan, waarbij op de duikcomputer gewisseld kan worden tussen
+sensoren waardoor er een sequentieel verloop van cilinder drukken ontstaat. Sommige
+moderne modellen (Shearwater Perdix AI, Scubapro G2) kunnen meerdere sensoren
+tegelijkertijd uitlezen en opslaan. In deze gevallen interpreteert <em>Subsurface</em> de data
+juiste manier.
+Er is permanente aandacht bij de <em>Subsurface</em> ontwikkelaars om nieuwe duikcomputer modellen
+te ondersteunen, ook die met meerdere druksensoren, en met juiste presentatie in het duikprofiel.
+Onafhankelijk van het model van druksensor afhandeling, diverse (technische) duikers
+zullen voorkeur hebben voor handmatige of juist automatische logging van duiken met
+meerdere gassen. Echter, automatische registratie bij (eenvoudige) sidemount duiken met twee
+cilinders is een eenvoudige casus. Zie de
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">lijst van ondersteunde duikcomputers</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_sidemount_duiken">5.6.2. Sidemount duiken</h4>
@@ -2620,7 +2670,8 @@ met hetzelfde gas in de meerdere cilinders. Het komt voort uit de grotduik werel
 waar de andere configuratie het passeren van kleinere passages mogelijk kan maken.
 Tegenwoordig lijkt sidemount configuratie ook ingang te vinden in de recreatieve
 duikwereld.</p></div>
-<div class="paragraph"><p>Het loggen van sidemount cilinder gebruik is niet anders dan hier eerder beschreven,
+<div class="paragraph"><p>Zie de vorige paragraaf over automatisch vastleggen van cilinderdrukken.
+Het handmatig loggen van sidemount cilinder gebruik is niet anders dan hier eerder beschreven,
 en bestaat wederom uit drie onderdelen:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2709,7 +2760,7 @@ van EAN36 met decompressie op zuurstof.</p></div>
 <td class="icon">
 <img src="images/APD.jpg" alt="Note" />
 </td>
-<td class="content">Gesloten circuit rebreathers (CCR) is geavanceerde technische
+<td class="content">Gesloten circuit rebreathers (CCR) zijn geavanceerde technische
 duikapparatuur. Ze doen twee specifieke dingen om een adembaar
 systeem te behouden:
 a) CO<sub>2</sub> wordt verwijderd (zoals bij pSCRs)
@@ -2722,18 +2773,24 @@ dergelijke systemen worden eCCRs (elektronisch) genoemd. Daarnaast bestaan er oo
 mCCRs (manueel, handmatig) waar de gebruiker zelf zorg draagt door een juist
 zuurstofgehalte.</p></div>
 <div class="paragraph"><p>De CCR interface of <em>Subsurface</em> is op dit moment experimenteel, en ondersteund
-de Poseidon MkVI en APD Discovery/Evolution duikcomputers; beide eCCR type
-apparaten. Voor deze beide rebreaters geldt dat de duiken in losse bestanden
+de Poseidon MkVI en APD Discovery/Evolution duikcomputers, Shearwater duikcomputers
+aangesloten op een CCR; allen eCCR type
+apparaten. Voor de eerste twee rebreaters geldt dat de duiken in losse bestanden
 op de duikcomputer worden weggeschreven en dat <em>Subsurface</em> deze losse logbestanden
-kan inlezen</p></div>
+kan inlezen. Met Shearwater duikcomputers kunnen wel meerdere duiken tegelijkertijd
+worden ingelezen.</p></div>
 <div class="sect4">
 <h5 id="_importeren_van_een_ccr_duik">Importeren van een CCR duik</h5>
-<div class="paragraph"><p>Zie de paragraaf over <a href="#S_ImportingAlienDiveLogs">importeren van duik informatie
-uit andere digitale bronnen</a>. CCR data wordt op dit moment uit gesloten programmatuur
-geladen, welke bij de rebreather is geleverd.
-Zie <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Bijlage B</a>
+<div class="paragraph"><p>Voor Shearwater CCR controllers of onafhankelijke Shearwater CCR logs kunnen duiken
+op normale wijze (zoals bij open circuit duiken) worden ingelezen. <em>Subsurface</em> herkent
+de CCR duiken op juiste wijze.
+Andere CCR data wordt op dit moment uit gesloten programmatuur
+geladen, welke bij de rebreather is geleverd.Zie de paragraaf over
+<a href="#S_ImportingAlienDiveLogs">importeren van duik informatie
+uit andere digitale bronnen</a>
+en <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Bijlage B</a>
 voor uitgebreidere informatie. Gebruik die programmatuur om de duik data uit de computer van
-de rebreathter te laden en op te slaan op de desktop PC. Ga dan in <em>Subsurface</em>
+de rebreather te laden en op te slaan op de desktop PC. Ga dan in <em>Subsurface</em>
 vanuit het hoofdmenu naar  <em>Importeren &#8594; Importeer logbestanden</em> om de
 <a href="#Unified_import">universele importeer dialoog te starten</a>. Selecteer het gewenste bestand
 om te importeren, en filter eventueel om het gewenste bestand eenvoudig te vinden
@@ -2872,7 +2929,67 @@ APD apparatuur staan in
 <h2 id="_meer_informatie_over_duiken_in_het_logboek">6. Meer informatie over duiken in het logboek</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_het_strong_informatie_strong_tabblad_voor_individuele_duiken">6.1. Het <strong>Informatie</strong> tabblad (voor individuele duiken)</h3>
+<h3 id="_de_duikkaart_gebruiken_om_meer_informatie_te_verkrijgen">6.1. De Duikkaart gebruiken om meer informatie te verkrijgen</h3>
+<div class="paragraph"><p>De duikkaart heeft een aantal knoppen nuttig om diverse aspecten van een duik te bewerken. Deze zijn</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewMode.jpg" alt="Note" />
+</td>
+<td class="content">Met deze knop kan gekozen worden voor een kaart of een satelliet beeld.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewPlus.jpg" alt="Note" />
+</td>
+<td class="content">Zoom in. Selecteer een kleiner gebied.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewMinus.jpg" alt="Note" />
+</td>
+<td class="content">Zoom out. Selecteer een groter gebied.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/MapMenu.jpg" alt="FIGURE: Map menu" />
+</div>
+</div>
+<div class="paragraph"><p>Een "Hamburger" knop in de rechts-boven hoek met de volgende functies:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Open locatie in <em>Google Maps</em>. Opent Google Map met een marker op de locatie.
+</p>
+</li>
+<li>
+<p>
+Kopieer locatie naar clipboard (decimaal). Kopieert de coördinaten van de huidige duik locatie
+naar het clipboard, in decimale notatie: -25.933905 30.710572
+</p>
+</li>
+<li>
+<p>
+Kopieer locatie naar clipboard (sexagesimaal). Kopieert de coördinaten van de huidige duik locatie
+naar het clipboard, in sexagesimale notatie: 25°56&#8217;02.058"S 30°42&#8217;38.059"E
+</p>
+</li>
+<li>
+<p>
+Selecteer zichtbare duiken. Dit selecteert alle duiken die zichtbaar zijn op de
+kaart in de Duiklijst. Handig om allen duiken in een gebied te bekijken of
+of statistieken ervoor te berekenen.
+</p>
+</li>
+</ul></div>
+</div>
+<div class="sect2">
+<h3 id="_het_strong_informatie_strong_tabblad_voor_individuele_duiken">6.2. Het <strong>Informatie</strong> tabblad (voor individuele duiken)</h3>
 <div class="paragraph"><p>Het Informatie tabblad toont enige samenvattende informatie over
 de geselecteerde duik in de <strong>Duiklijst</strong>. Nuttige informatie zoals
 oppervlakte interval, maximum en gemiddelde diepte, gebruikte hoeveelheden
@@ -2891,7 +3008,7 @@ niet-ideale gedrag van gassen onder druk. Met name bij drukken hoger dan
 </div>
 </div>
 <div class="sect2">
-<h3 id="S_ExtraDataTab">6.2. <strong>Extra Gegevens</strong> tabblad (normaal gesproken voor een enkele duik)</h3>
+<h3 id="S_ExtraDataTab">6.3. <strong>Extra Gegevens</strong> tabblad (normaal gesproken voor een enkele duik)</h3>
 <div class="paragraph"><p>Veel duikcomputers kunnen meer data opleveren dan regulier in duiklog programma&#8217;s
 verwerkt kan worden en veel kunnen verschillen tussen individuele type duikcomputers.
 Voorbeelden zijn: meta data over een duik, batterij status, niet-vliegen tijd,
@@ -2905,13 +3022,13 @@ uit een Poseidon rebreather.</p></div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_strong_statistieken_strong_tabblad_voor_meerdere_duiken">6.3. <strong>Statistieken</strong> tabblad (voor meerdere duiken)</h3>
+<h3 id="_strong_statistieken_strong_tabblad_voor_meerdere_duiken">6.4. <strong>Statistieken</strong> tabblad (voor meerdere duiken)</h3>
 <div class="paragraph"><p>Het Statistieken tabblad geeft een samenvatting over meerdere duiken zoals
 geselecteerd in de <strong>Duiklijst</strong>. Het totaal aantal geselecteerde duiken, maximum en
 minimum diepte, enzovoort.</p></div>
 </div>
 <div class="sect2">
-<h3 id="S_DiveProfile">6.4. Het <strong>Duikprofiel</strong></h3>
+<h3 id="S_DiveProfile">6.5. Het <strong>Duikprofiel</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Profile2.jpg" alt="Typisch duikprofiel" />
@@ -2980,7 +3097,7 @@ gebruik van de <strong>Grafiek Schalen</strong> knop kan dit worden opgelost.</t
 <div class="paragraph"><p><strong>Water temperatuur</strong> wordt getoond als een blauwe lijn onder de diepte grafiek,
 met een aantal gemeten waarden.</p></div>
 <div class="sect3">
-<h4 id="S_InfoBox">6.4.1. De <strong>Informatie Box</strong></h4>
+<h4 id="S_InfoBox">6.5.1. De <strong>Informatie Box</strong></h4>
 <div class="paragraph"><p>De <strong>Informatie Box</strong> toont een groot aantal items. Standaard staat de box in de
 linker boven hoek van het profiel, maar hij kan worden versleept, en de nieuwe
 positie wordt behouden tussen sessies.</p></div>
@@ -2996,7 +3113,8 @@ locatie van de pointer. Er is een uitgebreide lijst items die kunnen worden
 getoond, zoals: tijdstip in de duik (@ symbool), diepte, druk in gebruikte cilinder,
 opstijg- en afdaal snelheid, gasgebruik (SAC), pO<sub>2</sub>, Maximum gebruiksdiepte (MOD),
 Equivalente lucht diepte (EAD), Equivalente narcotische diepte (END),  Equivalente
-lucht dichtheid diepte (EADD), decompressie verplichting, tijd naar oppervlakte (TTS),
+lucht dichtheid diepte (EADD, ook als gasdichtheid in g/l), decompressie verplichting,
+tijd naar oppervlakte (TTS),
 berekend plafond. Een aantal van deze items kunnen worden aan- en uitgezet via knoppen
 aan de linker zijde:</p></div>
 <div class="admonitionblock">
@@ -3154,7 +3272,7 @@ verder opstijgen dus mogelijk is.
 </div>
 </div>
 <div class="sect3">
-<h4 id="_door_de_duikcomputer_vastgelegde_gebeurtenissen">6.4.2. Door de duikcomputer vastgelegde gebeurtenissen</h4>
+<h4 id="_door_de_duikcomputer_vastgelegde_gebeurtenissen">6.5.2. Door de duikcomputer vastgelegde gebeurtenissen</h4>
 <div class="paragraph"><p>Veel duikcomputers leggen diverse gebeurtenissen vast tijdens een duik. Zoals bijvoorbeeld
 alarmen voor een te hoge pO<sub>2</sub>, te snelle opstijgingen, overschrijden van
 de niet decompressie limiet (NDL). Andere gebeurtenissen daarentegen wordt als
@@ -3181,7 +3299,7 @@ op de duikcomputer. Deze worden getoond als een kleine rode vlag, en worden verd
 besproken in <a href="#S_Bookmarks"><em>bladwijzers toevoegen</em></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_de_profiel_toolbar">6.4.3. De Profiel Toolbar</h4>
+<h4 id="_de_profiel_toolbar">6.5.3. De Profiel Toolbar</h4>
 <div class="paragraph"><p>Het duikprofiel kan uitgebreid worden met grafieken die de <strong>partiële gasdrukken</strong>
 van O<sub>2</sub>, N<sub>2</sub>, en He weergeven (zie figuur hierboven), door <em>Subsurface</em> berekende
 decompressie informatie, alsmede de door de duikcomputer
@@ -3220,6 +3338,9 @@ in het geval van een lucht geïntegreerde duikcomputer. De kleur van de lijn is
 niet één of andere absolute waarde, maar een relatieve waarde gerelateerd aan
 de gemiddelde SAC, waarbij rood en oranje perioden aangeven met een verhoogd
 gasgebruik en groen een verlaagd gasgebruik.</p></div>
+<div class="paragraph"><p>In planner mode is de SAC, zoals ingesteld, constant gedurende de bodemfase en
+de decompressiefase. De kleur van de lijn geeft hier dan ook de gasdichtheid weer,
+en niet de SAC.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3462,7 +3583,7 @@ hoger is in de ondiepe fase van de deco.</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_het_duikprofiel_context_menu">6.4.4. Het duikprofiel context menu</h4>
+<h4 id="_het_duikprofiel_context_menu">6.5.4. Het duikprofiel context menu</h4>
 <div class="paragraph"><p>Het context menu voor het duikprofiel wordt geopend door met rechter muisknop te
 klikken in het profiel scherm. Met dit menu kunnen bladwijzers, gaswissels,
 of CCR setpoint instellingen worden ingevoerd, voor die gevallen waar deze
@@ -4617,7 +4738,7 @@ Erik Baker toegevoegde gradiënt factoren. Daarnaast is ook VPM-B aanwezig.</p><
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">De <em>Subsurface</em> duikplanner is OP DIT MOMENT EXPERIMENTEEL en veronderstelt dat
+<td class="content">De <em>Subsurface</em> duikplanner is EXPERIMENTEEL en veronderstelt dat
 de gebruiker bekend is met de <em>Subsurface</em> gebruikers interface. De volgende
 uitdrukkelijk voorwaarden zijn van toepassing:</td>
 </tr></table>
@@ -4676,7 +4797,7 @@ programmatuur worden overgedragen. Dit is ook het gebied waar waarschuwingen
 over het duikplan worden weergegeven.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/PlannerWindow1_f20.jpg" alt="Figuur: Duikplanner begin scherm" />
+<img src="images/PlannerWindow1.jpg" alt="Figuur: Duikplanner begin scherm" />
 </div>
 </div>
 </div>
@@ -4862,8 +4983,7 @@ valt de duik buiten recreatieve duik limieten, en dient de diepte of tijd vermin
 te worden.</p></div>
 <div class="paragraph"><p>Hieronder een figuur met een plan voor een recreatieve duik naar 30m. Hoewel de
 niet-decompressie limiet (NDL) 23 minuten bedraagt, is de duik beperkt tot de hoeveelheid
-gas in de cilinder. Dit is te zien in de tekst uitvoer rechtsonder, inclusief de hoeveelheid
-benodigd gas voor de opstijging.</p></div>
+gas in de cilinder.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Planner_OC_rec.jpg" alt="Figuur: Een recreatief duikplan: setup" />
@@ -4893,6 +5013,15 @@ heeft vaak een kortere totale decompressie tijd, hoewel dit ten koste gaat van
 hogere inert gas weefseldrukken in het name de langzamere weefsels. Bedenk echter
 dat beide modellen een model van de werkelijke fysiologische wereld zijn, die
 te beschouwen zijn als wiskundige modellen van iets dat werkt in de praktijk.</p></div>
+<div class="paragraph"><p>Merk op dat het VPM-B model de intrinsieke aanname maakt dat afgifte van gas alleen
+plaatsvindt tijdens de opstijgfase (die dus door de planner wordt berekend).
+Mogelijk ontstaan er misleidende resultaten als er handmatige routepunten ingevoerd
+worden tijdens deze opstijging. Dit is met name van toepassing op het her-plannen
+van werkelijke duikprofielen; deze bevatten immers routepunten tot aan de oppervlakte.
+Gooi voor dergelijke duiken eerst de routepunten weg die deel uit maken van de
+opstijging. Dit kan het eenvoudigst door de ctrl- of command- toets in te drukken
+tijdens het klikken op de het vuilnisbak icoon naast het eerste routepunt van de
+opstijging in de tabel aan de linker zijde.</p></div>
 <div class="paragraph"><p>Meer (algemene) informatie over decompressie is bijvoorbeeld te vinden op:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -4949,18 +5078,7 @@ cilinder, kan de planner ook de geadviseerde hoeveelheid bodemgas berekenen die
 nodig is om de eerstvolgende gasvoorraad te kunnen bereiken (het volgende decompressie
 gas of de oppervlakte). Dit wordt de "minimum gas" of "rock bottom" berekening
 genoemd, en wordt door een aantal (maar niet alle) technische opleidingssystemen
-toegepast. De berekening gaat van het slechtste geval uit (zoals ook in het grotduik
-voorbeeld hierboven): namelijk het volledig zonder gas komen te zitten
-(out-of-gas (OoG) event), op het eind van de bodemfase van de duik, op het diepste
-punt. Er is dan eerst tijd nodig (optie <em>tijd om problemen op te lossen</em>), zoals
-het beginnen van gas delen en het proberen het probleem op te lossen. Daarnaast zal
-het gasverbruik (SAC) toenemen door stress, en het feit dat er nu twee duikers uit
-één cilinder ademen: dit is de optie <em>SAC factor</em>. Het resultaat van deze berekening
-wordt afgedrukt in de tekst uitvoer van het plan; er zijn geen automatische controles
-op basis van deze berekening. Merk verder op dat een minimum gas berekening
-werkt op een vierkant profiel, en bij duiken met (sterk) verschillende
-dieptes gedurende de duik (in open water ook wel multi-level duiken genoemd) dient
-de berekening op meerdere momenten in de duik te worden gemaakt.</p></div>
+toegepast. Zie hieronder voor een gedetailleerde uitleg.</p></div>
 <div class="paragraph"><p>Nu kan worden begonnen met het invoeren van de tijd-diepte profiel. Dit kan met de
 grafische weergave rechtsboven. Bij openen van de planner is er een standaard duik
 te zien naar 15 meter voor 20 minuten. De witte routepunten kunnen worden versleept
@@ -4981,16 +5099,33 @@ worden. Sterker nog, vaak is het handiger om de duik via de tabel in te voeren.<
 woeden gekozen die in de tabel <em>Beschikbare gasmengsels</em> zijn ingevoerd. In de
 opstijging zal de planner op basis van pO<sub>2</sub> instellingen de
 benodigde gaswissels in de planning opnemen.</p></div>
-<div class="paragraph"><p>Als er een waarde anders dan 0 wordt ingevoerd in de <em>CCR setpoint</em> kolom wordt
+<div class="paragraph"><p>Cilinders in gebruik voor het plan dienen te worden ingevuld in de tabel <em>Beschikbare gassen</em>.
+Voer in de kolom <em>type</em> het soort cilinder in. Hoewel is al een groot aantal mogelijke
+cilinders beschikbaar is, is het mogelijk nieuwe toe te voegen door de naam ervan in te
+tikken. Voer achtereenvolgens de gassamenstelling in (helium en zuurstof).
+Als er een waarde anders dan 0 wordt ingevoerd in de <em>CCR setpoint</em> kolom wordt
 dat deel van het profiel beschouwd als een duik met een gesloten circuit rebreather
 (CCR). Als het laatst ingevoerde segment ook een ingevuld <em>CCR setpoint</em> heeft,
 wordt de decompressie fase ook als CCR duik bepaald. Als het laatste segment echter
 een open circuit segment is, zal de decompressie als open circuit duik worden bepaald.</p></div>
-<div class="paragraph"><p>Hieronder een voorbeeld van een duikplan naar 45m met Tx 21/35 met EAN50 en zuurstof
-als decompressie gassen.</p></div>
+<div class="paragraph"><p>Voor de duikprofiel segmenten in in de _Duikplanner punten" tabel, door tijd en diepte
+in te vullen. Voer ook de juiste cilinder in als er meer dan 1 cilinder in gebruik is.
+Indien nodig kan het aantal rijen in de tabel worden uitgebreid door het gebruik van de "enter"
+toets. In figuur A hieronder, is een segment (met gebruik van een EAN50 cilinder) toegevoegd
+aan het begin van de duik (omdat het andere gas niet adembaar is aan de oppervlakte). op
+moment dat het nieuwe segment met de "enter" toets wordt bevestigd, wordt het plan
+automatisch aangepast (figuur B hieronder).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_deco_VPM.jpg" alt="FIGUUR: Planning van een duik" />
+<img src="images/planner1.jpg" alt="FIGURE: Duikplanning: segmenten" />
+</div>
+</div>
+<div class="paragraph"><p>Hieronder een voorbeeld van een duik naar 55m met Tx20/30 met gebruikmaking van
+het Bühlmann algorithme, gevolgs door een opstijging met EAN50, en de instellingen
+zoals hierboven.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_deco.jpg" alt="FIGUUR: Planning van een duik" />
 </div>
 </div>
 <div class="paragraph"><p>Als bovenstaande stappen zijn doorlopen, kan de duik opgeslagen worden met de
@@ -5005,6 +5140,114 @@ waarschuwingen verschijnen ook de details van het plan.</p></div>
 diepte segment in de uitvoer. De duur bevat ook de tijd van de opstijging naar dat
 niveau. Echter, als <em>Toon overgangen in deco</em> ook is geselecteerd worden ook de overgangen
 tijdens de deco verder gedetailleerd.</p></div>
+<div class="paragraph"><p>De planner heeft een keuzevakje <em>Toon plan variaties</em>. Hierdoor gaat de planner
+iets diepere en langere duiken plannen dan de reeds geplande duik. Dit kost veel
+rekentijd, en de planner kan hierdoor merkbaar langzamer worden. De informatie wordt
+als volgt weergegeven:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Runtime: 53min + 0:52/m + 4:21/min</code></pre>
+</div></div>
+<div class="paragraph"><p>Dit betekent:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+De berekende duiktijd is 53 min.
+</p>
+</li>
+<li>
+<p>
+Voor elke meter dieper gedurende de bodemfase, neemt de duikduur met 52 seconden toe.
+</p>
+</li>
+<li>
+<p>
+Voor iedere minuut extra gedurende de bodemfase, neemt de duikduur met 4 minuten en 21 seconden toe.
+   Dus als de bodemtijd 2 minuten langer is, neemt de duikduur toe met 2 + 2x4 min 21 sec = 10 minuten en 21 sec.
+   En iedere decostop is ongeveer 10:42/53:00 = 20% langer dan gepland. Dit soort berekeningen zijn alleen
+   geldig voor kleine aanpassingen van het plan, en geen grotere.
+</p>
+</li>
+<li>
+<p>
+Minimum gas requirements*
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>De planner berekent ook het benodigde <strong>minimum gas</strong> noodzakelijk voor een
+veilige opstijging in geval van een incident.
+De berekening gaat van het slechtste geval uit (zoals ook in het grotduik
+voorbeeld hierboven): namelijk het volledig zonder gas komen te zitten
+(out-of-gas (OoG) event), op het eind van de bodemfase van de duik, op het diepste
+punt. Er is dan eerst tijd nodig (optie <em>tijd om problemen op te lossen</em>), zoals
+het beginnen van gas delen en het proberen het probleem op te lossen. Daarnaast zal
+het gasverbruik (SAC) toenemen door stress, en het feit dat er nu twee duikers uit
+één cilinder ademen: dit is de optie <em>SAC factor</em>. Het resultaat van deze berekening
+wordt afgedrukt in de tekst uitvoer van het plan; er zijn geen automatische controles
+op basis van deze berekening. Merk verder op dat een minimum gas berekening
+werkt op een vierkant profiel, en bij duiken met (sterk) verschillende
+dieptes gedurende de duik (in open water ook wel multi-level duiken genoemd) dient
+de berekening op meerdere momenten in de duik te worden gemaakt.</p></div>
+<div class="paragraph"><p>De volgende 2 parameters zijn van toepassing:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<strong>SAC factor</strong>. Dit is een inschatting hoeveel de SAC zal toenemen ten gevolge
+ van het incident. Realistische waarden liggen vermoedelijk tussen 2 en 5, met
+ 2 duikers op 1 cilinder na een OoG event.
+</p>
+</li>
+<li>
+<p>
+<strong>Probleem oplostijd</strong>. Dit is een inschatting van de tijd die nodig is, om vanaf
+ de bodem de opstijging in te kunnen zetten. De standaard waarde is 2 minuten
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Met deze informatie berekent de planner het benodigde minimum gas. Het wordt weergegeven als:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Minimum gas (gebaseerd op 2.0xSAC/+1min@81m): 2130 liters/90bar/delta:+80bar</code></pre>
+</div></div>
+<div class="paragraph"><p>Dit geeft aan:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Tussen haakjes, de <strong>SAC factor</strong> en <strong>Probleem oplostijd</strong> zoals gespecificeerd.
+</p>
+</li>
+<li>
+<p>
+Aantal liters gas nodig voor een veilige opstijging (2130 liters in het voorbeeld hierboven)
+</p>
+</li>
+<li>
+<p>
+Aantal bar nodig voor een veilige opstijging (90 bar in in het voorbeeld hierboven).
+</p>
+</li>
+<li>
+<p>
+Aantal bar beschikbaar op het eind van de bodemfase, <em>boven</em> de minimum gas eis
+   (80 bar in in het voorbeeld hierboven). Een positieve waarde geeft aan dat het plan
+   (voor zover het minimum gas betreft) veilig is. Negatief uiteraard niet.
+</p>
+</li>
+</ul></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">Zowel de plan variaties als het minimum gas zijn gebaseerd op aannamen, en derhalve
+richtlijnen bij het plannen van een duik. Het zijn uitdrukkelijk niet de enige
+twee middelen voor een veilige duikplanning. Interpreteer deze waarden in het kader
+van je formele duikopleiding.</td>
+</tr></table>
+</div>
+</div></div>
 </div>
 </div>
 <div class="sect2">
@@ -5027,7 +5270,7 @@ hieronder. Merk op dat de decompressie van de pSCR duik langer duurt, dan die va
 de vergelijkbare CCR duik. Dit komt met name door de pO<sub>2</sub> drop.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_pSCR1_f20.jpg" alt="Figuur: Planning a pSCR dive: setup" />
+<img src="images/Planner_pSCR.jpg" alt="Figuur: Planning a pSCR dive: setup" />
 </div>
 </div>
 </div>
@@ -5049,7 +5292,7 @@ gassen berekend (dus een bail-out decompressie berekening).</p></div>
 <div class="paragraph"><p>Zie de figuur hieronder voor een voorbeeld van een geplande CCR duik.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_CCR1_f20.jpg" alt="Figuur: Een CCR duik plannen: setup" />
+<img src="images/Planner_CCR.jpg" alt="Figuur: Een CCR duik plannen: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Merk op dat in de details van het duikplan (rechtsonder) geen gasberekening voor CCR duiken
@@ -6978,7 +7221,7 @@ alleen als deze nog niet zijn overschreven door nieuwere duiken.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-04-12 17:51:58 PDT
+Last updated 2017-10-21 09:35:40 CEST
 </div>
 </div>
 </body>

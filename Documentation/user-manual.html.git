@@ -2186,18 +2186,18 @@ If the diver moves, a trace of the route is obtained by saving a location every 
 </div>
 <div class="sect4">
 <h5 id="_activate_the_automated_recording_of_gps_locations">Activate the automated recording of GPS locations</h5>
-<div class="paragraph"><p>The <em>Subsurface-mobile</em> main menu has a checkbox at the bottom left labled
-<em>Run location service</em> (see image below). Checking the box starts the automated recording
+<div class="paragraph"><p>The <em>Subsurface-mobile</em> GPS menu has an option at the bottom labled
+<em>Run location service</em> (see image below). Selecting this starts the automated recording
 of GPS positions.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/MobileMenu.jpg" alt="FIGURE: Subsurface-mobile main menu" />
+<img src="images/MobileGpsMenu.jpg" alt="FIGURE: Subsurface-mobile GPS menu" />
 </div>
 </div>
 </div>
 <div class="sect4">
 <h5 id="_after_the_dive_stop_the_automated_recording_of_gps_locations">After the dive, stop the automated recording of GPS locations</h5>
-<div class="paragraph"><p>Uncheck the check box at the bottom left of the <em>Subsurface-mobile</em> main menu.</p></div>
+<div class="paragraph"><p>Select the menu option <em>Disable location service</em> at the bottom of the <em>Subsurface-mobile</em> GPS menu.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_upload_the_gps_locations_onto_the_em_subsurface_em_internet_server">Upload the GPS locations onto the <em>Subsurface</em> Internet server.</h5>
@@ -2918,11 +2918,11 @@ logging of cylinder pressures during sidemount involves three steps, exactly as 
 <td class="content">Passive semi-closed rebreathers (pSCR) are a technical advance in diving equipment that
 recirculates the breathing gas a diver uses, while removing carbon dioxide from
 the exhaled gas. While a small amount (typically a tenth) of the exhaled breathing gas is released into the water,
-a small amount of fresh gas is released from the diving gas cylinder.
+a small amount of fresh gas is released from the driving gas cylinder.
 A diver using a single cylinder of breathing gas can therefore dive for much longer periods than
 using a recreational open-circuit configuration. With pSCR equipment, a very small amount of breathing
-gas is released every time the diver exhales. With active SCR (aSCR) equipment, in contrast, a small amount of
-breathing gas is released continuously from the diving cylinder.</td>
+gas is released every time the diver inhales. With active SCR (aSCR) equipment, in contrast, a small amount of
+breathing gas is released continuously from the driving cylinder.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>To log pSCR dives, no special procedures are required. Use the normal steps outlined above:</p></div>
@@ -2977,9 +2977,9 @@ based CCR systems are different in this respect and allow multi-dive downloads.<
 <div class="sect4">
 <h5 id="_import_a_ccr_dive">Import a CCR dive</h5>
 <div class="paragraph"><p>For Shearwater CCR controllers, or independent Shearwater CCR logs, just download the dive log as would
-be the case for non-CCR dives. <em>Subsurface</em> interprets the CCR dive lig correctly.
+be the case for non-CCR dives. <em>Subsurface</em> interprets the CCR dive log correctly.
 Except for Shearwater CCR dive computers, CCR dive data are currently obtained from the proprietary software
-provided when purchasing CCR dice equipment. See the section dealing with <a href="#S_ImportingAlienDiveLogs">Importing dive information from other
+provided when purchasing CCR dive equipment. See the section dealing with <a href="#S_ImportingAlienDiveLogs">Importing dive information from other
 digital sources</a> and <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix B</a>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of <em>Subsurface</em>, select <em>Import &#8594;  Import
@@ -5491,7 +5491,7 @@ level dive profiles. For multi level dives one would need to check every leg of 
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Using the above information, the planner then estimates what the minimum botoom gas cylinder pressure needs to be for a
+<div class="paragraph"><p>Using the above information, the planner then estimates what the minimum botom gas cylinder pressure needs to be for a
 safe ascent. This information is given near the bottom of the <em>Dive plan details</em>, following the calculation of
 bottom gas used during the dive if it exactly follows the plan. the minimum gas is typically given as:</p></div>
 <div class="literalblock">
@@ -5532,7 +5532,7 @@ The delta-value: number of bars of back gas available at the end of the bottom s
 </td>
 <td class="content">The <strong>plan variations</strong> and <strong>minimum gas</strong> estimates are only guidelines for a diver performing dive planning, intended to
 enhance the safety of executing a particular dive plan. They are NOT precise
-and should NOT be relied upon as the only safety features in dive planning. Interpret these esimates
+and should NOT be relied upon as the only safety features in dive planning. Interpret these estimates
 within the framework of your formal training to perform dive planning.</td>
 </tr></table>
 </div>
@@ -7562,7 +7562,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-20 14:10:33 AST
+Last updated 2017-10-21 09:29:27 CEST
 </div>
 </div>
 </body>

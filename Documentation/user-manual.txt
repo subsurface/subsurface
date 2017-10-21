@@ -1441,15 +1441,15 @@ If the diver moves, a trace of the route is obtained by saving a location every 
 
 ===== Activate the automated recording of GPS locations
 
-The _Subsurface-mobile_ main menu has a checkbox at the bottom left labled
-_Run location service_ (see image below). Checking the box starts the automated recording
+The _Subsurface-mobile_ GPS menu has an option at the bottom labled
+_Run location service_ (see image below). Selecting this starts the automated recording
 of GPS positions.
 
-image::images/MobileMenu.jpg["FIGURE: Subsurface-mobile main menu",align="center"]
+image::images/MobileGpsMenu.jpg["FIGURE: Subsurface-mobile GPS menu",align="center"]
 
 ===== After the dive, stop the automated recording of GPS locations
 
-Uncheck the check box at the bottom left of the _Subsurface-mobile_ main menu.
+Select the menu option _Disable location service_ at the bottom of the _Subsurface-mobile_ GPS menu.
 
 ===== Upload the GPS locations onto the _Subsurface_ Internet server.
 
