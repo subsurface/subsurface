@@ -972,6 +972,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 	if (current_dive)
 		divePlannerSettingsWidget()->setDiveMode(current_dive->dc.divemode);
 	DivePictureModel::instance()->updateDivePictures();
+	if (current_dive->salinity)
+		divePlannerWidget()->setSalinity(current_dive->salinity);
 	divePlannerWidget()->setReplanButton(false);
 }
 
