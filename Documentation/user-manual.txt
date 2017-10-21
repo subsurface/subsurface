@@ -536,7 +536,7 @@ address and its pairing status. For BTLE devices the address often starts with "
 If the device is not paired and has a red
 background color, a context menu can be opened by selecting the item with a
 right-click.
-Select the the _Pair_ option and wait for the task to complete. If this dive computer
+Select the _Pair_ option and wait for the task to complete. If this dive computer
 is being paired to Subsurface for the first time, it’s possible Subsurface will
 request a Pass Code or PIN number. The most commonly-used Pass Code is 0000,
 and this works for the Shearwater Petrel. If necessary, consult the user manual of the
@@ -719,11 +719,11 @@ Double-click on the blue bar below the new dive location name. The blue bar disa
 the globe icon on the right-hand of the location name text box turns blue.  In the Dive Map part of the _Subsurface_ window, a world map appears (image C above). Click on the
 blue globe icon to the right of the dive site name in the _Notes_ panel (image B above). This opens a window for entering the details of the new dive location (image A below).
 The globe icon changes to indicate that the location data are being edited. The only important
-data here are the geographic coordinates of the dive location.
+data here are the geographic coordinates of the dive location. 
 
 image::images/Globe_image2.jpg["FIGURE:Location creation panel",align="center"]
 
-There are three ways of adding the the coordinates:
+There are three ways of adding the coordinates:
 
 *(1):* Enter coordinates by hand if they are known, using one of
    four formats with latitude followed by longitude:
@@ -743,7 +743,7 @@ The dive site information can later be edited by clicking the globe icon to the 
 dive site name in the *Notes tab*.
 
 *(2):* Use the Dive Map to specify the coordinates. The Dive map now shows
-all the existing dive lications in grey as well as an additional marker in red
+all the existing dive locations in grey as well as an additional marker in red
 (image B above). Drag the red marker to the location of the dive site being entered.
 The map can be dragged and zoomed using the mouse wheel. Position the red marker
 by dragging it on the map, zooming in on the appropriate part of the map and placing
@@ -759,12 +759,14 @@ image::images/Globe_image3.jpg["FIGURE:Location creation panel",align="center"]
 Once the dive location data have been saved, the dive on the Dive List has
 a globe icon immediately to the left of the location name of a particular dive.
 
-*(3):* Use eiher the Subsurface-Mobile App or the _Subsurface_ Companion App on an
+*(3):* Obtain the coordinates using either the Subsurface-Mobile App or the _Subsurface_ Companion App on an
    Android or iPhone device with GPS and if the dive site coordinates
    were stored using one of these apps.
    xref:S_Companion[Click here for more information]
 
-*Important*: GPS coordinates of a dive site are linked to the location
+[icon="images/icons/warning2.png"]
+[WARNING]
+GPS coordinates of a dive site are linked to the location
 name - so *saving* a dive site with only coordinates and no name
 causes problems. (Subsurface will think all of these
 dives have the same location and try to keep their GPS coordinates the
@@ -986,7 +988,7 @@ Many divers log their dives using the proprietary software provided by the
 manufacturers of their dive computers.  _Subsurface_ can import dive logs from a range of
 other dive log software. While import from some software is supported natively,
 others require
-export of the the dive log to an intermediate format that can then be imported
+export of the dive log to an intermediate format that can then be imported
 into _Subsurface_.
 Currently, _Subsurface_ supports importing CSV log files from several sources.
 Dive log import from APD LogViewer, XP5, Sensus and Seabear files are
@@ -1156,7 +1158,7 @@ progress.
 
 Open the website at:
 
-_https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl_
+_https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl_ 
 
 This is a no-frills
 web service for converting _SmartTrak_ dive logs to _Subsurface_. Select the browse button. This allows
@@ -2012,11 +2014,11 @@ image::images/sidemount1.jpg["FIGURE: Sidemount profile",align="center"]
 Passive semi-closed rebreathers (pSCR) are a technical advance in diving equipment that
 recirculates the breathing gas a diver uses, while removing carbon dioxide from
 the exhaled gas. While a small amount (typically a tenth) of the exhaled breathing gas is released into the water,
-a small amount of fresh gas is released from the driving gas cylinder.
+a small amount of fresh gas is released from the diving gas cylinder.
 A diver using a single cylinder of breathing gas can therefore dive for much longer periods than
 using a recreational open-circuit configuration. With pSCR equipment, a very small amount of breathing
-gas is released every time the diver inhales. With active SCR (aSCR) equipment, in contrast, a small amount of
-breathing gas is released continuously from the driving cylinder.
+gas is released every time the diver exhales. With active SCR (aSCR) equipment, in contrast, a small amount of
+breathing gas is released continuously from the diving cylinder.
 
 To log pSCR dives, no special procedures are required. Use the normal steps outlined above:
 
@@ -2061,7 +2063,7 @@ based CCR systems are different in this respect and allow multi-dive downloads.
 For Shearwater CCR controllers, or independent Shearwater CCR logs, just download the dive log as would
 be the case for non-CCR dives. _Subsurface_ interprets the CCR dive log correctly.
 Except for Shearwater CCR dive computers, CCR dive data are currently obtained from the proprietary software
-provided when purchasing CCR dive equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
+provided when purchasing CCR dice equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
 digital sources] and <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
@@ -2173,7 +2175,7 @@ Poseidon MkVI and APD equipment can be found in xref:_appendix_b_dive_computer_s
 
 The Dive Map has a number of buttons useful for manipulation several aspects of a dive. These are:
 
-[icon="images/icons/MapViewMode.jpg"]
+[icon="images/icons/MapViewMode.jpg"]  
 [NOTE]
 Select this button to show the Dive Map as a satellite image or as a Google Maps
 representation.
@@ -2473,7 +2475,7 @@ indicate
 times of increased normalized air consumption while dark green reflects times
 when the diver was using less gas than average.
 
-When in planner mode, the SAC is set to be constant during the bottom part
+When in planner mode, the SAC is set to be constant during the bottom part 
 of the dive as well during decompression. Therefore, when planning a dive,
 the color is a representation of the breathing gas density.
 
@@ -3800,8 +3802,10 @@ the transitions are shown separately from the segment durations at a particular 
 
 The planner has a check box _Display plan variations_. By checking this box, the planner
 provides information about a dive that is a little deeper or slightly
-longer than the planned dive. This can be found near the top of the _Dive plan details_
-where the dive duration is indicated. Checking this option creates a lot of additional computation,
+longer than the planned dive. This is found near the top of the _Dive plan details_
+where the dive duration is indicated. The information is intended to be used if it is necessary to
+modify the ascent "on the fly" in the case of unexpected deviations from the dive plan during the dive.
+Checking this option creates a lot of additional computation,
 to such a degree that the planner is slower than otherwise. The information is typically
 given as:
 
@@ -3810,33 +3814,32 @@ given as:
 This indicates:
 
  * Calculated dive duration is 53 min.
- * For each extra meter in depth during the bottom phase of the dive, the duration increases by 52 seconds.
+ * For each extra meter in depth during the bottom phase of the dive, the ascent duration increases by 52 seconds.
  * For each extra minute of bottom time, the duration increases by 4 min 21 sec. Thus, if the bottom time is
-   two minutes longer than planned, the dive duration will be (2+2*4min 21 sec) = 10 minutes 42 sec longer and
-   would probably require that each deco stop is 10:42/53:00 = 20% longer than planned. These calculations
+   two minutes longer than planned, ascent duration duration will be (2 * 4min 21 sec) = 8 minutes 42 sec longer and
+   would probably require that each deco stop is 8:42/53:00 = around 16% longer than planned. These calculations
    are only applicable for small deviations from the dive plan, not for larger deviations.
 
-* Minimum gas requirements*
+*Minimum gas requirements*
 
 The planner also estimates the *minimum gas* pressure required for safe ascent after an event that causes the dive
 to be aborted. The calculation assumes that in worst case an out of gas (OoG)
-situation could occur at the end of the planned bottom time at maximum depth. This OoG event forces
-the buddy team the share the gas of one diver and to stay at maximum depth for an additional
-number of minutes.
-At the same moment the combined SAC of both divers is increased by a estimated factor compared to the SAC factor of a single diver under normal conditions.
+situation occurs at the end of the planned bottom time at maximum depth. This OoG event forces
+the buddy team the share the gas of one diver and thet they require an additional period of time at maximum depth to solve the problem at hand.
+In addition the combined SAC of both divers is increased by an estimated factor compared to the SAC factor of a single diver under normal conditions.
 The result of the minimum gas calculation for the bottom gas is printed to the planner output. No automatic checks are performed based on this result.
 The feature only gives valid results for simple, rectengular shaped single
 level dive profiles. For multi level dives one would need to check every leg of the profile independently.
 
 There are two selector boxes on the left of the _Dive plan details_:
 
- * *SAC factor*. This is your estimate of the degree to which your SAC increases if a critical problem arises underwater,
+ * *SAC factor*. This is an estimate of the degree to which your SAC increases if a critical problem arises underwater,
    e.g. gas sharing or entanglement. Realistic values range from 2 to 5, reflecting the gas use of two divers sharing
    a single gas cylinder after an OoG situation.
- * *Problem solving time*. This is your estimate of how long you would take to solve the problem before starting the ascent
+ * *Problem solving time*. This is an estimate of how long you would take to solve the problem before starting the ascent
    to terminate the dive. The default value is 2 minutes.
 
-Using the above information, the planner then estimates what the minimum botom gas cylinder pressure needs to be for a
+Using the above information, the planner then estimates what the minimum bottom gas cylinder pressure needs to be for a
 safe ascent. This information is given near the bottom of the _Dive plan details_, following the calculation of
 bottom gas used during the dive if it exactly follows the plan. the minimum gas is typically given as:
 
@@ -3849,7 +3852,7 @@ This indicates:
  * The number of bars of back gas required for a safe ascent (90 bars in the example above).
  * The delta-value: number of bars of back gas available at the end of the bottom section of the dive, _over and above_ the minimum
    gas requirement (80 bars in the above example). A positive delta reflects a safe plan; a negative delta indicates insufficient gas for a
-   safe ascent.
+   safe ascent. 
 
 ****
 [icon="images/icons/warning2.png"]
