@@ -2065,7 +2065,7 @@ based CCR systems are different in this respect and allow multi-dive downloads.
 For Shearwater CCR controllers, or independent Shearwater CCR logs, just download the dive log as would
 be the case for non-CCR dives. _Subsurface_ interprets the CCR dive log correctly.
 Except for Shearwater CCR dive computers, CCR dive data are currently obtained from the proprietary software
-provided when purchasing CCR dice equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
+provided when purchasing CCR dive equipment. See the section dealing with xref:S_ImportingAlienDiveLogs[Importing dive information from other
 digital sources] and <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Appendix B>>
 for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of _Subsurface_, select _Import ->  Import
