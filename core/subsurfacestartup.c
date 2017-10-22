@@ -83,9 +83,6 @@ struct preferences default_prefs = {
 	.defaultsetpoint = 1100,
 	.cloud_background_sync = true,
 	.geocoding = {
-		.enable_geocoding = true,
-		.parse_dive_without_gps = false,
-		.tag_existing_dives = false,
 		.category = { 0 }
 	},
 	.locale = {

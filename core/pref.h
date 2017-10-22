@@ -28,9 +28,6 @@ typedef struct {
 } facebook_prefs_t;
 
 typedef struct {
-	bool enable_geocoding;
-	bool parse_dive_without_gps;
-	bool tag_existing_dives;
 	enum taxonomy_category category[3];
 } geocoding_prefs_t;
 
