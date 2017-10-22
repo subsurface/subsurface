@@ -770,21 +770,6 @@ GeocodingPreferences::GeocodingPreferences(QObject *parent) :
 
 }
 
-bool GeocodingPreferences::enableGeocoding() const
-{
-	return prefs.geocoding.enable_geocoding;
-}
-
-bool GeocodingPreferences::parseDiveWithoutGps() const
-{
-	return prefs.geocoding.parse_dive_without_gps;
-}
-
-bool GeocodingPreferences::tagExistingDives() const
-{
-	return prefs.geocoding.tag_existing_dives;
-}
-
 taxonomy_category GeocodingPreferences::firstTaxonomyCategory() const
 {
 	return prefs.geocoding.category[0];
@@ -798,39 +783,6 @@ taxonomy_category GeocodingPreferences::secondTaxonomyCategory() const
 taxonomy_category GeocodingPreferences::thirdTaxonomyCategory() const
 {
 	return prefs.geocoding.category[2];
-}
-
-void GeocodingPreferences::setEnableGeocoding(bool value)
-{
-	if (value == prefs.geocoding.enable_geocoding)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("enable_geocoding", value);
-	prefs.geocoding.enable_geocoding = value;
-	emit enableGeocodingChanged(value);
-}
-
-void GeocodingPreferences::setParseDiveWithoutGps(bool value)
-{
-	if (value == prefs.geocoding.parse_dive_without_gps)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("parse_dives_without_gps", value);
-	prefs.geocoding.parse_dive_without_gps = value;
-	emit parseDiveWithoutGpsChanged(value);
-}
-
-void GeocodingPreferences::setTagExistingDives(bool value)
-{
-	if (value == prefs.geocoding.tag_existing_dives)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("tag_existing_dives", value);
-	prefs.geocoding.tag_existing_dives = value;
-	emit tagExistingDivesChanged(value);
 }
 
 void GeocodingPreferences::setFirstTaxonomyCategory(taxonomy_category value)
@@ -2334,10 +2286,6 @@ void SettingsObjectWrapper::load()
 
 	// GeoManagement
 	s.beginGroup("geocoding");
-
-	GET_BOOL("enable_geocoding", geocoding.enable_geocoding);
-	GET_BOOL("parse_dives_without_gps", geocoding.parse_dive_without_gps);
-	GET_BOOL("tag_existing_dives", geocoding.tag_existing_dives);
 
 	GET_ENUM("cat0", taxonomy_category, geocoding.category[0]);
 	GET_ENUM("cat1", taxonomy_category, geocoding.category[1]);
