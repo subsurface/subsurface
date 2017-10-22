@@ -718,11 +718,20 @@ void DiveListView::addToTripAbove()
 
 void DiveListView::addToTrip(int delta)
 {
-	// if there is a trip above / below, then it's a sibling at the same
-	// level as this dive. So let's take a look
+	// d points to the row that has (mouse-)pointer focus, and there are nr rows selected
 	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
-	QModelIndex t = contextMenuIndex.sibling(contextMenuIndex.row() + delta, 0);
-	dive_trip_t *trip = (dive_trip_t *)t.data(DiveTripModel::TRIP_ROLE).value<void *>();
+	int nr = selectionModel()->selectedRows().count();
+	QModelIndex t;
+	dive_trip_t *trip = NULL;
+
+	// now look for the trip to add to, for this, loop over the selected dives and
+	// check if its sibling is a trip.
+	for (int i = 1; i <= nr; i++) {
+		t = contextMenuIndex.sibling(contextMenuIndex.row() + (delta > 0 ? i: i * -1), 0);
+		trip = (dive_trip_t *)t.data(DiveTripModel::TRIP_ROLE).value<void *>();
+		if (trip)
+			break;
+	}
 
 	if (!trip || !d)
 		// no dive, no trip? get me out of here
