@@ -29,6 +29,9 @@ Some of the changes since _Subsurface_ 4.6.4
   - Improved and more user friendly cylinder handling
   - Print delta pressure for minimum gas calculation in results
   - Identify overlapping dives when calculating dive plan
+  - Compute plan variations: How does decompression time change
+    due to changes of bottom time by one minute or depth by 1m?
+  - Faster planning for long decompression times
 - Option in user preferences to display units in main dive list table
 - Show green tank change icon when switching to EAN100
 - Better support for importing dive data from Shearwater desktop, DL7,
