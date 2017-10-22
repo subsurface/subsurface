@@ -34,6 +34,7 @@ Build-Depends: asciidoc,
                qtpositioning5-dev,
                qml-module-qtpositioning,
                qml-module-qtlocation,
+	       qml-module-qtquick2,
                libcurl4-openssl-dev,
                qtconnectivity5-dev,
                libgrantlee5-dev
