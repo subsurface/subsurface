@@ -4603,12 +4603,12 @@ Trotzdem fortfahren?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="719"/>
         <source>Open c&amp;loud storage</source>
-        <translation>C&amp;loudspeicher öffnen</translation>
+        <translation>C&amp;loud-Speicher öffnen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="724"/>
         <source>Save to clo&amp;ud storage</source>
-        <translation>In Clo&amp;udspeicher speichern</translation>
+        <translation>In Clo&amp;ud-Speicher speichern</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="729"/>
@@ -5044,7 +5044,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="90"/>
         <source>Clo&amp;ud storage default file</source>
-        <translation>Clo&amp;udspeicher-Standarddatei</translation>
+        <translation>Clo&amp;ud-Speicher-Standarddatei</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="99"/>
