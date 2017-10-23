@@ -165,6 +165,11 @@ void FacebookManager::facebookAlbumCreated()
 	} else {
 		qCDebug(lcFacebook) << "It was not possible to create the album with name" << fbInfo.albumName;
 		qCDebug(lcFacebook).noquote() << "Reply was: " << QString(albumsDoc.toJson(QJsonDocument::Indented));
+		// FIXME: we are lacking 'user_photos' facebook permission to create an album, 
+		// but we are able to upload the image to Facebook (album will be named 'Subsurface Photos')
+		qCDebug(lcFacebook) << "But we are still able to upload data. Album name will be 'Subsurface Photos'";
+		auto fb = SettingsObjectWrapper::instance()->facebook;
+		emit albumIdReceived(fb->albumId());
 	}
 }
 
