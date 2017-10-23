@@ -35,8 +35,6 @@
         <file alias="gaschangeTrimix">icons/Tmx_change.png</file>
         <file alias="gaschangeOxy">icons/Oxy_change.png</file>
         <file alias="flag">icons/flag.png</file>
-        <file alias="flagDark">icons/flag_dark.png</file>
-        <file alias="flagLight">icons/flag_light.png</file>
         <file alias="scale">icons/scale.png</file>
         <file alias="ruler">icons/ruler.png</file>
         <file alias="poster">icons/poster.png</file>
