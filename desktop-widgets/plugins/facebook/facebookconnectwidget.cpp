@@ -164,6 +164,7 @@ void FacebookManager::facebookAlbumCreated()
 		return;
 	} else {
 		qCDebug(lcFacebook) << "It was not possible to create the album with name" << fbInfo.albumName;
+		qCDebug(lcFacebook).noquote() << "Reply was: " << QString(albumsDoc.toJson(QJsonDocument::Indented));
 	}
 }
 
