@@ -43,6 +43,7 @@ void DownloadThread::run()
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
 	import_thread_cancelled = false;
+	error.clear();
 	if (!strcmp(internalData->vendor, "Uemis"))
 		errorText = do_uemis_import(internalData);
 	else
