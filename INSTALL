@@ -172,13 +172,9 @@ $ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/maste
 
 2) Install needed dependencies
 
-$ brew install asciidoc libzip sqlite cmake libusb pkg-config automake libtool hidapi libxml2 curl openssl libssh2
+$ brew install asciidoc libzip cmake libusb pkg-config automake libtool hidapi curl libssh2
 
-3) Make the brew version of sqlite the default
-
-$ brew link --force sqlite
-
-4) Download and install Qt
+3) Download and install Qt
 
 You can build Qt from source or use the prebuilt binaries for Mac. Start
 by downloading the online installer:
@@ -198,7 +194,7 @@ as well as QtWebEngine, Qt3D, Qt Canvas 3D and the Qt Extras.
 
 If you want to build from source (which takes a very long time and a lot of disk)
 
-$ cd ~/Qt/5.5/Src/
+$ cd ~/Qt/5.9.2/Src/
 
 $ ./configure -prefix /usr/local -opensource
 
