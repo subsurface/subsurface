@@ -404,54 +404,48 @@ asciidoc.install(3);
 <div id="content">
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/banner.jpg" alt="Banner" />
+<img src="mobile-images/Banner.jpg" alt="Banner" />
 </div>
 </div>
 <div class="paragraph"><p><span class="big">Subsurface-mobile para Android: MANUAL DE USUARIO</span></p></div>
-<div class="paragraph"><p><strong>Manual author</strong>: Willem Ferguson</p></div>
-<div id="toc">
-  <div id="toctitle">Table of Contents</div>
-  <noscript><p><b>JavaScript must be enabled in your browser to display the table of contents.</b></p></noscript>
-</div>
-<div class="paragraph"><p><span class="blue"><em>Version 1.0, Marzo  2016</em></span></p></div>
-<div class="paragraph"><p>Bienvenido a <em>Subsurface</em> un avanzado programa de registro de inmersiones con
-extensa infraestructura para describir, organizar, interpretar e imprimir
-inmersiones, con botella o a pulmón. <em>Subsurface</em> ofrece muchas ventajas sobre
-otras soluciones de software similares, entre ellas se incluye la
+<div class="paragraph"><p><strong>Autores</strong>: Willem Ferguson, Dirk Hohndel</p></div>
+<div class="paragraph"><p><span class="blue"><em>Versión 2.0, Octubre  2017</em></span></p></div>
+<div class="paragraph"><p>Bienvenido a <em>Subsurface</em> y <em>Subsurface-mobile</em> un avanzado programa de
+registro de inmersiones con extensa infraestructura para describir, organizar e
+interpretar inmersiones, con botella o a pulmón. <em>Subsurface</em> ofrece muchas
+ventajas sobre otras soluciones de software similares, entre ellas se incluye la
 compatibilidad con Windows, Mac-OS/X, Linux (muchas distribuciones) y también
-Android (en desarrollo un versión para iOS). Además, <em>Subsurface</em> es un
-software de código abierto que permite descargar información de inmersiones
-desde la mayoría de los ordenadores de buceo.</p></div>
+Android e iOS. Además, <em>Subsurface</em> es un software de código abierto que permite
+descargar información de inmersiones desde la mayoría de los ordenadores de buceo.</p></div>
 <div class="sect1">
 <h2 id="_presentación_de_subsurface_mobile">1. Presentación de  Subsurface-mobile</h2>
 <div class="sectionbody">
-<div class="paragraph"><p><em>Subsurface-mobile</em> es una extensión del <em>Subsurface</em> que ejecutamos en
-ordenadores portátiles o de sobremesa. Corre en teléfonos y tabletas Android y
-es una herramienta para ver o compartir información de buceo en el mismo lugar
-de la inmersión, donde no suele ser posible disponer de un ordenador completo.
-También permite recoger las posiciones GPS donde se realizan las inmersiones.</p></div>
-<div class="paragraph"><p>Está en desarrollo una versión de <em>Subsurface-mobile</em> para iOS pero aún no
-está lista para probarla.</p></div>
-<div class="paragraph"><p>Aunque <em>Subsurface-mobile</em> nos permite introducir y guardar información de
-buceo utilizando un dispositivo android, los usuarios de <em>Subsurface-mobile</em>
-utilizan, habitualmente, la app como una extension de la versión para
-ordenadores de <em>Subsurface</em>. Esto permite el almacenamiento de divelogs en
-Internet, que pueden compartirse entre las versiones para Android y PC. Aunque
+<div class="paragraph"><p><em>Subsurface-mobile</em> es una versión limitada de <em>Subsurface</em>, dirigida a
+smartphones y tablets con Android o iOS, que permite ver, incorporar,
+compartir y almacenar información de buceo en los mismos lugares de la
+inmersión, donde un ordenador no sería práctico. Aunque
 la versión para ordenador muestra una información mucho más detallada de cada
 inmersión, la versión para móvil nos permite tener esta información más
 accesible durante un viaje, lo que puede resultar util para demostrar nuestra
 experiencia de buceo en tiendas o centros, o simplemente revisar inmersiones
-anteriores.</p></div>
+anteriores. <em>Subsurface-mobile</em> para Android permite la recogida de posiciones
+GPS en el mismo lugar del buceo (Subsurface-mobile para iOS aún no tiene la
+funcionalidad completa).</p></div>
+<div class="paragraph"><p>Los usuarios de <em>Subsurface-mobile</em> habitualmente usan la app como accesorio
+de la versión de ordenador de <em>Subsurface</em>, compartiendo información entre las
+versiones móvil y de escritorio. Sin embargo, <em>Subsurface-mobile</em> también
+puede utilizarse independientemente de la versión de escritorio y no requiere
+el uso de almacenamiento en la nube.</p></div>
 <div class="paragraph"><p><em>Subsurface-mobile</em> nos permite:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Descargar la información del divelog desde internet.
+Descargar la información del divelog utilizando la nube de <em>Subsurface</em>.
 </p>
 </li>
 <li>
 <p>
-Visualizar esta información en un dispositivo Android.
+Visualizar esta información en un dispositivo móvil.
 </p>
 </li>
 <li>
@@ -468,7 +462,7 @@ Crear y añadir nuevas inmersiones a nuestro divelog. Guardar el divelog
 </li>
 <li>
 <p>
-Registrar y aplicar las posiciones GPS de las inmersiones.
+Registrar y aplicar las posiciones GPS de las inmersiones (solo Android).
 </p>
 </li>
 <li>
@@ -478,18 +472,19 @@ Visualizar las localizaciones de las posiciones GPS en un mapa.
 </li>
 </ul></div>
 <div class="paragraph"><p>Todas estas posibilidades se comentan con más detalle en el texto siguiente.</p></div>
-<div class="paragraph"><p>Lo que <em>Subsurface-mobile</em> no soporta (en estos momentos) es descargar datos
-directamente desde el ordenador de buceo. Esto aún debe realizarse desde un
-PC. Estamos investigando formas de descargar desde una parte de los
-ordenadores de buceo soportados a los dispositivos Android, pero esta parte
-aún no esta lista para ser probada.</p></div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> no soporta, todavía, descargar datos de todos los
+ordenadores de buceo de los que sí se puede en la versión de escritorio. Solo
+aquellos ordenadores de utilizan interfaces FTDI USB o Bluetooth/BLE pueden
+accederse desde <em>Subsurface-mobile</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_instalar_em_subsurface_mobile_em_en_un_dispositivo_android">2. Instalar <em>Subsurface-mobile</em> en un dispositivo Android</h2>
+<h2 id="_instalar_em_subsurface_mobile_em_en_tu_dispositivo_android">2. Instalar <em>Subsurface-mobile</em> en tu dispositivo Android</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Encuentra Subsurface-mobile_ en el Play Store de Google. Busca
-<em>Subsurface-mobile</em> e instalalo.</p></div>
+<div class="paragraph"><p>Encuentra <em>Subsurface-mobile</em> en el <em>Play Store</em> de Google o en el <em>iTunes
+Store</em>  e instálalo. Hay que tener en cuenta que ambos repositorios también
+contienen la app <em>Subsurface companion</em> (utilizada sola para recoger las
+posiciones GPS). Asegúrate de que instalas <em>Subsurface-mobile</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -501,65 +496,94 @@ algunos segundos. Tras haber cargado, aparecerá una <em>pantalla de credenciale
 de la nube</em> (ver la imagen de la izquierda, a continuación).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/landingscreen.jpg" alt="FIGURA: Pantalla inicial" />
+<img src="mobile-images/Credentials.jpg" alt="FIGURA: Pantalla de credenciales" />
 </div>
 </div>
-<div class="paragraph"><p>Dado que <em>Subsurface-mobile</em> es totalmente dependiente del registro  guardado
-en Internet, introduce una dirección de correo electrónico y la password  para
-acceder al servidor de almacenamiento en la nube de <em>Subsurface</em>. Estas
-credenciales se obtienen abriendo la versión de <em>Subsurface</em> para ordenador y
-pulsando <em>Archivo &#8594; Preferencias &#8594; Red</em>, y se explica en detalle en el manual
-de la versión de ordenador de <em>Subsurface</em>. Una vez que se ha creado y
-verificado utilizando la versión de ordenador, se  puede utilizar
-<em>Subsurface-mobile</em>.</p></div>
-<div class="paragraph"><p>Al introducir la password, es posible seleccionar la casilla "Recordar" que
-permite a <em>Subsurface-mobile</em> guardar las credenciales para próximas
-conexiones (ver la imagen anterior), Tras haber introducido las credenciales,
-pulsa el icono del disco, en la parte inferior de la pantalla.
-<em>Subsurface-mobile</em> intentará descargar la información guardada en el servidor
-y, finalmente, se mostrará una lista de inmersiones (imagen a la izquierda a
-continuación).</p></div>
+<div class="sect2">
+<h3 id="_si_no_se_utiliza_almacenamiento_en_la_nube">3.1. Si NO se utiliza almacenamiento en la nube</h3>
+<div class="paragraph"><p>Pulsa el botón "Sin conexión a la nube". La app no accederá al servidor en
+la nube de <em>Subsurface</em> para obtener la información del divelog. Esto significa
+que la información solo se guarda en el dispositivo móvil. Si no se han
+introducido inmersiones todavía en el divelog (el caso más habitual), se creará
+uno vacío.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_si_se_utiliza_el_almacenamiento_en_la_nube">3.2. Si se utiliza el almacenamiento en la nube</h3>
+<div class="paragraph"><p>Se puede utilizar una cuenta gratuita para guardar la información del divelog.
+Esta cuenta puede crearse, tanto desde <em>Subsurface</em> en un ordenador, como
+desde <em>Subsurface-mobile</em> utilizando un dispositivo móvil; de hecho se puede
+mantener un registro de inmersiones solo con <em>Subsurface-mobile</em>. Por otro
+lado, si compartes credenciales entre <em>Subsurface-mobile</em> y <em>Subsurface</em> a
+través de la nube, tu divelog también podrá compartirse entre dispositivos.</p></div>
+<div class="paragraph"><p>Los datos de buceo se guardan también en el dispositivo móvil y en el
+ordenador (desde el ordenador es muy fácil crear copias de seguridad, por
+ejemplo en formato XML), por lo que información se puede acceder sin conexión
+a internet. El equipo de Subsurface nunca accede a los datos de buceo de un
+usuario sin su autorización explícita, los datos proporcionados no se utilizan
+para otra cosa que facilitárselos al usuario que los creó. No hay anuncios ni
+recolección o análisis de los datos guardados en la nube de <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>1) Introduce un e-mail y una password en los campos indicados en la pantalla.
+La dirección de correo debe estar en minúsculas y la password debe contener
+una colección de caracteres del alfabeto (mayúsculas o minúsculas)  y/o
+números.
+Pulsa el botón "Conectarse o registrarse". Y ya has creado una cuenta desde la
+aplicación de escritorio <em>Subsurface</em>, introduce las mismas credenciales aquí.
+Una vez que la lista de inmersiones se ha descargado de la nube,
+<em>Subsurface-mobile</em> funciona solo con la copia local del dispositivo móvil.
+Esto evita esperas o incluso fallos operativos si hay una mala conexión a
+internet, una situación bastante habitual en muchos lugares de buceo.</p></div>
+<div class="paragraph"><p>2) Si estamos creando una cuenta nueva, se abrirá una pantalla para un PIN
+(ver la imagen anterior de la derecha). Se recibirá un PIN por correo
+electrónico en la dirección indicada en el paso anterior. Introduce este PIN y
+pulsa el botón <em>Registrar</em>. La información del usuario se guardará en la nube
+y el acceso quedará habilitado. En este caso la lista de inmersiones estará
+inicialmente vacía. Comienza a introducir buceos en el divelog o descarga la
+información desde un ordenador de buceo soportado.</p></div>
+<div class="paragraph"><p>El divelog puede actualizarse automáticamente. Si hay conexión a internet,
+<em>Subsurface-mobile</em> accederá al almacenamiento en la nube para verificar que
+la copia local del divelog es igual que la del servidor. Si no es así, la
+copia local y la de la nube se sincronizarán.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_modificar_las_credenciales_existentes_en_la_nube_de_em_subsurface_em">3.3. Modificar las credenciales existentes en la nube de <em>Subsurface</em></h3>
+<div class="paragraph"><p>Las credenciales de acceso pueden modificarse para, por ejemplo, trabajar con
+cuentas diferentes. Visita la sección en <a href="#S_ChangeCloudAccount">Cambiar a
+una cuenta en la nube diferente</a>.</p></div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_copia_local_del_divelog_y_sincronización_con_internet">4. Copia local del divelog y sincronización con Internet</h2>
+<h2 id="_estructura_de_menús_e_interfaz_de_usuario">4. Estructura de menús e interfaz de usuario</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Una vez que se haya descargado la lista de inmersiones desde Internet,
-<em>Subsurface-mobile</em> guardará una copia en el dispositivo móvil. Esto
-significa que, si no hay conexión a Internet en el punto de buceo, aún se
-puede acceder a la copia local y manipular la información. Si existe conexión
-a Internet, <em>Subsurface-mobile</em> accede al registro guardado en la nube para
-verificar si la copia local es aún la misma que la remota. Si no fuera así, la
-copia local se sincronizará con la versión del servidor.</p></div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_algunas_observaciones_sobre_la_interfaz_de_usuario">5. Algunas observaciones sobre la interfaz de usuario</h2>
-<div class="sectionbody">
-<div class="paragraph"><p>En la parte inferior de muchas de las pantallas de  <em>Subsurface-mobile</em>,
-aparece un botón redondo que habilita varias acciones y permite la selección
-de la principal acción afirmativa (ver las imágenes anterior y a
-continuación). En dispositivos Android, se utiliza el botón "Volver" para
-realizar las acciones de cancelar, descartar o volver. Por ejemplo, al editar
-una inmersión, pulsar el <em>botón de acciones</em> guarda los cambios, mientras que
-el botón "Volver" de Android, puede utilizarse para cancelar la edición sin
+<div class="paragraph"><p>En la parte inferior de muchas de las pantallas de <em>Subsurface-mobile</em> hay un
+botón redondo que permite acceder a diversas acciones (ver imagen a
+continuación). La selección más habitual se indica en un botón redondo de
+color (en el caso mostrado a continuación, editar una inmersión). Acciones
+alternativas se muestran en una barra de acciones blanca.
+En dispositivos Android, utiliza el botón "atrás" para las acciones
+"cancelar", "descartar" o "atrás". Por ejemplo, al editar la información de
+una inmersión, pulsar el botón de acciones guarda los cambios, mientras que el
+botón de retroceso de Android se puede utilizar para cancelar la edición  sin
 guardar los cambios.</p></div>
+<div class="paragraph"><p>En dispositivos iOS, en las pantallas donde está habilitada la acción de
+retroceso, se muestra una flecha "atrás" en la esquina superior izquierda de
+la pantalla.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/actionbutton.jpg" alt="FIGURE: Action Button" />
+<img src="mobile-images/Actionbutton.jpg" alt="FIGURA: Botón de acciones" />
 </div>
 </div>
-<div class="paragraph"><p>Para abrir menús, en vez del tradicional botón tipo "hamburgesa" en la esquina
-superior derecha de la pantalla, <em>Subsurface-mobile</em> utiliza una filosofía de
-interacción con el usuario diferente, basada en el sistema Kirigami, diseñado
-por el equipo de desarrolladores de Plasma. Para abrir el menú principal se
-dispone de tres opciones:</p></div>
+<div class="paragraph"><p>Para poder tener una experiencia de usuario consistente entre dispositivos iOS
+y Android, <em>Subsurface-mobile</em> no utiliza la tradicional "hamburguesa" de la
+esquina superior derecha o izquierda para desplegar menús. En su lugar,
+<em>Subsurface-mobile</em> usa una filosofía basada la herramienta <em>Kirigami</em>, creada
+por los desarrolladores del escritorio Plasma. Hay tres formas de desplegar el
+menú principal:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Pulsar el símbolo de flecha-derecha en la parte inferior izquierda de la
-  pantalla (fácil de alcanzar con una sola mano en dispositivos tipo
-  smartphone).
+Pulsar el símbolo de "hamburguesa" de la esquina inferior izquierda de la
+pantalla (fácil de alcanzar en dispositivos de una sola mano)
 </p>
 </li>
 <li>
@@ -576,62 +600,49 @@ Arrastrar hacia la derecha el <em>botón de acciones</em> visible en la mayoría
 </ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/menu.jpg" alt="FIGURE: Dive management subpanel" />
+<img src="mobile-images/Menusystem.jpg" alt="FIGURA: Sub-panel de gestión de inmersiones" />
 </div>
 </div>
 <div class="paragraph"><p>Las imágenes anteriores muestran algunas de las características más
 importantes del sistema de menús.  A la izquierda está el menú principal que
-se activa como se ha explicado antes. En el centro está el menú que se abre al
-pulsar la opción <em>GPS</em> desde el principal. A la derecha, el menú que se abre
-al pulsar la opción _Manage Dives_desde el principal.</p></div>
-<div class="paragraph"><p>De forma similar, el menú contextual (actualmente solo disponible en la
-pantalla de detalles de la inmersión) puede abrirse de una de estas tres
-formas:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Pulsando en el símbolo de la flecha-izquierda en la esquina inferior derecha
-  de la pantalla.
-</p>
-</li>
-<li>
-<p>
-Desplazando hacia la izquierda desde el borde de la pantalla.
-</p>
-</li>
-<li>
-<p>
-Arrastrando el "botón de acciones" hacia la izquierda.
-</p>
-</li>
-</ul></div>
+se activa como se ha explicado antes. A la derecha, las opciones accesibles de
+los submenús.</p></div>
+<div class="paragraph"><p>Todas las capturas de pantalla de este manual de usuario son de la versión
+para Android. Como se indicó anteriormente, la versión iOS tiene soporte para
+las opciones de <em>GPS</em>.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_visualizar_la_lista_de_inmersiones">6. Visualizar la lista de inmersiones</h2>
+<h2 id="_la_lista_de_inmersiones">5. La Lista de Inmersiones</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>La mayoría de las acciones de <em>Subsurface-mobile</em> se centran alrededor de las
 inmersiones de la lista. Mientras se carga la lista desde la nube, aparece un
 mensaje en la parte inferior de la pantalla, indicando que se está accediendo
 a la misma (ver imagen izquierda a continuación). Una vez que la lista se ha
 cargado, nos podemos desplazar arriba y abajo.
+Para descargar inmersiones desde un ordenador de buceo, pulsa el botón azul.
+Si deseas añadir manualmente un buceo, pulsa el botón "+" de la barra de
+acciones (descrita más adelante).
 Al pulsar una inmersión de la lista aparecerá una pantalla de <em>Vista de
 Detalles</em> para dicho buceo (ver imagen derecha a continuación). En ella se
 incluye el perfil de la inmersión, información adicional y notas.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/divelist.jpg" alt="FIGURE: Dive list screen" />
+<img src="mobile-images/Divelist2.jpg" alt="FIGURA: Pantalla de lista de inmersiones" />
 </div>
 </div>
 <div class="paragraph"><p>Se pueden visualizar otras inmersiones desplazando la <em>Vista de Detalles</em>
 hacia la derecha, para el buceo posterior, o hacia la izquierda para el
-anterior.</p></div>
+anterior.
+Utilizando la <em>Barra de acciones</em> también se puede borrar una inmersión
+(pulsando la papelera) o visualizar la ubicación en un mapa (Google Maps en
+Android o el sitio web de Google Maps en iOS) pulsando el icono de GPS.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_editar_los_detalles_de_la_inmersión">7. Editar los detalles de la inmersión.</h2>
+<h2 id="S_Edit_Dive">6. Editar los detalles de la inmersión.</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>En la parte inferior de la pantalla, el <em>Botón de Acciones</em> contiene un lápiz
+<div class="paragraph"><p>En la parte inferior de la pantalla, el <em>Botón de Acciones</em> es un lápiz
 (imagen anterior derecha).
 Pulsar el botón hará que se muestre  un panel con casillas de edición que nos
 permitirán modificar la información existente, p.e. añadiendo texto a las
@@ -639,25 +650,29 @@ notas o cambiando nombres o valores en otras casillas (ver imagen a
 continuación). Puede ser necesario desplazar la ventana para poder acceder a
 toda la información.  En la parte inferior de la pantalla de edición, el
 <em>Botón de Acciones</em> mostrará un icono de <em>Guardar</em>. Púlsalo para guardar los
-cambios efectuados. Tras haberlos guardado, la pantalla de la lista de
-inmersiones se actualizará y mostrará. Si se desea cancelar la edición se
-pulsa el botón "Volver" de Android.</p></div>
+cambios efectuados, tras lo cual la lista de inmersiones se actualizará y
+mostrará. Si se desea cancelar la edición se pulsa el botón "Volver" de
+Android.</p></div>
+<div class="paragraph"><p>Cuando se muestra el teclado virtual, para evitar congestionar la pantalla, el
+botón de acciones se oculta. Una vez cierras el teclado, se muestra de nuevo.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/editdive.jpg" alt="FIGURE: Dive edit screen" />
+<img src="mobile-images/Editdive.jpg" alt="FIGURA: Pantalla de edición de inmersiones" />
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_añadir_una_nueva_inmersión_a_la_lista">8. Añadir una nueva inmersión a la lista</h2>
+<h2 id="S_Add_Dive">7. Añadir manualmente una nueva inmersión a la lista</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>También es posible añadir una inmersión adicional a la lista existente. Desde
-el menú principal, pulsar <em>Manage dives &#8594; Add dive manually</em>. Esto abrirá una
-pantalla idéntica a la de edición comentada anteriormente. Al añadir
-manualmente una inmersión, no se puede añadir un perfil del ordenador de
-buceo. Sin embargo, si no se usa un ordenador de buceo, la duración,
-profundidad y varias otras informaciones pueden ser introducidas.
+<div class="paragraph"><p>También es posible añadir manualmente una inmersión a la lista de inmersiones.
+Desde la lista de inmersiones, pulsa el el símbolo "+" de la barra de
+acciones, o usando el menú principal, pulsa <em>Gestión de inmersiones &#8594; Añadir
+inmersión manualmente</em>. Esto abrirá una pantalla idéntica a la de edición
+comentada anteriormente. Al añadir manualmente una inmersión, no se puede
+añadir un perfil del ordenador de buceo. Sin embargo, si no se usa un ordenador
+de buceo, la duración, profundidad y varias otras informaciones pueden ser
+introducidas.
 El <em>Botón de acciones</em>, en la parte inferior de la pantalla, contendrá el
 icono de un disco. Púlsalo para guardar la nueva inmersión. Para cancelar las
 ediciones pulsa el botón "Volver" de Android.
@@ -666,66 +681,157 @@ una inmersión que está siendo creada, y la imagen de la derecha muestra la
 misma inmersión en la <em>Vista de detalles</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/createdive.jpg" alt="FIGURE: Dive edit screen" />
+<img src="mobile-images/Manualdive.jpg" alt="FIGURA: Pantalla de introducción manual" />
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_borrar_una_inmersión">9. Borrar una inmersión</h2>
+<h2 id="_borrar_una_inmersión">8. Borrar una inmersión</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>La <em>Vista de detalles</em> de una inmersión tiene un menú contextual en el lado
-derecho que puede activarse como se ha descrito anteriormente (p.e. pulsando
-el icono de flecha en la parte inferior derecha de la pantalla o arrastrando
-el <em>Botón de acciones</em> hacia la izquierda).
-El menú contextual contiene una sola opción: "Delete dive". Si se pulsa esta
-opción, la inmersión mostrada en la <em>Vista de detalles</em> será borrada.  Se
-dispone de una breve posibilidad de anular el borrado pulsando el botón <em>undo</em>
-en el mensaje que aparecerá en la parte inferior de la pantalla. Si no se
-pulsa dicho botón la inmersión se borrará.</p></div>
+<div class="paragraph"><p>La <em>Vista de detalles</em> de una inmersión tiene una Barra de Acciones, que
+incluye una papelera. Si se pulsa, la inmersión mostrada en la <em>Vista de
+detalles</em> se borrará.  Se dispone de una breve posibilidad de anular el
+borrado pulsando el botón <em>Deshacer</em> en el mensaje que aparecerá en la
+parte inferior de la pantalla (ver imagen a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/Delete_undo.jpg" alt="FIGURA: Deshacer borrado" />
+</div>
+</div>
+<div class="paragraph"><p>También se puede borrar un buceo desde la lista manteniéndolo pulsado hasta
+que aparezca una papelera roja a la derecha (ver imagen a continuación). Pulsa
+la papelera. La inmersión se borrará sin pedir confirmación ya que
+<em>Subsurface-mobile</em> asume que la combinación de pulsaciones citada elimina
+cualquier ambigüedad posible.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/RedDustbin.jpg" alt="FIGURA: Borrar inmersión de la lista" />
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_mantenimiento_del_divelog">10. Mantenimiento del divelog</h2>
+<h2 id="S_Download">9. Descargar inmersiones desde un ordenador de buceo</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Es posible descargar inmersiones desde ordenadores de buceo con interfaz FTDI
+USB o con Bluetooth/BTLE.</p></div>
+<div class="paragraph"><p>En primer lugar, establece una conexión entre el dispositivo móvil y el
+ordenador de buceo.</p></div>
+<div class="paragraph"><p>Para ordenadores con USB, los cables que se utilizan habitualmente para
+descargar a ordenadores de sobremesa o portátiles no sirven: estos cables
+suelen tener un contacto USB "macho" de "tipo A" que se conecta al puerto del
+PC. Para descargar a un dispositivo móvil se necesita un cable USB-OTG (USB on
+the go), el cual se conecta al puerto mini-USB (en ocasiones USB "tipo C") del
+dispositivo móvil. El cable OTG suele tener una terminación hembra en la que
+se insertará el macho tipo A del cable "habitual" (ver imagen a continuación).
+Esto supone que serán necesarios dos cables para conectar el ordenador de
+buceo con el dispositivo móvil.</p></div>
+<div class="paragraph"><p>Hay que resaltar que no todos los dispositivos móviles soportan los cables
+OTG, e incluso en algunos dispositivos que soportan, en general, dichos cables
+puede que <em>Subsurface-mobile</em> no pueda  conectarse por puertos serie.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/USB-OTG.jpg" alt="FIGURA: USB-OTG cable" />
+</div>
+</div>
+<div class="paragraph"><p>Para ordenadores de buceo equipados con Bluetooth, conéctalos al dispositivo
+móvil usando las herramientas habituales de este para conseguir un
+emparejamiento entre ambos. En dispositivos Android suele ser <em>Ajustes &#8594;
+Bluetooth</em>.
+<em>Subsurface-mobile</em> se comunica utilizando tanto Bluetooth como
+Bluetooth-low-energy (BTLE). La selección del protocolo adecuado la efectúa el
+software y el usuario no necesita ocuparse de ello.</p></div>
+<div class="paragraph"><p>Con el emparejamiento efectuado, la descarga es fácil. Desde el menú
+principal, pulsa <em>Gestión de inmersiones &#8594; Descargar desde el ordenador</em>. Se
+mostrará una pantalla requiriendo que se especifiquen marca y modelo del
+ordenador de buceo. Por ejemplo, si se está utilizando un Shearwater Petrel 2,
+la marca será <em>Shearwater</em> y el modelo <em>Petrel 2</em>. Selecciónalos de las listas
+desplegables (ver imagen izquierda a continuación).</p></div>
+<div class="paragraph"><p>Luego pulsa el botón etiquetado <em>Descargar</em>. Las inmersiones descargadas
+aparecerán en la parte inferior de la pantalla, las más recientes arriba (ver
+imagen de la derecha a continuación). Ten paciencia, la descarga puede llevar
+algunos minutos. Se ha comprobado que la primera descarga en algunos
+ordenadores ha tardado hasta 45 minutos (e incluso más) en completarse.</p></div>
+<div class="paragraph"><p>Tras la descarga, cada inmersión tendrá una casilla seleccionable a su
+izquierda, utilízala para elegir que inmersiones quieres que se añadan a la
+lista de buceos de <em>Subsurface-mobile</em>; las inmersiones que no se seleccionen
+serán ignoradas. Una vez hayas seleccionado las inmersiones deseadas, pulsa el
+botón de la izquierda etiquetado <em>Aceptar</em>. Todos los buceos seleccionados
+aparecerán en la lista. Ahora podrás editar la información descargada como se
+explicó en la sección anterior <a href="#S_Edit_Dive">Editar los detalles de una inmersión</a>.</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="mobile-images/DC-Download.jpg" alt=""FIGURA: Pantalla de descarga del ordenador" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_visualizar_el_punto_de_buceo_en_google_maps">10. Visualizar el punto de buceo en Google Maps</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>En la <em>Vista detallada</em>, la barra de acciones de abajo tiene un icono GPS en
+el lado izquierdo. Pulsa este icono y el lugar del buceo se mostrará en Google
+Maps. Cierra el mapa usando el botón "atrás" de Android.</p></div>
+<div class="paragraph"><p>Otra posibilidad, en la <em>Vista detallada</em> es el botón etiquetado <em>Mapa</em>,
+situado en la esquina superior derecha.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/Map.jpg" alt="FIGURA: Mapa del punto de buceo" />
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_gestión_del_divelog">11. Gestión del divelog</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>Una parte central de <em>Subsurface-mobile</em> es su capacidad para guardar la
 información de buceo haciendo uso del almacenamiento en la nube de
 <em>Subsurface</em>. Esto proporciona seguridad frente a los daños o la perdida de
-la copia del divelog guardada localmente y permite a la versión de sobremesa
+la copia del divelog guardada locálmente y permite a la versión de sobremesa
 de <em>Subsurface</em> acceder a los cambios realizados con el dispositivo móvil.
 Se accede a esta capacidad a través del menú principal (arrastrando el <em>Botón
-de acciones</em> hacia la derecha, o pulsando la flecha en la parte inferior
+de acciones</em> hacia la derecha, o pulsando la "hamburguesa" en la parte inferior
 izquierda de la pantalla).
-Pulsa la opción <em>Manage dives</em> que nos permitirá un nuevo número de acciones:</p></div>
+Pulsa la opción <em>Gestión de inmersiones</em> que nos permitirá un nuevo número de
+acciones:</p></div>
 <div class="sect2">
-<h3 id="_añadir_manualmente_una_nueva_inmersión">10.1. Añadir manualmente una nueva inmersión</h3>
-<div class="paragraph"><p>Se ha descrito anteriormente en la sección referida a la lista de inmersiones.</p></div>
+<h3 id="_añadir_manualmente_una_nueva_inmersión">11.1. Añadir manualmente una nueva inmersión</h3>
+<div class="paragraph"><p>Se ha descrito anteriormente en la sección <a href="#S_Add_Dive">Añadir manualmente una nueva inmersión a la lista</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_subir_el_divelog_al_almacenamiento_en_la_nube_de_em_subsurface_em">10.2. Subir el divelog al almacenamiento en la nube de <em>Subsurface</em></h3>
-<div class="paragraph"><p>Se pueden subir las inmersiones contenidas en el dispositivo móvil al
-almacenamiento en la nube de  <em>Subsurface</em> pulsando la opción <em>Upload to
-cloud</em>. Esto sincronizará los cambios efectuados localmente con el divelog en
-el almacenamiento en la nube.</p></div>
+<h3 id="_descargar_desde_el_ordenador">11.2. Descargar desde el ordenador</h3>
+<div class="paragraph"><p>Se ha descrito anteriormente en la sección <a href="#S_Download">Descargar inmersiones desde un ordenador de buceo</a>.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_descargar_el_divelog_desde_internet">10.3. Descargar el divelog desde internet</h3>
-<div class="paragraph"><p>En el subpanel <em>Dive managements</em>, pulsa la opción <em>Refresh</em> . Con esto se
-consigue que la copia local del dispositivo Android se sincronice con la copia
-del divelog en la nube.</p></div>
+<h3 id="_aplicar_posiciones_gps">11.3. Aplicar posiciones GPS</h3>
+<div class="paragraph"><p>Se describirá a continuación en la próxima sección principal.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_cambiar_las_credenciales_de_acceso_a_la_nube_de_em_subsurface_em">10.4. Cambiar las credenciales de acceso a la nube de <em>Subsurface</em></h3>
-<div class="paragraph"><p>Puede que sea necesario cambiar las credenciales de acceso, por ejemplo si
-nuestro correo electrónico (usado como credencial) ha cambiado. Para modificar
-los datos en <em>Subsuface-mobile</em>, abre el menú principal y pulsa <em>Cloud
-credentials</em>. Esto abrirá la pantalla de ajustes para especificar las nuevas
-credenciales.</p></div>
+<h3 id="_sincronización_manual_con_la_nube">11.4. Sincronización manual con la nube</h3>
+<div class="paragraph"><p>Sube las inmersiones guardadas en el dispositivo móvil al almacenamiento en la
+nube de <em>Subsurface</em>. Esta opción sincronizará los cambios locales con el
+divelog de la nube. También descarga los cambios al divelog que pudieran
+haberse hecho desde otro dispositivo u ordenador de sobremesa y se hubieran
+almacenado en la nube.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_activar_sincronizado_automático_con_la_nube">11.5. Activar sincronizado automático con la nube</h3>
+<div class="paragraph"><p>Por defecto, <em>Subsurface-mobile</em> se ejecuta desconectado y solo sincroniza la
+lista de inmersiones con el almacenamiento en la nube cuando se le pide
+explícitamente (apartado anterior).
+Puedes elegir que siempre se sincronice con la nube después de cada
+modificación de la lista. Esta opción no se recomienda, a menos que te
+encuentres en un área con una conexión a internet rápida y fiable, ya que, de
+otra manera, puede parecer que <em>Subsurface-mobile</em> se cuelga entre operaciones
+mientras intenta conectarse al servidor de la nube. Seleccionar <em>Activar
+sincronizado automático con la nube</em> hace que el divelog local se sincronice
+con la copia en la nube cada vez que se cierra <em>Subsurface-mobile</em>.</p></div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_registrar_puntos_de_buceo_usando_el_gps">11. Registrar puntos de buceo usando el GPS</h2>
+<h2 id="_registrar_puntos_de_buceo_usando_el_gps_solo_android">12. Registrar puntos de buceo usando el GPS (solo Android)</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>El hecho de que la mayoría de smartphones dispongan de GPS nos permite
 registrar las ubicaciones de las inmersiones. Se puede llevar el teléfono en
@@ -734,71 +840,161 @@ posiciones a intervalos regulares.
 Estas posiciones pueden ser aplicadas a inmersiones de la lista. A
 continuación se explica como:</p></div>
 <div class="sect2">
-<h3 id="_ajustar_el_gps">11.1. Ajustar el GPS</h3>
-<div class="paragraph"><p>Abre el menú principal y pulsa <em>GPS &#8594; Preferences</em>. Ahora especifica la forma
-en que se deben recoger automáticamente las posiciones (imagen derecha a
-continuación). Se puede especificar que los datos se recojan a intervalos
-regulares, p.e. cada 10 minutos, o a distancias regulares, p.e. después de que
-el barco se haya desplazado más de 200 metros, o una combinación de ambas
-opciones. Introduce los parámetros deseados y pulsa el botón "Guardar". El
-app está preparada para recoger posiciones GPS.</p></div>
+<h3 id="S_ConfigureGPS">12.1. Configurar el servicio GPS</h3>
+<div class="paragraph"><p>Desde el menú principal pulsa <em>Ajustes</em>. La pantalla de ajustes tiene una
+sección  para configurar el servicio GPS (imagen a continuación). Los datos de
+posiciones GPS se recogen a intervalos regulares, p.e. cada 10 minutos, o a
+distancias regulares, p.e. después de que el barco se haya desplazado más de
+200 metros, o una combinación de ambas opciones. Introduce los parámetros
+deseados y pulsa el botón "Retroceder" de Android. La app está preparada para
+recoger posiciones GPS.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/gpssetup.jpg" alt="FIGURE: GPS setup screen" />
+<img src="mobile-images/GPS-config.jpg" alt="FIGURA: Configuración del GPS" />
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_recoger_posiciones_gps">11.2. Recoger posiciones GPS</h3>
-<div class="paragraph"><p>Asegúrate de que el GPS del dispositivo Android está activado. En la parte
-inferior del menú principal y del submenú <em>GPS</em> hay una casilla seleccionable
-<em>Run location service</em>  (imagen derecha a continuación). Selecciona la casilla y
-<em>Subsurface-mobile</em> comenzará a tomar lecturas de las posiciones GPS siguiendo
+<h3 id="_recoger_posiciones_gps">12.2. Recoger posiciones GPS</h3>
+<div class="paragraph"><p>Asegúrate de que el GPS del dispositivo Android está activado.
+Abre el menú principal y selecciona <em>GPS &#8594; Activar el servicio de
+posicionamiento</em>. Con ello se inicia la grabación de posiciones GPS.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/GPSstart.jpg" alt="FIGURA: Inicio del GPS" />
+</div>
+</div>
+<div class="paragraph"><p><em>Subsurface-mobile</em> comenzará a tomar lecturas de las posiciones GPS siguiendo
 las indicaciones guardadas en las preferencias, como se ha indicado
-anteriormente. Despues de la inmersión se puede detener el servicio,
-deseleccionando la misma casilla que se había marcado antes.</p></div>
+anteriormente. Mientras se esté ejecutando el servicio, todos los menús tienen
+un símbolo de GPS en la parte de debajo del menú indicando que el servicio
+está activo. Al regresar del viaje de buceo, desactiva la recogida de datos
+pulsando la opción <em>Deshabilitar servicio de posicionamiento</em>. El símbolo de
+GPS en la parte inferior de los menús desaparecerá.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_guardar_los_datos_del_gps_en_la_nube_de_em_subsurface_em">11.3. Guardar los datos del GPS en la nube de <em>Subsurface</em></h3>
+<h3 id="_guardar_los_datos_del_gps_en_la_nube_de_em_subsurface_em">12.3. Guardar los datos del GPS en la nube de <em>Subsurface</em></h3>
 <div class="paragraph"><p>Activa el menú principal y selecciona la opción <em>GPS</em> que despliega el menú de
-acciones relacionadas con el GPS (imagen anterior izquierda). Pulsa <em>Upload
-GPS data</em> con ello, los datos recogidos en el dispositivo móvil se guardarán
-en la nube de <em>Subsurface</em>. Estas posiciones GPS se guardan <strong>separadamente</strong>
-del resto de datos del divelog. Todas las posiciones GPS recogidas se
-conservan en el dispositivo móvil, independientemente de que se hayan subido o
-no.</p></div>
+acciones relacionadas con el GPS . Pulsa <em>Subir datos GPS</em> con ello, los datos
+recogidos en el dispositivo móvil se guardarán en la nube de <em>Subsurface</em>.
+Estas posiciones GPS se guardan <strong>separadamente</strong> del resto de datos del divelog.
+Todas las posiciones GPS recogidas se conservan en el dispositivo móvil,
+independientemente de que se hayan subido o no.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_visualizar_datos_gps">11.4. Visualizar datos GPS</h3>
-<div class="paragraph"><p>Desde el menú GPS (imagen izquierda anterior) seleccionar <em>Show GPS fixes</em>.
+<h3 id="_descargar_datos_gps_de_la_nube_de_em_subsurface_em">12.4. Descargar datos GPS de la nube de <em>Subsurface</em></h3>
+<div class="paragraph"><p>Descarga los datos GPS que se hayan guardado en la nube (posiblemente desde
+un dispositivo diferente) seleccionando <em>Descargar datos GPS</em> en el subpanel
+GPS.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_visualizar_datos_gps">12.5. Visualizar datos GPS</h3>
+<div class="paragraph"><p>Desde el menú GPS selecciona <em>Mostrar posiciones GPS</em>.
 Esto mostrará una lista de posiciones GPS recogidas usando en servicio de
-ubicación (imagen izquierda a continuación). Se pueden efectuar dos acciones
-para cada una de las posiciones, habilitadas si se pulsa el botón (las tres
-bandas horizontales de la derecha, ver imagen izquierda a continuación) y se
-arrastra la posición hacia la izquierda (imagen derecha a continuación). Esta
-acción muestra dos opciones. Pulsar la papelera borra esta posición GPS en
-concreto. Pulsar el icono con forma de lágrima (un pin de Google maps) abre
-Google Maps en el navegador con un pin que indica la posición exacta en el
-mapa de las coordenadas GPS que se están visualizando. Las dos opciones
-indicadas, pueden ocultarse de nuevo arrastrando el registro de posición hacia
+ubicación (imagen a continuación). Se pueden efectuar dos acciones
+para cada una de las posiciones, habilitadas arrastrando el asa (la matriz de
+puntos de la derecha). Esta acción muestra dos opciones. Pulsar la papelera
+borra esta posición GPS en concreto. Pulsar el icono con forma de lágrima (un
+pin de Google maps) abre Google Maps en el navegador con un pin que indica la
+posición exacta en el mapa de las coordenadas GPS que se están visualizando.
+Las dos opciones indicadas, pueden ocultarse de nuevo arrastrando el asa hacia
 la derecha.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/gpsmanagement.jpg" alt="FIGURE: GPS management" />
+<img src="mobile-images/gpsmanagement.jpg" alt="FIGURA: Gestión del GPS" />
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_aplicar_los_datos_gps_a_las_inmersiones_del_divelog">11.5. Aplicar los datos GPS a las inmersiones del divelog</h3>
+<h3 id="_aplicar_los_datos_gps_a_las_inmersiones_del_divelog">12.6. Aplicar los datos GPS a las inmersiones del divelog</h3>
 <div class="paragraph"><p>Suponiendo que se hayan introducido a mano o descargado desde la nube de
 <em>Subsurface</em> todas las inmersiones del divelog, se pueden aplicar las
 posiciones GPS a dichas inmersiones. Las posiciones GPS solo pueden aplicarse
 a inmersiones que estén en la lista de inmersiones.
-Desde el subpanel <em>GPS</em>, pulsar <em>Apply GPS fixes</em>. La lista de inmersiones
-contiene la hora de inicio y fin de cada inmersión. <em>Subsurface-mobile</em>
-aplicará la primera posición que se encuentre dentro del periodo de duración
-del buceo, o la inmediatamente anterior al inicio si no hubiera ninguna dentro
-del periodo.</p></div>
+Desde el subpanel <em>Gestión de inmersiones</em>, pulsar <em>Aplicar posiciones GPSs</em>.
+La lista de inmersiones contiene la hora de inicio y fin de cada inmersión.
+<em>Subsurface-mobile</em> aplicará la primera posición que se encuentre dentro del
+periodo de duración del buceo, o la inmediatamente anterior al inicio si no
+hubiera ninguna dentro del periodo.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_usar_los_ajustes_de_em_subsurface_mobile_em">13. Usar los ajustes de <em>Subsurface-mobile</em></h2>
+<div class="sectionbody">
+<div class="paragraph"><p>La pantalla de ajustes permite la personalización de <em>Subsurface-mobile</em>.
+Muchos de los ajustes requieren desplazar un "interruptor" para activar o
+desactivar un ajuste concreto.</p></div>
+<div class="sect2">
+<h3 id="S_ChangeCloudAccount">13.1. Cambiar a una cuenta distinta en la nube</h3>
+<div class="paragraph"><p>Algunos usuarios tienen más de una cuenta en la nube y necesitan cambiar entre
+ellas. Pulsa <em>Ajustes</em> en el menú principal y desplázate a la sección llamada
+<em>Estado de conexión a la nube</em> (ver imagen a continuación).
+Pulsa el botón cambiar. Esto abrirá la pantalla de <em>Credenciales de la nube</em>.
+Cambia la información de las credenciales y pulsa el botón <em>Registrarse o
+entrar</em>. Se mostrará la nueva lista de inmersiones.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="mobile-images/SettingsCloudTheme.jpg" alt="FIGURA: Ajustes: Nube y Tema" />
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_cambiar_los_colores_de_em_subsurface_mobile_em">13.2. Cambiar los colores de <em>Subsurface-mobile</em></h3>
+<div class="paragraph"><p><em>Subsurface-mobile</em> tiene tres esquemas de colores para complacer a usuarios
+con diferentes gustos. En este manual se muestra el esquema por defecto, que
+es el azul. Cambia al esquema rosa o al oscuro pulsando <em>Ajustes</em> en el menú
+principal y desplazándote a la sección con el encabezamiento <em>Tema</em> (ver
+imagen anterior). Selecciona el esquema de colores que prefieras arrastrando
+el deslizador de la derecha que corresponda.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_configurar_el_servicio_web_de_gps">13.3. Configurar el servicio web de GPS</h3>
+<div class="paragraph"><p>La pantalla de ajustes permite configurar la forma en que se recogen las
+posiciones GPS durante el buceo. Visita la sección
+<a href="#S_ConfigureGPS">Configurar el servicio GPS</a> de este manual.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_guardar_un_registro_detallado_del_ordenador_de_buceo">13.4. Guardar un registro detallado del ordenador de buceo</h3>
+<div class="paragraph"><p>Bajo el encabezamiento <em>Ordenador de buceo</em>, encontrarás un interruptor para
+guardar un registro detallado cada vez que se descarguen inmersiones desde el
+ordenador de buceo. Cuando contactes con los desarrolladores con algún
+problema, se te pedirá habitualmente que facilites la información contenida en
+este registro, el cual se puede encontrar en la carpeta raíz del
+almacenamiento local de tu dispositivo con el nombre <code>libdivecomputer.log</code>. En
+la misma localización puedes encontrar <code>subsurface.log</code> que se crea siempre y
+que puede contener otra información útil para depurar problemas con
+<em>Subsurface-mobile</em>.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_activar_el_submenú_de_desarrollador">13.5. Activar el submenú de Desarrollador</h3>
+<div class="paragraph"><p>La información en subsurface.log y alguna información adicional para
+comprender como se muestra en pantalla y como <em>Subsurface-mobile</em> procesó la
+información en alguna ocasión concreta se encuentra disponible en tiempo de
+ejecución desde un menú de Desarrollador. Activa o desactiva esta opción de
+menú arrastrando el deslizador de la pantalla de <em>Ajustes</em>.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_el_submenú_desarrollador">14. El submenú Desarrollador</h2>
+<div class="sectionbody">
+<div class="paragraph"><p>Si se ha activado el submenú de Desarrollador en la pantalla de ajustes, el
+menú principal mostrará una opción <em>Desarrollador</em>. Pulsándola aparecerán dos
+opciones que resultan útiles en el contexto de desarrollo y depuración del
+programa.</p></div>
+<div class="sect2">
+<h3 id="_registro_de_la_app">14.1. Registro de la app</h3>
+<div class="paragraph"><p>Esta opción muestra los mensajes que genera <em>Subsurface-mobile</em> al ejecutarse.
+Aunque carecen de utilidad para la mayoría de usuarios, a menudo resultan
+cruciales para detectar cualquier comportamiento anormal de la app. El
+registro de la app puede encontrarse en la carpeta raíz del dispositivo móvil.</p></div>
+</div>
+<div class="sect2">
+<h3 id="_información_del_tema">14.2. Información del Tema</h3>
+<div class="paragraph"><p>Esta opción proporciona un cúmulo de información acerca de las características
+de la pantalla del dispositivo móvil y de las fuentes de texto usadas por
+<em>Subsurface-mobile</em></p></div>
 </div>
 </div>
 </div>
@@ -806,7 +1002,7 @@ del periodo.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2016-03-13 12:43:54 PDT
+Last updated 2017-10-18 14:44:27 AST
 </div>
 </div>
 </body>
