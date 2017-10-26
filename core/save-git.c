@@ -1099,7 +1099,7 @@ static void create_commit_message(struct membuffer *msg)
 	put_format(msg, "Created by %s\n", subsurface_user_agent());
 }
 
-static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id)
+static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id, bool create_empty)
 {
 	int ret;
 	git_reference *ref;
@@ -1184,7 +1184,14 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 
 	if (git_reference_set_target(&ref, ref, &commit_id, "Subsurface save event"))
 		return report_error("Failed to update branch '%s'", branch);
-	set_git_id(&commit_id);
+
+	/*
+	 * if this was the empty commit to initialize a new repo, don't remember the
+	 * commit_id, otherwise we'll think that the cache is valid and fail when building
+	 * the tree when we actually try to store the dive data
+	 */
+	if (! create_empty)
+		set_git_id(&commit_id);
 
 	git_signature_free(author);
 
@@ -1251,7 +1258,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		return report_error("git tree write failed");
 
 	/* And save the tree! */
-	if (create_new_commit(repo, remote, branch, &id))
+	if (create_new_commit(repo, remote, branch, &id, create_empty))
 		return report_error("creating commit failed");
 
 	if (remote && prefs.cloud_background_sync && !prefs.git_local_only) {
