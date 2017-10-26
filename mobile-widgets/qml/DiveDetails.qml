@@ -262,7 +262,7 @@ Kirigami.Page {
 			boundsBehavior: Flickable.StopAtBounds
 			maximumFlickVelocity: parent.width * 5
 			orientation: ListView.Horizontal
-			highlightFollowsCurrentItem: true
+			highlightFollowsCurrentItem: false
 			focus: true
 			clip: false
 			snapMode: ListView.SnapOneItem
