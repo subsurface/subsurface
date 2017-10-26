@@ -232,8 +232,11 @@ Comment: <xsl:value-of select="Comment"/>
               </xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
-          <xsl:attribute name="value">
+          <xsl:attribute name="o2">
             <xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/O2 * 100" />
+          </xsl:attribute>
+          <xsl:attribute name="he">
+            <xsl:value-of select="ancestor::DIVE/GASES/MIX[MIXNAME=current()]/HE * 100" />
           </xsl:attribute>
         </event>
       </xsl:for-each>
