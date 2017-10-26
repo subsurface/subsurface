@@ -297,7 +297,6 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	// now let's set up some connections
 	connect(graphics(), &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
-	connect(graphics(), &ProfileWidget2::showError, this, &MainWindow::showError);
 	connect(graphics(), &ProfileWidget2::disableShortcuts, this, &MainWindow::disableShortcuts);
 	connect(graphics(), &ProfileWidget2::enableShortcuts, this, &MainWindow::enableShortcuts);
 	connect(graphics(), &ProfileWidget2::refreshDisplay, this, &MainWindow::refreshDisplay);
@@ -439,7 +438,6 @@ MainWindow *MainWindow::instance()
 // this gets called after we download dives from a divecomputer
 void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
-	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	information()->reload();
 	TankInfoModel::instance()->update();
 	MapWidget::instance()->reload();
@@ -572,10 +570,9 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 		return;
 
 	QString filename;
-	if (getCloudURL(filename)) {
-		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+	if (getCloudURL(filename))
 		return;
-	}
+
 	if (verbose)
 		qDebug() << "Opening cloud storage from:" << filename;
 
@@ -601,13 +598,12 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 {
 	QString filename;
 	if (!dive_table.nr) {
-		getNotificationWidget()->showNotification(tr("Don't save an empty log to the cloud"), KMessageWidget::Error);
+		report_error(qPrintable(tr("Don't save an empty log to the cloud")));
 		return;
 	}
-	if (getCloudURL(filename)) {
-		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+	if (getCloudURL(filename))
 		return;
-	}
+
 	if (verbose)
 		qDebug() << "Saving cloud storage to:" << filename;
 	if (information()->isEditing())
@@ -615,14 +611,11 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 
 	showProgressBar();
 
-	if (save_dives(filename.toUtf8().data())) {
-		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+	if (save_dives(filename.toUtf8().data()))
 		return;
-	}
 
 	hideProgressBar();
 
-	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
@@ -1656,12 +1649,9 @@ int MainWindow::file_save_as(void)
 	if (information()->isEditing())
 		information()->acceptChanges();
 
-	if (save_dives(filename.toUtf8().data())) {
-		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+	if (save_dives(filename.toUtf8().data()))
 		return -1;
-	}
 
-	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
@@ -1693,14 +1683,12 @@ int MainWindow::file_save(void)
 	if (is_cloud)
 		showProgressBar();
 	if (save_dives(existing_filename)) {
-		getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 		if (is_cloud)
 			hideProgressBar();
 		return -1;
 	}
 	if (is_cloud)
 		hideProgressBar();
-	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 	mark_divelist_changed(false);
 	addRecentFile(QStringList() << QString(existing_filename));
 	return 0;
@@ -1709,11 +1697,6 @@ int MainWindow::file_save(void)
 NotificationWidget *MainWindow::getNotificationWidget()
 {
 	return ui.mainErrorMessage;
-}
-
-void MainWindow::showError()
-{
-	getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 }
 
 QString MainWindow::displayedFilename(QString fullFilename)
@@ -1805,7 +1788,6 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 
 void MainWindow::loadFiles(const QStringList fileNames)
 {
-	bool showWarning = false;
 	if (fileNames.isEmpty()) {
 		refreshDisplay();
 		return;
@@ -1822,19 +1804,11 @@ void MainWindow::loadFiles(const QStringList fileNames)
 		if (!error) {
 			set_filename(fileNamePtr.data(), true);
 			setTitle(MWTF_FILENAME);
-			// if there were any messages, show them
-			QString warning = get_error_string();
-			if (!warning.isEmpty()) {
-				showWarning = true;
-				getNotificationWidget()->showNotification(warning , KMessageWidget::Information);
-			}
 		} else {
 			failedParses.append(fileNames.at(i));
 		}
 	}
 	hideProgressBar();
-	if (!showWarning)
-		getNotificationWidget()->hideNotification();
 	process_dives(false, false);
 	addRecentFile(fileNames);
 	removeRecentFile(failedParses);
