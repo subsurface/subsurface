@@ -9,6 +9,7 @@
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)
 
 static struct membuffer error_string_buffer = { 0 };
+static void (*error_cb)(void) = NULL;
 /*
  * Note that the act of "getting" the error string
  * buffer doesn't de-allocate the buffer, but it does
@@ -37,10 +38,18 @@ int report_error(const char *fmt, ...)
 	VA_BUF(buf, fmt);
 	mb_cstring(buf);
 
+	/* if an error callback is registered, call it */
+	if (error_cb)
+		error_cb();
+
 	return -1;
 }
 
 void report_message(const char *msg)
 {
 	(void)report_error("%s", msg);
+}
+
+void set_error_cb(void(*cb)(void)) {
+	error_cb = cb;
 }
