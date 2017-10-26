@@ -40,6 +40,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	divesite.cpp
 	divelist.c
 	equipment.c
+	errorhelper.c
 	file.c
 	gas-model.c
 	git-access.c
