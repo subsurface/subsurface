@@ -474,6 +474,12 @@ static int tree_insert(git_treebuilder *dir, const char *name, int mkunique, git
 	}
 	ret = git_treebuilder_insert(NULL, dir, name, id, mode);
 	free_buffer(&uniquename);
+	if (ret) {
+		const git_error *gerr = giterr_last();
+		if (gerr) {
+			fprintf(stderr, "tree_insert failed with return %d error %s\n", ret, gerr->message);
+		}
+	}
 	return ret;
 }
 
