@@ -21,7 +21,6 @@ slots:
 private:
 	QNetworkReply *reply;
 	QString userAgent;
-	bool verbose;
 };
 
 QNetworkAccessManager *manager();
