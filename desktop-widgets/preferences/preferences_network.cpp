@@ -41,7 +41,7 @@ void PreferencesNetwork::refreshSettings()
 	ui->cloud_background_sync->setChecked(prefs.cloud_background_sync);
 	ui->save_uid_local->setChecked(prefs.save_userid_local);
 	ui->default_uid->setText(QString(prefs.userid).toUpper());
-	cloudPinNeeded();
+	updateCloudAuthenticationState();
 }
 
 void PreferencesNetwork::syncSettings()
@@ -73,7 +73,7 @@ void PreferencesNetwork::syncSettings()
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(updateCloudAuthenticationState()));
 				connect(cloudAuth, SIGNAL(passwordChangeSuccessful()), this, SLOT(passwordUpdateSuccessfull()));
 				cloudAuth->backend(email, password, "", newpassword);
 				ui->cloud_storage_new_passwd->setText("");
@@ -94,7 +94,7 @@ void PreferencesNetwork::syncSettings()
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-				connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::cloudPinNeeded);
+				connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::updateCloudAuthenticationState);
 				cloudAuth->backend(email, password);
 			}
 		}
@@ -107,7 +107,7 @@ void PreferencesNetwork::syncSettings()
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 			}
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-			connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(cloudPinNeeded()));
+			connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(updateCloudAuthenticationState()));
 			cloudAuth->backend(email, password, pin);
 		}
 	}
@@ -119,7 +119,7 @@ void PreferencesNetwork::syncSettings()
 	cloud->setBaseUrl(prefs.cloud_base_url);
 }
 
-void PreferencesNetwork::cloudPinNeeded()
+void PreferencesNetwork::updateCloudAuthenticationState()
 {
 	ui->cloud_storage_pin->setEnabled(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
 	ui->cloud_storage_pin->setVisible(prefs.cloud_verification_status == CS_NEED_TO_VERIFY);
@@ -131,6 +131,10 @@ void PreferencesNetwork::cloudPinNeeded()
 	ui->cloud_storage_new_passwd_label->setVisible(prefs.cloud_verification_status == CS_VERIFIED);
 	if (prefs.cloud_verification_status == CS_VERIFIED) {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (credentials verified)"));
+	} else if (prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD) {
+		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (incorrect password)"));
+	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
+		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (PIN required)"));
 	} else {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage"));
 	}
