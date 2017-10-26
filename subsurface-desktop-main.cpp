@@ -102,7 +102,11 @@ int main(int argc, char **argv)
 	}
 	MainWindow *m = MainWindow::instance();
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
+	if (verbose && !files.isEmpty())
+		qDebug() << "loading dive data from" << files;
 	m->loadFiles(files);
+	if (verbose && !importedFiles.isEmpty())
+		qDebug() << "importing dive data from" << importedFiles;
 	m->importFiles(importedFiles);
 
 	if (verbose > 0) {
