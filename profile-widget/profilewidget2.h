@@ -90,7 +90,6 @@ public:
 signals:
 	void fontPrintScaleChanged(double scale);
 	void enableToolbar(bool enable);
-	void showError();
 	void enableShortcuts();
 	void disableShortcuts(bool paste);
 	void refreshDisplay(bool recreateDivelist);

@@ -735,7 +735,6 @@ void DivelogsDeWebServices::prepareDivesForUpload(bool selected)
 	} else {
 		report_error("Failed to create upload file %s\n", qPrintable(filename));
 	}
-	MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
 }
 
 void DivelogsDeWebServices::uploadDives(QIODevice *dldContent)

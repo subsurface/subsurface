@@ -440,42 +440,6 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	save_dive_temperature(b, dive);
 }
 
-static struct membuffer error_string_buffer = { 0 };
-
-/*
- * Note that the act of "getting" the error string
- * buffer doesn't de-allocate the buffer, but it does
- * set the buffer length to zero, so that any future
- * error reports will overwrite the string rather than
- * append to it.
- */
-const char *get_error_string(void)
-{
-	const char *str;
-
-	if (!error_string_buffer.len)
-		return "";
-	str = mb_cstring(&error_string_buffer);
-	error_string_buffer.len = 0;
-	return str;
-}
-
-int report_error(const char *fmt, ...)
-{
-	struct membuffer *buf = &error_string_buffer;
-
-	/* Previous unprinted errors? Add a newline in between */
-	if (buf->len)
-		put_bytes(buf, "\n", 1);
-	VA_BUF(buf, fmt);
-	mb_cstring(buf);
-	return -1;
-}
-
-void report_message(const char *msg)
-{
-	(void)report_error("%s", msg);
-}
 
 /*
  * libgit2 has a "git_treebuilder" concept, but it's broken, and can not

@@ -709,7 +709,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 #ifdef SUBSURFACE_MOBILE
 	if (currentdc->divemode == CCR) {
-		gasYAxis->setPos(itemPos.partialPressure.pos.on);	
+		gasYAxis->setPos(itemPos.partialPressure.pos.on);
 		gasYAxis->setLine(itemPos.partialPressure.expanded);
 
 		tankItem->setVisible(false);
@@ -802,7 +802,6 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
 #endif
-	emit showError();
 }
 
 void ProfileWidget2::recalcCeiling()
