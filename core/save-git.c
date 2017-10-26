@@ -1070,12 +1070,14 @@ static int get_authorship(git_repository *repo, git_signature **authorp)
 	return git_signature_now(authorp, user.name, user.email);
 }
 
-static void create_commit_message(struct membuffer *msg)
+static void create_commit_message(struct membuffer *msg, bool create_empty)
 {
 	int nr = dive_table.nr;
 	struct dive *dive = get_dive(nr-1);
 
-	if (dive) {
+	if (create_empty) {
+		put_string(msg, "Initial commit to create empty repo.\n\n");
+	} else if (dive) {
 		dive_trip_t *trip = dive->divetrip;
 		const char *location = get_dive_location(dive) ? : "no location";
 		struct divecomputer *dc = &dive->dc;
@@ -1153,7 +1155,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	} else {
 		struct membuffer commit_msg = { 0 };
 
-		create_commit_message(&commit_msg);
+		create_commit_message(&commit_msg, create_empty);
 		if (git_commit_create_v(&commit_id, repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent))
 			return report_error("Git commit create failed (%s)", strerror(errno));
 		free_buffer(&commit_msg);
