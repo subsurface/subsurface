@@ -86,6 +86,15 @@ extern "C" int updateProgress(const char *text)
 
 MainWindow *MainWindow::m_Instance = NULL;
 
+extern "C" void showErrorFromC()
+{
+	MainWindow *mainwindow = MainWindow::instance();
+	if (mainwindow) {
+		mainwindow->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
+	}
+}
+
+
 MainWindow::MainWindow() : QMainWindow(),
 	actionNextDive(0),
 	actionPreviousDive(0),
@@ -244,6 +253,7 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	setupSocialNetworkMenu();
 	set_git_update_cb(&updateProgress);
+	set_error_cb(&showErrorFromC);
 
 	// Toolbar Connections related to the Profile Update
 	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
