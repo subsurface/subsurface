@@ -25,7 +25,7 @@ Item {
 	Map {
 		id: map
 		anchors.fill: parent
-		zoomLevel: 1
+		zoomLevel: defaultZoomIn
 
 		property var mapType
 		readonly property var defaultCenter: QtPositioning.coordinate(0, 0)
