@@ -326,7 +326,7 @@ void OstcFirmwareCheck::upgradeFirmware()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
 	storeFirmware = QFileDialog::getSaveFileName(parent, tr("Save the downloaded firmware as"),
-						     filename, tr("Firmware files (*.hex *.bin)"));
+						     filename, tr("Firmware files") + " (*.hex *.bin)");
 	if (storeFirmware.isEmpty())
 		return;
 
@@ -1362,7 +1362,7 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup dive computer settings"),
-							  filename, tr("Backup files (*.xml)"));
+							  filename, tr("Backup files") + " (*.xml)");
 	if (!backupPath.isEmpty()) {
 		populateDeviceDetails();
 		if (!config->saveXMLBackup(backupPath, deviceDetails, &device_data)) {
@@ -1383,7 +1383,7 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
 	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
-							   filename, tr("Backup files (*.xml)"));
+							   filename, tr("Backup files") + " (*.xml)");
 	if (!restorePath.isEmpty()) {
 		// Fw update is no longer a option, needs to be done on a untouched device
 		ui.updateFirmwareButton->setEnabled(false);
@@ -1405,7 +1405,7 @@ void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath();
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
-							    filename, tr("All files (*.*)"));
+							    filename, tr("All files") + " (*.*)");
 	if (!firmwarePath.isEmpty()) {
 		ui.progressBar->setValue(0);
 		ui.progressBar->setFormat("%p%");
@@ -1466,7 +1466,7 @@ void ConfigureDiveComputerDialog::pickLogFile()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
 	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
-					       filename, tr("Log files (*.log)"));
+					       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {
 		free(logfile_name);
 		logfile_name = strdup(logFile.toUtf8().data());

@@ -138,27 +138,27 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		if (ui->exportUDDF->isChecked()) {
 			stylesheet = "uddf-export.xslt";
 			filename = QFileDialog::getSaveFileName(this, tr("Export UDDF file as"), lastDir,
-								tr("UDDF files (*.uddf *.UDDF)"));
+								tr("UDDF files") + " (*.uddf)");
 		} else if (ui->exportCSV->isChecked()) {
 			stylesheet = "xml2csv.xslt";
 			filename = QFileDialog::getSaveFileName(this, tr("Export CSV file as"), lastDir,
-								tr("CSV files (*.csv *.CSV)"));
+								tr("CSV files") + " (*.csv)");
 		} else if (ui->exportCSVDetails->isChecked()) {
 			stylesheet = "xml2manualcsv.xslt";
 			filename = QFileDialog::getSaveFileName(this, tr("Export CSV file as"), lastDir,
-								tr("CSV files (*.csv *.CSV)"));
+								tr("CSV files") + " (*.csv)");
 		} else if (ui->exportDivelogs->isChecked()) {
 			DivelogsDeWebServices::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
 		} else if (ui->exportDiveshare->isChecked()) {
 			DiveShareExportDialog::instance()->prepareDivesForUpload(ui->exportSelected->isChecked());
 		} else if (ui->exportWorldMap->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export world map"), lastDir,
-								tr("HTML files (*.html)"));
+								tr("HTML files") + " (*.html)");
 			if (!filename.isNull() && !filename.isEmpty())
 				export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		} else if (ui->exportSubsurfaceXML->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface XML"), lastDir,
-								tr("XML files (*.xml *.ssrf)"));
+								tr("Subsurface files") + " (*.ssrf *.xml)");
 			if (!filename.isNull() && !filename.isEmpty()) {
 				if (!filename.contains('.'))
 					filename.append(".ssrf");
@@ -170,14 +170,14 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			if (!filename.isNull() && !filename.isEmpty())
 				export_depths(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		} else if (ui->exportTeX->isChecked()) {
-			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files (*.tex)"));
+			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
 			if (!filename.isNull() && !filename.isEmpty())
 				export_TeX(filename.toUtf8().data(), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:
 		filename = QFileDialog::getSaveFileName(this, tr("Export HTML files as"), lastDir,
-							tr("HTML files (*.html)"));
+							tr("HTML files") + " (*.html)");
 		if (!filename.isNull() && !filename.isEmpty())
 			exportHtmlInit(filename);
 		break;

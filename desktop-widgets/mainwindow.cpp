@@ -537,7 +537,7 @@ void MainWindow::on_actionOpen_triggered()
 	// yes, this look wrong to use getSaveFileName() for the open dialog, but we need to be able
 	// to enter file names that don't exist in order to use our git syntax /path/to/dir[branch]
 	// with is a potentially valid input, but of course won't exist. So getOpenFileName() wouldn't work
-	QFileDialog dialog(this, tr("Open file"), lastUsedDir(), filter());
+	QFileDialog dialog(this, tr("Open file"), lastUsedDir(), filter_open());
 	dialog.setFileMode(QFileDialog::AnyFile);
 	dialog.setViewMode(QFileDialog::Detail);
 	dialog.setLabelText(QFileDialog::Accept, tr("Open"));
@@ -649,7 +649,7 @@ void learnImageDirs(QStringList dirnames)
 void MainWindow::on_actionHash_images_triggered()
 {
 	QFuture<void> future;
-	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir(), filter());
+	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir());
 	dialog.setFileMode(QFileDialog::Directory);
 	dialog.setViewMode(QFileDialog::Detail);
 	dialog.setLabelText(QFileDialog::Accept, tr("Scan"));
@@ -1258,43 +1258,89 @@ void MainWindow::on_actionUserSurvey_triggered()
 	survey->show();
 }
 
-QString MainWindow::filter()
+QString MainWindow::filter_open()
 {
 	QString f;
-	f += "Dive log files ( *.ssrf ";
-	f += "*.can *.CAN ";
-	f += "*.db *.DB " ;
-	f += "*.sql *.SQL " ;
-	f += "*.dld *.DLD ";
-	f += "*.jlb *.JLB ";
-	f += "*.lvd *.LVD ";
-	f += "*.sde *.SDE ";
-	f += "*.udcf *.UDCF ";
-	f += "*.uddf *.UDDF ";
-	f += "*.xml *.XML ";
-	f += "*.dlf *.DLF ";
-	f += "*.log *.LOG ";
-	f += "*.txt *.TXT) ";
-	f += "*.apd *.APD) ";
-	f += "*.dive *.DIVE ";
-	f += "*.zxu *.zxl *.ZXU *.ZXL ";
+	f += tr("Dive log files");
+	f += " (*.ssrf";
+	f += " *.xml";
+	f += " *.can";
+	f += " *.db" ;
+	f += " *.sql" ;
+	f += " *.dld";
+	f += " *.jlb";
+	f += " *.lvd";
+	f += " *.sde";
+	f += " *.udcf";
+	f += " *.uddf";
+	f += " *.dlf";
+	f += " *.log";
+	f += " *.txt";
+	f += " *.apd";
+	f += " *.dive";
+	f += " *.zxu *.zxl";
 	f += ");;";
 
-	f += "Subsurface (*.ssrf);;";
-	f += "Cochran (*.can *.CAN);;";
-	f += "DiveLogs.de (*.dld *.DLD);;";
-	f += "JDiveLog  (*.jlb *.JLB);;";
-	f += "Liquivision (*.lvd *.LVD);;";
-	f += "Suunto (*.sde *.SDE *.db *.DB);;";
-	f += "UDCF (*.udcf *.UDCF);;";
-	f += "UDDF (*.uddf *.UDDF);;";
-	f += "XML (*.xml *.XML);;";
-	f += "Divesoft (*.dlf *.DLF);;";
-	f += "Datatrak/WLog Files (*.log *.LOG);;";
-	f += "MkVI files (*.txt *.TXT);;";
-	f += "APD log viewer (*.apd *.APD);;";
-	f += "OSTCtools Files (*.dive *.DIVE);;";
-	f += "DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL)";
+	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
+	f += tr("Cochran") + " (*.can);;";
+	f += tr("DiveLogs.de") + " (*.dld);;";
+	f += tr("JDiveLog") + " (*.jlb);;";
+	f += tr("Liquivision") + " (*.lvd);;";
+	f += tr("Suunto") + " (*.sde *.db);;";
+	f += tr("UDCF") + " (*.udcf);;";
+	f += tr("UDDF") + " (*.uddf);;";
+	f += tr("XML") + " (*.xml);;";
+	f += tr("Divesoft") + " (*.dlf);;";
+	f += tr("Datatrak/WLog") + " (*.log);;";
+	f += tr("MkVI files") + " (*.txt);;";
+	f += tr("APD log viewer") + " (*.apd);;";
+	f += tr("OSTCtools") + " (*.dive);;";
+	f += tr("DAN DL7") + " (*.zxu *.zxl)";
+
+	return f;
+}
+
+QString MainWindow::filter_import()
+{
+	QString f;
+	f += tr("Dive log files");
+	f += " (*.ssrf";
+	f += " *.xml";
+	f += " *.can";
+	f += " *.csv";
+	f += " *.db" ;
+	f += " *.sql" ;
+	f += " *.dld";
+	f += " *.jlb";
+	f += " *.lvd";
+	f += " *.sde";
+	f += " *.udcf";
+	f += " *.uddf";
+	f += " *.dlf";
+	f += " *.log";
+	f += " *.txt";
+	f += " *.apd";
+	f += " *.dive";
+	f += " *.zxu *.zxl";
+	f += ");;";
+
+	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
+	f += tr("Cochran") + " (*.can);;";
+	f += tr("CSV") + " (*.csv *.CSV);;";
+	f += tr("DiveLogs.de") + " (*.dld);;";
+	f += tr("JDiveLog") + " (*.jlb);;";
+	f += tr("Liquivision") + " (*.lvd);;";
+	f += tr("Suunto") + " (*.sde *.db);;";
+	f += tr("UDCF") + " (*.udcf);;";
+	f += tr("UDDF") + " (*.uddf);;";
+	f += tr("XML") + " (*.xml);;";
+	f += tr("Divesoft") + " (*.dlf);;";
+	f += tr("Datatrak/WLog") + " (*.log);;";
+	f += tr("MkVI files") + " (*.txt);;";
+	f += tr("APD log viewer") + " (*.apd);;";
+	f += tr("OSTCtools") + " (*.dive);;";
+	f += tr("DAN DL7") + " (*.zxu *.zxl);;";
+	f += tr("All files") + " (*.*)";
 
 	return f;
 }
@@ -1634,7 +1680,7 @@ int MainWindow::file_save_as(void)
 	}
 	// create a file dialog that allows us to save to a new file
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
-					 tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+					 tr("Subsurface files") + " (*.ssrf *.xml)");
 	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
 	selection_dialog.setDefaultSuffix("");
@@ -1842,24 +1888,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 
 void MainWindow::on_actionImportDiveLog_triggered()
 {
-	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(),
-		tr("Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl"
-			"*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;"
-			"Cochran files (*.can *.CAN);;"
-			"CSV files (*.csv *.CSV);;"
-			"DiveLog.de files (*.dld *.DLD);;"
-			"JDiveLog files (*.jlb *.JLB);;"
-			"Liquivision files (*.lvd *.LVD);;"
-			"MkVI files (*.txt *.TXT);;"
-			"Suunto files (*.sde *.db *.SDE *.DB);;"
-			"Divesoft files (*.dlf *.DLF);;"
-			"UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;"
-			"XML files (*.xml *.XML);;"
-			"APD log viewer (*.apd *.APD);;"
-			"Datatrak/WLog Files (*.log *.LOG);;"
-			"OSTCtools Files (*.dive *.DIVE);;"
-			"DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;"
-			"All files (*)"));
+	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(), filter_import());
 
 	if (fileNames.isEmpty())
 		return;
