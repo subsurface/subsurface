@@ -224,6 +224,7 @@ Kirigami.Page {
 				top: buttonBar.bottom
 				topMargin: Kirigami.Units.smallSpacing * 4
 			}
+			Layout.bottomMargin: bottomButtons.height * 1.5
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 
@@ -243,6 +244,7 @@ Kirigami.Page {
 		}
 
 		RowLayout {
+			id: bottomButtons
 			Layout.fillWidth: true
 			Controls.Label {
 				text: ""  // Spacer on the left for hamburger menu
