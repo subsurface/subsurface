@@ -1945,10 +1945,19 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	if (ui.multiFilter->isVisible())
+	if (ui.multiFilter->isVisible()) {
 		ui.multiFilter->closeFilter();
-	else
+		ui.actionFilterTags->setChecked(false);
+	}
+	else {
 		ui.multiFilter->setVisible(true);
+		ui.actionFilterTags->setChecked(true);
+	}
+}
+
+void MainWindow::setCheckedActionFilterTags(bool checked)
+{
+	ui.actionFilterTags->setChecked(checked);
 }
 
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)
