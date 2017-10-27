@@ -367,7 +367,7 @@ void DownloadFromDCWidget::pickLogFile()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
 	QString logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
-					       filename, tr("Log files (*.log)"));
+					       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {
 		free(logfile_name);
 		logfile_name = copy_string(logFile.toUtf8().data());
@@ -393,7 +393,7 @@ void DownloadFromDCWidget::pickDumpFile()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
 	QString dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer binary dump file"),
-						filename, tr("Dump files (*.bin)"));
+						filename, tr("Dump files") + " (*.bin)");
 	if (!dumpFile.isEmpty()) {
 		free(dumpfile_name);
 		dumpfile_name = copy_string(dumpFile.toUtf8().data());

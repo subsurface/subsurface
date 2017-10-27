@@ -49,8 +49,7 @@ void Smrtk2ssrfcWindow::updateLastUsedDir(const QString &dir)
 void Smrtk2ssrfcWindow::on_inputFilesButton_clicked()
 {
 	inputFiles = QFileDialog::getOpenFileNames(this, tr("Open SmartTrak files"), lastUsedDir(),
-		tr("SmartTrak files (*.slg *.SLG);;"
-		   "All files (*)"));
+		tr("SmartTrak files") + " (*.slg);;" + tr("All files") + " (*.*)");
 	if (inputFiles.isEmpty())
 		return;
 	updateLastUsedDir(QFileInfo(inputFiles[0]).dir().path());
@@ -61,8 +60,7 @@ void Smrtk2ssrfcWindow::on_inputFilesButton_clicked()
 void Smrtk2ssrfcWindow::on_outputFileButton_clicked()
 {
 	outputFile = QFileDialog::getSaveFileName(this, tr("Open Subsurface files"), lastUsedDir(),
-		tr("Subsurface files (*.ssrf *SSRF *.xml *.XML);;"
-		   "All files (*)"));
+		tr("Subsurface files") + " (*.ssrf *.xml);;" + tr("All files") + " (*.*)");
 	if (outputFile.isEmpty())
 		return;
 	updateLastUsedDir(QFileInfo(outputFile).dir().path());

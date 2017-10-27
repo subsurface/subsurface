@@ -190,7 +190,8 @@ private:
 	QAction *actionPreviousDive;
 	UserManual *helpView;
 	CurrentState state;
-	QString filter();
+	QString filter_open();
+	QString filter_import();
 	static MainWindow *m_Instance;
 	QString displayedFilename(QString fullFilename);
 	bool askSaveChanges();

@@ -20,7 +20,7 @@ PreferencesDefaults::~PreferencesDefaults()
 void PreferencesDefaults::on_chooseFile_clicked()
 {
 	QFileInfo fi(system_default_filename());
-	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open default log file"), fi.absolutePath(), tr("Subsurface XML files (*.ssrf *.xml *.XML)"));
+	QString choosenFileName = QFileDialog::getOpenFileName(this, tr("Open default log file"), fi.absolutePath(), tr("Subsurface files") + " (*.ssrf *.xml)");
 
 	if (!choosenFileName.isEmpty())
 		ui->defaultfilename->setText(choosenFileName);
