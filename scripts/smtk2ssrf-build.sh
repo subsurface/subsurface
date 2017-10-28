@@ -47,7 +47,7 @@ to rebuild it after running this script.
 Proceed? [y/n]\n"
 
 read -rs _proceed
-[[ $_proceed == "n" ]] && exit 0
+[[ $_proceed != "y" && $_proceed != "Y" ]] && exit 0
 
 # check for arguments and set options if any
 #
@@ -135,7 +135,6 @@ cmake   -DBTSUPPORT=OFF \
 	-DFTDISUPPORT=OFF \
 	-DMAKE_TESTS=OFF \
 	-DNO_DOCS=ON \
-	-DNO_MARBLE=ON \
 	-DNO_PRINTING=ON \
 	-DNO_USERMANUAL=ON \
 	-DUSE_WEBENGINE=OFF \
