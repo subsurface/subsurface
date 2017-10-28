@@ -1948,8 +1948,7 @@ void MainWindow::on_actionFilterTags_triggered()
 	if (ui.multiFilter->isVisible()) {
 		ui.multiFilter->closeFilter();
 		ui.actionFilterTags->setChecked(false);
-	}
-	else {
+	} else {
 		ui.multiFilter->setVisible(true);
 		ui.actionFilterTags->setChecked(true);
 	}
