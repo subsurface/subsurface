@@ -98,18 +98,55 @@ else
 	echo "----> Mdbtools already installed: $(pkg-config --print-provides libmdb)"
 fi
 
-# We are done. Move on
-# No need to update subsurface sources, as it has been previously
-# done by build.sh
-#
-# Do we want to build a branch or commit other than the one used
-# for build.sh?
-#
+# Build bare metal Subsurface.
+# We are going to modify some of the building parameters of Subsurface so
+# will get a copy of the cmake cache to restore them after building smtk2ssrf.
+cd "$SSRF_PATH" || aborting "Couldn't cd into $SSRF_PATH"
+echo "----> Saving a copy of $SSRF_PATH/build/CMakeCache.txt"
+cp -vf "$SSRF_PATH/build/CMakeCache.txt" "$SSRF_PATH/build/CMakeCache.txt.bak"
 if [ ! "$SSRF_TAG" == "" ]; then
-	cd "$SSRF_PATH" || aborting "Couldn't cd into $SSRF_PATH"
-	git checkout "$SSRF_TAG" || aborting "Couldn't checkout $SSRF_TAG. Is it correct?"
+	PREV_GIT="$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d')"
+	PREV_GIT=${PREV_GIT##*\ }; PREV_GIT=${PREV_GIT%)}
+	git checkout "$SSRF_TAG" || STATUS=1
 fi
 
+# abort if git checkout failed
+if [ ! -z "$STATUS" ] && [ "$STATUS" -eq 1 ]; then
+	mv -f "$SSRF_PATH/build/CMakeCache.txt.bak" "$SSRF_PATH/build/CMakeCache.txt"
+	aborting "Couldn't checkout $SSRF_TAG. Is it correct?"
+fi
+
+cmake   -DBTSUPPORT=OFF \
+	-DCMAKE_BUILD_TYPE="$RELEASE" \
+	-DFBSUPPORT=OFF \
+	-DFORCE_LIBSSH=OFF \
+	-DFTDISUPPORT=OFF \
+	-DMAKE_TESTS=OFF \
+	-DNO_DOCS=ON \
+	-DNO_MARBLE=ON \
+	-DNO_PRINTING=ON \
+	-DNO_USERMANUAL=ON \
+	-DUSE_WEBENGINE=OFF \
+	-DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable \
+	build
+cd build || aborting "Couldn't cd into $SSRF_PATH/build directory"
+make clean
+make "$JOBS" || STATUS=1
+
+# Restore initial state of subsurface building system:
+echo "----> Restoring Subsurface tree state"
+[[ ! -z $PREV_GIT ]] && echo "------> Restoring git branch to - $PREV_GIT -" && \
+	git checkout "$PREV_GIT" >/dev/null
+echo "------> Restoring cmake cache" && \
+	mv -f "$SSRF_PATH/build/CMakeCache.txt.bak" "$SSRF_PATH/build/CMakeCache.txt"
+cmake .
+echo "----> Restored. Rebuild subsurface if needed"
+
+# Abort if failed to build subsurface
+[[ ! -z $STATUS ]] && [[ $STATUS -eq 1 ]] && aborting "Couldn't build Subsurface"
+
+# We are done. Move on
+#
 echo "----> Building smtk2ssrf SmartTrak divelogs importer"
 
 cd "$SSRF_PATH"/smtk-import || aborting "Couldnt cd into $SSRF_PATH/smtk-import"
