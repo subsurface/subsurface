@@ -35,7 +35,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml" line="54"/>
         <source>Navigate Back</source>
-        <translation type="unfinished"/>
+        <translation>Seite vor</translation>
     </message>
 </context>
 <context>
@@ -3791,7 +3791,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/ForwardButton.qml" line="50"/>
         <source>Navigate Forward</source>
-        <translation type="unfinished"/>
+        <translation>Seite zurück</translation>
     </message>
 </context>
 <context>
@@ -4939,7 +4939,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="435"/>
         <source>50% avg. depth to 20ft</source>
-        <translation>50% mitlerer Tiefe bis 20ft</translation>
+        <translation>50% mittlerer Tiefe bis 20ft</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="436"/>
@@ -4964,7 +4964,7 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="441"/>
         <source>50% avg. depth to 6m</source>
-        <translation>50% mitlerer Tiefe bis 6m</translation>
+        <translation>50% mittlerer Tiefe bis 6m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="442"/>
@@ -6828,12 +6828,12 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="36"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud buttton above.</source>
-        <translation type="unfinished"/>
+        <translation>Um Subsurface-mobule mit der Subsurface-Cloud zu benutzen, bitte die Cloud-Daten eingeben.&lt;br/&gt;&lt;br/&gt; Sollte dies die erste Benutzung on Subsurface-Cloud sein, bitte eine gültige Emailadresse (nur Kleinbuchstaben verwenden) un ein Passwort nach Wahl (Buchstaben und Ziffern) eingeben.&lt;br/&gt;&lt;br/&gt;Um Subsurface-mobile ohne Cloud nur mit lokalen Daten zu verwenden, den Keine-Cloud-Schalter oben aktivieren.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="49"/>
         <source>Thank you for registering with Subsurface. We sent &lt;b&gt;%1&lt;/b&gt; a PIN code to complete the registration. If you do not receive an email from us within 15 minutes, please check the correct spelling of your email address and your spam box first.&lt;br/&gt;&lt;br/&gt;In case of any problems regarding cloud account setup, please contact us at our user forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Vielen Dank für die Registrierung bei Subsurface. Wir haben einen PIN-Code an &lt;b&gt;%1&lt;/b&gt; geschickt, um die Registrierung abzuschließen. Sollte innerhalb von 15 Minuten keine Email eingehen, bitte die Emailadresse auf Tippfehler überprüfen und in den Spam-Order sehen.&lt;br/&gt;&lt;br/&gt;Bei Problemen beim Erstellen des Clould-Kontos bitte eine Nachricht im Benutzerforum (https://subsurface-divelog.org/user-forum/) hinterlassen.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>
@@ -10566,7 +10566,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="138"/>
         <source>50% avg. depth to 6m</source>
-        <translation>50% mitlerer Tiefe bis 6m</translation>
+        <translation>50% mittlerer Tiefe bis 6m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="155"/>
