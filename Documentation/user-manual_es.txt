@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.6
-// :revdate: March 2017
+// :revnumber: 4.7
+// :revdate: October 2017
 :icons:
 :toc2:
 :toc-placement: manual
@@ -20,7 +20,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves, Stefan Fuchs
 
-[BLUE]#_Versión 4.6, Marzo 2017_#
+[BLUE]#_Versión 4.7, Octubre 2017_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -474,8 +474,8 @@ en la que se guarda el archivo del diario de _Subsurface_.
 muestran buceos en la Lista de inmersiones pero se crearán dos ficheros en la
 carpeta seleccionada arriba:
 
-	_Subsurface_.log
-	_Subsurface_.bin
+	subsurface.log
+	subsurface.bin
 
 Estos ficheros deberían ser remitidos a la lista de correo de _Subsurface_:
 _subsurface_@hohndel.org_ solicitando que los ficheros sean analizados,
@@ -488,10 +488,16 @@ información sobre las inmersiones grabadas en el ordenador de buceo.
 [icon="images/icons/bluetooth.jpg"]
 
 Bluetooth se está convirtiendo en una forma cada vez más común de comunicación
-entre los ordenadores de buceo y _Subsurface_. Por ejemplo, este mecanismo se
-usa en el Shearwater Petrel Mk2 o el OSTC3. _Subsurface_ proporciona un
-interfaz Bluetooth muy independiente del sistema operativo utilizado. Ajustar
-_Subsurface_ para comunicación con Bluetooth requiere cuatro pasos:
+entre los ordenadores de buceo y _Subsurface_. _Subsurface_ proporciona un
+interfaz Bluetooth muy independiente del sistema operativo utilizado. Un
+número cada vez mayor de ordenadores de buceo utiliza Bluetooth Low Energy
+(BTLE) como medio de comunicación. Sin embargo, BTLE no es un protocolo
+estandarizado, en consecuencia, es necesario  efectuar adaptaciones para cada
+modelo de ordenador de buceo. Visita el link:
+https://subsurface-divelog.org/documentation/supported-dive-computers/[lista
+de ordenadores de buceo soportados].
+
+Ajustar _Subsurface_ para comunicación con Bluetooth requiere cuatro pasos:
 
 - Asegurarse de que Bluetooth está activado en el ordenador que ejecuta
   _Subsurface_.
@@ -510,12 +516,20 @@ a continuación.
 
 image::images/DC_import_Bluetooth.jpg["FIGURA: Descarga Bluetooth",align="center"]
 
+Aunque el interfaz bluetooth de _Subsurface_ se ha diseñado para funcionar
+sin emparejamiento Bluetooth a nivel de sistema operativo, siempre es
+conveniente enfrentar los problemas iniciales de emparejamiento utilizando los
+servicios del sistema operativo del PC para emparejar _Subsurface_ con el
+ordenador de buceo.  Elimina todos los emparejamientos existentes y empieza
+por escanear los dispositivos bluetooth desde una lista vacía (en el ordenador
+de sobremesa). Una vez que _Subsurface_ haya reconocido el ordenador de buceo
+con bluetooth , las siguientes descargas de inmersiones al divelog resultarán
+sencillas.
+
 En plataformas _Linux_ o _MacOS_ el nombre del ordenador con _Subsurface_
-se muestran en el lado derecho. En el lado izquierdo, si el ordenador tiene
-conectado más de un dispositivo  Bluetooth, se puede seleccionar cual se desea
-conectar a _Subsurface_.
-Bajo la dirección se muestra el estado del adaptador (activado/desactivado) y
-puede cambiarse pulsando el botón _Activar/desactivar_.
+se muestran en el lado derecho.Bajo la dirección se muestra el estado del
+adaptador (activado/desactivado) y puede cambiarse pulsando el botón
+_Activar/desactivar_.
 
 Si no se muestra la dirección Bluetooth, es que _Subsurface_ no localiza el
 dispositivo Bluetooth del ordenador en que se ejecuta. Asegúrate de que el
@@ -534,7 +548,8 @@ la relación (tal vez entre otros dispositivos Bluetooth) de la lista de la
 izquierda del diálogo (ver imagen anterior). Si no es así, pulsa el botón,
 _Limpiar_ y efectúa una nueva búsqueda utilizando el botón _Buscar_. Si
 _Subsurface_ "ve" el ordenador de buceo, la línea de la lista contendrá el
-nombre del dispositivo, su dirección y su estado de emparejamiento. Si el
+nombre del dispositivo, su dirección y su estado de emparejamiento. En los
+dispositivos BTLE, a menudo, su dirección comienza con LE. Si el
 dispositivo no está emparejado y tiene un fondo rojo, se puede abrir un menú
 contextual seleccionando su línea y pulsando clic-derecho.
 Pulsa el botón _Emparejar_ y espera a que se complete la tarea. Si este
@@ -705,43 +720,40 @@ buceo. Introduce, solo entonces, el nombre del lugar de la inmersión en el
 campo de texto etiquetado _Ubicación_ de la pestaña *Notas*.
 
 
-Teclea el nombre del punto de buceo, p.e. "Tihany, Lake Balaton, Hungary".
+*Utilizar ubicaciones de buceo existentes_* Teclea el nombre del punto de
+buceo, p.e. "Tihany, Lake Balaton, Hungary".
 Si se han efectuado varias inmersiones en el mismo lugar, la información del
 primer buceo se reutiliza.
-La información existente puede editarse en cualquier momento seleccionando
-(en el panel *Lista de Inmersiones*) un buceo efectuado en el lugar deseado y
-abriendo la información de la ubicación haciendo clic en el botón con el globo
-a la derecha del nombre del lugar (ver imagen *A* a continuación).
-Cuando se introduce el nombre de una ubicación, aparece una lista desplegable
-mostrando todos los lugares con nombres similares. Si el lugar se ha utilizado
-antes, pulsa en el nombre preexistente.
+Así pues, si un punto de buceo se ha utilizado con anterioridad, el nombre de
+ese punto (y otros nombres similares) aparecerán bajo el recuadro de texto del
+lugar de buceo (imagen a continuación). Haz doble-clic en el punto de buceo
+correspondiente y este lugar quedará asociado a la inmersión que se está
+editando. Luego selecciona _Aplicar cambios_ (imagen a continuación) para
+guardar la geolocalización de este punto de inmersión.
 
-Los nombres de la lista desplegable contienen, bien un símbolo de un globo (que
-indica que existe en la base de datos de _Subsurface_), bien un símbolo *+* (que
-indicaría un nombre que puede ser añadido a la base de datos).
-Así pues, si este punto de buceo no ha sido usado con anterioridad, aparece un
-mensaje como el siguiente (imagen *A* a continuación):
+image::images/Location1.jpg["FIGURA:Panel de selección de ubicación",align="center"]
 
-image::images/Locations1_f22.jpg["FIGURA: Panel de descripción de ubicación",align="center"]
+*Introducir un nuevo punto de buceo:* Por otra parte, tras haber buceado en un
+lugar nuevo, necesita crearse un nuevo registro que se utilizará para esta y
+posteriores inmersiones en el mismo sitio. Teclea el nombre del nuevo punto de
+buceo en la casilla de texto (imagen A a continuación).
 
-Haz doble clic en el icono de la Tierra y aparecerá un panel para
-introducir las coordenadas y otra información sobre el lugar que pueda ser
-importante (imagen *B*, anterior). Lo más importante son las coordenadas del
-punto. Hay tres formas de especificarlas:
+image::images/Globe_image1.jpg["FIGURA:Panel de creación de posición",align="center"]
 
-a. El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
-   derecha en la ventana de _Subsurface_. El mapa muestra una barra marrón indicando
-   "Sin datos de ubicación - Mueve el mapa y haz doble clic para fijar la posición
-   del buceo". Al hacer doble clic en el lugar apropiado, la barra marrón desaparece
-   y las coordenadas quedan grabadas
+Haz doble-clic en la barra azul debajo del nombre. La barra azul desaparecerá
+(imagen B anterior) y el icono de un globo a la derecha del nombre se volverá
+azul. Haz clic en este icono (imagen B anterior) y se abrirá una ventana en la
+que introducir los detalles del nuevo punto de inmersión (imagen A a
+continuación). Aparecerá un icono sobre el globo terráqueo para indicar que se
+está editando el punto de buceo. Los datos más importantes en esta pantalla
+son las coordenadas del lugar de inmersión.
 
-b. Se pueden obtener las coordenadas desde la apps _Subsurface Companion_ o
-   _Subsurface mobile_ si se dispone de un dispositivo android o iPhone con
-   GPS y se guardaron las coordenadas del punto de buceo usando ese
-   dispositivo. xref:S_Companion[Pulsa aquí para más información]
+image::images/Globe_image2.jpg["FIGURA:Panel de creación de posición",align="center"]
 
-c. Se pueden introducir las coordenadas a mano, si son conocidas, usando uno de
-   estos cuatro formatos, con la latitud seguida de la longitud:
+Hay tres formas de añadir las coordenadas del punto de buceo:
+
+*(1):* Introducir las coordenadas a mano, si son conocidas, usando uno de
+estos cuatro formatos, con la latitud seguida de la longitud:
 
       Formato ISO 6709 Annex D, p.e. 30°13'28.9"N 30°49'1.5"E
       Grados y minutos decimales, p.e. N30º 13.49760', E30º 49.30788'
@@ -752,10 +764,35 @@ Las latitudes del hemisferio sur se dan con una *S*, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual forma, las longitudes al oeste se facilita
 con una *W*, p.e. W07°, o con un valor negativo, p.e. -7.34323. Algunos teclados
 no tienen el símbolo °. Puede reemplazarse con una *d* como en N30d W20d.
-Si se ha proporcionado un nombre y unas coordenadas, guarda la información
-seleccionando el botón _Aplicar cambios_ arriba en el panel.
+Introduce cualquier otra información  sobre el sitio de buceo (Descripción y
+notas), luego pulsa _Aplicar cambios_ para guardar la feolocalización de este
+punto de inmersión. La información del  lugar de buceo puede editarse
+posteriormente haciendo clic en el icono del globo a la derecha de la casilla
+del nombre del lugar en la pestaña *Notas*.
 
-*Importante*: Las coordenadas GPS de un punto están unidas a un nombre, por
+*(2):* Utilizar el mapamundi para especificar las coordenadas, En el napa se
+mostrarán ahora todas las ubicaciones de buceo en gris, y un marcador en rojo
+(imagen B anterior). Arrastra el marcador rojo a la posición del punto de
+buceo que se esté editando. Se puede hacer zoom en el mapa con la rueda del
+ratón. Sitúa el marcador en el lugar adecuado (imagen B a continuación). Las
+coordenadas de la posición se insertarán automáticamente en la casilla de
+texto correspondiente de la ventana (imagen A a continuación).Introduce
+cualquier otra información  sobre el sitio de buceo (Descripción y
+notas), luego pulsa _Aplicar cambios_ para guardar la feolocalización de este
+punto de inmersión. La información del  lugar de buceo puede editarse
+posteriormente haciendo clic en el icono del globo a la derecha de la casilla
+del nombre del lugar en la pestaña *Notas*.
+
+image::images/Globe_image3.jpg["FIGURA:Panel de creación de posición",align="center"]
+
+*(3):* Obtener las coordenadas usando las apps _Subsurface-mobile_ o
+_Subsurface companion_ en un dispositivo Android o iPhone con GPS, si las
+coordenadas del punto de buceo se guardaron utilizando una de estas apps. Haz
+clic xref:S_Companion[aquí] para más información.
+
+[icon="images/icons/warning2.png"]
+[WARNING]
+Las coordenadas GPS de un punto están unidas a un nombre, por
 tanto, guardar inmersiones  con coordenadas sin una descripción del lugar
 causará comportamientos inesperados (_Subsurface_ creerá que todos estos puntos
 son el mismo e intentará hacer que toas las coordenadas sean iguales).
@@ -1101,6 +1138,9 @@ archivos .slg generados por SmartTrak al formato .xml de _Subsurface_. Puede
 compilarse junto con _Subsurface_ en sistemas Linux.  Se necesita instalar dos
 dependencias antes compilar: libglib2.0 y libmdb2.
 
+Además, está disponible un servicio web para convertir divelogs desde
+SmartTrak a _Subsurface_ (ver a continuación).
+
 Si necesitas ayuda puedes contactar con el equipo de _Subsurface_ en
 mailto:subsurface@subsurface-divelog.org[nuestra lista de correo]
 
@@ -1145,6 +1185,18 @@ importarán y se guardarán en el archivo file.xml situado en la carpeta output.
 Comprueba los mensajes de aviso o error que puedan aparecer en la ventana
 gráfica o en la consola, algunos pueden ser interesantes, ya que el soporte de
 los ordenadores Galileo y familia está, aún, en progreso.
+
+===== ¿ Te da pereza lo anterior ? Un servicio web para importar _SmartTrak_ a _Subsurface_
+
+Visita el sitio web en _https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl_
+
+Es un servicio web sin ningún lujo para convertir el formato de los divelogs.
+Selecciona el botón _Browse_. Esto te permitirá navegar por las carpetas de tu
+ordenador y seleccionar el divelog de _SmartTrak_ a importar. Una vez
+seleccionado pulsa el botón _Submit query_. Tras unos momentos, aparecerá una
+ventana de diálogo para guardar el archivo creado en tu ordenador.
+
+image::images/strk2ssrf_web.jpg["FIGURA:Servicio web apara convertir divelogs de SmartTrak",align="center"]
 
 ===== Mezclar las inmersiones importadas en el divelog existente
 
@@ -1422,27 +1474,28 @@ minutos.
 
 - _Distancia límite_ (metros). Distancia mínima entre dos posiciones.
 
-*¿Como se recogen las coordenadas GPS?*  Suponiendo que el buceadror ajusta 5
+*¿Como se recogen las coordenadas GPS?*  Suponiendo que el buceador ajusta 5
 minutos y 50 metros en la pantalla de preferencias, la app tomará una posición
 en el punto actual, seguida por otra cada 5 minutos *o* cada vez que nos
 desplacemos más de 50 metros de la posición anterior, lo que ocurra primero.
-Si las siguentes posiciones se encuentran en el radio de 50 metros indicado,
+Si las siguientes posiciones se encuentran en el radio de 50 metros indicado,
 las posiciones no se guardan. Si el buceador no se mueve, solo se guardará la
 primera posición. Si el buceador se mueve, se obtendrá una traza de la ruta
 seguida, al guardarse las posiciones cada 50 metros.
 
 ===== Activar la recogida automática de posiciones GPS
 
-El menú principal de _Subsurface-mobile_ tiene una casilla seleccionable en la
-parte inferior izquierda etiquetada "Activar servicio de posicionamiento" (ver
-imagen a continuación) Al seleccionar la casilla, el servicio se inicia y
-comienza la recogida automática de posiciones.
+El menú GPS de _Subsurface-mobile_ tiene una opción en la parte inferior
+etiquetada "Activar servicio de posicionamiento" (ver imagen a continuación).
+Al seleccionar la opción, el servicio se inicia y comienza la recogida
+automática de posiciones.
 
-image::images/MobileMenu.jpg["FIGURA: Subsurface-mobile menú principal",align="center"]
+image::images/MobileGpsMenu.jpg["FIGURA: Menú GPS de Subsurface-mobile",align="center"]
 
-===== Despues de la inmersión, detener la grabación automática de GPS
+===== Después de la inmersión, detener la grabación automática de GPS
 
-Desactiva la casilla seleccionada anteriormente.
+Selecciona la opción _Deshabilitar el servicio de posicionamiento_ en la parte
+inferior del menú GPS de _Subsurface-mobile_.
 
 ===== Subir las posiciones GPS al servidor de internet de _Subsurface_
 
@@ -2012,13 +2065,34 @@ deco.
 
 image::images/multicylinder_dive.jpg["FIGURa: Perfil multi tanque",align="center"]
 
+Diversos ordenadores de buceo graban automáticamente la presión de las
+botellas. En este caso no se necesita intervención manual.
+Los ordenadores más antiguos (p.e. el Galileo de Uwatec y varios modelos de
+Suunto) gestionan más de un emisor en las botellas, cambiando de un sensor a
+otro al cambiar de botella el buceador y proporcionando un registro secuencial
+de presiones de las botellas durante la inmersión. Algunos de los últimos
+modelos (como el Shearwater Perdix AI o el Scubapro G2) graban dos o más
+presiones al mismo tiempo y continuamente durante la inmersión completa. En
+estos casos _Subsurface_ interpreta correctamente los datos.
+Hay un esfuerzo continuo en el equipo de desarrollo de _Subsurface_ por añadir
+nuevos modelos de ordenadores de buceo a aquellos de los que ya se puede
+descargar y por representar correctamente las presiones de las botellas.
+Independientemente del tipo de gestión de los sensores de los ordenadores de
+buceo, los buceadores técnicos probablemente utilicen ambos métodos de
+registro de presiones, manual y automático, cuando utilicen más de dos gases.
+Sin embargo, el registro automático simplifica el registro de las inmersiones
+en lateral (en las que utilicen dos botellas). Visita el link
+https://subsurface-divelog.org/documentation/supported-dive-computers/[lista
+de ordenadores de buceo soportados].
+
 ==== Inmersiones en montaje lateral (sidemount)
 
 El buceo en montaje lateral es solo otra forma de buceo multi botella, a menudo
 con ambas o todas las botellas conteniendo la misma mezcla. Aunque es una
 configuración popular entre los espeleo buceadores, el buceo en lateral se
 puede efectuar por buceadores recreativos que hayan completado el entrenamiento
-adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:
+adecuado.  Registrar inmersiones en sidemount se hace en tres pasos,
+exactamente como con las inmersiones multi botella anteriores:
 
 - *Durante el buceo, se registran los eventos de cambio de botella". Ya que bucear
   en lateral supone, normalmente, usar 2 botellas con aire o con la misma mezcla,
@@ -2098,19 +2172,27 @@ oxígeno respirable llevando a cabo dos acciones:
 a) Eliminan dióxido de carbono del gas que se ha exhalado.
 b) Regulan la concentración de oxígeno para que permanezca en los límites.
 La interfaz CCR de _Subsurface_ es experimental actualmente y se halla bajo
-desarrollo activo. _Subsurface_ soporta en estos momentos el Poseidon MKVI y
-los PD Discovery/Evolution  En contraste con un ordenador
-de buceo recreativo convencional, el ordenador de un sistema CCR no permite
-descargar un diario que contenga múltiples inmersiones. En su lugar, cada buceo
-se guarda independientemente. Esto significa que _SUbsurface_ no puede descargar
-el diario directamente desde un CCR, sino que lo importa de la misma manera que
-se importan datos de otras bases de datos digitales, una inmersión cada vez.
+desarrollo activo. _Subsurface_ soporta en estos momentos el Poseidon MKVI,
+los APD Discovery/Evolution  y los ordenadores de Shearwater conectados a
+sistemas CCR. En contraste con un ordenador de buceo recreativo convencional,
+el ordenador de un sistema CCR no permite descargar un diario que contenga
+múltiples inmersiones. En su lugar, cada buceo se guarda independientemente.
+Esto significa que _SUbsurface_ no puede descargar el diario directamente desde
+un CCR, sino que lo importa de la misma manera que se importan datos de otras
+bases de datos digitales, una inmersión cada vez. Sin embargo, los ordenadores
+Shearwater son diferentes en este aspecto y permites descargas de múltiples
+inmersiones.
 
 ===== Importar una inmersión con CCR
 
-Véase la sección que trata de  xref:S_ImportingAlienDiveLogs[Importar información de buceo de otras fuentes digitales].
-Los datos de las inmersiones con CCR se obtienen desde el software propietario
-obtenido al adquirir el equipo CCR.  Vease <<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Apéndice B>>
+Para los controladores Shearwater para CCR, o divelogs sueltos de Shearwater
+CCR, simplemente descarga como harías si se tratara de inmersiones en circuito
+abierto; _Subsurface_ interpretará el divelog correctamente.
+Excepto para los ordenadores de Shearwate, los divelogs para CCR se obtienen
+en la actualidad del software propietario obtenido al adquirir el equipo CCR.
+Lee la sección que trata de
+xref:S_ImportingAlienDiveLogs[Importar información de buceo de otras fuentes digitales] y
+<<_appendix_b_dive_computer_specific_information_for_importing_dive_information,Apéndice B>>
 para mayor información. Utiliza dicho software para descargar los datos del
 buceo a una carpeta conocida. Desde el menú principal de _Subsurface_,
 seleccionar _Import -> Importar archivos de registro_ para desplegar el
@@ -2222,6 +2304,44 @@ Se puede encontrar más información, específica para cada ordenador, sobre
 como descargar divelogs de CCR en el xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Apéndice B]
 
 == Obtener más información sobre inmersiones guardadas en el diario
+
+El Mapa de Inmersiones tiene algunos botones útiles para manipular algunos
+aspectos de una inmersión, los comentamos a continuación;
+
+[icon="images/icons/MapViewMode.jpg"]
+[NOTE]
+Selecciona este botón para visualizar el mapa como una imagen por satélite o
+como una representación de un mapa de Google.
+
+[icon="images/icons/MapViewPlus.jpg"]
+[NOTE]
+Incrementa el zoom, se visualiza una menor área del mapa
+
+[icon="images/icons/MapViewMinus.jpg"]
++[NOTE]
+Reduce el zoom, se visualiza una mayor área del mapa
+
+image::images/MapMenu.jpg["FIGURA: Menú del mapa",align="left"]
+
+El botón "hamburguesa" de arriba a la derecha del mapa activa el menú, sus
+opciones son:
+
+* Abrir ubicación en _Google Maps_: Abre la posición de la inmersión
+seleccionada en una ventana separada de _Google Maps_ con el punto de
+inmersión señalado por un marcador de gota.
+
+* Copiar ubicación al portapapeles (decimal): Copia las coordenadas de la
+inmersión seleccionada al portapapeles en grados decimales, p.e. -25.933905
+30.710572.
+
+* Copiar ubicación al portapapeles (sexagesimal): Copia las coordenadas de la
+inmersión seleccionada al portapapeles en grados sexagesimales, p.e.
+25°56'02.058"S 30°42'38.059"E.
+
+* Seleccionar puntos de buceo visibles: En la Lista de Inmersiones, selecciona
+todos los puntos de inmersión que se visualizan en el mapa. Esto permite
+seleccionar fácilmente todos los puntos de buceo en área determinada para
+revisarlos u obtener estadísticas de ellos.
 
 === La pestaña Información (para inmersiones individuales)
 
@@ -2534,6 +2654,10 @@ refiere a valores absolutos, sino que se calcula en relación a la media
 normalizada de aire consumido durante este buceo. Así pues, las áreas en rojo o
 naranja indican momentos de consumo por encima de la media mientras que el verde
 oscuro indicará momentos de consumo de gas por debajo de la media.
+
+En modo planificador, el CAS se fija constante durante el tiempo de fondo así
+como durante la descompresión. Así pues, durante la planificación, el color es
+una indicación de la densidad del gas respirado.
 
 [icon="images/icons/Heartbutton.png"]
 [NOTE]
@@ -3710,6 +3834,7 @@ condiciones:
 - El usuario esta familiarizado con la interfaz de usuario de _Subsurface_.
 - Un usuario que no este completamente seguro de cualquiera de los requisitos
   anteriores, no debería utilizar esta capacidad de _Subsurface_.
+
 ****
 
 === La pantalla del planificador de _Subsurface_
@@ -3730,7 +3855,7 @@ Aquí es donde se proporcionan los detalles del plan de inmersión de forma que
 pueda copiarse con facilidad a otro software. También es donde se imprimirá
 cualquier mensaje de aviso sobre el plan de buceo.
 
-image::images/PlannerWindow1_f20.jpg["FIGURA: Ventana de inicio del planificador",align="center"]
+image::images/PlannerWindow1.jpg["FIGURA: Ventana de inicio del planificador",align="center"]
 
 === Inmersiones con circuito abierto
 
@@ -3870,10 +3995,7 @@ y se necesita reducir, bien la profundidad, bien la duración.
 
 A continuación se muestra una imagen de un plan para una inmersión recreativa
 a 30 metros. Aunque el límite de no descompresión es 23 minutos, la duración
-del buceo se ve limitada por la cantidad de aire en la botella, reflejada por
-la ventana de texto informativa abajo a la derecha del panel en la que se nos
-indica que no existe suficiente gas para compartir con el compañero durante el
-ascenso.
+del buceo se ve limitada por la cantidad de aire en la botella.
 
 image::images/Planner_OC_rec.jpg["FIGURE: A recreational dive plan: setup",align="center"]
 
@@ -3899,13 +4021,24 @@ inmersión.
 ** Para más información sobre factores de gradiente visita la sección
 xref:S_GradientFactors[Ajustes de la Preferencias de factores de gradiente].
 
-Si se seleccioná ell modelo VPM-B, es necesario especificar el nivel de
+Si se seleccioná el modelo VPM-B, es necesario especificar el nivel de
 conservadurismo, en una escala de 0 (menos conservador) a 4 (más conservador).
 Este modelo tiende a dar paradas deco a mayores profundidades que el modelo de
 Bühlmann y, a menudo, produce perfiles ligeramente más cortos que este último
 al coste de mayores presiones en los tejidos de los compartimentos lentos..
 Cuando elijas uno de los modelos, recuerda que no son modelos fisiológicos
 exactos, sino modelos matemáticos que parecen funcionar en la práctica.
+
+Date cuenta, también, que el modelo VPM-B asume intrinsecamente que la
+eliminación de gases solo sucede durante la fase de ascenso de la inmersión
+(que es la parte que controla el planificador). Así pues, es posible generar
+resultados erróneos si introduces puntos de ruta en la zona de la fase de
+descompresión. Esto tiene especial relevancia si se está editando una
+inmersión existente, ya que tendrá puntos de ruta hasta la superficie. Para
+estas inmersiones, primero elimina todos los puntos de ruta correspondientes a
+la fase de ascenso. Es más fácil de hacer si se mantiene pulsada la tecla de
+Ctrl al tiempo que se hace clic en el icono de la papelera que hay junto al
+primer punto de la fase de ascenso, en la tabla del lado izquierdo.
 
 Para más información externa a este manual ver:
 
@@ -3956,21 +4089,7 @@ proporciona una forma de calcular la cantidad recomendada de gas de fondo que
 se necesitaría para un ascenso seguro hasta el primer cambio a un gas de deco
 o hasta la superficie. A este procedimiento se le llama "gas mínimo" o "rock
 bottom" y se utiliza por algunas (no todas) las organizaciones de buceo
-técnico. El cálculo asume que, en el peor caso, se puede producir una
-situación de perdida de gas (OoG del inglés "out of gas") al final del tiempo
-de fondo planeado y a la máxima profundidad. Este evento OoG obliga al equipo
-de compañeros a compartir el gas de uno de ellos y a permanecer a máxima
-profundidad un tiempo adicional de n minutos (opción en preferencias "Tiempo
-de resolución de problema").
-En el mismo momento, el CAS combinado de ambos buceadores se incrementa por un
-factor estimado (opción en preferencias "Factor CAS") en comparación con el
-CAS de un sólo buceador en condiciones normales.
-El resultado del cálculo de gas mínimo de fondo se imprime en la salida del
-planificador como una información adicional. No se efectúan chequeos
-automáticos basados en este resultado
-Por favor, date cuenta de que esta funcionalidad sólo proporciona resultados
-válidos para inmersiones simples de perfil rectangular. Para inmersiones multi
-nivel, se deberían comprobar cada tramo del perfil independientemente.
+técnico. Lee el texto a continuación para una explicación detallada.
 
 Ahora, por fin, se puede empezar la planificación detallada de tiempos y
 profundidades. _Subsurface_ ofrece una interfaz gráfica única para llevar a cabo
@@ -4003,13 +4122,45 @@ Indica cualquier cambio de gas, tal como se explicaba en la sección
 <<S_CreateProfile,Crear a mano un perfil de inmersión>>. Estos cambios deberían
 reflejar las botellas y composiciones de gas definidas en la table _Gases
 disponibles_. Si se usan dos o más gases, se sugerirán automáticamente cambios
-de gas durante la fase de ascenso a superficie
-.
-A continuación hay un ejemplo de planificación de inmersión a 45m usando
-Tx21/35, seguido de un ascenso usando EAN50 y oxígeno y utilizando los ajustes
-descritos anteriormente:
+de gas durante la fase de ascenso a superficie.
 
-image::images/Planner_OC_deco_VPM.jpg["FIGURA: Planificar una inmersión: construcción",align="center"]
+Es necesario introducir las botellas que se van a usar en el plan, en la tabla
+de _Gases disponibles_. En la columna _Tipo_ selecciona el tamaño de botella
+apropiado de la lista desplegable que aparece al hacer doble clic en la
+casilla de esta columna. Por defecto, se listan un gran número de tamaños y
+cualquier nuevo tamaño de botella puede crearse introduciéndolo en la casilla
+de texto. El tamaño de la botella, la presión inicial y las profundidades de
+cambio se inicializan automáticamente. Especifica la composición del gas (p.e.
+el contenido de helio y oxígeno). Cualquier valor distinto de cero en la
+columna "CC setpoint"  de la tabla de puntos de ruta del planificador indicará
+que ese segmento de la inmersión se efectuará usando un reciclador de circuito
+cerrado. Si el último segmento introducido manualmente corresponde  CCR, la
+fase de ascenso se computa asumiendo que se realiza con CCR con el setpoint
+indicado. Si el último segmento, por corto que sea se realiza en circuito
+abierto (el setpoint se fija a cero) la descompresión se computa en OC y
+planificador solo contemplará cambios de gas en modo OC.
+
+Introduce segmentos de perfil de inmersión en la tabla de _Puntos del
+planificador_ facilitando una duración del segmento y su profundidad final. Si
+se usa más de una botella durante la inmersión, asegúrate de que se ha
+seleccionado la correcta para cada segmento del plan haciendo doble clic en la
+casilla y eligiéndola del desplegable en la columna _Gas usado_. En caso
+necesario, inserta una fila en la tabla de _Puntos del planificador_ y
+ajustando el valor del tiempo como corresponda. En la imagen A a continuación,
+se ha añadido un segmento (que usa una botella de EAN50) y se desea utilizar
+este gas desde el inicio de la inmersión (el otro gas no es respirable en
+superficie).
+Al presionar la tecla INTRO del teclado, este segmento se moverá al principio
+de la tabla y el plan se ajustará automáticamente para tener en cuenta este
+nuevo segmento (imagen B a continuación).
+
+image::images/planner1.jpg["FIGURA: Planificar una inmersión: Segmentos",align="center"]
+
+A continuación hay un ejemplo de un plan de buceo que usa Tx20/30 y algoritmo
+Bühlmann, seguido de un ascenso  usando EAN50 y los ajustes descritos
+anteriormente.
+
+image::images/Planner_OC_deco.jpg["FIGURA: Planificar una inmersión: Ajustes",align="center"]
 
 Una vez que lo anterior se ha completado, se puede guardar clicando el botón
 _Guardar_ arriba en el centro del panel del planificador. El plan de buceo
@@ -4018,7 +4169,7 @@ guardado aparecerá en el panel *Lista de Inmersiones*.
 *Los detalles del plan de buceo*
 
 En la parte inferior derecha del planificador, bajo el encabezamiento _Detalles
-del plan de buceo_, se proporcionan los detalles exactos del plan de inmersión.
+del plan de buceo_, se proporcionan los detalles del plan de inmersión.
 Estos detalles pueden modificarse seleccionando cualquiera de las opciones bajo
 el encabezamiento _Notas_ del planificador, justo a la izquierda
 del anterior. Si se solicita un _Plan de buceo detallado_, se obtendrá un plan
@@ -4030,6 +4181,92 @@ duración de cada segmento de profundidad en los _Detalles del plan de buceo_.
 Esta duración INCLUYE el tiempo de transición hasta llegar al nivel. Sin
 embargo, si se selecciona _Mostrar transiciones en deco_, las transiciones se
 muestran separadamente de las duraciones de las paradas en cada nivel.
+
+El planificador tiene una casilla seleccionable _Mostrar variaciones del
+plan_. Al seleccionar esta casilla, el planificador facilita información
+sobre una inmersión que es ligeramente más profunda o algo más larga que la
+planeada. La información se encuentra al principio de los _Detalles del plan
+de inmersión_, donde se indica la duración de la inmersión. Esta información
+puede utilizarse si es necesario modificar el ascenso sobre la marcha, en caso
+de producirse desviaciones inesperadas del plan durante el buceo.
+Activar esta opción crea mucha carga de cálculo en el ordenador lo que hará
+que el planificador se ralentice mucho, la información habitualmente se
+muestra como:
+
+	Runtime: 53min + 0:52/min + 4:21/min
+
+Esto significa:
+
+ * La duración calculada de la inmersión es de 53 minutos.
+ * Por cada metro extra de profundidad durante la fase de fondo, la duración
+   del ascenso se incrementará en 52 segundos.
+ * Por cada minuto extra de tiempo de fondo, la duración se incrementa en 4
+   minutos y 21 segundos. Así pues, si el tiempo de fondo es 2 minutos más
+   largo de lo planeado, la duración del ascenso será  2 * 4min 21sec = 8min
+   42 secs más largo y requerirá que cada parada de descompresión sea
+   8:42/53:00 = 16% más largo de lo planeado. Estos cálculos solo son
+   aplicables para pequeñas desviaciones del plam, no para grandes desviaciones.
+
+* Requisitos de gas mínimo *
+
+El planificador también estima la presión mínima de gas necesaria para un
+ascenso seguro tras un evento que provoque abortar la inmersión. El cálculo
+asume que, en el peor caso, se produce una situación de pérdida de gas que
+sucede al final del tiempo de fondo y a profundidad máxima. Esta situación de
+perdida de gas obliga a la pareja de buceadores a compartir el gas de un
+buzo y requiere un periodo adicional de tiempo para resolver el problema.
+Además se incrementa el CAS de ambos buzos en un factor estimado, en relación
+a su consumo en condiciones normales.
+El resultado del cálculo de gas mínimo se muestra en la salida del
+planificador, no se efectúan comprobaciones automáticas basadas en este
+resultado.
+Esta capacidad solo da resultados para inmersiones simples, de perfil
+cuadrado, para inmersiones multinivel se necesitaría comprobar cada tramo del
+perfil independientemente.
+
+Hay dos casillas selectoras a la izquierda de la ventana _Detalles del plan de
+inmersión_:
+
+ * *Factor del CAS*, Esta es una estimación del grado en que se incrementará
+ tu consumo si se produce un problema crítico debajo del agua, por ejemplo
+ tener que compartir gas o quedar enredado. Un valor realista se situará entre
+ 2 y 5, reflejando el gas usado por dos buceadores compartiendo una sola
+ botella  tras una situación de perdida de gas.
+ * *Tiempo de resolución*. Esta es una estimación del tiempo que llevaría
+ solucionar el problema acaecido antes de iniciar el ascenso para terminar la
+ inmersión. El valor por defecto es de 2 minutos.
+
+Utilizando la información comentada, el planificador estima la presión mínima
+de gas de fondo necesaria para poder efectuar un ascenso seguro. Esta
+a información se presenta cerca del final de los _Detalles del plan de
+inmersión_, tras el cálculo de gas de fondo necesario para el buceo si se
+completase el plan. El gas mínimo se presenta como:
+
+	Minimum gas (based on 2.0xSAC/+1min@81m): 2130 l/90bar/Δ:+80bar
+
+Esto significa:
+
+ * Entre paréntesis, el *Factor del CAS* y el *Tiempo de resolución*
+   indicados.
+ * Los litros de gas requeridos para un ascenso seguro (2130 litros en el
+   ejemplo)
+ * Los bares de gas necesarios para efectuar un ascenso seguro (90 bars en el
+   ejemplo anterior)
+ * El valor-delta: número de bares de gas de fondo disponibles al final del
+   tiempo en fondo, _por encima o por debajo_ del mínimo necesario (80 bares
+   en el ejemplo anterior). Un valor positivo indica un plan seguro, Un valor
+   negativo reflejaría insuficiente gas para efectuar un ascenso seguro.
+
+****
+[icon="images/icons/warning2.png"]
+[WARNING]
+Las *Variaciones del plan* y el *gas mínimo* estimados son solo guías para un
+buceador haciendo tareas de planificación de inmersiones y se  supone que
+mejora la seguridad de un plan de buceo concreto. No son precisos ni deben
+tomarse como las únicas medidas de seguridad al planificar una inmersión.
+Interpreta estas estimaciones en el marco de tu entrenamiento formal para
+planificar inmersiones.
+****
 
 === Planificar inmersiones con pSCR
 
@@ -4053,7 +4290,7 @@ buceo con pSCR. El buceo es comparable al anterior con CCR, pero hay que hacer
 notar la mayor duración del ascenso debido al menor contenido de oxígeno en el
 circuito por la caída de oxígeno en la boquilla del equipo pSCR.
 
-image::images/Planner_pSCR1_f20.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
 
 === Planificar inmersiones con CCR
 
@@ -4080,7 +4317,7 @@ pero, desde luego, lo hace para ascensos de emergencia en circuito abierto.
 
 El perfil para una inmersión con CCR puede parecerse a la imagen a continuación
 
-image::images/Planner_CCR1_f20.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
+image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center"]
 
 Fíjate que, en los _Detalles del plan de buceo_, no se calcula el consumo de
 gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.
