@@ -37,8 +37,13 @@ Item {
 		property real newZoom: 1.0
 		property real newZoomOut: 1.0
 		property var clickCoord: QtPositioning.coordinate(0, 0)
+		property bool isReady: false
 
-		onZoomLevelChanged: mapHelper.calculateSmallCircleRadius(map.center)
+		Component.onCompleted: isReady = true
+		onZoomLevelChanged: {
+			if (isReady)
+				mapHelper.calculateSmallCircleRadius(map.center)
+		}
 
 		MapItemView {
 			id: mapItemView
