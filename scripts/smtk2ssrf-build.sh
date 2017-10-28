@@ -38,6 +38,17 @@ function aborting() {
 	exit 1
 }
 
+printf "
+*****  WARNING  *****
+Please, note that this script will render your Subsurface binary unusable.
+So, if you are using the binary placed in build directory, you will need
+to rebuild it after running this script.
+
+Proceed? [y/n]\n"
+
+read -rs _proceed
+[[ $_proceed == "n" ]] && exit 0
+
 # check for arguments and set options if any
 #
 while [ $# -gt 0 ]; do
@@ -67,17 +78,18 @@ export PKG_CONFIG_PATH="$BASEDIR/install-root/lib/pkgconfig"
 # Check if we have glib-2.0 installed. This is a dependency for
 # mdbtools.
 #
-pkg-config --exists glib-2.0
-[[ $? -ne 0 ]] && aborting "Glib-2.0 not installed" || \
+if ! pkg-config --exists glib-2.0; then
+	aborting "Glib-2.0 not installed"
+else
 	echo "----> Glib-2.0 exists: $(pkg-config --print-provides glib-2.0)"
+fi
 
 # Mdbtools
 #
 # Check if mdbtools devel package is avaliable, if it is not, download
 # and build it.
 #
-pkg-config --exists libmdb
-if [ $? -ne 0 ]; then
+if ! pkg-config --exists libmdb; then
 	echo "----> Downloading/Updating mdbtools "
 	if [ -d "$BASEDIR"/mdbtools ]; then
 		cd "$BASEDIR"/mdbtools || aborting "Couldn't cd into $BASEDIR/mdbtools"
@@ -157,6 +169,7 @@ cmake -DCMAKE_BUILD_TYPE="$RELEASE" .. || aborting "Cmake incomplete"
 
 make "$JOBS" || aborting "Failed to build smtk2ssrf"
 
-echo ">> Building smtk2ssrf completed <<"
-echo ">> Executable placed in  $SSRF_PATH/smtk-import/build <<"
-echo ">> To install system-wide, move there and run sudo make install <<"
+printf "
+>> Building smtk2ssrf completed <<
+>> Executable placed in  %s/smtk-import/build <<
+>> To install system-wide, move there and run sudo make install <<\n" "$SSRF_PATH"
