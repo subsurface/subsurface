@@ -1067,7 +1067,6 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
 	}
 
-
 	create_dive_from_plan(diveplan, dive, is_planner);
 	add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 	fixup_dc_duration(&dive->dc);
