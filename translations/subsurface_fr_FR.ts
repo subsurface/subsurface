@@ -378,6 +378,14 @@
     </message>
 </context>
 <context>
+    <name>CloudStorageAuthenticate</name>
+    <message>
+        <location filename="../core/cloudstorage.cpp" line="65"/>
+        <source>Cloud account verification required, enter PIN in preferences</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ColumnNameProvider</name>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="46"/>
@@ -1785,27 +1793,27 @@
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="260"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="259"/>
         <source>Clicking here will remove this cylinder.</source>
         <translation>Retirer ce bloc.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="272"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="271"/>
         <source>Switch depth for deco gas. Calculated using Deco pO₂ preference, unless set manually.</source>
         <translation>Profondeur de changement pour le gaz de déco. Calculé en utilisant les préférences de pO2 de déco, à moins qu&apos;elle ne soit définie manuellement.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="275"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="274"/>
         <source>Calculated using Bottom pO₂ preference. Setting MOD adjusts O₂%, set to &apos;*&apos; for best O₂% for max. depth.</source>
         <translation>Calculé en utilisant les préférences de pO2 de fond. La modification du MOD ajuste le taux d&apos;O₂ sur &apos;*&apos;  permettant un meilleur taux à la profondeur max.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="278"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="277"/>
         <source>Calculated using Best Mix END preference. Setting MND adjusts He%, set to &apos;*&apos; for best He% for max. depth.</source>
         <translation>Calculé en utilisant les préférences du Meilleur Mélange du END. La modification du MND ajuste le taux d&apos;He sur &apos;*&apos;  permettant un meilleur taux à la profondeur max.</translation>
     </message>
     <message>
-        <location filename="../qt-models/cylindermodel.cpp" line="258"/>
+        <location filename="../qt-models/cylindermodel.cpp" line="257"/>
         <source>This gas is in use. Only cylinders that are not used in the dive can be removed.</source>
         <translation>Ce gaz est utilisé. Seuls les blocs qui ne sont pas utilisés dans la plongée peuvent être retirés.</translation>
     </message>
@@ -2174,23 +2182,23 @@ GPS actuelle :</translation>
     <name>DiveList</name>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="13"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="282"/>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="288"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="281"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="287"/>
         <source>Dive list</source>
         <translation>Liste de plongée</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="278"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="277"/>
         <source>Cloud credentials</source>
         <translation>Informations de connexion pour le cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="284"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="283"/>
         <source>Please tap the &apos;+&apos; button to add a dive (or download dives from a supported dive computer)</source>
         <translation>Veuillez cliquer sur le bouton &apos;+&apos; pour ajouter une plongée (ou télécharger des plongées depuis un ordinateur supporté)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveList.qml" line="309"/>
+        <location filename="../mobile-widgets/qml/DiveList.qml" line="308"/>
         <source>No dives in dive list</source>
         <translation>Aucune plongée dans la liste de plongée</translation>
     </message>
@@ -2198,102 +2206,102 @@ GPS actuelle :</translation>
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="847"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="856"/>
         <source>Expand all</source>
         <translation>Tout déplier</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="849"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="858"/>
         <source>Collapse all</source>
         <translation>Tout replier</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="853"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="862"/>
         <source>Collapse others</source>
         <translation>Replier les autres</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="857"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="866"/>
         <source>Remove dive(s) from trip</source>
         <translation>Supprimer la plongée(s) du voyage</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="858"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="867"/>
         <source>Create new trip above</source>
         <translation>Créer un nouveau voyage au-dessus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="872"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="881"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation>Ajouter la(les) plongée(s) au voyage immédiatement au dessus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="874"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="883"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation>Ajouter la (les) plongée(s) au voyage immédiatement ci-dessous</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="878"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="887"/>
         <source>Merge trip with trip above</source>
         <translation>Fusionner le voyage avec le voyage du dessus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="879"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="888"/>
         <source>Merge trip with trip below</source>
         <translation>Fusionner le groupe avec le voyage du dessous</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="883"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="892"/>
         <source>Delete dive(s)</source>
         <translation>Effacer des plongée(s)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="885"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="894"/>
         <source>Mark dive(s) invalid</source>
         <translation>Marquer des plongée(s) comme invalides</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="889"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="898"/>
         <source>Merge selected dives</source>
         <translation>Fusionner les plongées sélectionnées</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="891"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
         <source>Renumber dive(s)</source>
         <translation>Renuméroter des plongée(s)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="892"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="901"/>
         <source>Shift dive times</source>
         <translation>Décaler l&apos;heure des plongées</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="893"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="902"/>
         <source>Split selected dives</source>
         <translation>Diviser les plongées sélectionnées</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="894"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="903"/>
         <source>Load image(s) from file(s)</source>
         <translation>Charger le(s) image(s) à partir du(des) fichier(s)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="904"/>
         <source>Load image from web</source>
         <translation>Charger l&apos;image depuis le web</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="921"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="930"/>
         <source>Image files (%1)</source>
         <translation>Fichiers images (%1)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="977"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="986"/>
         <source>%1 does not appear to be an image</source>
         <translation>%1 ne semble pas être une image</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="919"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="928"/>
         <source>Open image files</source>
         <translation>Ouvrir les fichiers images</translation>
     </message>
@@ -3365,82 +3373,82 @@ p, li { white-space: pre-wrap; }
         <translation>erreur lors de l&apos;écriture du fichier zip : %s erreur zip %d erreur système %d - %s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="758"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="757"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="948"/>
         <source>Done</source>
         <translation>Terminé</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="792"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="791"/>
         <source>Uploading dive list...</source>
         <translation>Envoi de la liste des plongées</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="824"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="823"/>
         <source>Downloading dive list...</source>
         <translation>Téléchargement de la liste des plongées...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="865"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="864"/>
         <source>Downloading %1 dives...</source>
         <translation>Téléchargement en cours de %1 plongées...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="899"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="898"/>
         <source>Download finished - %1</source>
         <translation>Téléchargement terminé - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="913"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="912"/>
         <source>Problem with download</source>
         <translation>Erreur de téléchargement</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="914"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="913"/>
         <source>The archive could not be opened:
 </source>
         <translation>L&apos;archive n&apos;a pas pu être ouverte :
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="923"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="922"/>
         <source>Corrupted download</source>
         <translation>Téléchargement corrompu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="924"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="923"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>L&apos;archive ne peut pas être ouverte :
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="950"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
         <source>Upload finished</source>
         <translation>Envoi terminé</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="963"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="962"/>
         <source>Upload failed</source>
         <translation>Échec de l&apos;envoi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="966"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="965"/>
         <source>Upload successful</source>
         <translation>Envoi terminé avec succès</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="969"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="968"/>
         <source>Login failed</source>
         <translation>Échec de connexion</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="972"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
         <source>Cannot parse response</source>
         <translation>Impossible d&apos;analyser la réponse</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="984"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="983"/>
         <source>Error: %1</source>
         <translation>Erreur : %1</translation>
     </message>
@@ -3657,17 +3665,17 @@ p, li { white-space: pre-wrap; }
         <translation>Info :</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="254"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="256"/>
         <source>Accept</source>
         <translation>Accepter</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="271"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="273"/>
         <source>Select All</source>
         <translation>Tout sélectionner</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="279"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="281"/>
         <source>Unselect All</source>
         <translation>Tout désélectionner</translation>
     </message>
@@ -3698,12 +3706,12 @@ p, li { white-space: pre-wrap; }
         <translation>Se connecter à Facebook</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="324"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="330"/>
         <source>To disconnect Subsurface from your Facebook account, use the &apos;Share on&apos; menu entry.</source>
         <translation>Déconnectez-vous de Facebook en utilisant le menu &apos;Partager sur&apos;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="335"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="341"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
         <translation>Identifiez-vous à Facebook afin de publier vos plongées sur votre profil</translation>
     </message>
@@ -3711,22 +3719,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FacebookManager</name>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="187"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="193"/>
         <source>Facebook logged in successfully</source>
         <translation>Connexion à Facebook réussie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="190"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="196"/>
         <source>Error, unknown user id, cannot login.</source>
         <translation>Erreur, identifiant inconnu, impossible de se connecter.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="288"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="294"/>
         <source>Dive uploaded successfully to Facebook</source>
         <translation>Plongée envoyée avec succès à Facebook</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="290"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="296"/>
         <source>Dive upload failed. Please see debug output and send to Subsurface mailing list</source>
         <translation>Échec de l&apos;envoi de la plongée. Veuillez vérifier les informations de débogage et les envoyer à liste de diffusion de Subsurface</translation>
     </message>
@@ -4291,7 +4299,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="171"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="517"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="533"/>
         <source>Open</source>
         <translation>Ouvrir</translation>
     </message>
@@ -4587,13 +4595,13 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="698"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="227"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="236"/>
         <source>&amp;Undo</source>
         <translation>&amp;Annuler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="706"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="228"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="237"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refaire</translation>
     </message>
@@ -4633,63 +4641,63 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
         <translation>Passer en mode hors-ligne</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="327"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="363"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="344"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="380"/>
         <source>Connect to</source>
         <translation>Se connecter à</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="357"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="374"/>
         <source>Disconnect from</source>
         <translation>Se déconnecter de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="508"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="553"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1586"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="524"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="569"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1597"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Veuillez enregistrer ou annuler vos modifications en cours avant d&apos;ouvrir un nouveau fichier.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="514"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="530"/>
         <source>Open file</source>
         <translation>Ouvrir un fichier</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="518"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="635"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="534"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="646"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="2019"/>
         <source>Cancel</source>
         <translation>Annuler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="586"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="601"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>Ne pas enregistrer un journal vide dans le cloud</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="642"/>
         <source>Traverse image directories</source>
         <translation>Traverser les dossiers d&apos;images</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="645"/>
         <source>Scan</source>
         <translation>Scanner</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="642"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="653"/>
         <source>Scanning images...(this can take a while)</source>
         <translation>Analyse des images ... (merci de patienter)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="584"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="668"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="814"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="924"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1009"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1015"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1890"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="825"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="935"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1020"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1026"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1882"/>
         <source>Warning</source>
         <translation>Avertissement</translation>
     </message>
@@ -4699,100 +4707,100 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
         <translation>Tentative de fusion des plongées compris dans un intervalle de temps de %1 minutes</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="693"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="704"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Veuillez enregistrer ou annuler vos modifications en cours avant de fermer le fichier.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="814"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="825"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Veuillez enregistrer ou annuler vos modifications en cours avant d&apos;ajouter une nouvelle plongée.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="866"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="877"/>
         <source>Print runtime table</source>
         <translation>Imprimer le tableau de runtime</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="924"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="935"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Tentative de replanification d&apos;une plongée qui n&apos;est pas une plongée planifiée.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1009"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1890"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1020"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1882"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Merci de finir l&apos;édition en cours avant d&apos;en commencer une autre.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1015"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1026"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation>Tentative de modification d&apos;une plongée qui n&apos;a pas été ajoutée manuellement.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1062"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1073"/>
         <source>Yearly statistics</source>
         <translation>Statistiques annuelles</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1285"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1296"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Voulez-vous enregistrer les modifications du fichier %1 ?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1288"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1299"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Voulez-vous enregistrer les modifications du fichier de données ?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1293"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1304"/>
         <source>Save changes?</source>
         <translation>Enregistrer les modifications ?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1294"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1305"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Les modifications seront perdues si vous ne les enregistrez pas.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1613"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1624"/>
         <source>Save file as</source>
         <translation>Enregistrer le fichier sous</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1614"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1625"/>
         <source>Subsurface XML files (*.ssrf *.xml *.XML)</source>
         <translation>Fichiers XML Subsurface (*.ssrf *.xml *.XML)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1711"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1712"/>
         <source>[local cache for] %1</source>
         <translation>[cache local pour] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1713"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1714"/>
         <source>[cloud storage for] %1</source>
         <translation>[stockage dans le cloud pour] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1829"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1821"/>
         <source>Opening datafile from older version</source>
         <translation>Ouverture du fichier de données à partir d&apos;une version antérieure</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1822"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Vous avez ouvert un fichier de données d&apos;une version plus ancienne de Subsurface. Nous vous recommandons de lire le manuel à propos des modifications apportées par la nouvelle version, particulièrement à propos de la gestion des sites de plongées qui a été grandement modifiée.
 Subsurface a déjà essayé de pré-remplir les données mais il est préférable que vous regardiez le nouveau système de gestion des sites de plongées pour vous assurer que tout est correct.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1841"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1833"/>
         <source>Open dive log file</source>
         <translation>Ouvrir le fichier de carnet de plongée</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1842"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1834"/>
         <source>Dive log files (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</source>
         <translation>Fichiers log de plongée (*.ssrf *.can *.csv *.db *.sql *.dld *.jlb *.lvd *.sde *.udcf *.uddf *.xml *.txt *.dlf *.apd *.zxu *.zxl*.SSRF *.CAN *.CSV *.DB *.SQL *.DLD *.JLB *.LVD *.SDE *.UDCF *.UDDF *.xml *.TXT *.DLF *.APD *.ZXU *.ZXL);;Cochran files (*.can *.CAN);;CSV files (*.csv *.CSV);;DiveLog.de files (*.dld *.DLD);;JDiveLog files (*.jlb *.JLB);;Liquivision files (*.lvd *.LVD);;MkVI files (*.txt *.TXT);;Suunto files (*.sde *.db *.SDE *.DB);;Divesoft files (*.dlf *.DLF);;UDDF/UDCF files (*.uddf *.udcf *.UDDF *.UDCF);;XML files (*.xml *.XML);;APD log viewer (*.apd *.APD);;Datatrak/WLog Files (*.log *.LOG);;OSTCtools Files (*.dive *.DIVE);;DAN DL7 (*.zxu *.zxl *.ZXU *.ZXL);;All files (*)</translation>
     </message>
@@ -4805,7 +4813,7 @@ Subsurface a déjà essayé de pré-remplir les données mais il est préférabl
 <context>
     <name>MapWidget</name>
     <message>
-        <location filename="../mobile-widgets/qml/MapWidget.qml" line="256"/>
+        <location filename="../mobile-widgets/qml/MapWidget.qml" line="259"/>
         <source>Drag the selected dive location</source>
         <translation>Déplacer le lieu de plongée sélectionné</translation>
     </message>
@@ -5123,32 +5131,12 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="20"/>
-        <source>Dive site geo lookup</source>
-        <translation>Recherche géographique du site de plongée</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="26"/>
-        <source>Enable geocoding for dive site management</source>
-        <translation>Activer le géocodage pour la gestion des sites de plongées</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="33"/>
-        <source>Parse site without GPS data</source>
-        <translation>Analyser les sites sans données GPS</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="40"/>
-        <source>Same format for existing dives</source>
-        <translation>Même format pour les plongées existantes</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="50"/>
         <source>Dive site layout</source>
         <translation>Structure des sites de plongées</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="72"/>
-        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="89"/>
+        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="42"/>
+        <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="59"/>
         <source>/</source>
         <translation>/</translation>
     </message>
@@ -5452,7 +5440,7 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="156"/>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="139"/>
         <source>Subsurface cloud storage</source>
         <translation>Stockage Subsurface dans le cloud</translation>
     </message>
@@ -5532,6 +5520,16 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="133"/>
         <source>Subsurface cloud storage (credentials verified)</source>
         <translation>Stockage Subsurface dans le cloud (Informations de connexion vérifiés)</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
+        <source>Subsurface cloud storage (incorrect password)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
+        <source>Subsurface cloud storage (PIN required)</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5847,17 +5845,17 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation>L&apos;affichage de la LND/DTR est désactivée à cause d&apos;un temps de calcul excessif</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1402"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1401"/>
         <source>Add gas change</source>
         <translation>Ajouter un changement de gaz</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
         <source> (Tank %1)</source>
         <translation> (Bloc %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1388"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1387"/>
         <source>Make first dive computer</source>
         <translation>Choisir comme odinateur principale</translation>
     </message>
@@ -5872,83 +5870,83 @@ Voir : http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <translation>Plongée ajoutée manuellement </translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1390"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1389"/>
         <source>Delete this dive computer</source>
         <translation>Supprimer cet ordinateur de plongée</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1411"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1410"/>
         <source>Add setpoint change</source>
         <translation>Ajouter un changement de setpoint</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1413"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1412"/>
         <source>Add bookmark</source>
         <translation>Ajouter un signet</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1417"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1416"/>
         <source>Edit the profile</source>
         <translation>Modifier le profil</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1420"/>
         <source>Remove event</source>
         <translation>Supprimer l&apos;évènement</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1426"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1425"/>
         <source>Hide similar events</source>
         <translation>Masquer les évènements similaires</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1433"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Edit name</source>
         <translation>Modifier le nom</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1464"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1471"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1463"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Adjust pressure of tank %1 (currently interpolated as %2)</source>
         <translation>Ajuster la pression du bloc %1 (actuellement interpolé comme %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1486"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1485"/>
         <source>Unhide all events</source>
         <translation>Afficher tous les évènements</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1521"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Hide events</source>
         <translation>Masquer les évènements</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1521"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Hide all %1 events?</source>
         <translation>Masquer tous les évènements %1 ?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1556"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1555"/>
         <source>Remove the selected event?</source>
         <translation>Supprimer l&apos;évènement sélectionné ?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1557"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1556"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1680"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1679"/>
         <source>Edit name of bookmark</source>
         <translation>Modifier le nom du signet</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1681"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1680"/>
         <source>Custom name:</source>
         <translation>Nom personnalisé :</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1686"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1685"/>
         <source>Name is too long!</source>
         <translation>Le nom est trop long !</translation>
     </message>
@@ -6679,64 +6677,64 @@ Fichiers avec dates/heures incorrectes</translation>
 <context>
     <name>SocialNetworkDialog</name>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="364"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="370"/>
         <source>Small</source>
         <translation>Petit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="365"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="371"/>
         <source>Medium</source>
         <translation>Moyen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="385"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="391"/>
         <source>Dive date: %1 
 </source>
         <translation>Date de plongée : %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="388"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="394"/>
         <source>Duration: %1 
 </source>
         <translation>Durée : %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="389"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="395"/>
         <source>h</source>
         <comment>abbreviation for hours</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="390"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="396"/>
         <source>min</source>
         <comment>abbreviation for minutes</comment>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="393"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="399"/>
         <source>Dive location: %1 
 </source>
         <translation>Lieu de plongée : %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="396"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="402"/>
         <source>Buddy: %1 
 </source>
         <translation>Équipier(s) : %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="399"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="405"/>
         <source>Divemaster: %1 
 </source>
         <translation>Guide/Moniteur : %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="402"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="408"/>
         <source>
 %1</source>
         <translation>
@@ -7459,7 +7457,7 @@ mélangés à partir de l&apos;air et en utilisant :
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="728"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="729"/>
         <source>%1click to visit %2</source>
         <translation>%1cliquer pour visiter %2</translation>
     </message>
@@ -8740,7 +8738,7 @@ Maximum</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="239"/>
-        <location filename="../core/parse-xml.c" line="3475"/>
+        <location filename="../core/parse-xml.c" line="3476"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>inconnu</translation>
@@ -9000,7 +8998,7 @@ Vous pouvez créer ce fichier log en sélectionnant la case correspondante dans 
         <translation>Impossible d&apos;analyser &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="3997"/>
+        <location filename="../core/parse-xml.c" line="3998"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Impossible d&apos;ouvrir le feuille de style %s</translation>
     </message>
@@ -9049,6 +9047,11 @@ Vous pouvez créer ce fichier log en sélectionnant la case correspondante dans 
         <location filename="../core/plannernotes.c" line="92"/>
         <source>dive plan&lt;/b&gt; (Overlapping dives detected)</source>
         <translation>Planification de la plongée&lt;/b&gt;(Chevauchement de plongées détecté)</translation>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.c" line="114"/>
+        <source>Runtime: %dmin %s</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="117"/>
@@ -9173,11 +9176,6 @@ Vous pouvez créer ce fichier log en sélectionnant la case correspondante dans 
         <location filename="../core/plannernotes.c" line="101"/>
         <source>dive plan&lt;/b&gt; created on</source>
         <translation>Plannification de la plongée &lt;/b&gt; crée le</translation>
-    </message>
-    <message>
-        <location filename="../core/plannernotes.c" line="114"/>
-        <source>Runtime: %dmin VARIATIONS&lt;br&gt;&lt;/div&gt;</source>
-        <translation>Runtime : %dmin VARIATIONS&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="333"/>
@@ -9852,6 +9850,31 @@ EADD : %d%s / %.1fg/ℓ
         <translation>État de plongée</translation>
     </message>
     <message>
+        <location filename="../core/statistics.c" line="142"/>
+        <source>All (by type stats)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/statistics.c" line="144"/>
+        <source>OC</source>
+        <translation>OC</translation>
+    </message>
+    <message>
+        <location filename="../core/statistics.c" line="146"/>
+        <source>CCR</source>
+        <translation>CCR (Recycleur)</translation>
+    </message>
+    <message>
+        <location filename="../core/statistics.c" line="148"/>
+        <source>pSCR</source>
+        <translation>pSCR</translation>
+    </message>
+    <message>
+        <location filename="../core/statistics.c" line="150"/>
+        <source>Freedive</source>
+        <translation>Apnée</translation>
+    </message>
+    <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
         <translation>Tous (stats des voyages)</translation>
@@ -9887,97 +9910,97 @@ EADD : %d%s / %.1fg/ℓ
         <translation>(pas de plongées)</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Sun</source>
         <translation>Dim.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Mon</source>
         <translation>Lun.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Tue</source>
         <translation>Mar.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Wed</source>
         <translation>Mer.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Thu</source>
         <translation>Jeu.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Fri</source>
         <translation>Ven.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="131"/>
         <source>Sat</source>
         <translation>Sam.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="140"/>
         <source>Jan</source>
         <translation>Janv.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="140"/>
         <source>Feb</source>
         <translation>Fév.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="140"/>
         <source>Mar</source>
         <translation>Mar.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="140"/>
         <source>Apr</source>
         <translation>Avril</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="140"/>
         <source>May</source>
         <translation>Mai</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="143"/>
+        <location filename="../core/subsurfacestartup.c" line="140"/>
         <source>Jun</source>
         <translation>Juin</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="144"/>
+        <location filename="../core/subsurfacestartup.c" line="141"/>
         <source>Jul</source>
         <translation>Juil.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="144"/>
+        <location filename="../core/subsurfacestartup.c" line="141"/>
         <source>Aug</source>
         <translation>Août</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="144"/>
+        <location filename="../core/subsurfacestartup.c" line="141"/>
         <source>Sep</source>
         <translation>Sept.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="144"/>
+        <location filename="../core/subsurfacestartup.c" line="141"/>
         <source>Oct</source>
         <translation>Oct.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="144"/>
+        <location filename="../core/subsurfacestartup.c" line="141"/>
         <source>Nov</source>
         <translation>Nov.</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="144"/>
+        <location filename="../core/subsurfacestartup.c" line="141"/>
         <source>Dec</source>
         <translation>Déc.</translation>
     </message>
@@ -10353,22 +10376,22 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
         <translation>Ville</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="985"/>
+        <location filename="../core/save-git.c" line="955"/>
         <source>Start saving data</source>
         <translation>Début de la sauvegarde des données</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="994"/>
+        <location filename="../core/save-git.c" line="964"/>
         <source>Start saving dives</source>
         <translation>Début de la sauvegarde des plongées</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1027"/>
+        <location filename="../core/save-git.c" line="997"/>
         <source>Done creating local cache</source>
         <translation>Cache local crée</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1258"/>
+        <location filename="../core/save-git.c" line="1237"/>
         <source>Preparing to save data</source>
         <translation>Préparation de la sauvegarde des données</translation>
     </message>
