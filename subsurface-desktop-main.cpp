@@ -51,8 +51,6 @@ int main(int argc, char **argv)
 		subsurface_console_init(dedicated_console, false);
 	}
 
-	validateGL();
-
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
 	subsurface_mkdir(default_directory);
@@ -77,6 +75,7 @@ int main(int argc, char **argv)
 		printf("If you insist to do so, run with option --allow_run_as_root.\n");
 		exit(0);
 	}
+	validateGL();
 #if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
 	git_threads_init();
 #else
@@ -137,6 +136,8 @@ bool haveFilesOnCommandLine()
 	return filesOnCommandLine;
 }
 
+#define VALIDATE_GL_PREFIX  "validateGL(): "
+
 void validateGL()
 {
 	GLint verMajor, verMinor;
@@ -151,30 +152,37 @@ void validateGL()
 		glError = "Cannot create OpenGL context";
 		goto exit;
 	}
+	if (verbose)
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "created OpenGLContext.").toUtf8().data();
 	ctx.makeCurrent(&surface);
 	func = ctx.functions();
 	if (!func) {
 		glError = "Cannot obtain QOpenGLFunctions";
 		goto exit;
 	}
+	if (verbose)
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.").toUtf8().data();
 	func->glGetIntegerv(GL_MAJOR_VERSION, &verMajor);
 	func->glGetIntegerv(GL_MINOR_VERSION, &verMinor);
-	if (verMajor * 10 + verMinor < 21) // set 2.1 as the minimal version
+	if (verbose)
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "detected OpenGL version %1.%2.").arg(verMajor).arg(verMinor).toUtf8().data();
+	if (verMajor * 10 + verMinor < 21) { // set 2.1 as the minimal version
 		glError = "OpenGL 2.1 or later is required";
+		goto exit;
+	}
 
 exit:
 	ctx.makeCurrent(NULL);
 	surface.destroy();
 	if (glError) {
 #if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
-		fprintf(stderr, "ERROR: %s.\n"
+		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "ERROR: %1.\n"
 			"Cannot automatically fallback to a software renderer!\n"
 			"Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
-			"before running Subsurface!\n",
-			glError);
+			"before running Subsurface!").arg(glError).toUtf8().data();
 		exit(0);
 #else
-		fprintf(stderr, "WARNING: %s. Using a software renderer!\n", glError);
+		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError).toUtf8().data();
 		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
 #endif
 	}
