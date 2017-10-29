@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.4
+import QtQuick 2.6
 import QtQuick.Controls 2.0
 import QtQuick.Controls.Material 2.1
 import QtQuick.Window 2.2
