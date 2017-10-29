@@ -2,7 +2,8 @@
 # This script is meant to run from src directory in the same fashion than
 # subsurface/scripts/build.sh
 #
-# Flags:	-t (--tag) A git valid tag, commit, etc in subsurface tree
+# Flags:	-c (--cli) Build commandline version (no graphics)
+#		-t (--tag) A git valid tag, commit, etc in subsurface tree
 #		-j (--jobs) Desired build parallelism, integer.
 #		-b (--build) Cmake build type, valid values Debug or Release
 # Examples:
@@ -53,6 +54,8 @@ read -rs _proceed
 #
 while [ $# -gt 0 ]; do
 	case $1 in
+		-c|--cli)	CLI="ON"
+				;;
 		-t|--tag)	SSRF_TAG="$2"
 				shift;;
 		-j|--jobs)	JOBS=-j"$2"
@@ -164,7 +167,9 @@ cd "$SSRF_PATH"/smtk-import || aborting "Couldnt cd into $SSRF_PATH/smtk-import"
 mkdir -p build
 cd build || aborting "Couldn't cd into $SSRF_PATH/smtk-import/build"
 
-cmake -DCMAKE_BUILD_TYPE="$RELEASE" .. || aborting "Cmake incomplete"
+cmake  -DCMAKE_BUILD_TYPE="$RELEASE" \
+       -DCOMMANDLINE=${CLI:-OFF} \
+       .. || aborting "Cmake incomplete"
 
 make "$JOBS" || aborting "Failed to build smtk2ssrf"
 
