@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-import QtQuick 2.0
+import QtQuick 2.6
 
 Item {
 	Text {
