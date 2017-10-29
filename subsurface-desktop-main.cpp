@@ -21,9 +21,14 @@
 #include <QStringList>
 #include <QApplication>
 #include <QLoggingCategory>
+#include <QOpenGLContext>
+#include <QOffscreenSurface>
+#include <QOpenGLFunctions>
+#include <QQuickWindow>
 #include <git2.h>
 
 static bool filesOnCommandLine = false;
+static void validateGL();
 
 int main(int argc, char **argv)
 {
@@ -45,6 +50,8 @@ int main(int argc, char **argv)
 			(arguments.at(1) == QString("--win32console"));
 		subsurface_console_init(dedicated_console, false);
 	}
+
+	validateGL();
 
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
@@ -128,4 +135,47 @@ int main(int argc, char **argv)
 bool haveFilesOnCommandLine()
 {
 	return filesOnCommandLine;
+}
+
+void validateGL()
+{
+	GLint verMajor, verMinor;
+	const char *glError = NULL;
+	QOpenGLContext ctx;
+	QOffscreenSurface surface;
+	QOpenGLFunctions *func;
+
+	surface.setFormat(ctx.format());
+	surface.create();
+	if (!ctx.create()) {
+		glError = "Cannot create OpenGL context";
+		goto exit;
+	}
+	ctx.makeCurrent(&surface);
+	func = ctx.functions();
+	if (!func) {
+		glError = "Cannot obtain QOpenGLFunctions";
+		goto exit;
+	}
+	func->glGetIntegerv(GL_MAJOR_VERSION, &verMajor);
+	func->glGetIntegerv(GL_MINOR_VERSION, &verMinor);
+	if (verMajor * 10 + verMinor < 21) // set 2.1 as the minimal version
+		glError = "OpenGL 2.1 or later is required";
+
+exit:
+	ctx.makeCurrent(NULL);
+	surface.destroy();
+	if (glError) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
+		fprintf(stderr, "ERROR: %s.\n"
+			"Cannot automatically fallback to a software renderer!\n"
+			"Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
+			"before running Subsurface!\n",
+			glError);
+		exit(0);
+#else
+		fprintf(stderr, "WARNING: %s. Using a software renderer!\n", glError);
+		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+#endif
+	}
 }
