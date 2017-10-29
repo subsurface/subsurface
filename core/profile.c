@@ -1028,9 +1028,11 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 						if (first_iteration) {
 							nuclear_regeneration(t1);
 							vpmb_start_gradient();
-							/* For CVA calculations, start by guessing deco time = dive time remaining */
+							/* For CVA calculations, deco time = dive time remaining is a good guess,
+							   but we want to over-estimate deco_time for the first iteration so it
+							   converges correctly, so add 30min*/
 							if (!in_planner())
-								deco_time = pi->maxtime - t1;
+								deco_time = pi->maxtime - t1 + 1800;
 							vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
 						}
 					}
