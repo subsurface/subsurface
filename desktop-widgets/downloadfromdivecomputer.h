@@ -58,6 +58,7 @@ slots:
 private:
 	void markChildrenAsDisabled();
 	void markChildrenAsEnabled();
+	void updateDeviceEnabled();
 
 	Ui::DownloadFromDiveComputer ui;
 	DownloadThread thread;

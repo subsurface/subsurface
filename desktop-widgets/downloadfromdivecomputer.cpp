@@ -254,18 +254,7 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 
 void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product)
 {
-	// Set up the DC descriptor
-	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup[ui.vendor->currentText() + product];
-
-	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
-	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
-		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
-		ui.device->setEnabled(true);
-	} else {
-		// otherwise disable the device node box
-		ui.device->setEnabled(false);
-	}
+	updateDeviceEnabled();
 }
 
 void DownloadFromDCWidget::on_search_clicked()
@@ -485,6 +474,22 @@ void DownloadFromDCWidget::on_ok_clicked()
 	accept();
 }
 
+void DownloadFromDCWidget::updateDeviceEnabled()
+{
+	// Set up the DC descriptor
+	dc_descriptor_t *descriptor = NULL;
+	descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
+
+	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
+	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
+		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
+		ui.device->setEnabled(true);
+	} else {
+		// otherwise disable the device node box
+		ui.device->setEnabled(false);
+	}
+}
+
 void DownloadFromDCWidget::markChildrenAsDisabled()
 {
 	ui.device->setEnabled(false);
@@ -507,7 +512,7 @@ void DownloadFromDCWidget::markChildrenAsDisabled()
 
 void DownloadFromDCWidget::markChildrenAsEnabled()
 {
-	ui.device->setEnabled(true);
+	updateDeviceEnabled();
 	ui.vendor->setEnabled(true);
 	ui.product->setEnabled(true);
 	ui.forceDownload->setEnabled(true);
