@@ -37,6 +37,21 @@ static inline int same_string_caseinsensitive(const char *a, const char *b)
 	return !strcasecmp(a ?: "", b ?: "");
 }
 
+static inline int includes_string_caseinsensitive(const char *haystack, const char *needle)
+{
+	if (!needle)
+		return 1; /* every string includes the NULL string */
+	if (!haystack)
+		return 0; /* nothing is included in the NULL string */
+	int len = strlen(needle);
+	while (*haystack) {
+		if (strncasecmp(haystack, needle, len))
+			return 1;
+		haystack++;
+	}
+	return 0;
+}
+
 static inline char *copy_string(const char *s)
 {
 	return (s && *s) ? strdup(s) : NULL;
