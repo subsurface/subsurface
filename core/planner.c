@@ -659,7 +659,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	struct sample *sample;
 	int po2;
 	int transitiontime, gi;
-	int current_cylinder;
+	int current_cylinder, stopcylinder;
 	int stopidx;
 	int depth;
 	struct gaschanges *gaschanges = NULL;
@@ -992,7 +992,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 					pendinggaschange = false;
 				}
 
-				int new_clock = wait_until(dive, clock, clock, laststoptime * 2, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
+				int new_clock = wait_until(dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (clock >= 48 * 3600 && depth >= 6000) {
@@ -1001,6 +1001,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				}
 
 				o2breaking = false;
+				stopcylinder = current_cylinder;
 				if (prefs.doo2breaks) {
 					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
 					 * backgas.  This could be customized if there were demand.
@@ -1041,13 +1042,13 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						}
 					}
 				}
-				add_segment(depth_to_bar(depth, dive), &dive->cylinder[current_cylinder].gasmix,
+				add_segment(depth_to_bar(depth, dive), &dive->cylinder[stopcylinder].gasmix,
 					    laststoptime, po2, dive, prefs.decosac);
 				decostoptable[decostopcounter].depth = depth;
 				decostoptable[decostopcounter].time = laststoptime;
 				++decostopcounter;
 
-				clock = new_clock;
+				clock += laststoptime;
 				if (!o2breaking)
 					break;
 			}
