@@ -960,6 +960,8 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 	}
 
 	if (subsurface_stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
+		if (verbose)
+			fprintf(stderr, "loc %s wasn't found or is not a directory\n", loc);
 		free(loc);
 		free(branch);
 		return dummy_git_repository;
