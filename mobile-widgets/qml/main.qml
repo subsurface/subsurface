@@ -13,6 +13,7 @@ Kirigami.ApplicationWindow {
 	id: rootItem
 	title: qsTr("Subsurface-mobile")
 	reachableModeEnabled: false // while it's a good idea, it seems to confuse more than help
+	wideScreen: true // workaround for probably Kirigami bug. See commit.
 	header: Kirigami.ApplicationHeader {
 		minimumHeight: 0
 		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))

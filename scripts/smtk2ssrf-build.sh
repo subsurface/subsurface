@@ -2,7 +2,8 @@
 # This script is meant to run from src directory in the same fashion than
 # subsurface/scripts/build.sh
 #
-# Flags:	-t (--tag) A git valid tag, commit, etc in subsurface tree
+# Flags:	-c (--cli) Build commandline version (no graphics)
+#		-t (--tag) A git valid tag, commit, etc in subsurface tree
 #		-j (--jobs) Desired build parallelism, integer.
 #		-b (--build) Cmake build type, valid values Debug or Release
 # Examples:
@@ -38,10 +39,23 @@ function aborting() {
 	exit 1
 }
 
+printf "
+*****  WARNING  *****
+Please, note that this script will render your Subsurface binary unusable.
+So, if you are using the binary placed in build directory, you will need
+to rebuild it after running this script.
+
+Proceed? [y/n]\n"
+
+read -rs _proceed
+[[ $_proceed != "y" && $_proceed != "Y" ]] && exit 0
+
 # check for arguments and set options if any
 #
 while [ $# -gt 0 ]; do
 	case $1 in
+		-c|--cli)	CLI="ON"
+				;;
 		-t|--tag)	SSRF_TAG="$2"
 				shift;;
 		-j|--jobs)	JOBS=-j"$2"
@@ -67,17 +81,18 @@ export PKG_CONFIG_PATH="$BASEDIR/install-root/lib/pkgconfig"
 # Check if we have glib-2.0 installed. This is a dependency for
 # mdbtools.
 #
-pkg-config --exists glib-2.0
-[[ $? -ne 0 ]] && aborting "Glib-2.0 not installed" || \
+if ! pkg-config --exists glib-2.0; then
+	aborting "Glib-2.0 not installed"
+else
 	echo "----> Glib-2.0 exists: $(pkg-config --print-provides glib-2.0)"
+fi
 
 # Mdbtools
 #
 # Check if mdbtools devel package is avaliable, if it is not, download
 # and build it.
 #
-pkg-config --exists libmdb
-if [ $? -ne 0 ]; then
+if ! pkg-config --exists libmdb; then
 	echo "----> Downloading/Updating mdbtools "
 	if [ -d "$BASEDIR"/mdbtools ]; then
 		cd "$BASEDIR"/mdbtools || aborting "Couldn't cd into $BASEDIR/mdbtools"
@@ -98,28 +113,67 @@ else
 	echo "----> Mdbtools already installed: $(pkg-config --print-provides libmdb)"
 fi
 
-# We are done. Move on
-# No need to update subsurface sources, as it has been previously
-# done by build.sh
-#
-# Do we want to build a branch or commit other than the one used
-# for build.sh?
-#
+# Build bare metal Subsurface.
+# We are going to modify some of the building parameters of Subsurface so
+# will get a copy of the cmake cache to restore them after building smtk2ssrf.
+cd "$SSRF_PATH" || aborting "Couldn't cd into $SSRF_PATH"
+echo "----> Saving a copy of $SSRF_PATH/build/CMakeCache.txt"
+cp -vf "$SSRF_PATH/build/CMakeCache.txt" "$SSRF_PATH/build/CMakeCache.txt.bak"
 if [ ! "$SSRF_TAG" == "" ]; then
-	cd "$SSRF_PATH" || aborting "Couldn't cd into $SSRF_PATH"
-	git checkout "$SSRF_TAG" || aborting "Couldn't checkout $SSRF_TAG. Is it correct?"
+	PREV_GIT="$(git branch --no-color 2> /dev/null | sed -e '/^[^*]/d')"
+	PREV_GIT=${PREV_GIT##*\ }; PREV_GIT=${PREV_GIT%)}
+	git checkout "$SSRF_TAG" || STATUS=1
 fi
 
+# abort if git checkout failed
+if [ ! -z "$STATUS" ] && [ "$STATUS" -eq 1 ]; then
+	mv -f "$SSRF_PATH/build/CMakeCache.txt.bak" "$SSRF_PATH/build/CMakeCache.txt"
+	aborting "Couldn't checkout $SSRF_TAG. Is it correct?"
+fi
+
+cmake   -DBTSUPPORT=OFF \
+	-DCMAKE_BUILD_TYPE="$RELEASE" \
+	-DFBSUPPORT=OFF \
+	-DFORCE_LIBSSH=OFF \
+	-DFTDISUPPORT=OFF \
+	-DMAKE_TESTS=OFF \
+	-DNO_DOCS=ON \
+	-DNO_PRINTING=ON \
+	-DNO_USERMANUAL=ON \
+	-DUSE_WEBENGINE=OFF \
+	-DSUBSURFACE_TARGET_EXECUTABLE=DesktopExecutable \
+	build
+cd build || aborting "Couldn't cd into $SSRF_PATH/build directory"
+make clean
+make "$JOBS" || STATUS=1
+
+# Restore initial state of subsurface building system:
+echo "----> Restoring Subsurface tree state"
+[[ ! -z $PREV_GIT ]] && echo "------> Restoring git branch to - $PREV_GIT -" && \
+	git checkout "$PREV_GIT" >/dev/null
+echo "------> Restoring cmake cache" && \
+	mv -f "$SSRF_PATH/build/CMakeCache.txt.bak" "$SSRF_PATH/build/CMakeCache.txt"
+cmake .
+echo "----> Restored. Rebuild subsurface if needed"
+
+# Abort if failed to build subsurface
+[[ ! -z $STATUS ]] && [[ $STATUS -eq 1 ]] && aborting "Couldn't build Subsurface"
+
+# We are done. Move on
+#
 echo "----> Building smtk2ssrf SmartTrak divelogs importer"
 
 cd "$SSRF_PATH"/smtk-import || aborting "Couldnt cd into $SSRF_PATH/smtk-import"
 mkdir -p build
 cd build || aborting "Couldn't cd into $SSRF_PATH/smtk-import/build"
 
-cmake -DCMAKE_BUILD_TYPE="$RELEASE" .. || aborting "Cmake incomplete"
+cmake  -DCMAKE_BUILD_TYPE="$RELEASE" \
+       -DCOMMANDLINE=${CLI:-OFF} \
+       .. || aborting "Cmake incomplete"
 
 make "$JOBS" || aborting "Failed to build smtk2ssrf"
 
-echo ">> Building smtk2ssrf completed <<"
-echo ">> Executable placed in  $SSRF_PATH/smtk-import/build <<"
-echo ">> To install system-wide, move there and run sudo make install <<"
+printf "
+>> Building smtk2ssrf completed <<
+>> Executable placed in  %s/smtk-import/build <<
+>> To install system-wide, move there and run sudo make install <<\n" "$SSRF_PATH"

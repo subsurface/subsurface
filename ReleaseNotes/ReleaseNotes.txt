@@ -1,7 +1,27 @@
-// _Subsurface_ 4.7.1 Release Notes
+// _Subsurface_ 4.7.2 Release Notes
 
-_Subsurface_ 4.7.1 - October 2017
+_Subsurface_ 4.7.2 - November 2017
 ------------------------------------------
+
+Some of the changes since _Subsurface_ 4.7.1
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Fix potential crash when running with French localization and
+  downloading dives from a dive computer
+- Fallback to old behavior if Facebook album creation fails
+- Fix UI issue when adding dives to trip below
+- Fix UI issue when closing filters
+- Add small behavior changes to the map widget
+- Change to a more consistent way to show errors in Subsurface
+- Solve several potential issues with the cloud account authentication
+  flow
+- Fix a potential problem when saving data that was loaded from a git
+  repository into cloud storage
+- Fix error where newly created cloud accounts failed to create
+  the remote repository on Windows
+- Detect and try to work around the fact that the map module requires
+  at least OpenGL 2.1 (previously Subsurface would crash when OpenGL
+  was too old - often on old Win32 versions)
 
 Some of the changes since _Subsurface_ 4.6.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

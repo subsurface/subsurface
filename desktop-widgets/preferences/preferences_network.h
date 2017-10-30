@@ -19,7 +19,7 @@ public:
 
 public slots:
 	void proxyType_changed(int i);
-	void cloudPinNeeded();
+	void updateCloudAuthenticationState();
 
 private:
 	Ui::PreferencesNetwork *ui;

@@ -256,33 +256,21 @@ private:
 /* Control the state of the Geocoding preferences */
 class GeocodingPreferences : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool enable_geocoding       READ enableGeocoding        WRITE setEnableGeocoding        NOTIFY enableGeocodingChanged)
-	Q_PROPERTY(bool parse_dive_without_gps READ parseDiveWithoutGps    WRITE setParseDiveWithoutGps    NOTIFY parseDiveWithoutGpsChanged)
-	Q_PROPERTY(bool tag_existing_dives     READ tagExistingDives       WRITE setTagExistingDives       NOTIFY tagExistingDivesChanged)
 	Q_PROPERTY(taxonomy_category first_category     READ firstTaxonomyCategory  WRITE setFirstTaxonomyCategory  NOTIFY firstTaxonomyCategoryChanged)
 	Q_PROPERTY(taxonomy_category second_category    READ secondTaxonomyCategory WRITE setSecondTaxonomyCategory NOTIFY secondTaxonomyCategoryChanged)
 	Q_PROPERTY(taxonomy_category third_category     READ thirdTaxonomyCategory  WRITE setThirdTaxonomyCategory  NOTIFY thirdTaxonomyCategoryChanged)
 public:
 	GeocodingPreferences(QObject *parent);
-	bool enableGeocoding() const;
-	bool parseDiveWithoutGps() const;
-	bool tagExistingDives() const;
 	taxonomy_category firstTaxonomyCategory() const;
 	taxonomy_category secondTaxonomyCategory() const;
 	taxonomy_category thirdTaxonomyCategory() const;
 
 public slots:
-	void setEnableGeocoding(bool value);
-	void setParseDiveWithoutGps(bool value);
-	void setTagExistingDives(bool value);
 	void setFirstTaxonomyCategory(taxonomy_category value);
 	void setSecondTaxonomyCategory(taxonomy_category value);
 	void setThirdTaxonomyCategory(taxonomy_category value);
 
 signals:
-	void enableGeocodingChanged(bool value);
-	void parseDiveWithoutGpsChanged(bool value);
-	void tagExistingDivesChanged(bool value);
 	void firstTaxonomyCategoryChanged(taxonomy_category value);
 	void secondTaxonomyCategoryChanged(taxonomy_category value);
 	void thirdTaxonomyCategoryChanged(taxonomy_category value);

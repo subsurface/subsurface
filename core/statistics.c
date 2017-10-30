@@ -139,15 +139,15 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 
 	/* Setting the is_trip to true to show the location as first
 	 * field in the statistics window */
-	stats_by_type[0].location = strdup("All (by type stats)");
+	stats_by_type[0].location = strdup(translate("gettextFromC", "All (by type stats)"));
 	stats_by_type[0].is_trip = true;
-	stats_by_type[1].location = strdup("OC");
+	stats_by_type[1].location = strdup(translate("gettextFromC","OC"));
 	stats_by_type[1].is_trip = true;
-	stats_by_type[2].location = strdup("CCR");
+	stats_by_type[2].location = strdup(translate("gettextFromC","CCR"));
 	stats_by_type[2].is_trip = true;
-	stats_by_type[3].location = strdup("pSCR");
+	stats_by_type[3].location = strdup(translate("gettextFromC","pSCR"));
 	stats_by_type[3].is_trip = true;
-	stats_by_type[4].location = strdup("Freedive");
+	stats_by_type[4].location = strdup(translate("gettextFromC","Freedive"));
 	stats_by_type[4].is_trip = true;
 
 	/* this relies on the fact that the dives in the dive_table

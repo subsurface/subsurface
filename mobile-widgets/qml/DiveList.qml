@@ -185,7 +185,7 @@ Kirigami.ScrollablePage {
 	Component {
 		id: tripHeading
 		Item {
-			width: page.width - Kirigami.Units.gridUnit
+			width: page.width
 			height: childrenRect.height - Kirigami.Units.smallSpacing
 			Rectangle {
 				id: headingBackground
@@ -193,7 +193,6 @@ Kirigami.ScrollablePage {
 				anchors {
 					left: parent.left
 					right: parent.right
-					rightMargin: Kirigami.Units.gridUnit * -2
 				}
 				color: subsurfaceTheme.lightPrimaryColor
 				visible: section != ""

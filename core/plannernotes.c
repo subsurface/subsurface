@@ -111,8 +111,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	if (prefs.display_variations)
-		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin VARIATIONS<br></div>"),
-				diveplan_duration(diveplan));
+		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin %s"),
+				diveplan_duration(diveplan), "VARIATIONS<br></div>");
 	else
 		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin<br></div>"),
 				diveplan_duration(diveplan));
@@ -448,11 +448,18 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					}
 				}
 			/* Print the gas consumption for every cylinder here to temp buffer. */
-			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+			if (lrint(volume) > 0)
+				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+			else
+				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span>"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix));
 
 		} else {
-			snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s (%.0f%s during planned ascent) of <span style='color: red;'><b>%s</b></span>"),
-				volume, unit, deco_volume, unit, gasname(&cyl->gasmix));
+			if (lrint(volume) > 0)
+				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s during planned ascent)"),
+					volume, unit, gasname(&cyl->gasmix), deco_volume, unit);
+			else
+				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span>"),
+					volume, unit, gasname(&cyl->gasmix));
 		}
 		/* Gas consumption: Now finally print all strings to output */
 		len += snprintf(buffer + len, sz_buffer - len, "%s%s%s<br>", temp, warning, mingas);

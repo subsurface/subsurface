@@ -972,6 +972,8 @@ void MainWindow::on_actionDivePlanner_triggered()
 	if (current_dive)
 		divePlannerSettingsWidget()->setDiveMode(current_dive->dc.divemode);
 	DivePictureModel::instance()->updateDivePictures();
+	if (current_dive->salinity)
+		divePlannerWidget()->setSalinity(current_dive->salinity);
 	divePlannerWidget()->setReplanButton(false);
 }
 
@@ -1945,10 +1947,18 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	if (ui.multiFilter->isVisible())
+	if (ui.multiFilter->isVisible()) {
 		ui.multiFilter->closeFilter();
-	else
+		ui.actionFilterTags->setChecked(false);
+	} else {
 		ui.multiFilter->setVisible(true);
+		ui.actionFilterTags->setChecked(true);
+	}
+}
+
+void MainWindow::setCheckedActionFilterTags(bool checked)
+{
+	ui.actionFilterTags->setChecked(checked);
 }
 
 void MainWindow::registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight)

@@ -653,6 +653,7 @@ void MultiFilter::closeFilter()
 {
 	MultiFilterSortModel::instance()->clearFilter();
 	hide();
+	MainWindow::instance()->setCheckedActionFilterTags(false);
 }
 
 TextHyperlinkEventFilter::TextHyperlinkEventFilter(QTextEdit *txtEdit) : QObject(txtEdit),

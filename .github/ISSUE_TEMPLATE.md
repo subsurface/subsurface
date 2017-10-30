@@ -12,10 +12,9 @@
 <!-- Describe the issue in detail. -->
 
 ### Operating system:
-<!-- What OS are you running? -->
-<!-- What is the OS version? -->
+<!-- What OS are you running, including OS version and the language that you are running in -->
 <!-- What device are you using? -->
-<!-- Does the same happen on another OS? -->
+<!-- Only answer this question if you have tried: Does the same happen on another OS? -->
 
 ### Subsurface version:
 <!-- What version of Subsurface are you running? -->

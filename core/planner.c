@@ -34,6 +34,7 @@ int decostoplevels_imperial[] = { 0, 3048, 6096, 9144, 12192, 15240, 18288, 2133
 				325120, 345440, 365760, 386080 };
 
 double plangflow, plangfhigh;
+int bottom_time = 0;
 
 extern double regressiona();
 extern double regressionb();
@@ -669,7 +670,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	bool stopping = false;
 	bool pendinggaschange = false;
 	int clock, previous_point_time;
-	int avg_depth, max_depth, bottom_time = 0;
+	int avg_depth, max_depth;
 	int last_ascend_rate;
 	int best_first_ascend_cylinder;
 	struct gasmix gas, bottom_gas;

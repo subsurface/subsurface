@@ -87,6 +87,7 @@ public:
 	QUndoStack *undoStack;
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
+	void setCheckedActionFilterTags(bool checked);
 
 private
 slots:

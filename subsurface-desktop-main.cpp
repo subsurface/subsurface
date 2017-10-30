@@ -21,9 +21,14 @@
 #include <QStringList>
 #include <QApplication>
 #include <QLoggingCategory>
+#include <QOpenGLContext>
+#include <QOffscreenSurface>
+#include <QOpenGLFunctions>
+#include <QQuickWindow>
 #include <git2.h>
 
 static bool filesOnCommandLine = false;
+static void validateGL();
 
 int main(int argc, char **argv)
 {
@@ -70,6 +75,7 @@ int main(int argc, char **argv)
 		printf("If you insist to do so, run with option --allow_run_as_root.\n");
 		exit(0);
 	}
+	validateGL();
 #if !LIBGIT2_VER_MAJOR && LIBGIT2_VER_MINOR < 22
 	git_threads_init();
 #else
@@ -102,7 +108,11 @@ int main(int argc, char **argv)
 	}
 	MainWindow *m = MainWindow::instance();
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
+	if (verbose && !files.isEmpty())
+		qDebug() << "loading dive data from" << files;
 	m->loadFiles(files);
+	if (verbose && !importedFiles.isEmpty())
+		qDebug() << "importing dive data from" << importedFiles;
 	m->importFiles(importedFiles);
 
 	if (verbose > 0) {
@@ -124,4 +134,56 @@ int main(int argc, char **argv)
 bool haveFilesOnCommandLine()
 {
 	return filesOnCommandLine;
+}
+
+#define VALIDATE_GL_PREFIX  "validateGL(): "
+
+void validateGL()
+{
+	GLint verMajor, verMinor;
+	const char *glError = NULL;
+	QOpenGLContext ctx;
+	QOffscreenSurface surface;
+	QOpenGLFunctions *func;
+
+	surface.setFormat(ctx.format());
+	surface.create();
+	if (!ctx.create()) {
+		glError = "Cannot create OpenGL context";
+		goto exit;
+	}
+	if (verbose)
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "created OpenGLContext.").toUtf8().data();
+	ctx.makeCurrent(&surface);
+	func = ctx.functions();
+	if (!func) {
+		glError = "Cannot obtain QOpenGLFunctions";
+		goto exit;
+	}
+	if (verbose)
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.").toUtf8().data();
+	func->glGetIntegerv(GL_MAJOR_VERSION, &verMajor);
+	func->glGetIntegerv(GL_MINOR_VERSION, &verMinor);
+	if (verbose)
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "detected OpenGL version %1.%2.").arg(verMajor).arg(verMinor).toUtf8().data();
+	if (verMajor * 10 + verMinor < 21) { // set 2.1 as the minimal version
+		glError = "OpenGL 2.1 or later is required";
+		goto exit;
+	}
+
+exit:
+	ctx.makeCurrent(NULL);
+	surface.destroy();
+	if (glError) {
+#if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
+		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "ERROR: %1.\n"
+			"Cannot automatically fallback to a software renderer!\n"
+			"Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
+			"before running Subsurface!").arg(glError).toUtf8().data();
+		exit(0);
+#else
+		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError).toUtf8().data();
+		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
+#endif
+	}
 }
