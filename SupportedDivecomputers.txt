@@ -16,7 +16,7 @@ Mares: Airlab, Darwin, Darwin Air, Icon HD, Icon HD Net Ready, M1, M2, Matrix, N
 Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, F10, F11, Geo, Geo 2.0, OC1, OCS, OCi, Pro Plus 2, Pro Plus 2.1, Pro Plus 3, VT 4.1, VT Pro, VT3, VT4, VTX, Veo 1.0, Veo 180, Veo 2.0, Veo 200, Veo 250, Veo 3.0, Versa Pro
 Ratio: iDive Deep, iDive Easy, iDive Free, iDive Tech+, iX3M Deep, iX3M Easy, iX3M Pro Deep, iX3M Pro Easy, iX3M Pro Tech+, iX3M Reb, iX3M Tech+
 Reefnet: Sensus, Sensus Pro, Sensus Ultra
-Scubapro: Chromis, G2, Mantis, Mantis 2, Meridian, XTender 5
+Scubapro: Aladin Sport Matrix, Chromis, G2, Mantis, Mantis 2, Meridian, XTender 5
 Seabaer: T1, H3, HUDC
 Seemann: XP5
 Shearwater: Nerd, Perdix, Perdix AI, Petrel, Petrel 2, Predator
