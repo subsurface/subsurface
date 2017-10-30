@@ -924,12 +924,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 						/* Stop for the minimum duration to switch gas */
-						add_segment(depth_to_bar(depth, dive),
-							&dive->cylinder[current_cylinder].gasmix,
-							prefs.min_switch_duration, po2, dive, prefs.decosac);
-						clock += prefs.min_switch_duration;
-						if (prefs.doo2breaks && get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000)
-							o2time += prefs.min_switch_duration;
+						if (!(prefs.doo2breaks && get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000)) {
+							add_segment(depth_to_bar(depth, dive),
+								&dive->cylinder[current_cylinder].gasmix,
+								prefs.min_switch_duration, po2, dive, prefs.decosac);
+							clock += prefs.min_switch_duration;
+						}
 					} else {
 						/* The user has selected the option to switch gas only at required stops.
 						 * Remember that we are waiting to switch gas
@@ -977,12 +977,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
 					/* Stop for the minimum duration to switch gas */
-					add_segment(depth_to_bar(depth, dive),
-						&dive->cylinder[current_cylinder].gasmix,
-						prefs.min_switch_duration, po2, dive, prefs.decosac);
-					clock += prefs.min_switch_duration;
-					if (prefs.doo2breaks && get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000)
-						o2time += prefs.min_switch_duration;
+					if (!(prefs.doo2breaks && get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000)) {
+						add_segment(depth_to_bar(depth, dive),
+							&dive->cylinder[current_cylinder].gasmix,
+							prefs.min_switch_duration, po2, dive, prefs.decosac);
+						clock += prefs.min_switch_duration;
+					}
 					pendinggaschange = false;
 				}
 
