@@ -140,6 +140,18 @@ bool haveFilesOnCommandLine()
 
 void validateGL()
 {
+	QString quickBackend = qgetenv("QT_QUICK_BACKEND");
+	/* an empty QT_QUICK_BACKEND env. variable means OpenGL (default).
+	 * only validate OpenGL; for everything else print out and return.
+	 * https://doc.qt.io/qt-5/qtquick-visualcanvas-adaptations.html
+	 */
+	if (!quickBackend.isEmpty()) {
+		if (verbose) {
+			qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "'QT_QUICK_BACKEND' is set to '%1'. "
+				"Skipping validation.").arg(quickBackend).toUtf8().data();
+		}
+		return;
+	}
 	GLint verMajor, verMinor;
 	const char *glError = NULL;
 	QOpenGLContext ctx;
