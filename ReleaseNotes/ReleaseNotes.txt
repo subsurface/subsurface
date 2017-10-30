@@ -17,6 +17,11 @@ Some of the changes since _Subsurface_ 4.7.1
   flow
 - Fix a potential problem when saving data that was loaded from a git
   repository into cloud storage
+- Fix error where newly created cloud accounts failed to create
+  the remote repository on Windows
+- Detect and try to work around the fact that the map module requires
+  at least OpenGL 2.1 (previously Subsurface would crash when OpenGL
+  was too old - often on old Win32 versions)
 
 Some of the changes since _Subsurface_ 4.6.4
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
