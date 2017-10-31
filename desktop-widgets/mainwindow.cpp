@@ -88,12 +88,22 @@ MainWindow *MainWindow::m_Instance = NULL;
 
 extern "C" void showErrorFromC()
 {
+	// Show errors only if we are running in the GUI thread.
+	// If we're not in the GUI thread, let errors accumulate.
+	if (QThread::currentThread() != QCoreApplication::instance()->thread())
+		return;
+
 	MainWindow *mainwindow = MainWindow::instance();
-	if (mainwindow) {
-		mainwindow->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
-	}
+	if (mainwindow)
+		mainwindow->showErrors();
 }
 
+void MainWindow::showErrors()
+{
+	const char *error = get_error_string();
+	if (error && error[0])
+		getNotificationWidget()->showNotification(error, KMessageWidget::Error);
+}
 
 MainWindow::MainWindow() : QMainWindow(),
 	actionNextDive(0),

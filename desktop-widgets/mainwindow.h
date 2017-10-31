@@ -89,6 +89,10 @@ public:
 	void enableDisableCloudActions();
 	void setCheckedActionFilterTags(bool checked);
 
+	// Shows errors that have accumulated.
+	// Must be called from GUI thread.
+	void showErrors();
+
 private
 slots:
 	/* file menu action */
