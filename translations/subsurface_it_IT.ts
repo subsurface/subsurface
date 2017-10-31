@@ -382,7 +382,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>E&apos; richiesta una verifica dell&apos;account del cloud, inserisci il PIN nelle preferenze</translation>
     </message>
 </context>
 <context>
@@ -5524,12 +5524,12 @@ Dai un&apos;occhiata a http://doc.qt.io/qt-5/qdatetime.html#toString</translatio
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Memoria cloud di Subsurface (password errata)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Memoria cloud di Subsurface (PIN richiesto)</translation>
     </message>
 </context>
 <context>
@@ -8720,17 +8720,17 @@ Media</translation>
         <translation>Sincronizzazione con lo storage cloud riuscita</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="752"/>
+        <location filename="../core/git-access.c" line="757"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Errore nella connessione alla memoria cloud di Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="755"/>
+        <location filename="../core/git-access.c" line="760"/>
         <source>git clone of %s failed (%s)</source>
         <translation>Errore (%s) nel clone git di %s</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="778"/>
+        <location filename="../core/git-access.c" line="783"/>
         <source>Synchronising data file</source>
         <translation>Sincronizzazione dei dadi in corso</translation>
     </message>
@@ -9050,7 +9050,7 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
     <message>
         <location filename="../core/plannernotes.c" line="114"/>
         <source>Runtime: %dmin %s</source>
-        <translation type="unfinished"/>
+        <translation>Runtime: %dmin %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="117"/>
@@ -9852,7 +9852,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="142"/>
         <source>All (by type stats)</source>
-        <translation type="unfinished"/>
+        <translation>Tutti (dalle statistiche per tipo)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="144"/>
@@ -10404,117 +10404,117 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="109"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="110"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="117"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="118"/>
         <source>Dive list</source>
         <translation>Lista immersioni</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="133"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Dive management</source>
         <translation>Gestione dell&apos;immersione</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Disable location service</source>
         <translation>Disabilita il servizio di localizzazione</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="250"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
         <source>Settings</source>
         <translation>Impostazioni</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="136"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="137"/>
         <source>Add dive manually</source>
         <translation>Aggiungi immersione manualmente</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Download from DC</source>
         <translation>Download dal computer di immersione</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
         <source>Apply GPS Fixes</source>
         <translation>Applica i punti GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="163"/>
         <source>Manual sync with cloud</source>
         <translation>Sincronizzazione manuale con il cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Offline mode</source>
         <translation>Modalità fuori linea</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Enable auto cloud sync</source>
         <translation>Abilita auto sincronizzazione con il cloud</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="186"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="187"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Disabilitando la sincronizzazione con il cloud i dati saranno memorizzati localmente. Molto utile in caso di mancanza di rete. Scegliere &apos;sincronizzazione manuale&apos; se si vuole trasferire i propri dati nella memoria cloud.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="195"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
         <source>Help</source>
         <translation>Aiuto</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="200"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="201"/>
         <source>Upload GPS data</source>
         <translation>Carica dati GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="209"/>
         <source>Download GPS data</source>
         <translation>Scarica dati GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
         <source>Show GPS fixes</source>
         <translation>Mostra i punti GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="226"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="227"/>
         <source>Clear GPS cache</source>
         <translation>Cancella la cache del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="259"/>
         <source>Developer</source>
         <translation>Sviluppatore</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="262"/>
         <source>App log</source>
         <translation>Log dell&apos;app</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Theme information</source>
         <translation>Informazioni sul tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="243"/>
         <source>About</source>
         <translation>Informazioni</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Run location service</source>
         <translation>Avvia il servizio di localizzazione</translation>
     </message>

@@ -382,7 +382,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Cal verificació del compte del núvol, introduïu el PIN a les preferències</translation>
     </message>
 </context>
 <context>
@@ -5527,12 +5527,12 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Emmagatzematge al núvol del Subsurface (contrasenya incorrecta)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Emmagatzematge al núvol del Subsurface (cal el PIN)</translation>
     </message>
 </context>
 <context>
@@ -8719,17 +8719,17 @@ Màxim</translation>
         <translation>S&apos;ha realitzat la incronització amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="752"/>
+        <location filename="../core/git-access.c" line="757"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Error en connectar amb l&apos;emmagatzematge al núvol del Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="755"/>
+        <location filename="../core/git-access.c" line="760"/>
         <source>git clone of %s failed (%s)</source>
         <translation>Ha fallat el «git clone» de %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="778"/>
+        <location filename="../core/git-access.c" line="783"/>
         <source>Synchronising data file</source>
         <translation>S&apos;està sincronitzant el fitxer de dades</translation>
     </message>
@@ -9045,7 +9045,7 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
     <message>
         <location filename="../core/plannernotes.c" line="114"/>
         <source>Runtime: %dmin %s</source>
-        <translation type="unfinished"/>
+        <translation>Temps acumulat: %dmin %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="117"/>
@@ -9840,7 +9840,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="142"/>
         <source>All (by type stats)</source>
-        <translation type="unfinished"/>
+        <translation>Tots (per estadístiques de tipus)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="144"/>
@@ -9865,7 +9865,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
-        <translation>Tots (per estat del viatge)</translation>
+        <translation>Tots (per estadístiques del viatge)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="245"/>
@@ -10392,117 +10392,117 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="109"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="110"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="117"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="118"/>
         <source>Dive list</source>
         <translation>Llista d&apos;immersions</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="133"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Dive management</source>
         <translation>Gestió de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Disable location service</source>
         <translation>Inhabilita el servei d&apos;ubicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="250"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
         <source>Settings</source>
         <translation>Ajustaments</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="136"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="137"/>
         <source>Add dive manually</source>
         <translation>Afegeix una immersió manualment</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Download from DC</source>
         <translation>Baixa des de l&apos;ordinador de busseig</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
         <source>Apply GPS Fixes</source>
         <translation>Aplica les correccions del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="163"/>
         <source>Manual sync with cloud</source>
         <translation>Sincronitza manualment amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Offline mode</source>
         <translation>Mode dedconnectat</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Enable auto cloud sync</source>
         <translation>Habilita la sincronització automàtica amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="186"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="187"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Desactivar la sincronització automàtica amb el núvol fa que totes les dades només es puguin emmagatzemar localment. Això pot ser molt útil en situacions amb accés limitat o sense a la xarxa. Si us plau, seleccioneu «Sincronitza manualment amb el núvol» si teniu connectivitat a la xarxa i voleu sincronitzar les vostres dades amb l&apos;emmagatzematge en el núvol.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="195"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="200"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="201"/>
         <source>Upload GPS data</source>
         <translation>Publica les dades del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="209"/>
         <source>Download GPS data</source>
         <translation>Baixa les dades del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
         <source>Show GPS fixes</source>
         <translation>Mostra les correccions del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="226"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="227"/>
         <source>Clear GPS cache</source>
         <translation>Neteja el cau del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="259"/>
         <source>Developer</source>
         <translation>Desenvolupador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="262"/>
         <source>App log</source>
         <translation>Registre de l&apos;aplicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Theme information</source>
         <translation>Informació sobre el tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="243"/>
         <source>About</source>
         <translation>Quant a</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Run location service</source>
         <translation>Executa el servei d&apos;ubicació</translation>
     </message>

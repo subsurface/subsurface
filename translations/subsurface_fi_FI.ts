@@ -382,7 +382,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Pilvipalvelun tunnus pitää vahvistaa, syötä PIN asetuksissa</translation>
     </message>
 </context>
 <context>
@@ -5521,12 +5521,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Subsurfacen pilvitallennustila (virheellinen salasana)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Subsurfacen pilvitallennustila (tarvitaan PIN)</translation>
     </message>
 </context>
 <context>
@@ -8715,17 +8715,17 @@ Keski</translation>
         <translation>Synkronointi pilvitallennustilaan valmis</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="752"/>
+        <location filename="../core/git-access.c" line="757"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Virhe: yhteys Subsurfacen pilvitallennustilaan</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="755"/>
+        <location filename="../core/git-access.c" line="760"/>
         <source>git clone of %s failed (%s)</source>
         <translation>lokin %s haku epäonnistui (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="778"/>
+        <location filename="../core/git-access.c" line="783"/>
         <source>Synchronising data file</source>
         <translation>Synkronoidaan tiedot</translation>
     </message>
@@ -9044,7 +9044,7 @@ Voit luoda tämän tiedoston valitsemalla kyseisen valinnan sukellusten lataus -
     <message>
         <location filename="../core/plannernotes.c" line="114"/>
         <source>Runtime: %dmin %s</source>
-        <translation type="unfinished"/>
+        <translation>Kesto: %dmin %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="117"/>
@@ -9845,7 +9845,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="142"/>
         <source>All (by type stats)</source>
-        <translation type="unfinished"/>
+        <translation>Kaikki (tyypin mukaan)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="144"/>
@@ -10396,117 +10396,117 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <translation>Subsurface-mobiili</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="109"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="110"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="117"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="118"/>
         <source>Dive list</source>
         <translation>Sukelluslista</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="133"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Dive management</source>
         <translation>Sukellusten hallinta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Disable location service</source>
         <translation>Disabloi sijaintipalvelu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="250"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
         <source>Settings</source>
         <translation>Asetukset</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="136"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="137"/>
         <source>Add dive manually</source>
         <translation>Lisää sukellus käsin</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Download from DC</source>
         <translation>Lataa sukellustietokoneelta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
         <source>Apply GPS Fixes</source>
         <translation>Käytä GPS-sijainteja</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="163"/>
         <source>Manual sync with cloud</source>
         <translation>Synkronoi kerran pilvipalveluun</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Offline mode</source>
         <translation>Käytä ilman verkkoa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Enable auto cloud sync</source>
         <translation>Ota automaattinen pilvisynkronointi käyttöön</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="186"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="187"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Tiedot tallennetaan vain paikallisesti, kun poistat automaattisen pilvipalvelusynkronoinnin käytöstä. Tämä voi olla hyödyllistä, kun käytössä on huono verkkoyhteys. Valitse &apos;Synkronoi kerran pilvipalveluun&apos;, kun olet toimivassa verkossa ja haluat synkronoida tietosi pilvipalveluun.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="195"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
         <source>Help</source>
         <translation>Ohje</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="200"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="201"/>
         <source>Upload GPS data</source>
         <translation>Vie GPS -tiedot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="209"/>
         <source>Download GPS data</source>
         <translation>Lataa GPS -tiedot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
         <source>Show GPS fixes</source>
         <translation>Näytä GPS -sijainnit</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="226"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="227"/>
         <source>Clear GPS cache</source>
         <translation>Tyhjennä GPS:n väliaikaistiedot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="259"/>
         <source>Developer</source>
         <translation>Kehittäjä</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="262"/>
         <source>App log</source>
         <translation>Sovellusloki</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Theme information</source>
         <translation>Teeman tiedot</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="243"/>
         <source>About</source>
         <translation>Tietoja</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Run location service</source>
         <translation>Käytä sijaintipalvelua</translation>
     </message>

@@ -382,7 +382,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Je vyžadováno ověření přístupu ke cloudu, v nastavení zadejte PIN</translation>
     </message>
 </context>
 <context>
@@ -5522,12 +5522,12 @@ Viz http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Cloudové úložiště Subsurface (neplatné heslo)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Cloudové úložiště Subsurface (je vyžadován PIN)</translation>
     </message>
 </context>
 <context>
@@ -8716,17 +8716,17 @@ Průměr</translation>
         <translation>Seřízení se serverovým úložištěm dokončeno</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="752"/>
+        <location filename="../core/git-access.c" line="757"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Chyba připojení k serverovému úložišti Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="755"/>
+        <location filename="../core/git-access.c" line="760"/>
         <source>git clone of %s failed (%s)</source>
         <translation>git clone %s selhal (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="778"/>
+        <location filename="../core/git-access.c" line="783"/>
         <source>Synchronising data file</source>
         <translation>Seřizují se datové soubory</translation>
     </message>
@@ -9045,7 +9045,7 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
     <message>
         <location filename="../core/plannernotes.c" line="114"/>
         <source>Runtime: %dmin %s</source>
-        <translation type="unfinished"/>
+        <translation>Doba běhu: %dmin %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="117"/>
@@ -9846,7 +9846,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="142"/>
         <source>All (by type stats)</source>
-        <translation type="unfinished"/>
+        <translation>Vše (dle typu statistik)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="144"/>
@@ -9871,7 +9871,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="195"/>
         <source>All (by trip stats)</source>
-        <translation>Všechny (dle statistik výletu)</translation>
+        <translation>Vše (dle statistik výletu)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="245"/>
@@ -10398,117 +10398,117 @@ Je Uemis Zurich správně zapojen?</translation>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="109"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="110"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="117"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="118"/>
         <source>Dive list</source>
         <translation>Seznam potápění</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="133"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
         <source>Dive management</source>
         <translation>Správa potápění</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Disable location service</source>
         <translation>Zakázat lokalizační službu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="250"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
         <source>Settings</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="136"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="137"/>
         <source>Add dive manually</source>
         <translation>Ručně přidat ponor</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
         <source>Download from DC</source>
         <translation>Stáhnout z potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="155"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
         <source>Apply GPS Fixes</source>
         <translation>Použít GPS pozice</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="163"/>
         <source>Manual sync with cloud</source>
         <translation>Ruční synchronizace s cloudem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Offline mode</source>
         <translation>Offline režim</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="181"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
         <source>Enable auto cloud sync</source>
         <translation>Povolit automatickou synchronizaci se serverem</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="186"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="187"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Vypnutí automatické synchronizace s cloudem způsobí uložení všech dat pouze lokálně. To může být velmi užitečné v situacích s omezeným nebo žádným přístupem k síti. Zvolte prosím &quot;Ručně synchronizovat s cloudem&quot; pokud máte síťové připojení a chcete synchronizovat data s cloudovým úložištěm.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="195"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="200"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="201"/>
         <source>Upload GPS data</source>
         <translation>Nahrát GPS data</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="208"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="209"/>
         <source>Download GPS data</source>
         <translation>Stáhnout GPS data</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
         <source>Show GPS fixes</source>
         <translation>Zobrazit GPS pozice</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="226"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="227"/>
         <source>Clear GPS cache</source>
         <translation>Vyčistit GPS cache</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="258"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="259"/>
         <source>Developer</source>
         <translation>Vývojář</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="261"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="262"/>
         <source>App log</source>
         <translation>Aplikační záznam</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Theme information</source>
         <translation>Informace tématu</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="243"/>
         <source>About</source>
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="234"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
         <source>Run location service</source>
         <translation>Spustit lokalizační službu</translation>
     </message>
