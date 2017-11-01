@@ -140,6 +140,11 @@ BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 BLEObject::~BLEObject()
 {
 	qDebug() << "Deleting BLE object";
+
+	foreach (QLowEnergyService *service, services)
+		delete service;
+
+	delete controller;
 }
 
 dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
@@ -329,7 +334,9 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 		return DC_STATUS_IO;
 	}
 
-	/* We need to discover services etc here! */
+	// We need to discover services etc here!
+	// Note that ble takes ownership of controller and henceforth deleting ble will
+	// take care of deleting controller.
 	BLEObject *ble = new BLEObject(controller, io->user_device);
 	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
 
@@ -348,7 +355,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 		qDebug() << "failed to find suitable service on" << devaddr;
 		report_error("Failed to find suitable service on '%s'", devaddr);
 		controller->disconnectFromDevice();
-		delete controller;
+		delete ble;
 		return DC_STATUS_IO;
 	}
 
@@ -363,7 +370,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 		qDebug() << "failed to find suitable service on" << devaddr;
 		report_error("Failed to find suitable service on '%s'", devaddr);
 		controller->disconnectFromDevice();
-		delete controller;
+		delete ble;
 		return DC_STATUS_IO;
 	}
 
@@ -378,8 +385,10 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 
 		if (IS_HW(io->user_device)) {
 			dc_status_t r = ble->setupHwTerminalIo(list);
-			if (r != DC_STATUS_SUCCESS)
+			if (r != DC_STATUS_SUCCESS) {
+				delete ble;
 				return r;
+			}
 		} else {
 			QList<QLowEnergyDescriptor> l = c.descriptors();
 
