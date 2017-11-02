@@ -31,7 +31,6 @@ static struct plot_data *last_pi_entry_new = NULL;
 void populate_pressure_information(struct dive *, struct divecomputer *, struct plot_info *, int);
 
 extern bool in_planner();
-extern int bottom_time;
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */
@@ -960,7 +959,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
 	if (in_planner())
-		deco_time = pi->maxtime - bottom_time;
+		deco_time = pi->maxtime - deco_state->bottom_time;
 	else
 		deco_time = 0;
 	struct deco_state *cache_data_initial = NULL;
