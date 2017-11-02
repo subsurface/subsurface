@@ -318,6 +318,21 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 	}
 }
 
+void PlannerSettingsWidget::disableBackgasBreaks(bool enabled)
+{
+	if (enabled) {
+		ui.backgasBreaks->setDisabled(false);
+		ui.backgasBreaks->blockSignals(true);
+		ui.backgasBreaks->setChecked(prefs.doo2breaks);
+		ui.backgasBreaks->blockSignals(false);
+	} else {
+		ui.backgasBreaks->setDisabled(true);
+		ui.backgasBreaks->blockSignals(true);
+		ui.backgasBreaks->setChecked(false);
+		ui.backgasBreaks->blockSignals(false);
+	}
+}
+
 void DivePlannerWidget::printDecoPlan()
 {
 	MainWindow::instance()->printPlan();
@@ -351,6 +366,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
 	disableDecoElements((int) prefs.planner_deco_mode);
+	disableBackgasBreaks(prefs.last_stop);
 
 	// should be the same order as in dive_comp_type!
 	rebreather_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
@@ -367,6 +383,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.vpmb_deco, SIGNAL(clicked()), modeMapper, SLOT(map()));
 
 	connect(ui.lastStop, SIGNAL(toggled(bool)), plannerModel, SLOT(setLastStop6m(bool)));
+	connect(ui.lastStop, SIGNAL(toggled(bool)), this, SLOT(disableBackgasBreaks(bool)));
 	connect(ui.verbatim_plan, SIGNAL(toggled(bool)), plannerModel, SLOT(setVerbatim(bool)));
 	connect(ui.display_duration, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayDuration(bool)));
 	connect(ui.display_runtime, SIGNAL(toggled(bool)), plannerModel, SLOT(setDisplayRuntime(bool)));

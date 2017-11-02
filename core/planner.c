@@ -1000,7 +1000,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 				o2breaking = false;
 				stop_cylinder = current_cylinder;
-				if (prefs.doo2breaks) {
+				if (prefs.doo2breaks && prefs.last_stop) {
 					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
 					 * backgas.  This could be customized if there were demand.
 					 */
