@@ -1084,9 +1084,9 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			if (final_tts > 0)
 				deco_time = pi->maxtime + final_tts - time_deep_ceiling;
 			else if (time_clear_ceiling > 0)
-				/* Consistent with planner, deco_time ends after ascending (20-40s @9m/min from 3-6m)
+				/* Consistent with planner, deco_time ends after ascending (20s @9m/min from 3m)
 				   at end of whole minute after clearing ceiling */
-				deco_time = ROUND_UP(time_clear_ceiling, 60) + 30 - time_deep_ceiling;
+				deco_time = ROUND_UP(time_clear_ceiling, 60) + 20 - time_deep_ceiling;
 			vpmb_next_gradient(deco_time, surface_pressure / 1000.0);
 			final_tts = 0;
 			last_ndl_tts_calc_time = 0;
