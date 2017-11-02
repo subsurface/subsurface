@@ -1077,6 +1077,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			}
 		}
 		if (decoMode() == VPMB && !in_planner()) {
+			int this_deco_time;
 			prev_deco_time = deco_state->deco_time;
 			// Do we need to update deco_time?
 			if (final_tts > 0)
@@ -1093,7 +1094,9 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			first_ceiling = 0;
 			first_iteration = false;
 			count_iteration ++;
+			this_deco_time = deco_state->deco_time;
 			restore_deco_state(cache_data_initial, true);
+			deco_state->deco_time = this_deco_time;
 		} else {
 			// With Buhlmann iterating isn't needed.  This makes the while condition false.
 			prev_deco_time = deco_state->deco_time = 0;
