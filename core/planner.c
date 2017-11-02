@@ -652,7 +652,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	int bottom_gi;
 	int bottom_stopidx;
 	bool is_final_plan = true;
-	int deco_time;
+	int bottom_time;
 	int previous_deco_time;
 	struct deco_state *bottom_cache = NULL;
 	struct sample *sample;
@@ -713,7 +713,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	sample = &dive->dc.sample[dive->dc.samples - 1];
 
 	/* Keep time during the ascend */
-	deco_state->bottom_time = clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
+	bottom_time = clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
 
 	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
 	gas = dive->cylinder[current_cylinder].gasmix;
@@ -721,7 +721,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	po2 = sample->setpoint.mbar;
 	depth = dive->dc.sample[dive->dc.samples - 1].depth.mm;
 	average_max_depth(diveplan, &avg_depth, &max_depth);
-	last_ascend_rate = ascent_velocity(depth, avg_depth, deco_state->bottom_time);
+	last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 
 	/* if all we wanted was the dive just get us back to the surface */
 	if (!is_planner) {
@@ -765,7 +765,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 	if (decoMode() == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
-		track_ascent_gas(depth, &dive->cylinder[current_cylinder], avg_depth, deco_state->bottom_time, safety_stop);
+		track_ascent_gas(depth, &dive->cylinder[current_cylinder], avg_depth, bottom_time, safety_stop);
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		do {
 			add_segment(depth_to_bar(depth, dive),
@@ -773,7 +773,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				    timestep, po2, dive, prefs.bottomsac);
 			update_cylinder_pressure(dive, depth, depth, timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false);
 			clock += timestep;
-		} while (trial_ascent(0, depth, 0, avg_depth, deco_state->bottom_time, &dive->cylinder[current_cylinder].gasmix,
+		} while (trial_ascent(0, depth, 0, avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix,
 				      po2, diveplan->surface_pressure / 1000.0, dive) &&
 			 enough_gas(current_cylinder));
 
@@ -787,11 +787,11 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
-			int deltad = ascent_velocity(depth, avg_depth, deco_state->bottom_time) * TIMESTEP;
-			if (ascent_velocity(depth, avg_depth, deco_state->bottom_time) != last_ascend_rate) {
+			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 				plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
 				previous_point_time = clock;
-				last_ascend_rate = ascent_velocity(depth, avg_depth, deco_state->bottom_time);
+				last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 			}
 			if (depth - deltad < 0)
 				deltad = depth;
@@ -830,7 +830,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	// VPM-B or Buehlmann Deco
 	tissue_at_end(dive, cached_datap);
 	previous_deco_time = 100000000;
-	deco_time = 10000000;
+	deco_state->deco_time = 10000000;
 	cache_deco_state(&bottom_cache);  // Lets us make several iterations
 	bottom_depth = depth;
 	bottom_gi = gi;
@@ -840,16 +840,16 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	//CVA
 	do {
 		decostopcounter = 0;
-		is_final_plan = (decoMode() == BUEHLMANN) || (previous_deco_time - deco_time < 10);  // CVA time converges
-		if (deco_time != 10000000)
-			vpmb_next_gradient(deco_time, diveplan->surface_pressure / 1000.0);
+		is_final_plan = (decoMode() == BUEHLMANN) || (previous_deco_time - deco_state->deco_time < 10);  // CVA time converges
+		if (deco_state->deco_time != 10000000)
+			vpmb_next_gradient(deco_state->deco_time, diveplan->surface_pressure / 1000.0);
 
-		previous_deco_time = deco_time;
+		previous_deco_time = deco_state->deco_time;
 		restore_deco_state(bottom_cache, true);
 
 		depth = bottom_depth;
 		gi = bottom_gi;
-		clock = previous_point_time = deco_state->bottom_time;
+		clock = previous_point_time = bottom_time;
 		gas = bottom_gas;
 		stopping = false;
 		decodive = false;
@@ -864,7 +864,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		if (deco_state->max_bottom_ceiling_pressure.mbar > deco_state->first_ceiling_pressure.mbar)
 			deco_state->first_ceiling_pressure.mbar = deco_state->max_bottom_ceiling_pressure.mbar;
 
-		last_ascend_rate = ascent_velocity(depth, avg_depth, deco_state->bottom_time);
+		last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 		/* Always prefer the best_first_ascend_cylinder if it has the right gasmix.
 		 * Otherwise take first cylinder from list with rightgasmix  */
 		if (same_gasmix(&gas, &dive->cylinder[best_first_ascend_cylinder].gasmix))
@@ -880,13 +880,13 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 			/* We will break out when we hit the surface */
 			do {
 				/* Ascend to next stop depth */
-				int deltad = ascent_velocity(depth, avg_depth, deco_state->bottom_time) * TIMESTEP;
-				if (ascent_velocity(depth, avg_depth, deco_state->bottom_time) != last_ascend_rate) {
+				int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
+				if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 					if (is_final_plan)
 						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
 					previous_point_time = clock;
 					stopping = false;
-					last_ascend_rate = ascent_velocity(depth, avg_depth, deco_state->bottom_time);
+					last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 				}
 				if (depth - deltad < stoplevels[stopidx])
 					deltad = depth - stoplevels[stopidx];
@@ -919,7 +919,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 
 				if (current_cylinder != gaschanges[gi].gasidx) {
 					if (!prefs.switch_at_req_stop ||
-							!trial_ascent(0, depth, stoplevels[stopidx - 1], avg_depth, deco_state->bottom_time,
+							!trial_ascent(0, depth, stoplevels[stopidx - 1], avg_depth, bottom_time,
 							&dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive) || get_o2(&dive->cylinder[current_cylinder].gasmix) < 160) {
 						current_cylinder = gaschanges[gi].gasidx;
 						gas = dive->cylinder[current_cylinder].gasmix;
@@ -948,7 +948,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 			/* Save the current state and try to ascend to the next stopdepth */
 			while (1) {
 				/* Check if ascending to next stop is clear, go back and wait if we hit the ceiling on the way */
-				if (trial_ascent(0, depth, stoplevels[stopidx], avg_depth, deco_state->bottom_time,
+				if (trial_ascent(0, depth, stoplevels[stopidx], avg_depth, bottom_time,
 						&dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, dive)) {
 					decostoptable[decostopcounter].depth = depth;
 					decostoptable[decostopcounter].time = 0;
@@ -990,7 +990,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 					pendinggaschange = false;
 				}
 
-				int new_clock = wait_until(dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth, deco_state->bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
+				int new_clock = wait_until(dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (clock >= 48 * 3600 && depth >= 6000) {
@@ -1060,7 +1060,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		 * otherwise odd things can happen, such as CVA causing the final ascent to start *later*
 		 * if the ascent rate is slower, which is completely nonsensical.
 		 * Assume final ascent takes 20s, which is the time taken to ascend at 9m/min from 3m */
-		deco_time = clock - deco_state->bottom_time - stoplevels[2] / last_ascend_rate + 20;
+		deco_state->deco_time = clock - bottom_time - stoplevels[2] / last_ascend_rate + 20;
 	} while (!is_final_plan);
 	decostoptable[decostopcounter].depth = 0;
 

@@ -894,7 +894,7 @@ struct deco_state {
 	pressure_t max_bottom_ceiling_pressure;
 	int ci_pointing_to_guiding_tissue;
 	double gf_low_pressure_this_dive;
-	int bottom_time;
+	int deco_time;
 };
 
 extern void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
