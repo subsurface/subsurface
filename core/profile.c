@@ -1080,7 +1080,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 			prev_deco_time = deco_state->deco_time;
 			// Do we need to update deco_time?
 			if (final_tts > 0)
-				deco_state->deco_time = pi->maxtime + final_tts - time_deep_ceiling;
+				deco_state->deco_time = last_ndl_tts_calc_time + final_tts - time_deep_ceiling;
 			else if (time_clear_ceiling > 0)
 				/* Consistent with planner, deco_time ends after ascending (20s @9m/min from 3m)
 				 * at end of whole minute after clearing ceiling. The deepest ceiling when planning a dive
