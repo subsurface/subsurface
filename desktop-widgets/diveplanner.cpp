@@ -250,13 +250,18 @@ void PlannerSettingsWidget::decoSacChanged(const double decosac)
 void PlannerSettingsWidget::disableDecoElements(int mode)
 {
 	if (mode == RECREATIONAL) {
+		ui.label_gflow->setDisabled(false);
+		ui.label_gfhigh->setDisabled(false);
 		ui.gflow->setDisabled(false);
 		ui.gfhigh->setDisabled(false);
 		ui.lastStop->setDisabled(true);
 		ui.backgasBreaks->setDisabled(true);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(true);
+		ui.safetystop->setDisabled(false);
+		ui.label_reserve_gas->setDisabled(false);
 		ui.reserve_gas->setDisabled(false);
+		ui.label_vpmb_conservatism->setDisabled(true);
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(true);
 		ui.min_switch_duration->setDisabled(true);
@@ -270,13 +275,18 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.problemsolvingtime->blockSignals(false);
 	}
 	else if (mode == VPMB) {
+		ui.label_gflow->setDisabled(true);
+		ui.label_gfhigh->setDisabled(true);
 		ui.gflow->setDisabled(true);
 		ui.gfhigh->setDisabled(true);
 		ui.lastStop->setDisabled(false);
 		ui.backgasBreaks->setDisabled(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
+		ui.safetystop->setDisabled(true);
+		ui.label_reserve_gas->setDisabled(true);
 		ui.reserve_gas->setDisabled(true);
+		ui.label_vpmb_conservatism->setDisabled(false);
 		ui.vpmb_conservatism->setDisabled(false);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
@@ -286,13 +296,18 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
 	}
 	else if (mode == BUEHLMANN) {
+		ui.label_gflow->setDisabled(false);
+		ui.label_gfhigh->setDisabled(false);
 		ui.gflow->setDisabled(false);
 		ui.gfhigh->setDisabled(false);
 		ui.lastStop->setDisabled(false);
 		ui.backgasBreaks->setDisabled(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
+		ui.safetystop->setDisabled(true);
+		ui.label_reserve_gas->setDisabled(true);
 		ui.reserve_gas->setDisabled(true);
+		ui.label_vpmb_conservatism->setDisabled(true);
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
