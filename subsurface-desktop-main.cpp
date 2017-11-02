@@ -190,7 +190,7 @@ void validateGL()
 		}
 		if (sscanf(verChar, "%f", &verFloat) == 1) {
 			verMajor = (GLint)verFloat;
-			verMinor = (GLint)((verFloat - verMajor) * 10.f);
+			verMinor = (GLint)roundf((verFloat - verMajor) * 10.f);
 		}
 	}
 	// attempt to detect version using the newer API
