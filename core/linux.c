@@ -221,10 +221,8 @@ int subsurface_zip_close(struct zip *zip)
 }
 
 /* win32 console */
-void subsurface_console_init(bool dedicated, bool logfile)
+void subsurface_console_init(void)
 {
-	(void)dedicated;
-	(void)logfile;
 	/* NOP */
 }
 

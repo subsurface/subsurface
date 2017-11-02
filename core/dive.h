@@ -767,7 +767,7 @@ extern int subsurface_access(const char *path, int mode);
 extern int subsurface_stat(const char* path, struct stat* buf);
 extern struct zip *subsurface_zip_open_readonly(const char *path, int flags, int *errorp);
 extern int subsurface_zip_close(struct zip *zip);
-extern void subsurface_console_init(bool dedicated, bool logfile);
+extern void subsurface_console_init(void);
 extern void subsurface_console_exit(void);
 extern bool subsurface_user_is_root(void);
 

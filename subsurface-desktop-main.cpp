@@ -41,15 +41,7 @@ int main(int argc, char **argv)
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
-	bool win32_log = arguments.length() > 1 &&
-		(arguments.at(1) == QString("--win32log"));
-	if (win32_log) {
-		subsurface_console_init(true, true);
-	} else {
-		bool dedicated_console = arguments.length() > 1 &&
-			(arguments.at(1) == QString("--win32console"));
-		subsurface_console_init(dedicated_console, false);
-	}
+	subsurface_console_init();
 
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
