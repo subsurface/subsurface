@@ -273,7 +273,7 @@
            </widget>
           </item>
           <item row="1" column="1">
-           <widget class="QLabel" name="label_3">
+           <widget class="QLabel" name="label_reserve_gas">
             <property name="text">
              <string>Reserve gas</string>
             </property>
@@ -338,7 +338,7 @@
            </spacer>
           </item>
           <item row="8" column="1">
-           <widget class="QLabel" name="label_15">
+           <widget class="QLabel" name="label_gflow">
             <property name="text">
              <string>GFLow</string>
             </property>
@@ -355,7 +355,7 @@
            </widget>
           </item>
           <item row="9" column="1">
-           <widget class="QLabel" name="label_16">
+           <widget class="QLabel" name="label_gfhigh">
             <property name="text">
              <string>GFHigh</string>
             </property>
@@ -490,7 +490,7 @@
            </spacer>
           </item>
           <item row="12" column="1">
-           <widget class="QLabel" name="label_5">
+           <widget class="QLabel" name="label_vpmb_conservatism">
             <property name="text">
              <string>Conservatism level</string>
             </property>
