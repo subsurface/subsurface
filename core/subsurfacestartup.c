@@ -197,8 +197,6 @@ static void print_help()
 	printf("\n --survey              Offer to submit a user survey");
 	printf("\n --user=<test>         Choose configuration space for user <test>");
 	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)");
-	printf("\n --win32console        Create a dedicated console if needed (Windows only). Add option before everything else");
-	printf("\n --win32log            Write the program output to subsurface.log (Windows only). Add option before everything else\n\n");
 }
 
 void parse_argument(const char *arg)
@@ -254,10 +252,6 @@ void parse_argument(const char *arg)
 				++force_root;
 				return;
 			}
-			if (strcmp(arg, "--win32console") == 0)
-				return;
-			if (strcmp(arg, "--win32log") == 0)
-				return;
 		/* fallthrough */
 		case 'p':
 			/* ignore process serial number argument when run as native macosx app */

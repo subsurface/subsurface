@@ -28,9 +28,7 @@ int main(int argc, char **argv)
 	(void)application;
 	QStringList arguments = QCoreApplication::arguments();
 
-	bool dedicated_console = arguments.length() > 1 &&
-				 (arguments.at(1) == QString("--win32console"));
-	subsurface_console_init(dedicated_console, false);
+	subsurface_console_init();
 
 	for (i = 1; i < arguments.length(); i++) {
 		QString a = arguments.at(i);
