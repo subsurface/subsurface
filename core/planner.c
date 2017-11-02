@@ -659,7 +659,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	struct sample *sample;
 	int po2;
 	int transitiontime, gi;
-	int current_cylinder, stopcylinder;
+	int current_cylinder, stop_cylinder;
 	int stopidx;
 	int depth;
 	struct gaschanges *gaschanges = NULL;
@@ -674,8 +674,8 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	int last_ascend_rate;
 	int best_first_ascend_cylinder;
 	struct gasmix gas, bottom_gas;
-	int o2time = 0;
-	int breaktime = -1;
+	bool o2break_next = false;
+	bool o2break_done = false;
 	int break_cylinder = -1, breakfrom_cylinder = 0;
 	int error = 0;
 	bool decodive = false;
@@ -855,8 +855,6 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		decodive = false;
 		first_stop_depth = 0;
 		stopidx = bottom_stopidx;
-		breaktime = -1;
-		o2time = 0;
 		deco_state->first_ceiling_pressure.mbar = depth_to_mbar(deco_allowed_depth(tissue_tolerance_calc(dive,
 												     depth_to_bar(depth, dive)),
 									    diveplan->surface_pressure / 1000.0,
@@ -929,8 +927,8 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi].gasidx,
 							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
-						/* Stop for the minimum duration to switch gas */
-						if (!(prefs.doo2breaks && get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000)) {
+						/* Stop for the minimum duration to switch gas unless we switch to o2 */
+						if (get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
 							add_segment(depth_to_bar(depth, dive),
 								&dive->cylinder[current_cylinder].gasmix,
 								prefs.min_switch_duration, po2, dive, prefs.decosac);
@@ -982,8 +980,8 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 					printf("switch to gas %d (%d/%d) @ %5.2lfm\n", gaschanges[gi + 1].gasidx,
 						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
-					/* Stop for the minimum duration to switch gas */
-					if (!(prefs.doo2breaks && get_o2(&dive->cylinder[current_cylinder].gasmix) == 1000)) {
+					/* Stop for the minimum duration to switch gas unless we switch to o2 */
+					if (get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
 						add_segment(depth_to_bar(depth, dive),
 							&dive->cylinder[current_cylinder].gasmix,
 							prefs.min_switch_duration, po2, dive, prefs.decosac);
@@ -1001,7 +999,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				}
 
 				o2breaking = false;
-				stopcylinder = current_cylinder;
+				stop_cylinder = current_cylinder;
 				if (prefs.doo2breaks) {
 					/* The backgas breaks option limits time on oxygen to 12 minutes, followed by 6 minutes on
 					 * backgas.  This could be customized if there were demand.
@@ -1017,7 +1015,8 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 							laststoptime = 12 * 60;
 							new_clock = clock + laststoptime;
 							o2breaking = true;
-							breaktime = 0;
+							o2break_next = true;
+							o2break_done = true;
 							breakfrom_cylinder = current_cylinder;
 							if (is_final_plan)
 								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
@@ -1025,24 +1024,21 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 							current_cylinder = break_cylinder;
 							gas = dive->cylinder[current_cylinder].gasmix;
 						}
-					} else {
-						if (breaktime >= 0) {
-							if (laststoptime >= 6 * 60) {
-								laststoptime = 6 * 60;
-								new_clock = clock + laststoptime;
-								o2breaking  = true;
-								o2time = 0;
-								if (is_final_plan)
-									plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
-								previous_point_time = clock + laststoptime;
-								current_cylinder = breakfrom_cylinder;
-								gas = dive->cylinder[current_cylinder].gasmix;
-								breaktime = -1;
-							}
+					} else if (o2break_next) {
+						if (laststoptime >= 6 * 60) {
+							laststoptime = 6 * 60;
+							new_clock = clock + laststoptime;
+							o2breaking  = true;
+							o2break_next = false;
+							if (is_final_plan)
+								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
+							previous_point_time = clock + laststoptime;
+							current_cylinder = breakfrom_cylinder;
+							gas = dive->cylinder[current_cylinder].gasmix;
 						}
 					}
 				}
-				add_segment(depth_to_bar(depth, dive), &dive->cylinder[stopcylinder].gasmix,
+				add_segment(depth_to_bar(depth, dive), &dive->cylinder[stop_cylinder].gasmix,
 					    laststoptime, po2, dive, prefs.decosac);
 				decostoptable[decostopcounter].depth = depth;
 				decostoptable[decostopcounter].time = laststoptime;
