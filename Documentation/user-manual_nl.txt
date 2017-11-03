@@ -3844,8 +3844,6 @@ De volgende opties zijn mogelijk:
 |--survey|Opent de xref:S_UserSurvey[gebruikers enquête] bij opstarten van _Subsurface_
 |--user=<username>|Kies de xref:S_user_space[instellingen] van gebruiker <username>
 |--cloud-timeout=<duration>|Stel de timeout in voor de verbinding ,met de cloud (0 < duration < 60). Soms handig op trage Internet verbindingen
-|--win32console|Alleen op Windows. Maak een specifieke uitvoer console. Deze optie dient vooraan te staan
-|--win32log|Alleen op Windows. Schrijf de programma uitvoer naar subsurface.log. Deze optie dient vooraan te staan
 |================================
 
 

@@ -5806,14 +5806,6 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">--cloud-timeout=&lt;duración&gt;</p></td>
 <td align="left" valign="top"><p class="table">Ajusta el tiempo de espera para la conexión con la nube (0 &lt; duración &lt; 60). Esto permite mayores tiempos de espera si tenemos una conexión a internet lenta</p></td>
 </tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32console</p></td>
-<td align="left" valign="top"><p class="table">Crea una consola dedicada en caso necesario (solo Windows). Indica esta opción antes que ninguna otra</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32log</p></td>
-<td align="left" valign="top"><p class="table">Escribe la salida del programa a subsurface.log (solo Windows). Indica esta opción antes que ninguna otra</p></td>
-</tr>
 </tbody>
 </table>
 </div>

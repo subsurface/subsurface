@@ -6027,14 +6027,6 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">--cloud-timeout=&lt;duration&gt;</p></td>
 <td align="left" valign="top"><p class="table">Set the timeout for cloud connection (0 &lt; duration &lt; 60). This enables longer timeouts for slow Internet connections</p></td>
 </tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32console</p></td>
-<td align="left" valign="top"><p class="table">Create a dedicated console if needed (Windows only). Add this option before everything else</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32log</p></td>
-<td align="left" valign="top"><p class="table">Write the program output to subsurface.log (Windows only). Add option before everything else</p></td>
-</tr>
 </tbody>
 </table>
 </div>

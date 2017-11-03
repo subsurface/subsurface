@@ -4409,8 +4409,6 @@ Las opciones incluyen:
 |--survey|Abre la xref:S_UserSurvey[encuesta de usuarios] inmediatamente después de lanzar _Subsurface_
 |--user<nombre de usuario>|Selecciona la xref:S_user_space[configuración de trabajo] del usuario <nombre de usuario>
 |--cloud-timeout=<duración>|Ajusta el tiempo de espera para la conexión con la nube (0 < duración < 60). Esto permite mayores tiempos de espera si tenemos una conexión a internet lenta
-|--win32console|Crea una consola dedicada en caso necesario (solo Windows). Indica esta opción antes que ninguna otra
-|--win32log|Escribe la salida del programa a subsurface.log (solo Windows). Indica esta opción antes que ninguna otra
 |======================
 
 == Descripción de las opciones del menú principal de _Subsurface_

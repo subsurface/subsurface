@@ -5421,14 +5421,6 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">--cloud-timeout=&lt;duration&gt;</p></td>
 <td align="left" valign="top"><p class="table">Stel de timeout in voor de verbinding ,met de cloud (0 &lt; duration &lt; 60). Soms handig op trage Internet verbindingen</p></td>
 </tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32console</p></td>
-<td align="left" valign="top"><p class="table">Alleen op Windows. Maak een specifieke uitvoer console. Deze optie dient vooraan te staan</p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32log</p></td>
-<td align="left" valign="top"><p class="table">Alleen op Windows. Schrijf de programma uitvoer naar subsurface.log. Deze optie dient vooraan te staan</p></td>
-</tr>
 </tbody>
 </table>
 </div>
