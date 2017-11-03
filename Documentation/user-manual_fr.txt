@@ -4356,8 +4356,6 @@ Ces options incluent:
 |--survey|Opens the xref:S_UserSurvey[user survey] immediately after starting _Subsurface_
 |--user=<username>|Choose the xref:S_user_space[configuration space] of user <username>
 |--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < duration < 60). This enables longer timeouts for slow Internet connections
-|--win32console|Create a dedicated console if needed (Windows only). Add this option before everything else
-|--win32log|Write the program output to subsurface.log (Windows only). Add option before everything else
 |====================
 
 == Description des éléments du menu principal de Subsurface

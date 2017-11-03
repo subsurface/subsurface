@@ -5046,10 +5046,6 @@ cellspacing="0" cellpadding="4">
 <td align="left" valign="top"><p class="table">--cloud-timeout=&lt;время в секундах</p></td>
 <td align="right" valign="top"><p class="table">Устанавливает таймаут соединения с облачным хранилищем (0 &lt; таймаут &lt; 60). Используйте для медленного соединения.</p></td>
 </tr>
-<tr>
-<td align="left" valign="top"><p class="table">--win32console</p></td>
-<td align="left" valign="top"><p class="table">Создает отдельное консольное окно (только Windows). Этот параметр должен быть первым</p></td>
-</tr>
 </tbody>
 </table>
 </div>

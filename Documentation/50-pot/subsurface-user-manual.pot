@@ -8279,10 +8279,6 @@ msgid ""
 "<username>\n"
 "|--cloud-timeout=<duration>|Set the timeout for cloud connection (0 < "
 "duration < 60). This enables longer timeouts for slow Internet connections\n"
-"|--win32console|Create a dedicated console if needed (Windows only). Add "
-"this option before everything else\n"
-"|--win32log|Write the program output to subsurface.log (Windows only). Add "
-"option before everything else\n"
 msgstr ""
 
 #. type: Title ==
