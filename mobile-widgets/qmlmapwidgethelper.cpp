@@ -113,7 +113,7 @@ void MapWidgetHelper::reloadMapLocations()
 		QString name(ds->name);
 		// don't add dive locations with the same name, unless they are
 		// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
-		if (locationNameMap[name]) {
+		if (locationNameMap.contains(name)) {
 			MapLocation *existingLocation = locationNameMap[name];
 			QGeoCoordinate coord = qvariant_cast<QGeoCoordinate>(existingLocation->getRole(MapLocation::Roles::RoleCoordinate));
 			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
