@@ -908,7 +908,7 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.vendor = strdup(selected_vendor.toUtf8().data());
 	device_data.product = strdup(selected_product.toUtf8().data());
 
-	device_data.descriptor = descriptorLookup[selected_vendor + selected_product];
+	device_data.descriptor = descriptorLookup.value(selected_vendor + selected_product);
 	device_data.deviceid = device_data.diveid = 0;
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;

@@ -482,7 +482,7 @@ void DownloadFromDCWidget::updateDeviceEnabled()
 {
 	// Set up the DC descriptor
 	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup[ui.vendor->currentText() + ui.product->currentText()];
+	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
 	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {

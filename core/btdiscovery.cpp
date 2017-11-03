@@ -46,7 +46,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	}
 
 	if (!vendor.isEmpty() && !product.isEmpty())
-		return(descriptorLookup[vendor + product]);
+		return(descriptorLookup.value(vendor + product));
 
 	return(NULL);
 }
