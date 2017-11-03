@@ -1036,7 +1036,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 					// Use the point where the ceiling clears as the end of deco phase for CVA calculations
 					if (current_ceiling > 0)
 						time_clear_ceiling = 0;
-					else if (time_clear_ceiling == 0)
+					else if (time_clear_ceiling == 0 && t1 > time_deep_ceiling)
 						time_clear_ceiling = t1;
 				}
 			}
