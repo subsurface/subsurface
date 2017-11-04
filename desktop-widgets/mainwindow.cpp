@@ -979,11 +979,12 @@ void MainWindow::on_actionDivePlanner_triggered()
 	DivePlannerPointsModel::instance()->setupStartTime();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	// plan the dive in the same mode as the currently selected one
-	if (current_dive)
+	if (current_dive) {
 		divePlannerSettingsWidget()->setDiveMode(current_dive->dc.divemode);
+		if (current_dive->salinity)
+			divePlannerWidget()->setSalinity(current_dive->salinity);
+	}
 	DivePictureModel::instance()->updateDivePictures();
-	if (current_dive->salinity)
-		divePlannerWidget()->setSalinity(current_dive->salinity);
 	divePlannerWidget()->setReplanButton(false);
 }
 
