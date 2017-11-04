@@ -68,7 +68,7 @@ private slots:
 	void remoteDeviceScanFinished();
 	void hostModeStateChanged(QBluetoothLocalDevice::HostMode mode);
 	void addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo);
-	void itemClicked(QListWidgetItem *item);
+	void currentItemChanged(QListWidgetItem *item,QListWidgetItem *previous);
 	void displayPairingMenu(const QPoint &pos);
 	void pairingFinished(const QBluetoothAddress &address,QBluetoothLocalDevice::Pairing pairing);
 	void error(QBluetoothLocalDevice::Error error);

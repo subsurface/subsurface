@@ -46,8 +46,8 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	ui->save->setEnabled(false);
 
 	// Add event for item selection
-	connect(ui->discoveredDevicesList, SIGNAL(itemClicked(QListWidgetItem*)),
-		this, SLOT(itemClicked(QListWidgetItem*)));
+	connect(ui->discoveredDevicesList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
+		this, SLOT(currentItemChanged(QListWidgetItem*,QListWidgetItem*)));
 
 #if defined(Q_OS_WIN)
 	ULONG       ulRetCode = SUCCESS;
@@ -172,7 +172,6 @@ void BtDeviceSelectionDialog::on_clear_clicked()
 {
 	ui->dialogStatus->setText(tr("Remote devices list was cleared."));
 	ui->discoveredDevicesList->clear();
-	ui->save->setEnabled(false);
 
 	if (remoteDeviceDiscoveryAgent->isActive()) {
 		// Stop the SDP agent if the clear button is pressed and enable the Scan button
@@ -263,8 +262,14 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	ui->discoveredDevicesList->addItem(item);
 }
 
-void BtDeviceSelectionDialog::itemClicked(QListWidgetItem *item)
+void BtDeviceSelectionDialog::currentItemChanged(QListWidgetItem *item, QListWidgetItem *)
 {
+	// If the list is cleared, we get a signal with a null item pointer
+	if (!item) {
+		ui->save->setEnabled(false);
+		return;
+	}
+
 	// By default we assume that the devices are paired
 	QBluetoothDeviceInfo remoteDeviceInfo = item->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
 	QString statusMessage = tr("The device %1 can be used for connection. You can press the Save button.")
