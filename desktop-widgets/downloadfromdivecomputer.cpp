@@ -555,7 +555,7 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 		/* Make the selected Bluetooth device default */
 		QString selectedDeviceName = btDeviceSelectionDialog->getSelectedDeviceName();
 
-		if (selectedDeviceName == NULL || selectedDeviceName.isEmpty()) {
+		if (selectedDeviceName.isEmpty()) {
 			ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceAddress());
 		} else {
 			ui.device->setCurrentText(selectedDeviceName);
