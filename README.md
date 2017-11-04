@@ -1,6 +1,8 @@
+# Subsurface [![Build Status](https://travis-ci.org/Subsurface-divelog/subsurface.svg?branch=master)](https://travis-ci.org/Subsurface-divelog/subsurface)
+
 This is the README file for Subsurface 4.7.2
 
-Please check the ReleaseNotes.txt for details about new features and
+Please check the `ReleaseNotes.txt` for details about new features and
 changes since Subsurface 4.6.4 (and earlier versions).
 
 Subsurface can be found at http://subsurface-divelog.org
@@ -12,7 +14,6 @@ https://github.com/Subsurface-divelog/subsurface/issues
 
 License: GPLv2
 
-
 We frequently make new test versions of Subsurface avilable at
 http://subsurface-divelog.org/downloads/test/
 These tend to contain the latest bug fixes and features, but also
@@ -22,7 +23,9 @@ that these are primarily intended for testing.
 You can get the sources to the latest development version from the git
 repository:
 
+```
 git clone https://github.com/Subsurface-divelog/subsurface.git
+```
 
 You can also fork the repository and browse the sources at the same site,
 simply using https://github.com/Subsurface-divelog/subsurface
@@ -31,16 +34,15 @@ If you want the latest release (instead of the bleeding edge
 development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
+```
 git checkout v4.7.2  (or whatever the last release is)
+```
 
-or download a tar ball from:
-
-http://subsurface-divelog.org/downloads/Subsurface-4.7.2.tgz
+or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.7.2.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 
-System Requirements:
-====================
+## System Requirements
 
 On desktop, the integrated Googlemaps feature of Subsurface requires a GPU
 driver that has support for at least OpenGL 2.1. If your driver does not
@@ -52,19 +54,22 @@ the following:
 1) Learn how to set persistent environment variables on your OS
 2) Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'
 
-Basic Usage:
-============
+## Basic Usage
 
 Install and start from the desktop, or you can run it locally from the
 build directory:
 
 On Linux:
 
+```
 $ ./subsurface
+```
 
 On Mac:
 
+```
 $ open Subsurface.app
+```
 
 Native builds on Windows are not really supported (the official Windows
 installers are both cross-built on Linux).
@@ -87,9 +92,7 @@ this is also available as Documentation/user-manual.html. The
 documentation for the latest release is also available on-line
 http://subsurface-divelog.org/documentation/
 
-
-Contributing:
-=============
+## Contributing
 
 There is a mailing list for developers: subsurface@subsurface-divelog.org
 Go to http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
@@ -115,17 +118,17 @@ looks like this:
 	Body of commit message is a few lines of text, explaining things
 	in more detail, possibly giving some background about the issue
 	being fixed, etc etc.
-
+	
 	The body of the commit message can be several paragraphs, and
 	please do proper word-wrap and keep columns shorter than about
 	74 characters or so. That way "git log" will show things
 	nicely even when it's indented.
-
+	
 	Make sure you explain your solution and why you're doing what you're
 	doing, as opposed to describing what you're doing. Reviewers and your
 	future self can read the patch, but might not understand why a
 	particular solution was implemented.
-
+	
 	Reported-by: whoever-reported-it
 	Signed-off-by: Your Name <youremail@yourhost.com>
 
@@ -136,9 +139,7 @@ independently of the longer explanation. Please use verbs in the
 imperative in the commit message, as in "Fix bug that...", "Add
 file/feature ...", or "Make Subsurface..."
 
-
-A bit of Subsurface history:
-============================
+## A bit of Subsurface history
 
 In fall of 2011, when a forced lull in kernel development gave him an
 opportunity to start on a new endeavor, Linus Torvalds decided to tackle
