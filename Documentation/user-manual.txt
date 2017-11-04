@@ -4298,7 +4298,7 @@ Now power on the controller and enable authentication:
 		RX bytes:1026 acl:0 sco:0 events:47 errors:0
 		TX bytes:449 acl:0 sco:0 commands:46 errors:0
 
-Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+.
+Check that the status now includes '+UP+', '+RUNNING+' AND '+AUTH+'.
 
 If there are multiple controllers running, it's easiest to turn off the unused controller(s). For example, for +hci1+:
 
