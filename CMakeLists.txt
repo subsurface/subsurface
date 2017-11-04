@@ -350,7 +350,7 @@ target_link_libraries(export-html subsurface_corelib ${SUBSURFACE_LINK_LIBRARIES
 # install Subsurface
 # first some variables with files that need installing
 set(DOCFILES
-	README
+	README.md
 	ReleaseNotes/ReleaseNotes.txt
 	SupportedDivecomputers.txt
 	${CMAKE_BINARY_DIR}/Documentation/user-manual.html
