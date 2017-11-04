@@ -7,7 +7,7 @@
 #include "mapwidget.h"
 #include "core/dive.h"
 #include "core/divesite.h"
-#include "mobile-widgets/qmlmapwidgethelper.h"
+#include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
 #include "mainwindow.h"
 #include "divelistview.h"
