@@ -149,7 +149,7 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desk
 
 %files
 %defattr(-,root,root)
-%doc gpl-2.0.txt README ReleaseNotes/ReleaseNotes.txt
+%doc gpl-2.0.txt README.md ReleaseNotes/ReleaseNotes.txt
 %{_bindir}/subsurface*
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop

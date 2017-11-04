@@ -15,7 +15,7 @@ set -eu
 #set -x
 
 # You would typically add/remove files to/from the list
-files="Documentation/user-manual.txt Makefile README ReleaseNotes/ReleaseNotes.txt"
+files="Documentation/user-manual.txt Makefile README.md ReleaseNotes/ReleaseNotes.txt"
 
 whine() {
 	echo "$0: $*" >&2
