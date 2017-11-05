@@ -25,7 +25,6 @@ struct plot_info {
 	enum {AIR, NITROX, TRIMIX, FREEDIVING} dive_type;
 	double endtempcoord;
 	double maxpp;
-	bool has_ndl;
 	struct plot_data *entry;
 };
 

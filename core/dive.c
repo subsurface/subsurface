@@ -753,6 +753,10 @@ struct sample *prepare_sample(struct divecomputer *dc)
 			sample->sensor[0] = sample[-1].sensor[0];
 			sample->sensor[1] = sample[-1].sensor[1];
 		}
+		// Init some values with -1
+		sample->bearing.degrees = -1;
+		sample->ndl.seconds = -1;
+		
 		return sample;
 	}
 	return NULL;
@@ -1261,12 +1265,12 @@ static void fixup_meandepth(struct dive *dive)
 static void fixup_duration(struct dive *dive)
 {
 	struct divecomputer *dc;
-	unsigned int duration = 0;
+	duration_t duration = { };
 
 	for_each_dc (dive, dc)
-		duration = MAX(duration, dc->duration.seconds);
+		duration.seconds = MAX(duration.seconds, dc->duration.seconds);
 
-	dive->duration.seconds = duration;
+	dive->duration.seconds = duration.seconds;
 }
 
 /*
