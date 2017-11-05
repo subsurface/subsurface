@@ -350,7 +350,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 	int nr;
 	int o2sensor;
 	struct sample *s;
-	struct sample dummy = {};
+	struct sample dummy = { .bearing.degrees = -1, .ndl.seconds = -1 };
 
 	/* Is this a CCR dive with the old-style "o2pressure" sensor? */
 	o2sensor = legacy_format_o2pressures(dive, dc);

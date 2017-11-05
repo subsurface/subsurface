@@ -114,6 +114,7 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 	static struct sample fake_samples[6];
 	static struct divecomputer fakedc;
 	struct sample *fake = fake_samples;
+	int i;
 
 	fakedc = (*dc);
 	if (alloc)
@@ -129,6 +130,10 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 
 	memset(fake, 0, sizeof(fake_samples));
 	fake[5].time.seconds = max_t;
+	for (i = 0; i < 6; i++) {
+		fake_samples[i].bearing.degrees = -1;
+		fake_samples[i].ndl.seconds = -1;
+	}
 	if (!max_t || !max_d)
 		return &fakedc;
 

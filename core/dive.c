@@ -1727,7 +1727,7 @@ static void merge_one_sample(struct sample *sample, int time, struct divecompute
 {
 	int last = dc->samples - 1;
 	if (last >= 0) {
-		static struct sample surface;
+		static struct sample surface = { .bearing.degrees = -1, .ndl.seconds = -1 };
 		struct sample *prev = dc->sample + last;
 		int last_time = prev->time.seconds;
 		int last_depth = prev->depth.mm;
@@ -1772,7 +1772,7 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 
 	for (;;) {
 		int at, bt;
-		struct sample sample;
+		struct sample sample = { .bearing.degrees = -1, .ndl.seconds = -1 };
 
 		if (!res)
 			return;

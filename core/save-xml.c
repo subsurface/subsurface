@@ -364,7 +364,7 @@ static void save_samples(struct membuffer *b, struct dive *dive, struct divecomp
 	int nr;
 	int o2sensor;
 	struct sample *s;
-	struct sample dummy = {};
+	struct sample dummy = { .bearing.degrees = -1, .ndl.seconds = -1 };
 
 	/* Set up default pressure sensor indexes */
 	o2sensor = legacy_format_o2pressures(dive, dc);
