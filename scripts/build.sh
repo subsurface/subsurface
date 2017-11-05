@@ -423,7 +423,7 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 	cd build
 	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
-		-DBUILD__TESTS=NO \
+		-DBUILD_TESTS=NO \
 		$SRC/grantlee
 	make -j4
 	make install
