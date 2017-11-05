@@ -495,6 +495,8 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	entry->running_sum = (entry - 1)->running_sum + (_time - (entry - 1)->sec) * (_depth + (entry - 1)->depth) / 2; \
 	memset(entry->pressure, 0, sizeof(entry->pressure)); \
 	entry->sac = _sac;          \
+	entry->ndl = -1;          \
+	entry->bearing = -1;          \
 	entry++;                    \
 	idx++
 
@@ -576,7 +578,6 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->stoptime = sample->stoptime.seconds;
 		entry->ndl = sample->ndl.seconds;
 		entry->tts = sample->tts.seconds;
-		pi->has_ndl |= sample->ndl.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
 		if (dc->divemode == CCR) {
@@ -1320,7 +1321,7 @@ struct divecomputer *select_dc(struct dive *dive)
 	return get_dive_dc(dive, i);
 }
 
-static void plot_string(struct plot_info *pi, struct plot_data *entry, struct membuffer *b, bool has_ndl)
+static void plot_string(struct plot_info *pi, struct plot_data *entry, struct membuffer *b)
 {
 	int pressurevalue, mod, ead, end, eadd;
 	const char *depth_unit, *pressure_unit, *temp_unit, *vertical_speed_unit;
@@ -1353,13 +1354,13 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		put_format(b, translate("gettextFromC", "SAC: %.*f%s/min\n"), decimals, sacvalue, unit);
 	if (entry->cns)
 		put_format(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
-	if (prefs.pp_graphs.po2)
+	if (prefs.pp_graphs.po2 && entry->pressures.o2 > 0)
 		put_format(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.o2);
-	if (prefs.pp_graphs.pn2)
+	if (prefs.pp_graphs.pn2 && entry->pressures.n2 > 0)
 		put_format(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.n2);
-	if (prefs.pp_graphs.phe)
+	if (prefs.pp_graphs.phe && entry->pressures.he > 0)
 		put_format(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
-	if (prefs.mod) {
+	if (prefs.mod && entry->mod > 0) {
 		mod = lrint(get_depth_units(lrint(entry->mod), NULL, &depth_unit));
 		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
@@ -1368,15 +1369,21 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	if (prefs.ead) {
 		switch (pi->dive_type) {
 		case NITROX:
-			ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
-			put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), ead, depth_unit, eadd, depth_unit, entry->density);
-			break;
+			if (entry->ead > 0) {
+				ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
+				put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), ead, depth_unit, eadd, depth_unit, entry->density);
+				break;
+			}
 		case TRIMIX:
-			end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
-			put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), end, depth_unit, eadd, depth_unit, entry->density);
-			break;
+			if (entry->end > 0) {
+				end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
+				put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), end, depth_unit, eadd, depth_unit, entry->density);
+				break;
+			}
 		case AIR:
-			put_format(b, translate("gettextFromC", "Density: %.1fg/ℓ\n"), entry->density);
+			if (entry->density > 0) {
+				put_format(b, translate("gettextFromC", "Density: %.1fg/ℓ\n"), entry->density);
+			}
 		case FREEDIVING:
 			/* nothing */
 			break;
@@ -1384,7 +1391,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	}
 	if (entry->stopdepth) {
 		depthvalue = get_depth_units(entry->stopdepth, NULL, &depth_unit);
-		if (entry->ndl) {
+		if (entry->ndl > 0) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
 				put_format(b, translate("gettextFromC", "Safety stop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
@@ -1403,7 +1410,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		}
 	} else if (entry->in_deco) {
 		put_string(b, translate("gettextFromC", "In deco\n"));
-	} else if (has_ndl) {
+	} else if (entry->ndl >= 0) {
 		put_format(b, translate("gettextFromC", "NDL: %umin\n"), DIV_UP(entry->ndl, 60));
 	}
 	if (entry->tts)
@@ -1448,7 +1455,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	}
 	if (entry->heartbeat && prefs.hrgraph)
 		put_format(b, translate("gettextFromC", "heart rate: %d\n"), entry->heartbeat);
-	if (entry->bearing)
+	if (entry->bearing >= 0)
 		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
 	if (entry->running_sum) {
 		depthvalue = get_depth_units(entry->running_sum / entry->sec, NULL, &depth_unit);
@@ -1463,13 +1470,14 @@ struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct me
 	struct plot_data *entry = NULL;
 	int i;
 
-	for (i = 0; i < pi->nr; i++) {
+	/* The two first and the two last plot entries do not have useful data */
+	for (i = 2; i < pi->nr - 2; i++) {
 		entry = pi->entry + i;
 		if (entry->sec >= time)
 			break;
 	}
 	if (entry)
-		plot_string(pi, entry, mb, pi->has_ndl);
+		plot_string(pi, entry, mb);
 	return (entry);
 }
 
