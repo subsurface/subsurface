@@ -527,11 +527,15 @@ void DownloadFromDCWidget::on_ok_clicked()
 	accept();
 }
 
+dc_descriptor_t *DownloadFromDCWidget::getDescriptor() const
+{
+	return descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+}
+
 void DownloadFromDCWidget::updateDeviceEnabled()
 {
 	// Set up the DC descriptor
-	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+	dc_descriptor_t *descriptor = getDescriptor();
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
 	if (dc_descriptor_get_transports(descriptor) & (DC_TRANSPORT_SERIAL | DC_TRANSPORT_USBSTORAGE)) {
@@ -590,7 +594,7 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 void DownloadFromDCWidget::selectRemoteBluetoothDevice()
 {
 	if (!btDeviceSelectionDialog) {
-		btDeviceSelectionDialog = new BtDeviceSelectionDialog(this);
+		btDeviceSelectionDialog = new BtDeviceSelectionDialog(ui.device->currentText(), getDescriptor(), this);
 		connect(btDeviceSelectionDialog, SIGNAL(finished(int)),
 			this, SLOT(bluetoothSelectionDialogIsFinished(int)));
 	}

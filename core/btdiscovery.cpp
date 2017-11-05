@@ -10,7 +10,7 @@ extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
-static dc_descriptor_t *getDeviceType(QString btName)
+dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
 	QString vendor, product;

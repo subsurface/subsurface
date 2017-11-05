@@ -18,6 +18,7 @@
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
+dc_descriptor_t *getDeviceType(QString btName);
 
 class BTDiscovery : public QObject {
 	Q_OBJECT
