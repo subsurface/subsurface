@@ -338,9 +338,12 @@
            </widget>
           </item>
           <item row="19" column="1">
-           <widget class="QLabel" name="label_min_switch_duration">
+           <widget class="QLabel" name="label_min_switch">
+            <property name="toolTip">
+             <string>For gas switches at and above 30m. Not applied for O₂% at 100%.</string>
+            </property>
             <property name="text">
-             <string>Min. switch duration O₂% below 100%</string>
+             <string>Min. switch duration</string>
             </property>
            </widget>
           </item>
@@ -513,6 +516,35 @@
            <widget class="QLabel" name="label_dive_type">
             <property name="text">
              <string>Dive mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="1">
+           <widget class="QLabel" name="label_min_switch_deep">
+            <property name="toolTip">
+             <string>For gas switches below 30m.</string>
+            </property>
+            <property name="text">
+             <string>Min. switch duration deep</string>
+            </property>
+           </widget>
+          </item>
+          <item row="20" column="2">
+           <widget class="QSpinBox" name="min_switch_duration_deep">
+            <property name="suffix">
+             <string>min</string>
+            </property>
+            <property name="prefix">
+             <string/>
+            </property>
+            <property name="minimum">
+             <number>0</number>
+            </property>
+            <property name="maximum">
+             <number>9</number>
+            </property>
+            <property name="value">
+             <number>1</number>
             </property>
            </widget>
           </item>
@@ -840,6 +872,7 @@
   <tabstop>backgasBreaks</tabstop>
   <tabstop>switch_at_req_stop</tabstop>
   <tabstop>min_switch_duration</tabstop>
+  <tabstop>min_switch_duration_deep</tabstop>
   <tabstop>bottomSAC</tabstop>
   <tabstop>decoStopSAC</tabstop>
   <tabstop>sacfactor</tabstop>

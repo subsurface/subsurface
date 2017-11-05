@@ -1234,6 +1234,11 @@ int DivePlannerSettings::minSwitchDuration() const
 	return prefs.min_switch_duration;
 }
 
+int DivePlannerSettings::minSwitchDurationDeep() const
+{
+	return prefs.min_switch_duration_deep;
+}
+
 int DivePlannerSettings::bottomSac() const
 {
 	return prefs.bottomsac;
@@ -1504,6 +1509,18 @@ void DivePlannerSettings::setMinSwitchDuration(int value)
 	s.setValue("min_switch_duration", value);
 	prefs.min_switch_duration = value;
 	emit minSwitchDurationChanged(value);
+}
+
+void DivePlannerSettings::setMinSwitchDurationDeep(int value)
+{
+	if (value == prefs.min_switch_duration_deep)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("min_switch_duration_deep", value);
+	prefs.min_switch_duration_deep = value;
+	emit minSwitchDurationDeepChanged(value);
 }
 
 void DivePlannerSettings::setBottomSac(int value)
@@ -2323,6 +2340,7 @@ void SettingsObjectWrapper::load()
 	GET_INT("decopo2", decopo2);
 	GET_INT("bestmixend", bestmixend.mm);
 	GET_INT("min_switch_duration", min_switch_duration);
+	GET_INT("min_switch_duration_deep", min_switch_duration_deep);
 	GET_INT("bottomsac", bottomsac);
 	GET_INT("decosac", decosac);
 
@@ -2381,6 +2399,7 @@ void SettingsObjectWrapper::sync()
 	s.setValue("drop_stone_mode", prefs.drop_stone_mode);
 	s.setValue("switch_at_req_stop", prefs.switch_at_req_stop);
 	s.setValue("min_switch_duration", prefs.min_switch_duration);
+	s.setValue("min_switch_duration_deep", prefs.min_switch_duration_deep);
 	s.setValue("bottomsac", prefs.bottomsac);
 	s.setValue("decosac", prefs.decosac);
 	s.setValue("deco_mode", int(prefs.planner_deco_mode));

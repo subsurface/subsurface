@@ -128,6 +128,7 @@ struct preferences {
 	bool switch_at_req_stop;
 	int reserve_gas;
 	int min_switch_duration; // seconds
+	int min_switch_duration_deep; // seconds
 	int bottomsac;
 	int decosac;
 	int o2consumption; // ml per min
