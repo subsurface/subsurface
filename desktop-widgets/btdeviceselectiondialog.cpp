@@ -40,6 +40,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	ui->scan->setText(tr("Scan"));
 	ui->clear->setText(tr("Clear"));
 	ui->save->setText(tr("Save"));
+	ui->save->setDefault(true);
 	ui->quit->setText(tr("Quit"));
 
 	// Disable the save button because there is no device selected
