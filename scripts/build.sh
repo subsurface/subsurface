@@ -475,6 +475,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DLIBDIVECOMPUTER_LIBRARIES=$INSTALL_ROOT/lib/libdivecomputer.a \
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
 		-DBTSUPPORT=${BTSUPPORT} \
+		-DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} \
 		$PRINTING $EXTRA_OPTS
 
 	if [ $PLATFORM = Darwin ] ; then
@@ -483,8 +484,5 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	fi
 
 	LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
-
-	if [ $PLATFORM = Darwin ] ; then
-		LIBRARY_PATH=$INSTALL_ROOT/lib make install
-	fi
+	LIBRARY_PATH=$INSTALL_ROOT/lib make install
 done
