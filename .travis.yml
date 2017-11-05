@@ -29,26 +29,28 @@ addons:
             - mesa-common-dev
             # Not a subsurface dependency, but a QtMultimedia/libdeclarative_multimedia.so dependency
             - libpulse-mainloop-glib0
+            # Not a subsurface dependency, but a QtWebKit dependency
+            - libhyphen-dev
+            - libicu52
 
 before_install:
     - if [ ! -e Qt/5.9.1 ] ; then
-          rm -rf Qt ;
-          wget http://download.qt.io/official_releases/qt/5.9/5.9.1/qt-opensource-linux-x64-5.9.1.run ;
-          chmod +x ./qt-opensource-linux-x64-5.9.1.run ;
-          ./qt-opensource-linux-x64-5.9.1.run --platform minimal --script qt-installer-noninteractive.qs --no-force-installations ;
+          rm -rf Qt ; mkdir -p Qt/5.9.1 ;
+          wget http://subsurface-divelog.org/downloads/Qt-5.9.1.tar.xz ; tar -xJ -C Qt/5.9.1 -f Qt-5.9.1.tar.xz ;
+          cd Qt/5.9.1 ; ln -s . gcc_64 ; cd .. ; ln -s 5.9.1/* . ; cd .. ;
       fi
       # TestPreferences uses gui calls, so run a xvfb so it has something to talk to
     - "export DISPLAY=:99.0"
     - "sh -e /etc/init.d/xvfb start"
 
 script:
-    - export PATH=$PWD/Qt/5.9.1/gcc_64/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
-    - export CMAKE_PREFIX_PATH=$PWD/Qt/5.9.1/gcc_64/lib/cmake ;
+    - export PATH=$PWD/Qt/5.9.1/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
+    - export CMAKE_PREFIX_PATH=$PWD/Qt/5.9.1/lib/cmake ;
       cd .. ;
-      bash -e ./subsurface/scripts/build.sh -desktop -create-appdir
+      bash -e ./subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
     - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
     - # env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build-mobile check
-    - mkdir -p appdir/usr/plugins/ ; mv appdir/usr/home/travis/build/*/subsurface/Qt/5.9.1/gcc_64/plugins/* appdir/usr/plugins/
+    - mkdir -p appdir/usr/plugins/ ; mv appdir/usr/home/travis/build/*/subsurface/Qt/5.9.1/plugins/* appdir/usr/plugins/
     - sudo mv appdir/usr/lib/* /usr/local/lib/ # Workaround for https://github.com/probonopd/linuxdeployqt/issues/160
     - rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
     - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
