@@ -11,9 +11,12 @@
 #include "ui_btdeviceselectiondialog.h"
 #include "btdeviceselectiondialog.h"
 
-BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
+BtDeviceSelectionDialog::BtDeviceSelectionDialog(const QString &address, dc_descriptor_t *dc, QWidget *parent) :
 	QDialog(parent),
 	ui(new Ui::BtDeviceSelectionDialog),
+	previousDevice(address),
+	dcDescriptor(dc),
+	maxPriority(0),
 	remoteDeviceDiscoveryAgent(0)
 {
 	ui->setupUi(this);
@@ -53,6 +56,9 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	connect(ui->discoveredDevicesList, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)),
 		this, SLOT(currentItemChanged(QListWidgetItem*,QListWidgetItem*)));
 
+	// Remove BLE marker from address
+	if (previousDevice.startsWith("LE:"))
+		previousDevice = previousDevice.mid(3);
 	// Initialize the local Bluetooth device
 	localDevice = new QBluetoothLocalDevice();
 
@@ -124,6 +130,7 @@ void BtDeviceSelectionDialog::on_save_clicked()
 	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
 								remoteDeviceInfo.address().toString();
 	saveBtDeviceInfo(address, remoteDeviceInfo);
+	previousDevice = address;
 	stopScan();
 
 	// Close the device selection dialog and set the result code to Accepted
@@ -149,6 +156,7 @@ void BtDeviceSelectionDialog::on_clear_clicked()
 
 	ui->dialogStatus->setText(tr("Remote devices list was cleared."));
 	ui->discoveredDevicesList->clear();
+	maxPriority = 0;
 }
 
 void BtDeviceSelectionDialog::on_scan_clicked()
@@ -221,6 +229,7 @@ void BtDeviceSelectionDialog::startScan()
 		if (remoteDeviceDiscoveryAgent->isActive())
 			remoteDeviceDiscoveryAgent->stop();
 		ui->discoveredDevicesList->clear();
+		maxPriority = 0;
 		remoteDeviceDiscoveryAgent->start();
 		ui->dialogStatus->setText(tr("Scanning for remote devices..."));
 		setScanStatusOn();
@@ -237,10 +246,25 @@ void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMo
 	ui->deviceState->setChecked(on);
 }
 
+int BtDeviceSelectionDialog::getDevicePriority(bool connectable, const QBluetoothDeviceInfo &remoteDeviceInfo)
+{
+	if (!connectable)
+		return 0;
+	QString address = remoteDeviceInfo.address().isNull() ?
+		remoteDeviceInfo.deviceUuid().toString() :
+		remoteDeviceInfo.address().toString();
+	if (address == previousDevice)
+		return 4;
+	if (dc_descriptor_t *dc = getDeviceType(remoteDeviceInfo.name()))
+		return dc == dcDescriptor ? 3 : 2;
+	return 1;
+}
+
 void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo)
 {
 #if defined(Q_OS_WIN)
 	// On Windows we cannot obtain the pairing status so we set only the name and the address of the device
+	bool connectable = true;
 	QString deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),
 						     remoteDeviceInfo.address().toString());
 	QColor pairingColor = QColor(Qt::white);
@@ -250,12 +274,15 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	QString pairingStatusLabel = tr("UNPAIRED");
 	QBluetoothLocalDevice::Pairing pairingStatus = localDevice->pairingStatus(remoteDeviceInfo.address());
 
+	bool connectable = false;
 	if (pairingStatus == QBluetoothLocalDevice::Paired) {
 		pairingStatusLabel = tr("PAIRED");
 		pairingColor = QColor(Qt::gray);
+		connectable = true;
 	} else if (pairingStatus == QBluetoothLocalDevice::AuthorizedPaired) {
 		pairingStatusLabel = tr("AUTHORIZED_PAIRED");
 		pairingColor = QColor("#89C4F4");
+		connectable = true;
 	}
 	if (remoteDeviceInfo.address().isNull())
 		pairingColor = QColor(Qt::gray);
@@ -267,6 +294,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 		// we have only a Uuid, no address, so show that and reset the pairing color
 		deviceLabel = QString("%1 (%2)").arg(remoteDeviceInfo.name(),remoteDeviceInfo.deviceUuid().toString());
 		pairingColor = QColor(Qt::white);
+		connectable = true;
 	} else
 #endif
 	deviceLabel = tr("%1 (%2)   [State: %3]").arg(remoteDeviceInfo.name(),
@@ -280,6 +308,13 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	item->setBackgroundColor(pairingColor);
 
 	ui->discoveredDevicesList->addItem(item);
+	int priority = getDevicePriority(connectable, remoteDeviceInfo);
+	if (priority > maxPriority) {
+		maxPriority = priority;
+		ui->discoveredDevicesList->setCurrentItem(item);
+		ui->save->setEnabled(true);
+		ui->save->setFocus();
+	}
 }
 
 void BtDeviceSelectionDialog::currentItemChanged(QListWidgetItem *item, QListWidgetItem *)

@@ -7,6 +7,7 @@
 #include <QPointer>
 #include <QtBluetooth/QBluetoothLocalDevice>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
+#include "core/libdivecomputer.h"
 
 namespace Ui {
 	class BtDeviceSelectionDialog;
@@ -16,7 +17,7 @@ class BtDeviceSelectionDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit BtDeviceSelectionDialog(QWidget *parent = 0);
+	explicit BtDeviceSelectionDialog(const QString &address, dc_descriptor_t *dc, QWidget *parent = 0);
 	~BtDeviceSelectionDialog();
 	QString getSelectedDeviceAddress();
 	QString getSelectedDeviceName();
@@ -41,6 +42,9 @@ private slots:
 
 private:
 	Ui::BtDeviceSelectionDialog *ui;
+	QString previousDevice;
+	dc_descriptor_t *dcDescriptor;
+	int maxPriority;
 	QBluetoothLocalDevice *localDevice;
 	QBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
 	QScopedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
@@ -54,6 +58,8 @@ private:
 	void startScan();
 	void stopScan();
 	void showEvent(QShowEvent *event);
+	void initializeDeviceList();
+	int getDevicePriority(bool connectable, const QBluetoothDeviceInfo &remoteDeviceInfo);
 };
 
 #endif // BTDEVICESELECTIONDIALOG_H

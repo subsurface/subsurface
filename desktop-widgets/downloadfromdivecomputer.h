@@ -66,6 +66,7 @@ private:
 	void markChildrenAsEnabled();
 	void updateDeviceEnabled();
 	void showRememberedDCs();
+	dc_descriptor_t *getDescriptor() const;
 
 	QStringListModel vendorModel;
 	QStringListModel productModel;
