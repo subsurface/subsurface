@@ -55,6 +55,10 @@ while [[ $# -gt 0 ]] ; do
 			BUILD_MOBILE="1"
 			BUILD_DESKTOP="1"
 			;;
+		-create-appdir)
+			# we are building an AppImage as by product
+			CREATE_APPDIR="1"
+			;;
 		*)
 			echo "Unknown command line argument $arg"
 			;;
@@ -485,4 +489,15 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 
 	LIBRARY_PATH=$INSTALL_ROOT/lib make -j4
 	LIBRARY_PATH=$INSTALL_ROOT/lib make install
+
+	if [ "$CREATE_APPDIR" = "1" ] ; then
+		# if we create an AppImage this makes gives us a sane starting point
+		cd $SRC
+		mkdir -p ./appdir
+		mkdir -p appdir/usr/share/metainfo
+		mkdir -p appdir/usr/share/icons/hicolor/256x256/apps
+		cp -r ./install-root/* ./appdir/usr
+		cp subsurface/appdata/subsurface.appdata.xml appdir/usr/share/metainfo/
+		cp subsurface/icons/subsurface-icon.png appdir/usr/share/icons/hicolor/256x256/apps/
+	fi
 done
