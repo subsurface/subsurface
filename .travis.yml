@@ -68,14 +68,11 @@ script:
     - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -qmldir=./subsurface/map-widget/ -verbose=2
     - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
     - curl --upload-file ./Subsurface*.AppImage https://transfer.sh/Subsurface-git.$(cd subsurface/ ; git rev-parse --short HEAD)-x86_64.AppImage
-    - ls -lh ./Subsurface*.AppImage
-    - export APPIMAGE=Subsurface-$(cd subsurface/ ; git rev-parse --short HEAD)-x86_64.AppImage
-    - cp ./Subsurface*.AppImage $APPIMAGE
 
 after_success:
-    - ls -lh $APPIMAGE
+    - ls -lh Subsurface*.AppImage
     - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    - bash -x ./upload.sh $APPIMAGE
+    - bash -x ./upload.sh Subsurface*.AppImage Subsurface*.AppImage.zsync
 
 deploy:
   provider: releases
