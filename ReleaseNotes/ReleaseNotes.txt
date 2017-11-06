@@ -1,7 +1,17 @@
-// _Subsurface_ 4.7.2 Release Notes
+// _Subsurface_ 4.7.3 Release Notes
 
-_Subsurface_ 4.7.2 - October 31, 2017
+_Subsurface_ 4.7.3 - November, 2017
 ------------------------------------------
+
+Some of the changes since _Subsurface_ 4.7.2
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Small UI fixes
+- Improvement to oxygen breaks code in planner
+- Write log messages into files when not started from a console on Windows
+- Improved detection of OpenGL versions (prevents potential crash on more
+  operating systems with ancient gfx drivers)
+
 
 Some of the changes since _Subsurface_ 4.7.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
