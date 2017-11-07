@@ -40,9 +40,10 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "EON Steel";
 	}
 
-	if (btName.startsWith("G2")) {
+	if (btName.startsWith("G2")  || btName.startsWith("Aladin")) {
 		vendor = "Scubapro";
-		product = "G2";
+		if (btName.startsWith("G2")) product = "G2";
+		if (btName.startsWith("Aladin")) product = "Aladin Sport Matrix";
 	}
 
 	if (!vendor.isEmpty() && !product.isEmpty())

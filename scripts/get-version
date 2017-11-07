@@ -18,7 +18,7 @@ os=$1
 if [ $# -eq 2 ] && [ "$2" ]; then
 	v0=$2
 else
-	cmd="git describe --tags --abbrev=12"
+	cmd="git describe --abbrev=12"
 	v0=$($cmd) || v0=$(cat .gitversion) || croak "odd; command '$cmd' failed"
 fi
 
