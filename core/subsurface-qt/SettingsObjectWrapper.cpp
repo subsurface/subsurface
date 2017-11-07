@@ -1906,6 +1906,7 @@ void DisplaySettingsObjectWrapper::setFontSize(double value)
 		return;
 
 	QSettings s;
+	s.beginGroup(group);
 	s.setValue("font_size", value);
 	prefs.font_size = value;
 	QFont defaultFont = qApp->font();
