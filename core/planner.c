@@ -1060,7 +1060,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 		 * otherwise odd things can happen, such as CVA causing the final ascent to start *later*
 		 * if the ascent rate is slower, which is completely nonsensical.
 		 * Assume final ascent takes 20s, which is the time taken to ascend at 9m/min from 3m */
-		deco_state->deco_time = clock - bottom_time - stoplevels[2] / last_ascend_rate + 20;
+		deco_state->deco_time = clock - bottom_time - stoplevels[stopidx + 1] / last_ascend_rate + 20;
 	} while (!is_final_plan);
 	decostoptable[decostopcounter].depth = 0;
 
