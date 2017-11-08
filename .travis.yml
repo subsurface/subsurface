@@ -1,14 +1,14 @@
-language: c++
-sudo: true # for FUSE
-dist: trusty
 
-# cache:
-#     directories:
-#         - Qt
-
-addons:
-    apt:
-        packages:
+matrix:
+  include:
+    - env: SUBSURFACE_PLATFORM='linux'
+      os: linux
+      dist: trusty
+      sudo: required
+      language: c++
+      addons:
+        apt:
+          packages:
             - git
             - g++
             - make
@@ -45,31 +45,7 @@ before_install:
     - "sh -e /etc/init.d/xvfb start"
 
 script:
-    - export QT_ROOT=$PWD/Qt
-    - export PATH=$QT_ROOT/5.9.1/bin:$PATH # Make sure correct qmake is found on the $PATH for linuxdeployqt
-    - export CMAKE_PREFIX_PATH=$QT_ROOT/5.9.1/lib/cmake ;
-      cd .. ;
-      bash -e ./subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit
-    - export QT_PLUGIN_PATH=$QT_ROOT/5.9.1/plugins
-    - export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/5.9.1/plugins
-    - export QT_DEBUG_PLUGINS=1
-    - find $QT_ROOT/5.9.1/plugins
-    - env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
-    - # env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build-mobile check
-    - mkdir -p appdir/usr/plugins/ ; mv appdir/usr/home/travis/build/*/subsurface/Qt/5.9.1/plugins/* appdir/usr/plugins/
-    - mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
-    - sudo mv appdir/usr/lib/* /usr/local/lib/ # Workaround for https://github.com/probonopd/linuxdeployqt/issues/160
-    - rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
-    - wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
-    - chmod a+x linuxdeployqt*.AppImage
-    - unset QTDIR; unset QT_PLUGIN_PATH ; unset LD_LIBRARY_PATH
-    - export LD_LIBRARY_PATH=/usr/local/lib/ # Workaround for https://github.com/probonopd/linuxdeployqt/issues/160
-    - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmldir=./subsurface/map-widget/ -verbose=2
-    - sed -i -e 's|/usr/lib/x86_64-linux-gnu|/usr/lib/x86_64-linux-xxx|g' ./appdir/usr/lib/libgstreamer-1.0.so.0
-    - export VERSION=$(cd subsurface/ ; git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
-    - ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -qmldir=./subsurface/map-widget/ -verbose=2
-    - find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
-    - curl --upload-file ./Subsurface*.AppImage https://transfer.sh/Subsurface-$VERSION-x86_64.AppImage
+    - source scripts/${SUBSURFACE_PLATFORM}/travisbuild.sh
 
 after_success:
     - ls -lh Subsurface*.AppImage
