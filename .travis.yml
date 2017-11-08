@@ -34,11 +34,11 @@ matrix:
             - libicu52
 
 before_install:
-    - source scripts/${SUBSURFACE_PLATFORM}/before_install.sh
+    - source ${TRAVIS_BUILD_DIR}/scripts/${SUBSURFACE_PLATFORM}/before_install.sh
 
 script:
-    - source scripts/${SUBSURFACE_PLATFORM}/travisbuild.sh
+    - source ${TRAVIS_BUILD_DIR}/scripts/${SUBSURFACE_PLATFORM}/travisbuild.sh
 
 after_success:
-    - source scripts/${SUBSURFACE_PLATFORM}/after_success.sh
+    - source ${TRAVIS_BUILD_DIR}/scripts/${SUBSURFACE_PLATFORM}/after_success.sh
 
