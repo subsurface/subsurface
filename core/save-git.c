@@ -904,7 +904,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct membuffer b = { 0 };
 		struct dive_site *ds = get_dive_site(i);
-		if (dive_site_is_empty(ds)) {
+		if (dive_site_is_empty(ds) || !is_dive_site_used(ds->uuid, false)) {
 			int j;
 			struct dive *d;
 			for_each_dive(j, d) {

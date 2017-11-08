@@ -571,7 +571,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 		int j;
 		struct dive *d;
 		struct dive_site *ds = get_dive_site(i);
-		if (dive_site_is_empty(ds)) {
+		if (dive_site_is_empty(ds) || !is_dive_site_used(ds->uuid, false)) {
 			for_each_dive(j, d) {
 				if (d->dive_site_uuid == ds->uuid)
 					d->dive_site_uuid = 0;
