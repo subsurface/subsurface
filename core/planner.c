@@ -676,6 +676,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 	bool o2break_next = false;
 	bool o2break_done = false;
 	int break_cylinder = -1, breakfrom_cylinder = 0;
+	bool last_segment_min_switch = false;
 	int error = 0;
 	bool decodive = false;
 	int first_stop_depth = 0;
@@ -894,6 +895,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				add_segment(depth_to_bar(depth, dive),
 								&dive->cylinder[current_cylinder].gasmix,
 								TIMESTEP, po2, dive, prefs.decosac);
+				last_segment_min_switch = false;
 				clock += TIMESTEP;
 				depth -= deltad;
 				/* Print VPM-Gradient as gradient factor, this has to be done from within deco.c */
@@ -928,11 +930,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 						/* Stop for the minimum duration to switch gas unless we switch to o2 */
-						if (get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
+						if (!last_segment_min_switch && get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
 							add_segment(depth_to_bar(depth, dive),
 								&dive->cylinder[current_cylinder].gasmix,
 								prefs.min_switch_duration, po2, dive, prefs.decosac);
 							clock += prefs.min_switch_duration;
+							last_segment_min_switch = true;
 						}
 					} else {
 						/* The user has selected the option to switch gas only at required stops.
@@ -981,11 +984,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
 					/* Stop for the minimum duration to switch gas unless we switch to o2 */
-					if (get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
+					if (!last_segment_min_switch && get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
 						add_segment(depth_to_bar(depth, dive),
 							&dive->cylinder[current_cylinder].gasmix,
 							prefs.min_switch_duration, po2, dive, prefs.decosac);
 						clock += prefs.min_switch_duration;
+						last_segment_min_switch = true;
 					}
 					pendinggaschange = false;
 				}
@@ -1040,6 +1044,7 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 				}
 				add_segment(depth_to_bar(depth, dive), &dive->cylinder[stop_cylinder].gasmix,
 					    laststoptime, po2, dive, prefs.decosac);
+				last_segment_min_switch = false;
 				decostoptable[decostopcounter].depth = depth;
 				decostoptable[decostopcounter].time = laststoptime;
 				++decostopcounter;
