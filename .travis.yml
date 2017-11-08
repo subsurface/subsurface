@@ -40,21 +40,5 @@ script:
     - source scripts/${SUBSURFACE_PLATFORM}/travisbuild.sh
 
 after_success:
-    - ls -lh Subsurface*.AppImage
-    - wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-    - bash -x ./upload.sh Subsurface*.AppImage Subsurface*.AppImage.zsync
+    - source scripts/${SUBSURFACE_PLATFORM}/after_success.sh
 
-deploy:
-  provider: releases
-  api_key:
-    secure: X/bD9kamMgbQsjdMY+198l/JK5RELLI04z57y0LP8nQyzFm9aa06pByZeIzNHl/u1MZHfE/abyI5CtZRXO29KF300Bx6nlkynhIaNED3JLZwKIN2/EuNavy4RitBIldeyAg0SqeHYGXoiM6BqvqG/dOW6e9UEC2pIr7DmxnKYdHV4P/RgrVYpYkvbcThUQPsAs0sXu6+gTMLibmUrHcOHOXTjdvpn8cYXJ/ctnKYRMqGadwiX3uBJIiKwG/0myHPe8ZncfEDWyWp+ZBcz+H3d/g2Psgn1eo8yJERLH9EpVrMAsCoJGC61cf+X+zJeK8SFiWCoghrzYRvQbRR3H3j1Qne2lS3FZGmxAMDbsacavcqqGK8YcuH1LZtXy1P7WkwprqZfaJi/tFKFD5m8IVygyFRTvKSOQkduzH/iup4+BJ98+BsgEP4Q1sJ5vvTfQQwT2K06uy2yjImPvTqnHKYpIh50nJx7DcZ0/sO1eHANMNFNBJzS7RNjoT87O8NvXjufdZBPGhosR4JZnL4Ji3Rj2JGPlw3xzXCp3UK+EBcYKJdJCYFn+WqQoxkhROdAgOXfRHBrv4VrfJOvgKAWq8UJ8sLTnkhkMVo8Y/Yl77JC2hk7rE9I6SlLtxHIfDFyybHVMUjrsK/SpBqeWithkohnYSnsqQx7xsDFY8+/HSJGZ8=
-  file: $APPIMAGE
-  skip_cleanup: true
-  on:
-    repo: Subsurface-divelog/subsurface
-    tags: true
-
-branches:
-  except:
-    - # Do not build tags that we create when we upload to GitHub Releases
-    - /^(?i:continuous)$/
