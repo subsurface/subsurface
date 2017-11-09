@@ -644,6 +644,16 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dc.maxdepth.mm = lrint(maxdepth * 1000);
 
+	// Parse the initial CNS%
+	unsigned int tmp_cns = 0;
+	rc = dc_parser_get_field(parser, DC_FIELD_INIT_CNS, 0, &tmp_cns);
+	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
+		dev_info(devdata, translate("gettextFromC", "Error parsing the initial CNS%"));
+		return rc;
+	}
+	if (rc == DC_STATUS_SUCCESS)
+		cns = tmp_cns;
+
 #if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 	// if this is defined then we have a fairly late version of libdivecomputer
 	// from the 0.5 development cylcle - most likely temperatures and tank sizes
