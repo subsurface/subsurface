@@ -11,6 +11,10 @@ Some of the changes since _Subsurface_ 4.7.2
 - Write log messages into files when not started from a console on Windows
 - Improved detection of OpenGL versions (prevents potential crash on more
   operating systems with ancient gfx drivers)
+- Improve the map widget editing behavior. Allow updating the location of
+  a marker that is being edited by entering new coordinates in the text field
+  in "real-time". Also, don't place new markers at the 0,0 coordinate and
+  instead place them at the current map center.
 
 
 Some of the changes since _Subsurface_ 4.7.1
