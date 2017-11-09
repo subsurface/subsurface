@@ -214,7 +214,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE      DE
 	o2pressure_t o2sensor[3];      // uint16_t   6    mbar   (0-65 bar)   Up to 3 PO2 sensor values (rebreather)
 	bearing_t bearing;             // int16_t    2  degrees  (-32k to 32k deg) compass bearing
 	uint8_t sensor[MAX_SENSORS];   // uint8_t    1  sensorID (0-255)      ID of cylinder pressure sensor
-	uint8_t cns;                   // uint8_t    1     %     (0-255 %)    cns% accumulated
+	uint16_t cns;                  // uint16_t   1     %     (0-64k %)    cns% accumulated
 	uint8_t heartbeat;             // uint8_t    1  beats/m  (0-255)      heart rate measurement
 	volume_t sac;                  //            4  ml/min                predefined SAC
 	bool in_deco;                  // bool       1    y/n      y/n        this sample is part of deco
