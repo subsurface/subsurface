@@ -52,6 +52,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 		this, &LocationInformationWidget::updateGpsCoordinates);
 	connect(this, &LocationInformationWidget::endEditDiveSite,
 		MapWidget::instance(), &MapWidget::repopulateLabels);
+	connect(this, &LocationInformationWidget::coordinatesChanged,
+		MapWidget::instance(), &MapWidget::updateCurrentDiveSiteCoordinatesToMap);
 }
 
 bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)

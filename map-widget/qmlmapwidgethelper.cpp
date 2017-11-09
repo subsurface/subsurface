@@ -210,7 +210,7 @@ void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool form
 	prefs.coordinates_traditional = savep;
 }
 
-void MapWidgetHelper::updateCurrentDiveSiteCoordinates(quint32 uuid, QGeoCoordinate coord)
+void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord)
 {
 	MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(uuid);
 	if (loc)
@@ -218,6 +218,14 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinates(quint32 uuid, QGeoCoordin
 	displayed_dive_site.latitude.udeg = lrint(coord.latitude() * 1000000.0);
 	displayed_dive_site.longitude.udeg = lrint(coord.longitude() * 1000000.0);
 	emit coordinatesChanged();
+}
+
+void MapWidgetHelper::updateCurrentDiveSiteCoordinatesToMap()
+{
+	const qreal latitude = displayed_dive_site.latitude.udeg * 0.000001;
+	const qreal longitude = displayed_dive_site.longitude.udeg * 0.000001;
+	QGeoCoordinate coord(latitude, longitude);
+	m_mapLocationModel->updateMapLocationCoordinates(displayed_dive_site.uuid, coord);
 }
 
 bool MapWidgetHelper::editMode()

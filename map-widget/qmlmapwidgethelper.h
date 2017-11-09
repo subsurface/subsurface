@@ -24,8 +24,9 @@ public:
 	void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
-	Q_INVOKABLE void updateCurrentDiveSiteCoordinates(quint32 uuid, QGeoCoordinate coord);
+	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
+	void updateCurrentDiveSiteCoordinatesToMap();
 	bool editMode();
 	void setEditMode(bool editMode);
 	QString pluginObject();

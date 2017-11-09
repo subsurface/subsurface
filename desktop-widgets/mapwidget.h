@@ -35,6 +35,7 @@ public slots:
 	void selectedDivesChanged(QList<int>);
 	void coordinatesChangedLocal();
 	void doneLoading(QQuickWidget::Status status);
+	void updateCurrentDiveSiteCoordinatesToMap();
 
 private:
 	void setEditMode(bool editMode);

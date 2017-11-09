@@ -118,6 +118,12 @@ void MapWidget::coordinatesChangedLocal()
 	emit coordinatesChanged();
 }
 
+void MapWidget::updateCurrentDiveSiteCoordinatesToMap()
+{
+	CHECK_IS_READY_RETURN_VOID();
+	m_mapHelper->updateCurrentDiveSiteCoordinatesToMap();
+}
+
 MapWidget::~MapWidget()
 {
 	m_instance = NULL;
