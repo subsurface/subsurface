@@ -231,11 +231,9 @@ void MapWidgetHelper::setEditMode(bool editMode)
 	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(displayed_dive_site.uuid);
 	// if divesite uuid doesn't exist in the model, add a new MapLocation.
 	if (editMode && !exists) {
-		QGeoCoordinate coord(0.0, 0.0);
+		QGeoCoordinate coord = m_map->property("center").value<QGeoCoordinate>();
 		m_mapLocationModel->add(new MapLocation(displayed_dive_site.uuid, coord,
 		                                        QString(displayed_dive_site.name)));
-		QMetaObject::invokeMethod(m_map, "centerOnCoordinate",
-		                          Q_ARG(QVariant, QVariant::fromValue(coord)));
 	}
 	emit editModeChanged();
 }
