@@ -213,6 +213,7 @@ void parse_argument(const char *arg)
 			print_help();
 			exit(0);
 		case 'v':
+			print_version();
 			verbose++;
 			continue;
 		case 'q':
@@ -241,6 +242,7 @@ void parse_argument(const char *arg)
 				return;
 			}
 			if (strcmp(arg, "--verbose") == 0) {
+				print_version();
 				verbose++;
 				return;
 			}
