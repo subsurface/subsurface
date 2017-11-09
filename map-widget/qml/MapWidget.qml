@@ -72,7 +72,7 @@ Item {
 						onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
 						onReleased: {
 							if (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) {
-								mapHelper.updateCurrentDiveSiteCoordinates(mapHelper.model.selectedUuid, mapItem.coordinate)
+								mapHelper.updateCurrentDiveSiteCoordinatesFromMap(mapHelper.model.selectedUuid, mapItem.coordinate)
 							}
 						}
 					}

@@ -27,6 +27,7 @@ public:
 	QVariant getRole(int role) const;
 	QGeoCoordinate coordinate();
 	void setCoordinate(QGeoCoordinate coord);
+	void setCoordinateNoEmit(QGeoCoordinate coord);
 	quint32 uuid();
 
 	enum Roles {
@@ -62,6 +63,7 @@ public:
 	void addList(QVector<MapLocation *>);
 	void clear();
 	MapLocation *getMapLocationForUuid(quint32 uuid);
+	void updateMapLocationCoordinates(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void setSelectedUuid(QVariant uuid, QVariant fromClick = true);
 	quint32 selectedUuid();
 

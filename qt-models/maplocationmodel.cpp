@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <QDebug>
 #include "maplocationmodel.h"
 
 const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
@@ -37,6 +38,11 @@ void MapLocation::setCoordinate(QGeoCoordinate coord)
 {
 	m_coordinate = coord;
 	emit coordinateChanged();
+}
+
+void MapLocation::setCoordinateNoEmit(QGeoCoordinate coord)
+{
+	m_coordinate = coord;
 }
 
 quint32 MapLocation::uuid()
@@ -135,4 +141,20 @@ MapLocation *MapLocationModel::getMapLocationForUuid(quint32 uuid)
 			return location;
 	}
 	return NULL;
+}
+
+void MapLocationModel::updateMapLocationCoordinates(quint32 uuid, QGeoCoordinate coord)
+{
+	MapLocation *location;
+	int row = 0;
+	foreach(location, m_mapLocations) {
+		if (uuid == location->uuid()) {
+			location->setCoordinateNoEmit(coord);
+			emit dataChanged(createIndex(0, row), createIndex(0, row));
+			return;
+		}
+		row++;
+	}
+	// should not happen, as this should be called only when editing an existing marker
+	qWarning() << "MapLocationModel::updateMapLocationCoordinates(): cannot find MapLocation for uuid:" << uuid;
 }
