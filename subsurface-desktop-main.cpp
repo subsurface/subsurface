@@ -107,10 +107,8 @@ int main(int argc, char **argv)
 		qDebug() << "importing dive data from" << importedFiles;
 	m->importFiles(importedFiles);
 
-	if (verbose > 0) {
+	if (verbose > 0)
 		print_files();
-		printf("%s\n", QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()).toUtf8().data());
-	}
 	if (!quit)
 		run_ui();
 	exit_ui();

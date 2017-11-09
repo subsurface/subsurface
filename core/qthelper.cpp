@@ -940,7 +940,7 @@ QString get_dive_duration_string(timestamp_t when, QString hoursText, QString mi
 			.arg(secs).arg(secondsText);
 	} else if (isFreeDive) {
 		// Mixed display (hh:mm / mm only) and freedive < 1h and we have no unit for minutes
-		// --> Prefix duration with "0:" --> "0:05:35" 
+		// --> Prefix duration with "0:" --> "0:05:35"
 		if (separator == ":") displayTime = QString("%1%2%3%4%5%6").arg(hrs).arg(separator)
 			.arg(fullmins, 2, 10, QChar('0')).arg(separator)
 			.arg(secs, 2, 10, QChar('0')).arg(hoursText);
@@ -1727,4 +1727,9 @@ extern "C" void cache_insert(int tissue, int timestep, enum inertgas inertgas, d
 	if (inertgas == HE)
 		++key;
 	factor_cache.insert(key, value);
+}
+
+extern "C" void print_qt_versions()
+{
+	printf("%s\n", QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()).toUtf8().data());
 }
