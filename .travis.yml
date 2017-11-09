@@ -27,6 +27,8 @@ matrix:
             - libcurl4-openssl-dev
             # Not a subsurface dependency, but a Qt dependency
             - mesa-common-dev
+            - libqt5gui5
+            - libxcb-xinerama0
             # Not a subsurface dependency, but a QtMultimedia/libdeclarative_multimedia.so dependency
             - libpulse-mainloop-glib0
             # Not a subsurface dependency, but a QtWebKit dependency
