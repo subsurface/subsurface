@@ -26,7 +26,6 @@ mkdir -p appdir/usr/plugins/
 # mv googlemaps and Grantlee plugins into place
 mv appdir/usr/usr/local/Qt*/plugins/* appdir/usr/plugins # the usr/usr is not a typo - that's where it ends up
 mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
-sudo mv appdir/usr/lib/* /usr/local/lib/ # Workaround for https://github.com/probonopd/linuxdeployqt/issues/160
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
 
 # get the linuxdeployqt tool and run it to collect the libraries
@@ -35,7 +34,6 @@ chmod a+x linuxdeployqt*.AppImage
 unset QTDIR
 unset QT_PLUGIN_PATH
 unset LD_LIBRARY_PATH
-export LD_LIBRARY_PATH=/usr/local/lib/ # Workaround for https://github.com/probonopd/linuxdeployqt/issues/160
 ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmldir=./subsurface/map-widget/ -verbose=2
 
 # create the AppImage
