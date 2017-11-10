@@ -89,14 +89,15 @@ void PreferencesLanguage::syncSettings()
 	lang->setDateFormatShort(ui->shortDateFormatEntry->text());
 	uiLanguage(NULL);
 
+	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");
 	QRegExp tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
 	if (tfillegalchars.indexIn(ui->timeFormatEntry->text()) >= 0)
 		QMessageBox::warning(this, tr("Literal characters"),
-			tr("Non-special character(s) in time format.\nThese will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString"));
+			tr("Non-special character(s) in time format.\n") + qDateTimeWeb);
 
 	QRegExp dfillegalchars("[^dMy/\\s:;\\.,\\-]");
 	if (dfillegalchars.indexIn(ui->dateFormatEntry->currentText()) >= 0 ||
 	    dfillegalchars.indexIn(ui->shortDateFormatEntry->text()) >= 0)
 		QMessageBox::warning(this, tr("Literal characters"),
-				     tr("Non-special character(s) in time format.\nThese will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString"));
+			tr("Non-special character(s) in date format.\n") + qDateTimeWeb);
 }
