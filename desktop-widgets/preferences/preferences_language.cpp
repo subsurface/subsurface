@@ -22,11 +22,24 @@ PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Langu
 	filterModel->sort(0);
 	connect(ui->languageFilter, &QLineEdit::textChanged,
 			filterModel, &QSortFilterProxyModel::setFilterFixedString);
+
+	dateFormatShortMap.insert("MM/dd/yyyy", "M/d/yy");
+	dateFormatShortMap.insert("dd.MM.yyyy", "d.M.yy");
+	dateFormatShortMap.insert("yyyy-MM-dd", "yy-M-d");
+	foreach (QString format, dateFormatShortMap.keys())
+		ui->dateFormatEntry->addItem(format);
+	connect(ui->dateFormatEntry, SIGNAL(currentIndexChanged(const QString&)),
+		this, SLOT(dateFormatChanged(const QString&)));
 }
 
 PreferencesLanguage::~PreferencesLanguage()
 {
 	delete ui;
+}
+
+void PreferencesLanguage::dateFormatChanged(const QString &text)
+{
+	ui->shortDateFormatEntry->setText(dateFormatShortMap.value(text));
 }
 
 void PreferencesLanguage::refreshSettings()
@@ -35,7 +48,7 @@ void PreferencesLanguage::refreshSettings()
 	ui->timeFormatSystemDefault->setChecked(!prefs.time_format_override);
 	ui->dateFormatSystemDefault->setChecked(!prefs.date_format_override);
 	ui->timeFormatEntry->setText(prefs.time_format);
-	ui->dateFormatEntry->setText(prefs.date_format);
+	ui->dateFormatEntry->setCurrentText(prefs.date_format);
 	ui->shortDateFormatEntry->setText(prefs.date_format_short);
 	QAbstractItemModel *m = ui->languageDropdown->model();
 	QModelIndexList languages = m->match(m->index(0, 0), Qt::UserRole, QString(prefs.locale.lang_locale).replace("-", "_"));
@@ -72,7 +85,7 @@ void PreferencesLanguage::syncSettings()
 	lang->setTimeFormatOverride(!ui->timeFormatSystemDefault->isChecked());
 	lang->setDateFormatOverride(!ui->dateFormatSystemDefault->isChecked());
 	lang->setTimeFormat(ui->timeFormatEntry->text());
-	lang->setDateFormat(ui->dateFormatEntry->text());
+	lang->setDateFormat(ui->dateFormatEntry->currentText());
 	lang->setDateFormatShort(ui->shortDateFormatEntry->text());
 	uiLanguage(NULL);
 
@@ -81,8 +94,8 @@ void PreferencesLanguage::syncSettings()
 		QMessageBox::warning(this, tr("Literal characters"),
 			tr("Non-special character(s) in time format.\nThese will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString"));
 
-	QRegExp dfillegalchars("[^dMy/\\s:;\\.,]");
-	if (dfillegalchars.indexIn(ui->dateFormatEntry->text()) >= 0 ||
+	QRegExp dfillegalchars("[^dMy/\\s:;\\.,\\-]");
+	if (dfillegalchars.indexIn(ui->dateFormatEntry->currentText()) >= 0 ||
 	    dfillegalchars.indexIn(ui->shortDateFormatEntry->text()) >= 0)
 		QMessageBox::warning(this, tr("Literal characters"),
 				     tr("Non-special character(s) in time format.\nThese will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString"));
