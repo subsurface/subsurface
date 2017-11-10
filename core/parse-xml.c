@@ -610,6 +610,11 @@ static void get_uint8(char *buffer, uint8_t *i)
 	*i = atoi(buffer);
 }
 
+static void get_uint16(char *buffer, uint16_t *i)
+{
+	*i = atoi(buffer);
+}
+
 static void get_bearing(char *buffer, bearing_t *bearing)
 {
 	bearing->degrees = atoi(buffer);
@@ -990,7 +995,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("stopdepth.sample", depth, &sample->stopdepth))
 		return;
-	if (MATCH("cns.sample", get_uint8, &sample->cns))
+	if (MATCH("cns.sample", get_uint16, &sample->cns))
 		return;
 	if (MATCH("rbt.sample", sampletime, &sample->rbt))
 		return;
