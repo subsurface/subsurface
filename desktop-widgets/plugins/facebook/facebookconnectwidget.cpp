@@ -300,6 +300,16 @@ void FacebookManager::uploadFinished()
 	emit sendDiveFinished();
 }
 
+void FacebookConnectWidget::showEvent(QShowEvent *event)
+{
+	if (FacebookManager::instance()->loggedIn()) {
+		facebookLoggedIn();
+	} else {
+		facebookDisconnect();
+	}
+	return QDialog::showEvent(event);
+}
+
 FacebookConnectWidget::FacebookConnectWidget(QWidget *parent) : QDialog(parent), ui(new Ui::FacebookConnectWidget) {
 	ui->setupUi(this);
 	FacebookManager *fb = FacebookManager::instance();
@@ -309,11 +319,6 @@ FacebookConnectWidget::FacebookConnectWidget(QWidget *parent) : QDialog(parent),
 	facebookWebView = new QWebView(this);
 #endif
 	ui->fbWebviewContainer->layout()->addWidget(facebookWebView);
-	if (fb->loggedIn()) {
-		facebookLoggedIn();
-	} else {
-		facebookDisconnect();
-	}
 #ifdef USE_WEBENGINE
 	connect(facebookWebView, &QWebEngineView::urlChanged, fb, &FacebookManager::tryLogin);
 #else

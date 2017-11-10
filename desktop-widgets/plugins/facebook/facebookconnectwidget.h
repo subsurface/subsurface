@@ -70,6 +70,7 @@ public:
 	explicit FacebookConnectWidget(QWidget* parent = 0);
 	void facebookLoggedIn();
 	void facebookDisconnect();
+	void showEvent(QShowEvent *event);
 private:
 	Ui::FacebookConnectWidget *ui;
 #ifdef USE_WEBENGINE
