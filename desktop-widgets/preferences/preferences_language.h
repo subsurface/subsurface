@@ -2,6 +2,7 @@
 #ifndef PREFERENCES_LANGUAGE_H
 #define PREFERENCES_LANGUAGE_H
 
+#include <QMap>
 #include "abstractpreferenceswidget.h"
 
 namespace Ui {
@@ -17,6 +18,9 @@ public:
 	virtual void syncSettings();
 private:
 	Ui::PreferencesLanguage *ui;
+	QMap<QString, QString> dateFormatShortMap;
+public slots:
+	void dateFormatChanged(const QString&);
 };
 
 #endif
