@@ -22,7 +22,9 @@ env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
 
 # set up the appdir
 mkdir -p appdir/usr/plugins/
-mv appdir/usr/home/travis/build/*/subsurface/Qt/*/plugins/* appdir/usr/plugins/
+
+# mv googlemaps and Grantlee plugins into place
+mv appdir/usr/usr/local/Qt*/plugins/* appdir/usr/plugins # the usr/usr is not a typo - that's where it ends up
 mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
 sudo mv appdir/usr/lib/* /usr/local/lib/ # Workaround for https://github.com/probonopd/linuxdeployqt/issues/160
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
