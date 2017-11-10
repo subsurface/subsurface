@@ -140,9 +140,18 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="timeFormatEntry">
+       <widget class="QComboBox" name="timeFormatEntry">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="toolTip">
          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Preferred time format&lt;/p&gt;&lt;p&gt;Commonly used format specifiers are&lt;/p&gt;&lt;p&gt;h (hours in 12h format)&lt;/p&gt;&lt;p&gt;H (hours in 24h format)&lt;/p&gt;&lt;p&gt;mm (2 digit minutes)&lt;/p&gt;&lt;p&gt;ss (2 digit seconds)&lt;/p&gt;&lt;p&gt;t/tt (a/p or am/pm)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="editable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -212,22 +221,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>timeFormatSystemDefault</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>timeFormatEntry</receiver>
-   <slot>setDisabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>79</x>
-     <y>210</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>264</x>
-     <y>210</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>dateFormatSystemDefault</sender>
    <signal>toggled(bool)</signal>
    <receiver>shortDateFormatEntry</receiver>
@@ -256,6 +249,22 @@
     <hint type="destinationlabel">
      <x>273</x>
      <y>103</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>timeFormatSystemDefault</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>timeFormatEntry</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>89</x>
+     <y>190</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>273</x>
+     <y>190</y>
     </hint>
    </hints>
   </connection>

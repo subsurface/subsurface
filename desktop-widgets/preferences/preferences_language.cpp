@@ -30,6 +30,10 @@ PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Langu
 		ui->dateFormatEntry->addItem(format);
 	connect(ui->dateFormatEntry, SIGNAL(currentIndexChanged(const QString&)),
 		this, SLOT(dateFormatChanged(const QString&)));
+
+	ui->timeFormatEntry->addItem("hh:mm");
+	ui->timeFormatEntry->addItem("h:mm AP");
+	ui->timeFormatEntry->addItem("hh:mm AP");
 }
 
 PreferencesLanguage::~PreferencesLanguage()
@@ -47,7 +51,7 @@ void PreferencesLanguage::refreshSettings()
 	ui->languageSystemDefault->setChecked(prefs.locale.use_system_language);
 	ui->timeFormatSystemDefault->setChecked(!prefs.time_format_override);
 	ui->dateFormatSystemDefault->setChecked(!prefs.date_format_override);
-	ui->timeFormatEntry->setText(prefs.time_format);
+	ui->timeFormatEntry->setCurrentText(prefs.time_format);
 	ui->dateFormatEntry->setCurrentText(prefs.date_format);
 	ui->shortDateFormatEntry->setText(prefs.date_format_short);
 	QAbstractItemModel *m = ui->languageDropdown->model();
@@ -84,14 +88,14 @@ void PreferencesLanguage::syncSettings()
 	lang->setUseSystemLanguage(ui->languageSystemDefault->isChecked());
 	lang->setTimeFormatOverride(!ui->timeFormatSystemDefault->isChecked());
 	lang->setDateFormatOverride(!ui->dateFormatSystemDefault->isChecked());
-	lang->setTimeFormat(ui->timeFormatEntry->text());
+	lang->setTimeFormat(ui->timeFormatEntry->currentText());
 	lang->setDateFormat(ui->dateFormatEntry->currentText());
 	lang->setDateFormatShort(ui->shortDateFormatEntry->text());
 	uiLanguage(NULL);
 
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");
 	QRegExp tfillegalchars("[^hHmszaApPt\\s:;\\.,]");
-	if (tfillegalchars.indexIn(ui->timeFormatEntry->text()) >= 0)
+	if (tfillegalchars.indexIn(ui->timeFormatEntry->currentText()) >= 0)
 		QMessageBox::warning(this, tr("Literal characters"),
 			tr("Non-special character(s) in time format.\n") + qDateTimeWeb);
 
