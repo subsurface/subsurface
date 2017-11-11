@@ -1,6 +1,12 @@
 
 matrix:
   include:
+    - env: SUBSURFACE_PLATFORM='windows'
+      os: linux
+      dist: trusty
+      sudo: required
+      language: c++
+
     - env: SUBSURFACE_PLATFORM='linux'
       os: linux
       dist: trusty
