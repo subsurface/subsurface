@@ -8,6 +8,12 @@
 
 set -x
 
+# Travis only pulls shallow repos. But that messes with git describe.
+# Sorry Travis, fetching the whole thing and the tags as well...
+git fetch --unshallow
+git pull --tags
+git describe
+
 export QT_ROOT=$PWD/Qt/5.9.3
 rm -rf Qt
 mkdir -p $QT_ROOT
