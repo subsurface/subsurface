@@ -29,7 +29,7 @@ mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
 
 # get the linuxdeployqt tool and run it to collect the libraries
-wget -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
+wget -q -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
 chmod a+x linuxdeployqt*.AppImage
 unset QTDIR
 unset QT_PLUGIN_PATH
