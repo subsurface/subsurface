@@ -1,6 +1,6 @@
-// _Subsurface_ 4.7.3 Release Notes
+// _Subsurface_ 4.7.4 Release Notes
 
-_Subsurface_ 4.7.3 - November 11, 2017
+_Subsurface_ 4.7.4 - November 11, 2017
 ------------------------------------------
 
 Some of the changes since _Subsurface_ 4.7.2
