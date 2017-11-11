@@ -1,6 +1,6 @@
 # Subsurface [![Build Status](https://travis-ci.org/Subsurface-divelog/subsurface.svg?branch=master)](https://travis-ci.org/Subsurface-divelog/subsurface)
 
-This is the README file for Subsurface 4.7.2
+This is the README file for Subsurface 4.7.3
 
 Please check the `ReleaseNotes.txt` for details about new features and
 changes since Subsurface 4.6.4 (and earlier versions).
