@@ -27,7 +27,7 @@ mkdir -p appdir/usr/plugins/
 mv appdir/usr/usr/local/Qt*/plugins/* appdir/usr/plugins # the usr/usr is not a typo - that's where it ends up
 mv appdir/usr/lib/grantlee/ appdir/usr/plugins/
 rm -rf appdir/usr/home/ appdir/usr/include/ appdir/usr/share/man/ # No need to ship developer and man files as part of the AppImage
-rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig appdir/usr/share/doc
+rm -rf appdir/usr/usr appdir/usr/lib/cmake appdir/usr/lib/pkgconfig
 
 # get the linuxdeployqt tool and run it to collect the libraries
 wget -q -c "https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage"
