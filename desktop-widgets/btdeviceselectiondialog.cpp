@@ -152,7 +152,7 @@ void BtDeviceSelectionDialog::on_save_clicked()
 	QBluetoothDeviceInfo remoteDeviceInfo = currentItem->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
 
 	// Save the selected device
-	selectedRemoteDeviceInfo = QSharedPointer<QBluetoothDeviceInfo>(new QBluetoothDeviceInfo(remoteDeviceInfo));
+	selectedRemoteDeviceInfo.reset(new QBluetoothDeviceInfo(remoteDeviceInfo));
 	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
 								remoteDeviceInfo.address().toString();
 	saveBtDeviceInfo(address.toUtf8().constData(), remoteDeviceInfo);
@@ -460,9 +460,8 @@ QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 
 QString BtDeviceSelectionDialog::getSelectedDeviceName()
 {
-	if (selectedRemoteDeviceInfo) {
+	if (selectedRemoteDeviceInfo)
 		return selectedRemoteDeviceInfo.data()->name();
-	}
 
 	return QString();
 }

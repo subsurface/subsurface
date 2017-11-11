@@ -83,7 +83,7 @@ private:
 	QBluetoothLocalDevice *localDevice;
 	QBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
 #endif
-	QSharedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
+	QScopedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
 
 	void updateLocalDeviceInformation();
 	void initializeDeviceDiscoveryAgent();
