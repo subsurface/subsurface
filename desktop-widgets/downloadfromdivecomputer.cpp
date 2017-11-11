@@ -24,8 +24,6 @@ namespace DownloadFromDcGlobal {
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	downloading(false),
 	previousLast(0),
-	vendorModel(0),
-	productModel(0),
 	timer(new QTimer(this)),
 	dumpWarningShown(false),
 	ostcFirmwareCheck(0),
@@ -33,7 +31,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 {
 	diveImportedModel = new DiveImportedModel(this);
 	diveImportedModel->setDiveTable(&downloadTable);
-	vendorModel = new QStringListModel(vendorList);
+	vendorModel.setStringList(vendorList);
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
 
@@ -54,7 +52,8 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.chooseLogFile->setEnabled(ui.logToFile->isChecked());
 	ui.selectAllButton->setEnabled(false);
 	ui.unselectAllButton->setEnabled(false);
-	ui.vendor->setModel(vendorModel);
+	ui.vendor->setModel(&vendorModel);
+	ui.product->setModel(&productModel);
 
 	progress_bar_text = "";
 
@@ -81,8 +80,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
 	if (!dc->dc_vendor().isEmpty()) {
 		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->dc_vendor()));
-		productModel = new QStringListModel(productList[dc->dc_vendor()]);
-		ui.product->setModel(productModel);
+		productModel.setStringList(productList[dc->dc_vendor()]);
 		if (!dc->dc_product().isEmpty())
 			ui.product->setCurrentIndex(ui.product->findText(dc->dc_product()));
 	}
@@ -241,19 +239,12 @@ void DownloadFromDCWidget::updateState(states state)
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 {
 	int dcType = DC_TYPE_SERIAL;
-	QAbstractItemModel *currentModel = ui.product->model();
-	if (!currentModel)
-		return;
-
-	productModel = new QStringListModel(productList[vendor]);
-	ui.product->setModel(productModel);
+	productModel.setStringList(productList[vendor]);
+	ui.product->setCurrentIndex(0);
 
 	if (vendor == QString("Uemis"))
 		dcType = DC_TYPE_UEMIS;
 	fill_device_list(dcType);
-
-	// Memleak - but deleting gives me a crash.
-	//currentModel->deleteLater();
 }
 
 void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product)
