@@ -42,7 +42,3 @@ export VERSION=$(cd subsurface/ ; git rev-parse --short HEAD) # linuxdeployqt us
 ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -qmldir=./subsurface/map-widget/ -verbose=2
 find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
 
-# this shouldn't be in the build, but hey, this ensures that we can always
-# get to the artifact
-curl --upload-file ./Subsurface*.AppImage https://transfer.sh/Subsurface-$VERSION-x86_64.AppImage
-
