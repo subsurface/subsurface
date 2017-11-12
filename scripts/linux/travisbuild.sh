@@ -38,7 +38,7 @@ unset LD_LIBRARY_PATH
 ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmldir=./subsurface/map-widget/ -verbose=2
 
 # create the AppImage
-export VERSION=$(cd subsurface/ ; git rev-parse --short HEAD) # linuxdeployqt uses this for naming the file
+export VERSION=$(cd ${TRAVIS_BUILD_DIR}/scripts ; ./get-version linux) # linuxdeployqt uses this for naming the file
 ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -qmldir=./subsurface/map-widget/ -verbose=2
 find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
 
