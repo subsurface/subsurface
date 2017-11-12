@@ -19,6 +19,7 @@ class DCDeviceData : public QObject {
 	Q_PROPERTY(QString product READ product WRITE setProduct)
 	Q_PROPERTY(bool bluetoothMode READ bluetoothMode WRITE setBluetoothMode)
 	Q_PROPERTY(QString devName READ devName WRITE setDevName)
+	Q_PROPERTY(QString devBluetoothName READ devBluetoothName WRITE setDevBluetoothName)
 	Q_PROPERTY(QString descriptor READ descriptor)
 	Q_PROPERTY(bool forceDownload READ forceDownload WRITE setForceDownload)
 	Q_PROPERTY(bool createNewTrip READ createNewTrip WRITE setCreateNewTrip)
@@ -34,6 +35,7 @@ public:
 	QString vendor() const;
 	QString product() const;
 	QString devName() const;
+	QString devBluetoothName() const;
 	QString descriptor() const;
 	bool bluetoothMode() const;
 	bool forceDownload() const;
@@ -57,6 +59,7 @@ public slots:
 	void setVendor(const QString& vendor);
 	void setProduct(const QString& product);
 	void setDevName(const QString& devName);
+	void setDevBluetoothName(const QString& devBluetoothName);
 	void setBluetoothMode(bool mode);
 	void setForceDownload(bool force);
 	void setCreateNewTrip(bool create);
@@ -67,6 +70,9 @@ public slots:
 private:
 	static DCDeviceData *m_instance;
 	device_data_t data;
+
+	// Bluetooth name is managed outside of libdivecomputer
+	QString m_devBluetoothName;
 };
 
 class DownloadThread : public QThread {

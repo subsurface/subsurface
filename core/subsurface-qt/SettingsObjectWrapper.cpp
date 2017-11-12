@@ -29,6 +29,11 @@ QString DiveComputerSettings::dc_device() const
 	return prefs.dive_computer.device;
 }
 
+QString DiveComputerSettings::dc_device_name() const
+{
+	return prefs.dive_computer.device_name;
+}
+
 int DiveComputerSettings::downloadMode() const
 {
 	return prefs.dive_computer.download_mode;
@@ -68,6 +73,18 @@ void DiveComputerSettings::setDevice(const QString& device)
 	s.setValue("dive_computer_device", device);
 	free(prefs.dive_computer.device);
 	prefs.dive_computer.device = copy_string(qPrintable(device));
+}
+
+void DiveComputerSettings::setDeviceName(const QString& device_name)
+{
+	if (device_name == prefs.dive_computer.device_name)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("dive_computer_device_name", device_name);
+	free(prefs.dive_computer.device_name);
+	prefs.dive_computer.device_name = copy_string(qPrintable(device_name));
 }
 
 void DiveComputerSettings::setDownloadMode(int mode)
@@ -2333,6 +2350,7 @@ void SettingsObjectWrapper::load()
 	GET_TXT("dive_computer_vendor",dive_computer.vendor);
 	GET_TXT("dive_computer_product", dive_computer.product);
 	GET_TXT("dive_computer_device", dive_computer.device);
+	GET_TXT("dive_computer_device_name", dive_computer.device_name);
 	GET_INT("dive_computer_download_mode", dive_computer.download_mode);
 	s.endGroup();
 

@@ -56,6 +56,7 @@ void DownloadThread::run()
 	dcs->setVendor(internalData->vendor);
 	dcs->setProduct(internalData->product);
 	dcs->setDevice(internalData->devname);
+	dcs->setDeviceName(m_data->devBluetoothName());
 }
 
 static void fill_supported_mobile_list()
@@ -239,6 +240,11 @@ QString DCDeviceData::devName() const
 	return data.devname;
 }
 
+QString DCDeviceData::devBluetoothName() const
+{
+	return m_devBluetoothName;
+}
+
 QString DCDeviceData::descriptor() const
 {
 	return "";
@@ -282,6 +288,11 @@ void DCDeviceData::setProduct(const QString& product)
 void DCDeviceData::setDevName(const QString& devName)
 {
 	data.devname = strdup(qPrintable(devName));
+}
+
+void DCDeviceData::setDevBluetoothName(const QString& name)
+{
+	m_devBluetoothName = name;
 }
 
 void DCDeviceData::setBluetoothMode(bool mode)

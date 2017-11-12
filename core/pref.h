@@ -54,6 +54,7 @@ typedef struct {
 	char *vendor;
 	char *product;
 	char *device;
+	char *device_name;
 	int download_mode;
 } dive_computer_prefs_t;
 
