@@ -59,6 +59,10 @@ while [[ $# -gt 0 ]] ; do
 			# we are building an AppImage as by product
 			CREATE_APPDIR="1"
 			;;
+		-skip-googlemaps)
+			# hack for Travix Mac build
+			SKIP_GOOGLEMAPS="1"
+			;;
 		*)
 			echo "Unknown command line argument $arg"
 			;;
@@ -183,6 +187,7 @@ fi
 # set up the right file name extensions
 if [ $PLATFORM = Darwin ] ; then
 	SH_LIB_EXT=dylib
+	pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
 else
 	SH_LIB_EXT=so
 
@@ -327,12 +332,12 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
 		cd $INSTALL_ROOT/lib
 		NAME=$(otool -L libgit2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
-		echo $NAME | grep / > /dev/null 2>&1
-		if [ $? -eq 1 ] ; then
+		echo $NAME | if grep / > /dev/null 2>&1 ; then
 			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 		fi
 	fi
 fi
+
 
 cd $SRC
 
@@ -431,31 +436,39 @@ else
 	PRINTING="-DNO_PRINTING=ON"
 fi
 
+if [ $SKIP_GOOGLEMAPS != "1" ] ; then
+	# build the googlemaps map plugin
 
-# build the googlemaps map plugin
-
-cd $SRC
-if [ ! -d googlemaps ] ; then
-	if [[ $1 = local ]] ; then
-		git clone $SRC/../googlemaps googlemaps
-	else
-		git clone https://github.com/Subsurface-divelog/googlemaps.git
+	cd $SRC
+	if [ ! -d googlemaps ] ; then
+		if [[ $1 = local ]] ; then
+			git clone $SRC/../googlemaps googlemaps
+		else
+			git clone https://github.com/Subsurface-divelog/googlemaps.git
+		fi
 	fi
+	cd googlemaps
+	git checkout master
+	git pull --rebase
+
+	# remove the qt_build_config from .qmake.conf as that fails on Travis
+	sed -i '' 's/.*qt_build_config.*//' .qmake.conf
+
+	mkdir -p build
+	cd build
+	$QMAKE -query
+	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
+	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+	# since things compile fine with c++11, let's just hack that away
+	# similarly, don't use -Wdata-time
+	sed -i 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
+	make -j4
+	make install
 fi
-cd googlemaps
-git checkout master
-git pull --rebase
-mkdir -p build
-cd build
-$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
-# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
-# since things compile fine with c++11, let's just hack that away
-# similarly, don't use -Wdata-time
-sed -i 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
-make -j4
-make install
 
 # finally, build Subsurface
+
+set -x
 
 cd $SRC/subsurface
 for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
@@ -480,6 +493,8 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
 		-DBTSUPPORT=${BTSUPPORT} \
 		-DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} \
+		-DLIBGIT2_FROM_PKGCONFIG=ON \
+		-DFORCE_LIBSSH=OFF \
 		$PRINTING $EXTRA_OPTS
 
 	if [ $PLATFORM = Darwin ] ; then
