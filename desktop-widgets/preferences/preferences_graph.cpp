@@ -62,7 +62,7 @@ void PreferencesGraph::syncSettings()
 	pp_gas->setPn2Threshold(ui->pn2Threshold->value());
 
 	auto tech = SettingsObjectWrapper::instance()->techDetails;
-	tech->setModp02(ui->maxpo2->value());
+	tech->setModpO2(ui->maxpo2->value());
 	tech->setRedceiling(ui->red_ceiling->isChecked());
 	tech->setBuehlmann(ui->buehlmann->isChecked());
 	tech->setGflow(ui->gflow->value());

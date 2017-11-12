@@ -296,7 +296,7 @@ void TechnicalDetailsSettings::setDecoMode(deco_mode d)
 	emit decoModeChanged(d);
 }
 
-double TechnicalDetailsSettings:: modp02() const
+double TechnicalDetailsSettings:: modpO2() const
 {
 	return prefs.modpO2;
 }
@@ -416,7 +416,7 @@ bool TechnicalDetailsSettings::showPicturesInProfile() const
 	return prefs.show_pictures_in_profile;
 }
 
-void TechnicalDetailsSettings::setModp02(double value)
+void TechnicalDetailsSettings::setModpO2(double value)
 {
 	if (value == prefs.modpO2)
 		return;

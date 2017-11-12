@@ -78,10 +78,10 @@ void TestPreferences::testPreferences()
 	TEST(cloud->verificationStatus(), (short)1);
 
 	auto tecDetails = pref->techDetails;
-	tecDetails->setModp02(0.2);
-	TEST(tecDetails->modp02(), 0.2);
-	tecDetails->setModp02(1.0);
-	TEST(tecDetails->modp02(), 1.0);
+	tecDetails->setModpO2(0.2);
+	TEST(tecDetails->modpO2(), 0.2);
+	tecDetails->setModpO2(1.0);
+	TEST(tecDetails->modpO2(), 1.0);
 
 	tecDetails->setGflow(2);
 	TEST(tecDetails->gflow(), 2);

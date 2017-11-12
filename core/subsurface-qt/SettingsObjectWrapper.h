@@ -112,7 +112,7 @@ private:
 
 class TechnicalDetailsSettings : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(double modpO2         READ modp02          WRITE setModp02          NOTIFY modpO2Changed)
+	Q_PROPERTY(double modpO2         READ modpO2          WRITE setModpO2          NOTIFY modpO2Changed)
 	Q_PROPERTY(bool ead              READ ead             WRITE setEad             NOTIFY eadChanged)
 	Q_PROPERTY(bool mod              READ mod             WRITE setMod             NOTIFY modChanged)
 	Q_PROPERTY(bool dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
@@ -141,7 +141,7 @@ class TechnicalDetailsSettings : public QObject {
 public:
 	TechnicalDetailsSettings(QObject *parent);
 
-	double modp02() const;
+	double modpO2() const;
 	bool ead() const;
 	bool mod() const;
 	bool dcceiling() const;
@@ -169,7 +169,7 @@ public:
 
 public slots:
 	void setMod(bool value);
-	void setModp02(double value);
+	void setModpO2(double value);
 	void setEad(bool value);
 	void setDCceiling(bool value);
 	void setRedceiling(bool value);
