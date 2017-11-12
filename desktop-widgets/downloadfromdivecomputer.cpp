@@ -84,14 +84,13 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 		if (!dc->dc_product().isEmpty())
 			ui.product->setCurrentIndex(ui.product->findText(dc->dc_product()));
 	}
-	if (!dc->dc_device().isEmpty())
-		ui.device->setEditText(dc->dc_device());
 
 	updateState(INITIAL);
 	ui.ok->setEnabled(false);
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
 
+	QString deviceText = dc->dc_device();
 #if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
 	ui.bluetoothMode->setChecked(dc->downloadMode() == DC_TRANSPORT_BLUETOOTH);
@@ -99,10 +98,14 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
 	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
+	if (ui.bluetoothMode->isChecked())
+		deviceText = BtDeviceSelectionDialog::formatDeviceText(dc->dc_device(), dc->dc_device_name());
 #else
 	ui.bluetoothMode->hide();
 	ui.chooseBluetoothDevice->hide();
 #endif
+	if (!deviceText.isEmpty())
+		ui.device->setEditText(deviceText);
 }
 
 void DownloadFromDCWidget::updateProgressBar()
@@ -291,6 +294,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	if (data->bluetoothMode() && btDeviceSelectionDialog != NULL) {
 		// Get the selected device address
 		data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
+		data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 	} else
 		// this breaks an "else if" across lines... not happy...
 #endif
@@ -544,13 +548,7 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 {
 	if (result == QDialog::Accepted) {
 		/* Make the selected Bluetooth device default */
-		QString selectedDeviceName = btDeviceSelectionDialog->getSelectedDeviceName();
-
-		if (selectedDeviceName.isEmpty()) {
-			ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceAddress());
-		} else {
-			ui.device->setCurrentText(selectedDeviceName);
-		}
+		ui.device->setEditText(btDeviceSelectionDialog->getSelectedDeviceText());
 	} else if (result == QDialog::Rejected){
 		/* Disable Bluetooth download mode */
 		ui.bluetoothMode->setChecked(false);

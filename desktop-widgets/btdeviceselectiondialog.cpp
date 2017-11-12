@@ -467,6 +467,20 @@ QString BtDeviceSelectionDialog::getSelectedDeviceName()
 	return QString();
 }
 
+QString BtDeviceSelectionDialog::getSelectedDeviceText()
+{
+	return formatDeviceText(getSelectedDeviceAddress(), getSelectedDeviceName());
+}
+
+QString BtDeviceSelectionDialog::formatDeviceText(const QString &address, const QString &name)
+{
+	if (address.isEmpty())
+		return name;
+	if (name.isEmpty())
+		return address;
+	return QString("%1 (%2)").arg(name, address);
+}
+
 void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 {
 #if defined(Q_OS_WIN)

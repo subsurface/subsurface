@@ -904,7 +904,9 @@ void ConfigureDiveComputerDialog::configError(QString err)
 
 void ConfigureDiveComputerDialog::getDeviceData()
 {
-	device_data.devname = strdup(ui.device->currentText().toUtf8().data());
+	QString device = ui.bluetoothMode && btDeviceSelectionDialog ?
+		btDeviceSelectionDialog->getSelectedDeviceAddress() : ui.device->currentText();
+	device_data.devname = strdup(device.toUtf8().data());
 	device_data.vendor = strdup(selected_vendor.toUtf8().data());
 	device_data.product = strdup(selected_product.toUtf8().data());
 
@@ -913,6 +915,8 @@ void ConfigureDiveComputerDialog::getDeviceData()
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
 	dc->setDevice(device_data.devname);
+	if (ui.bluetoothMode && btDeviceSelectionDialog)
+		dc->setDeviceName(btDeviceSelectionDialog->getSelectedDeviceName());
 }
 
 void ConfigureDiveComputerDialog::on_cancel_clicked()
@@ -1488,7 +1492,7 @@ void ConfigureDiveComputerDialog::selectRemoteBluetoothDevice()
 void ConfigureDiveComputerDialog::bluetoothSelectionDialogIsFinished(int result)
 {
 	if (result == QDialog::Accepted) {
-		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceAddress());
+		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceText());
 		device_data.bluetooth_mode = true;
 
 		ui.progressBar->setFormat("Connecting to device...");

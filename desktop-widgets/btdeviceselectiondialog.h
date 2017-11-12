@@ -59,6 +59,8 @@ public:
 	~BtDeviceSelectionDialog();
 	QString getSelectedDeviceAddress();
 	QString getSelectedDeviceName();
+	QString getSelectedDeviceText();
+	static QString formatDeviceText(const QString &address, const QString &name);
 
 private slots:
 	void on_changeDeviceState_clicked();
