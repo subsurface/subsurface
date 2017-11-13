@@ -326,10 +326,14 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	case QLowEnergyController::ConnectedState:
 		qDebug() << "connected to the controller for device" << devaddr;
 		break;
+	case QLowEnergyController::ConnectingState:
+		qDebug() << "timeout while trying to connect to the controller " << devaddr;
+		report_error("Timeout while trying to connect to %s", devaddr);
+		delete controller;
+		return DC_STATUS_IO;
 	default:
 		qDebug() << "failed to connect to the controller " << devaddr << "with error" << controller->errorString();
 		report_error("Failed to connect to %s: '%s'", devaddr, controller->errorString().toUtf8().data());
-		controller->disconnectFromDevice();
 		delete controller;
 		return DC_STATUS_IO;
 	}
@@ -354,7 +358,6 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	if (ble->preferredService() == nullptr) {
 		qDebug() << "failed to find suitable service on" << devaddr;
 		report_error("Failed to find suitable service on '%s'", devaddr);
-		controller->disconnectFromDevice();
 		delete ble;
 		return DC_STATUS_IO;
 	}
@@ -369,7 +372,6 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	if (ble->preferredService()->state() != QLowEnergyService::ServiceDiscovered) {
 		qDebug() << "failed to find suitable service on" << devaddr;
 		report_error("Failed to find suitable service on '%s'", devaddr);
-		controller->disconnectFromDevice();
 		delete ble;
 		return DC_STATUS_IO;
 	}
