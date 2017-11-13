@@ -71,7 +71,9 @@ void DiveEventItem::setupPixmap()
 	 // on iOS devices we need to adjust for Device Pixel Ratio
 	int sz_bigger = metrics.sz_med  * metrics.dpr;
 #else
-	int sz_bigger = metrics.sz_med;
+	// SUBSURFACE_MOBILE, seems a little big from the code,
+	// but looks fine on device
+	int sz_bigger = metrics.sz_big + metrics.sz_med;
 #endif
 #endif
 	int sz_pix = sz_bigger/2; // ex 20px
