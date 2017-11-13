@@ -1047,7 +1047,7 @@ void calculate_deco_information(struct dive *dive, struct divecomputer *dc, stru
 				/* If using VPM-B, take first_ceiling_pressure as the deepest ceiling */
 				if (decoMode() == VPMB) {
 					if  (current_ceiling >= first_ceiling ||
-					     time_deep_ceiling == t0 && entry->depth == (entry - 1)->depth) {
+					     (time_deep_ceiling == t0 && entry->depth == (entry - 1)->depth)) {
 						time_deep_ceiling = t1;
 						first_ceiling = current_ceiling;
 						deco_state->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
