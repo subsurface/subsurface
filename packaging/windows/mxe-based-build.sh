@@ -108,6 +108,7 @@ export CXXFLAGS=-std=c++11
 
 if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
+	RELEASE_MAIN="Debug"
 	DLL_SUFFIX="d"
 	shift
 	if [[ -f Release ]] ; then
@@ -116,6 +117,7 @@ if [[ "$1" == "debug" ]] ; then
 	touch Debug
 else
 	RELEASE="Release"
+	RELEASE_MAIN="RelWithDebInfo"
 	DLL_SUFFIX=""
 	if [[ -f Debug ]] ; then
 		rm -rf *
@@ -270,7 +272,7 @@ cd "$BUILDDIR"/subsurface
 
 i686-w64-mingw32.shared-cmake \
 	-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5 \
-	-DCMAKE_BUILD_TYPE=$RELEASE \
+	-DCMAKE_BUILD_TYPE=$RELEASE_MAIN \
 	-DQT_TRANSLATION_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/translations \
 	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
@@ -279,3 +281,10 @@ i686-w64-mingw32.shared-cmake \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
+
+OBJCOPY="i686-w64-mingw32.shared-objcopy"
+if [[ "$RELEASE_MAIN" == "RelWithDebInfo" ]] ; then
+	$OBJCOPY --only-keep-debug subsurface.exe subsurface.exe.debug
+	$OBJCOPY --strip-debug --strip-unneeded subsurface.exe
+	$OBJCOPY --add-gnu-debuglink=subsurface.exe.debug subsurface.exe
+fi
