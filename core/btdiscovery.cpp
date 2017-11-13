@@ -132,18 +132,20 @@ extern void addBtUuid(QBluetoothUuid uuid);
 extern QHash<QString, QStringList> productList;
 extern QStringList vendorList;
 
+QString btDeviceAddress(const QBluetoothDeviceInfo *device, bool isBle)
+{
+	QString address = device->address().isNull() ?
+		device->deviceUuid().toString() : device->address().toString();
+	const char *prefix = isBle ? "LE:" : "";
+	return prefix + address;
+}
+
 QString markBLEAddress(const QBluetoothDeviceInfo *device)
 {
-	QBluetoothDeviceInfo::CoreConfigurations flags;
-	QString prefix = "";
+	QBluetoothDeviceInfo::CoreConfigurations flags = device->coreConfigurations();
+	bool isBle = flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration;
 
-	flags = device->coreConfigurations();
-	if (flags == QBluetoothDeviceInfo::LowEnergyCoreConfiguration)
-		prefix = "LE:";
-	if (device->address().isNull())
-		return prefix + device->deviceUuid().toString();
-	else
-		return prefix + device->address().toString();
+	return btDeviceAddress(device, isBle);
 }
 
 void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)

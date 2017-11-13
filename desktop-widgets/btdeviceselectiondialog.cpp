@@ -449,13 +449,25 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 }
 
 extern QString markBLEAddress(const QBluetoothDeviceInfo *device);
+extern QString btDeviceAddress(const QBluetoothDeviceInfo *device, bool isBle);
 
 QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 {
-	if (selectedRemoteDeviceInfo)
-		return markBLEAddress(selectedRemoteDeviceInfo.data());
+	if (!selectedRemoteDeviceInfo)
+		return QString();
 
-	return QString();
+	int btMode = ui->btMode->currentIndex();
+	QBluetoothDeviceInfo *device = selectedRemoteDeviceInfo.data();
+
+	switch (btMode) {
+	case 0:		// Auto
+	default:
+		return markBLEAddress(device);
+	case 1:		// Force LE
+		return btDeviceAddress(device, true);
+	case 2:		// Force classical
+		return btDeviceAddress(device, false);
+	}
 }
 
 QString BtDeviceSelectionDialog::getSelectedDeviceName()
