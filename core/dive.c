@@ -1747,6 +1747,9 @@ static void merge_one_sample(struct sample *sample, int time, struct divecompute
 		struct sample *prev = dc->sample + last;
 		int last_time = prev->time.seconds;
 		int last_depth = prev->depth.mm;
+		/* Init a few values from prev sample to avoid useless info in XML */
+		surface.bearing.degrees = prev->bearing.degrees;
+		surface.ndl.seconds = prev->ndl.seconds;
 
 		/*
 		 * Only do surface events if the samples are more than
