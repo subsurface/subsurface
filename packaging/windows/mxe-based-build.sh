@@ -281,10 +281,3 @@ i686-w64-mingw32.shared-cmake \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
-
-OBJCOPY="i686-w64-mingw32.shared-objcopy"
-if [[ "$RELEASE_MAIN" == "RelWithDebInfo" ]] ; then
-	$OBJCOPY --only-keep-debug subsurface.exe subsurface.exe.debug
-	$OBJCOPY --strip-debug --strip-unneeded subsurface.exe
-	$OBJCOPY --add-gnu-debuglink=subsurface.exe.debug subsurface.exe
-fi

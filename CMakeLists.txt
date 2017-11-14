@@ -422,6 +422,18 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	install(CODE "execute_process(COMMAND cp -a ${_qt5Core_install_prefix}/qml/QtPositioning ${CMAKE_BINARY_DIR}/${APP_BUNDLE_DIR}/Contents/Resources/qml)")
 	install(CODE "message(STATUS \"two ERRORS here about libmysqlclient and libpq not found are harmless\")")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+	if (CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+		if(NOT DEFINED OBJCOPY)
+			set(OBJCOPY i686-w64-mingw32.shared-objcopy)
+		endif()
+		message(STATUS "Build type is 'RelWithDebInfo'. Creating debug symbols in a separate file.")
+		add_custom_command(TARGET ${SUBSURFACE_TARGET} POST_BUILD
+			COMMAND ${OBJCOPY} --only-keep-debug ${SUBSURFACE_TARGET}.exe ${SUBSURFACE_TARGET}.exe.debug
+			COMMAND ${OBJCOPY} --strip-debug --strip-unneeded ${SUBSURFACE_TARGET}.exe
+			COMMAND ${OBJCOPY} --add-gnu-debuglink=${SUBSURFACE_TARGET}.exe.debug ${SUBSURFACE_TARGET}.exe
+		)
+	endif()
+
 	# Windows bundling rules
 	# We don't have a helpful tool like macdeployqt for Windows, so we hardcode
 	# which libs we need.
