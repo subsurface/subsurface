@@ -404,6 +404,7 @@ class DivePlannerSettings : public QObject {
 	Q_PROPERTY(int bestmixend           READ bestmixend           WRITE setBestmixend           NOTIFY bestmixendChanged)
 	Q_PROPERTY(int reserve_gas          READ reserveGas           WRITE setReserveGas           NOTIFY reserveGasChanged)
 	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
+	Q_PROPERTY(int min_switch_duration_deep  READ minSwitchDurationDeep    WRITE setMinSwitchDurationDeep    NOTIFY minSwitchDurationDeepChanged)
 	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
 	Q_PROPERTY(int decosac              READ decoSac              WRITE setDecoSac              NOTIFY decoSacChanged)
 	Q_PROPERTY(deco_mode decoMode       READ decoMode             WRITE setDecoMode             NOTIFY decoModeChanged)
@@ -432,6 +433,7 @@ public:
 	int bestmixend() const;
 	int reserveGas() const;
 	int minSwitchDuration() const;
+	int minSwitchDurationDeep() const;
 	int bottomSac() const;
 	int decoSac() const;
 	deco_mode decoMode() const;
@@ -459,6 +461,7 @@ public slots:
 	void setBestmixend(int value);
 	void setReserveGas(int value);
 	void setMinSwitchDuration(int value);
+	void setMinSwitchDurationDeep(int value);
 	void setBottomSac(int value);
 	void setDecoSac(int value);
 	void setDecoMode(deco_mode value);
@@ -486,6 +489,7 @@ signals:
 	void bestmixendChanged(int value);
 	void reserveGasChanged(int value);
 	void minSwitchDurationChanged(int value);
+	void minSwitchDurationDeepChanged(int value);
 	void bottomSacChanged(int value);
 	void decoSacChanged(int value);
 	void decoModeChanged(deco_mode value);

@@ -930,7 +930,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 							(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi].depth / 1000.0);
 #endif
 						/* Stop for the minimum duration to switch gas unless we switch to o2 */
-						if (!last_segment_min_switch && get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
+						if (!last_segment_min_switch && depth > (prefs.units.length == METERS ? 30000 : 30480)) {
+							add_segment(depth_to_bar(depth, dive),
+								&dive->cylinder[current_cylinder].gasmix,
+								prefs.min_switch_duration_deep, po2, dive, prefs.decosac);
+							clock += prefs.min_switch_duration_deep;
+						} else if (!last_segment_min_switch && get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
 							add_segment(depth_to_bar(depth, dive),
 								&dive->cylinder[current_cylinder].gasmix,
 								prefs.min_switch_duration, po2, dive, prefs.decosac);
@@ -984,7 +989,12 @@ bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct dec
 						(get_o2(&gas) + 5) / 10, (get_he(&gas) + 5) / 10, gaschanges[gi + 1].depth / 1000.0);
 #endif
 					/* Stop for the minimum duration to switch gas unless we switch to o2 */
-					if (!last_segment_min_switch && get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
+					if (!last_segment_min_switch && depth > (prefs.units.length == METERS ? 30000 : 30480)) {
+						add_segment(depth_to_bar(depth, dive),
+							&dive->cylinder[current_cylinder].gasmix,
+							prefs.min_switch_duration_deep, po2, dive, prefs.decosac);
+						clock += prefs.min_switch_duration_deep;
+					} else if (!last_segment_min_switch && get_o2(&dive->cylinder[current_cylinder].gasmix) != 1000) {
 						add_segment(depth_to_bar(depth, dive),
 							&dive->cylinder[current_cylinder].gasmix,
 							prefs.min_switch_duration, po2, dive, prefs.decosac);

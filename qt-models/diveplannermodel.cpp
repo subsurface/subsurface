@@ -653,6 +653,13 @@ void DivePlannerPointsModel::setMinSwitchDuration(int duration)
 	emitDataChanged();
 }
 
+void DivePlannerPointsModel::setMinSwitchDurationDeep(int duration)
+{
+	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	planner->setMinSwitchDurationDeep(duration * 60);
+	emitDataChanged();
+}
+
 void DivePlannerPointsModel::setStartDate(const QDate &date)
 {
 	startTime.setDate(date);

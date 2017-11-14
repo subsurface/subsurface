@@ -61,6 +61,7 @@ struct preferences default_prefs = {
 	.drop_stone_mode = false,
 	.switch_at_req_stop = false,
 	.min_switch_duration = 60,
+	.min_switch_duration_deep = 60,
 	.last_stop = false,
 	.verbatim_plan = false,
 	.display_runtime = true,

@@ -265,6 +265,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(true);
 		ui.min_switch_duration->setDisabled(true);
+		ui.min_switch_duration_deep->setDisabled(true);
 		ui.sacfactor->setDisabled(true);
 		ui.problemsolvingtime->setDisabled(true);
 		ui.sacfactor->blockSignals(true);
@@ -290,6 +291,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(false);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.min_switch_duration_deep->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
 		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
@@ -311,6 +313,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.min_switch_duration_deep->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
 		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
@@ -362,6 +365,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.drop_stone_mode->setChecked(prefs.drop_stone_mode);
 	ui.switch_at_req_stop->setChecked(prefs.switch_at_req_stop);
 	ui.min_switch_duration->setValue(prefs.min_switch_duration / 60);
+	ui.min_switch_duration_deep->setValue(prefs.min_switch_duration_deep / 60);
 	ui.recreational_deco->setChecked(prefs.planner_deco_mode == RECREATIONAL);
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
@@ -405,6 +409,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	connect(ui.backgasBreaks, SIGNAL(toggled(bool)), this, SLOT(setBackgasBreaks(bool)));
 	connect(ui.switch_at_req_stop, SIGNAL(toggled(bool)), plannerModel, SLOT(setSwitchAtReqStop(bool)));
 	connect(ui.min_switch_duration, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDuration(int)));
+	connect(ui.min_switch_duration_deep, SIGNAL(valueChanged(int)), plannerModel, SLOT(setMinSwitchDurationDeep(int)));
 	connect(ui.rebreathermode, SIGNAL(currentIndexChanged(int)), plannerModel, SLOT(setRebreatherMode(int)));
 
 	connect(ui.bottompo2, SIGNAL(valueChanged(double)), CylindersModel::instance(), SLOT(updateBestMixes()));
@@ -467,12 +472,16 @@ void PlannerSettingsWidget::settingsChanged()
 		ui.asc50to6->setText(tr("50% avg. depth to 20ft"));
 		ui.asc6toSurf->setText(tr("20ft to surface"));
 		ui.bestmixEND->setSuffix(tr("ft"));
+		ui.label_min_switch->setToolTip(tr("For gas switches at and above 100ft. Not applied for O₂% at 100%."));
+		ui.label_min_switch_deep->setToolTip(tr("For gas switches below 100ft."));
 	} else {
 		vs.append(tr("m/min"));
 		ui.lastStop->setText(tr("Last stop at 6m"));
 		ui.asc50to6->setText(tr("50% avg. depth to 6m"));
 		ui.asc6toSurf->setText(tr("6m to surface"));
 		ui.bestmixEND->setSuffix(tr("m"));
+		ui.label_min_switch->setToolTip(tr("For gas switches at and above 30m. Not applied for O₂% at 100%."));
+		ui.label_min_switch_deep->setToolTip(tr("For gas switches below 30m."));
 	}
 	if(get_units()->volume == units::CUFT) {
 		ui.bottomSAC->setSuffix(tr("cuft/min"));
