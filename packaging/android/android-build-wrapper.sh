@@ -19,7 +19,7 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
 
-QT_VERSION=5.9.1
+QT_VERSION=5.9
 LATEST_QT=5.9.1
 NDK_VERSION=r14b
 SDK_VERSION=3859397
@@ -71,7 +71,7 @@ if [ ! -d Qt ] ; then
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
-sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/${QT_VERSION}/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/${LATEST_QT}/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
 # next we need to get the Android SDK and NDK
 if [ ! -d $ANDROID_NDK ] ; then
