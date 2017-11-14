@@ -762,7 +762,8 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	struct dive *dive = NULL;
 
 	/* reset static data, that is only valid per dive */
-	ndl = stoptime = stopdepth = po2 = 0;
+	stoptime = stopdepth = po2 = cns = heartbeat = 0;
+	ndl = bearing = -1;
 	in_deco = false;
 	current_gas_index = -1;
 
