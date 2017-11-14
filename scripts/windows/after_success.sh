@@ -13,3 +13,4 @@ find . -name subsurface\*.exe*
 wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
 bash ./upload.sh subsurface*.exe*
 
+bash -x ${TRAVIS_BUILD_DIR}/scripts/travis_end.sh
