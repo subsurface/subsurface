@@ -67,7 +67,7 @@ if [ ! -d Qt ] ; then
 		wget -q ${QT_DOWNLOAD_URL}
 	fi
 	chmod +x ./${QT_BINARIES}
-	./${QT_BINARIES} --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
+	./${QT_BINARIES} --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
