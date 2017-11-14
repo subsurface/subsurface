@@ -6,7 +6,7 @@ fi
 
 cd ${TRAVIS_BUILD_DIR}/../win32/subsurface
 
-echo "Submitting the folloing Windows installer for continuous build release:"
+echo "Submitting the following Windows files for continuous build release:"
 find . -name subsurface\*.exe*
 
 # get and run the upload script
