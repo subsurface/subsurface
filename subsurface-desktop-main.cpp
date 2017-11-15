@@ -29,12 +29,14 @@
 
 static bool filesOnCommandLine = false;
 static void validateGL();
+static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg);
 
 int main(int argc, char **argv)
 {
 	int i;
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
+	qInstallMessageHandler(messageHandler);
 	QApplication *application = new QApplication(argc, argv);
 	(void)application;
 	QStringList files;
@@ -213,5 +215,29 @@ exit:
 		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError).toUtf8().data();
 		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
 #endif
+	}
+}
+
+// install this message handler primarily so that the Windows build can log to files
+void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
+{
+	Q_UNUSED(ctx);
+	QByteArray localMsg = msg.toLocal8Bit();
+	switch (type) {
+	case QtDebugMsg:
+		fprintf(stdout, "%s\n", localMsg.constData());
+		break;
+	case QtInfoMsg:
+		fprintf(stdout, "%s\n", localMsg.constData());
+		break;
+	case QtWarningMsg:
+		fprintf(stderr, "%s\n", localMsg.constData());
+		break;
+	case QtCriticalMsg:
+		fprintf(stderr, "%s\n", localMsg.constData());
+		break;
+	case QtFatalMsg:
+		fprintf(stderr, "%s\n", localMsg.constData());
+		abort();
 	}
 }
