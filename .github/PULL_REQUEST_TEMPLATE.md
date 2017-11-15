@@ -7,6 +7,8 @@
 - [ ] Bug fix
 - [ ] Functional change
 - [ ] New feature
+- [ ] Code cleanup
+- [ ] Build system change
 - [ ] Documentation change
 - [ ] Language translation
 
@@ -23,6 +25,10 @@
 
 ### Additional information:
 <!-- Include sample dive log or other relevant information to allow testing the change where feasible. -->
+
+### Release note:
+<!-- Describe if this change needs a release note present in ReleaseNotes/ReleaseNotes.txt. -->
+<!-- Also, please make sure to update the ReleaseNotes/ReleaseNotes.txt file itself. -->
 
 ### Mentions:
 <!-- Mention users that you want to review your pull request with @<user-name>. Leave empty if not sure. -->
