@@ -18,6 +18,7 @@ fi
 
 # update the Body of the Release to be more interesting
 
+VERSION=$(cd ${TRAVIS_BUILD_DIR}; ./scripts/get-version linux)
 T_BUILD_REF="Travis CI build log: https://travis-ci.org/Subsurface-divelog/subsurface/builds/$TRAVIS_BUILD_ID/\n"
 WIN_BINS="subsurface.exe and subsurface.exe.debug are just the Subsurface executable for this build, the full Windows installer is subsurface-$VERSION.exe.\n"
 MAC_ZIP="Subsurface-$VERSION.app.zip is a zip archive containing an unsigned app folder; you will have to override Mac security settings in order to be able to run this app.\n"
