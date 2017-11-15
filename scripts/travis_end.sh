@@ -19,9 +19,10 @@ fi
 # update the Body of the Release to be more interesting
 
 T_BUILD_REF="Travis CI build log: https://travis-ci.org/Subsurface-divelog/subsurface/builds/$TRAVIS_BUILD_ID/\n"
-WIN_BINS="subsurface.exe and subsurface.exe.debug are just the Subsurface executable for this build, the full Windows installer contains the version number in its name.\n"
-MISSING_BINS="So far Mac App and Android APK are not automatically created on Travis - try looking for them at http://subsurface-divelog.org/downloads/test."
-BODY=$T_BUILD_REF$WIN_BINS$MISSING_BINS
+WIN_BINS="subsurface.exe and subsurface.exe.debug are just the Subsurface executable for this build, the full Windows installer is subsurface-$VERSION.exe.\n"
+MAC_ZIP="Subsurface-$VERSION.app.zip is a zip archive containing an unsigned app folder; you will have to override Mac security settings in order to be able to run this app.\n"
+MISSING_BINS="The Android APK is not yet automatically created on Travis - try looking for the latest at http://subsurface-divelog.org/downloads/test."
+BODY=$T_BUILD_REF$WIN_BINS$MAC_ZIP$MISSING_BINS
 
 release_id=$(curl https://api.github.com/repos/Subsurface-divelog/subsurface/releases/tags/${RELEASE_NAME} | grep "\"id\":" | head -n 1 | tr -s " " | cut -f 3 -d" " | cut -f 1 -d ",")
 release_infos=$(curl -H "Authorization: token ${GITHUB_TOKEN}" --request PATCH \
