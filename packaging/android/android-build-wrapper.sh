@@ -117,7 +117,6 @@ if ! git checkout Subsurface-branch ; then
 fi
 popd
 
-
 # and now we need a monotonic build number...
 if [ ! -f ./buildnr.dat ] ; then
 	BUILDNR=0
@@ -129,20 +128,13 @@ echo "${BUILDNR}" > ./buildnr.dat
 
 echo "Building Subsurface-mobile for Android, build nr ${BUILDNR}"
 
-if [ "$1" = release ] || [ "$1" = Release ] || [ "$1" = debug ] || [ "$1" = Debug ] ; then
-	RELEASE=$1
-	shift
-else
-	RELEASE=Debug
-fi
-
 rm -f ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
 rm -df ./subsurface-mobile-build-arm/AndroidManifest.xml
 
 if [ "$USE_X" ] ; then
-	bash "$USE_X" subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
+	bash "$USE_X" subsurface/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
 else
-	bash subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
+	bash subsurface/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
 fi
 
 ls -l ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
