@@ -410,6 +410,7 @@ void subsurface_console_init(void)
 		console_desc.out = freopen("CON", "w", stdout);
 		console_desc.err = freopen("CON", "w", stderr);
 	} else {
+		verbose = 1; /* set the verbose level to '1' */
 		console_desc.out = freopen("subsurface_out.log", "w", stdout);
 		console_desc.err = freopen("subsurface_err.log", "w", stderr);
 	}
