@@ -22,7 +22,7 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 QT_VERSION=5.9.1
 LATEST_QT=5.9.1
 NDK_VERSION=r14b
-SDK_VERSION=r25.2.3
+SDK_VERSION=3859397
 
 ANDROID_NDK=android-ndk-${NDK_VERSION}
 ANDROID_SDK=android-sdk-linux
@@ -36,7 +36,7 @@ popd
 if [ "$PLATFORM" = Linux ] ; then
 	QT_BINARIES=qt-opensource-linux-x64-${LATEST_QT}.run
 	NDK_BINARIES=${ANDROID_NDK}-linux-x86_64.zip
-	SDK_TOOLS=tools_${SDK_VERSION}-linux.zip
+	SDK_TOOLS=sdk-tools-linux-${SDK_VERSION}.zip
 else
 	echo "only on Linux so far"
 	exit 1
@@ -88,17 +88,9 @@ if [ ! -d $ANDROID_SDK ] ; then
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
 	unzip -q ../$SDK_TOOLS
-	echo "Please select the SDK Platform for the latest API and for API 16 (Android 4.2.1)"
-	echo "as well as the latest Android SDK Tools and Android SDK Platform-tools."
-	echo "You can unselect the various system images that usually are selected by default."
-	echo "Then accept the licenses and install."
-	bash tools/android update sdk
-	# ( sleep 5 && while true ; do sleep 1; echo y; done ) | bash tools/android update sdk --no-ui -a -t 1,2,3,33
-	# this is copied from https://stackoverflow.com/questions/38096225/automatically-accept-all-sdk-licences
-	mkdir -p licenses
-	echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "licenses/android-sdk-license"
-	echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "licenses/android-sdk-preview-license"
-
+	yes | tools/bin/sdkmanager --licenses
+	# FIXME: Read these from build.sh varables, or install them there.
+	tools/bin/sdkmanager tools platform-tools 'platforms;android-27' 'build-tools;25.0.3'
 	popd
 fi
 
