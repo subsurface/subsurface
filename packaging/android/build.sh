@@ -64,7 +64,11 @@ while [ "$#" -gt 0 ] ; do
 		arm|x86)
 			ARCH=$1
 			shift
-		;;
+			;;
+		*)
+			echo "Unknown argument $1"
+			exit 1
+			;;
 	esac
 done
 
