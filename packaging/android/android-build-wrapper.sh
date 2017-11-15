@@ -132,7 +132,7 @@ if [ ! -f ./buildnr.dat ] ; then
 else
 	BUILDNR=$(cat ./buildnr.dat)
 fi
-((BUILDNR++))
+BUILDNR=$((BUILDNR+1))
 echo "${BUILDNR}" > ./buildnr.dat
 
 echo "Building Subsurface-mobile ${VERSION} for Android, build nr ${BUILDNR} as Subsurface-mobile-${VERSION}-arm.apk"
