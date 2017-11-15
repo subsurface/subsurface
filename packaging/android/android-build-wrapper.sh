@@ -135,7 +135,7 @@ fi
 BUILDNR=$((BUILDNR+1))
 echo "${BUILDNR}" > ./buildnr.dat
 
-echo "Building Subsurface-mobile ${VERSION} for Android, build nr ${BUILDNR} as Subsurface-mobile-${VERSION}-arm.apk"
+echo "Building Subsurface-mobile for Android, build nr ${BUILDNR}"
 
 if [ "$1" = release ] || [ "$1" = Release ] || [ "$1" = debug ] || [ "$1" = Debug ] ; then
 	RELEASE=$1
