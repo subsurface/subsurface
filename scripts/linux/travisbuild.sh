@@ -9,8 +9,14 @@ export PATH=$QT_ROOT/bin:$PATH # Make sure correct qmake is found on the $PATH f
 export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 
 # the global build script expects to be called from the directory ABOVE subsurface
+# build both desktop and mobile - first without BT support and without
+# webkit to make sure that still works, then with all components in order
+# to create an AppImage
 cd ..
-bash -e -x ./subsurface/scripts/build.sh -desktop -create-appdir -build-with-webkit # we need to build 'both' and need to build without BT and other variations that we want to exercise
+
+bash -e -x ./subsurface/scripts/build.sh -both -no-bt
+rm -rf subsurface/build subsurface/build-mobile
+bash -e -x ./subsurface/scripts/build.sh -both -create-appdir -build-with-webkit
 
 export QT_PLUGIN_PATH=$QT_ROOT/plugins
 export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
