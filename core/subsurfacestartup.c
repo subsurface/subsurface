@@ -148,14 +148,18 @@ const char *monthname(int mon)
  */
 bool imported = false;
 
-static void print_version()
+bool version_printed = false;
+void print_version()
 {
+	if (version_printed)
+		return;
 	printf("Subsurface v%s,\n", subsurface_git_version());
 	printf("built with libdivecomputer v%s\n", dc_version(NULL));
 	print_qt_versions();
 	int git_maj, git_min, git_rev;
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	printf("built with libgit2 %d.%d.%d\n", git_maj, git_min, git_rev);
+	version_printed = true;
 }
 
 void print_files()

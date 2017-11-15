@@ -33,17 +33,19 @@ static void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const 
 
 int main(int argc, char **argv)
 {
+	subsurface_console_init();
+	qInstallMessageHandler(messageHandler);
+	if (verbose) /* print the version if the Win32 console_init() code enabled verbose. */
+		print_version();
+
 	int i;
 	bool no_filenames = true;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
-	qInstallMessageHandler(messageHandler);
 	QApplication *application = new QApplication(argc, argv);
 	(void)application;
 	QStringList files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
-
-	subsurface_console_init();
 
 	const char *default_directory = system_default_directory();
 	const char *default_filename = system_default_filename();
