@@ -145,7 +145,7 @@ else
 fi
 
 rm -f ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
-rm -d ./subsurface-mobile-build-arm/AndroidManifest.xml
+rm -df ./subsurface-mobile-build-arm/AndroidManifest.xml
 
 if [ "$USE_X" ] ; then
 	bash "$USE_X" subsurface/packaging/android/build.sh "$RELEASE" -buildnr "$BUILDNR" arm "$@"
