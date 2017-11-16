@@ -232,7 +232,7 @@ static inline int mbar_to_PSI(int mbar)
 #undef PASCAL
 #endif
 struct units {
-	enum LENGHT {
+	enum LENGTH {
 		METERS,
 		FEET
 	} length;

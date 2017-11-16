@@ -1625,7 +1625,7 @@ void UnitsSettings::setLength(int value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("length", value);
-	prefs.units.length = (units::LENGHT) value;
+	prefs.units.length = (units::LENGTH) value;
 	emit lengthChanged(value);
 }
 

@@ -79,7 +79,7 @@
 #define SUUNTO_VYPER_ALARM_DEPTH_TIME     0x65
 #define SUUNTO_VYPER_ALARM_TIME           0x66
 #define SUUNTO_VYPER_ALARM_DEPTH          0x68
-#define SUUNTO_VYPER_CUSTOM_TEXT_LENGHT   30
+#define SUUNTO_VYPER_CUSTOM_TEXT_LENGTH   30
 
 #ifdef DEBUG_OSTC
 // Fake io to ostc memory banks
@@ -148,7 +148,7 @@ static void write_ostc_cf(unsigned char data[], unsigned char cf, unsigned char 
 
 static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
-	unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT + 1];
+	unsigned char data[SUUNTO_VYPER_CUSTOM_TEXT_LENGTH + 1];
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
@@ -204,10 +204,10 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 	m_deviceDetails->serialNo = QString::number(serial_number);
 	EMIT_PROGRESS();
 
-	rc = dc_device_read(device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
+	rc = dc_device_read(device, SUUNTO_VYPER_CUSTOM_TEXT, data, SUUNTO_VYPER_CUSTOM_TEXT_LENGTH);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	data[SUUNTO_VYPER_CUSTOM_TEXT_LENGHT] = 0;
+	data[SUUNTO_VYPER_CUSTOM_TEXT_LENGTH] = 0;
 	m_deviceDetails->customText = (const char *)data;
 	EMIT_PROGRESS();
 
@@ -294,7 +294,7 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 	rc = dc_device_write(device, SUUNTO_VYPER_CUSTOM_TEXT,
 			     // Convert the customText to a 30 char wide padded with " "
 			     (const unsigned char *)QString("%1").arg(m_deviceDetails->customText, -30, QChar(' ')).toUtf8().data(),
-			     SUUNTO_VYPER_CUSTOM_TEXT_LENGHT);
+			     SUUNTO_VYPER_CUSTOM_TEXT_LENGTH);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
