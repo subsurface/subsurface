@@ -91,7 +91,7 @@ void TagWidget::reparse()
 	 * Do not show the completer when not in edit mode - basically
 	 * this returns when we are accepting or discarding the changes.
 	 */
-	if (MainWindow::instance()->information()->isEditing() == false || currentText.length() == 0) {
+	if (MainWindow::instance()->information()->isEditing() == false) {
 		return;
 	}
 
