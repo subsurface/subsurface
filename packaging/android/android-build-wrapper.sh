@@ -94,14 +94,6 @@ if [ ! -d $ANDROID_SDK ] ; then
 	popd
 fi
 
-# ok, now we have Qt, SDK, and NDK - let's get us some Subsurface
-if [ ! -d subsurface ] ; then
-	git clone https://github.com/Subsurface-divelog/subsurface.git
-fi
-pushd subsurface
-git pull --rebase
-popd
-
 if [ ! -d libdivecomputer ] ; then
 	git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
 	pushd libdivecomputer
@@ -132,9 +124,9 @@ rm -f ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
 rm -df ./subsurface-mobile-build-arm/AndroidManifest.xml
 
 if [ "$USE_X" ] ; then
-	bash "$USE_X" subsurface/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
+	bash "$USE_X" "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
 else
-	bash subsurface/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
+	bash "$SUBSURFACE_SOURCE"/packaging/android/build.sh -buildnr "$BUILDNR" arm "$@"
 fi
 
 ls -l ./subsurface-mobile-build-arm/build/outputs/apk/*.apk
