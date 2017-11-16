@@ -748,6 +748,7 @@ void FacebookSettings::setAccessToken (const QString& value)
 	s.beginGroup(subgroup);
 	s.setValue("ConnectToken", value);
 #endif
+	free(prefs.facebook.access_token);
 	prefs.facebook.access_token = copy_string(qPrintable(value));
 	emit accessTokenChanged(value);
 }
@@ -762,6 +763,7 @@ void FacebookSettings::setUserId(const QString& value)
 	s.beginGroup(subgroup);
 	s.setValue("UserId", value);
 #endif
+	free(prefs.facebook.user_id);
 	prefs.facebook.user_id = copy_string(qPrintable(value));
 	emit userIdChanged(value);
 }
@@ -776,6 +778,7 @@ void FacebookSettings::setAlbumId(const QString& value)
 	s.beginGroup(subgroup);
 	s.setValue("AlbumId", value);
 #endif
+	free(prefs.facebook.album_id);
 	prefs.facebook.album_id = copy_string(qPrintable(value));
 	emit albumIdChanged(value);
 }
@@ -889,7 +892,7 @@ void ProxySettings::setHost(const QString& value)
 	s.beginGroup(group);
 	s.setValue("proxy_host", value);
 	free(prefs.proxy_host);
-	prefs.proxy_host = copy_string(qPrintable(value));;
+	prefs.proxy_host = copy_string(qPrintable(value));
 	emit hostChanged(value);
 }
 
@@ -1792,6 +1795,7 @@ void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_filename", value);
+	free((void*)prefs.default_filename);
 	prefs.default_filename = copy_string(qPrintable(value));
 	emit defaultFilenameChanged(value);
 }
@@ -1804,6 +1808,7 @@ void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_cylinder", value);
+	free((void*)prefs.default_cylinder);
 	prefs.default_cylinder = copy_string(qPrintable(value));
 	emit defaultCylinderChanged(value);
 }
@@ -1996,7 +2001,7 @@ void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("UseSystemLanguage", value);
-	prefs.locale.use_system_language = copy_string(qPrintable(value));
+	prefs.locale.use_system_language = value;
 	emit useSystemLanguageChanged(value);
 }
 
@@ -2007,6 +2012,7 @@ void  LanguageSettingsObjectWrapper::setLangLocale(const QString &value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("UiLangLocale", value);
+	free((void*)prefs.locale.lang_locale);
 	prefs.locale.lang_locale = copy_string(qPrintable(value));
 	emit langLocaleChanged(value);
 }
@@ -2018,6 +2024,7 @@ void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("UiLanguage", value);
+	free((void*)prefs.locale.language);
 	prefs.locale.language = copy_string(qPrintable(value));
 	emit languageChanged(value);
 }
@@ -2029,7 +2036,8 @@ void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("time_format", value);
-	prefs.time_format = copy_string(qPrintable(value));;
+	free((void*)prefs.time_format);
+	prefs.time_format = copy_string(qPrintable(value));
 	emit timeFormatChanged(value);
 }
 
@@ -2041,7 +2049,8 @@ void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("date_format", value);
-	prefs.date_format = copy_string(qPrintable(value));;
+	free((void*)prefs.date_format);
+	prefs.date_format = copy_string(qPrintable(value));
 	emit dateFormatChanged(value);
 }
 
@@ -2053,7 +2062,8 @@ void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("date_format_short", value);
-	prefs.date_format_short = copy_string(qPrintable(value));;
+	free((void*)prefs.date_format_short);
+	prefs.date_format_short = copy_string(qPrintable(value));
 	emit dateFormatShortChanged(value);
 }
 
