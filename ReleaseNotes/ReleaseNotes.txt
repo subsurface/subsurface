@@ -9,6 +9,7 @@ Some of the changes since _Subsurface_ 4.7.4
 - Limit min. GFlow to 10 and min. GFhigh to 40 in preferences for profile
   and planner
 - Fix issues related to debug logging on Windows
+- Add "Bluetooth mode" in the BT selection dialog: Auto, LE, Classical
 
 
 _Subsurface_ 4.7.4 - November 11, 2017
