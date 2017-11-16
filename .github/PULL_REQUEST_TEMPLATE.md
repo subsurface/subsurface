@@ -30,5 +30,10 @@
 <!-- Describe if this change needs a release note present in ReleaseNotes/ReleaseNotes.txt. -->
 <!-- Also, please make sure to update the ReleaseNotes/ReleaseNotes.txt file itself. -->
 
+### Documentation change:
+<!-- If this PR makes changes to user functionality, then the documentation has to be updated too. -->
+<!-- Please, briefly outline here what has changed in terms of the user experience (UX). -->
+<!-- If UX changes have been made, a maintainer should apply the 'needs-documentation-change' label. -->
+
 ### Mentions:
 <!-- Mention users that you want to review your pull request with @<user-name>. Leave empty if not sure. -->
