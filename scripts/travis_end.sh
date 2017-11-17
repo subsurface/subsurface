@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# don't run this for pull requests
+if [ "$TRAVIS_EVENT_TYPE" == "pull_request" ] ; then
+  exit 0;
+fi
+
 if [ ! -z $UPLOADTOOL_SUFFIX ] ; then
   if [ "$UPLOADTOOL_SUFFIX" = "$TRAVIS_TAG" ] ; then
     RELEASE_NAME=$TRAVIS_TAG
