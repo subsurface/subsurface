@@ -331,8 +331,6 @@ static void debug_print_pressures(struct plot_info *pi)
 }
 #endif
 
-extern bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx);
-
 /* This function goes through the list of tank pressures, either SENSOR_PRESSURE(entry) or O2CYLINDER_PRESSURE(entry),
  * of structure plot_info for the dive profile where each item in the list corresponds to one point (node) of the
  * profile. It finds values for which there are no tank pressures (pressure==0). For each missing item (node) of
