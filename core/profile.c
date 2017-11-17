@@ -835,8 +835,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 		if (cyl < 0)
 			continue;
 
-		if (prev >= 0)
-			last[prev] = sec;
+		last[prev] = sec;
 		prev = cyl;
 
 		last[cyl] = sec;
@@ -846,8 +845,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 			seen[cyl] = 1;
 		}
 	}
-	if (prev >= 0)
-		last[prev] = INT_MAX;
+	last[prev] = INT_MAX;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
