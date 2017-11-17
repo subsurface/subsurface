@@ -10,10 +10,8 @@ Some of the changes since _Subsurface_ 4.7.4
   and planner
 - Fix issues related to debug logging on Windows
 - Add "Bluetooth mode" in the BT selection dialog: Auto, LE, Classical
+- Correct display of cylinder pressures for merged dives
 
-
-_Subsurface_ 4.7.4 - November 11, 2017
-------------------------------------------
 
 Some of the changes since _Subsurface_ 4.7.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,6 +25,10 @@ Some of the changes since _Subsurface_ 4.7.2
   a marker that is being edited by entering new coordinates in the text field
   in "real-time". Also, don't place new markers at the 0,0 coordinate and
   instead place them at the current map center.
+- Improve calculation of VPM-B decompression ceiling displayed in profile.
+  In 4.7.2 the VPM-B ceiling was generally under-estimated for decompression
+  dives and could be grossly over-estimated for what were actually
+  no-decompression dives.
 
 
 Some of the changes since _Subsurface_ 4.7.1
