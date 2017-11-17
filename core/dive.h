@@ -429,6 +429,7 @@ extern timestamp_t picture_get_timestamp(const char *filename);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 extern void picture_free(struct picture *picture);
 
+extern bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx);
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
 extern int get_depth_at_time(struct divecomputer *dc, unsigned int time);
 
@@ -969,7 +970,6 @@ static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *
 	*evp = ev;
 	return gasmix;
 }
-
 
 /* these structs holds the information that
  * describes the cylinders / weight systems.
