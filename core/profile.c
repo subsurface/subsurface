@@ -814,6 +814,8 @@ static void add_plot_pressure(struct plot_info *pi, int time, int cyl, int mbar)
 	SENSOR_PRESSURE(entry, cyl) = mbar;
 }
 
+extern bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx);
+
 static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int prev, i;
@@ -853,6 +855,16 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 		cylinder_t *cyl = dive->cylinder + i;
 		int start = cyl->start.mbar;
 		int end = cyl->end.mbar;
+		bool cyl_used_somewhere = false;
+
+		/* Don't plot a graph for a cylinder which has gas change events in other dc(s) but
+		 * not the current one. This cylinder belongs exclusively to another dc. */
+		for_each_dc(dive, secondary) {
+		if (has_gaschange_event(dive, secondary, i))
+			cyl_used_somewhere = true;
+		}
+		if (!has_gaschange_event(dive, dc, i) && cyl_used_somewhere)
+			continue;
 
 		if (start && end && start != end) {
 			add_plot_pressure(pi, first[i], i, start);
