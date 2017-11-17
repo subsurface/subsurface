@@ -802,7 +802,7 @@ static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_
  * This adds a pressure entry to the plot_info based on the gas change
  * information and the manually filled in pressures.
  */
-static void add_plot_pressure(struct plot_info *pi, int time, int cyl, int mbar)
+static void add_plot_pressure(struct plot_info *pi, int time, int cyl, pressure_t p)
 {
 	struct plot_data *entry;
 	for (int i = 0; i < pi->nr; i++) {
@@ -811,14 +811,14 @@ static void add_plot_pressure(struct plot_info *pi, int time, int cyl, int mbar)
 		if (entry->sec >= time)
 			break;
 	}
-	SENSOR_PRESSURE(entry, cyl) = mbar;
+	SENSOR_PRESSURE(entry, cyl) = p.mbar;
 }
 
 static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int prev, i;
 	struct event *ev;
-	unsigned int seen[MAX_CYLINDERS] = { 0, };
+	int seen[MAX_CYLINDERS] = { 0, };
 	unsigned int first[MAX_CYLINDERS] = { 0, };
 	unsigned int last[MAX_CYLINDERS] = { 0, };
 	struct divecomputer *secondary;
@@ -847,14 +847,44 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 	}
 	last[prev] = INT_MAX;
 
+	// Fill in "seen[]" array - mark cylinders we're not interested
+	// in as negative.
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
 		int start = cyl->start.mbar;
 		int end = cyl->end.mbar;
 
-		if (start && end && start != end) {
-			add_plot_pressure(pi, first[i], i, start);
-			add_plot_pressure(pi, last[i], i, end);
+		/*
+		 * Fundamentally uninteresting?
+		 *
+		 * A dive computer with no pressure data isn't interesting
+		 * to plot pressures for even if we've seen it..
+		 */
+		if (!start || !end || start == end) {
+			seen[i] = -1;
+			continue;
+		}
+
+		/* If we've seen it, we're definitely interested */
+		if (seen[i])
+			continue;
+
+		/* If it's only mentioned by other dc's, ignore it */
+		for_each_dc(dive, secondary) {
+			if (has_gaschange_event(dive, secondary, i)) {
+				seen[i] = -1;
+				break;
+			}
+		}
+	}
+
+
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (seen[i] >= 0) {
+			cylinder_t *cyl = dive->cylinder + i;
+
+			add_plot_pressure(pi, first[i], i, cyl->start);
+			add_plot_pressure(pi, last[i], i, cyl->end);
 		}
 	}
 
