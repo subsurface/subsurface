@@ -9,8 +9,9 @@ cd ${TRAVIS_BUILD_DIR}/../win32/subsurface
 echo "Submitting the following Windows files for continuous build release:"
 find . -name subsurface\*.exe*
 
-# get and run the upload script
-wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-bash ./upload.sh subsurface*.exe*
+# set up the release message to use
+source ${TRAVIS_BUILD_DIR}/scripts/release-message.sh
 
-bash -x ${TRAVIS_BUILD_DIR}/scripts/travis_end.sh
+# get and run the upload script
+wget -c https://github.com/dirkhh/uploadtool/raw/master/upload.sh
+bash ./upload.sh subsurface*.exe*
