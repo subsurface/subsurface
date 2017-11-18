@@ -295,7 +295,7 @@ void setup_system_prefs(void)
 	default_prefs.font_size = system_divelist_default_font_size;
 
 #if !defined(SUBSURFACE_MOBILE)
-	default_prefs.default_filename = system_default_filename();
+	default_prefs.default_filename = copy_string(system_default_filename());
 #endif
 	env = getenv("LC_MEASUREMENT");
 	if (!env)
