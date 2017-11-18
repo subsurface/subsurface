@@ -13,5 +13,5 @@ find . -name subsurface\*.exe*
 source ${TRAVIS_BUILD_DIR}/scripts/release-message.sh
 
 # get and run the upload script
-wget -c https://github.com/dirkhh/uploadtool/raw/master/upload.sh
+wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
 bash ./upload.sh subsurface*.exe*

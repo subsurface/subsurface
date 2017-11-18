@@ -14,6 +14,6 @@ echo "Submitting the folloing App for continuous build release:"
 ls -lh Subsurface-$VERSION.app.zip
 
 # get and run the upload script
-wget -c https://github.com/dirkhh/uploadtool/raw/master/upload.sh
+wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
 bash ./upload.sh Subsurface-$VERSION.app.zip
 
