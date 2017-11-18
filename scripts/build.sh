@@ -436,7 +436,7 @@ else
 	PRINTING="-DNO_PRINTING=ON"
 fi
 
-if [ $SKIP_GOOGLEMAPS != "1" ] ; then
+if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	# build the googlemaps map plugin
 
 	cd $SRC
