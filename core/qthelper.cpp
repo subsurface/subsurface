@@ -537,11 +537,11 @@ QString uiLanguage(QLocale *callerLoc)
 		// messes things up there
 		dateFormat.replace("'en' 'den' d:'e'", " d");
 		if (!prefs.date_format_override || same_string(prefs.date_format, "")) {
-			free((void*)prefs.date_format);
+			free((void *)prefs.date_format);
 			prefs.date_format = strdup(qPrintable(dateFormat));
 		}
 		if (!prefs.date_format_override || same_string(prefs.date_format_short, "")) {
-			free((void*)prefs.date_format_short);
+			free((void *)prefs.date_format_short);
 			prefs.date_format_short = strdup(qPrintable(shortDateFormat));
 		}
 	}
@@ -549,7 +549,7 @@ QString uiLanguage(QLocale *callerLoc)
 		timeFormat = loc.timeFormat();
 		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
-		free((void*)prefs.time_format);
+		free((void *)prefs.time_format);
 		prefs.time_format = strdup(qPrintable(timeFormat));
 	}
 	return uiLang;
@@ -1438,7 +1438,7 @@ int getCloudURL(QString &filename)
 	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
 		return report_error("Please configure Cloud storage email and password in the preferences");
 	if (email != prefs.cloud_storage_email_encoded) {
-		free(prefs.cloud_storage_email_encoded);
+		free((void *)prefs.cloud_storage_email_encoded);
 		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
 	}
 	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);

@@ -3623,11 +3623,12 @@ timestamp_t get_times()
 
 void set_userid(char *rUserId)
 {
+	char *userid = strdup(rUserId);
+	if (strlen(userid) > 30)
+		userid[30] = '\0';
 	if (prefs.userid)
-		free(prefs.userid);
-	prefs.userid = strdup(rUserId);
-	if (strlen(prefs.userid) > 30)
-		prefs.userid[30]='\0';
+		free((void *)prefs.userid);
+	prefs.userid = userid;
 }
 
 /* this sets a usually unused copy of the preferences with the units
