@@ -1400,7 +1400,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 		QMenu *gasChange = m.addMenu(tr("Add gas change"));
 		for (int i = 0; i < rowCount; i++) {
 			QAction *action = new QAction(&m);
-			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (Tank %1)")).arg(i + 1));
+			action->setText(model->data(model->index(i, 0), Qt::DisplayRole).toString() + QString(tr(" (cyl. %1)")).arg(i + 1));
 			connect(action, SIGNAL(triggered(bool)), this, SLOT(changeGas()));
 			action->setData(event->globalPos());
 			gasChange->addAction(action);
@@ -1459,14 +1459,14 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 					// pressure field if this is the first or last entry for this tank... see details in gaspressures.c
 					pressure_t pressure;
 					pressure.mbar = INTERPOLATED_PRESSURE(gasChangeEntry) ? : SENSOR_PRESSURE(gasChangeEntry);
-					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of tank %1 (currently interpolated as %2)")
+					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
 										 .arg(gasChangeEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
 				if (SENSOR_PRESSURE(newGasEntry) == 0 || displayed_dive.cylinder[newGasEntry->sensor[0]].sample_start.mbar == 0) {
 					// we only have interpolated press -- see commend above
 					pressure_t pressure;
 					pressure.mbar = INTERPOLATED_PRESSURE(newGasEntry) ? : SENSOR_PRESSURE(newGasEntry);
-					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of tank %1 (currently interpolated as %2)")
+					QAction *adjustOldPressure = m.addAction(tr("Adjust pressure of cyl. %1 (currently interpolated as %2)")
 										 .arg(newGasEntry->sensor[0] + 1).arg(get_pressure_string(pressure)));
 				}
 			}
