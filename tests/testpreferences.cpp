@@ -61,11 +61,10 @@ void TestPreferences::testPreferences()
 	cloud->setSavePasswordLocal(false);
 	TEST(cloud->savePasswordLocal(), false);
 
-	// Why this is short and not bool?
 	cloud->setSaveUserIdLocal(1);
-	TEST(cloud->saveUserIdLocal(), (short)1);
+	TEST(cloud->saveUserIdLocal(), true);
 	cloud->setSaveUserIdLocal(0);
-	TEST(cloud->saveUserIdLocal(), (short)0);
+	TEST(cloud->saveUserIdLocal(), false);
 
 	cloud->setUserId("Tomaz");
 	TEST(cloud->userId(), QStringLiteral("Tomaz"));
@@ -189,9 +188,9 @@ void TestPreferences::testPreferences()
 	pp->setPn2Threshold(3.0);
 	pp->setPheThreshold(4.0);
 
-	TEST(pp->showPn2(), (short) false);
-	TEST(pp->showPhe(), (short) false);
-	TEST(pp->showPo2(), (short) false);
+	TEST(pp->showPn2(), false);
+	TEST(pp->showPhe(), false);
+	TEST(pp->showPo2(), false);
 	TEST(pp->pn2Threshold(), 3.0);
 	TEST(pp->pheThreshold(), 4.0);
 	TEST(pp->po2ThresholdMin(), 1.0);
@@ -205,9 +204,9 @@ void TestPreferences::testPreferences()
 	pp->setPn2Threshold(6.0);
 	pp->setPheThreshold(7.0);
 
-	TEST(pp->showPn2(), (short) true);
-	TEST(pp->showPhe(), (short) true);
-	TEST(pp->showPo2(), (short) true);
+	TEST(pp->showPn2(), true);
+	TEST(pp->showPhe(), true);
+	TEST(pp->showPo2(), true);
 	TEST(pp->pn2Threshold(), 6.0);
 	TEST(pp->pheThreshold(), 7.0);
 	TEST(pp->po2ThresholdMin(), 4.0);
@@ -457,7 +456,7 @@ void TestPreferences::testPreferences()
 
 	TEST(display->divelistFont(),QStringLiteral("comic"));
 	TEST(display->fontSize(), 10.0);
-	TEST(display->displayInvalidDives(),(short) true); //TODO: this is true / false.
+	TEST(display->displayInvalidDives(), true);
 
 	display->setDivelistFont("helvetica");
 	display->setFontSize(14.0);
@@ -465,7 +464,7 @@ void TestPreferences::testPreferences()
 
 	TEST(display->divelistFont(),QStringLiteral("helvetica"));
 	TEST(display->fontSize(), 14.0);
-	TEST(display->displayInvalidDives(),(short) false);
+	TEST(display->displayInvalidDives(), false);
 
 	auto language = pref->language_settings;
 	language->setLangLocale         ("en_US");

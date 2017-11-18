@@ -74,9 +74,9 @@ private:
 /* Control the state of the Partial Pressure Graphs preferences */
 class PartialPressureGasSettings : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(short show_po2           READ showPo2         WRITE setShowPo2         NOTIFY showPo2Changed)
-	Q_PROPERTY(short show_pn2           READ showPn2         WRITE setShowPn2         NOTIFY showPn2Changed)
-	Q_PROPERTY(short show_phe	    READ showPhe         WRITE setShowPhe         NOTIFY showPheChanged)
+	Q_PROPERTY(bool   show_po2          READ showPo2         WRITE setShowPo2         NOTIFY showPo2Changed)
+	Q_PROPERTY(bool   show_pn2          READ showPn2         WRITE setShowPn2         NOTIFY showPn2Changed)
+	Q_PROPERTY(bool   show_phe	    READ showPhe         WRITE setShowPhe         NOTIFY showPheChanged)
 	Q_PROPERTY(double po2_threshold_min READ po2ThresholdMin WRITE setPo2ThresholdMin NOTIFY po2ThresholdMinChanged)
 	Q_PROPERTY(double po2_threshold_max READ po2ThresholdMax WRITE setPo2ThresholdMax NOTIFY po2ThresholdMaxChanged)
 	Q_PROPERTY(double pn2_threshold     READ pn2Threshold    WRITE setPn2Threshold    NOTIFY pn2ThresholdChanged)
@@ -84,27 +84,27 @@ class PartialPressureGasSettings : public QObject {
 
 public:
 	PartialPressureGasSettings(QObject *parent);
-	short showPo2() const;
-	short showPn2() const;
-	short showPhe() const;
+	bool showPo2() const;
+	bool showPn2() const;
+	bool showPhe() const;
 	double po2ThresholdMin() const;
 	double po2ThresholdMax() const;
 	double pn2Threshold() const;
 	double pheThreshold() const;
 
 public slots:
-	void setShowPo2(short value);
-	void setShowPn2(short value);
-	void setShowPhe(short value);
+	void setShowPo2(bool value);
+	void setShowPn2(bool value);
+	void setShowPhe(bool value);
 	void setPo2ThresholdMin(double value);
 	void setPo2ThresholdMax(double value);
 	void setPn2Threshold(double value);
 	void setPheThreshold(double value);
 
 signals:
-	void showPo2Changed(short value);
-	void showPn2Changed(short value);
-	void showPheChanged(short value);
+	void showPo2Changed(bool value);
+	void showPn2Changed(bool value);
+	void showPheChanged(bool value);
 	void po2ThresholdMaxChanged(double value);
 	void po2ThresholdMinChanged(double value);
 	void pn2ThresholdChanged(double value);
@@ -328,7 +328,7 @@ class CloudStorageSettings : public QObject {
 	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
 	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
 	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
-	Q_PROPERTY(short save_userid_local  READ saveUserIdLocal WRITE setSaveUserIdLocal NOTIFY saveUserIdLocalChanged)
+	Q_PROPERTY(bool save_userid_local    READ saveUserIdLocal    WRITE setSaveUserIdLocal    NOTIFY saveUserIdLocalChanged)
 	Q_PROPERTY(bool git_local_only       READ gitLocalOnly       WRITE setGitLocalOnly       NOTIFY gitLocalOnlyChanged)
 	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
 	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
@@ -346,7 +346,7 @@ public:
 	short verificationStatus() const;
 	bool backgroundSync() const;
 	bool gitLocalOnly() const;
-	short saveUserIdLocal() const;
+	bool saveUserIdLocal() const;
 
 public slots:
 	void setPassword(const QString& value);
@@ -360,7 +360,7 @@ public slots:
 	void setVerificationStatus(short value);
 	void setBackgroundSync(bool value);
 	void setGitLocalOnly(bool value);
-	void setSaveUserIdLocal(short value);
+	void setSaveUserIdLocal(bool value);
 
 signals:
 	void passwordChanged(const QString& value);
@@ -374,7 +374,7 @@ signals:
 	void verificationStatusChanged(short value);
 	void backgroundSyncChanged(bool value);
 	void gitLocalOnlyChanged(bool value);
-	void saveUserIdLocalChanged(short value);
+	void saveUserIdLocalChanged(bool value);
 
 private:
 	const QString group = QStringLiteral("CloudStorage");
@@ -592,20 +592,20 @@ class DisplaySettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
 	Q_PROPERTY(double font_size          READ fontSize           WRITE setFontSize           NOTIFY fontSizeChanged)
-	Q_PROPERTY(short display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
+	Q_PROPERTY(bool display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
 public:
 	DisplaySettingsObjectWrapper(QObject *parent);
 	QString divelistFont() const;
 	double fontSize() const;
-	short displayInvalidDives() const;
+	bool displayInvalidDives() const;
 public slots:
 	void setDivelistFont(const QString& value);
 	void setFontSize(double value);
-	void setDisplayInvalidDives(short value);
+	void setDisplayInvalidDives(bool value);
 signals:
 	void divelistFontChanged(const QString& value);
 	void fontSizeChanged(double value);
-	void displayInvalidDivesChanged(short value);
+	void displayInvalidDivesChanged(bool value);
 private:
 	const QString group = QStringLiteral("Display");
 };
