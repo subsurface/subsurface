@@ -210,7 +210,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 								FRACTION(dp->time, 60),
 								gasname(&gasmix));
 
-						len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
+					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
 					newdepth = dp->depth.mm;
 					lasttime = dp->time;
 				}
