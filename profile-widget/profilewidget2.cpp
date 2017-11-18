@@ -1592,7 +1592,7 @@ void ProfileWidget2::changeGas()
 	qreal sec_val = timeAxis->valueAt(scenePos);
 
 	// no gas changes before the dive starts
-	unsigned int seconds = (sec_val < 0.0) ? 0 : (unsigned int)sec_val;
+	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
 
 	// if there is a gas change at this time stamp, remove it before adding the new one
 	struct event *gasChangeEvent = current_dc->events;
