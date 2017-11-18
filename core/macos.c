@@ -81,18 +81,17 @@ const char *system_default_directory(void)
 
 const char *system_default_filename(void)
 {
-	static char *filename = NULL;
-	if (!filename) {
+	static const char *path = NULL;
+	if (!path) {
 		const char *user = getenv("LOGNAME");
 		if (same_string(user, ""))
 			user = "username";
-		filename = calloc(strlen(user) + 5, 1);
+		char *filename = calloc(strlen(user) + 5, 1);
 		strcat(filename, user);
 		strcat(filename, ".xml");
-	}
-	static const char *path = NULL;
-	if (!path)
 		path = system_default_path_append(filename);
+		free(filename);
+	}
 	return path;
 }
 
