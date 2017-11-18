@@ -337,9 +337,9 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 		case GAS:
 			if (value.toInt() >= 0 && value.toInt() < MAX_CYLINDERS)
 				p.cylinderid = value.toInt();
-				/* Did we change the start (dp 0) cylinder to another cylinderid than 0? */
-				if (value.toInt() != 0 && index.row() == 0)
-					CylindersModel::instance()->moveAtFirst(value.toInt());
+			/* Did we change the start (dp 0) cylinder to another cylinderid than 0? */
+			if (value.toInt() != 0 && index.row() == 0)
+				CylindersModel::instance()->moveAtFirst(value.toInt());
 			CylindersModel::instance()->updateTrashIcon();
 			break;
 		}
