@@ -169,17 +169,17 @@ PartialPressureGasSettings::PartialPressureGasSettings(QObject* parent):
 
 }
 
-short PartialPressureGasSettings::showPo2() const
+bool PartialPressureGasSettings::showPo2() const
 {
 	return prefs.pp_graphs.po2;
 }
 
-short PartialPressureGasSettings::showPn2() const
+bool PartialPressureGasSettings::showPn2() const
 {
 	return prefs.pp_graphs.pn2;
 }
 
-short PartialPressureGasSettings::showPhe() const
+bool PartialPressureGasSettings::showPhe() const
 {
 	return prefs.pp_graphs.phe;
 }
@@ -205,7 +205,7 @@ double PartialPressureGasSettings::pheThreshold() const
 	return prefs.pp_graphs.phe_threshold;
 }
 
-void PartialPressureGasSettings::setShowPo2(short value)
+void PartialPressureGasSettings::setShowPo2(bool value)
 {
 	if (value == prefs.pp_graphs.po2)
 		return;
@@ -217,7 +217,7 @@ void PartialPressureGasSettings::setShowPo2(short value)
 	emit showPo2Changed(value);
 }
 
-void PartialPressureGasSettings::setShowPn2(short value)
+void PartialPressureGasSettings::setShowPn2(bool value)
 {
 	if (value == prefs.pp_graphs.pn2)
 		return;
@@ -229,7 +229,7 @@ void PartialPressureGasSettings::setShowPn2(short value)
 	emit showPn2Changed(value);
 }
 
-void PartialPressureGasSettings::setShowPhe(short value)
+void PartialPressureGasSettings::setShowPhe(bool value)
 {
 	if (value == prefs.pp_graphs.phe)
 		return;
@@ -1092,7 +1092,7 @@ void CloudStorageSettings::setBackgroundSync(bool value)
 	emit backgroundSyncChanged(value);
 }
 
-void CloudStorageSettings::setSaveUserIdLocal(short int value)
+void CloudStorageSettings::setSaveUserIdLocal(bool value)
 {
 	//TODO: this is not saved on disk?
 	if (value == prefs.save_userid_local)
@@ -1101,7 +1101,7 @@ void CloudStorageSettings::setSaveUserIdLocal(short int value)
 	emit saveUserIdLocalChanged(value);
 }
 
-short int CloudStorageSettings::saveUserIdLocal() const
+bool CloudStorageSettings::saveUserIdLocal() const
 {
 	return prefs.save_userid_local;
 }
@@ -1895,7 +1895,7 @@ double DisplaySettingsObjectWrapper::fontSize() const
 	return prefs.font_size;
 }
 
-short DisplaySettingsObjectWrapper::displayInvalidDives() const
+bool DisplaySettingsObjectWrapper::displayInvalidDives() const
 {
 	return prefs.display_invalid_dives;
 }
@@ -1937,7 +1937,7 @@ void DisplaySettingsObjectWrapper::setFontSize(double value)
 	emit fontSizeChanged(value);
 }
 
-void DisplaySettingsObjectWrapper::setDisplayInvalidDives(short value)
+void DisplaySettingsObjectWrapper::setDisplayInvalidDives(bool value)
 {
 	if (value == prefs.display_invalid_dives)
 		return;
@@ -2272,7 +2272,7 @@ void SettingsObjectWrapper::load()
 	}
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
-	GET_INT("displayinvalid", display_invalid_dives);
+	GET_BOOL("displayinvalid", display_invalid_dives);
 	s.endGroup();
 
 	s.beginGroup("Animations");
