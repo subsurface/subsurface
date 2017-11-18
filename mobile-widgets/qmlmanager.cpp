@@ -383,7 +383,7 @@ void QMLManager::saveCloudCredentials()
 	s.setValue("cloud_verification_status", credentialStatus());
 	s.sync();
 	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUser))) {
-		free(prefs.cloud_storage_email);
+		free((void *)prefs.cloud_storage_email);
 		prefs.cloud_storage_email = strdup(qPrintable(cloudUser));
 		cloudCredentialsChanged = true;
 	}
@@ -396,7 +396,7 @@ void QMLManager::saveCloudCredentials()
 	}
 
 	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPwd))) {
-		free(prefs.cloud_storage_password);
+		free((void *)prefs.cloud_storage_password);
 		prefs.cloud_storage_password = strdup(qPrintable(cloudPwd));
 	}
 	if (cloudUser.isEmpty() || cloudPwd.isEmpty()) {
@@ -404,7 +404,7 @@ void QMLManager::saveCloudCredentials()
 	} else if (cloudCredentialsChanged) {
 		// let's make sure there are no unsaved changes
 		saveChangesLocal();
-		free(prefs.userid);
+		free((void *)prefs.userid);
 		prefs.userid = NULL;
 		syncLoadFromCloud();
 		QString url;
@@ -550,7 +550,7 @@ void QMLManager::retrieveUserid()
 	}
 	if (!userid.isEmpty()) {
 		// overwrite the existing userid
-		free(prefs.userid);
+		free((void *)prefs.userid);
 		prefs.userid = strdup(qPrintable(userid));
 		QSettings s;
 		s.setValue("subsurface_webservice_uid", prefs.userid);
@@ -649,9 +649,9 @@ void QMLManager::revertToNoCloudIfNeeded()
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
 			prefs.git_local_only = syncToCloud();
 		}
-		free(prefs.cloud_storage_email);
+		free((void *)prefs.cloud_storage_email);
 		prefs.cloud_storage_email = NULL;
-		free(prefs.cloud_storage_password);
+		free((void *)prefs.cloud_storage_password);
 		prefs.cloud_storage_password = NULL;
 		setCloudUserName("");
 		setCloudPassword("");

@@ -47,7 +47,7 @@ void DiveComputerSettings::setVendor(const QString& vendor)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_vendor", vendor);
-	free(prefs.dive_computer.vendor);
+	free((void *)prefs.dive_computer.vendor);
 	prefs.dive_computer.vendor = copy_string(qPrintable(vendor));
 }
 
@@ -59,7 +59,7 @@ void DiveComputerSettings::setProduct(const QString& product)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_product", product);
-	free(prefs.dive_computer.product);
+	free((void *)prefs.dive_computer.product);
 	prefs.dive_computer.product = copy_string(qPrintable(product));
 }
 
@@ -71,7 +71,7 @@ void DiveComputerSettings::setDevice(const QString& device)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_device", device);
-	free(prefs.dive_computer.device);
+	free((void *)prefs.dive_computer.device);
 	prefs.dive_computer.device = copy_string(qPrintable(device));
 }
 
@@ -83,7 +83,7 @@ void DiveComputerSettings::setDeviceName(const QString& device_name)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("dive_computer_device_name", device_name);
-	free(prefs.dive_computer.device_name);
+	free((void *)prefs.dive_computer.device_name);
 	prefs.dive_computer.device_name = copy_string(qPrintable(device_name));
 }
 
@@ -144,7 +144,7 @@ void UpdateManagerSettings::setLastVersionUsed(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("LastVersionUsed", value);
-	free (prefs.update_manager.last_version_used);
+	free((void *)prefs.update_manager.last_version_used);
 	prefs.update_manager.last_version_used = copy_string(qPrintable(value));
 	emit lastVersionUsedChanged(value);
 }
@@ -157,7 +157,7 @@ void UpdateManagerSettings::setNextCheck(const QDate& date)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("NextCheck", date);
-	free (prefs.update_manager.next_check);
+	free((void *)prefs.update_manager.next_check);
 	prefs.update_manager.next_check = copy_string(qPrintable(date.toString("dd/MM/yyyy")));
 	emit nextCheckChanged(date);
 }
@@ -748,7 +748,7 @@ void FacebookSettings::setAccessToken (const QString& value)
 	s.beginGroup(subgroup);
 	s.setValue("ConnectToken", value);
 #endif
-	free(prefs.facebook.access_token);
+	free((void *)prefs.facebook.access_token);
 	prefs.facebook.access_token = copy_string(qPrintable(value));
 	emit accessTokenChanged(value);
 }
@@ -763,7 +763,7 @@ void FacebookSettings::setUserId(const QString& value)
 	s.beginGroup(subgroup);
 	s.setValue("UserId", value);
 #endif
-	free(prefs.facebook.user_id);
+	free((void *)prefs.facebook.user_id);
 	prefs.facebook.user_id = copy_string(qPrintable(value));
 	emit userIdChanged(value);
 }
@@ -778,7 +778,7 @@ void FacebookSettings::setAlbumId(const QString& value)
 	s.beginGroup(subgroup);
 	s.setValue("AlbumId", value);
 #endif
-	free(prefs.facebook.album_id);
+	free((void *)prefs.facebook.album_id);
 	prefs.facebook.album_id = copy_string(qPrintable(value));
 	emit albumIdChanged(value);
 }
@@ -891,7 +891,7 @@ void ProxySettings::setHost(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_host", value);
-	free(prefs.proxy_host);
+	free((void *)prefs.proxy_host);
 	prefs.proxy_host = copy_string(qPrintable(value));
 	emit hostChanged(value);
 }
@@ -925,7 +925,7 @@ void ProxySettings::setUser(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_user", value);
-	free(prefs.proxy_user);
+	free((void *)prefs.proxy_user);
 	prefs.proxy_user = copy_string(qPrintable(value));
 	emit userChanged(value);
 }
@@ -937,7 +937,7 @@ void ProxySettings::setPass(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("proxy_pass", value);
-	free(prefs.proxy_pass);
+	free((void *)prefs.proxy_pass);
 	prefs.proxy_pass = copy_string(qPrintable(value));
 	emit passChanged(value);
 }
@@ -1010,7 +1010,7 @@ void CloudStorageSettings::setPassword(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("password", value);
-	free(prefs.cloud_storage_password);
+	free((void *)prefs.cloud_storage_password);
 	prefs.cloud_storage_password = copy_string(qPrintable(value));
 	emit passwordChanged(value);
 }
@@ -1020,7 +1020,7 @@ void CloudStorageSettings::setNewPassword(const QString& value)
 	if (value == prefs.cloud_storage_newpassword)
 		return;
 	/*TODO: This looks like wrong, but 'new password' is not saved on disk, why it's on prefs? */
-	free(prefs.cloud_storage_newpassword);
+	free((void *)prefs.cloud_storage_newpassword);
 	prefs.cloud_storage_newpassword = copy_string(qPrintable(value));
 	emit newPasswordChanged(value);
 }
@@ -1032,7 +1032,7 @@ void CloudStorageSettings::setEmail(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("email", value);
-	free(prefs.cloud_storage_email);
+	free((void *)prefs.cloud_storage_email);
 	prefs.cloud_storage_email = copy_string(qPrintable(value));
 	emit emailChanged(value);
 }
@@ -1044,7 +1044,7 @@ void CloudStorageSettings::setUserId(const QString& value)
 	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
 	QSettings s;
 	s.setValue("subsurface_webservice_uid", value);
-	free(prefs.userid);
+	free((void *)prefs.userid);
 	prefs.userid = copy_string(qPrintable(value));
 	emit userIdChanged(value);
 }
@@ -1054,7 +1054,7 @@ void CloudStorageSettings::setEmailEncoded(const QString& value)
 	if (value == prefs.cloud_storage_email_encoded)
 		return;
 	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
-	free(prefs.cloud_storage_email_encoded);
+	free((void *)prefs.cloud_storage_email_encoded);
 	prefs.cloud_storage_email_encoded = copy_string(qPrintable(value));
 	emit emailEncodedChanged(value);
 }
@@ -1113,8 +1113,8 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 
 	// dont free data segment.
 	if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
-		free((void*)prefs.cloud_base_url);
-		free((void*)prefs.cloud_git_url);
+		free((void *)prefs.cloud_base_url);
+		free((void *)prefs.cloud_git_url);
 	}
 	QSettings s;
 	s.beginGroup(group);
@@ -1795,7 +1795,7 @@ void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_filename", value);
-	free((void*)prefs.default_filename);
+	free((void *)prefs.default_filename);
 	prefs.default_filename = copy_string(qPrintable(value));
 	emit defaultFilenameChanged(value);
 }
@@ -1808,7 +1808,7 @@ void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("default_cylinder", value);
-	free((void*)prefs.default_cylinder);
+	free((void *)prefs.default_cylinder);
 	prefs.default_cylinder = copy_string(qPrintable(value));
 	emit defaultCylinderChanged(value);
 }
@@ -2012,7 +2012,7 @@ void  LanguageSettingsObjectWrapper::setLangLocale(const QString &value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("UiLangLocale", value);
-	free((void*)prefs.locale.lang_locale);
+	free((void *)prefs.locale.lang_locale);
 	prefs.locale.lang_locale = copy_string(qPrintable(value));
 	emit langLocaleChanged(value);
 }
@@ -2024,7 +2024,7 @@ void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("UiLanguage", value);
-	free((void*)prefs.locale.language);
+	free((void *)prefs.locale.language);
 	prefs.locale.language = copy_string(qPrintable(value));
 	emit languageChanged(value);
 }
@@ -2036,7 +2036,7 @@ void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("time_format", value);
-	free((void*)prefs.time_format);
+	free((void *)prefs.time_format);
 	prefs.time_format = copy_string(qPrintable(value));
 	emit timeFormatChanged(value);
 }
@@ -2049,7 +2049,7 @@ void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("date_format", value);
-	free((void*)prefs.date_format);
+	free((void *)prefs.date_format);
 	prefs.date_format = copy_string(qPrintable(value));
 	emit dateFormatChanged(value);
 }
@@ -2062,7 +2062,7 @@ void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("date_format_short", value);
-	free((void*)prefs.date_format_short);
+	free((void *)prefs.date_format_short);
 	prefs.date_format_short = copy_string(qPrintable(value));
 	emit dateFormatShortChanged(value);
 }

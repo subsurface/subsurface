@@ -22,9 +22,9 @@ typedef struct
 } partial_pressure_graphs_t;
 
 typedef struct {
-	char *access_token;
-	char *user_id;
-	char *album_id;
+	const char *access_token;
+	const char *user_id;
+	const char *album_id;
 } facebook_prefs_t;
 
 typedef struct {
@@ -46,15 +46,15 @@ enum deco_mode {
 typedef struct {
 	bool dont_check_for_updates;
 	bool dont_check_exists;
-	char *last_version_used;
-	char *next_check;
+	const char *last_version_used;
+	const char *next_check;
 } update_manager_prefs_t;
 
 typedef struct {
-	char *vendor;
-	char *product;
-	char *device;
-	char *device_name;
+	const char *vendor;
+	const char *product;
+	const char *device;
+	const char *device_name;
 	int download_mode;
 } dive_computer_prefs_t;
 
@@ -99,7 +99,7 @@ struct preferences {
 	short rulergraph;
 	short tankbar;
 	short save_userid_local;
-	char *userid;
+	const char *userid;
 	int ascrate75; // All rates in mm / sec
 	int ascrate50;
 	int ascratestops;
@@ -112,11 +112,11 @@ struct preferences {
 	enum deco_mode display_deco_mode;
 	depth_t bestmixend;
 	int proxy_type;
-	char *proxy_host;
+	const char *proxy_host;
 	int proxy_port;
 	short proxy_auth;
-	char *proxy_user;
-	char *proxy_pass;
+	const char *proxy_user;
+	const char *proxy_pass;
 	bool doo2breaks;
 	bool drop_stone_mode;
 	bool last_stop;   // At 6m?
@@ -138,10 +138,10 @@ struct preferences {
 	bool use_default_file;
 	short default_file_behavior;
 	facebook_prefs_t facebook;
-	char *cloud_storage_password;
-	char *cloud_storage_newpassword;
-	char *cloud_storage_email;
-	char *cloud_storage_email_encoded;
+	const char *cloud_storage_password;
+	const char *cloud_storage_newpassword;
+	const char *cloud_storage_email;
+	const char *cloud_storage_email_encoded;
 	bool save_password_local;
 	short cloud_verification_status;
 	bool cloud_background_sync;
