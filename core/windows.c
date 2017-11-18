@@ -103,17 +103,16 @@ const char *system_default_directory(void)
  */
 const char *system_default_filename(void)
 {
-	static wchar_t filename[UNLEN + 5] = { 0 };
-	if (!*filename) {
+	static const char *path = NULL;
+	if (!path) {
 		wchar_t username[UNLEN + 1] = { 0 };
 		DWORD username_len = UNLEN + 1;
 		GetUserNameW(username, &username_len);
+		wchar_t filename[UNLEN + 5] = { 0 };
 		wcscat(filename, username);
 		wcscat(filename, L".xml");
-	}
-	static const char *path = NULL;
-	if (!path)
 		path = system_default_path_append(filename);
+	}
 	return path;
 }
 
