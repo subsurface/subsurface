@@ -10,7 +10,7 @@ export VERSION=$(cd ${TRAVIS_BUILD_DIR}; ./scripts/get-version linux)
 
 
 cd ${TRAVIS_BUILD_DIR}/build
-zip -r Subsurface-$VERSION.app.zip Subsurface.app
+zip -r -y Subsurface-$VERSION.app.zip Subsurface.app
 
 echo "Submitting the folloing App for continuous build release:"
 ls -lh Subsurface-$VERSION.app.zip
