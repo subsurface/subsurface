@@ -963,7 +963,7 @@ static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *
 		gasmix = &dive->cylinder[cyl].gasmix;
 		ev = dc ? dc->events : NULL;
 	}
-	while (ev && ev->time.seconds < (unsigned int)time) {
+	while (ev && ev->time.seconds < time) {
 		gasmix = get_gasmix_from_event(dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
