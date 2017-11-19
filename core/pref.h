@@ -9,12 +9,11 @@ extern "C" {
 #include "units.h"
 #include "taxonomy.h"
 
-/* can't use 'bool' for the boolean values - different size in C and C++ */
 typedef struct
 {
-	short po2;
-	short pn2;
-	short phe;
+	bool po2;
+	bool pn2;
+	bool phe;
 	double po2_threshold_min;
 	double po2_threshold_max;
 	double pn2_threshold;
@@ -71,34 +70,34 @@ struct preferences {
 	bool date_format_override;
 	double font_size;
 	partial_pressure_graphs_t pp_graphs;
-	short mod;
+	bool mod;
 	double modpO2;
-	short ead;
-	short dcceiling;
-	short redceiling;
-	short calcceiling;
-	short calcceiling3m;
-	short calcalltissues;
-	short calcndltts;
+	bool ead;
+	bool dcceiling;
+	bool redceiling;
+	bool calcceiling;
+	bool calcceiling3m;
+	bool calcalltissues;
+	bool calcndltts;
 	short gflow;
 	short gfhigh;
 	int animation_speed;
 	bool gf_low_at_maxdepth;
 	bool show_ccr_setpoint;
 	bool show_ccr_sensors;
-	short display_invalid_dives;
+	bool display_invalid_dives;
 	short unit_system;
 	struct units units;
 	bool coordinates_traditional;
-	short show_sac;
-	short display_unused_tanks;
-	short show_average_depth;
-	short zoomed_plot;
-	short hrgraph;
-	short percentagegraph;
-	short rulergraph;
-	short tankbar;
-	short save_userid_local;
+	bool show_sac;
+	bool display_unused_tanks;
+	bool show_average_depth;
+	bool zoomed_plot;
+	bool hrgraph;
+	bool percentagegraph;
+	bool rulergraph;
+	bool tankbar;
+	bool save_userid_local;
 	const char *userid;
 	int ascrate75; // All rates in mm / sec
 	int ascrate50;
@@ -114,7 +113,7 @@ struct preferences {
 	int proxy_type;
 	const char *proxy_host;
 	int proxy_port;
-	short proxy_auth;
+	bool proxy_auth;
 	const char *proxy_user;
 	const char *proxy_pass;
 	bool doo2breaks;
