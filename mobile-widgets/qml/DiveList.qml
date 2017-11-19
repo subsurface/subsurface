@@ -333,6 +333,7 @@ Kirigami.ScrollablePage {
 	property QtObject downloadFromDCAction: Kirigami.Action {
 		icon {
 			name: "downloadDC"
+			color: subsurfaceTheme.primaryColor
 		}
 		onTriggered: {
 			downloadFromDc.dcImportModel.clearTable()

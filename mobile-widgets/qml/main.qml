@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.0 as Kirigami
+import org.kde.kirigami 2.2 as Kirigami
 
 Kirigami.ApplicationWindow {
 	id: rootItem
@@ -443,17 +443,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
-			Kirigami.Theme.highlightColor = Qt.binding(function() { return primaryColor })
-			Kirigami.Theme.highlightedTextColor = Qt.binding(function() { return darkerPrimaryTextColor })
-			Kirigami.Theme.backgroundColor = Qt.binding(function() { return backgroundColor })
-			Kirigami.Theme.textColor = Qt.binding(function() { return textColor })
-			Kirigami.Theme.buttonHoverColor = Qt.binding(function() { return primaryColor })
-			Kirigami.Theme.viewBackgroundColor = Qt.binding(function() { return drawerColor })
-			Kirigami.Theme.viewTextColor = Qt.binding(function() { return textColor })
-			Kirigami.Theme.buttonBackgroundColor = Qt.binding(function() { return drawerColor })
-			Kirigami.Theme.buttonTextColor = Qt.binding(function() { return textColor })
-			Kirigami.Theme.buttonFocusColor = Qt.binding(function() { return "red" })
-
 			// this needs to pick the theme from persistent preference settings
 			var theme = manager.theme
 			if (theme == "Blue")
