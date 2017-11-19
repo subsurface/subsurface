@@ -290,7 +290,7 @@ static dc_status_t qt_serial_open(dc_custom_io_t *io, dc_context_t *context, con
 		return DC_STATUS_NODEVICE;
 	}
 
-	qDebug() << "Succesfully connected to device";
+	qDebug() << "Successfully connected to device";
 #else
 	// Create a RFCOMM socket
 	serial_port->socket = new QBluetoothSocket(QBluetoothServiceInfo::RfcommProtocol);

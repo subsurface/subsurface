@@ -23,7 +23,7 @@ public slots:
 
 private:
 	Ui::PreferencesNetwork *ui;
-	void passwordUpdateSuccessfull();
+	void passwordUpdateSuccessful();
 };
 
 #endif

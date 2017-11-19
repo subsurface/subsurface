@@ -74,7 +74,7 @@ void PreferencesNetwork::syncSettings()
 			} else {
 				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
 				connect(cloudAuth, SIGNAL(finishedAuthenticate()), this, SLOT(updateCloudAuthenticationState()));
-				connect(cloudAuth, SIGNAL(passwordChangeSuccessful()), this, SLOT(passwordUpdateSuccessfull()));
+				connect(cloudAuth, SIGNAL(passwordChangeSuccessful()), this, SLOT(passwordUpdateSuccessful()));
 				cloudAuth->backend(email, password, "", newpassword);
 				ui->cloud_storage_new_passwd->setText("");
 				cloud->setNewPassword(newpassword);
@@ -157,7 +157,7 @@ void PreferencesNetwork::proxyType_changed(int idx)
 	ui->proxyAuthRequired->setChecked(ui->proxyAuthRequired->isChecked());
 }
 
-void PreferencesNetwork::passwordUpdateSuccessfull()
+void PreferencesNetwork::passwordUpdateSuccessful()
 {
 	ui->cloud_storage_password->setText(prefs.cloud_storage_password);
 }
