@@ -176,6 +176,7 @@ Kirigami.Page {
 	actions.main: Kirigami.Action {
 		icon {
 			name: state !== "view" ? "document-save" : "document-edit"
+			color: subsurfaceTheme.primaryColor
 		}
 		onTriggered: {
 			manager.appendTextToLog("save/edit button triggered")
