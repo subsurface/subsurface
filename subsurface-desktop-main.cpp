@@ -152,7 +152,6 @@ void validateGL()
 	QOffscreenSurface surface;
 	QOpenGLFunctions *func;
 	const char *verChar;
-	float verFloat;
 
 	surface.setFormat(ctx.format());
 	surface.create();
@@ -182,9 +181,10 @@ void validateGL()
 			 "before running Subsurface!\n").toUtf8().data();
 			 return;
 		}
-		if (sscanf(verChar, "%f", &verFloat) == 1) {
-			verMajor = (GLint)verFloat;
-			verMinor = (GLint)roundf((verFloat - verMajor) * 10.f);
+		int min, maj;
+		if (sscanf(verChar, "%d.%d", &maj, &min) == 2) {
+			verMajor = (GLint)maj;
+			verMinor = (GLint)min;
 		}
 	}
 	// attempt to detect version using the newer API

@@ -401,8 +401,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
-				if ((float) cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)
-				    < (float) cyl->deco_gas_used.mliter)
+				if (cyl->end.mbar / 1000.0 * cyl->type.size.mliter / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)
+				    < cyl->deco_gas_used.mliter)
 					snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
 						translate("gettextFromC", "not enough reserve for gas sharing on ascent!"));
