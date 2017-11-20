@@ -338,7 +338,6 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef FULLSCREEN_SUPPORT
 	ui.actionFullScreen->setEnabled(false);
 	ui.actionFullScreen->setVisible(false);
-	setWindowState(windowState() & ~Qt::WindowFullScreen);
 #endif
 }
 
