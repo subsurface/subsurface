@@ -310,7 +310,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		int i;
 		int qty_cyl;
 		int qty_weight;
-		float total_weight;
+		double total_weight;
 
 		if (need_pagebreak)
 			put_format(&buf, "\\vfill\\eject\n");

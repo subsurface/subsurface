@@ -610,7 +610,7 @@ bool enough_gas(int current_cylinder)
 	if (!cyl->start.mbar)
 		return true;
 	if (cyl->type.size.mliter)
-		return (float)(cyl->end.mbar - prefs.reserve_gas) * cyl->type.size.mliter / 1000.0 > (float) cyl->deco_gas_used.mliter;
+		return (cyl->end.mbar - prefs.reserve_gas) / 1000.0 * cyl->type.size.mliter > cyl->deco_gas_used.mliter;
 	else
 		return true;
 }
