@@ -66,6 +66,7 @@ private slots:
 	void on_save_clicked();
 	void on_clear_clicked();
 	void on_scan_clicked();
+	void on_quit_clicked();
 	void remoteDeviceScanFinished();
 	void hostModeStateChanged(QBluetoothLocalDevice::HostMode mode);
 	void addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo);
@@ -88,6 +89,13 @@ private:
 
 	void updateLocalDeviceInformation();
 	void initializeDeviceDiscoveryAgent();
+	bool isPoweredOn() const;
+	void setScanStatusOn();
+	void setScanStatusOff();
+	void setScanStatusInvalid();
+	void startScan();
+	void stopScan();
+	void showEvent(QShowEvent *event);
 };
 
 #endif // BTDEVICESELECTIONDIALOG_H

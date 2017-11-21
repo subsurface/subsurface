@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QMenu>
+#include <QShowEvent>
 #include "core/btdiscovery.h"
 
 #include <QBluetoothUuid>
@@ -26,8 +27,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 
 	// Quit button callbacks
 	QShortcut *quit = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_Q), this);
-	connect(quit, SIGNAL(activated()), this, SLOT(reject()));
-	connect(ui->quit, SIGNAL(clicked()), this, SLOT(reject()));
+	connect(quit, SIGNAL(activated()), this, SLOT(on_quit_clicked()));
 
 	// Translate the UI labels
 	ui->localDeviceDetails->setTitle(tr("Local Bluetooth device details"));
@@ -42,6 +42,16 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(QWidget *parent) :
 	ui->save->setText(tr("Save"));
 	ui->save->setDefault(true);
 	ui->quit->setText(tr("Quit"));
+	setScanStatusInvalid();
+
+	ui->waitingSpinner->setRoundness(70.0);
+	ui->waitingSpinner->setMinimumTrailOpacity(15.0);
+	ui->waitingSpinner->setTrailFadePercentage(70.0);
+	ui->waitingSpinner->setNumberOfLines(8);
+	ui->waitingSpinner->setLineLength(5);
+	ui->waitingSpinner->setLineWidth(3);
+	ui->waitingSpinner->setInnerRadius(5);
+	ui->waitingSpinner->setRevolutionsPerSecond(1);
 
 	// Disable the save button because there is no device selected
 	ui->save->setEnabled(false);
@@ -110,6 +120,8 @@ BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 {
 	delete ui;
 
+	if (remoteDeviceDiscoveryAgent)
+		delete remoteDeviceDiscoveryAgent;
 #if defined(Q_OS_WIN)
 	// Terminate the use of Winsock 2 DLL
 	WSACleanup();
@@ -117,17 +129,6 @@ BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 	// Clean the local device
 	delete localDevice;
 #endif
-	if (remoteDeviceDiscoveryAgent) {
-		// Clean the device discovery agent
-		if (remoteDeviceDiscoveryAgent->isActive()) {
-			remoteDeviceDiscoveryAgent->stop();
-#if defined(Q_OS_WIN)
-			remoteDeviceDiscoveryAgent->wait();
-#endif
-		}
-
-		delete remoteDeviceDiscoveryAgent;
-	}
 }
 
 void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
@@ -135,12 +136,12 @@ void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
 #if defined(Q_OS_WIN)
 	// TODO add implementation
 #else
-	if (localDevice->hostMode() == QBluetoothLocalDevice::HostPoweredOff) {
-		ui->dialogStatus->setText(tr("Trying to turn on the local Bluetooth device..."));
-		localDevice->powerOn();
-	} else {
+	if (isPoweredOn()) {
 		ui->dialogStatus->setText(tr("Trying to turn off the local Bluetooth device..."));
 		localDevice->setHostMode(QBluetoothLocalDevice::HostPoweredOff);
+	} else {
+		ui->dialogStatus->setText(tr("Trying to turn on the local Bluetooth device..."));
+		localDevice->powerOn();
 	}
 #endif
 }
@@ -156,40 +157,39 @@ void BtDeviceSelectionDialog::on_save_clicked()
 	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
 								remoteDeviceInfo.address().toString();
 	saveBtDeviceInfo(address, remoteDeviceInfo);
-	if (remoteDeviceDiscoveryAgent->isActive()) {
-		// Stop the SDP agent if the clear button is pressed and enable the Scan button
-		remoteDeviceDiscoveryAgent->stop();
-#if defined(Q_OS_WIN)
-		remoteDeviceDiscoveryAgent->wait();
-#endif
-		ui->scan->setEnabled(true);
-	}
+	stopScan();
 
 	// Close the device selection dialog and set the result code to Accepted
 	accept();
 }
 
+void BtDeviceSelectionDialog::on_quit_clicked()
+{
+	stopScan();
+
+	// Close the device selection dialog and set the result code to Rejected
+	reject();
+}
+
+void BtDeviceSelectionDialog::showEvent(QShowEvent *event)
+{
+}
+
 void BtDeviceSelectionDialog::on_clear_clicked()
 {
+	if (remoteDeviceDiscoveryAgent->isActive())
+		stopScan();
+
 	ui->dialogStatus->setText(tr("Remote devices list was cleared."));
 	ui->discoveredDevicesList->clear();
-
-	if (remoteDeviceDiscoveryAgent->isActive()) {
-		// Stop the SDP agent if the clear button is pressed and enable the Scan button
-		remoteDeviceDiscoveryAgent->stop();
-#if defined(Q_OS_WIN)
-		remoteDeviceDiscoveryAgent->wait();
-#endif
-		ui->scan->setEnabled(true);
-	}
 }
 
 void BtDeviceSelectionDialog::on_scan_clicked()
 {
-	ui->dialogStatus->setText(tr("Scanning for remote devices..."));
-	ui->discoveredDevicesList->clear();
-	remoteDeviceDiscoveryAgent->start();
-	ui->scan->setEnabled(false);
+	if (remoteDeviceDiscoveryAgent->isActive())
+		stopScan();
+	else
+		startScan();
 }
 
 void BtDeviceSelectionDialog::remoteDeviceScanFinished()
@@ -201,7 +201,75 @@ void BtDeviceSelectionDialog::remoteDeviceScanFinished()
 	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::NoError)
 		ui->dialogStatus->setText(tr("Scanning finished successfully."));
 
+	setScanStatusOff();
+}
+
+bool BtDeviceSelectionDialog::isPoweredOn() const
+{
+#if defined(Q_OS_WIN)
+	// TODO add implementation
+	return true;
+#else
+	return localDevice->hostMode() != QBluetoothLocalDevice::HostPoweredOff;
+#endif
+}
+
+void BtDeviceSelectionDialog::setScanStatusOn()
+{
+	ui->scanStatus->setText(tr("Scanning..."));
+	ui->scan->setText(tr("Stop scan"));
 	ui->scan->setEnabled(true);
+	ui->clear->setEnabled(true);
+	ui->waitingSpinner->start();
+}
+
+void BtDeviceSelectionDialog::setScanStatusOff()
+{
+	ui->scanStatus->setText(tr("Idle"));
+	ui->scan->setText(tr("Start scan"));
+	ui->scan->setEnabled(true);
+	ui->clear->setEnabled(true);
+	ui->waitingSpinner->stop();
+}
+
+void BtDeviceSelectionDialog::setScanStatusInvalid()
+{
+	ui->scanStatus->setText("-");
+	ui->scan->setText(tr("Start scan"));
+	ui->scan->setEnabled(false);
+	ui->clear->setEnabled(false);
+	ui->waitingSpinner->stop();
+}
+
+void BtDeviceSelectionDialog::stopScan()
+{
+	if (remoteDeviceDiscoveryAgent && remoteDeviceDiscoveryAgent->isActive()) {
+		remoteDeviceDiscoveryAgent->stop();
+#if defined(Q_OS_WIN)
+		remoteDeviceDiscoveryAgent->wait();
+#endif
+		ui->dialogStatus->setText(tr("Stopped scanning..."));
+	}
+	if (isPoweredOn())
+		setScanStatusOff();
+	else
+		setScanStatusInvalid();
+}
+
+void BtDeviceSelectionDialog::startScan()
+{
+	if (remoteDeviceDiscoveryAgent) {
+		if (remoteDeviceDiscoveryAgent->isActive()) {
+			remoteDeviceDiscoveryAgent->stop();
+#if defined(Q_OS_WIN)
+			remoteDeviceDiscoveryAgent->wait();
+#endif
+		}
+		ui->discoveredDevicesList->clear();
+		remoteDeviceDiscoveryAgent->start();
+		ui->dialogStatus->setText(tr("Scanning for remote devices..."));
+		setScanStatusOn();
+	}
 }
 
 void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMode mode)
@@ -215,7 +283,6 @@ void BtDeviceSelectionDialog::hostModeStateChanged(QBluetoothLocalDevice::HostMo
 	ui->dialogStatus->setText(tr("The local Bluetooth device was %1.")
 				  .arg(on? tr("turned on") : tr("turned off")));
 	ui->deviceState->setChecked(on);
-	ui->scan->setEnabled(on);
 #endif
 }
 
@@ -447,6 +514,7 @@ void BtDeviceSelectionDialog::deviceDiscoveryError(QBluetoothDeviceDiscoveryAgen
 	}
 
 	ui->dialogStatus->setText(tr("Device discovery error: %1.").arg(errorDescription));
+	setScanStatusOff();
 }
 
 extern QString markBLEAddress(const QBluetoothDeviceInfo *device);
@@ -511,9 +579,8 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 
 		// Disable the buttons
 		ui->save->setEnabled(false);
-		ui->scan->setEnabled(false);
-		ui->clear->setEnabled(false);
 		ui->changeDeviceState->setEnabled(false);
+		setScanStatusInvalid();
 
 		return;
 	}
@@ -525,7 +592,7 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 	connect(localDevice, SIGNAL(hostModeStateChanged(QBluetoothLocalDevice::HostMode)),
 		this, SLOT(hostModeStateChanged(QBluetoothLocalDevice::HostMode)));
 
-	// Initialize the state of the local device and activate/deactive the scan button
+	// Initialize the state of the local device
 	hostModeStateChanged(localDevice->hostMode());
 
 	// Add context menu for devices to be able to pair them
@@ -560,8 +627,7 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		ui->dialogStatus->setText(tr("The device discovery agent was not created because the %1 address does not "
 					     "match the physical adapter address of any local Bluetooth device.")
 					    .arg(localDevice->address().toString()));
-		ui->scan->setEnabled(false);
-		ui->clear->setEnabled(false);
+		setScanStatusInvalid();
 		return;
 	}
 #endif
@@ -571,6 +637,11 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		this, SLOT(remoteDeviceScanFinished()));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
 		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
+	// On Windows scans block the UI, therefore we might not want to force the user to scan.
+	if (isPoweredOn())
+		setScanStatusOff();
+	else
+		setScanStatusInvalid();
 }
 
 #if defined(Q_OS_WIN)
