@@ -1603,7 +1603,7 @@ int UnitsSettings::durationUnits() const
 	return prefs.units.duration_units;
 }
 
-int UnitsSettings::showUnitsTable() const
+bool UnitsSettings::showUnitsTable() const
 {
 	return prefs.units.show_units_table;
 }
@@ -1698,7 +1698,7 @@ void UnitsSettings::setDurationUnits(int value)
 	emit durationUnitChanged(value);
 }
 
-void UnitsSettings::setShowUnitsTable(int value)
+void UnitsSettings::setShowUnitsTable(bool value)
 {
 	if (value == prefs.units.show_units_table)
 		return;
@@ -2193,7 +2193,7 @@ void SettingsObjectWrapper::load()
 	}
 	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
 	GET_UNIT3("duration_units", duration_units, units::MIXED, units::ALWAYS_HOURS, units::DURATION);
-	GET_UNIT_INT("show_units_table", show_units_table);
+	GET_UNIT_BOOL("show_units_table", show_units_table);
 	GET_BOOL("coordinates", coordinates_traditional);
 	s.endGroup();
 	s.beginGroup("TecDetails");

@@ -9,6 +9,8 @@
 
 #ifdef __cplusplus
 extern "C" {
+#else
+#include <stdbool.h>
 #endif
 
 #define O2_IN_AIR 209 // permille
@@ -263,7 +265,7 @@ struct units {
 		MINUTES_ONLY,
 		ALWAYS_HOURS
 	} duration_units;
-	int show_units_table;
+	bool show_units_table;
 };
 
 /*
