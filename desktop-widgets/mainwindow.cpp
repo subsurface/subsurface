@@ -774,6 +774,11 @@ void MainWindow::showProfile()
 
 void MainWindow::on_actionPreferences_triggered()
 {
+	// the refreshPages() is currently done for just one
+	// reason. Allow the user to define a default cylinder that
+	// is not hardcoded but coming from the logbook.
+	PreferencesDialog::instance()->refreshPages();
+
 	PreferencesDialog::instance()->show();
 	PreferencesDialog::instance()->raise();
 }
