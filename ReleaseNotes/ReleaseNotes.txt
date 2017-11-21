@@ -11,6 +11,9 @@ Some of the changes since _Subsurface_ 4.7.4
 - Fix issues related to debug logging on Windows
 - Add "Bluetooth mode" in the BT selection dialog: Auto, LE, Classical
 - Correct display of cylinder pressures for merged dives
+- Allow user defined cylinders as default in preferences (#821)
+- mobile: fix black/white switch in splash screen (#531)
+- UI: tag editing. Comma entry shows all tags (again) (#605)
 
 
 Some of the changes since _Subsurface_ 4.7.2
