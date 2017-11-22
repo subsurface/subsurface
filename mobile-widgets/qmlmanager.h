@@ -184,6 +184,7 @@ public slots:
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
 	QString getCurrentPosition();
+	QString getGpsFromSiteName(const QString& siteName);
 	QString getVersion() const;
 	void deleteGpsFix(quint64 when);
 	void revertToNoCloudIfNeeded();
