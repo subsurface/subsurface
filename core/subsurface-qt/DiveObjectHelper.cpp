@@ -426,6 +426,23 @@ QStringList DiveObjectHelper::suitList() const
 	return suits;
 }
 
+QStringList DiveObjectHelper::locationList() const
+{
+	QStringList locations;
+	struct dive *d;
+	struct dive_site *ds;
+	int i = 0;
+	for_each_dive (i, d) {
+		ds = get_dive_site_by_uuid(d->dive_site_uuid);
+		QString temp = ds->name;
+		if (!temp.isEmpty())
+			locations << temp;
+	}
+	locations.removeDuplicates();
+	locations.sort();
+	return locations;
+}
+
 QStringList DiveObjectHelper::buddyList() const
 {
 	QStringList buddies;

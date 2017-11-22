@@ -50,6 +50,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QStringList suitList READ suitList CONSTANT)
 	Q_PROPERTY(QStringList buddyList READ buddyList CONSTANT)
 	Q_PROPERTY(QStringList divemasterList READ divemasterList CONSTANT)
+	Q_PROPERTY(QStringList locationList READ locationList CONSTANT)
 public:
 	DiveObjectHelper(struct dive *dive = NULL);
 	~DiveObjectHelper();
@@ -93,6 +94,7 @@ public:
 	QString endPressure() const;
 	QString firstGas() const;
 	QStringList suitList() const;
+	QStringList locationList() const;
 	QStringList buddyList() const;
 	QStringList divemasterList() const;
 

@@ -24,6 +24,7 @@ Kirigami.Page {
 	property alias depth: detailsEdit.depthText
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
+	property alias locationModel: detailsEdit.locationModel
 	property alias gps: detailsEdit.gpsText
 	property alias notes: detailsEdit.notesText
 	property alias suitIndex: detailsEdit.suitIndex
