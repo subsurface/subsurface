@@ -2,17 +2,6 @@
 
 matrix:
   include:
-    - env: SUBSURFACE_PLATFORM='mac'
-      os: osx
-      osx_image: xcode6.4
-      language: c++ ruby
-
-    - env: SUBSURFACE_PLATFORM='windows'
-      os: linux
-      dist: trusty
-      sudo: required
-      language: c++
-
     - env: SUBSURFACE_PLATFORM='linux'
       os: linux
       dist: trusty
@@ -46,6 +35,18 @@ matrix:
             # Not a subsurface dependency, but a QtWebKit dependency
             - libhyphen-dev
             - libicu52
+
+  exclude:
+    - env: SUBSURFACE_PLATFORM='mac'
+      os: osx
+      osx_image: xcode6.4
+      language: c++ ruby
+
+    - env: SUBSURFACE_PLATFORM='windows'
+      os: linux
+      dist: trusty
+      sudo: required
+      language: c++
 
     - env: SUBSURFACE_PLATFORM="android"
       # Currently hard coded to arm

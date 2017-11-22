@@ -14,9 +14,10 @@ export CMAKE_PREFIX_PATH=$QT_ROOT/lib/cmake
 # to create an AppImage
 cd ..
 
-bash -e -x ./subsurface/scripts/build.sh -both -no-bt
-rm -rf subsurface/build subsurface/build-mobile
-bash -e -x ./subsurface/scripts/build.sh -both -create-appdir -build-with-webkit
+# bash -e -x ./subsurface/scripts/build.sh -both -no-bt
+# rm -rf subsurface/build subsurface/build-mobile
+# bash -e -x ./subsurface/scripts/build.sh -both -create-appdir -build-with-webkit
+bash -e -x ./subsurface/scripts/build.sh -create-appdir
 
 export QT_PLUGIN_PATH=$QT_ROOT/plugins
 export QT_QPA_PLATFORM_PLUGIN_PATH=$QT_ROOT/plugins
