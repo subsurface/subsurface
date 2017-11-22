@@ -1536,6 +1536,18 @@ QString QMLManager::getVersion() const
 	return versionRe.cap(1);
 }
 
+QString QMLManager::getGpsFromSiteName(const QString& siteName)
+{	uint32_t uuid;
+	struct dive_site *ds;
+
+	uuid = get_dive_site_uuid_by_name(qPrintable(siteName), NULL);
+	if (uuid) {
+		ds = get_dive_site_by_uuid(uuid);
+		return QString(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg));
+	}
+	return "";
+}
+
 QString QMLManager::notificationText() const
 {
 	return m_notificationText;

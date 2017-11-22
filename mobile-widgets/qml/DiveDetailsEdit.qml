@@ -112,6 +112,9 @@ Item {
 					diveDetailsListView.currentItem.modelData.dive.locationList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onEditingFinished: {
+					gpsText = manager.getGpsFromSiteName(text)
+				}
 			}
 
 			Controls.Label {
