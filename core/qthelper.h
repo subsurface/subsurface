@@ -52,5 +52,6 @@ extern "C" int parse_seabear_header(const char *filename, char **params, int pnr
 enum inertgas {N2, HE};
 extern "C" double cache_value(int tissue, int timestep, enum inertgas gas);
 extern "C" void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
-
+extern "C" void lock_planner();
+extern "C" void unlock_planner();
 #endif // QTHELPER_H

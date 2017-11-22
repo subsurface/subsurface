@@ -115,7 +115,7 @@ private:
 	void createPlan(bool replanCopy);
 	struct diveplan diveplan;
 	struct divedatapoint *cloneDiveplan(struct diveplan *plan_copy);
-	void computeVariations();
+	void computeVariations(struct deco_state *ds);
 	int analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit);
 	Mode mode;
 	bool recalc;
@@ -124,6 +124,7 @@ private:
 	int tempGFHigh;
 	int tempGFLow;
 	int instanceCounter = 0;
+	struct deco_state ds_after_previous_dives;
 };
 
 #endif

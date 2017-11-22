@@ -231,8 +231,8 @@ void DivePlotDataModel::emitDataChanged()
 void DivePlotDataModel::calculateDecompression()
 {
 	struct divecomputer *dc = select_dc(&displayed_dive);
-	init_decompression(&displayed_dive);
-	calculate_deco_information(&displayed_dive, dc, &pInfo, false);
+	init_decompression(&plot_deco_state, &displayed_dive);
+	calculate_deco_information(&plot_deco_state, &displayed_dive, dc, &pInfo, false);
 	dataChanged(index(0, CEILING), index(pInfo.nr - 1, TISSUE_16));
 }
 #endif

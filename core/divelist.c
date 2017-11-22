@@ -419,7 +419,7 @@ static int calculate_sac(struct dive *dive)
 }
 
 /* for now we do this based on the first divecomputer */
-static void add_dive_to_deco(struct dive *dive)
+static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 {
 	struct divecomputer *dc = &dive->dc;
 	struct gasmix *gasmix = NULL;
@@ -439,7 +439,7 @@ static void add_dive_to_deco(struct dive *dive)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
-			add_segment(depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar, dive, dive->sac);
+			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar, dive, dive->sac);
 		}
 	}
 }
@@ -475,7 +475,9 @@ static struct gasmix air = { .o2.permille = O2_IN_AIR, .he.permille = 0 };
 /* take into account previous dives until there is a 48h gap between dives */
 /* return last surface time before this dive or dummy value of 48h */
 /* return negative surface time if dives are overlapping */
-int init_decompression(struct dive *dive)
+/* The place you call this function is likely the place where you want
+ * to create the deco_state */
+int init_decompression(struct deco_state *ds, struct dive *dive)
 {
 	int i, divenr = -1;
 	int surface_time = 48 * 60 * 60;
@@ -576,7 +578,7 @@ int init_decompression(struct dive *dive)
 #if DECO_CALC_DEBUG & 2
 			printf("Init deco\n");
 #endif
-			clear_deco(surface_pressure);
+			clear_deco(ds, surface_pressure);
 			deco_init = true;
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after init:\n");
@@ -591,21 +593,21 @@ int init_decompression(struct dive *dive)
 #endif
 				return surface_time;
 			}
-			add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
+			add_segment(ds, surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
-			dump_tissues();
+			dump_tissues(ds);
 #endif
 		}
 
-		add_dive_to_deco(pdive);
+		add_dive_to_deco(ds, pdive);
 
 		last_starttime = pdive->when;
 		last_endtime = dive_endtime(pdive);
-		clear_vpmb_state();
+		clear_vpmb_state(ds);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after added dive #%d:\n", pdive->number);
-		dump_tissues();
+		dump_tissues(ds);
 #endif
 	}
 
@@ -615,10 +617,10 @@ int init_decompression(struct dive *dive)
 #if DECO_CALC_DEBUG & 2
 		printf("Init deco\n");		
 #endif
-		clear_deco(surface_pressure);
+		clear_deco(ds, surface_pressure);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after no previous dive, surface time set to 48h:\n");
-		dump_tissues();
+		dump_tissues(ds);
 #endif
 	}
 	else {
@@ -629,15 +631,15 @@ int init_decompression(struct dive *dive)
 #endif
 			return surface_time;
 		}
-		add_segment(surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
+		add_segment(ds, surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
-		dump_tissues();
+		dump_tissues(ds);
 #endif
 	}
 
 	// I do not dare to remove this call. We don't need the result but it might have side effects. Bummer.
-	tissue_tolerance_calc(dive, surface_pressure);
+	tissue_tolerance_calc(ds, dive, surface_pressure);
 	return surface_time;
 }
 
