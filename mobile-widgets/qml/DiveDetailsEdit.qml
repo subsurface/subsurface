@@ -35,6 +35,7 @@ Item {
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
 	property alias cylinderModel: cylinderBox.model
+	property alias locationModel: txtLocation.model
 	property int rating
 	property int visibility
 
@@ -105,12 +106,12 @@ Item {
 				text: qsTr("Location:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			Controls.TextField {
-				id: txtLocation;
+			HintsTextEdit {
+				id: txtLocation
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.locationList : null
+				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
-				onEditingFinished: {
-					focus = false
-				}
 			}
 
 			Controls.Label {
