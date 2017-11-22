@@ -12,6 +12,7 @@
 
 int getTotalWork(print_options *printOptions);
 void find_all_templates();
+void set_bundled_templates_as_read_only();
 
 extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 

@@ -258,6 +258,7 @@ MainWindow::MainWindow() : QMainWindow(),
 #ifndef NO_PRINTING
 	// copy the bundled print templates to the user path; no overwriting occurs!
 	copyPath(getPrintingTemplatePathBundle(), getPrintingTemplatePathUser());
+	set_bundled_templates_as_read_only();
 	find_all_templates();
 #endif
 
