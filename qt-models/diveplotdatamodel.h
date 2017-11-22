@@ -5,6 +5,7 @@
 #include <QAbstractTableModel>
 
 #include "core/display.h"
+#include "core/dive.h"
 
 struct dive;
 struct plot_data;
@@ -91,6 +92,7 @@ private:
 	struct plot_info pInfo;
 	int diveId;
 	unsigned int dcNr;
+	struct deco_state plot_deco_state;
 };
 
 #endif // DIVEPLOTDATAMODEL_H

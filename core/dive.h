@@ -894,17 +894,17 @@ struct deco_state {
 	int deco_time;
 };
 
-extern void add_segment(double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
-extern void clear_deco(double surface_pressure);
-extern void dump_tissues(void);
+extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
+extern void clear_deco(struct deco_state *ds, double surface_pressure);
+extern void dump_tissues(struct deco_state *ds);
 extern void set_gf(short gflow, short gfhigh);
 extern void set_vpmb_conservatism(short conservatism);
-extern void cache_deco_state(struct deco_state **datap);
-extern void restore_deco_state(struct deco_state *data, bool keep_vpmb_state);
-extern void nuclear_regeneration(double time);
-extern void vpmb_start_gradient();
-extern void vpmb_next_gradient(double deco_time, double surface_pressure);
-extern double tissue_tolerance_calc(const struct dive *dive, double pressure);
+extern void cache_deco_state(struct deco_state *source, struct deco_state **datap);
+extern void restore_deco_state(struct deco_state *data, struct deco_state *target, bool keep_vpmb_state);
+extern void nuclear_regeneration(struct deco_state *ds, double time);
+extern void vpmb_start_gradient(struct deco_state *ds);
+extern void vpmb_next_gradient(struct deco_state *ds, double deco_time, double surface_pressure);
+extern double tissue_tolerance_calc(struct deco_state *ds, const struct dive *dive, double pressure);
 
 /* this should be converted to use our types */
 struct divedatapoint {
@@ -940,9 +940,9 @@ struct decostop {
 	int depth;
 	int time;
 };
-bool plan(struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
-void calc_crushing_pressure(double pressure);
-void vpmb_start_gradient();
+bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
+void calc_crushing_pressure(struct deco_state *ds, double pressure);
+void vpmb_start_gradient(struct deco_state *ds);
 void clear_vpmb_state();
 void printdecotable(struct decostop *table);
 
