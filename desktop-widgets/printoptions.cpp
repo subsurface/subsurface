@@ -128,12 +128,13 @@ void PrintOptions::on_editButton_clicked()
 
 void PrintOptions::on_importButton_clicked()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Import template file"), "",
+	QString pathUser = getPrintingTemplatePathUser();
+	QString filename = QFileDialog::getOpenFileName(this, tr("Import template file"), pathUser,
 							tr("HTML files") + " (*.html)");
 	if (filename.isEmpty())
 		return;
 	QFileInfo fileInfo(filename);
-	QFile::copy(filename, getPrintingTemplatePathUser() + QDir::separator() + fileInfo.fileName());
+	QFile::copy(filename, pathUser + QDir::separator() + fileInfo.fileName());
 	printOptions->p_template = fileInfo.fileName();
 	find_all_templates();
 	setup();
@@ -141,11 +142,14 @@ void PrintOptions::on_importButton_clicked()
 
 void PrintOptions::on_exportButton_clicked()
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("Export template files as"), "",
+	QString pathUser = getPrintingTemplatePathUser();
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export template files as"), pathUser,
 							tr("HTML files") + " (*.html)");
 	if (filename.isEmpty())
 		return;
-	QFile::copy(getPrintingTemplatePathUser() + QDir::separator() + getSelectedTemplate(), filename);
+	QFile::copy(pathUser + QDir::separator() + getSelectedTemplate(), filename);
+	find_all_templates();
+	setup();
 }
 
 void PrintOptions::on_deleteButton_clicked()
