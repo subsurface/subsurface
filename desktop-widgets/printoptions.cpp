@@ -124,7 +124,8 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 void PrintOptions::on_editButton_clicked()
 {
 	QString templateName = getSelectedTemplate();
-	QFile f(getPrintingTemplatePathUser() + QDir::separator() + templateName);
+	QString prefix = (printOptions->type == print_options::STATISTICS) ? "statistics/" : "";
+	QFile f(getPrintingTemplatePathUser() + QDir::separator() + prefix + templateName);
 	if (!f.open(QFile::ReadWrite | QFile::Text)) {
 		QMessageBox msgBox(this);
 		msgBox.setWindowTitle(tr("Read-only template!"));
