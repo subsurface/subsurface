@@ -839,7 +839,7 @@ void ProfileWidget2::settingsChanged()
 			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
 			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.pos.on);
 			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded);
-		}else {
+		} else {
 			percentageAxis->setPos(itemPos.percentage.pos.on);
 			percentageAxis->animateChangeLine(itemPos.percentage.expanded);
 			heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
@@ -847,7 +847,6 @@ void ProfileWidget2::settingsChanged()
 		}
 		gasYAxis->setPos(itemPos.partialPressureTissue.pos.on);
 		gasYAxis->animateChangeLine(itemPos.partialPressureTissue.expanded);
-
 	} else if (PP_GRAPHS_ENABLED || prefs.hrgraph || prefs.percentagegraph) {
 		profileYAxis->animateChangeLine(itemPos.depth.intermediate);
 		temperatureAxis->setPos(itemPos.temperature.pos.on);
@@ -857,14 +856,14 @@ void ProfileWidget2::settingsChanged()
 			percentageAxis->setPos(itemPos.percentageWithTankBar.pos.on);
 			percentageAxis->animateChangeLine(itemPos.percentageWithTankBar.expanded);
 			gasYAxis->setPos(itemPos.partialPressureWithTankBar.pos.on);
-			gasYAxis->setLine(itemPos.partialPressureWithTankBar.expanded);
+			gasYAxis->animateChangeLine(itemPos.partialPressureWithTankBar.expanded);
 			heartBeatAxis->setPos(itemPos.heartBeatWithTankBar.pos.on);
 			heartBeatAxis->animateChangeLine(itemPos.heartBeatWithTankBar.expanded);
 		} else {
 			gasYAxis->setPos(itemPos.partialPressure.pos.on);
 			gasYAxis->animateChangeLine(itemPos.partialPressure.expanded);
 			percentageAxis->setPos(itemPos.percentage.pos.on);
-			percentageAxis->setLine(itemPos.percentage.expanded);
+			percentageAxis->animateChangeLine(itemPos.percentage.expanded);
 			heartBeatAxis->setPos(itemPos.heartBeat.pos.on);
 			heartBeatAxis->animateChangeLine(itemPos.heartBeat.expanded);
 		}
