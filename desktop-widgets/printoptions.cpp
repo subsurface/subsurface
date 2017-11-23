@@ -163,6 +163,11 @@ void PrintOptions::on_exportButton_clicked()
 							tr("HTML files") + " (*.html)");
 	if (filename.isEmpty())
 		return;
+	const QString ext(".html");
+	if (filename.endsWith(".htm", Qt::CaseInsensitive))
+		filename += "l";
+	else if (!filename.endsWith(ext, Qt::CaseInsensitive))
+		filename += ext;
 	QFile::copy(pathUser + QDir::separator() + getSelectedTemplate(), filename);
 	QFile f(filename);
 	if (!f.open(QFile::ReadWrite | QFile::Text))
