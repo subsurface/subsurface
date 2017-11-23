@@ -121,6 +121,19 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 
 void PrintOptions::on_editButton_clicked()
 {
+	QString templateName = getSelectedTemplate();
+	QFile f(getPrintingTemplatePathUser() + QDir::separator() + templateName);
+	if (!f.open(QFile::ReadWrite | QFile::Text)) {
+		QMessageBox msgBox(this);
+		msgBox.setWindowTitle(tr("Read-only template!"));
+		msgBox.setText(tr("The template '%1' is read-only and connot be edited.\n"
+			"Please export this template to a different file.").arg(templateName));
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.exec();
+		return;
+	} else {
+		f.close();
+	}
 	TemplateEdit te(this, printOptions, templateOptions);
 	te.exec();
 	setup();
@@ -148,6 +161,11 @@ void PrintOptions::on_exportButton_clicked()
 	if (filename.isEmpty())
 		return;
 	QFile::copy(pathUser + QDir::separator() + getSelectedTemplate(), filename);
+	QFile f(filename);
+	if (!f.open(QFile::ReadWrite | QFile::Text))
+		f.setPermissions(QFileDevice::ReadUser | QFileDevice::ReadOwner | QFileDevice::WriteUser | QFileDevice::WriteOwner);
+	else
+		f.close();
 	find_all_templates();
 	setup();
 }
@@ -155,9 +173,9 @@ void PrintOptions::on_exportButton_clicked()
 void PrintOptions::on_deleteButton_clicked()
 {
 	QString templateName = getSelectedTemplate();
-	QMessageBox msgBox;
-	msgBox.setText(tr("This action cannot be undone!"));
-	msgBox.setInformativeText(tr("Delete template: %1?").arg(templateName));
+	QMessageBox msgBox(this);
+	msgBox.setWindowTitle(tr("This action cannot be undone!"));
+	msgBox.setText(tr("Delete template '%1'?").arg(templateName));
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Cancel);
 	if (msgBox.exec() == QMessageBox::Ok) {
