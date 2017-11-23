@@ -60,11 +60,13 @@ void PrintOptions::setupTemplates()
 	int current_index = 0;
 	ui.printTemplate->clear();
 	Q_FOREACH(const QString& theme, currList) {
-		if (theme == storedTemplate) // find the stored template in the list
+		 // find the stored template in the list
+		if (theme == storedTemplate || theme == lastImportExportTemplate)
 			current_index = currList.indexOf(theme);
 		ui.printTemplate->addItem(theme.split('.')[0], theme);
 	}
 	ui.printTemplate->setCurrentIndex(current_index);
+	lastImportExportTemplate = "";
 }
 
 // print type radio buttons
@@ -149,6 +151,7 @@ void PrintOptions::on_importButton_clicked()
 	QFileInfo fileInfo(filename);
 	QFile::copy(filename, pathUser + QDir::separator() + fileInfo.fileName());
 	printOptions->p_template = fileInfo.fileName();
+	lastImportExportTemplate = fileInfo.fileName();
 	find_all_templates();
 	setup();
 }
@@ -166,6 +169,8 @@ void PrintOptions::on_exportButton_clicked()
 		f.setPermissions(QFileDevice::ReadUser | QFileDevice::ReadOwner | QFileDevice::WriteUser | QFileDevice::WriteOwner);
 	else
 		f.close();
+	QFileInfo fileInfo(filename);
+	lastImportExportTemplate = fileInfo.fileName();
 	find_all_templates();
 	setup();
 }
