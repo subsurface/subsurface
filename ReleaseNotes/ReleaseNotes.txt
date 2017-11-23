@@ -14,6 +14,9 @@ Some of the changes since _Subsurface_ 4.7.4
 - Allow user defined cylinders as default in preferences (#821)
 - mobile: fix black/white switch in splash screen (#531)
 - UI: tag editing. Comma entry shows all tags (again) (#605)
+- Printing: the bundled templates are now read-only and are always overwritten
+  by the application. The first time the user runs this update, backup files
+  of the previous templates would be created. (#847).
 
 
 Some of the changes since _Subsurface_ 4.7.2
