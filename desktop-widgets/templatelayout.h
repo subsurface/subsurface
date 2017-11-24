@@ -2,6 +2,7 @@
 #ifndef TEMPLATELAYOUT_H
 #define TEMPLATELAYOUT_H
 
+#include <QStringList>
 #include <grantlee_templates.h>
 #include "mainwindow.h"
 #include "printoptions.h"
@@ -13,6 +14,7 @@
 int getTotalWork(print_options *printOptions);
 void find_all_templates();
 void set_bundled_templates_as_read_only();
+void copy_bundled_templates(QString src, QString dst, QStringList *templateBackupList);
 
 extern QList<QString> grantlee_templates, grantlee_statistics_templates;
 

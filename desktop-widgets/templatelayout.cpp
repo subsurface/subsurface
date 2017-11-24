@@ -62,6 +62,35 @@ void set_bundled_templates_as_read_only()
 		QFile::setPermissions(pathUser + QDir::separator() + f, QFileDevice::ReadOwner | QFileDevice::ReadUser);
 }
 
+void copy_bundled_templates(QString src, QString dst, QStringList *templateBackupList)
+{
+	QDir dir(src);
+	if (!dir.exists())
+		return;
+	foreach (QString d, dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot)) {
+		QString dst_path = dst + QDir::separator() + d;
+		dir.mkpath(dst_path);
+		copy_bundled_templates(src + QDir::separator() + d, dst_path, templateBackupList);
+	}
+	foreach (QString f, dir.entryList(QDir::Files)) {
+		QFile fileSrc(src + QDir::separator() + f);
+		QFile fileDest(dst + QDir::separator() + f);
+		if (fileDest.exists()) {
+			// if open() fails the file is either locked or r/o. try to remove it and then overwrite
+			if (!fileDest.open(QFile::ReadWrite | QFile::Text)) {
+				fileDest.setPermissions(QFileDevice::WriteOwner | QFileDevice::WriteUser);
+				fileDest.remove();
+			} else { // if the file is not read-only create a backup
+				fileDest.close();
+				const QString targetFile = fileDest.fileName().replace(".html", "-User.html");
+				fileDest.copy(targetFile);
+				*templateBackupList << targetFile;
+			}
+		}
+		fileSrc.copy(fileDest.fileName()); // in all cases copy the file
+	}
+}
+
 TemplateLayout::TemplateLayout(print_options *PrintOptions, template_options *templateOptions) :
 	m_engine(NULL)
 {

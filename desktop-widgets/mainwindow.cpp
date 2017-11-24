@@ -256,8 +256,23 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(geoLookup, SIGNAL(started()),information(), SLOT(disableGeoLookupEdition()));
 	connect(geoLookup, SIGNAL(finished()), information(), SLOT(enableGeoLookupEdition()));
 #ifndef NO_PRINTING
-	// copy the bundled print templates to the user path; no overwriting occurs!
-	copyPath(getPrintingTemplatePathBundle(), getPrintingTemplatePathUser());
+	// copy the bundled print templates to the user path
+	QStringList templateBackupList;
+	QString templatePathUser(getPrintingTemplatePathUser());
+	copy_bundled_templates(getPrintingTemplatePathBundle(), templatePathUser, &templateBackupList);
+	if (templateBackupList.length()) {
+		QMessageBox msgBox(this);
+		templatePathUser.replace("\\", "/");
+		templateBackupList.replaceInStrings(templatePathUser + "/", "");
+		msgBox.setWindowTitle(tr("Template backup created"));
+		msgBox.setText(tr("The following backup printing templates were created:\n\n%1\n\n"
+			"Location:\n%2\n\n"
+			"Please note that as of this version of Subsurface the default templates\n"
+			"are read-only and should not be edited directly, since the application\n"
+			"can overwrite them on startup.").arg(templateBackupList.join("\n")).arg(templatePathUser));
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.exec();
+	}
 	set_bundled_templates_as_read_only();
 	find_all_templates();
 #endif
