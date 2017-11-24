@@ -256,6 +256,9 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.gfhigh->setDisabled(false);
 		ui.lastStop->setDisabled(true);
 		ui.backgasBreaks->setDisabled(true);
+		ui.backgasBreaks->blockSignals(true);
+		ui.backgasBreaks->setChecked(false);
+		ui.backgasBreaks->blockSignals(false);
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(true);
 		ui.safetystop->setDisabled(false);
@@ -265,6 +268,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(true);
 		ui.min_switch_duration->setDisabled(true);
+		ui.label_min_switch_duration->setDisabled(true);
 		ui.sacfactor->setDisabled(true);
 		ui.problemsolvingtime->setDisabled(true);
 		ui.sacfactor->blockSignals(true);
@@ -280,7 +284,17 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.gflow->setDisabled(true);
 		ui.gfhigh->setDisabled(true);
 		ui.lastStop->setDisabled(false);
-		ui.backgasBreaks->setDisabled(false);
+		if (prefs.last_stop) {
+			ui.backgasBreaks->setDisabled(false);
+			ui.backgasBreaks->blockSignals(true);
+			ui.backgasBreaks->setChecked(prefs.doo2breaks);
+			ui.backgasBreaks->blockSignals(false);
+		} else {
+			ui.backgasBreaks->setDisabled(true);
+			ui.backgasBreaks->blockSignals(true);
+			ui.backgasBreaks->setChecked(false);
+			ui.backgasBreaks->blockSignals(false);
+		}
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -290,6 +304,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(false);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
 		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
@@ -301,7 +316,17 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.gflow->setDisabled(false);
 		ui.gfhigh->setDisabled(false);
 		ui.lastStop->setDisabled(false);
-		ui.backgasBreaks->setDisabled(false);
+		if (prefs.last_stop) {
+			ui.backgasBreaks->setDisabled(false);
+			ui.backgasBreaks->blockSignals(true);
+			ui.backgasBreaks->setChecked(prefs.doo2breaks);
+			ui.backgasBreaks->blockSignals(false);
+		} else {
+			ui.backgasBreaks->setDisabled(true);
+			ui.backgasBreaks->blockSignals(true);
+			ui.backgasBreaks->setChecked(false);
+			ui.backgasBreaks->blockSignals(false);
+		}
 		ui.bottompo2->setDisabled(false);
 		ui.decopo2->setDisabled(false);
 		ui.safetystop->setDisabled(true);
@@ -311,6 +336,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.vpmb_conservatism->setDisabled(true);
 		ui.switch_at_req_stop->setDisabled(false);
 		ui.min_switch_duration->setDisabled(false);
+		ui.label_min_switch_duration->setDisabled(false);
 		ui.sacfactor->setDisabled(false);
 		ui.problemsolvingtime->setDisabled(false);
 		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
@@ -320,6 +346,9 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 
 void PlannerSettingsWidget::disableBackgasBreaks(bool enabled)
 {
+	if (prefs.planner_deco_mode == RECREATIONAL)
+		return;
+
 	if (enabled) {
 		ui.backgasBreaks->setDisabled(false);
 		ui.backgasBreaks->blockSignals(true);
@@ -366,7 +395,6 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	ui.buehlmann_deco->setChecked(prefs.planner_deco_mode == BUEHLMANN);
 	ui.vpmb_deco->setChecked(prefs.planner_deco_mode == VPMB);
 	disableDecoElements((int) prefs.planner_deco_mode);
-	disableBackgasBreaks(prefs.last_stop);
 
 	// should be the same order as in dive_comp_type!
 	rebreather_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
