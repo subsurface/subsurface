@@ -451,12 +451,6 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	git checkout master
 	git pull --rebase
 
-	if [ $PLATFORM = "Darwin" ] ; then
-		# remove the qt_build_config from .qmake.conf as that fails on Travis
-		mv .qmake.conf .qmake.conf.bak
-		cat .qmake.conf.bak | sed -e 's/.*qt_build_config.*//' > .qmake.conf
-	fi
-
 	mkdir -p build
 	cd build
 	$QMAKE -query
