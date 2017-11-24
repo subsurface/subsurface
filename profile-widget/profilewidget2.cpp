@@ -640,7 +640,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	 * shown.
 	 */
 	plotInfo = calculate_max_limits_new(&displayed_dive, currentdc);
-	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth);
+	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, &DivePlannerPointsModel::instance()->final_deco_state);
 	int newMaxtime = get_maxtime(&plotInfo);
 	if (shouldCalculateMaxTime || newMaxtime > maxtime)
 		maxtime = newMaxtime;
