@@ -34,17 +34,21 @@ for i in libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
 		install_name_tool -change ${OLD} @executable_path/../Frameworks/${SONAME} ${EXECUTABLE}
 		install_name_tool -id @executable_path/../Frameworks/${SONAME} Subsurface.app/Contents/Frameworks/${SONAME}
 		# also fix incorrect references inside of libgit2
-		if [[ "$i" = "libgit2" ]] ; then
-			CURLLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libcurl | cut -d\  -f1 | tr -d "\t")
-			install_name_tool -change ${CURLLIB} @executable_path/../Frameworks/$(basename ${CURLLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
-			SSHLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libssh2 | cut -d\  -f1 | tr -d "\t")
-			install_name_tool -change ${SSHLIB} @executable_path/../Frameworks/$(basename ${SSHLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
-		fi
+		# if [[ "$i" = "libgit2" ]] ; then
+		# 	CURLLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libcurl | cut -d\  -f1 | tr -d "\t")
+		# 	if [ ! -z $CURLLIB ] ; then
+		# 		install_name_tool -change ${CURLLIB} @executable_path/../Frameworks/$(basename ${CURLLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
+		# 	fi
+		# 	SSHLIB=$(otool -L Subsurface.app/Contents/Frameworks/${SONAME} | grep libssh2 | cut -d\  -f1 | tr -d "\t")
+		# 	if [ ! -z $SSHLIB ] ; then
+		# 		install_name_tool -change ${SSHLIB} @executable_path/../Frameworks/$(basename ${SSHLIB}) Subsurface.app/Contents/Frameworks/${SONAME}
+		# 	fi
+		# fi
 	fi
 done
 
 # next, copy libssh2.1
-cp ${DIR}/install-root/lib/libssh2.1.dylib Subsurface.app/Contents/Frameworks
+# cp ${DIR}/install-root/lib/libssh2.1.dylib Subsurface.app/Contents/Frameworks
 
 # next, replace @rpath references with @executable_path references in Subsurface
 RPATH=$(otool -L ${EXECUTABLE} | grep rpath  | cut -d\  -f1 | tr -d "\t" | cut -b 8- )
