@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -x
+set -e
+
 docker exec -t builder subsurface/packaging/android/android-build-wrapper.sh
 
 # Extract the built apk from the builder container

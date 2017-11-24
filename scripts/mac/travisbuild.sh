@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -x
+set -e
+
 # this gets executed by Travis when building an App for Mac
 # it gets started from inside the subsurface directory
 
