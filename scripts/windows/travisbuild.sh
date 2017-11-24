@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -x
+set -e
+
 # this gets executed by Travis when building an installer for Windows
 # it gets started from inside the subsurface directory
 # with all the other projects downloaded and installed in parralel to

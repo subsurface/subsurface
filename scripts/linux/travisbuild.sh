@@ -1,6 +1,7 @@
 #!/bin/bash
 
 set -x
+set -e
 
 # this gets executed by Travis when building an AppImage for Linux
 # it gets started from inside the subsurface directory
