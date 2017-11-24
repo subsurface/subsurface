@@ -904,8 +904,12 @@ void ConfigureDiveComputerDialog::configError(QString err)
 
 void ConfigureDiveComputerDialog::getDeviceData()
 {
+#ifdef BT_SUPPORT
 	QString device = ui.bluetoothMode && btDeviceSelectionDialog ?
 		btDeviceSelectionDialog->getSelectedDeviceAddress() : ui.device->currentText();
+#else
+	QString device = ui.device->currentText();
+#endif
 	device_data.devname = strdup(device.toUtf8().data());
 	device_data.vendor = strdup(selected_vendor.toUtf8().data());
 	device_data.product = strdup(selected_product.toUtf8().data());
@@ -915,8 +919,10 @@ void ConfigureDiveComputerDialog::getDeviceData()
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
 	dc->setDevice(device_data.devname);
+#ifdef BT_SUPPORT
 	if (ui.bluetoothMode && btDeviceSelectionDialog)
 		dc->setDeviceName(btDeviceSelectionDialog->getSelectedDeviceName());
+#endif
 }
 
 void ConfigureDiveComputerDialog::on_cancel_clicked()
