@@ -20,23 +20,22 @@ int getTotalWork(print_options *printOptions)
 
 void find_all_templates()
 {
+	const QString ext(".html");
 	grantlee_templates.clear();
 	grantlee_statistics_templates.clear();
 	QDir dir(getPrintingTemplatePathUser());
 	QStringList list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
 	foreach (const QString& filename, list) {
-		if (filename.at(filename.size() - 1) != '~') {
+		if (filename.at(filename.size() - 1) != '~' && filename.endsWith(ext))
 			grantlee_templates.append(filename);
-		}
 	}
 
 	// find statistics templates
 	dir.setPath(getPrintingTemplatePathUser() + QDir::separator() + "statistics");
 	list = dir.entryList(QDir::Files | QDir::NoDotAndDotDot);
 	foreach (const QString& filename, list) {
-		if (filename.at(filename.size() - 1) != '~') {
+		if (filename.at(filename.size() - 1) != '~' && filename.endsWith(ext))
 			grantlee_statistics_templates.append(filename);
-		}
 	}
 }
 
