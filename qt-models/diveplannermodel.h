@@ -56,6 +56,7 @@ public:
 	int lastEnteredPoint();
 	void removeDeco();
 	static bool addingDeco;
+	struct deco_state final_deco_state;
 
 public
 slots:

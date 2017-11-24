@@ -924,6 +924,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		struct deco_state plan_deco_state;
 		plan(&plan_deco_state, &diveplan, &displayed_dive, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
 		//QtConcurrent::run(this, &DivePlannerPointsModel::computeVariations, &ds_after_previous_dives);
+		final_deco_state = plan_deco_state;
 		emit calculatedPlanNotes();
 	}
 	// throw away the cache

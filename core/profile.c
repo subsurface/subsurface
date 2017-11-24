@@ -986,14 +986,18 @@ static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct p
 
 /* Let's try to do some deco calculations.
  */
-void calculate_deco_information(struct deco_state *ds, struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
+void calculate_deco_information(struct deco_state *ds, struct deco_state *planner_ds, struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
 	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
-	if (!in_planner())
+	if (!in_planner()) {
 		ds->deco_time = 0;
+	} else {
+		ds->deco_time = planner_ds->deco_time;
+		ds->first_ceiling_pressure = planner_ds->first_ceiling_pressure;
+	}
 	struct deco_state *cache_data_initial = NULL;
 	lock_planner();
 	/* For VPM-B outside the planner, cache the initial deco state for CVA iterations */
@@ -1300,7 +1304,7 @@ static void debug_print_profiledata(struct plot_info *pi)
  * sides, so that you can do end-points without having to worry
  * about it.
  */
-void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast)
+void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool fast, struct deco_state *planner_ds)
 {
 	int o2, he, o2max;
 #ifndef SUBSURFACE_MOBILE
@@ -1333,7 +1337,7 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 	fill_o2_values(dive, dc, pi);			 /* .. and insert the O2 sensor data having 0 values. */
 	calculate_sac(dive, dc, pi);			 /* Calculate sac */
 #ifndef SUBSURFACE_MOBILE
-	calculate_deco_information(&plot_deco_state, dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
+	calculate_deco_information(&plot_deco_state, planner_ds, dive, dc, pi, false); /* and ceiling information, using gradient factor values in Preferences) */
 #endif
 	calculate_gas_information_new(dive, dc, pi);	 /* Calculate gas partial pressures */
 
