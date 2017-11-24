@@ -453,7 +453,8 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 
 	if [ $PLATFORM = "Darwin" ] ; then
 		# remove the qt_build_config from .qmake.conf as that fails on Travis
-		sed -i 's/.*qt_build_config.*//' .qmake.conf
+		mv .qmake.conf .qmake.conf.bak
+		cat .qmake.conf.bak | sed -e 's/.*qt_build_config.*//' > .qmake.conf
 	fi
 
 	mkdir -p build
@@ -463,7 +464,8 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 	# since things compile fine with c++11, let's just hack that away
 	# similarly, don't use -Wdata-time
-	sed -i 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
+	mv Makefile Makefile.bak
+	cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
 	make -j4
 	make install
 fi
