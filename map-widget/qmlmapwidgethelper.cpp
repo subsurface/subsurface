@@ -226,6 +226,7 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesToMap()
 	const qreal longitude = displayed_dive_site.longitude.udeg * 0.000001;
 	QGeoCoordinate coord(latitude, longitude);
 	m_mapLocationModel->updateMapLocationCoordinates(displayed_dive_site.uuid, coord);
+	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(coord)));
 }
 
 bool MapWidgetHelper::editMode()
