@@ -445,7 +445,7 @@ MainWindow *MainWindow::instance()
 	return m_Instance;
 }
 
-// this gets called after we download dives from a divecomputer
+// This gets called after one or more dives were added, edited or downloaded for a dive computer
 void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
 	information()->reload();
@@ -469,6 +469,7 @@ void MainWindow::recreateDiveList()
 	BuddyFilterModel::instance()->repopulate();
 	LocationFilterModel::instance()->repopulate();
 	SuitsFilterModel::instance()->repopulate();
+	MultiFilterSortModel::instance()->myInvalidate();
 }
 
 void MainWindow::configureToolbar() {

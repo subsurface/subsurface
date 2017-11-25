@@ -78,7 +78,40 @@ CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit)
 
 CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
-SuitsFilterModel::SuitsFilterModel(QObject *parent) : QStringListModel(parent)
+FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent)
+{
+}
+
+// Update the stringList and the checkState array.
+// The last item is supposed to be the "Show Empty Tags" entry.
+void FilterModelBase::updateList(const QStringList &newList)
+{
+	// Keep copy of old checkState array to reimport them later.
+	std::vector<char> oldCheckState = checkState;
+	checkState.resize(newList.count());
+	std::fill(checkState.begin(), checkState.end(), false);
+	anyChecked = false;
+
+	// Ignore last item, since this is the "Show Empty Tags" entry.
+	for (int i = 0; i < rowCount() - 1; i++) {
+		if (oldCheckState[i]) {
+			int ind = newList.indexOf(stringList()[i]);
+			if (ind >= 0 && ind < newList.count() - 1) {
+				checkState[ind] = true;
+				anyChecked = true;
+			}
+		}
+	}
+
+	// On program startup, the old list is empty.
+	if (rowCount() > 0 && oldCheckState.back()) {
+		checkState.back() = true;
+		anyChecked = true;
+	}
+	setStringList(newList);
+}
+
+SuitsFilterModel::SuitsFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
 
@@ -127,13 +160,10 @@ void SuitsFilterModel::repopulate()
 	}
 	qSort(list);
 	list << tr("No suit set");
-	setStringList(list);
-	checkState.resize(list.count());
-	std::fill(checkState.begin(), checkState.end(), false);
-	anyChecked = false;
+	updateList(list);
 }
 
-TagFilterModel::TagFilterModel(QObject *parent) : QStringListModel(parent)
+TagFilterModel::TagFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
 
@@ -150,10 +180,7 @@ void TagFilterModel::repopulate()
 	}
 	qSort(list);
 	list << tr("Empty tags");
-	setStringList(list);
-	checkState.resize(list.count());
-	std::fill(checkState.begin(), checkState.end(), false);
-	anyChecked = false;
+	updateList(list);
 }
 
 bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
@@ -190,7 +217,7 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 	return false;
 }
 
-BuddyFilterModel::BuddyFilterModel(QObject *parent) : QStringListModel(parent)
+BuddyFilterModel::BuddyFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
 
@@ -243,13 +270,10 @@ void BuddyFilterModel::repopulate()
 	}
 	qSort(list);
 	list << tr("No buddies");
-	setStringList(list);
-	checkState.resize(list.count());
-	std::fill(checkState.begin(), checkState.end(), false);
-	anyChecked = false;
+	updateList(list);
 }
 
-LocationFilterModel::LocationFilterModel(QObject *parent) : QStringListModel(parent)
+LocationFilterModel::LocationFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
 
@@ -294,10 +318,7 @@ void LocationFilterModel::repopulate()
 	}
 	qSort(list);
 	list << tr("No location set");
-	setStringList(list);
-	checkState.resize(list.count());
-	std::fill(checkState.begin(), checkState.end(), false);
-	anyChecked = false;
+	updateList(list);
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
