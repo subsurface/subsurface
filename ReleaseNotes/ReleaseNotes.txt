@@ -20,6 +20,10 @@ Some of the changes since _Subsurface_ 4.7.4
   of the previous templates would be created (#847)
 - Fix issues with filters not updating after changes to the dive list
   (#551, #675)
+- map-widget: allow updating coordinates on the map when the user
+  is editing a dive site by pressing Enter or clicking a "flag" button
+- map-widget: prevent glitches when the user is interacting with the map
+  while animations are in progress
 
 
 Some of the changes since _Subsurface_ 4.7.2
