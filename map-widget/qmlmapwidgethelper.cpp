@@ -238,11 +238,19 @@ void MapWidgetHelper::setEditMode(bool editMode)
 {
 	m_editMode = editMode;
 	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(displayed_dive_site.uuid);
-	// if divesite uuid doesn't exist in the model, add a new MapLocation.
-	if (editMode && !exists) {
-		QGeoCoordinate coord = m_map->property("center").value<QGeoCoordinate>();
-		m_mapLocationModel->add(new MapLocation(displayed_dive_site.uuid, coord,
-		                                        QString(displayed_dive_site.name)));
+	if (editMode) {
+		QGeoCoordinate coord;
+		// if divesite uuid doesn't exist in the model, add a new MapLocation.
+		if (!exists) {
+			coord = m_map->property("center").value<QGeoCoordinate>();
+			m_mapLocationModel->add(new MapLocation(displayed_dive_site.uuid, coord,
+			                                        QString(displayed_dive_site.name)));
+		} else {
+			coord = exists->coordinate();
+		}
+		displayed_dive_site.latitude.udeg = lrint(coord.latitude() * 1000000.0);
+		displayed_dive_site.longitude.udeg = lrint(coord.longitude() * 1000000.0);
+		emit coordinatesChanged();
 	}
 	emit editModeChanged();
 }
