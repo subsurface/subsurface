@@ -10,6 +10,7 @@
 #endif
 
 #include <QDebug>
+#include <algorithm>
 
 #define CREATE_INSTANCE_METHOD( CLASS ) \
 CLASS *CLASS::instance() \
@@ -39,8 +40,7 @@ bool CLASS::setData(const QModelIndex &index, const QVariant &value, int role) \
 #define CREATE_CLEAR_FILTER_METHOD( CLASS ) \
 void CLASS::clearFilter() \
 { \
-	memset(checkState, false, rowCount()); \
-	checkState[rowCount() - 1] = false; \
+	std::fill(checkState.begin(), checkState.end(), false); \
 	anyChecked = false; \
 	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0)); \
 }
@@ -128,10 +128,8 @@ void SuitsFilterModel::repopulate()
 	qSort(list);
 	list << tr("No suit set");
 	setStringList(list);
-	delete[] checkState;
-	checkState = new bool[list.count()];
-	memset(checkState, false, list.count());
-	checkState[list.count() - 1] = false;
+	checkState.resize(list.count());
+	std::fill(checkState.begin(), checkState.end(), false);
 	anyChecked = false;
 }
 
@@ -153,10 +151,8 @@ void TagFilterModel::repopulate()
 	qSort(list);
 	list << tr("Empty tags");
 	setStringList(list);
-	delete[] checkState;
-	checkState = new bool[list.count()];
-	memset(checkState, false, list.count());
-	checkState[list.count() - 1] = false;
+	checkState.resize(list.count());
+	std::fill(checkState.begin(), checkState.end(), false);
 	anyChecked = false;
 }
 
@@ -248,10 +244,8 @@ void BuddyFilterModel::repopulate()
 	qSort(list);
 	list << tr("No buddies");
 	setStringList(list);
-	delete[] checkState;
-	checkState = new bool[list.count()];
-	memset(checkState, false, list.count());
-	checkState[list.count() - 1] = false;
+	checkState.resize(list.count());
+	std::fill(checkState.begin(), checkState.end(), false);
 	anyChecked = false;
 }
 
@@ -301,10 +295,8 @@ void LocationFilterModel::repopulate()
 	qSort(list);
 	list << tr("No location set");
 	setStringList(list);
-	delete[] checkState;
-	checkState = new bool[list.count()];
-	memset(checkState, false, list.count());
-	checkState[list.count() - 1] = false;
+	checkState.resize(list.count());
+	std::fill(checkState.begin(), checkState.end(), false);
 	anyChecked = false;
 }
 
