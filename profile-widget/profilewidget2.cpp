@@ -828,6 +828,7 @@ void ProfileWidget2::settingsChanged()
 	// because the GF could have changed; otherwise we try to avoid replot()
 	bool needReplot = prefs.calcceiling;
 #ifndef SUBSURFACE_MOBILE
+	gasYAxis->settingsChanged();	// Initialize ticks of partial pressure graph
 	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
 		profileYAxis->animateChangeLine(itemPos.depth.shrinked);
 		temperatureAxis->setPos(itemPos.temperatureAll.pos.on);
