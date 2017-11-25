@@ -277,15 +277,12 @@ bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstrac
 			return true;
 	}
 
-	// there is a location selected
+	// There is a location selected
 	QStringList locationList = stringList();
-	if (!locationList.isEmpty()) {
-		locationList.removeLast(); // remove the "Show Empty Tags";
-		for (int i = 0; i < rowCount(); i++) {
-			if (checkState[i] && (location.indexOf(stringList()[i]) != -1)) {
-				return true;
-			}
-		}
+	// Ignore last item, since this is the "Show Empty Tags" entry
+	for (int i = 0; i < rowCount() - 1; i++) {
+		if (checkState[i] && location == locationList[i])
+			return true;
 	}
 	return false;
 }
