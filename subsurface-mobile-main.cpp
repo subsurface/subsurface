@@ -41,7 +41,7 @@ int main(int argc, char **argv)
 	setup_system_prefs();
 	if (uiLanguage(0).contains("-US"))
 		default_prefs.units = IMPERIAL_units;
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	fill_profile_color();
 	fill_computer_list();
 
