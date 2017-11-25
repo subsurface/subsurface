@@ -5,13 +5,14 @@
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
 #include <stdint.h>
+#include <vector>
 
 class MultiFilterInterface {
 public:
-	MultiFilterInterface() : checkState(NULL), anyChecked(false) {}
+	MultiFilterInterface() : anyChecked(false) {}
 	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
 	virtual void clearFilter() = 0;
-	bool *checkState;
+	std::vector<char> checkState;
 	bool anyChecked;
 };
 
