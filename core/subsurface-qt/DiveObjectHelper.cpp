@@ -433,10 +433,11 @@ QStringList DiveObjectHelper::locationList() const
 	struct dive_site *ds;
 	int i = 0;
 	for_each_dive (i, d) {
-		ds = get_dive_site_by_uuid(d->dive_site_uuid);
-		QString temp = ds->name;
-		if (!temp.isEmpty())
-			locations << temp;
+		if ((ds = get_dive_site_by_uuid(d->dive_site_uuid)) != NULL) {
+			QString temp = ds->name;
+			if (!temp.isEmpty())
+				locations << temp;
+		}
 	}
 	locations.removeDuplicates();
 	locations.sort();
