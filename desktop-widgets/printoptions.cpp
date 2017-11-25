@@ -60,11 +60,13 @@ void PrintOptions::setupTemplates()
 	int current_index = 0;
 	ui.printTemplate->clear();
 	Q_FOREACH(const QString& theme, currList) {
-		if (theme == storedTemplate) // find the stored template in the list
+		 // find the stored template in the list
+		if (theme == storedTemplate || theme == lastImportExportTemplate)
 			current_index = currList.indexOf(theme);
 		ui.printTemplate->addItem(theme.split('.')[0], theme);
 	}
 	ui.printTemplate->setCurrentIndex(current_index);
+	lastImportExportTemplate = "";
 }
 
 // print type radio buttons
@@ -121,6 +123,20 @@ void PrintOptions::on_printTemplate_currentIndexChanged(int index)
 
 void PrintOptions::on_editButton_clicked()
 {
+	QString templateName = getSelectedTemplate();
+	QString prefix = (printOptions->type == print_options::STATISTICS) ? "statistics/" : "";
+	QFile f(getPrintingTemplatePathUser() + QDir::separator() + prefix + templateName);
+	if (!f.open(QFile::ReadWrite | QFile::Text)) {
+		QMessageBox msgBox(this);
+		msgBox.setWindowTitle(tr("Read-only template!"));
+		msgBox.setText(tr("The template '%1' is read-only and connot be edited.\n"
+			"Please export this template to a different file.").arg(templateName));
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.exec();
+		return;
+	} else {
+		f.close();
+	}
 	TemplateEdit te(this, printOptions, templateOptions);
 	te.exec();
 	setup();
@@ -128,36 +144,93 @@ void PrintOptions::on_editButton_clicked()
 
 void PrintOptions::on_importButton_clicked()
 {
-	QString filename = QFileDialog::getOpenFileName(this, tr("Import template file"), "",
+	QString pathUser = getPrintingTemplatePathUser();
+	QString filename = QFileDialog::getOpenFileName(this, tr("Import template file"), pathUser,
 							tr("HTML files") + " (*.html)");
 	if (filename.isEmpty())
 		return;
 	QFileInfo fileInfo(filename);
-	QFile::copy(filename, getPrintingTemplatePathUser() + QDir::separator() + fileInfo.fileName());
+
+	const QString dest = pathUser + QDir::separator() + fileInfo.fileName();
+	QFile f(dest);
+	if (!f.open(QFile::ReadWrite | QFile::Text)) {
+		QMessageBox msgBox(this);
+		msgBox.setWindowTitle(tr("Read-only template!"));
+		msgBox.setText(tr("The destination template '%1' is read-only and cannot be overwritten.").arg(fileInfo.fileName()));
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.exec();
+		return;
+	} else {
+		f.close();
+		if (filename != dest)
+			f.remove();
+	}
+
+	QFile::copy(filename, dest);
 	printOptions->p_template = fileInfo.fileName();
+	lastImportExportTemplate = fileInfo.fileName();
 	find_all_templates();
 	setup();
 }
 
 void PrintOptions::on_exportButton_clicked()
 {
-	QString filename = QFileDialog::getSaveFileName(this, tr("Export template files as"), "",
+	QString pathUser = getPrintingTemplatePathUser();
+	QString filename = QFileDialog::getSaveFileName(this, tr("Export template files as"), pathUser,
 							tr("HTML files") + " (*.html)");
 	if (filename.isEmpty())
 		return;
-	QFile::copy(getPrintingTemplatePathUser() + QDir::separator() + getSelectedTemplate(), filename);
+	const QString ext(".html");
+	if (filename.endsWith(".htm", Qt::CaseInsensitive))
+		filename += "l";
+	else if (!filename.endsWith(ext, Qt::CaseInsensitive))
+		filename += ext;
+	QFileInfo fileInfo(filename);
+	const QString dest = pathUser + QDir::separator() + getSelectedTemplate();
+
+	QFile f(filename);
+	if (!f.open(QFile::ReadWrite | QFile::Text)) {
+		QMessageBox msgBox(this);
+		msgBox.setWindowTitle(tr("Read-only template!"));
+		msgBox.setText(tr("The destination template '%1' is read-only and cannot be overwritten.").arg(fileInfo.fileName()));
+		msgBox.setStandardButtons(QMessageBox::Ok);
+		msgBox.exec();
+		return;
+	} else {
+		f.close();
+		if (dest != filename)
+			f.remove();
+	}
+
+	QFile::copy(dest, filename);
+	if (!f.open(QFile::ReadWrite | QFile::Text))
+		f.setPermissions(QFileDevice::ReadUser | QFileDevice::ReadOwner | QFileDevice::WriteUser | QFileDevice::WriteOwner);
+	else
+		f.close();
+	lastImportExportTemplate = fileInfo.fileName();
+	find_all_templates();
+	setup();
 }
 
 void PrintOptions::on_deleteButton_clicked()
 {
 	QString templateName = getSelectedTemplate();
-	QMessageBox msgBox;
-	msgBox.setText(tr("This action cannot be undone!"));
-	msgBox.setInformativeText(tr("Delete template: %1?").arg(templateName));
+	QMessageBox msgBox(this);
+	msgBox.setWindowTitle(tr("This action cannot be undone!"));
+	msgBox.setText(tr("Delete template '%1'?").arg(templateName));
 	msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 	msgBox.setDefaultButton(QMessageBox::Cancel);
 	if (msgBox.exec() == QMessageBox::Ok) {
 		QFile f(getPrintingTemplatePathUser() + QDir::separator() + templateName);
+		if (!f.open(QFile::ReadWrite | QFile::Text)) {
+			msgBox.setWindowTitle(tr("Read-only template!"));
+			msgBox.setText(tr("The template '%1' is read-only and cannot be deleted.").arg(templateName));
+			msgBox.setStandardButtons(QMessageBox::Ok);
+			msgBox.exec();
+			return;
+		} else {
+			f.close();
+		}
 		f.remove();
 		find_all_templates();
 		setup();
