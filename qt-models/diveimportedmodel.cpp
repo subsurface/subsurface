@@ -180,7 +180,8 @@ void DiveImportedModel::recordDives()
 	}
 	diveTable->nr = 0;
 	process_dives(true, true);
-	autogroup_dives();
+	if (autogroup)
+		autogroup_dives();
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
