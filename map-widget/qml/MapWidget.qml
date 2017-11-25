@@ -128,6 +128,8 @@ Item {
 
 		MouseArea {
 			anchors.fill: parent
+			onPressed: { map.stopZoomAnimations(); mouse.accepted = false }
+			onWheel: { map.stopZoomAnimations(); wheel.accepted = false }
 			onDoubleClicked: map.doubleClickHandler(map.toCoordinate(Qt.point(mouseX, mouseY)))
 		}
 
@@ -294,6 +296,7 @@ Item {
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
+				map.stopZoomAnimations()
 				map.newCenter = map.center
 				map.newZoom = map.zoomLevel + map.zoomStep
 				if (map.newZoom > map.maximumZoomLevel)
@@ -318,6 +321,7 @@ Item {
 		MouseArea {
 			anchors.fill: parent
 			onClicked: {
+				map.stopZoomAnimations()
 				map.newCenter = map.center
 				map.newZoom = map.zoomLevel - map.zoomStep
 				mapAnimationClick.restart()
