@@ -115,7 +115,7 @@ void MapWidgetHelper::reloadMapLocations()
 		// at least MIN_DISTANCE_BETWEEN_DIVE_SITES_M apart
 		if (locationNameMap.contains(name)) {
 			MapLocation *existingLocation = locationNameMap[name];
-			QGeoCoordinate coord = qvariant_cast<QGeoCoordinate>(existingLocation->getRole(MapLocation::Roles::RoleCoordinate));
+			QGeoCoordinate coord = existingLocation->coordinate();
 			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
 				continue;
 		}
