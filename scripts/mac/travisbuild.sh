@@ -15,8 +15,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 cd ${TRAVIS_BUILD_DIR}/..
 DIR=$(pwd)
 
-#bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit # we need to build 'both' and need to build without BT and other variations that we want to exercise
-bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -skip-googlemaps
+bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit
 
 cd ${TRAVIS_BUILD_DIR}/build
 
