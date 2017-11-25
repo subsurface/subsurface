@@ -525,10 +525,6 @@ static inline depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive
 
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
-/* this is a global spot for a temporary dive structure that we use to
- * be able to edit a dive without unintended side effects */
-extern struct dive edit_dive;
-
 extern short autogroup;
 /* random threashold: three days without diving -> new trip
  * this works very well for people who usually dive as part of a trip and don't
