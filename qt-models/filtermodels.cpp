@@ -136,13 +136,10 @@ bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 
 	// there is a suit selected
 	QStringList suitList = stringList();
-	if (!suitList.isEmpty()) {
-		suitList.removeLast(); // remove the "Show Empty Suits";
-		for (int i = 0; i < rowCount(); i++) {
-			if (checkState[i] && (suit.indexOf(stringList()[i]) != -1)) {
-				return true;
-			}
-		}
+	// Ignore last item, since this is the "Show Empty Tags" entry
+	for (int i = 0; i < rowCount() - 1; i++) {
+		if (checkState[i] && suit == suitList[i])
+			return true;
 	}
 	return false;
 }
@@ -243,13 +240,10 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 
 	// have at least one buddy
 	QStringList buddyList = stringList();
-	if (!buddyList.isEmpty()) {
-		buddyList.removeLast(); // remove the "Show Empty Tags";
-		for (int i = 0; i < rowCount(); i++) {
-			if (checkState[i] && (diveBuddy.indexOf(stringList()[i]) != -1 || divemaster.indexOf(stringList()[i]) != -1)) {
-				return true;
-			}
-		}
+	// Ignore last item, since this is the "Show Empty Tags" entry
+	for (int i = 0; i < rowCount() - 1; i++) {
+		if (checkState[i] && (diveBuddy == buddyList[i] || divemaster == buddyList[i]))
+			return true;
 	}
 	return false;
 }
