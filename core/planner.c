@@ -675,7 +675,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int best_first_ascend_cylinder;
 	struct gasmix gas, bottom_gas;
 	bool o2break_next = false;
-	bool o2break_done = false;
 	int break_cylinder = -1, breakfrom_cylinder = 0;
 	bool last_segment_min_switch = false;
 	int error = 0;
@@ -1021,7 +1020,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 							new_clock = clock + laststoptime;
 							o2breaking = true;
 							o2break_next = true;
-							o2break_done = true;
 							breakfrom_cylinder = current_cylinder;
 							if (is_final_plan)
 								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
