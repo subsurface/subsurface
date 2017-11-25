@@ -189,6 +189,7 @@ extern const char *system_default_directory(void);
 extern const char *system_default_filename();
 extern bool subsurface_ignore_font(const char *font);
 extern void subsurface_OS_pref_setup();
+extern void copy_prefs(struct preferences *src, struct preferences *dest);
 
 #ifdef __cplusplus
 }

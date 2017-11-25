@@ -18,10 +18,10 @@
 	else                                                        \
 		prefs.units.field = default_prefs.units.field
 
-#define GET_UNIT_BOOL(name, field)                           \
+#define GET_UNIT_BOOL(name, field)                      \
 	v = s.value(QString(name));                     \
 	if (v.isValid())                                \
-		prefs.units.field = v.toBool();               \
+		prefs.units.field = v.toBool();         \
 	else                                            \
 		prefs.units.field = default_prefs.units.field
 
@@ -53,10 +53,10 @@
 	else                                        \
 		prefs.field = default_prefs.field
 
-#define GET_INT_DEF(name, field, defval)                                             \
+#define GET_INT_DEF(name, field, defval)                                 \
 	v = s.value(QString(name));                                      \
 	if (v.isValid())                                                 \
-		prefs.field = v.toInt(); \
+		prefs.field = v.toInt();                                 \
 	else                                                             \
 		prefs.field = defval
 
@@ -65,7 +65,7 @@
 	if (v.isValid())                                                 \
 		prefs.field = strdup(v.toString().toUtf8().constData()); \
 	else                                                             \
-		prefs.field = default_prefs.field
+		prefs.field = copy_string(default_prefs.field)
 
 #define SAVE_OR_REMOVE_SPECIAL(_setting, _default, _compare, _value)     \
 	if (_compare != _default)                                        \

@@ -109,7 +109,7 @@ void PreferencesDialog::refreshPages()
 		curr->setParent(0);
 	}
 
-	// Readd things.
+	// Read things
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		QListWidgetItem *item = new QListWidgetItem(page->icon(), page->name());
 		pagesList->addItem(item);
@@ -139,7 +139,7 @@ void PreferencesDialog::cancelRequested()
 
 void PreferencesDialog::defaultsRequested()
 {
-	prefs = default_prefs;
+	copy_prefs(&default_prefs, &prefs);
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
 	}
