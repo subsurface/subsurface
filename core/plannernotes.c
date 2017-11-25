@@ -89,7 +89,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s<br>",
 				translate("gettextFromC", "Subsurface"),
 				subsurface_canonical_version(),
-				translate("gettextFromC", "dive plan</b> (Overlapping dives detected)"));
+				translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
 				dive->notes = strdup(buffer);
 				free((void *)buffer);
 				free((void *)temp);

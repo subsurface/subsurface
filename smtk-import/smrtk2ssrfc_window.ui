@@ -374,7 +374,7 @@
      <bool>true</bool>
     </property>
     <property name="placeholderText">
-     <string>Import messages (Errors, warnings, etc)</string>
+     <string>Import messages (errors, warnings, etc)</string>
     </property>
    </widget>
    <zorder>label_4</zorder>
