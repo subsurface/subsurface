@@ -38,6 +38,9 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 	connect(this, SIGNAL(nameChanged(const QString &, const QString &)),
 		LocationFilterModel::instance(), SLOT(changeName(const QString &, const QString &)));
+	connect(ui.updateLocationButton, SIGNAL(clicked()), this, SLOT(updateLocationOnMap()));
+	connect(ui.diveSiteCoordinates, SIGNAL(returnPressed()), this, SLOT(updateLocationOnMap()));
+	ui.diveSiteCoordinates->installEventFilter(this);
 
 	SsrfSortFilterProxyModel *filter_model = new SsrfSortFilterProxyModel(this);
 	filter_model->setSourceModel(LocationInformationModel::instance());
@@ -58,7 +61,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 		MapWidget::instance(), &MapWidget::updateCurrentDiveSiteCoordinatesToMap);
 }
 
-bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)
+bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 {
 	if (ev->type() == QEvent::ContextMenu) {
 		QContextMenuEvent *ctx = (QContextMenuEvent *)ev;
@@ -66,8 +69,16 @@ bool LocationInformationWidget::eventFilter(QObject *, QEvent *ev)
 		contextMenu.addAction(tr("Merge into current site"), this, SLOT(mergeSelectedDiveSites()));
 		contextMenu.exec(ctx->globalPos());
 		return true;
+	} else if (ev->type() == QEvent::FocusOut && object == ui.diveSiteCoordinates) {
+		emit coordinatesChanged();
 	}
 	return false;
+}
+
+void LocationInformationWidget::enableLocationButtons(bool enable)
+{
+	ui.geoCodeButton->setEnabled(enable);
+	ui.updateLocationButton->setEnabled(enable);
 }
 
 void LocationInformationWidget::mergeSelectedDiveSites()
@@ -137,7 +148,7 @@ void LocationInformationWidget::updateGpsCoordinates()
 	QString oldText = ui.diveSiteCoordinates->text();
 	const char *coords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
 	ui.diveSiteCoordinates->setText(coords);
-	ui.geoCodeButton->setEnabled(dive_site_has_gps_location(&displayed_dive_site));
+	enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
 	free((void *)coords);
 	if (oldText != ui.diveSiteCoordinates->text())
 		markChangedWidget(ui.diveSiteCoordinates);
@@ -222,7 +233,7 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
 	if (displayed_dive_site.uuid) {
 		updateLabels();
-		ui.geoCodeButton->setEnabled(dive_site_has_gps_location(&displayed_dive_site));
+		enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
 		emit startFilterDiveSite(displayed_dive_site.uuid);
 		if (m)
@@ -274,10 +285,9 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 			displayed_dive_site.latitude.udeg = lrint(latitude * 1000000);
 			displayed_dive_site.longitude.udeg = lrint(longitude * 1000000);
 			markChangedWidget(ui.diveSiteCoordinates);
-			emit coordinatesChanged();
-			ui.geoCodeButton->setEnabled(latitude != 0 && longitude != 0);
+			enableLocationButtons(latitude != 0 && longitude != 0);
 		} else {
-			ui.geoCodeButton->setEnabled(false);
+			enableLocationButtons(false);
 		}
 	}
 	free((void *)coords);
@@ -322,6 +332,11 @@ void LocationInformationWidget::reverseGeocode()
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
 	geoLookup->run();
 	updateLabels();
+}
+
+void LocationInformationWidget::updateLocationOnMap()
+{
+	emit coordinatesChanged();
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *parent)

@@ -15,6 +15,7 @@ public:
 
 protected:
 	void showEvent(QShowEvent *);
+	void enableLocationButtons(bool enable);
 
 public slots:
 	void acceptChanges();
@@ -33,6 +34,7 @@ public slots:
 	void mergeSelectedDiveSites();
 private slots:
 	void updateLabels();
+	void updateLocationOnMap();
 signals:
 	void startEditDiveSite(uint32_t uuid);
 	void endEditDiveSite();
