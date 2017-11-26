@@ -333,6 +333,20 @@ void LocationFilterModel::changeName(const QString &oldName, const QString &newN
 		checkState[newIndex] = true;
 }
 
+void LocationFilterModel::addName(const QString &newName)
+{
+	// If any item is checked and a new location is added, add the name
+	// of the new location in front of the list and mark it as checked.
+	// Thus, on subsequent repopulation of the list, the new entry will
+	// be registered as already checked.
+	QStringList list = stringList();
+	if (!anyChecked || newName.isEmpty() || list.indexOf(newName) >= 0)
+		return;
+	list.prepend(newName);
+	setStringList(list);
+	checkState.insert(checkState.begin(), true);
+}
+
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
 	QSortFilterProxyModel(parent),
 	divesDisplayed(0),
