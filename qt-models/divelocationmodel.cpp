@@ -131,20 +131,6 @@ void LocationInformationModel::update()
 	endResetModel();
 }
 
-uint32_t LocationInformationModel::addDiveSite(const QString& name, timestamp_t divetime, int lon, int lat)
-{
-	degrees_t latitude, longitude;
-	latitude.udeg = lat;
-	longitude.udeg = lon;
-
-	beginInsertRows(QModelIndex(), dive_site_table.nr + 2, dive_site_table.nr + 2);
-	uint32_t uuid = create_dive_site_with_gps(name.toUtf8().data(), latitude, longitude, divetime);
-	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
-	internalRowCount = dive_site_table.nr;
-	endInsertRows();
-	return uuid;
-}
-
 bool LocationInformationModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (!index.isValid() || index.row() < 2)
