@@ -64,7 +64,6 @@ public
 slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();
-	void refreshDiveInfo();
 	void updateDiveInfo(bool clear = false);
 	void updateDepthDuration();
 	void acceptChanges();
