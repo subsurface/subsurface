@@ -54,20 +54,20 @@
      </property>
     </widget>
    </item>
-   <item row="7" column="2" rowspan="2" colspan="2">
+   <item row="7" column="2" rowspan="2" colspan="3">
     <widget class="QPlainTextEdit" name="diveSiteNotes">
      <property name="focusPolicy">
       <enum>Qt::ClickFocus</enum>
      </property>
     </widget>
    </item>
-   <item row="1" column="2" colspan="2">
+   <item row="1" column="2" colspan="3">
     <widget class="QLineEdit" name="diveSiteName"/>
    </item>
-   <item row="5" column="2" colspan="2">
+   <item row="5" column="2" colspan="3">
     <widget class="QLineEdit" name="diveSiteDescription"/>
    </item>
-   <item row="3" column="3">
+   <item row="3" column="4">
     <widget class="QToolButton" name="geoCodeButton">
      <property name="toolTip">
       <string>Reverse geo lookup</string>
@@ -81,7 +81,7 @@
      </property>
     </widget>
    </item>
-   <item row="0" column="0" colspan="4">
+   <item row="0" column="0" colspan="5">
     <widget class="KMessageWidget" name="diveSiteMessage">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -91,7 +91,7 @@
      </property>
     </widget>
    </item>
-   <item row="9" column="0" colspan="4">
+   <item row="9" column="0" colspan="5">
     <widget class="QGroupBox" name="diveSiteGroupBox">
      <property name="title">
       <string>Dive sites on same coordinates</string>
@@ -139,7 +139,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="2" colspan="2">
+   <item row="4" column="2" colspan="3">
     <widget class="QLabel" name="locationTags">
      <property name="text">
       <string/>
@@ -153,8 +153,22 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="2" colspan="2">
+   <item row="2" column="2" colspan="3">
     <widget class="QLineEdit" name="diveSiteCountry"/>
+   </item>
+   <item row="3" column="3">
+    <widget class="QToolButton" name="updateLocationButton">
+     <property name="toolTip">
+      <string>Update location on map</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset resource="../subsurface.qrc">
+       <normaloff>:/mapwidget-marker-selected</normaloff>:/mapwidget-marker-selected</iconset>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
@@ -170,6 +184,7 @@
   <tabstop>diveSiteName</tabstop>
   <tabstop>diveSiteCountry</tabstop>
   <tabstop>diveSiteCoordinates</tabstop>
+  <tabstop>updateLocationButton</tabstop>
   <tabstop>geoCodeButton</tabstop>
   <tabstop>diveSiteDescription</tabstop>
   <tabstop>diveSiteNotes</tabstop>
