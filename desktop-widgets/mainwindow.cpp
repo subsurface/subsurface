@@ -159,10 +159,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	LocationInformationWidget * diveSiteEdit = new LocationInformationWidget();
 	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
 			this, &MainWindow::setDefaultState);
-
-	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
-			mainTab, &MainTab::refreshDiveInfo);
-
+	connect(diveSiteEdit, SIGNAL(endEditDiveSite()), this, SLOT(refreshDisplay()));
 	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
 			mainTab, &MainTab::refreshDisplayedDiveSite);
 
