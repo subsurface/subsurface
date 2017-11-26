@@ -1,5 +1,6 @@
 <divelog program='subsurface' version='3'>
 <settings>
+<divecomputerid model='Vyper Air' deviceid='013749e4' serial='20400612'/>
 <divecomputerid model='Suunto Vyper Air' deviceid='11223344' serial='99999999'/>
 <divecomputerid model='Heinrichs Weikamp OSTC Sport' deviceid='abcdef00' serial='10000' firmware='10.31'/>
 <divecomputerid model='Vyper Air' deviceid='ffffffff' serial='20400612'/>
