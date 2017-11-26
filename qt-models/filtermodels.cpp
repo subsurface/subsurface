@@ -315,6 +315,24 @@ void LocationFilterModel::repopulate()
 	updateList(list);
 }
 
+void LocationFilterModel::changeName(const QString &oldName, const QString &newName)
+{
+	if (oldName.isEmpty() || newName.isEmpty() || oldName == newName)
+		return;
+	QStringList list = stringList();
+	int oldIndex = list.indexOf(oldName);
+	if (oldIndex < 0)
+		return;
+	int newIndex = list.indexOf(newName);
+	list[oldIndex] = newName;
+	setStringList(list);
+
+	// If there was already an entry with the new name, we are merging entries.
+	// Thus, if the old entry was selected, also select the new entry.
+	if (newIndex >= 0 && checkState[oldIndex])
+		checkState[newIndex] = true;
+}
+
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
 	QSortFilterProxyModel(parent),
 	divesDisplayed(0),

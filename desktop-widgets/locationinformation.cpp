@@ -36,6 +36,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
 	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
+	connect(this, SIGNAL(nameChanged(const QString &, const QString &)),
+		LocationFilterModel::instance(), SLOT(changeName(const QString &, const QString &)));
 
 	SsrfSortFilterProxyModel *filter_model = new SsrfSortFilterProxyModel(this);
 	filter_model->setSourceModel(LocationInformationModel::instance());
@@ -156,6 +158,7 @@ void LocationInformationWidget::acceptChanges()
 	currentDs->latitude = displayed_dive_site.latitude;
 	currentDs->longitude = displayed_dive_site.longitude;
 	if (!same_string(uiString, currentDs->name)) {
+		emit nameChanged(QString(currentDs->name), ui.diveSiteName->text());
 		free(currentDs->name);
 		currentDs->name = uiString;
 	} else {
