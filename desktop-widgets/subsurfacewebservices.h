@@ -110,12 +110,4 @@ slots:
 	virtual void buttonClicked(QAbstractButton *button) { Q_UNUSED(button) }
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-extern void set_userid(char *user_id);
-#ifdef __cplusplus
-}
-#endif
-
 #endif // SUBSURFACEWEBSERVICES_H
