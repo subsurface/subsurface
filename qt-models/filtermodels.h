@@ -68,6 +68,7 @@ public:
 public
 slots:
 	void repopulate();
+	void changeName(const QString &oldName, const QString &newName);
 
 private:
 	explicit LocationFilterModel(QObject *parent = 0);

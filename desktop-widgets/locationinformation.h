@@ -41,6 +41,7 @@ signals:
 	void stopFilterDiveSite();
 	void requestCoordinates();
 	void endRequestCoordinates();
+	void nameChanged(const QString &oldName, const QString &newName);
 
 private:
 	void clearLabels();
