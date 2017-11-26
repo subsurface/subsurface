@@ -7,9 +7,9 @@
 #include <QIcon>
 #include <core/gettextfromc.h>
 
-bool dive_site_less_than(dive_site *a, dive_site *b)
+static bool dive_site_less_than(dive_site *a, dive_site *b)
 {
-	return QString(a->name) <= QString(b->name);
+	return QString(a->name) < QString(b->name);
 }
 
 LocationInformationModel *LocationInformationModel::instance()
