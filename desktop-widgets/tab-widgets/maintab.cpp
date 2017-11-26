@@ -461,6 +461,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.locationTags->setText(constructLocationTags(ds, true));
 		} else {
 			ui.location->clear();
+			ui.locationTags->clear();
 			clear_dive_site(&displayed_dive_site);
 		}
 
