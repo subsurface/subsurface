@@ -163,6 +163,16 @@ void TestParse::testParseDM4()
 		SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
 }
 
+void TestParse::testParseDM5()
+{
+	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.db", &_sqlite3_handle), 0);
+	QCOMPARE(parse_dm5_buffer(_sqlite3_handle, 0, 0, 0, &dive_table), 0);
+
+	QCOMPARE(save_dives("./testdm5out.ssrf"), 0);
+	FILE_COMPARE("./testdm5out.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.xml");
+}
+
 void TestParse::testParseHUDC()
 {
 	char *params[37];

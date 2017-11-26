@@ -19,6 +19,7 @@ private slots:
 	void testParse();
 
 	void testParseDM4();
+	void testParseDM5();
 	void testParseHUDC();
 	void testParseNewFormat();
 	void testParseDLD();
