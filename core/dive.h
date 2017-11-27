@@ -994,6 +994,9 @@ extern bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
+#ifdef DEBUG_CYL
+extern void dump_cylinders(struct dive *dive, bool verbose);
+#endif
 
 /*
  * String handling.
