@@ -29,7 +29,6 @@
 
 int verbose, quit, force_root;
 int last_xml_version = -1;
-int diveid = -1;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 
@@ -1883,18 +1882,6 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 
 	cylinder_end();
 
-	return 0;
-}
-
-static int atoi_n(char *ptr, unsigned int len)
-{
-	if (len < 10) {
-		char buf[10];
-
-		memcpy(buf, ptr, len);
-		buf[len] = 0;
-		return atoi(buf);
-	}
 	return 0;
 }
 
