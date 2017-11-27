@@ -47,6 +47,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/load-git.c \
     ../../../core/parse-xml.c \
     ../../../core/parse.c \
+    ../../../core/parse-db.c \
     ../../../core/save-html.c \
     ../../../core/statistics.c \
     ../../../core/worldmap-save.c \

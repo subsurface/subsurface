@@ -51,6 +51,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	ostctools.c
 	parse-xml.c
 	parse.c
+	parse-db.c
 	planner.c
 	plannernotes.c
 	profile.c
