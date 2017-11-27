@@ -488,6 +488,9 @@ void CylindersModel::updateDive()
 {
 	clear();
 	rows = 0;
+#ifdef DEBUG_CYL
+	dump_cylinders(&displayed_dive, true);
+#endif
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (show_cylinder(&displayed_dive, i))
 			rows = i + 1;
