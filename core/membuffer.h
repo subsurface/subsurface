@@ -7,6 +7,7 @@ extern "C" {
 #endif
 
 #include <ctype.h>
+#include "units.h"
 
 struct membuffer {
 	unsigned int len, alloc;

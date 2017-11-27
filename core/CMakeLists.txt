@@ -50,6 +50,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	membuffer.c
 	ostctools.c
 	parse-xml.c
+	parse.c
 	planner.c
 	plannernotes.c
 	profile.c

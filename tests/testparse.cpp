@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testparse.h"
 #include "core/dive.h"
+#include "core/parse.h"
 #include "core/file.h"
 #include "core/divelist.h"
 #include <QTextStream>
