@@ -106,7 +106,7 @@ void TabDiveStatistics::updateData()
 	QString gasUsedString;
 	volume_t vol;
 	selectedDivesGasUsed(gasUsed);
-	for (int j = 0; j < 20; j++) {
+	for (int j = 0; j < MAX_CYLINDERS; j++) {
 		if (gasUsed.isEmpty())
 			break;
 		QPair<QString, int> gasPair = gasUsed.last();
