@@ -93,4 +93,6 @@ void userid_start(void);
 void userid_stop(void);
 void utf8_string(char *buffer, void *_res);
 
+void add_dive_site(char *ds_name, struct dive *dive);
+
 #endif
