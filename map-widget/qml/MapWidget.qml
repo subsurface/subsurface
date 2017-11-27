@@ -112,15 +112,6 @@ Item {
 		}
 
 		ParallelAnimation {
-			id: mapAnimationZoomOut
-			NumberAnimation { target: map; property: "zoomLevel"; from: map.zoomLevel; to: map.newZoom; duration: 3000 }
-			SequentialAnimation {
-				PauseAnimation { duration: 2000 }
-				CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 2000 }
-			}
-		}
-
-		ParallelAnimation {
 			id: mapAnimationClick
 			CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 500	}
 			NumberAnimation { target: map; property: "zoomLevel"; to: map.newZoom; duration: 500 }
@@ -141,20 +132,12 @@ Item {
 			mapAnimationClick.restart()
 		}
 
-		function animateMapZoomOut() {
-			newCenter = defaultCenter
-			newZoom = defaultZoomOut
-			mapAnimationZoomIn.stop()
-			mapAnimationZoomOut.restart()
-		}
-
 		function pointIsVisible(pt) {
 			return !isNaN(pt.x)
 		}
 
 		function stopZoomAnimations() {
 			mapAnimationZoomIn.stop()
-			mapAnimationZoomOut.stop()
 		}
 
 		function centerOnCoordinate(coord) {
@@ -180,7 +163,6 @@ Item {
 				zoomLevel = zoomStored
 				newZoom = zoomStored
 				mapAnimationZoomIn.restart()
-				mapAnimationZoomOut.stop()
 			}
 		}
 
@@ -225,7 +207,6 @@ Item {
 				zoomLevel = zoomStored
 				center = centerStored
 				mapAnimationZoomIn.restart()
-				mapAnimationZoomOut.stop()
 			}
 		}
 
