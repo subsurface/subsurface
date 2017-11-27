@@ -13,6 +13,8 @@
 #include <QtConcurrent>
 #include <desktop-widgets/mainwindow.h>
 
+#define VARIATIONS_IN_BACKGROUND 1
+
 #define UNIT_FACTOR ((prefs.units.length == units::METERS) ? 1000.0 / 60.0 : feet_to_mm(1.0) / 60.0)
 
 /* TODO: Port this to CleanerTableModel to remove a bit of boilerplate and
@@ -930,7 +932,11 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lock_planner();
 		cloneDiveplan(&diveplan, plan_copy);
 		unlock_planner();
+#ifdef VARIATIONS_IN_BACKGROUND
 		QtConcurrent::run(this, &DivePlannerPointsModel::computeVariations, plan_copy, &plan_deco_state);
+#else
+		computeVariations(plan_copy, &plan_deco_state);
+#endif
 		final_deco_state = plan_deco_state;
 		emit calculatedPlanNotes();
 	}
