@@ -9,6 +9,9 @@
 #include "parse.h"
 #include "divelist.h"
 #include "device.h"
+#include "gettext.h"
+
+int metric = 1;
 
 /*
 static union {
