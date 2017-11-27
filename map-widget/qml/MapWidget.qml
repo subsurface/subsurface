@@ -104,9 +104,9 @@ Item {
 				target: map; property: "zoomLevel"; to: map.newZoomOut; duration: Math.abs(map.newZoomOut - map.zoomLevel) * 200
 			}
 			ParallelAnimation {
-				CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 1000 }
+				CoordinateAnimation { target: map; property: "center"; to: map.newCenter; duration: 2000; easing.type: Easing.OutCubic }
 				NumberAnimation {
-					target: map; property: "zoomLevel"; to: map.newZoom ; duration: 2000; easing.type: Easing.InCubic
+					target: map; property: "zoomLevel"; to: map.newZoom; duration: 2000
 				}
 			}
 		}
