@@ -109,9 +109,7 @@ bool weightsystem_none(void *_data)
 
 bool no_weightsystems(weightsystem_t *ws)
 {
-	int i;
-
-	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		if (!weightsystem_none(ws + i))
 			return false;
 	return true;
@@ -125,9 +123,7 @@ static bool one_weightsystem_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 
 bool weightsystems_equal(weightsystem_t *ws1, weightsystem_t *ws2)
 {
-	int i;
-
-	for (i = 0; i < MAX_WEIGHTSYSTEMS; i++)
+	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		if (!one_weightsystem_equal(ws1 + i, ws2 + i))
 			return false;
 	return true;
@@ -227,10 +223,9 @@ void remove_weightsystem(struct dive *dive, int idx)
  * and if we are tracking gas consumption the pressures need to be reset to start = end = workingpressure */
 void reset_cylinders(struct dive *dive, bool track_gas)
 {
-	int i;
 	pressure_t decopo2 = {.mbar = prefs.decopo2};
 
-	for (i = 0; i < MAX_CYLINDERS; i++) {
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = &dive->cylinder[i];
 		if (cylinder_none(cyl))
 			continue;
