@@ -37,7 +37,7 @@ if [ "$NOPULL" = "" ] ; then
 	popd
 fi
 if [ ! -d breeze-icons ] ; then
-	git clone git://anongit.kde.org/breeze-icons
+	git clone https://github.com/kde/breeze-icons
 fi
 if [ "$NOPULL" = "" ] ; then
 	pushd breeze-icons
