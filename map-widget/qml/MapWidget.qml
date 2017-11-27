@@ -151,73 +151,73 @@ Item {
 			stopZoomAnimations()
 			if (!coordIsValid(coord)) {
 				console.warn("MapWidget.qml: centerOnCoordinate(): !coordIsValid()")
-			} else {
-				var newZoomOutFound = false
-				var zoomStored = zoomLevel
-				var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
-				newZoomOut = zoomLevel
-				newCenter = coord
-				zoomLevel = Math.floor(zoomLevel)
-				while (zoomLevel > minimumZoomLevel) {
-					var pt = fromCoordinate(coord)
-					if (pointIsVisible(pt)) {
-						newZoomOut = zoomLevel
-						newZoomOutFound = true
-						break
-					}
-					zoomLevel -= 1.0
-				}
-				if (!newZoomOutFound)
-					newZoomOut = defaultZoomOut
-				zoomLevel = zoomStored
-				center = centerStored
-				newZoom = zoomStored
-				mapAnimationZoomIn.restart()
+				return
 			}
+			var newZoomOutFound = false
+			var zoomStored = zoomLevel
+			var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
+			newZoomOut = zoomLevel
+			newCenter = coord
+			zoomLevel = Math.floor(zoomLevel)
+			while (zoomLevel > minimumZoomLevel) {
+				var pt = fromCoordinate(coord)
+				if (pointIsVisible(pt)) {
+					newZoomOut = zoomLevel
+					newZoomOutFound = true
+					break
+				}
+				zoomLevel -= 1.0
+			}
+			if (!newZoomOutFound)
+				newZoomOut = defaultZoomOut
+			zoomLevel = zoomStored
+			center = centerStored
+			newZoom = zoomStored
+			mapAnimationZoomIn.restart()
 		}
 
 		function centerOnRectangle(topLeft, bottomRight, centerRect) {
 			stopZoomAnimations()
 			if (newCenter.latitude === 0.0 && newCenter.longitude === 0.0) {
 				// Do nothing
-			} else {
-				var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
-				var zoomStored = zoomLevel
-				var newZoomOutFound = false
-				newCenter = centerRect
-				// calculate zoom out
-				newZoomOut = zoomLevel
-				while (zoomLevel > minimumZoomLevel) {
-					var ptCenter = fromCoordinate(centerStored)
-					var ptCenterRect = fromCoordinate(centerRect)
-					if (pointIsVisible(ptCenter) && pointIsVisible(ptCenterRect)) {
-						newZoomOut = zoomLevel
-						newZoomOutFound = true
-						break
-					}
-					zoomLevel -= 1.0
-				}
-				if (!newZoomOutFound)
-					newZoomOut = defaultZoomOut
-				// calculate zoom in
-				center = newCenter
-				zoomLevel = Math.floor(maximumZoomLevel)
-				var diagonalRect = topLeft.distanceTo(bottomRight)
-				while (zoomLevel > minimumZoomLevel) {
-					var c0 = toCoordinate(Qt.point(0.0, 0.0))
-					var c1 = toCoordinate(Qt.point(width, height))
-					if (c0.distanceTo(c1) > diagonalRect) {
-						newZoom = zoomLevel - 2.0
-						break
-					}
-					zoomLevel -= 1.0
-				}
-				if (newZoom > defaultZoomIn)
-					newZoom = defaultZoomIn
-				zoomLevel = zoomStored
-				center = centerStored
-				mapAnimationZoomIn.restart()
+				return
 			}
+			var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
+			var zoomStored = zoomLevel
+			var newZoomOutFound = false
+			newCenter = centerRect
+			// calculate zoom out
+			newZoomOut = zoomLevel
+			while (zoomLevel > minimumZoomLevel) {
+				var ptCenter = fromCoordinate(centerStored)
+				var ptCenterRect = fromCoordinate(centerRect)
+				if (pointIsVisible(ptCenter) && pointIsVisible(ptCenterRect)) {
+					newZoomOut = zoomLevel
+					newZoomOutFound = true
+					break
+				}
+				zoomLevel -= 1.0
+			}
+			if (!newZoomOutFound)
+				newZoomOut = defaultZoomOut
+			// calculate zoom in
+			center = newCenter
+			zoomLevel = Math.floor(maximumZoomLevel)
+			var diagonalRect = topLeft.distanceTo(bottomRight)
+			while (zoomLevel > minimumZoomLevel) {
+				var c0 = toCoordinate(Qt.point(0.0, 0.0))
+				var c1 = toCoordinate(Qt.point(width, height))
+				if (c0.distanceTo(c1) > diagonalRect) {
+					newZoom = zoomLevel - 2.0
+					break
+				}
+				zoomLevel -= 1.0
+			}
+			if (newZoom > defaultZoomIn)
+				newZoom = defaultZoomIn
+			zoomLevel = zoomStored
+			center = centerStored
+			mapAnimationZoomIn.restart()
 		}
 
 		function deselectMapLocation() {
