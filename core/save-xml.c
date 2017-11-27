@@ -159,6 +159,8 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		put_pressure(b, cylinder->end, " end='", " bar'");
 		if (cylinder->cylinder_use != OC_GAS)
 			show_utf8(b, cylinderuse_text[cylinder->cylinder_use], " use='", "'", 1);
+		if (cylinder->depth.mm != 0)
+			put_milli(b, " depth='", cylinder->depth.mm, " m'");
 		put_format(b, " />\n");
 	}
 }
