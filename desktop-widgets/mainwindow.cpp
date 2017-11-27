@@ -212,6 +212,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(information(), SIGNAL(dateTimeChanged()), graphics(), SLOT(dateTimeChanged()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
+	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
 	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), mapWidget, SLOT(centerOnDiveSite(struct dive_site *)));
@@ -445,7 +446,6 @@ void MainWindow::enableDisableCloudActions()
 PlannerDetails *MainWindow::plannerDetails() const {
 	return qobject_cast<PlannerDetails*>(applicationState["PlanDive"].bottomRight);
 }
-
 PlannerSettingsWidget *MainWindow::divePlannerSettingsWidget() {
 	return qobject_cast<PlannerSettingsWidget*>(applicationState["PlanDive"].bottomLeft);
 }
@@ -896,6 +896,14 @@ void MainWindow::planCreated()
 
 void MainWindow::setPlanNotes()
 {
+	plannerDetails()->divePlanOutput()->setHtml(displayed_dive.notes);
+}
+
+void MainWindow::updateVariations(QString variations)
+{
+	QString notes = QString(displayed_dive.notes);
+	free(displayed_dive.notes);
+	displayed_dive.notes = strdup(notes.replace("VARIATIONS", variations).toUtf8().data());
 	plannerDetails()->divePlanOutput()->setHtml(displayed_dive.notes);
 }
 
