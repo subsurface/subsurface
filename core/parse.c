@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <assert.h>
+#include <stdarg.h>
 #include "membuffer.h"
 #include <stdlib.h>
 #include <unistd.h>
