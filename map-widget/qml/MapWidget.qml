@@ -136,19 +136,28 @@ Item {
 			return !isNaN(pt.x)
 		}
 
+		function coordIsValid(coord) {
+			if (coord == null || isNaN(coord.latitude) || isNaN(coord.longitude) ||
+			    (coord.latitude === 0.0 && coord.longitude === 0.0))
+				return false;
+			return true;
+		}
+
 		function stopZoomAnimations() {
 			mapAnimationZoomIn.stop()
 		}
 
 		function centerOnCoordinate(coord) {
 			stopZoomAnimations()
-			if (coord.latitude === 0.0 && coord.longitude === 0.0) {
-				// Do nothing
+			if (!coordIsValid(coord)) {
+				console.warn("MapWidget.qml: centerOnCoordinate(): !coordIsValid()")
 			} else {
 				var newZoomOutFound = false
 				var zoomStored = zoomLevel
+				var centerStored = QtPositioning.coordinate(center.latitude, center.longitude)
 				newZoomOut = zoomLevel
 				newCenter = coord
+				zoomLevel = Math.floor(zoomLevel)
 				while (zoomLevel > minimumZoomLevel) {
 					var pt = fromCoordinate(coord)
 					if (pointIsVisible(pt)) {
@@ -156,11 +165,12 @@ Item {
 						newZoomOutFound = true
 						break
 					}
-					zoomLevel--
+					zoomLevel -= 1.0
 				}
 				if (!newZoomOutFound)
 					newZoomOut = defaultZoomOut
 				zoomLevel = zoomStored
+				center = centerStored
 				newZoom = zoomStored
 				mapAnimationZoomIn.restart()
 			}
@@ -185,13 +195,13 @@ Item {
 						newZoomOutFound = true
 						break
 					}
-					zoomLevel--
+					zoomLevel -= 1.0
 				}
 				if (!newZoomOutFound)
 					newZoomOut = defaultZoomOut
 				// calculate zoom in
 				center = newCenter
-				zoomLevel = maximumZoomLevel
+				zoomLevel = Math.floor(maximumZoomLevel)
 				var diagonalRect = topLeft.distanceTo(bottomRight)
 				while (zoomLevel > minimumZoomLevel) {
 					var c0 = toCoordinate(Qt.point(0.0, 0.0))
@@ -200,7 +210,7 @@ Item {
 						newZoom = zoomLevel - 2.0
 						break
 					}
-					zoomLevel--
+					zoomLevel -= 1.0
 				}
 				if (newZoom > defaultZoomIn)
 					newZoom = defaultZoomIn
