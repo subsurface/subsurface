@@ -36,6 +36,7 @@
 #include "qt-models/weigthsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
 #include "qt-models/diveplannermodel.h"
+#include "qt-models/cylindermodel.h"
 #include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/usersurvey.h"
@@ -980,6 +981,7 @@ void MainWindow::on_actionReplanDive_triggered()
 		divePlannerWidget()->setSalinity(current_dive->salinity);
 	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
 	reset_cylinders(&displayed_dive, true);
+	CylindersModel::instance()->updateDive();
 }
 
 void MainWindow::on_actionDivePlanner_triggered()
