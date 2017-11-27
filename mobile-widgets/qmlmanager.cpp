@@ -132,7 +132,11 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	}
 #endif
 	appendTextToLog("Starting " + getUserAgent());
-	appendTextToLog(QStringLiteral("build with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
+	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
+	appendTextToLog(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
+	int git_maj, git_min, git_rev;
+	git_libgit2_version(&git_maj, &git_min, &git_rev);
+	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	setStartPageText(tr("Starting..."));
 
 #if defined(BT_SUPPORT)
