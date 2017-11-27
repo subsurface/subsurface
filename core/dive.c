@@ -1716,7 +1716,7 @@ struct dive *fixup_dive(struct dive *dive)
 /* Don't pick a zero for MERGE_MIN() */
 #define MERGE_MAX(res, a, b, n) res->n = MAX(a->n, b->n)
 #define MERGE_MIN(res, a, b, n) res->n = (a->n) ? (b->n) ? MIN(a->n, b->n) : (a->n) : (b->n)
-#define MERGE_TXT(res, a, b, n) res->n = merge_text(a->n, b->n)
+#define MERGE_TXT(res, a, b, n, sep) res->n = merge_text(a->n, b->n, sep)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
 struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc)
@@ -1862,7 +1862,7 @@ static void merge_samples(struct divecomputer *res, struct divecomputer *a, stru
 	}
 }
 
-static char *merge_text(const char *a, const char *b)
+static char *merge_text(const char *a, const char *b, const char *sep)
 {
 	char *res;
 	if (!a && !b)
@@ -1876,7 +1876,7 @@ static char *merge_text(const char *a, const char *b)
 	res = malloc(strlen(a) + strlen(b) + 32);
 	if (!res)
 		return (char *)a;
-	sprintf(res, translate("gettextFromC", "(%s) or (%s)"), a, b);
+	sprintf(res, "%s%s%s", a, sep, b);
 	return res;
 }
 
@@ -3268,11 +3268,11 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	res->when = dl ? dl->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
-	MERGE_TXT(res, a, b, notes);
-	MERGE_TXT(res, a, b, buddy);
-	MERGE_TXT(res, a, b, divemaster);
+	MERGE_TXT(res, a, b, notes, "\n--\n");
+	MERGE_TXT(res, a, b, buddy, ", ");
+	MERGE_TXT(res, a, b, divemaster, ", ");
 	MERGE_MAX(res, a, b, rating);
-	MERGE_TXT(res, a, b, suit);
+	MERGE_TXT(res, a, b, suit, ", ");
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
