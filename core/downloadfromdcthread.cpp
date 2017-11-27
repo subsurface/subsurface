@@ -67,48 +67,49 @@ static void fill_supported_mobile_list()
 #if defined(Q_OS_ANDROID)
 	/* BT, BLE and FTDI devices */
 	mobileProductList["Aeris"] =
-			QStringList({{"500 AI"}, {"A300"}, {"A300 AI"}, {"A300CS"}, {"Atmos 2"}, {"Atmos AI"}, {"Atmos AI 2"}, {"Compumask"}, {"Elite"}, {"Elite T3"}, {"Epic"}, {"F10"}, {"F11"}, {"Manta"}, {"XR-1 NX"}, {"XR-2"}});
+		QStringList({{"500 AI"}, {"A300"}, {"A300 AI"}, {"A300CS"}, {"Atmos 2"}, {"Atmos AI"}, {"Atmos AI 2"}, {"Compumask"}, {"Elite"}, {"Elite T3"}, {"Epic"}, {"F10"}, {"F11"}, {"Manta"}, {"XR-1 NX"}, {"XR-2"}});
 	mobileProductList["Aqualung"] =
-			QStringList({{"i300"}, {"i450T"}, {"i550"}, {"i750TC"}});
+		QStringList({{"i200"}, {"i300"}, {"i450T"}, {"i550"}, {"i750TC"}});
 	mobileProductList["Beuchat"] =
-			QStringList({{"Mundial 2"}, {"Mundial 3"}, {"Voyager 2G"}});
+		QStringList({{"Mundial 2"}, {"Mundial 3"}, {"Voyager 2G"}});
 	mobileProductList["Cochran"] =
-			QStringList({{"Commander TM"}, {"Commander I"}, {"Commander II"}, {"EMC-14"}, {"EMC-16"}, {"EMC-20H"}});
+		QStringList({{"Commander I"}, {"Commander II"}, {"Commander TM"}, {"EMC-14"}, {"EMC-16"}, {"EMC-20H"}});
 	mobileProductList["Genesis"] =
-			QStringList({{"React Pro"}, {"React Pro White"}});
+		QStringList({{"React Pro"}, {"React Pro White"}});
 	mobileProductList["Heinrichs Weikamp"] =
-			QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Sport"}, {"OSTC cR"}});
+		QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC cR"}});
 	mobileProductList["Hollis"] =
-			QStringList({{"DG02"}, {"DG03"}, {"TX1"}});
+		QStringList({{"DG02"}, {"DG03"}, {"TX1"}});
 	mobileProductList["Oceanic"] =
-			QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
+		QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
 	mobileProductList["Scubapro"] =
-			QStringList({{"G2"}});
+		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
 	mobileProductList["Seemann"] =
-			QStringList({{"XP5"}});
+		QStringList({{"XP5"}});
 	mobileProductList["Shearwater"] =
-			QStringList({{"Nerd"}, {"Perdix"}, {"Perdix AI"}, {"Petrel"}, {"Petrel 2"}, {"Predator"}});
+		QStringList({{"Nerd"}, {"Perdix"}, {"Perdix AI"}, {"Petrel"}, {"Petrel 2"}, {"Predator"}});
 	mobileProductList["Sherwood"] =
-			QStringList({{"Amphos"}, {"Amphos Air"}, {"Insight"}, {"Insight 2"}, {"Vision"}, {"Wisdom"}, {"Wisdom 2"}, {"Wisdom 3"}});
+		QStringList({{"Amphos"}, {"Amphos Air"}, {"Insight"}, {"Insight 2"}, {"Vision"}, {"Wisdom"}, {"Wisdom 2"}, {"Wisdom 3"}});
 	mobileProductList["Subgear"] =
-			QStringList({{"XP-Air"}});
+		QStringList({{"XP-Air"}});
 	mobileProductList["Suunto"] =
-			QStringList({{"Cobra"}, {"Cobra 2"}, {"Cobra 3"}, {"D3"}, {"D4"}, {"D4i"}, {"D6"}, {"D6i"}, {"D9"}, {"D9tx"}, {"DX"}, {"EON Steel"}, {"Eon"}, {"Gekko"}, {"HelO2"}, {"Mosquito"}, {"Solution"}, {"Solution Alpha"}, {"Solution Nitrox"}, {"Spyder"}, {"Stinger"}, {"Vyper"}, {"Vyper 2"}, {"Vyper Air"}, {"Vyper Novo"}, {"Vytec"}, {"Zoop"}, {"Zoop Novo"}});
+		QStringList({{"Cobra"}, {"Cobra 2"}, {"Cobra 3"}, {"D3"}, {"D4"}, {"D4f"}, {"D4i"}, {"D6"}, {"D6i"}, {"D9"}, {"D9tx"}, {"DX"}, {"EON Core"}, {"EON Steel"}, {"Eon"}, {"Gekko"}, {"HelO2"}, {"Mosquito"}, {"Solution"}, {"Solution Alpha"}, {"Solution Nitrox"}, {"Spyder"}, {"Stinger"}, {"Vyper"}, {"Vyper 2"}, {"Vyper Air"}, {"Vyper Novo"}, {"Vytec"}, {"Zoop"}, {"Zoop Novo"}});
 	mobileProductList["Tusa"] =
-			QStringList({{"Element II (IQ-750)"}, {"Zen (IQ-900)"}, {"Zen Air (IQ-950)"}});
+		QStringList({{"Element II (IQ-750)"}, {"Zen (IQ-900)"}, {"Zen Air (IQ-950)"}});
 	mobileProductList["Uwatec"] =
-			QStringList({{"Aladin Air Twin"}, {"Aladin Air Z"}, {"Aladin Air Z Nitrox"}, {"Aladin Air Z O2"}, {"Aladin Pro"}, {"Aladin Pro Ultra"}, {"Aladin Sport Plus"}, {"Memomouse"}});
+		QStringList({{"Aladin Air Twin"}, {"Aladin Air Z"}, {"Aladin Air Z Nitrox"}, {"Aladin Air Z O2"}, {"Aladin Pro"}, {"Aladin Pro Ultra"}, {"Aladin Sport Plus"}, {"Memomouse"}});
 	mobileProductList["Atomic Aquatics"] =
-			QStringList({{"Cobalt"}, {"Cobalt 2"}});
+		QStringList({{"Cobalt"}, {"Cobalt 2"}});
+
 #endif
 #if defined(Q_OS_IOS)
 	/* BLE only, Qt does not support classic BT on iOS */
 	mobileProductList["Scubapro"] =
-			QStringList({{"G2"}});
+		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
 	mobileProductList["Shearwater"] =
-			QStringList({{"Petrel"}, {"Petrel 2"}, {"Perdix"}, {"Perdix AI"}});
+		QStringList({{"Perdix"}, {"Perdix AI"}, {"Petrel"}, {"Petrel 2"}});
 	mobileProductList["Suunto"] =
-			QStringList({{"EON Steel"}});
+		QStringList({{"EON Core"}, {"EON Steel"}});
 
 #endif
 	// end of the automatically generated code
