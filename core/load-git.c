@@ -390,6 +390,10 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 		cylinder->cylinder_use = cylinderuse_from_text(value);
 		return;
 	}
+	if (!strcmp(key, "depth")) {
+		cylinder->depth = get_depth(value);
+		return;
+	}
 	report_error("Unknown cylinder key/value pair (%s/%s)", key, value);
 }
 
