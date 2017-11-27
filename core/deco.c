@@ -506,6 +506,7 @@ void add_segment(struct deco_state *ds, double pressure, const struct gasmix *ga
 	return;
 }
 
+#if DECO_CALC_DEBUG
 void dump_tissues(struct deco_state *ds)
 {
 	int ci;
@@ -517,6 +518,7 @@ void dump_tissues(struct deco_state *ds)
 		printf(" %6.3e", ds->tissue_he_sat[ci]);
 	printf("\n");
 }
+#endif
 
 void clear_vpmb_state(struct deco_state *ds) {
 	int ci;
