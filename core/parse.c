@@ -12,6 +12,7 @@
 #include "gettext.h"
 
 int metric = 1;
+int diveid = -1;
 
 /*
 static union {
@@ -514,5 +515,17 @@ void add_dive_site(char *ds_name, struct dive *dive)
 		}
 	}
 	free(to_free);
+}
+
+int atoi_n(char *ptr, unsigned int len)
+{
+	if (len < 10) {
+		char buf[10];
+
+		memcpy(buf, ptr, len);
+		buf[len] = 0;
+		return atoi(buf);
+	}
+	return 0;
 }
 

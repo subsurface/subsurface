@@ -54,6 +54,7 @@ extern struct dive_table dive_table;
 extern struct dive_table *target_table;
 
 extern int metric;
+extern int diveid;
 
 int trimspace(char *buffer);
 void clear_table(struct dive_table *table);
@@ -96,5 +97,6 @@ void userid_stop(void);
 void utf8_string(char *buffer, void *_res);
 
 void add_dive_site(char *ds_name, struct dive *dive);
+int atoi_n(char *ptr, unsigned int len);
 
 #endif
