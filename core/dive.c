@@ -750,8 +750,8 @@ struct sample *prepare_sample(struct divecomputer *dc)
 		// Copy the sensor numbers - but not the pressure values
 		// from the previous sample if any.
 		if (nr) {
-			sample->sensor[0] = sample[-1].sensor[0];
-			sample->sensor[1] = sample[-1].sensor[1];
+			for (int idx = 0; idx < MAX_SENSORS; idx++)
+				sample->sensor[idx] = sample[-1].sensor[idx];
 		}
 		// Init some values with -1
 		sample->bearing.degrees = -1;
@@ -1477,7 +1477,7 @@ static void simplify_dc_pressures(struct divecomputer *dc)
 		int j;
 		struct sample *sample = dc->sample + i;
 
-		for (j = 0; j < 2; j++) {
+		for (j = 0; j < MAX_SENSORS; j++) {
 			int pressure = sample->pressure[j].mbar;
 			int index = sample->sensor[j];
 
@@ -2075,7 +2075,7 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 		struct sample *s = dc->sample + i;
 		int j;
 
-		for (j = 0; j < 2; j++) {
+		for (j = 0; j < MAX_SENSORS; j++) {
 			int sensor;
 
 			sensor = mapping[s->sensor[j]];
