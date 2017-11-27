@@ -688,7 +688,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int decostopcounter = 0;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
-	lock_planner();
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
 	if (!diveplan->surface_pressure)
 		diveplan->surface_pressure = SURFACE_PRESSURE;
@@ -733,7 +732,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		transitiontime = depth / 75; /* this still needs to be made configurable */
 		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false);
 		create_dive_from_plan(diveplan, dive, is_planner);
-		unlock_planner();
 		return false;
 	}
 
@@ -820,7 +818,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 		free(stoplevels);
 		free(gaschanges);
-		unlock_planner();
 		return false;
 	}
 
@@ -1084,7 +1081,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	free(stoplevels);
 	free(gaschanges);
 	free(bottom_cache);
-	unlock_planner();
 	return decodive;
 }
 

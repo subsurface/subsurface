@@ -15,6 +15,7 @@
 #include <QProgressDialog>
 
 #include "ui_mainwindow.h"
+#include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
 #include "core/windowtitleupdate.h"
 #include "core/gpslocation.h"
@@ -186,6 +187,8 @@ slots:
 	void socialNetworkRequestUpload();
 	void facebookLoggedIn();
 	void facebookLoggedOut();
+	void updateVariations(QString);
+
 
 private:
 	Ui::MainWindow ui;

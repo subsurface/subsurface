@@ -55,7 +55,6 @@ slots:
 	void printDecoPlan();
 	void setSurfacePressure(int surface_pressure);
 	void setSalinity(int salinity);
-
 private:
 	Ui::DivePlanner ui;
 	QAbstractButton *replanButton;
@@ -103,6 +102,7 @@ public:
 	explicit PlannerDetails(QWidget *parent = 0);
 	QPushButton *printPlan() const { return ui.printPlan; }
 	QTextEdit *divePlanOutput() const { return ui.divePlanOutput; }
+	QLabel *divePlannerOutputLabel() const { return ui.divePlanOutputLabel; }
 
 private:
 	Ui::plannerDetails ui;
