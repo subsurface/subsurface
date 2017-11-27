@@ -623,6 +623,9 @@ bool enough_gas(int current_cylinder)
 
 int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure)
 {
+	// When a deco stop exceeds two days, there is something wrong...
+	if (min >= 48 * 3600)
+		return 50 * 3600;
 	// Round min + leap up to the next multiple of stepsize
 	int upper = min + leap + stepsize - 1 - (min + leap - 1) % stepsize;
 	// Is the upper boundary too small?
@@ -997,7 +1000,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				int new_clock = wait_until(ds, dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
-				if (clock >= 48 * 3600 && depth >= 6000) {
+				if (laststoptime >= 48 * 3600 && depth >= 6000) {
 					error = LONGDECO;
 					break;
 				}
