@@ -15,19 +15,6 @@
 int metric = 1;
 int diveid = -1;
 
-/*
-static union {
-	struct event event;
-	char allocation[sizeof(struct event)+MAX_EVENT_NAME];
-} event_allocation = { .event.deleted = 1 };
-
-static event_allocation cur_event = { .event.deleted = 1 };
-static inline union {
-	struct event event;
-	char allocation[sizeof(struct event)+MAX_EVENT_NAME];
-} event_allocation = { .event.deleted = 1 };
-#define cur_event event_allocation.event
-*/
 event_allocation_t event_allocation = { .event.deleted = 1 };
 
 
