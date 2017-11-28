@@ -27,8 +27,8 @@
 <!-- Include sample dive log or other relevant information to allow testing the change where feasible. -->
 
 ### Release note:
-<!-- Describe if this change needs a release note present in ReleaseNotes/ReleaseNotes.txt. -->
-<!-- Also, please make sure to update the ReleaseNotes/ReleaseNotes.txt file itself. -->
+<!-- Describe if this change needs a release note present in CHANGELOG.md. -->
+<!-- Also, please make sure to add the release note on top of the file CHANGELOG.md. -->
 
 ### Documentation change:
 <!-- If this PR makes changes to user functionality, then the documentation has to be updated too. -->
