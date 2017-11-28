@@ -549,11 +549,13 @@ void MainTab::updateDiveInfo(bool clear)
 			weightModel->updateDive();
 			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
 			ui.tagWidget->setText(QString(buf));
-			bool isManual = !current_dive || same_string(current_dive->dc.model, "manually added dive");
-			ui.depth->setVisible(isManual);
-			ui.depthLabel->setVisible(isManual);
-			ui.duration->setVisible(isManual);
-			ui.durationLabel->setVisible(isManual);
+			if (current_dive) {
+				bool isManual = same_string(current_dive->dc.model, "manually added dive");
+				ui.depth->setVisible(isManual);
+				ui.depthLabel->setVisible(isManual);
+				ui.duration->setVisible(isManual);
+				ui.durationLabel->setVisible(isManual);
+			}
 		}
 		ui.duration->setText(QDateTime::fromTime_t(displayed_dive.duration.seconds).toUTC().toString("h:mm"));
 		ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
