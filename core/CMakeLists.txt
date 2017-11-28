@@ -52,6 +52,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	parse-xml.c
 	parse.c
 	parse-db.c
+	import-suunto.c
 	planner.c
 	plannernotes.c
 	profile.c
