@@ -53,6 +53,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	parse.c
 	parse-db.c
 	import-suunto.c
+	import-shearwater.c
 	planner.c
 	plannernotes.c
 	profile.c
