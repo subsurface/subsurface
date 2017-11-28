@@ -1022,7 +1022,7 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, struct deco_state *previos_ds)
 {
 
-	bool oldRecalc = setRecalc(false);
+//	bool oldRecalc = setRecalc(false);
 	struct dive *dive = alloc_dive();
 	copy_dive(&displayed_dive, dive);
 	struct decostop original[60], deeper[60], shallower[60], shorter[60], longer[60];
@@ -1032,7 +1032,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 	struct deco_state ds = *previos_ds;
 
 	if(!original_plan) {
-		setRecalc(oldRecalc);
+//		setRecalc(oldRecalc);
 		return;
 	}
 
@@ -1083,19 +1083,19 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		plan(&ds, &plan_copy, dive, 1, shorter, &cache, true, false);
 		free_dps(&plan_copy);
 		restore_deco_state(save, &ds, false);
-finish:
-		free_dps(original_plan);
-		free(original_plan);
-#ifdef SHOWSTOPVARIATIONS
-		printf("\n\n");
-#endif
 
 		char buf[200];
 		sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
 			FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
 		emit variationsComputed(QString(buf));
+#ifdef SHOWSTOPVARIATIONS
+		printf("\n\n");
+#endif
 	}
-	setRecalc(oldRecalc);
+finish:
+	free_dps(original_plan);
+	free(original_plan);
+//	setRecalc(oldRecalc);
 }
 
 void DivePlannerPointsModel::createPlan(bool replanCopy)
