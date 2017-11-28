@@ -51,10 +51,10 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	ostctools.c
 	parse-xml.c
 	parse.c
-	parse-db.c
 	import-suunto.c
 	import-shearwater.c
 	import-cobalt.c
+	import-divinglog.c
 	planner.c
 	plannernotes.c
 	profile.c

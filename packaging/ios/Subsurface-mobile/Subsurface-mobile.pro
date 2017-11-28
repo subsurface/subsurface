@@ -48,10 +48,10 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/load-git.c \
     ../../../core/parse-xml.c \
     ../../../core/parse.c \
-    ../../../core/parse-db.c \
     ../../../core/import-suunto.c \
     ../../../core/import-shearwater.c \
     ../../../core/import-cobalt.c \
+    ../../../core/import-divinglog.c \
     ../../../core/save-html.c \
     ../../../core/statistics.c \
     ../../../core/worldmap-save.c \
