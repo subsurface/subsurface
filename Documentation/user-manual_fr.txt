@@ -494,10 +494,10 @@ Vérifiez les éléments suivants:
    A]
 
 Si l'ordinateur utilisant _Subsurface_ ne reconnaît pas l'adaptateur USB en
-ne montrant pas le bon nom de périphérique à côté du Point de monage, il est
-possible que le câble ou l'adaptateur USB soit fautif. Un câble défectueux
-est la cause la plus courante de problème de communication entre un
-ordinateur de plongée et _Subsurface_. Il est également possible que
+ne montrant pas le bon nom de périphérique à côté du Point de montage, il
+est possible que le câble ou l'adaptateur USB soit fautif. Un câble
+défectueux est la cause la plus courante de problème de communication entre
+un ordinateur de plongée et _Subsurface_. Il est également possible que
 _Subsurface_ ne puisse pas interpréter les données. Réalisez un
 téléchargement de diagnostic en cochant les deux cases suivantes dans la
 boîte de dialogue de téléchargement décrite ci-dessus:
@@ -803,7 +803,7 @@ dive location.
 
 image::images/Globe_image2.jpg["FIGURE:Location creation panel", align="center"]
 
-There are three ways of adding the the coordinates:
+Il existe trois façons d'ajouter des coordonnées :
 
 *(1):* Entrer les coordonnées manuellement si vous les connaissez,
    en utilisant un des quatre formats avec la latitude suivie de la longitude :
@@ -825,7 +825,7 @@ géolocalisation de ce site. Les informations du site de plongée pourront
 nom du site de plongée, dans l'"onglet notes".
 
 *(2):* Use the Dive Map to specify the coordinates. The Dive map now shows
-all the existing dive lications in grey as well as an additional marker in red
+all the existing dive locations in grey as well as an additional marker in red
 (image B above). Drag the red marker to the location of the dive site being entered.
 The map can be dragged and zoomed using the mouse wheel. Position the red marker
 by dragging it on the map, zooming in on the appropriate part of the map and placing
@@ -842,16 +842,17 @@ Once the dive location data have been saved, the dive on the Dive List has a
 globe icon immediately to the left of the location name of a particular
 dive.
 
-*(3):* Utiliser l'application Subsurface-Mobile ou l'application _Subsurface_ Companion avec un 
+*(3):* Obtenir les coordonnées en utilisant soit l'application Subsurface-Mobile, soit l'application _Subsurface_ Companion avec un 
 périphérique Android ou un iPhone avec GPS si les coordonnées du site de plongée ont été stockées 
 en utilisant une de ces applications. 
 xref:S_Companion[Cliquez ici pour plus d'information]
 
-*Important*: les coordonnées GPS d'un site de plongée sont liées au nom de
-lieu - ainsi, *enregistrer* un site de plongée avec uniquement les coordonnées mais aucun nom
-causera des problèmes. (Subsurface pensera que toutes ces
-plongées ont le même lieu et tentera de garder leurs coordonnées GPS
-identiques).
+[icon="images/icons/warning2.png"]
+[WARNING]
+Les coordonnées GPS d'un site de plongée sont liées au nom de lieu - ainsi,
+*enregistrer* un site de plongée avec uniquement les coordonnées mais aucun
+nom causera des problèmes. (Subsurface pensera que toutes cesplongées ont le
+même lieu et tentera de garder leurs coordonnées GPSidentiques).
 
 *Recherche du nom d'un site de plongée*: si vous avez entré les coordonnées dans la boîte
 de texte appropriée, vous pouvez lancer une recherche de nom sur base des coordonnées.
@@ -1076,19 +1077,19 @@ disque de l'ordinateur.
 Many divers log their dives using the proprietary software provided by the
 manufacturers of their dive computers.  _Subsurface_ can import dive logs
 from a range of other dive log software. While import from some software is
-supported natively, others require export of the the dive log to an
-intermediate format that can then be imported into _Subsurface_.  Currently,
-_Subsurface_ supports importing CSV log files from several sources.  Dive
-log import from APD LogViewer, XP5, Sensus and Seabear files are
-preconfigured, but because the import is flexible, users can configure their
-own imports.  Manually kept log files (e.g. a spreadsheet) can also be
-imported by configuring the CSV import.  _Subsurface_ can also import UDDF
-and UDCF files used by some dive log software and some dive computers, like
-the Heinrichs & Weikamp DR5. Finally, for some dive log software like Mares
-Dive Organizer we currently recommend importing the logbook first into a web
-service like _divelogs.de_ and then import from there with
-_Subsurface_. Divelogs.de supports a few additional logbook formats that
-_Subsurface_ currently cannot handle.
+supported natively, others require export of the dive log to an intermediate
+format that can then be imported into _Subsurface_.  Currently, _Subsurface_
+supports importing CSV log files from several sources.  Dive log import from
+APD LogViewer, XP5, Sensus and Seabear files are preconfigured, but because
+the import is flexible, users can configure their own imports.  Manually
+kept log files (e.g. a spreadsheet) can also be imported by configuring the
+CSV import.  _Subsurface_ can also import UDDF and UDCF files used by some
+dive log software and some dive computers, like the Heinrichs & Weikamp
+DR5. Finally, for some dive log software like Mares Dive Organizer we
+currently recommend importing the logbook first into a web service like
+_divelogs.de_ and then import from there with _Subsurface_. Divelogs.de
+supports a few additional logbook formats that _Subsurface_ currently cannot
+handle.
 
 If the format of other software is supported natively on Subsurface, select
 either _Import -> Import log files_ or _File -> Open log file_. Notice that
@@ -1430,11 +1431,11 @@ Les données ci-dessus ne sont pas aisément lisible pour un être
 humain. Voici les mêmes informations dans un format séparé par des
 tabulations :
 
-	Dive site	Dive date	Time	Dive_duration	Dive_depth	Dive buddy
-	Illovo Beach	2012-11-23	10:45	46:15	18.4	John Smith
-	Key Largo	2012-11-24	09:12	34:15	20.4	Jason McDonald
-	Wismar Baltic	2012-12-01	10:13	35:27	15.4	Dieter Albrecht
-	Pulau Weh	2012-12-20	09:46	55:56	38.6	Karaeng Bontonompo
+	Dive site      Dive date	Time	Dive_duration	Dive_depth	Dive buddy
+	Illovo Beach   2012-11-23	10:45	46:15	18.4	John Smith
+	Key Largo      2012-11-24	09:12	34:15	20.4	Jason McDonald
+	Wismar Baltic  2012-12-01	10:13	35:27	15.4	Dieter Albrecht
+	Pulau Weh      2012-12-20	09:46	55:56	38.6	Karaeng Bontonompo
 
 It is clear why many people prefer the TAB-delimited format to the
 comma-delimited format. The disadvantage is that you cannot see the TAB
@@ -1560,16 +1561,16 @@ If the diver moves, a trace of the route is obtained by saving a location every 
 
 ===== Activate the automated recording of GPS locations
 
-The _Subsurface-mobile_ main menu has a checkbox at the bottom left labled
-_Run location service_ (see image below). Checking the box starts the
-automated recording of GPS positions.
+The _Subsurface-mobile_ GPS menu has an option at the bottom labled _Run
+location service_ (see image below). Selecting this starts the automated
+recording of GPS positions.
 
-image::images/MobileMenu.jpg["FIGURE: Subsurface-mobile main menu", align="center"]
+image::images/MobileGpsMenu.jpg["FIGURE: Subsurface-mobile GPS menu", align="center"]
 
 ===== After the dive, stop the automated recording of GPS locations
 
-Uncheck the check box at the bottom left of the _Subsurface-mobile_ main
-menu.
+Select the menu option _Disable location service_ at the bottom of the
+_Subsurface-mobile_ GPS menu.
 
 ===== Upload the GPS locations onto the _Subsurface_ Internet server.
 
@@ -2244,7 +2245,7 @@ B>> for more complete information. Use that software to download the dive
 data into a known directory. From the main menu of _Subsurface_, select
 _Import -> Import log files_ to bring up the xref:Unified_import[universal
 import dialogue]. As explained in that section, the bottom right hand of the
-import dialogue contains a dropdown list (labled _Filter:_) of appropriate
+import dialogue contains a dropdown list (labeled _Filter:_) of appropriate
 devices that currently include (Poseidon) MkVI or APD log viewer
 files. Import for other CCR equipment is under active development. Having
 selected the appropriate CCR format and the directory where the original
@@ -2298,7 +2299,7 @@ pressure and the setpoint values, as shown below.
 image::images/CCR_setpoint_f20.jpg["FIGURE: CCR setpoint and pO~2~ graph", align="center"]
 
 The second checkbox allows the display of the data from each individual
-oxygen sensor of the CCR equipment. The data for each sensor is colour-coded
+oxygen sensor of the CCR equipment. The data for each sensor is color-coded
 as follows:
 
 - Sensor 1: grey
@@ -2550,11 +2551,11 @@ divers breathing gases other than air. Their values are dependent on the
 composition of the breathing gas. The EAD is the depth of a hypothetical air
 dive that has the same partial pressure of nitrogen as the current depth of
 the nitrox dive at hand. A nitrox dive leads to the same decompression
-obligation as an air dive to the depth equalling the EAD. The END is the
+obligation as an air dive to the depth equaling the EAD. The END is the
 depth of a hypothetical air dive that has the same sum of partial pressures
 of the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing air
-diving at a depth equalling the END.
+diving at a depth equaling the END.
 
 La figure (*B*) ci-dessous affiche une boîte d'information avec un ensemble
 quasiment complet de données.
@@ -2818,7 +2819,7 @@ image::images/ShowCylinders_f20.jpg["Figure: Cylinder use graph", align="center"
 ====================================================================================
 Display the tissue heat-map. The heat map summarises, for the duration of
 the dive, the inert gas tissue pressures for each of the 16 tissue
-compartments of the Bühlmann model. Blue colours mean low gas pressures in a
+compartments of the Bühlmann model. Blue colors mean low gas pressures in a
 tissue compartment and thus on-gassing, green to red means excess gas in the
 tissue and thus off-gassing. Fast to slow tissues are indicated from top to
 bottom. The figure below explains in greater detail how the heat map can be
@@ -2835,17 +2836,17 @@ compartments on the right. Refer to the section on the
 xref:S_gas_pressure_graph[Gas Pressure Graph] for more details on the
 different elements of this graph.
 
-Image *B* shows a gradient of unique colours, spanning the whole range of
+Image *B* shows a gradient of unique colors, spanning the whole range of
 inert gas pressures.  It is possible to map the height of each of the dark
-green vertical bars of *A* to a colour in *B*. For instance, the fastest
-(leftmost) dark green verical bar in *A* has a height corresponding to the
+green vertical bars of *A* to a color in *B*. For instance, the fastest
+(leftmost) dark green vertical bar in *A* has a height corresponding to the
 medium green part of *B*. The height of this bar can therefore be summarised
-using a medium green colour. Similarly, the highest dark green bar in *A* is
+using a medium green color. Similarly, the highest dark green bar in *A* is
 as high as the yellow part of *B*. The 14 remaining tissue pressure bars in
-*A* can also be translated to colours. The colours represent three ranges of
+*A* can also be translated to colors. The colors represent three ranges of
 tissue inert gas pressure:
 
- -  The bottom range in *B* (marked _On-gassing_) includes colours from light
+ -  The bottom range in *B* (marked _On-gassing_) includes colors from light
     blue to black, representing tissue gas pressures below the equilibrium
     pressure of inert gas (bottom horizontal line in *A*). The measurement unit
     is the % of inert gas pressure, relative to the equilibrium inert gas
@@ -2856,41 +2857,41 @@ tissue inert gas pressure:
     gas pressure in the tissue compartment equals that of the water in which the
     diver is. The equilibrium pressure changes according to depth.
 
- -  The central range in *B* includes the colours from black to light green,
-    when the inert gas pressure of a tissue compartment is higher than the
+ -  The central range in *B* includes the colors from black to light green, when
+    the inert gas pressure of a tissue compartment is higher than the
     equilibrium pressure but less than the ambient pressure.  In this zone
     decompression is not very efficient because the gradient of inert gas
     pressure from tissue to the environment is relatively small and indicated by
     dark green areas of the heat map.
 
- -  The top range in *B* (marked _Off-gassing_) includes colours from light
-    green to red and white, repesenting tissue gas pressures above that of the
-    total ambient pressure (top of light green area of *A*). The measurement
-    unit is the % of inert gas pressure above ambient pressure, relative to the
-    Bühlmann M-value gradient (bottom of red area in *A*). These tissue
-    pressures are normally reached while ascending to a shallower depth.  Below
-    a value of 100%, this range indicates efficient off-gassing of inert gas
-    from the tissue compartment into the environment. Usually, efficient
-    off-gassing is indicated by light green, yellow or orange colours.  Above
-    100% (red to white in *B*) the M-value gradient is exceeded and the
-    probability of decompression sickness increases markedly.
+ -  The top range in *B* (marked _Off-gassing_) includes colors from light green
+    to red and white, repesenting tissue gas pressures above that of the total
+    ambient pressure (top of light green area of *A*). The measurement unit is
+    the % of inert gas pressure above ambient pressure, relative to the Bühlmann
+    M-value gradient (bottom of red area in *A*). These tissue pressures are
+    normally reached while ascending to a shallower depth.  Below a value of
+    100%, this range indicates efficient off-gassing of inert gas from the
+    tissue compartment into the environment. Usually, efficient off-gassing is
+    indicated by light green, yellow or orange colors.  Above 100% (red to white
+    in *B*) the M-value gradient is exceeded and the probability of
+    decompression sickness increases markedly.
 
-Image *C* shows the colour mapping of each of the vertical bars in *A*, the
+Image *C* shows the color mapping of each of the vertical bars in *A*, the
 fast tissues (on the left in *A*) depicted at the top and the slow tissue
 compartments at the bottom of *C*. The highest vertical bar in *A* (vertical
 bar 3rd from the left) is presented as the yellow rectangle 3rd from the top
 in *C*. The 16 vertical bars in *A* are now presented as a vertical column
-of 16 coloured rectangles, representing a snapshot of tissue compartment gas
+of 16 colored rectangles, representing a snapshot of tissue compartment gas
 pressures at a particular instant during the dive.
 
-Image *D* is a compilation of similar colour mappings of 16 tissue
-compartments during a 10-minute period of a dive, the colours representing
+Image *D* is a compilation of similar color mappings of 16 tissue
+compartments during a 10-minute period of a dive, the colors representing
 the inert gas loading of a tissue compartment at a point in time during the
 dive. Faster tissues are shown at the top and slower tissues at the bottom,
 with time forming the horizontal axis of the graph. The column of rectangles
 in *C* can be found on the horizontal axis between 9 and 10 minutes.
 
-The colours of the heat map are not affected by the gradient factor
+The colors of the heat map are not affected by the gradient factor
 settings.  This is because the heat map indicates tissue pressures relative
 to the Bühlmann M-value gradient, and not relative to any specific gradient
 factor. For more information external to this manual see:
@@ -2898,9 +2899,8 @@ factor. For more information external to this manual see:
 http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by
 Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
-Since the colours of the heat map are not affected by the gradient
-factor(s), the heat map is also applicable when using the VPM-B
-decompression model.
+Since the colors of the heat map are not affected by the gradient factor(s),
+the heat map is also applicable when using the VPM-B decompression model.
 
 The image below compares the profiles and heat maps for two planned
 decompression dives to 60m: the first using the Bühlmann decompression
@@ -2990,8 +2990,8 @@ after the dive, or of landscapes as seen from the boat.
 
 [icon="images/icons/inAndOutPhoto.png"]
 [NOTE]
-This dive has photographs taken both during the dive and immdiately before
-or after the dive.
+Cette plongée contient à la fois des photos prises pendant la plongée, et
+juste avant ou juste après la plongée.
 
 [[S_Renumber]]
 === Renuméroter les plongées
@@ -3694,10 +3694,7 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page", align="center"]
    respect to inert gas loading and the deeper the ceilings are. Gradient
    factors of 20/60 are considered conservative and values of 70/90 are considered
    harsh.
-   In addition decide whether to check the _GFLow at max. depth_ box. If checked, GF_Low is used for the
-   deepest dive depth and linearly increased up to the GF_High value at the surface. If unchecked,
-   GF_Low is used between the deepest dive depth and the first deco stop, after which the
-   gradient factor linearly increases up to the GF_High value at the surface. For more information see:
+   For more information see:
 
  *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
@@ -3935,12 +3932,12 @@ calculation of the nitrogen load incurred during previous dives.
 
 - Define the depth of the dive by dragging the waypoints (white dots) on the
   dive profile or (even better) defining the appropriate depths using the
-  table under _Dive planner points_ as desribed under the previous heading. If
-  this is a multilevel dive, set the appropriate dive depths to represent the
-  dive plan by adding waypoints to the dive profile or by adding appropriate
-  dive planner points to the _Dive Planner Points_ table. _Subsurface_ will
-  automatically extend the bottom section of the dive to the maximum duration
-  within the no-decompression limits (NDL).
+  table under _Dive planner points_ as described under the previous
+  heading. If this is a multilevel dive, set the appropriate dive depths to
+  represent the dive plan by adding waypoints to the dive profile or by adding
+  appropriate dive planner points to the _Dive Planner Points_
+  table. _Subsurface_ will automatically extend the bottom section of the dive
+  to the maximum duration within the no-decompression limits (NDL).
 
 - La vitesse de remontée peut être modifiée. Les vitesses de remontée par
   défaut sont celles qui sont considérées comme sûres pour les plongées
@@ -4047,7 +4044,7 @@ the limit of the gas supply but that an appropriate reserve is kept
 for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
 In addition to calculating the total gas consumption for every cylinder the planner provides one way
-of calculating the recommended volume of bottom gas which is needed for safe asscent to the
+of calculating the recommended volume of bottom gas which is needed for safe ascent to the
 first deco gas change depth or the surface. This procedure is called the "minimum gas" or "rock bottom"
 consideration and it is used by various (but not all)
 technical diving organisations. See the text below for a detailed explanation.
@@ -4145,10 +4142,13 @@ from the segment durations at a particular level.
 
 The planner has a check box _Display plan variations_. By checking this box,
 the planner provides information about a dive that is a little deeper or
-slightly longer than the planned dive. This can be found near the top of the
-_Dive plan details_ where the dive duration is indicated. Checking this
-option creates a lot of additional computation, to such a degree that the
-planner is slower than otherwise. The information is typically given as:
+slightly longer than the planned dive. This is found near the top of the
+_Dive plan details_ where the dive duration is indicated. The information is
+intended to be used if it is necessary to modify the ascent "on the fly" in
+the case of unexpected deviations from the dive plan during the dive.
+Checking this option creates a lot of additional computation, to such a
+degree that the planner is slower than otherwise. The information is
+typically given as:
 
     Runtime: 53min + 0:52/m + 4:21/min
 
@@ -4156,40 +4156,40 @@ This indicates:
 
  * Calculated dive duration is 53 min.
  * For each extra meter in depth during the bottom phase of the dive, the
-   duration increases by 52 seconds.
+   ascent duration increases by 52 seconds.
  * For each extra minute of bottom time, the duration increases by 4 min 21
-   sec. Thus, if the bottom time is two minutes longer than planned, the dive
-   duration will be (2+2*4min 21 sec) = 10 minutes 42 sec longer and would
-   probably require that each deco stop is 10:42/53:00 = 20% longer than
-   planned. These calculations are only applicable for small deviations from
-   the dive plan, not for larger deviations.
+   sec. Thus, if the bottom time is two minutes longer than planned, ascent
+   duration duration will be (2 * 4min 21 sec) = 8 minutes 42 sec longer and
+   would probably require that each deco stop is 8:42/53:00 = around 16% longer
+   than planned. These calculations are only applicable for small deviations
+   from the dive plan, not for larger deviations.
 
-* Minimum gas requirements*
+*Minimum gas requirements*
 
 The planner also estimates the *minimum gas* pressure required for safe
 ascent after an event that causes the dive to be aborted. The calculation
-assumes that in worst case an out of gas (OoG)  situation could occur at the
-end of the planned bottom time at maximum depth. This OoG event forces the
-buddy team the share the gas of one diver and to stay at maximum depth for
-an additional number of minutes.  At the same moment the combined SAC of
-both divers is increased by a estimated factor compared to the SAC factor of
-a single diver under normal conditions.  The result of the minimum gas
-calculation for the bottom gas is printed to the planner output. No
-automatic checks are performed based on this result.  The feature only gives
-valid results for simple, rectengular shaped single level dive profiles. For
-multi level dives one would need to check every leg of the profile
-independently.
+assumes that in worst case an out of gas (OoG)  situation occurs at the end
+of the planned bottom time at maximum depth. This OoG event forces the buddy
+team the share the gas of one diver and that they require an additional
+period of time at maximum depth to solve the problem at hand.  In addition
+the combined SAC of both divers is increased by an estimated factor compared
+to the SAC factor of a single diver under normal conditions.  The result of
+the minimum gas calculation for the bottom gas is printed to the planner
+output. No automatic checks are performed based on this result.  The feature
+only gives valid results for simple, rectangular shaped single level dive
+profiles. For multi level dives one would need to check every leg of the
+profile independently.
 
 There are two selector boxes on the left of the _Dive plan details_:
 
- * *SAC factor*. This is your estimate of the degree to which your SAC increases if a critical problem arises underwater,
+ * *SAC factor*. This is an estimate of the degree to which your SAC increases if a critical problem arises underwater,
    e.g. gas sharing or entanglement. Realistic values range from 2 to 5, reflecting the gas use of two divers sharing
    a single gas cylinder after an OoG situation.
- * *Problem solving time*. This is your estimate of how long you would take to solve the problem before starting the ascent
+ * *Problem solving time*. This is an estimate of how long you would take to solve the problem before starting the ascent
    to terminate the dive. The default value is 2 minutes.
 
 Using the above information, the planner then estimates what the minimum
-botom gas cylinder pressure needs to be for a safe ascent. This information
+bottom gas cylinder pressure needs to be for a safe ascent. This information
 is given near the bottom of the _Dive plan details_, following the
 calculation of bottom gas used during the dive if it exactly follows the
 plan. the minimum gas is typically given as:
@@ -4225,11 +4225,11 @@ _Open circuit_ in the dropdown list.
 The parameters of the pSCR dive can be set by selecting  _File ->   Preferences ->   Profile_
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
 ratio (default 1:10) as well as the metabolic rate. The calculation also takes the oxygen drop
-accross the mouthpiece of the rebreather into account. If the
+across the mouthpiece of the rebreather into account. If the
 pO~2~ drops below what is considered safe, a warning appears in the _Dive plan
 details_. A typical pSCR cylinder setup is very similar to an open circuit dive;
-one or more drive cilinders, possibly with different bottom and decompression
-gasses, including gas switches during the dive like in open circuit diving.
+one or more drive cylinders, possibly with different bottom and decompression
+gases, including gas switches during the dive like in open circuit diving.
 Therefore, the setup of the _Available gases_ and the _Dive planner points_ tables
 are very similar to that of a open circuit dive plan, described above. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
@@ -4329,12 +4329,12 @@ to do this:
   real-life dive from the _dive computer_.
 - In the _Dive List_, highlight the dive plan as well as the data for the real
   dive and merge the two dives, making use of the Dive List Context Menu
-  (available by righ-clicking a dive).
+  (available by right-clicking a dive).
 
 The text version of the dive plan is appended to the Notes in the _Notes
 Tab_. With this merged dive highlighted in the _Dive List_, switch between
 the planned profile and the real-life profile using the
-righ-arrow/left-arrow keyboard keys.
+right-arrow/left-arrow keyboard keys.
 
 == Lancer _Subsurface_ depuis la ligne de commande
 _Subsurface_ can be launched from the command-line to set some specialised
@@ -4688,7 +4688,7 @@ power on the controller and enable authentication:
 		RX bytes:1026 acl:0 sco:0 events:47 errors:0
 		TX bytes:449 acl:0 sco:0 commands:46 errors:0
 
-Check that the status now includes +'UP', 'RUNNING' AND 'AUTH'+.
+Check that the status now includes '+UP+', '+RUNNING+' AND '+AUTH+'.
 
 If there are multiple controllers running, it's easiest to turn off the
 unused controller(s). For example, for +hci1+:
