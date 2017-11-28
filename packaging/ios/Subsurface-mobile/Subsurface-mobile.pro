@@ -51,6 +51,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/parse-db.c \
     ../../../core/import-suunto.c \
     ../../../core/import-shearwater.c \
+    ../../../core/import-cobalt.c \
     ../../../core/save-html.c \
     ../../../core/statistics.c \
     ../../../core/worldmap-save.c \
