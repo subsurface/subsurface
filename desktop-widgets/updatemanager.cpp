@@ -104,7 +104,7 @@ void UpdateManager::requestReceived()
 #ifndef SUBSURFACE_MOBILE
 	if (haveNewVersion || !isAutomaticCheck) {
 		msgbox.setWindowTitle(msgTitle);
-		msgbox.setWindowIcon(QIcon(":/subsurface-icon"));
+		msgbox.setWindowIcon(QIcon(":subsurface-icon"));
 		msgbox.setText(msgText);
 		msgbox.setTextFormat(Qt::RichText);
 		msgbox.exec();
