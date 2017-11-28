@@ -1959,8 +1959,8 @@ as _Subsurface_ is concerned, there are only two types of information that need 
   in time on the *Dive Profile* panel and indicating the cylinder to which the change was made. After
   right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
   those defined during the first step, above (see image below). If the
-  *tank bar* button in the toolbar has been activated, the cylinder switches are also indicated in the
-  tank bar (image below).
+  *gas bar* button in the toolbar has been activated, the cylinder switches are also indicated in the
+  gas bar (image below).
 
 When this is complete, _Subsurface_ indicates the appropriate use of cylinders in the dive profile.
 Below is a two-cylinder dive, starting off with EAN28, then changing cylinders to EAN50 after 26 minutes
@@ -2001,8 +2001,8 @@ logging of cylinder pressures during sidemount involves three steps, exactly as 
   selecting _Add gas change_. A list of the appropriate cylinders is shown with the
   currently used cylinder greyed out. In the image below Tank 1 is greyed out, leaving only Tank 2
   to be selected. Select the appropriate cylinder. The cylinder change is then shown on the dive
-  profile with a cylinder symbol. If the *Tank Bar* is activated using the toolbar to the left of the
-  profile, then the cylinder change is also shown on the Tank Bar (see image below). After all
+  profile with a cylinder symbol. If the *gas bar* is activated using the toolbar to the left of the
+  profile, then the cylinder change is also shown on the gas bar (see image below). After all
   the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
   for both cylinders are shown on the dive profile, as in the image below.
 
