@@ -426,12 +426,13 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.notes->setText(QString());
 	if (!clear) {
 		QString tmp(displayed_dive.notes);
-		if (tmp.indexOf("<table") != -1)
+		if (tmp.indexOf("<table") != -1) {
+			tmp.replace(QString("\n"), QString("<br>"));
 			ui.notes->setHtml(tmp);
-		else
+		} else {
 			ui.notes->setPlainText(tmp);
+		}
 	}
-	UPDATE_TEXT(displayed_dive, notes);
 	UPDATE_TEXT(displayed_dive, suit);
 	UPDATE_TEXT(displayed_dive, divemaster);
 	UPDATE_TEXT(displayed_dive, buddy);
@@ -1494,10 +1495,12 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	SHOW_SELECTIVE(suit);
 	if (what.notes) {
 		QString tmp(displayed_dive.notes);
-		if (tmp.contains("<table"))
+		if (tmp.contains("<table")) {
+			tmp.replace(QString("\n"), QString("<br>"));
 			ui.notes->setHtml(tmp);
-		else
+		} else {
 			ui.notes->setPlainText(tmp);
+		}
 	}
 	if (what.rating)
 		ui.rating->setCurrentStars(displayed_dive.rating);
