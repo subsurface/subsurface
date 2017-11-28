@@ -11,4 +11,12 @@
     <usb-device vendor-id="1027" product-id="63104"/>
     <!-- Cressi (Leonardo) Custom PID -->
     <usb-device vendor-id="1027" product-id="63104"/>
+    <!-- EON Steel -->
+    <usb-device vendor-id="5267" product-id="48"/>
+    <!-- EON Steel core -->
+    <usb-device vendor-id="5267" product-id="51"/>
+    <!-- Scubapro G2 -->
+    <usb-device vendor-id="11884" product-id="12801"/>
+    <!-- Scubapro Aladin Square -->
+    <usb-device vendor-id="49745" product-id="8198"/>
 </resources>
