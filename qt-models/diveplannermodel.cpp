@@ -1085,8 +1085,14 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		char buf[200];
-		sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
-			FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
+		if (prefs.units.length == units::METERS)
+			sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
+				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
+		else
+			sprintf(buf, "+ %d:%02d /ft + %d:%02d /min",
+				FRACTION(analyzeVariations(shallower, original, deeper, "ft") * feet_to_mm(1.0) / 1000,60),
+				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
+
 		emit variationsComputed(QString(buf));
 #ifdef SHOWSTOPVARIATIONS
 		printf("\n\n");
