@@ -25,6 +25,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/divelogexportlogic.cpp \
     ../../../core/divesite.cpp \
     ../../../core/divesitehelpers.cpp \
+    ../../../core/errorhelper.c \
     ../../../core/exif.cpp \
     ../../../core/gettextfromc.cpp \
     ../../../core/isocialnetworkintegration.cpp \
