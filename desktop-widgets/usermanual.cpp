@@ -74,7 +74,7 @@ UserManual::UserManual(QWidget *parent) : QWidget(parent)
 	addAction(actionHideSearch);
 
 	setWindowTitle(tr("User manual"));
-	setWindowIcon(QIcon(":/subsurface-icon"));
+	setWindowIcon(QIcon(":subsurface-icon"));
 
 #ifdef USE_WEBENGINE
 	userManual = new MyQWebEngineView(this);

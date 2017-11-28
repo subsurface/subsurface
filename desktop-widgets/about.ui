@@ -24,7 +24,7 @@
   </property>
   <property name="windowIcon">
    <iconset resource="../subsurface.qrc">
-    <normaloff>:/subsurface-icon</normaloff>:/subsurface-icon</iconset>
+    <normaloff>:subsurface-icon</normaloff>:subsurface-icon</iconset>
   </property>
   <property name="modal">
    <bool>true</bool>
@@ -39,7 +39,7 @@
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap resource="../subsurface.qrc">:/subsurface-icon</pixmap>
+      <pixmap resource="../subsurface.qrc">:subsurface-icon</pixmap>
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>

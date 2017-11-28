@@ -479,7 +479,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_o2</normaloff>:/icon_o2</iconset>
+     <normaloff>:icon_o2</normaloff>:icon_o2</iconset>
    </property>
    <property name="text">
     <string>Toggle pO₂ graph</string>
@@ -491,7 +491,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_n2</normaloff>:/icon_n2</iconset>
+     <normaloff>:icon_n2</normaloff>:icon_n2</iconset>
    </property>
    <property name="text">
     <string>Toggle pN₂ graph</string>
@@ -503,7 +503,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_he</normaloff>:/icon_he</iconset>
+     <normaloff>:icon_he</normaloff>:icon_he</iconset>
    </property>
    <property name="text">
     <string>Toggle pHe graph</string>
@@ -515,7 +515,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_ceiling_dc</normaloff>:/icon_ceiling_dc</iconset>
+     <normaloff>:icon_ceiling_dc</normaloff>:icon_ceiling_dc</iconset>
    </property>
    <property name="text">
     <string>Toggle DC reported ceiling</string>
@@ -527,7 +527,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_ceiling_calculated</normaloff>:/icon_ceiling_calculated</iconset>
+     <normaloff>:icon_ceiling_calculated</normaloff>:icon_ceiling_calculated</iconset>
    </property>
    <property name="text">
     <string>Toggle calculated ceiling</string>
@@ -539,7 +539,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_ceiling_alltissues</normaloff>:/icon_ceiling_alltissues</iconset>
+     <normaloff>:icon_ceiling_alltissues</normaloff>:icon_ceiling_alltissues</iconset>
    </property>
    <property name="text">
     <string>Toggle calculating all tissues</string>
@@ -551,7 +551,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_ceiling_3m</normaloff>:/icon_ceiling_3m</iconset>
+     <normaloff>:icon_ceiling_3m</normaloff>:icon_ceiling_3m</iconset>
    </property>
    <property name="text">
     <string>Toggle calculated ceiling with 3m increments</string>
@@ -563,7 +563,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_HR</normaloff>:/icon_HR</iconset>
+     <normaloff>:icon_HR</normaloff>:icon_HR</iconset>
    </property>
    <property name="text">
     <string>Toggle heart rate</string>
@@ -575,7 +575,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_mod</normaloff>:/icon_mod</iconset>
+     <normaloff>:icon_mod</normaloff>:icon_mod</iconset>
    </property>
    <property name="text">
     <string>Toggle MOD</string>
@@ -587,7 +587,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_ead</normaloff>:/icon_ead</iconset>
+     <normaloff>:icon_ead</normaloff>:icon_ead</iconset>
    </property>
    <property name="text">
     <string>Toggle EAD, END, EADD</string>
@@ -599,7 +599,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_NDLTTS</normaloff>:/icon_NDLTTS</iconset>
+     <normaloff>:icon_NDLTTS</normaloff>:icon_NDLTTS</iconset>
    </property>
    <property name="text">
     <string>Toggle NDL, TTS</string>
@@ -611,7 +611,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_lung</normaloff>:/icon_lung</iconset>
+     <normaloff>:icon_lung</normaloff>:icon_lung</iconset>
    </property>
    <property name="text">
     <string>Toggle SAC rate</string>
@@ -623,7 +623,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/ruler</normaloff>:/ruler</iconset>
+     <normaloff>:ruler</normaloff>:ruler</iconset>
    </property>
    <property name="text">
     <string>Toggle ruler</string>
@@ -635,7 +635,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/scale</normaloff>:/scale</iconset>
+     <normaloff>:scale</normaloff>:scale</iconset>
    </property>
    <property name="text">
     <string>Scale graph</string>
@@ -647,7 +647,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/pictures</normaloff>:/pictures</iconset>
+     <normaloff>:pictures</normaloff>:pictures</iconset>
    </property>
    <property name="text">
     <string>Toggle pictures</string>
@@ -659,7 +659,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/gaschange</normaloff>:/gaschange</iconset>
+     <normaloff>:gaschange</normaloff>:gaschange</iconset>
    </property>
    <property name="text">
     <string>Toggle gas bar</string>
@@ -682,7 +682,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:/icon_tissue</normaloff>:/icon_tissue</iconset>
+     <normaloff>:icon_tissue</normaloff>:icon_tissue</iconset>
    </property>
    <property name="text">
     <string>Toggle tissue heat-map</string>
