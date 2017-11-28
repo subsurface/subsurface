@@ -129,7 +129,7 @@ void PrintOptions::on_editButton_clicked()
 	if (!f.open(QFile::ReadWrite | QFile::Text)) {
 		QMessageBox msgBox(this);
 		msgBox.setWindowTitle(tr("Read-only template!"));
-		msgBox.setText(tr("The template '%1' is read-only and connot be edited.\n"
+		msgBox.setText(tr("The template '%1' is read-only and cannot be edited.\n"
 			"Please export this template to a different file.").arg(templateName));
 		msgBox.setStandardButtons(QMessageBox::Ok);
 		msgBox.exec();
