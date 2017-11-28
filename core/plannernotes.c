@@ -27,7 +27,7 @@ int diveplan_duration(struct diveplan *diveplan)
 			duration = dp->time;
 		dp = dp->next;
 	}
-	return duration / 60;
+	return (duration + 30) / 60;
 }
 
 
