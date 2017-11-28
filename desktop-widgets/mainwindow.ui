@@ -662,7 +662,7 @@
      <normaloff>:/gaschange</normaloff>:/gaschange</iconset>
    </property>
    <property name="text">
-    <string>Toggle tank bar</string>
+    <string>Toggle gas bar</string>
    </property>
   </action>
   <action name="actionFilterTags">
