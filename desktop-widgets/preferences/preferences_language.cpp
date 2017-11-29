@@ -10,7 +10,7 @@
 
 #include "qt-models/models.h"
 
-PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Language"), QIcon(":language"), 4)
+PreferencesLanguage::PreferencesLanguage() : AbstractPreferencesWidget(tr("Language"), QIcon(":/language"), 4)
 {
 	ui = new Ui::PreferencesLanguage();
 	ui->setupUi(this);

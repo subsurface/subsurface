@@ -74,7 +74,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:filter-reset</normaloff>:filter-reset</iconset>
+         <normaloff>:/filter-reset</normaloff>:/filter-reset</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -88,7 +88,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:filter-hide</normaloff>:filter-hide</iconset>
+         <normaloff>:/filter-hide</normaloff>:/filter-hide</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -102,7 +102,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:filter-close</normaloff>:filter-close</iconset>
+         <normaloff>:/filter-close</normaloff>:/filter-close</iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
