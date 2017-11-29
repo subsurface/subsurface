@@ -41,6 +41,7 @@ public:
 	void updateDecoDepths(pressure_t olddecopo2);
 	void updateTrashIcon();
 	void moveAtFirst(int cylid);
+	void moveAtPos(int cylid, int pos);
 	cylinder_t *cylinderAt(const QModelIndex &index);
 	bool changed;
 	virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const;
