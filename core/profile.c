@@ -399,7 +399,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	bool seen = false;
 	static struct plot_info pi;
 	int maxdepth = dive->maxdepth.mm;
-	unsigned int maxtime = 0;
+	int maxtime = 0;
 	int maxpressure = 0, minpressure = INT_MAX;
 	int maxhr = 0, minhr = INT_MAX;
 	int mintemp = dive->mintemp.mkelvin;
@@ -1310,6 +1310,8 @@ void create_plot_info_new(struct dive *dive, struct divecomputer *dc, struct plo
 #ifndef SUBSURFACE_MOBILE
 	struct deco_state plot_deco_state;
 	init_decompression(&plot_deco_state, dive);
+#else
+	(void)planner_ds;
 #endif
 	/* Create the new plot data */
 	free((void *)last_pi_entry_new);
