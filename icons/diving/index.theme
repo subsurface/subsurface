@@ -1,0 +1,36 @@
+[Icon Theme]
+Name=Diving
+Name[cs]=Potápění
+Comment=Icons for diving applications (log and planner).
+Comment[cs]=Ikony pro potápěčské aplikace (deník a plánovač ponorů).
+Inherits=Tango
+Directories=scalable/actions,scalable/apps,scalable/devices,scalable/emblems
+
+[scalable/actions]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=256
+Context=Actions
+
+[scalable/apps]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=256
+Context=Applications
+
+[scalable/devices]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=256
+Context=Devices
+
+[scalable/emblems]
+Size=48
+Type=Scalable
+MinSize=16
+MaxSize=256
+Context=Emblems
+
