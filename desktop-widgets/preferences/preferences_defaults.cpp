@@ -7,7 +7,7 @@
 
 #include <QFileDialog>
 
-PreferencesDefaults::PreferencesDefaults(): AbstractPreferencesWidget(tr("General"), QIcon(":defaults"), 0 ), ui(new Ui::PreferencesDefaults())
+PreferencesDefaults::PreferencesDefaults(): AbstractPreferencesWidget(tr("General"), QIcon(":preferences-other-icon"), 0 ), ui(new Ui::PreferencesDefaults())
 {
 	ui->setupUi(this);
 }
