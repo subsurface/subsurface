@@ -31,7 +31,7 @@ Item {
 	Image {
 		id: contextMenuImage
 		x: -width
-		source: "qrc:///mapwidget-context-menu"
+		source: "qrc:///open-menu-icon"
 
 		SequentialAnimation {
 			id:contextMenuImageAnimation

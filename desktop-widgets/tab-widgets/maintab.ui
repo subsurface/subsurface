@@ -226,7 +226,7 @@
                  </property>
                  <property name="icon">
                   <iconset resource="../../subsurface.qrc">
-                   <normaloff>:geocode</normaloff>:geocode</iconset>
+                   <normaloff>:geotag-icon</normaloff>:geotag-icon</iconset>
                  </property>
                 </widget>
                </item>
