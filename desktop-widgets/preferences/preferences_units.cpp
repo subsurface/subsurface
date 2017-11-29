@@ -5,7 +5,7 @@
 #include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
-PreferencesUnits::PreferencesUnits(): AbstractPreferencesWidget(tr("Units"),QIcon(":units-icon"),1), ui(new Ui::PreferencesUnits())
+PreferencesUnits::PreferencesUnits(): AbstractPreferencesWidget(tr("Units"),QIcon(":units"),1), ui(new Ui::PreferencesUnits())
 {
 	ui->setupUi(this);
 }

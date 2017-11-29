@@ -7,7 +7,7 @@
 
 #include "qt-models/models.h"
 
-PreferencesGraph::PreferencesGraph() : AbstractPreferencesWidget(tr("Profile"), QIcon(":graph-icon"), 5)
+PreferencesGraph::PreferencesGraph() : AbstractPreferencesWidget(tr("Profile"), QIcon(":graph"), 5)
 {
 	ui = new Ui::PreferencesGraph();
 	ui->setupUi(this);

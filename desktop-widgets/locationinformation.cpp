@@ -376,8 +376,8 @@ void DiveLocationModel::resetModel()
 
 QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 {
-	static const QIcon plusIcon(":list-add-icon");
-	static const QIcon geoCode(":geotag-icon");
+	static const QIcon plusIcon(":plus");
+	static const QIcon geoCode(":geocode");
 
 	if (index.row() <= 1) { // two special cases.
 		if (index.column() == UUID) {

@@ -73,7 +73,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset theme="go-up-icon">
+      <iconset theme="go-up">
        <normaloff/>
       </iconset>
      </property>
@@ -97,7 +97,7 @@
       <string/>
      </property>
      <property name="icon">
-      <iconset theme="go-down-icon">
+      <iconset theme="go-down">
        <normaloff/>
       </iconset>
      </property>
