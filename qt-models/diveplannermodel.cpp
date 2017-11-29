@@ -346,8 +346,10 @@ void DivePlannerPointsModel::gasChange(const QModelIndex &index, int newcylinder
 
 void DivePlannerPointsModel::cylinderRenumber(int mapping[])
 {
-	for (int i = 0; i < rowCount(); i++)
-		divepoints[i].cylinderid = mapping[divepoints[i].cylinderid];
+	for (int i = 0; i < rowCount(); i++) {
+		if (mapping[divepoints[i].cylinderid] >= 0)
+			divepoints[i].cylinderid = mapping[divepoints[i].cylinderid];
+	}
 	emitDataChanged();
 }
 
