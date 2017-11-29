@@ -30,13 +30,13 @@ public:
 	MinMaxAvgWidgetPrivate(MinMaxAvgWidget *owner)
 	{
 		avgIco = new QLabel(owner);
-		avgIco->setPixmap(QIcon(":average-icon").pixmap(16, 16));
+		avgIco->setPixmap(QIcon(":value-average-icon").pixmap(16, 16));
 		avgIco->setToolTip(QObject::tr("Average"));
 		minIco = new QLabel(owner);
-		minIco->setPixmap(QIcon(":minimum-icon").pixmap(16, 16));
+		minIco->setPixmap(QIcon(":value-minimum-icon").pixmap(16, 16));
 		minIco->setToolTip(QObject::tr("Minimum"));
 		maxIco = new QLabel(owner);
-		maxIco->setPixmap(QIcon(":maximum-icon").pixmap(16, 16));
+		maxIco->setPixmap(QIcon(":value-maximum-icon").pixmap(16, 16));
 		maxIco->setToolTip(QObject::tr("Maximum"));
 		avgValue = new QLabel(owner);
 		minValue = new QLabel(owner);
