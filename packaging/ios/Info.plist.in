@@ -43,6 +43,8 @@
 	<array>
 		<string>bluetooth-central</string>
 	</array>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Subsurface-mobile can download dive information directly from some Bluetooth LE enabled dive computers; for this it needs access to your Bluetooth peripherals.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Subsurface-mobile stores your dive list locally - iOS seems to think that means it accesses your photos (which it does not)</string>
 </dict>
