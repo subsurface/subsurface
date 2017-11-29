@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="advanced-icon">icons/advanced.png</file>
         <file alias="bookmark-icon">icons/flag.png</file>
         <file alias="ceiling-calculated-icon">icons/ss.png</file>
         <file alias="ceiling-dc-icon">icons/pc.png</file>
@@ -16,11 +15,7 @@
         <file alias="dive-spot-icon">map-widget/qml/icons/mapwidget-marker.png</file>
         <file alias="dive-spot-inactive-icon">map-widget/qml/icons/mapwidget-marker-gray.png</file>
         <file alias="dive-spot-selected-icon">map-widget/qml/icons/mapwidget-marker-selected.png</file>
-        <file alias="duplicate-edit-icon">icons/edit-circled.svg</file>
-        <file alias="duplicate-geotag-icon">icons/georeference.png</file>
-        <file alias="duplicate-warning-icon">icons/warning.png</file>
         <file alias="edit-clear-icon">icons/edit-undo.svg</file>
-        <file alias="facebook-icon">icons/facebook.png</file>
         <file alias="filter-close">icons/process-stop.svg</file>
         <file alias="gaschange-air-icon">icons/Air_change.png</file>
         <file alias="gaschange-ean-icon">icons/Nx_change.png</file>
