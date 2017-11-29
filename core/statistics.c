@@ -345,6 +345,19 @@ bool is_cylinder_used(struct dive *dive, int idx)
 	return false;
 }
 
+bool is_cylinder_prot(struct dive *dive, int idx)
+{
+	struct divecomputer *dc;
+	if (cylinder_none(&dive->cylinder[idx]))
+		return false;
+
+	for_each_dc(dive, dc) {
+		if (has_gaschange_event(dive, dc, idx))
+			return true;
+	}
+	return false;
+}
+
 void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS])
 {
 	int idx;

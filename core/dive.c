@@ -2070,7 +2070,7 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 	if (mapping[0] > 0)
 		add_initial_gaschange(dive, dc);
 
-	/* Remap the sensor indexes */
+	/* Remap or delete the sensor indexes */
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *s = dc->sample + i;
 		int j;
@@ -2079,8 +2079,18 @@ static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, int
 			int sensor;
 
 			sensor = mapping[s->sensor[j]];
-			if (sensor >= 0)
+			if (sensor == -1) {
+				// Remove sensor and gas pressure info
+				if (i == 0) {
+					s->sensor[j] = 0;
+					s->pressure[j].mbar = 0;
+				} else {
+					s->sensor[j] = s[-1].sensor[j];
+					s->pressure[j].mbar = s[-1].pressure[j].mbar;
+				}
+			} else {
 				s->sensor[j] = sensor;
+			}
 		}
 	}
 
