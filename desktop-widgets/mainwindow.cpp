@@ -130,18 +130,34 @@ MainWindow::MainWindow() : QMainWindow(),
 	DivePlannerWidget *plannerWidget = new DivePlannerWidget();
 	PlannerDetails *plannerDetails = new PlannerDetails();
 
-	// what is a sane order for those icons? we should have the ones the user is
-	// most likely to want towards the top so they are always visible
-	// and the ones that someone likely sets and then never touches again towards the bottom
-	profileToolbarActions << ui.profCalcCeiling << ui.profCalcAllTissues << // start with various ceilings
-				 ui.profIncrement3m << ui.profDcCeiling <<
-				 ui.profPhe << ui.profPn2 << ui.profPO2 << // partial pressure graphs
-				 ui.profRuler << ui.profScaled << // measuring and scaling
-				 ui.profTogglePicture << ui.profTankbar <<
-				 ui.profMod << ui.profNdl_tts << // various values that a user is either interested in or not
-				 ui.profEad << ui.profSAC <<
-				 ui.profHR << // very few dive computers support this
-				 ui.profTissues; // maybe less frequently used
+	// Same order is related items close to each other.
+	// Most important and used items first.
+	// Ceiling options are somehow likely to be found up.
+	// Bottom options should be down (where one expects the bottom).
+	profileToolbarActions <<
+		// Start with various ceilings.
+		ui.profCalcCeiling <<
+		ui.profCalcAllTissues <<
+		ui.profIncrement3m <<
+		ui.profDcCeiling <<
+		// Gas related items and partial pressure graphs.
+		// O2 limits us the most, then N2, He only TECs.
+		ui.profPO2 <<
+		ui.profPn2 <<
+		ui.profPhe <<
+		ui.profTankbar <<
+		// Divers body related items.
+		ui.profSAC <<
+		ui.profHR <<
+		ui.profTissues <<
+		// Depth limit related items are down (NDL is closely related to depth).
+		ui.profNdl_tts <<
+		ui.profEad <<
+		ui.profMod <<
+		// Graph related options (have nothing to do with dive).
+		ui.profTogglePicture <<
+		ui.profRuler <<
+		ui.profScaled;
 
 	QToolBar *toolBar = new QToolBar();
 	Q_FOREACH (QAction *a, profileToolbarActions)
