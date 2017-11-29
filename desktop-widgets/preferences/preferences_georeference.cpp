@@ -8,7 +8,7 @@
 
 #include <ctime>
 
-PreferencesGeoreference::PreferencesGeoreference() : AbstractPreferencesWidget(tr("Georeference"), QIcon(":georeference"), 9)
+PreferencesGeoreference::PreferencesGeoreference() : AbstractPreferencesWidget(tr("Georeference"), QIcon(":/georeference"), 9)
 {
 	ui = new Ui::PreferencesGeoreference();
 	ui->setupUi(this);

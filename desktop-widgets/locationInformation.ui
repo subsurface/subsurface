@@ -77,7 +77,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>:satellite</normaloff>:satellite</iconset>
+       <normaloff>:/satellite</normaloff>:/satellite</iconset>
      </property>
     </widget>
    </item>
@@ -166,7 +166,7 @@
      </property>
      <property name="icon">
       <iconset resource="../subsurface.qrc">
-       <normaloff>:mapwidget-marker-selected</normaloff>:mapwidget-marker-selected</iconset>
+       <normaloff>:/mapwidget-marker-selected</normaloff>:/mapwidget-marker-selected</iconset>
      </property>
     </widget>
    </item>

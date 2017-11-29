@@ -18,7 +18,7 @@
   </property>
   <property name="windowIcon">
    <iconset>
-    <normalon>:subsurface-icon</normalon>
+    <normalon>:/subsurface-icon</normalon>
    </iconset>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
