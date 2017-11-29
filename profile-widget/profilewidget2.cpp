@@ -86,7 +86,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	zoomLevel(0),
 	zoomFactor(1.15),
 	background(new DivePixmapItem()),
-	backgroundFile(":poster-icon"),
+	backgroundFile(":subsurface-icon"),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
