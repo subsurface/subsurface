@@ -35,7 +35,11 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 		QString filename = model()->data(indexAt(event->pos()), Qt::DisplayPropertyRole).toString();
 
 		if (!filename.isEmpty()) {
+			int dim = lrint(defaultIconMetrics().sz_pic * 0.2);
+			
 			QPixmap pixmap = model()->data(indexAt(event->pos()), Qt::DecorationRole).value<QPixmap>();
+			pixmap = pixmap.scaled(dim, dim, Qt::KeepAspectRatio);
+			
 			QByteArray itemData;
 			QDataStream dataStream(&itemData, QIODevice::WriteOnly);
 			dataStream << filename << event->pos();
@@ -46,7 +50,6 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 			QDrag *drag = new QDrag(this);
 			drag->setMimeData(mimeData);
 			drag->setPixmap(pixmap);
-			drag->setHotSpot(event->pos() - rectForIndex(indexAt(event->pos())).topLeft());
 
 			drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 		}
