@@ -8,7 +8,7 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QNetworkProxy>
 
-PreferencesNetwork::PreferencesNetwork() : AbstractPreferencesWidget(tr("Network"),QIcon(":network"), 9), ui(new Ui::PreferencesNetwork())
+PreferencesNetwork::PreferencesNetwork() : AbstractPreferencesWidget(tr("Network"),QIcon(":preferences-system-network-icon"), 9), ui(new Ui::PreferencesNetwork())
 {
 	ui->setupUi(this);
 

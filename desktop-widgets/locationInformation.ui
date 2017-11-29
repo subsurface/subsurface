@@ -166,7 +166,7 @@
      </property>
      <property name="icon">
       <iconset resource="../subsurface.qrc">
-       <normaloff>:mapwidget-marker-selected</normaloff>:mapwidget-marker-selected</iconset>
+       <normaloff>:dive-location-marker-selected-icon</normaloff>:dive-location-marker-selected-icon</iconset>
      </property>
     </widget>
    </item>

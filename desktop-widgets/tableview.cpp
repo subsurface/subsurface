@@ -43,7 +43,7 @@ TableView::TableView(QWidget *parent) : QGroupBox(parent)
 	}
 	layout()->setContentsMargins(margins);
 
-	QIcon plusIcon(":plus");
+	QIcon plusIcon(":list-add-icon");
 	plusBtn = new QPushButton(plusIcon, QString(), this);
 	plusBtn->setFlat(true);
 
