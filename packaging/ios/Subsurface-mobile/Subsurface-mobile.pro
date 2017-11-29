@@ -243,8 +243,8 @@ include(deployment.pri)
 include(../../../mobile-widgets/qml/kirigami/kirigami.pri)
 
 ios {
-    ios_icon.files = $$files(../../../icons/AppIcon*.png)
+    QMAKE_ASSET_CATALOGS += ../storeIcon.xcassets
     app_launch_images.files = ../SubsurfaceMobileLaunch.xib $$files(../SubsurfaceMobileLaunchImage*.png)
-    QMAKE_BUNDLE_DATA += app_launch_images ios_icon
+    QMAKE_BUNDLE_DATA += app_launch_images
     QMAKE_INFO_PLIST = ../Info.plist
 }
