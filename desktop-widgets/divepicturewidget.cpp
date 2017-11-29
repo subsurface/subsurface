@@ -19,42 +19,40 @@
 
 DivePictureWidget::DivePictureWidget(QWidget *parent) : QListView(parent)
 {
-	connect(this, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(doubleClicked(const QModelIndex &)));
 }
 
-void DivePictureWidget::doubleClicked(const QModelIndex &index)
+void DivePictureWidget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	QString filePath = model()->data(index, Qt::DisplayPropertyRole).toString();
-	emit photoDoubleClicked(localFilePath(filePath));
+	if (event->button() == Qt::LeftButton) {
+		QString filePath = model()->data(indexAt(event->pos()), Qt::DisplayPropertyRole).toString();
+		emit photoDoubleClicked(localFilePath(filePath));
+	}
 }
-
 
 void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 {
-	int doubleClickInterval = qApp->styleHints()->mouseDoubleClickInterval();
-	static qint64 lasttime = 0L;
-	qint64 timestamp = QDateTime::currentDateTime().toMSecsSinceEpoch();
-
-	if (timestamp - lasttime <= doubleClickInterval) {
-		doubleClicked(indexAt(event->pos()));
-	} else {
-		lasttime = timestamp;
-		QPixmap pixmap = model()->data(indexAt(event->pos()), Qt::DecorationRole).value<QPixmap>();
-
+	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
 		QString filename = model()->data(indexAt(event->pos()), Qt::DisplayPropertyRole).toString();
 
-		QByteArray itemData;
-		QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-		dataStream << filename << event->pos();
+		if (!filename.isEmpty()) {
+			QPixmap pixmap = model()->data(indexAt(event->pos()), Qt::DecorationRole).value<QPixmap>();
+			QByteArray itemData;
+			QDataStream dataStream(&itemData, QIODevice::WriteOnly);
+			dataStream << filename << event->pos();
 
-		QMimeData *mimeData = new QMimeData;
-		mimeData->setData("application/x-subsurfaceimagedrop", itemData);
+			QMimeData *mimeData = new QMimeData;
+			mimeData->setData("application/x-subsurfaceimagedrop", itemData);
 
-		QDrag *drag = new QDrag(this);
-		drag->setMimeData(mimeData);
-		drag->setPixmap(pixmap);
-		drag->setHotSpot(event->pos() - rectForIndex(indexAt(event->pos())).topLeft());
+			QDrag *drag = new QDrag(this);
+			drag->setMimeData(mimeData);
+			drag->setPixmap(pixmap);
+			drag->setHotSpot(event->pos() - rectForIndex(indexAt(event->pos())).topLeft());
 
-		drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+			drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
+		}
+
+		QListView::mousePressEvent(event);
+	} else {
+		QListView::mousePressEvent(event);
 	}
 }

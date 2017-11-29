@@ -12,13 +12,11 @@ class DivePictureWidget : public QListView {
 public:
 	DivePictureWidget(QWidget *parent);
 protected:
+	void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
 
 signals:
 	void photoDoubleClicked(const QString filePath);
-private
-slots:
-	void doubleClicked(const QModelIndex &index);
 };
 
 class DivePictureThumbnailThread : public QThread {

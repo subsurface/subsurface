@@ -10,6 +10,7 @@
 #include <QDesktopServices>
 #include <QGraphicsView>
 #include <QUrl>
+#include <QGraphicsSceneMouseEvent>
 
 DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
 {
@@ -129,8 +130,9 @@ DivePictureItem::~DivePictureItem(){
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	Q_UNUSED(event);
-	QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl));
+	if (event->button() == Qt::LeftButton) {
+		QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl));
+	}
 }
 
 void DivePictureItem::removePicture()
