@@ -1,3 +1,7 @@
+- Store the gas switch depth of a cylinder from the planner in the logbook
+  file or git storage. No more need to reenter this value on replanning.
+- Improved handling of different information (divemaster, buddy, suit, notes)
+  when merging two dives.
 - Limit min. GFlow to 10 and min. GFhigh to 40 in preferences for profile
   and planner
 - Fix issues related to debug logging on Windows
