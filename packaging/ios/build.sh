@@ -297,3 +297,11 @@ for src in $SRCS; do
 	${IOS_QT}/${QT_VERSION}/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm translations/${src/.ts/.qm}
 done
 popd
+
+# in order to be able to use xcode without going through Qt Creator
+# call qmake directly
+mkdir -p build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-Debug
+cd build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-Debug
+${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile/Subsurface-mobile.pro \
+	-spec macx-ios-clang CONFIG+=iphoneos CONFIG+=device CONFIG+=qml_debug
+make qmake_all
