@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   id="svg2"
+   version="1.1">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g936"
+     transform="translate(-1.9999756,2.000553)">
+    <g
+       id="g887">
+      <g
+         id="g861" />
+    </g>
+    <path
+       id="path4185-3"
+       d="M 8.5000002,2.9994459 V 39.456499 l 36.4981858,0.04295"
+       style="fill:none;fill-rule:evenodd;stroke:#808080;stroke-width:3.00000024;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path4185"
+       d="m 8.5000008,4.0000011 -1e-7,35.5000009 H 44.000002"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <path
+       id="path4206"
+       d="m 13.285633,29.953004 h 7.467423 l 9.675565,-15.000116 8.571494,19.556509"
+       style="fill:none;fill-rule:evenodd;stroke:#b30000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path4208"
+       d="m 14.324436,7.1541128 h 7.532691 L 30.428621,33.291602 41.142988,17.571479"
+       style="fill:none;fill-rule:evenodd;stroke:#0061ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       id="path828"
+       d="M 15.319646,15.534072 35.035095,7.6018684 40.703581,10.374059"
+       style="fill:none;stroke:#009b00;stroke-width:2;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <g
+       id="g887-9"
+       transform="rotate(180,24.0001,23.9999)">
+      <g
+         id="g861-6" />
+    </g>
+  </g>
+</svg>

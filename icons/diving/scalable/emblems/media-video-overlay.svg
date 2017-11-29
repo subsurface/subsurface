@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   width="48"
+   height="48"
+   viewBox="0 0 48 48"
+   id="svg2"
+   version="1.1">
+  <defs
+     id="defs4" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g829">
+    <g
+       transform="translate(0,-1004.3622)"
+       id="layer1">
+      <g
+         transform="matrix(2.0434783,0,0,2.0434783,108.47274,-1082.5541)"
+         id="g4209">
+        <path
+           style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#808080;fill-opacity:1;fill-rule:nonzero;stroke:#808080;stroke-width:0.99999994;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+           d="m 0.5,0.5 v 47 H 8 v -47 z m 39.5,0 v 47 h 7.5 V 0.5 Z M 2,2 H 6 V 6 H 2 Z m 40,0 h 4 V 6 H 42 Z M 2,10 h 4 v 4 H 2 Z m 40,0 h 4 v 4 H 42 Z M 2,18 h 4 v 4 H 2 Z m 40,0 h 4 v 4 H 42 Z M 2,26 h 4 v 4 H 2 Z m 40,0 h 4 v 4 H 42 Z M 2,34 h 4 v 4 H 2 Z m 40,0 h 4 v 4 H 42 Z M 2,42 h 4 v 4 H 2 Z m 40,0 h 4 v 4 h -4 z"
+           transform="matrix(0.48936169,0,0,0.48936169,-53.082404,1021.2569)"
+           id="rect4185-6" />
+      </g>
+    </g>
+    <path
+       id="rect829"
+       d="M 16.499999,16.5 31.500001,24 16.499999,31.5 Z"
+       style="opacity:1;fill:#808080;fill-opacity:1;stroke:none;stroke-width:0.99999994;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
+  </g>
+</svg>
