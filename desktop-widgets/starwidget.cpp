@@ -99,7 +99,7 @@ StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),
 	int dim = defaultIconMetrics().sz_small;
 
 	if (activeStar.isNull()) {
-		QSvgRenderer render(QString(":star-icon"));
+		QSvgRenderer render(QString(":star"));
 		QPixmap renderedStar(dim, dim);
 
 		renderedStar.fill(Qt::transparent);

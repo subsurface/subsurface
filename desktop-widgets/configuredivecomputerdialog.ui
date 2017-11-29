@@ -215,7 +215,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:dc-ostc-3-icon</normaloff>:dc-ostc-3-icon</iconset>
+         <normaloff>:icons/ostc3.png</normaloff>:icons/ostc3.png</iconset>
        </property>
       </item>
       <item>
@@ -224,7 +224,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:dc-suunto-vyper-icon</normaloff>:dc-suunto-vyper-icon</iconset>
+         <normaloff>:icons/suunto_vyper.png</normaloff>:icons/suunto_vyper.png</iconset>
        </property>
       </item>
       <item>
@@ -233,7 +233,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:dc-ostc-2n-icon</normaloff>:dc-ostc-2n-icon</iconset>
+         <normaloff>:icons/ostc2n.png</normaloff>:icons/ostc2n.png</iconset>
        </property>
       </item>
       <item>
@@ -242,7 +242,7 @@
        </property>
        <property name="icon">
         <iconset resource="../subsurface.qrc">
-         <normaloff>:dc-ostc-4-icon</normaloff>:dc-ostc-4-icon</iconset>
+         <normaloff>:icons/ostc4.png</normaloff>:icons/ostc4.png</iconset>
        </property>
       </item>
      </widget>

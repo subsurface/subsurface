@@ -14,13 +14,13 @@
 
 const QPixmap &trashIcon()
 {
-	static QPixmap trash = QPixmap(":list-remove-icon").scaledToHeight(defaultIconMetrics().sz_small);
+	static QPixmap trash = QPixmap(":trash").scaledToHeight(defaultIconMetrics().sz_small);
 	return trash;
 }
 
 const QPixmap &trashForbiddenIcon()
 {
-	static QPixmap trash = QPixmap(":list-remove-disabled-icon").scaledToHeight(defaultIconMetrics().sz_small);
+	static QPixmap trash = QPixmap(":trashForbidden").scaledToHeight(defaultIconMetrics().sz_small);
 	return trash;
 }
 
