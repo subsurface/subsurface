@@ -80,7 +80,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 				}
 				return textField->text();
 			}
-			case Qt::DecorationRole : return QIcon(":plus");
+			case Qt::DecorationRole : return QIcon(":list-add-icon");
 		}
 	}
 
@@ -108,7 +108,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	break;
 	case Qt::DecorationRole : {
 		if (dive_site_has_gps_location(ds))
-			return QIcon(":geocode");
+			return QIcon(":geotag-icon");
 		else
 			return QVariant();
 	}

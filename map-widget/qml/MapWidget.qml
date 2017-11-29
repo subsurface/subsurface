@@ -56,7 +56,7 @@ Item {
 				z: mapHelper.model.selectedUuid === model.uuid ? mapHelper.model.count - 1 : 0
 				sourceItem: Image {
 					id: mapItemImage
-					source: "qrc:///mapwidget-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : (mapHelper.editMode ? "-gray" : ""))
+					source: "qrc:///dive-spot" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : (mapHelper.editMode ? "-inactive" : "")) + "-icon"
 					SequentialAnimation {
 						id: mapItemImageAnimation
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
@@ -258,7 +258,7 @@ Item {
 		x: 10; y: x
 		width: 40
 		height: 40
-		source: "qrc:///mapwidget-toggle-" + (map.activeMapType === map.mapType.SATELLITE ? "street" : "satellite")
+		source: "qrc:///map-style-" + (map.activeMapType === map.mapType.SATELLITE ? "roadmap" : "satellite") + "-icon"
 		SequentialAnimation {
 			id: toggleImageAnimation
 			PropertyAnimation { target: toggleImage; property: "scale"; from: 1.0; to: 0.8; duration: 120 }
@@ -278,7 +278,7 @@ Item {
 		x: 10 + (toggleImage.width - imageZoomIn.width) * 0.5; y: toggleImage.y + toggleImage.height + 10
 		width: 20
 		height: 20
-		source: "qrc:///mapwidget-zoom-in"
+		source: "qrc:///zoom-in-icon"
 		SequentialAnimation {
 			id: imageZoomInAnimation
 			PropertyAnimation { target: imageZoomIn; property: "scale"; from: 1.0; to: 0.8; duration: 120 }
@@ -301,7 +301,7 @@ Item {
 	Image {
 		id: imageZoomOut
 		x: imageZoomIn.x; y: imageZoomIn.y + imageZoomIn.height + 10
-		source: "qrc:///mapwidget-zoom-out"
+		source: "qrc:///zoom-out-icon"
 		width: 20
 		height: 20
 		SequentialAnimation {

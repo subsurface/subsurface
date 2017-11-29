@@ -83,17 +83,17 @@ void DiveEventItem::setupPixmap()
 	if (same_string(internalEvent->name, "")) {
 		setPixmap(EVENT_PIXMAP(":warning-icon"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
-		setPixmap(EVENT_PIXMAP(":flag"));
+		setPixmap(EVENT_PIXMAP(":bookmark-icon"));
 	} else if (event_is_gaschange(internalEvent)) {
 		struct gasmix *mix = get_gasmix_from_event(&displayed_dive, internalEvent);
 		if (mix->he.permille)
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeTrimix"));
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-tmx-icon"));
 		else if (gasmix_is_air(mix))
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeAir"));
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-icon"));
 		else if (mix->o2.permille == 1000)
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeOxy"));
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxy-icon"));
 		else
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschangeNitrox"));
+			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icon"));
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
 	} else if ((((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
 		    // those are useless internals of the dive computer

@@ -29,7 +29,7 @@ void DiveButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 // paint on screen, but for now, this.
 CloseButtonItem::CloseButtonItem(QObject *parent): DiveButtonItem(parent)
 {
-	static QPixmap p = QPixmap(":trash");
+	static QPixmap p = QPixmap(":list-remove-icon");
 	setPixmap(p);
 	setFlag(ItemIgnoresTransformations);
 }
