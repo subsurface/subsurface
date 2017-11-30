@@ -245,6 +245,7 @@ include(../../../mobile-widgets/qml/kirigami/kirigami.pri)
 ios {
     QMAKE_ASSET_CATALOGS += ../storeIcon.xcassets
     app_launch_images.files = ../SubsurfaceMobileLaunch.xib $$files(../SubsurfaceMobileLaunchImage*.png)
-    QMAKE_BUNDLE_DATA += app_launch_images
+    images.files = ../../../icons/subsurface-mobile-icon.png
+    QMAKE_BUNDLE_DATA += app_launch_images images
     QMAKE_INFO_PLIST = ../Info.plist
 }
