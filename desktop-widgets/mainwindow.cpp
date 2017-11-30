@@ -1440,11 +1440,9 @@ void MainWindow::readSettings()
 	enableDisableCloudActions();
 
 #if !defined(SUBSURFACE_MOBILE)
-	QSettings s; //TODO: this 's' exists only for the loadRecentFiles, remove it.
-
 	loadRecentFiles();
 	if (firstRun) {
-		checkSurvey(&s);
+		checkSurvey();
 		firstRun = false;
 	}
 #endif
@@ -1452,22 +1450,23 @@ void MainWindow::readSettings()
 
 #undef TOOLBOX_PREF_BUTTON
 
-void MainWindow::checkSurvey(QSettings *s)
+void MainWindow::checkSurvey()
 {
-	s->beginGroup("UserSurvey");
-	if (!s->contains("FirstUse42")) {
+	QSettings s;
+	s.beginGroup("UserSurvey");
+	if (!s.contains("FirstUse42")) {
 		QVariant value = QDate().currentDate();
-		s->setValue("FirstUse42", value);
+		s.setValue("FirstUse42", value);
 	}
 	// wait a week for production versions, but not at all for non-tagged builds
 	int waitTime = 7;
-	QDate firstUse42 = s->value("FirstUse42").toDate();
-	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s->contains("SurveyDone"))) {
+	QDate firstUse42 = s.value("FirstUse42").toDate();
+	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s.contains("SurveyDone"))) {
 		if (!survey)
 			survey = new UserSurvey(this);
 		survey->show();
 	}
-	s->endGroup();
+	s.endGroup();
 }
 
 void MainWindow::writeSettings()
