@@ -34,9 +34,12 @@
 #include <QScrollBar>
 #include <QtCore/qmath.h>
 #include <QMessageBox>
+#include <QImage>
 #include <QInputDialog>
+#include <QPainter>
 #include <QDebug>
 #include <QWheelEvent>
+#include <QSvgRenderer>
 #include <QMenu>
 #include <QElapsedTimer>
 
@@ -101,7 +104,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	zoomLevel(0),
 	zoomFactor(1.15),
 	background(new DivePixmapItem()),
-	backgroundFile(":poster-icon"),
+	backgroundFile(":subsurface-icon"),
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem(new ToolTipItem()),
 #endif
@@ -981,15 +984,26 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 
 void ProfileWidget2::fixBackgroundPos()
 {
-	static QPixmap toBeScaled(backgroundFile);
+    // TODO this needs optimization.
 	if (currentState != EMPTY)
-		return;
-	QPixmap p = toBeScaled.scaledToHeight(viewport()->height() - 40, Qt::SmoothTransformation);
-	int x = viewport()->width() / 2 - p.width() / 2;
-	int y = viewport()->height() / 2 - p.height() / 2;
-	background->setPixmap(p);
-	background->setX(mapToScene(x, 0).x());
-	background->setY(mapToScene(y, 20).y());
+	    return;
+	QSvgRenderer renderer(backgroundFile);
+	QSize size(renderer.defaultSize());
+	// Scale icon up to 90 % of viewport size.
+	size.scale((int)(0.9 * (viewport()->width())),
+	           (int)(0.9 * (viewport()->height())),
+	           Qt::KeepAspectRatio);
+	// Render SVG icon to pixmap.
+	QPixmap pixmap(size);
+	pixmap.fill(Qt::transparent);
+	QPainter painter;
+	painter.begin(&pixmap);
+	renderer.render(&painter);
+	painter.end();
+	background->setPixmap(pixmap);
+	// Center the pixmap.
+	background->setOffset((viewport()->width() - pixmap.width()) / 2,
+	                      (viewport()->height() - pixmap.height()) / 2);
 }
 
 void ProfileWidget2::scale(qreal sx, qreal sy)
