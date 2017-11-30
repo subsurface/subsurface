@@ -557,6 +557,10 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 {
 	ui.setupUi(this);
 
+	ui.clear->setIcon(QIcon::fromTheme("edit-clear", QIcon(":edit-clear-icon")));
+	ui.maximize->setIcon(QIcon::fromTheme("hide", QIcon(":hide-icon")));
+	ui.close->setIcon(QIcon::fromTheme("window-close", QIcon(":window-close-icon")));
+
 	QWidget *expandedWidget = new QWidget();
 	QHBoxLayout *l = new QHBoxLayout();
 

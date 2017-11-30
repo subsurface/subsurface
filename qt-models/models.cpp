@@ -9,19 +9,23 @@
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
 
+#include <QIcon>
 #include <QLocale>
+#include <QPixmap>
 
 // initialize the trash icon if necessary
 
 const QPixmap &trashIcon()
 {
-	static QPixmap trash = QPixmap(":list-remove-icon").scaledToHeight(defaultIconMetrics().sz_small);
+	QIcon icon(QIcon::fromTheme("list-remove", QIcon(":list-remove-icon")));
+	static QPixmap trash(icon.pixmap(defaultIconMetrics().sz_small));
 	return trash;
 }
 
 const QPixmap &trashForbiddenIcon()
 {
-	static QPixmap trash = QPixmap(":list-remove-disabled-icon").scaledToHeight(defaultIconMetrics().sz_small);
+	QIcon icon(QIcon::fromTheme("list-remove", QIcon(":list-remove-disabled-icon")));
+	static QPixmap trash(icon.pixmap(defaultIconMetrics().sz_small, QIcon::Disabled));
 	return trash;
 }
 

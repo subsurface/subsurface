@@ -2,6 +2,7 @@
 #include "profile-widget/divepixmapitem.h"
 #include "profile-widget/animationfunctions.h"
 #include "qt-models/divepicturemodel.h"
+#include "core/metrics.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
 #ifndef SUBSURFACE_MOBILE
@@ -10,6 +11,7 @@
 
 #include <QDesktopServices>
 #include <QGraphicsView>
+#include <QIcon>
 #include <QUrl>
 #include <QGraphicsSceneMouseEvent>
 
@@ -19,7 +21,8 @@ DivePixmapItem::DivePixmapItem(QGraphicsItem *parent) : QGraphicsPixmapItem(pare
 
 CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
 {
-	static QPixmap p = QPixmap(":list-remove-icon");
+	static QPixmap p(QIcon::fromTheme(
+		"list-remove", QIcon(":list-remove-icon")).pixmap(defaultIconMetrics().sz_small));
 	setPixmap(p);
 	setFlag(ItemIgnoresTransformations);
 }

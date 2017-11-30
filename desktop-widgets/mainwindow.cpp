@@ -222,6 +222,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.multiFilter->hide();
 
 	setWindowIcon(QIcon(":subsurface-icon"));
+	#if defined(Q_OS_MAC) || defined(Q_OS_WIN)
+	QIcon::setThemeName("diving");
+	#endif
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
 	}

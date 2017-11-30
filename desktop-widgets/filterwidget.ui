@@ -73,8 +73,9 @@
 	<string>Reset filters</string>
        </property>
        <property name="icon">
-        <iconset resource="../subsurface.qrc">
-         <normaloff>:edit-clear-icon</normaloff>:edit-clear-icon</iconset>
+        <iconset theme="edit-clear">
+         <normaloff/>
+        </iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>
@@ -101,8 +102,9 @@
         <string>Close and reset filters</string>
        </property>
        <property name="icon">
-        <iconset resource="../subsurface.qrc">
-         <normaloff>:filter-close</normaloff>:filter-close</iconset>
+        <iconset theme="window-close">
+         <normaloff/>
+        </iconset>
        </property>
        <property name="autoRaise">
         <bool>true</bool>

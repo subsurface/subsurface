@@ -376,7 +376,7 @@ void DiveLocationModel::resetModel()
 
 QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 {
-	static const QIcon plusIcon(":list-add-icon");
+	static const QIcon plusIcon(QIcon::fromTheme("list-add", QIcon(":list-add-icon")));
 	static const QIcon geoCode(":geotag-icon");
 
 	if (index.row() <= 1) { // two special cases.
