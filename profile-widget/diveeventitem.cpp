@@ -86,9 +86,9 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
 	} else if (same_string_caseinsensitive(internalEvent->name, "modechange")) {
 		if (internalEvent->value == 0)
-			setPixmap(EVENT_PIXMAP(":bailout-icon"));
+			setPixmap(EVENT_PIXMAP(":circuit-open-icon"));
 		else
-			setPixmap(EVENT_PIXMAP(":onCCRLoop-icon"));
+			setPixmap(EVENT_PIXMAP(":circuit-closed-icon"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));
 	} else if (event_is_gaschange(internalEvent)) {
@@ -97,22 +97,22 @@ void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (mix.he.permille) {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-ICD-icon"));
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-icd-icon"));
 			else
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-icon"));
 		} else if (gasmix_is_air(mix)) {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-ICD-icon"));
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-icd-icon"));
 			else
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-icon"));
 		} else if (mix.o2.permille == 1000) {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-ICD-icon"));
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-icd-icon"));
 			else
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-icon"));
 		} else {
 			if (icd)
-				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-ICD-icon"));
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icd-icon"));
 			else
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icon"));
 		}

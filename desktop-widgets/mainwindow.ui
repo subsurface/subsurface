@@ -607,7 +607,7 @@
    </property>
    <property name="icon">
     <iconset resource="../subsurface.qrc">
-     <normaloff>:photo-icon</normaloff>:photo-icon</iconset>
+     <normaloff>:media-photo-icon</normaloff>:media-photo-icon</iconset>
    </property>
    <property name="text">
     <string>Toggle media</string>

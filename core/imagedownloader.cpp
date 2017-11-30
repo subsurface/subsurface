@@ -176,11 +176,11 @@ static QImage renderIconWidth(const char *id, int size)
 	return res;
 }
 
-Thumbnailer::Thumbnailer() : failImage(renderIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
-			     dummyImage(renderIcon(":camera-icon", maxThumbnailSize())),
-			     videoImage(renderIcon(":video-icon", maxThumbnailSize())),
-			     videoOverlayImage(renderIconWidth(":video-overlay", maxThumbnailSize())),
-			     unknownImage(renderIcon(":unknown-icon", maxThumbnailSize()))
+Thumbnailer::Thumbnailer() : failImage(renderIcon(":media-photo-none-icon", maxThumbnailSize())),
+                             dummyImage(renderIcon(":media-photo-icon", maxThumbnailSize())),
+                             videoImage(renderIcon(":media-video-icon", maxThumbnailSize())),
+                             videoOverlayImage(renderIconWidth(":media-video-overlay-icon", maxThumbnailSize())),
+                             unknownImage(renderIcon(":media-unknown-icon", maxThumbnailSize()))
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.

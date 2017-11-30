@@ -72,9 +72,9 @@ QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 
 static const QString icon_names[4] = {
 	QStringLiteral(":zero"),
-	QStringLiteral(":photo-in-icon"),
-	QStringLiteral(":photo-out-icon"),
-	QStringLiteral(":photo-in-out-icon")
+	QStringLiteral(":media-photo-in-icon"),
+	QStringLiteral(":media-photo-out-icon"),
+	QStringLiteral(":media-photo-in-out-icon")
 };
 
 static int countPhotos(const struct dive *d)
@@ -185,7 +185,7 @@ QVariant DiveTripModel::diveData(const struct dive *d, int column, int role)
 		case LOCATION:
 			if (dive_has_gps_location(d)) {
 				IconMetrics im = defaultIconMetrics();
-				return QIcon(":globe-icon").pixmap(im.sz_small, im.sz_small);
+				return QIcon(":geotag-icon").pixmap(im.sz_small, im.sz_small);
 			}
 			break;
 		case PHOTOS:
