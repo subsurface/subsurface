@@ -2,7 +2,7 @@ TEMPLATE = app
 
 QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth
 
-DEFINES += SUBSURFACE_MOBILE BT_SUPPORT
+DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
 
 CONFIG += c++11
 
