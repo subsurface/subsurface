@@ -1437,13 +1437,11 @@ void MainWindow::readSettings()
 	// now make sure that the cloud menu items are enabled IFF cloud account is verified
 	enableDisableCloudActions();
 
-#if !defined(SUBSURFACE_MOBILE)
 	loadRecentFiles();
 	if (firstRun) {
 		checkSurvey();
 		firstRun = false;
 	}
-#endif
 }
 
 #undef TOOLBOX_PREF_BUTTON
