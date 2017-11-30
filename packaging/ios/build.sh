@@ -32,6 +32,10 @@ echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-mobile/ssr
 # create Info.plist with the correct versions
 cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION@/$CANONICALVERSION/" > Info.plist
 
+if [ "$1" = "version" ] ; then
+	exit 0
+fi
+
 # Build Subsurface-mobile by default
 SUBSURFACE_MOBILE=1
 
