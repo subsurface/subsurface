@@ -203,6 +203,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
 	for (int i = 0; i < NUM_RECENT_FILES; i++) {
 		actionsRecent[i] = new QAction(this);
+		actionsRecent[i]->setData(i);
 		ui.menuFile->insertAction(ui.actionQuit, actionsRecent[i]);
 		connect(actionsRecent[i], SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	}
@@ -1592,9 +1593,10 @@ void MainWindow::recentFileTriggered(bool checked)
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
-	QAction *actionRecent = (QAction *)sender();
-
-	const QString &filename = actionRecent->toolTip();
+	int filenr = ((QAction *)sender())->data().toInt();
+	if (filenr >= recentFiles.count())
+		return;
+	const QString &filename = recentFiles[filenr];
 
 	updateLastUsedDir(QFileInfo(filename).dir().path());
 	closeCurrentFile();
