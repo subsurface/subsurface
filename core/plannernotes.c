@@ -110,7 +110,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				get_current_date());
 	}
 
-	if (prefs.display_variations)
+	if (prefs.display_variations && decoMode() != RECREATIONAL)
 		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin %s"),
 				diveplan_duration(diveplan), "VARIATIONS<br></div>");
 	else

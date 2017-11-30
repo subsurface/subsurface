@@ -277,6 +277,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.problemsolvingtime->setValue(0);
 		ui.sacfactor->blockSignals(false);
 		ui.problemsolvingtime->blockSignals(false);
+		ui.display_variations->setDisabled(true);
 	}
 	else if (mode == VPMB) {
 		ui.label_gflow->setDisabled(true);
@@ -309,6 +310,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.problemsolvingtime->setDisabled(false);
 		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
+		ui.display_variations->setDisabled(false);
 	}
 	else if (mode == BUEHLMANN) {
 		ui.label_gflow->setDisabled(false);
@@ -341,6 +343,7 @@ void PlannerSettingsWidget::disableDecoElements(int mode)
 		ui.problemsolvingtime->setDisabled(false);
 		ui.sacfactor->setValue(prefs.sacfactor / 100.0);
 		ui.problemsolvingtime->setValue(prefs.problemsolvingtime);
+		ui.display_variations->setDisabled(false);
 	}
 }
 
