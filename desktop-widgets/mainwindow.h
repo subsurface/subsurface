@@ -83,7 +83,7 @@ public:
 	ProfileWidget2 *graphics() const;
 	PlannerDetails *plannerDetails() const;
 	void printPlan();
-	void checkSurvey(QSettings *s);
+	void checkSurvey();
 	void setApplicationState(const QByteArray& state);
 	void setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl,const PropertyList& br);
 	bool inPlanner();
