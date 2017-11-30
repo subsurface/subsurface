@@ -201,11 +201,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerWidget(), SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerSettingsWidget(), SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
-	// TODO: Make the number of actions depend on NUM_RECENT_FILES
-	connect(ui.actionRecent1, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
-	connect(ui.actionRecent2, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
-	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
-	connect(ui.actionRecent4, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
+	for (int i = 0; i < NUM_RECENT_FILES; i++) {
+		actionsRecent[i] = new QAction(this);
+		ui.menuFile->insertAction(ui.actionQuit, actionsRecent[i]);
+		connect(actionsRecent[i], SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
+	}
+	ui.menuFile->insertSeparator(ui.actionQuit);
 	connect(information(), SIGNAL(addDiveFinished()), graphics(), SLOT(setProfileState()));
 	connect(information(), SIGNAL(dateTimeChanged()), graphics(), SLOT(dateTimeChanged()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
@@ -1543,7 +1544,7 @@ void MainWindow::loadRecentFiles()
 void MainWindow::updateRecentFilesMenu()
 {
 	for (int c = 0; c < NUM_RECENT_FILES; c++) {
-		QAction *action = this->findChild<QAction *>(QString("actionRecent%1").arg(c + 1));
+		QAction *action = actionsRecent[c];
 
 		if (recentFiles.count() > c) {
 			QFileInfo fi(recentFiles.at(c));
