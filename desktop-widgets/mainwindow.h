@@ -222,6 +222,7 @@ private:
 	struct dive_components what;
 	QList<QAction *> profileToolbarActions;
 	QStringList recentFiles;
+	QAction *actionsRecent[NUM_RECENT_FILES];
 
 	struct WidgetForQuadrant {
 		WidgetForQuadrant(QWidget *tl = 0, QWidget *tr = 0, QWidget *bl = 0, QWidget *br = 0) :

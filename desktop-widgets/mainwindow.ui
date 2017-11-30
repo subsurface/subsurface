@@ -75,11 +75,6 @@
     <addaction name="separator"/>
     <addaction name="actionHash_images"/>
     <addaction name="actionConfigure_Dive_Computer"/>
-    <addaction name="actionRecent1"/>
-    <addaction name="actionRecent2"/>
-    <addaction name="actionRecent3"/>
-    <addaction name="actionRecent4"/>
-    <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuLog">
@@ -419,26 +414,6 @@
    </property>
    <property name="shortcut">
     <string notr="true">F11</string>
-   </property>
-  </action>
-  <action name="actionRecent1">
-   <property name="visible">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionRecent2">
-   <property name="visible">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionRecent3">
-   <property name="visible">
-    <bool>false</bool>
-   </property>
-  </action>
-  <action name="actionRecent4">
-   <property name="visible">
-    <bool>false</bool>
    </property>
   </action>
   <action name="action_Check_for_Updates">
