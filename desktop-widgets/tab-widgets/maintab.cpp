@@ -469,7 +469,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
-			setTabText(0, tr("Trip notes"));
+			ui.tabWidget->setTabText(0, tr("Trip notes"));
 			currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 			// only use trip relevant fields
 			ui.divemaster->setVisible(false);
@@ -511,7 +511,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.duration->setVisible(false);
 			ui.durationLabel->setVisible(false);
 		} else {
-			setTabText(0, tr("Notes"));
+			ui.tabWidget->setTabText(0, tr("Notes"));
 			currentTrip = NULL;
 			// make all the fields visible writeable
 			ui.diveTripLocation->hide();
