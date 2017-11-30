@@ -201,6 +201,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerWidget(), SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerSettingsWidget(), SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
+	// TODO: Make the number of actions depend on NUM_RECENT_FILES
 	connect(ui.actionRecent1, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent2, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	connect(ui.actionRecent3, SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
@@ -1441,7 +1442,7 @@ void MainWindow::readSettings()
 #if !defined(SUBSURFACE_MOBILE)
 	QSettings s; //TODO: this 's' exists only for the loadRecentFiles, remove it.
 
-	loadRecentFiles(&s);
+	loadRecentFiles();
 	if (firstRun) {
 		checkSurvey(&s);
 		firstRun = false;
@@ -1523,49 +1524,32 @@ MainTab *MainWindow::information()
 	return qobject_cast<MainTab*>(applicationState["Default"].topLeft);
 }
 
-void MainWindow::loadRecentFiles(QSettings *s)
+void MainWindow::loadRecentFiles()
 {
-	QStringList files;
-	bool modified = false;
-
-	s->beginGroup("Recent_Files");
-	for (int c = 1; c <= 4; c++) {
-		QString key = QString("File_%1").arg(c);
-		if (s->contains(key)) {
-			QString file = s->value(key).toString();
-
-			if (QFile::exists(file)) {
-				files.append(file);
-			} else {
-				modified = true;
-			}
-		} else {
+	recentFiles.clear();
+	QSettings s;
+	s.beginGroup("Recent_Files");
+	foreach (const QString &key, s.childKeys()) {
+		// TODO Sorting only correct up to 9 entries. Currently, only 4 used, so no problem.
+		if (!key.startsWith("File_"))
+			continue;
+		QString file = s.value(key).toString();
+		if (QFile::exists(file))
+			recentFiles.append(file);
+		if (recentFiles.count() > NUM_RECENT_FILES)
 			break;
-		}
 	}
+	s.endGroup();
+	updateRecentFilesMenu();
+}
 
-	if (modified) {
-		for (int c = 0; c < 4; c++) {
-			QString key = QString("File_%1").arg(c + 1);
-
-			if (files.count() > c) {
-				s->setValue(key, files.at(c));
-			} else {
-				if (s->contains(key)) {
-					s->remove(key);
-				}
-			}
-		}
-
-		s->sync();
-	}
-	s->endGroup();
-
-	for (int c = 0; c < 4; c++) {
+void MainWindow::updateRecentFilesMenu()
+{
+	for (int c = 0; c < NUM_RECENT_FILES; c++) {
 		QAction *action = this->findChild<QAction *>(QString("actionRecent%1").arg(c + 1));
 
-		if (files.count() > c) {
-			QFileInfo fi(files.at(c));
+		if (recentFiles.count() > c) {
+			QFileInfo fi(recentFiles.at(c));
 			action->setText(fi.fileName());
 			action->setToolTip(fi.absoluteFilePath());
 			action->setVisible(true);
@@ -1575,99 +1559,32 @@ void MainWindow::loadRecentFiles(QSettings *s)
 	}
 }
 
-void MainWindow::addRecentFile(const QStringList &newFiles)
+void MainWindow::addRecentFile(const QString &file, bool update)
 {
-	QStringList files;
-	QSettings s;
-
-	if (newFiles.isEmpty())
-		return;
-
-	s.beginGroup("Recent_Files");
-
-	for (int c = 1; c <= 4; c++) {
-		QString key = QString("File_%1").arg(c);
-		if (s.contains(key)) {
-			QString file = s.value(key).toString();
-
-			files.append(file);
-		} else {
-			break;
-		}
-	}
-
-	foreach (const QString &file, newFiles) {
-		int index = files.indexOf(QDir::toNativeSeparators(file));
-
-		if (index >= 0) {
-			files.removeAt(index);
-		}
-	}
-
-	foreach (const QString &file, newFiles) {
-		if (QFile::exists(file)) {
-			files.prepend(QDir::toNativeSeparators(file));
-		}
-	}
-
-	while (files.count() > 4) {
-		files.removeLast();
-	}
-
-	for (int c = 1; c <= 4; c++) {
-		QString key = QString("File_%1").arg(c);
-
-		if (files.count() >= c) {
-			s.setValue(key, files.at(c - 1));
-		} else {
-			if (s.contains(key)) {
-				s.remove(key);
-			}
-		}
-	}
-	s.endGroup();
-	s.sync();
-
-	loadRecentFiles(&s);
+	QString localFile = QDir::toNativeSeparators(file);
+	int index = recentFiles.indexOf(localFile);
+	if (index >= 0)
+		recentFiles.removeAt(index);
+	recentFiles.prepend(localFile);
+	while (recentFiles.count() > NUM_RECENT_FILES)
+		recentFiles.removeLast();
+	if (update)
+		updateRecentFiles();
 }
 
-void MainWindow::removeRecentFile(QStringList failedFiles)
+void MainWindow::updateRecentFiles()
 {
-	QStringList files;
 	QSettings s;
 
-	if (failedFiles.isEmpty())
-		return;
-
 	s.beginGroup("Recent_Files");
-
-	for (int c = 1; c <= 4; c++) {
+	s.remove("");	// Remove all old entries
+	for (int c = 1; c <= recentFiles.count(); c++) {
 		QString key = QString("File_%1").arg(c);
-
-		if (s.contains(key)) {
-			QString file = s.value(key).toString();
-			files.append(file);
-		} else {
-			break;
-		}
+		s.setValue(key, recentFiles.at(c - 1));
 	}
-
-	foreach (const QString &file, failedFiles)
-		files.removeAll(file);
-
-	for (int c = 1; c <= 4; c++) {
-		QString key = QString("File_%1").arg(c);
-
-		if (files.count() >= c)
-			s.setValue(key, files.at(c - 1));
-		else if (s.contains(key))
-			s.remove(key);
-	}
-
 	s.endGroup();
 	s.sync();
-
-	loadRecentFiles(&s);
+	updateRecentFilesMenu();
 }
 
 void MainWindow::recentFileTriggered(bool checked)
@@ -1735,7 +1652,7 @@ int MainWindow::file_save_as(void)
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
-	addRecentFile(QStringList() << filename);
+	addRecentFile(filename, true);
 	return 0;
 }
 
@@ -1770,7 +1687,7 @@ int MainWindow::file_save(void)
 	if (is_cloud)
 		hideProgressBar();
 	mark_divelist_changed(false);
-	addRecentFile(QStringList() << QString(existing_filename));
+	addRecentFile(QString(existing_filename), true);
 	return 0;
 }
 
@@ -1873,25 +1790,19 @@ void MainWindow::loadFiles(const QStringList fileNames)
 		return;
 	}
 	QByteArray fileNamePtr;
-	QStringList failedParses;
 
 	showProgressBar();
 	for (int i = 0; i < fileNames.size(); ++i) {
-		int error;
-
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		error = parse_file(fileNamePtr.data());
-		if (!error) {
+		if (!parse_file(fileNamePtr.data())) {
 			set_filename(fileNamePtr.data(), true);
+			addRecentFile(fileNamePtr, false);
 			setTitle(MWTF_FILENAME);
-		} else {
-			failedParses.append(fileNames.at(i));
 		}
 	}
 	hideProgressBar();
+	updateRecentFiles();
 	process_dives(false, false);
-	addRecentFile(fileNames);
-	removeRecentFile(failedParses);
 
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
