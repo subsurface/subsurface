@@ -19,6 +19,8 @@
 #include "core/windowtitleupdate.h"
 #include "core/gpslocation.h"
 
+#define NUM_RECENT_FILES 4
+
 class QSortFilterProxyModel;
 class DiveTripModel;
 class QItemSelection;
@@ -63,9 +65,10 @@ public:
 	virtual ~MainWindow();
 	static MainWindow *instance();
 	MainTab *information();
-	void loadRecentFiles(QSettings *s);
-	void addRecentFile(const QStringList &newFiles);
-	void removeRecentFile(QStringList failedFiles);
+	void loadRecentFiles();
+	void updateRecentFiles();
+	void updateRecentFilesMenu();
+	void addRecentFile(const QString &file, bool update);
 	DiveListView *dive_list();
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
@@ -218,6 +221,7 @@ private:
 	struct dive copyPasteDive;
 	struct dive_components what;
 	QList<QAction *> profileToolbarActions;
+	QStringList recentFiles;
 
 	struct WidgetForQuadrant {
 		WidgetForQuadrant(QWidget *tl = 0, QWidget *tr = 0, QWidget *bl = 0, QWidget *br = 0) :
