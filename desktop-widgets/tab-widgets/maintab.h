@@ -115,6 +115,9 @@ private:
 	Completers completers;
 	bool modified;
 	bool copyPaste;
+	bool lastSelectedDive;
+	int lastTabSelectedDive;
+	int lastTabSelectedDiveTrip;
 	void resetPallete();
 	void saveTags();
 	void saveTaggedStrings();

@@ -44,7 +44,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	cylindersModel(new CylindersModel(this)),
 	editMode(NONE),
 	copyPaste(false),
-	currentTrip(0)
+	currentTrip(0),
+	lastTabSelectedDive(0),
+	lastTabSelectedDiveTrip(0)
 {
 	ui.setupUi(this);
 
@@ -469,7 +471,18 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
 		if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
+			// Remember the tab selected for last dive
+			if (lastSelectedDive)
+				lastTabSelectedDive = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Trip notes"));
+			ui.tabWidget->setTabEnabled(1, false);
+			ui.tabWidget->setTabEnabled(2, false);
+			ui.tabWidget->setTabEnabled(4, false);
+			ui.tabWidget->setTabEnabled(5, false);
+			// Recover the tab selected for last dive trip
+			if (lastSelectedDive)
+				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
+			lastSelectedDive = false;
 			currentTrip = *MainWindow::instance()->dive_list()->selectedTrips().begin();
 			// only use trip relevant fields
 			ui.divemaster->setVisible(false);
@@ -511,7 +524,18 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.duration->setVisible(false);
 			ui.durationLabel->setVisible(false);
 		} else {
+			// Remember the tab selected for last dive trip
+			if (!lastSelectedDive)
+				lastTabSelectedDiveTrip = ui.tabWidget->currentIndex();
 			ui.tabWidget->setTabText(0, tr("Notes"));
+			ui.tabWidget->setTabEnabled(1, true);
+			ui.tabWidget->setTabEnabled(2, true);
+			ui.tabWidget->setTabEnabled(4, true);
+			ui.tabWidget->setTabEnabled(5, true);
+			// Recover the tab selected for last dive
+			if (!lastSelectedDive)
+				ui.tabWidget->setCurrentIndex(lastTabSelectedDive);
+			lastSelectedDive = true;
 			currentTrip = NULL;
 			// make all the fields visible writeable
 			ui.diveTripLocation->hide();
