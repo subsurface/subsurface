@@ -1124,8 +1124,8 @@ void MainWindow::on_actionViewList_triggered()
 {
 	TOGGLE_COLLAPSABLE( true );
 	beginChangeState(LIST_MAXIMIZED);
-	ui.topSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.bottomSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 }
 
 void MainWindow::on_actionViewProfile_triggered()
