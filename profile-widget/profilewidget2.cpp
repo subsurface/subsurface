@@ -683,7 +683,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	percentageAxis->setVisible(false);
 	percentageAxis->updateTicks(HR_AXIS);
 #endif
-	timeAxis->setMaximum(maxtime);
+	if (shouldCalculateMaxTime)
+		timeAxis->setMaximum(maxtime);
 	int i, incr;
 	static int increments[8] = { 10, 20, 30, 60, 5 * 60, 10 * 60, 15 * 60, 30 * 60 };
 	/* Time markers: at most every 10 seconds, but no more than 12 markers.
@@ -1822,6 +1823,8 @@ void ProfileWidget2::recreatePlannedDive()
 	int minutes = lrint(timeAxis->valueAt(activeHandler->pos()) / 60);
 	if (minutes * 60 <= mintime || minutes * 60 >= maxtime)
 		return;
+	if (minutes * 60 > timeAxis->maximum() * 0.9)
+		timeAxis->setMaximum(timeAxis->maximum() * 1.02);
 
 	divedatapoint data = plannerModel->at(index);
 	data.depth.mm = lrint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
