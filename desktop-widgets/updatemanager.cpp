@@ -101,7 +101,6 @@ void UpdateManager::requestReceived()
 			msgbox.setIcon(QMessageBox::Warning);
 		}
 	}
-#ifndef SUBSURFACE_MOBILE
 	if (haveNewVersion || !isAutomaticCheck) {
 		msgbox.setWindowTitle(msgTitle);
 		msgbox.setWindowIcon(QIcon(":subsurface-icon"));
@@ -126,5 +125,4 @@ void UpdateManager::requestReceived()
 			update_settings->setDontCheckForUpdates(response.exec() != QMessageBox::Accepted);
 		}
 	}
-#endif
 }
