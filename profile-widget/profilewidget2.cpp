@@ -914,7 +914,6 @@ void ProfileWidget2::divePlannerHandlerClicked()
 	if (zoomLevel)
 		return;
 	shouldCalculateMaxDepth = false;
-	replot();
 }
 
 void ProfileWidget2::divePlannerHandlerReleased()
@@ -1827,10 +1826,13 @@ void ProfileWidget2::recreatePlannedDive()
 		timeAxis->setMaximum(timeAxis->maximum() * 1.02);
 
 	divedatapoint data = plannerModel->at(index);
+	depth_t oldDepth = data.depth;
+	int oldtime = data.time;
 	data.depth.mm = lrint(profileYAxis->valueAt(activeHandler->pos()) / M_OR_FT(1, 1)) * M_OR_FT(1, 1);
 	data.time = lrint(timeAxis->valueAt(activeHandler->pos()));
 
-	plannerModel->editStop(index, data);
+	if (data.depth.mm != oldDepth.mm || data.time != oldtime)
+		plannerModel->editStop(index, data);
 }
 
 void ProfileWidget2::keyDownAction()
@@ -1839,6 +1841,8 @@ void ProfileWidget2::keyDownAction()
 		return;
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	bool oldRecalc = plannerModel->setRecalc(false);
+
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -1850,6 +1854,8 @@ void ProfileWidget2::keyDownAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+	plannerModel->setRecalc(oldRecalc);
+	replot();
 }
 
 void ProfileWidget2::keyUpAction()
@@ -1858,6 +1864,7 @@ void ProfileWidget2::keyUpAction()
 		return;
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -1870,6 +1877,8 @@ void ProfileWidget2::keyUpAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+	plannerModel->setRecalc(oldRecalc);
+	replot();
 }
 
 void ProfileWidget2::keyLeftAction()
@@ -1878,6 +1887,7 @@ void ProfileWidget2::keyLeftAction()
 		return;
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -1903,6 +1913,8 @@ void ProfileWidget2::keyLeftAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+	plannerModel->setRecalc(oldRecalc);
+	replot();
 }
 
 void ProfileWidget2::keyRightAction()
@@ -1911,6 +1923,7 @@ void ProfileWidget2::keyRightAction()
 		return;
 
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
+	bool oldRecalc = plannerModel->setRecalc(false);
 	Q_FOREACH (QGraphicsItem *i, scene()->selectedItems()) {
 		if (DiveHandler *handler = qgraphicsitem_cast<DiveHandler *>(i)) {
 			int row = handles.indexOf(handler);
@@ -1935,6 +1948,8 @@ void ProfileWidget2::keyRightAction()
 			plannerModel->editStop(row, dp);
 		}
 	}
+	plannerModel->setRecalc(oldRecalc);
+	replot();
 }
 
 void ProfileWidget2::keyDeleteAction()
