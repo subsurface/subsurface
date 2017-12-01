@@ -22,6 +22,7 @@ TabDivePhotos::TabDivePhotos(QWidget *parent)
 	ui->setupUi(this);
 	ui->photosView->setModel(divePictureModel);
 	ui->photosView->setSelectionMode(QAbstractItemView::ExtendedSelection);
+	ui->photosView->setResizeMode(QListView::Adjust);
 
 	connect(ui->photosView, &DivePictureWidget::photoDoubleClicked,
 		[](const QString& path) {
