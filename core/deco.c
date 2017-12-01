@@ -501,7 +501,7 @@ void add_segment(struct deco_state *ds, double pressure, const struct gasmix *ga
 		ds->tissue_inertgas_saturation[ci] = ds->tissue_n2_sat[ci] + ds->tissue_he_sat[ci];
 
 	}
-	if(decoMode() == VPMB)
+	if (decoMode() == VPMB)
 		calc_crushing_pressure(ds, pressure);
 	return;
 }
