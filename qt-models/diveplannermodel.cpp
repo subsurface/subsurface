@@ -1085,11 +1085,12 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		char buf[200];
+		char *deco_time = tr("Stop times").toUtf8().data();
 		if (prefs.units.length == units::METERS)
-			sprintf(buf, "+ %d:%02d /m + %d:%02d /min", FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
+			sprintf(buf, ", %s + %d:%02d /m + %d:%02d /min", deco_time, FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
 				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
 		else
-			sprintf(buf, "+ %d:%02d /ft + %d:%02d /min",
+			sprintf(buf, ", %s + %d:%02d /ft + %d:%02d /min", deco_time,
 				FRACTION(analyzeVariations(shallower, original, deeper, "ft") * feet_to_mm(1.0) / 1000,60),
 				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
 

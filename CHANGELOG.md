@@ -1,3 +1,5 @@
+- Compute plan variations in background to improve responsiveness
+- Improve profile rescaling in planner
 - Store the gas switch depth of a cylinder from the planner in the logbook
   file or git storage. No more need to reenter this value on replanning.
 - Improved handling of different information (divemaster, buddy, suit, notes)

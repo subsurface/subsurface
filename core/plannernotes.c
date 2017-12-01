@@ -111,7 +111,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	if (prefs.display_variations && decoMode() != RECREATIONAL)
-		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin %s"),
+		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin%s"),
 				diveplan_duration(diveplan), "VARIATIONS<br></div>");
 	else
 		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin<br></div>"),

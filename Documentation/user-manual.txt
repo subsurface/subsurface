@@ -3804,20 +3804,27 @@ provides information about a dive that is a little deeper or slightly
 longer than the planned dive. This is found near the top of the _Dive plan details_
 where the dive duration is indicated. The information is intended to be used if it is necessary to
 modify the ascent "on the fly" in the case of unexpected deviations from the dive plan during the dive.
+
+For example, if it says "Runtime: 123min, Stop times + 2:49 /m + 1:30 /min" this means: if you dive deeper
+than planned, you should add almost 3 minutes per meter you go deeper to your decompression (and
+you can substract 3 minutes per meter that you stay shallower). If you overstay your bottom
+time, you need to add one and a half minutes to the stops for each minutes you overstay
+and similarly, you can shorten your deco time by one and a half minute for each minute
+you stay shorter.
+
+These variations of depth and time all refer to the last manually entered segment of the
+dive (which is not necessarily the deepest). The additional minutes should be distributed
+over the differnent stops in a way proportional to the stop length, i.e. add more of the
+additional minutes to the longer, shallower stops.
+
+Note that the given times are variations of the duration of the decompression phase. The
+minutes to add for overstaying at depth do not include the extended bottom time! This 
+way of altering dive plans gets worse the larger the deviation becomes from the original 
+plan. So it should not be trusted for more than a handful of minutes or meters of 
+deviations from the planned bottom time.
+
 Checking this option creates a lot of additional computation,
-to such a degree that the planner is slower than otherwise. The information is typically
-given as:
-
-    Runtime: 53min + 0:52/m + 4:21/min
-
-This indicates:
-
- * Calculated dive duration is 53 min.
- * For each extra meter in depth during the bottom phase of the dive, the ascent duration increases by 52 seconds.
- * For each extra minute of bottom time, the duration increases by 4 min 21 sec. Thus, if the bottom time is
-   two minutes longer than planned, ascent duration duration will be (2 * 4min 21 sec) = 8 minutes 42 sec longer and
-   would probably require that each deco stop is 8:42/53:00 = around 16% longer than planned. These calculations
-   are only applicable for small deviations from the dive plan, not for larger deviations.
+to such a degree that the planner is slower than otherwise. 
 
 *Minimum gas requirements*
 
