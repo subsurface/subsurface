@@ -11,7 +11,6 @@
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
-#include "desktop-widgets/mainwindow.h"
 
 #define VARIATIONS_IN_BACKGROUND 1
 
@@ -1031,12 +1030,11 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 	struct divedatapoint *last_segment;
 	struct deco_state ds = *previos_ds;
 
-	if(!original_plan) {
-//		setRecalc(oldRecalc);
+	if (!original_plan)
 		return;
-	}
 
-	if(in_planner() && prefs.display_variations && decoMode() != RECREATIONAL) {
+
+	if (in_planner() && prefs.display_variations && decoMode() != RECREATIONAL) {
 		int my_instance = ++instanceCounter;
 		cache_deco_state(&ds, &save);
 
