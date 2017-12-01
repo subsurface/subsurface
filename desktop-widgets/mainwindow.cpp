@@ -610,8 +610,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
-	error = parse_file(fileNamePtr.data());
-	if (!error) {
+	if (!parse_file(fileNamePtr.data())) {
 		set_filename(fileNamePtr.data(), true);
 		setTitle(MWTF_FILENAME);
 	}
@@ -638,11 +637,10 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		information()->acceptChanges();
 
 	showProgressBar();
-
-	if (save_dives(filename.toUtf8().data()))
-		return;
-
+	int error = save_dives(filename.toUtf8().data());
 	hideProgressBar();
+	if (error)
+		return;
 
 	set_filename(filename.toUtf8().data(), true);
 	setTitle(MWTF_FILENAME);
