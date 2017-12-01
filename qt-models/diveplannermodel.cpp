@@ -11,7 +11,7 @@
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
-#include <desktop-widgets/mainwindow.h>
+#include "desktop-widgets/mainwindow.h"
 
 #define VARIATIONS_IN_BACKGROUND 1
 
