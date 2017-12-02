@@ -832,15 +832,10 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 	if (*p++ != '/' || *p++ != '/')
 		return NULL;
 
-	/* Special-case "file://", since it's already local */
-	if (!strncmp(remote, "file://", 7))
-		remote += 7;
-
 	/*
-	 * Ok, we found "[a-z]*://", we've simplified the
-	 * local repo case (because libgit2 is insanely slow
-	 * for that), and we think we have a real "remote
-	 * git" format.
+	 * Ok, we found "[a-z]*://" and we think we have a real
+	 * "remote git" format. The "file://" case was handled
+	 * in the calling function.
 	 *
 	 * We now create the SHA1 hash of the whole thing,
 	 * including the branch name. That will be our unique
@@ -904,6 +899,15 @@ struct git_repository *is_git_repository(const char *filename, const char **bran
 	flen = strlen(filename);
 	if (!flen || filename[--flen] != ']')
 		return NULL;
+
+	/*
+	 * Special-case "file://", and treat it as a local
+	 * repository since libgit2 is insanely slow for that.
+	 */
+	if (!strncmp(filename, "file://", 7)) {
+		filename += 7;
+		flen -= 7;
+	}
 
 	/* Find the matching '[' */
 	blen = 0;
