@@ -986,32 +986,29 @@ struct divedatapoint * DivePlannerPointsModel::cloneDiveplan(struct diveplan *pl
 
 int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decostop *mid, struct decostop *max, const char *unit)
 {
+	int minsum = 0;
+	int midsum = 0;
+	int maxsum = 0;
 	int leftsum = 0;
 	int rightsum = 0;
-	while (mid->depth > min->depth)
-		++mid;
-	while (max->depth > mid->depth)
-		++max;
 
-	while (mid->depth) {
-		int left = mid->time - min->time;
-		leftsum += left;
-		int right = max->time - mid->time;
-		rightsum += right;
-#ifdef SHOWSTOPVARIATIONS
-		if (min->time + mid->time + max->time)
-			printf("%dm: %dmin + %ds/%s +- %ds/%s\n", mid->depth / 1000,
-			       (mid->time + 1)/60,
-			       (left + right) / 2, unit,
-			       (right - left) / 2, unit);
-#else
-		(void) unit;
-#endif
+	while (min->depth) {
+		minsum += min->time;
 		++min;
+	}
+	while (mid->depth) {
+		midsum += mid->time;
 		++mid;
+	}
+	while (max->depth) {
+		maxsum += max->time;
 		++max;
 	}
-#ifdef SHOWSTOPVARIATIONS
+
+	leftsum = midsum - minsum;
+	rightsum = maxsum - midsum;
+
+#ifdef DEBUG_STOPVAR
 	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION((leftsum + rightsum) / 2, 60), unit,
 						       (rightsum - leftsum) / 2, unit);
 #endif
@@ -1093,7 +1090,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
 
 		emit variationsComputed(QString(buf));
-#ifdef SHOWSTOPVARIATIONS
+#ifdef DEBUG_STOPVAR
 		printf("\n\n");
 #endif
 	}
