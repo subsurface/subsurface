@@ -104,6 +104,8 @@ static void fill_supported_mobile_list()
 #endif
 #if defined(Q_OS_IOS)
 	/* BLE only, Qt does not support classic BT on iOS */
+	mobileProductList["Heinrichs Weikamp"] =
+		QStringList({{"OSTC 2"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Plus"}, {"OSTC Sport"}});
 	mobileProductList["Scubapro"] =
 		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
 	mobileProductList["Shearwater"] =
