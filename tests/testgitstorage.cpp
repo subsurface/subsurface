@@ -67,10 +67,17 @@ void TestGitStorage::cleanup()
 
 void TestGitStorage::testGitStorageLocal_data()
 {
-	// test different path we may encounter (since storage depends on user name)
+	// Test different paths we may encounter (since storage depends on user name)
+	// as well as with and without "file://" URL prefix.
 	QTest::addColumn<QString>("testDirName");
-	QTest::newRow("ASCII path") << "./gittest";
-	QTest::newRow("Non ASCII path") << "./gittest_éèêôàüäößíñóúäåöø";
+	QTest::addColumn<QString>("prefixRead");
+	QTest::addColumn<QString>("prefixWrite");
+	QTest::newRow("ASCII path") << "./gittest" << "" << "";
+	QTest::newRow("Non ASCII path") << "./gittest_éèêôàüäößíñóúäåöø" << "" << "";
+	QTest::newRow("ASCII path with file:// prefix on read") << "./gittest2" << "file://" << "";
+	QTest::newRow("Non ASCII path with file:// prefix on read") << "./gittest2_éèêôàüäößíñóúäåöø" << "" << "file://";
+	QTest::newRow("ASCII path with file:// prefix on write") << "./gittest3" << "file://" << "";
+	QTest::newRow("Non ASCII path with file:// prefix on write") << "./gittest3_éèêôàüäößíñóúäåöø" << "" << "file://";
 }
 
 void TestGitStorage::testGitStorageLocal()
@@ -80,14 +87,18 @@ void TestGitStorage::testGitStorageLocal()
 	git_libgit2_init();
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf"), 0);
 	QFETCH(QString, testDirName);
+	QFETCH(QString, prefixRead);
+	QFETCH(QString, prefixWrite);
 	QDir testDir(testDirName);
 	QCOMPARE(testDir.removeRecursively(), true);
 	QCOMPARE(QDir().mkdir(testDirName), true);
+	QString repoNameRead = prefixRead + testDirName;
+	QString repoNameWrite = prefixWrite + testDirName;
 	QCOMPARE(git_repository_init(&repo, qUtf8Printable(testDirName), false), 0);
-	QCOMPARE(save_dives(qUtf8Printable(testDirName + "[test]")), 0);
+	QCOMPARE(save_dives(qUtf8Printable(repoNameWrite + "[test]")), 0);
 	QCOMPARE(save_dives("./SampleDivesV3.ssrf"), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file(qUtf8Printable(testDirName + "[test]")), 0);
+	QCOMPARE(parse_file(qUtf8Printable(repoNameRead + "[test]")), 0);
 	QCOMPARE(save_dives("./SampleDivesV3viagit.ssrf"), 0);
 	QFile org("./SampleDivesV3.ssrf");
 	org.open(QFile::ReadOnly);
