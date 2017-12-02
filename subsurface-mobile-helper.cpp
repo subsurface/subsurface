@@ -94,6 +94,10 @@ void run_ui()
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
+	// call again to be able to log
+	// FIXME - this is redundant - but otherwise they don't end up in the AppLog
+	fill_computer_list();
+
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {

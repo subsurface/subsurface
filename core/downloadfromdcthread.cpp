@@ -142,6 +142,7 @@ void fill_computer_list()
 			productList[vendor].push_back(product);
 
 		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
+		qDebug() << "added supported DC: " << vendor << " " << product;
 	}
 	dc_iterator_free(iterator);
 	Q_FOREACH (QString vendor, vendorList)
