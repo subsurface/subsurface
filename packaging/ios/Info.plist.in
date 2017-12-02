@@ -42,10 +42,17 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>bluetooth-central</string>
+		<string>location</string>
 	</array>
 	<key>NSBluetoothPeripheralUsageDescription</key>
 	<string>Subsurface-mobile can download dive information directly from some Bluetooth LE enabled dive computers; for this it needs access to your Bluetooth peripherals.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Subsurface-mobile stores your dive list locally - iOS seems to think that means it accesses your photos (which it does not)</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Subsurface-mobile can track your location to match imported dives</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Subsurface-mobile can track your location to match imported dives</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Subsurface-mobile can track your location to match imported dives</string>
 </dict>
 </plist>
