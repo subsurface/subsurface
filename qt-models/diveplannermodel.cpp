@@ -1034,11 +1034,23 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 	if (in_planner() && prefs.display_variations && decoMode() != RECREATIONAL) {
 		int my_instance = ++instanceCounter;
 		cache_deco_state(&ds, &save);
+		
+		duration_t delta_time = { .seconds = 60 };
+		QString time_units = tr("min");
+		depth_t delta_depth;
+		QString depth_units;
+
+		if (prefs.units.length == units::METERS) {
+			delta_depth.mm = 1000; // 1m
+			depth_units = tr("m");
+		} else {
+			delta_depth.mm = feet_to_mm(1.0); // 1ft
+			depth_units = tr("ft");
+		}
 
 		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		if (!last_segment) {
+		if (!last_segment)
 			goto finish;
-		}
 		if (my_instance != instanceCounter)
 			goto finish;
 		plan(&ds, &plan_copy, dive, 1, original, &cache, true, false);
@@ -1046,8 +1058,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->depth.mm += 1000;
-		last_segment->next->depth.mm += 1000;
+		last_segment->depth.mm += delta_depth.mm;
+		last_segment->next->depth.mm += delta_depth.mm;
 		if (my_instance != instanceCounter)
 			goto finish;
 		plan(&ds, &plan_copy, dive, 1, deeper, &cache, true, false);
@@ -1055,8 +1067,8 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->depth.mm -= 1000;
-		last_segment->next->depth.mm -= 1000;
+		last_segment->depth.mm -= delta_depth.mm;
+		last_segment->next->depth.mm -= delta_depth.mm;
 		if (my_instance != instanceCounter)
 			goto finish;
 		plan(&ds, &plan_copy, dive, 1, shallower, &cache, true, false);
@@ -1064,7 +1076,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->next->time += 60;
+		last_segment->next->time += delta_time.seconds;
 		if (my_instance != instanceCounter)
 			goto finish;
 		plan(&ds, &plan_copy, dive, 1, longer, &cache, true, false);
@@ -1072,7 +1084,7 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		last_segment = cloneDiveplan(original_plan, &plan_copy);
-		last_segment->next->time -= 60;
+		last_segment->next->time -= delta_time.seconds;
 		if (my_instance != instanceCounter)
 			goto finish;
 		plan(&ds, &plan_copy, dive, 1, shorter, &cache, true, false);
@@ -1080,14 +1092,9 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		char buf[200];
-		char *deco_time = tr("Stop times").toUtf8().data();
-		if (prefs.units.length == units::METERS)
-			sprintf(buf, ", %s + %d:%02d /m + %d:%02d /min", deco_time, FRACTION(analyzeVariations(shallower, original, deeper, "m"),60),
-				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
-		else
-			sprintf(buf, ", %s + %d:%02d /ft + %d:%02d /min", deco_time,
-				FRACTION(analyzeVariations(shallower, original, deeper, "ft") * feet_to_mm(1.0) / 1000,60),
-				FRACTION(analyzeVariations(shorter, original, longer, "min"), 60));
+		sprintf(buf, ", %s: + %d:%02d /%s + %d:%02d /min", tr("Stop times").toUtf8().data(),
+			FRACTION(analyzeVariations(shallower, original, deeper, depth_units.toUtf8().data()), 60), depth_units.toUtf8().data(),
+			FRACTION(analyzeVariations(shorter, original, longer, time_units.toUtf8().data()), 60));
 
 		emit variationsComputed(QString(buf));
 #ifdef DEBUG_STOPVAR
