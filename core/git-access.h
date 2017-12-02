@@ -15,8 +15,8 @@ enum remote_transport { RT_OTHER, RT_HTTPS, RT_SSH };
 struct git_oid;
 struct git_repository;
 #define dummy_git_repository ((git_repository *)3ul) /* Random bogus pointer, not NULL */
-extern struct git_repository *is_git_repository(const char *filename, const char **branchp, const char **remote, bool dry_run);
-extern int check_git_sha(const char *filename, git_repository **git_p, const char **branch_p);
+extern struct git_repository *is_git_repository(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud);
+extern int check_git_sha(const char *filename, const char *branch, const char *user, bool is_remote, bool is_cloud, struct git_repository **git_p);
 extern int sync_with_remote(struct git_repository *repo, const char *remote, const char *branch, enum remote_transport rt);
 extern int git_save_dives(struct git_repository *, const char *, const char *remote, bool select_only);
 extern int git_load_dives(struct git_repository *, const char *);
@@ -28,7 +28,7 @@ extern void set_git_id(const struct git_oid *);
 void set_git_update_cb(int(*)(const char *));
 int git_storage_update_progress(const char *text);
 char *get_local_dir(const char *remote, const char *branch);
-int git_create_local_repo(const char *filename);
+int git_create_local_repo(const char *directory);
 
 #ifdef __cplusplus
 }

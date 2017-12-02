@@ -126,7 +126,6 @@ void run_ui()
 void exit_ui()
 {
 	delete qApp;
-	free((void *)existing_filename);
 }
 
 double get_screen_dpi()

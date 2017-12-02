@@ -16,6 +16,7 @@
 #include "desktop-widgets/diveplanner.h"
 #include "core/color.h"
 #include "core/qthelper.h"
+#include "core/filelocation.h"
 #include "core/downloadfromdcthread.h" // for fill_computer_list
 
 #include <QStringList>
@@ -106,7 +107,10 @@ int main(int argc, char **argv)
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	if (verbose && !files.isEmpty())
 		qDebug() << "loading dive data from" << files;
-	m->loadFiles(files);
+	QList<FileLocation> locations;
+	Q_FOREACH (QString filename, files)
+		locations.append(FileLocation::guessFromFileName(filename));
+	m->loadFiles(locations);
 	if (verbose && !importedFiles.isEmpty())
 		qDebug() << "importing dive data from" << importedFiles;
 	m->importFiles(importedFiles);

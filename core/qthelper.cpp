@@ -33,7 +33,6 @@
 
 #include <libxslt/documents.h>
 
-const char *existing_filename;
 static QLocale loc;
 
 #define translate(_context, arg) trGettext(arg)
@@ -560,15 +559,29 @@ QLocale getLocale()
 	return loc;
 }
 
-void set_filename(const char *filename, bool force)
+void set_filename(const FileLocation &location, bool force)
 {
-	if (!force && existing_filename)
+	if (!force && !currentFile.isNone())
 		return;
-	free((void *)existing_filename);
-	if (filename)
-		existing_filename = strdup(filename);
-	else
-		existing_filename = NULL;
+	currentFile = location;
+}
+
+void set_current_file_none()
+{
+	currentFile = FileLocation();
+}
+
+char *get_current_file_name()
+{
+	return strdup(qPrintable(currentFile.getName()));
+}
+
+int parse_git_filename(const char *fn, char **repo, char **branch)
+{
+	FileLocation f(FileLocation::GIT, fn);
+	*repo = strdup(qPrintable(f.getName()));
+	*branch = strdup(qPrintable(f.getBranch()));
+	return 0;
 }
 
 const QString get_dc_nickname(const char *model, uint32_t deviceid)
@@ -1747,4 +1760,14 @@ extern "C" void lock_planner()
 extern "C" void unlock_planner()
 {
 	planLock.unlock();
+}
+
+FileLocation getCloudLocation()
+{
+	QString filename;
+	if (getCloudURL(filename))
+		return FileLocation();
+
+	return prefs.git_local_only ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, filename)
+				    : FileLocation(FileLocation::CLOUD_GIT, filename);
 }

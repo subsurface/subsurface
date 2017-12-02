@@ -1741,7 +1741,6 @@ int git_load_dives(struct git_repository *repo, const char *branch)
 		return report_error("Unable to open git repository at '%s'", branch);
 	ret = do_git_load(repo, branch);
 	git_repository_free(repo);
-	free((void *)branch);
 	finish_active_dive();
 	finish_active_trip();
 	return ret;

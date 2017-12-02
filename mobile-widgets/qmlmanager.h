@@ -175,7 +175,7 @@ public slots:
 	void clearCredentials();
 	void cancelCredentialsPinSetup();
 	void finishSetup();
-	void openLocalThenRemote(QString url);
+	void openLocalThenRemote(const FileLocation &file);
 	void mergeLocalRepo();
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);

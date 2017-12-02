@@ -25,7 +25,7 @@ void TestMerge::testMergeEmpty()
 	process_dives(true, false);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml"), 0);
 	process_dives(true, false);
-	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testmerge47+48.ssrf");
@@ -48,7 +48,7 @@ void TestMerge::testMergeBackwards()
 	process_dives(true, false);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml"), 0);
 	process_dives(true, false);
-	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);
 	QFile out("./testmerge47+48.ssrf");

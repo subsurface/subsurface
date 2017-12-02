@@ -566,20 +566,14 @@ void MainWindow::on_actionOpen_triggered()
 		filenames = dialog.selectedFiles();
 	if (filenames.isEmpty())
 		return;
-	updateLastUsedDir(QFileInfo(filenames.first()).dir().path());
 	closeCurrentFile();
-	// some file dialogs decide to add the default extension to a filename without extension
-	// so we would get dir[branch].ssrf when trying to select dir[branch].
-	// let's detect that and remove the incorrect extension
-	QStringList cleanFilenames;
-	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
 
-	Q_FOREACH (QString filename, filenames) {
-		if (reg.match(filename).hasMatch())
-			filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
-		cleanFilenames << filename;
-	}
-	loadFiles(cleanFilenames);
+	QList<FileLocation> locations;
+	Q_FOREACH (QString filename, filenames)
+		locations.append(FileLocation::guessFromFileName(filename));
+	updateLastUsedDir(locations[0]);
+
+	loadFiles(locations);
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -597,21 +591,18 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
-	QString filename;
-	if (getCloudURL(filename))
+	FileLocation location = getCloudLocation();
+	if (location.getType() == FileLocation::NONE)
 		return;
 
 	if (verbose)
-		qDebug() << "Opening cloud storage from:" << filename;
+		qDebug() << "Opening cloud storage from:" << location.formatLong();
 
 	closeCurrentFile();
 
-	int error;
-
 	showProgressBar();
-	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data())) {
-		set_filename(fileNamePtr.data(), true);
+	if (!loadDives(location)) {
+		set_filename(location, true);
 		setTitle(MWTF_FILENAME);
 	}
 	getNotificationWidget()->hideNotification();
@@ -636,13 +627,14 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (information()->isEditing())
 		information()->acceptChanges();
 
+	FileLocation location = getCloudLocation();
 	showProgressBar();
-	int error = save_dives(filename.toUtf8().data());
+	int error = saveDives(location);
 	hideProgressBar();
 	if (error)
 		return;
 
-	set_filename(filename.toUtf8().data(), true);
+	set_filename(location, true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
 }
@@ -693,7 +685,7 @@ void MainWindow::cleanUpEmpty()
 	graphics()->setEmptyState();
 	dive_list()->reload(DiveTripModel::TREE);
 	MapWidget::instance()->reload();
-	if (!existing_filename)
+	if (currentFile.isNone())
 		setTitle(MWTF_DEFAULT);
 	disableShortcuts();
 }
@@ -753,6 +745,13 @@ void MainWindow::updateLastUsedDir(const QString &dir)
 	QSettings s;
 	s.beginGroup("FileDialog");
 	s.setValue("LastDir", dir);
+}
+
+void MainWindow::updateLastUsedDir(const FileLocation &l)
+{
+	QString dir = l.path();
+	if (!dir.isEmpty())
+		return updateLastUsedDir(dir);
 }
 
 void MainWindow::on_actionPrint_triggered()
@@ -1381,11 +1380,11 @@ bool MainWindow::askSaveChanges()
 	QString message;
 	QMessageBox response(this);
 
-	if (existing_filename)
-		message = tr("Do you want to save the changes that you made in the file %1?")
-				.arg(displayedFilename(existing_filename));
-	else
+	if (currentFile.isNone())
 		message = tr("Do you want to save the changes that you made in the data file?");
+	else
+		message = tr("Do you want to save the changes that you made in the file %1?")
+				.arg(currentFile.formatShort());
 
 	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Save);
@@ -1538,9 +1537,15 @@ void MainWindow::loadRecentFiles()
 		// TODO Sorting only correct up to 9 entries. Currently, only 4 used, so no problem.
 		if (!key.startsWith("File_"))
 			continue;
-		QString file = s.value(key).toString();
-		if (QFile::exists(file))
-			recentFiles.append(file);
+		QVariant v = s.value(key);
+		if (v.type() == QVariant::Type::StringList) {
+			QStringList l = v.toStringList();
+			recentFiles.append(FileLocation(l.at(0), l.at(1), l.at(2)));
+		} else {
+			// In previous versions, only local files were added to the recent list
+			QString name = s.value(key).toString();
+			recentFiles.append(FileLocation(FileLocation::LOCAL_FILE, name));
+		}
 		if (recentFiles.count() > NUM_RECENT_FILES)
 			break;
 	}
@@ -1554,9 +1559,9 @@ void MainWindow::updateRecentFilesMenu()
 		QAction *action = actionsRecent[c];
 
 		if (recentFiles.count() > c) {
-			QFileInfo fi(recentFiles.at(c));
-			action->setText(fi.fileName());
-			action->setToolTip(fi.absoluteFilePath());
+			const FileLocation &location = recentFiles[c];
+			action->setText(location.formatShort());
+			action->setToolTip(location.formatLong());
 			action->setVisible(true);
 		} else {
 			action->setVisible(false);
@@ -1564,13 +1569,15 @@ void MainWindow::updateRecentFilesMenu()
 	}
 }
 
-void MainWindow::addRecentFile(const QString &file, bool update)
+void MainWindow::addRecentFile(const FileLocation &file, bool update)
 {
-	QString localFile = QDir::toNativeSeparators(file);
-	int index = recentFiles.indexOf(localFile);
-	if (index >= 0)
-		recentFiles.removeAt(index);
-	recentFiles.prepend(localFile);
+	// Don't add cloud and local cloud copy to recent files
+	if (file.isCloud())
+		return;
+	int idx = recentFiles.indexOf(file);
+	if (idx >= 0)
+		recentFiles.removeAt(idx);
+	recentFiles.prepend(file);
 	while (recentFiles.count() > NUM_RECENT_FILES)
 		recentFiles.removeLast();
 	if (update)
@@ -1585,7 +1592,8 @@ void MainWindow::updateRecentFiles()
 	s.remove("");	// Remove all old entries
 	for (int c = 1; c <= recentFiles.count(); c++) {
 		QString key = QString("File_%1").arg(c);
-		s.setValue(key, recentFiles.at(c - 1));
+		FileLocation loc = recentFiles[c - 1];
+		s.setValue(key, QStringList({loc.typeAsString(), loc.getName(), loc.getBranch()}));
 	}
 	s.endGroup();
 	s.sync();
@@ -1602,34 +1610,27 @@ void MainWindow::recentFileTriggered(bool checked)
 	int filenr = ((QAction *)sender())->data().toInt();
 	if (filenr >= recentFiles.count())
 		return;
-	const QString &filename = recentFiles[filenr];
+	const FileLocation &location = recentFiles[filenr];
 
-	updateLastUsedDir(QFileInfo(filename).dir().path());
+	updateLastUsedDir(location);
 	closeCurrentFile();
-	loadFiles(QStringList() << filename);
+	loadFiles({location});
 }
 
 int MainWindow::file_save_as(void)
 {
-	QString filename;
-	const char *default_filename = existing_filename;
-
-	// if the default is to save to cloud storage, pick something that will work as local file:
+	// If the default is to save to cloud storage, pick something that will work as local file:
 	// simply extract the branch name which should be the users email address
-	if (default_filename && strstr(default_filename, prefs.cloud_git_url)) {
-		QString filename(default_filename);
-		filename.remove(prefs.cloud_git_url);
-		filename.remove(0, filename.indexOf("[") + 1);
-		filename.replace("]", ".ssrf");
-		default_filename = strdup(qPrintable(filename));
-	}
+	QString default_filename = currentFile.isCloud() ?
+		currentFile.getBranch() : currentFile.getName() + ".ssrf";
+
 	// create a file dialog that allows us to save to a new file
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,
 					 tr("Subsurface files") + " (*.ssrf *.xml)");
 	selection_dialog.setAcceptMode(QFileDialog::AcceptSave);
 	selection_dialog.setFileMode(QFileDialog::AnyFile);
 	selection_dialog.setDefaultSuffix("");
-	if (same_string(default_filename, "")) {
+	if (default_filename.simplified().isEmpty()) {
 		QFileInfo defaultFile(system_default_filename());
 		selection_dialog.setDirectory(qPrintable(defaultFile.absolutePath()));
 	}
@@ -1638,62 +1639,90 @@ int MainWindow::file_save_as(void)
 		return 0;
 
 	/* get the first selected file */
-	filename = selection_dialog.selectedFiles().at(0);
-
-	/* now for reasons I don't understand we appear to add a .ssrf to
-	 * git style filenames <path>/directory[branch]
-	 * so let's remove that */
-	QRegularExpression reg(".*\\[[^]]+]\\.ssrf", QRegularExpression::CaseInsensitiveOption);
-	if (reg.match(filename).hasMatch())
-		filename.remove(QRegularExpression("\\.ssrf$", QRegularExpression::CaseInsensitiveOption));
-	if (filename.isNull() || filename.isEmpty())
-		return report_error("No filename to save into");
+	QString filename = selection_dialog.selectedFiles().at(0);
 
 	if (information()->isEditing())
 		information()->acceptChanges();
 
-	if (save_dives(filename.toUtf8().data()))
+	FileLocation location = FileLocation::guessFromFileName(filename);
+	if (saveDives(location))
 		return -1;
 
-	set_filename(filename.toUtf8().data(), true);
+	set_filename(location, true);
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
-	addRecentFile(filename, true);
+	addRecentFile(location, true);
 	return 0;
+}
+
+int MainWindow::saveDives(const FileLocation &f)
+{
+	bool is_remote = f.isRemote();
+	if (is_remote)
+		showProgressBar();
+	int res = -1;
+	switch(f.getType()) {
+	case FileLocation::LOCAL_FILE:
+		res = save_dives_file(qPrintable(f.getName()));
+		break;
+	case FileLocation::GIT:
+	case FileLocation::CLOUD_GIT:
+	case FileLocation::CLOUD_GIT_OFFLINE:
+		res = save_dives_git(qPrintable(f.getName()), qPrintable(f.getBranch()), qPrintable(f.getUser()), f.isRemote(), f.isCloud());
+		break;
+	case FileLocation::NONE:
+	default:
+		;	// Leave error marker on
+	}
+	if (is_remote)
+		hideProgressBar();
+	return res;
+}
+
+int MainWindow::loadDives(const FileLocation &f)
+{
+	bool is_remote = f.isRemote();
+	if (is_remote)
+		showProgressBar();
+	int res = -1;
+	switch(f.getType()) {
+	case FileLocation::LOCAL_FILE:
+		res = parse_file(qPrintable(f.getName()));
+		break;
+	case FileLocation::GIT:
+	case FileLocation::CLOUD_GIT:
+	case FileLocation::CLOUD_GIT_OFFLINE:
+		res = parse_file_git(qPrintable(f.getName()), qPrintable(f.getBranch()), qPrintable(f.getUser()), f.isRemote(), f.isCloud());
+		break;
+	case FileLocation::NONE:
+	default:
+		;	// Leave error marker on
+	}
+	if (is_remote)
+		hideProgressBar();
+	return res;
 }
 
 int MainWindow::file_save(void)
 {
-	const char *current_default;
-	bool is_cloud = false;
-
-	if (!existing_filename)
+	if (currentFile.isNone())
 		return file_save_as();
-
-	is_cloud = (strncmp(existing_filename, "http", 4) == 0);
 
 	if (information()->isEditing())
 		information()->acceptChanges();
 
-	current_default = prefs.default_filename;
-	if (strcmp(existing_filename, current_default) == 0) {
+	const char *current_default = prefs.default_filename;
+	if (currentFile.getName() == current_default) {
 		/* if we are using the default filename the directory
 		 * that we are creating the file in may not exist */
 		QDir current_def_dir = QFileInfo(current_default).absoluteDir();
 		if (!current_def_dir.exists())
 			current_def_dir.mkpath(current_def_dir.absolutePath());
 	}
-	if (is_cloud)
-		showProgressBar();
-	if (save_dives(existing_filename)) {
-		if (is_cloud)
-			hideProgressBar();
+	if (saveDives(currentFile))
 		return -1;
-	}
-	if (is_cloud)
-		hideProgressBar();
 	mark_divelist_changed(false);
-	addRecentFile(QString(existing_filename), true);
+	addRecentFile(currentFile, true);
 	return 0;
 }
 
@@ -1701,26 +1730,6 @@ NotificationWidget *MainWindow::getNotificationWidget()
 {
 	return ui.mainErrorMessage;
 }
-
-QString MainWindow::displayedFilename(QString fullFilename)
-{
-	QFile f(fullFilename);
-	QFileInfo fileInfo(f);
-	QString fileName(fileInfo.fileName());
-
-	if (fullFilename.contains(prefs.cloud_git_url)) {
-		QString email = fileName.left(fileName.indexOf('['));
-		if (prefs.git_local_only) {
-			ui.actionTake_cloud_storage_online->setEnabled(true);
-			return tr("[local cache for] %1").arg(email);
-		} else {
-			return tr("[cloud storage for] %1").arg(email);
-		}
-	} else {
-		return fileName;
-	}
-}
-
 
 void MainWindow::setAutomaticTitle()
 {
@@ -1734,12 +1743,12 @@ void MainWindow::setTitle(enum MainWindowTitleFormat format)
 		setWindowTitle("Subsurface");
 		break;
 	case MWTF_FILENAME:
-		if (!existing_filename) {
+		if (currentFile.isNone()) {
 			setTitle(MWTF_DEFAULT);
 			return;
 		}
-		QString unsaved = (unsaved_changes() ? " *" : "");
-		setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved);
+		const char *unsaved = (unsaved_changes() ? " *" : "");
+		setWindowTitle("Subsurface: " + currentFile.formatShort() + unsaved);
 		break;
 	}
 }
@@ -1749,11 +1758,9 @@ void MainWindow::importFiles(const QStringList fileNames)
 	if (fileNames.isEmpty())
 		return;
 
-	QByteArray fileNamePtr;
-
 	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data());
+		FileLocation location = FileLocation::guessFromFileName(fileNames.at(i));
+		loadDives(location);
 	}
 	process_dives(true, false);
 	refreshDisplay();
@@ -1789,20 +1796,18 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 	refreshDisplay();
 }
 
-void MainWindow::loadFiles(const QStringList fileNames)
+void MainWindow::loadFiles(const QList<FileLocation> &files)
 {
-	if (fileNames.isEmpty()) {
+	if (files.isEmpty()) {
 		refreshDisplay();
 		return;
 	}
-	QByteArray fileNamePtr;
 
 	showProgressBar();
-	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		if (!parse_file(fileNamePtr.data())) {
-			set_filename(fileNamePtr.data(), true);
-			addRecentFile(fileNamePtr, false);
+	for (int i = 0; i < files.size(); ++i) {
+		if (!loadDives(files[i])) {
+			set_filename(files[i], true);
+			addRecentFile(files[i], false);
 			setTitle(MWTF_FILENAME);
 		}
 	}

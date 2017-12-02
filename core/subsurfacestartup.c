@@ -164,15 +164,14 @@ void print_version()
 
 void print_files()
 {
-	const char *branch = 0;
-	const char *remote = 0;
+	char *branch = 0;
+	char *remote = 0;
 	const char *filename, *local_git;
 
 	printf("\nFile locations:\n\n");
 	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, "")) {
 		filename = cloud_url();
-
-		is_git_repository(filename, &branch, &remote, true);
+		parse_git_filename(filename, &branch, &remote);
 	} else {
 		/* strdup so the free below works in either case */
 		filename = strdup("No valid cloud credentials set.\n");
@@ -183,6 +182,8 @@ void print_files()
 	} else {
 		printf("Unable to get local git directory\n");
 	}
+	free(branch);
+	free(remote);
 	printf("Cloud URL: %s\n", filename);
 	free((void *)filename);
 	char *tmp = hashfile_name_string();

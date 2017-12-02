@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include "dive.h"
 #include "divelist.h"
+#include "filelocation.h"
 #include <QTranslator>
 #include <QDir>
 
@@ -54,4 +55,9 @@ extern "C" double cache_value(int tissue, int timestep, enum inertgas gas);
 extern "C" void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 extern "C" void lock_planner();
 extern "C" void unlock_planner();
+void set_filename(const FileLocation &, bool force);
+extern "C" void set_current_file_none();
+extern "C" char *get_current_file_name();	// Caller must free() returned file name
+extern "C" int parse_git_filename(const char *fn, char **repo, char **branch);	// Caller must free() *repo and *branch
+FileLocation getCloudLocation();		// Return FileLocation::NONE if no cloud was set
 #endif // QTHELPER_H

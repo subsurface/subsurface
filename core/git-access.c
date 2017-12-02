@@ -23,7 +23,8 @@
 #include "git-access.h"
 #include "gettext.h"
 
-bool is_subsurface_cloud = false;
+static bool is_subsurface_cloud = false;
+static bool is_local_cloud = false;
 
 int (*update_progress_cb)(const char *) = NULL;
 
@@ -551,7 +552,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	char *proxy_string;
 	git_config *conf;
 
-	if (prefs.git_local_only) {
+	if (is_local_cloud) {
 		if (verbose)
 			fprintf(stderr, "don't sync with remote - read from cache only\n");
 		return 0;
@@ -635,7 +636,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
 	}
-	if (!prefs.git_local_only)
+	if (!is_local_cloud)
 		sync_with_remote(repo, remote, branch, rt);
 
 	return repo;
@@ -747,7 +748,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		char *pattern = malloc(len);
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
 		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", branch);
-		if (strstr(remote, prefs.cloud_git_url) && includes_string_caseinsensitive(msg, pattern)) {
+		if (is_subsurface_cloud && includes_string_caseinsensitive(msg, pattern)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
 			 * So we need to create the branch and push it to the remote */
@@ -800,10 +801,10 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 			 * remote cloud repo.
 			 */
 			git_repository *ret;
-			bool glo = prefs.git_local_only;
-			prefs.git_local_only = false;
+			bool local = is_local_cloud;
+			is_local_cloud = false;
 			ret = create_local_repo(localdir, remote, branch, rt);
-			prefs.git_local_only = glo;
+			is_local_cloud = local;
 			return ret;
 		}
 	}
@@ -812,188 +813,69 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	return 0;
 }
 
-/*
- * This turns a remote repository into a local one if possible.
- *
- * The recognized formats are
- *    git://host/repo[branch]
- *    ssh://host/repo[branch]
- *    http://host/repo[branch]
- *    https://host/repo[branch]
- *    file://repo[branch]
- */
-static struct git_repository *is_remote_git_repository(char *remote, const char *branch)
+struct git_repository *is_git_repository(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud)
 {
-	char c, *localdir;
-	const char *p = remote;
+	struct stat st;
+	git_repository *repo;
+	int ret;
+	const char *localdir;
 
-	while ((c = *p++) >= 'a' && c <= 'z')
-		/* nothing */;
-	if (c != ':')
-		return NULL;
-	if (*p++ != '/' || *p++ != '/')
-		return NULL;
-
-	/*
-	 * Ok, we found "[a-z]*://" and we think we have a real
-	 * "remote git" format. The "file://" case was handled
-	 * in the calling function.
-	 *
-	 * We now create the SHA1 hash of the whole thing,
-	 * including the branch name. That will be our unique
-	 * unique local repository name.
-	 *
-	 * NOTE! We will create a local repository per branch,
-	 * because
-	 *
-	 *  (a) libgit2 remote tracking branch support seems to
-	 *      be a bit lacking
-	 *  (b) we'll actually check the branch out so that we
-	 *      can do merges etc too.
-	 *
-	 * so even if you have a single remote git repo with
-	 * multiple branches for different people, the local
-	 * caches will sadly force that to split into multiple
-	 * individual repositories.
-	 */
-
-	/*
-	 * next we need to make sure that any encoded username
-	 * has been extracted from an https:// based URL
-	 */
-	if  (!strncmp(remote, "https://", 8)) {
-		char *at = strchr(remote, '@');
-		if (at) {
-			/* was this the @ that denotes an account? that means it was before the
-			 * first '/' after the https:// - so let's find a '/' after that and compare */
-			char *slash = strchr(remote + 8, '/');
-			if (slash && slash > at) {
-				/* grab the part between "https://" and "@" as encoded email address
-				 * (that's our username) and move the rest of the URL forward, remembering
-				 * to copy the closing NUL as well */
-				prefs.cloud_storage_email_encoded = strndup(remote + 8, at - remote - 8);
-				memmove(remote + 8, at + 1, strlen(at + 1) + 1);
-			}
-		}
+	if (user && user[0]) {
+		if (prefs.cloud_storage_email_encoded)
+			free((void *)prefs.cloud_storage_email_encoded);
+		prefs.cloud_storage_email_encoded = strdup(user);
 	}
-	localdir = get_local_dir(remote, branch);
-	if (!localdir)
-		return NULL;
 
 	/* remember if the current git storage we are working on is our cloud storage
 	 * this is used to create more user friendly error message and warnings */
-	is_subsurface_cloud = strstr(remote, prefs.cloud_git_url) != NULL;
+	is_subsurface_cloud = is_cloud;
+	is_local_cloud = is_cloud && !is_remote;
 
-	return get_remote_repo(localdir, remote, branch);
-}
+	if (is_cloud || is_remote) {
+		/*
+		 * This turns a remote repository into a local one,
+		 * if possible.
+		 *
+		 * We now create the SHA1 hash of the whole thing,
+		 * including the branch name. That will be our unique
+		 * unique local repository name.
+		 *
+		 * NOTE! We will create a local repository per branch,
+		 * because
+		 *
+		 *  (a) libgit2 remote tracking branch support seems to
+		 *      be a bit lacking
+		 *  (b) we'll actually check the branch out so that we
+		 *      can do merges etc too.
+		 *
+		 * so even if you have a single remote git repo with
+		 * multiple branches for different people, the local
+		 * caches will sadly force that to split into multiple
+		 * individual repositories.
+		 */
+		localdir = get_local_dir(loc, branch);
+		if (!localdir)
+			return dummy_git_repository;
 
-/*
- * If it's not a git repo, return NULL. Be very conservative.
- */
-struct git_repository *is_git_repository(const char *filename, const char **branchp, const char **remote, bool dry_run)
-{
-	int flen, blen, ret;
-	int offset = 1;
-	struct stat st;
-	git_repository *repo;
-	char *loc, *branch;
-
-	flen = strlen(filename);
-	if (!flen || filename[--flen] != ']')
-		return NULL;
-
-	/*
-	 * Special-case "file://", and treat it as a local
-	 * repository since libgit2 is insanely slow for that.
-	 */
-	if (!strncmp(filename, "file://", 7)) {
-		filename += 7;
-		flen -= 7;
-	}
-
-	/* Find the matching '[' */
-	blen = 0;
-	while (flen && filename[--flen] != '[')
-		blen++;
-
-	/* Ignore slashes at the end of the repo name */
-	while (flen && filename[flen-1] == '/') {
-		flen--;
-		offset++;
-	}
-
-	if (!flen)
-		return NULL;
-
-	/*
-	 * This is the "point of no return": the name matches
-	 * the git repository name rules, and we will no longer
-	 * return NULL.
-	 *
-	 * We will either return "dummy_git_repository" and the
-	 * branch pointer will have the _whole_ filename in it,
-	 * or we will return a real git repository with the
-	 * branch pointer being filled in with just the branch
-	 * name.
-	 *
-	 * The actual git reading/writing routines can use this
-	 * to generate proper error messages.
-	 */
-	*branchp = filename;
-	loc = format_string("%.*s", flen, filename);
-	if (!loc)
-		return dummy_git_repository;
-
-	branch = format_string("%.*s", blen, filename + flen + offset);
-	if (!branch) {
-		free(loc);
-		return dummy_git_repository;
-	}
-
-	if (dry_run) {
-		*branchp = branch;
-		*remote = loc;
-		return dummy_git_repository;
-	}
-	repo = is_remote_git_repository(loc, branch);
-	if (repo) {
-		if (remote)
-			*remote = loc;
-		else
-			free(loc);
-		*branchp = branch;
-		return repo;
+		return get_remote_repo(localdir, loc, branch);
 	}
 
 	if (subsurface_stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		if (verbose)
 			fprintf(stderr, "loc %s wasn't found or is not a directory\n", loc);
-		free(loc);
-		free(branch);
 		return dummy_git_repository;
 	}
 
 	ret = git_repository_open(&repo, loc);
-	free(loc);
-	if (ret < 0) {
-		free(branch);
+	if (ret < 0)
 		return dummy_git_repository;
-	}
-	if (remote)
-		*remote = NULL;
-	*branchp = branch;
 	return repo;
 }
 
-int git_create_local_repo(const char *filename)
+int git_create_local_repo(const char *directory)
 {
 	git_repository *repo;
-	char *path = strdup(filename);
-	char *branch = strchr(path, '[');
-	if (branch)
-		*branch = '\0';
-	int ret = git_repository_init(&repo, path, false);
-	free(path);
+	int ret = git_repository_init(&repo, directory, false);
 	if (ret != 0)
 		(void)report_error("Create local repo failed with error code %d", ret);
 	git_repository_free(repo);

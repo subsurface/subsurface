@@ -19,6 +19,7 @@
 #include "desktop-widgets/notificationwidget.h"
 #include "core/windowtitleupdate.h"
 #include "core/gpslocation.h"
+#include "core/filelocation.h"
 
 #define NUM_RECENT_FILES 4
 
@@ -69,14 +70,14 @@ public:
 	void loadRecentFiles();
 	void updateRecentFiles();
 	void updateRecentFilesMenu();
-	void addRecentFile(const QString &file, bool update);
+	void addRecentFile(const FileLocation &file, bool update);
 	DiveListView *dive_list();
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
 	LocationInformationWidget *locationInformationWidget();
 	void setTitle(enum MainWindowTitleFormat format = MWTF_FILENAME);
 
-	void loadFiles(const QStringList files);
+	void loadFiles(const QList<FileLocation> &files);
 	void importFiles(const QStringList importFiles);
 	void importTxtFiles(const QStringList fileNames);
 	void cleanUpEmpty();
@@ -199,7 +200,6 @@ private:
 	QString filter_open();
 	QString filter_import();
 	static MainWindow *m_Instance;
-	QString displayedFilename(QString fullFilename);
 	bool askSaveChanges();
 	bool okToClose(QString message);
 	void closeCurrentFile();
@@ -208,10 +208,13 @@ private:
 	void writeSettings();
 	int file_save();
 	int file_save_as();
+	int loadDives(const FileLocation &);
+	int saveDives(const FileLocation &);
 	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
 	QString lastUsedDir();
 	void updateLastUsedDir(const QString &s);
+	void updateLastUsedDir(const FileLocation &);
 	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
@@ -224,7 +227,7 @@ private:
 	struct dive copyPasteDive;
 	struct dive_components what;
 	QList<QAction *> profileToolbarActions;
-	QStringList recentFiles;
+	QList<FileLocation> recentFiles;
 	QAction *actionsRecent[NUM_RECENT_FILES];
 
 	struct WidgetForQuadrant {

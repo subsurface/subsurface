@@ -428,20 +428,15 @@ static int parse_file_buffer(const char *filename, struct memblock *mem)
 	return parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL);
 }
 
-int check_git_sha(const char *filename, struct git_repository **git_p, const char **branch_p)
+int check_git_sha(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud, struct git_repository **git_p)
 {
 	struct git_repository *git;
-	const char *branch = NULL;
 
 	char *current_sha = strdup(saved_git_id);
-	git = is_git_repository(filename, &branch, NULL, false);
+	git = is_git_repository(loc, branch, user, is_remote, is_cloud);
 	if (git_p)
 		*git_p = git;
-	if (branch_p)
-		*branch_p = branch;
-	if (prefs.cloud_git_url &&
-	    strstr(filename, prefs.cloud_git_url)
-	    && git == dummy_git_repository) {
+	if (is_cloud && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason,
 		 * so we don't know if there is additional data in the remote */
 		free(current_sha);
@@ -462,19 +457,13 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 	return 1;
 }
 
-int parse_file(const char *filename)
+int parse_file_git(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud)
 {
 	struct git_repository *git;
-	const char *branch = NULL;
 	char *current_sha = copy_string(saved_git_id);
-	struct memblock mem;
-	char *fmt;
-	int ret;
+	git = is_git_repository(loc, branch, user, is_remote, is_cloud);
 
-	git = is_git_repository(filename, &branch, NULL, false);
-	if (prefs.cloud_git_url &&
-	    strstr(filename, prefs.cloud_git_url)
-	    && git == dummy_git_repository) {
+	if (is_cloud && (!git || git == dummy_git_repository)) {
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
 		free(current_sha);
@@ -495,6 +484,14 @@ int parse_file(const char *filename)
 	free(current_sha);
 	if (git)
 		return git_load_dives(git, branch);
+	return -1;
+}
+
+int parse_file(const char *filename)
+{
+	struct memblock mem;
+	char *fmt;
+	int ret;
 
 	if ((ret = readfile(filename, &mem)) < 0) {
 		/* we don't want to display an error if this was the default file or the cloud storage */

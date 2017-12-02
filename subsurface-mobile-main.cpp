@@ -13,6 +13,7 @@
 #include "core/qthelper.h"
 #include "core/helpers.h"
 #include "core/downloadfromdcthread.h"
+#include "core/filelocation.h"
 
 #include <QStringList>
 #include <QApplication>
@@ -52,9 +53,9 @@ int main(int argc, char **argv)
 	taglist_init_global();
 	init_ui();
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
-		set_filename(prefs.default_filename, true);
+		set_filename(FileLocation::guessFromFileName(prefs.default_filename), true);
 	else
-		set_filename(NULL, true);
+		set_filename(FileLocation(), true);
 
 	// some hard coded settings
 	prefs.animation_speed = 0; // we render the profile to pixmap, no animations

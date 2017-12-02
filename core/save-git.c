@@ -1127,12 +1127,16 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 			return report_error("Unable to look up parent in branch '%s'", branch);
 
 		if (saved_git_id) {
-			if (existing_filename && verbose)
-				fprintf(stderr, "existing filename %s\n", existing_filename);
+			char *current_filename = get_current_file_name();
+			if (current_filename[0] && verbose)
+				fprintf(stderr, "existing filename %s\n", current_filename);
 			const git_oid *id = git_commit_id((const git_commit *) parent);
 			/* if we are saving to the same git tree we got this from, let's make
 			 * sure there is no confusion */
-			if (same_string(existing_filename, remote) && git_oid_strcmp(id, saved_git_id))
+			// TODO: Test this!
+			bool same = same_string(current_filename, remote);
+			free(current_filename);
+			if (same && git_oid_strcmp(id, saved_git_id))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 
@@ -1273,6 +1277,14 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	return 0;
 }
 
+int save_dives_git(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud)
+{
+	void *git = is_git_repository(loc, branch, user, is_remote, is_cloud);
+	if (!git || git == dummy_git_repository)
+		return report_error("Unable to open git repository '%s'", branch);
+	return git_save_dives(git, branch, loc, false);
+}
+
 int git_save_dives(struct git_repository *repo, const char *branch, const char *remote, bool select_only)
 {
 	int ret;
@@ -1281,6 +1293,5 @@ int git_save_dives(struct git_repository *repo, const char *branch, const char *
 		return report_error("Unable to open git repository '%s'", branch);
 	ret = do_git_save(repo, branch, remote, select_only, false);
 	git_repository_free(repo);
-	free((void *)branch);
 	return ret;
 }
