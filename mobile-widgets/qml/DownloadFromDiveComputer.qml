@@ -159,6 +159,11 @@ Kirigami.Page {
 				onCurrentTextChanged: {
 					// pattern that matches BT addresses
 					var btAddr = /[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]:[0-9A-Fa-f][0-9A-Fa-f]/ ;
+
+					// On iOS we store UUID instead of device address.
+					if (Qt.platform.os === 'ios')
+						btAddr = /\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}/;
+
 					if (btAddr.test(currentText))
 						downloadThread.deviceData.bluetoothMode = true
 					else
