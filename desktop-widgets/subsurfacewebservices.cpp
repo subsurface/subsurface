@@ -110,7 +110,7 @@ static bool merge_locations_into_dives(void)
 								break;
 							} else {
 								/* ok, gpsfix is before, nextgpsfix is after */
-								if (dive->when - gpsfix->when <= nextgpsfix->when - dive_endtime(dive)) {
+								if (dive->when - gpsfix->when <= nextgpsfix->when - dive->when) {
 									if (verbose)
 										qDebug() << "pick the one before as it's closer to the start";
 									SET_LOCATION(dive, gpsfix, j);
