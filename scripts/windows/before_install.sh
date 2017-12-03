@@ -36,16 +36,10 @@ CURRENT_HIDAPI="hidapi-0.7.0"
 CURRENT_LIBUSB="v1.0.21"
 CURRENT_LIBGIT2="v0.26.0"
 
-
-#this will soon be a git submodule
+# make sure we have libdivecomputer
 echo "Get libdivecomputer"
-cd ${TRAVIS_BUILD_DIR}/..
-git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
-cd libdivecomputer
-if [ ! -f ./configure ] ; then
-        autoreconf --install .
-        autoreconf --install . # not a typo - somehow/sometimes libdivecomputer needs to run this twice. Don't ask.
-fi
+cd ${TRAVIS_BUILD_DIR}
+git submodule update --recursive
 
 echo "Get libusb"
 cd ${TRAVIS_BUILD_DIR}/..
