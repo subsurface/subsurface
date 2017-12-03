@@ -17,6 +17,7 @@
 #include <QStringList>
 #include <QApplication>
 #include <QLoggingCategory>
+#include <QLocale>
 #include <git2.h>
 
 int main(int argc, char **argv)
@@ -39,7 +40,9 @@ int main(int argc, char **argv)
 	}
 	git_libgit2_init();
 	setup_system_prefs();
-	if (uiLanguage(0).contains("-US"))
+	if (QLocale().measurementSystem() == QLocale::MetricSystem)
+		default_prefs.units = SI_units;
+	else
 		default_prefs.units = IMPERIAL_units;
 	copy_prefs(&default_prefs, &prefs);
 	fill_profile_color();
