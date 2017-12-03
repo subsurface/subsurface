@@ -1,15 +1,11 @@
 #!/bin/bash
 #
-# this should be run from the src directory, the layout is supposed to
-# look like this:
+# this should be run from the src directory which contains the subsurface
+# directory; the layout should look like this:
 #.../src/subsurface
-#       /libdivecomputer
 #
-# the script will build these three libraries from source, even if
-# they are installed as part of the host OS since we have seen
-# numerous cases where building with random versions (especially older,
-# but sometimes also newer versions than recommended here) will lead
-# to all kinds of unnecessary pain
+# the script will build Subsurface and libdivecomputer (plus some other
+# dependencies if requestsed) from source.
 #
 # it installs the libraries and subsurface in the install-root subdirectory
 # of the current directory (except on Mac where the Subsurface.app ends up
@@ -343,19 +339,13 @@ cd $SRC
 
 # build libdivecomputer
 
-if [ ! -d libdivecomputer ] ; then
-	if [[ $1 = local ]] ; then
-		git clone $SRC/../libdivecomputer libdivecomputer
-	else
-		git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
-	fi
+cd subsurface
+
+if [ ! -d subsurface/libdivecomputer/src ] ; then
+	git submodule update --recursive
 fi
+
 cd libdivecomputer
-git pull --rebase
-if ! git checkout Subsurface-branch ; then
-	echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
-	exit 1
-fi
 
 mkdir -p build
 cd build
