@@ -321,7 +321,7 @@ void QMLManager::finishSetup()
 			// we got an error loading the local file
 			appendTextToLog(QString("got error %2 when parsing file %1").arg(existing_filename, get_error_string()));
 			setNotificationText(tr("Error parsing local storage, giving up"));
-			set_filename(NULL, "");
+			set_filename(NULL, true);
 		} else {
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad(0);
