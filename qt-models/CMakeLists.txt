@@ -18,7 +18,6 @@ set(SUBSURFACE_MODELS_LIB_SRCS
 	divepicturemodel.cpp
 	diveplotdatamodel.cpp
 	divelocationmodel.cpp
-	divesitepicturesmodel.cpp
 	ssrfsortfilterproxymodel.cpp
 	divelistmodel.cpp
 	gpslistmodel.cpp

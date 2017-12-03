@@ -91,7 +91,6 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../qt-models/divecomputermodel.cpp \
     ../../../qt-models/divelocationmodel.cpp \
     ../../../qt-models/divepicturemodel.cpp \
-    ../../../qt-models/divesitepicturesmodel.cpp \
     ../../../qt-models/divetripmodel.cpp \
     ../../../qt-models/diveimportedmodel.cpp \
     ../../../qt-models/filtermodels.cpp \
@@ -210,7 +209,6 @@ HEADERS += \
     ../../../qt-models/cleanertablemodel.h \
     ../../../qt-models/divepicturemodel.h \
     ../../../qt-models/ssrfsortfilterproxymodel.h \
-    ../../../qt-models/divesitepicturesmodel.h \
     ../../../qt-models/completionmodels.h \
     ../../../qt-models/weigthsysteminfomodel.h \
     ../../../qt-models/divecomputerextradatamodel.h \
