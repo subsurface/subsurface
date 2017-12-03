@@ -194,7 +194,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			Kirigami.Action {
 				iconName: "icons/ic_place.svg"
 				text: qsTr("GPS")
-				visible: (Qt.platform.os !== "ios")
+				visible: true
 
 				Kirigami.Action {
 					iconName: "icons/ic_cloud_upload.svg"
