@@ -40,6 +40,9 @@ CURRENT_LIBGIT2="v0.26.0"
 echo "Get libdivecomputer"
 cd ${TRAVIS_BUILD_DIR}
 git submodule update --recursive
+cd libdivecomputer
+autoreconf --install
+autoreconf --install
 
 echo "Get libusb"
 cd ${TRAVIS_BUILD_DIR}/..

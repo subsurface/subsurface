@@ -42,7 +42,6 @@
 # ~/src/mxe                    <- MXE git with Qt5, automake (see above)
 #      /grantlee               <- Grantlee 5.0.0 sources from git
 #      /subsurface             <- current subsurface git
-#      /libdivecomputer        <- appropriate libdc/Subsurface-branch branch
 #      /libgit2                <- libgit2 0.23.1 or similar
 #      /googlemaps             <- Google Maps plugin for QtLocation from git
 #
@@ -158,22 +157,19 @@ if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
 fi
 
 # libdivecomputer
-#
-# this one is special because we want to make sure it's in sync
-# with the Linux builds, but we don't want the autoconf files cluttering
-# the original source directory... so the "$BASEDIR"/libdivecomputer is
-# a local clone of the "real" libdivecomputer directory
+
+cd "$BASEDIR"/subsurface
+if [ ! -d libdivecomputer/src ] ; then
+	git submodule update --recursive
+fi
 
 cd "$BUILDDIR"
 if [[ ! -d libdivecomputer || -f build.libdivecomputer ]] ; then
 	rm -f build.libdivecomputer
-	cd "$BASEDIR"/libdivecomputer
-	git pull
-	cd "$BUILDDIR"
 	mkdir -p libdivecomputer
 	cd libdivecomputer
 
-	"$BASEDIR"/libdivecomputer/configure \
+	"$BASEDIR"/subsurface/libdivecomputer/configure \
 		CC=i686-w64-mingw32.shared-gcc \
 		--host=i686-w64-mingw32.shared \
 		--enable-shared \
