@@ -994,5 +994,6 @@ int git_create_local_repo(const char *filename)
 	free(path);
 	if (ret != 0)
 		(void)report_error("Create local repo failed with error code %d", ret);
+	git_repository_free(repo);
 	return ret;
 }
