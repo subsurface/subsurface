@@ -2000,7 +2000,7 @@ void ProfileWidget2::plotPictures()
 
 	double x, y, lastX = -1.0, lastY = -1.0;
 	DivePictureModel *m = DivePictureModel::instance();
-	for (int i = 0; i < m->rowCount(); i++) {
+	for (int i = m->rowDDStart; i <= m->rowDDEnd; i++) {
 		int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
 		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
 		// information area.
