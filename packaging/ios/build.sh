@@ -259,24 +259,19 @@ echo next building for $ARCH
 #
 
 # build libdivecomputer
-	if [ ! -d libdivecomputer ] ; then
-		git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
-	fi
-	cd libdivecomputer
-	git pull --rebase
-	if ! git checkout Subsurface-branch ; then
-		echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
-		exit 1
-	fi
-	if [ ! -f configure ] ; then
+	if [ ! -d ../../../libdivecomputer/src ] ; then
+		pushd ../../..
+		git submodule update --recursive
+		pushd libdivecomputer
 		autoreconf --install
+		autoreconf --install
+		popd
+		popd
 	fi
-	cd ..
-
 	if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
 		mkdir -p libdivecomputer-build-$ARCH
 		pushd libdivecomputer-build-$ARCH
-		../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi
+		../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi
 		make
 		make install
 		popd
