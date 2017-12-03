@@ -36,7 +36,7 @@ DivePictureModel *DivePictureModel::instance()
 	return self;
 }
 
-DivePictureModel::DivePictureModel()
+DivePictureModel::DivePictureModel() : rowDDStart(0), rowDDEnd(0)
 {
 }
 
@@ -56,13 +56,22 @@ void DivePictureModel::updateDivePictures()
 		endRemoveRows();
 	}
 
-	// if the dive_table is empty, ignore the displayed_dive
-	if (dive_table.nr == 0 || dive_get_picture_count(&displayed_dive) == 0)
+	// if the dive_table is empty, quit
+	if (dive_table.nr == 0)
 		return;
 
-	FOR_EACH_PICTURE_NON_PTR(displayed_dive)
-		pictures.push_back({picture, picture->filename, QImage(), picture->offset.seconds});
-
+	int i;
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		if (dive->selected) {
+			if (dive->id == displayed_dive.id)
+				rowDDStart = pictures.count();
+			FOR_EACH_PICTURE(dive)
+				pictures.push_back({picture, picture->filename, QImage(), picture->offset.seconds});
+			if (dive->id == displayed_dive.id)
+				rowDDEnd = pictures.count() - 1;
+		}
+	}
 	QtConcurrent::blockingMap(pictures, scaleImages);
 
 	beginInsertRows(QModelIndex(), 0, pictures.count() - 1);

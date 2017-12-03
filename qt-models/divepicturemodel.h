@@ -26,6 +26,7 @@ public:
 	virtual void updateDivePictures();
 	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePicture(const QString& fileUrl, bool last);
+	int rowDDStart, rowDDEnd;
 
 protected:
 	DivePictureModel();
