@@ -1018,7 +1018,7 @@ QString DiveListView::lastUsedImageDir()
 	settings.beginGroup("FileDialog");
 	if (settings.contains("LastImageDir"))
 		if (QDir::setCurrent(settings.value("LastImageDir").toString()))
-			lastImageDir = settings.value("LastIamgeDir").toString();
+			lastImageDir = settings.value("LastImageDir").toString();
 	return lastImageDir;
 }
 
