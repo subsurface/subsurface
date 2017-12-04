@@ -272,7 +272,7 @@ echo next building for $ARCH
 	if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
 		mkdir -p libdivecomputer-build-$ARCH
 		pushd libdivecomputer-build-$ARCH
-		../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi
+		../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
 		make
 		make install
 		popd
