@@ -259,8 +259,9 @@ echo next building for $ARCH
 #
 
 # build libdivecomputer
-	if [ ! -d ../../../libdivecomputer/src ] ; then
-		pushd ../../..
+	if [ ! -d ../../libdivecomputer/src ] ; then
+		pushd ../..
+		git submodule init
 		git submodule update --recursive
 		pushd libdivecomputer
 		autoreconf --install
