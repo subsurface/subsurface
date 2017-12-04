@@ -3841,9 +3841,9 @@ struct picture *clone_picture(struct picture *src)
 void dive_remove_picture(char *filename)
 {
 	struct picture **picture = &current_dive->picture_list;
-	while (picture && !same_string((*picture)->filename, filename))
+	while (*picture && !same_string((*picture)->filename, filename))
 		picture = &(*picture)->next;
-	if (picture) {
+	if (*picture) {
 		struct picture *temp = (*picture)->next;
 		picture_free(*picture);
 		*picture = temp;
