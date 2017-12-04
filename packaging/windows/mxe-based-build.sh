@@ -157,10 +157,17 @@ if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
 fi
 
 # libdivecomputer
+# ensure the git submodule is present and the autotools are set up
 
 cd "$BASEDIR"/subsurface
 if [ ! -d libdivecomputer/src ] ; then
+	git submodule init
 	git submodule update --recursive
+fi
+if [ ! -f libdivecomputer/configure ] ; then
+	cd libdivecomputer
+	autoreconf --install
+	autoreconf --install
 fi
 
 cd "$BUILDDIR"
