@@ -743,7 +743,7 @@ QString MainWindow::lastUsedDir()
 
 	settings.beginGroup("FileDialog");
 	if (settings.contains("LastDir"))
-		if (QDir::setCurrent(settings.value("LastDir").toString()))
+		if (QDir(settings.value("LastDir").toString()).exists())
 			lastDir = settings.value("LastDir").toString();
 	return lastDir;
 }
