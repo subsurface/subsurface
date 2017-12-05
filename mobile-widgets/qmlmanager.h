@@ -196,6 +196,8 @@ public slots:
 	void appendTextToLog(const QString &newText);
 	void quit();
 	void hasLocationSourceChanged();
+	void btRescan();
+
 
 private:
 	QString m_cloudUserName;
