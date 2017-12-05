@@ -6,8 +6,6 @@
 #include <QNetworkReply>
 #include <QSsl>
 
-#include "checkcloudconnection.h"
-
 class CheckCloudConnection : public QObject {
 	Q_OBJECT
 public:
