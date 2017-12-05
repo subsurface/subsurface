@@ -103,6 +103,5 @@ extern "C" bool canReachCloudServer()
 {
 	if (verbose)
 		qWarning() << "Cloud storage: checking connection to cloud server";
-	CheckCloudConnection *checker = new CheckCloudConnection;
-	return checker->checkServer();
+	return CheckCloudConnection().checkServer();
 }
