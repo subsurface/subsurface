@@ -215,6 +215,14 @@ Kirigami.Page {
 					manager.appendTextToLog("exit DCDownload screen")
 				}
 			}
+			SsrfButton {
+				id:rescanbutton
+				text: qsTr("Rescan")
+				onClicked: {
+					manager.btRescan()
+				}
+			}
+
 			Controls.Label {
 				Layout.maximumWidth: parent.width - download.width - quitbutton.width
 				text: divesDownloaded ? qsTr(" Downloaded dives") :

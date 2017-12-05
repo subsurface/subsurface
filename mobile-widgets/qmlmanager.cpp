@@ -96,6 +96,11 @@ void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 	emit btEnabledChanged();
 }
 
+void QMLManager::btRescan()
+{
+	BTDiscovery::instance()->BTDiscoveryReDiscover();
+}
+
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
 	reply(0),
