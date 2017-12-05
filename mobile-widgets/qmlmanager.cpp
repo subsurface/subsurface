@@ -13,9 +13,7 @@
 #include <QTimer>
 #include <QDateTime>
 
-#if defined(BT_SUPPORT)
 #include <QBluetoothLocalDevice>
-#endif
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
@@ -81,7 +79,6 @@ extern "C" int gitProgressCB(const char *text)
 	return 0;
 }
 
-#if defined(BT_SUPPORT)
 void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 {
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
@@ -98,7 +95,6 @@ void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
 	}
 	emit btEnabledChanged();
 }
-#endif
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
@@ -139,16 +135,12 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	setStartPageText(tr("Starting..."));
 
-#if defined(BT_SUPPORT)
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 	m_btEnabled = btDiscovery->btAvailable();
 	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 		this, &QMLManager::btHostModeChange);
-#else
-	m_btEnabled = false;
-#endif
 	setShowPin(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
