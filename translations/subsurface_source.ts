@@ -2576,76 +2576,76 @@ GPS location:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="140"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="139"/>
         <source>Export UDDF file as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="141"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="140"/>
         <source>UDDF files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="145"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="149"/>
-        <source>CSV files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="156"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="180"/>
-        <source>HTML files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="161"/>
-        <source>Subsurface files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="173"/>
-        <source>TeX files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="144"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="148"/>
-        <source>Export CSV file as</source>
+        <source>CSV files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="155"/>
-        <source>Export world map</source>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="179"/>
+        <source>HTML files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="160"/>
+        <source>Subsurface files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="172"/>
+        <source>TeX files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
+        <source>Export CSV file as</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="154"/>
+        <source>Export world map</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="159"/>
         <source>Export Subsurface XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="169"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="168"/>
         <source>Save image depths</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="173"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="172"/>
         <source>Export to TeX file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="179"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="178"/>
         <source>Export HTML files as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="195"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="194"/>
         <source>Please wait, exporting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="230"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="412"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="229"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="411"/>
         <source>Can&apos;t open file %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10561,11 +10561,6 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
-        <source>Apply GPS Fixes</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mobile-widgets/qml/main.qml" line="163"/>
         <source>Manual sync with cloud</source>
         <translation type="unfinished"></translation>
@@ -10598,6 +10593,11 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="201"/>
         <source>Upload GPS data</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <source>Apply GPS fixes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
