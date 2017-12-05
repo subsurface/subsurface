@@ -23,9 +23,6 @@
 #include "git-access.h"
 #include "gettext.h"
 
-static bool is_subsurface_cloud = false;
-static bool is_local_cloud = false;
-
 int (*update_progress_cb)(const char *) = NULL;
 
 void set_git_update_cb(int(*cb)(const char *))
@@ -101,7 +98,7 @@ static int push_transfer_progress_cb(unsigned int current, unsigned int total, s
 	return git_storage_update_progress(buf);
 }
 
-char *get_local_dir(const char *remote, const char *branch)
+char *get_local_dir(const struct git_state *state)
 {
 	SHA_CTX ctx;
 	unsigned char hash[20];
@@ -109,9 +106,9 @@ char *get_local_dir(const char *remote, const char *branch)
 	// That zero-byte update is so that we don't get hash
 	// collisions for "repo1 branch" vs "repo 1branch".
 	SHA1_Init(&ctx);
-	SHA1_Update(&ctx, remote, strlen(remote));
+	SHA1_Update(&ctx, state->location, strlen(state->location));
 	SHA1_Update(&ctx, "", 1);
-	SHA1_Update(&ctx, branch, strlen(branch));
+	SHA1_Update(&ctx, state->branch, strlen(state->branch));
 	SHA1_Final(hash, &ctx);
 
 	return format_string("%s/cloudstorage/%02x%02x%02x%02x%02x%02x%02x%02x",
@@ -120,19 +117,19 @@ char *get_local_dir(const char *remote, const char *branch)
 			hash[4], hash[5], hash[6], hash[7]);
 }
 
-static char *move_local_cache(const char *remote, const char *branch)
+static char *move_local_cache(const struct git_state *state)
 {
-	char *old_path = get_local_dir(remote, branch);
+	char *old_path = get_local_dir(state);
 	return move_away(old_path);
 }
 
 static int check_clean(const char *path, unsigned int status, void *payload)
 {
-	(void) payload;
+	struct git_state *state = (struct git_state *)payload;
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
-	if (is_subsurface_cloud)
+	if (state->is_cloud)
 		report_error(translate("gettextFromC", "Local cache directory %s corrupted - can't sync with Subsurface cloud storage"), path);
 	else
 		report_error("WARNING: Git cache directory modified (path %s) status %0x", path, status);
@@ -142,7 +139,7 @@ static int check_clean(const char *path, unsigned int status, void *payload)
 /*
  * The remote is strictly newer than the local branch.
  */
-static int reset_to_remote(git_repository *repo, git_reference *local, const git_oid *new_id)
+static int reset_to_remote(git_repository *repo, git_reference *local, const git_oid *new_id, const struct git_state *state)
 {
 	git_checkout_options opts = GIT_CHECKOUT_OPTIONS_INIT;
 	opts.progress_cb = &progress_cb;
@@ -168,14 +165,14 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	}
 
 	if (git_object_lookup(&target, repo, new_id, GIT_OBJ_COMMIT)) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			return report_error(translate("gettextFromC", "Subsurface cloud storage corrupted"));
 		else
 			return report_error("Could not look up remote commit");
 	}
 	opts.checkout_strategy = GIT_CHECKOUT_SAFE;
 	if (git_reset(repo, target, GIT_RESET_HARD, &opts)) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			return report_error(translate("gettextFromC", "Could not update local cache to newer remote data"));
 		else
 			return report_error("Local head checkout failed after update");
@@ -187,8 +184,6 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 	return 0;
 }
 
-static int auth_attempt = 0;
-
 int credential_ssh_cb(git_cred **out,
 		  const char *url,
 		  const char *username_from_url,
@@ -197,7 +192,7 @@ int credential_ssh_cb(git_cred **out,
 {
 	(void) url;
 	(void) allowed_types;
-	(void) payload;
+	struct git_state *state = (struct git_state *) payload;
 
 	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
 	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
@@ -205,7 +200,7 @@ int credential_ssh_cb(git_cred **out,
 	/* Bail out from libgit authentication loop when credentials are
 	 * incorrect */
 
-	if (auth_attempt++ > 2) {
+	if (state->auth_attempt++ > 2) {
 		report_error("Authentication to cloud storage failed.");
 		return GIT_EUSER;
 	}
@@ -221,19 +216,18 @@ int credential_https_cb(git_cred **out,
 {
 	(void) url;
 	(void) username_from_url;
-	(void) payload;
 	(void) allowed_types;
-	const char *username = prefs.cloud_storage_email_encoded;
+	struct git_state *state = (struct git_state *)payload;
 	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 
 	/* Bail out from libgit authentication loop when credentials are
 	 * incorrect */
 
-	if (auth_attempt++ > 2) {
+	if (state->auth_attempt++ > 2) {
 		report_error("Authentication to cloud storage failed.");
 		return GIT_EUSER;
 	}
-	return git_cred_userpass_plaintext_new(out, username, password);
+	return git_cred_userpass_plaintext_new(out, state->user, password);
 }
 
 #define KNOWN_CERT "\xfd\xb8\xf7\x73\x76\xe2\x75\x53\x93\x37\xdc\xfe\x1e\x55\x43\x3d\xf2\x2c\x18\x2c"
@@ -258,7 +252,7 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 	return valid;
 }
 
-static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
+static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, struct git_state *state, enum remote_transport rt)
 {
 	(void) repo;
 	(void) remote;
@@ -273,16 +267,17 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 	refspec.count = 1;
 	refspec.strings = (char **)&name;
 
-	auth_attempt = 0;
+	state->auth_attempt = 0;
 	opts.callbacks.push_transfer_progress = &push_transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 	opts.callbacks.certificate_check = certificate_check_cb;
+	opts.callbacks.payload = (void *)state;
 
 	if (git_remote_push(origin, &refspec, &opts)) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			return report_error(translate("gettextFromC", "Could not update Subsurface cloud storage, try again later"));
 		else
 			return report_error("Unable to update remote with current local cache state (%s)", giterr_last()->message);
@@ -416,16 +411,16 @@ write_error:
 // if accessing the local cache of Subsurface cloud storage fails, we simplify things
 // for the user and simply move the cache away (in case they want to try and extract data)
 // and ask them to retry the operation (which will then refresh the data from the cloud server)
-static int cleanup_local_cache(const char *remote_url, const char *branch)
+static int cleanup_local_cache(const struct git_state *state)
 {
-	char *backup_path = move_local_cache(remote_url, branch);
+	char *backup_path = move_local_cache(state);
 	report_error(translate("gettextFromC", "Problems with local cache of Subsurface cloud data"));
 	report_error(translate("gettextFromC", "Moved cache data to %s. Please try the operation again."), backup_path);
 	free(backup_path);
 	return -1;
 }
 static int try_to_update(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote,
-			 const char *remote_url, const char *branch, enum remote_transport rt)
+			 struct git_state *state, enum remote_transport rt)
 {
 	git_oid base;
 	const git_oid *local_id, *remote_id;
@@ -439,8 +434,8 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 
 	// Dirty modified state in the working tree? We're not going
 	// to update either way
-	if (git_status_foreach(repo, check_clean, NULL)) {
-		if (is_subsurface_cloud)
+	if (git_status_foreach(repo, check_clean, state)) {
+		if (state->is_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("local cached copy is dirty, skipping update");
@@ -449,7 +444,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	remote_id = git_reference_target(remote);
 
 	if (!local_id || !remote_id) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Unable to get local or remote SHA1");
@@ -460,7 +455,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 		// so instead merge this as merging a commit into a repo - git_merge() appears to do that
 		// but needs testing and cleanup afterwards
 		//
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Unable to find common commit of local and remote branches");
@@ -468,7 +463,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	/* Is the remote strictly newer? Use it */
 	if (git_oid_equal(&base, local_id)) {
 		git_storage_update_progress(translate("gettextFromC", "Update local storage to match cloud storage"));
-		return reset_to_remote(repo, local, remote_id);
+		return reset_to_remote(repo, local, remote_id, state);
 	}
 
 	/* Is the local repo the more recent one? See if we can update upstream */
@@ -476,18 +471,18 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 		if (verbose)
 			fprintf(stderr, "local is newer than remote, update remote\n");
 		git_storage_update_progress(translate("gettextFromC", "Push local changes to cloud storage"));
-		return update_remote(repo, origin, local, remote, rt);
+		return update_remote(repo, origin, local, remote, state, rt);
 	}
 	/* Merging a bare repository always needs user action */
 	if (git_repository_is_bare(repo)) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Local and remote have diverged, merge of bare branch needed");
 	}
 	/* Merging will definitely need the head branch too */
 	if (git_branch_is_head(local) != 1) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			goto cloud_data_error;
 		else
 			return report_error("Local and remote do not match, local branch not HEAD - cannot update");
@@ -496,7 +491,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	git_storage_update_progress(translate("gettextFromC", "Try to merge local changes into cloud storage"));
 	ret = try_to_git_merge(repo, &local, remote, &base, local_id, remote_id);
 	if (ret == 0)
-		return update_remote(repo, origin, local, remote, rt);
+		return update_remote(repo, origin, local, remote, state, rt);
 	else
 		return ret;
 
@@ -504,10 +499,10 @@ cloud_data_error:
 	// since we are working with Subsurface cloud storage we want to make the user interaction
 	// as painless as possible. So if something went wrong with the local cache, tell the user
 	// about it an move it away
-	return cleanup_local_cache(remote_url, branch);
+	return cleanup_local_cache(state);
 }
 
-static int check_remote_status(git_repository *repo, git_remote *origin, const char *remote, const char *branch, enum remote_transport rt)
+static int check_remote_status(git_repository *repo, git_remote *origin, struct git_state *state, enum remote_transport rt)
 {
 	int error = 0;
 
@@ -516,11 +511,11 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 	if (verbose)
 		fprintf(stderr, "git storage: check remote status\n");
 
-	if (git_branch_lookup(&local_ref, repo, branch, GIT_BRANCH_LOCAL)) {
-		if (is_subsurface_cloud)
-			return cleanup_local_cache(remote, branch);
+	if (git_branch_lookup(&local_ref, repo, state->branch, GIT_BRANCH_LOCAL)) {
+		if (state->is_cloud)
+			return cleanup_local_cache(state);
 		else
-			return report_error("Git cache branch %s no longer exists", branch);
+			return report_error("Git cache branch %s no longer exists", state->branch);
 	}
 	if (git_branch_upstream(&remote_ref, local_ref)) {
 		/* so there is no upstream branch for our branch; that's a problem.
@@ -529,36 +524,37 @@ static int check_remote_status(git_repository *repo, git_remote *origin, const c
 		git_reference_list(&refspec, repo);
 		git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 		opts.callbacks.transfer_progress = &transfer_progress_cb;
-		auth_attempt = 0;
+		state->auth_attempt = 0;
 		if (rt == RT_SSH)
 			opts.callbacks.credentials = credential_ssh_cb;
 		else if (rt == RT_HTTPS)
 			opts.callbacks.credentials = credential_https_cb;
 		opts.callbacks.certificate_check = certificate_check_cb;
+		opts.callbacks.payload = (void *)state;
 		git_storage_update_progress(translate("gettextFromC", "Store data into cloud storage"));
 		error = git_remote_push(origin, &refspec, &opts);
 	} else {
-		error = try_to_update(repo, origin, local_ref, remote_ref, remote, branch, rt);
+		error = try_to_update(repo, origin, local_ref, remote_ref, state, rt);
 		git_reference_free(remote_ref);
 	}
 	git_reference_free(local_ref);
 	return error;
 }
 
-int sync_with_remote(git_repository *repo, const char *remote, const char *branch, enum remote_transport rt)
+int sync_with_remote(git_repository *repo, struct git_state *state, enum remote_transport rt)
 {
 	int error;
 	git_remote *origin;
 	char *proxy_string;
 	git_config *conf;
 
-	if (is_local_cloud) {
+	if (state->is_cloud && !state->is_remote) {
 		if (verbose)
 			fprintf(stderr, "don't sync with remote - read from cache only\n");
 		return 0;
 	}
 	if (verbose)
-		fprintf(stderr, "sync with remote %s[%s]\n", remote, branch);
+		fprintf(stderr, "sync with remote %s[%s]\n", state->location, state->branch);
 	git_storage_update_progress(translate("gettextFromC", "Sync with cloud storage"));
 	git_repository_config(&conf, repo);
 	if (rt == RT_HTTPS && getProxyString(&proxy_string)) {
@@ -578,8 +574,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	 */
 	error = git_remote_lookup(&origin, repo, "origin");
 	if (error) {
-		if (!is_subsurface_cloud)
-			report_error("Repository '%s' origin lookup failed (%s)", remote, giterr_last()->message);
+		if (!state->is_cloud)
+			report_error("Repository '%s' origin lookup failed (%s)", state->location, giterr_last()->message);
 		return 0;
 	}
 
@@ -593,34 +589,35 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		fprintf(stderr, "git storage: fetch remote\n");
 	git_fetch_options opts = GIT_FETCH_OPTIONS_INIT;
 	opts.callbacks.transfer_progress = &transfer_progress_cb;
-	auth_attempt = 0;
+	state->auth_attempt = 0;
 	if (rt == RT_SSH)
 		opts.callbacks.credentials = credential_ssh_cb;
 	else if (rt == RT_HTTPS)
 		opts.callbacks.credentials = credential_https_cb;
 	opts.callbacks.certificate_check = certificate_check_cb;
+	opts.callbacks.payload = (void *)state;
 	git_storage_update_progress(translate("gettextFromC", "Successful cloud connection, fetch remote"));
 	error = git_remote_fetch(origin, NULL, &opts, NULL);
 	// NOTE! A fetch error is not fatal, we just report it
 	if (error) {
-		if (is_subsurface_cloud)
+		if (state->is_cloud)
 			report_error("Cannot sync with cloud server, working with offline copy");
 		else
-			report_error("Unable to fetch remote '%s'", remote);
+			report_error("Unable to fetch remote '%s'", state->location);
 		if (verbose)
 			// If we returned GIT_EUSER during authentication, giterr_last() returns NULL
 			fprintf(stderr, "remote fetch failed (%s)\n",
 				giterr_last() ? giterr_last()->message : "authentication failed");
 		error = 0;
 	} else {
-		error = check_remote_status(repo, origin, remote, branch, rt);
+		error = check_remote_status(repo, origin, state, rt);
 	}
 	git_remote_free(origin);
 	git_storage_update_progress(translate("gettextFromC", "Done syncing with cloud storage"));
 	return error;
 }
 
-static git_repository *update_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
+static git_repository *update_local_repo(const char *localdir, struct git_state *state, enum remote_transport rt)
 {
 	int error;
 	git_repository *repo = NULL;
@@ -630,14 +627,14 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 
 	error = git_repository_open(&repo, localdir);
 	if (error) {
-		if (is_subsurface_cloud)
-			(void)cleanup_local_cache(remote, branch);
+		if (state->is_cloud)
+			(void)cleanup_local_cache(state);
 		else
 			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
 	}
-	if (!is_local_cloud)
-		sync_with_remote(repo, remote, branch, rt);
+	if (state->is_remote)
+		sync_with_remote(repo, state, rt);
 
 	return repo;
 }
@@ -671,7 +668,7 @@ static int repository_create_cb(git_repository **out, const char *path, int bare
 
 /* this should correctly initialize both the local and remote
  * repository for the Subsurface cloud storage */
-static git_repository *create_and_push_remote(const char *localdir, const char *remote, const char *branch)
+static git_repository *create_and_push_remote(const char *localdir, struct git_state *state)
 {
 	git_repository *repo;
 	git_config *conf;
@@ -686,33 +683,33 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 
 	/* set up the origin to point to our remote */
 	git_repository_init_options init_opts = GIT_REPOSITORY_INIT_OPTIONS_INIT;
-	init_opts.origin_url = remote;
+	init_opts.origin_url = state->location;
 
 	/* now initialize the repository with */
 	git_repository_init_ext(&repo, localdir, &init_opts);
 
 	/* create a config so we can set the remote tracking branch */
 	git_repository_config(&conf, repo);
-	len = sizeof("branch..remote") + strlen(branch);
+	len = sizeof("branch..remote") + strlen(state->branch);
 	variable_name = malloc(len);
-	snprintf(variable_name, len, "branch.%s.remote", branch);
+	snprintf(variable_name, len, "branch.%s.remote", state->branch);
 	git_config_set_string(conf, variable_name, "origin");
 	/* we know this is shorter than the previous one, so we reuse the variable*/
-	snprintf(variable_name, len, "branch.%s.merge", branch);
-	len = sizeof("refs/heads/") + strlen(branch);
+	snprintf(variable_name, len, "branch.%s.merge", state->branch);
+	len = sizeof("refs/heads/") + strlen(state->branch);
 	merge_head = malloc(len);
-	snprintf(merge_head, len, "refs/heads/%s", branch);
+	snprintf(merge_head, len, "refs/heads/%s", state->branch);
 	git_config_set_string(conf, variable_name, merge_head);
 	free(variable_name);
 	free(merge_head);
 
 	/* finally create an empty commit and push it to the remote */
-	if (do_git_save(repo, branch, remote, false, true))
+	if (do_git_save(repo, state, false, true))
 		return NULL;
 	return(repo);
 }
 
-static git_repository *create_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)
+static git_repository *create_local_repo(const char *localdir, struct git_state *state, enum remote_transport rt)
 {
 	int error;
 	git_repository *cloned_repo = NULL;
@@ -721,7 +718,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	if (verbose)
 		fprintf(stderr, "git storage: create_local_repo\n");
 
-	auth_attempt = 0;
+	state->auth_attempt = 0;
 	opts.fetch_opts.callbacks.transfer_progress = &transfer_progress_cb;
 	if (rt == RT_SSH)
 		opts.fetch_opts.callbacks.credentials = credential_ssh_cb;
@@ -729,13 +726,14 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		opts.fetch_opts.callbacks.credentials = credential_https_cb;
 	opts.repository_cb = repository_create_cb;
 	opts.fetch_opts.callbacks.certificate_check = certificate_check_cb;
+	opts.fetch_opts.callbacks.payload = (void *)state;
 
-	opts.checkout_branch = branch;
+	opts.checkout_branch = state->branch;
 	if (rt == RT_HTTPS && !canReachCloudServer())
 		return 0;
 	if (verbose > 1)
 		fprintf(stderr, "git storage: calling git_clone()\n");
-	error = git_clone(&cloned_repo, remote, localdir, &opts);
+	error = git_clone(&cloned_repo, state->location, localdir, &opts);
 	if (verbose > 1)
 		fprintf(stderr, "git storage: returned from git_clone() with error %d\n", error);
 	if (error) {
@@ -744,68 +742,66 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 			 msg = giterr_last()->message;
 			 fprintf(stderr, "error message was %s\n", msg);
 		}
-		int len = sizeof("reference 'refs/remotes/origin/' not found") + strlen(branch);
+		int len = sizeof("reference 'refs/remotes/origin/' not found") + strlen(state->branch);
 		char *pattern = malloc(len);
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
-		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", branch);
-		if (is_subsurface_cloud && includes_string_caseinsensitive(msg, pattern)) {
+		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", state->branch);
+		if (state->is_cloud && includes_string_caseinsensitive(msg, pattern)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
 			 * So we need to create the branch and push it to the remote */
 			if (verbose)
 				fprintf(stderr, "remote repo didn't include our branch\n");
-			cloned_repo = create_and_push_remote(localdir, remote, branch);
+			cloned_repo = create_and_push_remote(localdir, state);
 #if !defined(DEBUG) && !defined(SUBSURFACE_MOBILE)
-		} else if (is_subsurface_cloud) {
+		} else if (state->is_cloud) {
 			report_error(translate("gettextFromC", "Error connecting to Subsurface cloud storage"));
 #endif
 		} else {
-			report_error(translate("gettextFromC", "git clone of %s failed (%s)"), remote, msg);
+			report_error(translate("gettextFromC", "git clone of %s failed (%s)"), state->location, msg);
 		}
 		free(pattern);
 	}
 	return cloned_repo;
 }
 
-static struct git_repository *get_remote_repo(const char *localdir, const char *remote, const char *branch)
+static struct git_repository *get_remote_repo(const char *localdir, struct git_state *state)
 {
 	struct stat st;
 	enum remote_transport rt;
 
 	/* figure out the remote transport */
-	if (strncmp(remote, "ssh://", 6) == 0)
+	if (strncmp(state->location, "ssh://", 6) == 0)
 		rt = RT_SSH;
-	else if (strncmp(remote, "https://", 8) == 0)
+	else if (strncmp(state->location, "https://", 8) == 0)
 		rt = RT_HTTPS;
 	else
 		rt = RT_OTHER;
 
 	if (verbose > 1) {
-		fprintf(stderr, "git_remote_repo: accessing %s\n", remote);
+		fprintf(stderr, "git_remote_repo: accessing %s\n", state->location);
 	}
 	git_storage_update_progress(translate("gettextFromC", "Synchronising data file"));
 	/* Do we already have a local cache? */
 	if (!subsurface_stat(localdir, &st)) {
 		if (!S_ISDIR(st.st_mode)) {
-			if (is_subsurface_cloud)
-				(void)cleanup_local_cache(remote, branch);
+			if (state->is_cloud)
+				(void)cleanup_local_cache(state);
 			else
 				report_error("local git cache at '%s' is corrupt");
 			return NULL;
 		}
-		return update_local_repo(localdir, remote, branch, rt);
+		return update_local_repo(localdir, state, rt);
 	} else {
 		/* we have no local cache yet */
-		if (is_subsurface_cloud) {
+		if (state->is_cloud) {
 			/* and take us temporarly online to create a local and
 			 * remote cloud repo.
 			 */
 			git_repository *ret;
-			bool local = is_local_cloud;
-			is_local_cloud = false;
-			ret = create_local_repo(localdir, remote, branch, rt);
-			is_local_cloud = local;
-			return ret;
+			struct git_state state_remote = *state;
+			state_remote.is_remote = true;
+			return create_local_repo(localdir, &state_remote, rt);
 		}
 	}
 
@@ -813,25 +809,14 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 	return 0;
 }
 
-struct git_repository *is_git_repository(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud)
+struct git_repository *is_git_repository(struct git_state *state)
 {
 	struct stat st;
 	git_repository *repo;
 	int ret;
 	const char *localdir;
 
-	if (user && user[0]) {
-		if (prefs.cloud_storage_email_encoded)
-			free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(user);
-	}
-
-	/* remember if the current git storage we are working on is our cloud storage
-	 * this is used to create more user friendly error message and warnings */
-	is_subsurface_cloud = is_cloud;
-	is_local_cloud = is_cloud && !is_remote;
-
-	if (is_cloud || is_remote) {
+	if (state->is_cloud || state->is_remote) {
 		/*
 		 * This turns a remote repository into a local one,
 		 * if possible.
@@ -853,20 +838,21 @@ struct git_repository *is_git_repository(const char *loc, const char *branch, co
 		 * caches will sadly force that to split into multiple
 		 * individual repositories.
 		 */
-		localdir = get_local_dir(loc, branch);
+		localdir = get_local_dir(state);
 		if (!localdir)
 			return dummy_git_repository;
 
-		return get_remote_repo(localdir, loc, branch);
+		return get_remote_repo(localdir, state);
 	}
 
-	if (subsurface_stat(loc, &st) < 0 || !S_ISDIR(st.st_mode)) {
+	// Remote failed, try to access as local file
+	if (subsurface_stat(state->location, &st) < 0 || !S_ISDIR(st.st_mode)) {
 		if (verbose)
-			fprintf(stderr, "loc %s wasn't found or is not a directory\n", loc);
+			fprintf(stderr, "loc %s wasn't found or is not a directory\n", state->location);
 		return dummy_git_repository;
 	}
 
-	ret = git_repository_open(&repo, loc);
+	ret = git_repository_open(&repo, state->location);
 	if (ret < 0)
 		return dummy_git_repository;
 	return repo;
@@ -880,4 +866,11 @@ int git_create_local_repo(const char *directory)
 		(void)report_error("Create local repo failed with error code %d", ret);
 	git_repository_free(repo);
 	return ret;
+}
+
+void free_git_state(struct git_state *state)
+{
+	free((void *)state->location);
+	free((void *)state->branch);
+	free((void *)state->user);
 }

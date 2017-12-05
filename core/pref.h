@@ -142,7 +142,6 @@ struct preferences {
 	const char *cloud_storage_password;
 	const char *cloud_storage_newpassword;
 	const char *cloud_storage_email;
-	const char *cloud_storage_email_encoded;
 	bool save_password_local;
 	short cloud_verification_status;
 	bool cloud_background_sync;

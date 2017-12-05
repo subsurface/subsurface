@@ -619,7 +619,8 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		report_error(qPrintable(tr("Don't save an empty log to the cloud")));
 		return;
 	}
-	if (getCloudURL(filename))
+	FileLocation location = getCloudLocation();
+	if (location.getType() == FileLocation::NONE)
 		return;
 
 	if (verbose)
@@ -627,7 +628,6 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (information()->isEditing())
 		information()->acceptChanges();
 
-	FileLocation location = getCloudLocation();
 	showProgressBar();
 	int error = saveDives(location);
 	hideProgressBar();
@@ -1667,9 +1667,12 @@ int MainWindow::saveDives(const FileLocation &f)
 		break;
 	case FileLocation::GIT:
 	case FileLocation::CLOUD_GIT:
-	case FileLocation::CLOUD_GIT_OFFLINE:
-		res = save_dives_git(qPrintable(f.getName()), qPrintable(f.getBranch()), qPrintable(f.getUser()), f.isRemote(), f.isCloud());
+	case FileLocation::CLOUD_GIT_OFFLINE: {
+		git_state state = f.gitState();
+		res = save_dives_git(&state);
+		free_git_state(&state);
 		break;
+	}
 	case FileLocation::NONE:
 	default:
 		;	// Leave error marker on
@@ -1691,9 +1694,12 @@ int MainWindow::loadDives(const FileLocation &f)
 		break;
 	case FileLocation::GIT:
 	case FileLocation::CLOUD_GIT:
-	case FileLocation::CLOUD_GIT_OFFLINE:
-		res = parse_file_git(qPrintable(f.getName()), qPrintable(f.getBranch()), qPrintable(f.getUser()), f.isRemote(), f.isCloud());
+	case FileLocation::CLOUD_GIT_OFFLINE: {
+		git_state state = f.gitState();
+		res = parse_file_git(&state);
+		free_git_state(&state);
 		break;
+	}
 	case FileLocation::NONE:
 	default:
 		;	// Leave error marker on

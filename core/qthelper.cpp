@@ -12,6 +12,7 @@
 #include <sys/time.h>
 #include "exif.h"
 #include "file.h"
+#include "git-access.h"
 #include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
@@ -576,12 +577,10 @@ char *get_current_file_name()
 	return strdup(qPrintable(currentFile.getName()));
 }
 
-int parse_git_filename(const char *fn, char **repo, char **branch)
+void get_cloud_info(git_state *state)
 {
-	FileLocation f(FileLocation::GIT, fn);
-	*repo = strdup(qPrintable(f.getName()));
-	*branch = strdup(qPrintable(f.getBranch()));
-	return 0;
+	FileLocation location = getCloudLocation();
+	*state = location.gitState();
 }
 
 const QString get_dc_nickname(const char *model, uint32_t deviceid)
@@ -1444,39 +1443,6 @@ fraction_t string_to_fraction(const char *str)
 	return fraction;
 }
 
-int getCloudURL(QString &filename)
-{
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
-		return report_error("Please configure Cloud storage email and password in the preferences");
-	if (email != prefs.cloud_storage_email_encoded) {
-		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
-	}
-	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);
-	if (verbose)
-		qDebug() << "cloud URL set as" << filename;
-	return 0;
-}
-
-extern "C" char *cloud_url()
-{
-	QString filename;
-	getCloudURL(filename);
-	return strdup(filename.toUtf8().data());
-}
-
-extern "C" bool isCloudUrl(const char *filename)
-{
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (!email.isEmpty() &&
-	    QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email) == filename)
-		return true;
-	return false;
-}
-
 extern "C" bool getProxyString(char **buffer)
 {
 	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
@@ -1764,10 +1730,8 @@ extern "C" void unlock_planner()
 
 FileLocation getCloudLocation()
 {
-	QString filename;
-	if (getCloudURL(filename))
-		return FileLocation();
-
-	return prefs.git_local_only ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, filename)
-				    : FileLocation(FileLocation::CLOUD_GIT, filename);
+	QString email = QString(prefs.cloud_storage_email);
+	QString url = QString(prefs.cloud_git_url) + "/" + email;
+	return prefs.git_local_only ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, url, email)
+				    : FileLocation(FileLocation::CLOUD_GIT, url, email);
 }

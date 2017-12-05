@@ -77,6 +77,7 @@ enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The differ
 
 extern const char *cylinderuse_text[];
 extern const char *divemode_text[];
+struct git_state;
 
 struct gasmix {
 	fraction_t o2;
@@ -732,14 +733,14 @@ extern int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *
 extern int parse_dlf_buffer(unsigned char *buffer, size_t size);
 
 extern int parse_file(const char *filename);
-extern int parse_file_git(const char *repository, const char *branch, const char *user, bool is_remote, bool is_cloud);
+extern int parse_file_git(struct git_state *);
 extern int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
 extern int parse_seabear_log(const char *filename);
 extern int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
 extern int parse_txt_file(const char *filename, const char *csv);
 extern int parse_manual_file(const char *filename, char **params, int pnr);
 extern int save_dives_file(const char *filename);
-extern int save_dives_git(const char *repository, const char *branch, const char *user, bool is_remote, bool is_cloud);
+extern int save_dives_git(struct git_state *);
 extern int save_dives_logic(const char *filename, bool select_only);
 extern int save_dive(FILE *f, struct dive *dive);
 extern int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt);

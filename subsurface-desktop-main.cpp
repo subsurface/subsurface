@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	QApplication *application = new QApplication(argc, argv);
 	(void)application;
-	QStringList files;
+	QList<FileLocation> files;
 	QStringList importedFiles;
 	QStringList arguments = QCoreApplication::arguments();
 
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
 			importedFiles.push_back(a);
 		} else {
 			no_filenames = false;
-			files.push_back(a);
+			files.push_back(FileLocation::guessFromFileName(a));
 		}
 	}
 	if (subsurface_user_is_root() && !force_root) {
@@ -94,23 +94,18 @@ int main(int argc, char **argv)
 	init_ui();
 	if (no_filenames) {
 		if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE) {
-			QString defaultFile(prefs.default_filename);
-			if (!defaultFile.isEmpty())
-				files.push_back(QString(prefs.default_filename));
+			if (!same_string(prefs.default_filename, ""))
+				files.push_back(FileLocation::guessFromFileName(prefs.default_filename));
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
-			QString cloudURL;
-			if (getCloudURL(cloudURL) == 0)
-				files.push_back(cloudURL);
+			files.push_back(getCloudLocation());
 		}
 	}
 	MainWindow *m = MainWindow::instance();
 	filesOnCommandLine = !files.isEmpty() || !importedFiles.isEmpty();
 	if (verbose && !files.isEmpty())
-		qDebug() << "loading dive data from" << files;
-	QList<FileLocation> locations;
-	Q_FOREACH (QString filename, files)
-		locations.append(FileLocation::guessFromFileName(filename));
-	m->loadFiles(locations);
+		foreach(const FileLocation &f, files)
+			qDebug() << "loading dive data from" << f.formatLong();
+	m->loadFiles(files);
 	if (verbose && !importedFiles.isEmpty())
 		qDebug() << "importing dive data from" << importedFiles;
 	m->importFiles(importedFiles);

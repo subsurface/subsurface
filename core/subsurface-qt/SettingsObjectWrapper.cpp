@@ -968,11 +968,6 @@ QString CloudStorageSettings::email() const
 	return QString(prefs.cloud_storage_email);
 }
 
-QString CloudStorageSettings::emailEncoded() const
-{
-	return QString(prefs.cloud_storage_email_encoded);
-}
-
 bool CloudStorageSettings::savePasswordLocal() const
 {
 	return prefs.save_password_local;
@@ -1047,16 +1042,6 @@ void CloudStorageSettings::setUserId(const QString& value)
 	free((void *)prefs.userid);
 	prefs.userid = copy_string(qPrintable(value));
 	emit userIdChanged(value);
-}
-
-void CloudStorageSettings::setEmailEncoded(const QString& value)
-{
-	if (value == prefs.cloud_storage_email_encoded)
-		return;
-	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
-	free((void *)prefs.cloud_storage_email_encoded);
-	prefs.cloud_storage_email_encoded = copy_string(qPrintable(value));
-	emit emailEncodedChanged(value);
 }
 
 void CloudStorageSettings::setSavePasswordLocal(bool value)

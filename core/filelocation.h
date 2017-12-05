@@ -4,6 +4,8 @@
 
 #include <QString>
 
+struct git_state;
+
 class FileLocation {
 public:
 	enum Type {
@@ -41,6 +43,7 @@ public:
 	QString typeAsString() const;
 	QString path() const;
 	QString repoName() const;
+	git_state gitState() const;
 
 	bool operator==(const FileLocation &) const;	// So that we can find location in list
 };

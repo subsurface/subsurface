@@ -7,15 +7,14 @@
 #include "core/file.h"
 #include "core/prefs-macros.h"
 #include "core/subsurfacestartup.h"
+#include "core/filelocation.h"
+#include "core/git-access.h"
 
 #include <QDir>
 #include <QTextStream>
 #include <QNetworkProxy>
 #include <QSettings>
 #include <QDebug>
-
-// this is a local helper function in git-access.c
-extern "C" char *get_local_dir(const char *remote, const char *branch);
 
 void TestGitStorage::initTestCase()
 {
@@ -40,8 +39,8 @@ void TestGitStorage::initTestCase()
 	if (gitUrl.right(1) != "/")
 		gitUrl += "/";
 	prefs.cloud_git_url = strdup(qUtf8Printable(gitUrl + "git"));
+	prefs.cloud_storage_email = strdup(qUtf8Printable("ssrftest@hohndel.org"));
 	s.endGroup();
-	prefs.cloud_storage_email_encoded = strdup("ssrftest@hohndel.org");
 	prefs.cloud_storage_password = strdup("geheim");
 	prefs.cloud_background_sync = true;
 	QNetworkProxy proxy;
@@ -55,7 +54,10 @@ void TestGitStorage::initTestCase()
 	QNetworkProxy::setApplicationProxy(proxy);
 
 	// now cleanup the cache dir in case there's something weird from previous runs
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	FileLocation loc(FileLocation::CLOUD_GIT, "https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org");
+	git_state state = loc.gitState();
+	QString localCacheDir(get_local_dir(&state));
+	free_git_state(&state);
 	QDir localCacheDirectory(localCacheDir);
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 }
@@ -92,13 +94,15 @@ void TestGitStorage::testGitStorageLocal()
 	QDir testDir(testDirName);
 	QCOMPARE(testDir.removeRecursively(), true);
 	QCOMPARE(QDir().mkdir(testDirName), true);
-	QString repoNameRead = prefixRead + testDirName;
-	QString repoNameWrite = prefixWrite + testDirName;
+	FileLocation locRead(FileLocation::GIT, prefixRead + testDirName, "test");
+	FileLocation locWrite(FileLocation::GIT, prefixWrite + testDirName, "test");
+	git_state stateRead = locRead.gitState();
+	git_state stateWrite = locWrite.gitState();
 	QCOMPARE(git_repository_init(&repo, qUtf8Printable(testDirName), false), 0);
-	QCOMPARE(save_dives_git(qUtf8Printable(repoNameWrite), "test", "", false, false), 0);
+	QCOMPARE(save_dives_git(&stateWrite), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3.ssrf"), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file_git(qUtf8Printable(repoNameRead), "test", "", false, false), 0);
+	QCOMPARE(parse_file_git(&stateRead), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3viagit.ssrf"), 0);
 	QFile org("./SampleDivesV3.ssrf");
 	org.open(QFile::ReadOnly);
@@ -109,6 +113,8 @@ void TestGitStorage::testGitStorageLocal()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
+	free_git_state(&stateRead);
+	free_git_state(&stateWrite);
 }
 
 void TestGitStorage::testGitStorageCloud()
@@ -118,10 +124,12 @@ void TestGitStorage::testGitStorageCloud()
 	// and repeat the same test as before with the local git storage
 	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org");
 	QString cloudTestBranch("ssrftest@hohndel.org");
+	FileLocation loc(FileLocation::CLOUD_GIT, cloudTestRepo, cloudTestBranch);
+	git_state state = loc.gitState();
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/SampleDivesV2.ssrf"), 0);
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	clear_dive_file_data();
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3viacloud.ssrf"), 0);
 	QFile org("./SampleDivesV3.ssrf");
 	org.open(QFile::ReadOnly);
@@ -132,6 +140,7 @@ void TestGitStorage::testGitStorageCloud()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
+	free_git_state(&state);
 }
 
 void TestGitStorage::testGitStorageCloudOfflineSync()
@@ -140,19 +149,23 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	// and then open the remote one again and check that things were propagated correctly
 	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org");
 	QString cloudTestBranch("ssrftest@hohndel.org");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	FileLocation loc(FileLocation::CLOUD_GIT, cloudTestRepo, cloudTestBranch);
+	git_state state = loc.gitState();
+	QString localCacheDir(get_local_dir(&state));
+	FileLocation loc_local(FileLocation::GIT, localCacheDir, cloudTestBranch);
+	git_state local_state = loc_local.gitState();
 	// read the local repo from the previous test and add dive 10
-	QCOMPARE(parse_file_git(qUtf8Printable(localCacheDir), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	QCOMPARE(parse_file_git(&local_state), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml"), 0);
 	// calling process_dive() sorts the table, but calling it with
 	// is_imported == true causes it to try to update the window title... let's not do that
 	process_dives(false, false);
 	// now save only to the local cache but not to the remote server
-	QCOMPARE(save_dives_git(qUtf8Printable(localCacheDir), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	QCOMPARE(save_dives_git(&local_state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3plus10local.ssrf"), 0);
 	clear_dive_file_data();
 	// open the cloud storage and compare
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3plus10viacloud.ssrf"), 0);
 	QFile org("./SampleDivesV3plus10local.ssrf");
 	org.open(QFile::ReadOnly);
@@ -164,13 +177,13 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
 	// write back out to cloud storage, move away the local cache, open again and compare
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	clear_dive_file_data();
 	QDir localCacheDirectory(localCacheDir);
 	QDir localCacheDirectorySave(localCacheDir + "save");
 	QCOMPARE(localCacheDirectorySave.removeRecursively(), true);
 	QCOMPARE(localCacheDirectory.rename(localCacheDir, localCacheDir + "save"), true);
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3plus10fromcloud.ssrf"), 0);
 	org.close();
 	org.open(QFile::ReadOnly);
@@ -181,6 +194,8 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	readin = orgS2.readAll();
 	written = outS2.readAll();
 	QCOMPARE(readin, written);
+	free_git_state(&state);
+	free_git_state(&local_state);
 }
 
 void TestGitStorage::testGitStorageCloudMerge()
@@ -190,19 +205,25 @@ void TestGitStorage::testGitStorageCloudMerge()
 	// another offline change there
 	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org");
 	QString cloudTestBranch("ssrftest@hohndel.org");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
+	FileLocation loc(FileLocation::CLOUD_GIT, cloudTestRepo, cloudTestBranch);
+	git_state state = loc.gitState();
+	QString localCacheDir(get_local_dir(&state));
+	FileLocation loc_local(FileLocation::GIT, localCacheDir, cloudTestBranch);
+	git_state local_state = loc_local.gitState();
 	QString localCacheRepoSave = localCacheDir + "save";
-	QCOMPARE(parse_file_git(qUtf8Printable(localCacheRepoSave), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	FileLocation loc_local_save(FileLocation::GIT, localCacheRepoSave, cloudTestBranch);
+	git_state local_save_state = loc_local.gitState();
+	QCOMPARE(parse_file_git(&local_save_state), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml"), 0);
 	process_dives(false, false);
-	QCOMPARE(save_dives_git(qUtf8Printable(localCacheRepoSave), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	QCOMPARE(save_dives_git(&local_save_state), 0);
 	clear_dive_file_data();
 
 	// now we open the cloud storage repo and add a different dive to it
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml"), 0);
 	process_dives(false, false);
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	clear_dive_file_data();
 
 	// now we move the saved local cache into place and try to open the cloud repo
@@ -211,7 +232,7 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 	QDir localCacheDirectorySave(localCacheDir + "save");
 	QCOMPARE(localCacheDirectory.rename(localCacheDir + "save", localCacheDir), true);
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesV3plus10-11-12-merged.ssrf"), 0);
 	clear_dive_file_data();
 	QCOMPARE(parse_file("./SampleDivesV3plus10local.ssrf"), 0);
@@ -229,6 +250,9 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
+	free_git_state(&state);
+	free_git_state(&local_state);
+	free_git_state(&local_save_state);
 }
 
 void TestGitStorage::testGitStorageCloudMerge2()
@@ -238,13 +262,17 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	// merge
 	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org");
 	QString cloudTestBranch("ssrftest@hohndel.org");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QCOMPARE(parse_file_git(qUtf8Printable(localCacheDir), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	FileLocation loc(FileLocation::CLOUD_GIT, cloudTestRepo, cloudTestBranch);
+	git_state state = loc.gitState();
+	QString localCacheDir(get_local_dir(&state));
+	FileLocation loc_local(FileLocation::GIT, localCacheDir, cloudTestBranch);
+	git_state local_state = loc_local.gitState();
+	QCOMPARE(parse_file_git(&local_state), 0);
 	process_dives(false, false);
 	struct dive *dive = get_dive(1);
 	delete_single_dive(1);
 	QCOMPARE(save_dives_file("./SampleDivesMinus1.ssrf"), 0);
-	QCOMPARE(save_dives_git(qUtf8Printable(localCacheDir), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	QCOMPARE(save_dives_git(&local_state), 0);
 	clear_dive_file_data();
 
 	// move the local cache away
@@ -255,13 +283,13 @@ void TestGitStorage::testGitStorageCloudMerge2()
 		QCOMPARE(localCacheDirectory.rename(localCacheDir, localCacheDir + "save"), true);
 	}
 	// now we open the cloud storage repo and modify that first dive
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	process_dives(false, false);
 	dive = get_dive(1);
 	QVERIFY(dive != NULL);
 	free(dive->notes);
 	dive->notes = strdup("These notes have been modified by TestGitStorage");
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	clear_dive_file_data();
 
 	// now we move the saved local cache into place and try to open the cloud repo
@@ -271,9 +299,9 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 	QCOMPARE(localCacheDirectorySave.rename(localCacheDir + "save", localCacheDir), true);
 
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesMinus1-merged.ssrf"), 0);
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	QFile org("./SampleDivesMinus1-merged.ssrf");
 	org.open(QFile::ReadOnly);
 	QFile out("./SampleDivesMinus1.ssrf");
@@ -283,6 +311,8 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QString readin = orgS.readAll();
 	QString written = outS.readAll();
 	QCOMPARE(readin, written);
+	free_git_state(&state);
+	free_git_state(&local_state);
 }
 
 void TestGitStorage::testGitStorageCloudMerge3()
@@ -294,8 +324,12 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	clear_dive_file_data();
 	QString cloudTestRepo("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org");
 	QString cloudTestBranch("ssrftest@hohndel.org");
-	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	FileLocation loc(FileLocation::CLOUD_GIT, cloudTestRepo, cloudTestBranch);
+	git_state state = loc.gitState();
+	QString localCacheDir(get_local_dir(&state));
+	FileLocation loc_local(FileLocation::GIT, localCacheDir, cloudTestBranch);
+	git_state local_state = loc_local.gitState();
+	QCOMPARE(parse_file_git(&state), 0);
 	process_dives(false, false);
 	struct dive *dive = get_dive(0);
 	QVERIFY(dive != 0);
@@ -304,10 +338,10 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
 	dive = get_dive(2);
 	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	clear_dive_file_data();
 
-	QCOMPARE(parse_file_git(qUtf8Printable(localCacheDir), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	QCOMPARE(parse_file_git(&local_state), 0);
 	process_dives(false, false);
 	dive = get_dive(0);
 	dive->notes = strdup("Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough");
@@ -315,7 +349,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
 	dive = get_dive(2);
 	dive->notes = strdup("single line dive notes");
-	QCOMPARE(save_dives_git(qUtf8Printable(localCacheDir), qUtf8Printable(cloudTestBranch), "", false, false), 0);
+	QCOMPARE(save_dives_git(&local_state), 0);
 	clear_dive_file_data();
 
 	// move the local cache away
@@ -326,7 +360,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 		QCOMPARE(localCacheDirectory.rename(localCacheDir, localCacheDir + "save"), true);
 	}
 	// now we open the cloud storage repo and modify those first dive notes differently
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	process_dives(false, false);
 	dive = get_dive(0);
 	dive->notes = strdup("Completely different dive notes\nBut also multi line");
@@ -334,7 +368,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	dive->notes = strdup("single line dive notes");
 	dive = get_dive(2);
 	dive->notes = strdup("Line 2\nLine 3\nLine 4\nLine 5"); // keep the middle, remove first and last");
-	QCOMPARE(save_dives_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(save_dives_git(&state), 0);
 	clear_dive_file_data();
 
 	// now we move the saved local cache into place and try to open the cloud repo
@@ -344,10 +378,12 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QCOMPARE(localCacheDirectory.removeRecursively(), true);
 	QCOMPARE(localCacheDirectorySave.rename(localCacheDir + "save", localCacheDir), true);
 
-	QCOMPARE(parse_file_git(qUtf8Printable(cloudTestRepo), qUtf8Printable(cloudTestBranch), "", true, true), 0);
+	QCOMPARE(parse_file_git(&state), 0);
 	QCOMPARE(save_dives_file("./SampleDivesMerge3.ssrf"), 0);
 	// we are not trying to compare this to a pre-determined result... what this test
 	// checks is that there are no parsing errors with the merge
+	free_git_state(&state);
+	free_git_state(&local_state);
 }
 
 QTEST_GUILESS_MAIN(TestGitStorage)

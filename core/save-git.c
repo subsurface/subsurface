@@ -1229,7 +1229,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	return ret;
 }
 
-int do_git_save(git_repository *repo, const char *branch, const char *remote, bool select_only, bool create_empty)
+int do_git_save(git_repository *repo, struct git_state *state, bool select_only, bool create_empty)
 {
 	struct dir tree;
 	git_oid id;
@@ -1265,33 +1265,23 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		return report_error("git tree write failed");
 
 	/* And save the tree! */
-	if (create_new_commit(repo, remote, branch, &id, create_empty))
+	if (create_new_commit(repo, state->location, state->branch, &id, create_empty))
 		return report_error("creating commit failed");
 
-	if (remote && prefs.cloud_background_sync && !prefs.git_local_only) {
+	if (prefs.cloud_background_sync && state->is_cloud && state->is_remote) {
 		/* now sync the tree with the cloud server */
-		if (strstr(remote, prefs.cloud_git_url)) {
-			return sync_with_remote(repo, remote, branch, RT_HTTPS);
-		}
+		return sync_with_remote(repo, state, RT_HTTPS);
 	}
 	return 0;
 }
 
-int save_dives_git(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud)
-{
-	void *git = is_git_repository(loc, branch, user, is_remote, is_cloud);
-	if (!git || git == dummy_git_repository)
-		return report_error("Unable to open git repository '%s'", branch);
-	return git_save_dives(git, branch, loc, false);
-}
-
-int git_save_dives(struct git_repository *repo, const char *branch, const char *remote, bool select_only)
+int save_dives_git(struct git_state *state)
 {
 	int ret;
-
-	if (repo == dummy_git_repository)
-		return report_error("Unable to open git repository '%s'", branch);
-	ret = do_git_save(repo, branch, remote, select_only, false);
-	git_repository_free(repo);
+	void *git = is_git_repository(state);
+	if (!git || git == dummy_git_repository)
+		return report_error("Unable to open git repository '%s'", state->location);
+	ret = do_git_save(git, state, false, false);
+	git_repository_free(git);
 	return ret;
 }

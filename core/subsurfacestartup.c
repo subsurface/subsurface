@@ -164,28 +164,22 @@ void print_version()
 
 void print_files()
 {
-	char *branch = 0;
-	char *remote = 0;
-	const char *filename, *local_git;
+	struct git_state cloud_state;
+	char *local_git;
 
 	printf("\nFile locations:\n\n");
 	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, "")) {
-		filename = cloud_url();
-		parse_git_filename(filename, &branch, &remote);
-	} else {
-		/* strdup so the free below works in either case */
-		filename = strdup("No valid cloud credentials set.\n");
-	}
-	if (branch && remote) {
-		local_git = get_local_dir(remote, branch);
+		get_cloud_info(&cloud_state);
+		printf("Cloud repository: %s\n", cloud_state.location);
+		printf("Cloud branch: %s\n", cloud_state.branch);
+		printf("Cloud user: %s\n", cloud_state.user);
+		printf("Cloud local only: %s\n", cloud_state.is_remote ? "no" : "yes");
+		local_git = get_local_dir(&cloud_state);
 		printf("Local git storage: %s\n", local_git);
+		free(local_git);
 	} else {
-		printf("Unable to get local git directory\n");
+		printf("No valid cloud credentials set.\n");
 	}
-	free(branch);
-	free(remote);
-	printf("Cloud URL: %s\n", filename);
-	free((void *)filename);
 	char *tmp = hashfile_name_string();
 	printf("Image hashes: %s\n", tmp);
 	free(tmp);
@@ -334,7 +328,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->cloud_storage_password = copy_string(src->cloud_storage_password);
 	dest->cloud_storage_newpassword = copy_string(src->cloud_storage_newpassword);
 	dest->cloud_storage_email = copy_string(src->cloud_storage_email);
-	dest->cloud_storage_email_encoded = copy_string(src->cloud_storage_email_encoded);
 	dest->facebook.access_token = copy_string(src->facebook.access_token);
 	dest->facebook.user_id = copy_string(src->facebook.user_id);
 	dest->facebook.album_id = copy_string(src->facebook.album_id);

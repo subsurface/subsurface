@@ -428,15 +428,15 @@ static int parse_file_buffer(const char *filename, struct memblock *mem)
 	return parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL);
 }
 
-int check_git_sha(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud, struct git_repository **git_p)
+int check_git_sha(struct git_state *state, struct git_repository **git_p)
 {
 	struct git_repository *git;
 
 	char *current_sha = strdup(saved_git_id);
-	git = is_git_repository(loc, branch, user, is_remote, is_cloud);
+	git = is_git_repository(state);
 	if (git_p)
 		*git_p = git;
-	if (is_cloud && git == dummy_git_repository) {
+	if (state->is_cloud && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason,
 		 * so we don't know if there is additional data in the remote */
 		free(current_sha);
@@ -445,7 +445,7 @@ int check_git_sha(const char *loc, const char *branch, const char *user, bool is
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
-		const char *sha = get_sha(git, branch);
+		const char *sha = get_sha(git, state->branch);
 		if (!same_string(sha, "") &&
 		    same_string(sha, current_sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
@@ -457,13 +457,13 @@ int check_git_sha(const char *loc, const char *branch, const char *user, bool is
 	return 1;
 }
 
-int parse_file_git(const char *loc, const char *branch, const char *user, bool is_remote, bool is_cloud)
+int parse_file_git(struct git_state *state)
 {
 	struct git_repository *git;
 	char *current_sha = copy_string(saved_git_id);
-	git = is_git_repository(loc, branch, user, is_remote, is_cloud);
+	git = is_git_repository(state);
 
-	if (is_cloud && (!git || git == dummy_git_repository)) {
+	if (state->is_cloud && (!git || git == dummy_git_repository)) {
 		/* opening the cloud storage repository failed for some reason
 		 * give up here and don't send errors about git repositories */
 		free(current_sha);
@@ -472,7 +472,7 @@ int parse_file_git(const char *loc, const char *branch, const char *user, bool i
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
-		const char *sha = get_sha(git, branch);
+		const char *sha = get_sha(git, state->branch);
 		if (!same_string(sha, "") &&
 		    same_string(sha, current_sha) &&
 		    !unsaved_changes()) {
@@ -483,7 +483,7 @@ int parse_file_git(const char *loc, const char *branch, const char *user, bool i
 	}
 	free(current_sha);
 	if (git)
-		return git_load_dives(git, branch);
+		return git_load_dives(git, state->branch);
 	return -1;
 }
 
@@ -494,9 +494,8 @@ int parse_file(const char *filename)
 	int ret;
 
 	if ((ret = readfile(filename, &mem)) < 0) {
-		/* we don't want to display an error if this was the default file or the cloud storage */
-		if ((prefs.default_filename && !strcmp(filename, prefs.default_filename)) ||
-		    isCloudUrl(filename))
+		/* we don't want to display an error if this was the default file */
+		if (prefs.default_filename && !strcmp(filename, prefs.default_filename))
 			return 0;
 
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);

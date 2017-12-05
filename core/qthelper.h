@@ -38,7 +38,6 @@ depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
-int getCloudURL(QString &filename);
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 QByteArray getCurrentAppState();
 void setCurrentAppState(QByteArray state);
@@ -58,6 +57,6 @@ extern "C" void unlock_planner();
 void set_filename(const FileLocation &, bool force);
 extern "C" void set_current_file_none();
 extern "C" char *get_current_file_name();	// Caller must free() returned file name
-extern "C" int parse_git_filename(const char *fn, char **repo, char **branch);	// Caller must free() *repo and *branch
+extern "C" void get_cloud_info(struct git_state *state);
 FileLocation getCloudLocation();		// Return FileLocation::NONE if no cloud was set
 #endif // QTHELPER_H

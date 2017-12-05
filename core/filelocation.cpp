@@ -1,12 +1,27 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/filelocation.h"
 #include "core/pref.h"
+#include "core/git-access.h"
+#include "core/dive.h"
 #include <QObject>
 #include <QFileInfo>
 #include <QDir>
+#include <QRegularExpression>
 #include <utility>
 
 FileLocation currentFile;
+
+git_state FileLocation::gitState() const
+{
+	git_state ret;
+	ret.location = strdup(qPrintable(name));
+	ret.branch = strdup(qPrintable(branch));
+	ret.user = strdup(qPrintable(user));
+	ret.is_remote = isRemote();
+	ret.is_cloud = isCloud();
+	ret.auth_attempt = 0;
+	return ret;
+}
 
 FileLocation::FileLocation() : type(NONE)
 {
@@ -22,6 +37,20 @@ bool isRemoteRepository(const QString &name)
 // For local files or git repositories, do proper unicode encoding.
 void FileLocation::fixName()
 {
+	// For cloud storage, take the email from preferences as user name
+	if (isCloud()) {
+		QString email = QString(prefs.cloud_storage_email);
+		email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
+		// Cloud access will not work, let's warn the user and set this to none
+		if (email.isEmpty() || same_string(prefs.cloud_storage_password, "")) {
+			report_error("Please configure Cloud storage email and password in the preferences");
+			type = FileLocation::NONE;
+			name.clear();
+			return;
+		}
+		user = email;
+	}
+
 	switch (type) {
 	default:
 	case NONE:
