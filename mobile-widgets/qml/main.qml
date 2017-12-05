@@ -153,7 +153,7 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 					iconName: "icons/ic_add_location.svg"
-					text: qsTr("Apply GPS Fixes")
+					text: qsTr("Apply GPS fixes")
 					onTriggered: {
 						manager.applyGpsData();
 					}
