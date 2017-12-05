@@ -607,7 +607,9 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 		else
 			report_error("Unable to fetch remote '%s'", remote);
 		if (verbose)
-			fprintf(stderr, "remote fetch failed (%s)\n", giterr_last()->message);
+			// If we returned GIT_EUSER during authentication, giterr_last() returns NULL
+			fprintf(stderr, "remote fetch failed (%s)\n",
+				giterr_last() ? giterr_last()->message : "authentication failed");
 		error = 0;
 	} else {
 		error = check_remote_status(repo, origin, remote, branch, rt);
