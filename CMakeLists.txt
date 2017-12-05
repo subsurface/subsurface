@@ -161,6 +161,8 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Quick)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::QuickControls2)
 	add_definitions(-DSUBSURFACE_MOBILE)
+	message(STATUS "Building Subsurface-mobile requires BT support")
+	set(BTSUPPORT ON)
 endif()
 
 if(ANDROID)
@@ -218,7 +220,10 @@ set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::Svg  Q
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test)
 
 #disable bluetooth if Qt version is ancient.
-if (BTSUPPORT AND "${Qt5Core_VERSION}" VERSION_LESS 5.4.0)
+if (BTSUPPORT AND Qt5Widgets_VERSION VERSION_LESS 5.4.0)
+	if (${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+		message(FATAL_ERROR "Subsurface-mobile requires BT and Qt version ${Qt5Widgets_VERSION} is too old for that")
+	endif()
 	set(BTSUPPORT OFF)
 	message(STATUS "Turning off Bluetooth support as Qt version ${Qt5Core_VERSION} is insufficient for that")
 	list(REMOVE_ITEM QT_LIBRARIES Qt5::Bluetooth)
