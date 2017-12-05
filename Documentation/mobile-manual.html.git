@@ -409,11 +409,11 @@ asciidoc.install(3);
 </div>
 <div class="paragraph"><p><span class="big">Subsurface-mobile USER MANUAL</span></p></div>
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Dirk Hohndel</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 2, October 2017</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 2, December 2017</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em> and <em>Subsurface-mobile</em>, advanced dive logging
 software with extensive infrastructure to describe, organize, and interpret scuba
 and free dives. <em>Subsurface</em> offers many advantages over other similar
-software solutions, including compatibility with Windows, Mac-OS/X, Linux (many
+software solutions, including compatibility with Windows, macOS, Linux (many
 distributions), Android and iOS. In addition, <em>Subsurface</em> is
 open-source software that allows downloading dive
 information from many dive computers.</p></div>
@@ -425,9 +425,8 @@ aimed at Android and iOS smartphone and tablet devices, allowing viewing, enteri
 computer is not useful. While the desktop version of <em>Subsurface</em> shows much more detailed information
 for each dive, the mobile version allows a more accessible dive log
 on a dive trip, useful for proving dive experience to dive shops or to review
-previous dives. <em>Subsurface-mobile</em> for Android allows
-the gathering of GPS locations where dives are performed
-(Subsurface-mobile for iOS currently does not have full functionality).</p></div>
+previous dives. <em>Subsurface-mobile</em> also allows
+the gathering of GPS locations where dives are performed.</p></div>
 <div class="paragraph"><p>Users of <em>Subsurface-mobile</em> typically use the
 mobile app as a companion to the laptop/desktop version of <em>Subsurface</em>,  sharing dive information
 between the mobile and the desktop versions. However <em>Subsurface-mobile</em> can
@@ -463,7 +462,7 @@ Editing many of the dive log data fields, e.g. divemaster, buddy,
 </li>
 <li>
 <p>
-Recording, storing and applying GPS positions of dives (Android only).
+Recording, storing and applying GPS positions of dives.
 </p>
 </li>
 <li>
@@ -474,10 +473,13 @@ Viewing the localities of recorded GPS positions and of dives
 </li>
 </ul></div>
 <div class="paragraph"><p>These items are discussed in greater detail in the following text.
-<em>Subsurface-mobile</em> does not yet support download of dive data from all the
-dive computers that the desktop/laptop version can. Only a subset of
-dive computers that use a FTDI USB interface or a Bluetooth/BTLE interface
-are accessible by <em>Subsurface-mobile</em>.</p></div>
+<em>Subsurface-mobile</em> does not support download of dive data from all the
+dive computers that the desktop/laptop version can. This limitation is
+mainly caused by the ability to access different type of devices on the
+two mobile platforms. On Android, a subset of
+dive computers that use a FTDI USB interface or a Bluetooth / Bluetooth LE interface
+are accessible by <em>Subsurface-mobile</em>. On iOS, only Bluetooth LE based
+dive computers are supported.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -505,16 +507,17 @@ may take several seconds. After loading, the <em>Cloud Credentials screen</em> a
 cloud storage server
 to obtain dive log information. This means that dive log information is
 stored on the mobile device only. If no dives have been entered into the dive log
-yet (the usual case), then a an empty dive log is created.</p></div>
+yet (the usual case), an empty dive log is created.</p></div>
 </div>
 <div class="sect2">
 <h3 id="_using_cloud_storage">3.2. Using Cloud Storage</h3>
-<div class="paragraph"><p>A free Internet cloud storage account can be used for
+<div class="paragraph"><p>The <em>Subsurface</em> developers provide a custom
+free Internet cloud storage account that can be used for
 storing dive log information. This cloud storage account can be created either from <em>Subsurface</em> on the desktop or <em>Subsurface-mobile</em>
-using a mobile device; in fact, you can
-do full maintenance of a dive log from <em>Subsurface-mobile</em> alone. On the other hand, if you
-share credentials between <em>Subsurface-mobile</em> and <em>Subsurface</em> for desktop, through the <em>Subsurface</em> cloud storage your dive
-log can be shared by both devices.</p></div>
+using a mobile device; you can
+do full maintenance of a dive log from <em>Subsurface-mobile</em> alone. By using the same
+credentials wirh <em>Subsurface-mobile</em> and <em>Subsurface</em> for desktop, the <em>Subsurface</em> cloud storage allows you to share your dive
+log between both (or even more than two) devices.</p></div>
 <div class="paragraph"><p>The dive data are cached both on the mobile device as well as on the desktop - it is easy to create backups of the data (for example in XML format) on the desktop, and both mobile device and desktop keep a local copy of the data so that the dive log is always accessible, even without Internet connection. The Subsurface team never accesses a user&#8217;s dive data without explicit permission to do so, the data are not used for any purpose other than providing them to the user who created them. There are no ads and no harvesting / analysis of the data stored in the Subsurface cloud storage.</p></div>
 <div class="paragraph"><p>1) Enter an e-mail address and a password in the fields indicated on the screen.
 The e-mail address should be in lower case and the password should contain a combination of
@@ -592,8 +595,7 @@ Drag the action button visible on most screens to
 On the left is the main menu, activated as described above. On the right of the image
 are the items of all the submenus accessible.</p></div>
 <div class="paragraph"><p>All screenshots in this user manual are currently from the Android
-version. As indicated earlier, the iOS version currently doesn&#8217;t support
-<em>GPS</em> features.</p></div>
+version. The iOS screens look fairly similar.</p></div>
 </div>
 </div>
 <div class="sect1">
@@ -602,7 +604,8 @@ version. As indicated earlier, the iOS version currently doesn&#8217;t support
 <div class="paragraph"><p>Most of the actions of <em>Subsurface-mobile</em> center around the dives on the
 dive list. While the dive list is loading from the cloud,
 a message appears at the bottom of the screen, indicating that the cloud is
-being accessed, after which the dive list is shown. Once the list is loaded you can scroll up and down.
+being accessed, after which the dive list is shown. Once the list is loaded you can scroll up and down
+through your dive history.
 To upload dives from a dive computer, tap the blue action button. If you wish
 to add a dive manually, tap the + button in the action bar (described below).
 Tapping an existing dive on the list brings up a display of <em>Details View</em> for that dive
@@ -631,7 +634,8 @@ or changing the names or values of some of the information (see image below).
 It may be necessary to scroll the window to access all the information.
 At the bottom of the edit screen is a <em>Save</em> action button. Tap this to save
 the new information, after which the dive list screen is
-updated and shown. To cancel any edits, tap the Android <em>Back</em> Button.</p></div>
+updated and shown. To cancel any edits, tap the Android <em>Back</em> Button or
+the application back button at the top left of the screen on iOS.</p></div>
 <div class="paragraph"><p>When the virtual keyboard is shown, to avoid screen clutter, the action button is hidden.
 Once you close the keyboard it is drawn again.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -688,8 +692,21 @@ instruction to delete the dive.</p></div>
 <div class="sect1">
 <h2 id="S_Download">9. Download dives from a dive computer</h2>
 <div class="sectionbody">
-<div class="paragraph"><p>Download of dives is possible from dive computers with a FTDI USB interface, or with a Bluetooth/BTLE interface.</p></div>
-<div class="paragraph"><p>First, establish a link between the dive computer and the mobile device.</p></div>
+<div class="paragraph"><p>The download deature supports only a limited number of dive computers. On
+Android devices these are typically dive computers using an FTDI interface
+using a USB OTG cable (but this is blocked on some Android devices by OS
+settings). Android devices also support all Bluetooth dive computers that
+are supported in Subsurface. And both Android and iOS devices allow direct
+download of dive data from a hand full of Bluetooth LE enabled dive
+computers.</p></div>
+<div class="paragraph"><p>The process for download is slightly different between the two OSs.
+In our testing we got the best results on iOS when the dive computer was
+in Bluetooth mode before <em>Subsurface-mobile</em> is started. On most dive
+computers this is done through a menu entry, others (like the Suunto
+models) always respond to BLE requests.</p></div>
+<div class="paragraph"><p>On Android devices, you should first establish a link between the
+Bluetooth or Bluetooth LE dive computer and the mobile device using
+Android utilities. See below for more details.</p></div>
 <div class="paragraph"><p>For USB dive computers, USB cables "normally" used
 for uploading dives to a desktop/laptop computer do NOT work: these cables usually have a full-sized ("Type A") male USB plug
 on one end which plugs into the USB port of a desktop/laptop computer. For downloads to a mobile device
@@ -704,7 +721,7 @@ of the USB cable "normally" used (see image below). This means that two cables a
 <img src="mobile-images/USB-OTG.jpg" alt="FIGURE: USB-OTG cable" />
 </div>
 </div>
-<div class="paragraph"><p>For Bluetooth-equipped dive computers, establish a Bluetooth connection between the dive computer and the
+<div class="paragraph"><p>For Bluetooth-equipped dive computers and Android devices, establish a Bluetooth connection between the dive computer and the
 mobile device. Use the tools on the mobile device to achieve pairing between the Bluetooth dice computer
 and the mobile device. For of Android devices,
 the Settings &#8594; Bluetooth tool is probably appropriate. Ensure pairing of the dive computer and mobile device.
@@ -734,10 +751,10 @@ above <a href="#S_Edit_Dive">Edit a dive</a>.</p></div>
 <h2 id="_viewing_the_dive_location_on_google_maps">10. Viewing the dive location on Google Maps</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>In the <em>Details View</em>, the Action Bar at the bottom has a GPS pin on the
-left hand side. Tap that pin and the dive site is shown in Google Maps. Close Google Maps by using the Android <em>Back</em> button.</p></div>
+left hand side. Tap that pin and the dive site is shown in Google Maps. Close Google Maps by using the Android <em>Back</em> button
+or tapping on the <em>Subsurface-mobile</em> link in the top left corner on iOS.</p></div>
 <div class="paragraph"><p>Alternatively, the <em>Details View</em> has a button at the top right hand marked
-<em>Map it</em>. Tap this button to open Google Maps showing the dive site (image below).
-Afterwards, use the Android <em>Back</em> button to return to <em>Subsurface-mobile</em>.</p></div>
+<em>Map it</em>. Tap this button to open Google Maps showing the dive site (image below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/Map.jpg" alt="FIGURE: Map of dive site" />
@@ -792,10 +809,10 @@ sync to be either activated or to be switched off.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_recording_dive_locations_using_gps_android_only">12. Recording dive locations using GPS (Android only).</h2>
+<h2 id="_recording_dive_locations_using_gps">12. Recording dive locations using GPS</h2>
 <div class="sectionbody">
 <div class="paragraph"><p>The fact that most smartphones have GPS facilities allows
-<em>Subsurface-mobile</em> on Android to record
+<em>Subsurface-mobile</em> to record
 the locations of dives. If the smartphone is taken on the dive boat
 during a dive, locations will be automatically recorded at regular intervals.
 These locations can then be applied to dives in the dive list. Here is how it&#8217;s done:</p></div>
@@ -806,7 +823,7 @@ configuring the GPS service (image below). GPS location data
 are collected at regular intervals, e.g. every 5 minutes, or at regular
 distances, e.g. after the boat has moved more than 200m, or a combination of
 both of these approaches. Provide the appropriate information and
-tap the Android <em>Back</em> button. The program is now ready to collect GPS positions.</p></div>
+tap the <em>Back</em> button. The program is now ready to collect GPS positions.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="mobile-images/GPS-config.jpg" alt="FIGURE: GPS configure" />
@@ -815,7 +832,8 @@ tap the Android <em>Back</em> button. The program is now ready to collect GPS po
 </div>
 <div class="sect2">
 <h3 id="_collecting_gps_positions">12.2. Collecting GPS positions</h3>
-<div class="paragraph"><p>Ensure that the GPS on the Android device has been activated.
+<div class="paragraph"><p>Ensure that the GPS on the mobile device has been activated and that you
+have given the app permission to access your location data.
 Open the Main Menu and select <em>GPS &#8594; Run location service</em>. This activates the
 recording of GPS locations.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -932,7 +950,7 @@ device and the font characteristics used by <em>Subsurface-mobile</em>.</p></div
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-11 16:47:09 PDT
+Last updated 2017-12-04 22:03:57 PST
 </div>
 </div>
 </body>
