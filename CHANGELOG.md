@@ -1,3 +1,4 @@
+- Add button to recan for BT devices
 - Compute plan variations in background to improve responsiveness
 - Improve profile rescaling in planner
 - Store the gas switch depth of a cylinder from the planner in the logbook
