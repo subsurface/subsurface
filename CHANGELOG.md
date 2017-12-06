@@ -1,4 +1,5 @@
-- Add button to recan for BT devices
+- Subsurface-mobile: Add button to recan for BT devices
+- Subsurface-mobile: Enable BLE and GPS on iOS
 - Compute plan variations in background to improve responsiveness
 - Improve profile rescaling in planner
 - Store the gas switch depth of a cylinder from the planner in the logbook
