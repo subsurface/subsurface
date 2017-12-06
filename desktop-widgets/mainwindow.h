@@ -229,6 +229,7 @@ private:
 	QList<QAction *> profileToolbarActions;
 	QList<FileLocation> recentFiles;
 	QAction *actionsRecent[NUM_RECENT_FILES];
+	bool cloudIsOffline;
 
 	struct WidgetForQuadrant {
 		WidgetForQuadrant(QWidget *tl = 0, QWidget *tr = 0, QWidget *bl = 0, QWidget *br = 0) :

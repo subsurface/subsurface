@@ -579,7 +579,7 @@ char *get_current_file_name()
 
 void get_cloud_info(git_state *state)
 {
-	FileLocation location = getCloudLocation();
+	FileLocation location = getCloudLocation(false);
 	*state = location.gitState();
 }
 
@@ -1728,10 +1728,10 @@ extern "C" void unlock_planner()
 	planLock.unlock();
 }
 
-FileLocation getCloudLocation()
+FileLocation getCloudLocation(bool isOffline)
 {
 	QString email = QString(prefs.cloud_storage_email);
 	QString url = QString(prefs.cloud_git_url) + "/" + email;
-	return prefs.git_local_only ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, url, email)
-				    : FileLocation(FileLocation::CLOUD_GIT, url, email);
+	return isOffline ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, url, email)
+			 : FileLocation(FileLocation::CLOUD_GIT, url, email);
 }

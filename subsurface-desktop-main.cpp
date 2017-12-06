@@ -97,7 +97,7 @@ int main(int argc, char **argv)
 			if (!same_string(prefs.default_filename, ""))
 				files.push_back(FileLocation::guessFromFileName(prefs.default_filename));
 		} else if (prefs.default_file_behavior == CLOUD_DEFAULT_FILE) {
-			files.push_back(getCloudLocation());
+			files.push_back(getCloudLocation(false));
 		}
 	}
 	MainWindow *m = MainWindow::instance();

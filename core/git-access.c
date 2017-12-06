@@ -579,8 +579,9 @@ int sync_with_remote(git_repository *repo, struct git_state *state, enum remote_
 		return 0;
 	}
 
-	if (rt == RT_HTTPS && !canReachCloudServer()) {
-		// this is not an error, just a warning message, so return 0
+	if (state->is_cloud && !canReachCloudServer(state->location)) {
+		// this is not an error, just a warning message, so return 0 and set state to offline
+		state->is_remote = false;
 		report_error("Cannot connect to cloud server, working with local copy");
 		git_storage_update_progress(translate("gettextFromC", "Can't reach cloud server, working with local data"));
 		return 0;
@@ -729,8 +730,9 @@ static git_repository *create_local_repo(const char *localdir, struct git_state 
 	opts.fetch_opts.callbacks.payload = (void *)state;
 
 	opts.checkout_branch = state->branch;
-	if (rt == RT_HTTPS && !canReachCloudServer())
+	if (state->is_cloud && !canReachCloudServer(state->location)) {
 		return 0;
+	}
 	if (verbose > 1)
 		fprintf(stderr, "git storage: calling git_clone()\n");
 	error = git_clone(&cloned_repo, state->location, localdir, &opts);

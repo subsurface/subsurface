@@ -17,7 +17,7 @@ struct git_state {
 	const char *location;
 	const char *branch;
 	const char *user;
-	bool is_remote;
+	bool is_remote;		// Is set to false if cloud can't be reached
 	bool is_cloud;
 	int auth_attempt;
 };

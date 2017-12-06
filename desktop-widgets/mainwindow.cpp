@@ -111,7 +111,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionPreviousDive(0),
 	helpView(0),
 	state(VIEWALL),
-	survey(0)
+	survey(0),
+	cloudIsOffline(false)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -440,7 +441,7 @@ void MainWindow::enableDisableCloudActions()
 {
 	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
-	ui.actionTake_cloud_storage_online->setEnabled(prefs.cloud_verification_status == CS_VERIFIED && prefs.git_local_only);
+	ui.actionTake_cloud_storage_online->setEnabled(prefs.cloud_verification_status == CS_VERIFIED && cloudIsOffline);
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {
@@ -591,7 +592,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
-	FileLocation location = getCloudLocation();
+	FileLocation location = getCloudLocation(cloudIsOffline);
 	if (location.getType() == FileLocation::NONE)
 		return;
 
@@ -601,10 +602,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	closeCurrentFile();
 
 	showProgressBar();
-	if (!loadDives(location)) {
-		set_filename(location, true);
-		setTitle(MWTF_FILENAME);
-	}
+	loadDives(location);
 	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
 	hideProgressBar();
@@ -619,7 +617,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		report_error(qPrintable(tr("Don't save an empty log to the cloud")));
 		return;
 	}
-	FileLocation location = getCloudLocation();
+	FileLocation location = getCloudLocation(cloudIsOffline);
 	if (location.getType() == FileLocation::NONE)
 		return;
 
@@ -634,14 +632,12 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (error)
 		return;
 
-	set_filename(location, true);
-	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
 }
 
 void MainWindow::on_actionTake_cloud_storage_online_triggered()
 {
-	prefs.git_local_only = false;
+	cloudIsOffline = false;
 	ui.actionTake_cloud_storage_online->setEnabled(false);
 }
 
@@ -1648,8 +1644,6 @@ int MainWindow::file_save_as(void)
 	if (saveDives(location))
 		return -1;
 
-	set_filename(location, true);
-	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
 	addRecentFile(location, true);
 	return 0;
@@ -1661,22 +1655,38 @@ int MainWindow::saveDives(const FileLocation &f)
 	if (is_remote)
 		showProgressBar();
 	int res = -1;
-	switch(f.getType()) {
+	switch (f.getType()) {
 	case FileLocation::LOCAL_FILE:
 		res = save_dives_file(qPrintable(f.getName()));
+		if (!res)
+			set_filename(f, true);
 		break;
-	case FileLocation::GIT:
+	case FileLocation::GIT: {
+		git_state state = f.gitState();
+		res = save_dives_git(&state);
+		free_git_state(&state);
+		if (!res)
+			set_filename(f, true);
+		break;
+	}
 	case FileLocation::CLOUD_GIT:
 	case FileLocation::CLOUD_GIT_OFFLINE: {
 		git_state state = f.gitState();
 		res = save_dives_git(&state);
+		cloudIsOffline = !state.is_remote;
 		free_git_state(&state);
+		if (cloudIsOffline)
+			ui.actionTake_cloud_storage_online->setEnabled(true);
+		if (!res)
+			set_filename(getCloudLocation(cloudIsOffline), true);
 		break;
 	}
 	case FileLocation::NONE:
 	default:
 		;	// Leave error marker on
 	}
+	if (!res)
+		setTitle(MWTF_FILENAME);
 	if (is_remote)
 		hideProgressBar();
 	return res;
@@ -1688,22 +1698,38 @@ int MainWindow::loadDives(const FileLocation &f)
 	if (is_remote)
 		showProgressBar();
 	int res = -1;
-	switch(f.getType()) {
+	switch (f.getType()) {
 	case FileLocation::LOCAL_FILE:
 		res = parse_file(qPrintable(f.getName()));
+		if (!res)
+			set_filename(f, true);
 		break;
-	case FileLocation::GIT:
+	case FileLocation::GIT: {
+		git_state state = f.gitState();
+		res = parse_file_git(&state);
+		free_git_state(&state);
+		if (!res)
+			set_filename(f, true);
+		break;
+	}
 	case FileLocation::CLOUD_GIT:
 	case FileLocation::CLOUD_GIT_OFFLINE: {
 		git_state state = f.gitState();
 		res = parse_file_git(&state);
+		cloudIsOffline = !state.is_remote;
 		free_git_state(&state);
+		if (cloudIsOffline)
+			ui.actionTake_cloud_storage_online->setEnabled(true);
+		if (!res)
+			set_filename(getCloudLocation(cloudIsOffline), true);
 		break;
 	}
 	case FileLocation::NONE:
 	default:
 		;	// Leave error marker on
 	}
+	if (!res)
+		setTitle(MWTF_FILENAME);
 	if (is_remote)
 		hideProgressBar();
 	return res;
@@ -1811,11 +1837,8 @@ void MainWindow::loadFiles(const QList<FileLocation> &files)
 
 	showProgressBar();
 	for (int i = 0; i < files.size(); ++i) {
-		if (!loadDives(files[i])) {
-			set_filename(files[i], true);
+		if (!loadDives(files[i]))
 			addRecentFile(files[i], false);
-			setTitle(MWTF_FILENAME);
-		}
 	}
 	hideProgressBar();
 	updateRecentFiles();

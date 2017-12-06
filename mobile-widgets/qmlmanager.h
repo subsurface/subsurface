@@ -216,6 +216,7 @@ private:
 	struct dive_trip *deletedTrip;
 	QString m_notificationText;
 	bool m_syncToCloud;
+	bool m_cloudIsOffline;
 	int m_updateSelectedDive;
 	int m_selectedDiveTimestamp;
 	cloud_status_qml m_credentialStatus;

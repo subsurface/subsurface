@@ -328,7 +328,6 @@ class CloudStorageSettings : public QObject {
 	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
 	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
 	Q_PROPERTY(bool save_userid_local    READ saveUserIdLocal    WRITE setSaveUserIdLocal    NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(bool git_local_only       READ gitLocalOnly       WRITE setGitLocalOnly       NOTIFY gitLocalOnlyChanged)
 	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
 	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
 	Q_PROPERTY(bool background_sync      READ backgroundSync     WRITE setBackgroundSync     NOTIFY backgroundSyncChanged)
@@ -343,7 +342,6 @@ public:
 	bool savePasswordLocal() const;
 	short verificationStatus() const;
 	bool backgroundSync() const;
-	bool gitLocalOnly() const;
 	bool saveUserIdLocal() const;
 
 public slots:
@@ -356,7 +354,6 @@ public slots:
 	void setSavePasswordLocal(bool value);
 	void setVerificationStatus(short value);
 	void setBackgroundSync(bool value);
-	void setGitLocalOnly(bool value);
 	void setSaveUserIdLocal(bool value);
 
 signals:
@@ -369,7 +366,6 @@ signals:
 	void savePasswordLocalChanged(bool value);
 	void verificationStatusChanged(short value);
 	void backgroundSyncChanged(bool value);
-	void gitLocalOnlyChanged(bool value);
 	void saveUserIdLocalChanged(bool value);
 
 private:

@@ -12,8 +12,9 @@
 #include "checkcloudconnection.h"
 
 
-CheckCloudConnection::CheckCloudConnection(QObject *parent) :
+CheckCloudConnection::CheckCloudConnection(const QString &baseUrl_, QObject *parent) :
 	QObject(parent),
+	baseUrl(baseUrl_),
 	reply(0)
 {
 
@@ -34,7 +35,7 @@ bool CheckCloudConnection::checkServer()
 	request.setRawHeader("Accept", "text/plain");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	request.setRawHeader("Client-Id", getUUID().toUtf8());
-	request.setUrl(QString(prefs.cloud_base_url) + TEAPOT);
+	request.setUrl(baseUrl + TEAPOT);
 	QNetworkAccessManager *mgr = new QNetworkAccessManager();
 	reply = mgr->get(request);
 	connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
@@ -63,7 +64,6 @@ bool CheckCloudConnection::checkServer()
 		}
 	}
 	git_storage_update_progress(qPrintable(tr("Cloud connection failed")));
-	prefs.git_local_only = true;
 	if (verbose)
 		qDebug() << "connection test to cloud server failed" <<
 			    reply->error() << reply->errorString() <<
@@ -87,7 +87,7 @@ void CheckCloudConnection::sslErrors(QList<QSslError> errorList)
 	QSslConfiguration conf = reply->sslConfiguration();
 	QSslCertificate cert = conf.peerCertificate();
 	QByteArray hexDigest = cert.digest().toHex();
-	if (reply->url().toString().contains(prefs.cloud_base_url) &&
+	if (reply->url().toString().contains(baseUrl) &&
 	    hexDigest == "13ff44c62996cfa5cd69d6810675490e") {
 		if (verbose)
 			qDebug() << "Overriding SSL check as I recognize the certificate digest" << hexDigest;
@@ -99,9 +99,11 @@ void CheckCloudConnection::sslErrors(QList<QSslError> errorList)
 }
 
 // helper to be used from C code
-extern "C" bool canReachCloudServer()
+extern "C" bool canReachCloudServer(const char *url_string)
 {
+	QUrl url(url_string);
+	QString baseUrl = url.toString(QUrl::RemovePath);
 	if (verbose)
-		qWarning() << "Cloud storage: checking connection to cloud server";
-	return CheckCloudConnection().checkServer();
+		qWarning() << "Cloud storage: checking connection to cloud server " << baseUrl;
+	return CheckCloudConnection(baseUrl).checkServer();
 }

@@ -9,9 +9,10 @@
 class CheckCloudConnection : public QObject {
 	Q_OBJECT
 public:
-	CheckCloudConnection(QObject *parent = 0);
+	CheckCloudConnection(const QString &baseUrl, QObject *parent = 0);
 	bool checkServer();
 private:
+	QString baseUrl;
 	QNetworkReply *reply;
 private
 slots:

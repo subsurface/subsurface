@@ -5,7 +5,7 @@
 struct git_state;
 
 bool getProxyString(char **buffer);
-bool canReachCloudServer();
+bool canReachCloudServer(const char *cloud_url);
 void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);

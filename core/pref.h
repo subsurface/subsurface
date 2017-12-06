@@ -150,7 +150,6 @@ struct preferences {
 	short vpmb_conservatism;
 	int time_threshold;
 	int distance_threshold;
-	bool git_local_only;
 	short cloud_timeout;
 	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
 	update_manager_prefs_t update_manager;

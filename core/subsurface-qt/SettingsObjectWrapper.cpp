@@ -948,11 +948,6 @@ CloudStorageSettings::CloudStorageSettings(QObject *parent) :
 
 }
 
-bool CloudStorageSettings::gitLocalOnly() const
-{
-	return prefs.git_local_only;
-}
-
 QString CloudStorageSettings::password() const
 {
 	return QString(prefs.cloud_storage_password);
@@ -1111,17 +1106,6 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 void CloudStorageSettings::setGitUrl(const QString& value)
 {
 	Q_UNUSED(value); /* no op */
-}
-
-void CloudStorageSettings::setGitLocalOnly(bool value)
-{
-	if (value == prefs.git_local_only)
-		return;
-	QSettings s;
-	s.beginGroup("CloudStorage");
-	s.setValue("git_local_only", value);
-	prefs.git_local_only = value;
-	emit gitLocalOnlyChanged(value);
 }
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
@@ -2286,7 +2270,6 @@ void SettingsObjectWrapper::load()
 	}
 	GET_INT("cloud_verification_status", cloud_verification_status);
 	GET_BOOL("cloud_background_sync", cloud_background_sync);
-	GET_BOOL("git_local_only", git_local_only);
 
 	// creating the git url here is simply a convenience when C code wants
 	// to compare against that git URL - it's always derived from the base URL
