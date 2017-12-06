@@ -1008,11 +1008,9 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		if (buddy.contains(",")){
 			buddy = buddy.replace(QRegExp("\\s*,\\s*"), ", ");
 		}
-		if (!buddy.contains("Multiple Buddies")) {
-			diveChanged = true;
-			free(d->buddy);
-			d->buddy = strdup(qPrintable(buddy));
-		}
+		diveChanged = true;
+		free(d->buddy);
+		d->buddy = strdup(qPrintable(buddy));
 	}
 	if (myDive->divemaster() != diveMaster) {
 		diveChanged = true;
