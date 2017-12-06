@@ -8,7 +8,12 @@ set -e
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 IOS_QT=${TOP}/Qt
-QT_VERSION=$(cd ${IOS_QT}; ls -d 5.*)
+QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | sort -n | tail -1)
+
+if [ -z $QT_VERSION ] ; then
+	echo "Couldn't determine Qt version; giving up"
+	exit 1
+fi
 
 # Which versions are we building against?
 SQLITE_VERSION=3090200
