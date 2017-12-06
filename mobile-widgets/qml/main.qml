@@ -111,6 +111,7 @@ Kirigami.ApplicationWindow {
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
 
 		bannerImageSource: "dive.jpg"
+		resetMenuOnTriggered: false
 
 		actions: [
 			Kirigami.Action {
@@ -137,6 +138,7 @@ Kirigami.ApplicationWindow {
 					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
 					onTriggered: {
+						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
 						startAddDive()
 					}
@@ -147,6 +149,7 @@ Kirigami.ApplicationWindow {
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
+						globalDrawer.close()
 						downloadFromDc.dcImportModel.clearTable()
 						stackView.push(downloadFromDc)
 					}
@@ -216,6 +219,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					iconName: "icons/ic_gps_fixed.svg"
 					text: qsTr("Show GPS fixes")
 					onTriggered: {
+						globalDrawer.close()
 						returnTopPage()
 						manager.populateGpsData();
 						stackView.push(gpsWindow)
@@ -242,6 +246,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				iconName: "icons/ic_info_outline.svg"
 				text: qsTr("About")
 				onTriggered: {
+					globalDrawer.close()
 					stackView.push(aboutWindow)
 					detailsWindow.endEditMode()
 				}
@@ -250,6 +255,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				iconName: "icons/ic_settings.svg"
 				text: qsTr("Settings")
 				onTriggered: {
+					globalDrawer.close()
 					stackView.push(settingsWindow)
 					detailsWindow.endEditMode()
 				}
@@ -261,6 +267,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
+						globalDrawer.close()
 						stackView.push(logWindow)
 					}
 				}
@@ -268,6 +275,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				Kirigami.Action {
 					text: qsTr("Theme information")
 					onTriggered: {
+						globalDrawer.close()
 						stackView.push(themetest)
 					}
 				}
