@@ -8,7 +8,7 @@ set -e
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
 IOS_QT=${TOP}/Qt
-QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | sort -n | tail -1)
+QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
 
 if [ -z $QT_VERSION ] ; then
 	echo "Couldn't determine Qt version; giving up"
