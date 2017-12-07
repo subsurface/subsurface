@@ -94,20 +94,19 @@ if [ ! -d $ANDROID_SDK ] ; then
 	popd
 fi
 
-if [ ! -d libdivecomputer ] ; then
-	git clone -b Subsurface-branch https://github.com/Subsurface-divelog/libdc.git libdivecomputer
-	pushd libdivecomputer
+if [ ! -d subsurface/libdivecomputer/src ] ; then
+	pushd subsurface
+	git submodule init
+	git submodule update --recursive
+	popd
+fi
+
+if [ ! -f subsurface/libdivecomputer/configure ] ; then
+	pushd subsurface/libdivecomputer
 	autoreconf --install
 	autoreconf --install
 	popd
 fi
-pushd libdivecomputer
-git pull --rebase
-if ! git checkout Subsurface-branch ; then
-	echo "can't check out the Subsurface-branch branch of libdivecomputer -- giving up"
-	exit 1
-fi
-popd
 
 # and now we need a monotonic build number...
 if [ ! -f ./buildnr.dat ] ; then
