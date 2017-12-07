@@ -77,7 +77,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
         <source>Force LE</source>
-        <translation type="unfinished"/>
+        <translation>Força l&apos;intel·ligent</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="211"/>

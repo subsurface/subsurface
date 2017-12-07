@@ -3043,7 +3043,7 @@ GPS actual:</translation>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1095"/>
         <source>Stop times</source>
-        <translation type="unfinished"/>
+        <translation>Tiempos de parada</translation>
     </message>
 </context>
 <context>
@@ -9387,7 +9387,7 @@ Puedes crear el archivo de registro seleccionando la casilla correspondiente en 
     <message>
         <location filename="../core/plannernotes.c" line="114"/>
         <source>Runtime: %dmin%s</source>
-        <translation type="unfinished"/>
+        <translation>Tiempo de ejecución: %dmin%s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="333"/>

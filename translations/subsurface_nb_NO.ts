@@ -66,22 +66,22 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <source>Bluetooth mode</source>
-        <translation type="unfinished"/>
+        <translation>Blåtannmodus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="201"/>
         <source>Auto</source>
-        <translation type="unfinished"/>
+        <translation>Auto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
         <source>Force LE</source>
-        <translation type="unfinished"/>
+        <translation>Tving LE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="211"/>
         <source>Force classical</source>
-        <translation type="unfinished"/>
+        <translation>Tving klassisk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="229"/>
@@ -401,7 +401,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Verifikasjon av skykonto kreves, legg inn PIN i valgpanelet</translation>
     </message>
 </context>
 <context>
@@ -1663,7 +1663,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1375"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1396"/>
         <source>Backup files</source>
-        <translation type="unfinished"/>
+        <translation>Sikkerhetskopier</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1379"/>
@@ -1722,12 +1722,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1418"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1479"/>
         <source>Log files</source>
-        <translation type="unfinished"/>
+        <translation>Loggfiler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1478"/>
@@ -2584,29 +2584,29 @@ GPS-posisjon:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="140"/>
         <source>UDDF files</source>
-        <translation type="unfinished"/>
+        <translation>UDDF-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="144"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="148"/>
         <source>CSV files</source>
-        <translation type="unfinished"/>
+        <translation>CSV-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="155"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="179"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>HTML-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="160"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="172"/>
         <source>TeX files</source>
-        <translation type="unfinished"/>
+        <translation>TeX-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
@@ -2995,7 +2995,7 @@ GPS-posisjon:</translation>
         <location filename="../qt-models/diveplannermodel.cpp" line="194"/>
         <location filename="../qt-models/diveplannermodel.cpp" line="279"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>syl.</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="375"/>
@@ -3040,7 +3040,7 @@ GPS-posisjon:</translation>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1095"/>
         <source>Stop times</source>
-        <translation type="unfinished"/>
+        <translation>Stopptider</translation>
     </message>
 </context>
 <context>
@@ -3532,7 +3532,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="365"/>
         <source>Log files</source>
-        <translation type="unfinished"/>
+        <translation>Loggfiler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="390"/>
@@ -3542,7 +3542,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="391"/>
         <source>Dump files</source>
-        <translation type="unfinished"/>
+        <translation>Dump-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="416"/>
@@ -4003,7 +4003,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="162"/>
         <source>Update location on map</source>
-        <translation type="unfinished"/>
+        <translation>Oppdater posisjon på kart</translation>
     </message>
 </context>
 <context>
@@ -4619,7 +4619,7 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="640"/>
         <source>Toggle gas bar</source>
-        <translation type="unfinished"/>
+        <translation>Skru gass-bar av/på</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
@@ -4716,7 +4716,7 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <source>Don&apos;t save an empty log to the cloud</source>
-        <translation type="unfinished"/>
+        <translation>Ikke lagre en tom logg til skyen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="668"/>
@@ -4752,7 +4752,7 @@ Er du sikker på at du vil fortsette?</translation>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="269"/>
         <source>Template backup created</source>
-        <translation type="unfinished"/>
+        <translation>Sikkerhertskopi av templat opprettet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="270"/>
@@ -4766,7 +4766,16 @@ Location:
 Please note that as of this version of Subsurface the default templates
 are read-only and should not be edited directly, since the application
 can overwrite them on startup.</source>
-        <translation type="unfinished"/>
+        <translation>Følgende sikkerhetskopi av utskriftstemplater ble opprettet:
+
+%1
+
+Posisjon:
+%2
+
+Vær oppmerksom på at fra denne versjonen av Subsurface så vil standard-
+templatene være skrivebeskyttet og bør ikke redigeres direkte, siden
+programmet kan overskrive dem.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="730"/>
@@ -4808,50 +4817,50 @@ can overwrite them on startup.</source>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1295"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1337"/>
         <source>Dive log files</source>
-        <translation type="unfinished"/>
+        <translation>Dykkeloggfiler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1315"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1358"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1628"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1316"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1359"/>
         <source>Cochran</source>
-        <translation type="unfinished"/>
+        <translation>Cochran</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1317"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
         <source>DiveLogs.de</source>
-        <translation type="unfinished"/>
+        <translation>DiveLogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1318"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1362"/>
         <source>JDiveLog</source>
-        <translation type="unfinished"/>
+        <translation>JDiveLog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1319"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1363"/>
         <source>Liquivision</source>
-        <translation type="unfinished"/>
+        <translation>Liquivision</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1320"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1364"/>
         <source>Suunto</source>
-        <translation type="unfinished"/>
+        <translation>Suunto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1321"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1365"/>
         <source>UDCF</source>
-        <translation type="unfinished"/>
+        <translation>UDCF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1322"/>
@@ -4863,43 +4872,43 @@ can overwrite them on startup.</source>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1323"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
         <source>XML</source>
-        <translation type="unfinished"/>
+        <translation>XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1324"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
         <source>Divesoft</source>
-        <translation type="unfinished"/>
+        <translation>Divesoft</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1325"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
         <source>Datatrak/WLog</source>
-        <translation type="unfinished"/>
+        <translation>Datatrak/WLog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1326"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
         <source>MkVI files</source>
-        <translation type="unfinished"/>
+        <translation>MkVI-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1327"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
         <source>APD log viewer</source>
-        <translation type="unfinished"/>
+        <translation>APD log viewer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1328"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
         <source>OSTCtools</source>
-        <translation type="unfinished"/>
+        <translation>OSTCtools</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1329"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
         <source>DAN DL7</source>
-        <translation type="unfinished"/>
+        <translation>DAN DL7</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1360"/>
@@ -4909,7 +4918,7 @@ can overwrite them on startup.</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
@@ -5057,7 +5066,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="329"/>
         <source>Firmware files</source>
-        <translation type="unfinished"/>
+        <translation>Firmware-filer</translation>
     </message>
 </context>
 <context>
@@ -5278,7 +5287,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="23"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-filer</translation>
     </message>
 </context>
 <context>
@@ -5291,7 +5300,7 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="20"/>
         <source>Dive site layout</source>
-        <translation type="unfinished"/>
+        <translation>Dykkested-layout</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/prefs_georeference.ui" line="42"/>
@@ -5541,7 +5550,8 @@ Hvis devicen din bruker bluetooth, gjør det samme som du gjør før en logg-ned
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="96"/>
         <source>These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
-        <translation type="unfinished"/>
+        <translation>Disse vil bli brukt som de er.  Det er kanskje ikke hva du ønsker.
+Se http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="99"/>
@@ -5553,13 +5563,15 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="100"/>
         <source>Non-special character(s) in time format.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ikke-spesielle tegn i tidsformatet.
+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="106"/>
         <source>Non-special character(s) in date format.
 </source>
-        <translation type="unfinished"/>
+        <translation>Ikke-spesielle tegn i datoformatet.
+</translation>
     </message>
 </context>
 <context>
@@ -5691,12 +5703,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface skylagring (feil passord)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface skylagring (PIN kreves)</translation>
     </message>
 </context>
 <context>
@@ -5973,13 +5985,14 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/printoptions.cpp" line="194"/>
         <location filename="../desktop-widgets/printoptions.cpp" line="226"/>
         <source>Read-only template!</source>
-        <translation type="unfinished"/>
+        <translation>Skrivebeskyttet templat!</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="132"/>
         <source>The template '%1' is read-only and cannot be edited.
 Please export this template to a different file.</source>
-        <translation type="unfinished"/>
+        <translation>Templaten &apos;%1&apos; er skrivebeskyttet og kan ikke redigeres.
+Eksporter denne templaten til en annen fil.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="148"/>
@@ -5990,13 +6003,13 @@ Please export this template to a different file.</source>
         <location filename="../desktop-widgets/printoptions.cpp" line="149"/>
         <location filename="../desktop-widgets/printoptions.cpp" line="180"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>HTML-filer</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="159"/>
         <location filename="../desktop-widgets/printoptions.cpp" line="195"/>
         <source>The destination template &apos;%1&apos; is read-only and cannot be overwritten.</source>
-        <translation type="unfinished"/>
+        <translation>Destinasjonstemplaten &apos;%1&apos; er skrivebeskyttet.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="179"/>
@@ -6011,12 +6024,12 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="220"/>
         <source>Delete template &apos;%1&apos;?</source>
-        <translation type="unfinished"/>
+        <translation>Slett templaten &apos;%1&apos;?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="227"/>
         <source>The template &apos;%1&apos; is read-only and cannot be deleted.</source>
-        <translation type="unfinished"/>
+        <translation>Templaten &apos;%1&apos; er skrivebeskyttet og kan ikke slettes.</translation>
     </message>
 </context>
 <context>
@@ -6100,7 +6113,7 @@ Please export this template to a different file.</source>
         <location filename="../profile-widget/profilewidget2.cpp" line="1463"/>
         <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
-        <translation type="unfinished"/>
+        <translation>Juster trykket på syl. %1 (interpolert som %2)</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1485"/>
@@ -6447,7 +6460,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../core/divesite.cpp" line="20"/>
         <source>No dive site layout categories set in preferences!</source>
-        <translation type="unfinished"/>
+        <translation>Ingen kategorier for dykkesteds-layout er satt i valgpanelet!</translation>
     </message>
     <message>
         <location filename="../core/divesite.cpp" line="28"/>
@@ -6728,7 +6741,7 @@ valgte dykk. </translation>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="313"/>
         <source>Image files</source>
-        <translation type="unfinished"/>
+        <translation>Bildefiler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="391"/>
@@ -6843,7 +6856,7 @@ Filer med upassende dykkedato/-tid</translation>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="377"/>
         <source>Import messages (errors, warnings, etc)</source>
-        <translation type="unfinished"/>
+        <translation>Import-beskjeder (feil, advarsler, osv)</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="51"/>
@@ -6853,18 +6866,18 @@ Filer med upassende dykkedato/-tid</translation>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="52"/>
         <source>SmartTrak files</source>
-        <translation type="unfinished"/>
+        <translation>SmartTrak-filer</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="52"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="63"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Alle filer</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="63"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface-filer</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="62"/>
@@ -9313,12 +9326,12 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
     <message>
         <location filename="../core/plannernotes.c" line="433"/>
         <source>Minimum gas</source>
-        <translation type="unfinished"/>
+        <translation>Minimum gass</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="434"/>
         <source>based on</source>
-        <translation type="unfinished"/>
+        <translation>basert på</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="436"/>
@@ -9328,17 +9341,17 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
     <message>
         <location filename="../core/plannernotes.c" line="454"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s/%.0f%s av &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="458"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s during planned ascent)</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s av &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s under planlagt oppstigning)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="461"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
-        <translation type="unfinished"/>
+        <translation>%.0f%s av &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="90"/>
@@ -9365,12 +9378,12 @@ Du kan lage denne ved å velge tilsvarende sjekkboks når i nedlastingsdialogen.
     <message>
         <location filename="../core/plannernotes.c" line="92"/>
         <source>dive plan&lt;/b&gt; (overlapping dives detected)</source>
-        <translation type="unfinished"/>
+        <translation>dykkeplan &lt;/b&gt; (overlappende dykk oppdaget)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="114"/>
         <source>Runtime: %dmin%s</source>
-        <translation type="unfinished"/>
+        <translation>Kjøretid: %dmin%s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="333"/>
@@ -10049,7 +10062,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/statistics.c" line="142"/>
         <source>All (by type stats)</source>
-        <translation type="unfinished"/>
+        <translation>Alle (av type-stats)</translation>
     </message>
     <message>
         <location filename="../core/statistics.c" line="144"/>
@@ -10817,7 +10830,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="343"/>
         <source>Min. switch duration O₂% below 100%</source>
-        <translation type="unfinished"/>
+        <translation>Min. tid for bytte O₂% under 100%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="419"/>
