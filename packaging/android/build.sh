@@ -332,7 +332,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
 	mkdir -p libdivecomputer-build-"$ARCH"
 	pushd libdivecomputer-build-"$ARCH"
-	"$SUBSURFACE_SOURCE"/../libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
+	"$SUBSURFACE_SOURCE"/libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
 	make
 	make install
 	popd
