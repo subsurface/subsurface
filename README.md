@@ -1,6 +1,6 @@
 # Subsurface [![Build Status](https://travis-ci.org/Subsurface-divelog/subsurface.svg?branch=master)](https://travis-ci.org/Subsurface-divelog/subsurface)
 
-This is the README file for Subsurface 4.7.4
+This is the README file for Subsurface 4.7.5
 
 Please check the `ReleaseNotes.txt` for details about new features and
 changes since Subsurface 4.7.2 (and earlier versions).
@@ -35,10 +35,10 @@ development version) you can either get this via git or the release tar
 ball. After cloning run the following command:
 
 ```
-git checkout v4.7.4  (or whatever the last release is)
+git checkout v4.7.5  (or whatever the last release is)
 ```
 
-or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.7.4.tgz
+or download a tarball from http://subsurface-divelog.org/downloads/Subsurface-4.7.5.tgz
 
 Detailed build instructions can be found in the INSTALL file.
 
