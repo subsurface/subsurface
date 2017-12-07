@@ -31,7 +31,7 @@ $(OUT)%.pdf: %.txt
 
 $(OUT)%.html: %.txt
 	@echo "if asciidoc isn't found the html file included in the sources is copied"
-	$(ASCIIDOC) -a toc -a toclevels=3 -a themedir=$(PWD) -a theme=$(THEME) -a stylesdir=$(PWD) \
+	$(ASCIIDOC) -a themedir=$(PWD) -a theme=$(THEME) -a stylesdir=$(PWD) \
 		-o $@ $< || cp $(<:%.txt=%.html.git) $@
 
 # Alternatively::

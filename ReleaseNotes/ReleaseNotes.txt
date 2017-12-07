@@ -1,13 +1,10 @@
-Please add release notes on top of the file /CHANGELOG.md
+//Please add release notes on top of the file /CHANGELOG.md
 
-// _Subsurface_ 4.7.5 Release Notes
-
-_Subsurface_ 4.7.6 - Month dd, 2017
-------------------------------------------
+= _Subsurface_ Release Notes
 
 
-_Subsurface_ 4.7.5:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+New in _Subsurface_ 4.7.5
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - Subsurface-mobile: Add button to rescan for BT devices
 - Subsurface-mobile: Enable BLE and GPS on iOS
@@ -39,6 +36,13 @@ _Subsurface_ 4.7.5:
   recreational mode
 - Various small improvements in the dive photo UI
 
+
+NOTE: As of _Subsurface_ 4.7.5 we changed the format of this file so that
+the new features are listed under a heading with the release number where
+they were added. Prior to that we always listed the changes since the last
+release, so the changes since _Subsurface_ 4.7.2 below actually are the
+changes that first were released in _Subsurface_ 4.7.4 (as we skipped
+4.7.3).
 
 Some of the changes since _Subsurface_ 4.7.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -464,7 +468,6 @@ operations can now been un-done and subsequently re-done.
   diver reached the surface
 - Don't zoom out the globe to "sky view" when a dive site has no GPS data
 - Various other small fixes
-
 
 Some of the changes since _Subsurface_ 4.4.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
