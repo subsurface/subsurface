@@ -2,8 +2,43 @@ Please add release notes on top of the file /CHANGELOG.md
 
 // _Subsurface_ 4.7.5 Release Notes
 
-_Subsurface_ 4.7.5 - Month dd, 2017
+_Subsurface_ 4.7.6 - Month dd, 2017
 ------------------------------------------
+
+
+_Subsurface_ 4.7.5:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- Subsurface-mobile: Add button to rescan for BT devices
+- Subsurface-mobile: Enable BLE and GPS on iOS
+- Compute plan variations in background to improve responsiveness
+- Improve profile rescaling in planner
+- Store the gas switch depth of a cylinder from the planner in the logbook
+  file or git storage. No more need to reenter this value on replanning.
+- Improved handling of different information (divemaster, buddy, suit, notes)
+  when merging two dives.
+- Limit min. GFlow to 10 and min. GFhigh to 40 in preferences for profile
+  and planner
+- Fix issues related to debug logging on Windows
+- Add "Bluetooth mode" in the BT selection dialog: Auto, LE, Classical
+- Correct display of cylinder pressures for merged dives
+- Allow user defined cylinders as default in preferences (#821)
+- Subsurface-mobile: fix black/white switch in splash screen (#531)
+- Tag-editing: comma entry shows all tags (again) (#605)
+- Subsurface-mobile: enable auto completion for dive site entry (#546)
+- Printing: the bundled templates are now read-only and are always overwritten
+  by the application. The first time the user runs this update, backup files
+  of the previous templates would be created (#847)
+- Fix issues with filters not updating after changes to the dive list
+  (#551, #675)
+- Map-widget: allow updating coordinates on the map when the user
+  is editing a dive site by pressing Enter or clicking a "flag" button
+- Map-widget: prevent glitches when the user is interacting with the map
+  while animations are in progress
+- Planner: don't accidentally enable o2breaks option when entering planner in
+  recreational mode
+- Various small improvements in the dive photo UI
+
 
 Some of the changes since _Subsurface_ 4.7.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
