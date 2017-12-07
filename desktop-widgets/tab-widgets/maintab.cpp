@@ -477,7 +477,6 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.tabWidget->setTabText(0, tr("Trip notes"));
 			ui.tabWidget->setTabEnabled(1, false);
 			ui.tabWidget->setTabEnabled(2, false);
-			ui.tabWidget->setTabEnabled(4, false);
 			ui.tabWidget->setTabEnabled(5, false);
 			// Recover the tab selected for last dive trip
 			if (lastSelectedDive)
@@ -530,7 +529,6 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.tabWidget->setTabText(0, tr("Notes"));
 			ui.tabWidget->setTabEnabled(1, true);
 			ui.tabWidget->setTabEnabled(2, true);
-			ui.tabWidget->setTabEnabled(4, true);
 			ui.tabWidget->setTabEnabled(5, true);
 			// Recover the tab selected for last dive
 			if (!lastSelectedDive)
