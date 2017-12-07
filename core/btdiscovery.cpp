@@ -195,7 +195,7 @@ void BTDiscovery::btDeviceDiscoveredMain(const btPairedDevice &device)
 		btVP.vendorIdx = vendorList.indexOf(vendor);
 		btVP.productIdx = productList[vendor].indexOf(newDevice);
 		btDCs << btVP;
-		connectionListModel.addAddress(device.address + " (" + newDevice + ")");
+		connectionListModel.addAddress(newDevice + " " + device.address);
 		return;
 	}
 	connectionListModel.addAddress(device.address);

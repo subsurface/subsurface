@@ -199,7 +199,7 @@ Kirigami.Page {
 					text = qsTr("Retry")
 					// strip any BT Name from the address
 					var devName = downloadThread.deviceData.devName
-					downloadThread.deviceData.devName = devName.replace(/ (.*)$/, "")
+					downloadThread.deviceData.devName = devName.replace(/^(.*) /, "")
 					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.product + " on "+ downloadThread.deviceData.devName)
 					progressBar.visible = true
 					downloadThread.start()
