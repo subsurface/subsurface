@@ -290,7 +290,7 @@ Item {
 			}
 			Controls.ComboBox {
 				id: cylinderBox
-				editable: true
+				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
