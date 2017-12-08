@@ -218,6 +218,9 @@ Item {
 					diveDetailsListView.currentItem.modelData.dive.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onActivated: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
@@ -232,6 +235,9 @@ Item {
 					diveDetailsListView.currentItem.modelData.dive.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onActivated: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
@@ -246,6 +252,9 @@ Item {
 					diveDetailsListView.currentItem.modelData.dive.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onActivated: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
