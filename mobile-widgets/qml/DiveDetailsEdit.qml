@@ -11,18 +11,18 @@ Item {
 	property int dive_id
 	property int number
 	property alias dateText: txtDate.text
-	property alias locationText: txtLocation.text
+	property alias locationText: txtLocation.editText
 	property alias gpsText: txtGps.text
 	property alias airtempText: txtAirTemp.text
 	property alias watertempText: txtWaterTemp.text
 	property alias suitIndex: suitBox.currentIndex
-	property alias suitText: suitBox.text
+	property alias suitText: suitBox.editText
 	property alias buddyIndex: buddyBox.currentIndex
-	property alias buddyText: buddyBox.text
+	property alias buddyText: buddyBox.editText
 	property alias divemasterIndex: divemasterBox.currentIndex
-	property alias divemasterText: divemasterBox.text
+	property alias divemasterText: divemasterBox.editText
 	property alias cylinderIndex: cylinderBox.currentIndex
-	property alias cylinderText: cylinderBox.text
+	property alias cylinderText: cylinderBox.editText
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
@@ -43,9 +43,14 @@ Item {
 		diveDetailsPage.state = "view" // run the transition
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
-				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText, suitBox.text, buddyBox.text,
-				      divemasterBox.text, detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, detailsEdit.gasmixText, cylinderBox.text, detailsEdit.rating,
+				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
+				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText,
+				      buddyBox.currentText != "" ? buddyBox.currentText : buddyBox.editText,
+				      divemasterBox.currentText != "" ? divemasterBox.currentText : divemasterBox.editText,
+				      detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
+				      detailsEdit.endpressureText, detailsEdit.gasmixText,
+				      cylinderBox.currentText != "" ? cylinderBox.currentText : cylinderBox.editText,
+				      detailsEdit.rating,
 				      detailsEdit.visibility)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
@@ -106,13 +111,15 @@ Item {
 				text: qsTr("Location:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			HintsTextEdit {
+			Controls.ComboBox {
 				id: txtLocation
+				editable: true
+				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.locationList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
-				onEditingFinished: {
+				onAccepted: {
 					gpsText = manager.getGpsFromSiteName(text)
 				}
 			}
@@ -203,8 +210,10 @@ Item {
 				text: qsTr("Suit:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			HintsTextEdit {
+			Controls.ComboBox {
 				id: suitBox
+				editable: true
+				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -216,8 +225,9 @@ Item {
 				text: qsTr("Buddy:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			HintsTextEdit {
+			Controls.ComboBox {
 				id: buddyBox
+				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -229,8 +239,9 @@ Item {
 				text: qsTr("Divemaster:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			HintsTextEdit {
+			Controls.ComboBox {
 				id: divemasterBox
+				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
@@ -256,8 +267,9 @@ Item {
 				text: qsTr("Cylinder:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
-			HintsTextEdit {
+			Controls.ComboBox {
 				id: cylinderBox
+				editable: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
