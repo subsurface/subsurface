@@ -23,7 +23,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/configuredivecomputer.cpp \
     ../../../core/divecomputer.cpp \
     ../../../core/divelogexportlogic.cpp \
-    ../../../core/divesite.cpp \
+    ../../../core/divesite-helper.cpp \
     ../../../core/divesitehelpers.cpp \
     ../../../core/errorhelper.c \
     ../../../core/exif.cpp \
