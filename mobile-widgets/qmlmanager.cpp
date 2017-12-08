@@ -1784,6 +1784,7 @@ void QMLManager::setStatusbarColor(QColor color)
 #else
 void QMLManager::setStatusbarColor(QColor color)
 {
+	Q_UNUSED(color)
 	// noop
 }
 
