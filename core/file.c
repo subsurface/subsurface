@@ -445,13 +445,15 @@ int check_git_sha(struct git_state *state, struct git_repository **git_p)
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
-		const char *sha = get_sha(git, state->branch);
+		char *sha = get_sha(git, state->branch);
 		if (!same_string(sha, "") &&
 		    same_string(sha, current_sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
 			free(current_sha);
+			free(sha);
 			return 0;
 		}
+		free(sha);
 	}
 	free(current_sha);
 	return 1;
@@ -472,14 +474,16 @@ int parse_file_git(struct git_state *state)
 	/* if this is a git repository, do we already have this exact state loaded ?
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
-		const char *sha = get_sha(git, state->branch);
+		char *sha = get_sha(git, state->branch);
 		if (!same_string(sha, "") &&
 		    same_string(sha, current_sha) &&
 		    !unsaved_changes()) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
 			free(current_sha);
+			free(sha);
 			return 0;
 		}
+		free(sha);
 	}
 	free(current_sha);
 	if (git)

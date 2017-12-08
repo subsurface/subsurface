@@ -1715,12 +1715,13 @@ static int do_git_load(git_repository *repo, const char *branch)
 	return ret;
 }
 
-const char *get_sha(git_repository *repo, const char *branch)
+char *get_sha(git_repository *repo, const char *branch)
 {
-	static char git_id_buffer[GIT_OID_HEXSZ+1];
+	char *git_id_buffer;
 	git_commit *commit;
 	if (find_commit(repo, branch, &commit))
 		return NULL;
+	git_id_buffer = malloc(GIT_OID_HEXSZ+1);
 	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), (const git_oid *)commit);
 	return git_id_buffer;
 }

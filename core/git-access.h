@@ -30,7 +30,7 @@ extern int check_git_sha(struct git_state *loc, struct git_repository **git_p);
 extern int sync_with_remote(struct git_repository *repo, struct git_state *state, enum remote_transport rt);
 //extern int git_save_dives(struct git_repository *, struct git_state *state, bool select_only);
 extern int git_load_dives(struct git_repository *, const char *);
-extern const char *get_sha(git_repository *repo, const char *branch);
+extern char *get_sha(git_repository *repo, const char *branch);
 extern int do_git_save(git_repository *repo, struct git_state *state, bool select_only, bool create_empty);
 extern const char *saved_git_id;
 extern void clear_git_id(void);
