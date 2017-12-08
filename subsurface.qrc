@@ -13,7 +13,6 @@
         <file alias="zoom-out-icon">map-widget/qml/icons/mapwidget-zoom-out.png</file>
         <file alias="satellite-icon">icons/satellite.svg</file>
         <file alias="graph-icon">icons/graph.png</file>
-        <file alias="scale-icon">icons/scale.png</file>
         <file alias="hide-icon">icons/go-top.svg</file>
         <file alias="star-icon">icons/star.svg</file>
         <file alias="subsurface-icon">icons/subsurface-icon.png</file>
