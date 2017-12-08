@@ -1011,6 +1011,8 @@ int DivePlannerPointsModel::analyzeVariations(struct decostop *min, struct decos
 #ifdef DEBUG_STOPVAR
 	printf("Total + %d:%02d/%s +- %d s/%s\n\n", FRACTION((leftsum + rightsum) / 2, 60), unit,
 						       (rightsum - leftsum) / 2, unit);
+#else
+	Q_UNUSED(unit)
 #endif
 	return (leftsum + rightsum) / 2;
 }
