@@ -37,7 +37,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	device.c
 	dive.c
 	divesite.c
-	divesite.cpp
+	divesite-helper.cpp
 	divelist.c
 	equipment.c
 	errorhelper.c
