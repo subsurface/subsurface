@@ -239,6 +239,9 @@ Item {
 					manager.suitList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onActivated: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
@@ -253,6 +256,9 @@ Item {
 					manager.buddyList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onActivated: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
@@ -267,6 +273,9 @@ Item {
 					manager.divemasterList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
+				onActivated: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
