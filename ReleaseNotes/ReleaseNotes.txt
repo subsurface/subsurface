@@ -2,6 +2,11 @@
 
 = _Subsurface_ Release Notes
 
+_Subsurface_ 4.7.6 - Month dd, 2017
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+During the development cycle, changes are collected in CHANGELOG.md
+
 
 New in _Subsurface_ 4.7.5
 ~~~~~~~~~~~~~~~~~~~~~~~~~

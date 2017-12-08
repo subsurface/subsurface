@@ -3,7 +3,7 @@
 This is the README file for Subsurface 4.7.5
 
 Please check the `ReleaseNotes.txt` for details about new features and
-changes since Subsurface 4.7.2 (and earlier versions).
+changes since Subsurface 4.7.4 (and earlier versions).
 
 Subsurface can be found at http://subsurface-divelog.org
 
