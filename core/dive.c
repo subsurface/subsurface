@@ -1423,7 +1423,7 @@ static void fixup_dc_depths(struct dive *dive, struct divecomputer *dc)
 		dive->maxdepth.mm = maxdepth;
 }
 
-static void fixup_dc_ndl(struct dive *dive, struct divecomputer *dc)
+static void fixup_dc_ndl(struct divecomputer *dc)
 {
 	int i;
 
@@ -1654,7 +1654,7 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	fixup_dc_depths(dive, dc);
 
 	/* Fix up first sample ndl data */
-	fixup_dc_ndl(dive, dc);
+	fixup_dc_ndl(dc);
 
 	/* Fix up dive temperatures based on dive computer samples */
 	fixup_dc_temp(dive, dc);
