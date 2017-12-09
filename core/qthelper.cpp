@@ -1740,7 +1740,7 @@ FileLocation getCloudLocation(bool isOffline)
 	if (currentFile.isCloud() && currentFile.isRemote() != isOffline)
 		return currentFile;
 	QString email = QString(prefs.cloud_storage_email);
-	QString url = QString(prefs.cloud_git_url) + "/" + email;
+	QString url = QString(prefs.cloud_base_url) + "/git/" + email;
 	return isOffline ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, url, email)
 			 : FileLocation(FileLocation::CLOUD_GIT, url, email);
 }

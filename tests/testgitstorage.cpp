@@ -36,9 +36,6 @@ void TestGitStorage::initTestCase()
 	s.beginGroup("CloudStorage");
 	GET_TXT("cloud_base_url", cloud_base_url);
 	QString gitUrl(prefs.cloud_base_url);
-	if (gitUrl.right(1) != "/")
-		gitUrl += "/";
-	prefs.cloud_git_url = strdup(qUtf8Printable(gitUrl + "git"));
 	prefs.cloud_storage_email = strdup(qUtf8Printable("ssrftest@hohndel.org"));
 	s.endGroup();
 	prefs.cloud_storage_password = strdup("geheim");

@@ -10,7 +10,6 @@
 
 struct preferences prefs, git_prefs;
 struct preferences default_prefs = {
-	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
 	.units = SI_UNITS,
 	.unit_system = METRIC,
 	.coordinates_traditional = true,
@@ -289,6 +288,7 @@ void setup_system_prefs(void)
 #if !defined(SUBSURFACE_MOBILE)
 	default_prefs.default_filename = copy_string(system_default_filename());
 #endif
+	default_prefs.cloud_base_url = strdup("https://cloud.subsurface-divelog.org/");
 	env = getenv("LC_MEASUREMENT");
 	if (!env)
 		env = getenv("LC_ALL");
@@ -314,7 +314,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->default_filename = copy_string(src->default_filename);
 	dest->default_cylinder = copy_string(src->default_cylinder);
 	dest->cloud_base_url = copy_string(src->cloud_base_url);
-	dest->cloud_git_url = copy_string(src->cloud_git_url);
 	dest->userid = copy_string(src->userid);
 	dest->proxy_host = copy_string(src->proxy_host);
 	dest->proxy_user = copy_string(src->proxy_user);

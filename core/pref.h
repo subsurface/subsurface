@@ -64,7 +64,6 @@ struct preferences {
 	const char *default_filename;
 	const char *default_cylinder;
 	const char *cloud_base_url;
-	const char *cloud_git_url;
 	const char *time_format;
 	const char *date_format;
 	const char *date_format_short;

@@ -988,11 +988,6 @@ QString CloudStorageSettings::baseUrl() const
 	return QString(prefs.cloud_base_url);
 }
 
-QString CloudStorageSettings::gitUrl() const
-{
-	return QString(prefs.cloud_git_url);
-}
-
 void CloudStorageSettings::setPassword(const QString& value)
 {
 	if (value == prefs.cloud_storage_password)
@@ -1090,22 +1085,11 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 {
 	if (value == prefs.cloud_base_url)
 		return;
-
-	// dont free data segment.
-	if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
-		free((void *)prefs.cloud_base_url);
-		free((void *)prefs.cloud_git_url);
-	}
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_base_url", value);
+	free((void *)prefs.cloud_base_url);
 	prefs.cloud_base_url = copy_string(qPrintable(value));
-	prefs.cloud_git_url = copy_string(qPrintable(QString(prefs.cloud_base_url) + "/git"));
-}
-
-void CloudStorageSettings::setGitUrl(const QString& value)
-{
-	Q_UNUSED(value); /* no op */
 }
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
@@ -2271,10 +2255,7 @@ void SettingsObjectWrapper::load()
 	GET_INT("cloud_verification_status", cloud_verification_status);
 	GET_BOOL("cloud_background_sync", cloud_background_sync);
 
-	// creating the git url here is simply a convenience when C code wants
-	// to compare against that git URL - it's always derived from the base URL
 	GET_TXT("cloud_base_url", cloud_base_url);
-	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
 	s.endGroup();
 
 	// Subsurface webservice id is stored outside of the groups
