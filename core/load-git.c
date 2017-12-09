@@ -26,8 +26,6 @@
 #include "git-access.h"
 #include "qthelperfromc.h"
 
-const char *saved_git_id = NULL;
-
 struct picture_entry_list {
 	void *data;
 	int len;
@@ -1669,17 +1667,11 @@ static int load_dives_from_tree(git_repository *repo, git_tree *tree)
 	return 0;
 }
 
-void clear_git_id(void)
+void set_git_id(struct git_state *state, const struct git_oid * id)
 {
-	saved_git_id = NULL;
-}
-
-void set_git_id(const struct git_oid * id)
-{
-	static char git_id_buffer[GIT_OID_HEXSZ+1];
-
-	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), id);
-	saved_git_id = git_id_buffer;
+	free((void *)state->sha);
+	state->sha = malloc(GIT_OID_HEXSZ+1);
+	git_oid_tostr((char *)state->sha, GIT_OID_HEXSZ+1, id);
 }
 
 static int find_commit(git_repository *repo, const char *branch, git_commit **commit_p)
@@ -1693,21 +1685,21 @@ static int find_commit(git_repository *repo, const char *branch, git_commit **co
 	return 0;
 }
 
-static int do_git_load(git_repository *repo, const char *branch)
+static int do_git_load(git_repository *repo, struct git_state *state)
 {
 	int ret;
 	git_commit *commit;
 	git_tree *tree;
 
-	ret = find_commit(repo, branch, &commit);
+	ret = find_commit(repo, state->branch, &commit);
 	if (ret)
 		return ret;
 	if (git_commit_tree(&tree, commit))
-		return report_error("Could not look up tree of commit in branch '%s'", branch);
+		return report_error("Could not look up tree of commit in branch '%s'", state->branch);
 	git_storage_update_progress(translate("gettextFromC", "Load dives from local cache"));
 	ret = load_dives_from_tree(repo, tree);
 	if (!ret) {
-		set_git_id(git_commit_id(commit));
+		set_git_id(state, git_commit_id(commit));
 		git_storage_update_progress(translate("gettextFromC", "Successfully opened dive data"));
 	}
 	git_object_free((git_object *)tree);
@@ -1722,7 +1714,7 @@ char *get_sha(git_repository *repo, const char *branch)
 	if (find_commit(repo, branch, &commit))
 		return NULL;
 	git_id_buffer = malloc(GIT_OID_HEXSZ+1);
-	git_oid_tostr(git_id_buffer, sizeof(git_id_buffer), (const git_oid *)commit);
+	git_oid_tostr(git_id_buffer, GIT_OID_HEXSZ+1, (const git_oid *)commit);
 	return git_id_buffer;
 }
 
@@ -1734,13 +1726,13 @@ char *get_sha(git_repository *repo, const char *branch)
  * If it is a git repository, we return zero for success,
  * or report an error and return 1 if the load failed.
  */
-int git_load_dives(struct git_repository *repo, const char *branch)
+int git_load_dives(struct git_repository *repo, struct git_state *state)
 {
 	int ret;
 
 	if (repo == dummy_git_repository)
-		return report_error("Unable to open git repository at '%s'", branch);
-	ret = do_git_load(repo, branch);
+		return report_error("Unable to open git repository at '%s'", state->branch);
+	ret = do_git_load(repo, state);
 	git_repository_free(repo);
 	finish_active_dive();
 	finish_active_trip();

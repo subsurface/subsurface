@@ -17,6 +17,7 @@ git_state FileLocation::gitState() const
 	ret.location = strdup(qPrintable(name));
 	ret.branch = strdup(qPrintable(branch));
 	ret.user = strdup(qPrintable(user));
+	ret.sha = strdup(qPrintable(sha));
 	ret.is_remote = isRemote();
 	ret.is_cloud = isCloud();
 	ret.auth_attempt = 0;
@@ -189,6 +190,11 @@ bool FileLocation::isRemote() const
 bool FileLocation::isCloud() const
 {
 	return type == CLOUD_GIT || type == CLOUD_GIT_OFFLINE;
+}
+
+void FileLocation::setSHA(const char *s)
+{
+	sha = s;
 }
 
 QString FileLocation::typeAsString() const

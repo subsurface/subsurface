@@ -20,6 +20,7 @@ private:
 	QString name;					// Name of file or git repository
 	QString branch;					// For git repos
 	QString user;					// For https:// git repos
+	QString sha;					// For git repos - sha of last commit
 
 	void fixName();
 public:
@@ -38,6 +39,7 @@ public:
 	bool isNone() const;
 	bool isRemote() const;
 	bool isCloud() const;
+	void setSHA(const char *);
 	QString formatShort() const;
 	QString formatLong() const;
 	QString typeAsString() const;

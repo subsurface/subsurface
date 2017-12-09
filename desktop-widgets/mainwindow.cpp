@@ -567,7 +567,6 @@ void MainWindow::on_actionOpen_triggered()
 		filenames = dialog.selectedFiles();
 	if (filenames.isEmpty())
 		return;
-	closeCurrentFile();
 
 	QList<FileLocation> locations;
 	Q_FOREACH (QString filename, filenames)
@@ -599,13 +598,31 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	if (verbose)
 		qDebug() << "Opening cloud storage from:" << location.formatLong();
 
+	showProgressBar();
+	// Check if we already have that status
+	git_state state = location.gitState();
+	git_repository *git;
+	if (check_git_sha(&state, &git) == 0) {
+		hideProgressBar();
+		free_git_state(&state);
+		return;
+	}
+
 	closeCurrentFile();
 
-	showProgressBar();
-	loadDives(location);
+	int error = git_load_dives(git, &state);
+	hideProgressBar();
+	cloudIsOffline = !state.is_remote;
+	if (cloudIsOffline)
+		ui.actionTake_cloud_storage_online->setEnabled(true);
+	if (!error) {
+		set_filename(getCloudLocation(cloudIsOffline), state.sha);
+		setTitle(MWTF_FILENAME);
+	}
+	free_git_state(&state);
+
 	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
-	hideProgressBar();
 	refreshDisplay();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
@@ -703,7 +720,6 @@ void MainWindow::closeCurrentFile()
 {
 	graphics()->setEmptyState();
 	/* free the dives and trips */
-	clear_git_id();
 	clear_dive_file_data();
 	cleanUpEmpty();
 	mark_divelist_changed(false);
@@ -1609,7 +1625,6 @@ void MainWindow::recentFileTriggered(bool checked)
 	const FileLocation &location = recentFiles[filenr];
 
 	updateLastUsedDir(location);
-	closeCurrentFile();
 	loadFiles({location});
 }
 
@@ -1664,9 +1679,9 @@ int MainWindow::saveDives(const FileLocation &f)
 	case FileLocation::GIT: {
 		git_state state = f.gitState();
 		res = save_dives_git(&state);
-		free_git_state(&state);
 		if (!res)
-			set_filename(f, true);
+			set_filename(f, state.sha);
+		free_git_state(&state);
 		break;
 	}
 	case FileLocation::CLOUD_GIT:
@@ -1678,7 +1693,7 @@ int MainWindow::saveDives(const FileLocation &f)
 		if (cloudIsOffline)
 			ui.actionTake_cloud_storage_online->setEnabled(true);
 		if (!res)
-			set_filename(getCloudLocation(cloudIsOffline), true);
+			set_filename(getCloudLocation(cloudIsOffline), state.sha);
 		break;
 	}
 	case FileLocation::NONE:
@@ -1704,24 +1719,16 @@ int MainWindow::loadDives(const FileLocation &f)
 		if (!res)
 			set_filename(f, true);
 		break;
+	case FileLocation::CLOUD_GIT:
+	case FileLocation::CLOUD_GIT_OFFLINE:
+		fprintf(stderr, "Warning: loading from cloud in loadDives() unsupported\n");
+		// Fallthrough
 	case FileLocation::GIT: {
 		git_state state = f.gitState();
 		res = parse_file_git(&state);
-		free_git_state(&state);
 		if (!res)
-			set_filename(f, true);
-		break;
-	}
-	case FileLocation::CLOUD_GIT:
-	case FileLocation::CLOUD_GIT_OFFLINE: {
-		git_state state = f.gitState();
-		res = parse_file_git(&state);
-		cloudIsOffline = !state.is_remote;
+			set_filename(f, state.sha);	// TODO: the SHA is not used in this case
 		free_git_state(&state);
-		if (cloudIsOffline)
-			ui.actionTake_cloud_storage_online->setEnabled(true);
-		if (!res)
-			set_filename(getCloudLocation(cloudIsOffline), true);
 		break;
 	}
 	case FileLocation::NONE:
@@ -1835,12 +1842,11 @@ void MainWindow::loadFiles(const QList<FileLocation> &files)
 		return;
 	}
 
-	showProgressBar();
+	closeCurrentFile();
 	for (int i = 0; i < files.size(); ++i) {
 		if (!loadDives(files[i]))
 			addRecentFile(files[i], false);
 	}
-	hideProgressBar();
 	updateRecentFiles();
 	process_dives(false, false);
 

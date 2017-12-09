@@ -1427,5 +1427,4 @@ void clear_dive_file_data()
 	set_current_file_none();
 
 	reset_min_datafile_version();
-	saved_git_id = "";
 }

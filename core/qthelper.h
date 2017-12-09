@@ -55,6 +55,7 @@ extern "C" void cache_insert(int tissue, int timestep, enum inertgas gas, double
 extern "C" void lock_planner();
 extern "C" void unlock_planner();
 void set_filename(const FileLocation &, bool force);
+void set_filename(const FileLocation &, const char *new_sha);
 extern "C" void set_current_file_none();
 extern "C" char *get_current_file_name();	// Caller must free() returned file name
 extern "C" void get_cloud_info(struct git_state *state);

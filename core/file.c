@@ -432,14 +432,12 @@ int check_git_sha(struct git_state *state, struct git_repository **git_p)
 {
 	struct git_repository *git;
 
-	char *current_sha = strdup(saved_git_id);
 	git = is_git_repository(state);
 	if (git_p)
 		*git_p = git;
 	if (state->is_cloud && git == dummy_git_repository) {
 		/* opening the cloud storage repository failed for some reason,
 		 * so we don't know if there is additional data in the remote */
-		free(current_sha);
 		return 1;
 	}
 	/* if this is a git repository, do we already have this exact state loaded ?
@@ -447,47 +445,23 @@ int check_git_sha(struct git_state *state, struct git_repository **git_p)
 	if (git && git != dummy_git_repository) {
 		char *sha = get_sha(git, state->branch);
 		if (!same_string(sha, "") &&
-		    same_string(sha, current_sha)) {
+		    same_string(sha, state->sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
-			free(current_sha);
+			git_repository_free(git);
 			free(sha);
 			return 0;
 		}
 		free(sha);
 	}
-	free(current_sha);
 	return 1;
 }
 
 int parse_file_git(struct git_state *state)
 {
 	struct git_repository *git;
-	char *current_sha = copy_string(saved_git_id);
 	git = is_git_repository(state);
-
-	if (state->is_cloud && (!git || git == dummy_git_repository)) {
-		/* opening the cloud storage repository failed for some reason
-		 * give up here and don't send errors about git repositories */
-		free(current_sha);
-		return -1;
-	}
-	/* if this is a git repository, do we already have this exact state loaded ?
-	 * get the SHA and compare with what we currently have */
-	if (git && git != dummy_git_repository) {
-		char *sha = get_sha(git, state->branch);
-		if (!same_string(sha, "") &&
-		    same_string(sha, current_sha) &&
-		    !unsaved_changes()) {
-			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
-			free(current_sha);
-			free(sha);
-			return 0;
-		}
-		free(sha);
-	}
-	free(current_sha);
 	if (git)
-		return git_load_dives(git, state->branch);
+		return git_load_dives(git, state);
 	return -1;
 }
 

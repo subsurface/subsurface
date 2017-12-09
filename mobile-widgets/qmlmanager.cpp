@@ -205,7 +205,6 @@ void QMLManager::openLocalThenRemote(const FileLocation &f)
 	setNotificationText(tr("Open local dive data file"));
 	git_state state = f.gitState();
 	int error = parse_file_git(&state);
-	free_git_state(&state);
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
@@ -251,7 +250,8 @@ void QMLManager::openLocalThenRemote(const FileLocation &f)
 		m_cloudIsOffline = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
-	set_filename(f, true);
+	set_filename(f, state.sha);
+	free_git_state(&state);
 	if (m_cloudIsOffline) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
@@ -422,7 +422,6 @@ void QMLManager::saveCloudCredentials()
 		prefs.userid = NULL;
 		syncLoadFromCloud();
 		manager()->clearAccessCache(); // remove any chached credentials
-		clear_git_id(); // invalidate our remembered GIT SHA
 		clear_dive_file_data();
 		DiveListModel::instance()->clear();
 		GpsListModel::instance()->clear();
@@ -590,7 +589,6 @@ void QMLManager::loadDivesWithValidCredentials()
 	git_state state = f.gitState();
 	git_repository *git;
 	int error;
-	QString branch = f.getBranch();
 	if (check_git_sha(&state, &git) == 0) {
 		appendTextToLog("Cloud sync shows local cache was current");
 		goto successful_exit;
@@ -599,8 +597,8 @@ void QMLManager::loadDivesWithValidCredentials()
 
 	clear_dive_file_data();
 	if (git != dummy_git_repository) {
-		appendTextToLog(QString("have repository and branch %1").arg(branch));
-		error = git_load_dives(git, qPrintable(branch));
+		appendTextToLog(QString("have repository and branch %1").arg(state.branch));
+		error = git_load_dives(git, &state);
 		if (!state.is_remote)
 			setSyncToCloud(false);
 	} else {
@@ -613,7 +611,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		report_error("filename is now %s", qPrintable(f.formatShort()));
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
-		set_filename(f, true);
+		set_filename(f, state.sha);
 	} else {
 		report_error("failed to open file %s", qPrintable(f.formatLong()));
 		QString errorString(get_error_string());

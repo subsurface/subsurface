@@ -287,7 +287,7 @@ static int update_remote(git_repository *repo, git_remote *origin, git_reference
 
 extern int update_git_checkout(git_repository *repo, git_object *parent, git_tree *tree);
 
-static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
+static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id, struct git_state *state)
 {
 	(void) remote;
 	git_tree *local_tree, *remote_tree, *base_tree;
@@ -395,7 +395,7 @@ static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_r
 	}
 	if (git_reference_set_target(local_p, *local_p, &commit_oid, "Subsurface merge event"))
 		goto write_error;
-	set_git_id(&commit_oid);
+	set_git_id(state, &commit_oid);
 	git_signature_free(author);
 	if (verbose)
 		fprintf(stderr, "Successfully merged repositories");
@@ -489,7 +489,7 @@ static int try_to_update(git_repository *repo, git_remote *origin, git_reference
 	}
 	/* Ok, let's try to merge these */
 	git_storage_update_progress(translate("gettextFromC", "Try to merge local changes into cloud storage"));
-	ret = try_to_git_merge(repo, &local, remote, &base, local_id, remote_id);
+	ret = try_to_git_merge(repo, &local, remote, &base, local_id, remote_id, state);
 	if (ret == 0)
 		return update_remote(repo, origin, local, remote, state, rt);
 	else

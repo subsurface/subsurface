@@ -567,6 +567,12 @@ void set_filename(const FileLocation &location, bool force)
 	currentFile = location;
 }
 
+void set_filename(const FileLocation &location, const char *new_sha)
+{
+	set_filename(location, true);
+	currentFile.setSHA(new_sha);
+}
+
 void set_current_file_none()
 {
 	currentFile = FileLocation();
@@ -1730,6 +1736,9 @@ extern "C" void unlock_planner()
 
 FileLocation getCloudLocation(bool isOffline)
 {
+	// If current file is cloud location, return that to preserve the current SHA
+	if (currentFile.isCloud() && currentFile.isRemote() != isOffline)
+		return currentFile;
 	QString email = QString(prefs.cloud_storage_email);
 	QString url = QString(prefs.cloud_git_url) + "/" + email;
 	return isOffline ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, url, email)
