@@ -8,20 +8,26 @@
 #include <QtConcurrent>
 
 extern QHash <QString, QImage> thumbnailCache;
+static QMutex thumbnailMutex;
 
 void scaleImages(PictureEntry &entry)
 {
+	QMutexLocker l(&thumbnailMutex);
 	if (thumbnailCache.contains(entry.filename) && !thumbnailCache.value(entry.filename).isNull()) {
 		entry.image = thumbnailCache.value(entry.filename);
-	} else {
-		int dim = defaultIconMetrics().sz_pic;
-		QImage p = SHashedImage(entry.picture);
-		if(!p.isNull()) {
-			p = p.scaled(dim, dim, Qt::KeepAspectRatio);
-			thumbnailCache.insert(entry.filename, p);
-		}
-		entry.image = p;
+		return;
 	}
+	l.unlock();
+
+	int dim = defaultIconMetrics().sz_pic;
+	QImage p = SHashedImage(entry.picture);
+	if(!p.isNull()) {
+		p = p.scaled(dim, dim, Qt::KeepAspectRatio);
+		QMutexLocker l(&thumbnailMutex);
+		if (!thumbnailCache.contains(entry.filename))
+			thumbnailCache.insert(entry.filename, p);
+	}
+	entry.image = p;
 }
 
 DivePictureModel *DivePictureModel::instance()
