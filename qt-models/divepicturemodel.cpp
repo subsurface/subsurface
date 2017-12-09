@@ -7,8 +7,7 @@
 
 #include <QtConcurrent>
 
-extern QHash <QString, QImage > thumbnailCache;
-
+extern QHash <QString, QImage> thumbnailCache;
 
 SPixmap scaleImages(picturepointer picture)
 {
@@ -28,7 +27,6 @@ SPixmap scaleImages(picturepointer picture)
 	return ret;
 }
 
-
 DivePictureModel *DivePictureModel::instance()
 {
 	static DivePictureModel *self = new DivePictureModel();
@@ -39,8 +37,7 @@ DivePictureModel::DivePictureModel() : numberOfPictures(0)
 {
 }
 
-
-void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void> > futures)
+void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
 {
 	Q_FOREACH (QFuture<void> f, futures) {
 		f.waitForFinished();
@@ -108,7 +105,7 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 		switch (role) {
 		case Qt::UserRole:
 			ret = QVariant::fromValue((int)stringPixmapCache[key].offsetSeconds);
-		break;
+			break;
 		case Qt::DisplayRole:
 			ret = key;
 		}

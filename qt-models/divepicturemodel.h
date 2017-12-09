@@ -26,7 +26,7 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual void updateDivePictures();
-	void updateDivePicturesWhenDone(QList<QFuture<void> >);
+	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePicture(const QString& fileUrl, bool last);
 
 protected:
