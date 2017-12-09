@@ -6,17 +6,15 @@
 #include <QImage>
 #include <QFuture>
 
-struct PhotoHelper {
+struct PictureEntry {
+	struct picture *picture;
+	QString filename;
 	QImage image;
 	int offsetSeconds;
 };
 
-typedef QList<struct picture *> SPictureList;
-typedef struct picture *picturepointer;
-typedef QPair<picturepointer, QImage> SPixmap;
-
 // function that will scale the pixmap, used inside the QtConcurrent thread.
-SPixmap scaleImages(picturepointer picture);
+void scaleImages(PictureEntry &entry);
 
 class DivePictureModel : public QAbstractTableModel {
 	Q_OBJECT
@@ -31,11 +29,10 @@ public:
 
 protected:
 	DivePictureModel();
-	int numberOfPictures;
 	// Currently, load the images on the fly
 	// Later, use a thread to load the images
 	// Later, save the thumbnails so we don't need to reopen every time.
-	QHash<QString, PhotoHelper> stringPixmapCache;
+	QList<PictureEntry> pictures;
 };
 
 #endif
