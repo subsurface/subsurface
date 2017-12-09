@@ -9,22 +9,19 @@
 
 extern QHash <QString, QImage> thumbnailCache;
 
-SPixmap scaleImages(picturepointer picture)
+void scaleImages(PictureEntry &entry)
 {
-	SPixmap ret;
-	ret.first = picture;
-	if (thumbnailCache.contains(picture->filename) && !thumbnailCache.value(picture->filename).isNull()) {
-		ret.second = thumbnailCache.value(picture->filename);
+	if (thumbnailCache.contains(entry.filename) && !thumbnailCache.value(entry.filename).isNull()) {
+		entry.image = thumbnailCache.value(entry.filename);
 	} else {
 		int dim = defaultIconMetrics().sz_pic;
-		QImage p = SHashedImage(picture);
+		QImage p = SHashedImage(entry.picture);
 		if(!p.isNull()) {
 			p = p.scaled(dim, dim, Qt::KeepAspectRatio);
-			thumbnailCache.insert(picture->filename, p);
+			thumbnailCache.insert(entry.filename, p);
 		}
-		ret.second = p;
+		entry.image = p;
 	}
-	return ret;
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -33,7 +30,7 @@ DivePictureModel *DivePictureModel::instance()
 	return self;
 }
 
-DivePictureModel::DivePictureModel() : numberOfPictures(0)
+DivePictureModel::DivePictureModel()
 {
 }
 
@@ -47,30 +44,22 @@ void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
 
 void DivePictureModel::updateDivePictures()
 {
-	if (numberOfPictures != 0) {
-		beginRemoveRows(QModelIndex(), 0, numberOfPictures - 1);
-		numberOfPictures = 0;
+	if (!pictures.isEmpty()) {
+		beginRemoveRows(QModelIndex(), 0, pictures.count() - 1);
+		pictures.clear();
 		endRemoveRows();
 	}
 
 	// if the dive_table is empty, ignore the displayed_dive
-	numberOfPictures = dive_table.nr == 0 ? 0 : dive_get_picture_count(&displayed_dive);
-	if (numberOfPictures == 0) {
+	if (dive_table.nr == 0 || dive_get_picture_count(&displayed_dive) == 0)
 		return;
-	}
 
-	stringPixmapCache.clear();
-	SPictureList pictures;
-	FOR_EACH_PICTURE_NON_PTR(displayed_dive) {
-		stringPixmapCache[QString(picture->filename)].offsetSeconds = picture->offset.seconds;
-		pictures.push_back(picture);
-	}
+	FOR_EACH_PICTURE_NON_PTR(displayed_dive)
+		pictures.push_back({picture, picture->filename, QImage(), picture->offset.seconds});
 
-	QList<SPixmap> list = QtConcurrent::blockingMapped(pictures, scaleImages);
-	Q_FOREACH (const SPixmap &pixmap, list)
-		stringPixmapCache[pixmap.first->filename].image = pixmap.second;
+	QtConcurrent::blockingMap(pictures, scaleImages);
 
-	beginInsertRows(QModelIndex(), 0, numberOfPictures - 1);
+	beginInsertRows(QModelIndex(), 0, pictures.count() - 1);
 	endInsertRows();
 }
 
@@ -86,28 +75,28 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	if (!index.isValid())
 		return ret;
 
-	QString key = stringPixmapCache.keys().at(index.row());
+	const PictureEntry &entry = pictures.at(index.row());
 	if (index.column() == 0) {
 		switch (role) {
 		case Qt::ToolTipRole:
-			ret = key;
+			ret = entry.filename;
 			break;
 		case Qt::DecorationRole:
-			ret = stringPixmapCache[key].image;
+			ret = entry.image;
 			break;
 		case Qt::DisplayRole:
-			ret = QFileInfo(key).fileName();
+			ret = QFileInfo(entry.filename).fileName();
 			break;
 		case Qt::DisplayPropertyRole:
-			ret = QFileInfo(key).filePath();
+			ret = QFileInfo(entry.filename).filePath();
 		}
 	} else if (index.column() == 1) {
 		switch (role) {
 		case Qt::UserRole:
-			ret = QVariant::fromValue((int)stringPixmapCache[key].offsetSeconds);
+			ret = QVariant::fromValue(entry.offsetSeconds);
 			break;
 		case Qt::DisplayRole:
-			ret = key;
+			ret = entry.filename;
 		}
 	}
 	return ret;
@@ -126,5 +115,5 @@ void DivePictureModel::removePicture(const QString &fileUrl, bool last)
 int DivePictureModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
-	return numberOfPictures;
+	return pictures.count();
 }
