@@ -29,9 +29,6 @@ public:
 
 protected:
 	DivePictureModel();
-	// Currently, load the images on the fly
-	// Later, use a thread to load the images
-	// Later, save the thumbnails so we don't need to reopen every time.
 	QList<PictureEntry> pictures;
 };
 
