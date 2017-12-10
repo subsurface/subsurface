@@ -359,6 +359,27 @@
           </xsl:choose>
         </xsl:attribute>
 
+      <!-- Divemode -->
+      <xsl:if test="samples/waypoint/divemode/@type|u:samples/u:waypoint/u:divemode/@type|u1:samples/u1:waypoint/u1:divemode/@type != ''">
+        <xsl:attribute name='dctype'>
+          <xsl:choose>
+            <xsl:when test="samples/waypoint/divemode/@type|u:samples/u:waypoint/u:divemode/@type|u1:samples/u1:waypoint/u1:divemode/@type = 'apnoe'
+              or samples/waypoint/divemode/@type|u:samples/u:waypoint/u:divemode/@type|u1:samples/u1:waypoint/u1:divemode/@type = 'apnea'">
+              <xsl:text>Freedive</xsl:text>
+            </xsl:when>
+            <xsl:when test="samples/waypoint/divemode/@type|u:samples/u:waypoint/u:divemode/@type|u1:samples/u1:waypoint/u1:divemode/@type = 'closedcircuit'">
+              <xsl:text>CCR</xsl:text>
+            </xsl:when>
+            <xsl:when test="samples/waypoint/divemode/@type|u:samples/u:waypoint/u:divemode/@type|u1:samples/u1:waypoint/u1:divemode/@type = 'semiclosedcircuit'">
+              <xsl:text>PSCR</xsl:text>
+            </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>OC</xsl:text>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
+      </xsl:if>
+
       <depth>
         <xsl:for-each select="greatestdepth|informationafterdive/greatestdepth|u:greatestdepth|u:informationafterdive/u:greatestdepth|u1:greatestdepth|u1:informationafterdive/u1:greatestdepth|max_depth">
           <xsl:attribute name="max">
