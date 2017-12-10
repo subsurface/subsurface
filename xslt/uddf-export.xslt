@@ -360,11 +360,11 @@
                 <xsl:value-of select="substring-before(@start, ' ') * 100000"/>
               </tankpressurebegin>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="../divecomputer[1]/sample[@pressure]/@pressure[1]">
               <tankpressurebegin>
                 <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure]/@pressure[1], ' ') * 100000"/>
               </tankpressurebegin>
-            </xsl:otherwise>
+            </xsl:when>
           </xsl:choose>
 
           <xsl:choose>
@@ -373,11 +373,11 @@
                 <xsl:value-of select="substring-before(@end, ' ') * 100000"/>
               </tankpressureend>
             </xsl:when>
-            <xsl:otherwise>
+            <xsl:when test="../divecomputer[1]/sample[@pressure][last()]/@pressure[1]">
               <tankpressureend>
                 <xsl:value-of select="substring-before(../divecomputer[1]/sample[@pressure][last()]/@pressure[1], ' ') * 100000"/>
               </tankpressureend>
-            </xsl:otherwise>
+            </xsl:when>
           </xsl:choose>
 
         </tankdata>
