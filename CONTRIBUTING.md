@@ -59,7 +59,7 @@ Example with gitk
 [6]: https://github.com/Subsurface-divelog/subsurface/pulls
 [7]: https://www.kernel.org/pub/software/scm/git/docs/user-manual.html
 [8]: https://subsurface-divelog.org/building/
-[9]: http://gerrit.googlecode.com/svn/documentation/2.0/user-signedoffby.html
+[9]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
 [10]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
 
   
