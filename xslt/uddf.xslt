@@ -285,12 +285,16 @@
             <xsl:attribute name="he">
               <xsl:value-of select="//gas_mix[@id=$gas]/he"/>
             </xsl:attribute>
-            <xsl:attribute name="start">
-              <xsl:value-of select="concat(substring-before(./pressure_start, '.') div 100000, ' bar')"/>
-            </xsl:attribute>
-            <xsl:attribute name="end">
-              <xsl:value-of select="concat(substring-before(./pressure_end, '.') div 100000, ' bar')"/>
-            </xsl:attribute>
+            <xsl:if test="./pressure_start != ''">
+              <xsl:attribute name="start">
+                <xsl:value-of select="concat(substring-before(./pressure_start, '.') div 100000, ' bar')"/>
+              </xsl:attribute>
+            </xsl:if>
+            <xsl:if test="./pressure_end != ''">
+              <xsl:attribute name="end">
+                <xsl:value-of select="concat(substring-before(./pressure_end, '.') div 100000, ' bar')"/>
+              </xsl:attribute>
+            </xsl:if>
           </cylinder>
         </xsl:for-each>
       </xsl:if>
