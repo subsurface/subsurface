@@ -563,10 +563,7 @@ QLocale getLocale()
 void set_filename(const char *filename)
 {
 	free((void *)existing_filename);
-	if (filename)
-		existing_filename = strdup(filename);
-	else
-		existing_filename = NULL;
+	existing_filename = copy_string(filename);
 }
 
 const QString get_dc_nickname(const char *model, uint32_t deviceid)
