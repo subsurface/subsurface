@@ -723,7 +723,7 @@ extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
 extern void parse_xml_init(void);
 extern int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, const char **params);
 extern void parse_xml_exit(void);
-extern void set_filename(const char *filename, bool force);
+extern void set_filename(const char *filename);
 
 extern int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
 extern int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buf, int size, struct dive_table *table);
