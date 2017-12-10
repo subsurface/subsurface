@@ -948,11 +948,6 @@ CloudStorageSettings::CloudStorageSettings(QObject *parent) :
 
 }
 
-bool CloudStorageSettings::gitLocalOnly() const
-{
-	return prefs.git_local_only;
-}
-
 QString CloudStorageSettings::password() const
 {
 	return QString(prefs.cloud_storage_password);
@@ -966,11 +961,6 @@ QString CloudStorageSettings::newPassword() const
 QString CloudStorageSettings::email() const
 {
 	return QString(prefs.cloud_storage_email);
-}
-
-QString CloudStorageSettings::emailEncoded() const
-{
-	return QString(prefs.cloud_storage_email_encoded);
 }
 
 bool CloudStorageSettings::savePasswordLocal() const
@@ -996,11 +986,6 @@ QString CloudStorageSettings::userId() const
 QString CloudStorageSettings::baseUrl() const
 {
 	return QString(prefs.cloud_base_url);
-}
-
-QString CloudStorageSettings::gitUrl() const
-{
-	return QString(prefs.cloud_git_url);
 }
 
 void CloudStorageSettings::setPassword(const QString& value)
@@ -1047,16 +1032,6 @@ void CloudStorageSettings::setUserId(const QString& value)
 	free((void *)prefs.userid);
 	prefs.userid = copy_string(qPrintable(value));
 	emit userIdChanged(value);
-}
-
-void CloudStorageSettings::setEmailEncoded(const QString& value)
-{
-	if (value == prefs.cloud_storage_email_encoded)
-		return;
-	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
-	free((void *)prefs.cloud_storage_email_encoded);
-	prefs.cloud_storage_email_encoded = copy_string(qPrintable(value));
-	emit emailEncodedChanged(value);
 }
 
 void CloudStorageSettings::setSavePasswordLocal(bool value)
@@ -1110,33 +1085,11 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 {
 	if (value == prefs.cloud_base_url)
 		return;
-
-	// dont free data segment.
-	if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
-		free((void *)prefs.cloud_base_url);
-		free((void *)prefs.cloud_git_url);
-	}
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_base_url", value);
+	free((void *)prefs.cloud_base_url);
 	prefs.cloud_base_url = copy_string(qPrintable(value));
-	prefs.cloud_git_url = copy_string(qPrintable(QString(prefs.cloud_base_url) + "/git"));
-}
-
-void CloudStorageSettings::setGitUrl(const QString& value)
-{
-	Q_UNUSED(value); /* no op */
-}
-
-void CloudStorageSettings::setGitLocalOnly(bool value)
-{
-	if (value == prefs.git_local_only)
-		return;
-	QSettings s;
-	s.beginGroup("CloudStorage");
-	s.setValue("git_local_only", value);
-	prefs.git_local_only = value;
-	emit gitLocalOnlyChanged(value);
 }
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
@@ -2301,12 +2254,8 @@ void SettingsObjectWrapper::load()
 	}
 	GET_INT("cloud_verification_status", cloud_verification_status);
 	GET_BOOL("cloud_background_sync", cloud_background_sync);
-	GET_BOOL("git_local_only", git_local_only);
 
-	// creating the git url here is simply a convenience when C code wants
-	// to compare against that git URL - it's always derived from the base URL
 	GET_TXT("cloud_base_url", cloud_base_url);
-	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
 	s.endGroup();
 
 	// Subsurface webservice id is stored outside of the groups

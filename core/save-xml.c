@@ -18,7 +18,6 @@
 #include "device.h"
 #include "membuffer.h"
 #include "strndup.h"
-#include "git-access.h"
 #include "qthelperfromc.h"
 
 /*
@@ -544,7 +543,7 @@ static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 	put_format(b, "/>\n");
 }
 
-int save_dives(const char *filename)
+int save_dives_file(const char *filename)
 {
 	return save_dives_logic(filename, false);
 }
@@ -713,13 +712,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 {
 	struct membuffer buf = { 0 };
 	FILE *f;
-	void *git;
-	const char *branch, *remote;
 	int error;
-
-	git = is_git_repository(filename, &branch, &remote, false);
-	if (git)
-		return git_save_dives(git, branch, remote, select_only);
 
 	save_dives_buffer(&buf, select_only);
 

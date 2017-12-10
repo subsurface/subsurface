@@ -28,13 +28,22 @@
 #include "core/membuffer.h"
 #include "qt-models/tankinfomodel.h"
 #include "core/downloadfromdcthread.h"
+#include "core/filelocation.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
 #define END_FONT QLatin1Literal("</font>")
 
-#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
+static const FileLocation &noCloudLocalStorage()
+{
+	static FileLocation loc;
+	if (loc.isNone()) {
+		QString repo = QString(system_default_directory()) + "/cloudstorage/localrepo";
+		loc = FileLocation(FileLocation::GIT, repo, QString("master"));
+	}
+	return loc;
+}
 
 static void progressCallback(const char *text)
 {
@@ -154,6 +163,10 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
 	set_git_update_cb(&gitProgressCB);
 
+	QSettings s;
+	m_cloudIsOffline = s.value("git_local_only", true).toBool();
+	m_syncToCloud = !m_cloudIsOffline;
+
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
 }
@@ -186,15 +199,12 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 }
 
-void QMLManager::openLocalThenRemote(QString url)
+void QMLManager::openLocalThenRemote(const FileLocation &f)
 {
 	clear_dive_file_data();
 	setNotificationText(tr("Open local dive data file"));
-	QByteArray fileNamePrt = QFile::encodeName(url);
-	bool glo = prefs.git_local_only;
-	prefs.git_local_only = true;
-	int error = parse_file(fileNamePrt.data());
-	prefs.git_local_only = glo;
+	git_state state = f.gitState();
+	int error = parse_file_git(&state);
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
@@ -237,11 +247,12 @@ void QMLManager::openLocalThenRemote(QString url)
 	}
 	if (oldStatus() == CS_NOCLOUD) {
 		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
-		prefs.git_local_only = false;
+		m_cloudIsOffline = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
-	set_filename(fileNamePrt.data(), true);
-	if (prefs.git_local_only) {
+	set_filename(f, state.sha);
+	free_git_state(&state);
+	if (m_cloudIsOffline) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
 	} else {
@@ -252,8 +263,10 @@ void QMLManager::openLocalThenRemote(QString url)
 
 void QMLManager::mergeLocalRepo()
 {
-	char *filename = NOCLOUD_LOCALSTORAGE;
-	parse_file(filename);
+	const FileLocation &f = noCloudLocalStorage();
+	git_state state = f.gitState();
+	parse_file_git(&state);
+	free_git_state(&state);
 	process_dives(true, false);
 }
 
@@ -298,31 +311,31 @@ void QMLManager::finishSetup()
 	// Initialize cloud credentials.
 	setCloudUserName(prefs.cloud_storage_email);
 	setCloudPassword(prefs.cloud_storage_password);
-	setSyncToCloud(!prefs.git_local_only);
 	setCredentialStatus((cloud_status_qml) prefs.cloud_verification_status);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
-	if (!cloudUserName().isEmpty() &&
-	    !cloudPassword().isEmpty() &&
-	    getCloudURL(url) == 0) {
+	FileLocation cloud = getCloudLocation(true);
+	if (cloud.getType() != FileLocation::NONE) {
 		// we know that we are the first ones to access git storage, so we don't need to test,
 		// but we need to make sure we stay the only ones accessing git storage
 		alreadySaving = true;
-		openLocalThenRemote(url);
-	} else if (!same_string(existing_filename, "") && credentialStatus() != CS_UNKNOWN) {
+		openLocalThenRemote(cloud);
+	} else if (currentFile.isNone() && credentialStatus() != CS_UNKNOWN) {
 		setCredentialStatus(CS_NOCLOUD);
 		saveCloudCredentials();
 		appendTextToLog(tr("working in no-cloud mode"));
-		int error = parse_file(existing_filename);
+		git_state state = currentFile.gitState();
+		int error = parse_file_git(&state);
+		free_git_state(&state);
 		if (error) {
 			// we got an error loading the local file
-			appendTextToLog(QString("got error %2 when parsing file %1").arg(existing_filename, get_error_string()));
+			appendTextToLog(QString("got error %2 when parsing file %1").arg(currentFile.formatShort(), get_error_string()));
 			setNotificationText(tr("Error parsing local storage, giving up"));
-			set_filename(NULL, true);
+			set_filename(FileLocation(), true);
 		} else {
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad(0);
-			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
+			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(currentFile.formatShort()));
 		}
 	} else {
 		setCredentialStatus(CS_UNKNOWN);
@@ -408,10 +421,7 @@ void QMLManager::saveCloudCredentials()
 		free((void *)prefs.userid);
 		prefs.userid = NULL;
 		syncLoadFromCloud();
-		QString url;
-		getCloudURL(url);
 		manager()->clearAccessCache(); // remove any chached credentials
-		clear_git_id(); // invalidate our remembered GIT SHA
 		clear_dive_file_data();
 		DiveListModel::instance()->clear();
 		GpsListModel::instance()->clear();
@@ -421,9 +431,9 @@ void QMLManager::saveCloudCredentials()
 		alreadySaving = true;
 		// since we changed credentials, we need to try to connect to the cloud, regardless
 		// of whether we're in offline mode or not, to make sure the repository is synced
-		currentGitLocalOnly = prefs.git_local_only;
-		prefs.git_local_only = false;
-		openLocalThenRemote(url);
+		currentGitLocalOnly = m_cloudIsOffline;
+		m_cloudIsOffline = false;
+		openLocalThenRemote(getCloudLocation(true));
 	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY && !cloudPin().isEmpty()) {
 		// the user entered a PIN?
 		tryRetrieveDataFromBackend();
@@ -567,18 +577,19 @@ void QMLManager::loadDivesWithValidCredentials()
 {
 	QString url;
 	timestamp_t currentDiveTimestamp = selectedDiveTimestamp();
-	if (getCloudURL(url)) {
-		QString errorString(get_error_string());
+	FileLocation f = getCloudLocation(m_cloudIsOffline);
+	if (f.getType() == FileLocation::NONE) {
+		// This should not happen
+		QString errorString = tr("Cloud credentials are invalid");
 		appendTextToLog(errorString);
-		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(errorString) + END_FONT);
+		setStartPageText(RED_FONT + errorString + END_FONT);
 		revertToNoCloudIfNeeded();
 		return;
 	}
-	QByteArray fileNamePrt = QFile::encodeName(url);
+	git_state state = f.gitState();
 	git_repository *git;
-	const char *branch;
 	int error;
-	if (check_git_sha(fileNamePrt.data(), &git, &branch) == 0) {
+	if (check_git_sha(&state, &git) == 0) {
 		appendTextToLog("Cloud sync shows local cache was current");
 		goto successful_exit;
 	}
@@ -586,28 +597,34 @@ void QMLManager::loadDivesWithValidCredentials()
 
 	clear_dive_file_data();
 	if (git != dummy_git_repository) {
-		appendTextToLog(QString("have repository and branch %1").arg(branch));
-		error = git_load_dives(git, branch);
+		appendTextToLog(QString("have repository and branch %1").arg(state.branch));
+		error = git_load_dives(git, &state);
+		if (!state.is_remote)
+			setSyncToCloud(false);
 	} else {
 		appendTextToLog(QString("didn't receive valid git repo, try again"));
-		error = parse_file(fileNamePrt.data());
+		error = parse_file_git(&state);
+		if (!state.is_remote)
+			setSyncToCloud(false);
 	}
 	if (!error) {
-		report_error("filename is now %s", fileNamePrt.data());
+		report_error("filename is now %s", qPrintable(f.formatShort()));
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
-		set_filename(fileNamePrt.data(), true);
+		set_filename(f, state.sha);
 	} else {
-		report_error("failed to open file %s", fileNamePrt.data());
+		report_error("failed to open file %s", qPrintable(f.formatLong()));
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
 		setNotificationText(errorString);
 		revertToNoCloudIfNeeded();
+		free_git_state(&state);
 		return;
 	}
 	consumeFinishedLoad(currentDiveTimestamp);
 
 successful_exit:
+	free_git_state(&state);
 	alreadySaving = false;
 	setLoadFromCloud(true);
 	// if we came from local storage mode, let's merge the local data into the local cache
@@ -622,13 +639,13 @@ successful_exit:
 		saveChangesLocal();
 		if (syncToCloud() == false) {
 			appendTextToLog(QStringLiteral("taking things back offline now that storage is synced"));
-			prefs.git_local_only = syncToCloud();
+			m_cloudIsOffline = syncToCloud();
 		}
 	}
 	// if we got here just for an initial connection to the cloud, reset to offline
 	if (currentGitLocalOnly) {
 		currentGitLocalOnly = false;
-		prefs.git_local_only = true;
+		m_cloudIsOffline = true;
 	}
 	return;
 }
@@ -638,7 +655,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 	if (currentGitLocalOnly) {
 		// we tried to connect to the cloud for the first time and that failed
 		currentGitLocalOnly = false;
-		prefs.git_local_only = true;
+		m_cloudIsOffline = true;
 	}
 	if (oldStatus() == CS_NOCLOUD) {
 		// we tried to switch to a cloud account and had previously used local data,
@@ -648,7 +665,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		// dives
 		if (syncToCloud() == false) {
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
-			prefs.git_local_only = syncToCloud();
+			m_cloudIsOffline = syncToCloud();
 		}
 		free((void *)prefs.cloud_storage_email);
 		prefs.cloud_storage_email = NULL;
@@ -657,7 +674,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		setCloudUserName("");
 		setCloudPassword("");
 		setCredentialStatus(CS_NOCLOUD);
-		set_filename(NOCLOUD_LOCALSTORAGE, true);
+		set_filename(noCloudLocalStorage(), true);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
 	alreadySaving = false;
@@ -1090,35 +1107,36 @@ void QMLManager::openNoCloudRepo()
  * is obviously empty when just created.
  */
 {
-	char *filename = NOCLOUD_LOCALSTORAGE;
-	const char *branch;
+	const FileLocation &f = noCloudLocalStorage();
+	git_state state = f.gitState();
 	struct git_repository *git;
 
-	git = is_git_repository(filename, &branch, NULL, false);
+	git = is_git_repository(&state);
 
 	if (git == dummy_git_repository) {
-		if (git_create_local_repo(filename))
+		if (git_create_local_repo(qPrintable(f.getName())))
 			appendTextToLog(get_error_string());
-		set_filename(filename, true);
+		set_filename(f, true);
 		GeneralSettingsObjectWrapper s(this);
-		s.setDefaultFilename(filename);
+		s.setDefaultFilename(f.getName());
 		s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
 	}
 
-	openLocalThenRemote(filename);
+	free_git_state(&state);
+	openLocalThenRemote(f);
 }
 
 void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
 		if (credentialStatus() == CS_NOCLOUD) {
-			if (same_string(existing_filename, "")) {
-				char *filename = NOCLOUD_LOCALSTORAGE;
-				if (git_create_local_repo(filename))
+			if (currentFile.isNone()) {
+				const FileLocation &f = noCloudLocalStorage();
+				if (git_create_local_repo(qPrintable(f.getName())))
 					appendTextToLog(get_error_string());
-				set_filename(filename, true);
+				set_filename(f, true);
 				GeneralSettingsObjectWrapper s(this);
-				s.setDefaultFilename(filename);
+				s.setDefaultFilename(f.getName());
 				s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
 			}
 		} else if (!loadFromCloud()) {
@@ -1132,18 +1150,20 @@ void QMLManager::saveChangesLocal()
 			return;
 		}
 		alreadySaving = true;
-		bool glo = prefs.git_local_only;
-		prefs.git_local_only = true;
-		if (save_dives(existing_filename)) {
+		const FileLocation &f = currentFile;
+		struct git_state state = f.gitState();
+		int error = save_dives_git(&state);
+		if (f.isCloud() && !state.is_remote)
+			setSyncToCloud(false);
+		free_git_state(&state);
+		if (error) {
 			QString errorString(get_error_string());
 			appendTextToLog(errorString);
 			setNotificationText(errorString);
-			set_filename(NULL, true);
-			prefs.git_local_only = glo;
+			set_filename(FileLocation(), true);
 			alreadySaving = false;
 			return;
 		}
-		prefs.git_local_only = glo;
 		mark_divelist_changed(false);
 		alreadySaving = false;
 	} else {
@@ -1166,7 +1186,7 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 	saveChangesLocal();
 
 	// if the user asked not to push to the cloud we are done
-	if (prefs.git_local_only && !forceRemoteSync)
+	if (m_cloudIsOffline && !forceRemoteSync)
 		return;
 
 	if (!loadFromCloud()) {
@@ -1174,12 +1194,9 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 		return;
 	}
 
-	bool glo = prefs.git_local_only;
-	prefs.git_local_only = false;
 	alreadySaving = true;
 	loadDivesWithValidCredentials();
 	alreadySaving = false;
-	prefs.git_local_only = glo;
 }
 
 bool QMLManager::undoDelete(int id)
@@ -1481,7 +1498,7 @@ void QMLManager::setCredentialStatus(const cloud_status_qml value)
 		setOldStatus(m_credentialStatus);
 		if (value == CS_NOCLOUD) {
 			appendTextToLog("Switching to no cloud mode");
-			set_filename(NOCLOUD_LOCALSTORAGE, true);
+			set_filename(noCloudLocalStorage(), true);
 			clearCredentials();
 		}
 		m_credentialStatus = value;
@@ -1562,10 +1579,10 @@ bool QMLManager::syncToCloud() const
 void QMLManager::setSyncToCloud(bool status)
 {
 	m_syncToCloud = status;
-	prefs.git_local_only = !status;
+	m_cloudIsOffline = !status;
 	QSettings s;
 	s.beginGroup("CloudStorage");
-	s.setValue("git_local_only", prefs.git_local_only);
+	s.setValue("git_local_only", m_cloudIsOffline);
 	emit syncToCloudChanged();
 }
 

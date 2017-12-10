@@ -40,11 +40,6 @@ void TestPreferences::testPreferences()
 	cloud->setEmail("tomaz@gmail.com");
 	TEST(cloud->email(), QStringLiteral("tomaz@gmail.com"));
 
-	cloud->setGitLocalOnly(true);
-	TEST(cloud->gitLocalOnly(), true);
-	cloud->setGitLocalOnly(false);
-	TEST(cloud->gitLocalOnly(), false);
-
 	// Why there's new password and password on the prefs?
 	cloud->setNewPassword("ABCD");
 	TEST(cloud->newPassword(), QStringLiteral("ABCD"));

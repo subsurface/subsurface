@@ -149,7 +149,7 @@ void TestParse::testParse()
 	QCOMPARE(parseV3(), 0);
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
 
-	QCOMPARE(save_dives("./testout.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testout.ssrf"), 0);
 	FILE_COMPARE("./testout.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
 }
@@ -159,7 +159,7 @@ void TestParse::testParseDM4()
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.db", &_sqlite3_handle), 0);
 	QCOMPARE(parse_dm4_buffer(_sqlite3_handle, 0, 0, 0, &dive_table), 0);
 
-	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testdm4out.ssrf"), 0);
 	FILE_COMPARE("./testdm4out.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
 }
@@ -169,7 +169,7 @@ void TestParse::testParseDM5()
 	QCOMPARE(sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.db", &_sqlite3_handle), 0);
 	QCOMPARE(parse_dm5_buffer(_sqlite3_handle, 0, 0, 0, &dive_table), 0);
 
-	QCOMPARE(save_dives("./testdm5out.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testdm5out.ssrf"), 0);
 	FILE_COMPARE("./testdm5out.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.xml");
 }
@@ -228,7 +228,7 @@ void TestParse::testParseHUDC()
 		dive->dc.when = 1255152761;
 	}
 
-	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testhudcout.ssrf"), 0);
 	FILE_COMPARE("./testhudcout.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
 }
@@ -260,7 +260,7 @@ void TestParse::testParseNewFormat()
 	}
 
 	fprintf(stderr, "number of dives %d \n", dive_table.nr);
-	QCOMPARE(save_dives("./testsbnewout.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testsbnewout.ssrf"), 0);
 
 	// Currently the CSV parse fails
 	FILE_COMPARE("./testsbnewout.ssrf",
@@ -283,7 +283,7 @@ void TestParse::testParseDLD()
 	 * clear_dive_file_data(), so we do have an additional DC nick
 	 * name field on the log.
 	 */
-	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testdldout.ssrf"), 0);
 	FILE_COMPARE("./testdldout.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml")
 }
@@ -295,7 +295,7 @@ void TestParse::testParseMerge()
 	 */
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml"), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml"), 0);
-	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
+	QCOMPARE(save_dives_file("./testmerge.ssrf"), 0);
 	FILE_COMPARE("./testmerge.ssrf",
 		SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
 }

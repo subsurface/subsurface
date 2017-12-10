@@ -12,6 +12,7 @@
 #include <sys/time.h>
 #include "exif.h"
 #include "file.h"
+#include "git-access.h"
 #include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
@@ -33,7 +34,6 @@
 
 #include <libxslt/documents.h>
 
-const char *existing_filename;
 static QLocale loc;
 
 #define translate(_context, arg) trGettext(arg)
@@ -560,15 +560,33 @@ QLocale getLocale()
 	return loc;
 }
 
-void set_filename(const char *filename, bool force)
+void set_filename(const FileLocation &location, bool force)
 {
-	if (!force && existing_filename)
+	if (!force && !currentFile.isNone())
 		return;
-	free((void *)existing_filename);
-	if (filename)
-		existing_filename = strdup(filename);
-	else
-		existing_filename = NULL;
+	currentFile = location;
+}
+
+void set_filename(const FileLocation &location, const char *new_sha)
+{
+	set_filename(location, true);
+	currentFile.setSHA(new_sha);
+}
+
+void set_current_file_none()
+{
+	currentFile = FileLocation();
+}
+
+char *get_current_file_name()
+{
+	return strdup(qPrintable(currentFile.getName()));
+}
+
+void get_cloud_info(git_state *state)
+{
+	FileLocation location = getCloudLocation(false);
+	*state = location.gitState();
 }
 
 const QString get_dc_nickname(const char *model, uint32_t deviceid)
@@ -1431,39 +1449,6 @@ fraction_t string_to_fraction(const char *str)
 	return fraction;
 }
 
-int getCloudURL(QString &filename)
-{
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
-		return report_error("Please configure Cloud storage email and password in the preferences");
-	if (email != prefs.cloud_storage_email_encoded) {
-		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
-	}
-	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);
-	if (verbose)
-		qDebug() << "cloud URL set as" << filename;
-	return 0;
-}
-
-extern "C" char *cloud_url()
-{
-	QString filename;
-	getCloudURL(filename);
-	return strdup(filename.toUtf8().data());
-}
-
-extern "C" bool isCloudUrl(const char *filename)
-{
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (!email.isEmpty() &&
-	    QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email) == filename)
-		return true;
-	return false;
-}
-
 extern "C" bool getProxyString(char **buffer)
 {
 	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
@@ -1747,4 +1732,15 @@ extern "C" void lock_planner()
 extern "C" void unlock_planner()
 {
 	planLock.unlock();
+}
+
+FileLocation getCloudLocation(bool isOffline)
+{
+	// If current file is cloud location, return that to preserve the current SHA
+	if (currentFile.isCloud() && currentFile.isRemote() != isOffline)
+		return currentFile;
+	QString email = QString(prefs.cloud_storage_email);
+	QString url = QString(prefs.cloud_base_url) + "/git/" + email;
+	return isOffline ? FileLocation(FileLocation::CLOUD_GIT_OFFLINE, url, email)
+			 : FileLocation(FileLocation::CLOUD_GIT, url, email);
 }

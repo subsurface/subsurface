@@ -64,7 +64,6 @@ struct preferences {
 	const char *default_filename;
 	const char *default_cylinder;
 	const char *cloud_base_url;
-	const char *cloud_git_url;
 	const char *time_format;
 	const char *date_format;
 	const char *date_format_short;
@@ -142,7 +141,6 @@ struct preferences {
 	const char *cloud_storage_password;
 	const char *cloud_storage_newpassword;
 	const char *cloud_storage_email;
-	const char *cloud_storage_email_encoded;
 	bool save_password_local;
 	short cloud_verification_status;
 	bool cloud_background_sync;
@@ -151,7 +149,6 @@ struct preferences {
 	short vpmb_conservatism;
 	int time_threshold;
 	int distance_threshold;
-	bool git_local_only;
 	short cloud_timeout;
 	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
 	update_manager_prefs_t update_manager;

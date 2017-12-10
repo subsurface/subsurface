@@ -10,10 +10,6 @@
 
 struct preferences prefs, git_prefs;
 struct preferences default_prefs = {
-	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
-#if defined(SUBSURFACE_MOBILE)
-	.git_local_only = true,
-#endif
 	.units = SI_UNITS,
 	.unit_system = METRIC,
 	.coordinates_traditional = true,
@@ -164,27 +160,22 @@ void print_version()
 
 void print_files()
 {
-	const char *branch = 0;
-	const char *remote = 0;
-	const char *filename, *local_git;
+	struct git_state cloud_state;
+	char *local_git;
 
 	printf("\nFile locations:\n\n");
 	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, "")) {
-		filename = cloud_url();
-
-		is_git_repository(filename, &branch, &remote, true);
-	} else {
-		/* strdup so the free below works in either case */
-		filename = strdup("No valid cloud credentials set.\n");
-	}
-	if (branch && remote) {
-		local_git = get_local_dir(remote, branch);
+		get_cloud_info(&cloud_state);
+		printf("Cloud repository: %s\n", cloud_state.location);
+		printf("Cloud branch: %s\n", cloud_state.branch);
+		printf("Cloud user: %s\n", cloud_state.user);
+		printf("Cloud local only: %s\n", cloud_state.is_remote ? "no" : "yes");
+		local_git = get_local_dir(&cloud_state);
 		printf("Local git storage: %s\n", local_git);
+		free(local_git);
 	} else {
-		printf("Unable to get local git directory\n");
+		printf("No valid cloud credentials set.\n");
 	}
-	printf("Cloud URL: %s\n", filename);
-	free((void *)filename);
 	char *tmp = hashfile_name_string();
 	printf("Image hashes: %s\n", tmp);
 	free(tmp);
@@ -297,6 +288,7 @@ void setup_system_prefs(void)
 #if !defined(SUBSURFACE_MOBILE)
 	default_prefs.default_filename = copy_string(system_default_filename());
 #endif
+	default_prefs.cloud_base_url = strdup("https://cloud.subsurface-divelog.org/");
 	env = getenv("LC_MEASUREMENT");
 	if (!env)
 		env = getenv("LC_ALL");
@@ -322,7 +314,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->default_filename = copy_string(src->default_filename);
 	dest->default_cylinder = copy_string(src->default_cylinder);
 	dest->cloud_base_url = copy_string(src->cloud_base_url);
-	dest->cloud_git_url = copy_string(src->cloud_git_url);
 	dest->userid = copy_string(src->userid);
 	dest->proxy_host = copy_string(src->proxy_host);
 	dest->proxy_user = copy_string(src->proxy_user);
@@ -333,7 +324,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->cloud_storage_password = copy_string(src->cloud_storage_password);
 	dest->cloud_storage_newpassword = copy_string(src->cloud_storage_newpassword);
 	dest->cloud_storage_email = copy_string(src->cloud_storage_email);
-	dest->cloud_storage_email_encoded = copy_string(src->cloud_storage_email_encoded);
 	dest->facebook.access_token = copy_string(src->facebook.access_token);
 	dest->facebook.user_id = copy_string(src->facebook.user_id);
 	dest->facebook.album_id = copy_string(src->facebook.album_id);

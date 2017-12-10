@@ -13,6 +13,7 @@
 #include <QLibraryInfo>
 
 #include "core/qt-gui.h"
+#include "core/filelocation.h"
 
 #ifdef SUBSURFACE_MOBILE
 #include <QQuickWindow>
@@ -33,7 +34,7 @@ void init_ui()
 	PluginManager::instance().loadPlugins();
 
 	window = new MainWindow();
-	if (existing_filename && existing_filename[0] != '\0')
+	if (!currentFile.isNone())
 		window->setTitle(MWTF_FILENAME);
 	else
 		window->setTitle(MWTF_DEFAULT);
@@ -49,7 +50,6 @@ void exit_ui()
 {
 	delete window;
 	delete qApp;
-	free((void *)existing_filename);
 }
 
 double get_screen_dpi()

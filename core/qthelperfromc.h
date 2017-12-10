@@ -2,10 +2,11 @@
 #ifndef QTHELPERFROMC_H
 #define QTHELPERFROMC_H
 
+struct git_state;
+
 bool getProxyString(char **buffer);
-bool canReachCloudServer();
+bool canReachCloudServer(const char *cloud_url);
 void updateWindowTitle();
-bool isCloudUrl(const char *filename);
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);
 void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
@@ -28,5 +29,9 @@ void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 void print_qt_versions();
 void lock_planner();
 void unlock_planner();
+void set_current_file_none();
+char *get_current_file_name();	// Caller must free() returned file name
+int parse_git_filename(const char *fn, char **repo, char **branch);	// Caller must free() *repo and *branch
+void get_cloud_info(struct git_state *state);
 
 #endif // QTHELPERFROMC_H

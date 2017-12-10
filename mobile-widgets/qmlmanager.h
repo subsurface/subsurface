@@ -175,7 +175,7 @@ public slots:
 	void clearCredentials();
 	void cancelCredentialsPinSetup();
 	void finishSetup();
-	void openLocalThenRemote(QString url);
+	void openLocalThenRemote(const FileLocation &file);
 	void mergeLocalRepo();
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
@@ -216,6 +216,7 @@ private:
 	struct dive_trip *deletedTrip;
 	QString m_notificationText;
 	bool m_syncToCloud;
+	bool m_cloudIsOffline;
 	int m_updateSelectedDive;
 	int m_selectedDiveTimestamp;
 	cloud_status_qml m_credentialStatus;

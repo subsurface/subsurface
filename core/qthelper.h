@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include "dive.h"
 #include "divelist.h"
+#include "filelocation.h"
 #include <QTranslator>
 #include <QDir>
 
@@ -37,7 +38,6 @@ depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);
 fraction_t string_to_fraction(const char *str);
-int getCloudURL(QString &filename);
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude);
 QByteArray getCurrentAppState();
 void setCurrentAppState(QByteArray state);
@@ -54,4 +54,10 @@ extern "C" double cache_value(int tissue, int timestep, enum inertgas gas);
 extern "C" void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 extern "C" void lock_planner();
 extern "C" void unlock_planner();
+void set_filename(const FileLocation &, bool force);
+void set_filename(const FileLocation &, const char *new_sha);
+extern "C" void set_current_file_none();
+extern "C" char *get_current_file_name();	// Caller must free() returned file name
+extern "C" void get_cloud_info(struct git_state *state);
+FileLocation getCloudLocation(bool isOffline);	// Return FileLocation::NONE if no cloud was set
 #endif // QTHELPER_H

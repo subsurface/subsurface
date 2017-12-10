@@ -6,6 +6,7 @@
 #include "core/display.h"
 #include "core/uemis.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/filelocation.h"
 #include "qt-models/models.h"
 #include "qt-models/diveimportedmodel.h"
 
@@ -358,9 +359,7 @@ void DownloadFromDCWidget::checkLogFile(int state)
 
 void DownloadFromDCWidget::pickLogFile()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
+	QString filename = currentFile.path().append(QDir::separator()).append("subsurface.log");
 	QString logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
 					       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {
@@ -384,9 +383,7 @@ void DownloadFromDCWidget::checkDumpFile(int state)
 
 void DownloadFromDCWidget::pickDumpFile()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
+	QString filename = currentFile.path().append(QDir::separator()).append("subsurface.bin");
 	QString dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer binary dump file"),
 						filename, tr("Dump files") + " (*.bin)");
 	if (!dumpFile.isEmpty()) {

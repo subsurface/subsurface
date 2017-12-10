@@ -7,6 +7,7 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 // For fill_computer_list, descriptorLookup
 #include "core/downloadfromdcthread.h"
+#include "core/filelocation.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -322,9 +323,7 @@ void OstcFirmwareCheck::upgradeFirmware()
 	QString saveFileName = latestFirmwareHexFile;
 	saveFileName.replace("http://www.heinrichsweikamp.net/autofirmware/", "");
 	saveFileName.replace("firmware", latestFirmwareAvailable);
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append(saveFileName);
+	QString filename = currentFile.path().append(QDir::separator()).append(saveFileName);
 	storeFirmware = QFileDialog::getSaveFileName(parent, tr("Save the downloaded firmware as"),
 						     filename, tr("Firmware files") + " (*.hex *.bin)");
 	if (storeFirmware.isEmpty())
@@ -1368,9 +1367,7 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC4()
 
 void ConfigureDiveComputerDialog::on_backupButton_clicked()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
+	QString filename = currentFile.path().append(QDir::separator()).append("Backup.xml");
 	QString backupPath = QFileDialog::getSaveFileName(this, tr("Backup dive computer settings"),
 							  filename, tr("Backup files") + " (*.xml)");
 	if (!backupPath.isEmpty()) {
@@ -1389,9 +1386,7 @@ void ConfigureDiveComputerDialog::on_backupButton_clicked()
 
 void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("Backup.xml");
+	QString filename = currentFile.path().append(QDir::separator()).append("Backup.xml");
 	QString restorePath = QFileDialog::getOpenFileName(this, tr("Restore dive computer settings"),
 							   filename, tr("Backup files") + " (*.xml)");
 	if (!restorePath.isEmpty()) {
@@ -1411,9 +1406,7 @@ void ConfigureDiveComputerDialog::on_restoreBackupButton_clicked()
 
 void ConfigureDiveComputerDialog::on_updateFirmwareButton_clicked()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath();
+	QString filename = currentFile.path();
 	QString firmwarePath = QFileDialog::getOpenFileName(this, tr("Select firmware file"),
 							    filename, tr("All files") + " (*.*)");
 	if (!firmwarePath.isEmpty()) {
@@ -1472,9 +1465,7 @@ void ConfigureDiveComputerDialog::checkLogFile(int state)
 
 void ConfigureDiveComputerDialog::pickLogFile()
 {
-	QString filename = existing_filename ?: prefs.default_filename;
-	QFileInfo fi(filename);
-	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
+	QString filename = currentFile.path().append(QDir::separator()).append("subsurface.log");
 	logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
 					       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {

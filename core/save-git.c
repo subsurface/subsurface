@@ -1102,7 +1102,7 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 	put_format(msg, "Created by %s\n", subsurface_user_agent());
 }
 
-static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id, bool create_empty)
+static int create_new_commit(git_repository *repo, struct git_state *state, git_oid *tree_id, bool create_empty)
 {
 	int ret;
 	git_reference *ref;
@@ -1112,27 +1112,23 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	git_commit *commit;
 	git_tree *tree;
 
-	ret = git_branch_lookup(&ref, repo, branch, GIT_BRANCH_LOCAL);
+	ret = git_branch_lookup(&ref, repo, state->branch, GIT_BRANCH_LOCAL);
 	switch (ret) {
 	default:
-		return report_error("Bad branch '%s' (%s)", branch, strerror(errno));
+		return report_error("Bad branch '%s' (%s)", state->branch, strerror(errno));
 	case GIT_EINVALIDSPEC:
-		return report_error("Invalid branch name '%s'", branch);
+		return report_error("Invalid branch name '%s'", state->branch);
 	case GIT_ENOTFOUND: /* We'll happily create it */
 		ref = NULL;
-		parent = try_to_find_parent(saved_git_id, repo);
+		parent = try_to_find_parent(state->sha, repo);
 		break;
 	case 0:
 		if (git_reference_peel(&parent, ref, GIT_OBJ_COMMIT))
-			return report_error("Unable to look up parent in branch '%s'", branch);
+			return report_error("Unable to look up parent in branch '%s'", state->branch);
 
-		if (saved_git_id) {
-			if (existing_filename && verbose)
-				fprintf(stderr, "existing filename %s\n", existing_filename);
+		if (state->sha[0]) {
 			const git_oid *id = git_commit_id((const git_commit *) parent);
-			/* if we are saving to the same git tree we got this from, let's make
-			 * sure there is no confusion */
-			if (same_string(existing_filename, remote) && git_oid_strcmp(id, saved_git_id))
+			if (git_oid_strcmp(id, state->sha))
 				return report_error("The git branch does not match the git parent of the source");
 		}
 
@@ -1166,8 +1162,8 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	}
 
 	if (!ref) {
-		if (git_branch_create(&ref, repo, branch, commit, 0))
-			return report_error("Failed to create branch '%s'", branch);
+		if (git_branch_create(&ref, repo, state->branch, commit, 0))
+			return report_error("Failed to create branch '%s'", state->branch);
 	}
 	/*
 	 * If it's a checked-out branch, try to also update the working
@@ -1181,12 +1177,12 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 			const git_error *err = giterr_last();
 			const char *errstr = err ? err->message : strerror(errno);
 			report_error("Git branch '%s' is checked out, but worktree is dirty (%s)",
-				branch, errstr);
+				state->branch, errstr);
 		}
 	}
 
 	if (git_reference_set_target(&ref, ref, &commit_id, "Subsurface save event"))
-		return report_error("Failed to update branch '%s'", branch);
+		return report_error("Failed to update branch '%s'", state->branch);
 
 	/*
 	 * if this was the empty commit to initialize a new repo, don't remember the
@@ -1194,7 +1190,7 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	 * the tree when we actually try to store the dive data
 	 */
 	if (! create_empty)
-		set_git_id(&commit_id);
+		set_git_id(state, &commit_id);
 
 	git_signature_free(author);
 
@@ -1225,7 +1221,7 @@ static int write_git_tree(git_repository *repo, struct dir *tree, git_oid *resul
 	return ret;
 }
 
-int do_git_save(git_repository *repo, const char *branch, const char *remote, bool select_only, bool create_empty)
+int do_git_save(git_repository *repo, struct git_state *state, bool select_only, bool create_empty)
 {
 	struct dir tree;
 	git_oid id;
@@ -1241,7 +1237,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 	 * Check if we can do the cached writes - we need to
 	 * have the original git commit we loaded in the repo
 	 */
-	cached_ok = try_to_find_parent(saved_git_id, repo);
+	cached_ok = try_to_find_parent(state->sha, repo);
 
 	/* Start with an empty tree: no subdirectories, no files */
 	tree.name[0] = 0;
@@ -1261,26 +1257,23 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		return report_error("git tree write failed");
 
 	/* And save the tree! */
-	if (create_new_commit(repo, remote, branch, &id, create_empty))
+	if (create_new_commit(repo, state, &id, create_empty))
 		return report_error("creating commit failed");
 
-	if (remote && prefs.cloud_background_sync && !prefs.git_local_only) {
+	if (prefs.cloud_background_sync && state->is_cloud && state->is_remote) {
 		/* now sync the tree with the cloud server */
-		if (strstr(remote, prefs.cloud_git_url)) {
-			return sync_with_remote(repo, remote, branch, RT_HTTPS);
-		}
+		return sync_with_remote(repo, state, RT_HTTPS);
 	}
 	return 0;
 }
 
-int git_save_dives(struct git_repository *repo, const char *branch, const char *remote, bool select_only)
+int save_dives_git(struct git_state *state)
 {
 	int ret;
-
-	if (repo == dummy_git_repository)
-		return report_error("Unable to open git repository '%s'", branch);
-	ret = do_git_save(repo, branch, remote, select_only, false);
-	git_repository_free(repo);
-	free((void *)branch);
+	void *git = is_git_repository(state);
+	if (!git || git == dummy_git_repository)
+		return report_error("Unable to open git repository '%s'", state->location);
+	ret = do_git_save(git, state, false, false);
+	git_repository_free(git);
 	return ret;
 }
