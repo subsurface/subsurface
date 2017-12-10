@@ -90,8 +90,8 @@ struct preferences default_prefs = {
 	},
 	.planner_deco_mode = BUEHLMANN,
 	.vpmb_conservatism = 3,
-	.distance_threshold = 1000,
-	.time_threshold = 600,
+	.distance_threshold = 50,
+	.time_threshold = 300,
 #if defined(SUBSURFACE_MOBILE)
 	.cloud_timeout = 10,
 #else

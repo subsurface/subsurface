@@ -55,6 +55,13 @@ static void copy_gps_location(struct dive *from, struct dive *to)
 }
 
 #define SAME_GROUP 6 * 3600 // six hours
+#define SET_LOCATION(_dive, _gpsfix, _mark)\
+{ ;\
+	copy_gps_location(_gpsfix, _dive);\
+	changed ++;\
+	tracer = _mark;\
+}
+
 //TODO: C Code. static functions are not good if we plan to have a test for them.
 static bool merge_locations_into_dives(void)
 {
@@ -79,9 +86,7 @@ static bool merge_locations_into_dives(void)
 					if (time_during_dive_with_offset(dive, gpsfix->when, 0)) {
 						if (verbose)
 							qDebug() << "gpsfix is during the dive, pick that one";
-						copy_gps_location(gpsfix, dive);
-						changed++;
-						tracer = j;
+						SET_LOCATION(dive, gpsfix, j);
 						break;
 					} else {
 						/*
@@ -91,15 +96,6 @@ static bool merge_locations_into_dives(void)
 						    time_during_dive_with_offset(dive, nextgpsfix->when, SAME_GROUP)) {
 							if (verbose)
 								qDebug() << "look at the next gps fix @" << get_dive_date_string(nextgpsfix->when);
-							/* first let's test if this one is during the dive */
-							if (time_during_dive_with_offset(dive, nextgpsfix->when, 0)) {
-								if (verbose)
-									qDebug() << "which is during the dive, pick that one";
-								copy_gps_location(nextgpsfix, dive);
-								changed++;
-								tracer = j + 1;
-								break;
-							}
 							/* we know the gps fixes are sorted; if they are both before the dive, ignore the first,
 							 * if theay are both after the dive, take the first,
 							 * if the first is before and the second is after, take the closer one */
@@ -110,25 +106,19 @@ static bool merge_locations_into_dives(void)
 							} else if (gpsfix->when > dive_endtime(dive)) {
 								if (verbose)
 									qDebug() << "which is even later after the end of the dive, so pick the previous one";
-								copy_gps_location(gpsfix, dive);
-								changed++;
-								tracer = j;
+								SET_LOCATION(dive, gpsfix, j);
 								break;
 							} else {
 								/* ok, gpsfix is before, nextgpsfix is after */
-								if (dive->when - gpsfix->when <= nextgpsfix->when - dive_endtime(dive)) {
+								if (dive->when - gpsfix->when <= nextgpsfix->when - dive->when) {
 									if (verbose)
 										qDebug() << "pick the one before as it's closer to the start";
-									copy_gps_location(gpsfix, dive);
-									changed++;
-									tracer = j;
+									SET_LOCATION(dive, gpsfix, j);
 									break;
 								} else {
 									if (verbose)
 										qDebug() << "pick the one after as it's closer to the start";
-									copy_gps_location(nextgpsfix, dive);
-									changed++;
-									tracer = j + 1;
+									SET_LOCATION(dive, nextgpsfix, j + 1);
 									break;
 								}
 							}
@@ -138,9 +128,7 @@ static bool merge_locations_into_dives(void)
 						} else {
 							if (verbose)
 								qDebug() << "which seems to be the best one for this dive, so pick it";
-							copy_gps_location(gpsfix, dive);
-							changed++;
-							tracer = j;
+							SET_LOCATION(dive, gpsfix, j);
 							break;
 						}
 					}
