@@ -240,7 +240,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		prefs.git_local_only = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
-	set_filename(fileNamePrt.data(), true);
+	set_filename(fileNamePrt.data());
 	if (prefs.git_local_only) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
@@ -318,7 +318,7 @@ void QMLManager::finishSetup()
 			// we got an error loading the local file
 			appendTextToLog(QString("got error %2 when parsing file %1").arg(existing_filename, get_error_string()));
 			setNotificationText(tr("Error parsing local storage, giving up"));
-			set_filename(NULL, true);
+			set_filename(NULL);
 		} else {
 			// successfully opened the local file, now add thigs to the dive list
 			consumeFinishedLoad(0);
@@ -596,7 +596,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		report_error("filename is now %s", fileNamePrt.data());
 		QString errorString(get_error_string());
 		appendTextToLog(errorString);
-		set_filename(fileNamePrt.data(), true);
+		set_filename(fileNamePrt.data());
 	} else {
 		report_error("failed to open file %s", fileNamePrt.data());
 		QString errorString(get_error_string());
@@ -657,7 +657,7 @@ void QMLManager::revertToNoCloudIfNeeded()
 		setCloudUserName("");
 		setCloudPassword("");
 		setCredentialStatus(CS_NOCLOUD);
-		set_filename(NOCLOUD_LOCALSTORAGE, true);
+		set_filename(NOCLOUD_LOCALSTORAGE);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
 	alreadySaving = false;
@@ -1099,7 +1099,7 @@ void QMLManager::openNoCloudRepo()
 	if (git == dummy_git_repository) {
 		if (git_create_local_repo(filename))
 			appendTextToLog(get_error_string());
-		set_filename(filename, true);
+		set_filename(filename);
 		GeneralSettingsObjectWrapper s(this);
 		s.setDefaultFilename(filename);
 		s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
@@ -1116,7 +1116,7 @@ void QMLManager::saveChangesLocal()
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				if (git_create_local_repo(filename))
 					appendTextToLog(get_error_string());
-				set_filename(filename, true);
+				set_filename(filename);
 				GeneralSettingsObjectWrapper s(this);
 				s.setDefaultFilename(filename);
 				s.setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
@@ -1138,7 +1138,7 @@ void QMLManager::saveChangesLocal()
 			QString errorString(get_error_string());
 			appendTextToLog(errorString);
 			setNotificationText(errorString);
-			set_filename(NULL, true);
+			set_filename(NULL);
 			prefs.git_local_only = glo;
 			alreadySaving = false;
 			return;
@@ -1481,7 +1481,7 @@ void QMLManager::setCredentialStatus(const cloud_status_qml value)
 		setOldStatus(m_credentialStatus);
 		if (value == CS_NOCLOUD) {
 			appendTextToLog("Switching to no cloud mode");
-			set_filename(NOCLOUD_LOCALSTORAGE, true);
+			set_filename(NOCLOUD_LOCALSTORAGE);
 			clearCredentials();
 		}
 		m_credentialStatus = value;

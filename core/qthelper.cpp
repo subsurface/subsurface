@@ -560,10 +560,8 @@ QLocale getLocale()
 	return loc;
 }
 
-void set_filename(const char *filename, bool force)
+void set_filename(const char *filename)
 {
-	if (!force && existing_filename)
-		return;
 	free((void *)existing_filename);
 	if (filename)
 		existing_filename = strdup(filename);

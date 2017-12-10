@@ -611,7 +611,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	if (!parse_file(fileNamePtr.data())) {
-		set_filename(fileNamePtr.data(), true);
+		set_filename(fileNamePtr.data());
 		setTitle(MWTF_FILENAME);
 	}
 	getNotificationWidget()->hideNotification();
@@ -642,7 +642,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (error)
 		return;
 
-	set_filename(filename.toUtf8().data(), true);
+	set_filename(filename.toUtf8().data());
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
 }
@@ -1655,7 +1655,7 @@ int MainWindow::file_save_as(void)
 	if (save_dives(filename.toUtf8().data()))
 		return -1;
 
-	set_filename(filename.toUtf8().data(), true);
+	set_filename(filename.toUtf8().data());
 	setTitle(MWTF_FILENAME);
 	mark_divelist_changed(false);
 	addRecentFile(filename, true);
@@ -1801,7 +1801,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		if (!parse_file(fileNamePtr.data())) {
-			set_filename(fileNamePtr.data(), true);
+			set_filename(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
 			setTitle(MWTF_FILENAME);
 		}
