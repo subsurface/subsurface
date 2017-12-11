@@ -606,8 +606,6 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	closeCurrentFile();
 
-	int error;
-
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	if (!parse_file(fileNamePtr.data())) {
