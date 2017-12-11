@@ -47,7 +47,7 @@
 #include "qthelperfromc.h"
 #include "git-access.h"
 
-static short dive_list_changed = false;
+static bool dive_list_changed = false;
 
 short autogroup = false;
 
@@ -1201,7 +1201,7 @@ void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 		add_dive_to_trip(trip_b->dives, trip_a);
 }
 
-void mark_divelist_changed(int changed)
+void mark_divelist_changed(bool changed)
 {
 	dive_list_changed = changed;
 	updateWindowTitle();
