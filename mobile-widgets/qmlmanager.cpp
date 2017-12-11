@@ -603,6 +603,7 @@ void QMLManager::loadDivesWithValidCredentials()
 		appendTextToLog(errorString);
 		setNotificationText(errorString);
 		revertToNoCloudIfNeeded();
+		set_filename(NULL);
 		return;
 	}
 	consumeFinishedLoad(currentDiveTimestamp);

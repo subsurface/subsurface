@@ -746,6 +746,7 @@ void MainWindow::closeCurrentFile()
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data();
+	setCurrentFile(NULL);
 	cleanUpEmpty();
 	mark_divelist_changed(false);
 
