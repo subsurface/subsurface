@@ -119,7 +119,12 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 
 void DivePictureModel::removePicture(const QString &fileUrl, bool last)
 {
-	dive_remove_picture(fileUrl.toUtf8().data());
+	int i;
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		if (dive->selected && dive_remove_picture(dive, fileUrl.toUtf8().data()))
+			break;
+	}
 	if (last) {
 		copy_dive(current_dive, &displayed_dive);
 		updateDivePictures();
