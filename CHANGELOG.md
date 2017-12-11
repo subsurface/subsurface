@@ -1,0 +1,1 @@
+- Write profile images to correct directory in TeX export

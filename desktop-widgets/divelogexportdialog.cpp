@@ -237,6 +237,7 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_only)
 {
 	FILE *f;
+	QDir texdir = QFileInfo(filename).dir();
 	struct dive *dive;
 	struct units *units = get_units();
 	const char *unit;
@@ -281,13 +282,12 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		if (selected_only && !dive->selected)
 			continue;
 
-		QString filename = "profile%1.png";
 		ProfileWidget2 *profile = MainWindow::instance()->graphics();
 		profile->plotDive(dive, true);
 		profile->setToolTipVisibile(false);
 		QPixmap pix = QPixmap::grabWidget(profile);
 		profile->setToolTipVisibile(true);
-		pix.save(filename.arg(dive->number));
+		pix.save(texdir.filePath(QString("profile%1.png").arg(dive->number)));
 
 
 		struct tm tm;
