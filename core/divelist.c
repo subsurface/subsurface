@@ -1426,9 +1426,6 @@ void clear_dive_file_data()
 	clear_dive(&displayed_dive);
 	clear_dive_site(&displayed_dive_site);
 
-	free((void *)existing_filename);
-	existing_filename = NULL;
-
 	reset_min_datafile_version();
 	saved_git_id = "";
 }
