@@ -2014,7 +2014,7 @@ void ProfileWidget2::plotPictures()
 		x = timeAxis->posAtValue(offsetSeconds);
 		if (i == 0)
 			y = 10;
-		else if (fabs(x - lastX) < 4)
+		else if (fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
 			y = lastY + 3;
 		else
 			y = 10;
