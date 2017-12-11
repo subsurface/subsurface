@@ -3838,9 +3838,10 @@ struct picture *clone_picture(struct picture *src)
 	return dst;
 }
 
-void dive_remove_picture(char *filename)
+// Return true if picture was found and deleted
+bool dive_remove_picture(struct dive *d, char *filename)
 {
-	struct picture **picture = &current_dive->picture_list;
+	struct picture **picture = &d->picture_list;
 	while (*picture && !same_string((*picture)->filename, filename))
 		picture = &(*picture)->next;
 	if (*picture) {
@@ -3848,7 +3849,9 @@ void dive_remove_picture(char *filename)
 		picture_free(*picture);
 		*picture = temp;
 		invalidate_dive_cache(current_dive);
+		return true;
 	}
+	return false;
 }
 
 /* this always acts on the current divecomputer of the current dive */
