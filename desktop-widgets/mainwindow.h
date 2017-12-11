@@ -41,11 +41,6 @@ class LocationInformationWidget;
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
 typedef QVector<WidgetProperty> PropertyList;
 
-enum MainWindowTitleFormat {
-	MWTF_DEFAULT,
-	MWTF_FILENAME
-};
-
 class MainWindow : public QMainWindow {
 	Q_OBJECT
 public:
@@ -74,7 +69,7 @@ public:
 	DivePlannerWidget *divePlannerWidget();
 	PlannerSettingsWidget *divePlannerSettingsWidget();
 	LocationInformationWidget *locationInformationWidget();
-	void setTitle(enum MainWindowTitleFormat format = MWTF_FILENAME);
+	void setTitle();
 
 	void loadFiles(const QStringList files);
 	void importFiles(const QStringList importFiles);

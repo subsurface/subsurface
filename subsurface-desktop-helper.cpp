@@ -33,10 +33,7 @@ void init_ui()
 	PluginManager::instance().loadPlugins();
 
 	window = new MainWindow();
-	if (existing_filename && existing_filename[0] != '\0')
-		window->setTitle(MWTF_FILENAME);
-	else
-		window->setTitle(MWTF_DEFAULT);
+	window->setTitle();
 }
 
 void run_ui()

@@ -610,7 +610,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	if (!parse_file(fileNamePtr.data())) {
 		set_filename(fileNamePtr.data());
-		setTitle(MWTF_FILENAME);
+		setTitle();
 	}
 	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
@@ -641,7 +641,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		return;
 
 	set_filename(filename.toUtf8().data());
-	setTitle(MWTF_FILENAME);
+	setTitle();
 	mark_divelist_changed(false);
 }
 
@@ -692,7 +692,7 @@ void MainWindow::cleanUpEmpty()
 	dive_list()->reload(DiveTripModel::TREE);
 	MapWidget::instance()->reload();
 	if (!existing_filename)
-		setTitle(MWTF_DEFAULT);
+		setTitle();
 	disableShortcuts();
 }
 
@@ -1654,7 +1654,7 @@ int MainWindow::file_save_as(void)
 		return -1;
 
 	set_filename(filename.toUtf8().data());
-	setTitle(MWTF_FILENAME);
+	setTitle();
 	mark_divelist_changed(false);
 	addRecentFile(filename, true);
 	return 0;
@@ -1725,21 +1725,15 @@ void MainWindow::setAutomaticTitle()
 	setTitle();
 }
 
-void MainWindow::setTitle(enum MainWindowTitleFormat format)
+void MainWindow::setTitle()
 {
-	switch (format) {
-	case MWTF_DEFAULT:
+	if (!existing_filename || !existing_filename[0]) {
 		setWindowTitle("Subsurface");
-		break;
-	case MWTF_FILENAME:
-		if (!existing_filename) {
-			setTitle(MWTF_DEFAULT);
-			return;
-		}
-		QString unsaved = (unsaved_changes() ? " *" : "");
-		setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved);
-		break;
+		return;
 	}
+
+	QString unsaved = (unsaved_changes() ? " *" : "");
+	setWindowTitle("Subsurface: " + displayedFilename(existing_filename) + unsaved);
 }
 
 void MainWindow::importFiles(const QStringList fileNames)
@@ -1801,7 +1795,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 		if (!parse_file(fileNamePtr.data())) {
 			set_filename(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
-			setTitle(MWTF_FILENAME);
+			setTitle();
 		}
 	}
 	hideProgressBar();
