@@ -1203,6 +1203,8 @@ void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 
 void mark_divelist_changed(bool changed)
 {
+	if (dive_list_changed == changed)
+		return;
 	dive_list_changed = changed;
 	updateWindowTitle();
 }
