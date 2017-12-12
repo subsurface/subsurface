@@ -252,6 +252,13 @@ static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 }
 
 #define SAME_GROUP 6 * 3600 /* six hours */
+#define SET_LOCATION(_dive, _gpsfix, _mark)	\
+{						\
+	copy_gps_location(_gpsfix, _dive);	\
+	changed = true;				\
+	last = _mark;				\
+}
+
 bool GpsLocation::applyLocations()
 {
 	int i;
@@ -283,9 +290,7 @@ bool GpsLocation::applyLocations()
 				if (time_during_dive_with_offset(d, gpsTable[j].when, 0)) {
 					if (verbose)
 						qDebug() << "gpsFix is during the dive, pick that one";
-					copy_gps_location(gpsTable[j], d);
-					changed = true;
-					last = j;
+					SET_LOCATION(d, gpsTable[j], j);
 					break;
 				} else {
 					/*
@@ -304,25 +309,19 @@ bool GpsLocation::applyLocations()
 						} else if (gpsTable[j].when > dive_endtime(d)) {
 							if (verbose)
 								qDebug() << "which is even later after the end of the dive, so pick the previous one";
-							copy_gps_location(gpsTable[j], d);
-							changed = true;
-							last = j;
+							SET_LOCATION(d, gpsTable[j], j);
 							break;
 						} else {
 							/* ok, gpsFix is before, nextgpsFix is after */
 							if (d->when - gpsTable[j].when <= gpsTable[j+1].when - dive_endtime(d)) {
 								if (verbose)
 									qDebug() << "pick the one before as it's closer to the start";
-								copy_gps_location(gpsTable[j], d);
-								changed = true;
-								last = j;
+								SET_LOCATION(d, gpsTable[j], j);
 								break;
 							} else {
 								if (verbose)
 									qDebug() << "pick the one after as it's closer to the start";
-								copy_gps_location(gpsTable[j+1], d);
-								changed = true;
-								last = j + 1;
+								SET_LOCATION(d, gpsTable[j + 1], j + 1);
 								break;
 							}
 						}
@@ -332,9 +331,7 @@ bool GpsLocation::applyLocations()
 					} else {
 						if (verbose)
 							qDebug() << "which seems to be the best one for this dive, so pick it";
-						copy_gps_location(gpsTable[j], d);
-						changed = true;
-						last = j;
+						SET_LOCATION(d, gpsTable[j], j);
 						break;
 					}
 				}
