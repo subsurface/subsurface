@@ -294,15 +294,6 @@ bool GpsLocation::applyLocations()
 					if (j + 1 < cnt && time_during_dive_with_offset(d, gpsTable[j+1].when, SAME_GROUP)) {
 						if (verbose)
 							qDebug() << "look at the next gps fix @" << get_dive_date_string(gpsTable[j+1].when);
-						/* first let's test if this one is during the dive */
-						if (time_during_dive_with_offset(d, gpsTable[j+1].when, 0)) {
-							if (verbose)
-								qDebug() << "which is during the dive, pick that one";
-							copy_gps_location(gpsTable[j+1], d);
-							changed = true;
-							last = j + 1;
-							break;
-						}
 						/* we know the gps fixes are sorted; if they are both before the dive, ignore the first,
 						 * if theay are both after the dive, take the first,
 						 * if the first is before and the second is after, take the closer one */
