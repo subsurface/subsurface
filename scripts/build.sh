@@ -342,6 +342,7 @@ cd $SRC
 cd subsurface
 
 if [ ! -d libdivecomputer/src ] ; then
+	git submodule init
 	git submodule update --recursive
 fi
 
