@@ -1,2 +1,3 @@
+- Show all pictures of a selected trip in the pictures tab
 - Add detection of new libdivecomputer divemode DC_DIVEMODE_SCR for semi-closed rebreathers
 - Write profile images to correct directory in TeX export
