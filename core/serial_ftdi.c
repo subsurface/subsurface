@@ -43,6 +43,7 @@
 //#define SYSERROR(context, errcode)	ERROR(__FILE__ ":" __LINE__ ": %s", strerror(errcode))
 #define SYSERROR(context, errcode)	;
 
+#include "libdivecomputer.h"
 #include <libdivecomputer/custom_io.h>
 #include <libdivecomputer/context.h>
 
