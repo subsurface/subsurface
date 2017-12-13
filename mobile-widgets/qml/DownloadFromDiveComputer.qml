@@ -213,6 +213,8 @@ Kirigami.Page {
 					if (!progressBar.visible) {
 						stackView.pop();
 						download.text = qsTr("Download")
+						divesDownloaded = false
+						manager.progressMessage = ""
 					}
 					manager.appendTextToLog("exit DCDownload screen")
 				}
@@ -277,6 +279,7 @@ Kirigami.Page {
 					diveModel.addAllDives()
 					stackView.pop();
 					download.text = qsTr("Download")
+					divesDownloaded = false
 				}
 			}
 			Controls.Label {
