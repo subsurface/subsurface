@@ -735,7 +735,7 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		case DC_DIVEMODE_OC: /* Open circuit */
 			dive->dc.divemode = OC;
 			break;
-		case DC_DIVEMODE_CC:  /* Closed circuit */
+		case DC_DIVEMODE_CCR:  /* Closed circuit */
 			dive->dc.divemode = CCR;
 			break;
 		}
