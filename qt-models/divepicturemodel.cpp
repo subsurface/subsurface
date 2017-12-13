@@ -54,6 +54,7 @@ void DivePictureModel::updateDivePictures()
 		beginRemoveRows(QModelIndex(), 0, pictures.count() - 1);
 		pictures.clear();
 		endRemoveRows();
+		rowDDStart = rowDDEnd = 0;
 	}
 
 	// if the dive_table is empty, quit
@@ -69,7 +70,7 @@ void DivePictureModel::updateDivePictures()
 			FOR_EACH_PICTURE(dive)
 				pictures.push_back({picture, picture->filename, QImage(), picture->offset.seconds});
 			if (dive->id == displayed_dive.id)
-				rowDDEnd = pictures.count() - 1;
+				rowDDEnd = pictures.count();
 		}
 	}
 	QtConcurrent::blockingMap(pictures, scaleImages);
