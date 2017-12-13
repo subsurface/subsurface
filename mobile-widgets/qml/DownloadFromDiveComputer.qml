@@ -210,8 +210,10 @@ Kirigami.Page {
 				text: progressBar.visible ? qsTr("Cancel") : qsTr("Quit")
 				onClicked: {
 					manager.cancelDownloadDC()
-					if (!progressBar.visible)
+					if (!progressBar.visible) {
 						stackView.pop();
+						download.text = qsTr("Download")
+					}
 					manager.appendTextToLog("exit DCDownload screen")
 				}
 			}
@@ -274,6 +276,7 @@ Kirigami.Page {
 					diveModel.clear()
 					diveModel.addAllDives()
 					stackView.pop();
+					download.text = qsTr("Download")
 				}
 			}
 			Controls.Label {
