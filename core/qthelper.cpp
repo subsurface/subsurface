@@ -1449,16 +1449,6 @@ extern "C" char *cloud_url()
 	return strdup(filename.toUtf8().data());
 }
 
-extern "C" bool isCloudUrl(const char *filename)
-{
-	QString email = QString(prefs.cloud_storage_email);
-	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (!email.isEmpty() &&
-	    QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email) == filename)
-		return true;
-	return false;
-}
-
 extern "C" bool getProxyString(char **buffer)
 {
 	if (prefs.proxy_type == QNetworkProxy::HttpProxy) {
