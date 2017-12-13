@@ -497,9 +497,8 @@ int parse_file(const char *filename)
 		return git_load_dives(git, branch);
 
 	if ((ret = readfile(filename, &mem)) < 0) {
-		/* we don't want to display an error if this was the default file or the cloud storage */
-		if ((prefs.default_filename && !strcmp(filename, prefs.default_filename)) ||
-		    isCloudUrl(filename))
+		/* we don't want to display an error if this was the default file  */
+		if (same_string(filename, prefs.default_filename))
 			return 0;
 
 		return report_error(translate("gettextFromC", "Failed to read '%s'"), filename);
