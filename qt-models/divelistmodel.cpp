@@ -93,8 +93,8 @@ void DiveListModel::removeDiveById(int id)
 void DiveListModel::updateDive(int i, dive *d)
 {
 	DiveObjectHelper *newDive = new DiveObjectHelper(d);
-	removeDive(i);
-	insertDive(i, newDive);
+	m_dives.replace(i, newDive);
+	emit dataChanged(createIndex(i, 0), createIndex(i, 0));
 }
 
 void DiveListModel::clear()
