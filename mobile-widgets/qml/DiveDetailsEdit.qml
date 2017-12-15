@@ -39,6 +39,24 @@ Item {
 	property int rating
 	property int visibility
 
+	function clearDetailsEdit() {
+		detailsEdit.dive_id = 0
+		detailsEdit.number = 0
+		detailsEdit.dateText = ""
+		detailsEdit.locationText = ""
+		detailsEdit.durationText = ""
+		detailsEdit.depthText = ""
+		detailsEdit.airtempText = ""
+		detailsEdit.watertempText = ""
+		suitBox.currentIndex = -1
+		buddyBox.currentIndex = -1
+		divemasterBox.currentIndex = -1
+		cylinderBox.currentIndex = -1
+		detailsEdit.notesText = ""
+		detailsEdit.rating = 0
+		detailsEdit.visibility = 0
+	}
+
 	function saveData() {
 		diveDetailsPage.state = "view" // run the transition
 		// apply the changes to the dive_table
@@ -71,6 +89,7 @@ Item {
 		Qt.inputMethod.hide()
 		// now make sure we directly show the saved dive (this may be a new dive, or it may have moved)
 		showDiveIndex(newIdx)
+		clearDetailsEdit()
 	}
 
 	height: editArea.height
