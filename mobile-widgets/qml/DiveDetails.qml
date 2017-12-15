@@ -207,6 +207,7 @@ Kirigami.Page {
 		state = "view";
 		focus = false;
 		Qt.inputMethod.hide();
+		detailsEdit.clearDetailsEdit();
 	}
 
 	function startEditMode() {
