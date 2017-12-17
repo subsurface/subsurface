@@ -24,8 +24,7 @@ public:
 	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePicture(const QString& fileUrl, bool last);
 	int rowDDStart, rowDDEnd;
-
-protected:
+private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
 };
