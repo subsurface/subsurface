@@ -160,7 +160,7 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 {
 	(void) columns;
 	(void) column;
-	unsigned int i;
+	int i;
 	int interval, retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	float *profileBlob;
@@ -363,7 +363,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 {
 	(void) columns;
 	(void) column;
-	unsigned int i;
+	int i;
 	int interval, retval = 0, block_size;
 	sqlite3 *handle = (sqlite3 *)param;
 	unsigned const char *sampleBlob;

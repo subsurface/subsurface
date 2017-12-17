@@ -48,7 +48,7 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 static void process_dive(struct dive *dp, stats_t *stats)
 {
 	int old_tadt, sac_time = 0;
-	uint32_t duration = dp->duration.seconds;
+	int32_t duration = dp->duration.seconds;
 
 	old_tadt = stats->total_average_depth_time.seconds;
 	stats->total_time.seconds += duration;

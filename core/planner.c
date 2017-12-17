@@ -116,7 +116,7 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 
 void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2)
 {
-	uint32_t j;
+	int32_t j;
 
 	for (j = t0.seconds; j < t1.seconds; j++) {
 		int depth = interpolate(d0.mm, d1.mm, j - t0.seconds, t1.seconds - t0.seconds);
@@ -287,7 +287,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		free(ev);
 	}
 	dp = diveplan->dp;
-	/* Create first sample at time = 0, not based on dp because 
+	/* Create first sample at time = 0, not based on dp because
 	 * there is no real dp for time = 0, set first cylinder to 0
 	 * O2 setpoint for this sample will be filled later from next dp */
 	cyl = &dive->cylinder[0];
