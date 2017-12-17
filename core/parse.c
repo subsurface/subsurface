@@ -112,8 +112,6 @@ void nonmatch(const char *type, const char *name, char *buffer)
 		       type, name, buffer);
 }
 
-typedef void (*matchfn_t)(char *buffer, void *);
-
 int match(const char *pattern, int plen,
 		 const char *name,
 		 matchfn_t fn, char *buf, void *data)
