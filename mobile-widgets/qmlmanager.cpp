@@ -714,7 +714,7 @@ bool QMLManager::checkDate(DiveObjectHelper *myDive, struct dive * d, QString da
 		// what a pain - Qt will not parse dates if the day of the week is incorrect
 		// so if the user changed the date but didn't update the day of the week (most likely behavior, actually),
 		// we need to make sure we don't try to parse that
-		QString format(QString(prefs.date_format) + QChar(' ') + prefs.time_format);
+		QString format(QString(prefs.date_format_short) + QChar(' ') + prefs.time_format);
 		if (format.contains(QLatin1String("ddd")) || format.contains(QLatin1String("dddd"))) {
 			QString dateFormatToDrop = format.contains(QLatin1String("ddd")) ? QStringLiteral("ddd") : QStringLiteral("dddd");
 			QDateTime ts;
@@ -1523,7 +1523,7 @@ QString QMLManager::getDate(const QString& diveId)
 	struct dive *d = get_dive_by_uniq_id(dive_id);
 	QString datestring;
 	if (d)
-		datestring = get_dive_date_string(d->when);
+		datestring = get_short_dive_date_string(d->when);
 	return datestring;
 }
 
