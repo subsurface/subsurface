@@ -10,7 +10,7 @@
 extern QHash <QString, QImage> thumbnailCache;
 static QMutex thumbnailMutex;
 
-void scaleImages(PictureEntry &entry)
+static void scaleImages(PictureEntry &entry)
 {
 	QMutexLocker l(&thumbnailMutex);
 	if (thumbnailCache.contains(entry.filename) && !thumbnailCache.value(entry.filename).isNull()) {
