@@ -814,15 +814,14 @@ parsed:
 bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString location, QString gps)
 {
 	bool diveChanged = false;
-	uint32_t uuid;
+	uint32_t uuid = 0;
 	struct dive_site *ds = get_dive_site_for_dive(d);
 	if (myDive->location() != location) {
 		diveChanged = true;
-		if (!ds) {
+		if (!ds)
 			uuid = get_dive_site_uuid_by_name(qPrintable(location), NULL);
-			if (!uuid)
-				uuid = create_dive_site(qPrintable(location), d->when);
-		}
+		if (!uuid && !location.isEmpty())
+			uuid = create_dive_site(qPrintable(location), d->when);
 		d->dive_site_uuid = uuid;
 	}
 	// now make sure that the GPS coordinates match - if the user changed the name but not
