@@ -13,9 +13,6 @@ struct PictureEntry {
 	int offsetSeconds;
 };
 
-// function that will scale the pixmap, used inside the QtConcurrent thread.
-void scaleImages(PictureEntry &entry);
-
 class DivePictureModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
