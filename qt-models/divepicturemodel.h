@@ -10,6 +10,7 @@ struct PictureEntry {
 	struct picture *picture;
 	QString filename;
 	QImage image;
+	QImage imageProfile;	// For the profile widget keep a copy of a constant sized image
 	int offsetSeconds;
 };
 
@@ -24,9 +25,13 @@ public:
 	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePicture(const QString& fileUrl, bool last);
 	int rowDDStart, rowDDEnd;
+public slots:
+	void setZoomLevel(int level);
 private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
+	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
+	void updateThumbnails();
 };
 
 #endif

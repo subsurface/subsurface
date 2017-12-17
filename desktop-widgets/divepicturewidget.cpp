@@ -59,3 +59,17 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 		QListView::mousePressEvent(event);
 	}
 }
+
+void DivePictureWidget::wheelEvent(QWheelEvent *event)
+{
+	if (event->modifiers() == Qt::ControlModifier) {
+		// Angle delta is given in eighth parts of a degree. A classical mouse
+		// wheel click is 15 degrees. Each click should correspond to one zoom step.
+		// Therefore, divide by 15*8=120. To also support touch pads and finer-grained
+		// mouse wheels, take care to always round away from zero.
+		int delta = event->angleDelta().y();
+		int carry = delta > 0 ? 119 : -119;
+		emit zoomLevelChanged((delta + carry) / 120);
+	} else
+		QListView::wheelEvent(event);
+}
