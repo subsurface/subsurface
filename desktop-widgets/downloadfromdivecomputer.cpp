@@ -252,6 +252,7 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 
 void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product)
 {
+	Q_UNUSED(product)
 	updateDeviceEnabled();
 }
 
