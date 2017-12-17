@@ -1,3 +1,4 @@
+- desktop: Add variable zoom-levels for the dive photos tab (#898)
 - mobile: Faulty navigation after aborted dive edit (#932)
 - mobile: fixed weird navigation problem after dive edit (#875)
 - mobile: improves button handling on download screen (issue #895)
