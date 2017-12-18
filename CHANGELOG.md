@@ -1,3 +1,4 @@
+- improve planner performance
 _ mobile: fixed weird navigation problem after dive edit (#875)
 - mobile: improves button handling on download screen (issue #895)
 - Show all pictures of a selected trip in the pictures tab
