@@ -1698,14 +1698,17 @@ char *intdup(int index)
 
 QHash<int, double> factor_cache;
 
-QMutex factorCacheLock;
+QReadWriteLock factorCacheLock;
 extern "C" double cache_value(int tissue, int timestep, enum inertgas inertgas)
 {
+	double value;
 	int key = (timestep << 5) + (tissue << 1);
 	if (inertgas == HE)
 		++key;
-	QMutexLocker locker(&factorCacheLock);
-	return factor_cache.value(key);
+	factorCacheLock.lockForRead();
+	value = factor_cache.value(key);
+	factorCacheLock.unlock();
+	return value;
 }
 
 extern "C" void cache_insert(int tissue, int timestep, enum inertgas inertgas, double value)
@@ -1713,8 +1716,9 @@ extern "C" void cache_insert(int tissue, int timestep, enum inertgas inertgas, d
 	int key = (timestep << 5) + (tissue << 1);
 	if (inertgas == HE)
 		++key;
-	QMutexLocker locker(&factorCacheLock);
+	factorCacheLock.lockForWrite();
 	factor_cache.insert(key, value);
+	factorCacheLock.unlock();
 }
 
 extern "C" void print_qt_versions()
