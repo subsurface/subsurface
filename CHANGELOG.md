@@ -1,4 +1,5 @@
-_ mobile: fixed weird navigation problem after dive edit (#875)
+- mobile: Faulty navigation after aborted dive edit (#932)
+- mobile: fixed weird navigation problem after dive edit (#875)
 - mobile: improves button handling on download screen (issue #895)
 - Show all pictures of a selected trip in the pictures tab
 - Add detection of new libdivecomputer divemode DC_DIVEMODE_SCR for semi-closed rebreathers
