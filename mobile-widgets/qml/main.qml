@@ -19,7 +19,6 @@ Kirigami.ApplicationWindow {
 		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
 		maximumHeight: Kirigami.Units.gridUnit * 2
 	}
-
 	property alias oldStatus: manager.oldStatus
 	property alias notificationText: manager.notificationText
 	property alias syncToCloud: manager.syncToCloud
