@@ -1,5 +1,6 @@
 - desktop: Add variable zoom-levels for the dive photos tab (#898)
 - mobile: Faulty navigation after aborted dive edit (#932)
+- improve planner performance
 - mobile: fixed weird navigation problem after dive edit (#875)
 - mobile: improves button handling on download screen (issue #895)
 - Show all pictures of a selected trip in the pictures tab
