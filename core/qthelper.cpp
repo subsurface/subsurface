@@ -1108,7 +1108,7 @@ void write_hashes()
 		stream << thumbnailCache;
 		hashfile.commit();
 	} else {
-		qDebug() << "cannot open" << hashfile.fileName();
+		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();
 	}
 }
 

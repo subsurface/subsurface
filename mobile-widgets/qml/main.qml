@@ -436,7 +436,17 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				easing.type: Easing.OutQuad
 			}
 		}
+	}
 
+	pageStack.onCurrentItemChanged: {
+	// This is called whenever the user navigates using the breadcrumbs in the header
+
+		// In case we land on any page, not being the DiveDetails (which can be
+		// in multiple states, such as add, edit or view), just end the edit/add mode
+		if (pageStack.currentItem.objectName !== "DiveDetails" &&
+				(detailsWindow.state === 'edit' || detailsWindow.state === 'add')) {
+				detailsWindow.endEditMode()
+		}
 	}
 
 	QMLManager {

@@ -29,6 +29,10 @@ TabDivePhotos::TabDivePhotos(QWidget *parent)
 			QDesktopServices::openUrl(QUrl::fromLocalFile(path));
 		}
 	);
+	connect(ui->photosView, &DivePictureWidget::zoomLevelChanged,
+		this, &TabDivePhotos::changeZoomLevel);
+	connect(ui->zoomSlider, &QAbstractSlider::valueChanged,
+		DivePictureModel::instance(), &DivePictureModel::setZoomLevel);
 }
 
 TabDivePhotos::~TabDivePhotos()
@@ -98,3 +102,8 @@ void TabDivePhotos::updateData()
 	divePictureModel->updateDivePictures();
 }
 
+void TabDivePhotos::changeZoomLevel(int delta)
+{
+	// We count on QSlider doing bound checks
+	ui->zoomSlider->setValue(ui->zoomSlider->value() + delta);
+}

@@ -9,25 +9,28 @@
 
 extern QHash <QString, QImage> thumbnailCache;
 static QMutex thumbnailMutex;
+static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
 
-void scaleImages(PictureEntry &entry)
+static QImage getThumbnailFromCache(const PictureEntry &entry)
 {
 	QMutexLocker l(&thumbnailMutex);
-	if (thumbnailCache.contains(entry.filename) && !thumbnailCache.value(entry.filename).isNull()) {
-		entry.image = thumbnailCache.value(entry.filename);
-		return;
-	}
-	l.unlock();
+	return thumbnailCache.value(entry.filename);
+}
 
-	int dim = defaultIconMetrics().sz_pic;
-	QImage p = SHashedImage(entry.picture);
-	if(!p.isNull()) {
-		p = p.scaled(dim, dim, Qt::KeepAspectRatio);
+static void scaleImages(PictureEntry &entry, int size, int maxSize)
+{
+	QImage thumbnail = getThumbnailFromCache(entry);
+	// If thumbnails were written by an earlier version, they might be smaller than needed.
+	// Rescale in such a case to avoid resizing artifacts.
+	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
+		thumbnail = SHashedImage(entry.picture).scaled(maxSize, maxSize, Qt::KeepAspectRatio);
 		QMutexLocker l(&thumbnailMutex);
-		if (!thumbnailCache.contains(entry.filename))
-			thumbnailCache.insert(entry.filename, p);
+		thumbnailCache.insert(entry.filename, thumbnail);
 	}
-	entry.image = p;
+
+	entry.imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
+	entry.image = size == maxSize ? thumbnail
+				      : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -36,7 +39,9 @@ DivePictureModel *DivePictureModel::instance()
 	return self;
 }
 
-DivePictureModel::DivePictureModel() : rowDDStart(0), rowDDEnd(0)
+DivePictureModel::DivePictureModel() : rowDDStart(0),
+				       rowDDEnd(0),
+				       zoomLevel(0.0)
 {
 }
 
@@ -46,6 +51,33 @@ void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
 		f.waitForFinished();
 	}
 	updateDivePictures();
+}
+
+void DivePictureModel::setZoomLevel(int level)
+{
+	zoomLevel = level / 10.0;
+	// zoomLevel is bound by [-1.0 1.0], see comment below.
+	if (zoomLevel < -1.0)
+		zoomLevel = -1.0;
+	if (zoomLevel > 1.0)
+		zoomLevel = 1.0;
+	updateThumbnails();
+	layoutChanged();
+}
+
+void DivePictureModel::updateThumbnails()
+{
+	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
+	// We use exponential scaling so that the central point is the standard
+	// size and the minimum and maximum extreme points are a third respectively
+	// three times the standard size.
+	// Naturally, these three zoom levels are then represented by
+	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
+	// calculated as standard_size*3.0^zoomLevel.
+	int defaultSize = defaultIconMetrics().sz_pic;
+	int maxSize = defaultSize * maxZoom;
+	int size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
+	QtConcurrent::blockingMap(pictures, [size, maxSize](PictureEntry &entry){scaleImages(entry, size, maxSize);});
 }
 
 void DivePictureModel::updateDivePictures()
@@ -68,12 +100,13 @@ void DivePictureModel::updateDivePictures()
 			if (dive->id == displayed_dive.id)
 				rowDDStart = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({picture, picture->filename, QImage(), picture->offset.seconds});
+				pictures.push_back({picture, picture->filename, {}, {}, picture->offset.seconds});
 			if (dive->id == displayed_dive.id)
 				rowDDEnd = pictures.count();
 		}
 	}
-	QtConcurrent::blockingMap(pictures, scaleImages);
+
+	updateThumbnails();
 
 	beginInsertRows(QModelIndex(), 0, pictures.count() - 1);
 	endInsertRows();
@@ -99,6 +132,9 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			break;
 		case Qt::DecorationRole:
 			ret = entry.image;
+			break;
+		case Qt::UserRole:	// Used by profile widget to access bigger thumbnails
+			ret = entry.imageProfile;
 			break;
 		case Qt::DisplayRole:
 			ret = QFileInfo(entry.filename).fileName();

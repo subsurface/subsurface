@@ -10,11 +10,9 @@ struct PictureEntry {
 	struct picture *picture;
 	QString filename;
 	QImage image;
+	QImage imageProfile;	// For the profile widget keep a copy of a constant sized image
 	int offsetSeconds;
 };
-
-// function that will scale the pixmap, used inside the QtConcurrent thread.
-void scaleImages(PictureEntry &entry);
 
 class DivePictureModel : public QAbstractTableModel {
 	Q_OBJECT
@@ -27,10 +25,13 @@ public:
 	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePicture(const QString& fileUrl, bool last);
 	int rowDDStart, rowDDEnd;
-
-protected:
+public slots:
+	void setZoomLevel(int level);
+private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
+	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
+	void updateThumbnails();
 };
 
 #endif

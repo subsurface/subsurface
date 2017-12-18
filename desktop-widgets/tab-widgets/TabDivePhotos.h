@@ -26,6 +26,7 @@ private slots:
 	void addPhotosFromURL();
 	void removeAllPhotos();
 	void removeSelectedPhotos();
+	void changeZoomLevel(int delta);
 
 private:
 	Ui::TabDivePhotos *ui;
