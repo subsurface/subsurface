@@ -200,7 +200,7 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 
 	if [ "$BUILD_DEPS" == "1" ] ; then
 		if [ ! -d libzip-${CURRENT_LIBZIP} ] ; then
-			curl -O https://nih.at/libzip/libzip-${CURRENT_LIBZIP}.tar.gz
+			curl -O https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
 			tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
 		fi
 		cd libzip-${CURRENT_LIBZIP}
