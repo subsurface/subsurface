@@ -583,14 +583,14 @@ void DivePlannerPointsModel::setDecoMode(int mode)
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setDecoMode(deco_mode(mode));
 	emit recreationChanged(mode == int(prefs.planner_deco_mode));
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSafetyStop(bool value)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
 	planner->setSafetyStop(value);
-	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, COLUMNS -1));
+	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setReserveGas(int reserve)
