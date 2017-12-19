@@ -1,3 +1,4 @@
+- Fix dive site merging for cloud (and local git storage) users. (#939)
 - desktop: Add variable zoom-levels for the dive photos tab (#898)
 - mobile: Faulty navigation after aborted dive edit (#932)
 - improve planner performance
