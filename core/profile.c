@@ -1007,7 +1007,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
 	 * Set maximum number of iterations to 10 just in case */
 	while ((abs(prev_deco_time - ds->deco_time) >= 30) && (count_iteration < 10)) {
-		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling, final_tts = 0 , time_clear_ceiling = 0;
+		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling = 0, final_tts = 0 , time_clear_ceiling = 0;
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
