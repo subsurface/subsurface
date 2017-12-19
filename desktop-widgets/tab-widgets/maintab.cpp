@@ -44,9 +44,9 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	cylindersModel(new CylindersModel(this)),
 	editMode(NONE),
 	copyPaste(false),
-	currentTrip(0),
 	lastTabSelectedDive(0),
-	lastTabSelectedDiveTrip(0)
+	lastTabSelectedDiveTrip(0),
+	currentTrip(0)
 {
 	ui.setupUi(this);
 
