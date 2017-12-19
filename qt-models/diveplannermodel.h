@@ -63,9 +63,7 @@ slots:
 	int addStop(int millimeters = 0, int seconds = 0, int cylinderid_in = -1, int ccpoint = 0, bool entered = true);
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
-	void triggerGFHigh();
 	void setGFLow(const int gflow);
-	void triggerGFLow();
 	void setVpmbConservatism(int level);
 	void setSurfacePressure(int pressure);
 	void setSalinity(int salinity);
@@ -123,8 +121,6 @@ private:
 	bool recalc;
 	QVector<divedatapoint> divepoints;
 	QDateTime startTime;
-	int tempGFHigh;
-	int tempGFLow;
 	int instanceCounter = 0;
 	struct deco_state ds_after_previous_dives;
 };
