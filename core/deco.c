@@ -543,8 +543,7 @@ void clear_deco(struct deco_state *ds, double surface_pressure)
 		ds->n2_regen_radius[ci] = get_crit_radius_N2();
 		ds->he_regen_radius[ci] = get_crit_radius_He();
 	}
-	ds->gf_low_pressure_this_dive = surface_pressure;
-		ds->gf_low_pressure_this_dive += buehlmann_config.gf_low_position_min;
+	ds->gf_low_pressure_this_dive = surface_pressure + buehlmann_config.gf_low_position_min;
 	ds->max_ambient_pressure = 0.0;
 }
 
