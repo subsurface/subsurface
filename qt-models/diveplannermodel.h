@@ -64,7 +64,7 @@ slots:
 	void addCylinder_clicked();
 	void setGFHigh(const int gfhigh);
 	void triggerGFHigh();
-	void setGFLow(const int ghflow);
+	void setGFLow(const int gflow);
 	void triggerGFLow();
 	void setVpmbConservatism(int level);
 	void setSurfacePressure(int pressure);

@@ -470,9 +470,9 @@ void DivePlannerPointsModel::triggerGFHigh()
 	}
 }
 
-void DivePlannerPointsModel::setGFLow(const int ghflow)
+void DivePlannerPointsModel::setGFLow(const int gflow)
 {
-	tempGFLow = ghflow;
+	tempGFLow = gflow;
 	triggerGFLow();
 }
 
