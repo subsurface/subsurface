@@ -617,6 +617,7 @@ static void try_to_match_autogroup(const char *name, char *buf)
 		set_autogroup(autogroupvalue);
 		return;
 	}
+	set_autogroup(0);
 	nonmatch("autogroup", name, buf);
 }
 
