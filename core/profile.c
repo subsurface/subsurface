@@ -805,6 +805,10 @@ static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_
 static void add_plot_pressure(struct plot_info *pi, int time, int cyl, pressure_t p)
 {
 	struct plot_data *entry;
+	if (pi->nr <= 0) {
+		fprintf(stderr, "add_plot_pressure(): called with pi->nr <= 0\n");
+		return;
+	}
 	for (int i = 0; i < pi->nr; i++) {
 		entry = pi->entry + i;
 
