@@ -436,13 +436,12 @@ void GpsLocation::deleteFixFromStorage(gpsTracker &gt)
 
 void GpsLocation::deleteGpsFix(qint64 when)
 {
-	struct gpsTracker defaultTracker;
-	defaultTracker.when = 0;
-	struct gpsTracker deletedTracker = m_trackers.value(when, defaultTracker);
-	if (deletedTracker.when != when) {
-		qDebug() << "can't find tracker for timestamp" << when;
+	auto it = m_trackers.find(when);
+	if (it == m_trackers.end()) {
+		qWarning() << "GpsLocation::deleteGpsFix(): can't find tracker for timestamp " << when;
 		return;
 	}
+	struct gpsTracker deletedTracker = *it;
 	deleteFixFromStorage(deletedTracker);
 	m_deletedTrackers.append(deletedTracker);
 }
