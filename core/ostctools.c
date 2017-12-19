@@ -43,13 +43,14 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	char *tmp;
 	struct dive *ostcdive = alloc_dive();
 	dc_status_t rc = 0;
-	int model, ret, i = 0;
+	int model, ret, i = 0, c;
 	unsigned int serial;
 	struct extra_data *ptr;
+	const char *failed_to_read_msg = translate("gettextFromC", "Failed to read '%s'");
 
 	// Open the archive
 	if ((archive = subsurface_fopen(file, "rb")) == NULL) {
-		report_error(translate("gettextFromC", "Failed to read '%s'"), file);
+		report_error(failed_to_read_msg, file);
 		free(ostcdive);
 		goto out;
 	}
@@ -57,24 +58,39 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	// Read dive number from the log
 	uc_tmp = calloc(2, 1);
 	fseek(archive, 258, 0);
-	fread(uc_tmp, 1, 2, archive);
+	if (fread(uc_tmp, 1, 2, archive) != 2) {
+		report_error(failed_to_read_msg, file);
+		free(uc_tmp);
+		free(ostcdive);
+		goto out;
+	}
 	ostcdive->number = uc_tmp[0] + (uc_tmp[1] << 8);
 	free(uc_tmp);
 
 	// Read device's serial number
 	uc_tmp = calloc(2, 1);
 	fseek(archive, 265, 0);
-	fread(uc_tmp, 1, 2, archive);
+	if (fread(uc_tmp, 1, 2, archive) != 2) {
+		report_error(failed_to_read_msg, file);
+		free(uc_tmp);
+		free(ostcdive);
+		goto out;
+	}
 	serial = uc_tmp[0] + (uc_tmp[1] << 8);
 	free(uc_tmp);
 
 	// Read dive's raw data, header + profile
 	fseek(archive, 456, 0);
-	while (!feof(archive)) {
-		fread(buffer + i, 1, 1, archive);
+	while ((c = getc(archive)) != EOF) {
+		buffer[i] = c;
 		if (buffer[i] == 0xFD && buffer[i - 1] == 0xFD)
 			break;
 		i++;
+	}
+	if (ferror(archive)) {
+		report_error(failed_to_read_msg, file);
+		free(ostcdive);
+		goto out;
 	}
 
 	// Try to determine the dc family based on the header type
