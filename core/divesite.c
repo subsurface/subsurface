@@ -336,6 +336,7 @@ void merge_dive_sites(uint32_t ref, uint32_t* uuids, int count)
 			if (d->dive_site_uuid != uuids[i] )
 				continue;
 			d->dive_site_uuid = ref;
+			invalidate_dive_cache(d);
 		}
 	}
 
