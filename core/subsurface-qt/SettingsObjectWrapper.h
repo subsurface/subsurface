@@ -220,7 +220,6 @@ signals:
 	void showCCRSensorsChanged(bool value);
 	void zoomedPlotChanged(bool value);
 	void showSacChanged(bool value);
-	void gfLowAtMaxDepthChanged(bool value);
 	void displayUnusedTanksChanged(bool value);
 	void showAverageDepthChanged(bool value);
 	void showPicturesInProfileChanged(bool value);
