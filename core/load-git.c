@@ -394,11 +394,11 @@ static void parse_cylinder_keyvalue(void *_cylinder, const char *key, const char
 		cylinder->depth = get_depth(value);
 		return;
 	}
-	if (!strcmp(key, "m'") && strlen(value) == 0) {
+	if ((*key == 'm') && strlen(value) == 0) {
 		/* found a bogus key/value pair in the cylinder, consisting
-		 * of a lonely "m" without value. This is caused by commit
-		 * 46004c39e26 and fixed in 48d9c8eb6eb0. See referenced
-		 * commits for more info.
+		 * of a lonely "m" or m<single quote> without value. This
+		 * is caused by commit 46004c39e26 and fixed in 48d9c8eb6eb0 and
+		 * b984fb98c38e4. See referenced commits for more info.
 		 *
 		 * Just ignore this key/value pair. No processing is broken
 		 * due to this, as the git storage stores only metric SI type data.
