@@ -6,8 +6,8 @@
 
 TankInfoModel *TankInfoModel::instance()
 {
-	static QScopedPointer<TankInfoModel> self(new TankInfoModel());
-	return self.data();
+	static TankInfoModel self;
+	return &self;
 }
 
 const QString &TankInfoModel::biggerString() const

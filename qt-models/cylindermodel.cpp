@@ -31,8 +31,8 @@ QVariant CylindersModel::headerData(int section, Qt::Orientation orientation, in
 CylindersModel *CylindersModel::instance()
 {
 
-	static QScopedPointer<CylindersModel> self(new CylindersModel());
-	return self.data();
+	static CylindersModel self;
+	return &self;
 }
 
 static QString get_cylinder_string(cylinder_t *cyl)

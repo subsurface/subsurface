@@ -32,8 +32,8 @@ Qt::ItemFlags GasSelectionModel::flags(const QModelIndex &index) const
 
 GasSelectionModel *GasSelectionModel::instance()
 {
-	static QScopedPointer<GasSelectionModel> self(new GasSelectionModel());
-	return self.data();
+	static GasSelectionModel self;
+	return &self;
 }
 
 //TODO: Remove this #include here when the issue below is fixed.

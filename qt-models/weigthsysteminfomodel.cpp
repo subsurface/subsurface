@@ -6,8 +6,8 @@
 
 WSInfoModel *WSInfoModel::instance()
 {
-	static QScopedPointer<WSInfoModel> self(new WSInfoModel());
-	return self.data();
+	static WSInfoModel self;
+	return &self;
 }
 
 bool WSInfoModel::insertRows(int row, int count, const QModelIndex &parent)

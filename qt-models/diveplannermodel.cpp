@@ -414,8 +414,8 @@ DivePlannerPointsModel::DivePlannerPointsModel(QObject *parent) : QAbstractTable
 
 DivePlannerPointsModel *DivePlannerPointsModel::instance()
 {
-	static QScopedPointer<DivePlannerPointsModel> self(new DivePlannerPointsModel());
-	return self.data();
+	static DivePlannerPointsModel self;
+	return &self;
 }
 
 void DivePlannerPointsModel::emitDataChanged()
