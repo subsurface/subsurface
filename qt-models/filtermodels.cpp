@@ -228,10 +228,12 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 		return true;
 	}
 	// Checked means 'Show', Unchecked means 'Hide'.
-	QString diveBuddy(d->buddy);
-	QString divemaster(d->divemaster);
+	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
+	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
+	for (QString &s: personsList)
+		s = s.trimmed();
 	// only show empty buddie dives if the user checked that.
-	if (diveBuddy.isEmpty() && divemaster.isEmpty()) {
+	if (personsList.isEmpty()) {
 		if (rowCount() > 0)
 			return checkState[rowCount() - 1];
 		else
@@ -242,7 +244,7 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	QStringList buddyList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
-		if (checkState[i] && (diveBuddy == buddyList[i] || divemaster == buddyList[i]))
+		if (checkState[i] && personsList.contains(buddyList[i], Qt::CaseInsensitive))
 			return true;
 	}
 	return false;
