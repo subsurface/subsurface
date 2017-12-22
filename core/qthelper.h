@@ -10,9 +10,6 @@
 #include <QTranslator>
 #include <QDir>
 
-// global pointers for our translation
-extern QTranslator *qtTranslator, *ssrfTranslator;
-
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
