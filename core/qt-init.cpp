@@ -7,7 +7,7 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 char *settings_suffix = NULL;
-QTranslator *qtTranslator, *ssrfTranslator;
+static QTranslator *qtTranslator, *ssrfTranslator;
 
 void init_qt_late()
 {
