@@ -19,63 +19,10 @@ CLASS *CLASS::instance() \
 	return self; \
 }
 
-#define CREATE_MODEL_SET_DATA_METHOD( CLASS ) \
-bool CLASS::setData(const QModelIndex &index, const QVariant &value, int role) \
-{ \
-	if (role == Qt::CheckStateRole) { \
-		checkState[index.row()] = value.toBool(); \
-		anyChecked = false; \
-		for (int i = 0; i < rowCount(); i++) { \
-			if (checkState[i] == true) { \
-				anyChecked = true; \
-				break; \
-			} \
-		} \
-		dataChanged(index, index); \
-		return true; \
-	} \
-	return false; \
-}
-
-#define CREATE_CLEAR_FILTER_METHOD( CLASS ) \
-void CLASS::clearFilter() \
-{ \
-	std::fill(checkState.begin(), checkState.end(), false); \
-	anyChecked = false; \
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0)); \
-}
-
-#define CREATE_FLAGS_METHOD( CLASS ) \
-Qt::ItemFlags CLASS::flags(const QModelIndex &index) const \
-{ \
-	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable; \
-}
-
-#define CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION ) \
-QVariant CLASS::data(const QModelIndex &index, int role) const \
-{ \
-	if (role == Qt::CheckStateRole) { \
-		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked; \
-	} else if (role == Qt::DisplayRole) { \
-		QString value = stringList()[index.row()]; \
-		int count = COUNTER_FUNCTION((index.row() == rowCount() - 1) ? "" : value.toUtf8().data()); \
-		return value + QString(" (%1)").arg(count); \
-	} \
-	return QVariant(); \
-}
-
-#define CREATE_COMMON_METHODS_FOR_FILTER( CLASS, COUNTER_FUNCTION ) \
-CREATE_FLAGS_METHOD( CLASS ); \
-CREATE_CLEAR_FILTER_METHOD( CLASS ); \
-CREATE_MODEL_SET_DATA_METHOD( CLASS ); \
-CREATE_INSTANCE_METHOD( CLASS ); \
-CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION )
-
-CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel, count_dives_with_tag)
-CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel, count_dives_with_person)
-CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel, count_dives_with_location)
-CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit)
-
+CREATE_INSTANCE_METHOD(TagFilterModel)
+CREATE_INSTANCE_METHOD(BuddyFilterModel)
+CREATE_INSTANCE_METHOD(LocationFilterModel)
+CREATE_INSTANCE_METHOD(SuitsFilterModel)
 CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
 FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent)
@@ -112,8 +59,54 @@ void FilterModelBase::updateList(const QStringList &newList)
 	setStringList(newList);
 }
 
+Qt::ItemFlags FilterModelBase::flags(const QModelIndex &index) const
+{
+	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
+}
+
+bool FilterModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (role == Qt::CheckStateRole) {
+		checkState[index.row()] = value.toBool();
+		anyChecked = false;
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] == true) {
+				anyChecked = true;
+				break;
+			}
+		}
+		dataChanged(index, index);
+		return true;
+	}
+	return false;
+}
+
+QVariant FilterModelBase::data(const QModelIndex &index, int role) const
+{
+	if (role == Qt::CheckStateRole) {
+		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
+	} else if (role == Qt::DisplayRole) {
+		QString value = stringList()[index.row()];
+		int count = countDives((index.row() == rowCount() - 1) ? "" : value.toUtf8().data());
+		return value + QString(" (%1)").arg(count);
+	}
+	return QVariant();
+}
+
+void FilterModelBase::clearFilter()
+{
+	std::fill(checkState.begin(), checkState.end(), false);
+	anyChecked = false;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
 SuitsFilterModel::SuitsFilterModel(QObject *parent) : FilterModelBase(parent)
 {
+}
+
+int SuitsFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_suit(s);
 }
 
 bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
@@ -163,6 +156,11 @@ void SuitsFilterModel::repopulate()
 
 TagFilterModel::TagFilterModel(QObject *parent) : FilterModelBase(parent)
 {
+}
+
+int TagFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_tag(s);
 }
 
 void TagFilterModel::repopulate()
@@ -219,6 +217,11 @@ BuddyFilterModel::BuddyFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
 
+int BuddyFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_person(s);
+}
+
 bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
 	Q_UNUSED(index0);
@@ -272,6 +275,11 @@ void BuddyFilterModel::repopulate()
 
 LocationFilterModel::LocationFilterModel(QObject *parent) : FilterModelBase(parent)
 {
+}
+
+int LocationFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_location(s);
 }
 
 bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
