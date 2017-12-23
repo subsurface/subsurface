@@ -204,7 +204,7 @@ static void print_help()
 	printf("\n --version             Prints current version");
 	printf("\n --survey              Offer to submit a user survey");
 	printf("\n --user=<test>         Choose configuration space for user <test>");
-	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)");
+	printf("\n --cloud-timeout=<nr>  Set timeout for cloud connection (0 < timeout < 60)\n\n");
 }
 
 void parse_argument(const char *arg)
