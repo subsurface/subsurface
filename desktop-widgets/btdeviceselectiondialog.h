@@ -6,7 +6,6 @@
 #include <QListWidgetItem>
 #include <QPointer>
 #include <QtBluetooth/QBluetoothLocalDevice>
-#include <QtBluetooth/qbluetoothglobal.h>
 #include <QtBluetooth/QBluetoothDeviceDiscoveryAgent>
 
 #if defined(Q_OS_WIN)
