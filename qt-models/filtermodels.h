@@ -11,6 +11,8 @@ class FilterModelBase : public QStringListModel {
 public:
 	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
 	void clearFilter();
+	void selectAll();
+	void invertSelection();
 	std::vector<char> checkState;
 	bool anyChecked;
 protected:

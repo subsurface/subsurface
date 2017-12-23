@@ -513,6 +513,12 @@ FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent)
 	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
+
+	QMenu *menu = new QMenu(this);
+	menu->addAction(tr("Select All"), model, &FilterModelBase::selectAll);
+	menu->addAction(tr("Unselect All"), model, &FilterModelBase::clearFilter);
+	menu->addAction(tr("Invert Selection"), model, &FilterModelBase::invertSelection);
+	ui.selectionButton->setMenu(menu);
 }
 
 void FilterBase::showEvent(QShowEvent *event)
