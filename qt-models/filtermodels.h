@@ -7,16 +7,12 @@
 #include <stdint.h>
 #include <vector>
 
-class MultiFilterInterface {
+class FilterModelBase : public QStringListModel {
 public:
-	MultiFilterInterface() : anyChecked(false) {}
 	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
 	virtual void clearFilter() = 0;
 	std::vector<char> checkState;
 	bool anyChecked;
-};
-
-class FilterModelBase : public QStringListModel, public MultiFilterInterface {
 protected:
 	explicit FilterModelBase(QObject *parent = 0);
 	void updateList(const QStringList &new_list);
@@ -97,8 +93,8 @@ class MultiFilterSortModel : public QSortFilterProxyModel {
 public:
 	static MultiFilterSortModel *instance();
 	virtual bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
-	void addFilterModel(MultiFilterInterface *model);
-	void removeFilterModel(MultiFilterInterface *model);
+	void addFilterModel(FilterModelBase *model);
+	void removeFilterModel(FilterModelBase *model);
 	int divesDisplayed;
 public
 slots:
@@ -111,7 +107,7 @@ signals:
 	void filterFinished();
 private:
 	MultiFilterSortModel(QObject *parent = 0);
-	QList<MultiFilterInterface *> models;
+	QList<FilterModelBase *> models;
 	bool justCleared;
 	struct dive_site *curr_dive_site;
 };

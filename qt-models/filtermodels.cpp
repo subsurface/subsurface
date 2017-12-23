@@ -79,6 +79,7 @@ CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit)
 CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
 FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent)
+						  , anyChecked(false)
 {
 }
 
@@ -401,7 +402,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		}
 		return showTrip;
 	}
-	Q_FOREACH (MultiFilterInterface *model, models) {
+	Q_FOREACH (FilterModelBase *model, models) {
 		if (!model->doFilter(d, index0, sourceModel()))
 			shouldShow = false;
 	}
@@ -456,7 +457,7 @@ void MultiFilterSortModel::myInvalidate()
 #endif
 }
 
-void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
+void MultiFilterSortModel::addFilterModel(FilterModelBase *model)
 {
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
 	Q_ASSERT(itemModel);
@@ -464,7 +465,7 @@ void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
 	connect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
 }
 
-void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
+void MultiFilterSortModel::removeFilterModel(FilterModelBase *model)
 {
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
 	Q_ASSERT(itemModel);
@@ -475,7 +476,7 @@ void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
 void MultiFilterSortModel::clearFilter()
 {
 	justCleared = true;
-	Q_FOREACH (MultiFilterInterface *iface, models) {
+	Q_FOREACH (FilterModelBase *iface, models) {
 		iface->clearFilter();
 	}
 	justCleared = false;
