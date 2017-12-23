@@ -10,57 +10,52 @@
 class FilterModelBase : public QStringListModel {
 public:
 	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
-	virtual void clearFilter() = 0;
+	void clearFilter();
 	std::vector<char> checkState;
 	bool anyChecked;
 protected:
 	explicit FilterModelBase(QObject *parent = 0);
 	void updateList(const QStringList &new_list);
+	virtual int countDives(const char *) const = 0;
+private:
+	Qt::ItemFlags flags(const QModelIndex &index) const;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
 };
 
 class TagFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static TagFilterModel *instance();
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
-	void clearFilter();
 public
 slots:
 	void repopulate();
 
 private:
 	explicit TagFilterModel(QObject *parent = 0);
+	int countDives(const char *) const;
 };
 
 class BuddyFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static BuddyFilterModel *instance();
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
-	void clearFilter();
 public
 slots:
 	void repopulate();
 
 private:
 	explicit BuddyFilterModel(QObject *parent = 0);
+	int countDives(const char *) const;
 };
 
 class LocationFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static LocationFilterModel *instance();
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
-	void clearFilter();
 public
 slots:
 	void repopulate();
@@ -69,23 +64,21 @@ slots:
 
 private:
 	explicit LocationFilterModel(QObject *parent = 0);
+	int countDives(const char *) const;
 };
 
 class SuitsFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static SuitsFilterModel *instance();
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const;
-	void clearFilter();
 public
 slots:
 	void repopulate();
 
 private:
 	explicit SuitsFilterModel(QObject *parent = 0);
+	int countDives(const char *) const;
 };
 
 class MultiFilterSortModel : public QSortFilterProxyModel {
