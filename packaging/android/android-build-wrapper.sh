@@ -60,20 +60,7 @@ if [ "$MISSING" ] ; then
 	exit 1
 fi
 
-# download the Qt installer including Android bits and unpack / install
-QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
-if [ ! -d Qt ] ; then
-	if [ ! -f ${QT_BINARIES} ] ; then
-		wget -q ${QT_DOWNLOAD_URL}
-	fi
-	chmod +x ./${QT_BINARIES}
-	./${QT_BINARIES} --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
-fi
-
-# patch the cmake / Qt5.7.1 incompatibility mentioned above
-sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/${LATEST_QT}/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
-
-# next we need to get the Android SDK and NDK
+# first we need to get the Android SDK and NDK
 if [ ! -d $ANDROID_NDK ] ; then
 	if [ ! -f $NDK_BINARIES ] ; then
 		wget -q https://dl.google.com/android/repository/$NDK_BINARIES
@@ -93,6 +80,19 @@ if [ ! -d $ANDROID_SDK ] ; then
 	tools/bin/sdkmanager tools platform-tools 'platforms;android-27' 'build-tools;25.0.3'
 	popd
 fi
+
+# download the Qt installer including Android bits and unpack / install
+QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
+if [ ! -d Qt ] ; then
+	if [ ! -f ${QT_BINARIES} ] ; then
+		wget -q ${QT_DOWNLOAD_URL}
+	fi
+	chmod +x ./${QT_BINARIES}
+	./${QT_BINARIES} --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
+fi
+
+# patch the cmake / Qt5.7.1 incompatibility mentioned above
+sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/${LATEST_QT}/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
 if [ ! -d subsurface/libdivecomputer/src ] ; then
 	pushd subsurface
