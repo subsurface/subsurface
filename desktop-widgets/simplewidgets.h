@@ -177,32 +177,26 @@ protected:
 };
 
 class TagFilter : public FilterBase {
-	Q_OBJECT
 public:
 	TagFilter(QWidget *parent = 0);
-	friend class MultiFilter;
 };
 
 class BuddyFilter : public FilterBase {
-	Q_OBJECT
 public:
 	BuddyFilter(QWidget *parent = 0);
 };
 
 class SuitFilter : public FilterBase {
-	Q_OBJECT
 public:
 	SuitFilter(QWidget *parent = 0);
 };
 
 class LocationFilter : public FilterBase {
-	Q_OBJECT
 public:
 	LocationFilter(QWidget *parent = 0);
 };
 
 class TextHyperlinkEventFilter : public QObject {
-	Q_OBJECT
 public:
 	explicit TextHyperlinkEventFilter(QTextEdit *txtEdit);
 
