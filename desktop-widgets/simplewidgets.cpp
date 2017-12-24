@@ -162,14 +162,14 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		MainWindow::instance()->dive_list()->rememberSelection();
 		// we remember a map from dive uuid to a pair of old number / new number
-		QMap<int,QPair<int, int> > renumberedDives;
+		QMap<int, QPair<int, int>> renumberedDives;
 		int i;
 		int newNr = ui.spinBox->value();
 		struct dive *dive = NULL;
 		for_each_dive (i, dive) {
 			if (!selectedOnly || dive->selected) {
 				invalidate_dive_cache(dive);
-				renumberedDives.insert(dive->id, QPair<int,int>(dive->number, newNr++));
+				renumberedDives.insert(dive->id, QPair<int, int>(dive->number, newNr++));
 			}
 		}
 		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives);
@@ -214,8 +214,7 @@ void SetpointDialog::buttonClicked(QAbstractButton *button)
 	MainWindow::instance()->graphics()->replot();
 }
 
-SetpointDialog::SetpointDialog(QWidget *parent) :
-	QDialog(parent),
+SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent),
 	dc(0)
 {
 	ui.setupUi(this);
@@ -281,8 +280,7 @@ void ShiftTimesDialog::changeTime()
 	ui.shiftedTime->setText(get_dive_date_string(amount + when));
 }
 
-ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) :
-	QDialog(parent),
+ShiftTimesDialog::ShiftTimesDialog(QWidget *parent) : QDialog(parent),
 	when(0)
 {
 	ui.setupUi(this);
@@ -346,8 +344,7 @@ bool ShiftImageTimesDialog::matchAll()
 	return matchAllImages;
 }
 
-ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNames) :
-	QDialog(parent),
+ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNames) : QDialog(parent),
 	fileNames(fileNames),
 	m_amount(0),
 	matchAllImages(false)
@@ -359,7 +356,7 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNa
 	connect(ui.backwards, SIGNAL(toggled(bool)), this, SLOT(timeEditChanged()));
 	connect(ui.matchAllImages, SIGNAL(toggled(bool)), this, SLOT(matchAllImagesToggled(bool)));
 	dcImageEpoch = (time_t)0;
-	
+
 	updateInvalid();
 }
 
@@ -409,7 +406,7 @@ void ShiftImageTimesDialog::updateInvalid()
 		allValid = false;
 	}
 
-	if (!allValid){
+	if (!allValid) {
 		ui.warningLabel->show();
 		ui.invalidFilesText->show();
 	}
@@ -419,15 +416,16 @@ void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
 {
 	m_amount = time.hour() * 3600 + time.minute() * 60;
 	if (ui.backwards->isChecked())
-			m_amount *= -1;
+		m_amount *= -1;
 	updateInvalid();
 }
 
 void ShiftImageTimesDialog::timeEditChanged()
 {
 	if ((m_amount > 0) == ui.backwards->isChecked())
-			m_amount *= -1;
-	if (m_amount) updateInvalid();
+		m_amount *= -1;
+	if (m_amount)
+		updateInvalid();
 }
 
 URLDialog::URLDialog(QWidget *parent) : QDialog(parent)
@@ -500,9 +498,8 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 	}
 }
 
-FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent)
-	: QWidget(parent)
-	, model(model_)
+FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent) : QWidget(parent),
+	model(model_)
 {
 	ui.setupUi(this);
 #if QT_VERSION >= 0x050200
@@ -563,7 +560,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 
 	TagFilter *tagFilter = new TagFilter(this);
 	int minimumHeight = tagFilter->ui.filterInternalList->height() +
-			tagFilter->ui.verticalLayout->spacing() * tagFilter->ui.verticalLayout->count();
+			    tagFilter->ui.verticalLayout->spacing() * tagFilter->ui.verticalLayout->count();
 
 	QListView *dummyList = new QListView();
 	QStringListModel *dummy = new QStringListModel(QStringList() << "Dummy Text");
@@ -582,7 +579,7 @@ MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
 	expandedWidget->setLayout(l);
 
 	ui.scrollArea->setWidget(expandedWidget);
-	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5 );
+	expandedWidget->resize(expandedWidget->width(), minimumHeight + dummyList->sizeHintForRow(0) * 5);
 	ui.scrollArea->setMinimumHeight(expandedWidget->height() + 5);
 
 	connect(MultiFilterSortModel::instance(), SIGNAL(filterFinished()), this, SLOT(filterFinished()));
@@ -738,7 +735,8 @@ QString TextHyperlinkEventFilter::fromCursorTilWhitespace(QTextCursor *cursor, c
 		}
 
 		grownText = cursor->selectedText();
-		if (grownText.size() == oldSize) movedOk = false;
+		if (grownText.size() == oldSize)
+			movedOk = false;
 		oldSize = grownText.size();
 		noSpaces = grownText.simplified().replace(" ", "");
 	} while (grownText == noSpaces && movedOk);

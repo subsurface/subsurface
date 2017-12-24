@@ -12,12 +12,12 @@
 #include <QDebug>
 #include <algorithm>
 
-#define CREATE_INSTANCE_METHOD( CLASS ) \
-CLASS *CLASS::instance() \
-{ \
-	static CLASS *self = new CLASS(); \
-	return self; \
-}
+#define CREATE_INSTANCE_METHOD(CLASS)             \
+	CLASS *CLASS::instance()                  \
+	{                                         \
+		static CLASS *self = new CLASS(); \
+		return self;                      \
+	}
 
 CREATE_INSTANCE_METHOD(TagFilterModel)
 CREATE_INSTANCE_METHOD(BuddyFilterModel)
@@ -25,8 +25,8 @@ CREATE_INSTANCE_METHOD(LocationFilterModel)
 CREATE_INSTANCE_METHOD(SuitsFilterModel)
 CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
-FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent)
-						  , anyChecked(false)
+FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent),
+	anyChecked(false)
 {
 }
 
@@ -97,22 +97,22 @@ void FilterModelBase::clearFilter()
 {
 	std::fill(checkState.begin(), checkState.end(), false);
 	anyChecked = false;
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, 0));
 }
 
 void FilterModelBase::selectAll()
 {
 	std::fill(checkState.begin(), checkState.end(), true);
 	anyChecked = true;
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, 0));
 }
 
 void FilterModelBase::invertSelection()
 {
-	for (char &b: checkState)
+	for (char &b : checkState)
 		b = !b;
-	anyChecked = std::any_of(checkState.begin(), checkState.end(), [](char b){return !!b;});
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+	anyChecked = std::any_of(checkState.begin(), checkState.end(), [](char b) { return !!b; });
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, 0));
 }
 
 SuitsFilterModel::SuitsFilterModel(QObject *parent) : FilterModelBase(parent)
@@ -249,7 +249,7 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
 	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
-	for (QString &s: personsList)
+	for (QString &s : personsList)
 		s = s.trimmed();
 	// only show empty buddie dives if the user checked that.
 	if (personsList.isEmpty()) {
@@ -373,8 +373,7 @@ void LocationFilterModel::addName(const QString &newName)
 	checkState.insert(checkState.begin(), true);
 }
 
-MultiFilterSortModel::MultiFilterSortModel(QObject *parent) :
-	QSortFilterProxyModel(parent),
+MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
 	divesDisplayed(0),
 	justCleared(false),
 	curr_dive_site(NULL)
@@ -394,14 +393,14 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 			bool showTrip = false;
 			for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
 				QModelIndex child = sourceModel()->index(i, 0, index0);
-				d = (struct dive *) sourceModel()->data(child, DiveTripModel::DIVE_ROLE).value<void*>();
+				d = (struct dive *)sourceModel()->data(child, DiveTripModel::DIVE_ROLE).value<void *>();
 				ds = get_dive_site_by_uuid(d->dive_site_uuid);
 				if (!ds)
 					continue;
-				if ( same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid) {
+				if (same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid) {
 					if (ds->uuid != curr_dive_site->uuid) {
 						qWarning() << "Warning, two different dive sites with same name have a different id"
-							<< ds->uuid << "and" << curr_dive_site->uuid;
+							   << ds->uuid << "and" << curr_dive_site->uuid;
 					}
 					showTrip = true; // do not shortcircuit the loop or the counts will be wrong
 				}
@@ -411,7 +410,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		ds = get_dive_site_by_uuid(d->dive_site_uuid);
 		if (!ds)
 			return false;
-		return ( same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid);
+		return (same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid);
 	}
 
 	if (justCleared || models.isEmpty())
@@ -467,7 +466,7 @@ void MultiFilterSortModel::myInvalidate()
 		dlv->selectDives(curSelectedDives);
 	}
 
-	for_each_dive (i,d) {
+	for_each_dive (i, d) {
 		if (!d->hidden_by_filter)
 			divesDisplayed++;
 	}
