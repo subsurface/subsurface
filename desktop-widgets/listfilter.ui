@@ -51,16 +51,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QToolButton" name="selectionButton">
-       <property name="text">
-        <string>...</string>
-       </property>
-       <property name="popupMode">
-        <enum>QToolButton::InstantPopup</enum>
-       </property>
-      </widget>
-     </item>
     </layout>
    </item>
    <item>
