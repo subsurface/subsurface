@@ -27,6 +27,7 @@ CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
 FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent)
 						  , anyChecked(false)
+						  , negate(false)
 {
 }
 
@@ -115,6 +116,12 @@ void FilterModelBase::invertSelection()
 	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
 }
 
+void FilterModelBase::setNegate(bool negate_)
+{
+	negate = negate_;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
 SuitsFilterModel::SuitsFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
@@ -129,28 +136,25 @@ bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	Q_UNUSED(index0);
 	Q_UNUSED(sourceModel);
 
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no suits" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
 
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString suit(d->suit);
 	// only show empty suit dives if the user checked that.
-	if (suit.isEmpty()) {
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (suit.isEmpty())
+		return checkState[rowCount() - 1] != negate;
 
 	// there is a suit selected
 	QStringList suitList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
 		if (checkState[i] && suit == suitList[i])
-			return true;
+			return !negate;
 	}
-	return false;
+	return negate;
 }
 
 void SuitsFilterModel::repopulate()
@@ -200,18 +204,16 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 	Q_UNUSED(sourceModel);
 
 	// If there's nothing checked, this should show everything
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no tags" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
+
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
-	if (!head) { // last tag means "Show empty tags";
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (!head) // last tag means "Show empty tags";
+		return checkState[rowCount() - 1] != negate;
 
 	// have at least one tag.
 	QStringList tagList = stringList();
@@ -221,11 +223,11 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 			QString tagName(head->tag->name);
 			int index = tagList.indexOf(tagName);
 			if (checkState[index])
-				return true;
+				return !negate;
 			head = head->next;
 		}
 	}
-	return false;
+	return negate;
 }
 
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : FilterModelBase(parent)
@@ -243,30 +245,28 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	Q_UNUSED(sourceModel);
 
 	// If there's nothing checked, this should show everything
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no tags" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
+
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
 	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
 	for (QString &s: personsList)
 		s = s.trimmed();
 	// only show empty buddie dives if the user checked that.
-	if (personsList.isEmpty()) {
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (personsList.isEmpty())
+		return checkState[rowCount() - 1] != negate;
 
 	// have at least one buddy
 	QStringList buddyList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
 		if (checkState[i] && personsList.contains(buddyList[i], Qt::CaseInsensitive))
-			return true;
+			return !negate;
 	}
-	return false;
+	return negate;
 }
 
 void BuddyFilterModel::repopulate()
@@ -302,27 +302,25 @@ bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstrac
 	Q_UNUSED(index0);
 	Q_UNUSED(sourceModel);
 
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no location" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
+
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString location(get_dive_location(d));
 	// only show empty location dives if the user checked that.
-	if (location.isEmpty()) {
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (location.isEmpty())
+		return checkState[rowCount() - 1] != negate;
 
 	// There is a location selected
 	QStringList locationList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
 		if (checkState[i] && location == locationList[i])
-			return true;
+			return !negate;
 	}
-	return false;
+	return negate;
 }
 
 void LocationFilterModel::repopulate()

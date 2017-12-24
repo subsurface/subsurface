@@ -519,6 +519,7 @@ FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent)
 	filter->setSourceModel(model);
 	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	connect(ui.notButton, &QToolButton::toggled, model, &FilterModelBase::setNegate);
 	ui.filterList->setModel(filter);
 
 	addContextMenuEntry(tr("Select All"), &FilterModelBase::selectAll);

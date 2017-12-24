@@ -8,6 +8,7 @@
 #include <vector>
 
 class FilterModelBase : public QStringListModel {
+	Q_OBJECT
 public:
 	virtual bool doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const = 0;
 	void clearFilter();
@@ -15,6 +16,10 @@ public:
 	void invertSelection();
 	std::vector<char> checkState;
 	bool anyChecked;
+	bool negate;
+public
+slots:
+	void setNegate(bool negate);
 protected:
 	explicit FilterModelBase(QObject *parent = 0);
 	void updateList(const QStringList &new_list);
