@@ -500,109 +500,65 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 	}
 }
 
-TagFilter::TagFilter(QWidget *parent) : QWidget(parent)
+void FilterBase::addContextMenuEntry(const QString &s, void (FilterModelBase::*fn)())
+{
+	QAction *act = new QAction(s, this);
+	connect(act, &QAction::triggered, model, fn);
+	ui.filterList->addAction(act);
+}
+
+FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent)
+	: QWidget(parent)
+	, model(model_)
 {
 	ui.setupUi(this);
-	ui.label->setText(tr("Tags: "));
 #if QT_VERSION >= 0x050200
 	ui.filterInternalList->setClearButtonEnabled(true);
 #endif
 	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
-	filter->setSourceModel(TagFilterModel::instance());
+	filter->setSourceModel(model);
 	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
+	connect(ui.notButton, &QToolButton::toggled, model, &FilterModelBase::setNegate);
 	ui.filterList->setModel(filter);
+
+	addContextMenuEntry(tr("Select All"), &FilterModelBase::selectAll);
+	addContextMenuEntry(tr("Unselect All"), &FilterModelBase::clearFilter);
+	addContextMenuEntry(tr("Invert Selection"), &FilterModelBase::invertSelection);
+	ui.filterList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
-void TagFilter::showEvent(QShowEvent *event)
+void FilterBase::showEvent(QShowEvent *event)
 {
-	MultiFilterSortModel::instance()->addFilterModel(TagFilterModel::instance());
+	MultiFilterSortModel::instance()->addFilterModel(model);
 	QWidget::showEvent(event);
 }
 
-void TagFilter::hideEvent(QHideEvent *event)
+void FilterBase::hideEvent(QHideEvent *event)
 {
-	MultiFilterSortModel::instance()->removeFilterModel(TagFilterModel::instance());
+	MultiFilterSortModel::instance()->removeFilterModel(model);
 	QWidget::hideEvent(event);
 }
 
-BuddyFilter::BuddyFilter(QWidget *parent) : QWidget(parent)
+TagFilter::TagFilter(QWidget *parent) : FilterBase(TagFilterModel::instance(), parent)
 {
-	ui.setupUi(this);
+	ui.label->setText(tr("Tags: "));
+}
+
+BuddyFilter::BuddyFilter(QWidget *parent) : FilterBase(BuddyFilterModel::instance(), parent)
+{
 	ui.label->setText(tr("Person: "));
 	ui.label->setToolTip(tr("Searches for buddies and divemasters"));
-#if QT_VERSION >= 0x050200
-	ui.filterInternalList->setClearButtonEnabled(true);
-#endif
-	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
-	filter->setSourceModel(BuddyFilterModel::instance());
-	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
-	ui.filterList->setModel(filter);
 }
 
-void BuddyFilter::showEvent(QShowEvent *event)
+LocationFilter::LocationFilter(QWidget *parent) : FilterBase(LocationFilterModel::instance(), parent)
 {
-	MultiFilterSortModel::instance()->addFilterModel(BuddyFilterModel::instance());
-	QWidget::showEvent(event);
-}
-
-void BuddyFilter::hideEvent(QHideEvent *event)
-{
-	MultiFilterSortModel::instance()->removeFilterModel(BuddyFilterModel::instance());
-	QWidget::hideEvent(event);
-}
-
-LocationFilter::LocationFilter(QWidget *parent) : QWidget(parent)
-{
-	ui.setupUi(this);
 	ui.label->setText(tr("Location: "));
-#if QT_VERSION >= 0x050200
-	ui.filterInternalList->setClearButtonEnabled(true);
-#endif
-	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
-	filter->setSourceModel(LocationFilterModel::instance());
-	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
-	ui.filterList->setModel(filter);
 }
 
-void LocationFilter::showEvent(QShowEvent *event)
+SuitFilter::SuitFilter(QWidget *parent) : FilterBase(SuitsFilterModel::instance(), parent)
 {
-	MultiFilterSortModel::instance()->addFilterModel(LocationFilterModel::instance());
-	QWidget::showEvent(event);
-}
-
-void LocationFilter::hideEvent(QHideEvent *event)
-{
-	MultiFilterSortModel::instance()->removeFilterModel(LocationFilterModel::instance());
-	QWidget::hideEvent(event);
-}
-
-SuitFilter::SuitFilter(QWidget *parent) : QWidget(parent)
-{
-	ui.setupUi(this);
 	ui.label->setText(tr("Suits: "));
-#if QT_VERSION >= 0x050200
-	ui.filterInternalList->setClearButtonEnabled(true);
-#endif
-	QSortFilterProxyModel *filter = new QSortFilterProxyModel();
-	filter->setSourceModel(SuitsFilterModel::instance());
-	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
-	ui.filterList->setModel(filter);
-}
-
-void SuitFilter::showEvent(QShowEvent *event)
-{
-	MultiFilterSortModel::instance()->addFilterModel(SuitsFilterModel::instance());
-	QWidget::showEvent(event);
-}
-
-void SuitFilter::hideEvent(QHideEvent *event)
-{
-	MultiFilterSortModel::instance()->removeFilterModel(SuitsFilterModel::instance());
-	QWidget::hideEvent(event);
 }
 
 MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)

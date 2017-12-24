@@ -19,66 +19,15 @@ CLASS *CLASS::instance() \
 	return self; \
 }
 
-#define CREATE_MODEL_SET_DATA_METHOD( CLASS ) \
-bool CLASS::setData(const QModelIndex &index, const QVariant &value, int role) \
-{ \
-	if (role == Qt::CheckStateRole) { \
-		checkState[index.row()] = value.toBool(); \
-		anyChecked = false; \
-		for (int i = 0; i < rowCount(); i++) { \
-			if (checkState[i] == true) { \
-				anyChecked = true; \
-				break; \
-			} \
-		} \
-		dataChanged(index, index); \
-		return true; \
-	} \
-	return false; \
-}
-
-#define CREATE_CLEAR_FILTER_METHOD( CLASS ) \
-void CLASS::clearFilter() \
-{ \
-	std::fill(checkState.begin(), checkState.end(), false); \
-	anyChecked = false; \
-	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0)); \
-}
-
-#define CREATE_FLAGS_METHOD( CLASS ) \
-Qt::ItemFlags CLASS::flags(const QModelIndex &index) const \
-{ \
-	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable; \
-}
-
-#define CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION ) \
-QVariant CLASS::data(const QModelIndex &index, int role) const \
-{ \
-	if (role == Qt::CheckStateRole) { \
-		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked; \
-	} else if (role == Qt::DisplayRole) { \
-		QString value = stringList()[index.row()]; \
-		int count = COUNTER_FUNCTION((index.row() == rowCount() - 1) ? "" : value.toUtf8().data()); \
-		return value + QString(" (%1)").arg(count); \
-	} \
-	return QVariant(); \
-}
-
-#define CREATE_COMMON_METHODS_FOR_FILTER( CLASS, COUNTER_FUNCTION ) \
-CREATE_FLAGS_METHOD( CLASS ); \
-CREATE_CLEAR_FILTER_METHOD( CLASS ); \
-CREATE_MODEL_SET_DATA_METHOD( CLASS ); \
-CREATE_INSTANCE_METHOD( CLASS ); \
-CREATE_DATA_METHOD( CLASS, COUNTER_FUNCTION )
-
-CREATE_COMMON_METHODS_FOR_FILTER(TagFilterModel, count_dives_with_tag)
-CREATE_COMMON_METHODS_FOR_FILTER(BuddyFilterModel, count_dives_with_person)
-CREATE_COMMON_METHODS_FOR_FILTER(LocationFilterModel, count_dives_with_location)
-CREATE_COMMON_METHODS_FOR_FILTER(SuitsFilterModel, count_dives_with_suit)
-
+CREATE_INSTANCE_METHOD(TagFilterModel)
+CREATE_INSTANCE_METHOD(BuddyFilterModel)
+CREATE_INSTANCE_METHOD(LocationFilterModel)
+CREATE_INSTANCE_METHOD(SuitsFilterModel)
 CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
 FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent)
+						  , anyChecked(false)
+						  , negate(false)
 {
 }
 
@@ -111,8 +60,75 @@ void FilterModelBase::updateList(const QStringList &newList)
 	setStringList(newList);
 }
 
+Qt::ItemFlags FilterModelBase::flags(const QModelIndex &index) const
+{
+	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
+}
+
+bool FilterModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+	if (role == Qt::CheckStateRole) {
+		checkState[index.row()] = value.toBool();
+		anyChecked = false;
+		for (int i = 0; i < rowCount(); i++) {
+			if (checkState[i] == true) {
+				anyChecked = true;
+				break;
+			}
+		}
+		dataChanged(index, index);
+		return true;
+	}
+	return false;
+}
+
+QVariant FilterModelBase::data(const QModelIndex &index, int role) const
+{
+	if (role == Qt::CheckStateRole) {
+		return checkState[index.row()] ? Qt::Checked : Qt::Unchecked;
+	} else if (role == Qt::DisplayRole) {
+		QString value = stringList()[index.row()];
+		int count = countDives((index.row() == rowCount() - 1) ? "" : value.toUtf8().data());
+		return value + QString(" (%1)").arg(count);
+	}
+	return QVariant();
+}
+
+void FilterModelBase::clearFilter()
+{
+	std::fill(checkState.begin(), checkState.end(), false);
+	anyChecked = false;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
+void FilterModelBase::selectAll()
+{
+	std::fill(checkState.begin(), checkState.end(), true);
+	anyChecked = true;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
+void FilterModelBase::invertSelection()
+{
+	for (char &b: checkState)
+		b = !b;
+	anyChecked = std::any_of(checkState.begin(), checkState.end(), [](char b){return !!b;});
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
+void FilterModelBase::setNegate(bool negate_)
+{
+	negate = negate_;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
 SuitsFilterModel::SuitsFilterModel(QObject *parent) : FilterModelBase(parent)
 {
+}
+
+int SuitsFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_suit(s);
 }
 
 bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
@@ -120,28 +136,25 @@ bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	Q_UNUSED(index0);
 	Q_UNUSED(sourceModel);
 
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no suits" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
 
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString suit(d->suit);
 	// only show empty suit dives if the user checked that.
-	if (suit.isEmpty()) {
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (suit.isEmpty())
+		return checkState[rowCount() - 1] != negate;
 
 	// there is a suit selected
 	QStringList suitList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
 		if (checkState[i] && suit == suitList[i])
-			return true;
+			return !negate;
 	}
-	return false;
+	return negate;
 }
 
 void SuitsFilterModel::repopulate()
@@ -162,6 +175,11 @@ void SuitsFilterModel::repopulate()
 
 TagFilterModel::TagFilterModel(QObject *parent) : FilterModelBase(parent)
 {
+}
+
+int TagFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_tag(s);
 }
 
 void TagFilterModel::repopulate()
@@ -186,18 +204,16 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 	Q_UNUSED(sourceModel);
 
 	// If there's nothing checked, this should show everything
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no tags" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
+
 	// Checked means 'Show', Unchecked means 'Hide'.
 	struct tag_entry *head = d->tag_list;
 
-	if (!head) { // last tag means "Show empty tags";
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (!head) // last tag means "Show empty tags";
+		return checkState[rowCount() - 1] != negate;
 
 	// have at least one tag.
 	QStringList tagList = stringList();
@@ -207,15 +223,20 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 			QString tagName(head->tag->name);
 			int index = tagList.indexOf(tagName);
 			if (checkState[index])
-				return true;
+				return !negate;
 			head = head->next;
 		}
 	}
-	return false;
+	return negate;
 }
 
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : FilterModelBase(parent)
 {
+}
+
+int BuddyFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_person(s);
 }
 
 bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
@@ -224,30 +245,28 @@ bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel
 	Q_UNUSED(sourceModel);
 
 	// If there's nothing checked, this should show everything
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no tags" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
+
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
 	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
 	for (QString &s: personsList)
 		s = s.trimmed();
 	// only show empty buddie dives if the user checked that.
-	if (personsList.isEmpty()) {
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (personsList.isEmpty())
+		return checkState[rowCount() - 1] != negate;
 
 	// have at least one buddy
 	QStringList buddyList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
 		if (checkState[i] && personsList.contains(buddyList[i], Qt::CaseInsensitive))
-			return true;
+			return !negate;
 	}
-	return false;
+	return negate;
 }
 
 void BuddyFilterModel::repopulate()
@@ -273,32 +292,35 @@ LocationFilterModel::LocationFilterModel(QObject *parent) : FilterModelBase(pare
 {
 }
 
+int LocationFilterModel::countDives(const char *s) const
+{
+	return count_dives_with_location(s);
+}
+
 bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
 {
 	Q_UNUSED(index0);
 	Q_UNUSED(sourceModel);
 
-	if (!anyChecked) {
+	// rowCount() == 0 should never happen, because we have the "no location" row
+	// let's handle it gracefully anyway.
+	if (!anyChecked || rowCount() == 0)
 		return true;
-	}
+
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString location(get_dive_location(d));
 	// only show empty location dives if the user checked that.
-	if (location.isEmpty()) {
-		if (rowCount() > 0)
-			return checkState[rowCount() - 1];
-		else
-			return true;
-	}
+	if (location.isEmpty())
+		return checkState[rowCount() - 1] != negate;
 
 	// There is a location selected
 	QStringList locationList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
 		if (checkState[i] && location == locationList[i])
-			return true;
+			return !negate;
 	}
-	return false;
+	return negate;
 }
 
 void LocationFilterModel::repopulate()
@@ -401,7 +423,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		}
 		return showTrip;
 	}
-	Q_FOREACH (MultiFilterInterface *model, models) {
+	Q_FOREACH (FilterModelBase *model, models) {
 		if (!model->doFilter(d, index0, sourceModel()))
 			shouldShow = false;
 	}
@@ -456,7 +478,7 @@ void MultiFilterSortModel::myInvalidate()
 #endif
 }
 
-void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
+void MultiFilterSortModel::addFilterModel(FilterModelBase *model)
 {
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
 	Q_ASSERT(itemModel);
@@ -464,7 +486,7 @@ void MultiFilterSortModel::addFilterModel(MultiFilterInterface *model)
 	connect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
 }
 
-void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
+void MultiFilterSortModel::removeFilterModel(FilterModelBase *model)
 {
 	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
 	Q_ASSERT(itemModel);
@@ -475,7 +497,7 @@ void MultiFilterSortModel::removeFilterModel(MultiFilterInterface *model)
 void MultiFilterSortModel::clearFilter()
 {
 	justCleared = true;
-	Q_FOREACH (MultiFilterInterface *iface, models) {
+	Q_FOREACH (FilterModelBase *iface, models) {
 		iface->clearFilter();
 	}
 	justCleared = false;

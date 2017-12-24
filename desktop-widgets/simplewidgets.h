@@ -5,6 +5,7 @@
 class MinMaxAvgWidgetPrivate;
 class QAbstractButton;
 class QNetworkReply;
+class FilterModelBase;
 
 #include <QWidget>
 #include <QGroupBox>
@@ -165,53 +166,38 @@ public:
 	Ui::FilterWidget2 ui;
 };
 
-class TagFilter : public QWidget {
-	Q_OBJECT
-public:
-	TagFilter(QWidget *parent = 0);
+class FilterBase : public QWidget {
+	void addContextMenuEntry(const QString &s, void (FilterModelBase::*)());
+protected:
+	FilterBase(FilterModelBase *model, QWidget *parent = 0);
+	FilterModelBase *model;
+	Ui::FilterWidget ui;
 	virtual void showEvent(QShowEvent *);
 	virtual void hideEvent(QHideEvent *);
-
-private:
-	Ui::FilterWidget ui;
 	friend class MultiFilter;
 };
 
-class BuddyFilter : public QWidget {
-	Q_OBJECT
+class TagFilter : public FilterBase {
+public:
+	TagFilter(QWidget *parent = 0);
+};
+
+class BuddyFilter : public FilterBase {
 public:
 	BuddyFilter(QWidget *parent = 0);
-	virtual void showEvent(QShowEvent *);
-	virtual void hideEvent(QHideEvent *);
-
-private:
-	Ui::FilterWidget ui;
 };
 
-class SuitFilter : public QWidget {
-	Q_OBJECT
+class SuitFilter : public FilterBase {
 public:
 	SuitFilter(QWidget *parent = 0);
-	virtual void showEvent(QShowEvent *);
-	virtual void hideEvent(QHideEvent *);
-
-private:
-	Ui::FilterWidget ui;
 };
 
-class LocationFilter : public QWidget {
-	Q_OBJECT
+class LocationFilter : public FilterBase {
 public:
 	LocationFilter(QWidget *parent = 0);
-	virtual void showEvent(QShowEvent *);
-	virtual void hideEvent(QHideEvent *);
-
-private:
-	Ui::FilterWidget ui;
 };
 
 class TextHyperlinkEventFilter : public QObject {
-	Q_OBJECT
 public:
 	explicit TextHyperlinkEventFilter(QTextEdit *txtEdit);
 
