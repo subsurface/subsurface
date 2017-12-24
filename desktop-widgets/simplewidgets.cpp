@@ -500,6 +500,13 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 	}
 }
 
+void FilterBase::addContextMenuEntry(const QString &s, void (FilterModelBase::*fn)())
+{
+	QAction *act = new QAction(s, this);
+	connect(act, &QAction::triggered, model, fn);
+	ui.filterList->addAction(act);
+}
+
 FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent)
 	: QWidget(parent)
 	, model(model_)
@@ -513,6 +520,11 @@ FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent)
 	filter->setFilterCaseSensitivity(Qt::CaseInsensitive);
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
+
+	addContextMenuEntry(tr("Select All"), &FilterModelBase::selectAll);
+	addContextMenuEntry(tr("Unselect All"), &FilterModelBase::clearFilter);
+	addContextMenuEntry(tr("Invert Selection"), &FilterModelBase::invertSelection);
+	ui.filterList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 void FilterBase::showEvent(QShowEvent *event)

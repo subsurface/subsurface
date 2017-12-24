@@ -100,6 +100,21 @@ void FilterModelBase::clearFilter()
 	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
 }
 
+void FilterModelBase::selectAll()
+{
+	std::fill(checkState.begin(), checkState.end(), true);
+	anyChecked = true;
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
+void FilterModelBase::invertSelection()
+{
+	for (char &b: checkState)
+		b = !b;
+	anyChecked = std::any_of(checkState.begin(), checkState.end(), [](char b){return !!b;});
+	emit dataChanged(createIndex(0,0), createIndex(rowCount()-1, 0));
+}
+
 SuitsFilterModel::SuitsFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }

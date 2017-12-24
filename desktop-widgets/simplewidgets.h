@@ -167,6 +167,7 @@ public:
 };
 
 class FilterBase : public QWidget {
+	void addContextMenuEntry(const QString &s, void (FilterModelBase::*)());
 protected:
 	FilterBase(FilterModelBase *model, QWidget *parent = 0);
 	FilterModelBase *model;
