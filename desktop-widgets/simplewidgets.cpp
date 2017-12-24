@@ -498,6 +498,13 @@ void DiveComponentSelection::buttonClicked(QAbstractButton *button)
 	}
 }
 
+void FilterBase::addContextMenuEntry(const QString &s, void (FilterModelBase::*fn)())
+{
+	QAction *act = new QAction(s, this);
+	connect(act, &QAction::triggered, model, fn);
+	ui.filterList->addAction(act);
+}
+
 FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent) : QWidget(parent),
 	model(model_)
 {
@@ -511,11 +518,10 @@ FilterBase::FilterBase(FilterModelBase *model_, QWidget *parent) : QWidget(paren
 	connect(ui.filterInternalList, SIGNAL(textChanged(QString)), filter, SLOT(setFilterFixedString(QString)));
 	ui.filterList->setModel(filter);
 
-	QMenu *menu = new QMenu(this);
-	menu->addAction(tr("Select All"), model, &FilterModelBase::selectAll);
-	menu->addAction(tr("Unselect All"), model, &FilterModelBase::clearFilter);
-	menu->addAction(tr("Invert Selection"), model, &FilterModelBase::invertSelection);
-	ui.selectionButton->setMenu(menu);
+	addContextMenuEntry(tr("Select All"), &FilterModelBase::selectAll);
+	addContextMenuEntry(tr("Unselect All"), &FilterModelBase::clearFilter);
+	addContextMenuEntry(tr("Invert Selection"), &FilterModelBase::invertSelection);
+	ui.filterList->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
 
 void FilterBase::showEvent(QShowEvent *event)
