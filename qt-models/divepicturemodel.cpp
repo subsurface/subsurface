@@ -108,8 +108,10 @@ void DivePictureModel::updateDivePictures()
 
 	updateThumbnails();
 
-	beginInsertRows(QModelIndex(), 0, pictures.count() - 1);
-	endInsertRows();
+	if (!pictures.isEmpty()) {
+		beginInsertRows(QModelIndex(), 0, pictures.count() - 1);
+		endInsertRows();
+	}
 }
 
 int DivePictureModel::columnCount(const QModelIndex &parent) const
