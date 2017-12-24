@@ -51,6 +51,16 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QToolButton" name="notButton">
+       <property name="text">
+        <string>¬</string>
+       </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
    <item>
