@@ -6,6 +6,9 @@
 project(Subsurface)
 cmake_minimum_required(VERSION 2.8.11)
 
+# don't process generated files
+cmake_policy(SET CMP0071 OLD)
+
 # global settings
 
 set(CMAKE_AUTOMOC ON)
