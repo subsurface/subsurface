@@ -153,8 +153,8 @@ const double vpmb_conservatism_lvls[] = { 1.0, 1.05, 1.12, 1.22, 1.35 };
 
 #define TISSUE_ARRAY_SZ sizeof(ds->tissue_n2_sat)
 
-int sumx, sum1;
-long sumxx;
+int  sum1;
+long sumx, sumxx;
 double sumy, sumxy;
 
 double get_crit_radius_He()
@@ -649,7 +649,7 @@ double regressionb()
 
 void reset_regression()
 {
-	sumx = sum1 = 0;
-	sumxx = 0L;
+	sum1 = 0;
+	sumxx = sumx = 0L;
 	sumy = sumxy = 0.0;
 }
