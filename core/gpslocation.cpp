@@ -601,7 +601,7 @@ void GpsLocation::downloadFromServer()
 			qDebug() << downloadedFixes.count() << "GPS fixes downloaded";
 			for (int i = 0; i < downloadedFixes.count(); i++) {
 				QJsonObject fix = downloadedFixes[i].toObject();
-				QDate date = QDate::fromString(fix.value("date").toString(), "yyy-M-d");
+				QDate date = QDate::fromString(fix.value("date").toString(), "yyyy-M-d");
 				QTime time = QTime::fromString(fix.value("time").toString(), "hh:m:s");
 				QString name = fix.value("name").toString();
 				QString latitude = fix.value("latitude").toString();
