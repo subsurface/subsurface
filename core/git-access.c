@@ -198,16 +198,14 @@ int credential_ssh_cb(git_cred **out,
 	(void) allowed_types;
 	(void) payload;
 
-	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
-	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
-
-	/* Bail out from libgit authentication loop when credentials are
-	 * incorrect */
-
+	/* Bail out from libgit authentication loop when credentials are incorrect */
 	if (auth_attempt++ > 2) {
 		report_error("Authentication to cloud storage failed.");
 		return GIT_EUSER;
 	}
+
+	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
+	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 
 	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
 }
@@ -222,16 +220,16 @@ int credential_https_cb(git_cred **out,
 	(void) username_from_url;
 	(void) payload;
 	(void) allowed_types;
-	const char *username = prefs.cloud_storage_email_encoded;
-	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
 
-	/* Bail out from libgit authentication loop when credentials are
-	 * incorrect */
-
+	/* Bail out from libgit authentication loop when credentials are incorrect */
 	if (auth_attempt++ > 2) {
 		report_error("Authentication to cloud storage failed.");
 		return GIT_EUSER;
 	}
+
+	const char *username = prefs.cloud_storage_email_encoded;
+	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
 
