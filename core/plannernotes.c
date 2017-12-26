@@ -95,19 +95,23 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				free((void *)temp);
 				return;
 	} else if (diveplan->surface_interval >= 48 * 60 *60) {
+		const char *current_date = get_current_date();
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
 				translate("gettextFromC", "Subsurface"),
 				subsurface_canonical_version(),
 				translate("gettextFromC", "dive plan</b> created on"),
-				get_current_date());
+				current_date);
+		free((void *)current_date);
 	} else {
+		const char *current_date = get_current_date();
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %d:%02d) %s %s<br>",
 				translate("gettextFromC", "Subsurface"),
 				subsurface_canonical_version(),
 				translate("gettextFromC", "dive plan</b> (surface interval "),
 				FRACTION(diveplan->surface_interval / 60, 60),
 				translate("gettextFromC", "created on"),
-				get_current_date());
+				current_date);
+		free((void *)current_date);
 	}
 
 	if (prefs.display_variations && decoMode() != RECREATIONAL)
