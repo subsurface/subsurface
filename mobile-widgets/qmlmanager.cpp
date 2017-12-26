@@ -921,6 +921,12 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			       QString startpressure, QString endpressure, QString gasmix, QString cylinder, int rating, int visibility)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
+
+	if (!d) {
+		appendTextToLog("cannot commit changes: no dive");
+		return;
+	}
+
 	DiveObjectHelper *myDive = new DiveObjectHelper(d);
 
 	// notes comes back as rich text - let's convert this into plain text
@@ -928,10 +934,6 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	doc.setHtml(notes);
 	notes = doc.toPlainText();
 
-	if (!d) {
-		appendTextToLog("cannot commit changes: no dive");
-		return;
-	}
 	bool diveChanged = false;
 	bool needResort = false;
 
