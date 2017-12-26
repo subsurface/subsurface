@@ -345,6 +345,9 @@ else
 	git pull
 	popd
 fi
+# the Qt Android cmake addon runs androiddeployqt with '--verbose' which
+# is, err, rather verbose. Let's not do that.
+sed -i -e 's/--verbose//' qt-android-cmake/AddQtAndroidApk.cmake
 
 # Should we build the mobile ui or the desktop ui?
 # doing this backwards in order not to break people's setup
