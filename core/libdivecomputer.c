@@ -804,6 +804,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	if (!devdata->force_download && find_dive(&dive->dc)) {
 		const char *date_string = get_dive_date_c_string(dive->when);
 		dev_info(devdata, translate("gettextFromC", "Already downloaded dive at %s"), date_string);
+		free((void *)date_string);
 		goto error_exit;
 	}
 
