@@ -203,6 +203,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					iconName: "icons/ic_cloud_upload.svg"
 					text: qsTr("Upload GPS data")
 					onTriggered: {
+						globalDrawer.close();
 						manager.sendGpsData();
 					}
 				}
@@ -211,6 +212,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					iconName: "icons/ic_cloud_download.svg"
 					text: qsTr("Download GPS data")
 					onTriggered: {
+						globalDrawer.close();
 						manager.downloadGpsData();
 					}
 				}
@@ -230,6 +232,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					iconName: "icons/ic_clear.svg"
 					text: qsTr("Clear GPS cache")
 					onTriggered: {
+						globalDrawer.close();
 						manager.clearGpsData();
 					}
 				}
@@ -238,6 +241,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					iconName: locationServiceEnabled ? "icons/ic_location_off.svg" : "icons/ic_place.svg"
 					text: locationServiceEnabled ? qsTr("Disable location service") : qsTr("Run location service")
 					onTriggered: {
+						globalDrawer.close();
 						locationServiceEnabled = !locationServiceEnabled
 					}
 				}
