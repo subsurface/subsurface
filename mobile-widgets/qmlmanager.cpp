@@ -987,7 +987,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		diveChanged = true;
 		unsigned long i;
 		int size = 0, wp = 0;
-		for (i = 0; i < sizeof(tank_info) && tank_info[i].name != NULL; i++) {
+		for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
 			if (tank_info[i].name == cylinder ) {
 				if (tank_info[i].ml > 0){
 					size = tank_info[i].ml;
