@@ -177,6 +177,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	sort_table(divetable);
 	fclose(archive);
 out:
+	free(archive);
 	free(devdata);
 	free(buffer);
 }
