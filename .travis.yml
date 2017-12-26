@@ -51,6 +51,7 @@ matrix:
       # Currently hard coded to arm
       os: linux
       language: c++
+      filter_secrets: false
       services:
           - docker
 # TODO: caching
