@@ -538,7 +538,6 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 		} else {
 			report_error(translate("gettextFromC", "[Error] Out of memory for dive %d. Abort parsing."), dt_dive->number);
 			free(compl_buffer);
-			free(devdata);
 			goto bail;
 		}
 		if (is_nitrox)
@@ -566,6 +565,7 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 	free(devdata);
 	return membuf;
 bail:
+	free(devdata);
 	return NULL;
 }
 /*
