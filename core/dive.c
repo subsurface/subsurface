@@ -245,7 +245,7 @@ struct gasmix *get_gasmix_from_event(struct dive *dive, struct event *ev)
 	static struct gasmix dummy;
 	if (ev && event_is_gaschange(ev)) {
 		int index = ev->gas.index;
-		if (index >= 0 && index <= MAX_CYLINDERS)
+		if (index >= 0 && index < MAX_CYLINDERS)
 			return &dive->cylinder[index].gasmix;
 		return &ev->gas.mix;
 	}
@@ -756,7 +756,7 @@ struct sample *prepare_sample(struct divecomputer *dc)
 		// Init some values with -1
 		sample->bearing.degrees = -1;
 		sample->ndl.seconds = -1;
-		
+
 		return sample;
 	}
 	return NULL;
