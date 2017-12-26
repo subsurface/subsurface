@@ -399,6 +399,7 @@ cmake $MOBILE_CMAKE \
 	-DANDROID_NATIVE_LIBSSL="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libssl.so" \
 	-DANDROID_NATIVE_LIBCRYPT="$BUILDROOT/ndk-$ARCH/sysroot/usr/lib/libcrypto.so" \
 	-DBUILDTOOLS_REVISION="$ANDROID_BUILDTOOLS_REVISION" \
+	-DCMAKE_MAKE_PROGRAM="make" \
 	"$SUBSURFACE_SOURCE"
 
 # set up the version number
