@@ -1151,21 +1151,29 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	/* If the parent commit has the same tree ID, do not create a new commit */
 	if (parent && git_oid_equal(tree_id, git_commit_tree_id((const git_commit *) parent))) {
 		/* If the parent already came from the ref, the commit is already there */
-		if (ref)
+		if (ref) {
+			git_signature_free(author);
 			return 0;
+		}
 		/* Else we do want to create the new branch, but with the old commit */
 		commit = (git_commit *) parent;
 	} else {
 		struct membuffer commit_msg = { 0 };
 
 		create_commit_message(&commit_msg, create_empty);
-		if (git_commit_create_v(&commit_id, repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent))
+		if (git_commit_create_v(&commit_id, repo, NULL, author, author, NULL, mb_cstring(&commit_msg), tree, parent != NULL, parent)) {
+			git_signature_free(author);
 			return report_error("Git commit create failed (%s)", strerror(errno));
+		}
 		free_buffer(&commit_msg);
 
-		if (git_commit_lookup(&commit, repo, &commit_id))
+		if (git_commit_lookup(&commit, repo, &commit_id)) {
+			git_signature_free(author);
 			return report_error("Could not look up newly created commit");
+		}
 	}
+
+	git_signature_free(author);
 
 	if (!ref) {
 		if (git_branch_create(&ref, repo, branch, commit, 0))
@@ -1197,8 +1205,6 @@ static int create_new_commit(git_repository *repo, const char *remote, const cha
 	 */
 	if (! create_empty)
 		set_git_id(&commit_id);
-
-	git_signature_free(author);
 
 	return 0;
 }
