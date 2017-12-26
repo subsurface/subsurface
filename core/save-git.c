@@ -1099,7 +1099,9 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 		} while ((dc = dc->next) != NULL);
 		put_format(msg, "\n");
 	}
-	put_format(msg, "Created by %s\n", subsurface_user_agent());
+	const char *user_agent = subsurface_user_agent();
+	put_format(msg, "Created by %s\n", user_agent);
+	free((void *)user_agent);
 }
 
 static int create_new_commit(git_repository *repo, const char *remote, const char *branch, git_oid *tree_id, bool create_empty)
