@@ -882,7 +882,7 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 #if UEMIS_DEBUG & 4
 			fprintf(debugfile, "Expect to find section %s\n", sections[nr_sections]);
 #endif
-			if (nr_sections < sizeof(sections) - 1)
+			if (nr_sections < sizeof(sections) / sizeof(*sections) - 1)
 				nr_sections++;
 			continue;
 		}
