@@ -1950,7 +1950,9 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 				cur_latitude.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
 				cur_longitude.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
 				cur_dive->dive_site_uuid = create_dive_site_with_gps(NULL, cur_latitude, cur_longitude, cur_dive->when);
-				printf("gps: %s\n", printGPSCoords(cur_latitude.udeg, cur_longitude.udeg));
+				const char * coords = printGPSCoords(cur_latitude.udeg, cur_longitude.udeg);
+				printf("gps: %s\n", coords);
+				free((void *)coords);
 				break;
 			default:
 				break;
