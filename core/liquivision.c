@@ -427,6 +427,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		// End dive
 		dive->downloaded = true;
 		record_dive(dive);
+		dive = NULL;
 		mark_divelist_changed(true);
 
 		// Advance ptr for next dive
@@ -434,6 +435,9 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 	} // while
 
 	//DEBUG save_dives("/tmp/test.xml");
+
+	// if we bailed out of the loop, the dive hasn't been recorded and dive hasn't been set to NULL
+	free(dive);
 }
 
 int try_to_open_liquivision(const char *filename, struct memblock *mem)
