@@ -58,6 +58,7 @@ void FilterModelBase::updateList(const QStringList &newList)
 		anyChecked = true;
 	}
 	setStringList(newList);
+	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, 0));
 }
 
 Qt::ItemFlags FilterModelBase::flags(const QModelIndex &index) const
@@ -353,8 +354,10 @@ void LocationFilterModel::changeName(const QString &oldName, const QString &newN
 
 	// If there was already an entry with the new name, we are merging entries.
 	// Thus, if the old entry was selected, also select the new entry.
-	if (newIndex >= 0 && checkState[oldIndex])
+	if (newIndex >= 0 && checkState[oldIndex]) {
 		checkState[newIndex] = true;
+		emit dataChanged(createIndex(newIndex, 0), createIndex(newIndex, 0));
+	}
 }
 
 void LocationFilterModel::addName(const QString &newName)
@@ -369,6 +372,7 @@ void LocationFilterModel::addName(const QString &newName)
 	list.prepend(newName);
 	setStringList(list);
 	checkState.insert(checkState.begin(), true);
+	emit dataChanged(createIndex(0, 0), createIndex(0, 0));
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
@@ -440,7 +444,8 @@ void MultiFilterSortModel::myInvalidate()
 
 	divesDisplayed = 0;
 
-	invalidate();
+	invalidateFilter();
+	MainWindow::instance()->dive_list()->fixMessyQtModelBehaviour();
 
 	// first make sure the trips are no longer shown as selected
 	// (but without updating the selection state of the dives... this just cleans
