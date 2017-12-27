@@ -280,7 +280,7 @@ QStringList DiveObjectHelper::cylinderList() const
 		}
 	}
 
-	for (unsigned long ti = 0; ti < sizeof(tank_info) && tank_info[ti].name != NULL; ti++) {
+	for (unsigned long ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
 		QString cyl = tank_info[ti].name;
 		if (cyl == EMPTY_DIVE_STRING)
 			continue;
