@@ -349,12 +349,12 @@ void LocationFilterModel::changeName(const QString &oldName, const QString &newN
 		return;
 	int newIndex = list.indexOf(newName);
 	list[oldIndex] = newName;
-	setStringList(list);
 
 	// If there was already an entry with the new name, we are merging entries.
 	// Thus, if the old entry was selected, also select the new entry.
 	if (newIndex >= 0 && checkState[oldIndex])
 		checkState[newIndex] = true;
+	setStringList(list);
 }
 
 void LocationFilterModel::addName(const QString &newName)
@@ -367,8 +367,8 @@ void LocationFilterModel::addName(const QString &newName)
 	if (!anyChecked || newName.isEmpty() || list.indexOf(newName) >= 0)
 		return;
 	list.prepend(newName);
-	setStringList(list);
 	checkState.insert(checkState.begin(), true);
+	setStringList(list);
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
