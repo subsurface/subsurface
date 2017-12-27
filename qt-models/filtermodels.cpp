@@ -479,18 +479,14 @@ void MultiFilterSortModel::myInvalidate()
 
 void MultiFilterSortModel::addFilterModel(FilterModelBase *model)
 {
-	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
-	Q_ASSERT(itemModel);
 	models.append(model);
-	connect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
+	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
 }
 
 void MultiFilterSortModel::removeFilterModel(FilterModelBase *model)
 {
-	QAbstractItemModel *itemModel = dynamic_cast<QAbstractItemModel *>(model);
-	Q_ASSERT(itemModel);
 	models.removeAll(model);
-	disconnect(itemModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
+	disconnect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
 }
 
 void MultiFilterSortModel::clearFilter()
