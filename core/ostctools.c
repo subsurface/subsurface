@@ -62,7 +62,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 		report_error(failed_to_read_msg, file);
 		free(uc_tmp);
 		free(ostcdive);
-		goto out;
+		goto close_out;
 	}
 	ostcdive->number = uc_tmp[0] + (uc_tmp[1] << 8);
 	free(uc_tmp);
@@ -74,7 +74,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 		report_error(failed_to_read_msg, file);
 		free(uc_tmp);
 		free(ostcdive);
-		goto out;
+		goto close_out;
 	}
 	serial = uc_tmp[0] + (uc_tmp[1] << 8);
 	free(uc_tmp);
@@ -90,7 +90,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	if (ferror(archive)) {
 		report_error(failed_to_read_msg, file);
 		free(ostcdive);
-		goto out;
+		goto close_out;
 	}
 
 	// Try to determine the dc family based on the header type
@@ -108,8 +108,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 		default:
 			report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 			free(ostcdive);
-			fclose(archive);
-			goto out;
+			goto close_out;
 		}
 	}
 
@@ -140,8 +139,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	if (ret == 0) {
 		report_error(translate("gettextFromC", "Unknown DC in dive %d"), ostcdive->number);
 		free(ostcdive);
-		fclose(archive);
-		goto out;
+		goto close_out;
 	}
 	tmp = calloc(strlen(devdata->vendor) + strlen(devdata->model) + 28, 1);
 	sprintf(tmp, "%s %s (Imported from OSTCTools)", devdata->vendor, devdata->model);
@@ -175,9 +173,10 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	record_dive_to_table(ostcdive, divetable);
 	mark_divelist_changed(true);
 	sort_table(divetable);
+
+close_out:
 	fclose(archive);
 out:
-	free(archive);
 	free(devdata);
 	free(buffer);
 }
