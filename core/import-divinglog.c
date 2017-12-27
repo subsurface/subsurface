@@ -217,7 +217,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		 * Count the number of o2 sensors
 		 */
 
-		if (!cur_dive->dc.no_o2sensors && (cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[0].mbar)) {
+		if (!cur_dive->dc.no_o2sensors && (cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[1].mbar || cur_sample->o2sensor[2].mbar)) {
 			cur_dive->dc.no_o2sensors = cur_sample->o2sensor[0].mbar ? 1 : 0 +
 				 cur_sample->o2sensor[1].mbar ? 1 : 0 +
 				 cur_sample->o2sensor[2].mbar ? 1 : 0;
