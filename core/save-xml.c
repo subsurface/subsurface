@@ -715,7 +715,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 	FILE *f;
 	void *git;
 	const char *branch, *remote;
-	int error;
+	int error = 0;
 
 	git = is_git_repository(filename, &branch, &remote, false);
 	if (git)
