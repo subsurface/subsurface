@@ -1578,16 +1578,18 @@ static int parse_picture_file(git_repository *repo, const git_tree_entry *entry,
 	/* remember the picture data so we can handle it when all dive data has been loaded
 	 * the name of the git file is PIC-<hash> */
 	git_blob *blob = git_tree_entry_blob(repo, entry);
-	const void *rawdata = git_blob_rawcontent(blob);
-	int len = git_blob_rawsize(blob);
-	struct picture_entry_list *new_pel = malloc(sizeof(struct picture_entry_list));
-	new_pel->next = pel;
-	pel = new_pel;
-	pel->data = malloc(len);
-	memcpy(pel->data, rawdata, len);
-	pel->len = len;
-	pel->hash = strdup(name + 4);
-	git_blob_free(blob);
+	if (blob) {
+		const void*rawdata = git_blob_rawcontent(blob);
+		int len = git_blob_rawsize(blob);
+		struct picture_entry_list *new_pel = malloc(sizeof(struct picture_entry_list));
+		new_pel->next = pel;
+		pel = new_pel;
+		pel->data = malloc(len);
+		memcpy(pel->data, rawdata, len);
+		pel->len = len;
+		pel->hash = strdup(name + 4);
+		git_blob_free(blob);
+	}
 	return 0;
 }
 
