@@ -53,6 +53,9 @@
      </item>
      <item>
       <widget class="QToolButton" name="notButton">
+       <property name="toolTip">
+        <string>Negate filter</string>
+       </property>
        <property name="text">
         <string>¬</string>
        </property>
