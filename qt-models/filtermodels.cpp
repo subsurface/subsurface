@@ -222,7 +222,7 @@ bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *
 		while (head) {
 			QString tagName(head->tag->name);
 			int index = tagList.indexOf(tagName);
-			if (checkState[index])
+			if (index >= 0 && checkState[index])
 				return !negate;
 			head = head->next;
 		}
