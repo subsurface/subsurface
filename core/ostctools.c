@@ -57,7 +57,12 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 
 	// Read dive number from the log
 	uc_tmp = calloc(2, 1);
-	fseek(archive, 258, 0);
+	if (fseek(archive, 258, 0) == -1) {
+		report_error(failed_to_read_msg, file);
+		free(uc_tmp);
+		free(ostcdive);
+		goto close_out;
+	}
 	if (fread(uc_tmp, 1, 2, archive) != 2) {
 		report_error(failed_to_read_msg, file);
 		free(uc_tmp);
@@ -69,7 +74,12 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 
 	// Read device's serial number
 	uc_tmp = calloc(2, 1);
-	fseek(archive, 265, 0);
+	if (fseek(archive, 265, 0) == -1) {
+		report_error(failed_to_read_msg, file);
+		free(uc_tmp);
+		free(ostcdive);
+		goto close_out;
+	}
 	if (fread(uc_tmp, 1, 2, archive) != 2) {
 		report_error(failed_to_read_msg, file);
 		free(uc_tmp);
@@ -80,7 +90,12 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	free(uc_tmp);
 
 	// Read dive's raw data, header + profile
-	fseek(archive, 456, 0);
+	if (fseek(archive, 456, 0) == -1) {
+		report_error(failed_to_read_msg, file);
+		free(uc_tmp);
+		free(ostcdive);
+		goto close_out;
+	}
 	while ((c = getc(archive)) != EOF) {
 		buffer[i] = c;
 		if (buffer[i] == 0xFD && buffer[i - 1] == 0xFD)
