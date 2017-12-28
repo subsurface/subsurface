@@ -28,6 +28,8 @@ MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 	qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
 	qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
 
+	m_rootItem = Q_NULLPTR;
+	m_mapHelper = Q_NULLPTR;
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
 	connect(this, &QQuickWidget::statusChanged, this, &MapWidget::doneLoading);
 	setSource(urlMapWidget);
