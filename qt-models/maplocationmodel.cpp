@@ -8,6 +8,7 @@ const char *MapLocation::PROPERTY_NAME_NAME       = "name";
 
 MapLocation::MapLocation()
 {
+	m_uuid = 0;
 }
 
 MapLocation::MapLocation(quint32 uuid, QGeoCoordinate coord, QString name) :
@@ -55,6 +56,7 @@ MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
 	m_roles[MapLocation::Roles::RoleUuid] = MapLocation::PROPERTY_NAME_UUID;
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
 	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
+	m_selectedUuid = 0;
 }
 
 MapLocationModel::~MapLocationModel()
