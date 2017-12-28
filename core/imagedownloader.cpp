@@ -17,6 +17,7 @@ QUrl cloudImageURL(const char *hash)
 ImageDownloader::ImageDownloader(struct picture *pic)
 {
 	picture = pic;
+	loadFromHash = false;
 }
 
 ImageDownloader::~ImageDownloader()
