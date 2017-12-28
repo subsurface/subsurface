@@ -135,6 +135,7 @@ BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 	controller = c;
 	device = d;
 	debugCounter = 0;
+	isCharacteristicWritten = false;
 }
 
 BLEObject::~BLEObject()
