@@ -940,15 +940,13 @@ struct decostop {
 	int depth;
 	int time;
 };
-bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
-void calc_crushing_pressure(struct deco_state *ds, double pressure);
-void vpmb_start_gradient(struct deco_state *ds);
-void clear_vpmb_state();
-void printdecotable(struct decostop *table);
+extern bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, int timestep, struct decostop *decostoptable, struct deco_state **cached_datap, bool is_planner, bool show_disclaimer);
+extern void calc_crushing_pressure(struct deco_state *ds, double pressure);
+extern void vpmb_start_gradient(struct deco_state *ds);
+extern void clear_vpmb_state(struct deco_state *ds);
+extern void printdecotable(struct decostop *table);
 
-void delete_single_dive(int idx);
-
-struct event *get_next_event(struct event *event, const char *name);
+extern struct event *get_next_event(struct event *event, const char *name);
 
 static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
 {
