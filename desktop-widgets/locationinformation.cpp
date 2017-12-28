@@ -358,7 +358,7 @@ bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModel
 
 bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
-	return source_left.data().toString() <= source_right.data().toString();
+	return source_left.data().toString() < source_right.data().toString();
 }
 
 
