@@ -203,9 +203,10 @@ void LocationInformationWidget::acceptChanges()
 
 	if (!ui.diveSiteCoordinates->text().isEmpty()) {
 		double lat, lon;
-		parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon);
-		currentDs->latitude.udeg = lrint(lat * 1000000.0);
-		currentDs->longitude.udeg = lrint(lon * 1000000.0);
+		if (parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon)) {
+			currentDs->latitude.udeg = lrint(lat * 1000000.0);
+			currentDs->longitude.udeg = lrint(lon * 1000000.0);
+		}
 	}
 	if (dive_site_is_empty(currentDs)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
