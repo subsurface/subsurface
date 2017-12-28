@@ -204,6 +204,7 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 	if (dt_dive->dive_site_uuid == 0)
 		dt_dive->dive_site_uuid = create_dive_site(buffer, dt_dive->when);
 	free(locality);
+	locality = NULL;
 	free(dive_point);
 
 	/*
@@ -471,9 +472,9 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 		dt_dive->notes = calloc((len +1), 1);
 		dt_dive->notes = memcpy(dt_dive->notes, buffer, len);
 		free(tmp_string1);
-		if (tmp_notes_str != NULL)
-			free(tmp_notes_str);
 	}
+	if (tmp_notes_str != NULL)
+		free(tmp_notes_str);
 
 	/*
 	 * Alarms 1 and Alarms2 - Bit tables - Not in Subsurface, we use the profile
@@ -565,6 +566,7 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 	free(devdata);
 	return membuf;
 bail:
+	free(locality);
 	free(devdata);
 	return NULL;
 }
