@@ -31,6 +31,7 @@ TankItem::TankItem(QObject *parent) :
 	trimixGradient.setColorAt(1.0, red);
 	trimix = trimixGradient;
 	air = blue;
+	hAxis = Q_NULLPTR;
 	memset(&diveCylinderStore, 0, sizeof(diveCylinderStore));
 }
 
