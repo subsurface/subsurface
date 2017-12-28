@@ -28,7 +28,6 @@ private:
 	void createBar(qreal x, qreal w, struct gasmix *gas);
 	DivePlotDataModel *dataModel;
 	DiveCartesianAxis *hAxis;
-	int hDataColumn;
 	struct dive diveCylinderStore;
 	struct plot_data *pInfoEntry;
 	int pInfoNr;
