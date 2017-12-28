@@ -451,6 +451,8 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QFontMetrics fmBigger(fontBigger);
 	QStyleOptionViewItem opt = option;
 	const QAbstractProxyModel *proxyModel = dynamic_cast<const QAbstractProxyModel*>(origIdx.model());
+	if (!proxyModel)
+		return;
 	QModelIndex index = proxyModel->mapToSource(origIdx);
 	QStyledItemDelegate::initStyleOption(&opt, index);
 	QString diveSiteName = index.data().toString();
