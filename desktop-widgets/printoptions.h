@@ -69,8 +69,8 @@ public:
 
 private:
 	Ui::PrintOptions ui;
-	struct print_options *printOptions;
-	struct template_options *templateOptions;
+	struct print_options *printOptions = Q_NULLPTR;
+	struct template_options *templateOptions = Q_NULLPTR;
 	bool hasSetupSlots;
 	QString lastImportExportTemplate;
 	void setupTemplates();
