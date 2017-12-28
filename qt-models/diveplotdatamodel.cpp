@@ -12,6 +12,7 @@ DivePlotDataModel::DivePlotDataModel(QObject *parent) :
 	dcNr(0)
 {
 	memset(&pInfo, 0, sizeof(pInfo));
+	memset(&plot_deco_state, 0, sizeof(struct deco_state));
 }
 
 int DivePlotDataModel::columnCount(const QModelIndex &parent) const
