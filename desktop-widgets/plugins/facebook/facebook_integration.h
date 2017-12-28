@@ -21,7 +21,6 @@ public:
 	virtual void requestUpload();
 private:
 	FacebookConnectWidget *fbConnectWidget;
-	SocialNetworkDialog *fbUploadDialog;
 };
 
 #endif
