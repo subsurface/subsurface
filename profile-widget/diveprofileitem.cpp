@@ -624,6 +624,7 @@ DiveMeanDepthItem::DiveMeanDepthItem()
 	pen.setCosmetic(true);
 	pen.setWidth(2);
 	setPen(pen);
+	lastRunningSum = 0.0;
 	settingsChanged();
 }
 
