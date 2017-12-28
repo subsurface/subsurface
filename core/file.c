@@ -927,6 +927,11 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 				++iter;
 		}
 
+		if (!iter) {
+			fprintf(stderr, "DEBUG: Data corrupt");
+			return -1;
+		}
+
 		/* Setting date */
 		memcpy(tmpbuf, iter, 8);
 		tmpbuf[8] = 0;
@@ -950,9 +955,12 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		}
 		if (ptr)
 			ptr = strstr(ptr, NL);
-		if (ptr)
+		if (ptr) {
 			ptr += strlen(NL);
-
+		} else {
+			fprintf(stderr, "DEBUG: Data corrupt");
+			return -1;
+		}
 		end_ptr = ptr - (char *)mem.buffer;
 
 		/* Copy the current dive data to start of mem_csv buffer */
