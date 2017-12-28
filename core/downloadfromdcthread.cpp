@@ -179,16 +179,16 @@ DCDeviceData *DCDeviceData::m_instance = NULL;
 
 DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
 {
-	if (m_instance) {
-		qDebug() << "already have an instance of DCDevieData";
-		return;
-	}
-	m_instance = this;
 	memset(&data, 0, sizeof(data));
 	data.trip = nullptr;
 	data.download_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
+	if (m_instance) {
+		qDebug() << "already have an instance of DCDevieData";
+		return;
+	}
+	m_instance = this;
 }
 
 DCDeviceData *DCDeviceData::instance()
