@@ -62,7 +62,9 @@ void UndoDeleteDive::redo()
 			tripList.append(undo_trip);
 		}
 		//delete the dive
-		delete_single_dive(get_divenr(diveList.at(i)));
+		int nr;
+		if ((nr = get_divenr(diveList.at(i))) >= 0)
+			delete_single_dive(nr);
 	}
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
