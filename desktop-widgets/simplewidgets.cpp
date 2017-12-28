@@ -215,7 +215,7 @@ void SetpointDialog::buttonClicked(QAbstractButton *button)
 }
 
 SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent),
-	dc(0)
+	dc(0), time(0)
 {
 	ui.setupUi(this);
 	connect(ui.buttonBox, SIGNAL(clicked(QAbstractButton *)), this, SLOT(buttonClicked(QAbstractButton *)));
