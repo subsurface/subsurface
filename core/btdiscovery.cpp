@@ -52,7 +52,8 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	return(NULL);
 }
 
-BTDiscovery::BTDiscovery(QObject *parent)
+BTDiscovery::BTDiscovery(QObject *parent) : m_btValid(false),
+	discoveryAgent(NULL)
 {
 	Q_UNUSED(parent)
 	if (m_instance) {
