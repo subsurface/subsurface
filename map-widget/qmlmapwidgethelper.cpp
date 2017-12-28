@@ -17,6 +17,9 @@
 MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 {
 	m_mapLocationModel = new MapLocationModel(this);
+	m_smallCircleRadius = SMALL_CIRCLE_RADIUS_PX;
+	m_map = nullptr;
+	m_editMode = false;
 	connect(m_mapLocationModel, SIGNAL(selectedLocationChanged(MapLocation *)),
 	        this, SLOT(selectedLocationChanged(MapLocation *)));
 }
