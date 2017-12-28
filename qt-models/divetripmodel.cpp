@@ -347,7 +347,6 @@ int DiveItem::countPhotos(dive *dive) const
 	int diveTotaltime = dive_endtime(dive) - dive->when;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
 	FOR_EACH_PICTURE (dive) {		// Step through each of the pictures for this dive:
-		if (!picture) break;		// if there are no pictures for this dive, return 0
 		pic_offset = picture->offset.seconds;
 		if  ((pic_offset < -bufperiod) | (pic_offset > diveTotaltime+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
