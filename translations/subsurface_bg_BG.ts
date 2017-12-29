@@ -323,12 +323,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="540"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="547"/>
         <source>Person: </source>
         <translation>Лице:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="541"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="548"/>
         <source>Searches for buddies and divemasters</source>
         <translation>Търсене за партньори и водачи</translation>
     </message>
@@ -3037,7 +3037,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1080"/>
         <source>Stop times</source>
-        <translation type="unfinished"/>
+        <translation>Стоп времена</translation>
     </message>
 </context>
 <context>
@@ -3071,107 +3071,107 @@ GPS позиция:</translation>
 <context>
     <name>DivePlotDataModel</name>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="114"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="115"/>
         <source>Depth</source>
         <translation>Дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="116"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="117"/>
         <source>Time</source>
         <translation>Време</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="118"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="119"/>
         <source>Pressure</source>
         <translation>Налягане</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="120"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="121"/>
         <source>Temperature</source>
         <translation>Температура:</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="122"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="123"/>
         <source>Color</source>
         <translation>Цвят</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="124"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="125"/>
         <source>User entered</source>
         <translation>Въведено от потребителя</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="126"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="127"/>
         <source>Pressure S</source>
         <translation>Налягане S</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="128"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="129"/>
         <source>Pressure I</source>
         <translation>Налягане I</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="130"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="131"/>
         <source>Ceiling</source>
         <translation>Таван</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="132"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="133"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="134"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="135"/>
         <source>pN₂</source>
         <translation>pN₂</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="136"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="137"/>
         <source>pHe</source>
         <translation>pHe</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="138"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="139"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="140"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="141"/>
         <source>Setpoint</source>
         <translation>Сетпойнт</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="142"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 1</source>
         <translation>Сензор 1</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="144"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="145"/>
         <source>Sensor 2</source>
         <translation>Сензор 2</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="146"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="147"/>
         <source>Sensor 3</source>
         <translation>Сензор 3</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="148"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="149"/>
         <source>Ambient pressure</source>
         <translation>Околно налягане</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="150"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="151"/>
         <source>Heart rate</source>
         <translation>Сърдечен ритъм</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="152"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="153"/>
         <source>Gradient factor</source>
         <translation>Градиент фактор</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="154"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="155"/>
         <source>Mean depth @ s</source>
         <translation>Средна дълбочина @ сек</translation>
     </message>
@@ -3235,142 +3235,142 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="478"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="530"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="529"/>
         <source>#</source>
         <translation>№</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="481"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="533"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="480"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="532"/>
         <source>Date</source>
         <translation>Дата</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="484"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="536"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="483"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="535"/>
         <source>Rating</source>
         <translation>Оценка</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="487"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="486"/>
         <source>Depth</source>
         <translation>Дълбочина</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="490"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="542"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="489"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="541"/>
         <source>Duration</source>
         <translation>Продълж. (мин.)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="496"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="495"/>
         <source>Weight</source>
         <translation>Тежест</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="499"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="551"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="498"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="550"/>
         <source>Suit</source>
         <translation>Водолазен костюм</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="493"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="492"/>
         <source>Temp.</source>
         <translation>Темп.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="502"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="554"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="501"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="553"/>
         <source>Cylinder</source>
         <translation>Бутилка</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="505"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="557"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="504"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="556"/>
         <source>Gas</source>
         <translation>Газ</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="508"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="507"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="565"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="510"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="564"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="514"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="568"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="513"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="567"/>
         <source>Max CNS</source>
         <translation>Макс. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="517"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="516"/>
         <source>Photos</source>
         <translation>Снимки</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="519"/>
         <source>Country</source>
         <translation>Държава</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="523"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="574"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="522"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="573"/>
         <source>Location</source>
         <translation>Местонахождение</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="538"/>
         <source>Depth(%1)</source>
         <translation>Дълбочина(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="538"/>
         <source>m</source>
         <translation>м</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="538"/>
         <source>ft</source>
         <translation>фута</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="545"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="544"/>
         <source>Temp.(%1%2)</source>
         <translation>Темп.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="547"/>
         <source>Weight(%1)</source>
         <translation>Тежест(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="547"/>
         <source>kg</source>
         <translation>кг</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="547"/>
         <source>lbs</source>
         <translation>паунда</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="561"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="561"/>
         <source>/min</source>
         <translation>/м</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="571"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="570"/>
         <source>Photos before/during/after dive</source>
         <translation>Снимки преди/по време на/след гмуркане</translation>
     </message>
@@ -3694,7 +3694,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="224"/>
         <source>Rescan</source>
-        <translation type="unfinished"/>
+        <translation>Пресканиране</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="232"/>
@@ -3792,19 +3792,19 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FilterBase</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="515"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="522"/>
         <source>Select All</source>
         <translation>Селектирай всички</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="516"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="523"/>
         <source>Unselect All</source>
         <translation>Деселектирай всички</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="517"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="524"/>
         <source>Invert Selection</source>
-        <translation type="unfinished"/>
+        <translation>Инвертиране на селекцията</translation>
     </message>
 </context>
 <context>
@@ -3826,8 +3826,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="57"/>
-        <source>...</source>
-        <translation>...</translation>
+        <source>¬</source>
+        <translation>¬</translation>
     </message>
 </context>
 <context>
@@ -3929,7 +3929,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="546"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="553"/>
         <source>Location: </source>
         <translation>Местонахождение: </translation>
     </message>
@@ -3970,7 +3970,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="340"/>
+        <location filename="../qt-models/filtermodels.cpp" line="338"/>
         <source>No location set</source>
         <translation>Няма зададено местонахождение</translation>
     </message>
@@ -5048,7 +5048,7 @@ QML модулите QtPositioning и QtLocation може да липсват!</
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="590"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="597"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation>Филтърът показва %1 (от %2) гмуркания</translation>
     </message>
@@ -6325,7 +6325,7 @@ Please export this template to a different file.</source>
         <translation>сек.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1273"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1275"/>
         <source>Unknown GPS location</source>
         <translation>Непозната GPS позиция</translation>
     </message>
@@ -7157,7 +7157,7 @@ Files with inappropriate date/time</source>
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="551"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="558"/>
         <source>Suits: </source>
         <translation>Костюми:</translation>
     </message>
@@ -7165,7 +7165,7 @@ Files with inappropriate date/time</source>
 <context>
     <name>SuitsFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="168"/>
+        <location filename="../qt-models/filtermodels.cpp" line="172"/>
         <source>No suit set</source>
         <translation>Няма избран костюм</translation>
     </message>
@@ -7293,7 +7293,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="29"/>
         <source>Zoom level</source>
-        <translation type="unfinished"/>
+        <translation>Ниво на зуум</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="51"/>
@@ -7491,7 +7491,7 @@ mixed from Air and using:
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="535"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="542"/>
         <source>Tags: </source>
         <translation>Тагове:</translation>
     </message>
@@ -7499,7 +7499,7 @@ mixed from Air and using:
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="193"/>
+        <location filename="../qt-models/filtermodels.cpp" line="197"/>
         <source>Empty tags</source>
         <translation>Празни тагове</translation>
     </message>
@@ -7698,7 +7698,7 @@ mixed from Air and using:
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="675"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="682"/>
         <source>%1click to visit %2</source>
         <translation>%1щтракни за да посетиш %2</translation>
     </message>
@@ -7769,12 +7769,12 @@ mixed from Air and using:
         <translation>Макс. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="365"/>
         <source>h</source>
         <translation>ч.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="365"/>
         <source>min</source>
         <translation>мин</translation>
     </message>
@@ -7785,13 +7785,13 @@ mixed from Air and using:
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="246"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>kg</source>
         <translation>кг</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="246"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>lbs</source>
         <translation>паунда</translation>
     </message>
@@ -7812,7 +7812,7 @@ mixed from Air and using:
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="260"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="409"/>
         <source>/min</source>
         <translation>/м</translation>
     </message>
@@ -8307,7 +8307,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="795"/>
+        <location filename="../core/libdivecomputer.c" line="792"/>
         <source>Error parsing the header</source>
         <translation>Грешка при рaзряд на хедър</translation>
     </message>
@@ -8318,7 +8318,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>deco stop</source>
         <translation>деко. стоп</translation>
     </message>
@@ -8326,7 +8326,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="770"/>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>ascent</source>
         <translation>покачване</translation>
     </message>
@@ -8338,20 +8338,20 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="271"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>maxdepth</source>
         <translation>макс. дълбочина</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="272"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -8360,109 +8360,109 @@ Maximum</source>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="851"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
-        <location filename="../core/libdivecomputer.c" line="277"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>gaschange</source>
         <translation>смяна на газ</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>ceiling</source>
         <translation>таван</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>transmitter</source>
         <translation>предавател</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="258"/>
+        <location filename="../core/datatrak.c" line="259"/>
         <source>clear</source>
         <translation>чисто</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="261"/>
+        <location filename="../core/datatrak.c" line="262"/>
         <source>misty</source>
         <translation>мъгляво</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="264"/>
+        <location filename="../core/datatrak.c" line="265"/>
         <source>fog</source>
         <translation>мъгла</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="267"/>
+        <location filename="../core/datatrak.c" line="268"/>
         <source>rain</source>
         <translation>дъжд</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="270"/>
+        <location filename="../core/datatrak.c" line="271"/>
         <source>storm</source>
         <translation>буря</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="273"/>
+        <location filename="../core/datatrak.c" line="274"/>
         <source>snow</source>
         <translation>сняг</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="293"/>
+        <location filename="../core/datatrak.c" line="294"/>
         <source>No suit</source>
         <translation>Няма костюм</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="296"/>
+        <location filename="../core/datatrak.c" line="297"/>
         <source>Shorty</source>
         <translation>Шорти</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="299"/>
+        <location filename="../core/datatrak.c" line="300"/>
         <source>Combi</source>
         <translation>Комби</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="302"/>
+        <location filename="../core/datatrak.c" line="303"/>
         <source>Wet suit</source>
         <translation>Мокър костюм</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="305"/>
+        <location filename="../core/datatrak.c" line="306"/>
         <source>Semidry suit</source>
         <translation>Полумокър костюм</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="308"/>
+        <location filename="../core/datatrak.c" line="309"/>
         <source>Dry suit</source>
         <translation>Сух костюм</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="368"/>
+        <location filename="../core/datatrak.c" line="369"/>
         <source>no stop</source>
         <translation>няма стоп</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="370"/>
+        <location filename="../core/datatrak.c" line="371"/>
         <location filename="../core/dive.c" line="30"/>
         <source>deco</source>
         <translation>деко</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="372"/>
+        <location filename="../core/datatrak.c" line="373"/>
         <source>single ascent</source>
         <translation>единично изкачване</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="374"/>
+        <location filename="../core/datatrak.c" line="375"/>
         <source>multiple ascent</source>
         <translation>множествено изкачване</translation>
     </message>
@@ -8472,117 +8472,117 @@ Maximum</source>
         <translation>нов</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="376"/>
+        <location filename="../core/datatrak.c" line="377"/>
         <source>fresh water</source>
         <translation>Сладка вода</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="378"/>
+        <location filename="../core/datatrak.c" line="379"/>
         <source>salt water</source>
         <translation>солена вода</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="403"/>
+        <location filename="../core/datatrak.c" line="404"/>
         <source>sight seeing</source>
         <translation>забележителности</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="405"/>
+        <location filename="../core/datatrak.c" line="406"/>
         <source>club dive</source>
         <translation>клубно гмуркане</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="407"/>
+        <location filename="../core/datatrak.c" line="408"/>
         <location filename="../core/dive.c" line="29"/>
         <source>instructor</source>
         <translation>инструктор</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="409"/>
+        <location filename="../core/datatrak.c" line="410"/>
         <source>instruction</source>
         <translation>инструкция</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="411"/>
+        <location filename="../core/datatrak.c" line="412"/>
         <location filename="../core/dive.c" line="28"/>
         <source>night</source>
         <translation>вечер</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="413"/>
+        <location filename="../core/datatrak.c" line="414"/>
         <location filename="../core/dive.c" line="26"/>
         <source>cave</source>
         <translation>пещера</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="415"/>
+        <location filename="../core/datatrak.c" line="416"/>
         <location filename="../core/dive.c" line="25"/>
         <source>ice</source>
         <translation>лед</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="417"/>
+        <location filename="../core/datatrak.c" line="418"/>
         <source>search</source>
         <translation>търсене</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="426"/>
+        <location filename="../core/datatrak.c" line="427"/>
         <location filename="../core/dive.c" line="26"/>
         <source>wreck</source>
         <translation>останки</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="428"/>
+        <location filename="../core/datatrak.c" line="429"/>
         <location filename="../core/dive.c" line="27"/>
         <source>river</source>
         <translation>река</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="430"/>
+        <location filename="../core/datatrak.c" line="431"/>
         <location filename="../core/dive.c" line="24"/>
         <source>drift</source>
         <translation>дрейф</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="432"/>
+        <location filename="../core/datatrak.c" line="433"/>
         <location filename="../core/dive.c" line="29"/>
         <source>photo</source>
         <translation>снимка</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="434"/>
+        <location filename="../core/datatrak.c" line="435"/>
         <source>other</source>
         <translation>друго</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="445"/>
+        <location filename="../core/datatrak.c" line="446"/>
         <source>Other activities</source>
         <translation>Други активности</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="469"/>
+        <location filename="../core/datatrak.c" line="470"/>
         <source>Datatrak/Wlog notes</source>
         <translation>Datatrak/Wlog бележки</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="513"/>
+        <location filename="../core/datatrak.c" line="514"/>
         <source>[Warning] Manual dive # %d
 </source>
         <translation>[Внимание] Ръчно гмуркане № %d
 </translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="539"/>
+        <location filename="../core/datatrak.c" line="540"/>
         <source>[Error] Out of memory for dive %d. Abort parsing.</source>
         <translation>[Грешка] Няма достатъчно памен за разряд на гмуркане %d.</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="585"/>
+        <location filename="../core/datatrak.c" line="587"/>
         <source>[Error] File is not a DataTrak file. Aborted</source>
         <translation>[Грешка] Файла не е DataTrak файл.</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="598"/>
+        <location filename="../core/datatrak.c" line="600"/>
         <source>Error: no dive</source>
         <translation>Грешка: няма гмуркане</translation>
     </message>
@@ -8777,7 +8777,7 @@ Maximum</source>
         <location filename="../core/file.c" line="504"/>
         <location filename="../core/file.c" line="590"/>
         <location filename="../core/file.c" line="888"/>
-        <location filename="../core/file.c" line="1098"/>
+        <location filename="../core/file.c" line="1106"/>
         <location filename="../core/ostctools.c" line="49"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Не може да бъде прочетен &apos;%s&apos;</translation>
@@ -8835,7 +8835,7 @@ Maximum</source>
         <translation>O₂ калибрация</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="949"/>
+        <location filename="../core/file.c" line="954"/>
         <source>No dive profile found from &apos;%s&apos;</source>
         <translation>Не може да бъде намерен профил от &apos;%s&apos;</translation>
     </message>
@@ -8871,295 +8871,295 @@ Maximum</source>
         <translation>Облаковия слад е повреден</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="285"/>
+        <location filename="../core/git-access.c" line="283"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
         <translation>Не може да бъде обновен облаковия слад. Моля опитайте по-късно.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="345"/>
+        <location filename="../core/git-access.c" line="343"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation>Дистанционния склад и локалните данни се разминават . Грешка: сливането се провали (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="375"/>
+        <location filename="../core/git-access.c" line="373"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation>Облаковия слад и локалните данни се разминават. Данните не могат да бъдат сляти.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="409"/>
+        <location filename="../core/git-access.c" line="407"/>
         <source>Remote storage and local data diverged</source>
         <translation>Облаковия слад и локалните данни се разминават</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="412"/>
+        <location filename="../core/git-access.c" line="410"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
         <translation>Облаковия слад и локалните данни се разминават. Грешка: записа на данни се провали (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="421"/>
+        <location filename="../core/git-access.c" line="419"/>
         <source>Problems with local cache of Subsurface cloud data</source>
         <translation>Проблем с локалния кеш на облаковия слад</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="422"/>
+        <location filename="../core/git-access.c" line="420"/>
         <source>Moved cache data to %s. Please try the operation again.</source>
         <translation>Преместване на кеша в %s. Моля опитайте отново.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="469"/>
+        <location filename="../core/git-access.c" line="467"/>
         <source>Update local storage to match cloud storage</source>
         <translation>Обнови локалния склад да съвпада с облаковия.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="477"/>
+        <location filename="../core/git-access.c" line="475"/>
         <source>Push local changes to cloud storage</source>
         <translation>Качи локалните промени в облака</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="495"/>
+        <location filename="../core/git-access.c" line="493"/>
         <source>Try to merge local changes into cloud storage</source>
         <translation>Опитай да смесиш локалните промени в облака</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="537"/>
+        <location filename="../core/git-access.c" line="535"/>
         <source>Store data into cloud storage</source>
         <translation>Запази данните в облака</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="561"/>
+        <location filename="../core/git-access.c" line="559"/>
         <source>Sync with cloud storage</source>
         <translation>Синхронизирай с облака</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="588"/>
+        <location filename="../core/git-access.c" line="586"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
         <translation>Облаковия сървър не може да бъде намерен. Работа с локални данни.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="601"/>
+        <location filename="../core/git-access.c" line="599"/>
         <source>Successful cloud connection, fetch remote</source>
         <translation>Успешна връзка с облака. Теглене на данни.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="618"/>
+        <location filename="../core/git-access.c" line="616"/>
         <source>Done syncing with cloud storage</source>
         <translation>Синхронизацията с облака завършена</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="759"/>
+        <location filename="../core/git-access.c" line="757"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Грешка при връзка с облаковия склад</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="762"/>
+        <location filename="../core/git-access.c" line="760"/>
         <source>git clone of %s failed (%s)</source>
         <translation>git clone на %s се провали (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="785"/>
+        <location filename="../core/git-access.c" line="783"/>
         <source>Synchronising data file</source>
         <translation>Синхорнизация на файл с данни</translation>
     </message>
     <message>
         <location filename="../core/import-divinglog.c" line="312"/>
-        <location filename="../core/libdivecomputer.c" line="239"/>
+        <location filename="../core/libdivecomputer.c" line="236"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>неизвестно</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="249"/>
         <source>none</source>
         <translation>няма</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>workload</source>
         <translation>натовареност</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>violation</source>
         <translation>нарушение</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>bookmark</source>
         <translation>бележка</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>surface</source>
         <translation>повърхност</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>safety stop</source>
         <translation>безопасен стоп</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
         <source>safety stop (voluntary)</source>
         <translation>безопасен стоп (свободен)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
         <source>safety stop (mandatory)</source>
         <translation>безопасен стоп (задължителен)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>deepstop</source>
         <translation>дълбочина на спиране</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>ceiling (safety stop)</source>
         <translation>таван (безопасен стоп)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>под</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>divetime</source>
         <translation>време за гмуркане</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="273"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>airtime</source>
         <translation>време за въздух</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="274"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="275"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>heading</source>
         <translation>посока</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="276"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>tissue level warning</source>
         <translation>внимание: ниво на тъканта</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="286"/>
+        <location filename="../core/libdivecomputer.c" line="283"/>
         <source>invalid event number</source>
         <translation>грешен номер на събитие</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="607"/>
+        <location filename="../core/libdivecomputer.c" line="604"/>
         <source>Error parsing the datetime</source>
         <translation>Грешка при разряд на дата и час</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="625"/>
+        <location filename="../core/libdivecomputer.c" line="622"/>
         <source>Dive %d: %s</source>
         <translation>Гмуркане №%d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="631"/>
+        <location filename="../core/libdivecomputer.c" line="628"/>
         <source>Error parsing the divetime</source>
         <translation>Грешка при рaзряд на време за гмуркане</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="641"/>
+        <location filename="../core/libdivecomputer.c" line="638"/>
         <source>Error parsing the maxdepth</source>
         <translation>Грешка при рaзряд на максимална дълбочина</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="660"/>
+        <location filename="../core/libdivecomputer.c" line="657"/>
         <source>Error parsing temperature</source>
         <translation>Грешка при рaзряд на температура</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="680"/>
+        <location filename="../core/libdivecomputer.c" line="677"/>
         <source>Error parsing the gas mix count</source>
         <translation>Грешка при рaзряд на газ микс брой</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="692"/>
+        <location filename="../core/libdivecomputer.c" line="689"/>
         <source>Error obtaining water salinity</source>
         <translation>Грешка при прием на водна соленост</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="701"/>
+        <location filename="../core/libdivecomputer.c" line="698"/>
         <source>Error obtaining surface pressure</source>
         <translation>Грешка при прием на повърхностно налягане</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="726"/>
+        <location filename="../core/libdivecomputer.c" line="723"/>
         <source>Error obtaining dive mode</source>
         <translation>Грешка при прием на режим на гмуркане</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="749"/>
+        <location filename="../core/libdivecomputer.c" line="746"/>
         <source>Error parsing the gas mix</source>
         <translation>Грешка при рaзряд на газ микс</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="775"/>
+        <location filename="../core/libdivecomputer.c" line="772"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Не може да бъде създаден разряд за %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="781"/>
+        <location filename="../core/libdivecomputer.c" line="778"/>
         <source>Error registering the data</source>
         <translation>Грешка при регистриране на данни</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="802"/>
+        <location filename="../core/libdivecomputer.c" line="799"/>
         <source>Error parsing the samples</source>
         <translation>Грешка при рaзряд на стойности</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="809"/>
+        <location filename="../core/libdivecomputer.c" line="806"/>
         <source>Already downloaded dive at %s</source>
         <translation>Гмуркане в %s е вече изтеглено</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
+        <location filename="../core/libdivecomputer.c" line="941"/>
         <source>Event: waiting for user action</source>
         <translation>Събитие: изчаквание на действие от потребителя</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="962"/>
+        <location filename="../core/libdivecomputer.c" line="960"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation>модел=%s фирммуер=%u сер.номер=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1024"/>
+        <location filename="../core/libdivecomputer.c" line="1022"/>
         <source>Error registering the event handler.</source>
         <translation>Грешка при регистриране на направление за събития</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1029"/>
+        <location filename="../core/libdivecomputer.c" line="1027"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Грешка при регистриране на направление за отменяне</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1050"/>
+        <location filename="../core/libdivecomputer.c" line="1048"/>
         <source>Dive data import error</source>
         <translation>Грешка при вход на данни</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1089"/>
+        <location filename="../core/libdivecomputer.c" line="1087"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Не може да бъде създаден libdivecomputer контекст</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1098"/>
+        <location filename="../core/libdivecomputer.c" line="1096"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Не може да бъдe отворен %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1123"/>
+        <location filename="../core/libdivecomputer.c" line="1121"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
@@ -9169,7 +9169,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
 </translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1132"/>
+        <location filename="../core/libdivecomputer.c" line="1130"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>Няма изтеглени нови гмуркания от леководолазен компютър</translation>
     </message>
@@ -9190,23 +9190,23 @@ You can create this logfile by selecting the corresponding checkbox in the downl
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1719"/>
+        <location filename="../core/load-git.c" line="1721"/>
         <source>Load dives from local cache</source>
         <translation>Зареди гмуркания от лакален кеш</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1723"/>
+        <location filename="../core/load-git.c" line="1725"/>
         <source>Successfully opened dive data</source>
         <translation>Данните за гмурканията бяха заредни успешно</translation>
     </message>
     <message>
         <location filename="../core/ostctools.c" line="109"/>
-        <location filename="../core/ostctools.c" line="141"/>
+        <location filename="../core/ostctools.c" line="140"/>
         <source>Unknown DC in dive %d</source>
         <translation>непознат ГК в гмуркане %d</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="154"/>
+        <location filename="../core/ostctools.c" line="152"/>
         <source>Error - %s - parsing dive %d</source>
         <translation>Грешка - %s - резряд на гмуркане %d</translation>
     </message>
@@ -9223,7 +9223,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>Не може да бъде напревен разбор на &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2034"/>
+        <location filename="../core/parse-xml.c" line="2036"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Не може да бъде отворен стилов файл %s</translation>
     </message>
@@ -9239,16 +9239,16 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="78"/>
-        <location filename="../core/plannernotes.c" line="401"/>
-        <location filename="../core/plannernotes.c" line="407"/>
-        <location filename="../core/plannernotes.c" line="446"/>
-        <location filename="../core/plannernotes.c" line="489"/>
-        <location filename="../core/plannernotes.c" line="501"/>
+        <location filename="../core/plannernotes.c" line="405"/>
+        <location filename="../core/plannernotes.c" line="411"/>
+        <location filename="../core/plannernotes.c" line="450"/>
+        <location filename="../core/plannernotes.c" line="493"/>
+        <location filename="../core/plannernotes.c" line="505"/>
         <source>Warning:</source>
         <translation>Предупреждение:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="342"/>
+        <location filename="../core/plannernotes.c" line="346"/>
         <source>, effective GF=%d/%d</source>
         <translation>, ефективно GF=%d/%d</translation>
     </message>
@@ -9269,141 +9269,141 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>BUHLMANN</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="117"/>
+        <location filename="../core/plannernotes.c" line="121"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
         <translation>Времетраене: %dмин&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="123"/>
+        <location filename="../core/plannernotes.c" line="127"/>
         <source>depth</source>
         <translation>дълбочина</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="126"/>
+        <location filename="../core/plannernotes.c" line="130"/>
         <source>duration</source>
         <translation>продължителност</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="129"/>
+        <location filename="../core/plannernotes.c" line="133"/>
         <source>runtime</source>
         <translation>времетраене</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="132"/>
+        <location filename="../core/plannernotes.c" line="136"/>
         <source>gas</source>
         <translation>газ</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="179"/>
+        <location filename="../core/plannernotes.c" line="183"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Преход към %.*f %s за %d:%02d мин - времетраене %d:%02u на %s (SP = %.1f бара)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="187"/>
+        <location filename="../core/plannernotes.c" line="191"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Преход към %.*f %s за %d:%02d мин - времетраене %d:%02u на %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="200"/>
+        <location filename="../core/plannernotes.c" line="204"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Остани на %.*f %s за %d:%02d мин - времетраене %d:%02u на %s (SP = %.1f бара)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="207"/>
+        <location filename="../core/plannernotes.c" line="211"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Остани на %.*f %s за %d:%02d мин - времетраене %d:%02u на %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="253"/>
+        <location filename="../core/plannernotes.c" line="257"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="256"/>
         <location filename="../core/plannernotes.c" line="260"/>
+        <location filename="../core/plannernotes.c" line="264"/>
         <source>%3dmin</source>
         <translation>%3dмин</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="269"/>
-        <location filename="../core/plannernotes.c" line="281"/>
+        <location filename="../core/plannernotes.c" line="273"/>
+        <location filename="../core/plannernotes.c" line="285"/>
         <source>(SP = %.1fbar)</source>
         <translation>(SP = %.1f бара)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="304"/>
+        <location filename="../core/plannernotes.c" line="308"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Превключи газ към %s (SP = %.1f бара)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="306"/>
+        <location filename="../core/plannernotes.c" line="310"/>
         <source>Switch gas to %s</source>
         <translation>Превключи газ на %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="326"/>
+        <location filename="../core/plannernotes.c" line="330"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="328"/>
+        <location filename="../core/plannernotes.c" line="332"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="338"/>
+        <location filename="../core/plannernotes.c" line="342"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation>Деко модел VPM-B при номинален консерватизъм</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="433"/>
+        <location filename="../core/plannernotes.c" line="437"/>
         <source>Minimum gas</source>
         <translation>Минимален газ</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="434"/>
+        <location filename="../core/plannernotes.c" line="438"/>
         <source>based on</source>
         <translation>базиран на</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="436"/>
+        <location filename="../core/plannernotes.c" line="440"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="454"/>
+        <location filename="../core/plannernotes.c" line="458"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s/%.0f%s от&lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="458"/>
+        <location filename="../core/plannernotes.c" line="462"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s during planned ascent)</source>
         <translation>%.0f%s от &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s в планирано изкачване)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="461"/>
+        <location filename="../core/plannernotes.c" line="465"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s от &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="90"/>
-        <location filename="../core/plannernotes.c" line="99"/>
-        <location filename="../core/plannernotes.c" line="105"/>
+        <location filename="../core/plannernotes.c" line="100"/>
+        <location filename="../core/plannernotes.c" line="108"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="107"/>
+        <location filename="../core/plannernotes.c" line="110"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
         <translation>гмуркачески план&lt;/b&gt; (интервал на повърхност</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="109"/>
+        <location filename="../core/plannernotes.c" line="112"/>
         <source>created on</source>
         <translation>създаден на</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="101"/>
+        <location filename="../core/plannernotes.c" line="102"/>
         <source>dive plan&lt;/b&gt; created on</source>
         <translation>гмуркачески план&lt;/b&gt; създаден на</translation>
     </message>
@@ -9413,67 +9413,67 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>гмуркачески план &lt;/b&gt; (установено припокриване на гмуркания)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="114"/>
+        <location filename="../core/plannernotes.c" line="118"/>
         <source>Runtime: %dmin%s</source>
-        <translation type="unfinished"/>
+        <translation>Времетраене: %dмин%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="333"/>
+        <location filename="../core/plannernotes.c" line="337"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Деко модел: Bühlmann ZHL-16C с GFLow = %d%% и GFHigh = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="340"/>
+        <location filename="../core/plannernotes.c" line="344"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation>Деко модел: VPM-B при +%d консерватизъм</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="346"/>
+        <location filename="../core/plannernotes.c" line="350"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Деко модел: &quot;Развлекателен режим&quot; базиран на Bühlmann ZHL-16B с GFLow = %d%% и GFHigh = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="354"/>
+        <location filename="../core/plannernotes.c" line="358"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
         <translation>ATM налягане: %d милибара (%d%s)&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="372"/>
+        <location filename="../core/plannernotes.c" line="376"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Консумация на газ (CCR крака включени):</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="374"/>
+        <location filename="../core/plannernotes.c" line="378"/>
         <source>Gas consumption (based on SAC</source>
         <translation>Консумация на газ (базирана на SAC</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="402"/>
+        <location filename="../core/plannernotes.c" line="406"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>има повече газ от този на разположение в избраната бултилка</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="408"/>
+        <location filename="../core/plannernotes.c" line="412"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>няма достатъчно резерв за газово споделяне при изкачване!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="447"/>
+        <location filename="../core/plannernotes.c" line="451"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
         <translation>Изисквания минимален газ за изкачаване вече надвишава стартовото налягане на бутилката!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="452"/>
+        <location filename="../core/plannernotes.c" line="456"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s в планирано изкачване)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="486"/>
+        <location filename="../core/plannernotes.c" line="490"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>висока pO₂ стойност %.2f при %d:%02u с газ %s на дълбочина %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="498"/>
+        <location filename="../core/plannernotes.c" line="502"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>ниска pO₂ стойност %.2f към %d:%02u с газ %s при дълбочина %.*f %s</translation>
     </message>
@@ -10302,67 +10302,67 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>details for #</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="705"/>
+        <location filename="../core/uemis-downloader.c" line="707"/>
         <source>wetsuit</source>
         <translation>мокър костюм</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="705"/>
+        <location filename="../core/uemis-downloader.c" line="707"/>
         <source>semidry</source>
         <translation>полусух</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="705"/>
+        <location filename="../core/uemis-downloader.c" line="707"/>
         <source>drysuit</source>
         <translation>сух костюм</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>shorty</source>
         <translation>къс</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>vest</source>
         <translation>жилетка</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>long john</source>
         <translation>лонг джон</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>jacket</source>
         <translation>яке</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>full suit</source>
         <translation>пълен косюм</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>2 pcs full suit</source>
         <translation>2 за цял костюм</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="707"/>
+        <location filename="../core/uemis-downloader.c" line="709"/>
         <source>membrane</source>
         <translation>мембрана</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1237"/>
+        <location filename="../core/uemis-downloader.c" line="1239"/>
         <source>Initialise communication</source>
         <translation>Започни връзка</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1240"/>
+        <location filename="../core/uemis-downloader.c" line="1242"/>
         <source>Uemis init failed</source>
         <translation>Uemis не може да бъде зареден</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1252"/>
+        <location filename="../core/uemis-downloader.c" line="1254"/>
         <source>Start download</source>
         <translation>Започни теглене</translation>
     </message>
@@ -10472,7 +10472,7 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Продължителност:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="438"/>
+        <location filename="../core/plannernotes.c" line="442"/>
         <location filename="../core/worldmap-save.c" line="47"/>
         <source>min</source>
         <translation>мин</translation>
@@ -10633,7 +10633,7 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Локален кеш създаден</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1238"/>
+        <location filename="../core/save-git.c" line="1246"/>
         <source>Preparing to save data</source>
         <translation>Подготовка за запис на данни</translation>
     </message>
@@ -10661,12 +10661,12 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Менажиране на гмуркания</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
         <source>Disable location service</source>
         <translation>Изключи услугата за локализиране</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="260"/>
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
@@ -10701,7 +10701,7 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="285"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
         <source>Help</source>
         <translation>Помощ</translation>
     </message>
@@ -10718,45 +10718,45 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="185"/>
         <source>Auto cloud sync enabled</source>
-        <translation type="unfinished"/>
+        <translation>Авто-синхронизиране с облака включено</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="212"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="213"/>
         <source>Download GPS data</source>
         <translation>Теглене на GPS данни</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="220"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Show GPS fixes</source>
         <translation>Покажи GPS позиции</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="231"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
         <source>Clear GPS cache</source>
         <translation>Изчисти GPS кеш</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="265"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Developer</source>
         <translation>Разработчик</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="272"/>
         <source>App log</source>
         <translation>Регистър на приложението</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="280"/>
         <source>Theme information</source>
         <translation>Информация за темата</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
         <source>About</source>
         <translation>За приложението</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
         <source>Run location service</source>
         <translation>Стартирай услугата за локализиране</translation>
     </message>

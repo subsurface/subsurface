@@ -323,12 +323,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="540"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="547"/>
         <source>Person: </source>
         <translation>Persona:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="541"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="548"/>
         <source>Searches for buddies and divemasters</source>
         <translation>Cerca per companys i líders de busseig</translation>
     </message>
@@ -3073,107 +3073,107 @@ majoria dels detalls però no la informació sobre el perfil.</translation>
 <context>
     <name>DivePlotDataModel</name>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="114"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="115"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="116"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="117"/>
         <source>Time</source>
         <translation>Hora</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="118"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="119"/>
         <source>Pressure</source>
         <translation>Pressió</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="120"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="121"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="122"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="123"/>
         <source>Color</source>
         <translation>Color</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="124"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="125"/>
         <source>User entered</source>
         <translation>Introduïda per l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="126"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="127"/>
         <source>Pressure S</source>
         <translation>Pressió S</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="128"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="129"/>
         <source>Pressure I</source>
         <translation>Pressió I</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="130"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="131"/>
         <source>Ceiling</source>
         <translation>Sostre</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="132"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="133"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="134"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="135"/>
         <source>pN₂</source>
         <translation>pN₂</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="136"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="137"/>
         <source>pHe</source>
         <translation>pHe</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="138"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="139"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="140"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="141"/>
         <source>Setpoint</source>
         <translation>Punt d&apos;ajust</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="142"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="143"/>
         <source>Sensor 1</source>
         <translation>Sensor 1</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="144"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="145"/>
         <source>Sensor 2</source>
         <translation>Sensor 2</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="146"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="147"/>
         <source>Sensor 3</source>
         <translation>Sensor 3</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="148"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="149"/>
         <source>Ambient pressure</source>
         <translation>Pressió ambiental</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="150"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="151"/>
         <source>Heart rate</source>
         <translation>Ritme cardíac</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="152"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="153"/>
         <source>Gradient factor</source>
         <translation>Factor de degradat</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplotdatamodel.cpp" line="154"/>
+        <location filename="../qt-models/diveplotdatamodel.cpp" line="155"/>
         <source>Mean depth @ s</source>
         <translation>Mitjana de la profunditat @ s</translation>
     </message>
@@ -3238,142 +3238,142 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="478"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="530"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="477"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="529"/>
         <source>#</source>
         <translation>Núm.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="481"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="533"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="480"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="532"/>
         <source>Date</source>
         <translation>Data</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="484"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="536"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="483"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="535"/>
         <source>Rating</source>
         <translation>Valoració</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="487"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="486"/>
         <source>Depth</source>
         <translation>Profunditat</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="490"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="542"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="489"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="541"/>
         <source>Duration</source>
         <translation>Durada</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="496"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="495"/>
         <source>Weight</source>
         <translation>Llast</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="499"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="551"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="498"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="550"/>
         <source>Suit</source>
         <translation>Vestit</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="493"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="492"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="502"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="554"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="501"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="553"/>
         <source>Cylinder</source>
         <translation>Ampolla</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="505"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="557"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="504"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="556"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="508"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="507"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="511"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="565"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="510"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="564"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="514"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="568"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="513"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="567"/>
         <source>Max CNS</source>
         <translation>SNC màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="517"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="516"/>
         <source>Photos</source>
         <translation>Fotografies</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="520"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="519"/>
         <source>Country</source>
         <translation>País</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="523"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="574"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="522"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="573"/>
         <source>Location</source>
         <translation>Ubicació</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="538"/>
         <source>Depth(%1)</source>
         <translation>Prof.(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="538"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="538"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="545"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="544"/>
         <source>Temp.(%1%2)</source>
         <translation>Temp.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="547"/>
         <source>Weight(%1)</source>
         <translation>Llast(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="547"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="548"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="547"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="561"/>
         <source>SAC(%1)</source>
         <translation>CAS(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="562"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="561"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="571"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="570"/>
         <source>Photos before/during/after dive</source>
         <translation>Fotografies abans/durant/ després de la immersió</translation>
     </message>
@@ -3795,17 +3795,17 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>FilterBase</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="515"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="522"/>
         <source>Select All</source>
         <translation>Selecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="516"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="523"/>
         <source>Unselect All</source>
         <translation>Desselecciona-ho tot</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="517"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="524"/>
         <source>Invert Selection</source>
         <translation>Inverteix la selecció</translation>
     </message>
@@ -3829,8 +3829,8 @@ a la llista d&apos;immersions.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="57"/>
-        <source>...</source>
-        <translation>...</translation>
+        <source>¬</source>
+        <translation>¬</translation>
     </message>
 </context>
 <context>
@@ -3932,7 +3932,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="546"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="553"/>
         <source>Location: </source>
         <translation>Ubicació: </translation>
     </message>
@@ -3973,7 +3973,7 @@ a la llista d&apos;immersions.</translation>
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="340"/>
+        <location filename="../qt-models/filtermodels.cpp" line="338"/>
         <source>No location set</source>
         <translation>Sense ubicació</translation>
     </message>
@@ -5052,7 +5052,7 @@ Podrien faltar els mòduls QtPositioning i QtLocation del QML!</translation>
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="590"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="597"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation>El filtratge mostra %1 (de %2) immersions</translation>
     </message>
@@ -6329,7 +6329,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
         <translation>seg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1273"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1275"/>
         <source>Unknown GPS location</source>
         <translation>Ubicació GPS desconeguda</translation>
     </message>
@@ -7159,7 +7159,7 @@ Fitxers amb una data/hora inapropiada</translation>
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="551"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="558"/>
         <source>Suits: </source>
         <translation>Combinacions:</translation>
     </message>
@@ -7167,7 +7167,7 @@ Fitxers amb una data/hora inapropiada</translation>
 <context>
     <name>SuitsFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="168"/>
+        <location filename="../qt-models/filtermodels.cpp" line="172"/>
         <source>No suit set</source>
         <translation>No s&apos;ha establert cap vestit</translation>
     </message>
@@ -7492,7 +7492,7 @@ mixed from Air and using:
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="535"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="542"/>
         <source>Tags: </source>
         <translation>Etiquetes: </translation>
     </message>
@@ -7500,7 +7500,7 @@ mixed from Air and using:
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="193"/>
+        <location filename="../qt-models/filtermodels.cpp" line="197"/>
         <source>Empty tags</source>
         <translation>Etiquetes buides</translation>
     </message>
@@ -7699,7 +7699,7 @@ mixed from Air and using:
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="675"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="682"/>
         <source>%1click to visit %2</source>
         <translation>%1feu clic per a visitar %2</translation>
     </message>
@@ -7770,12 +7770,12 @@ mixed from Air and using:
         <translation>SNC màx.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="365"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="366"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="365"/>
         <source>min</source>
         <translation>min</translation>
     </message>
@@ -7786,13 +7786,13 @@ mixed from Air and using:
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="246"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="246"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="423"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="422"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
@@ -7813,7 +7813,7 @@ mixed from Air and using:
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="260"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="410"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="409"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
@@ -8308,7 +8308,7 @@ Màxim</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="795"/>
+        <location filename="../core/libdivecomputer.c" line="792"/>
         <source>Error parsing the header</source>
         <translation>Error en analitzar la capçalera</translation>
     </message>
@@ -8319,7 +8319,7 @@ Màxim</translation>
         <location filename="../core/cochran.c" line="304"/>
         <location filename="../core/cochran.c" line="310"/>
         <location filename="../core/cochran.c" line="380"/>
-        <location filename="../core/libdivecomputer.c" line="253"/>
+        <location filename="../core/libdivecomputer.c" line="250"/>
         <source>deco stop</source>
         <translation>parada descompressió</translation>
     </message>
@@ -8327,7 +8327,7 @@ Màxim</translation>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
         <location filename="../core/file.c" line="770"/>
-        <location filename="../core/libdivecomputer.c" line="255"/>
+        <location filename="../core/libdivecomputer.c" line="252"/>
         <source>ascent</source>
         <translation>ascens</translation>
     </message>
@@ -8339,20 +8339,20 @@ Màxim</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="343"/>
-        <location filename="../core/libdivecomputer.c" line="271"/>
+        <location filename="../core/libdivecomputer.c" line="268"/>
         <source>OLF</source>
         <translation>OLF</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="348"/>
-        <location filename="../core/libdivecomputer.c" line="270"/>
+        <location filename="../core/libdivecomputer.c" line="267"/>
         <source>maxdepth</source>
         <translation>profunditat màx.</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="353"/>
         <location filename="../core/cochran.c" line="399"/>
-        <location filename="../core/libdivecomputer.c" line="272"/>
+        <location filename="../core/libdivecomputer.c" line="269"/>
         <source>pO₂</source>
         <translation>pO₂</translation>
     </message>
@@ -8361,109 +8361,109 @@ Màxim</translation>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
         <location filename="../core/file.c" line="851"/>
-        <location filename="../core/libdivecomputer.c" line="263"/>
-        <location filename="../core/libdivecomputer.c" line="277"/>
+        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="274"/>
         <source>gaschange</source>
         <translation>canvi de mescla</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="365"/>
         <location filename="../core/cochran.c" line="404"/>
-        <location filename="../core/libdivecomputer.c" line="254"/>
+        <location filename="../core/libdivecomputer.c" line="251"/>
         <source>rbt</source>
         <translation>rbt</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="374"/>
         <location filename="../core/cochran.c" line="421"/>
-        <location filename="../core/libdivecomputer.c" line="256"/>
+        <location filename="../core/libdivecomputer.c" line="253"/>
         <source>ceiling</source>
         <translation>sostre</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="390"/>
-        <location filename="../core/libdivecomputer.c" line="258"/>
+        <location filename="../core/libdivecomputer.c" line="255"/>
         <source>transmitter</source>
         <translation>transmissor</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="258"/>
+        <location filename="../core/datatrak.c" line="259"/>
         <source>clear</source>
         <translation>clar</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="261"/>
+        <location filename="../core/datatrak.c" line="262"/>
         <source>misty</source>
         <translation>boirós</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="264"/>
+        <location filename="../core/datatrak.c" line="265"/>
         <source>fog</source>
         <translation>boira</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="267"/>
+        <location filename="../core/datatrak.c" line="268"/>
         <source>rain</source>
         <translation>pluja</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="270"/>
+        <location filename="../core/datatrak.c" line="271"/>
         <source>storm</source>
         <translation>tempesta</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="273"/>
+        <location filename="../core/datatrak.c" line="274"/>
         <source>snow</source>
         <translation>neu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="293"/>
+        <location filename="../core/datatrak.c" line="294"/>
         <source>No suit</source>
         <translation>Sense vestit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="296"/>
+        <location filename="../core/datatrak.c" line="297"/>
         <source>Shorty</source>
         <translation>Shorty (curt)</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="299"/>
+        <location filename="../core/datatrak.c" line="300"/>
         <source>Combi</source>
         <translation>Combi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="302"/>
+        <location filename="../core/datatrak.c" line="303"/>
         <source>Wet suit</source>
         <translation>Vestit humit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="305"/>
+        <location filename="../core/datatrak.c" line="306"/>
         <source>Semidry suit</source>
         <translation>Vestit semisec</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="308"/>
+        <location filename="../core/datatrak.c" line="309"/>
         <source>Dry suit</source>
         <translation>Vestit sec</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="368"/>
+        <location filename="../core/datatrak.c" line="369"/>
         <source>no stop</source>
         <translation>sense parades</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="370"/>
+        <location filename="../core/datatrak.c" line="371"/>
         <location filename="../core/dive.c" line="30"/>
         <source>deco</source>
         <translation>Descompressió</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="372"/>
+        <location filename="../core/datatrak.c" line="373"/>
         <source>single ascent</source>
         <translation>ascens senzill</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="374"/>
+        <location filename="../core/datatrak.c" line="375"/>
         <source>multiple ascent</source>
         <translation>ascens múltiple</translation>
     </message>
@@ -8473,117 +8473,117 @@ Màxim</translation>
         <translation>aigua dolça</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="376"/>
+        <location filename="../core/datatrak.c" line="377"/>
         <source>fresh water</source>
         <translation>aigua dolça</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="378"/>
+        <location filename="../core/datatrak.c" line="379"/>
         <source>salt water</source>
         <translation>aigua salada</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="403"/>
+        <location filename="../core/datatrak.c" line="404"/>
         <source>sight seeing</source>
         <translation>paisatge</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="405"/>
+        <location filename="../core/datatrak.c" line="406"/>
         <source>club dive</source>
         <translation>immersió de club</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="407"/>
+        <location filename="../core/datatrak.c" line="408"/>
         <location filename="../core/dive.c" line="29"/>
         <source>instructor</source>
         <translation>instructor</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="409"/>
+        <location filename="../core/datatrak.c" line="410"/>
         <source>instruction</source>
         <translation>instrucció</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="411"/>
+        <location filename="../core/datatrak.c" line="412"/>
         <location filename="../core/dive.c" line="28"/>
         <source>night</source>
         <translation>nit</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="413"/>
+        <location filename="../core/datatrak.c" line="414"/>
         <location filename="../core/dive.c" line="26"/>
         <source>cave</source>
         <translation>cova</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="415"/>
+        <location filename="../core/datatrak.c" line="416"/>
         <location filename="../core/dive.c" line="25"/>
         <source>ice</source>
         <translation>gel</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="417"/>
+        <location filename="../core/datatrak.c" line="418"/>
         <source>search</source>
         <translation>cerca</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="426"/>
+        <location filename="../core/datatrak.c" line="427"/>
         <location filename="../core/dive.c" line="26"/>
         <source>wreck</source>
         <translation>naufragi</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="428"/>
+        <location filename="../core/datatrak.c" line="429"/>
         <location filename="../core/dive.c" line="27"/>
         <source>river</source>
         <translation>riu</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="430"/>
+        <location filename="../core/datatrak.c" line="431"/>
         <location filename="../core/dive.c" line="24"/>
         <source>drift</source>
         <translation>a la deriva</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="432"/>
+        <location filename="../core/datatrak.c" line="433"/>
         <location filename="../core/dive.c" line="29"/>
         <source>photo</source>
         <translation>fotografia</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="434"/>
+        <location filename="../core/datatrak.c" line="435"/>
         <source>other</source>
         <translation>altres</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="445"/>
+        <location filename="../core/datatrak.c" line="446"/>
         <source>Other activities</source>
         <translation>Altres activitats</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="469"/>
+        <location filename="../core/datatrak.c" line="470"/>
         <source>Datatrak/Wlog notes</source>
         <translation>Notes de Datatrak/Wlog</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="513"/>
+        <location filename="../core/datatrak.c" line="514"/>
         <source>[Warning] Manual dive # %d
 </source>
         <translation>[Avís] Immersió manual núm. %d
 </translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="539"/>
+        <location filename="../core/datatrak.c" line="540"/>
         <source>[Error] Out of memory for dive %d. Abort parsing.</source>
         <translation>[Error] S&apos;ha esgotat la memòria per a la immersió %d. S&apos;ha interromput l&apos;anàlisi.</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="585"/>
+        <location filename="../core/datatrak.c" line="587"/>
         <source>[Error] File is not a DataTrak file. Aborted</source>
         <translation>[Error] El fitxer no és un fitxer DataTrak. S&apos;ha interromput</translation>
     </message>
     <message>
-        <location filename="../core/datatrak.c" line="598"/>
+        <location filename="../core/datatrak.c" line="600"/>
         <source>Error: no dive</source>
         <translation>Error: sense immersions</translation>
     </message>
@@ -8778,7 +8778,7 @@ Màxim</translation>
         <location filename="../core/file.c" line="504"/>
         <location filename="../core/file.c" line="590"/>
         <location filename="../core/file.c" line="888"/>
-        <location filename="../core/file.c" line="1098"/>
+        <location filename="../core/file.c" line="1106"/>
         <location filename="../core/ostctools.c" line="49"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Ha fallat en llegir «%s»</translation>
@@ -8836,7 +8836,7 @@ Màxim</translation>
         <translation>Calibratge de l&apos;O₂</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="949"/>
+        <location filename="../core/file.c" line="954"/>
         <source>No dive profile found from &apos;%s&apos;</source>
         <translation>No s&apos;ha trobat cap perfil de la immersió a «%s»</translation>
     </message>
@@ -8872,295 +8872,295 @@ Màxim</translation>
         <translation>Emmagatzematge al núvol del Subsurface és corrupte</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="285"/>
+        <location filename="../core/git-access.c" line="283"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
         <translation>No s&apos;ha pogut actualitzar l&apos;emmagatzematge al núvol del Subsurface, proveu-ho més tard</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="345"/>
+        <location filename="../core/git-access.c" line="343"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents. Error: ha fallat en fusionar (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="375"/>
+        <location filename="../core/git-access.c" line="373"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents. No es poden combinar els canvis locals i remots</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="409"/>
+        <location filename="../core/git-access.c" line="407"/>
         <source>Remote storage and local data diverged</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="412"/>
+        <location filename="../core/git-access.c" line="410"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
         <translation>L&apos;emmagatzematge remot i local de les dades són diferents. Error: ha fallat en escriure les dades (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="421"/>
+        <location filename="../core/git-access.c" line="419"/>
         <source>Problems with local cache of Subsurface cloud data</source>
         <translation>Problemes amb el cau local de les dades al núvol del Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="422"/>
+        <location filename="../core/git-access.c" line="420"/>
         <source>Moved cache data to %s. Please try the operation again.</source>
         <translation>S&apos;han mogut les dades de la memòria cau a %s. Si us plau, proveu de nou l&apos;operació.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="469"/>
+        <location filename="../core/git-access.c" line="467"/>
         <source>Update local storage to match cloud storage</source>
         <translation>Actualitza l&apos;emmagatzematge local per fer-lo coincidir amb l&apos;emmagatzematge al núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="477"/>
+        <location filename="../core/git-access.c" line="475"/>
         <source>Push local changes to cloud storage</source>
         <translation>Entrega els canvis locals a l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="495"/>
+        <location filename="../core/git-access.c" line="493"/>
         <source>Try to merge local changes into cloud storage</source>
         <translation>Intenta fussionar els canvis locals en l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="537"/>
+        <location filename="../core/git-access.c" line="535"/>
         <source>Store data into cloud storage</source>
         <translation>Emmagatzema les dades a l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="561"/>
+        <location filename="../core/git-access.c" line="559"/>
         <source>Sync with cloud storage</source>
         <translation>Sincronitza amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="588"/>
+        <location filename="../core/git-access.c" line="586"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
         <translation>No s&apos;ha pogut abastar el servidor en el núvol, s&apos;està treballant amb les dades locals</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="601"/>
+        <location filename="../core/git-access.c" line="599"/>
         <source>Successful cloud connection, fetch remote</source>
         <translation>Connexió amb el núvol exitosa, s&apos;estan recuperant les dades remotes</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="618"/>
+        <location filename="../core/git-access.c" line="616"/>
         <source>Done syncing with cloud storage</source>
         <translation>S&apos;ha realitzat la incronització amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="759"/>
+        <location filename="../core/git-access.c" line="757"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Error en connectar amb l&apos;emmagatzematge al núvol del Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="762"/>
+        <location filename="../core/git-access.c" line="760"/>
         <source>git clone of %s failed (%s)</source>
         <translation>Ha fallat el «git clone» de %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="785"/>
+        <location filename="../core/git-access.c" line="783"/>
         <source>Synchronising data file</source>
         <translation>S&apos;està sincronitzant el fitxer de dades</translation>
     </message>
     <message>
         <location filename="../core/import-divinglog.c" line="312"/>
-        <location filename="../core/libdivecomputer.c" line="239"/>
+        <location filename="../core/libdivecomputer.c" line="236"/>
         <location filename="../core/uemis-downloader.c" line="137"/>
         <source>unknown</source>
         <translation>Desconegut</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="252"/>
+        <location filename="../core/libdivecomputer.c" line="249"/>
         <source>none</source>
         <translation>cap</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="257"/>
+        <location filename="../core/libdivecomputer.c" line="254"/>
         <source>workload</source>
         <translation>esforç</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="259"/>
+        <location filename="../core/libdivecomputer.c" line="256"/>
         <source>violation</source>
         <translation>violació</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="260"/>
+        <location filename="../core/libdivecomputer.c" line="257"/>
         <source>bookmark</source>
         <translation>adreça d&apos;interès</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="261"/>
+        <location filename="../core/libdivecomputer.c" line="258"/>
         <source>surface</source>
         <translation>superfície</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="262"/>
+        <location filename="../core/libdivecomputer.c" line="259"/>
         <source>safety stop</source>
         <translation>parada de seguretat</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="264"/>
+        <location filename="../core/libdivecomputer.c" line="261"/>
         <source>safety stop (voluntary)</source>
         <translation>parada de seguretat (voluntària)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="265"/>
+        <location filename="../core/libdivecomputer.c" line="262"/>
         <source>safety stop (mandatory)</source>
         <translation>parada de seguretat (obligatòria)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="266"/>
+        <location filename="../core/libdivecomputer.c" line="263"/>
         <source>deepstop</source>
         <translation>parada profunda</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="267"/>
+        <location filename="../core/libdivecomputer.c" line="264"/>
         <source>ceiling (safety stop)</source>
         <translation>sostre (parada de seguretat)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="268"/>
+        <location filename="../core/libdivecomputer.c" line="265"/>
         <source>below floor</source>
         <comment>event showing dive is below deco floor and adding deco time</comment>
         <translation>per sota del sostre</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="269"/>
+        <location filename="../core/libdivecomputer.c" line="266"/>
         <source>divetime</source>
         <translation>durada de la immersió</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="273"/>
+        <location filename="../core/libdivecomputer.c" line="270"/>
         <source>airtime</source>
         <translation>temps d&apos;aire</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="274"/>
+        <location filename="../core/libdivecomputer.c" line="271"/>
         <source>rgbm</source>
         <translation>rgbm</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="275"/>
+        <location filename="../core/libdivecomputer.c" line="272"/>
         <source>heading</source>
         <translation>encapçalament</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="276"/>
+        <location filename="../core/libdivecomputer.c" line="273"/>
         <source>tissue level warning</source>
         <translation>Avís del nivell dels teixits</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="286"/>
+        <location filename="../core/libdivecomputer.c" line="283"/>
         <source>invalid event number</source>
         <translation>el número de l&apos;esdeveniment no és vàlid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="607"/>
+        <location filename="../core/libdivecomputer.c" line="604"/>
         <source>Error parsing the datetime</source>
         <translation>Error en analitzar la data</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="625"/>
+        <location filename="../core/libdivecomputer.c" line="622"/>
         <source>Dive %d: %s</source>
         <translation>Immersió %d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="631"/>
+        <location filename="../core/libdivecomputer.c" line="628"/>
         <source>Error parsing the divetime</source>
         <translation>Error en analitzar el temps de busseig</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="641"/>
+        <location filename="../core/libdivecomputer.c" line="638"/>
         <source>Error parsing the maxdepth</source>
         <translation>Error en analitzar la profunditat màxima</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="660"/>
+        <location filename="../core/libdivecomputer.c" line="657"/>
         <source>Error parsing temperature</source>
         <translation>Error en llegir la temperatura</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="680"/>
+        <location filename="../core/libdivecomputer.c" line="677"/>
         <source>Error parsing the gas mix count</source>
         <translation>Error en analitzar el contingut de la mescla de gas</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="692"/>
+        <location filename="../core/libdivecomputer.c" line="689"/>
         <source>Error obtaining water salinity</source>
         <translation>Error en obtenir la salinitat de l&apos;aigua</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="701"/>
+        <location filename="../core/libdivecomputer.c" line="698"/>
         <source>Error obtaining surface pressure</source>
         <translation>Error en obtenir la pressió en superfície</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="726"/>
+        <location filename="../core/libdivecomputer.c" line="723"/>
         <source>Error obtaining dive mode</source>
         <translation>Error en obtenir el mode de busseig</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="749"/>
+        <location filename="../core/libdivecomputer.c" line="746"/>
         <source>Error parsing the gas mix</source>
         <translation>Error en analitzar la mescla de gas</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="775"/>
+        <location filename="../core/libdivecomputer.c" line="772"/>
         <source>Unable to create parser for %s %s</source>
         <translation>No s&apos;ha pogut crear l&apos;analitzador per a %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="781"/>
+        <location filename="../core/libdivecomputer.c" line="778"/>
         <source>Error registering the data</source>
         <translation>Error en enregistrar les dades</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="802"/>
+        <location filename="../core/libdivecomputer.c" line="799"/>
         <source>Error parsing the samples</source>
         <translation>Error en analitzar les mostres</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="809"/>
+        <location filename="../core/libdivecomputer.c" line="806"/>
         <source>Already downloaded dive at %s</source>
         <translation>La immersió ja s&apos;ha baixat a %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="943"/>
+        <location filename="../core/libdivecomputer.c" line="941"/>
         <source>Event: waiting for user action</source>
         <translation>Esdeveniment: s&apos;està a l&apos;espera d&apos;una acció de l&apos;usuari</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="962"/>
+        <location filename="../core/libdivecomputer.c" line="960"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation>model=%s microprogramari=%u sèrie=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1024"/>
+        <location filename="../core/libdivecomputer.c" line="1022"/>
         <source>Error registering the event handler.</source>
         <translation>Error en enregistrar el manegador d&apos;esdeveniments.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1029"/>
+        <location filename="../core/libdivecomputer.c" line="1027"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Error en enregistrar el manegador de cancel·lació.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1050"/>
+        <location filename="../core/libdivecomputer.c" line="1048"/>
         <source>Dive data import error</source>
         <translation>Error en importar les dades de les immersions</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1089"/>
+        <location filename="../core/libdivecomputer.c" line="1087"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>No s&apos;ha pogut crear un context de «libdivecomputer»</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1098"/>
+        <location filename="../core/libdivecomputer.c" line="1096"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>No s&apos;ha pogut obrir %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1123"/>
+        <location filename="../core/libdivecomputer.c" line="1121"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
@@ -9169,7 +9169,7 @@ En la majoria dels casos, per a depurar aquest problema, serà útil un fitxer d
 Podeu crear aquest fitxer de registre seleccionant la casella de selecció corresponent al diàleg de baixada.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1132"/>
+        <location filename="../core/libdivecomputer.c" line="1130"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>No hi ha cap immersió nova baixada des de l&apos;ordinador de busseig</translation>
     </message>
@@ -9188,23 +9188,23 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>nom addicional per aquest lloc: %s</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1719"/>
+        <location filename="../core/load-git.c" line="1721"/>
         <source>Load dives from local cache</source>
         <translation>Carrega les immersions des del cau local</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1723"/>
+        <location filename="../core/load-git.c" line="1725"/>
         <source>Successfully opened dive data</source>
         <translation>S&apos;han obert amb èxit les dades de busseig</translation>
     </message>
     <message>
         <location filename="../core/ostctools.c" line="109"/>
-        <location filename="../core/ostctools.c" line="141"/>
+        <location filename="../core/ostctools.c" line="140"/>
         <source>Unknown DC in dive %d</source>
         <translation>Ordinador de busseig desconegut en la immersió %d</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="154"/>
+        <location filename="../core/ostctools.c" line="152"/>
         <source>Error - %s - parsing dive %d</source>
         <translation>Error - %s - en analitzar la immersió %d</translation>
     </message>
@@ -9220,7 +9220,7 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>Ha fallat en analitzar «%s»</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2034"/>
+        <location filename="../core/parse-xml.c" line="2036"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>No s&apos;ha pogut obrir el full d&apos;estil %s</translation>
     </message>
@@ -9236,16 +9236,16 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="78"/>
-        <location filename="../core/plannernotes.c" line="401"/>
-        <location filename="../core/plannernotes.c" line="407"/>
-        <location filename="../core/plannernotes.c" line="446"/>
-        <location filename="../core/plannernotes.c" line="489"/>
-        <location filename="../core/plannernotes.c" line="501"/>
+        <location filename="../core/plannernotes.c" line="405"/>
+        <location filename="../core/plannernotes.c" line="411"/>
+        <location filename="../core/plannernotes.c" line="450"/>
+        <location filename="../core/plannernotes.c" line="493"/>
+        <location filename="../core/plannernotes.c" line="505"/>
         <source>Warning:</source>
         <translation>Avís:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="342"/>
+        <location filename="../core/plannernotes.c" line="346"/>
         <source>, effective GF=%d/%d</source>
         <translation>, GF=%d/%d efectiu</translation>
     </message>
@@ -9266,141 +9266,141 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>BUHLMANN</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="117"/>
+        <location filename="../core/plannernotes.c" line="121"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
         <translation>Temps acumulat: %d min.&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="123"/>
+        <location filename="../core/plannernotes.c" line="127"/>
         <source>depth</source>
         <translation>profunditat</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="126"/>
+        <location filename="../core/plannernotes.c" line="130"/>
         <source>duration</source>
         <translation>durada</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="129"/>
+        <location filename="../core/plannernotes.c" line="133"/>
         <source>runtime</source>
         <translation>temps acumulat</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="132"/>
+        <location filename="../core/plannernotes.c" line="136"/>
         <source>gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="179"/>
+        <location filename="../core/plannernotes.c" line="183"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Transició a %.*f %s en %d:%02d min. - temps acumulat %d:%02u amb %s (PA = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="187"/>
+        <location filename="../core/plannernotes.c" line="191"/>
         <source>Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Transició a %.*f %s en %d:%02d min. - temps acumulat %d:%02u amb %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="200"/>
+        <location filename="../core/plannernotes.c" line="204"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation>Romandre a %.*f %s durant %d:%02d min. - temps acumulat %d:%02u amb %s (SP = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="207"/>
+        <location filename="../core/plannernotes.c" line="211"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
         <translation>Romandre a %.*f %s durant %d:%02d min. - temps acumulat %d:%02u amb %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="253"/>
+        <location filename="../core/plannernotes.c" line="257"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="256"/>
         <location filename="../core/plannernotes.c" line="260"/>
+        <location filename="../core/plannernotes.c" line="264"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="269"/>
-        <location filename="../core/plannernotes.c" line="281"/>
+        <location filename="../core/plannernotes.c" line="273"/>
+        <location filename="../core/plannernotes.c" line="285"/>
         <source>(SP = %.1fbar)</source>
         <translation>(PA = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="304"/>
+        <location filename="../core/plannernotes.c" line="308"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation>Canvia el gas a %s (PA = %.1fbar)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="306"/>
+        <location filename="../core/plannernotes.c" line="310"/>
         <source>Switch gas to %s</source>
         <translation>Canvia el gas a %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="326"/>
+        <location filename="../core/plannernotes.c" line="330"/>
         <source>CNS</source>
         <translation>SNC</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="328"/>
+        <location filename="../core/plannernotes.c" line="332"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="338"/>
+        <location filename="../core/plannernotes.c" line="342"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation>Model de descompressió: VPM-B sense conservadorisme</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="433"/>
+        <location filename="../core/plannernotes.c" line="437"/>
         <source>Minimum gas</source>
         <translation>Gas mínim</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="434"/>
+        <location filename="../core/plannernotes.c" line="438"/>
         <source>based on</source>
         <translation>creat a</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="436"/>
+        <location filename="../core/plannernotes.c" line="440"/>
         <source>SAC</source>
         <translation>CAS</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="454"/>
+        <location filename="../core/plannernotes.c" line="458"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s/%.0f%s de &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="458"/>
+        <location filename="../core/plannernotes.c" line="462"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s during planned ascent)</source>
         <translation>%.0f%s de &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s en l&apos;ascens planificat)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="461"/>
+        <location filename="../core/plannernotes.c" line="465"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation>%.0f%s de &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="90"/>
-        <location filename="../core/plannernotes.c" line="99"/>
-        <location filename="../core/plannernotes.c" line="105"/>
+        <location filename="../core/plannernotes.c" line="100"/>
+        <location filename="../core/plannernotes.c" line="108"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="107"/>
+        <location filename="../core/plannernotes.c" line="110"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
         <translation>Pla d&apos;immersió&lt;/b&gt; (interval de superfície</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="109"/>
+        <location filename="../core/plannernotes.c" line="112"/>
         <source>created on</source>
         <translation>creat a</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="101"/>
+        <location filename="../core/plannernotes.c" line="102"/>
         <source>dive plan&lt;/b&gt; created on</source>
         <translation>Pla d&apos;immersió&lt;/b&gt; creat a</translation>
     </message>
@@ -9410,67 +9410,67 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
         <translation>pla d&apos;immersió&lt;/b&gt; (s&apos;han detectat immersions superposades)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="114"/>
+        <location filename="../core/plannernotes.c" line="118"/>
         <source>Runtime: %dmin%s</source>
         <translation>Temps acumulat: %dmin%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="333"/>
+        <location filename="../core/plannernotes.c" line="337"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Model de descompressió Bühlmann ZHL-16C amb GFBaix = %d%% i GFAlt = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="340"/>
+        <location filename="../core/plannernotes.c" line="344"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation>Model de descompressió: VPM-B amb +%d de conservadorisme</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="346"/>
+        <location filename="../core/plannernotes.c" line="350"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
         <translation>Model de descompressió: Mode recreatiu basat en Bühlmann ZHL-16B amb GFBaix = %d%% i GFAlt = %d%%</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="354"/>
+        <location filename="../core/plannernotes.c" line="358"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
         <translation>Pressió atmosfèrica: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="372"/>
+        <location filename="../core/plannernotes.c" line="376"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation>Consum de gas (exclosos els segments amb CCR):</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="374"/>
+        <location filename="../core/plannernotes.c" line="378"/>
         <source>Gas consumption (based on SAC</source>
         <translation>Consum de gas (basat en el CAS</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="402"/>
+        <location filename="../core/plannernotes.c" line="406"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>Això és més gas del disponible a l&apos;ampolla especificada!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="408"/>
+        <location filename="../core/plannernotes.c" line="412"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>Reserva insuficient per a compartir el gas durant l&apos;ascens!</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="447"/>
+        <location filename="../core/plannernotes.c" line="451"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
         <translation>el gas mínim requerit per a l&apos;ascens ja excedeix la pressió d&apos;inici del cilindre</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="452"/>
+        <location filename="../core/plannernotes.c" line="456"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
         <translation>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s en l&apos;ascens planificat)</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="486"/>
+        <location filename="../core/plannernotes.c" line="490"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>Valor de pO₂ alt %.2f a %d:%02u amb gas %s a la profunditat de %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="498"/>
+        <location filename="../core/plannernotes.c" line="502"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>Valor de pO₂ baix %.2f a %d:%02u amb gas %s a la profunditat de %.*f %s</translation>
     </message>
@@ -10293,67 +10293,67 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Detalls per a #</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="705"/>
+        <location filename="../core/uemis-downloader.c" line="707"/>
         <source>wetsuit</source>
         <translation>humit</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="705"/>
+        <location filename="../core/uemis-downloader.c" line="707"/>
         <source>semidry</source>
         <translation>semisec</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="705"/>
+        <location filename="../core/uemis-downloader.c" line="707"/>
         <source>drysuit</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>shorty</source>
         <translation>shorty (curt)</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>vest</source>
         <translation>samarreta</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>long john</source>
         <translation>roba interior</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>jacket</source>
         <translation>armilla</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>full suit</source>
         <translation>Vestit complet</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="706"/>
+        <location filename="../core/uemis-downloader.c" line="708"/>
         <source>2 pcs full suit</source>
         <translation>Vestit complet de 2 peces</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="707"/>
+        <location filename="../core/uemis-downloader.c" line="709"/>
         <source>membrane</source>
         <translation>membrana</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1237"/>
+        <location filename="../core/uemis-downloader.c" line="1239"/>
         <source>Initialise communication</source>
         <translation>Inicialitza la comunicació</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1240"/>
+        <location filename="../core/uemis-downloader.c" line="1242"/>
         <source>Uemis init failed</source>
         <translation>Ha fallat en intentar iniciar Uemis</translation>
     </message>
     <message>
-        <location filename="../core/uemis-downloader.c" line="1252"/>
+        <location filename="../core/uemis-downloader.c" line="1254"/>
         <source>Start download</source>
         <translation>Inicia la baixada</translation>
     </message>
@@ -10463,7 +10463,7 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Durada:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="438"/>
+        <location filename="../core/plannernotes.c" line="442"/>
         <location filename="../core/worldmap-save.c" line="47"/>
         <source>min</source>
         <translation>min</translation>
@@ -10624,7 +10624,7 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>S&apos;ha realitzat la creació del cau local</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1238"/>
+        <location filename="../core/save-git.c" line="1246"/>
         <source>Preparing to save data</source>
         <translation>S&apos;està realitzant la preparació per a desar les dades</translation>
     </message>
@@ -10652,12 +10652,12 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>Gestió de la immersió</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
         <source>Disable location service</source>
         <translation>Inhabilita el servei d&apos;ubicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="260"/>
         <source>Settings</source>
         <translation>Ajustaments</translation>
     </message>
@@ -10692,7 +10692,7 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="285"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="289"/>
         <source>Help</source>
         <translation>Ajuda</translation>
     </message>
@@ -10712,42 +10712,42 @@ Està connectat correctament el Uemis Zurich?</translation>
         <translation>S&apos;ha habilitat la sincronització automàtica amb el núvol</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="212"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="213"/>
         <source>Download GPS data</source>
         <translation>Baixa les dades del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="220"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="222"/>
         <source>Show GPS fixes</source>
         <translation>Mostra les correccions del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="231"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="233"/>
         <source>Clear GPS cache</source>
         <translation>Neteja el cau del GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="265"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
         <source>Developer</source>
         <translation>Desenvolupador</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="272"/>
         <source>App log</source>
         <translation>Registre de l&apos;aplicació</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="280"/>
         <source>Theme information</source>
         <translation>Informació sobre el tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
         <source>About</source>
         <translation>Quant a</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="242"/>
         <source>Run location service</source>
         <translation>Executa el servei d&apos;ubicació</translation>
     </message>
