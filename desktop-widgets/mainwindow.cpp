@@ -1115,8 +1115,6 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 	d.exec();
 }
 
-#define BEHAVIOR QList<int>()
-
 void MainWindow::toggleCollapsible(bool toggle)
 {
 	ui.mainSplitter->setCollapsible(0, toggle);
@@ -1131,34 +1129,33 @@ void MainWindow::on_actionViewList_triggered()
 {
 	toggleCollapsible(true);
 	beginChangeState(LIST_MAXIMIZED);
-	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui.bottomSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.mainSplitter->setSizes({ COLLAPSED, EXPANDED });
+	ui.bottomSplitter->setSizes({ EXPANDED, COLLAPSED });
 }
 
 void MainWindow::on_actionViewProfile_triggered()
 {
 	toggleCollapsible(true);
 	beginChangeState(PROFILE_MAXIMIZED);
-	ui.topSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.topSplitter->setSizes({ COLLAPSED, EXPANDED });
+	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
 }
 
 void MainWindow::on_actionViewInfo_triggered()
 {
 	toggleCollapsible(true);
 	beginChangeState(INFO_MAXIMIZED);
-	ui.topSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
-	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
+	ui.topSplitter->setSizes({ EXPANDED, COLLAPSED });
+	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
 }
 
 void MainWindow::on_actionViewMap_triggered()
 {
 	toggleCollapsible(true);
 	beginChangeState(MAP_MAXIMIZED);
-	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
-	ui.bottomSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
+	ui.mainSplitter->setSizes({ COLLAPSED, EXPANDED });
+	ui.bottomSplitter->setSizes({ COLLAPSED, EXPANDED });
 }
-#undef BEHAVIOR
 
 void MainWindow::on_actionViewAll_triggered()
 {
