@@ -1,12 +1,1 @@
-- Do not introduce any more 1/1/1970 GPS fixes (#567)
-- desktop: Add negation button to filter lists (#435)
-- desktop: Add select all/select none/invert selection context menu to filter lists
-- Fix dive site merging for cloud (and local git storage) users. (#939)
-- desktop: Add variable zoom-levels for the dive photos tab (#898)
-- mobile: Faulty navigation after aborted dive edit (#932)
-- improve planner performance
-- mobile: fixed weird navigation problem after dive edit (#875)
-- mobile: improves button handling on download screen (issue #895)
-- Show all pictures of a selected trip in the pictures tab
-- Add detection of new libdivecomputer divemode DC_DIVEMODE_SCR for semi-closed rebreathers
-- Write profile images to correct directory in TeX export
+- Add changes after 4.7.6 above this line
