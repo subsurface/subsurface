@@ -322,12 +322,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="532"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="540"/>
         <source>Person: </source>
         <translation>Άτομο:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="533"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="541"/>
         <source>Searches for buddies and divemasters</source>
         <translation>Αναζήτηση για καταδυτικό ζευγάρι και divemasters</translation>
     </message>
@@ -335,7 +335,7 @@
 <context>
     <name>BuddyFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="266"/>
+        <location filename="../qt-models/filtermodels.cpp" line="287"/>
         <source>No buddies</source>
         <translation>Χωρίς καταδυτικό ζευγάρι</translation>
     </message>
@@ -1943,131 +1943,126 @@
 <context>
     <name>DiveDetails</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="45"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="46"/>
         <source>Dive details</source>
         <translation>Λεπτομέρειες κατάδυσης </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="139"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="140"/>
         <source>Delete dive</source>
         <translation>Διαγραφή κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="154"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="155"/>
         <source>Cancel edit</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="163"/>
         <source>Show on map</source>
         <translation>Προβολή στον χάρτη</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="232"/>
-        <source>Multiple Buddies</source>
-        <translation>Πολλαπλοί καταδυτικοί σύντροφοι  </translation>
     </message>
 </context>
 <context>
     <name>DiveDetailsEdit</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="90"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="109"/>
         <source>Dive %1</source>
         <translation>Κατάδυση %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="94"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="113"/>
         <source>Date:</source>
         <translation>Ημερομηνία:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="106"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="125"/>
         <source>Location:</source>
         <translation>Τοποθεσία:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="122"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="141"/>
         <source>Coordinates:</source>
         <translation>Συντεταγμένες:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="135"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="154"/>
         <source>Use current
 GPS location:</source>
         <translation>Χρήση τρέχουσας θέσης GPS:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="150"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="169"/>
         <source>Depth:</source>
         <translation>Βάθος:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="163"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="182"/>
         <source>Duration:</source>
         <translation>Διάρκεια:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="177"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="196"/>
         <source>Air Temp:</source>
         <translation>Θερμοκρασία Ατμόσφαιρας:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="190"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="209"/>
         <source>Water Temp:</source>
         <translation>Θερμοκρασία Νερού:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="203"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="222"/>
         <source>Suit:</source>
         <translation>Στολή:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="235"/>
         <source>Buddy:</source>
         <translation>Καταδυτικό ζευγάρι:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="248"/>
         <source>Divemaster:</source>
         <translation>Divemaster:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="261"/>
         <source>Weight:</source>
         <translation>Βάρος:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="256"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="275"/>
         <source>Cylinder:</source>
         <translation>Φιάλη:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="269"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="288"/>
         <source>Gas mix:</source>
         <translation>Μείγμα αερίου:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="283"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="302"/>
         <source>Start Pressure:</source>
         <translation>Πίεση στην αρχή:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="296"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="315"/>
         <source>End Pressure:</source>
         <translation>Πίεση στο τέλος:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="309"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="328"/>
         <source>Rating:</source>
         <translation>Βαθμός:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="322"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="341"/>
         <source>Visibility:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="336"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="355"/>
         <source>Notes:</source>
         <translation>Σημειώσεις:</translation>
     </message>
@@ -3020,22 +3015,22 @@ GPS location:</source>
         <translation>Καθορισμένη Τιμή Κλειστού Κυκλώματος</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1039"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1024"/>
         <source>min</source>
         <translation>λεπτά</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1045"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1030"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1048"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1033"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1095"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1080"/>
         <source>Stop times</source>
         <translation type="unfinished"/>
     </message>
@@ -3378,111 +3373,111 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="167"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="155"/>
         <source>no dives were selected</source>
         <translation>καμία κατάδυση δεν έχει επιλεγεί</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="177"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="165"/>
         <source>stylesheet to export to divelogs.de is not found</source>
         <translation>Η διαμόρφωση φύλλου για εξαγωγή στο divelogs.de δεν βρέθηκε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="187"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="175"/>
         <source>failed to create zip file for upload: %s</source>
         <translation>αποτυχία δημιουργίας συμπιεσμένου αρχείου για μεταφόρτωση: %s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="251"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="239"/>
         <source>internal error</source>
         <translation>εσωτερικό σφάλμα</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="259"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="247"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation>Η μετατροπή της κατάδυσης %1 στη μορφή divelogs.de απέτυχε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="287"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="275"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation>σφάλμα εγγραφής συμπιεσμένου αρχείου: %s σφάλμα συμπίεσης %d σφάλμα συστήματος %d - %s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="757"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="948"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="745"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="936"/>
         <source>Done</source>
         <translation>Done</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="791"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="779"/>
         <source>Uploading dive list...</source>
         <translation>Μεταφόρτωση λίστας καταδύσεων...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="823"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="811"/>
         <source>Downloading dive list...</source>
         <translation>Λήψη λίστας καταδύσεων...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="864"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="852"/>
         <source>Downloading %1 dives...</source>
         <translation>Λήψη %1 καταδύσων...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="898"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="886"/>
         <source>Download finished - %1</source>
         <translation>Η λήψη τελείωσε - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="912"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="900"/>
         <source>Problem with download</source>
         <translation>Πρόβλημα με την λήψη</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="913"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="901"/>
         <source>The archive could not be opened:
 </source>
         <translation>Το αρχείο αυτό δεν μπόρεσε να ανοιχθεί</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="922"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="910"/>
         <source>Corrupted download</source>
         <translation>Κατεστραμμένη λήψη</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="923"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="911"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Το αρχείο αυτό δεν μπορούσε να ανοιχθεί:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="937"/>
         <source>Upload finished</source>
         <translation>Η μεταφόρτωση τελείωσε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="962"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="950"/>
         <source>Upload failed</source>
         <translation>Η μεταφόρτωση απέτυχε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="965"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="953"/>
         <source>Upload successful</source>
         <translation>Η μεταφόρτωση πέτυχε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="968"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="956"/>
         <source>Login failed</source>
         <translation>Login failed</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="959"/>
         <source>Cannot parse response</source>
         <translation>Δεν μπορεί να αναλυθεί η απάντηση  </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="983"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="971"/>
         <source>Error: %1</source>
         <translation>Σφάλμα: %1</translation>
     </message>
@@ -3511,47 +3506,47 @@ p, li { white-space: pre-wrap; }
         <translation>Σφάλμα</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="262"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="263"/>
         <source>Find Uemis dive computer</source>
         <translation>Εύρεση καταδυτικού υπολογιστή UEMIS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="287"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="288"/>
         <source>Cancel download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="364"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="365"/>
         <source>Choose file for dive computer download logfile</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="365"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="366"/>
         <source>Log files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="390"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="391"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="391"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="392"/>
         <source>Dump files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="416"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="417"/>
         <source>Retry download</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="378"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="379"/>
         <source>Warning</source>
         <translation>Προειδοποίηση</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="379"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="380"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Saving the libdivecomputer dump will NOT download dives to the dive list.</translation>
     </message>
@@ -3624,6 +3619,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="197"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="215"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="281"/>
         <source>Download</source>
         <translation>Λήψη</translation>
     </message>
@@ -3689,27 +3686,32 @@ p, li { white-space: pre-wrap; }
         <translation>Παραίτηση</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="220"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="224"/>
+        <source>Rescan</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="232"/>
         <source> Downloaded dives</source>
         <translation>Ληφθείσες καταδύσεις</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="221"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="233"/>
         <source>Info:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="261"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="273"/>
         <source>Accept</source>
         <translation>Αποδοχή</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="278"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="292"/>
         <source>Select All</source>
         <translation>Επιλογή όλων</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="286"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="300"/>
         <source>Unselect All</source>
         <translation>Αποεπιλογή Όλων</translation>
     </message>
@@ -3782,6 +3784,24 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>FilterBase</name>
+    <message>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="515"/>
+        <source>Select All</source>
+        <translation>Επιλογή όλων</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="516"/>
+        <source>Unselect All</source>
+        <translation>Αποεπιλογή Όλων</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="517"/>
+        <source>Invert Selection</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FilterWidget</name>
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="14"/>
@@ -3797,6 +3817,11 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/listfilter.ui" line="50"/>
         <source>Filter this list</source>
         <translation>Εισαγωγή φίλτρου στον παρόν κατάλογο</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/listfilter.ui" line="57"/>
+        <source>...</source>
+        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -3898,7 +3923,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="559"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="546"/>
         <source>Location: </source>
         <translation>Τοποθεσία:</translation>
     </message>
@@ -3939,7 +3964,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="314"/>
+        <location filename="../qt-models/filtermodels.cpp" line="340"/>
         <source>No location set</source>
         <translation>Δεν καθορίσθηκε τοποθεσία</translation>
     </message>
@@ -4064,8 +4089,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="27"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="447"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="530"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="570"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="529"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="568"/>
         <source>Notes</source>
         <translation>Σημειώσεις</translation>
     </message>
@@ -4098,7 +4123,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="569"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="567"/>
         <source>Location</source>
         <translation>Τοποθεσία</translation>
     </message>
@@ -4259,27 +4284,27 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="477"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="518"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="517"/>
         <source>Trip notes</source>
         <translation>Σημειώσεις ταξιδιού</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="513"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="512"/>
         <source>Trip location</source>
         <translation>Τοποθεσία ταξιδιού</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="736"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="734"/>
         <source>New dive site</source>
         <translation>Νέα θέση κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1040"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1038"/>
         <source>Discard the changes?</source>
         <translation>Απόρριψη των αλλαγών;</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1041"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1039"/>
         <source>You are about to discard your changes.</source>
         <translation>Πρόκειται να απορρίψετε τις αλλαγές σας. </translation>
     </message>
@@ -4693,7 +4718,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="552"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="597"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1599"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1597"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Παρακάλω αποθηκεύστε ή ακυρώστε την επεξεργασία της κατάδυσης πριν ανοίξετε ένα νέο αρχείο.</translation>
     </message>
@@ -4704,39 +4729,39 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="562"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="672"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1999"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="670"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1991"/>
         <source>Cancel</source>
         <translation>Ακύρωση</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="626"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="668"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="666"/>
         <source>Traverse image directories</source>
         <translation>Εξερεύνηση αρχείων εικόνων</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="671"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="669"/>
         <source>Scan</source>
         <translation>Σάρωση</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="677"/>
         <source>Scanning images...(this can take a while)</source>
         <translation>Σάρωση εικόνων...(αυτή η ενέργεια μπορεί να καθυστερήσει) </translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="584"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="705"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="856"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="974"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1063"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1069"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1862"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="703"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="854"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="972"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1061"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1067"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1854"/>
         <source>Warning</source>
         <translation>Προειδοποίηση</translation>
     </message>
@@ -4765,202 +4790,202 @@ can overwrite them on startup.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="730"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="728"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Παρακάλω αποθηκεύστε ή ακυρώστε την επεξεργασία της κατάδυσης πριν κλέισετε το αρχείο.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="856"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="854"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Παρακάλω αποθηκεύστε ή ακυρώστε την επεξεργασία της κατάδυσης πριν προσπαθήσετε να προσθέσετε μια κατάδυση.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="916"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="914"/>
         <source>Print runtime table</source>
         <translation>Εκτύπωση πίνακα ολικού χρόνου κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="974"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="972"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Προσπάθεια να επανασχεδιαστεί μία κατάδυση που δεν ήταν μια σχεδιασμένη κατάδυση. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1063"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1862"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1061"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1854"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Παρακαλώ πρώτα τελειώστε την τρέχουσα επεξεργασία πριν προσπαθήσετε να επεξεργαστείτε εκ νέου. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1069"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1067"/>
         <source>Trying to edit a dive that&apos;s not a manually added dive.</source>
         <translation>Προσπάθεια επεξεργασίας μια κατάδυσης που δεν προστέθηκε με μη αυτόματο τρόπο. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1116"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1114"/>
         <source>Yearly statistics</source>
         <translation>Ετήσια στατιστικά στοιχεία</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1295"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1337"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1293"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1335"/>
         <source>Dive log files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1315"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1358"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1628"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1313"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1356"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1626"/>
         <source>Subsurface files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1316"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1359"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1314"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1357"/>
         <source>Cochran</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1315"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1359"/>
+        <source>DiveLogs.de</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1316"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1360"/>
+        <source>JDiveLog</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1317"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
-        <source>DiveLogs.de</source>
+        <source>Liquivision</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1318"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1362"/>
-        <source>JDiveLog</source>
+        <source>Suunto</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1319"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1363"/>
-        <source>Liquivision</source>
+        <source>UDCF</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1320"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1364"/>
-        <source>Suunto</source>
-        <translation type="unfinished"/>
+        <source>UDDF</source>
+        <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1321"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1365"/>
-        <source>UDCF</source>
+        <source>XML</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1322"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1366"/>
-        <source>UDDF</source>
-        <translation>UDDF</translation>
+        <source>Divesoft</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1323"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
-        <source>XML</source>
+        <source>Datatrak/WLog</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1324"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
-        <source>Divesoft</source>
+        <source>MkVI files</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1325"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
-        <source>Datatrak/WLog</source>
+        <source>APD log viewer</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1326"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
-        <source>MkVI files</source>
+        <source>OSTCtools</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1327"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
-        <source>APD log viewer</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1328"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
-        <source>OSTCtools</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1329"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
         <source>DAN DL7</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1360"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1358"/>
         <source>CSV</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Θέλετε να αποθηκευτούν οι αλλαγές στο αρχείο %1;</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Θέλετε να αποθηκευθούν οι αλλαγές στο αρχείο δεδομένων;</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1391"/>
         <source>Save changes?</source>
         <translation>Αποθήκευση αλλαγών;</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1394"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1392"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Οι αλλαγές θα χαθούν αν δεν τις αποθηκεύσετε.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1627"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1625"/>
         <source>Save file as</source>
         <translation>Αποθήκευση αρχείου ως</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1715"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1713"/>
         <source>[local cache for] %1</source>
         <translation>[τοπική κρυφή μνήμη για] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1717"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1715"/>
         <source>[cloud storage for] %1</source>
         <translation>[αποθήκευση στο αποθηκευτικό νέφος για] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1818"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1810"/>
         <source>Opening datafile from older version</source>
         <translation>Άνοιγμα αρχείου δεδομένων από παλαιότερη έκδοση </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1819"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1811"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Ανοίξατε ένα αρχείο δεδομένων μίας παλαιότερης έκδοσης του Subsurface. Προτείνεται να συμβουλευτείτε το εγχειρίδιο χρήσης για να μάθετε για τις διαφοροποιήσεις της καινούργιας έκδοσης, ιδιαίτερα στην διαχείριση των καταδυτικών θέσεων η οποία έχει αλλάξει σε μεγάλο βαθμό.
 Το Subsurface ήδη επιχείρησε να συμπληρώσει τα δεδομένα, αλλά προτείνεται να αφιερώσετε κάποιο χρόνο στο νέο σύστημα διαχείρισης των καταδυτικών θέσεων και να βεβαιωθείτε ότι όλα είναι σωστά.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1822"/>
         <source>Open dive log file</source>
         <translation>Άνοιγμα αρχείου καταγραφής κατάδυσης</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1999"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1991"/>
         <source>Contacting cloud service...</source>
         <translation>Επικοινωνία με την υπηρεσία αποθηκευτικού νέφους... </translation>
     </message>
@@ -5008,7 +5033,7 @@ The QML modules QtPositioning and QtLocation could be missing!</source>
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="644"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="590"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation>Το φίλτρο δείχνει %1 (από %2) καταδύσεις</translation>
     </message>
@@ -5091,74 +5116,74 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation>Παθητικό ημίκλειστο κύκλωμα επαναπνοής </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="496"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="494"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="497"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="495"/>
         <source>Last stop at 20ft</source>
         <translation>Τελευταία στάση στα 20ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="498"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="496"/>
         <source>50% avg. depth to 20ft</source>
         <translation>Ταχύτητα ανόδου από το 50% του μέσου βάθους στα 20ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="499"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="497"/>
         <source>20ft to surface</source>
         <translation>20ft για την επιφάνεια</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="500"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="498"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="502"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="500"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="503"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="501"/>
         <source>Last stop at 6m</source>
         <translation>Τελευταία στάση στα 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="504"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="502"/>
         <source>50% avg. depth to 6m</source>
         <translation>Ταχύτητα ανόδου από το 50% του μέσου βάθους στα 6m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="505"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="503"/>
         <source>6m to surface</source>
         <translation>6m για την επιφάνεια</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="506"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="504"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="509"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="510"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="507"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="508"/>
         <source>cuft/min</source>
         <translation>cuft/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="518"/>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="519"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="516"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="517"/>
         <source>ℓ/min</source>
         <translation>ℓ/min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="528"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="526"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="533"/>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="531"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -6141,124 +6166,124 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="140"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="294"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="141"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="291"/>
         <source>Starting...</source>
         <translation>Έναρξη...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="195"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="192"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="203"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="200"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="235"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="232"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="318"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="315"/>
         <source>working in no-cloud mode</source>
         <translation>εργασία εκτός αποθηκευτικού νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="323"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="320"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="332"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="329"/>
         <source>no cloud credentials</source>
         <translation>Δεν υπάρχουν διαπιστευτήρια νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="333"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="407"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="330"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="404"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Παρακαλώ εισάγετε έγκυρα διαπιστευτήρια νέφους </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="374"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="371"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Η διεύθυνση  ηλεκτρονικού ταχυδρομείου και το συνθηματικό του αποθηκευτικού νέφους μπορεί να περιλαμβάνει μόνο γράμματα, αριθμούς και &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, και &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="380"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="377"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="421"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="418"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Προσπάθεια ανοίγματος αποθήκευσης νέφους με νέα διαπιστευτήρια </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="442"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="439"/>
         <source>Testing cloud credentials</source>
         <translation>Έλεγχος διαπιστευτηρίων νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="456"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Καμία απόκριση από τον διαμεσολαβητή του αποθηκευτικού νέφους για έλεγχο εγκυρότητας των διαπιστευτηρίων  </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="464"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="461"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="470"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="467"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>Δεν μπορεί να συνδεθεί με το αποθηκευτικό νέφος - ο λογαριασμός αποθηκευτικού νέφους δεν έχει επιβεβαιωθεί   </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="502"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="499"/>
         <source>Cloud credentials are invalid</source>
         <translation>Λανθασμένα διαπιστευτήρια αποθηκευτικού νέφους</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="512"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>Δεν μπορεί να ανοιχθεί το αποθηκευτικό νέφος: Σφάλμα στη δημιουργία συνδέσεων https  </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="528"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="525"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>Δεν μπορεί να ανοιχθεί το αποθηκευτικό νέφος: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="540"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="537"/>
         <source>Cannot connect to cloud storage</source>
         <translation>Δεν μπορεί να συνδεθεί με το αποθηκευτικό νέφος</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="564"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="561"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="576"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="573"/>
         <source>Cloud storage error: %1</source>
         <translation>Σφάλμα αποθήκευσης στο αποθηκευτικό νέφος: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="619"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="616"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="664"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="661"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Αποτυχία σύνδεσης με τον διακομιστή του αποθηκευτικού νέφους, επαναφορά σε καθεστώς λειτουργίας χωρίς αποθηκευτικό νέφος </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="689"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="686"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Το αποθηκευτικό νέφος ανοίχθηκε με επιτυχία. Δεν υπάρχουν καταδύσεις στον κατάλογο καταδύσεων. </translation>
     </message>
@@ -6281,7 +6306,7 @@ Please export this template to a different file.</source>
         <translation>δευτερόλεπτα</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1274"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1273"/>
         <source>Unknown GPS location</source>
         <translation>Άγνωστη θέση GPS</translation>
     </message>
@@ -6294,79 +6319,79 @@ Please export this template to a different file.</source>
         <translation>Αναμονή για την πρόσκτηση τοποθεσίας από το GPS</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="783"/>
-        <location filename="../core/qthelper.cpp" line="1344"/>
+        <location filename="../core/qthelper.cpp" line="778"/>
+        <location filename="../core/qthelper.cpp" line="1339"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="785"/>
-        <location filename="../core/qthelper.cpp" line="1343"/>
+        <location filename="../core/qthelper.cpp" line="780"/>
+        <location filename="../core/qthelper.cpp" line="1338"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="811"/>
+        <location filename="../core/qthelper.cpp" line="806"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="813"/>
+        <location filename="../core/qthelper.cpp" line="808"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="838"/>
-        <location filename="../core/qthelper.cpp" line="1319"/>
+        <location filename="../core/qthelper.cpp" line="833"/>
+        <location filename="../core/qthelper.cpp" line="1314"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="840"/>
-        <location filename="../core/qthelper.cpp" line="1320"/>
+        <location filename="../core/qthelper.cpp" line="835"/>
+        <location filename="../core/qthelper.cpp" line="1315"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="865"/>
-        <location filename="../core/qthelper.cpp" line="1369"/>
+        <location filename="../core/qthelper.cpp" line="860"/>
+        <location filename="../core/qthelper.cpp" line="1364"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="867"/>
-        <location filename="../core/qthelper.cpp" line="1368"/>
+        <location filename="../core/qthelper.cpp" line="862"/>
+        <location filename="../core/qthelper.cpp" line="1363"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="888"/>
-        <location filename="../core/qthelper.cpp" line="1304"/>
+        <location filename="../core/qthelper.cpp" line="883"/>
+        <location filename="../core/qthelper.cpp" line="1299"/>
         <source>AIR</source>
         <translation>ΑΕΡΑΣ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="890"/>
+        <location filename="../core/qthelper.cpp" line="885"/>
         <source>EAN</source>
         <translation>Εμπλουτισμένο μείγμα Nitrox</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="1028"/>
+        <location filename="../core/qthelper.cpp" line="1023"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n κατάδυση(ύσεις))</numerusform><numerusform>(%n κατάδυση(ύσεις))</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1304"/>
+        <location filename="../core/qthelper.cpp" line="1299"/>
         <source>OXYGEN</source>
         <translation>ΟΞΥΓΟΝΟ</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1391"/>
+        <location filename="../core/qthelper.cpp" line="1386"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1392"/>
+        <location filename="../core/qthelper.cpp" line="1387"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
@@ -6420,32 +6445,32 @@ Please export this template to a different file.</source>
         <translation>Μέγιστο</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="638"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="626"/>
         <source>Invalid response from server</source>
         <translation>Άκυρη απάντηση από τον διακομιστή</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="646"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="634"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Αντί της αναμενόμενης ετικέτας XML &apos;DiveDateReader&apos;, εμφανίστηκε &apos;%1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="692"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="680"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Expected XML tag &apos;DiveDates&apos; not found</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="699"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="687"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Παραμορφωμένη απάντηση XML. Γραμμή %1: %2</translation>
     </message>
     <message>
-        <location filename="../core/divesite.cpp" line="20"/>
+        <location filename="../core/divesite-helper.cpp" line="20"/>
         <source>No dive site layout categories set in preferences!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/divesite.cpp" line="28"/>
+        <location filename="../core/divesite-helper.cpp" line="28"/>
         <source>Tags</source>
         <translation>Ετικέτες</translation>
     </message>
@@ -6716,38 +6741,38 @@ Not all images have timestamps in the range between
         <translation>Ποιά ημερομηνία και ώρα προβάλετε στην εικόνα; </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="311"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="309"/>
         <source>Open image file</source>
         <translation>Άνοιγμα αρχείων εικόνας</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="313"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="311"/>
         <source>Image files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="391"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="388"/>
         <source>Selected dive date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="393"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="390"/>
         <source>First selected dive date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="394"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="391"/>
         <source>Last selected dive date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="396"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="393"/>
         <source>
 Files with inappropriate date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="406"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="403"/>
         <source>No Exif date/time found</source>
         <translation type="unfinished"/>
     </message>
@@ -7065,47 +7090,47 @@ Files with inappropriate date/time</source>
 <context>
     <name>SubsurfaceWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="410"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="398"/>
         <source>Enter User ID and click Download</source>
         <translation>Εισάγετε την ταυτότητα χρήστη και πιέστε Λήψη  </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="432"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="420"/>
         <source>Webservice</source>
         <translation>Webservice</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="518"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="506"/>
         <source>Connecting...</source>
         <translation>Σύνδεση...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="537"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="525"/>
         <source>Download finished</source>
         <translation>Η λήψη τελείωσε</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="551"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="539"/>
         <source>Download error: %1</source>
         <translation>Σφάλμα λήψης: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="561"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="549"/>
         <source>Connection error: </source>
         <translation>Σφάλμα επικοινωνίας:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="564"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="552"/>
         <source>Invalid user identifier!</source>
         <translation>Άκυρος έλεγχος χρήστη!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="567"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="555"/>
         <source>Cannot parse response!</source>
         <translation>Δεν μπορεί να αναλυθεί η απάντηση!</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="570"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="558"/>
         <source>Download successful</source>
         <translation>Επιτυχής λήψη</translation>
     </message>
@@ -7113,7 +7138,7 @@ Files with inappropriate date/time</source>
 <context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="585"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="551"/>
         <source>Suits: </source>
         <translation>Στολές:</translation>
     </message>
@@ -7121,7 +7146,7 @@ Files with inappropriate date/time</source>
 <context>
     <name>SuitsFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="159"/>
+        <location filename="../qt-models/filtermodels.cpp" line="168"/>
         <source>No suit set</source>
         <translation>Δεν καθορίσθηκε στολή</translation>
     </message>
@@ -7247,32 +7272,37 @@ Files with inappropriate date/time</source>
         <translation>Φωτογραφίες</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="47"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="29"/>
+        <source>Zoom level</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="51"/>
         <source>Load image(s) from file(s)</source>
         <translation>Φόρτωση εικόνας(-ων) από αρχείο(-α)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="48"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="52"/>
         <source>Load image(s) from web</source>
         <translation>Φόρτωση εικόνας(ων) από το διαδίκτυο</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="50"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="54"/>
         <source>Delete selected images</source>
         <translation>Διαγραφή επιλεγμένων εικόνων</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="51"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="55"/>
         <source>Delete all images</source>
         <translation>Διαγραφή όλων των εικόνων </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="90"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="94"/>
         <source>Deleting Images</source>
         <translation>Διαγραφή εικόνων </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="90"/>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="94"/>
         <source>Are you sure you want to delete all images?</source>
         <translation>Σίγουρα θέλετε να διαγράψετε όλες τις εικόνες;</translation>
     </message>
@@ -7441,7 +7471,7 @@ mixed from Air and using:
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="506"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="535"/>
         <source>Tags: </source>
         <translation>Ετικέτες:</translation>
     </message>
@@ -7449,7 +7479,7 @@ mixed from Air and using:
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="179"/>
+        <location filename="../qt-models/filtermodels.cpp" line="193"/>
         <source>Empty tags</source>
         <translation>Άδειες ετικέτες</translation>
     </message>
@@ -7648,7 +7678,7 @@ mixed from Air and using:
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="729"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="675"/>
         <source>%1click to visit %2</source>
         <translation>%1πιέστε για να επισκεφθείτε %2</translation>
     </message>
@@ -8101,12 +8131,12 @@ Language: %1</source>
         <translation>Μεταφόρτωση</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="339"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="327"/>
         <source>Operation timed out</source>
         <translation>Operation timed out</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="360"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="348"/>
         <source>Transferring data...</source>
         <translation>Μεταφορά δεδομένων...</translation>
     </message>
@@ -8256,7 +8286,7 @@ Maximum</source>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="792"/>
+        <location filename="../core/libdivecomputer.c" line="795"/>
         <source>Error parsing the header</source>
         <translation>Σφάλμα στην ανάλυση της κεφαλίδας</translation>
     </message>
@@ -8274,14 +8304,14 @@ Maximum</source>
     <message>
         <location filename="../core/cochran.c" line="331"/>
         <location filename="../core/cochran.c" line="385"/>
-        <location filename="../core/file.c" line="771"/>
+        <location filename="../core/file.c" line="770"/>
         <location filename="../core/libdivecomputer.c" line="255"/>
         <source>ascent</source>
         <translation>άνοδος</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="337"/>
-        <location filename="../core/file.c" line="749"/>
+        <location filename="../core/file.c" line="748"/>
         <source>battery</source>
         <translation>μπαταρία</translation>
     </message>
@@ -8308,7 +8338,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="360"/>
         <location filename="../core/cochran.c" line="409"/>
         <location filename="../core/cochran.c" line="416"/>
-        <location filename="../core/file.c" line="852"/>
+        <location filename="../core/file.c" line="851"/>
         <location filename="../core/libdivecomputer.c" line="263"/>
         <location filename="../core/libdivecomputer.c" line="277"/>
         <source>gaschange</source>
@@ -8609,13 +8639,13 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/dive.c" line="270"/>
-        <location filename="../core/qthelper.cpp" line="667"/>
+        <location filename="../core/qthelper.cpp" line="662"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="274"/>
-        <location filename="../core/qthelper.cpp" line="670"/>
+        <location filename="../core/qthelper.cpp" line="665"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8631,15 +8661,15 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/dive.c" line="357"/>
-        <location filename="../core/qthelper.cpp" line="588"/>
-        <location filename="../core/qthelper.cpp" line="603"/>
+        <location filename="../core/qthelper.cpp" line="583"/>
+        <location filename="../core/qthelper.cpp" line="598"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="362"/>
-        <location filename="../core/qthelper.cpp" line="591"/>
-        <location filename="../core/qthelper.cpp" line="605"/>
+        <location filename="../core/qthelper.cpp" line="586"/>
+        <location filename="../core/qthelper.cpp" line="600"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -8665,15 +8695,15 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/dive.c" line="413"/>
-        <location filename="../core/qthelper.cpp" line="614"/>
-        <location filename="../core/qthelper.cpp" line="624"/>
+        <location filename="../core/qthelper.cpp" line="609"/>
+        <location filename="../core/qthelper.cpp" line="619"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="417"/>
-        <location filename="../core/qthelper.cpp" line="612"/>
-        <location filename="../core/qthelper.cpp" line="622"/>
+        <location filename="../core/qthelper.cpp" line="607"/>
+        <location filename="../core/qthelper.cpp" line="617"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -8722,11 +8752,11 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/file.c" line="122"/>
-        <location filename="../core/file.c" line="505"/>
-        <location filename="../core/file.c" line="591"/>
-        <location filename="../core/file.c" line="889"/>
-        <location filename="../core/file.c" line="1099"/>
-        <location filename="../core/ostctools.c" line="52"/>
+        <location filename="../core/file.c" line="504"/>
+        <location filename="../core/file.c" line="590"/>
+        <location filename="../core/file.c" line="888"/>
+        <location filename="../core/file.c" line="1098"/>
+        <location filename="../core/ostctools.c" line="49"/>
         <source>Failed to read &apos;%s&apos;</source>
         <translation>Αποτυχία ανάγνωσης &apos;%s&apos;</translation>
     </message>
@@ -8737,53 +8767,53 @@ Maximum</source>
         <translation>Δεν ανοίγει το αρχείο CSV %s, παρακαλώ χρησιμοποιείστε τον διάλογο Εισαγωγή αρχείου καταγραφής</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="507"/>
+        <location filename="../core/file.c" line="506"/>
         <source>Empty file &apos;%s&apos;</source>
         <translation>Κενό αρχείο &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="688"/>
+        <location filename="../core/file.c" line="687"/>
         <source>Poseidon import failed: unable to read &apos;%s&apos;</source>
         <translation>Η εισαγωγή από το Poseidon απέτυχε: αδυναμία ανάγνωσης του &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="724"/>
+        <location filename="../core/file.c" line="723"/>
         <source>Mouth piece position OC</source>
         <translation>Θέση επιστομίου στο Ανοιχτό Κύκλωμα</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="728"/>
+        <location filename="../core/file.c" line="727"/>
         <source>Mouth piece position CC</source>
         <translation>Θέση επιστομίου στο Κλειστό Κύκλωμα</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="732"/>
+        <location filename="../core/file.c" line="731"/>
         <source>Mouth piece position unknown</source>
         <translation>Άγνωστη θέση επιστομίου</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="736"/>
+        <location filename="../core/file.c" line="735"/>
         <source>Mouth piece position not connected</source>
         <translation>Μη συνδεμένη θέση επιστομίου</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="743"/>
+        <location filename="../core/file.c" line="742"/>
         <source>Power off</source>
         <translation>Σβήσιμο</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="793"/>
+        <location filename="../core/file.c" line="792"/>
         <source>O₂ calibration failed</source>
         <translation>Η βαθμονόμηση του O₂ απέτυχε</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="795"/>
-        <location filename="../core/file.c" line="804"/>
+        <location filename="../core/file.c" line="794"/>
+        <location filename="../core/file.c" line="803"/>
         <source>O₂ calibration</source>
         <translation>Βαθμονόμηση O₂</translation>
     </message>
     <message>
-        <location filename="../core/file.c" line="950"/>
+        <location filename="../core/file.c" line="949"/>
         <source>No dive profile found from &apos;%s&apos;</source>
         <translation type="unfinished"/>
     </message>
@@ -8889,22 +8919,22 @@ Maximum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="616"/>
+        <location filename="../core/git-access.c" line="618"/>
         <source>Done syncing with cloud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="757"/>
+        <location filename="../core/git-access.c" line="759"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Σφάλμα κατά την σύνδεση με το αποθηκευτικό νέφος Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="760"/>
+        <location filename="../core/git-access.c" line="762"/>
         <source>git clone of %s failed (%s)</source>
         <translation>Η κλωνοποίηση git του %s απέτυχε (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="783"/>
+        <location filename="../core/git-access.c" line="785"/>
         <source>Synchronising data file</source>
         <translation type="unfinished"/>
     </message>
@@ -9047,74 +9077,74 @@ Maximum</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="746"/>
+        <location filename="../core/libdivecomputer.c" line="749"/>
         <source>Error parsing the gas mix</source>
         <translation>Σφάλμα στο μίγμα αερίων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="772"/>
+        <location filename="../core/libdivecomputer.c" line="775"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Αδύνατον να αναλυθεί το %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="778"/>
+        <location filename="../core/libdivecomputer.c" line="781"/>
         <source>Error registering the data</source>
         <translation>Σφάλμα στην καταχώρηση των δεδομένων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="799"/>
+        <location filename="../core/libdivecomputer.c" line="802"/>
         <source>Error parsing the samples</source>
         <translation>Σφάλμα στα δείγματα</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="806"/>
+        <location filename="../core/libdivecomputer.c" line="809"/>
         <source>Already downloaded dive at %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="940"/>
+        <location filename="../core/libdivecomputer.c" line="943"/>
         <source>Event: waiting for user action</source>
         <translation>Συμβάν: Περιμένοντας για ενέργεια από τον χρήστη</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="959"/>
+        <location filename="../core/libdivecomputer.c" line="962"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1021"/>
+        <location filename="../core/libdivecomputer.c" line="1024"/>
         <source>Error registering the event handler.</source>
         <translation>Σφάλμα στην καταχώρηση του συμβάντος</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1026"/>
+        <location filename="../core/libdivecomputer.c" line="1029"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Σφάλμα στην καταχώρηση της ακύρωσης</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1047"/>
+        <location filename="../core/libdivecomputer.c" line="1050"/>
         <source>Dive data import error</source>
         <translation>Σφάλμα στην εισαγωγή δεδομένων</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1086"/>
+        <location filename="../core/libdivecomputer.c" line="1089"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Unable to create libdivecomputer context</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1095"/>
+        <location filename="../core/libdivecomputer.c" line="1098"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Αδύνατον να ανοιχθεί το %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1120"/>
+        <location filename="../core/libdivecomputer.c" line="1123"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1129"/>
+        <location filename="../core/libdivecomputer.c" line="1132"/>
         <source>No new dives downloaded from dive computer</source>
         <translation type="unfinished"/>
     </message>
@@ -9128,30 +9158,30 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/load-git.c" line="225"/>
-        <location filename="../core/parse.c" line="495"/>
+        <location filename="../core/parse.c" line="493"/>
         <source>additional name for site: %s
 </source>
         <translation>επιπρόσθετο όνομα για την θέση κατάδυσης: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1707"/>
+        <location filename="../core/load-git.c" line="1719"/>
         <source>Load dives from local cache</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1711"/>
+        <location filename="../core/load-git.c" line="1723"/>
         <source>Successfully opened dive data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="93"/>
-        <location filename="../core/ostctools.c" line="125"/>
+        <location filename="../core/ostctools.c" line="109"/>
+        <location filename="../core/ostctools.c" line="141"/>
         <source>Unknown DC in dive %d</source>
         <translation>Άγνωστος καταδυτικός υπολογιστής στην κατάδυση %d</translation>
     </message>
     <message>
-        <location filename="../core/ostctools.c" line="138"/>
+        <location filename="../core/ostctools.c" line="154"/>
         <source>Error - %s - parsing dive %d</source>
         <translation>Σφάλμα - %s - ανάλυση κατάδυσης %d</translation>
     </message>
@@ -9433,7 +9463,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1375"/>
+        <location filename="../core/profile.c" line="1379"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -9442,142 +9472,142 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1387"/>
+        <location filename="../core/profile.c" line="1391"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1393"/>
+        <location filename="../core/profile.c" line="1397"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1396"/>
+        <location filename="../core/profile.c" line="1400"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>Κατανάλωση Αέρα στην Επιφάνεια: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1398"/>
+        <location filename="../core/profile.c" line="1402"/>
         <source>CNS: %u%%
 </source>
         <translation>Τοξικότητα Κεντρικού Νευρικού Συστήματος: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1400"/>
+        <location filename="../core/profile.c" line="1404"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1402"/>
+        <location filename="../core/profile.c" line="1406"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1404"/>
+        <location filename="../core/profile.c" line="1408"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1407"/>
+        <location filename="../core/profile.c" line="1411"/>
         <source>MOD: %d%s
 </source>
         <translation>Μέγιστο Λειτουργικό Βάθος: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1447"/>
+        <location filename="../core/profile.c" line="1451"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Αποσυμπίεση: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1439"/>
+        <location filename="../core/profile.c" line="1443"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1383"/>
+        <location filename="../core/profile.c" line="1387"/>
         <source>P: %d%s (%s)
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1416"/>
+        <location filename="../core/profile.c" line="1420"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1422"/>
+        <location filename="../core/profile.c" line="1426"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1427"/>
+        <location filename="../core/profile.c" line="1431"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1442"/>
+        <location filename="../core/profile.c" line="1446"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1450"/>
+        <location filename="../core/profile.c" line="1454"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1454"/>
+        <location filename="../core/profile.c" line="1458"/>
         <source>In deco
 </source>
         <translation>Ανάγκη αποσυμπίεσης
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1456"/>
+        <location filename="../core/profile.c" line="1460"/>
         <source>NDL: %umin
 </source>
         <translation>Όριο Μη Αποσυμπίεσης: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1459"/>
+        <location filename="../core/profile.c" line="1463"/>
         <source>TTS: %umin
 </source>
         <translation>Χρόνος Μέχρι την Επιφάνεια: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1462"/>
+        <location filename="../core/profile.c" line="1466"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Αποσυμπίεση: %umin @ %.0f%s (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1470"/>
+        <location filename="../core/profile.c" line="1474"/>
         <source>In deco (calc)
 </source>
         <translation>Ανάγκη αποσυμπίεσης (calc)
@@ -9585,111 +9615,111 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1473"/>
+        <location filename="../core/profile.c" line="1477"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>Όριο Μη Αποσυμπίεσης: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1475"/>
+        <location filename="../core/profile.c" line="1479"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>Όριο Μη Αποσυμπίεσης: &gt;2h (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1479"/>
+        <location filename="../core/profile.c" line="1483"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>Χρόνος Μέχρι την Επιφάνεια: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1481"/>
+        <location filename="../core/profile.c" line="1485"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>Χρόνος Μέχρι την Επιφάνεια: &gt;2h (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1484"/>
+        <location filename="../core/profile.c" line="1488"/>
         <source>RBT: %umin
 </source>
         <translation>Χρόνος στον Βυθό που Απομένει: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1487"/>
+        <location filename="../core/profile.c" line="1491"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Υπολογισμένο βάθος ασφαλούς ανάδυσης %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1493"/>
+        <location filename="../core/profile.c" line="1497"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Ιστός %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1499"/>
+        <location filename="../core/profile.c" line="1503"/>
         <source>heart rate: %d
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1501"/>
+        <location filename="../core/profile.c" line="1505"/>
         <source>bearing: %d
 </source>
         <translation>διόπτευση: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1504"/>
+        <location filename="../core/profile.c" line="1508"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>μέσο βάθος μέχρι εδώ %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1601"/>
+        <location filename="../core/profile.c" line="1605"/>
         <source>%sT: %d:%02d min</source>
         <translation>%sT: %d:%02d min</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1605"/>
         <location filename="../core/profile.c" line="1609"/>
         <location filename="../core/profile.c" line="1613"/>
+        <location filename="../core/profile.c" line="1617"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1617"/>
+        <location filename="../core/profile.c" line="1621"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1621"/>
+        <location filename="../core/profile.c" line="1625"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1625"/>
         <location filename="../core/profile.c" line="1629"/>
+        <location filename="../core/profile.c" line="1633"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1636"/>
+        <location filename="../core/profile.c" line="1640"/>
         <source>%s %sP:%d %s</source>
         <translation>%s %sP:%d %s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1661"/>
+        <location filename="../core/profile.c" line="1665"/>
         <source>%s SAC: %.*f%s</source>
         <translation type="unfinished"/>
     </message>
@@ -9738,17 +9768,17 @@ EADD: %d%s / %.1fg/ℓ
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="633"/>
+        <location filename="../core/qthelper.cpp" line="628"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="636"/>
+        <location filename="../core/qthelper.cpp" line="631"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="965"/>
+        <location filename="../core/qthelper.cpp" line="960"/>
         <source>more than %1 days</source>
         <translation type="unfinished"/>
     </message>
@@ -10585,112 +10615,112 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="118"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="119"/>
         <source>Dive list</source>
         <translation>Κατάλογος καταδύσεων</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="134"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="135"/>
         <source>Dive management</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
         <source>Disable location service</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="251"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="256"/>
         <source>Settings</source>
         <translation>Ρυθμίσεις</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="137"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="138"/>
         <source>Add dive manually</source>
         <translation>Προσθήκη κατάδυσης μη αυτόματα</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="147"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="149"/>
         <source>Download from DC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="163"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="166"/>
         <source>Manual sync with cloud</source>
         <translation>Μη αυτόματος συγχρονισμός με το αποθηκευτικό νέφος</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="185"/>
         <source>Offline mode</source>
         <translation>Λειτουργία χωρίς σύνδεση</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="182"/>
-        <source>Enable auto cloud sync</source>
-        <translation>Ενεργοποίηση αυτόματου συγχρονισμού αποθηκευτικού νέφους</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="190"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="196"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="199"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="277"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="285"/>
         <source>Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="201"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="204"/>
         <source>Upload GPS data</source>
         <translation>Μεταφόρτωση δεδομένων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="156"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="159"/>
         <source>Apply GPS fixes</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="209"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="185"/>
+        <source>Auto cloud sync enabled</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/main.qml" line="212"/>
         <source>Download GPS data</source>
         <translation>Λήψη δεδομένων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="217"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="220"/>
         <source>Show GPS fixes</source>
         <translation>Προβολή στοιχείων θέσεων GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="227"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="231"/>
         <source>Clear GPS cache</source>
         <translation>Εκκαθάριση τοπικής κρυφής μνήμης GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="259"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="265"/>
         <source>Developer</source>
         <translation>Υπεύθυνος ανάπτυξης </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="262"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="268"/>
         <source>App log</source>
         <translation>Αρχείο καταγραφής δεδομένων εφαρμογής </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="269"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="276"/>
         <source>Theme information</source>
         <translation>Πληροφορίες θέματος εμφάνισης</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="243"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="247"/>
         <source>About</source>
         <translation>Σχετικά</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="235"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="239"/>
         <source>Run location service</source>
         <translation>Εκτέλεση υπηρεσίας τοποθεσίας</translation>
     </message>
