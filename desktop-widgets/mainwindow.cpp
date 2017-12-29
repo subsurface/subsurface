@@ -1117,17 +1117,19 @@ void MainWindow::on_actionYearlyStatistics_triggered()
 
 #define BEHAVIOR QList<int>()
 
-#define TOGGLE_COLLAPSABLE( X ) \
-	ui.mainSplitter->setCollapsible(0, X); \
-	ui.mainSplitter->setCollapsible(1, X); \
-	ui.topSplitter->setCollapsible(0, X); \
-	ui.topSplitter->setCollapsible(1, X); \
-	ui.bottomSplitter->setCollapsible(0, X); \
-	ui.bottomSplitter->setCollapsible(1, X);
+void MainWindow::toggleCollapsible(bool toggle)
+{
+	ui.mainSplitter->setCollapsible(0, toggle);
+	ui.mainSplitter->setCollapsible(1, toggle);
+	ui.topSplitter->setCollapsible(0, toggle);
+	ui.topSplitter->setCollapsible(1, toggle);
+	ui.bottomSplitter->setCollapsible(0, toggle);
+	ui.bottomSplitter->setCollapsible(1, toggle);
+}
 
 void MainWindow::on_actionViewList_triggered()
 {
-	TOGGLE_COLLAPSABLE( true );
+	toggleCollapsible(true);
 	beginChangeState(LIST_MAXIMIZED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.bottomSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
@@ -1135,7 +1137,7 @@ void MainWindow::on_actionViewList_triggered()
 
 void MainWindow::on_actionViewProfile_triggered()
 {
-	TOGGLE_COLLAPSABLE( true );
+	toggleCollapsible(true);
 	beginChangeState(PROFILE_MAXIMIZED);
 	ui.topSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
@@ -1143,7 +1145,7 @@ void MainWindow::on_actionViewProfile_triggered()
 
 void MainWindow::on_actionViewInfo_triggered()
 {
-	TOGGLE_COLLAPSABLE( true );
+	toggleCollapsible(true);
 	beginChangeState(INFO_MAXIMIZED);
 	ui.topSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
 	ui.mainSplitter->setSizes(BEHAVIOR << EXPANDED << COLLAPSED);
@@ -1151,7 +1153,7 @@ void MainWindow::on_actionViewInfo_triggered()
 
 void MainWindow::on_actionViewMap_triggered()
 {
-	TOGGLE_COLLAPSABLE( true );
+	toggleCollapsible(true);
 	beginChangeState(MAP_MAXIMIZED);
 	ui.mainSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
 	ui.bottomSplitter->setSizes(BEHAVIOR << COLLAPSED << EXPANDED);
@@ -1160,7 +1162,7 @@ void MainWindow::on_actionViewMap_triggered()
 
 void MainWindow::on_actionViewAll_triggered()
 {
-	TOGGLE_COLLAPSABLE( false );
+	toggleCollapsible(false);
 	beginChangeState(VIEWALL);
 	static QList<int> mainSizes;
 	const int appH = qApp->desktop()->size().height();
@@ -1206,8 +1208,6 @@ void MainWindow::on_actionViewAll_triggered()
 	ui.bottomSplitter->setCollapsible(0,false);
 	ui.bottomSplitter->setCollapsible(1,false);
 }
-
-#undef TOGGLE_COLLAPSABLE
 
 void MainWindow::beginChangeState(CurrentState s)
 {

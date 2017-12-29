@@ -205,6 +205,7 @@ private:
 	int file_save_as();
 	void beginChangeState(CurrentState s);
 	void saveSplitterSizes();
+	void toggleCollapsible(bool toggle);
 	QString lastUsedDir();
 	void updateLastUsedDir(const QString &s);
 	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
