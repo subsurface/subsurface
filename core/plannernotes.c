@@ -162,7 +162,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		    !gaschange_before &&
 		    !gaschange_after)
 			continue;
-		if (dp->time - lasttime < 10 && !(gaschange_after && dp->next && dp->depth.mm != dp->next->depth.mm))
+		if ((dp->time - lasttime < 10 && lastdepth == dp->depth.mm) && !(gaschange_after && dp->next && dp->depth.mm != dp->next->depth.mm))
 			continue;
 
 		/* Store pointer to last entered datapoint for minimum gas calculation */
