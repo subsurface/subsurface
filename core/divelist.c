@@ -49,7 +49,7 @@
 
 static bool dive_list_changed = false;
 
-short autogroup = false;
+bool autogroup = false;
 
 dive_trip_t *dive_trip_list;
 
