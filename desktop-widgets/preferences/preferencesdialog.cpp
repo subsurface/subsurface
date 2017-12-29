@@ -90,7 +90,7 @@ void PreferencesDialog::buttonClicked(QAbstractButton* btn)
 
 bool abstractpreferenceswidget_lessthan(AbstractPreferencesWidget *p1, AbstractPreferencesWidget *p2)
 {
-	return p1->positionHeight() <= p2->positionHeight();
+	return p1->positionHeight() < p2->positionHeight();
 }
 
 void PreferencesDialog::addPreferencePage(AbstractPreferencesWidget *page)

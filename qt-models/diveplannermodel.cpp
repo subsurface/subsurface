@@ -659,7 +659,7 @@ void DivePlannerPointsModel::setStartTime(const QTime &t)
 
 bool divePointsLessThan(const divedatapoint &p1, const divedatapoint &p2)
 {
-	return p1.time <= p2.time;
+	return p1.time < p2.time;
 }
 
 int DivePlannerPointsModel::lastEnteredPoint()
