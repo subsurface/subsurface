@@ -612,7 +612,6 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 		set_filename(fileNamePtr.data());
 		setTitle();
 	}
-	getNotificationWidget()->hideNotification();
 	process_dives(false, false);
 	hideProgressBar();
 	refreshDisplay();
