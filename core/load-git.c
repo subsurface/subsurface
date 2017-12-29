@@ -833,7 +833,7 @@ static void parse_settings_autogroup(char *line, struct membuffer *str, void *_u
 	(void) line;
 	(void) str;
 	(void) _unused;
-	set_autogroup(1);
+	set_autogroup(true);
 }
 
 static void parse_settings_units(char *line, struct membuffer *str, void *unused)
