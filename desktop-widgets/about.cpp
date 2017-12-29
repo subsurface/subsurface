@@ -21,7 +21,7 @@ SubsurfaceAbout::SubsurfaceAbout(QWidget *parent, Qt::WindowFlags f) : QDialog(p
 				  "Subsurface %1 </span><br><br>"
 				  "Multi-platform divelog software<br>"
 				  "<span style='font-size: 8pt'>"
-				  "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2017"
+				  "Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2018"
 				  "</span>").arg(versionString));
 
 	QShortcut *close = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
