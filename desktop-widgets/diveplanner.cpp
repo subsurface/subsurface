@@ -44,6 +44,7 @@ void DiveHandler::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
 {
 	QMenu m;
 	// Don't have a gas selection for the last point
+	emit released();
 	QModelIndex index = plannerModel->index(parentIndex(), DivePlannerPointsModel::GAS);
 	if (index.sibling(index.row() + 1, index.column()).isValid()) {
 		GasSelectionModel *model = GasSelectionModel::instance();
