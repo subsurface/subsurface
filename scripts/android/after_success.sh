@@ -11,5 +11,5 @@ echo "Submitting the folloing apk for continuous build release:"
 ls -lh $TRAVIS_BUILD_DIR/apk/*.apk
 
 # get and run the upload script
-wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
 bash ./upload.sh $TRAVIS_BUILD_DIR/apk/*.apk
