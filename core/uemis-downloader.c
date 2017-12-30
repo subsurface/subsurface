@@ -584,7 +584,9 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		if (ismulti && more_files && tmp[0] == '1') {
 			int size;
 			snprintf(fl, 13, "ANS%d.TXT", assembling_mbuf ? filenr - 2 : filenr - 1);
-			ans_path = build_filename(build_filename(path, "ANS"), fl);
+			char *intermediate = build_filename(path, "ANS");
+			ans_path = build_filename(intermediate, fl);
+			free(intermediate);
 			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			free(ans_path);
 			size = bytes_available(ans_file);
