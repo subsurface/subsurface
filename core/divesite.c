@@ -189,14 +189,17 @@ uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
 {
 	if (name == NULL)
 		name ="";
-	unsigned char hash[20];
+	union {
+		unsigned char hash[20];
+		uint32_t i;
+	} u;
 	SHA_CTX ctx;
 	SHA1_Init(&ctx);
 	SHA1_Update(&ctx, &divetime, sizeof(timestamp_t));
 	SHA1_Update(&ctx, name, strlen(name));
-	SHA1_Final(hash, &ctx);
+	SHA1_Final(u.hash, &ctx);
 	// now return the first 32 of the 160 bit hash
-	return *(uint32_t *)hash;
+	return u.i;
 }
 
 /* allocate a new site and add it to the table */
