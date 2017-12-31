@@ -292,10 +292,16 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data->setProduct(ui.product->currentText());
 #if defined(BT_SUPPORT)
 	data->setBluetoothMode(ui.bluetoothMode->isChecked());
-	if (data->bluetoothMode() && btDeviceSelectionDialog != NULL) {
-		// Get the selected device address
-		data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
-		data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
+	if (data->bluetoothMode()) {
+		// Get the selected device address from dialog or from preferences
+		if (btDeviceSelectionDialog != NULL) {
+			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
+			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
+		} else {
+			auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+			data->setDevName(dc->dc_device());
+			data->setDevBluetoothName(dc->dc_device_name());
+		}
 	} else
 		// this breaks an "else if" across lines... not happy...
 #endif
