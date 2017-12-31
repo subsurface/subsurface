@@ -291,6 +291,22 @@ void DCDeviceData::setProduct(const QString& product)
 
 void DCDeviceData::setDevName(const QString& devName)
 {
+	// This is a workaround for bug #1002. A string of the form "devicename (deviceaddress)"
+	// or "deviceaddress (devicename)" may have found its way into the preferences.
+	// Try to fetch the address from such a string
+	// TODO: Remove this code in due course
+	if (data.bluetooth_mode) {
+		int idx1 = devName.indexOf('(');
+		int idx2 = devName.lastIndexOf(')');
+		if (idx1 >= 0 && idx2 >= 0 && idx2 > idx1) {
+			QString front = devName.left(idx1).trimmed();
+			QString back = devName.mid(idx1 + 1, idx2 - idx1 - 1);
+			QString newDevName = back.indexOf(':') >= 0 ? back : front;
+			qWarning() << "Found invalid bluetooth device" << devName << "corrected to" << newDevName << ".";
+			data.devname = strdup(qPrintable(newDevName));
+			return;
+		}
+	}
 	data.devname = strdup(qPrintable(devName));
 }
 
