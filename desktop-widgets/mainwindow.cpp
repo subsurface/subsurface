@@ -475,6 +475,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	dive_list()->setEnabled(true);
 	dive_list()->setFocus();
 	WSInfoModel::instance()->updateInfo();
+	ui.actionAutoGroup->setChecked(autogroup);
 	if (amount_selected == 0)
 		cleanUpEmpty();
 }
@@ -615,7 +616,6 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	process_dives(false, false);
 	hideProgressBar();
 	refreshDisplay();
-	ui.actionAutoGroup->setChecked(autogroup);
 }
 
 void MainWindow::on_actionCloudstoragesave_triggered()
@@ -1802,7 +1802,6 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	process_dives(false, false);
 
 	refreshDisplay();
-	ui.actionAutoGroup->setChecked(autogroup);
 
 	int min_datafile_version = get_min_datafile_version();
 	if (min_datafile_version >0 && min_datafile_version < DATAFORMAT_VERSION) {
