@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "preferences_language.h"
-#include "ui_prefs_language.h"
+#include "ui_preferences_language.h"
 #include "core/helpers.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
