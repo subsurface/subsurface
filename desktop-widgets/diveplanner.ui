@@ -217,7 +217,7 @@
           </sizepolicy>
          </property>
          <property name="suffix">
-          <string> kg/ℓ</string>
+          <string>kg/ℓ</string>
          </property>
          <property name="minimum">
           <double>1.000000000000000</double>
