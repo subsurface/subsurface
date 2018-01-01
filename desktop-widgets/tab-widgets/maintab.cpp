@@ -585,7 +585,6 @@ void MainTab::updateDiveInfo(bool clear)
 
 		volume_t gases[MAX_CYLINDERS] = {};
 		get_gas_used(&displayed_dive, gases);
-		QString volumes;
 		int mean[MAX_CYLINDERS], duration[MAX_CYLINDERS];
 		per_cylinder_mean_depth(&displayed_dive, select_dc(&displayed_dive), mean, duration);
 
@@ -629,6 +628,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.timeEdit->setSpecialValueText(QString("-"));
 		ui.timeEdit->setMinimumTime(QTime(0, 0, 0, 0));
 		ui.timeEdit->setTime(QTime(0, 0, 0, 0));
+		ui.tagWidget->clear();
 	}
 	editMode = rememberEM;
 	ui.cylinders->view()->hideColumn(CylindersModel::DEPTH);
