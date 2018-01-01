@@ -9,8 +9,8 @@ set(SUBSURFACE_PREFERENCES_UI
   preferences_graph.ui
   preferences_network.ui
   preferences_units.ui
-  prefs_georeference.ui
-  prefs_language.ui
+  preferences_georeference.ui
+  preferences_language.ui
 )
 
 qt5_wrap_ui(SUBSURFACE_PREFERENCES_UI_HDRS ${SUBSURFACE_PREFERENCES_UI})
