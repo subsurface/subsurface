@@ -677,7 +677,7 @@ void TextHyperlinkEventFilter::handleUrlTooltip(const QString &urlStr, const QPo
 	} else {
 		// per Qt docs, QKeySequence::toString does localization "tr()" on strings like Ctrl.
 		// Note: Qt knows that on Mac OSX, ctrl (and Control) are the command key.
-		const QString ctrlKeyName = QKeySequence(Qt::CTRL).toString();
+		const QString ctrlKeyName = QKeySequence(Qt::CTRL).toString(QKeySequence::NativeText);
 		// ctrlKeyName comes with a trailing '+', as in: 'Ctrl+'
 		QToolTip::showText(pos, tr("%1click to visit %2").arg(ctrlKeyName).arg(urlStr));
 	}
