@@ -72,14 +72,18 @@ Kirigami.ScrollablePage {
 			}
 			actions: [
 				Kirigami.Action {
-					iconName: "trash-empty"
+					icon {
+						name: "trash-empty"
+					}
 					onTriggered: {
 						print("delete this!")
 						manager.deleteGpsFix(when)
 					}
 				},
 				Kirigami.Action {
-					iconName: "gps"
+					icon {
+						name: "gps"
+					}
 					onTriggered: {
 						showMap(latitude + " " + longitude)
 					}

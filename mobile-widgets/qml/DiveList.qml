@@ -332,7 +332,9 @@ Kirigami.ScrollablePage {
 	}
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
-		iconName: "downloadDC"
+		icon {
+			name: "downloadDC"
+		}
 		onTriggered: {
 			downloadFromDc.dcImportModel.clearTable()
 			stackView.push(downloadFromDc)
@@ -340,14 +342,18 @@ Kirigami.ScrollablePage {
 	}
 
 	property QtObject addDiveAction: Kirigami.Action {
-		iconName: "list-add"
+		icon {
+			name: "list-add"
+		}
 		onTriggered: {
 			startAddDive()
 		}
 	}
 
 	property QtObject saveAction: Kirigami.Action {
-		iconName: "document-save"
+		icon {
+			name: "document-save"
+		}
 		onTriggered: {
 			Qt.inputMethod.hide()
 			startPage.saveCredentials();
@@ -355,7 +361,9 @@ Kirigami.ScrollablePage {
 	}
 
 	property QtObject offlineAction: Kirigami.Action {
-		iconName: "qrc:/qml/nocloud.svg"
+		icon {
+			name: "qrc:/qml/nocloud.svg"
+		}
 		onTriggered: {
 			manager.syncToCloud = false
 			manager.credentialStatus = QMLManager.CS_NOCLOUD
