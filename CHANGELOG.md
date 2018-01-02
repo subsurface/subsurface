@@ -1,2 +1,3 @@
+- Small UI fixes
+- Fix bug when using remembered BT/BLE addresses in dive computer download
 - Fix bug in cylider pressure lines
-- Add changes after 4.7.6 above this line
