@@ -28,6 +28,8 @@
 	</qresource>
 	<qresource prefix="/">
 		<file>qtquickcontrols2.conf</file>
+	</qresource>
+	<qresource prefix="/org/kde/kirigami">
 		<file alias="icons/go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
 		<file alias="icons/go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>
 		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>

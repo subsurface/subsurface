@@ -115,7 +115,9 @@ Kirigami.ApplicationWindow {
 
 		actions: [
 			Kirigami.Action {
-				iconName: "icons/ic_home.svg"
+				icon {
+					name: "icons/ic_home.svg"
+				}
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
@@ -131,10 +133,14 @@ Kirigami.ApplicationWindow {
 				}
 			},
 			Kirigami.Action {
-				iconName: "icons/ic_sync.svg"
+				icon {
+					name: "icons/ic_sync.svg"
+				}
 				text: qsTr("Dive management")
 				Kirigami.Action {
-					iconName: "icons/ic_add.svg"
+					icon {
+						name: "icons/ic_add.svg"
+					}
 					text: qsTr("Add dive manually")
 					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
 					onTriggered: {
@@ -145,7 +151,9 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 					// this of course assumes a white background - theming means this needs to change again
-					iconName: "icons/downloadDC-black.svg"
+					icon {
+						name: "icons/downloadDC-black.svg"
+					}
 					text: qsTr("Download from DC")
 					enabled: true
 					onTriggered: {
@@ -155,14 +163,18 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-					iconName: "icons/ic_add_location.svg"
+					icon {
+						name: "icons/ic_add_location.svg"
+					}
 					text: qsTr("Apply GPS fixes")
 					onTriggered: {
 						manager.applyGpsData();
 					}
 				}
 				Kirigami.Action {
-					iconName: "icons/cloud_sync.svg"
+					icon {
+						name: "icons/cloud_sync.svg"
+					}
 					text: qsTr("Manual sync with cloud")
 					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
 					onTriggered: {
@@ -181,7 +193,9 @@ Kirigami.ApplicationWindow {
 					}
 				}
 				Kirigami.Action {
-				iconName: syncToCloud ? "icons/ic_cloud_off.svg" : "icons/ic_cloud_done.svg"
+				icon {
+					name: syncToCloud ? "icons/ic_cloud_off.svg" : "icons/ic_cloud_done.svg"
+				}
 				text: syncToCloud ? qsTr("Offline mode") : qsTr("Auto cloud sync enabled")
 					enabled: manager.credentialStatus !== QMLManager.CS_NOCLOUD
 					onTriggered: {
@@ -195,12 +209,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				iconName: "icons/ic_place.svg"
+				icon {
+					name: "icons/ic_place.svg"
+				}
 				text: qsTr("GPS")
 				visible: true
 
 				Kirigami.Action {
-					iconName: "icons/ic_cloud_upload.svg"
+					icon {
+						name: "icons/ic_cloud_upload.svg"
+					}
 					text: qsTr("Upload GPS data")
 					onTriggered: {
 						globalDrawer.close();
@@ -209,7 +227,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
-					iconName: "icons/ic_cloud_download.svg"
+					icon {
+						name: "icons/ic_cloud_download.svg"
+					}
 					text: qsTr("Download GPS data")
 					onTriggered: {
 						globalDrawer.close();
@@ -218,7 +238,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
-					iconName: "icons/ic_gps_fixed.svg"
+					icon {
+						name:"icons/ic_gps_fixed.svg"
+					}
 					text: qsTr("Show GPS fixes")
 					onTriggered: {
 						globalDrawer.close()
@@ -229,7 +251,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
-					iconName: "icons/ic_clear.svg"
+					icon {
+						name: "icons/ic_clear.svg"
+					}
 					text: qsTr("Clear GPS cache")
 					onTriggered: {
 						globalDrawer.close();
@@ -238,7 +262,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 
 				Kirigami.Action {
-					iconName: locationServiceEnabled ? "icons/ic_location_off.svg" : "icons/ic_place.svg"
+					icon {
+						name: locationServiceEnabled ? "icons/ic_location_off.svg" : "icons/ic_place.svg"
+					}
 					text: locationServiceEnabled ? qsTr("Disable location service") : qsTr("Run location service")
 					onTriggered: {
 						globalDrawer.close();
@@ -247,7 +273,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				iconName: "icons/ic_info_outline.svg"
+				icon {
+					name: "icons/ic_info_outline.svg"
+				}
 				text: qsTr("About")
 				onTriggered: {
 					globalDrawer.close()
@@ -256,7 +284,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				iconName: "icons/ic_settings.svg"
+				icon {
+					name: "icons/ic_settings.svg"
+				}
 				text: qsTr("Settings")
 				onTriggered: {
 					globalDrawer.close()
@@ -265,7 +295,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				iconName: "icons/ic_adb.svg"
+				icon {
+					name: "icons/ic_adb.svg"
+				}
 				text: qsTr("Developer")
 				visible: manager.developer
 				Kirigami.Action {
@@ -285,7 +317,9 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				}
 			},
 			Kirigami.Action {
-				iconName: "icons/ic_help_outline.svg"
+				icon {
+					name: "icons/ic_help_outline.svg"
+				}
 				text: qsTr("Help")
 				onTriggered: {
 					Qt.openUrlExternally("https://subsurface-divelog.org/documentation/subsurface-mobile-v2-user-manual/")

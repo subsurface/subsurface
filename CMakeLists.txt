@@ -286,6 +286,8 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
 		mobile-widgets/qml/kirigami/src/settings.cpp
 		mobile-widgets/qml/kirigami/src/enums.cpp
+                mobile-widgets/qml/kirigami/src/formlayoutattached.cpp
+                mobile-widgets/qml/kirigami/src/mnemonicattached.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/basictheme.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/kirigamipluginfactory.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
