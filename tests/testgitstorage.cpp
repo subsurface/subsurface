@@ -43,7 +43,6 @@ void TestGitStorage::initTestCase()
 	s.endGroup();
 	prefs.cloud_storage_email_encoded = strdup("ssrftest@hohndel.org");
 	prefs.cloud_storage_password = strdup("geheim");
-	prefs.cloud_background_sync = true;
 	QNetworkProxy proxy;
 	proxy.setType(QNetworkProxy::ProxyType(prefs.proxy_type));
 	proxy.setHostName(prefs.proxy_host);

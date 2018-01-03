@@ -983,11 +983,6 @@ short CloudStorageSettings::verificationStatus() const
 	return prefs.cloud_verification_status;
 }
 
-bool CloudStorageSettings::backgroundSync() const
-{
-	return prefs.cloud_background_sync;
-}
-
 QString CloudStorageSettings::userId() const
 {
 	return QString(prefs.userid);
@@ -1079,17 +1074,6 @@ void CloudStorageSettings::setVerificationStatus(short value)
 	s.setValue("cloud_verification_status", value);
 	prefs.cloud_verification_status = value;
 	emit verificationStatusChanged(value);
-}
-
-void CloudStorageSettings::setBackgroundSync(bool value)
-{
-	if (value == prefs.cloud_background_sync)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cloud_background_sync", value);
-	prefs.cloud_background_sync = value;
-	emit backgroundSyncChanged(value);
 }
 
 void CloudStorageSettings::setSaveUserIdLocal(bool value)
@@ -2300,7 +2284,6 @@ void SettingsObjectWrapper::load()
 		GET_TXT("password", cloud_storage_password);
 	}
 	GET_INT("cloud_verification_status", cloud_verification_status);
-	GET_BOOL("cloud_background_sync", cloud_background_sync);
 	GET_BOOL("git_local_only", git_local_only);
 
 	// creating the git url here is simply a convenience when C code wants

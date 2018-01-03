@@ -25,10 +25,6 @@ void TestPreferences::testPreferences()
 	pref->load();
 
 	auto cloud = pref->cloud_storage;
-	cloud->setBackgroundSync(true);
-	TEST(cloud->backgroundSync(), true);
-	cloud->setBackgroundSync(false);
-	TEST(cloud->backgroundSync(), false);
 
 	cloud->setBaseUrl("test_one");
 	TEST(cloud->baseUrl(), QStringLiteral("test_one"));
