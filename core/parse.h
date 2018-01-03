@@ -24,13 +24,14 @@ extern struct sample *cur_sample;
 extern struct picture *cur_picture;
 
 
-struct {
+struct parser_settings {
 	struct {
 		const char *model;
 		uint32_t deviceid;
 		const char *nickname, *serial_nr, *firmware;
 	} dc;
-} cur_settings;
+};
+extern struct parser_settings cur_settings;
 
 extern bool in_settings;
 extern bool in_userid;
