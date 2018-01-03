@@ -66,7 +66,7 @@
     <addaction name="actionSaveAs"/>
     <addaction name="actionCloudstorageopen"/>
     <addaction name="actionCloudstoragesave"/>
-    <addaction name="actionTake_cloud_storage_online"/>
+    <addaction name="actionCloudOnline"/>
     <addaction name="separator"/>
     <addaction name="actionClose"/>
     <addaction name="actionExport"/>
@@ -714,9 +714,12 @@
     <string>Facebook</string>
    </property>
   </action>
-  <action name="actionTake_cloud_storage_online">
+  <action name="actionCloudOnline">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
-    <string>Take cloud storage online</string>
+    <string>Cloud storage online</string>
    </property>
   </action>
  </widget>

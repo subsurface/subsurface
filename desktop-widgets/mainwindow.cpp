@@ -440,7 +440,8 @@ void MainWindow::enableDisableCloudActions()
 {
 	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
-	ui.actionTake_cloud_storage_online->setEnabled(prefs.cloud_verification_status == CS_VERIFIED && prefs.git_local_only);
+	ui.actionCloudOnline->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.actionCloudOnline->setChecked(prefs.cloud_verification_status == CS_VERIFIED && !prefs.git_local_only);
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {
@@ -644,33 +645,45 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	mark_divelist_changed(false);
 }
 
-void MainWindow::on_actionTake_cloud_storage_online_triggered()
+void MainWindow::on_actionCloudOnline_triggered()
 {
+	bool isOffline = !ui.actionCloudOnline->isChecked();
+	if (isOffline == prefs.git_local_only)
+		return;
+
 	// Refuse to go online if there is an edit in progress
-	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		information()->isEditing() ) {
+	if (!isOffline &&
+	    (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
+	    information()->isEditing())) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before going online"));
+		// We didn't switch to online, therefore uncheck the checkbox
+		ui.actionCloudOnline->setChecked(false);
 		return;
 	}
 
-	prefs.git_local_only = false;
-	if (unsaved_changes()) {
-		// If there are unsaved changes, ask the user if they want to save them.
-		// If they don't, they have to sync manually.
-		if (QMessageBox::warning(this, tr("Save changes?"),
-					 tr("You have unsaved changes. Do you want to commit them to the cloud storage?\n"
-					    "If answering no, the cloud will only be synced on next call to "
-					    "\"Open cloud storage\" or \"Save to cloud storage\"."),
-					 QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes)
-			on_actionCloudstoragesave_triggered();
-		else
-			setTitle();
-	} else {
-		// If there are no unsaved changes, let's just try to load the remote cloud
-		on_actionCloudstorageopen_triggered();
+	prefs.git_local_only = isOffline;
+	if (!isOffline) {
+		// User requests to go online. Try to sync cloud storage
+		prefs.git_local_only = false;
+		if (unsaved_changes()) {
+			// If there are unsaved changes, ask the user if they want to save them.
+			// If they don't, they have to sync manually.
+			if (QMessageBox::warning(this, tr("Save changes?"),
+						 tr("You have unsaved changes. Do you want to commit them to the cloud storage?\n"
+						    "If answering no, the cloud will only be synced on next call to "
+						    "\"Open cloud storage\" or \"Save to cloud storage\"."),
+						 QMessageBox::Yes|QMessageBox::No) == QMessageBox::Yes)
+				on_actionCloudstoragesave_triggered();
+		} else {
+			// If there are no unsaved changes, let's just try to load the remote cloud
+			on_actionCloudstorageopen_triggered();
+		}
+		if (prefs.git_local_only)
+			report_error(qPrintable(tr("Failure taking cloud storage online")));
 	}
-	if (prefs.git_local_only)
-		report_error(qPrintable(tr("Failure taking cloud storage online")));
+
+	setTitle();
+	ui.actionCloudOnline->setChecked(!prefs.git_local_only);
 }
 
 void learnImageDirs(QStringList dirnames)
@@ -1727,12 +1740,11 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		if (prefs.git_local_only) {
-			ui.actionTake_cloud_storage_online->setEnabled(true);
+		ui.actionCloudOnline->setChecked(!prefs.git_local_only);
+		if (prefs.git_local_only)
 			return tr("[local cache for] %1").arg(email);
-		} else {
+		else
 			return tr("[cloud storage for] %1").arg(email);
-		}
 	} else {
 		return fileName;
 	}
