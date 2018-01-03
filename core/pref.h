@@ -145,7 +145,6 @@ struct preferences {
 	const char *cloud_storage_email_encoded;
 	bool save_password_local;
 	short cloud_verification_status;
-	bool cloud_background_sync;
 	geocoding_prefs_t geocoding;
 	enum deco_mode planner_deco_mode;
 	short vpmb_conservatism;

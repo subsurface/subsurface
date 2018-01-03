@@ -38,7 +38,6 @@ void PreferencesNetwork::refreshSettings()
 	ui->cloud_storage_email->setText(prefs.cloud_storage_email);
 	ui->cloud_storage_password->setText(prefs.cloud_storage_password);
 	ui->save_password_local->setChecked(prefs.save_password_local);
-	ui->cloud_background_sync->setChecked(prefs.cloud_background_sync);
 	ui->save_uid_local->setChecked(prefs.save_userid_local);
 	ui->default_uid->setText(QString(prefs.userid).toUpper());
 	updateCloudAuthenticationState();
@@ -115,7 +114,6 @@ void PreferencesNetwork::syncSettings()
 	cloud->setSavePasswordLocal(ui->save_password_local->isChecked());
 	cloud->setPassword(password);
 	cloud->setVerificationStatus(prefs.cloud_verification_status);
-	cloud->setBackgroundSync(ui->cloud_background_sync->isChecked());
 	cloud->setBaseUrl(prefs.cloud_base_url);
 }
 

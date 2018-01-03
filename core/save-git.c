@@ -1273,7 +1273,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 		return report_error("creating commit failed");
 
 	/* now sync the tree with the remote server */
-	if (remote && prefs.cloud_background_sync && !prefs.git_local_only)
+	if (remote && !prefs.git_local_only)
 		return sync_with_remote(repo, remote, branch, RT_HTTPS);
 	return 0;
 }

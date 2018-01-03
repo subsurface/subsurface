@@ -81,7 +81,6 @@ struct preferences default_prefs = {
 		.access_token = NULL
 	},
 	.defaultsetpoint = 1100,
-	.cloud_background_sync = true,
 	.geocoding = {
 		.category = { 0 }
 	},
