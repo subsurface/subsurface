@@ -1085,7 +1085,7 @@ void MainWindow::on_actionRenumber_triggered()
 
 void MainWindow::on_actionAutoGroup_triggered()
 {
-	autogroup = ui.actionAutoGroup->isChecked();
+	set_autogroup(ui.actionAutoGroup->isChecked());
 	if (autogroup)
 		autogroup_dives();
 	else
