@@ -440,8 +440,6 @@ void MainWindow::enableDisableCloudActions()
 {
 	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
-	ui.actionCloudOnline->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
-	ui.actionCloudOnline->setChecked(prefs.cloud_verification_status == CS_VERIFIED && !prefs.git_local_only);
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {
@@ -610,10 +608,8 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data())) {
-		set_filename(fileNamePtr.data());
-		setTitle();
-	}
+	if (!parse_file(fileNamePtr.data()))
+		setCurrentFile(fileNamePtr.data());
 	process_dives(false, false);
 	hideProgressBar();
 	refreshDisplay();
@@ -640,8 +636,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 	if (error)
 		return;
 
-	set_filename(filename.toUtf8().data());
-	setTitle();
+	setCurrentFile(filename.toUtf8().data());
 	mark_divelist_changed(false);
 }
 
@@ -683,7 +678,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 	}
 
 	setTitle();
-	ui.actionCloudOnline->setChecked(!prefs.git_local_only);
+	updateCloudOnlineStatus();
 }
 
 void learnImageDirs(QStringList dirnames)
@@ -756,6 +751,21 @@ void MainWindow::closeCurrentFile()
 	clear_events();
 
 	dcList.dcMap.clear();
+}
+
+void MainWindow::updateCloudOnlineStatus()
+{
+	bool is_cloud = existing_filename && prefs.cloud_git_url && prefs.cloud_verification_status == CS_VERIFIED &&
+			strstr(existing_filename, prefs.cloud_git_url);
+	ui.actionCloudOnline->setEnabled(is_cloud);
+	ui.actionCloudOnline->setChecked(is_cloud && !prefs.git_local_only);
+}
+
+void MainWindow::setCurrentFile(const char *f)
+{
+	set_filename(f);
+	setTitle();
+	updateCloudOnlineStatus();
 }
 
 void MainWindow::on_actionClose_triggered()
@@ -1685,8 +1695,7 @@ int MainWindow::file_save_as(void)
 	if (save_dives(filename.toUtf8().data()))
 		return -1;
 
-	set_filename(filename.toUtf8().data());
-	setTitle();
+	setCurrentFile(filename.toUtf8().data());
 	mark_divelist_changed(false);
 	addRecentFile(filename, true);
 	return 0;
@@ -1740,7 +1749,6 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		ui.actionCloudOnline->setChecked(!prefs.git_local_only);
 		if (prefs.git_local_only)
 			return tr("[local cache for] %1").arg(email);
 		else
@@ -1824,9 +1832,8 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		if (!parse_file(fileNamePtr.data())) {
-			set_filename(fileNamePtr.data());
+			setCurrentFile(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
-			setTitle();
 		}
 	}
 	hideProgressBar();
