@@ -16,7 +16,7 @@ int metric = 1;
 int diveid = -1;
 
 event_allocation_t event_allocation = { .event.deleted = 1 };
-
+struct parser_settings cur_settings;
 
 struct divecomputer *cur_dc = NULL;
 struct dive *cur_dive = NULL;
