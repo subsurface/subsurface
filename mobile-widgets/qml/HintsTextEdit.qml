@@ -106,6 +106,7 @@ TextField {
 				bottomPadding: 0
 				leftPadding: 0
 				rightPadding: 0
+				icon: ""
 				implicitHeight: Kirigami.Units.gridUnit*2
 				checked: hintsView.currentIndex == index
 				onClicked: {
