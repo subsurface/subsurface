@@ -198,6 +198,8 @@ private:
 	bool askSaveChanges();
 	bool okToClose(QString message);
 	void closeCurrentFile();
+	void setCurrentFile(const char *f);
+	void updateCloudOnlineStatus();
 	void showProgressBar();
 	void hideProgressBar();
 	void writeSettings();
