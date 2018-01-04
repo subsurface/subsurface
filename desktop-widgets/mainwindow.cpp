@@ -111,7 +111,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	actionPreviousDive(0),
 	helpView(0),
 	state(VIEWALL),
-	survey(0)
+	survey(0),
+	locationProvider(new GpsLocation(nullptr, this))
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -826,7 +827,6 @@ void MainWindow::on_actionDownloadDC_triggered()
 void MainWindow::on_actionDownloadWeb_triggered()
 {
 	SubsurfaceWebServices dlg(this);
-
 	dlg.exec();
 }
 
