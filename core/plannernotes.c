@@ -35,11 +35,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 {
 	const unsigned int sz_buffer = 2000000;
 	const unsigned int sz_temp = 100000;
+	const unsigned int sz_icdbuf = 10000;
 	char *buffer = (char *)malloc(sz_buffer);
 	char *temp = (char *)malloc(sz_temp);
+	char *icdbuffer = (char *)malloc(sz_icdbuf);
+	char *prev_gasname = (char *)malloc(10);
+	char *colorc = (char *)malloc(10);
 	const char *deco, *segmentsymbol;
 	static char buf[1000];
-	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
+	double deltaN2, deltaHe, maxdeltaN2, deltaPN2;
+	int icyl, len, icdlen=0, runtime, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
 	struct gasmix lastprintgasmix = {{ -1 }, { -1 }};
 	struct divedatapoint *dp = diveplan->dp;
 	bool plan_verbatim = prefs.verbatim_plan;
@@ -49,6 +54,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	bool gaschange_after = !plan_verbatim;
 	bool gaschange_before;
 	bool lastentered = true;
+	bool istrimix = false;
 	struct divedatapoint *nextdp = NULL;
 	struct divedatapoint *lastbottomdp = NULL;
 
@@ -135,6 +141,27 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				"<th style='padding-left: 10px; float: left;'>%s</th></tr></thead><tbody style='float: left;'>",
 				translate("gettextFromC", "gas"));
 	}
+	for (icyl=0; icyl<MAX_CYLINDERS; icyl++)	// If dive plan has an OC cylinder with helium, then initialise ICD table:
+		if ((dive->cylinder[icyl].cylinder_use == OC_GAS) && (dive->cylinder[icyl].gasmix.he.permille > 0)) {	
+			istrimix = true;
+			icdlen = 0;
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, 
+					"<table><tbody style='float: left;'><tr><td colspan=5>Isobaric counterdiffusion information:</td></tr>");
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<tr><td align='left'><b>%s</b></td>",
+					translate("gettextFromC", "runtime"));
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td align='center'><b>%s</b></td>",
+					translate("gettextFromC", "gaschange"));
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 15px;'><b>%s</b></td>",
+					translate("gettextFromC", "&#916;pN&#8322;"));
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 10px;'><b>%s</b></td>",
+					translate("gettextFromC", "&#916;He%"));
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 10px;'><b>%s</b></td>",
+					translate("gettextFromC", "&#916;N&#8322;%"));
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 10px;'><b>%s</b></td></tr>",
+					translate("gettextFromC", "max &#916;N&#8322;%"));
+			break;
+		}
+
 	do {
 		struct gasmix gasmix, newgasmix = {};
 		const char *depth_unit;
@@ -268,13 +295,29 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				/* Normally a gas change is displayed on the stopping segment, so only display a gas change at the end of
 				 * an ascent segment if it is not followed by a stop
 				 */
+
+				if(istrimix) {
+					deltaN2 = ((1000-newgasmix.he.permille-newgasmix.o2.permille)-(1000-lastprintgasmix.he.permille-lastprintgasmix.o2.permille))/10.0;
+					deltaHe = (newgasmix.he.permille-lastprintgasmix.he.permille)/10.0;
+					maxdeltaN2 = 0.02*(lastprintgasmix.he.permille-newgasmix.he.permille);
+					runtime = (dp->time + 30) / 60;
+					deltaPN2 = (1+((dp->depth.mm)/10000)) * deltaN2 / 100;
+					colorc = (deltaN2>maxdeltaN2)?strcpy(colorc,"red"):strcpy(colorc,"black");
+				}
+
 				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth.mm != nextdp->depth.mm || nextdp->entered)) {
 					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
 						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
 									temp);
 					} else {
-							len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+						if (isascent && (lastprintgasmix.he.permille > 0)) {		// On ascent, save ICD info if previous cylinder had helium
+							icdlen += snprintf(icdbuffer+icdlen, sz_icdbuf-icdlen, translate("gettextFromC", 
+							"<tr><td>%3dmin</td><td>%s&#10137;%s</td><td style='padding-left: 15px'>%+5.2f</td><td style='padding-left: 10px'>%+5.1f</td><td style='color:%s; padding-left:15px';>%+5.1f</td><td style='padding-left:15px';>%+5.1f</td></tr>"),
+							runtime, prev_gasname, gasname(&newgasmix), deltaPN2, deltaHe, colorc, deltaN2, maxdeltaN2);
+						}
+						strcpy(prev_gasname,gasname(&newgasmix));
 					}
 					lastprintsetpoint = nextdp->setpoint;
 					lastprintgasmix = newgasmix;
@@ -286,7 +329,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
 									temp);
 					} else {
-							len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&gasmix));
+						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&gasmix));
+						if (lastprintgasmix.he.permille > 0) {		// Save ICD info if previous cylinder had helium
+							icdlen += snprintf(icdbuffer+icdlen, sz_icdbuf-icdlen, translate("gettextFromC", 
+							"<tr><td>%3dmin</td><td>%s&#10137;%s</td><td style='padding-left: 15px'>%+5.2f</td><td style='padding-left: 10px'>%+5.1f</td><td style='color:%s; padding-left:15px';>%+5.1f</td><td style='padding-left:15px';>%+5.1f</td></tr>"),
+							runtime, prev_gasname, gasname(&newgasmix), deltaPN2, deltaHe, colorc, deltaN2, maxdeltaN2);
+						}
+						strcpy(prev_gasname,gasname(&newgasmix));
 					}
 					// Set variables so subsequent iterations can test against the last gas printed
 					lastprintsetpoint = dp->setpoint;
@@ -308,11 +357,10 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						snprintf(temp, sz_temp, translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) nextdp->setpoint / 1000.0);
 					else
 						snprintf(temp, sz_temp, translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
-
-					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
+						len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
 				}
 				gaschange_after = false;
-			gasmix = newgasmix;
+				gasmix = newgasmix;
 			}
 		}
 		lastprintdepth = newdepth;
@@ -509,6 +557,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			dp = dp->next;
 		}
 	}
+
+	/* For trimix OC dives, add ICD table here */
+	if (istrimix) {
+		icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen,"</tbody></table><br>");	// End the ICD table
+		len += snprintf(buffer + len, sz_buffer - len, "%s", icdbuffer);					// ..and add it to the html buffer
+	}
+
 	snprintf(buffer + len, sz_buffer - len, "</div>");
 	dive->notes = strdup(buffer);
 
