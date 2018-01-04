@@ -457,6 +457,11 @@ static void get_index(char *buffer, int *i)
 	*i = atoi(buffer);
 }
 
+static void get_bool(char *buffer, bool *i)
+{
+	*i = atoi(buffer);
+}
+
 static void get_uint8(char *buffer, uint8_t *i)
 {
 	*i = atoi(buffer);
@@ -610,10 +615,10 @@ static void eventtime(char *buffer, duration_t *duration)
 
 static void try_to_match_autogroup(const char *name, char *buf)
 {
-	int autogroupvalue;
+	bool autogroupvalue;
 
 	start_match("autogroup", name, buf);
-	if (MATCH("state.autogroup", get_index, &autogroupvalue)) {
+	if (MATCH("state.autogroup", get_bool, &autogroupvalue)) {
 		set_autogroup(autogroupvalue);
 		return;
 	}
