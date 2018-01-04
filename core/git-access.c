@@ -608,6 +608,8 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 			// If we returned GIT_EUSER during authentication, giterr_last() returns NULL
 			fprintf(stderr, "remote fetch failed (%s)\n",
 				giterr_last() ? giterr_last()->message : "authentication failed");
+		// Since we failed to sync with online repository, enter offline mode
+		prefs.git_local_only = true;
 		error = 0;
 	} else {
 		error = check_remote_status(repo, origin, remote, branch, rt);
