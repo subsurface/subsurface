@@ -372,7 +372,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		resetState();
 		break;
 	case QDialogButtonBox::HelpRole:
-		QDesktopServices::openUrl(QUrl("http://api.hohndel.org"));
+		QDesktopServices::openUrl(QUrl("http://api.subsurface-divelog.org"));
 		break;
 	default:
 		break;
@@ -381,7 +381,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 
 void SubsurfaceWebServices::startDownload()
 {
-	QUrl url("http://api.hohndel.org/api/dive/get/");
+	QUrl url("http://api.subsurface-divelog.org/api/dive/get/");
 	QUrlQuery query;
 	query.addQueryItem("login", ui.userID->text().toUpper());
 	url.setQuery(query);
