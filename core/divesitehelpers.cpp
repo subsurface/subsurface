@@ -34,10 +34,8 @@ void ReverseGeoLookupThread::run()
 	QNetworkRequest request;
 	QNetworkAccessManager *rgl = new QNetworkAccessManager();
 	QEventLoop loop;
-	QString mapquestURL("http://open.mapquestapi.com/nominatim/v1/reverse.php?format=json&accept-language=%1&lat=%2&lon=%3");
 	QString geonamesURL("http://api.geonames.org/findNearbyPlaceNameJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
 	QString geonamesOceanURL("http://api.geonames.org/oceanJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
-	QString divelogsURL("https://www.divelogs.de/mapsearch_divespotnames.php?lat=%1&lng=%2&radius=50");
 	QTimer timer;
 
 	request.setRawHeader("Accept", "text/json");
