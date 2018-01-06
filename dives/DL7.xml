@@ -1,0 +1,22 @@
+<divelog program='subsurface' version='3'>
+<settings>
+<divecomputerid model='Subsurface Divelog' deviceid='01234567' serial='3' nickname='Heinrichs Weikamp OSTC 3'/>
+<divecomputerid model='Vyper Air' deviceid='013749e4' serial='20400612'/>
+<divecomputerid model='Suunto Vyper Air' deviceid='11223344' serial='99999999'/>
+<divecomputerid model='Heinrichs Weikamp OSTC Sport' deviceid='abcdef00' serial='10000' firmware='10.31'/>
+<divecomputerid model='Vyper Air' deviceid='ffffffff' serial='20400612'/>
+</settings>
+<divesites>
+</divesites>
+<dives>
+<dive number='2' date='2018-01-02' time='10:10:00' duration='60:00 min'>
+  <divecomputer model='Imported from CSV' deviceid='ffffffff'>
+  <depth max='10.0 m' mean='9.508 m' />
+  <sample time='0:00 min' depth='1.0 m' />
+  <sample time='1:00 min' depth='10.0 m' />
+  <sample time='55:00 min' depth='10.0 m' />
+  <sample time='60:00 min' depth='0.0 m' />
+  </divecomputer>
+</dive>
+</dives>
+</divelog>
