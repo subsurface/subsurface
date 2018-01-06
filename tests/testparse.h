@@ -32,6 +32,8 @@ private slots:
 	void exportUDDF();
 	void testExport();
 
+	void parseDL7();
+
 private:
 	sqlite3 *_sqlite3_handle = NULL;
 };
