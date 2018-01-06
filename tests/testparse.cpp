@@ -502,8 +502,9 @@ void TestParse::parseDL7()
 				params, pnr - 1 , "DL7"), 0);
 	QCOMPARE(dive_table.nr, 1);
 
-	FILE_COMPARE("testuddfexport.uddf",
-		"testuddfexport2.uddf");
+	QCOMPARE(save_dives("./testdl7out.ssrf"), 0);
+	FILE_COMPARE("./testdl7out.ssrf",
+		SUBSURFACE_TEST_DATA "/dives/DL7.xml");
 	clear_dive_file_data();
 }
 
