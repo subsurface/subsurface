@@ -450,5 +450,62 @@ void TestParse::testExport()
 	exportUDDF();
 }
 
+void TestParse::parseDL7()
+{
+	char *params[47];
+	int pnr = 0;
+
+	params[pnr++] = strdup("dateField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("datefmt");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("starttimeField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("numberField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("timeField");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("depthField");
+	params[pnr++] = intdup(2);
+	params[pnr++] = strdup("tempField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("po2Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2sensor1Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2sensor2Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("o2sensor3Field");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("cnsField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("ndlField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("ttsField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("stopdepthField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("pressureField");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("setpointFiend");
+	params[pnr++] = intdup(-1);
+	params[pnr++] = strdup("separatorIndex");
+	params[pnr++] = intdup(3);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("hw");
+	params[pnr++] = strdup("DL7");
+	params[pnr++] = 0;
+
+	clear_dive_file_data();
+	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
+				params, pnr - 1 , "DL7"), 0);
+	QCOMPARE(dive_table.nr, 1);
+
+	FILE_COMPARE("testuddfexport.uddf",
+		"testuddfexport2.uddf");
+	clear_dive_file_data();
+}
+
 
 QTEST_GUILESS_MAIN(TestParse)
