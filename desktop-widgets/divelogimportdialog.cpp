@@ -8,6 +8,7 @@
 #include <QMimeData>
 #include <QRegExp>
 #include "core/qthelper.h"
+#include "core/import-csv.h"
 
 static QString subsurface_mimedata = "subsurface/csvcolumns";
 static QString subsurface_index = "subsurface/csvindex";
