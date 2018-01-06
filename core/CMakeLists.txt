@@ -55,6 +55,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	import-shearwater.c
 	import-cobalt.c
 	import-divinglog.c
+	import-csv.c
 	planner.c
 	plannernotes.c
 	profile.c
