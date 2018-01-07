@@ -75,6 +75,7 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 	}
 
 	while ((end_ptr < mem.size) && (ptr = strstr(mem.buffer + end_ptr, "ZDH"))) {
+		char *iter_end = NULL;
 
 		/*
 		 * Process the dives, but let the last round be parsed
@@ -124,6 +125,23 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		params[pnr + 4] = "time";
 		params[pnr + 5] = strdup(tmpbuf);
 		params[pnr + 6] = NULL;
+
+		/* Air temperature */
+		memset(tmpbuf, 0, sizeof(tmpbuf));
+		iter = strchr(iter, '|');
+
+		if (iter && iter + 1) {
+			iter = iter + 1;
+			iter_end = strchr(iter, '|');
+
+			if (iter_end) {
+				memcpy(tmpbuf, iter, iter_end - iter);
+				params[pnr + 6] = "airTemp";
+				params[pnr + 7] = strdup(tmpbuf);
+				params[pnr + 8] = NULL;
+			}
+		}
+
 
 		/* Search for the next line */
 		if (iter)
