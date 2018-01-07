@@ -660,7 +660,6 @@ void MainWindow::on_actionCloudOnline_triggered()
 	prefs.git_local_only = isOffline;
 	if (!isOffline) {
 		// User requests to go online. Try to sync cloud storage
-		prefs.git_local_only = false;
 		if (unsaved_changes()) {
 			// If there are unsaved changes, ask the user if they want to save them.
 			// If they don't, they have to sync manually.
