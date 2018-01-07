@@ -80,7 +80,7 @@ void DiveEventItem::setupPixmap()
 
 #define EVENT_PIXMAP(PIX) QPixmap(QString(PIX)).scaled(sz_pix, sz_pix, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
-	if (same_string(internalEvent->name, "")) {
+	if (empty_string(internalEvent->name)) {
 		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));

@@ -38,6 +38,11 @@ static inline bool same_string_caseinsensitive(const char *a, const char *b)
 	return !strcasecmp(a ?: "", b ?: "");
 }
 
+static inline bool empty_string(const char *s)
+{
+	return !s || !*s;
+}
+
 static inline bool includes_string_caseinsensitive(const char *haystack, const char *needle)
 {
 	if (!needle)

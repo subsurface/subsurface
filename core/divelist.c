@@ -1187,11 +1187,11 @@ void filter_dive(struct dive *d, bool shown)
  * (or the second one if the first one is empty */
 void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 {
-	if (same_string(trip_a->location, "") && trip_b->location) {
+	if (empty_string(trip_a->location) && trip_b->location) {
 		free(trip_a->location);
 		trip_a->location = strdup(trip_b->location);
 	}
-	if (same_string(trip_a->notes, "") && trip_b->notes) {
+	if (empty_string(trip_a->notes) && trip_b->notes) {
 		free(trip_a->notes);
 		trip_a->notes = strdup(trip_b->notes);
 	}

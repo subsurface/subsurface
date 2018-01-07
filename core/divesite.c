@@ -239,9 +239,9 @@ uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees
 /* a uuid is always present - but if all the other fields are empty, the dive site is pointless */
 bool dive_site_is_empty(struct dive_site *ds)
 {
-	return same_string(ds->name, "") &&
-	       same_string(ds->description, "") &&
-	       same_string(ds->notes, "") &&
+	return empty_string(ds->name) &&
+	       empty_string(ds->description) &&
+	       empty_string(ds->notes) &&
 	       ds->latitude.udeg == 0 &&
 	       ds->longitude.udeg == 0;
 }

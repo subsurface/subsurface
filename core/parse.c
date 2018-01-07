@@ -469,7 +469,7 @@ void add_dive_site(char *ds_name, struct dive *dive)
 		}
 		if (ds) {
 			// we have a uuid, let's hope there isn't a different name
-			if (same_string(ds->name, "")) {
+			if (empty_string(ds->name)) {
 				ds->name = copy_string(buffer);
 			} else if (!same_string(ds->name, buffer)) {
 				// if it's not the same name, it's not the same dive site

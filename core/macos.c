@@ -84,7 +84,7 @@ const char *system_default_filename(void)
 	static const char *path = NULL;
 	if (!path) {
 		const char *user = getenv("LOGNAME");
-		if (same_string(user, ""))
+		if (empty_string(user))
 			user = "username";
 		char *filename = calloc(strlen(user) + 5, 1);
 		strcat(filename, user);
