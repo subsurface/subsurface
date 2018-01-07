@@ -169,6 +169,23 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		/* We got a trailer, no samples on this dive */
 		if (strncmp(iter, "ZDT", 3) == 0) {
 			end_ptr = iter - (char *)mem.buffer;
+
+			/* Water temperature */
+			memset(tmpbuf, 0, sizeof(tmpbuf));
+			for (i = 0; i < 5 && iter; ++i)
+				iter = strchr(iter + 1, '|');
+
+			if (iter && iter + 1) {
+				iter = iter + 1;
+				iter_end = strchr(iter, '|');
+
+				if (iter_end) {
+					memcpy(tmpbuf, iter, iter_end - iter);
+					params[pnr_local++] = "waterTemp";
+					params[pnr_local++] = strdup(tmpbuf);
+				}
+			}
+			params[pnr_local] = NULL;
 			ret |= parse_xml_buffer(filename, "<csv></csv>", 11, &dive_table, (const char **)params);
 			continue;
 		}
@@ -203,6 +220,26 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 			return -1;
 		}
 		mem_csv.size = ptr - (char*)mem_csv.buffer;
+
+		iter = parse_dan_new_line(ptr + 1, NL);
+		if (iter && strncmp(iter, "ZDT", 3) == 0) {
+			/* Water temperature */
+			memset(tmpbuf, 0, sizeof(tmpbuf));
+			for (i = 0; i < 5 && iter; ++i)
+				iter = strchr(iter + 1, '|');
+
+			if (iter && iter + 1) {
+				iter = iter + 1;
+				iter_end = strchr(iter, '|');
+
+				if (iter_end) {
+					memcpy(tmpbuf, iter, iter_end - iter);
+					params[pnr_local++] = "waterTemp";
+					params[pnr_local++] = strdup(tmpbuf);
+				}
+			}
+			params[pnr_local] = NULL;
+		}
 
 		if (try_to_xslt_open_csv(filename, &mem_csv, "csv"))
 			return -1;
