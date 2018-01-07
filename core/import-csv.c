@@ -50,6 +50,23 @@ void add_sample_data(struct sample *sample, enum csv_format type, double val)
 	}
 }
 
+char *parse_dan_new_line(char *buf, const char *NL)
+{
+	char *iter = buf;
+
+	if (!iter)
+		return NULL;
+
+	iter = strstr(iter, NL);
+	if (iter) {
+		iter += strlen(NL);
+	} else {
+		fprintf(stderr, "DEBUG: No new line found\n");
+		return NULL;
+	}
+	return iter;
+}
+
 int parse_dan_format(const char *filename, char **params, int pnr)
 {
 	int ret = 0, i;
@@ -144,10 +161,8 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 
 		/* Search for the next line */
 		if (iter)
-			iter = strstr(iter, NL);
-		if (iter) {
-			iter += strlen(NL);
-		} else {
+			iter = parse_dan_new_line(iter, NL);
+		if (!iter) {
 			fprintf(stderr, "DEBUG: No new line found");
 			return -1;
 		}
@@ -169,11 +184,10 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 			end_ptr += ptr - (char *)mem_csv.buffer;
 			return report_error(translate("gettextFromC", "No dive profile found from '%s'"), filename);
 		}
+
 		if (ptr)
-			ptr = strstr(ptr, NL);
-		if (ptr) {
-			ptr += strlen(NL);
-		} else {
+			ptr = parse_dan_new_line(ptr, NL);
+		if (!ptr) {
 			fprintf(stderr, "DEBUG: Data corrupt");
 			return -1;
 		}
