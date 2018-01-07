@@ -162,10 +162,9 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		/* Search for the next line */
 		if (iter)
 			iter = parse_dan_new_line(iter, NL);
-		if (!iter) {
-			fprintf(stderr, "DEBUG: No new line found");
+		if (!iter)
 			return -1;
-		}
+
 		/* We got a trailer, no samples on this dive */
 		if (strncmp(iter, "ZDT", 3) == 0) {
 			end_ptr = iter - (char *)mem.buffer;
@@ -204,10 +203,9 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 
 		if (ptr)
 			ptr = parse_dan_new_line(ptr, NL);
-		if (!ptr) {
-			fprintf(stderr, "DEBUG: Data corrupt");
+		if (!ptr)
 			return -1;
-		}
+
 		end_ptr = ptr - (char *)mem.buffer;
 
 		/* Copy the current dive data to start of mem_csv buffer */
