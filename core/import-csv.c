@@ -137,6 +137,7 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		/* We got a trailer, no samples on this dive */
 		if (strncmp(iter, "ZDT", 3) == 0) {
 			end_ptr = iter - (char *)mem.buffer;
+			ret |= parse_xml_buffer(filename, "<csv></csv>", 11, &dive_table, (const char **)params);
 			continue;
 		}
 
