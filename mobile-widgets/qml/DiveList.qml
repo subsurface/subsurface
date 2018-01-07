@@ -162,9 +162,8 @@ Kirigami.ScrollablePage {
 						anchors.fill: parent
 						enabled: parent.visible
 						onClicked: {
-							parent.visible = false
+							deleteButtonVisible = false
 							timer.stop()
-							detailsWindow.showDiveIndex(index)
 							manager.deleteDive(dive.id)
 						}
 					}

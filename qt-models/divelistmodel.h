@@ -46,6 +46,7 @@ public:
 	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	QHash<int, QByteArray> roleNames() const;
 	QString startAddDive();
+	void resetInternalData();
 	Q_INVOKABLE DiveObjectHelper* at(int i);
 private:
 	QList<DiveObjectHelper*> m_dives;
