@@ -70,7 +70,7 @@ QVariant TripItem::data(int column, int role) const
 			}
 			if (countShown < trip->nrdives)
 				shownText = tr("(%1 shown)").arg(countShown);
-			if (trip->location && *trip->location)
+			if (!empty_string(trip->location))
 				ret = QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives, oneDayTrip) + " "+ shownText;
 			else
 				ret = get_trip_date_string(trip->when, trip->nrdives, oneDayTrip) + shownText;

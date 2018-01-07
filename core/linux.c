@@ -31,12 +31,12 @@ void subsurface_user_info(struct user_info *user)
 	const char *username = getenv("USER");
 
 	if (pwd) {
-		if (pwd->pw_gecos && *pwd->pw_gecos)
+		if (!empty_string(pwd->pw_gecos))
 			user->name = pwd->pw_gecos;
 		if (!username)
 			username = pwd->pw_name;
 	}
-	if (username && *username) {
+	if (!empty_string(username)) {
 		char hostname[64];
 		struct membuffer mb = {};
 		gethostname(hostname, sizeof(hostname));

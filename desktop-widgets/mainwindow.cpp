@@ -102,7 +102,7 @@ extern "C" void showErrorFromC()
 void MainWindow::showErrors()
 {
 	const char *error = get_error_string();
-	if (error && error[0])
+	if (!empty_string(error))
 		getNotificationWidget()->showNotification(error, KMessageWidget::Error);
 }
 
@@ -1766,7 +1766,7 @@ void MainWindow::setAutomaticTitle()
 
 void MainWindow::setTitle()
 {
-	if (!existing_filename || !existing_filename[0]) {
+	if (empty_string(existing_filename)) {
 		setWindowTitle("Subsurface");
 		return;
 	}
