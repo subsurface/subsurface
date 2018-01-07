@@ -140,7 +140,13 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 			continue;
 		}
 
-		ptr = strstr(ptr, "ZDP{");
+		/* After ZDH we should get either ZDT (above) or ZDP */
+		if (strncmp(iter, "ZDP{", 4) != 0) {
+			fprintf(stderr, "DEBUG: Input appears to violate DL7 specification\n");
+			end_ptr = iter - (char *)mem.buffer;
+			continue;
+		}
+
 		if (ptr && ptr[4] == '}') {
 			end_ptr += ptr - (char *)mem_csv.buffer;
 			return report_error(translate("gettextFromC", "No dive profile found from '%s'"), filename);
