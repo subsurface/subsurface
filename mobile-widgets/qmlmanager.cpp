@@ -1244,6 +1244,7 @@ void QMLManager::deleteDive(int id)
 	}
 	DiveListModel::instance()->removeDiveById(id);
 	delete_single_dive(get_idx_by_uniq_id(id));
+	DiveListModel::instance()->resetInternalData();
 	changesNeedSaving();
 }
 
