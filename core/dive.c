@@ -1190,7 +1190,7 @@ static struct event *find_previous_event(struct divecomputer *dc, struct event *
 	struct event *ev = dc->events;
 	struct event *previous = NULL;
 
-	if (same_string(event->name, ""))
+	if (empty_string(event->name))
 		return NULL;
 	while (ev && ev != event) {
 		if (same_string(ev->name, event->name))
@@ -2954,7 +2954,7 @@ void taglist_cleanup(struct tag_entry **tag_list)
 	struct tag_entry **tl = tag_list;
 	while (*tl) {
 		/* skip tags that are empty or that we have seen before */
-		if (same_string((*tl)->tag->name, "") || tag_seen_before(*tag_list, *tl)) {
+		if (empty_string((*tl)->tag->name) || tag_seen_before(*tag_list, *tl)) {
 			*tl = (*tl)->next;
 			continue;
 		}
@@ -3128,7 +3128,7 @@ int count_dives_with_tag(const char *tag)
 	struct dive *d;
 
 	for_each_dive (i, d) {
-		if (same_string(tag, "")) {
+		if (empty_string(tag)) {
 			// count dives with no tags
 			if (d->tag_list == NULL)
 				counter++;
@@ -3148,9 +3148,9 @@ int count_dives_with_person(const char *person)
 	struct dive *d;
 
 	for_each_dive (i, d) {
-		if (same_string(person, "")) {
+		if (empty_string(person)) {
 			// solo dive
-			if (same_string(d->buddy, "") && same_string(d->divemaster, ""))
+			if (empty_string(d->buddy) && empty_string(d->divemaster))
 				counter++;
 		} else if (string_sequence_contains(d->buddy, person) || string_sequence_contains(d->divemaster, person)) {
 			counter++;

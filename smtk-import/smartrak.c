@@ -95,7 +95,7 @@ static void smtk_date_to_tm(char *d_buffer, struct tm *tm_date)
 {
 	int n, d, m, y;
 
-	if ((d_buffer) && (!same_string(d_buffer, ""))) {
+	if ((d_buffer) && (!empty_string(d_buffer))) {
 		n = sscanf(d_buffer, "%d/%d/%d ", &m, &d, &y);
 		y = (y < 70) ? y + 100 : y;
 		if (n == 3) {
@@ -118,7 +118,7 @@ static void smtk_time_to_tm(char *t_buffer, struct tm *tm_date)
 {
 	int n, hr, min, sec;
 
-	if ((t_buffer) && (!same_string(t_buffer, ""))) {
+	if ((t_buffer) && (!empty_string(t_buffer))) {
 		n = sscanf(t_buffer, "%*[0-9/] %d:%d:%d ", &hr, &min, &sec);
 		if (n == 3) {
 			tm_date->tm_hour = hr;
@@ -143,7 +143,7 @@ static unsigned int smtk_time_to_secs(char *t_buffer)
 {
 	int n, hr, min, sec;
 
-	if (!same_string(t_buffer, "")) {
+	if (!empty_string(t_buffer)) {
 		n = sscanf(t_buffer, "%*[0-9/] %d:%d:%d ", &hr, &min, &sec);
 		return((n == 3) ? (((hr*60)+min)*60)+sec : 0);
 	} else {
@@ -607,11 +607,11 @@ static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx)
 	 * it's not a good idea to use a complex data structure and algorithm.
 	 */
 	while (mdb_fetch_row(table)) {
-		if (!same_string(col[3]->bind_ptr, ""))
+		if (!empty_string(col[3]->bind_ptr))
 			fullname = smtk_concat_str(fullname, " ", "%s", col[3]->bind_ptr);
-		if (!same_string(col[4]->bind_ptr, ""))
+		if (!empty_string(col[4]->bind_ptr))
 			fullname = smtk_concat_str(fullname, " ", "%s", col[4]->bind_ptr);
-		if (!same_string(col[2]->bind_ptr, ""))
+		if (!empty_string(col[2]->bind_ptr))
 			fullname = smtk_concat_str(fullname, " ", "%s", col[2]->bind_ptr);
 		if (fullname && !same_string(col[1]->bind_ptr, fullname))
 			buddies[atoi(col[0]->bind_ptr)] = smtk_concat_str(buddies[atoi(col[0]->bind_ptr)], "", "%s (%s)", col[1]->bind_ptr, fullname);

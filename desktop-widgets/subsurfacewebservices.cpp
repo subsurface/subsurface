@@ -272,8 +272,8 @@ SubsurfaceWebServices::SubsurfaceWebServices(QWidget *parent, Qt::WindowFlags f)
 	QString userid(prefs.userid);
 
 	if (userid.isEmpty() &&
-	    !same_string(prefs.cloud_storage_email, "") &&
-	    !same_string(prefs.cloud_storage_password, "") &&
+	    !empty_string(prefs.cloud_storage_email) &&
+	    !empty_string(prefs.cloud_storage_password) &&
 	    GpsLocation::hasInstance())
 		userid = GpsLocation::instance()->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
 

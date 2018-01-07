@@ -268,7 +268,7 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
 		const char *sha = get_sha(git, branch);
-		if (!same_string(sha, "") &&
+		if (!empty_string(sha) &&
 		    same_string(sha, current_sha)) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);
 			free(current_sha);
@@ -301,7 +301,7 @@ int parse_file(const char *filename)
 	 * get the SHA and compare with what we currently have */
 	if (git && git != dummy_git_repository) {
 		const char *sha = get_sha(git, branch);
-		if (!same_string(sha, "") &&
+		if (!empty_string(sha) &&
 		    same_string(sha, current_sha) &&
 		    !unsaved_changes()) {
 			fprintf(stderr, "already have loaded SHA %s - don't load again\n", sha);

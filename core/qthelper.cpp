@@ -408,7 +408,7 @@ extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path
 
 extern "C" bool string_sequence_contains(const char *string_sequence, const char *text)
 {
-	if (same_string(text, "") || same_string(string_sequence, ""))
+	if (empty_string(text) || empty_string(string_sequence))
 		return false;
 
 	QString stringSequence(string_sequence);
@@ -525,7 +525,7 @@ QString uiLanguage(QLocale *callerLoc)
 	if (callerLoc)
 		*callerLoc = loc;
 
-	if (!prefs.date_format_override || same_string(prefs.date_format_short, "") || same_string(prefs.date_format, "")) {
+	if (!prefs.date_format_override || empty_string(prefs.date_format_short) || empty_string(prefs.date_format)) {
 		// derive our standard date format from what the locale gives us
 		// the short format is fine
 		// the long format uses long weekday and month names, so replace those with the short ones
@@ -536,16 +536,16 @@ QString uiLanguage(QLocale *callerLoc)
 		// special hack for Swedish as our switching from long weekday names to short weekday names
 		// messes things up there
 		dateFormat.replace("'en' 'den' d:'e'", " d");
-		if (!prefs.date_format_override || same_string(prefs.date_format, "")) {
+		if (!prefs.date_format_override || empty_string(prefs.date_format)) {
 			free((void *)prefs.date_format);
 			prefs.date_format = strdup(qPrintable(dateFormat));
 		}
-		if (!prefs.date_format_override || same_string(prefs.date_format_short, "")) {
+		if (!prefs.date_format_override || empty_string(prefs.date_format_short)) {
 			free((void *)prefs.date_format_short);
 			prefs.date_format_short = strdup(qPrintable(shortDateFormat));
 		}
 	}
-	if (!prefs.time_format_override || same_string(prefs.time_format, "")) {
+	if (!prefs.time_format_override || empty_string(prefs.time_format)) {
 		timeFormat = loc.timeFormat();
 		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
@@ -1186,7 +1186,7 @@ void hashPicture(struct picture *picture)
 		return;
 	char *oldHash = copy_string(picture->hash);
 	learnHash(picture, hashFile(localFilePath(picture->filename)));
-	if (!same_string(picture->hash, "") && !same_string(picture->hash, oldHash))
+	if (!empty_string(picture->hash) && !same_string(picture->hash, oldHash))
 		mark_divelist_changed((true));
 	free(oldHash);
 	picture_free(picture);
@@ -1430,7 +1430,7 @@ int getCloudURL(QString &filename)
 {
 	QString email = QString(prefs.cloud_storage_email);
 	email.replace(QRegularExpression("[^a-zA-Z0-9@._+-]"), "");
-	if (email.isEmpty() || same_string(prefs.cloud_storage_password, ""))
+	if (email.isEmpty() || empty_string(prefs.cloud_storage_password))
 		return report_error("Please configure Cloud storage email and password in the preferences");
 	if (email != prefs.cloud_storage_email_encoded) {
 		free((void *)prefs.cloud_storage_email_encoded);

@@ -309,7 +309,7 @@ void QMLManager::finishSetup()
 		// but we need to make sure we stay the only ones accessing git storage
 		alreadySaving = true;
 		openLocalThenRemote(url);
-	} else if (!same_string(existing_filename, "") && credentialStatus() != CS_UNKNOWN) {
+	} else if (!empty_string(existing_filename) && credentialStatus() != CS_UNKNOWN) {
 		setCredentialStatus(CS_NOCLOUD);
 		saveCloudCredentials();
 		appendTextToLog(tr("working in no-cloud mode"));
@@ -433,8 +433,8 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 {
 	// if the cloud credentials are present, we should try to get the GPS Webservice ID
 	// and (if we haven't done so) load the dive list
-	if (!same_string(prefs.cloud_storage_email, "") &&
-	    !same_string(prefs.cloud_storage_password, "")) {
+	if (!empty_string(prefs.cloud_storage_email) &&
+	    !empty_string(prefs.cloud_storage_password)) {
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
@@ -540,7 +540,7 @@ void QMLManager::retrieveUserid()
 	setCredentialStatus(CS_VERIFIED);
 	QString userid(prefs.userid);
 	if (userid.isEmpty()) {
-		if (same_string(prefs.cloud_storage_email, "") || same_string(prefs.cloud_storage_password, "")) {
+		if (empty_string(prefs.cloud_storage_email) || empty_string(prefs.cloud_storage_password)) {
 			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
 			revertToNoCloudIfNeeded();
 			return;
@@ -1117,7 +1117,7 @@ void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
 		if (credentialStatus() == CS_NOCLOUD) {
-			if (same_string(existing_filename, "")) {
+			if (empty_string(existing_filename)) {
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				if (git_create_local_repo(filename))
 					appendTextToLog(get_error_string());
@@ -1682,7 +1682,7 @@ QStringList QMLManager::cylinderInit() const
 	int i = 0;
 	for_each_dive (i, d) {
 		for (int j = 0; j < MAX_CYLINDERS; j++) {
-			if (! same_string(d->cylinder[j].type.description, ""))
+			if (!empty_string(d->cylinder[j].type.description))
 				cylinders << d->cylinder[j].type.description;
 		}
 	}

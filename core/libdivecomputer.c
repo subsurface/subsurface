@@ -232,7 +232,7 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			fill_default_cylinder(&dive->cylinder[i]);
 		}
 		/* whatever happens, make sure there is a name for the cylinder */
-		if (same_string(dive->cylinder[i].type.description, ""))
+		if (empty_string(dive->cylinder[i].type.description))
 			dive->cylinder[i].type.description = strdup(translate("gettextFromC", "unknown"));
 	}
 	return DC_STATUS_SUCCESS;

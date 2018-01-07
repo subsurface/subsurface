@@ -151,7 +151,7 @@ void DivePlannerPointsModel::setupCylinders()
 			if (!cylinder_none(&(displayed_dive.cylinder[i])))
 				return;		// We have at least one cylinder
 	}
-	if (!same_string(prefs.default_cylinder, "")) {
+	if (!empty_string(prefs.default_cylinder)) {
 		fill_default_cylinder(&displayed_dive.cylinder[0]);
 	}
 	if (cylinder_none(&displayed_dive.cylinder[0])) {

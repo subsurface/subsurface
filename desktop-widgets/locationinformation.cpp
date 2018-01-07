@@ -186,7 +186,7 @@ void LocationInformationWidget::acceptChanges()
 	// if the user entered a different contriy, first update the taxonomy
 	// for the displayed dive site; this below will get copied into the currentDs
 	if (!same_string(uiString, taxonomy_get_country(&displayed_dive_site.taxonomy)) &&
-	    !same_string(uiString, ""))
+	    !empty_string(uiString))
 		taxonomy_set_country(&displayed_dive_site.taxonomy, uiString, taxonomy_origin::GEOMANUAL);
 	else
 		free(uiString);

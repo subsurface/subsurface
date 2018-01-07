@@ -217,7 +217,7 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 		dive->dive_site_uuid = uuid;
 	} else {
 		// we already had a dive site linked to the dive
-		if (same_string(ds->name, "")) {
+		if (empty_string(ds->name)) {
 			ds->name = strdup(name);
 		} else {
 			// and that dive site had a name. that's weird - if our name is different, add it to the notes

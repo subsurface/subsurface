@@ -718,7 +718,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	while (event) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
-			if (same_string(event->name, "") ||
+			if (empty_string(event->name) ||
 			    !(strcmp(event->name, "heading") == 0 ||
 			      (same_string(event->name, "SP change") && event->time.seconds == 0) ||
 			      event_is_gaschange(event) ||
@@ -1488,7 +1488,7 @@ void ProfileWidget2::hideEvents()
 	if (QMessageBox::question(this,
 				  TITLE_OR_TEXT(tr("Hide events"), tr("Hide all %1 events?").arg(event->name)),
 				  QMessageBox::Ok | QMessageBox::Cancel) == QMessageBox::Ok) {
-		if (!same_string(event->name, "")) {
+		if (!empty_string(event->name)) {
 			for (int i = 0; i < evn_used; i++) {
 				if (same_string(event->name, ev_namelist[i].ev_name)) {
 					ev_namelist[i].plot_ev = false;

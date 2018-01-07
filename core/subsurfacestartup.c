@@ -159,7 +159,7 @@ void print_files()
 	const char *filename, *local_git;
 
 	printf("\nFile locations:\n\n");
-	if (!same_string(prefs.cloud_storage_email, "") && !same_string(prefs.cloud_storage_password, "")) {
+	if (!empty_string(prefs.cloud_storage_email) && !empty_string(prefs.cloud_storage_password)) {
 		filename = cloud_url();
 
 		is_git_repository(filename, &branch, &remote, true);
