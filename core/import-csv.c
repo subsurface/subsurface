@@ -528,7 +528,8 @@ int parse_txt_file(const char *filename, const char *csv)
 		cur_cylinder_index++;
 
 		lineptr = strstr(memtxt.buffer, "Dive started at");
-		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n')) && ++lineptr) {
+		while (!empty_string(lineptr) && (lineptr = strchr(lineptr, '\n'))) {
+			++lineptr;	// Skip over '\n'
 			key = next_mkvi_key(lineptr);
 			if (!key)
 				break;
