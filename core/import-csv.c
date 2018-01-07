@@ -76,6 +76,7 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 
 	while ((end_ptr < mem.size) && (ptr = strstr(mem.buffer + end_ptr, "ZDH"))) {
 		char *iter_end = NULL;
+		unsigned int pnr_local = pnr;
 
 		/*
 		 * Process the dives, but let the last round be parsed
@@ -93,8 +94,8 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		if (iter) {
 			memcpy(tmpbuf, ptr + 4, iter - ptr - 4);
 			tmpbuf[iter - ptr - 4] = 0;
-			params[pnr] = "diveNro";
-			params[pnr + 1] = strdup(tmpbuf);
+			params[pnr_local++] = "diveNro";
+			params[pnr_local++] = strdup(tmpbuf);
 		}
 
 		//fprintf(stderr, "DEBUG: BEGIN end_ptr %d round %d <%s>\n", end_ptr, j++, ptr);
@@ -113,8 +114,8 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		/* Setting date */
 		memcpy(tmpbuf, iter, 8);
 		tmpbuf[8] = 0;
-		params[pnr + 2] = "date";
-		params[pnr + 3] = strdup(tmpbuf);
+		params[pnr_local++] = "date";
+		params[pnr_local++] = strdup(tmpbuf);
 
 		/* Setting time, gotta prepend it with 1 to
 		 * avoid octal parsing (this is stripped out in
@@ -122,9 +123,8 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		tmpbuf[0] = '1';
 		memcpy(tmpbuf + 1, iter + 8, 6);
 		tmpbuf[7] = 0;
-		params[pnr + 4] = "time";
-		params[pnr + 5] = strdup(tmpbuf);
-		params[pnr + 6] = NULL;
+		params[pnr_local++] = "time";
+		params[pnr_local++] = strdup(tmpbuf);
 
 		/* Air temperature */
 		memset(tmpbuf, 0, sizeof(tmpbuf));
@@ -136,12 +136,11 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 
 			if (iter_end) {
 				memcpy(tmpbuf, iter, iter_end - iter);
-				params[pnr + 6] = "airTemp";
-				params[pnr + 7] = strdup(tmpbuf);
-				params[pnr + 8] = NULL;
+				params[pnr_local++] = "airTemp";
+				params[pnr_local++] = strdup(tmpbuf);
 			}
 		}
-
+		params[pnr_local] = NULL;
 
 		/* Search for the next line */
 		if (iter)
