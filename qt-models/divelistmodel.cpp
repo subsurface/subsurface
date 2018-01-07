@@ -76,6 +76,7 @@ void DiveListModel::insertDive(int i, DiveObjectHelper *newDive)
 void DiveListModel::removeDive(int i)
 {
 	beginRemoveRows(QModelIndex(), i, i);
+	delete m_dives.at(i);
 	m_dives.removeAt(i);
 	endRemoveRows();
 }
