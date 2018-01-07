@@ -4,6 +4,7 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <time.h>
 #include <math.h>
 #include <zip.h>
@@ -27,17 +28,17 @@
 
 #define IS_FP_SAME(_a, _b) (fabs((_a) - (_b)) <= 0.000001 * MAX(fabs(_a), fabs(_b)))
 
-static inline int same_string(const char *a, const char *b)
+static inline bool same_string(const char *a, const char *b)
 {
 	return !strcmp(a ?: "", b ?: "");
 }
 
-static inline int same_string_caseinsensitive(const char *a, const char *b)
+static inline bool same_string_caseinsensitive(const char *a, const char *b)
 {
 	return !strcasecmp(a ?: "", b ?: "");
 }
 
-static inline int includes_string_caseinsensitive(const char *haystack, const char *needle)
+static inline bool includes_string_caseinsensitive(const char *haystack, const char *needle)
 {
 	if (!needle)
 		return 1; /* every string includes the NULL string */
@@ -66,8 +67,6 @@ static inline char *copy_string(const char *s)
 
 #ifdef __cplusplus
 extern "C" {
-#else
-#include <stdbool.h>
 #endif
 
 extern int last_xml_version;
