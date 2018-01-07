@@ -500,7 +500,7 @@ void TestParse::parseDL7()
 	clear_dive_file_data();
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
 				params, pnr - 1 , "DL7"), 0);
-	QCOMPARE(dive_table.nr, 1);
+	QCOMPARE(dive_table.nr, 3);
 
 	QCOMPARE(save_dives("./testdl7out.ssrf"), 0);
 	FILE_COMPARE("./testdl7out.ssrf",
