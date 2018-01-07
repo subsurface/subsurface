@@ -1163,7 +1163,7 @@ QString localFilePath(const QString originalFilename)
 
 QString fileFromHash(const char *hash)
 {
-	if (!hash || !*hash)
+	if (empty_string(hash))
 		return "";
 	QMutexLocker locker(&hashOfMutex);
 

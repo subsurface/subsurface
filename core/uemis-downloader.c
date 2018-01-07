@@ -112,7 +112,7 @@ static void uemis_add_string(const char *buffer, char **text, const char *delimi
 {
 	/* do nothing if this is an empty buffer (Uemis sometimes returns a single
 	 * space for empty buffers) */
-	if (!buffer || !*buffer || (*buffer == ' ' && *(buffer + 1) == '\0'))
+	if (empty_string(buffer) || (*buffer == ' ' && *(buffer + 1) == '\0'))
 		return;
 	if (!*text) {
 		*text = strdup(buffer);

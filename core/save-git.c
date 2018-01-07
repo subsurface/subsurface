@@ -1088,11 +1088,11 @@ static void create_commit_message(struct membuffer *msg, bool create_empty)
 			nr = dive->number;
 
 		put_format(msg, "dive %d: %s", nr, location);
-		if (trip && trip->location && *trip->location && strcmp(trip->location, location))
+		if (trip && !empty_string(trip->location) && strcmp(trip->location, location))
 			put_format(msg, " (%s)", trip->location);
 		put_format(msg, "\n");
 		do {
-			if (dc->model && *dc->model) {
+			if (!empty_string(dc->model)) {
 				put_format(msg, "%s%s", sep, dc->model);
 				sep = ", ";
 			}

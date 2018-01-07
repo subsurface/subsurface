@@ -158,7 +158,7 @@ extern "C" void set_dc_nickname(struct dive *dive)
 	struct divecomputer *dc;
 
 	for_each_dc (dive, dc) {
-		if (dc->model && *dc->model && dc->deviceid &&
+		if (!empty_string(dc->model) && dc->deviceid &&
 		    !dcList.getExact(dc->model, dc->deviceid)) {
 			// we don't have this one, yet
 			const DiveComputerNode *existNode = dcList.get(dc->model);

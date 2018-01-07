@@ -389,4 +389,3 @@ int parse_file(const char *filename)
 	free(mem.buffer);
 	return ret;
 }
-
