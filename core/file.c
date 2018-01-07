@@ -115,7 +115,7 @@ int try_to_open_zip(const char *filename)
 	return success;
 }
 
-int db_test_func(void *param, int columns, char **data, char **column)
+static int db_test_func(void *param, int columns, char **data, char **column)
 {
 	(void) param;
 	(void) columns;
@@ -184,38 +184,6 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	sqlite3_close(handle);
 
 	return retval;
-}
-
-timestamp_t parse_date(const char *date)
-{
-	int hour, min, sec;
-	struct tm tm;
-	char *p;
-
-	memset(&tm, 0, sizeof(tm));
-	tm.tm_mday = strtol(date, &p, 10);
-	if (tm.tm_mday < 1 || tm.tm_mday > 31)
-		return 0;
-	for (tm.tm_mon = 0; tm.tm_mon < 12; tm.tm_mon++) {
-		if (!memcmp(p, monthname(tm.tm_mon), 3))
-			break;
-	}
-	if (tm.tm_mon > 11)
-		return 0;
-	date = p + 3;
-	tm.tm_year = strtol(date, &p, 10);
-	if (date == p)
-		return 0;
-	if (tm.tm_year < 70)
-		tm.tm_year += 2000;
-	if (tm.tm_year < 100)
-		tm.tm_year += 1900;
-	if (sscanf(p, "%d:%d:%d", &hour, &min, &sec) != 3)
-		return 0;
-	tm.tm_hour = hour;
-	tm.tm_min = min;
-	tm.tm_sec = sec;
-	return utc_mktime(&tm);
 }
 
 /*
@@ -389,4 +357,3 @@ int parse_file(const char *filename)
 	free(mem.buffer);
 	return ret;
 }
-
