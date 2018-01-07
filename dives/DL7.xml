@@ -11,13 +11,13 @@
 <dives>
 <dive number='1' date='2018-01-01' time='10:10:00'>
   <divecomputer model='Imported from CSV' deviceid='ffffffff'>
-  <temperature air='27.0 C' />
+  <temperature air='27.0 C' water='25.0 C' />
   </divecomputer>
 </dive>
 <dive number='2' date='2018-01-02' time='10:10:00' duration='60:00 min'>
   <divecomputer model='Imported from CSV' deviceid='ffffffff'>
   <depth max='10.0 m' mean='9.508 m' />
-  <temperature air='27.0 C' />
+  <temperature air='27.0 C' water='25.0 C' />
   <sample time='0:00 min' depth='1.0 m' />
   <sample time='1:00 min' depth='10.0 m' />
   <sample time='55:00 min' depth='10.0 m' />
@@ -26,7 +26,7 @@
 </dive>
 <dive number='3' date='2018-01-03' time='10:10:00'>
   <divecomputer model='Imported from CSV' deviceid='ffffffff'>
-  <temperature air='28.0 C' />
+  <temperature air='28.0 C' water='26.0 C' />
   </divecomputer>
 </dive>
 </dives>
