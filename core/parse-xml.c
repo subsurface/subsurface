@@ -1610,16 +1610,6 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	return ret;
 }
 
-void parse_mkvi_buffer(struct membuffer *txt, struct membuffer *csv, const char *starttime)
-{
-	(void) csv;
-	(void) txt;
-	dive_start();
-	divedate(starttime, &cur_dive->when);
-	dive_end();
-}
-
-
 /*
  * Parse a unsigned 32-bit integer in little-endian mode,
  * that is seconds since Jan 1, 2000.
