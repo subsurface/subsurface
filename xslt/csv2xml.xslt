@@ -33,6 +33,8 @@
   <xsl:param name="GF" select="GF"/>
   <xsl:param name="maxDepth" select="maxDepth"/>
   <xsl:param name="meanDepth" select="meanDepth"/>
+  <xsl:param name="airTemp" select="airTemp"/>
+  <xsl:param name="waterTemp" select="waterTemp"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -218,6 +220,35 @@
                   </xsl:attribute>
                 </xsl:if>
               </depth>
+            </xsl:if>
+
+            <xsl:if test="string-length($airTemp) &gt; 0 or string-length($waterTemp) &gt; 0">
+              <temperature>
+                <xsl:if test="string-length($airTemp) &gt; 0">
+                  <xsl:attribute name="air">
+                    <xsl:choose>
+                      <xsl:when test="$units = 0">
+                        <xsl:value-of select="translate($airTemp, ',', '.')"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="concat(format-number((translate(translate($airTemp, translate($airTemp, '0123456789,.', ''), ''), ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                </xsl:if>
+                <xsl:if test="string-length($waterTemp) &gt; 0">
+                  <xsl:attribute name="water">
+                    <xsl:choose>
+                      <xsl:when test="$units = 0">
+                        <xsl:value-of select="translate($waterTemp, ',', '.')"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="concat(format-number((translate(translate($waterTemp, translate($waterTemp, '0123456789,.', ''), ''), ',', '.') - 32) * 5 div 9, '0.0'), ' C')"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                </xsl:if>
+              </temperature>
             </xsl:if>
 
             <xsl:call-template name="printLine">
