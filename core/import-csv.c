@@ -14,6 +14,38 @@
 #define MATCH(buffer, pattern) \
 	memcmp(buffer, pattern, strlen(pattern))
 
+static timestamp_t parse_date(const char *date)
+{
+	int hour, min, sec;
+	struct tm tm;
+	char *p;
+
+	memset(&tm, 0, sizeof(tm));
+	tm.tm_mday = strtol(date, &p, 10);
+	if (tm.tm_mday < 1 || tm.tm_mday > 31)
+		return 0;
+	for (tm.tm_mon = 0; tm.tm_mon < 12; tm.tm_mon++) {
+		if (!memcmp(p, monthname(tm.tm_mon), 3))
+			break;
+	}
+	if (tm.tm_mon > 11)
+		return 0;
+	date = p + 3;
+	tm.tm_year = strtol(date, &p, 10);
+	if (date == p)
+		return 0;
+	if (tm.tm_year < 70)
+		tm.tm_year += 2000;
+	if (tm.tm_year < 100)
+		tm.tm_year += 1900;
+	if (sscanf(p, "%d:%d:%d", &hour, &min, &sec) != 3)
+		return 0;
+	tm.tm_hour = hour;
+	tm.tm_min = min;
+	tm.tm_sec = sec;
+	return utc_mktime(&tm);
+}
+
 void add_sample_data(struct sample *sample, enum csv_format type, double val)
 {
 	switch (type) {
@@ -50,7 +82,7 @@ void add_sample_data(struct sample *sample, enum csv_format type, double val)
 	}
 }
 
-char *parse_dan_new_line(char *buf, const char *NL)
+static char *parse_dan_new_line(char *buf, const char *NL)
 {
 	char *iter = buf;
 
@@ -67,7 +99,8 @@ char *parse_dan_new_line(char *buf, const char *NL)
 	return iter;
 }
 
-int parse_dan_format(const char *filename, char **params, int pnr)
+static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag);
+static int parse_dan_format(const char *filename, char **params, int pnr)
 {
 	int ret = 0, i;
 	size_t end_ptr = 0;
@@ -319,7 +352,7 @@ int parse_csv_file(const char *filename, char **params, int pnr, const char *csv
 }
 
 
-int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag)
+static int try_to_xslt_open_csv(const char *filename, struct memblock *mem, const char *tag)
 {
 	char *buf;
 
@@ -422,7 +455,7 @@ int try_to_open_csv(struct memblock *mem, enum csv_format type)
 	return 1;
 }
 
-char *parse_mkvi_value(const char *haystack, const char *needle)
+static char *parse_mkvi_value(const char *haystack, const char *needle)
 {
 	char *lineptr, *valueptr, *endptr, *ret = NULL;
 
@@ -445,7 +478,7 @@ char *parse_mkvi_value(const char *haystack, const char *needle)
 	return ret;
 }
 
-char *next_mkvi_key(const char *haystack)
+static char *next_mkvi_key(const char *haystack)
 {
 	char *valueptr, *endptr, *ret = NULL;
 
@@ -751,6 +784,7 @@ int parse_txt_file(const char *filename, const char *csv)
 #define TIMESTR 6
 
 #define SBPARAMS 40
+static int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
 int parse_seabear_log(const char *filename)
 {
 	char *params[SBPARAMS];
@@ -766,7 +800,7 @@ int parse_seabear_log(const char *filename)
 }
 
 
-int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
+static int parse_seabear_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate)
 {
 	int ret, i;
 	struct memblock mem;

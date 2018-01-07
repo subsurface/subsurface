@@ -899,7 +899,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	nonmatch("sample", name, buf);
 }
 
-void try_to_fill_userid(const char *name, char *buf)
+static void try_to_fill_userid(const char *name, char *buf)
 {
 	(void) name;
 	if (prefs.save_userid_local)
@@ -1557,7 +1557,7 @@ static void reset_all(void)
  * but once we decode the HTML encoded characters they turn
  * into UTF-8 instead. So skip the incorrect encoding
  * declaration and decode the HTML encoded characters */
-const char *preprocess_divelog_de(const char *buffer)
+static const char *preprocess_divelog_de(const char *buffer)
 {
 	char *ret = strstr(buffer, "<DIVELOGSDATA>");
 
