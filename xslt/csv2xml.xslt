@@ -31,6 +31,8 @@
   <xsl:param name="Firmware" select="Firmware"/>
   <xsl:param name="Serial" select="Serial"/>
   <xsl:param name="GF" select="GF"/>
+  <xsl:param name="maxDepth" select="maxDepth"/>
+  <xsl:param name="meanDepth" select="meanDepth"/>
   <xsl:output method="xml" indent="yes"/>
 
   <xsl:variable name="lf"><xsl:text>
@@ -187,6 +189,35 @@
                   <xsl:value-of select="$GF"/>
                 </xsl:attribute>
               </extradata>
+            </xsl:if>
+
+            <xsl:if test="string-length($maxDepth) &gt; 0 or string-length($meanDepth) &gt; 0">
+              <depth>
+                <xsl:if test="string-length($maxDepth) &gt; 0">
+                  <xsl:attribute name="max">
+                    <xsl:choose>
+                      <xsl:when test="$units = 0">
+                        <xsl:value-of select="translate($maxDepth, ',', '.')"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="round(translate(translate($maxDepth, translate($maxDepth, '0123456789,.', ''), ''), ',', '.') * 0.3048 * 1000) div 1000"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                </xsl:if>
+                <xsl:if test="string-length($meanDepth) &gt; 0">
+                  <xsl:attribute name="mean">
+                    <xsl:choose>
+                      <xsl:when test="$units = 0">
+                        <xsl:value-of select="translate($meanDepth, ',', '.')"/>
+                      </xsl:when>
+                      <xsl:otherwise>
+                        <xsl:value-of select="round(translate(translate($meanDepth, translate($meanDepth, '0123456789,.', ''), ''), ',', '.') * 0.3048 * 1000) div 1000"/>
+                      </xsl:otherwise>
+                    </xsl:choose>
+                  </xsl:attribute>
+                </xsl:if>
+              </depth>
             </xsl:if>
 
             <xsl:call-template name="printLine">
