@@ -125,6 +125,21 @@ int parse_dan_format(const char *filename, char **params, int pnr)
 		params[pnr + 5] = strdup(tmpbuf);
 		params[pnr + 6] = NULL;
 
+		/* Search for the next line */
+		if (iter)
+			iter = strstr(iter, NL);
+		if (iter) {
+			iter += strlen(NL);
+		} else {
+			fprintf(stderr, "DEBUG: No new line found");
+			return -1;
+		}
+		/* We got a trailer, no samples on this dive */
+		if (strncmp(iter, "ZDT", 3) == 0) {
+			end_ptr = iter - (char *)mem.buffer;
+			continue;
+		}
+
 		ptr = strstr(ptr, "ZDP{");
 		if (ptr && ptr[4] == '}') {
 			end_ptr += ptr - (char *)mem_csv.buffer;
