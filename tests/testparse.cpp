@@ -452,7 +452,7 @@ void TestParse::testExport()
 
 void TestParse::parseDL7()
 {
-	char *params[47];
+	char *params[51];
 	int pnr = 0;
 
 	params[pnr++] = strdup("dateField");
