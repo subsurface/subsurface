@@ -138,7 +138,6 @@ slots: // Necessary to call from QAction's signals.
 #endif
 
 protected:
-	virtual ~ProfileWidget2();
 	void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 #ifndef SUBSURFACE_MOBILE
 	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
