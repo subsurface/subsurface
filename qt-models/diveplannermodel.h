@@ -52,7 +52,6 @@ public:
 	divedatapoint at(int row);
 	int size();
 	struct diveplan &getDiveplan();
-	QStringList &getGasList();
 	int lastEnteredPoint();
 	void removeDeco();
 	static bool addingDeco;
