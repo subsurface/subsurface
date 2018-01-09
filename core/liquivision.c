@@ -310,6 +310,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 		unsigned int event_code, d = 0, e;
 		struct lv_event event;
+		memset(&event, 0, sizeof(event));
 
 		// Loop through events
 		for (e = 0; e < ps_count; e++) {
