@@ -1,31 +1,47 @@
 # the data models that will interface
 # with the views.
-set(SUBSURFACE_MODELS_LIB_SRCS
+
+# models used both mobile and desktop builds
+set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	cleanertablemodel.cpp
 	cylindermodel.cpp
-	diveplannermodel.cpp
 	models.cpp
-	filtermodels.cpp
 	tankinfomodel.cpp
-	weigthsysteminfomodel.cpp
-	weightmodel.cpp
-	divecomputermodel.cpp
-	treemodel.cpp
-	yearlystatisticsmodel.cpp
-	divetripmodel.cpp
-	divecomputerextradatamodel.cpp
-	completionmodels.cpp
 	divepicturemodel.cpp
+	diveplannermodel.cpp
+	treemodel.cpp
 	diveplotdatamodel.cpp
-	divelocationmodel.cpp
-	ssrfsortfilterproxymodel.cpp
-	divelistmodel.cpp
-	gpslistmodel.cpp
 	diveimportedmodel.cpp
-	messagehandlermodel.cpp
-	maplocationmodel.cpp
 )
 
-source_group("Subsurface Models" FILES ${SUBSURFACE_MODELS})
-add_library(subsurface_models STATIC ${SUBSURFACE_MODELS_LIB_SRCS})
-target_link_libraries(subsurface_models ${QT_LIBRARIES})
+# models exclusively used in desktop builds
+set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
+	maplocationmodel.cpp
+	yearlystatisticsmodel.cpp
+	weigthsysteminfomodel.cpp
+ 	weightmodel.cpp
+	filtermodels.cpp
+	divecomputermodel.cpp
+	divetripmodel.cpp
+	divecomputerextradatamodel.cpp
+ 	completionmodels.cpp
+	divelocationmodel.cpp
+	ssrfsortfilterproxymodel.cpp
+)
+
+# models exclusively used in mobile builds
+set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
+	divelistmodel.cpp
+	messagehandlermodel.cpp
+	gpslistmodel.cpp
+)
+
+if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
+	add_library(subsurface_models_desktop STATIC ${SUBSURFACE_GENERIC_MODELS_LIB_SRCS}
+		${SUBSURFACE_DESKTOP_MODELS_LIB_SRCS})
+	target_link_libraries(subsurface_models_desktop ${QT_LIBRARIES})
+elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
+	add_library(subsurface_models_mobile STATIC ${SUBSURFACE_GENERIC_MODELS_LIB_SRCS}
+		${SUBSURFACE_MOBILE_MODELS_LIB_SRCS})
+	target_link_libraries(subsurface_models_mobile ${QT_LIBRARIES})
+endif()
