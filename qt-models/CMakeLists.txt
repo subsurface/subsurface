@@ -3,28 +3,28 @@
 
 # models used both mobile and desktop builds
 set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
-	cleanertablemodel.cpp
-	cylindermodel.cpp
-	models.cpp
-	tankinfomodel.cpp
 	divepicturemodel.cpp
-	diveplannermodel.cpp
-	treemodel.cpp
 	diveplotdatamodel.cpp
 	diveimportedmodel.cpp
 )
 
 # models exclusively used in desktop builds
 set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
+	cleanertablemodel.cpp
+	models.cpp
+	tankinfomodel.cpp
+	treemodel.cpp
 	maplocationmodel.cpp
+	cylindermodel.cpp
 	yearlystatisticsmodel.cpp
 	weigthsysteminfomodel.cpp
- 	weightmodel.cpp
+	weightmodel.cpp
 	filtermodels.cpp
 	divecomputermodel.cpp
 	divetripmodel.cpp
+	diveplannermodel.cpp
 	divecomputerextradatamodel.cpp
- 	completionmodels.cpp
+	completionmodels.cpp
 	divelocationmodel.cpp
 	ssrfsortfilterproxymodel.cpp
 )

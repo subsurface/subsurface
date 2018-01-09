@@ -606,8 +606,13 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	 * so I'll *not* calculate everything if something is not being
 	 * shown.
 	 */
+
 	plotInfo = calculate_max_limits_new(&displayed_dive, currentdc);
+#ifndef SUBSURFACE_MOBILE
 	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, &DivePlannerPointsModel::instance()->final_deco_state);
+#else
+	create_plot_info_new(&displayed_dive, currentdc, &plotInfo, !shouldCalculateMaxDepth, nullptr);
+#endif
 	int newMaxtime = get_maxtime(&plotInfo);
 	if (shouldCalculateMaxTime || newMaxtime > maxtime)
 		maxtime = newMaxtime;
@@ -1662,11 +1667,11 @@ void ProfileWidget2::editName()
 
 void ProfileWidget2::disconnectTemporaryConnections()
 {
+#ifndef SUBSURFACE_MOBILE
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
 	disconnect(plannerModel, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(replot()));
 	disconnect(plannerModel, SIGNAL(cylinderModelEdited()), this, SLOT(replot()));
 
-#ifndef SUBSURFACE_MOBILE
 	disconnect(plannerModel, SIGNAL(rowsInserted(const QModelIndex &, int, int)),
 		   this, SLOT(pointInserted(const QModelIndex &, int, int)));
 	disconnect(plannerModel, SIGNAL(rowsRemoved(const QModelIndex &, int, int)),
