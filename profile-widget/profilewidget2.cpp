@@ -1004,6 +1004,13 @@ bool ProfileWidget2::eventFilter(QObject *object, QEvent *event)
 }
 #endif
 
+template <typename T>
+static void hideAll(T &container)
+{
+	Q_FOREACH (auto *item, container)
+		item->setVisible(false);
+}
+
 void ProfileWidget2::setEmptyState()
 {
 	// Then starting Empty State, move the background up.
@@ -1047,18 +1054,15 @@ void ProfileWidget2::setEmptyState()
 	heartBeatItem->setVisible(false);
 #endif
 
-#define HIDE_ALL(TYPE, CONTAINER) \
-	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
 #ifndef SUBSURFACE_MOBILE
-	HIDE_ALL(DiveCalculatedTissue, allTissues);
-	HIDE_ALL(DivePercentageItem, allPercentages);
+	hideAll(allTissues);
+	hideAll(allPercentages);
 #endif
-	HIDE_ALL(DiveEventItem, eventItems);
+	hideAll(eventItems);
 #ifndef SUBSURFACE_MOBILE
-	HIDE_ALL(DiveHandler, handles);
+	hideAll(handles);
 #endif
-	HIDE_ALL(QGraphicsSimpleTextItem, gases);
-#undef HIDE_ALL
+	hideAll(gases);
 }
 
 void ProfileWidget2::setProfileState()
@@ -1187,16 +1191,12 @@ void ProfileWidget2::setProfileState()
 	tankItem->setVisible(prefs.tankbar);
 	tankItem->setPos(itemPos.tankBar.on);
 
-#define HIDE_ALL(TYPE, CONTAINER) \
-	Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
-
 #ifndef SUBSURFACE_MOBILE
-	HIDE_ALL(DiveHandler, handles);
+	hideAll(handles);
 	mouseFollowerHorizontal->setVisible(false);
 	mouseFollowerVertical->setVisible(false);
 #endif
-	HIDE_ALL(QGraphicsSimpleTextItem, gases);
-#undef HIDE_ALL
+	hideAll(gases);
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -1713,9 +1713,7 @@ void ProfileWidget2::pointsRemoved(const QModelIndex &, int start, int end)
 void ProfileWidget2::repositionDiveHandlers()
 {
 	DivePlannerPointsModel *plannerModel = DivePlannerPointsModel::instance();
-	#define HIDE_ALL(TYPE, CONTAINER) \
-		Q_FOREACH (TYPE *item, CONTAINER) item->setVisible(false);
-	HIDE_ALL(QGraphicsSimpleTextItem, gases);
+	hideAll(gases);
 	// Re-position the user generated dive handlers
 	for (int i = 0; i < plannerModel->rowCount(); i++) {
 		struct divedatapoint datapoint = plannerModel->at(i);
