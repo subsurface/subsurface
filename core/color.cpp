@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "color.h"
 
-QMap<color_indice_t, QVector<QColor> > profile_color;
+QMap<color_index_t, QVector<QColor> > profile_color;
 
 void fill_profile_color()
 {
@@ -68,7 +68,7 @@ void fill_profile_color()
 #undef COLOR
 }
 
-QColor getColor(const color_indice_t i, bool isGrayscale)
+QColor getColor(const color_index_t i, bool isGrayscale)
 {
 	if (profile_color.count() > i && i >= 0)
 		return profile_color[i].at((isGrayscale) ? 1 : 0);
@@ -85,7 +85,7 @@ QColor getSacColor(int sac, int avg_sac)
 		sac_index = 0;
 	if (sac_index > SAC_COLORS - 1)
 		sac_index = SAC_COLORS - 1;
-	return getColor((color_indice_t)(SAC_COLORS_START_IDX + sac_index), false);
+	return getColor((color_index_t)(SAC_COLORS_START_IDX + sac_index), false);
 }
 
 QColor getPressureColor(double density)

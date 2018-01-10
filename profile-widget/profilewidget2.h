@@ -162,7 +162,7 @@ private: /*methods*/
 	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
-	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_indice_t color, color_indice_t colorAlert,
+	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
 			 double *thresholdSettingsMin, double *thresholdSettingsMax);
 private:
 	DivePlotDataModel *dataModel;
