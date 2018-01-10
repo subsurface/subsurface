@@ -359,7 +359,7 @@ void ProfileWidget2::createPPGas(PartialPressureGasItem *item, int verticalColum
 				 double *thresholdSettingsMin, double *thresholdSettingsMax)
 {
 	setupItem(item, gasYAxis, verticalColumn, DivePlotDataModel::TIME, 0);
-	item->setThreshouldSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
+	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
 	item->setColors(getColor(color, isGrayscale), getColor(colorAlert, isGrayscale));
 	item->settingsChanged();
 	item->setZValue(99);

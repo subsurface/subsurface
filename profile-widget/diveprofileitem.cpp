@@ -1037,7 +1037,7 @@ void PartialPressureGasItem::paint(QPainter *painter, const QStyleOptionGraphics
 	painter->restore();
 }
 
-void PartialPressureGasItem::setThreshouldSettingsKey(double *prefPointerMin, double *prefPointerMax)
+void PartialPressureGasItem::setThresholdSettingsKey(double *prefPointerMin, double *prefPointerMax)
 {
 	thresholdPtrMin = prefPointerMin;
 	thresholdPtrMax = prefPointerMax;
