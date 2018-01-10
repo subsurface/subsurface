@@ -71,7 +71,7 @@ public:
 	ProfileWidget2(QWidget *parent = 0);
 	void resetZoom();
 	void plotDive(struct dive *d = 0, bool force = false);
-	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis, DiveCartesianAxis *vAxis, DivePlotDataModel *model, int vData, int hData, int zValue);
+	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *vAxis, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
 	bool getPrintMode();
 	bool isPointOutOfBoundaries(const QPointF &point) const;

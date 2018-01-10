@@ -289,27 +289,27 @@ void ProfileWidget2::setupItemOnScene()
 	decoModelParameters->setX(50);
 	decoModelParameters->setBrush(getColor(PRESSURE_TEXT));
 	decoModelParameters->setAlignment(Qt::AlignHCenter | Qt::AlignBottom);
-	setupItem(diveCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
+	setupItem(diveCeiling, profileYAxis, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
 	for (int i = 0; i < 16; i++) {
 		DiveCalculatedTissue *tissueItem = new DiveCalculatedTissue(this);
-		setupItem(tissueItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1 + i);
+		setupItem(tissueItem, profileYAxis, DivePlotDataModel::TISSUE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allTissues.append(tissueItem);
 		DivePercentageItem *percentageItem = new DivePercentageItem(i);
-		setupItem(percentageItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::PERCENTAGE_1 + i, DivePlotDataModel::TIME, 1 + i);
+		setupItem(percentageItem, percentageAxis, DivePlotDataModel::PERCENTAGE_1 + i, DivePlotDataModel::TIME, 1 + i);
 		allPercentages.append(percentageItem);
 	}
-	setupItem(heartBeatItem, timeAxis, heartBeatAxis, dataModel, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
-	setupItem(ambPressureItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::AMBPRESSURE, DivePlotDataModel::TIME, 1);
-	setupItem(gflineItem, timeAxis, percentageAxis, dataModel, DivePlotDataModel::GFLINE, DivePlotDataModel::TIME, 1);
+	setupItem(heartBeatItem, heartBeatAxis, DivePlotDataModel::HEARTBEAT, DivePlotDataModel::TIME, 1);
+	setupItem(ambPressureItem, percentageAxis, DivePlotDataModel::AMBPRESSURE, DivePlotDataModel::TIME, 1);
+	setupItem(gflineItem, percentageAxis, DivePlotDataModel::GFLINE, DivePlotDataModel::TIME, 1);
 #endif
-	setupItem(reportedCeiling, timeAxis, profileYAxis, dataModel, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
-	setupItem(gasPressureItem, timeAxis, cylinderPressureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
-	setupItem(temperatureItem, timeAxis, temperatureAxis, dataModel, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
-	setupItem(diveProfileItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
-	setupItem(meanDepthItem, timeAxis, profileYAxis, dataModel, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
+	setupItem(reportedCeiling, profileYAxis, DivePlotDataModel::CEILING, DivePlotDataModel::TIME, 1);
+	setupItem(gasPressureItem, cylinderPressureAxis, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
+	setupItem(temperatureItem, temperatureAxis, DivePlotDataModel::TEMPERATURE, DivePlotDataModel::TIME, 1);
+	setupItem(diveProfileItem, profileYAxis, DivePlotDataModel::DEPTH, DivePlotDataModel::TIME, 0);
+	setupItem(meanDepthItem, profileYAxis, DivePlotDataModel::INSTANT_MEANDEPTH, DivePlotDataModel::TIME, 1);
 
 #define CREATE_PP_GAS(ITEM, VERTICAL_COLUMN, COLOR, COLOR_ALERT, THRESHOULD_SETTINGS_MIN, THRESHOULD_SETTINGS_MAX)              \
-	setupItem(ITEM, timeAxis, gasYAxis, dataModel, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
+	setupItem(ITEM, gasYAxis, DivePlotDataModel::VERTICAL_COLUMN, DivePlotDataModel::TIME, 0); \
 	ITEM->setThreshouldSettingsKey(THRESHOULD_SETTINGS_MIN, THRESHOULD_SETTINGS_MAX);                                                            \
 	ITEM->setColors(getColor(COLOR, isGrayscale), getColor(COLOR_ALERT, isGrayscale));                              \
 	ITEM->settingsChanged();                                                                                        \
@@ -483,13 +483,12 @@ void ProfileWidget2::setupItemSizes()
 #endif
 }
 
-void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *hAxis,
-			       DiveCartesianAxis *vAxis, DivePlotDataModel *model,
+void ProfileWidget2::setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *vAxis,
 			       int vData, int hData, int zValue)
 {
-	item->setHorizontalAxis(hAxis);
+	item->setHorizontalAxis(timeAxis);
 	item->setVerticalAxis(vAxis);
-	item->setModel(model);
+	item->setModel(dataModel);
 	item->setVerticalDataColumn(vData);
 	item->setHorizontalDataColumn(hData);
 	item->setZValue(zValue);
