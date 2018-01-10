@@ -104,10 +104,10 @@ slots: // Necessary to call from QAction's signals.
 	void actionRequestedReplot(bool triggered);
 	void setEmptyState();
 	void setProfileState();
-	void plotPictures();
 	void setReplot(bool state);
 	void replot(dive *d = 0);
 #ifndef SUBSURFACE_MOBILE
+	void plotPictures();
 	void setPlanState();
 	void setAddState();
 	void changeGas();

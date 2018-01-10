@@ -764,8 +764,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
 	}
-#endif
 	plotPictures();
+#endif
 
 	// OK, how long did this take us? Anything above the second is way too long,
 	// so if we are calculation TTS / NDL then let's force that off.
@@ -1081,9 +1081,11 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	disconnectTemporaryConnections();
+#ifndef SUBSURFACE_MOBILE
 	connect(DivePictureModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(plotPictures()));
 	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
 	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
+#endif
 	/* show the same stuff that the profile shows. */
 
 	emit enableShortcuts();
@@ -1950,7 +1952,6 @@ void ProfileWidget2::keyEscAction()
 	if (plannerModel->isPlanner())
 		plannerModel->cancelPlan();
 }
-#endif
 
 void ProfileWidget2::plotPictures()
 {
@@ -1990,6 +1991,7 @@ void ProfileWidget2::plotPictures()
 		pictures.push_back(item);
 	}
 }
+#endif
 
 void ProfileWidget2::dropEvent(QDropEvent *event)
 {
@@ -2011,7 +2013,9 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 			}
 		}
 		copy_dive(current_dive, &displayed_dive);
+#ifndef SUBSURFACE_MOBILE
 		DivePictureModel::instance()->updateDivePictures();
+#endif
 
 
 		if (event->source() == this) {
