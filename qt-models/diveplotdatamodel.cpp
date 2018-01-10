@@ -85,7 +85,7 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::BackgroundRole) {
 		switch (index.column()) {
 		case COLOR:
-			return getColor((color_indice_t)(VELOCITY_COLORS_START_IDX + item.velocity));
+			return getColor((color_index_t)(VELOCITY_COLORS_START_IDX + item.velocity));
 		}
 	}
 	return QVariant();
