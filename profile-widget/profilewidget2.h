@@ -160,6 +160,7 @@ private: /*methods*/
 	void setupItemOnScene();
 	void disconnectTemporaryConnections();
 	struct plot_data *getEntryFromPos(QPointF pos);
+	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
 
 private:
 	DivePlotDataModel *dataModel;
