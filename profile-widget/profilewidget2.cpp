@@ -139,24 +139,14 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addItemsToScene();
 	scene()->installEventFilter(this);
 #ifndef SUBSURFACE_MOBILE
-	QAction *action = NULL;
 	setAcceptDrops(true);
 
-#define ADD_ACTION(SHORTCUT, Slot)                                  \
-	action = new QAction(this);                                 \
-	action->setShortcut(SHORTCUT);                              \
-	action->setShortcutContext(Qt::WindowShortcut);             \
-	addAction(action);                                          \
-	connect(action, SIGNAL(triggered(bool)), this, SLOT(Slot)); \
-	actionsForKeys[SHORTCUT] = action;
-
-	ADD_ACTION(Qt::Key_Escape, keyEscAction());
-	ADD_ACTION(Qt::Key_Delete, keyDeleteAction());
-	ADD_ACTION(Qt::Key_Up, keyUpAction());
-	ADD_ACTION(Qt::Key_Down, keyDownAction());
-	ADD_ACTION(Qt::Key_Left, keyLeftAction());
-	ADD_ACTION(Qt::Key_Right, keyRightAction());
-#undef ADD_ACTION
+	addActionShortcut(Qt::Key_Escape, &ProfileWidget2::keyEscAction);
+	addActionShortcut(Qt::Key_Delete, &ProfileWidget2::keyDeleteAction);
+	addActionShortcut(Qt::Key_Up, &ProfileWidget2::keyUpAction);
+	addActionShortcut(Qt::Key_Down, &ProfileWidget2::keyDownAction);
+	addActionShortcut(Qt::Key_Left, &ProfileWidget2::keyLeftAction);
+	addActionShortcut(Qt::Key_Right, &ProfileWidget2::keyRightAction);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -165,6 +155,18 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	diveDepthTableView->show();
 #endif
 }
+
+#ifndef SUBSURFACE_MOBILE
+void ProfileWidget2::addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)())
+{
+	QAction *action = new QAction(this);
+	action->setShortcut(shortcut);
+	action->setShortcutContext(Qt::WindowShortcut);
+	addAction(action);
+	connect(action, &QAction::triggered, this, slot);
+	actionsForKeys[shortcut] = action;
+}
+#endif // SUBSURFACE_MOBILE
 
 #define SUBSURFACE_OBJ_DATA 1
 #define SUBSURFACE_OBJ_DC_TEXT 0x42
