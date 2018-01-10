@@ -24,7 +24,9 @@ public:
 	void setPixmap(const QPixmap& pix);
 public slots:
 	void settingsChanged();
+#ifndef SUBSURFACE_MOBILE
 	void removePicture();
+#endif
 	void setFileUrl(const QString& s);
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);

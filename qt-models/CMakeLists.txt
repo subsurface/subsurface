@@ -3,13 +3,13 @@
 
 # models used both mobile and desktop builds
 set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
-	divepicturemodel.cpp
 	diveplotdatamodel.cpp
 	diveimportedmodel.cpp
 )
 
 # models exclusively used in desktop builds
 set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
+	divepicturemodel.cpp
 	cleanertablemodel.cpp
 	models.cpp
 	tankinfomodel.cpp
