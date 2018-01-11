@@ -60,9 +60,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	snprintf(buf, sizeof(buf), translate("gettextFromC", "DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s "
-				"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS "
-				"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
-				"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."), deco);
+		"ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS "
+		"RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO "
+		"PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE."), deco);
 	disclaimer = buf;
 
 	if (!dp) {
@@ -73,9 +73,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	if (error) {
 		snprintf(temp, sz_temp, "%s",
-			 translate("gettextFromC", "Decompression calculation aborted due to excessive time"));
+			translate("gettextFromC", "Decompression calculation aborted due to excessive time"));
 		snprintf(buffer, sz_buffer, "<span style='color: red;'>%s </span> %s<br>",
-				translate("gettextFromC", "Warning:"), temp);
+			translate("gettextFromC", "Warning:"), temp);
 		dive->notes = strdup(buffer);
 
 		free((void *)buffer);
@@ -87,50 +87,50 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 	if (diveplan->surface_interval < 0) {
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s<br>",
-				translate("gettextFromC", "Subsurface"),
-				subsurface_canonical_version(),
-				translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
-				dive->notes = strdup(buffer);
-				free((void *)buffer);
-				free((void *)temp);
-				return;
+			translate("gettextFromC", "Subsurface"),
+			subsurface_canonical_version(),
+			translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
+		dive->notes = strdup(buffer);
+		free((void *)buffer);
+		free((void *)temp);
+		return;
 	} else if (diveplan->surface_interval >= 48 * 60 *60) {
 		const char *current_date = get_current_date();
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
-				translate("gettextFromC", "Subsurface"),
-				subsurface_canonical_version(),
-				translate("gettextFromC", "dive plan</b> created on"),
-				current_date);
+			translate("gettextFromC", "Subsurface"),
+			subsurface_canonical_version(),
+			translate("gettextFromC", "dive plan</b> created on"),
+			current_date);
 		free((void *)current_date);
 	} else {
 		const char *current_date = get_current_date();
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %d:%02d) %s %s<br>",
-				translate("gettextFromC", "Subsurface"),
-				subsurface_canonical_version(),
-				translate("gettextFromC", "dive plan</b> (surface interval "),
-				FRACTION(diveplan->surface_interval / 60, 60),
-				translate("gettextFromC", "created on"),
-				current_date);
+			translate("gettextFromC", "Subsurface"),
+			subsurface_canonical_version(),
+			translate("gettextFromC", "dive plan</b> (surface interval "),
+			FRACTION(diveplan->surface_interval / 60, 60),
+			translate("gettextFromC", "created on"),
+			current_date);
 		free((void *)current_date);
 	}
 
 	if (prefs.display_variations && decoMode() != RECREATIONAL)
 		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin%s"),
-				diveplan_duration(diveplan), "VARIATIONS<br></div>");
+			diveplan_duration(diveplan), "VARIATIONS<br></div>");
 	else
 		len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "Runtime: %dmin<br></div>"),
-				diveplan_duration(diveplan));
+			diveplan_duration(diveplan));
 
 
 	if (!plan_verbatim) {
 		len += snprintf(buffer + len, sz_buffer - len, "<table><thead><tr><th></th><th>%s</th>",
-				translate("gettextFromC", "depth"));
+			translate("gettextFromC", "depth"));
 		if (plan_display_duration)
 			len += snprintf(buffer + len, sz_buffer - len, "<th style='padding-left: 10px;'>%s</th>",
-					translate("gettextFromC", "duration"));
+				translate("gettextFromC", "duration"));
 		if (plan_display_runtime)
 			len += snprintf(buffer + len, sz_buffer - len, "<th style='padding-left: 10px;'>%s</th>",
-					translate("gettextFromC", "runtime"));
+				translate("gettextFromC", "runtime"));
 		len += snprintf(buffer + len, sz_buffer - len,
 				"<th style='padding-left: 10px; float: left;'>%s</th></tr></thead><tbody style='float: left;'>",
 				translate("gettextFromC", "gas"));
@@ -179,41 +179,40 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			 */
 			if (dp->depth.mm != lastprintdepth) {
 				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth.mm != nextdp->depth.mm)) {
-					if (dp->setpoint)
+					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
 							 decimals, depthvalue, depth_unit,
 							 FRACTION(dp->time - lasttime, 60),
 							 FRACTION(dp->time, 60),
 							 gasname(&gasmix),
 							 (double) dp->setpoint / 1000.0);
-
-					else
+					} else {
 						snprintf(temp, sz_temp, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
 							 decimals, depthvalue, depth_unit,
 							 FRACTION(dp->time - lasttime, 60),
 							 FRACTION(dp->time, 60),
 							 gasname(&gasmix));
-
+					}
 					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
 				}
 				newdepth = dp->depth.mm;
 				lasttime = dp->time;
 			} else {
 				if ((nextdp && dp->depth.mm != nextdp->depth.mm) || gaschange_after) {
-					if (dp->setpoint)
+					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
-								decimals, depthvalue, depth_unit,
-								FRACTION(dp->time - lasttime, 60),
-								FRACTION(dp->time, 60),
-								gasname(&gasmix),
-								(double) dp->setpoint / 1000.0);
-					else
+							decimals, depthvalue, depth_unit,
+							FRACTION(dp->time - lasttime, 60),
+							FRACTION(dp->time, 60),
+							gasname(&gasmix),
+							(double) dp->setpoint / 1000.0);
+					} else {
 						snprintf(temp, sz_temp, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s"),
-								decimals, depthvalue, depth_unit,
-								FRACTION(dp->time - lasttime, 60),
-								FRACTION(dp->time, 60),
-								gasname(&gasmix));
-
+							decimals, depthvalue, depth_unit,
+							FRACTION(dp->time - lasttime, 60),
+							FRACTION(dp->time, 60),
+							gasname(&gasmix));
+					}
 					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
 					newdepth = dp->depth.mm;
 					lasttime = dp->time;
@@ -271,22 +270,24 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth.mm != nextdp->depth.mm || nextdp->entered)) {
 					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "(SP = %.1fbar)"), (double) nextdp->setpoint / 1000.0);
-						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&newgasmix),
-									temp);
+						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
+							gasname(&newgasmix), temp);
 					} else {
-							len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&newgasmix));
+						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>",
+							gasname(&newgasmix));
 					}
 					lastprintsetpoint = nextdp->setpoint;
 					lastprintgasmix = newgasmix;
 					gaschange_after = false;
 				} else if (gaschange_before) {
-				// If a new gas has been used for this segment, now is the time to show it
+					// If a new gas has been used for this segment, now is the time to show it
 					if (dp->setpoint) {
 						snprintf(temp, sz_temp, translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
-						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
-									temp);
+						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
+							gasname(&gasmix), temp);
 					} else {
-							len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&gasmix));
+						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>",
+							gasname(&gasmix));
 					}
 					// Set variables so subsequent iterations can test against the last gas printed
 					lastprintsetpoint = dp->setpoint;
@@ -308,11 +309,10 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						snprintf(temp, sz_temp, translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) nextdp->setpoint / 1000.0);
 					else
 						snprintf(temp, sz_temp, translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
-
 					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
 				}
 				gaschange_after = false;
-			gasmix = newgasmix;
+				gasmix = newgasmix;
 			}
 		}
 		lastprintdepth = newdepth;
@@ -343,8 +343,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		else
 			temp_len = snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: VPM-B at +%d conservatism"), diveplan->vpmb_conservatism);
 		if (diveplan->eff_gflow)
-			temp_len += snprintf(temp + temp_len, sz_temp - temp_len,  translate("gettextFromC", ", effective GF=%d/%d"), diveplan->eff_gflow
-					     , diveplan->eff_gfhigh);
+			temp_len += snprintf(temp + temp_len, sz_temp - temp_len,  translate("gettextFromC", ", effective GF=%d/%d"), diveplan->eff_gflow,
+				diveplan->eff_gfhigh);
 
 	} else if (decoMode() == RECREATIONAL){
 		snprintf(temp, sz_temp, translate("gettextFromC", "Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%"),
@@ -356,9 +356,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	int altitude = (int) get_depth_units((int) (log(1013.0 / diveplan->surface_pressure) * 7800000), NULL, &depth_unit);
 
 	len += snprintf(buffer + len, sz_buffer - len, translate("gettextFromC", "ATM pressure: %dmbar (%d%s)<br></div>"),
-			diveplan->surface_pressure,
-			altitude,
-			depth_unit);
+		diveplan->surface_pressure, altitude, depth_unit);
 
 	/* Get SAC values and units for printing it in gas consumption */
 	double bottomsacvalue, decosacvalue;
@@ -393,8 +391,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
 			int remaining_gas = lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0));
-			double deco_pressure_mbar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter, cyl->type.size.mliter) * 1000
-					- cyl->end.mbar;
+			double deco_pressure_mbar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter,
+				cyl->type.size.mliter) * 1000 - cyl->end.mbar;
 			deco_pressure = get_pressure_units(lrint(deco_pressure_mbar), &pressure_unit);
 			pressure = get_pressure_units(cyl->start.mbar - cyl->end.mbar, &pressure_unit);
 			/* Warn if the plan uses more gas than is available in a cylinder
@@ -452,11 +450,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					}
 				}
 			/* Print the gas consumption for every cylinder here to temp buffer. */
-			if (lrint(volume) > 0)
-				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
-			else
-				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span>"), volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix));
-
+			if (lrint(volume) > 0) {
+				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"),
+					volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+			} else {
+				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span>"),
+					volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix));
+			}
 		} else {
 			if (lrint(volume) > 0)
 				snprintf(temp, sz_temp, translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s during planned ascent)"),
@@ -515,3 +515,4 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	free((void *)buffer);
 	free((void *)temp);
 }
+
