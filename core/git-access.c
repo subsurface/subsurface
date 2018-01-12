@@ -766,18 +766,21 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 	return cloned_repo;
 }
 
+enum remote_transport url_to_remote_transport(const char *remote)
+{
+	/* figure out the remote transport */
+	if (strncmp(remote, "ssh://", 6) == 0)
+		return RT_SSH;
+	else if (strncmp(remote, "https://", 8) == 0)
+		return RT_HTTPS;
+	else
+		return RT_OTHER;
+}
+
 static struct git_repository *get_remote_repo(const char *localdir, const char *remote, const char *branch)
 {
 	struct stat st;
-	enum remote_transport rt;
-
-	/* figure out the remote transport */
-	if (strncmp(remote, "ssh://", 6) == 0)
-		rt = RT_SSH;
-	else if (strncmp(remote, "https://", 8) == 0)
-		rt = RT_HTTPS;
-	else
-		rt = RT_OTHER;
+	enum remote_transport rt = url_to_remote_transport(remote);
 
 	if (verbose > 1) {
 		fprintf(stderr, "git_remote_repo: accessing %s\n", remote);
