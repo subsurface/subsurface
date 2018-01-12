@@ -747,7 +747,7 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 		}
 		char *pattern = format_string("reference 'refs/remotes/origin/%s' not found", branch);
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
-		if (strstr(remote, prefs.cloud_git_url) && includes_string_caseinsensitive(msg, pattern)) {
+		if (includes_string_caseinsensitive(msg, pattern)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
 			 * So we need to create the branch and push it to the remote */
@@ -794,18 +794,16 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 		}
 		return update_local_repo(localdir, remote, branch, rt);
 	} else {
-		/* we have no local cache yet */
-		if (is_subsurface_cloud) {
-			/* and take us temporarly online to create a local and
-			 * remote cloud repo.
-			 */
-			git_repository *ret;
-			bool glo = prefs.git_local_only;
-			prefs.git_local_only = false;
-			ret = create_local_repo(localdir, remote, branch, rt);
-			prefs.git_local_only = glo;
-			return ret;
-		}
+		/* We have no local cache yet.
+		 * Take us temporarly online to create a local and
+		 * remote cloud repo.
+		 */
+		git_repository *ret;
+		bool glo = prefs.git_local_only;
+		prefs.git_local_only = false;
+		ret = create_local_repo(localdir, remote, branch, rt);
+		prefs.git_local_only = glo;
+		return ret;
 	}
 
 	/* all normal cases are handled above */
