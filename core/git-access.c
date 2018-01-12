@@ -205,18 +205,36 @@ int credential_ssh_cb(git_cred **out,
 		  void *payload)
 {
 	(void) url;
-	(void) allowed_types;
 	(void) payload;
+	(void) username_from_url;
 
-	if (exceeded_auth_attempts())
-		return GIT_EUSER;
-
-	char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
+	const char *username = prefs.cloud_storage_email_encoded;
 	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
 
-	int res = git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
-	free(priv_key);
-	return res;
+	// TODO: We need a way to differentiate between password and private key authentication
+	if (allowed_types & GIT_CREDTYPE_SSH_KEY) {
+		char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
+		if (!access(priv_key, F_OK)) {
+			if (exceeded_auth_attempts())
+				return GIT_EUSER;
+			int ret = git_cred_ssh_key_new(out, username, NULL, priv_key, passphrase);
+			free(priv_key);
+			return ret;
+		}
+		free(priv_key);
+	}
+
+	if (allowed_types & GIT_CREDTYPE_USERPASS_PLAINTEXT) {
+		if (exceeded_auth_attempts())
+			return GIT_EUSER;
+		return git_cred_userpass_plaintext_new(out, username, passphrase);
+	}
+
+	if (allowed_types & GIT_CREDTYPE_USERNAME)
+		return git_cred_username_new(out, username);
+
+	report_error("No supported ssh authentication.");
+	return GIT_EUSER;
 }
 
 int credential_https_cb(git_cred **out,
@@ -826,7 +844,7 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 static struct git_repository *is_remote_git_repository(char *remote, const char *branch)
 {
 	char c, *localdir;
-	const char *p = remote;
+	char *p = remote;
 
 	while ((c = *p++) >= 'a' && c <= 'z')
 		/* nothing */;
@@ -860,21 +878,19 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 
 	/*
 	 * next we need to make sure that any encoded username
-	 * has been extracted from an https:// based URL
+	 * has been extracted from the URL
 	 */
-	if  (!strncmp(remote, "https://", 8)) {
-		char *at = strchr(remote, '@');
-		if (at) {
-			/* was this the @ that denotes an account? that means it was before the
-			 * first '/' after the https:// - so let's find a '/' after that and compare */
-			char *slash = strchr(remote + 8, '/');
-			if (slash && slash > at) {
-				/* grab the part between "https://" and "@" as encoded email address
-				 * (that's our username) and move the rest of the URL forward, remembering
-				 * to copy the closing NUL as well */
-				prefs.cloud_storage_email_encoded = strndup(remote + 8, at - remote - 8);
-				memmove(remote + 8, at + 1, strlen(at + 1) + 1);
-			}
+	char *at = strchr(remote, '@');
+	if (at) {
+		/* was this the @ that denotes an account? that means it was before the
+		 * first '/' after the protocol:// - so let's find a '/' after that and compare */
+		char *slash = strchr(p, '/');
+		if (slash && slash > at) {
+			/* grab the part between "protocol://" and "@" as encoded email address
+			 * (that's our username) and move the rest of the URL forward, remembering
+			 * to copy the closing NUL as well */
+			prefs.cloud_storage_email_encoded = strndup(p, at - p);
+			memmove(p, at + 1, strlen(at + 1) + 1);
 		}
 	}
 	localdir = get_local_dir(remote, branch);
