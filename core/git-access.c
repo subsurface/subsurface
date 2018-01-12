@@ -676,7 +676,6 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 {
 	git_repository *repo;
 	git_config *conf;
-	int len;
 	char *variable_name, *merge_head;
 
 	if (verbose)
@@ -694,18 +693,15 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 
 	/* create a config so we can set the remote tracking branch */
 	git_repository_config(&conf, repo);
-	len = sizeof("branch..remote") + strlen(branch);
-	variable_name = malloc(len);
-	snprintf(variable_name, len, "branch.%s.remote", branch);
+	variable_name = format_string("branch.%s.remote", branch);
 	git_config_set_string(conf, variable_name, "origin");
-	/* we know this is shorter than the previous one, so we reuse the variable*/
-	snprintf(variable_name, len, "branch.%s.merge", branch);
-	len = sizeof("refs/heads/") + strlen(branch);
-	merge_head = malloc(len);
-	snprintf(merge_head, len, "refs/heads/%s", branch);
-	git_config_set_string(conf, variable_name, merge_head);
 	free(variable_name);
+
+	variable_name = format_string("branch.%s.merge", branch);
+	merge_head = format_string("refs/heads/%s", branch);
+	git_config_set_string(conf, variable_name, merge_head);
 	free(merge_head);
+	free(variable_name);
 
 	/* finally create an empty commit and push it to the remote */
 	if (do_git_save(repo, branch, remote, false, true))
@@ -745,10 +741,8 @@ static git_repository *create_local_repo(const char *localdir, const char *remot
 			 msg = giterr_last()->message;
 			 fprintf(stderr, "error message was %s\n", msg);
 		}
-		int len = sizeof("reference 'refs/remotes/origin/' not found") + strlen(branch);
-		char *pattern = malloc(len);
+		char *pattern = format_string("reference 'refs/remotes/origin/%s' not found", branch);
 		// it seems that we sometimes get 'Reference' and sometimes 'reference'
-		snprintf(pattern, len, "reference 'refs/remotes/origin/%s' not found", branch);
 		if (strstr(remote, prefs.cloud_git_url) && includes_string_caseinsensitive(msg, pattern)) {
 			/* we're trying to open the remote branch that corresponds
 			 * to our cloud storage and the branch doesn't exist.
