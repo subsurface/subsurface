@@ -204,10 +204,12 @@ int credential_ssh_cb(git_cred **out,
 		return GIT_EUSER;
 	}
 
-	const char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
-	const char *passphrase = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+	char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
+	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
 
-	return git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
+	int res = git_cred_ssh_key_new(out, username_from_url, NULL, priv_key, passphrase);
+	free(priv_key);
+	return res;
 }
 
 int credential_https_cb(git_cred **out,
@@ -228,7 +230,7 @@ int credential_https_cb(git_cred **out,
 	}
 
 	const char *username = prefs.cloud_storage_email_encoded;
-	const char *password = prefs.cloud_storage_password ? strdup(prefs.cloud_storage_password) : strdup("");
+	const char *password = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
 
 	return git_cred_userpass_plaintext_new(out, username, password);
 }
