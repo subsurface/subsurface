@@ -1274,7 +1274,7 @@ int do_git_save(git_repository *repo, const char *branch, const char *remote, bo
 
 	/* now sync the tree with the remote server */
 	if (remote && !prefs.git_local_only)
-		return sync_with_remote(repo, remote, branch, RT_HTTPS);
+		return sync_with_remote(repo, remote, branch, url_to_remote_transport(remote));
 	return 0;
 }
 
