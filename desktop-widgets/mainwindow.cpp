@@ -78,6 +78,8 @@ extern "C" int updateProgress(const char *text)
 	if (progressDialog) {
 		progressDialog->setLabelText(text);
 		progressDialog->setValue(++progressCounter);
+		int width = QFontMetrics(qApp->font()).width(text) + 100;
+		progressDialog->resize(width, progressDialog->height());
 		if (progressCounter == 100)
 			progressCounter = 0; // yes this is silly, but we really don't know how long it will take
 	}
