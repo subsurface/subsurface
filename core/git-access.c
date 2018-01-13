@@ -187,6 +187,16 @@ static int reset_to_remote(git_repository *repo, git_reference *local, const git
 }
 
 static int auth_attempt = 0;
+static const int max_auth_attempts = 2;
+
+static bool exceeded_auth_attempts()
+{
+	if (auth_attempt++ > max_auth_attempts) {
+		report_error("Authentication to cloud storage failed.");
+		return true;
+	}
+	return false;
+}
 
 int credential_ssh_cb(git_cred **out,
 		  const char *url,
@@ -198,11 +208,8 @@ int credential_ssh_cb(git_cred **out,
 	(void) allowed_types;
 	(void) payload;
 
-	/* Bail out from libgit authentication loop when credentials are incorrect */
-	if (auth_attempt++ > 2) {
-		report_error("Authentication to cloud storage failed.");
+	if (exceeded_auth_attempts())
 		return GIT_EUSER;
-	}
 
 	char *priv_key = format_string("%s/%s", system_default_directory(), "ssrf_remote.key");
 	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
@@ -223,11 +230,8 @@ int credential_https_cb(git_cred **out,
 	(void) payload;
 	(void) allowed_types;
 
-	/* Bail out from libgit authentication loop when credentials are incorrect */
-	if (auth_attempt++ > 2) {
-		report_error("Authentication to cloud storage failed.");
+	if (exceeded_auth_attempts())
 		return GIT_EUSER;
-	}
 
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *password = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
