@@ -82,7 +82,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	struct divecomputer *dc = &(d->dc);
 	recalc = false;
 	CylindersModel::instance()->updateDive();
-	duration_t lasttime = {};
+	duration_t lasttime = { 0 };
 	duration_t lastrecordedtime = {};
 	duration_t newtime = {};
 	free_dps(&diveplan);
@@ -108,6 +108,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int cylinderid = 0;
 	last_sp.mbar = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
+		if (dc->last_manual_time.seconds && lasttime.seconds >= dc->last_manual_time.seconds)
+			break;
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
@@ -130,7 +132,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	if (!hasMarkedSamples) addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true);
+	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
+		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true);
 	recalc = oldRec;
 	emitDataChanged();
 }

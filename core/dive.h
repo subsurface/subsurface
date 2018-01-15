@@ -295,7 +295,7 @@ struct extra_data {
  */
 struct divecomputer {
 	timestamp_t when;
-	duration_t duration, surfacetime;
+	duration_t duration, surfacetime, last_manual_time;
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;
 	pressure_t surface_pressure;
