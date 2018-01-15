@@ -259,7 +259,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	struct event *ev;
 	cylinder_t *cyl;
 	int oldpo2 = 0;
-	int lasttime = 0;
+	int lasttime = 0, last_manual_point = 0;
 	depth_t lastdepth = {.mm = 0};
 	int lastcylid;
 	enum dive_comp_type type = dive->dc.divemode;
@@ -342,6 +342,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		sample[-1].setpoint.mbar = po2;
 		sample->setpoint.mbar = po2;
 		sample->time.seconds = lasttime = time;
+		if (dp->entered) last_manual_point = dp->time;
 		sample->depth = lastdepth = depth;
 		sample->manually_entered = dp->entered;
 		sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
@@ -354,6 +355,8 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		finish_sample(dc);
 		dp = dp->next;
 	}
+	dive->dc.last_manual_time.seconds = last_manual_point;
+
 	dc->divemode = type;
 #if DEBUG_PLAN & 32
 	save_dive(stdout, &displayed_dive);

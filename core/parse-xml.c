@@ -734,6 +734,8 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 		return 1;
 	if (MATCH("divetimesec", duration, &dc->duration))
 		return 1;
+	if (MATCH("last-manual-time", duration, &dc->last_manual_time))
+		return 1;
 	if (MATCH("surfacetime", duration, &dc->surfacetime))
 		return 1;
 	if (MATCH("airtemp", temperature, &dc->airtemp))

@@ -387,6 +387,8 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 {
 	put_format(b, "  <divecomputer");
 	show_utf8(b, dc->model, " model='", "'", 1);
+	if (dc->last_manual_time.seconds)
+		put_duration(b, dc->last_manual_time, " last-manual-time='", " min'");
 	if (dc->deviceid)
 		put_format(b, " deviceid='%08x'", dc->deviceid);
 	if (dc->diveid)

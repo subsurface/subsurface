@@ -692,6 +692,9 @@ static void parse_dc_duration(char *line, struct membuffer *str, void *_dc)
 static void parse_dc_dctype(char *line, struct membuffer *str, void *_dc)
 { (void) str; struct divecomputer *dc = _dc; dc->divemode = get_dctype(line); }
 
+static void parse_dc_lastmanualtime(char *line, struct membuffer *str, void *_dc)
+{ (void) str; struct divecomputer *dc = _dc; dc->last_manual_time = get_duration(line); }
+
 static void parse_dc_maxdepth(char *line, struct membuffer *str, void *_dc)
 { (void) str; struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }
 
@@ -979,7 +982,7 @@ struct keyword_action dc_action[] = {
 #undef D
 #define D(x) { #x, parse_dc_ ## x }
 	D(airtemp), D(date), D(dctype), D(deviceid), D(diveid), D(duration),
-	D(event), D(keyvalue), D(maxdepth), D(meandepth), D(model), D(numberofoxygensensors),
+	D(event), D(keyvalue), D(lastmanualtime), D(maxdepth), D(meandepth), D(model), D(numberofoxygensensors),
 	D(salinity), D(surfacepressure), D(surfacetime), D(time), D(watertemp)
 };
 
