@@ -1202,7 +1202,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 	while (!found) {
 		if (import_thread_cancelled)
 			break;
-        snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read+1);
+        	snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read+1);
 		param_buff[2] = dive_to_read_buf;
 		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
 #if UEMIS_DEBUG & 16
