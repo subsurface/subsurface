@@ -71,18 +71,18 @@ void PreferencesNetwork::syncSettings()
 			if (!reg.match(email).hasMatch() || (!password.isEmpty() && !reg.match(password).hasMatch())) {
 				report_error(qPrintable(tr("Change ignored. Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 				return;
-			} else if (!reg.match(email).hasMatch() || (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch())) {
+			}
+			if (!reg.match(email).hasMatch() || (!newpassword.isEmpty() && !reg.match(newpassword).hasMatch())) {
 				report_error(qPrintable(tr("Change ignored. Cloud storage email and new password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 				ui->cloud_storage_new_passwd->setText("");
 				return;
-			} else {
-				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-				connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::updateCloudAuthenticationState);
-				connect(cloudAuth, &CloudStorageAuthenticate::passwordChangeSuccessful, this, &PreferencesNetwork::passwordUpdateSuccessful);
-				cloudAuth->backend(email, password, "", newpassword);
-				ui->cloud_storage_new_passwd->setText("");
-				cloud->setNewPassword(newpassword);
 			}
+			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+			connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::updateCloudAuthenticationState);
+			connect(cloudAuth, &CloudStorageAuthenticate::passwordChangeSuccessful, this, &PreferencesNetwork::passwordUpdateSuccessful);
+			cloudAuth->backend(email, password, "", newpassword);
+			ui->cloud_storage_new_passwd->setText("");
+			cloud->setNewPassword(newpassword);
 		}
 	} else if (prefs.cloud_verification_status == CS_UNKNOWN ||
 		   prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD ||
@@ -99,11 +99,10 @@ void PreferencesNetwork::syncSettings()
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
 				cloud->setVerificationStatus(oldVerificationStatus);
 				return;
-			} else {
-				CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
-				connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::updateCloudAuthenticationState);
-				cloudAuth->backend(email, password);
 			}
+			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
+			connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::updateCloudAuthenticationState);
+			cloudAuth->backend(email, password);
 		}
 	} else if (prefs.cloud_verification_status == CS_NEED_TO_VERIFY) {
 		QString pin = ui->cloud_storage_pin->text();
