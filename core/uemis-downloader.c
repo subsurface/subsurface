@@ -76,6 +76,14 @@ static int dive_to_read = 0;
 
 static int max_deleted_seen = -1;
 
+// Linked list to remember already executed divespot download requests
+struct divespot_downloads{
+	int divespot_id;
+	uint32_t dive_site_uuid;
+	struct divespot_downloads *next;
+};
+struct divespot_downloads *divespot_downloads = NULL;
+
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
 {
@@ -243,7 +251,8 @@ static bool uemis_init(const char *path)
 {
 	char *ans_path;
 	int i;
-
+	// Wipe linked list
+	divespot_downloads = NULL;
 	if (!path)
 		return false;
 	/* let's check if this is indeed a Uemis DC */
@@ -1117,7 +1126,32 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
 {
 	struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
-	if (nds && nds->name && strstr(nds->name,"from Uemis")) {
+	struct divespot_downloads **pdl = &divespot_downloads;
+	struct divespot_downloads *dl = *pdl;
+	bool already_downloaded = false;
+
+	/*
+	 * Search linked list of already downloaded
+	 * divespots using the uemis's divespot_id
+	 */
+	while(dl && !already_downloaded)
+	{
+		if(dl->divespot_id == divespot_id)
+		{
+			/*
+			 * This divespot_id was already requested.
+			 */
+			already_downloaded = true;
+			dive->dive_site_uuid = dl->dive_site_uuid;
+#if UEMIS_DEBUG & 2
+			fprintf(debugfile, "Mapping dive spot with id %d to UUID %d\n", divespot_id, dive->dive_site_uuid);
+#endif
+		}
+		pdl = &dl->next;
+		dl = dl->next;
+	}
+	
+	if (!already_downloaded && nds && nds->name && strstr(nds->name,"from Uemis")) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
 			* the newly created site
@@ -1135,6 +1169,13 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 					dive->dive_site_uuid = ods->uuid;
 				}
 			}
+			/* Append this id to linked list
+			 */
+			struct divespot_downloads *ndl = (struct divespot_downloads*)calloc(1, sizeof(struct divespot_downloads));
+			ndl->divespot_id = divespot_id;
+			ndl->dive_site_uuid = dive->dive_site_uuid;
+			ndl->next = NULL;
+			dl = *pdl = ndl;
 		} else {
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
@@ -1161,7 +1202,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 	while (!found) {
 		if (import_thread_cancelled)
 			break;
-		snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read);
+        	snprintf(dive_to_read_buf, sizeof(dive_to_read_buf), "%d", dive_to_read+1);
 		param_buff[2] = dive_to_read_buf;
 		(void)uemis_get_answer(mountpath, "getDive", 3, 0, NULL);
 #if UEMIS_DEBUG & 16
