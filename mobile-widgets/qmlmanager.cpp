@@ -363,44 +363,42 @@ void QMLManager::saveCloudCredentials()
 	bool cloudCredentialsChanged = false;
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
-	QString cloudPwd = m_cloudPassword;
-	QString cloudUser = m_cloudUserName;
 	if (m_credentialStatus != CS_NOCLOUD) {
 		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
-		if (cloudPwd.isEmpty() || !regExp.match(cloudPwd).hasMatch() || !regExp.match(cloudUser).hasMatch()) {
+		if (m_cloudPassword.isEmpty() || !regExp.match(m_cloudPassword).hasMatch() || !regExp.match(m_cloudUserName).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 			return;
 		}
 		// use the same simplistic regex as the backend to check email addresses
 		regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
-		if (!regExp.match(cloudUser).hasMatch()) {
+		if (!regExp.match(m_cloudUserName).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
 			return;
 		}
 	}
 	s.beginGroup("CloudStorage");
-	s.setValue("email", cloudUser);
-	s.setValue("password", cloudPwd);
+	s.setValue("email", m_cloudUserName);
+	s.setValue("password", m_cloudPassword);
 	s.setValue("cloud_verification_status", m_credentialStatus);
 	s.sync();
-	if (!same_string(prefs.cloud_storage_email, qPrintable(cloudUser))) {
+	if (!same_string(prefs.cloud_storage_email, qPrintable(m_cloudUserName))) {
 		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = strdup(qPrintable(cloudUser));
+		prefs.cloud_storage_email = strdup(qPrintable(m_cloudUserName));
 		cloudCredentialsChanged = true;
 	}
 
-	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(cloudPwd));
+	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password, qPrintable(m_cloudPassword));
 
 	if (m_credentialStatus != CS_NOCLOUD && !cloudCredentialsChanged) {
 		// just go back to the dive list
 		setCredentialStatus(m_oldStatus);
 	}
 
-	if (!same_string(prefs.cloud_storage_password, qPrintable(cloudPwd))) {
+	if (!same_string(prefs.cloud_storage_password, qPrintable(m_cloudPassword))) {
 		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = strdup(qPrintable(cloudPwd));
+		prefs.cloud_storage_password = strdup(qPrintable(m_cloudPassword));
 	}
-	if (cloudUser.isEmpty() || cloudPwd.isEmpty()) {
+	if (m_cloudUserName.isEmpty() || m_cloudPassword.isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	} else if (cloudCredentialsChanged) {
 		// let's make sure there are no unsaved changes
