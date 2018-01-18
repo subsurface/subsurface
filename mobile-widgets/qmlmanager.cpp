@@ -115,6 +115,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 {
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
+	timer.start();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
 	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
@@ -1323,8 +1324,6 @@ void QMLManager::setLogText(const QString &logText)
 
 void QMLManager::appendTextToLog(const QString &newText)
 {
-	if (!timer.isValid())
-		timer.start();
 	qDebug() << QString::number(timer.elapsed() / 1000.0,'f', 3) + ": " + newText;
 }
 
