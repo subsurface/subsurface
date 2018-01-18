@@ -27,10 +27,22 @@ void init_qt_late()
 	// enable user specific settings (based on command line argument)
 	if (settings_suffix) {
 		if (verbose)
+#if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
+			qDebug() << "using custom config for" << QString("Subsurface-Mobile-%1").arg(settings_suffix);
+#else
 			qDebug() << "using custom config for" << QString("Subsurface-%1").arg(settings_suffix);
+#endif
+#if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
+		QCoreApplication::setApplicationName(QString("Subsurface-Mobile-%1").arg(settings_suffix));
+#else
 		QCoreApplication::setApplicationName(QString("Subsurface-%1").arg(settings_suffix));
+#endif
 	} else {
+#if defined(SUBSURFACE_MOBILE) && ((defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID)) || (defined(Q_OS_DARWIN) && !defined(Q_OS_IOS)))
+		QCoreApplication::setApplicationName("Subsurface-Mobile");
+#else
 		QCoreApplication::setApplicationName("Subsurface");
+#endif
 	}
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
 	SettingsObjectWrapper::instance()->load();
