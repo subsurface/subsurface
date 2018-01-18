@@ -76,6 +76,65 @@ static int dive_to_read = 0;
 
 static int max_deleted_seen = -1;
 
+/* Linked list to remember already executed divespot download requests */
+struct divespot_mapping {
+	int divespot_id;
+	uint32_t dive_site_uuid;
+	struct divespot_mapping *next;
+};
+static struct divespot_mapping *divespot_mapping = NULL;
+
+static void erase_divespot_mapping()
+{
+	struct divespot_mapping *tmp;
+	while (divespot_mapping != NULL) {
+		tmp = divespot_mapping;
+		divespot_mapping = tmp->next;
+		free(tmp);
+	}
+	divespot_mapping = NULL;
+}
+
+static void add_to_divespot_mapping(int divespot_id, uint32_t dive_site_uuid)
+{
+	struct divespot_mapping *ndm = (struct divespot_mapping*)calloc(1, sizeof(struct divespot_mapping));
+	struct divespot_mapping **pdm = &divespot_mapping;
+	struct divespot_mapping *cdm = *pdm;
+	
+	while (cdm && cdm->next)
+		cdm = cdm->next;
+	
+	ndm->divespot_id = divespot_id;
+	ndm->dive_site_uuid = dive_site_uuid;
+	ndm->next = NULL;
+	if (cdm)
+		cdm->next = ndm;
+	else
+		cdm = *pdm = ndm;
+}
+
+static bool is_divespot_mappable(int divespot_id)
+{
+	struct divespot_mapping *dm = divespot_mapping;
+	while (dm) {
+		if (dm->divespot_id == divespot_id)
+			return true;
+		dm = dm->next;
+	}
+	return false;
+}
+
+static uint32_t get_dive_site_uuid_by_divespot_id(int divespot_id)
+{
+	struct divespot_mapping *dm = divespot_mapping;
+	while (dm) {
+		if (dm->divespot_id == divespot_id)
+			return dm->dive_site_uuid;
+		dm = dm->next;
+	}
+	return 0;
+}
+
 /* helper function to parse the Uemis data structures */
 static void uemis_ts(char *buffer, void *_when)
 {
@@ -243,7 +302,7 @@ static bool uemis_init(const char *path)
 {
 	char *ans_path;
 	int i;
-
+	erase_divespot_mapping();
 	if (!path)
 		return false;
 	/* let's check if this is indeed a Uemis DC */
@@ -1117,7 +1176,10 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
 {
 	struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
-	if (nds && nds->name && strstr(nds->name,"from Uemis")) {
+	
+	if (is_divespot_mappable(divespot_id)) {
+		dive->dive_site_uuid = get_dive_site_uuid_by_divespot_id(divespot_id);
+	} else if (nds && nds->name && strstr(nds->name,"from Uemis")) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
 			* the newly created site
@@ -1135,6 +1197,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 					dive->dive_site_uuid = ods->uuid;
 				}
 			}
+			add_to_divespot_mapping(divespot_id, dive->dive_site_uuid);
 		} else {
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
