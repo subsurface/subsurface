@@ -160,8 +160,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 {
-	if (!timer.isValid())
-		timer.start();
 	QString stateText;
 	switch (state) {
 	case Qt::ApplicationActive: stateText = "active"; break;
@@ -182,7 +180,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 		//       make sure the user sees that we are saving data if they come back
 		//       while this is running
 		saveChangesCloud(false);
-		appendTextToLog(QString::number(timer.elapsed() / 1000.0,'f', 3) + ": done saving to git local / remote");
+		appendTextToLog("done saving to git local / remote");
 	}
 }
 
