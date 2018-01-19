@@ -30,27 +30,6 @@ int diveplan_duration(struct diveplan *diveplan)
 	return (duration + 30) / 60;
 }
 
-struct icd_data { // This structure provides communication between function isobaric_counterdiffusion() and the calling software.
-	int dN2;      // The change in fraction (permille) of nitrogen during the change
-	int dHe;      // The change in fraction (permille) of helium during the change
-};
-
-/* Perform isobaric counterdiffusion calculations for gas changes in trimix dives.
- * Here we use the rule-of-fifths where, during a change involving trimix gas, the increase in nitrogen
- * should not exceed one fifth of the decrease in helium.
- * Parameters: 1) Pointer to the dive structure.
- *             2) pointers to two gas mixes, the gas being switched from and the gas being switched to.
- *             3) a pointer to an icd_data structure.
- * Output:     i) The icd_data stucture is filled with the delta_N2 and delta_He numbers (as permille).
- *            ii) Function returns a boolean indicating an exceeding of the rule-of-fifths. False = no icd problem.
- */
-bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmix, struct icd_data *results)
-{
-	results->dN2 = get_he(oldgasmix) + get_o2(oldgasmix) - get_he(newgasmix) - get_o2(newgasmix);
-	results->dHe = get_he(newgasmix) - get_he(oldgasmix);
-	return get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;
-}
-
 /* Add the icd results of one trimix gas change to the dive plan html buffer. Two rows are added to the table, one
  * indicating fractions of gas, the other indication partial pressures of gas. This function makes use of the
  * icd_data structure that was filled with information by the function isobaric_counterdiffusion().
