@@ -1,0 +1,110 @@
+This is a protocoll of my (Robert's) attempts to come up with a headless version
+of Subsurface that runs on a small one chip computer like a RaspberryPi or C.H.I.P.
+
+The idea behind this is that that computer could do the talking to the dive computer
+and then provide the data (I thought the easiest way would be via being a wifi 
+access point running a git server serving the user's divelog in git).
+
+This is still very far from working and a lot more needs to be done. As this task is
+mainly SysAdmin stuff on the small computer, it's hard to preserve this. So I decided 
+to take a log of what I did. This is a dump of the corresponding wiki page on the old
+trac system.
+
+* Bought RPi3 with SD card.
+* Downloaded Raspian Jessie from https://www.raspberrypi.org/downloads/raspbian/ and decompress it
+* Downloaded PiFiller and run it, follow instructions there
+* Give up as RPi 3 wants a micro SD card, not an SD card.
+* Reinstalled on a micro SD
+* Connected network cable from Laptop (enabled Internet sharing in System Preferences)
+* ifconfig suggests RPi got IP address 192.168.2.2
+* logged in as user pi and pw raspberry
+* sudo apt-get update and upgrade
+* no space left on device. Hmm. Trying to reboot
+* ah running sudo rasps-config allows to extend the file system
+* sudo dpkg-reconfigure tzdata
+* mkdir src
+* cd src
+* git clone git://subsurface-divelog.org/subsurface.git
+* sudo apt-get install git g++ make autoconf automake libtool cmake pkg-config \
+        libxml2-dev libxslt1-dev libzip-dev libsqlite3-dev \
+        libusb-1.0-0-dev libgit2-dev \
+        qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
+        libqt5webkit5-dev libqt5qml5 libqt5quick5 libqt5declarative5 \
+        qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
+        qtconnectivity5-dev  qtpositioning5-dev (qtlocation5-dev was not found)
+* subsurface/scripts/build.sh
+* fails to find an include file, trying export QtDir=/usr/include/i386-linux-gnu/qt5
+* that did not help, now trying CPATH
+* Argh, of course, it's not i386-linux-gnu but arm...
+* Now, it complains about qt wanting fPIC for position independent code. Setting that in CMakeText
+* Ah, no, that is just for some test. The subsurface binary is already built. good.
+* And it starts (after I have installed XQuartz on my Macbook)
+* after initial problems (I don't know), it downloads dives from the Vytec.
+* I created a new directory and do git init there and then I can save in git format
+* From the laptop: git clone ssh://pi@192.168.2.2/home/pi/.subsurface/gitsave works
+
+==RPi as wifi access point==
+* sudo apt-get install hosted
+* Following https://www.elektronik-kompendium.de/sites/raspberry-pi/2002171.htm
+* sudo vi /etc/hostapd/hostapd.conf
+* sudo chmod 600 /etc/hostapd/hostapd.conf
+* sudo hostapd -dd /etc/hostapd/hostapd.conf
+* I see the AP but my passphrase is rejected. Now trying http://elinux.org/RPI-Wireless-Hotspot
+* sudo apt-get install udhcpd
+* sudo vi  /etc/udhcpd.conf
+* sudo vi /etc/default/udhcpd
+* once more sudo vi /etc/hostapd/hostapd.conf
+* reboot
+* one day later: I have to do the sudo ifconfig wlan0 192.168.42.1 again, but then it works. The iPhone take the connection and sees 192.168.42.1
+
+* sudo apt-get install apache2
+
+== Installing the command line version of subsurface ==
+
+* cd ~/src/subsurface
+* mv build build.full
+* git remote add github https://github.com/atdotde/subsurface.git
+* git checkout github/command_line -b command_line
+* cd ~/src
+* subsurface/scripts/build.sh
+
+
+==BIND==
+* sudo apt-get install bind9 bind9utils dnsutils
+* sudo vim /etc/bind/named.conf.local
+* sudo vi /etc/bind/db.example.com
+
+==Git server on CHIP==
+So far, no significant difference to the Pi
+
+* run subsurface and save to local git repository (with [] syntax)
+* cd src/subsurface/build/
+* ./subsurface 
+* cd cloud
+*  git init
+*  git checkout robert
+*  sudo apt-get install apache2 apache2-utils
+*  sudo /etc/init.d/apache2 start
+* git clone --bar cloud/ cloud.git
+*  sudo adduser git
+*  sudo mv cloud.git/ ~git
+*  sudo chown git.git -R /home/git/cloud.git/
+*  sudo Cash git (set it to /usr/bin/git-shell)
+* a2enmod cgi alias env rewrite
+* sudo mkdir /opt/git
+*  sudo cp -r ~git/cloud.git/ /opt/git/
+*  sudo chgrp -R www-data /opt/git
+*  sudo vi /etc/apache2/sites-enabled/000-default.conf 
+*  sudo htpasswd -c /opt/git/.htpasswd subsurface
+*  sudo chgrp www-data /opt/git/.htpasswd 
+*  sudo apt-get install gitweb
+*  sudo a2enmod env alias fcgid auth_digest
+*  sudo service apache2 restart
+*  sudo vi /etc/gitweb.conf 
+
+==a new attempt==
+* threw away the default site and roughly followed http://p0l0.binware.org/index.php/2011/08/26/git-over-http-git-http-backend/ (without SSL or authentication)
+* /etc/apache2/sites-enabled/001-git.conf
+* created /var/www/git/test.git as a repository and gave rights to www-data
+* git config http.receivepack true
+* this seems to work as in serves git repository clone and push
