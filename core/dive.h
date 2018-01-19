@@ -114,6 +114,13 @@ typedef struct
 	const char *description; /* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
+struct icd_data { // This structure provides communication between function isobaric_counterdiffusion() and the calling software.
+	int dN2;      // The change in fraction (permille) of nitrogen during the change
+	int dHe;      // The change in fraction (permille) of helium during the change
+};
+
+extern bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmix, struct icd_data *results);
+
 /*
  * Events are currently based straight on what libdivecomputer gives us.
  *  We need to wrap these into our own events at some point to remove some of the limitations.

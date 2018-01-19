@@ -1172,6 +1172,21 @@ static void sanitize_cylinder_info(struct dive *dive)
 	}
 }
 
+/* Perform isobaric counterdiffusion calculations for gas changes in trimix dives.
+ * Here we use the rule-of-fifths where, during a change involving trimix gas, the increase in nitrogen
+ * should not exceed one fifth of the decrease in helium.
+ * Parameters: 1) pointers to two gas mixes, the gas being switched from and the gas being switched to.
+ *             2) a pointer to an icd_data structure.
+ * Output:     i) The icd_data stucture is filled with the delta_N2 and delta_He numbers (as permille).
+ *            ii) Function returns a boolean indicating an exceeding of the rule-of-fifths. False = no icd problem.
+ */
+bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmix, struct icd_data *results)
+{
+	results->dN2 = get_he(oldgasmix) + get_o2(oldgasmix) - get_he(newgasmix) - get_o2(newgasmix);
+	results->dHe = get_he(newgasmix) - get_he(oldgasmix);
+	return get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;
+}
+
 /* some events should never be thrown away */
 static bool is_potentially_redundant(struct event *event)
 {
