@@ -1,0 +1,108 @@
+== A simple "download my dives" box that works with Subsurface and Subsurface-mobile ==
+
+=== Rationale ===
+
+While it may be possible to connect some dive computers to Android (BT, BLE, FTDI based cables) and iOS (likely only BLE), it seems unlikely that we'll be able to get the majority of typical dive computers to work with a tablet / phone. And even on the desktop there are issues (iRDA based dive computers on Mac and Windows 10).
+One possible solution could be a small Linux box that connects to the dive computer and then offers a very simple way for a device or computer running Subsurface-mobile or even the full Subsurface to connect to that box.
+
+=== Requirements ===
+
+* Target group is A out of:
+  * A) actual divers and users of Subsurface-mobile on their iPhone with no discernible knowledge of computers
+  * B) people who are comfortable installing debian on some random device and making all this work
+ This is really important:
+  - The Spouse Approval Factor has to be very high
+  - It has to be plug-and-play
+  - There should be as good as no FAQ needed for this so that support needed is minimal
+
+
+* small, cheap
+* supports downloading from most dive computers (this might be very easily achieved if we have a Linux board with a USB connector)
+  - Basically: it needs to run libdivecomputer
+* supports connection to Subsurface and Subsurface-mobile
+  * BLE: 
+   [[BR]]Pros:
+     * available on most phones and devices
+     * zero configuration
+   Cons:
+     * low bandwidth for data transfer
+     * requires us to invent a custom protocol
+  * WIFI 
+   [[BR]]Pros:
+     * high bandwidth
+     * existing transfer protocols (REST/HTTP)
+   Cons:
+     * complicated setup for the user with switching access points to the box
+* battery life: box should survive a day on a dive boat, should be able to recharge
+ - C.H.I.P. takes LiPo batteries (1S / single cell only though)
+ - USB "Battery Pack" could be another method
+* upgrade capability
+ - Reflash the whole image in one go
+ - No state on the device, config happens using BT
+* Case:
+ - mostly water-proof-ish
+ - nice bright yellow plastic so it can't get lost
+* Distribution: C.H.I.P. and Raspberry Pi are all Debian based, going for this is likely the best path forward.
+* Filesystem: Read-only system partition, minimize risk of filesystem corruption
+  - C.H.I.P. is mounted rw, but a custom image can likely be made readonly in chunks
+* Software:
+ - likely just libdivecomputer with some kind of interface (BLE / WiFi)  to the mobile device
+ - sending raw DC data will be most compact.
+
+=== Possible hardware choices ===
+
+==== C.H.I.P. ====
+Pro:
+ * Cheap (<10 EUR)
+ * Has all interfaces we need (Wifi, Bluetooth)
+ * Very small size
+ * Good contact with developers
+ * LiPo Battery (1S)
+Con:
+ * Currently limited availability (but NextThing is working with us to address this for development of the Subsurface Box)
+
+Device Details: [[NextThingCHIP|NextThing C.H.I.P. Details]]
+
+==== Raspberry ====
+Pro:
+ * Availability
+Con:
+ * Cheap-ish (~60 EUR)
+ * RPi 3 has all interfaces we need, before that you need dongles for WIFI and Bluetooth.
+ * Rather big size
+ * USB Battery Pack
+
+atdotde: I have an evening to spend and a Rpi3 in front of me, let's see how far I can get. I will log my efforts [[Subsurface on RPi]] here. 
+
+=== BLE Protocol ===
+Services:
+ * Device Information Service (Bluetooth SIG approved service)
+ * Battery Service (Bluetooth SIG approved service) ??
+ * Subsurface Service (proprietary)
+Advertisement Data:
+ * Device name (max 26 Bytes if only advertising the name, which is in general sufficient)
+   - `Users's SsrfBox` (already 15 bytes :()
+
+Summary of BLE Protocol details: http://chapters.comsoc.org/vancouver/BTLER3.pdf
+
+Working (on C.H.I.P.) GATT Server (golang though): https://github.com/paypal/gatt/tree/master/examples
+
+=== Future Features ===
+
+===== Pin Requirement (Bluetooth) =====
+
+ - Initially we will not require a PIN on Bluetooth connection.
+    We do not expect any attacks to this when on a boat anyway...
+ - Future: allow a PIN to be configured and required through the configuration menu
+
+===== Home / Away button =====
+
+This is a design idea that uses Wifi as the main communication with the box (instead of BLE)
+   - When switched to "Home" it will try to connect to the local
+     home Wifi Network, that way it becomes available to the home
+     network and one can use it that way, thus avoiding need
+     to have to have your mobile device switch between the home-wifi
+     and the device wifi.
+   - When switched to "Away" it will be a AP, your mobile device
+     can then connect to it and use it directly.
+This requires additional configuration / setup and possibly a hardware switch to select the mode the box is in.
