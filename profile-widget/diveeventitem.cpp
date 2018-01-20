@@ -56,12 +56,12 @@ void DiveEventItem::setEvent(struct event *ev, struct gasmix *lastgasmix)
 
 	free(internalEvent);
 	internalEvent = clone_event(ev);
-	setupPixmap();
+	setupPixmap(lastgasmix);
 	setupToolTipString(lastgasmix);
 	recalculatePos(true);
 }
 
-void DiveEventItem::setupPixmap()
+void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
 {
 	const IconMetrics& metrics = defaultIconMetrics();
 #ifndef SUBSURFACE_MOBILE
@@ -86,14 +86,29 @@ void DiveEventItem::setupPixmap()
 		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));
 	} else if (event_is_gaschange(internalEvent)) {
 		struct gasmix *mix = get_gasmix_from_event(&displayed_dive, internalEvent);
-		if (mix->he.permille)
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-icon"));
-		else if (gasmix_is_air(mix))
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-icon"));
-		else if (mix->o2.permille == 1000)
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-icon"));
-		else
-			setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icon"));
+		struct icd_data icd_data;
+		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
+		if (mix->he.permille) {
+			if (icd)
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-ICD-icon"));
+			else
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-icon"));
+		} else if (gasmix_is_air(mix)) {
+			if (icd)
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-ICD-icon"));
+			else
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-icon"));
+		} else if (mix->o2.permille == 1000) {
+			if (icd)
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-ICD-icon"));
+			else
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-oxygen-icon"));
+		} else {
+			if (icd)
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-ICD-icon"));
+			else
+				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-ean-icon"));
+		}
 #ifdef SAMPLE_FLAGS_SEVERITY_SHIFT
 	} else if ((((internalEvent->flags & SAMPLE_FLAGS_SEVERITY_MASK) >> SAMPLE_FLAGS_SEVERITY_SHIFT) == 1) ||
 		    // those are useless internals of the dive computer
@@ -180,7 +195,6 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 		name += internalEvent->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
 								    internalEvent->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}
-	// qDebug() << name;
 	setToolTip(name);
 }
 
