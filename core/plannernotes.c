@@ -337,7 +337,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							if (isobaric_counterdiffusion(&lastprintgasmix, &gasmix, &icdvalues))			// Do icd calculations
 								icdwarning = true;
 							strcpy(old_gas_name, gasname(&lastprintgasmix));
-							icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, dp->time, depth_to_mbar(dp->depth.mm, dive), old_gas_name, gasname(&gasmix)); // and print them to buffer.
+							icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, lasttime, depth_to_mbar(dp->depth.mm, dive), old_gas_name, gasname(&gasmix)); // and print them to buffer.
 						} 
 					}
 					// Set variables so subsequent iterations can test against the last gas printed
