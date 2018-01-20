@@ -715,6 +715,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	qDeleteAll(eventItems);
 	eventItems.clear();
 	struct event *event = currentdc->events;
+	struct event *ev;
+	struct gasmix lastgasmix = *get_gasmix(&displayed_dive, current_dc, 1, &ev, NULL);
 	while (event) {
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
@@ -731,7 +733,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		item->setHorizontalAxis(timeAxis);
 		item->setVerticalAxis(profileYAxis);
 		item->setModel(dataModel);
-		item->setEvent(event);
+		item->setEvent(event, &lastgasmix);
 		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);

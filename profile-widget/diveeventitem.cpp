@@ -49,7 +49,7 @@ struct event *DiveEventItem::getEvent()
 	return internalEvent;
 }
 
-void DiveEventItem::setEvent(struct event *ev)
+void DiveEventItem::setEvent(struct event *ev, struct gasmix *lastgasmix)
 {
 	if (!ev)
 		return;
@@ -57,7 +57,7 @@ void DiveEventItem::setEvent(struct event *ev)
 	free(internalEvent);
 	internalEvent = clone_event(ev);
 	setupPixmap();
-	setupToolTipString();
+	setupToolTipString(lastgasmix);
 	recalculatePos(true);
 }
 
@@ -143,7 +143,7 @@ void DiveEventItem::setupPixmap()
 #undef EVENT_PIXMAP_BIGGER
 }
 
-void DiveEventItem::setupToolTipString()
+void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 {
 	// we display the event on screen - so translate
 	QString name = gettextFromC::instance()->tr(internalEvent->name);
@@ -158,6 +158,10 @@ void DiveEventItem::setupToolTipString()
 		/* Do we have an explicit cylinder index?  Show it. */
 		if (internalEvent->gas.index >= 0)
 			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
+		icd_data icd_data;
+		if (isobaric_counterdiffusion(lastgasmix, mix, &icd_data))
+			name += tr("\nICD ΔN2/ΔHe=%1/%2=%3%").arg(icd_data.dN2 / 10).arg(-icd_data.dHe / 10).arg((-100 * icd_data.dN2 / icd_data.dHe));
+		*lastgasmix = *mix;
 	} else if (value) {
 		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
