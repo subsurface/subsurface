@@ -168,10 +168,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		if ((dive->cylinder[icyl].cylinder_use == OC_GAS) && (get_he(&dive->cylinder[icyl].gasmix) > 0)) {	
 			istrimix = true;
 			icdlen = 0;
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen,
-				"<table><tbody style='float: left;'><tr><td colspan=5>%s:</td></tr>",
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<div>%s:",
 				translate("gettextFromC","Isobaric counterdiffusion information"));
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<tr><td align='left'><b>%s</b></td>",
+			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<table><tr><td align='left'><b>%s</b></td>",
 				translate("gettextFromC", "runtime"));
 			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td align='center'><b>%s</b></td>",
 				translate("gettextFromC", "gaschange"));
@@ -534,7 +533,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			}
 		}
 		/* Gas consumption: Now finally print all strings to output */
-		len += snprintf(buffer + len, sz_buffer - len, "%s%s%s<br>", temp, warning, mingas);
+		len += snprintf(buffer + len, sz_buffer - len, "%s%s%s<br></div>", temp, warning, mingas);
 	}
 
 	/* For trimix OC dives, add the ICD table here */
@@ -546,7 +545,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				translate("gettextFromC", "Warning:"),
 				translate("gettextFromC", "Isobaric counterdiffusion conditions exceeded"));
 		}
-		len += snprintf(buffer + len, sz_buffer - len, "<br>");							// ... and add a line break
+		len += snprintf(buffer + len, sz_buffer - len, "<br></div>");
 	}
 
 	/* Print warnings for pO2 */
@@ -564,7 +563,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					int decimals;
 					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 					len = strlen(buffer);
-					if (!o2warning_exist) len += snprintf(buffer + len, sz_buffer - len, "<br>");
+					if (!o2warning_exist)
+						len += snprintf(buffer + len, sz_buffer - len, "<div>");
 					o2warning_exist = true;
 					snprintf(temp, sz_temp,
 						 translate("gettextFromC", "high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
@@ -576,7 +576,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					int decimals;
 					double depth_value = get_depth_units(dp->depth.mm, &decimals, &depth_unit);
 					len = strlen(buffer);
-					if (!o2warning_exist) len += snprintf(buffer + len, sz_buffer - len, "<br>");
+					if (!o2warning_exist)
+						len += snprintf(buffer + len, sz_buffer - len, "<div>");
 					o2warning_exist = true;
 					snprintf(temp, sz_temp,
 						 translate("gettextFromC", "low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s"),
