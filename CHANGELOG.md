@@ -1,3 +1,4 @@
+- Warn in case of isobaric counter diffusion
 - Desktop: Automatically sync with cloud when going online
 - Small UI fixes
 - Fix bug when using remembered BT/BLE addresses in dive computer download
