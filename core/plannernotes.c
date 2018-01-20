@@ -495,8 +495,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					mingas_depth = get_depth_units(lastbottomdp->depth.mm, NULL, &depth_unit);
 					/* Print it to results */
 					if (cyl->start.mbar > lastbottomdp->minimum_gas.mbar) {
-						snprintf(mingas, sizeof(mingas), "<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): \
-							%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
+						snprintf(mingas, sizeof(mingas), "<br>&nbsp;&mdash; <span style='color: %s;'>%s</span> (%s %.1fx%s/+%d%s@%.0f%s): "
+							"%.0f%s/%.0f%s<span style='color: %s;'>/&Delta;:%+.0f%s</span>",
 							mingas_d_pressure > 0 ? "green" :"red",
 							translate("gettextFromC", "Minimum gas"),
 							translate("gettextFromC", "based on"),
