@@ -166,6 +166,7 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 	int type = internalEvent->type;
 
 	if (event_is_gaschange(internalEvent)) {
+		struct icd_data icd_data;
 		struct gasmix *mix = get_gasmix_from_event(&displayed_dive, internalEvent);
 		name += ": ";
 		name += gasname(mix);
@@ -173,9 +174,13 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 		/* Do we have an explicit cylinder index?  Show it. */
 		if (internalEvent->gas.index >= 0)
 			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
-		icd_data icd_data;
-		if (isobaric_counterdiffusion(lastgasmix, mix, &icd_data))
-			name += tr("\nICD ΔN2/ΔHe=%1/%2=%3%").arg(icd_data.dN2 / 10).arg(-icd_data.dHe / 10).arg((-100 * icd_data.dN2 / icd_data.dHe));
+		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
+		if (icd_data.dHe < 0) {
+			if (icd)
+				name += tr("\nICD: ΔHe=%1% ΔN₂=%2%>%3%").arg(icd_data.dHe / 10).arg(icd_data.dN2 / 10).arg(-icd_data.dHe / 50);
+			else
+				name += tr("\nICD: ΔHe=%1% ΔN₂=%2%<%3%").arg(icd_data.dHe / 10).arg(icd_data.dN2 / 10).arg(-icd_data.dHe / 50);
+		}
 		*lastgasmix = *mix;
 	} else if (value) {
 		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {

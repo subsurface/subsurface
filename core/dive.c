@@ -1184,7 +1184,7 @@ bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmi
 {
 	results->dN2 = get_he(oldgasmix) + get_o2(oldgasmix) - get_he(newgasmix) - get_o2(newgasmix);
 	results->dHe = get_he(newgasmix) - get_he(oldgasmix);
-	return get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;
+	return get_he(oldgasmix) > 0 && results->dN2 > 0 && results->dHe < 0 && get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;
 }
 
 /* some events should never be thrown away */
