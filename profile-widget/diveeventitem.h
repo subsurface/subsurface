@@ -13,7 +13,7 @@ class DiveEventItem : public DivePixmapItem {
 public:
 	DiveEventItem(QObject *parent = 0);
 	virtual ~DiveEventItem();
-	void setEvent(struct event *ev);
+	void setEvent(struct event *ev, struct gasmix *lastgasmix);
 	struct event *getEvent();
 	void eventVisibilityChanged(const QString &eventName, bool visible);
 	void setVerticalAxis(DiveCartesianAxis *axis);
@@ -25,7 +25,7 @@ slots:
 	void recalculatePos(bool instant = false);
 
 private:
-	void setupToolTipString();
+	void setupToolTipString(struct gasmix *lastgasmix);
 	void setupPixmap();
 	DiveCartesianAxis *vAxis;
 	DiveCartesianAxis *hAxis;
