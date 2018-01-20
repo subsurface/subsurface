@@ -36,6 +36,11 @@
         <file alias="gaschange-ean-icon">icons/Nx_change.png</file>
         <file alias="gaschange-trimix-icon">icons/Tmx_change.png</file>
         <file alias="gaschange-oxygen-icon">icons/Oxy_change.png</file>
+        <file alias="gaschange-ICD-icon">icons/gaschangeICD.png</file>
+        <file alias="gaschange-air-ICD-icon">icons/Air_changeICD.png</file>
+        <file alias="gaschange-ean-ICD-icon">icons/Nx_changeICD.png</file>
+        <file alias="gaschange-trimix-ICD-icon">icons/Tmx_changeICD.png</file>
+        <file alias="gaschange-oxygen-ICD-icon">icons/Oxy_changeICD.png</file>
         <file alias="dive-bookmark-icon">icons/flag.png</file>
         <file alias="scale-icon">icons/scale.png</file>
         <file alias="ruler-icon">icons/ruler.png</file>
