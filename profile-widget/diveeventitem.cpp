@@ -7,6 +7,7 @@
 #include "core/profile.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
+#include "core/membuffer.h"
 
 extern struct ev_select *ev_namelist;
 extern int evn_used;
@@ -168,6 +169,7 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 	if (event_is_gaschange(internalEvent)) {
 		struct icd_data icd_data;
 		struct gasmix *mix = get_gasmix_from_event(&displayed_dive, internalEvent);
+		struct membuffer mb = {};
 		name += ": ";
 		name += gasname(mix);
 
@@ -176,10 +178,12 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (icd_data.dHe < 0) {
-			if (icd)
-				name += tr("\nICD: ΔHe=%1% ΔN₂=%2%>%3%").arg(icd_data.dHe / 10).arg(icd_data.dN2 / 10).arg(-icd_data.dHe / 50);
-			else
-				name += tr("\nICD: ΔHe=%1% ΔN₂=%2%<%3%").arg(icd_data.dHe / 10).arg(icd_data.dN2 / 10).arg(-icd_data.dHe / 50);
+			put_format(&mb, "\n%s: %s=%+.3g%% %s=%+.3g%%%s%+.3g%%",
+				tr("ICD").toUtf8().constData(),
+				tr("ΔHe").toUtf8().constData(), icd_data.dHe / 10.0,
+				tr("ΔN₂").toUtf8().constData(), icd_data.dN2 / 10.0,
+				icd ? ">" : "<", -icd_data.dHe / 50.0);
+			name += QString::fromUtf8(mb.buffer, mb.len);
 		}
 		*lastgasmix = *mix;
 	} else if (value) {
