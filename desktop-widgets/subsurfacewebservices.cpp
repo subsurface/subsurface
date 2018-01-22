@@ -125,7 +125,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			report_error(tr("internal error").toUtf8());
 			goto error_close_zip;
 		}
-		free((void *)membuf);
+		free_buffer(&mb);
 
 		transformed = xsltApplyStylesheet(xslt, doc, NULL);
 		if (!transformed) {

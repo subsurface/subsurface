@@ -184,6 +184,7 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 				tr("ΔN₂").toUtf8().constData(), icd_data.dN2 / 10.0,
 				icd ? ">" : "<", -icd_data.dHe / 50.0);
 			name += QString::fromUtf8(mb.buffer, mb.len);
+			free_buffer(&mb);
 		}
 		*lastgasmix = *mix;
 	} else if (value) {

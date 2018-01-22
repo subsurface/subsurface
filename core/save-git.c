@@ -903,6 +903,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 	struct membuffer dirname = { 0 };
 	put_format(&dirname, "01-Divesites");
 	subdir = new_directory(repo, tree, &dirname);
+	free_buffer(&dirname);
 
 	for (int i = 0; i < dive_site_table.nr; i++) {
 		struct membuffer b = { 0 };
@@ -946,6 +947,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 			}
 		}
 		blob_insert(repo, subdir, &b, mb_cstring(&site_file_name));
+		free_buffer(&site_file_name);
 	}
 }
 
