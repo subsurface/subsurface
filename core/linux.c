@@ -42,6 +42,7 @@ void subsurface_user_info(struct user_info *user)
 		gethostname(hostname, sizeof(hostname));
 		put_format(&mb, "%s@%s", username, hostname);
 		user->email = mb_cstring(&mb);
+		free_buffer(&mb);
 	}
 }
 
