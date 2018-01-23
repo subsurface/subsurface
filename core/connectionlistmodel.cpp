@@ -38,9 +38,11 @@ int ConnectionListModel::rowCount(const QModelIndex &parent) const
 
 void ConnectionListModel::addAddress(const QString address)
 {
-	beginInsertRows(QModelIndex(), rowCount(), rowCount());
-	m_addresses.append(address);
-	endInsertRows();
+	if (!m_addresses.contains(address)) {
+		beginInsertRows(QModelIndex(), rowCount(), rowCount());
+		m_addresses.append(address);
+		endInsertRows();
+	}
 }
 
 void ConnectionListModel::removeAllAddresses()
