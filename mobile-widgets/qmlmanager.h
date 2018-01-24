@@ -126,7 +126,6 @@ public:
 	bool btEnabled() const;
 	void setBtEnabled(bool value);
 
-	typedef void (QMLManager::*execute_function_type)();
 	DiveListSortModel *dlSortModel;
 
 	QStringList suitInit() const;
@@ -146,7 +145,6 @@ public slots:
 	void applicationStateChanged(Qt::ApplicationState state);
 	void savePreferences();
 	void saveCloudCredentials();
-	void checkCredentialsAndExecute(execute_function_type execute);
 	void tryRetrieveDataFromBackend();
 	void handleError(QNetworkReply::NetworkError nError);
 	void handleSslErrors(const QList<QSslError> &errors);
