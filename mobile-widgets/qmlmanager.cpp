@@ -36,6 +36,14 @@ QMLManager *QMLManager::m_instance = NULL;
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
+extern "C" void showErrorFromC()
+{
+	// By using invokeMethod with Qt:AutoConnection, the error string is safely
+	// transported across thread boundaries, if not called from the UI thread.
+	QString error(get_error_string());
+	QMetaObject::invokeMethod(QMLManager::instance(), "registerError", Qt::AutoConnection, Q_ARG(QString, error));
+}
+
 static void progressCallback(const char *text)
 {
 	QMLManager *self = QMLManager::instance();
@@ -77,6 +85,21 @@ extern "C" int gitProgressCB(const char *text)
 	}
 	// return 0 so that we don't end the download
 	return 0;
+}
+
+void QMLManager::registerError(const QString &error)
+{
+	appendTextToLog(error);
+	if (!m_lastError.isEmpty())
+		m_lastError += '\n';
+	m_lastError += error;
+}
+
+QString QMLManager::consumeError()
+{
+	QString ret;
+	ret.swap(m_lastError);
+	return ret;
 }
 
 void QMLManager::btHostModeChange(QBluetoothLocalDevice::HostMode state)
@@ -133,6 +156,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 				+ " at " + QDateTime::currentDateTime().toString());
 	}
 #endif
+	set_error_cb(&showErrorFromC);
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
 	appendTextToLog(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()));
@@ -315,7 +339,6 @@ void QMLManager::finishSetup()
 		int error = parse_file(existing_filename);
 		if (error) {
 			// we got an error loading the local file
-			appendTextToLog(QString("got error %2 when parsing file %1").arg(existing_filename, get_error_string()));
 			setNotificationText(tr("Error parsing local storage, giving up"));
 			set_filename(NULL);
 		} else {
@@ -559,9 +582,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	QString url;
 	timestamp_t currentDiveTimestamp = m_selectedDiveTimestamp;
 	if (getCloudURL(url)) {
-		QString errorString(get_error_string());
-		appendTextToLog(errorString);
-		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(errorString) + END_FONT);
+		setStartPageText(RED_FONT + tr("Cloud storage error: %1").arg(consumeError()) + END_FONT);
 		revertToNoCloudIfNeeded();
 		return;
 	}
@@ -585,14 +606,10 @@ void QMLManager::loadDivesWithValidCredentials()
 	}
 	if (!error) {
 		report_error("filename is now %s", fileNamePrt.data());
-		QString errorString(get_error_string());
-		appendTextToLog(errorString);
 		set_filename(fileNamePrt.data());
 	} else {
 		report_error("failed to open file %s", fileNamePrt.data());
-		QString errorString(get_error_string());
-		appendTextToLog(errorString);
-		setNotificationText(errorString);
+		setNotificationText(consumeError());
 		revertToNoCloudIfNeeded();
 		set_filename(NULL);
 		return;
@@ -1094,8 +1111,7 @@ void QMLManager::openNoCloudRepo()
 	git = is_git_repository(filename, &branch, NULL, false);
 
 	if (git == dummy_git_repository) {
-		if (git_create_local_repo(filename))
-			appendTextToLog(get_error_string());
+		git_create_local_repo(filename);
 		set_filename(filename);
 		auto s = SettingsObjectWrapper::instance()->general_settings;
 		s->setDefaultFilename(filename);
@@ -1111,8 +1127,7 @@ void QMLManager::saveChangesLocal()
 		if (m_credentialStatus == CS_NOCLOUD) {
 			if (empty_string(existing_filename)) {
 				char *filename = NOCLOUD_LOCALSTORAGE;
-				if (git_create_local_repo(filename))
-					appendTextToLog(get_error_string());
+				git_create_local_repo(filename);
 				set_filename(filename);
 				auto s = SettingsObjectWrapper::instance()->general_settings;
 				s->setDefaultFilename(filename);
@@ -1132,9 +1147,7 @@ void QMLManager::saveChangesLocal()
 		bool glo = prefs.git_local_only;
 		prefs.git_local_only = true;
 		if (save_dives(existing_filename)) {
-			QString errorString(get_error_string());
-			appendTextToLog(errorString);
-			setNotificationText(errorString);
+			setNotificationText(consumeError());
 			set_filename(NULL);
 			prefs.git_local_only = glo;
 			alreadySaving = false;
