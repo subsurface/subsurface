@@ -904,7 +904,7 @@ void ProfileWidget2::mouseReleaseEvent(QMouseEvent *event)
 		return;
 	QGraphicsView::mouseReleaseEvent(event);
 	if (currentState == PLAN || currentState == ADD || currentState == EDIT) {
-		shouldCalculateMaxTime = true;
+		shouldCalculateMaxTime = shouldCalculateMaxDepth = true;
 		replot();
 	}
 }
