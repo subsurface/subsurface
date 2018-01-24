@@ -58,6 +58,8 @@ public:
 	};
 
 	static QMLManager *instance();
+	Q_INVOKABLE void registerError(const QString &error);
+	QString consumeError();
 
 	QString cloudUserName() const;
 	void setCloudUserName(const QString &cloudUserName);
@@ -200,6 +202,7 @@ private:
 	QString m_ssrfGpsWebUserid;
 	QString m_startPageText;
 	QString m_logText;
+	QString m_lastError;
 	bool m_locationServiceEnabled;
 	bool m_locationServiceAvailable;
 	bool m_verboseEnabled;
