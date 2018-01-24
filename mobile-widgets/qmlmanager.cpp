@@ -426,7 +426,7 @@ void QMLManager::saveCloudCredentials()
 	}
 }
 
-void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
+void QMLManager::tryRetrieveDataFromBackend()
 {
 	// if the cloud credentials are present, we should try to get the GPS Webservice ID
 	// and (if we haven't done so) load the dive list
@@ -477,13 +477,8 @@ void QMLManager::checkCredentialsAndExecute(execute_function_type execute)
 		reply = manager()->get(request);
 		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
 		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
-		connect(reply, &QNetworkReply::finished, this, execute, Qt::UniqueConnection);
+		connect(reply, &QNetworkReply::finished, this, &QMLManager::retrieveUserid, Qt::UniqueConnection);
 	}
-}
-
-void QMLManager::tryRetrieveDataFromBackend()
-{
-	checkCredentialsAndExecute(&QMLManager::retrieveUserid);
 }
 
 void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
