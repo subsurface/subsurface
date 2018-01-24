@@ -178,11 +178,11 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
 		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (icd_data.dHe < 0) {
-			put_format(&mb, "\n%s: %s=%+.3g%% %s=%+.3g%%%s%+.3g%%",
+			put_format(&mb, "\n%s %s:%+.3g%% %s:%+.3g%%%s%+.3g%%",
 				tr("ICD").toUtf8().constData(),
 				tr("ΔHe").toUtf8().constData(), icd_data.dHe / 10.0,
 				tr("ΔN₂").toUtf8().constData(), icd_data.dN2 / 10.0,
-				icd ? ">" : "<", -icd_data.dHe / 50.0);
+				icd ? ">" : "<", lrint(-icd_data.dHe / 5.0) / 10.0);
 			name += QString::fromUtf8(mb.buffer, mb.len);
 		}
 		*lastgasmix = *mix;

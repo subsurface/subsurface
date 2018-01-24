@@ -47,18 +47,17 @@ int add_icd_entry(char *icdbuffer, unsigned int maxsize, struct icd_data *icdval
 		"<td rowspan=2 style= 'vertical-align:top;'>%s&#10137;",
 		(time_seconds + 30) / 60, translate("gettextFromC", "min"), gasname(gas_from));
 	len += snprintf(icdbuffer + len, maxsize - len, 
-		"%s</td><td style='padding-left: 10px;'>%+5.2f%%</td>"
-		"<td style= 'padding-left: 15px; color:%s;'>%+5.2f%%</td>"
-		"<td style='padding-left: 15px;'>%+5.2f%%</td></tr>"
+		"%s</td><td style='padding-left: 10px;'>%+5.1f%%</td>"
+		"<td style= 'padding-left: 15px; color:%s;'>%+5.1f%%</td>"
+		"<td style='padding-left: 15px;'>%+5.1f%%</td></tr>"
 		"<tr><td style='padding-left: 10px;'>%+5.2f%s</td>"
 		"<td style='padding-left: 15px; color:%s;'>%+5.2f%s</td>"
 		"<td style='padding-left: 15px;'>%+5.2f%s</td></tr>",
 		gasname(gas_to), icdvalues->dHe / 10.0, 
-		((5 * icdvalues->dN2) > -icdvalues->dHe) ? "red" : "#383838", icdvalues->dN2 / 10.0 , 0.2 * (-icdvalues->dHe / 10), 
-		ambientpressure_mbar * icdvalues->dHe / 1e6, translate("gettextFromC", "bar"), ((5 * icdvalues->dN2) > -icdvalues->dHe) ? "red" : "#383838",
-		ambientpressure_mbar * icdvalues->dN2 / 1e6, translate("gettextFromC", "bar"), 
-		ambientpressure_mbar * -icdvalues->dHe / 5e6, translate("gettextFromC", "bar"));
-
+		((5 * icdvalues->dN2) > -icdvalues->dHe) ? "red" : "#383838", icdvalues->dN2 / 10.0 , 0.2 * (-icdvalues->dHe / 10.0), 
+		ambientpressure_mbar * icdvalues->dHe / 1e6f, translate("gettextFromC", "bar"), ((5 * icdvalues->dN2) > -icdvalues->dHe) ? "red" : "#383838",
+		ambientpressure_mbar * icdvalues->dN2 / 1e6f, translate("gettextFromC", "bar"), 
+		ambientpressure_mbar * -icdvalues->dHe / 5e6f, translate("gettextFromC", "bar"));
 	return len;
 }
 
