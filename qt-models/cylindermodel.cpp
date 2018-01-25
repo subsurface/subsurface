@@ -447,6 +447,7 @@ void CylindersModel::add()
 
 	int row = rows;
 	fill_default_cylinder(&displayed_dive.cylinder[row]);
+	displayed_dive.cylinder[row].start = displayed_dive.cylinder[row].type.workingpressure;
 	displayed_dive.cylinder[row].manually_added = true;
 	beginInsertRows(QModelIndex(), row, row);
 	rows++;
