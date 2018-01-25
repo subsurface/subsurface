@@ -782,7 +782,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			clock += timestep;
 		} while (trial_ascent(ds, 0, depth, 0, avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix,
 				      po2, diveplan->surface_pressure / 1000.0, dive) &&
-			 enough_gas(current_cylinder));
+			 enough_gas(current_cylinder) && clock < 6 * 3600);
 
 		// We did stay one DECOTIMESTEP too many.
 		// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
