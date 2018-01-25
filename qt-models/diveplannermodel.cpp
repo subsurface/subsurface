@@ -156,6 +156,7 @@ void DivePlannerPointsModel::setupCylinders()
 	}
 	if (!empty_string(prefs.default_cylinder)) {
 		fill_default_cylinder(&displayed_dive.cylinder[0]);
+		displayed_dive.cylinder[0].start = displayed_dive.cylinder[0].type.workingpressure;
 	}
 	if (cylinder_none(&displayed_dive.cylinder[0])) {
 		// roughly an AL80
