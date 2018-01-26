@@ -719,7 +719,7 @@ extern "C" {
 
 extern int report_error(const char *fmt, ...);
 extern const char *get_error_string(void);
-extern void set_error_cb(void(*cb)(void));
+extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
 
 extern struct dive *find_dive_including(timestamp_t when);
 extern bool dive_within_time_range(struct dive *dive, timestamp_t when, timestamp_t offset);

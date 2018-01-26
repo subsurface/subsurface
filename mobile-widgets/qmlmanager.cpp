@@ -36,11 +36,12 @@ QMLManager *QMLManager::m_instance = NULL;
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
-extern "C" void showErrorFromC()
+extern "C" void showErrorFromC(char *buf)
 {
+	QString error(buf);
+	free(buf);
 	// By using invokeMethod with Qt:AutoConnection, the error string is safely
 	// transported across thread boundaries, if not called from the UI thread.
-	QString error(get_error_string());
 	QMetaObject::invokeMethod(QMLManager::instance(), "registerError", Qt::AutoConnection, Q_ARG(QString, error));
 }
 

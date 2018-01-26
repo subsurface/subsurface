@@ -89,9 +89,11 @@ extern "C" int updateProgress(const char *text)
 
 MainWindow *MainWindow::m_Instance = NULL;
 
-extern "C" void showErrorFromC()
+extern "C" void showErrorFromC(char *buf)
 {
-	emit MainWindow::instance()->showError(get_error_string());
+	QString error(buf);
+	free(buf);
+	emit MainWindow::instance()->showError(error);
 }
 
 MainWindow::MainWindow() : QMainWindow(),
