@@ -91,9 +91,7 @@ MainWindow *MainWindow::m_Instance = NULL;
 
 extern "C" void showErrorFromC()
 {
-	MainWindow *mainwindow = MainWindow::instance();
-	if (mainwindow)
-		emit mainwindow->showError(get_error_string());
+	emit MainWindow::instance()->showError(get_error_string());
 }
 
 MainWindow::MainWindow() : QMainWindow(),
