@@ -74,8 +74,6 @@ static int max_mem_used = -1;
 static int next_table_index = 0;
 static int dive_to_read = 0;
 
-static int max_deleted_seen = -1;
-
 /* Linked list to remember already executed divespot download requests */
 struct divespot_mapping {
 	int divespot_id;
@@ -316,7 +314,8 @@ static bool uemis_init(const char *path)
 	}
 	if (bytes_available(reqtxt_file) > 5) {
 		char tmp[6];
-		read(reqtxt_file, tmp, 5);
+		if (read(reqtxt_file, tmp, 5) != 5)
+			return false;
 		tmp[5] = '\0';
 #if UEMIS_DEBUG & 2
 		fprintf(debugfile, "::r req.txt \"%s\"\n", tmp);
@@ -593,7 +592,8 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #endif
 			return false;
 		}
-		read(ans_file, tmp, 100);
+		if (read(ans_file, tmp, 100) < 0)
+			return false;
 		close(ans_file);
 #if UEMIS_DEBUG & 8
 		tmp[100] = '\0';
@@ -1060,12 +1060,6 @@ static char *uemis_get_divenr(char *deviceidstr, int force)
 				maxdiveid = dc->diveid;
 		}
 	}
-	if (max_deleted_seen >= 0 && maxdiveid < (uint32_t)max_deleted_seen) {
-		maxdiveid = max_deleted_seen;
-#if UEMIS_DEBUG & 4
-		fprintf(debugfile, "overriding max seen with max deleted seen %d\n", max_deleted_seen);
-#endif
-	}
 	snprintf(divenr, 10, "%d", maxdiveid);
 	return strdup(divenr);
 }
@@ -1077,6 +1071,7 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix)
 	char path[100];
 	char date[40];
 	char obid[40];
+	bool success;
 	if (!buf)
 		return false;
 
@@ -1101,10 +1096,10 @@ static bool do_dump_buffer_to_file(char *buf, char *prefix)
 	int dumpFile = subsurface_open(path, O_RDWR | O_CREAT, 0666);
 	if (dumpFile == -1)
 		return false;
-	write(dumpFile, buf, strlen(buf));
+	success = write(dumpFile, buf, strlen(buf)) == strlen(buf);
 	close(dumpFile);
 	bufCnt++;
-	return true;
+	return success;
 }
 #endif
 
@@ -1263,7 +1258,6 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						fprintf(debugfile, "TRY matching dive log id %d from %s with dive details %d but details are deleted\n", dive->dc.diveid, d_time, dive_to_read);
 #endif
 						deleted_files++;
-						max_deleted_seen = dive_to_read;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
 						dive->downloaded = false;
 #if UEMIS_DEBUG & 2
