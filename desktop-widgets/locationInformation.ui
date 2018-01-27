@@ -77,7 +77,7 @@
      </property>
      <property name="icon">
       <iconset>
-       <normaloff>:satellite</normaloff>:satellite</iconset>
+       <normaloff>:satellite-icon</normaloff>:satellite-icon</iconset>
      </property>
     </widget>
    </item>
