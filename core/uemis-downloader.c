@@ -73,6 +73,7 @@ static int mbuf_size = 0;
 static int max_mem_used = -1;
 static int next_table_index = 0;
 static int dive_to_read = 0;
+static uint32_t mindiveid;
 
 static int max_deleted_seen = -1;
 
@@ -975,6 +976,7 @@ static char *uemis_get_divenr(char *deviceidstr, int force)
 	char divenr[10];
 	struct dive_table *table;
 	deviceid = atoi(deviceidstr);
+	mindiveid = 0xFFFFFFFF;
 
 	/*
 	 * If we are are retrying after a disconnect/reconnect, we
@@ -996,9 +998,12 @@ static char *uemis_get_divenr(char *deviceidstr, int force)
 			continue;
 		for_each_dc (d, dc) {
 			if (dc->model && !strcmp(dc->model, "Uemis Zurich") &&
-			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid) &&
-			    dc->diveid > maxdiveid)
-				maxdiveid = dc->diveid;
+			    (dc->deviceid == 0 || dc->deviceid == 0x7fffffff || dc->deviceid == deviceid)) {
+				if (dc->diveid > maxdiveid)
+					maxdiveid = dc->diveid;
+				if (dc->diveid < mindiveid)
+					mindiveid = dc->diveid;
+			}
 		}
 	}
 	if (max_deleted_seen >= 0 && maxdiveid < (uint32_t)max_deleted_seen) {
@@ -1153,6 +1158,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 	bool found_below = false;
 	bool found_above = false;
 	int deleted_files = 0;
+	int fail_count = 0;
 
 	snprintf(log_file_no_to_find, sizeof(log_file_no_to_find), "logfilenr{int{%d", dive->dc.diveid);
 #if UEMIS_DEBUG & 2
@@ -1220,6 +1226,10 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 						}
 						if (dive_to_read < -1)
 							dive_to_read = -1;
+					} else if (!strstr(mbuf, "act{") && ++fail_count == 10) {
+						if (verbose)
+							fprintf(stderr, "Uemis downloader: Cannot access dive details - searching from start\n");
+						dive_to_read = -1;
 					}
 				}
 			}
@@ -1284,10 +1294,10 @@ const char *do_uemis_import(device_data_t *data)
 	param_buff[1] = "notempty";
 	newmax = uemis_get_divenr(deviceid, force_download);
 	if (verbose)
-		fprintf(stderr, "Uemis downloader: start looking at dive nr %s", newmax);
+		fprintf(stderr, "Uemis downloader: start looking at dive nr %s\n", newmax);
 
 	first = start = atoi(newmax);
-	dive_to_read = first;
+	dive_to_read = mindiveid < first ? first - mindiveid : first;
 	for (;;) {
 #if UEMIS_DEBUG & 2
 		debug_round++;
