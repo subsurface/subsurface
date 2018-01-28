@@ -411,21 +411,6 @@ QString DiveObjectHelper::firstGas() const
 	return gas;
 }
 
-QStringList DiveObjectHelper::suitList() const
-{
-	QStringList suits;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		QString temp = d->suit;
-		if (!temp.isEmpty())
-			suits << d->suit;
-	}
-	suits.removeDuplicates();
-	suits.sort();
-	return suits;
-}
-
 QStringList DiveObjectHelper::locationList() const
 {
 	QStringList locations;

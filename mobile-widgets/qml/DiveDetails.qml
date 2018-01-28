@@ -30,7 +30,6 @@ Kirigami.Page {
 	property alias notes: detailsEdit.notesText
 	property alias suitIndex: detailsEdit.suitIndex
 	property alias suitText: detailsEdit.suitText
-	property alias suitModel: detailsEdit.suitModel
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
@@ -237,7 +236,7 @@ Kirigami.Page {
 		depth = currentItem.modelData.dive.depth
 		airtemp = currentItem.modelData.dive.airTemp
 		watertemp = currentItem.modelData.dive.waterTemp
-		suitIndex = currentItem.modelData.dive.suitList.indexOf(currentItem.modelData.dive.suit)
+		suitIndex = manager.suitList.indexOf(currentItem.modelData.dive.suit)
 		if (currentItem.modelData.dive.buddy.indexOf(",") > 0) {
 			buddyText = currentItem.modelData.dive.buddy;
 		} else {
