@@ -248,6 +248,11 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 		tryRetrieveDataFromBackend();
 	}
+	updateAllGlobalLists();
+}
+
+void QMLManager::updateAllGlobalLists()
+{
 	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
 	divemasterModel.updateModel(); emit divemasterListChanged();
@@ -1083,6 +1088,7 @@ void QMLManager::changesNeedSaving()
 #elif !defined(Q_OS_IOS)
 	saveChangesCloud(false);
 #endif
+	updateAllGlobalLists();
 }
 
 void QMLManager::openNoCloudRepo()

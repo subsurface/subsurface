@@ -240,6 +240,7 @@ private:
 	bool m_libdcLog;
 	bool m_developer;
 	bool m_btEnabled;
+	void updateAllGlobalLists();
 
 #if defined(Q_OS_ANDROID)
 	QString appLogFileName;
