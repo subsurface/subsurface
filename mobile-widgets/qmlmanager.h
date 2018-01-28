@@ -38,7 +38,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(int selectedDiveTimestamp MEMBER m_selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
 	Q_PROPERTY(QStringList suitList READ suitList NOTIFY suitListChanged)
 	Q_PROPERTY(QStringList buddyList READ buddyList NOTIFY buddyListChanged)
-	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
+	Q_PROPERTY(QStringList divemasterList READ divemasterList NOTIFY divemasterListChanged)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin MEMBER m_showPin WRITE setShowPin NOTIFY showPinChanged)
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
@@ -133,7 +133,7 @@ public:
 
 	QStringList suitList() const;
 	QStringList buddyList() const;
-	QStringList divemasterInit() const;
+	QStringList divemasterList() const;
 	QStringList cylinderInit() const;
 	bool showPin() const;
 	void setShowPin(bool enable);
@@ -199,6 +199,7 @@ public slots:
 private:
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
+	DiveMasterCompletionModel divemasterModel;
 	QString m_cloudUserName;
 	QString m_cloudPassword;
 	QString m_cloudPin;
@@ -272,6 +273,7 @@ signals:
 	void btEnabledChanged();
 	void suitListChanged();
 	void buddyListChanged();
+	void divemasterListChanged();
 };
 
 #endif

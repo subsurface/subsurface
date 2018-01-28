@@ -241,7 +241,7 @@ Kirigami.Page {
 		} else {
 			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy)
 		}
-		divemasterIndex = currentItem.modelData.dive.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
+		divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
 		notes = currentItem.modelData.dive.notes
 		if (currentItem.modelData.dive.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it

@@ -428,18 +428,3 @@ QStringList DiveObjectHelper::locationList() const
 	locations.sort();
 	return locations;
 }
-
-QStringList DiveObjectHelper::divemasterList() const
-{
-	QStringList divemasters;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		QString temp = d->divemaster;
-		if (!temp.isEmpty())
-			divemasters << d->divemaster;
-	}
-	divemasters.removeDuplicates();
-	divemasters.sort();
-	return divemasters;
-}
