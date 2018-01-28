@@ -410,21 +410,3 @@ QString DiveObjectHelper::firstGas() const
 	gas = get_gas_string(m_dive->cylinder[0].gasmix);
 	return gas;
 }
-
-QStringList DiveObjectHelper::locationList() const
-{
-	QStringList locations;
-	struct dive *d;
-	struct dive_site *ds;
-	int i = 0;
-	for_each_dive (i, d) {
-		if ((ds = get_dive_site_by_uuid(d->dive_site_uuid)) != NULL) {
-			QString temp = ds->name;
-			if (!temp.isEmpty())
-				locations << temp;
-		}
-	}
-	locations.removeDuplicates();
-	locations.sort();
-	return locations;
-}

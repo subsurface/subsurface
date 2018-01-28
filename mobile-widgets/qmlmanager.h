@@ -14,6 +14,7 @@
 #include "core/downloadfromdcthread.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/completionmodels.h"
+#include "qt-models/divelocationmodel.h"
 
 class QMLManager : public QObject {
 	Q_OBJECT
@@ -39,6 +40,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList suitList READ suitList NOTIFY suitListChanged)
 	Q_PROPERTY(QStringList buddyList READ buddyList NOTIFY buddyListChanged)
 	Q_PROPERTY(QStringList divemasterList READ divemasterList NOTIFY divemasterListChanged)
+	Q_PROPERTY(QStringList locationList READ locationList NOTIFY locationListChanged)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin MEMBER m_showPin WRITE setShowPin NOTIFY showPinChanged)
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
@@ -134,6 +136,7 @@ public:
 	QStringList suitList() const;
 	QStringList buddyList() const;
 	QStringList divemasterList() const;
+	QStringList locationList() const;
 	QStringList cylinderInit() const;
 	bool showPin() const;
 	void setShowPin(bool enable);
@@ -200,6 +203,7 @@ private:
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
 	DiveMasterCompletionModel divemasterModel;
+	LocationInformationModel locationModel;
 	QString m_cloudUserName;
 	QString m_cloudPassword;
 	QString m_cloudPin;
@@ -274,6 +278,7 @@ signals:
 	void suitListChanged();
 	void buddyListChanged();
 	void divemasterListChanged();
+	void locationListChanged();
 };
 
 #endif

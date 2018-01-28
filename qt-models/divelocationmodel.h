@@ -17,6 +17,7 @@ bool filter_same_gps_cb (QAbstractItemModel *m, int sourceRow, const QModelIndex
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
+	LocationInformationModel(QObject *obj = 0);
 	enum Columns { UUID, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
 	enum Roles { UUID_ROLE = Qt::UserRole + 1 };
 	static LocationInformationModel *instance();
@@ -29,9 +30,10 @@ public:
 
 public slots:
 	void update();
+	QStringList allSiteNames() const;
 private:
-	LocationInformationModel(QObject *obj = 0);
 	int internalRowCount;
+	QStringList locationNames;
 	QLineEdit *textField;
 };
 

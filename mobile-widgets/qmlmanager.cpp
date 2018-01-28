@@ -276,6 +276,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
 	divemasterModel.updateModel(); emit divemasterListChanged();
+	locationModel.update(); emit locationListChanged();
 }
 
 void QMLManager::mergeLocalRepo()
@@ -1565,6 +1566,11 @@ QStringList QMLManager::buddyList() const
 QStringList QMLManager::divemasterList() const
 {
 	return divemasterModel.stringList();
+}
+
+QStringList QMLManager::locationList() const
+{
+	return locationModel.allSiteNames();
 }
 
 QStringList QMLManager::cylinderInit() const
