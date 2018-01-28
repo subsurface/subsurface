@@ -16,6 +16,11 @@ void NotificationWidget::showNotification(QString message, KMessageWidget::Messa
 	animatedShow();
 }
 
+void NotificationWidget::showError(QString message)
+{
+	showNotification(message, KMessageWidget::Error);
+}
+
 void NotificationWidget::hideNotification()
 {
 	animatedHide();
