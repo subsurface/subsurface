@@ -128,7 +128,15 @@ void LocationInformationModel::update()
 	beginResetModel();
 	internalRowCount = dive_site_table.nr;
 	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
+	locationNames.clear();
+	for (int i = 0; i < internalRowCount; i++)
+		locationNames << QString(dive_site_table.dive_sites[i]->name);
 	endResetModel();
+}
+
+QStringList LocationInformationModel::allSiteNames() const
+{
+	return(locationNames);
 }
 
 bool LocationInformationModel::setData(const QModelIndex &index, const QVariant &value, int role)

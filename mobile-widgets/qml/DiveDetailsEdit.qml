@@ -129,8 +129,7 @@ Item {
 			}
 			HintsTextEdit {
 				id: txtLocation
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.locationList : null
+				model: manager.locationList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onEditingFinished: {
