@@ -21,6 +21,9 @@ public:
 	void hideNotification();
 	QString getNotificationText();
 
+public
+slots:
+	void showError(QString message);
 private:
 	QFutureWatcher<void> future_watcher;
 

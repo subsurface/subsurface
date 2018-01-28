@@ -91,21 +91,9 @@ MainWindow *MainWindow::m_Instance = NULL;
 
 extern "C" void showErrorFromC()
 {
-	// Show errors only if we are running in the GUI thread.
-	// If we're not in the GUI thread, let errors accumulate.
-	if (QThread::currentThread() != QCoreApplication::instance()->thread())
-		return;
-
 	MainWindow *mainwindow = MainWindow::instance();
 	if (mainwindow)
-		mainwindow->showErrors();
-}
-
-void MainWindow::showErrors()
-{
-	const char *error = get_error_string();
-	if (!empty_string(error))
-		getNotificationWidget()->showNotification(error, KMessageWidget::Error);
+		emit mainwindow->showError(get_error_string());
 }
 
 MainWindow::MainWindow() : QMainWindow(),
@@ -219,6 +207,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget(), SLOT(printDecoPlan()));
 	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
 	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), mapWidget, SLOT(centerOnDiveSite(struct dive_site *)));
+	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
 	wtu = new WindowTitleUpdate();
 	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));

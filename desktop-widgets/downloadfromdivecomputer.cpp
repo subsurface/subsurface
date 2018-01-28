@@ -222,9 +222,6 @@ void DownloadFromDCWidget::updateState(states state)
 	else if (state == ERROR) {
 		timer->stop();
 
-		// Show messages that worker thread produced.
-		MainWindow::instance()->showErrors();
-
 		QMessageBox::critical(this, TITLE_OR_TEXT(tr("Error"), thread.error), QMessageBox::Ok);
 		markChildrenAsEnabled();
 		progress_bar_text = "";
