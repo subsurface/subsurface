@@ -17,6 +17,7 @@
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
+#include "qt-models/completionmodels.h"
 #include "core/divelist.h"
 #include "core/device.h"
 #include "core/pref.h"
@@ -272,6 +273,8 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 		tryRetrieveDataFromBackend();
 	}
+	buddyModel.updateModel();
+	suitModel.updateModel(); emit suitListChanged();
 }
 
 void QMLManager::mergeLocalRepo()
@@ -1548,19 +1551,9 @@ void QMLManager::quit()
 	QApplication::quit();
 }
 
-QStringList QMLManager::suitInit() const
+QStringList QMLManager::suitList() const
 {
-	QStringList suits;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		QString temp = d->suit;
-		if (!temp.isEmpty())
-			suits << d->suit;
-	}
-	suits.removeDuplicates();
-	suits.sort();
-	return suits;
+	return suitModel.stringList();
 }
 
 QStringList QMLManager::buddyInit() const

@@ -224,8 +224,7 @@ Item {
 			}
 			HintsTextEdit {
 				id: suitBox
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.suitList : null
+				model: manager.suitList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}

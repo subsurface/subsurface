@@ -92,7 +92,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.location = ""
 		detailsWindow.gps = ""
 		detailsWindow.duration = ""
-		detailsWindow.suitModel = manager.suitInit
+		detailsWindow.suitModel = manager.suitList
 		detailsWindow.suitIndex = -1
 		detailsWindow.suitText = ""
 		detailsWindow.cylinderModel = manager.cylinderInit

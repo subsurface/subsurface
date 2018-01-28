@@ -13,6 +13,7 @@
 #include "core/gpslocation.h"
 #include "core/downloadfromdcthread.h"
 #include "qt-models/divelistmodel.h"
+#include "qt-models/completionmodels.h"
 
 class QMLManager : public QObject {
 	Q_OBJECT
@@ -35,7 +36,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool syncToCloud MEMBER m_syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
 	Q_PROPERTY(int updateSelectedDive MEMBER m_updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
 	Q_PROPERTY(int selectedDiveTimestamp MEMBER m_selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
-	Q_PROPERTY(QStringList suitInit READ suitInit CONSTANT)
+	Q_PROPERTY(QStringList suitList READ suitList NOTIFY suitListChanged)
 	Q_PROPERTY(QStringList buddyInit READ buddyInit CONSTANT)
 	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
@@ -130,7 +131,7 @@ public:
 
 	DiveListSortModel *dlSortModel;
 
-	QStringList suitInit() const;
+	QStringList suitList() const;
 	QStringList buddyInit() const;
 	QStringList divemasterInit() const;
 	QStringList cylinderInit() const;
@@ -196,6 +197,8 @@ public slots:
 
 
 private:
+	BuddyCompletionModel buddyModel;
+	SuitCompletionModel suitModel;
 	QString m_cloudUserName;
 	QString m_cloudPassword;
 	QString m_cloudPin;
@@ -267,6 +270,7 @@ signals:
 	void libdcLogChanged();
 	void developerChanged();
 	void btEnabledChanged();
+	void suitListChanged();
 };
 
 #endif
