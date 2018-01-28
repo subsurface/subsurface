@@ -236,8 +236,7 @@ Item {
 			}
 			HintsTextEdit {
 				id: buddyBox
-				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.buddyList : null
+				model: manager.buddyList
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 			}

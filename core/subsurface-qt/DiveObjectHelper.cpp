@@ -429,28 +429,6 @@ QStringList DiveObjectHelper::locationList() const
 	return locations;
 }
 
-QStringList DiveObjectHelper::buddyList() const
-{
-	QStringList buddies;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		QString temp = d->buddy;
-		if (!temp.isEmpty() && !temp.contains(",")){
-			buddies << d->buddy;
-		}
-		else if (!temp.isEmpty()){
-			QRegExp sep("(,\\s)");
-			QStringList tempList = temp.split(sep);
-			buddies << tempList;
-			buddies << tr("Multiple Buddies");
-		}
-	}
-	buddies.removeDuplicates();
-	buddies.sort();
-	return buddies;
-}
-
 QStringList DiveObjectHelper::divemasterList() const
 {
 	QStringList divemasters;
