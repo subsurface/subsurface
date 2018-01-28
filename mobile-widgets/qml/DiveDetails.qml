@@ -18,7 +18,6 @@ Kirigami.Page {
 	property alias watertemp: detailsEdit.watertempText
 	property alias buddyIndex: detailsEdit.buddyIndex
 	property alias buddyText: detailsEdit.buddyText
-	property alias buddyModel: detailsEdit.buddyModel
 	property alias divemasterIndex: detailsEdit.divemasterIndex
 	property alias divemasterText: detailsEdit.divemasterText
 	property alias divemasterModel: detailsEdit.divemasterModel
@@ -240,7 +239,7 @@ Kirigami.Page {
 		if (currentItem.modelData.dive.buddy.indexOf(",") > 0) {
 			buddyText = currentItem.modelData.dive.buddy;
 		} else {
-			buddyIndex = currentItem.modelData.dive.buddyList.indexOf(currentItem.modelData.dive.buddy)
+			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy)
 		}
 		divemasterIndex = currentItem.modelData.dive.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
 		notes = currentItem.modelData.dive.notes

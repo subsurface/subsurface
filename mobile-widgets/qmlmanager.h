@@ -37,7 +37,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(int updateSelectedDive MEMBER m_updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
 	Q_PROPERTY(int selectedDiveTimestamp MEMBER m_selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
 	Q_PROPERTY(QStringList suitList READ suitList NOTIFY suitListChanged)
-	Q_PROPERTY(QStringList buddyInit READ buddyInit CONSTANT)
+	Q_PROPERTY(QStringList buddyList READ buddyList NOTIFY buddyListChanged)
 	Q_PROPERTY(QStringList divemasterInit READ divemasterInit CONSTANT)
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin MEMBER m_showPin WRITE setShowPin NOTIFY showPinChanged)
@@ -130,7 +130,7 @@ public:
 	DiveListSortModel *dlSortModel;
 
 	QStringList suitList() const;
-	QStringList buddyInit() const;
+	QStringList buddyList() const;
 	QStringList divemasterInit() const;
 	QStringList cylinderInit() const;
 	bool showPin() const;
@@ -268,6 +268,7 @@ signals:
 	void developerChanged();
 	void btEnabledChanged();
 	void suitListChanged();
+	void buddyListChanged();
 };
 
 #endif

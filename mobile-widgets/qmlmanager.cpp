@@ -248,7 +248,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
 		tryRetrieveDataFromBackend();
 	}
-	buddyModel.updateModel();
+	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
 }
 
@@ -1542,25 +1542,9 @@ QStringList QMLManager::suitList() const
 	return suitModel.stringList();
 }
 
-QStringList QMLManager::buddyInit() const
+QStringList QMLManager::buddyList() const
 {
-	QStringList buddies;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		QString temp = d->buddy;
-		if (!temp.isEmpty() && !temp.contains(",")){
-			buddies << d->buddy;
-		}
-		else if (!temp.isEmpty()){
-			QRegExp sep("(,\\s)");
-			QStringList tempList = temp.split(sep);
-			buddies << tempList;
-		}
-	}
-	buddies.removeDuplicates();
-	buddies.sort();
-	return buddies;
+	return buddyModel.stringList();
 }
 
 QStringList QMLManager::divemasterInit() const

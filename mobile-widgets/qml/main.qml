@@ -81,7 +81,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.date = manager.getDate(detailsWindow.dive_id)
 		detailsWindow.airtemp = ""
 		detailsWindow.watertemp = ""
-		detailsWindow.buddyModel = manager.buddyInit
+		detailsWindow.buddyModel = manager.buddyList
 		detailsWindow.buddyIndex = -1
 		detailsWindow.buddyText = ""
 		detailsWindow.depth = ""
