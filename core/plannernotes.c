@@ -36,13 +36,28 @@ int diveplan_duration(struct diveplan *diveplan)
  * Parameters: 1) Pointer to the output buffer position at which writing should start.
  *             2) The size of the part of the unused output buffer that remains unused.
  *             3) The data structure containing icd calculation results: icdvalues.
- *             4) The names of the gasses in the gas change: gas-from and gas-to.
+ *             4) A boolean value indicating whether a table header should be written before the data. Only during 1st call.
+ *             5) Pointers to gas mixes in the gas change: gas-from and gas-to.
  * Returns:    The size of the output buffer that has been used after the new results have been added.
  */
-int add_icd_entry(char *icdbuffer, unsigned int maxsize, struct icd_data *icdvalues, int time_seconds, int ambientpressure_mbar, struct gasmix *gas_from, struct gasmix *gas_to)
+int add_icd_entry(char *icdbuffer, unsigned int maxsize, struct icd_data *icdvalues, bool printheader, int time_seconds, int ambientpressure_mbar, struct gasmix *gas_from, struct gasmix *gas_to)
 {
-	int len;
-	len = snprintf(icdbuffer, maxsize, 
+	int len = 0;
+	if (printheader) { // Create a table description and a table header if no icd data have been written yet.
+		len = snprintf(icdbuffer + len, maxsize - len, "<div>%s:",
+			translate("gettextFromC","Isobaric counterdiffusion information"));
+		len += snprintf(icdbuffer + len, maxsize - len, "<table><tr><td align='left'><b>%s</b></td>",
+			translate("gettextFromC", "runtime"));
+		len += snprintf(icdbuffer + len, maxsize - len, "<td align='center'><b>%s</b></td>",
+			translate("gettextFromC", "gaschange"));
+		len += snprintf(icdbuffer + len, maxsize - len, "<td style='padding-left: 15px;'><b>%s</b></td>",
+			translate("gettextFromC", "&#916;He"));
+		len += snprintf(icdbuffer + len, maxsize - len, "<td style='padding-left: 20px;'><b>%s</b></td>",
+			translate("gettextFromC", "&#916;N&#8322;"));
+		len += snprintf(icdbuffer + len, maxsize - len, "<td style='padding-left: 10px;'><b>%s</b></td></tr>",
+			translate("gettextFromC", "max &#916;N&#8322;"));
+	}		// Add one entry to the icd table:
+	len += snprintf(icdbuffer + len, maxsize - len, 
 		"<tr><td rowspan='2' style= 'vertical-align:top;'>%3d%s</td>"
 		"<td rowspan=2 style= 'vertical-align:top;'>%s&#10137;",
 		(time_seconds + 30) / 60, translate("gettextFromC", "min"), gasname(gas_from));
@@ -72,7 +87,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	const char *deco, *segmentsymbol;
 	static char buf[1000];
 	int len, lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
-	int icyl, icdlen = 0;
+	int icdlen = 0;
 	struct gasmix lastprintgasmix = {{ -1 }, { -1 }};
 	struct divedatapoint *dp = diveplan->dp;
 	bool plan_verbatim = prefs.verbatim_plan;
@@ -82,8 +97,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	bool gaschange_after = !plan_verbatim;
 	bool gaschange_before;
 	bool lastentered = true;
-	bool istrimix = false;
-	bool icdwarning = false;
+	bool icdwarning = false, icdtableheader = true;
 	struct divedatapoint *nextdp = NULL;
 	struct divedatapoint *lastbottomdp = NULL;
 	struct icd_data icdvalues;
@@ -162,25 +176,6 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		len += snprintf(buffer + len, sz_buffer - len,
 				"<th style='padding-left: 10px; float: left;'>%s</th></tr></thead><tbody style='float: left;'>",
 				translate("gettextFromC", "gas"));
-	}
-	for (icyl = 0; icyl < MAX_CYLINDERS; icyl++) {	// If dive plan has an OC cylinder with helium, then initialise ICD table:
-		if ((dive->cylinder[icyl].cylinder_use == OC_GAS) && (get_he(&dive->cylinder[icyl].gasmix) > 0)) {	
-			istrimix = true;
-			icdlen = 0;
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<div>%s:",
-				translate("gettextFromC","Isobaric counterdiffusion information"));
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<table><tr><td align='left'><b>%s</b></td>",
-				translate("gettextFromC", "runtime"));
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td align='center'><b>%s</b></td>",
-				translate("gettextFromC", "gaschange"));
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 15px;'><b>%s</b></td>",
-				translate("gettextFromC", "&#916;He"));
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 20px;'><b>%s</b></td>",
-				translate("gettextFromC", "&#916;N&#8322;"));
-			icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen, "<td style='padding-left: 10px;'><b>%s</b></td></tr>",
-				translate("gettextFromC", "max &#916;N&#8322;"));
-			break;
-		}
 	}
 
 	do {
@@ -323,10 +318,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					} else {
 						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>",
 							gasname(&newgasmix));
-						if (isascent && (get_he(&lastprintgasmix) > 0)) {		// For a trimix gas change on ascent, save ICD info if previous cylinder had helium
-							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) 					// Do icd calulations
+						if (isascent && (get_he(&lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
+							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
-							icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, dp->time, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &newgasmix); // Print calculations to buffer.
+							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
+								icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &newgasmix); // .. then print calculations to buffer.
+								icdtableheader = false;
+							}
 						}
 					}
 					lastprintsetpoint = nextdp->setpoint;
@@ -341,10 +339,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					} else {
 						len += snprintf(buffer + len, sz_buffer - len, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>",
 							gasname(&gasmix));
-						if (get_he(&lastprintgasmix) > 0) {						// For a trimix gas change, save ICD info if previous cylinder had helium
-							if (isobaric_counterdiffusion(&lastprintgasmix, &gasmix, &icdvalues))			// Do icd calculations
+						if (get_he(&lastprintgasmix) > 0) {  // For a trimix gas change, save ICD info if previous cylinder had helium
+							if (isobaric_counterdiffusion(&lastprintgasmix, &gasmix, &icdvalues))  // Do icd calculations
 								icdwarning = true;
-							icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, lasttime, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &gasmix); // and print them to buffer.
+							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
+								icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, icdtableheader, lasttime, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &gasmix); // .. then print data to buffer.
+								icdtableheader = false;
+							}
 						} 
 					}
 					// Set variables so subsequent iterations can test against the last gas printed
@@ -367,10 +368,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						snprintf(temp, sz_temp, translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) nextdp->setpoint / 1000.0);
 					} else {
 						snprintf(temp, sz_temp, translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
-						if ((isascent) && (get_he(&lastprintgasmix) > 0)) {										//	For a trimix gas change on ascent:
-							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues))				// Do icd calculations
+						if ((isascent) && (get_he(&lastprintgasmix) > 0)) {          // For a trimix gas change on ascent:
+							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) // Do icd calculations
 								icdwarning = true;
-							icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, dp->time, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &newgasmix); // and print them to buffer.
+							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
+								icdlen += add_icd_entry(icdbuffer+icdlen, sz_icdbuf-icdlen, &icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &newgasmix); // ... then print data to buffer.
+								icdtableheader = false;
+							}
 						}
 					}
 					len += snprintf(buffer + len, sz_buffer - len, "%s<br>", temp);
@@ -535,11 +539,11 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		len += snprintf(buffer + len, sz_buffer - len, "%s%s%s<br></div>", temp, warning, mingas);
 	}
 
-	/* For trimix OC dives, add the ICD table here */
-	if (istrimix) {
-		icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen,"</tbody></table>");	// End the ICD table
-		len += snprintf(buffer + len, sz_buffer - len, "%s", icdbuffer);				// ..and add it to the html buffer
-		if (icdwarning) {																// If necessary, add a warning message to html buffer
+	/* For trimix OC dives, if an icd table header and icd data were printed to buffer, then add the ICD table here */
+	if (!icdtableheader) {
+		icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen,"</tbody></table>"); // End the ICD table
+		len += snprintf(buffer + len, sz_buffer - len, "%s", icdbuffer); // ..and add it to the html buffer
+		if (icdwarning) { // If necessary, add warning
 			len += snprintf(buffer + len, sz_buffer - len, "<span style='color: red;'>%s</span> %s",
 				translate("gettextFromC", "Warning:"),
 				translate("gettextFromC", "Isobaric counterdiffusion conditions exceeded"));
