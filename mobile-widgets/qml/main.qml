@@ -85,7 +85,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.buddyIndex = -1
 		detailsWindow.buddyText = ""
 		detailsWindow.depth = ""
-		detailsWindow.divemasterModel = manager.divemasterInit
+		detailsWindow.divemasterModel = manager.divemasterList
 		detailsWindow.divemasterIndex = -1
 		detailsWindow.divemasterText = ""
 		detailsWindow.notes = ""

@@ -250,6 +250,7 @@ void QMLManager::openLocalThenRemote(QString url)
 	}
 	buddyModel.updateModel(); emit buddyListChanged();
 	suitModel.updateModel(); emit suitListChanged();
+	divemasterModel.updateModel(); emit divemasterListChanged();
 }
 
 void QMLManager::mergeLocalRepo()
@@ -1547,19 +1548,9 @@ QStringList QMLManager::buddyList() const
 	return buddyModel.stringList();
 }
 
-QStringList QMLManager::divemasterInit() const
+QStringList QMLManager::divemasterList() const
 {
-	QStringList divemasters;
-	struct dive *d;
-	int i = 0;
-	for_each_dive (i, d) {
-		QString temp = d->divemaster;
-		if (!temp.isEmpty())
-			divemasters << d->divemaster;
-	}
-	divemasters.removeDuplicates();
-	divemasters.sort();
-	return divemasters;
+	return divemasterModel.stringList();
 }
 
 QStringList QMLManager::cylinderInit() const
