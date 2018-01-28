@@ -20,10 +20,9 @@ public:
 	void showNotification(QString message, KMessageWidget::MessageType type);
 	void hideNotification();
 	QString getNotificationText();
-	~NotificationWidget();
 
 private:
-	QFutureWatcher<void> *future_watcher;
+	QFutureWatcher<void> future_watcher;
 
 private
 slots:
