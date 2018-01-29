@@ -801,7 +801,14 @@ void ProfileWidget2::settingsChanged()
 {
 	// if we are showing calculated ceilings then we have to replot()
 	// because the GF could have changed; otherwise we try to avoid replot()
-	bool needReplot = prefs.calcceiling;
+	// but always replot in PLAN/ADD/EDIT mode to avoid a bug of DiveHandlers not
+	// being redrawn on setting changes, causing them to become unattached
+	// to the profile
+	bool needReplot;
+	if (currentState == ADD || currentState == PLAN || currentState ==  EDIT)
+		needReplot = true;
+	else
+		needReplot = prefs.calcceiling;
 #ifndef SUBSURFACE_MOBILE
 	gasYAxis->settingsChanged();	// Initialize ticks of partial pressure graph
 	if ((prefs.percentagegraph||prefs.hrgraph) && PP_GRAPHS_ENABLED) {
