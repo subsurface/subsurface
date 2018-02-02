@@ -18,6 +18,7 @@ Kirigami.Page {
 	property alias watertemp: detailsEdit.watertempText
 	property alias buddyIndex: detailsEdit.buddyIndex
 	property alias buddyText: detailsEdit.buddyText
+	property alias buddyModel: detailsEdit.buddyModel
 	property alias divemasterIndex: detailsEdit.divemasterIndex
 	property alias divemasterText: detailsEdit.divemasterText
 	property alias divemasterModel: detailsEdit.divemasterModel
@@ -29,6 +30,7 @@ Kirigami.Page {
 	property alias notes: detailsEdit.notesText
 	property alias suitIndex: detailsEdit.suitIndex
 	property alias suitText: detailsEdit.suitText
+	property alias suitModel: detailsEdit.suitModel
 	property alias weight: detailsEdit.weightText
 	property alias startpressure: detailsEdit.startpressureText
 	property alias endpressure: detailsEdit.endpressureText
