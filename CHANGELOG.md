@@ -1,9 +1,28 @@
-- Do not add double BT/BLE items
-- New version of libdivecomputer 
-- Fixed instability crashes in reverse geo lookup function (dive site edit)
-- Warn in case of isobaric counter diffusion if N2 increas is more than 
-  20% of He decrease.
-- Desktop: Automatically sync with cloud when going online
-- Small UI fixes
-- Fix bug when using remembered BT/BLE addresses in dive computer download
-- Fix bug in cylider pressure lines
+- Libdivecomputer: use a new version
+- Dekstop: fix instability crashes in reverse geo lookup function
+- Desktop: automatically sync with cloud when going online
+- Desktop: fix missing icon when doing reverse geo lookup
+- Desktop: fix bug about progress bars not resizing
+- Desktop: fix a bug about dive list auto group when importing dives
+- Desktop: clear tags when creating a new logbook
+- Cloud-storage: automatically sync with cloud when going online
+- Cloud-storage: support non-https:// repositories for saving
+- Cloud-storage: fix small memory leaks
+- Cloud-storage: enter offline mode if sync with cloud failed
+- Mobile: correct the FTDI PID for Cressi devices
+- Mobile: fix crash on delete dive from dive list
+- Import: support parsing of DL7 dives
+- Uemis: fix possible stall when doing dive sync
+- Uemis: speed up synchronization of same dive sites
+- Planner: implement ICD calculations in planner output
+- Planner: recreational dives are now limited to 6 hours
+- Planner: initialize cylinder start pressure with working pressure
+- Planner: save the last manually-entered point of a dive plan
+- Planner: fix bug in cylinder pressure lines
+- Profile: fix disappearance of cylinder pressure line
+- Profile: fix garbled profiles after visiting the planner
+- Profile: warn in case of isobaric counter diffusion if N2 increase is more
+  than 20% of He decrease
+- Bluetooth: fix a bug when using remembered BT/BLE addresses in the dive
+  computer download dialog
+- Bluetooth: do not add duplicate BT/BLE items
