@@ -58,6 +58,8 @@
 		<file>icons/ic_star_border.svg</file>
 		<file>icons/ic_sync.svg</file>
 		<file>icons/Pink_gps.svg</file>
+		<file alias="icons/ic_filter_list.svg">icons/ic_filter_list_24px.svg</file>
+		<file alias="icons/ic_sort.svg">icons/ic_sort_24px.svg</file>
 
 		<!-- ********** kirigami icons ********** -->
 		<file alias="icons/application-menu.svg">kirigami/icons/application-menu.svg</file>
