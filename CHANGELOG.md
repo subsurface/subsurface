@@ -5,6 +5,7 @@
 - Desktop: fix bug about progress bars not resizing
 - Desktop: fix a bug about dive list auto group when importing dives
 - Desktop: clear tags when creating a new logbook
+- Desktop: Enable device field for IRDA transports
 - Cloud-storage: automatically sync with cloud when going online
 - Cloud-storage: support non-https:// repositories for saving
 - Cloud-storage: fix small memory leaks
