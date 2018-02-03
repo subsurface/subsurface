@@ -480,13 +480,19 @@ void DownloadFromDCWidget::updateDeviceEnabled()
 	dc_descriptor_t *descriptor = NULL;
 	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
 
-	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
-	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
-		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
+	// Enable the device selection field only for transports that need a device
+	switch (dc_descriptor_get_transport(descriptor)) {
+	case DC_TRANSPORT_SERIAL:
+	case DC_TRANSPORT_IRDA:
+	default:
 		ui.device->setEnabled(true);
-	} else {
-		// otherwise disable the device node box
+		break;
+	case DC_TRANSPORT_BLUETOOTH:
+	case DC_TRANSPORT_USB:
+	case DC_TRANSPORT_USBHID:
+	case DC_TRANSPORT_NONE:
 		ui.device->setEnabled(false);
+		break;
 	}
 }
 
