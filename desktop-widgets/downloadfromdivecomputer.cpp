@@ -18,9 +18,6 @@ namespace DownloadFromDcGlobal {
 	const char *err_string;
 };
 
-// Workaround abuse of old libdc types
-#define DC_TRANSPORT_BLUETOOTH 1024
-
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	downloading(false),
 	previousLast(0),
