@@ -1352,12 +1352,9 @@ void QMLManager::saveChangesCloud(bool forceRemoteSync)
 		return;
 	}
 
-	bool glo = git_local_only;
-	git_local_only = false;
 	alreadySaving = true;
 	loadDivesWithValidCredentials();
 	alreadySaving = false;
-	git_local_only = glo;
 }
 
 void QMLManager::undo()
