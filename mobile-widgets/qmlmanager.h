@@ -208,7 +208,7 @@ public slots:
 	void copyAppLogToClipboard();
 	bool createSupportEmail();
 	void finishSetup();
-	void openLocalThenRemote(QString url);
+	void openLocalThenRemote(QString url, bool localOnly);
 	void mergeLocalRepo();
 	QString getNumber(const QString& diveId);
 	QString getDate(const QString& diveId);
@@ -258,7 +258,6 @@ private:
 	bool checkLocation(DiveSiteChange &change, const DiveObjectHelper &myDive, struct dive *d, QString location, QString gps);
 	bool checkDuration(const DiveObjectHelper &myDive, struct dive *d, QString duration);
 	bool checkDepth(const DiveObjectHelper &myDive, struct dive *d, QString depth);
-	bool currentGitLocalOnly;
 	Q_INVOKABLE DCDeviceData *m_device_data;
 	QString m_progressMessage;
 	bool m_btEnabled;

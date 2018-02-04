@@ -325,7 +325,7 @@ void QMLManager::applicationStateChanged(Qt::ApplicationState state)
 	}
 }
 
-void QMLManager::openLocalThenRemote(QString url)
+void QMLManager::openLocalThenRemote(QString url, bool localOnly)
 {
 	// clear out the models and the fulltext index
 	MobileModels::instance()->clear();
@@ -381,11 +381,11 @@ void QMLManager::openLocalThenRemote(QString url)
 	}
 	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD) {
 		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
-		git_local_only = false;
+		localOnly = false;
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
 	set_filename(fileNamePrt.data());
-	if (git_local_only) {
+	if (localOnly) {
 		if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
 			appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
@@ -507,7 +507,7 @@ void QMLManager::finishSetup()
 		// we know that we are the first ones to access git storage, so we don't need to test,
 		// but we need to make sure we stay the only ones accessing git storage
 		alreadySaving = true;
-		openLocalThenRemote(url);
+		openLocalThenRemote(url, git_local_only);
 	} else if (!empty_string(existing_filename) &&
 				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
 		setOldStatus((qPrefCloudStorage::cloud_status)qPrefCloudStorage::cloud_verification_status());
@@ -617,9 +617,7 @@ void QMLManager::saveCloudCredentials(const QString &newEmail, const QString &ne
 		alreadySaving = true;
 		// since we changed credentials, we need to try to connect to the cloud, regardless
 		// of whether we're in offline mode or not, to make sure the repository is synced
-		currentGitLocalOnly = git_local_only;
-		git_local_only = false;
-		openLocalThenRemote(url);
+		openLocalThenRemote(url, false);
 	}
 }
 
@@ -678,6 +676,7 @@ void QMLManager::loadDivesWithValidCredentials()
 	git_repository *git;
 	const char *branch;
 	int error;
+	git_local_only = false;
 	if (check_git_sha(fileNamePrt.data(), &git, &branch) == 0) {
 		appendTextToLog("Cloud sync shows local cache was current");
 		goto successful_exit;
@@ -728,21 +727,11 @@ successful_exit:
 			git_local_only = true;
 		}
 	}
-	// if we got here just for an initial connection to the cloud, reset to offline
-	if (currentGitLocalOnly) {
-		currentGitLocalOnly = false;
-		git_local_only = true;
-	}
 	return;
 }
 
 void QMLManager::revertToNoCloudIfNeeded()
 {
-	if (currentGitLocalOnly) {
-		// we tried to connect to the cloud for the first time and that failed
-		currentGitLocalOnly = false;
-		git_local_only = true;
-	}
 	if (m_oldStatus == qPrefCloudStorage::CS_NOCLOUD) {
 		// we tried to switch to a cloud account and had previously used local data,
 		// but connecting to the cloud account (and subsequently merging the local
@@ -1296,7 +1285,7 @@ void QMLManager::openNoCloudRepo()
 		s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	}
 
-	openLocalThenRemote(filename);
+	openLocalThenRemote(filename, true);
 }
 
 void QMLManager::saveChangesLocal()
