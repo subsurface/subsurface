@@ -17,6 +17,8 @@ public:
 public slots:
 	int getDiveId(int idx);
 	int getIdxForId(int id);
+	void setFilter(QString f);
+	void resetFilter();
 };
 
 class DiveListModel : public QAbstractListModel
@@ -26,7 +28,8 @@ public:
 
 	enum DiveListRoles {
 		DiveRole = Qt::UserRole + 1,
-		DiveDateRole
+		DiveDateRole,
+		DiveSiteRole
 	};
 
 	static DiveListModel *instance();

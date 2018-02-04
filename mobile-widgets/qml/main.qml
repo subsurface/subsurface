@@ -32,6 +32,9 @@ Kirigami.ApplicationWindow {
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
 	property alias showPin: prefs.showPin
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
+	property bool filterToggle: false
+	property string filterPattern: ""
+
 	onNotificationTextChanged: {
 		if (notificationText != "") {
 			// there's a risk that we have a >5 second gap in update events;

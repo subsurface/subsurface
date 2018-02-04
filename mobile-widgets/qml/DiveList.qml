@@ -336,6 +336,7 @@ Kirigami.ScrollablePage {
 					prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
+				page.actions.left = page.filterToggleAction
 				page.title = qsTr("Dive list")
 				if (diveListView.count === 0)
 					showPassiveNotification(qsTr("Please tap the '+' button to add a dive (or download dives from a supported dive computer)"), 3000)
@@ -363,6 +364,20 @@ Kirigami.ScrollablePage {
 		visible: diveListView.visible && diveListView.count === 0
 	}
 
+	Component {
+		id: filterHeader
+		Controls.TextField  {
+			id: sitefilter
+			visible: (opacity > 0) && rootItem.filterToggle
+			text: ""
+			placeholderText: "Dive site name"
+			onTextChanged: {
+				rootItem.filterPattern = text
+				diveModel.setFilter(text)
+			}
+		}
+	}
+
 	ListView {
 		id: diveListView
 		anchors.fill: parent
@@ -371,6 +386,7 @@ Kirigami.ScrollablePage {
 		model: diveModel
 		currentIndex: -1
 		delegate: diveDelegate
+		header: filterHeader
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
@@ -417,6 +433,22 @@ Kirigami.ScrollablePage {
 		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
+		}
+	}
+
+	property QtObject filterToggleAction: Kirigami.Action {
+		icon {
+			name: ":icons/ic_filter_list"
+		}
+		text: qsTr("Filter dives")
+		onTriggered: {
+			rootItem.filterToggle = !rootItem.filterToggle
+			if (rootItem.filterToggle) {
+				diveModel.setFilter(rootItem.filterPattern)
+			} else {
+				diveModel.resetFilter()
+				rootItem.filterPattern = ""
+			}
 		}
 	}
 
