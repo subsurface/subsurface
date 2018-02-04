@@ -14,10 +14,6 @@
 #include <QMessageBox>
 #include <QShortcut>
 
-namespace DownloadFromDcGlobal {
-	const char *err_string;
-};
-
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	downloading(false),
 	previousLast(0),
