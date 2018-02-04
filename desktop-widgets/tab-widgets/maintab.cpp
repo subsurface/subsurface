@@ -393,7 +393,7 @@ void MainTab::updateDepthDuration()
 	ui.depthLabel->setVisible(true);
 	ui.duration->setVisible(true);
 	ui.durationLabel->setVisible(true);
-	ui.duration->setText(QDateTime::fromTime_t(displayed_dive.duration.seconds).toUTC().toString("h:mm"));
+	ui.duration->setText(render_seconds_to_string(displayed_dive.duration.seconds));
 	ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
 }
 
@@ -579,7 +579,7 @@ void MainTab::updateDiveInfo(bool clear)
 				ui.durationLabel->setVisible(isManual);
 			}
 		}
-		ui.duration->setText(QDateTime::fromTime_t(displayed_dive.duration.seconds).toUTC().toString("h:mm"));
+		ui.duration->setText(render_seconds_to_string(displayed_dive.duration.seconds));
 		ui.depth->setText(get_depth_string(displayed_dive.maxdepth, true));
 		ui.DiveType->setCurrentIndex(get_dive_dc(&displayed_dive, dc_number)->divemode);
 

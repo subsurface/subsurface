@@ -743,6 +743,14 @@ int gettimezoneoffset(timestamp_t when)
 	return dt2.secsTo(dt1);
 }
 
+QString render_seconds_to_string(int seconds)
+{
+	if (seconds % 60 == 0)
+		return QDateTime::fromTime_t(seconds).toUTC().toString("h:mm");
+	else
+		return QDateTime::fromTime_t(seconds).toUTC().toString("h:mm:ss");
+}
+
 int parseDurationToSeconds(const QString &text)
 {
 	int secs;
