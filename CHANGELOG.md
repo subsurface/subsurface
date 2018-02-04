@@ -1,3 +1,4 @@
+- Desktop: don't ignore seconds in duration input field
 - Libdivecomputer: use a new version
 - Dekstop: fix instability crashes in reverse geo lookup function
 - Desktop: automatically sync with cloud when going online
