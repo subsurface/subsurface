@@ -108,7 +108,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int cylinderid = 0;
 	last_sp.mbar = 0;
 	for (int i = 0; i < plansamples - 1; i++) {
-		if (dc->last_manual_time.seconds && lasttime.seconds >= dc->last_manual_time.seconds)
+		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
 			break;
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
