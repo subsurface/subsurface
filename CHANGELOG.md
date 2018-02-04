@@ -1,3 +1,4 @@
+- Fix bug that alters manually entered dive durations
 - Desktop: don't ignore seconds in duration input field
 - Libdivecomputer: use a new version
 - Dekstop: fix instability crashes in reverse geo lookup function
