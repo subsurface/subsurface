@@ -722,10 +722,6 @@ successful_exit:
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
 		saveChangesLocal();
-		if (git_local_only == false) {
-			appendTextToLog(QStringLiteral("taking things back offline now that storage is synced"));
-			git_local_only = true;
-		}
 	}
 	return;
 }
@@ -738,10 +734,6 @@ void QMLManager::revertToNoCloudIfNeeded()
 		// and cloud data) failed - so let's delete the cloud credentials and go
 		// back to CS_NOCLOUD mode in order to prevent us from losing the locally stored
 		// dives
-		if (git_local_only == true) {
-			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
-			git_local_only = false;
-		}
 		free((void *)prefs.cloud_storage_email);
 		prefs.cloud_storage_email = NULL;
 		free((void *)prefs.cloud_storage_password);
@@ -1311,16 +1303,13 @@ void QMLManager::saveChangesLocal()
 			return;
 		}
 		alreadySaving = true;
-		bool glo = git_local_only;
 		git_local_only = true;
 		if (save_dives(existing_filename)) {
 			setNotificationText(consumeError());
 			set_filename(NULL);
-			git_local_only = glo;
 			alreadySaving = false;
 			return;
 		}
-		git_local_only = glo;
 		mark_divelist_changed(false);
 		alreadySaving = false;
 	} else {
