@@ -14,16 +14,6 @@
 
 #include "core/qt-gui.h"
 
-#ifdef SUBSURFACE_MOBILE
-#include <QQuickWindow>
-#include <QQmlApplicationEngine>
-#include <QQmlContext>
-#include <QSortFilterProxyModel>
-#include "mobile-widgets/qmlmanager.h"
-#include "qt-models/divelistmodel.h"
-#include "mobile-widgets/qmlprofile.h"
-#endif
-
 static MainWindow *window = NULL;
 
 void init_ui()
