@@ -47,6 +47,7 @@ struct preferences default_prefs = {
 	.show_sac = false,
 	.display_unused_tanks = false,
 	.show_average_depth = true,
+	.show_icd = false,
 	.ascrate75 = 9000 / 60,
 	.ascrate50 = 9000 / 60,
 	.ascratestops = 9000 / 60,

@@ -46,6 +46,7 @@ void PreferencesGraph::refreshSettings()
 
 	ui->display_unused_tanks->setChecked(prefs.display_unused_tanks);
 	ui->show_average_depth->setChecked(prefs.show_average_depth);
+	ui->show_icd->setChecked(prefs.show_icd);
 }
 
 void PreferencesGraph::syncSettings()
@@ -72,6 +73,7 @@ void PreferencesGraph::syncSettings()
 	tech->setShowCCRSensors(ui->show_ccr_sensors->isChecked());
 	tech->setDisplayUnusedTanks(ui->display_unused_tanks->isChecked());
 	tech->setShowAverageDepth(ui->show_average_depth->isChecked());
+	tech->setShowIcd(ui->show_icd->isChecked());
 	tech->setDecoMode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
 }
 

@@ -139,6 +139,7 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
 	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
 	Q_PROPERTY(bool show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
+	Q_PROPERTY(bool show_icd         READ showIcd         WRITE setShowIcd         NOTIFY showIcdChanged)
 	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
 	Q_PROPERTY(deco_mode deco READ deco WRITE setDecoMode NOTIFY decoModeChanged)
 
@@ -168,6 +169,7 @@ public:
 	bool showSac() const;
 	bool displayUnusedTanks() const;
 	bool showAverageDepth() const;
+	bool showIcd() const;
 	bool showPicturesInProfile() const;
 	deco_mode deco() const;
 
@@ -195,6 +197,7 @@ public slots:
 	void setShowSac(bool value);
 	void setDisplayUnusedTanks(bool value);
 	void setShowAverageDepth(bool value);
+	void setShowIcd(bool value);
 	void setShowPicturesInProfile(bool value);
 	void setDecoMode(deco_mode d);
 
@@ -222,6 +225,7 @@ signals:
 	void showSacChanged(bool value);
 	void displayUnusedTanksChanged(bool value);
 	void showAverageDepthChanged(bool value);
+	void showIcdChanged(bool value);
 	void showPicturesInProfileChanged(bool value);
 	void decoModeChanged(deco_mode m);
 
