@@ -1182,6 +1182,8 @@ static void sanitize_cylinder_info(struct dive *dive)
  */
 bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmix, struct icd_data *results)
 {
+	if (!prefs.show_icd)
+		return false;
 	results->dN2 = get_he(oldgasmix) + get_o2(oldgasmix) - get_he(newgasmix) - get_o2(newgasmix);
 	results->dHe = get_he(newgasmix) - get_he(oldgasmix);
 	return get_he(oldgasmix) > 0 && results->dN2 > 0 && results->dHe < 0 && get_he(oldgasmix) && results->dN2 > 0 && 5 * results->dN2 > -results->dHe;

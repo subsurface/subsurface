@@ -423,6 +423,11 @@ bool TechnicalDetailsSettings::showAverageDepth() const
 	return prefs.show_average_depth;
 }
 
+bool TechnicalDetailsSettings::showIcd() const
+{
+	return prefs.show_icd;
+}
+
 bool TechnicalDetailsSettings::mod() const
 {
 	return prefs.mod;
@@ -716,6 +721,17 @@ void TechnicalDetailsSettings::setShowAverageDepth(bool value)
 	s.setValue("show_average_depth", value);
 	prefs.show_average_depth = value;
 	emit showAverageDepthChanged(value);
+}
+
+void TechnicalDetailsSettings::setShowIcd(bool value)
+{
+	if (value == prefs.show_icd)
+		return;
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("show_icd", value);
+	prefs.show_icd = value;
+	emit showIcdChanged(value);
 }
 
 FacebookSettings::FacebookSettings(QObject *parent) :

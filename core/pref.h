@@ -94,6 +94,7 @@ struct preferences {
 	bool show_sac;
 	bool display_unused_tanks;
 	bool show_average_depth;
+	bool show_icd;
 	bool zoomed_plot;
 	bool hrgraph;
 	bool percentagegraph;
