@@ -14,27 +14,25 @@
 
 #include "core/qt-gui.h"
 
-static MainWindow *window = NULL;
-
 void init_ui()
 {
 	init_qt_late();
 
 	PluginManager::instance().loadPlugins();
 
-	window = new MainWindow();
+	MainWindow *window = new MainWindow();
 	window->setTitle();
 }
 
 void run_ui()
 {
-	window->show();
+	MainWindow::instance()->show();
 	qApp->exec();
 }
 
 void exit_ui()
 {
-	delete window;
+	delete MainWindow::instance();
 	delete qApp;
 	free((void *)existing_filename);
 }
