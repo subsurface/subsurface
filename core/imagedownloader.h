@@ -6,8 +6,6 @@
 #include <QFuture>
 #include <QNetworkReply>
 
-typedef QPair<QString, QByteArray> SHashedFilename;
-
 class ImageDownloader : public QObject {
 	Q_OBJECT;
 public:
