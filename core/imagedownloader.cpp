@@ -89,6 +89,8 @@ static void loadPicture(struct picture *picture, bool fromHash)
 	if (queuedPictures.contains(QString(picture->filename)))
 		return;
 	queuedPictures.insert(QString(picture->filename));
+	locker.unlock();
+
 	ImageDownloader download(picture);
 	download.load(fromHash);
 }
