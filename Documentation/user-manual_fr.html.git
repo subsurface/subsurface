@@ -2829,12 +2829,13 @@ tab of the <em>Notes</em> panel. Photos taken in rapid succession during a dive
 (therefore sometimes with large overlap on the dive profile) can easily be
 accessed in the <em>Photos</em> tab. This tab serves as a tool for individually
 accessing the photos of a dive, while the stubs on the dive profile show
-when during a dive a photo was taken. Single-click a thumbnail in the
-<em>Photos</em> panel to select a photo. Double-click a thumbnail to view the
-full-sized image, overlaying the <em>Subsurface</em> window. Deleted a photo from
-the <em>Photos</em> panel by selecting it (single-click) and then by pressing the
-<em>Del</em> key on the keyboard. This removes the photo BOTH from the <em>Photos</em> tab
-as well as the dive profile.</p></div>
+when during a dive a photo was taken. The size of the thumbnails in the
+<em>Photos</em> tab can be changed using the <em>Zoom level</em> slider at the bottom of
+the panel. Single-click a thumbnail in the <em>Photos</em> panel to select a
+photo. Double-click a thumbnail to view the full-sized image, overlaying the
+<em>Subsurface</em> window. Delete a photo from the <em>Photos</em> panel by selecting it
+(single-click) and then by pressing the <em>Del</em> key on the keyboard. This
+removes the photo BOTH from the <em>Photos</em> tab as well as the dive profile.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_photos_stockées_sur_un_disque_dur_externe">5.5.4. Photos stockées sur un disque dur externe</h4>
@@ -2859,7 +2860,7 @@ which dives have associated photos and which not: activate the <em>Photos</em>
 checkbox in the dropdown list obtained by right-clicking on the header bar
 of the <strong>Divelist</strong>. In the <strong>Divelist</strong>, all dives with associated photographs
 have an icon indicating whether the photographs were taken during the dive,
-just before/after the dive or both during and before/after the dive. More
+just before/after the dive or both during and before/after the dive.  More
 information is provided in the section dealing with <a href="#S_Divelist_columns">photo icons on the <strong>Divelist</strong></a>.</p></div>
 </div>
 <div class="sect3">
@@ -2964,8 +2965,8 @@ only two types of information that need to be provided:</p></div>
   in time on the <strong>Dive Profile</strong> panel and indicating the cylinder to which the change was made. After
   right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
   those defined during the first step, above (see image below). If the
-  <strong>tank bar</strong> button in the toolbar has been activated, the cylinder switches are also indicated in the
-  tank bar (image below).
+  <strong>gas bar</strong> button in the toolbar has been activated, the cylinder switches are also indicated in the
+  gas bar (image below).
 </p>
 </li>
 </ul></div>
@@ -3034,8 +3035,8 @@ three steps, exactly as with multi-cylinder dives above:</p></div>
   selecting <em>Add gas change</em>. A list of the appropriate cylinders is shown with the
   currently used cylinder greyed out. In the image below Tank 1 is greyed out, leaving only Tank 2
   to be selected. Select the appropriate cylinder. The cylinder change is then shown on the dive
-  profile with a cylinder symbol. If the <strong>Tank Bar</strong> is activated using the toolbar to the left of the
-  profile, then the cylinder change is also shown on the Tank Bar (see image below). After all
+  profile with a cylinder symbol. If the <strong>gas bar</strong> is activated using the toolbar to the left of the
+  profile, then the cylinder change is also shown on the gas bar (see image below). After all
   the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
   for both cylinders are shown on the dive profile, as in the image below.
 </p>
@@ -5442,21 +5443,35 @@ The most efficient way to create a dive profile is to enter the appropriate
 </ul></div>
 <div class="sect3">
 <h4 id="_plongées_loisir">14.2.1. Plongées loisir</h4>
-<div class="paragraph"><p>Recreational mode is what comes closest to planning a dive based on the non-decompression limit (NDL).
-It computes the maximum time a diver can stay at the current depth without needing mandatory decompression
-stops and without using more than the existing gas (minus a reserve). The planner automatically takes
-into account the nitrogen load incurred in previous dives. But conventional dive tables are also used in a
-way that can take into account previous dives. Why use a dive planner for recreational dives? Using
-recreational dive tables, the maximum depth of a dive is taken into account. But few dives are
-done at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means
-dive tables overestimate the nitrogen load incurred during previous dives. The <em>Subsurface</em>
-dive planner calculates nitrogen load according to the real dive profiles of all uploaded previous dives,
-in a similar way as dive computers calculate nitrogen load during a dive. This means that the diver gets <em>credit,</em>
-in terms of nitrogen load, for not remaining at maximum depth during
-previous dives, so a longer subsequent dive can be planned.
- For the planner to work it&#8217;s crucial to upload all previous dives
-onto <em>Subsurface</em> before doing dive planning.
-To plan a dive, the appropriate settings need to be defined.</p></div>
+<div class="paragraph"><p>Recreational mode is intended for what most divers would call
+"recreational", "sports"or "nontechnical" dives, remaining within no-deco
+limits (NDL).  It computes the maximum time a diver can stay at the current
+depth without needing mandatory decompression stops and without using more
+than the existing gas (minus a reserve). The planner automatically takes
+into account the nitrogen load incurred in previous dives. But conventional
+dive tables are also used in a way that can take into account previous
+dives. Why use a dive planner for recreational dives? The subsurface dive
+planner provides two significant advantages over the use of recreational
+dive tables for dive planning.</p></div>
+<div class="paragraph"><p>Firstly, using recreational dive tables, the maximum depth of each previous
+dive is taken into account. But few dives are done at a constant depth
+corresponding to the maximum depth (i.e. a "square" dive profile). This
+means dive tables overestimate the nitrogen load incurred during previous
+dives. The <em>Subsurface</em> dive planner calculates nitrogen load according to
+the real dive profiles of all uploaded previous dives, in a similar way as
+dive computers calculate nitrogen load during a dive. This means that the
+diver gets <em>credit,</em> in terms of nitrogen load, for not remaining at maximum
+depth during previous dives, so a longer subsequent dive can be planned.
+For the planner to work it&#8217;s therefore crucial to log previous dives in
+<em>Subsurface</em> before doing dive planning.</p></div>
+<div class="paragraph"><p>Secondly, recreational dive tables are not designed to build additional
+safety features into a dive. NDL times derived from dive tables often take
+divers close to the limit where decompression sickness (DCS) can arise. The
+Subsurface dive planner allows a diver to build more safety features into a
+dive plan, preventing recreational divers from getting close to the limits
+of getting a DCS hit. This is performed by specifying appropriate gradient
+factors for a dive plan, as explained below.</p></div>
+<div class="paragraph"><p>To plan a dive, the appropriate settings need to be defined.</p></div>
 <div class="paragraph"><p>Ensure the date and time is set to that of the intended dive. This allows
 calculation of the nitrogen load incurred during previous dives.</p></div>
 <div class="ulist"><ul>
@@ -5492,10 +5507,7 @@ Define the amount of gas the cylinder must have at the end of the bottom
   most agencies assume a fixed amount of gas, or actually of pressure e.g. 40
   or 50 bar or 25% or 33% (rule of thirds). But <em>Subsurface</em> can do better
   because it knows about the ascent and that is why we add the amount of gas
-  during the ascent (i.e. the "deco gas“).  Subsurface still uses a fixed
-  pressure "reserve" but that&#8217;s supposed to be for the additional gas used
-  when there&#8217;s a problem and your pulse rate goes up when you start to buddy
-  breathe. This reserve amount is user configurable.
+  during the ascent.
 </p>
 </li>
 <li>
@@ -5517,24 +5529,49 @@ La vitesse de remontée peut être modifiée. Les vitesses de remontée par
   loisir.
 </p>
 </li>
+<li>
+<p>
+To build additional safety into the dive plan (over and above those of
+  recreational dive tables), specify gradient factors less than 100% (<em>GFHigh</em>
+  and <em>GFLow</em> under the <em>Planning</em> heading in the planner). On the other hand,
+  to approximate the values in recreational dive tables, set the gradient
+  factors to 100.  By reducing the values of GFHigh and GFLow to values below
+  100, one can build more safety into a dive. Decreasing the values of the
+  gradient factors below 100 will shorten the duration of the dive. This is
+  the price of a larger safety margin. Reasons for using gradient factors less
+  than 100 may be the age of the diver, the health of a diver, or unusual
+  conditions such as cold water or strong currents.  Realistic conservative
+  values for the gradient factors are GFLow=40% and GFHigh=80%. This allows
+  you to create a cusom dive plan, suited to yourself as well as the dive
+  conditions.
+</p>
+</li>
 </ul></div>
+<div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30 meters with
+gradient factors of 100. Because the no-deco limit (NDL) is 22 minutes,
+there remains a significant amount of air in the cylinder at the end of the
+dive.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: A recreational dive plan: setup" />
+</div>
+</div>
 <div class="paragraph"><p>The dive profile in the planner shows the maximum dive time within no-deco
 limits using the Bühlmann ZH-L16 algorithm and the gas and depth settings
 specified as described above. The <em>Subsurface</em> planner allows rapid
 assessment of dive duration as a function of dive depth, given the nitrogen
 load incurred during previous dives. The dive plan includes estimates of the
 amount of air/gas used, depending on the cylinder settings specified under
-<em>Available gases</em>. If the initial cylinder pressure is set to 0, the dive
+<em>Available gases</em>. If the start cylinder pressure is left blank, the dive
 duration shown is the true no-deco limit (NDL) without taking into account
 gas used during the dive. If the surface above the dive profile is RED it
 means that recreational dive limits are exceeded and either the dive
 duration or the dive depth needs to be reduced.</p></div>
-<div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30
-meters. Although the no-deco limit (NDL) is 23 minutes, the duration of the
-dive is limited by the amount of air in the cylinder.</p></div>
+<div class="paragraph"><p>Below is the same dive plan as above, but with a safety stop and reduced
+gradient factors for a larger safety margin.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec.jpg" alt="FIGURE: A recreational dive plan: setup" />
+<img src="images/Planner_OC_rec2.jpg" alt="FIGURE: A recreational dive plan: gradient factors setup" />
 </div>
 </div>
 </div>
@@ -5551,8 +5588,14 @@ panel of <em>Subsurface</em> is used. If these are changed within the planner (s
 the planner), the new values are
 used without changing the original values in the <em>Preferences</em>.
 Gradient Factor settings strongly affect the calculated ceilings and their depths.
-A very low GFLow value brings on decompression stops early during the dive.
- ** For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.</p></div>
+A very low GFLow value brings on decompression stops early during the dive.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p>If the VPM-B model is selected, the Conservatism_level needs to be specified
 on a scale of 0 (least conservative) to 4 (most conservative).  This model
 tends to give deco stops at deeper levels than the Bühlmann model and often
@@ -5702,82 +5745,61 @@ utilisant du EAN50 et utilisant les réglages décrits ci-dessous.</p></div>
 towards the top middle of the planner. The saved dive plan will appear in
 the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p><strong>Les détails du plan de plongée</strong></p></div>
-<div class="paragraph"><p>On the bottom right of the dive planner, under <em>Dive Plan Details</em>, the
-details of the dive plan are provided. These may be modified by checking any
-of the options under the <em>Notes</em> section of the dive planner, immediately to
-the left of the <em>Dive Plan Details</em>. If a <em>Verbatim dive plan</em> is requested,
-a detailed sentence-level explanation of the dive plan is given. If any of
-the management specifications have been exceeded during the planning, a
-warning message is printed underneath the dive plan information.</p></div>
+<div class="paragraph"><p>On the bottom right panel of the dive planner, under <em>Dive Plan Details</em>,
+the details of the dive plan are provided. These may be modified by checking
+any of the options under the <em>Notes</em> section of the dive planner,
+immediately to the left of the <em>Dive Plan Details</em>. If a <em>Verbatim dive
+plan</em> is requested, a detailed sentence-level explanation of the dive plan
+is given. If any of the management specifications have been exceeded during
+the planning, a warning message is printed underneath the dive plan
+information.</p></div>
 <div class="paragraph"><p>If the option <em>Display segment duration</em> is checked, then the duration of
 each depth level is indicated in the <em>Dive Plan Details</em>. This duration
 INCLUDES the transition time to get to that level. However, if the <em>Display
 transition in deco</em> option is checked, the transitions are shown separately
 from the segment durations at a particular level.</p></div>
-<div class="paragraph"><p>The planner has a check box <em>Display plan variations</em>. By checking this box,
-the planner provides information about a dive that is a little deeper or
-slightly longer than the planned dive. This is found near the top of the
-<em>Dive plan details</em> where the dive duration is indicated. The information is
-intended to be used if it is necessary to modify the ascent "on the fly" in
-the case of unexpected deviations from the dive plan during the dive.
-Checking this option creates a lot of additional computation, to such a
-degree that the planner is slower than otherwise. The information is
-typically given as:</p></div>
-<div class="literalblock">
-<div class="content">
-<pre><code>Runtime: 53min + 0:52/m + 4:21/min</code></pre>
-</div></div>
-<div class="paragraph"><p>This indicates:</p></div>
+<div class="paragraph"><p><strong>Dive plan variations</strong>: The planner has a check box <em>Display plan variations</em>. By checking this box, the planner
+provides information about a dive that is a little deeper or slightly
+longer than the planned dive. This is found near the top of the <em>Dive plan details</em>
+where the dive duration is indicated. The information is intended to be used if it is necessary to
+modify the ascent "on the fly" in the case of unexpected deviations from the dive plan during the dive.
+For example, if it says "Runtime: 123min, Stop times + 2:49 /m + 1:30 /min" this means: if you dive deeper
+than planned, you should add almost 3 minutes per meter you go deeper to your decompression (and
+you can substract 3 minutes per meter that you stay shallower). If you overstay your bottom
+time, you need to add one and a half minutes to the stops for each minutes you overstay
+and similarly, you can shorten your deco time by one and a half minute for each minute
+you stay shorter. These variations of depth and time are based on the last manually entered segment of the
+dive (not necessarily the deepest). The additional minutes should be distributed
+over the differnent stops in a way proportional to the stop length, i.e. add more of the
+additional minutes to the longer, shallower stops. The given times refer to the
+duration of the decompression phase and do not include the extended bottom time!
+This way of altering dive plans becomes inaccurate for large deviations from the original
+plan. So it should not be trusted for more than a few minutes or meters of
+deviations from the planned bottom time. Checking this option creates a lot of additional computation,
+to such a degree that the planner is slower than otherwise.</p></div>
+<div class="paragraph"><p><strong>Minimum gas requirements</strong>: The planner also estimates the <em>minimum gas</em> pressure
+required for safe ascent after an event that causes the dive to be aborted. The
+calculation assumes that in worst case an out of gas (OoG)
+situation occurs at the end of the planned bottom time at maximum depth, requiring
+additional time at maximum depth to solve the problem and forcing
+the buddy pair the share the gas of one diver. In addition the combined SAC of both
+divers is increased by an estimated factor compared to the SAC of a single diver under normal conditions.
+The result of the minimum gas calculation for the bottom gas is printed to the planner output. There
+are two selector boxes on the left of the <em>Dive plan details</em>:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Calculated dive duration is 53 min.
+<em>SAC factor</em>. This is an estimate of the degree to which your SAC increases
+   if a critical problem arises underwater, e.g. gas sharing or
+   entanglement. Realistic values range from 3 to 5, reflecting the gas use of
+   two divers sharing a single gas cylinder after an OoG situation.
 </p>
 </li>
 <li>
 <p>
-For each extra meter in depth during the bottom phase of the dive, the
-   ascent duration increases by 52 seconds.
-</p>
-</li>
-<li>
-<p>
-For each extra minute of bottom time, the duration increases by 4 min 21
-   sec. Thus, if the bottom time is two minutes longer than planned, ascent
-   duration duration will be (2 * 4min 21 sec) = 8 minutes 42 sec longer and
-   would probably require that each deco stop is 8:42/53:00 = around 16% longer
-   than planned. These calculations are only applicable for small deviations
-   from the dive plan, not for larger deviations.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Minimum gas requirements</strong></p></div>
-<div class="paragraph"><p>The planner also estimates the <strong>minimum gas</strong> pressure required for safe
-ascent after an event that causes the dive to be aborted. The calculation
-assumes that in worst case an out of gas (OoG)  situation occurs at the end
-of the planned bottom time at maximum depth. This OoG event forces the buddy
-team the share the gas of one diver and that they require an additional
-period of time at maximum depth to solve the problem at hand.  In addition
-the combined SAC of both divers is increased by an estimated factor compared
-to the SAC factor of a single diver under normal conditions.  The result of
-the minimum gas calculation for the bottom gas is printed to the planner
-output. No automatic checks are performed based on this result.  The feature
-only gives valid results for simple, rectangular shaped single level dive
-profiles. For multi level dives one would need to check every leg of the
-profile independently.</p></div>
-<div class="paragraph"><p>There are two selector boxes on the left of the <em>Dive plan details</em>:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<strong>SAC factor</strong>. This is an estimate of the degree to which your SAC increases if a critical problem arises underwater,
-   e.g. gas sharing or entanglement. Realistic values range from 2 to 5, reflecting the gas use of two divers sharing
-   a single gas cylinder after an OoG situation.
-</p>
-</li>
-<li>
-<p>
-<strong>Problem solving time</strong>. This is an estimate of how long you would take to solve the problem before starting the ascent
-   to terminate the dive. The default value is 2 minutes.
+<em>Problem solving time</em>. This is an estimate of how long you would take to
+   solve the problem before starting the ascent to terminate the dive. The
+   default value is 2 minutes.
 </p>
 </li>
 </ul></div>
@@ -5794,7 +5816,7 @@ plan. the minimum gas is typically given as:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Within parentheses, the <strong>SAC factor</strong> and <strong>Problem solving time</strong> specified.
+Within parentheses, the <em>SAC factor</em> and <em>Problem solving time</em> specified.
 </p>
 </li>
 <li>
@@ -5818,6 +5840,23 @@ The delta-value: number of bars of back gas available at the end of the
 </p>
 </li>
 </ul></div>
+<div class="paragraph"><p>No automatic checks are performed based on this result.  The feature only
+gives valid results for simple, rectangular shaped single level dive
+profiles. For multi level dives one would need to check every leg of the
+profile independently.</p></div>
+<div class="paragraph"><p><strong>Isobaric counterdiffusion information</strong>: For gas switches during the ascent in hypoxic open-circuit trimix dives information
+about isobaric counterdiffusion (icd) is given near the bottom of the <em>Dive plan details</em>, based on the
+rule-of-fifths (i.e. during a gas change, the increase in nitrogen partial pressure should not exceed
+one fifth of the corresponding decrease in partial pressure of helium). For each gas change, two lines
+are printed, indicating the changes in gas fractions (%) and the equivalent changes in partial pressures. If the
+rule-of-fifths is not met, the relevant information is highlighted in red and a warning message appears
+at the bottom of that table. The gas change events on the dive profile also provide information on icd,
+visible at the bottom of the <em>Information box</em> when the mouse hovers on the respective gas change icon. This information
+is only shown for gas changes relevant with respect to icd. If the rule-of-fifths is not met,
+a red warning exclamation mark is shown over the gas change icon. When relevant, the <em>Information box</em> contains
+information such as: ICD ΔHe:-13% ΔN₂+3%&gt;2.6%. This means: for this gas change, the helium
+decreased with 13% while the nitrogen increased with 3% which
+is more than the 2.6% maximum increase in nitrogen suggested by the rule-of-fifths.</p></div>
 <div class="sidebarblock">
 <div class="content">
 <div class="admonitionblock">
@@ -5827,9 +5866,10 @@ The delta-value: number of bars of back gas available at the end of the
 </td>
 <td class="content">The <strong>plan variations</strong> and <strong>minimum gas</strong> estimates are only guidelines for a
 diver performing dive planning, intended to enhance the safety of executing
-a particular dive plan. They are NOT precise and should NOT be relied upon
-as the only safety features in dive planning. Interpret these estimates
-within the framework of your formal training to perform dive planning.</td>
+a particular dive plan and do not replace formal contingency planning for a
+specific dive. They are NOT precise and should NOT be relied upon as the
+only safety features in dive planning. Interpret these estimates within the
+framework of your formal training to perform dive planning.</td>
 </tr></table>
 </div>
 </div></div>
@@ -5841,11 +5881,14 @@ within the framework of your formal training to perform dive planning.</td>
 <em>Open circuit</em> in the dropdown list.
 The parameters of the pSCR dive can be set by selecting  <em>File &#8594;   Preferences &#8594;   Profile</em>
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
-ratio (default 1:10) as well as the metabolic rate. The calculation also takes the oxygen drop
+ratio (default 1:8) as well as the metabolic rate. Specify the bottom and deco SAC rates.
+Here the SAC in the planner is the volume of gas per minute
+that is exhaled into the loop on the surface, <strong>not</strong> the amount of gas that escapes into the water.
+The calculation takes the oxygen drop
 across the mouthpiece of the rebreather into account. If the
 pO<sub>2</sub> drops below what is considered safe, a warning appears in the <em>Dive plan
 details</em>. A typical pSCR cylinder setup is very similar to an open circuit dive;
-one or more drive cylinders, possibly with different bottom and decompression
+one or more dive cylinders, possibly with different bottom and decompression
 gases, including gas switches during the dive like in open circuit diving.
 Therefore, the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
 are very similar to that of a open circuit dive plan, described above. However, no oxygen setpoints
@@ -7920,7 +7963,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2017-11-28 08:54:18 CET
+ 2018-02-07 17:48:32 CET
 </div>
 </div>
 </body>
