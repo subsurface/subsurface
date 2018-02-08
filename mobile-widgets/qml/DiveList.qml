@@ -349,27 +349,6 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	property QtObject saveAction: Kirigami.Action {
-		icon {
-			name: "document-save"
-		}
-		onTriggered: {
-			Qt.inputMethod.hide()
-			startPage.saveCredentials();
-		}
-	}
-
-	property QtObject offlineAction: Kirigami.Action {
-		icon {
-			name: "qrc:/qml/nocloud.svg"
-		}
-		onTriggered: {
-			manager.syncToCloud = false
-			manager.credentialStatus = QMLManager.CS_NOCLOUD
-			manager.saveCloudCredentials()
-		}
-	}
-
 	onBackRequested: {
 		if (startPage.visible && diveListView.count > 0 && manager.credentialStatus !== QMLManager.CS_INCORRECT_USER_PASSWD) {
 			manager.credentialStatus = oldStatus
