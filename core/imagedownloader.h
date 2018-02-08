@@ -14,11 +14,9 @@ public:
 	void load(bool fromHash);
 
 private:
+	bool loadFromUrl(const QUrl &);	// return true on success
+	void saveImage(QNetworkReply *reply, bool &success);
 	struct picture *picture;
-	bool loadFromHash;
-
-private slots:
-	void saveImage(QNetworkReply *reply);
 };
 
 class SHashedImage : public QImage {
