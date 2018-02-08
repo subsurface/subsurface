@@ -41,6 +41,7 @@ void ImageDownloader::load(bool fromHash){
 			loop.processEvents();
 			sleep(1);
 		}
+		delete reply;
 	}
 }
 
@@ -69,8 +70,6 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 		add_hash(imageFile.fileName(), hash.result());
 		learnHash(picture, hash.result());
 	}
-	reply->manager()->deleteLater();
-	reply->deleteLater();
 	// This should be called to make the picture actually show.
 	// Problem is DivePictureModel is not in core.
 	// Nevertheless, the image shows when the dive is selected the next time.
