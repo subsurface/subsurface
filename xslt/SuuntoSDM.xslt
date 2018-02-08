@@ -4,10 +4,16 @@
   <xsl:output method="xml" indent="yes" encoding="ASCII"/>
 
   <xsl:template match="/">
-    <dives>
-      <program name="subsurface-import" version="1"/>
-      <xsl:apply-templates select="/SUUNTO/MSG"/>
-    </dives>
+    <divelog program="subsurface-import" version="2">
+      <dives>
+        <divecomputer>
+          <xsl:attribute name="model">
+            <xsl:value-of select="concat('Suunto ', /SUUNTO/MSG/DEVICEMODEL)" />
+          </xsl:attribute>
+        </divecomputer>
+        <xsl:apply-templates select="/SUUNTO/MSG"/>
+      </dives>
+    </divelog>
   </xsl:template>
 
   <xsl:template match="MSG">
