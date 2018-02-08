@@ -10,6 +10,12 @@
           <xsl:attribute name="model">
             <xsl:value-of select="concat('Suunto ', /SUUNTO/MSG/DEVICEMODEL)" />
           </xsl:attribute>
+          <xsl:attribute name="deviceid">
+            <xsl:value-of select="/SUUNTO/MSG/WRISTOPID" />
+          </xsl:attribute>
+          <xsl:attribute name="serial">
+            <xsl:value-of select="/SUUNTO/MSG/WRISTOPID" />
+          </xsl:attribute>
         </divecomputer>
         <xsl:apply-templates select="/SUUNTO/MSG"/>
       </dives>
