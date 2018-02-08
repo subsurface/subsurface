@@ -15,7 +15,6 @@ public:
 
 private:
 	struct picture *picture;
-	QNetworkAccessManager manager;
 	bool loadFromHash;
 
 private slots:
