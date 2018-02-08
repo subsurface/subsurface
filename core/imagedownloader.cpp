@@ -17,7 +17,6 @@ static QUrl cloudImageURL(const char *hash)
 ImageDownloader::ImageDownloader(struct picture *pic)
 {
 	picture = pic;
-	loadFromHash = false;
 }
 
 ImageDownloader::~ImageDownloader()
@@ -25,18 +24,24 @@ ImageDownloader::~ImageDownloader()
 	picture_free(picture);
 }
 
-void ImageDownloader::load(bool fromHash){
-	QUrl url;
-	loadFromHash = fromHash;
-	if(fromHash)
-		url = cloudImageURL(picture->hash);
-	else
-		url = QUrl::fromUserInput(QString(picture->filename));
+void ImageDownloader::load(bool fromHash)
+{
+	if (fromHash && loadFromUrl(cloudImageURL(picture->hash)))
+		return;
+
+	// If loading from hash failed, try to load from filename
+	loadFromUrl(QUrl::fromUserInput(QString(picture->filename)));
+}
+
+bool ImageDownloader::loadFromUrl(const QUrl &url)
+{
+	bool success = false;
 	if (url.isValid()) {
 		QEventLoop loop;
 		QNetworkAccessManager manager;
 		QNetworkRequest request(url);
-		connect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(saveImage(QNetworkReply *)));
+		connect(&manager, &QNetworkAccessManager::finished, this,
+			[this,&success] (QNetworkReply *reply) { saveImage(reply, success); });
 		QNetworkReply *reply = manager.get(request);
 		while (reply->isRunning()) {
 			loop.processEvents();
@@ -44,18 +49,18 @@ void ImageDownloader::load(bool fromHash){
 		}
 		delete reply;
 	}
+	return success;
 }
 
-void ImageDownloader::saveImage(QNetworkReply *reply)
+void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
 {
+	success = false;
 	QByteArray imageData = reply->readAll();
 	QImage image = QImage();
 	image.loadFromData(imageData);
-	if (image.isNull()) {
-		if (loadFromHash)
-			load(false);
+	if (image.isNull())
 		return;
-	}
+	success = true;
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	hash.addData(imageData);
 	QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
