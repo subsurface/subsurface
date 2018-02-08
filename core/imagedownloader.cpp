@@ -86,8 +86,10 @@ static void loadPicture(struct picture *picture, bool fromHash)
 	if (!picture)
 		return;
 	QMutexLocker locker(&pictureQueueMutex);
-	if (queuedPictures.contains(QString(picture->filename)))
+	if (queuedPictures.contains(QString(picture->filename))) {
+		picture_free(picture);
 		return;
+	}
 	queuedPictures.insert(QString(picture->filename));
 	locker.unlock();
 
