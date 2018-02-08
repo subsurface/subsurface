@@ -56,7 +56,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
 {
 	success = false;
 	QByteArray imageData = reply->readAll();
-	QImage image = QImage();
+	QImage image;
 	image.loadFromData(imageData);
 	if (image.isNull())
 		return;
