@@ -34,6 +34,7 @@ void ImageDownloader::load(bool fromHash){
 		url = QUrl::fromUserInput(QString(picture->filename));
 	if (url.isValid()) {
 		QEventLoop loop;
+		QNetworkAccessManager manager;
 		QNetworkRequest request(url);
 		connect(&manager, SIGNAL(finished(QNetworkReply *)), this, SLOT(saveImage(QNetworkReply *)));
 		QNetworkReply *reply = manager.get(request);
