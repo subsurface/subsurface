@@ -42,11 +42,9 @@ bool ImageDownloader::loadFromUrl(const QUrl &url)
 		QNetworkRequest request(url);
 		connect(&manager, &QNetworkAccessManager::finished, this,
 			[this,&success] (QNetworkReply *reply) { saveImage(reply, success); });
+		connect(&manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
 		QNetworkReply *reply = manager.get(request);
-		while (reply->isRunning()) {
-			loop.processEvents();
-			sleep(1);
-		}
+		loop.exec();
 		delete reply;
 	}
 	return success;
