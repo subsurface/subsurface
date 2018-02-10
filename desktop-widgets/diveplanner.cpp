@@ -117,6 +117,10 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	ui.cylinderTableWidget->setTitle(tr("Available gases"));
 	ui.cylinderTableWidget->setBtnToolTip(tr("Add cylinder"));
 	ui.cylinderTableWidget->setModel(CylindersModel::instance());
+	ui.waterType->setItemData(0, FRESHWATER_SALINITY);
+	ui.waterType->setItemData(1, SEAWATER_SALINITY);
+	ui.waterType->setItemData(2, EN13319_SALINITY);
+	waterTypeUpdateTexts();
 	QTableView *view = ui.cylinderTableWidget->view();
 	view->setColumnHidden(CylindersModel::START, true);
 	view->setColumnHidden(CylindersModel::END, true);
@@ -147,7 +151,8 @@ DivePlannerWidget::DivePlannerWidget(QWidget *parent, Qt::WindowFlags f) : QWidg
 	connect(ui.dateEdit, SIGNAL(dateChanged(QDate)), plannerModel, SLOT(setStartDate(QDate)));
 	connect(ui.ATMPressure, SIGNAL(valueChanged(int)), this, SLOT(atmPressureChanged(int)));
 	connect(ui.atmHeight, SIGNAL(valueChanged(int)), this, SLOT(heightChanged(int)));
-	connect(ui.salinity, SIGNAL(valueChanged(double)), this, SLOT(salinityChanged(double)));
+	connect(ui.waterType, SIGNAL(currentIndexChanged(int)), this, SLOT(waterTypeChanged(int)));
+	connect(ui.customSalinity, SIGNAL(valueChanged(double)), this, SLOT(customSalinityChanged(double)));
 	connect(plannerModel, SIGNAL(startTimeChanged(QDateTime)), this, SLOT(setupStartTime(QDateTime)));
 
 	// Creating (and canceling) the plan
@@ -195,7 +200,23 @@ void PlannerSettingsWidget::setDiveMode(int mode)
 
 void DivePlannerWidget::setSalinity(int salinity)
 {
-	ui.salinity->setValue(salinity / 10000.0);
+	bool mapped = false;
+	for (int i = 0; i < ui.waterType->count(); i++) {
+		if (salinity == ui.waterType->itemData(i).toInt()) {
+			mapped = true;
+			ui.waterType->setCurrentIndex(i);
+			break;
+		}
+	}
+	
+	if (!mapped) {
+		/* Assign to last element "custom" in combo box */
+		ui.waterType->setItemData(ui.waterType->count()-1, salinity);
+		ui.waterType->setCurrentIndex(ui.waterType->count()-1);
+		ui.customSalinity->setEnabled(true);
+		ui.customSalinity->setValue(salinity / 10000.0);
+	}
+	plannerModel->setSalinity(salinity);
 }
 
 void DivePlannerWidget::settingsChanged()
@@ -232,10 +253,34 @@ void DivePlannerWidget::heightChanged(const int height)
 	plannerModel->setSurfacePressure(pressure);
 }
 
-void DivePlannerWidget::salinityChanged(const double salinity)
+void DivePlannerWidget::waterTypeUpdateTexts()
 {
-	/* Salinity is expressed in weight in grams per 10l */
-	plannerModel->setSalinity(lrint(10000 * salinity));
+	double density;
+	/* Do not set text in last/custom element */
+	for (int i = 0; i < ui.waterType->count()-1; i++) {
+		if (ui.waterType->itemData(i) != QVariant::Invalid) {
+			QString densityText = ui.waterType->itemText(i).split("(")[0].trimmed();
+			density = ui.waterType->itemData(i).toInt() / 10000.0;
+			densityText.append(QString(" (%L1%2)").arg(density, 0, 'f', 2).arg(tr("kg/ℓ")));
+			ui.waterType->setItemText(i, densityText);
+		}
+	}
+}
+
+void DivePlannerWidget::waterTypeChanged(const int index)
+{
+	ui.customSalinity->setEnabled(index == ui.waterType->count() - 1);
+	ui.customSalinity->setValue(ui.waterType->itemData(index).toInt() / 10000.0);
+	plannerModel->setSalinity(ui.waterType->itemData(index).toInt());
+}
+
+void DivePlannerWidget::customSalinityChanged(double density)
+{
+	if (ui.customSalinity->isEnabled()) {
+		int newSalinity = (int)(density * 10000.0);
+		ui.waterType->setItemData(ui.waterType->count() - 1, newSalinity);
+		plannerModel->setSalinity(newSalinity);
+	}
 }
 
 void PlannerSettingsWidget::bottomSacChanged(const double bottomSac)
