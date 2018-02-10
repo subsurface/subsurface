@@ -62,41 +62,6 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <item row="5" column="0" colspan="3">
-        <widget class="TableView" name="tableWidget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>50</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="3">
-        <widget class="TableView" name="cylinderTableWidget" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>50</height>
-          </size>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
          <property name="sizePolicy">
@@ -133,7 +98,7 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
+       <item row="1" column="2" colspan="2">
         <widget class="QDialogButtonBox" name="buttonBox">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -163,26 +128,7 @@
        <item row="2" column="2">
         <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Salinity</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QSpinBox" name="ATMPressure">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="suffix">
-          <string>mbar</string>
-         </property>
-         <property name="minimum">
-          <number>689</number>
-         </property>
-         <property name="maximum">
-          <number>1100</number>
+          <string>Water type</string>
          </property>
         </widget>
        </item>
@@ -208,8 +154,8 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="2">
-        <widget class="QDoubleSpinBox" name="salinity">
+       <item row="3" column="1">
+        <widget class="QSpinBox" name="ATMPressure">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
            <horstretch>0</horstretch>
@@ -217,19 +163,106 @@
           </sizepolicy>
          </property>
          <property name="suffix">
+          <string>mbar</string>
+         </property>
+         <property name="minimum">
+          <number>689</number>
+         </property>
+         <property name="maximum">
+          <number>1100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="2">
+        <widget class="QComboBox" name="waterType">
+         <item>
+          <property name="text">
+           <string>Fresh water</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Sea water</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>EN13319</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Custom</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="3">
+        <widget class="QDoubleSpinBox" name="customSalinity">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>90</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string extracomment="Custom water density"/>
+         </property>
+         <property name="suffix">
           <string>kg/ℓ</string>
          </property>
          <property name="minimum">
-          <double>1.000000000000000</double>
+          <double>0.990000000000000</double>
          </property>
          <property name="maximum">
-          <double>1.050000000000000</double>
+          <double>1.300000000000000</double>
          </property>
          <property name="singleStep">
           <double>0.010000000000000</double>
          </property>
          <property name="value">
-          <double>1.030000000000000</double>
+          <double>1.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0" colspan="4">
+        <widget class="TableView" name="cylinderTableWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0" colspan="4">
+        <widget class="TableView" name="tableWidget" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>50</height>
+          </size>
          </property>
         </widget>
        </item>

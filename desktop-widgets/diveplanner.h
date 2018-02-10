@@ -51,13 +51,15 @@ slots:
 	void settingsChanged();
 	void atmPressureChanged(const int pressure);
 	void heightChanged(const int height);
-	void salinityChanged(const double salinity);
+	void waterTypeChanged(const int index);
+	void customSalinityChanged(double density);
 	void printDecoPlan();
 	void setSurfacePressure(int surface_pressure);
 	void setSalinity(int salinity);
 private:
 	Ui::DivePlanner ui;
 	QAbstractButton *replanButton;
+	void waterTypeUpdateTexts();
 };
 
 #include "ui_plannerSettings.h"

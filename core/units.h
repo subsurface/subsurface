@@ -30,6 +30,7 @@ extern "C" {
 
 /* Salinity is expressed in weight in grams per 10l */
 #define SEAWATER_SALINITY 10300
+#define EN13319_SALINITY 10200
 #define FRESHWATER_SALINITY 10000
 
 #include <stdint.h>
