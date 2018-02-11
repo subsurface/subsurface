@@ -668,7 +668,7 @@ void WinBluetoothDeviceDiscoveryAgent::run()
 				// Get the last error and emit a signal
 				lastErrorToString = qt_error_string();
 				lastError = QBluetoothDeviceDiscoveryAgent::UnknownError;
-				emit(lastError);
+				emit error(lastError);
 
 				break;
 			}
@@ -690,7 +690,7 @@ void WinBluetoothDeviceDiscoveryAgent::run()
 			// Get the last error and emit a signal
 			lastErrorToString = qt_error_string();
 			lastError = QBluetoothDeviceDiscoveryAgent::UnknownError;
-			emit(lastError);
+			emit error(lastError);
 		}
 	}
 
