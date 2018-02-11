@@ -140,6 +140,7 @@ Item {
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onAccepted: {
+					focus = false
 					gpsText = manager.getGpsFromSiteName(text)
 				}
 			}
@@ -241,6 +242,9 @@ Item {
 				onActivated: {
 					focus = false
 				}
+				onAccepted: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
@@ -258,6 +262,9 @@ Item {
 				onActivated: {
 					focus = false
 				}
+				onAccepted: {
+					focus = false
+				}
 			}
 
 			Controls.Label {
@@ -273,6 +280,9 @@ Item {
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onActivated: {
+					focus = false
+				}
+				onAccepted: {
 					focus = false
 				}
 			}
