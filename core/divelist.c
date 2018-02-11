@@ -572,7 +572,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 			deco_init = true;
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after init:\n");
-			dump_tissues();
+			dump_tissues(ds);
 #endif
 		}
 		else {

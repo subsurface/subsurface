@@ -1147,7 +1147,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 	}
 	free(cache_data_initial);
 #if DECO_CALC_DEBUG & 1
-	dump_tissues();
+	dump_tissues(ds);
 #endif
 	unlock_planner();
 }
