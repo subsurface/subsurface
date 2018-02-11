@@ -11,6 +11,14 @@
 
 QStringList inputFiles;
 QString outputFile;
+QString error_buf;
+
+extern "C" void getErrorFromC(char *buf)
+{
+	QString error(buf);
+	free(buf);
+	error_buf = error;
+}
 
 Smrtk2ssrfcWindow::Smrtk2ssrfcWindow(QWidget *parent) :
 	QMainWindow(parent),
@@ -76,11 +84,12 @@ void Smrtk2ssrfcWindow::on_importButton_clicked()
 
 	ui->plainTextEdit->setDisabled(false);
 	ui->progressBar->setRange(0, inputFiles.size());
+	set_error_cb(&getErrorFromC);
 	for (int i = 0; i < inputFiles.size(); ++i) {
 		ui->progressBar->setValue(i);
 		fileNamePtr = QFile::encodeName(inputFiles.at(i));
 		smartrak_import(fileNamePtr.data(), &dive_table);
-		ui->plainTextEdit->appendPlainText(QString(get_error_string()));
+		ui->plainTextEdit->appendPlainText(error_buf);
 	}
 	ui->progressBar->setValue(inputFiles.size());
 	save_dives_logic(outputFile.toUtf8().data(), false);
