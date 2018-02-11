@@ -64,8 +64,7 @@ Item {
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
-				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText,
-				      buddyBox.currentText != "" ? buddyBox.currentText : buddyBox.editText,
+				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText, buddyBox.editText,
 				      divemasterBox.currentText != "" ? divemasterBox.currentText : divemasterBox.editText,
 				      detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
 				      detailsEdit.endpressureText, detailsEdit.gasmixText,
