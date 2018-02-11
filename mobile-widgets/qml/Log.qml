@@ -30,6 +30,7 @@ Kirigami.ScrollablePage {
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			color: Kirigami.Theme.textColor
 			text : message
+			font.pointSize: subsurfaceTheme.smallPointSize
 		}
 	}
 }
