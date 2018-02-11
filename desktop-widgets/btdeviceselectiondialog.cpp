@@ -682,7 +682,7 @@ void WinBluetoothDeviceDiscoveryAgent::run()
 			deviceAddress.truncate(BTH_ADDR_PRETTY_STRING_LEN);
 
 			// Create an object with information about the discovered device
-			QBluetoothDeviceInfo deviceInfo = QBluetoothDeviceInfo(QBluetoothAddress(deviceAddress), deviceName, 0);
+			QBluetoothDeviceInfo deviceInfo(QBluetoothAddress(deviceAddress), deviceName, 0);
 
 			// Raise a signal with information about the found remote device
 			emit deviceDiscovered(deviceInfo);
