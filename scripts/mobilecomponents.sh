@@ -33,7 +33,7 @@ if [ "$NOPULL" = "" ] ; then
 	git checkout master
 	git pull origin master
 	# if we want to pin a specific Kirigami version, we can do this here
-	git checkout 3606ef16375f9deb132565463d1ab11cea2548df
+	git checkout 68a2ceb60e805fcdef10669f2415c6a3084898cf
 	popd
 fi
 if [ ! -d breeze-icons ] ; then
