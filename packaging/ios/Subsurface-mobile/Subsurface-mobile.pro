@@ -79,27 +79,12 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/subsurface-qt/SettingsObjectWrapper.cpp \
     ../../../mobile-widgets/qmlmanager.cpp \
     ../../../mobile-widgets/qmlprofile.cpp \
-    ../../../qt-models/cylindermodel.cpp \
     ../../../qt-models/divelistmodel.cpp \
     ../../../qt-models/diveplotdatamodel.cpp \
     ../../../qt-models/gpslistmodel.cpp \
-    ../../../qt-models/yearlystatisticsmodel.cpp \
-    ../../../qt-models/diveplannermodel.cpp \
-    ../../../qt-models/cleanertablemodel.cpp \
     ../../../qt-models/completionmodels.cpp \
-    ../../../qt-models/divecomputerextradatamodel.cpp \
-    ../../../qt-models/divecomputermodel.cpp \
     ../../../qt-models/divelocationmodel.cpp \
-    ../../../qt-models/divepicturemodel.cpp \
-    ../../../qt-models/divetripmodel.cpp \
     ../../../qt-models/diveimportedmodel.cpp \
-    ../../../qt-models/filtermodels.cpp \
-    ../../../qt-models/models.cpp \
-    ../../../qt-models/tankinfomodel.cpp \
-    ../../../qt-models/treemodel.cpp \
-    ../../../qt-models/weightmodel.cpp \
-    ../../../qt-models/weigthsysteminfomodel.cpp \
-    ../../../qt-models/ssrfsortfilterproxymodel.cpp \
     ../../../qt-models/messagehandlermodel.cpp \
     ../../../profile-widget/divecartesianaxis.cpp \
     ../../../profile-widget/diveeventitem.cpp \
@@ -200,22 +185,8 @@ HEADERS += \
     ../../../qt-models/diveplotdatamodel.h \
     ../../../qt-models/gpslistmodel.h \
     ../../../qt-models/divelocationmodel.h \
-    ../../../qt-models/cylindermodel.h \
-    ../../../qt-models/divecomputermodel.h \
-    ../../../qt-models/diveplannermodel.h \
-    ../../../qt-models/divetripmodel.h \
-    ../../../qt-models/models.h \
-    ../../../qt-models/weightmodel.h \
-    ../../../qt-models/cleanertablemodel.h \
-    ../../../qt-models/divepicturemodel.h \
-    ../../../qt-models/ssrfsortfilterproxymodel.h \
     ../../../qt-models/completionmodels.h \
     ../../../qt-models/weigthsysteminfomodel.h \
-    ../../../qt-models/divecomputerextradatamodel.h \
-    ../../../qt-models/filtermodels.h \
-    ../../../qt-models/tankinfomodel.h \
-    ../../../qt-models/treemodel.h \
-    ../../../qt-models/yearlystatisticsmodel.h \
     ../../../qt-models/diveimportedmodel.h \
     ../../../qt-models/messagehandlermodel.h \
     ../../../profile-widget/diveprofileitem.h \
