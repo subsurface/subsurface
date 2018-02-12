@@ -274,7 +274,14 @@ echo next building for $ARCH
 		popd
 		popd
 	fi
-	if [ ! -e $PKG_CONFIG_LIBDIR/libdivecomputer.pc ] ; then
+	if [ ! -f libdivecomputer-${ARCH}.SHA ] ; then
+		echo "" > libdivecomputer-${ARCH}.SHA
+	fi
+	git submodule update --recursive
+	CURRENT_SHA=$(cd ../../libdivecomputer ; git describe)
+	PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
+	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
+		echo $CURRENT_SHA > libdivecomputer-${ARCH}.SHA
 		mkdir -p libdivecomputer-build-$ARCH
 		pushd libdivecomputer-build-$ARCH
 		../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
