@@ -718,7 +718,6 @@ extern "C" {
 #endif
 
 extern int report_error(const char *fmt, ...);
-extern const char *get_error_string(void);
 extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
 
 extern struct dive *find_dive_including(timestamp_t when);
