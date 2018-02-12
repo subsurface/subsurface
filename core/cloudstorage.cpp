@@ -73,9 +73,6 @@ void CloudStorageAuthenticate::uploadFinished()
 		csSettings.setVerificationStatus(CS_INCORRECT_USER_PASSWD);
 		myLastError = cloudAuthReply;
 		report_error("%s", qPrintable(cloudAuthReply));
-		/* TODO: Emit a signal with the error
-		MainWindow::instance()->getNotificationWidget()->showNotification(get_error_string(), KMessageWidget::Error);
-		*/
 	}
 	emit finishedAuthenticate();
 }
