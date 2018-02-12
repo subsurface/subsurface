@@ -125,7 +125,7 @@ echo next building for $ARCH
 		# so let's hack around that
 		make libsqlite3.la
 		touch sqlite3
-		make install-libLTLIBRARIES
+		make install-libLTLIBRARIES install-pkgconfigDATA
 		popd
 	fi
 
