@@ -14,8 +14,13 @@ endif()
 
 # global settings
 
+set(CMAKE_MODULE_PATH
+	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
+	${CMAKE_MODULE_PATH}
+)
+
 set(CMAKE_AUTOMOC ON)
-include(cmake/Modules/MacroOutOfSourceBuild.cmake)
+include(MacroOutOfSourceBuild)
 MACRO_ENSURE_OUT_OF_SOURCE_BUILD(
     "We don't support building in source, please create a build folder elsewhere and remember to run git clean -xdf to remove temporary files created by CMake."
 )
@@ -62,12 +67,6 @@ endif()
 set(SUBSURFACE_SOURCE ${CMAKE_SOURCE_DIR})
 add_definitions(-DSUBSURFACE_SOURCE="${SUBSURFACE_SOURCE}")
 
-#evenrything's correct, moving on.
-set(CMAKE_MODULE_PATH
-	${CMAKE_MODULE_PATH}
-	${${PROJECT_NAME}_SOURCE_DIR}/cmake/Modules
-)
-
 #
 # TODO: This Compilation part should go on the Target specific CMake.
 #
@@ -112,7 +111,7 @@ set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O2")
 
 # pkgconfig for required libraries
 find_package(PkgConfig)
-include(cmake/Modules/pkgconfig_helper.cmake)
+include(pkgconfig_helper)
 
 # The 'HandleFindXXX' are special libraries that subsurface needs
 # to find and configure in a few different ways because of a few
@@ -120,16 +119,16 @@ include(cmake/Modules/pkgconfig_helper.cmake)
 # everyone happy. It also sets some variables for each library, so
 # if you think a module miss anything, take a look on the specific
 # module file.
-include(cmake/Modules/HandleFindGit2.cmake)
-include(cmake/Modules/HandleFindLibDiveComputer.cmake)
+include(HandleFindGit2)
+include(HandleFindLibDiveComputer)
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
-	include(cmake/Modules/HandleFindGrantlee.cmake)
-	include(cmake/Modules/HandleUserManual.cmake)
+        include(HandleFindGrantlee)
+	include(HandleUserManual)
 endif()
-include(cmake/Modules/HandleFtdiSupport.cmake)
-include(cmake/Modules/HandleVersionGeneration.cmake)
-include(cmake/Modules/RunOnBuildDir.cmake)
-include(cmake/Modules/cmake_variables_helper.cmake)
+include(HandleFtdiSupport)
+include(HandleVersionGeneration)
+include(RunOnBuildDir)
+include(cmake_variables_helper)
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	include_directories(${CMAKE_OSX_SYSROOT}/usr/include/libxml2)
