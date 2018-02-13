@@ -49,3 +49,5 @@ export VERSION=$(cd ${TRAVIS_BUILD_DIR}/scripts ; ./get-version linux) # linuxde
 ./linuxdeployqt*.AppImage ./appdir/usr/share/applications/*.desktop -appimage -qmldir=./subsurface/map-widget/ -verbose=2
 find ./appdir -executable -type f -exec ldd {} \; | grep " => /usr" | cut -d " " -f 2-3 | sort | uniq
 
+# SmartTrak import tool
+bash -e -x ./subsurface/scripts/smtk2ssrf-build.sh
