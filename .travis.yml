@@ -46,6 +46,9 @@ matrix:
             # Not a subsurface dependency, but a QtWebKit dependency
             - libhyphen-dev
             - libicu52
+            # For SmartTrak import
+            - libglib2.0-dev
+            - mdbtools-dev
 
     - env: SUBSURFACE_PLATFORM="android"
       # Currently hard coded to arm
