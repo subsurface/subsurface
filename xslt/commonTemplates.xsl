@@ -168,6 +168,23 @@
     <xsl:value-of select="concat(floor($depth div 1000), '.', format-number($depth mod 1000, '00'))"/>
   </xsl:template>
 
+  <!-- convert depth to meters -->
+  <xsl:template name="depthConvert">
+    <xsl:param name="depth"/>
+    <xsl:param name="units"/>
+
+    <xsl:choose>
+      <xsl:when test="$units = 'Imperial'">
+        <xsl:value-of select="concat(format-number(($depth * 0.3048), '#.##'), ' m')"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="concat($depth, ' m')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  <!-- end convert depth -->
+
+
   <!-- Convert date format "Sun Jan 19 11:02:56 2014 UTC" => 2014-1-19
        11:02 -->
   <xsl:template name="convertDate">
