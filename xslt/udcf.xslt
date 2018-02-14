@@ -136,24 +136,12 @@
 		  format-number(floor($timeSec mod $timeconvert), '00'), ' min')"/>
 	      </xsl:attribute>
 	      <xsl:attribute name="depth">
-                <xsl:choose>
-                  <xsl:when test="//units|//UNITS = 'imperial'">
-                    <xsl:call-template name="depthConvert">
-                      <xsl:with-param name="depth">
-                        <xsl:value-of select="."/>
-                      </xsl:with-param>
-                      <xsl:with-param name="units" select="'Imperial'"/>
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="depthConvert">
-                      <xsl:with-param name="depth">
-                        <xsl:value-of select="."/>
-                      </xsl:with-param>
-                      <xsl:with-param name="units" select="'Metric'"/>
-                    </xsl:call-template>
-                  </xsl:otherwise>
-                </xsl:choose>
+                <xsl:call-template name="depthConvert">
+                  <xsl:with-param name="depth">
+                    <xsl:value-of select="."/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
 	      </xsl:attribute>
 	    </sample>
 	  </xsl:for-each>
@@ -189,24 +177,12 @@
 		  format-number(floor($timeSec mod 60), '00'), ' min')"/>
 	      </xsl:attribute>
 	      <xsl:attribute name="depth">
-                <xsl:choose>
-                  <xsl:when test="//units|//UNITS = 'imperial'">
-                    <xsl:call-template name="depthConvert">
-                      <xsl:with-param name="depth">
-                        <xsl:value-of select="."/>
-                      </xsl:with-param>
-                      <xsl:with-param name="units" select="'Imperial'"/>
-                    </xsl:call-template>
-                  </xsl:when>
-                  <xsl:otherwise>
-                    <xsl:call-template name="depthConvert">
-                      <xsl:with-param name="depth">
-                        <xsl:value-of select="."/>
-                      </xsl:with-param>
-                      <xsl:with-param name="units" select="'Metric'"/>
-                    </xsl:call-template>
-                  </xsl:otherwise>
-                </xsl:choose>
+                <xsl:call-template name="depthConvert">
+                  <xsl:with-param name="depth">
+                    <xsl:value-of select="."/>
+                  </xsl:with-param>
+                  <xsl:with-param name="units" select="$units"/>
+                </xsl:call-template>
 	      </xsl:attribute>
 	    </sample>
 	  </xsl:for-each>
