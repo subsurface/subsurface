@@ -63,7 +63,12 @@
       <xsl:if test="TEMPERATURE|temperature != ''">
         <temperature>
           <xsl:attribute name="water">
-            <xsl:value-of select="concat(TEMPERATURE|temperature, ' C')"/>
+            <xsl:call-template name="tempConvert">
+              <xsl:with-param name="temp">
+                <xsl:value-of select="TEMPERATURE|temperature"/>
+              </xsl:with-param>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
         </temperature>
       </xsl:if>
