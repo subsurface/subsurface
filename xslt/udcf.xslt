@@ -31,6 +31,16 @@
   </xsl:template>
 
   <xsl:template match="DIVE|dive">
+    <xsl:variable name="units">
+      <xsl:choose>
+        <xsl:when test="//units|//UNITS = 'imperial'">
+          <xsl:value-of select="'Imperial'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'Metric'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     <dive>
       <xsl:attribute name="date">
         <xsl:for-each select="DATE/YEAR|DATE/MONTH|DATE/DAY|date/year|date/month|date/day">
