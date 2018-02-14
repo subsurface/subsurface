@@ -88,10 +88,20 @@
             <xsl:value-of select="concat(TANK/TANKVOLUME|tank/tankvolume, ' l')"/>
           </xsl:attribute>
           <xsl:attribute name="start">
-            <xsl:value-of select="TANK/PSTART|tank/pstart"/>
+            <xsl:call-template name="pressureConvert">
+              <xsl:with-param name="number">
+                <xsl:value-of select="TANK/PSTART|tank/pstart"/>
+              </xsl:with-param>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
           <xsl:attribute name="end">
-            <xsl:value-of select="TANK/PEND|tank/pend"/>
+            <xsl:call-template name="pressureConvert">
+              <xsl:with-param name="number">
+                <xsl:value-of select="TANK/PEND|tank/pend"/>
+              </xsl:with-param>
+              <xsl:with-param name="units" select="$units"/>
+            </xsl:call-template>
           </xsl:attribute>
           <xsl:attribute name="o2">
             <xsl:value-of select="O2|o2"/>
