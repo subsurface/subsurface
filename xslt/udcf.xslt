@@ -33,7 +33,7 @@
   <xsl:template match="DIVE|dive">
     <xsl:variable name="units">
       <xsl:choose>
-        <xsl:when test="//units|//UNITS = 'imperial'">
+        <xsl:when test="translate(//units|//UNITS, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz') = 'imperial'">
           <xsl:value-of select="'Imperial'"/>
         </xsl:when>
         <xsl:otherwise>
