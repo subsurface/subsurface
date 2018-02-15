@@ -85,7 +85,14 @@
             <xsl:value-of select="MIXNAME|mixname"/>
           </xsl:attribute>
           <xsl:attribute name="size">
-            <xsl:value-of select="concat(TANK/TANKVOLUME|tank/tankvolume, ' l')"/>
+            <xsl:choose>
+              <xsl:when test="$units = 'Imperial'">
+                <xsl:value-of select="concat(TANK/TANKVOLUME|tank/tankvolume div 7, ' l')"/>
+              </xsl:when>
+              <xsl:otherwise>
+                <xsl:value-of select="concat(TANK/TANKVOLUME|tank/tankvolume, ' l')"/>
+              </xsl:otherwise>
+            </xsl:choose>
           </xsl:attribute>
           <xsl:attribute name="start">
             <xsl:call-template name="pressureConvert">
