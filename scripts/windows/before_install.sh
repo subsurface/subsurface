@@ -20,6 +20,7 @@ tar xJf ../mxe-994ad473.tar.xz
 sudo mkdir -p /data/winqt551/
 sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /data/winqt551/mxe-current
 ls -l /data/winqt551/mxe-current/usr
+sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /usr/src/mxe
 
 # libdivecomputer uses the wrong include path for libusb
 # the pkgconfig file for libusb already gives the include path as
@@ -74,3 +75,15 @@ if ! git checkout v5.0.0 ; then
 	echo "can't check out v5.0.0 of grantlee -- giving up"
 	exit 1
 fi
+
+echo "Get mdbtools"
+cd ${TRAVIS_BUILD_DIR}/..
+git clone https://github.com/brianb/mdbtools.git
+
+# get prebuilt mxe libraries for mdbtools and glib.
+# do not overwrite upstream prebuilt mxe binaries if there is any coincidence.
+wget https://www.dropbox.com/s/842skyusb96ii1u/mxe-static-minimal-994ad473.tar.xz
+[[ ! -f mxe-static-minimal-994ad473.tar.xz ]] && exit 1
+cd mxe
+tar -xJf ../mxe-static-minimal-994ad473.tar.xz --skip-old-files
+ls -al usr/

@@ -13,3 +13,4 @@ mkdir win32
 ls -l
 cd win32
 bash -ex ${TRAVIS_BUILD_DIR}/packaging/windows/mxe-based-build.sh installer
+bash -ex ${TRAVIS_BUILD_DIR}/packaging/windows/smtk2ssrf-mxe-build.sh -i
