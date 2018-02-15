@@ -73,9 +73,20 @@ cp $BREEZE/icons/actions/22/overflow-menu.svg $MC/icons
 # kirigami now needs the breeze-icons internally as well
 pushd $MC
 ln -s $SRC/$BREEZE .
+
+# do not show the action buttons when the keyboard is open
 sed -i -e "s/visible: root.action/visible: root.action \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
 sed -i -e "s/visible: root.leftAction/visible: root.leftAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
 sed -i -e "s/visible: root.rightAction/visible: root.rightAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
+
+# another hack. Do not include the Kirigami resources (on static build). It causes
+# double defined symbols in our setting. I would like a nicer fix for this
+# issue, but failed to find one. For example, not adding the resource in
+# our build causes the qrc file not to be generated. Manual generation
+# of the resource file (using rcc) introduces the double symbols again. 
+# so it seems some Kirigami weirdness (but their staticcmake example compiles
+# correctly).
+sed -i -e "s/#include <qrc_kirigami.cpp>/\/\/#include <qrc_kirigami.cpp>/" src/kirigamiplugin.cpp
 popd
 
 echo org.kde.plasma.kirigami synced from upstream
