@@ -11,6 +11,7 @@ Kirigami.ScrollablePage {
 	objectName: "Settings"
 	id: settingsPage
 	title: qsTr("Settings")
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	property real gridWidth: settingsPage.width - Kirigami.Units.gridUnit
 	property var describe: [qsTr("Undefined"),

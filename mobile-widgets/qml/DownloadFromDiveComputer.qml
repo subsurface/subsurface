@@ -14,6 +14,7 @@ Kirigami.Page {
 	height: parent.height
 	Layout.fillWidth: true;
 	title: qsTr("Dive Computer")
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	property alias dcImportModel: importModel
 	property bool divesDownloaded: false

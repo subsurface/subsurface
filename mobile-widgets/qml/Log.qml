@@ -14,6 +14,7 @@ Kirigami.ScrollablePage {
 	anchors.margins: Kirigami.Units.gridUnit / 2
 	objectName: "Log"
 	title: qsTr("Application Log")
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	ListView {
 		anchors.fill: parent
