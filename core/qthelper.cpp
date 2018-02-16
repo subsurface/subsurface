@@ -1153,7 +1153,7 @@ void learnHash(struct picture *picture, QByteArray hash)
 	picture->hash = strdup(hash.toHex());
 }
 
-bool haveHash(const QString &filename)
+static bool haveHash(const QString &filename)
 {
 	QMutexLocker locker(&hashOfMutex);
 	return hashOf.contains(filename);
