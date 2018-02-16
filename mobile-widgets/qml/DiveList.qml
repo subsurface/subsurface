@@ -50,6 +50,7 @@ Kirigami.ScrollablePage {
 			width: parent.width
 			height: diveListEntry.height + Kirigami.Units.smallSpacing
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
+			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
 
 			property real detailsOpacity : 0
