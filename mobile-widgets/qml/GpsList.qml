@@ -12,6 +12,7 @@ Kirigami.ScrollablePage {
 	id: gpsListWindow
 	objectName: "gpsList"
 	title: qsTr("GPS Fixes")
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	Component {
 		id: gpsDelegate

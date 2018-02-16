@@ -8,6 +8,7 @@ import org.kde.kirigami 2.2 as Kirigami
 Kirigami.Page {
 
 	title: "Theme Information"
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	GridLayout {
 		id: themetest

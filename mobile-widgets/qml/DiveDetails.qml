@@ -49,6 +49,7 @@ Kirigami.Page {
 	topPadding: Kirigami.Units.gridUnit * 2 // make room for the title bar
 	rightPadding: 0
 	bottomPadding: 0
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	states: [
 		State {

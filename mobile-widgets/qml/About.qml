@@ -8,6 +8,7 @@ Kirigami.ScrollablePage {
 	id: aboutPage
 	property int pageWidth: aboutPage.width - aboutPage.leftPadding - aboutPage.rightPadding
 	title: qsTr("About Subsurface-mobile")
+	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	ColumnLayout {
 		spacing: Kirigami.Units.largeSpacing
