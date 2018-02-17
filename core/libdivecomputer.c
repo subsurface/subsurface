@@ -1194,7 +1194,7 @@ dc_status_t libdc_buffer_parser(struct dive *dive, device_data_t *data, unsigned
 		return rc;
 	}
 	dc_parser_destroy(parser);
-	return(DC_STATUS_SUCCESS);
+	return DC_STATUS_SUCCESS;
 }
 
 /*

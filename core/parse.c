@@ -187,8 +187,8 @@ void event_end(void)
  */
 bool is_dive(void)
 {
-	return (cur_dive &&
-		(cur_dive->dive_site_uuid || cur_dive->when || cur_dive->dc.samples));
+	return cur_dive &&
+		(cur_dive->dive_site_uuid || cur_dive->when || cur_dive->dc.samples);
 }
 
 void reset_dc_info(struct divecomputer *dc)

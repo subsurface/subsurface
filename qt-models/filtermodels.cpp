@@ -408,7 +408,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		ds = get_dive_site_by_uuid(d->dive_site_uuid);
 		if (!ds)
 			return false;
-		return (same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid);
+		return same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid;
 	}
 
 	if (justCleared || models.isEmpty())

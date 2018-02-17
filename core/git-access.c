@@ -728,7 +728,7 @@ static git_repository *create_and_push_remote(const char *localdir, const char *
 	/* finally create an empty commit and push it to the remote */
 	if (do_git_save(repo, branch, remote, false, true))
 		return NULL;
-	return(repo);
+	return repo;
 }
 
 static git_repository *create_local_repo(const char *localdir, const char *remote, const char *branch, enum remote_transport rt)

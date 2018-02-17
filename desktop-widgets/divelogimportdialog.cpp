@@ -260,7 +260,7 @@ QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
 		return QVariant();
 
 	if (index.row() == 0) {
-		return (columnNames[index.column()]);
+		return columnNames[index.column()];
 	}
 	// make sure the element exists before returning it - this might get called before the
 	// model is correctly set up again (e.g., when changing separators)

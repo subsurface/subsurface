@@ -1147,7 +1147,7 @@ function mbar_to_bar(mbar)
 
 function mbar_to_psi(mbar)
 {
-	return (mbar * 0.0145037738);
+	return mbar * 0.0145037738;
 }
 
 function mm_to_meter(mm)

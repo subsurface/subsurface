@@ -136,7 +136,7 @@ void LocationInformationModel::update()
 
 QStringList LocationInformationModel::allSiteNames() const
 {
-	return(locationNames);
+	return locationNames;
 }
 
 bool LocationInformationModel::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -200,5 +200,5 @@ bool filter_same_gps_cb (QAbstractItemModel *model, int sourceRow, const QModelI
 	if (ds->latitude.udeg == 0 || ds->longitude.udeg == 0)
 		return false;
 
-	return (ds->latitude.udeg == ref_lat && ds->longitude.udeg == ref_lon && ds->uuid != ref_uuid);
+	return ds->latitude.udeg == ref_lat && ds->longitude.udeg == ref_lon && ds->uuid != ref_uuid;
 }

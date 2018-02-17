@@ -355,7 +355,7 @@ bool TechnicalDetailsSettings::calcndltts() const
 
 bool TechnicalDetailsSettings::buehlmann() const
 {
-	return (prefs.planner_deco_mode == BUEHLMANN);
+	return prefs.planner_deco_mode == BUEHLMANN;
 }
 
 int TechnicalDetailsSettings::gflow() const

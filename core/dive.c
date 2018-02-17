@@ -2720,7 +2720,7 @@ static int likely_same_dive(struct dive *a, struct dive *b)
 	if (fuzz < 60)
 		fuzz = 60;
 
-	return ((a->when <= b->when + fuzz) && (a->when >= b->when - fuzz));
+	return (a->when <= b->when + fuzz) && (a->when >= b->when - fuzz);
 }
 
 /*

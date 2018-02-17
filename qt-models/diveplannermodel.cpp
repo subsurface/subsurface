@@ -178,7 +178,7 @@ bool DivePlannerPointsModel::updateMaxDepth()
 		if (p.depth.mm > displayed_dive.maxdepth.mm)
 			displayed_dive.maxdepth.mm = p.depth.mm;
 	}
-	return (displayed_dive.maxdepth.mm != prevMaxDepth);
+	return displayed_dive.maxdepth.mm != prevMaxDepth;
 }
 
 void DivePlannerPointsModel::removeDeco()

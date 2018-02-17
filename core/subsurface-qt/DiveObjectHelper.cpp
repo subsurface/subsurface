@@ -119,7 +119,7 @@ QString DiveObjectHelper::gps_decimal() const
 	prefs.coordinates_traditional = false;
 	val = gps();
 	prefs.coordinates_traditional = savep;
-	return(val);
+	return val;
 }
 
 QString DiveObjectHelper::duration() const

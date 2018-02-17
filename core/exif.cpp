@@ -897,6 +897,6 @@ time_t easyexif::EXIFInfo::epoch()
 	tm.tm_hour = hour;
 	tm.tm_min = min;
 	tm.tm_sec = sec;
-	return (utc_mktime(&tm));
+	return utc_mktime(&tm);
 }
 

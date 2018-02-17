@@ -49,7 +49,7 @@ QString weight_string(int weight_in_grams)
 		double lbs = grams_to_lbs(weight_in_grams);
 		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
-	return (str);
+	return str;
 }
 
 QString distance_string(int distanceInMeters)
@@ -608,7 +608,7 @@ QString get_weight_string(weight_t weight, bool showunit)
 	} else {
 		str = QString("%1%2").arg(str).arg(showunit ? translate("gettextFromC", "lbs") : "");
 	}
-	return (str);
+	return str;
 }
 
 QString get_weight_unit()
@@ -1017,7 +1017,7 @@ bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
 		utc_mkdate(twhen, &tmt);
 	}
 
-	return ((tmd.tm_mday == tmt.tm_mday) && (tmd.tm_mon == tmt.tm_mon) && (tmd.tm_year == tmt.tm_year));
+	return (tmd.tm_mday == tmt.tm_mday) && (tmd.tm_mon == tmt.tm_mon) && (tmd.tm_year == tmt.tm_year);
 }
 
 QString get_trip_date_string(timestamp_t when, int nr, bool getday)
@@ -1195,7 +1195,7 @@ void hashPicture(struct picture *picture)
 	char *oldHash = copy_string(picture->hash);
 	learnHash(picture, hashFile(localFilePath(picture->filename)));
 	if (!empty_string(picture->hash) && !same_string(picture->hash, oldHash))
-		mark_divelist_changed((true));
+		mark_divelist_changed(true);
 	free(oldHash);
 	picture_free(picture);
 }
@@ -1499,7 +1499,7 @@ void setCurrentAppState(QByteArray state)
 
 extern "C" bool in_planner()
 {
-	return (currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive");
+	return currentApplicationState == "PlanDive" || currentApplicationState == "EditPlannedDive";
 }
 
 extern "C" enum deco_mode decoMode()

@@ -968,10 +968,10 @@ bool ProfileWidget2::isPointOutOfBoundaries(const QPointF &point) const
 {
 	double xpos = timeAxis->valueAt(point);
 	double ypos = profileYAxis->valueAt(point);
-	return (xpos > timeAxis->maximum() ||
-		xpos < timeAxis->minimum() ||
-		ypos > profileYAxis->maximum() ||
-		ypos < profileYAxis->minimum());
+	return xpos > timeAxis->maximum() ||
+	       xpos < timeAxis->minimum() ||
+	       ypos > profileYAxis->maximum() ||
+	       ypos < profileYAxis->minimum();
 }
 
 void ProfileWidget2::scrollViewTo(const QPoint &pos)
