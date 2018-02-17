@@ -1120,7 +1120,7 @@ void write_hashes()
 	}
 }
 
-void add_hash(const QString filename, QByteArray hash)
+void add_hash(const QString &filename, const QByteArray &hash)
 {
 	if (hash.isEmpty())
 		return;
@@ -1129,7 +1129,7 @@ void add_hash(const QString filename, QByteArray hash)
 	localFilenameOf[hash] = filename;
 }
 
-QByteArray hashFile(const QString filename)
+QByteArray hashFile(const QString &filename)
 {
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	QFile imagefile(filename);
@@ -1157,7 +1157,7 @@ static bool haveHash(const QString &filename)
 	return hashOf.contains(filename);
 }
 
-QString localFilePath(const QString originalFilename)
+QString localFilePath(const QString &originalFilename)
 {
 	QMutexLocker locker(&hashOfMutex);
 
@@ -1479,7 +1479,7 @@ QByteArray getCurrentAppState()
 	return currentApplicationState;
 }
 
-void setCurrentAppState(QByteArray state)
+void setCurrentAppState(const QByteArray &state)
 {
 	currentApplicationState = state;
 }
