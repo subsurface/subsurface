@@ -18,6 +18,7 @@ Kirigami.ApplicationWindow {
 		minimumHeight: 0
 		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
 		maximumHeight: Kirigami.Units.gridUnit * 2
+		background: Rectangle { color: subsurfaceTheme.primaryColor }
 	}
 	property alias oldStatus: manager.oldStatus
 	property alias notificationText: manager.notificationText
