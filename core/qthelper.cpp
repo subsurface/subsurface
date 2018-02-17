@@ -1179,15 +1179,6 @@ QString fileFromHash(const char *hash)
 }
 
 // This needs to operate on a copy of picture as it frees it after finishing!
-void updateHash(struct picture *picture) {
-	if (!picture)
-		return;
-	QByteArray hash = hashFile(fileFromHash(picture->hash));
-	learnHash(picture, hash);
-	picture_free(picture);
-}
-
-// This needs to operate on a copy of picture as it frees it after finishing!
 void hashPicture(struct picture *picture)
 {
 	if (!picture)

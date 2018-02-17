@@ -120,7 +120,7 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 			load(filename);
 			if (!isNull()) {
 				// Make sure the hash still matches the image file
-				QtConcurrent::run(updateHash, clone_picture(picture));
+				QtConcurrent::run(hashPicture, clone_picture(picture));
 			} else {
 				// Interpret filename as URL
 				QtConcurrent::run(loadPicture, clone_picture(picture), false);
