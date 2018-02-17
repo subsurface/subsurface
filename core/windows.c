@@ -437,5 +437,5 @@ void subsurface_console_exit(void)
 bool subsurface_user_is_root()
 {
 	/* FIXME: Detect admin rights */
-	return (false);
+	return false;
 }

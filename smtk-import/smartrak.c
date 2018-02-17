@@ -145,7 +145,7 @@ static unsigned int smtk_time_to_secs(char *t_buffer)
 
 	if (!empty_string(t_buffer)) {
 		n = sscanf(t_buffer, "%*[0-9/] %d:%d:%d ", &hr, &min, &sec);
-		return((n == 3) ? (((hr*60)+min)*60)+sec : 0);
+		return (n == 3) ? (((hr*60)+min)*60)+sec : 0;
 	} else {
 		return 0;
 	}

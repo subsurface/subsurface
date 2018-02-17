@@ -47,9 +47,9 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	}
 
 	if (!vendor.isEmpty() && !product.isEmpty())
-		return(descriptorLookup.value(vendor + product));
+		return descriptorLookup.value(vendor + product);
 
-	return(NULL);
+	return NULL;
 }
 
 BTDiscovery::BTDiscovery(QObject *parent) : m_btValid(false),

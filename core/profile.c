@@ -1524,7 +1524,7 @@ struct plot_data *get_plot_details_new(struct plot_info *pi, int time, struct me
 	}
 	if (entry)
 		plot_string(pi, entry, mb);
-	return (entry);
+	return entry;
 }
 
 /* Compare two plot_data entries and writes the results into a string */
