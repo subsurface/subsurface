@@ -435,8 +435,10 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 		put_degrees(b, pic->latitude, " gps='", " ");
 		put_degrees(b, pic->longitude, "", "'");
 	}
-	if (hashstring(pic->filename))
-		put_format(b, " hash='%s'", hashstring(pic->filename));
+	char *hash = hashstring(pic->filename);
+	if (!empty_string(hash))
+		put_format(b, " hash='%s'", hash);
+	free(hash);
 
 	put_string(b, "/>\n");
 }
