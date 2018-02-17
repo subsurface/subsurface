@@ -20,6 +20,10 @@ Kirigami.ScrollablePage {
 			id: gpsFix
 			enabled: true
 			width: parent.width
+			background: Rectangle {
+				color: subsurfaceTheme.backgroundColor
+				border.width: 1
+			}
 			GridLayout {
 				columns: 4
 				id: timeAndName
