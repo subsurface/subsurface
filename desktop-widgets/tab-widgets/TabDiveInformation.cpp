@@ -95,7 +95,7 @@ void TabDiveInformation::updateData()
 		ui->airPressureText->clear();
 
 	if (displayed_dive.salinity)
-		ui->salinityText->setText(QString("%1g/l").arg(displayed_dive.salinity / 10.0));
+		ui->salinityText->setText(QString("%1g/ℓ").arg(displayed_dive.salinity / 10.0));
 	else
 		ui->salinityText->clear();
 
