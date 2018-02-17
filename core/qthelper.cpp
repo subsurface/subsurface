@@ -1071,7 +1071,7 @@ QHash <QString, QImage > thumbnailCache;
 extern "C" char * hashstring(const char *filename)
 {
 	QMutexLocker locker(&hashOfMutex);
-	return hashOf[QString(filename)].toHex().data();
+	return strdup(hashOf[QString(filename)].toHex().data());
 }
 
 const QString hashfile_name()
