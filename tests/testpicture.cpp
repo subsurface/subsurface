@@ -43,9 +43,8 @@ void TestPicture::addPicture()
 	QVERIFY(pic2->hash == NULL);
 	learnHash(pic1, hashFile(localFilePath(pic1->filename)));
 	learnHash(pic2, hashFile(localFilePath(pic2->filename)));
-	QCOMPARE(pic1->hash, "929ad9499b7ae7a9e39ef63eb6c239604ac2adfa");
-	QCOMPARE(pic2->hash, "fa8bd48f8f24017a81e1204f52300bd98b43d4a7");
-
+	QCOMPARE(hashstring(pic1->filename), "929ad9499b7ae7a9e39ef63eb6c239604ac2adfa");
+	QCOMPARE(hashstring(pic2->filename), "fa8bd48f8f24017a81e1204f52300bd98b43d4a7");
 }
 
 
