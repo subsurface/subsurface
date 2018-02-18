@@ -71,8 +71,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
 		stream.writeRawData(imageData.data(), imageData.length());
 		imageFile.waitForBytesWritten(-1);
 		imageFile.close();
-		add_hash(imageFile.fileName(), hash.result());
-		learnHash(picture, hash.result());
+		learnHash(QString(picture->filename), imageFile.fileName(), hash.result());
 	}
 	// This should be called to make the picture actually show.
 	// Problem is DivePictureModel is not in core.

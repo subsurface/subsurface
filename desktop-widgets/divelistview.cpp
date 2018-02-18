@@ -1000,11 +1000,7 @@ void DiveListView::loadImageFromURL(QUrl url)
 			stream.writeRawData(imageData.data(), imageData.length());
 			imageFile.waitForBytesWritten(-1);
 			imageFile.close();
-			add_hash(imageFile.fileName(), hash.result());
-			struct picture picture;
-			picture.hash = NULL;
-			picture.filename = strdup(url.toString().toUtf8().data());
-			learnHash(&picture, hash.result());
+			learnHash(url.toString(), imageFile.fileName(), hash.result());
 			matchImagesToDives(QStringList(url.toString()));
 		}
 	}
