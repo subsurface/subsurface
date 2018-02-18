@@ -44,8 +44,6 @@ void TestPicture::addPicture()
 	QVERIFY(pic1->longitude.udeg == 11334500);
 	QVERIFY(pic2->offset.seconds == 1321);
 
-	QVERIFY(pic1->hash == NULL);
-	QVERIFY(pic2->hash == NULL);
 	QByteArray hash1 = hashFile(localFilePath(pic1->filename));
 	QByteArray hash2 = hashFile(localFilePath(pic2->filename));
 	learnHash(pic1->filename, PIC1_NAME, hash1);
@@ -54,8 +52,8 @@ void TestPicture::addPicture()
 	QCOMPARE(hashstring(pic2->filename), PIC2_HASH);
 	QCOMPARE(hashstring(PIC1_NAME), PIC1_HASH);
 	QCOMPARE(hashstring(PIC2_NAME), PIC2_HASH);
-	QCOMPARE(fileFromHash(PIC1_HASH), QString(PIC1_NAME));
-	QCOMPARE(fileFromHash(PIC2_HASH), QString(PIC2_NAME));
+	QCOMPARE(localFilePath(pic1->filename), QString(PIC1_NAME));
+	QCOMPARE(localFilePath(pic2->filename), QString(PIC2_NAME));
 }
 
 

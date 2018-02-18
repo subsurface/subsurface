@@ -1154,6 +1154,7 @@ static void gps_picture_location(char *buffer, struct picture *pic)
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
+	char *hash;
 	start_match("dive", name, buf);
 
 	switch (import_source) {
@@ -1197,8 +1198,11 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("gps.picture", gps_picture_location, cur_picture))
 		return;
-	if (MATCH("hash.picture", utf8_string, &cur_picture->hash))
+	if (MATCH("hash.picture", utf8_string, &hash)) {
+		register_hash(cur_picture->filename, hash);
+		free(hash);
 		return;
+	}
 	if (MATCH("cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
 	if (MATCH("cylinderendpressure", pressure, &dive->cylinder[0].end))

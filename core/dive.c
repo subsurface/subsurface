@@ -455,7 +455,6 @@ static void copy_pl(struct picture *sp, struct picture *dp)
 {
 	*dp = *sp;
 	dp->filename = copy_string(sp->filename);
-	dp->hash = copy_string(sp->hash);
 }
 
 /* copy an element in a list of tags */
@@ -3804,7 +3803,6 @@ void picture_free(struct picture *picture)
 	if (!picture)
 		return;
 	free(picture->filename);
-	free(picture->hash);
 	free(picture);
 }
 

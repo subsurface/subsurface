@@ -9,8 +9,9 @@
 
 #include <QtConcurrent>
 
-static QUrl cloudImageURL(const char *hash)
+static QUrl cloudImageURL(const char *filename)
 {
+	QString hash = hashString(filename);
 	return QUrl::fromUserInput(QString("https://cloud.subsurface-divelog.org/images/").append(hash));
 }
 
@@ -26,7 +27,7 @@ ImageDownloader::~ImageDownloader()
 
 void ImageDownloader::load(bool fromHash)
 {
-	if (fromHash && loadFromUrl(cloudImageURL(picture->hash)))
+	if (fromHash && loadFromUrl(cloudImageURL(picture->filename)))
 		return;
 
 	// If loading from hash failed, try to load from filename
@@ -107,12 +108,11 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 	if (isNull()) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
-		QString filename = fileFromHash(picture->hash);
-		if (filename.isNull())
-			filename = QString(picture->filename);
+		QString filename = localFilePath(picture->filename);
 		if (filename.isNull()) {
 			// That didn't produce a local filename.
 			// Try the cloud server
+			// TODO: This is dead code at the moment.
 			QtConcurrent::run(loadPicture, clone_picture(picture), true);
 		} else {
 			// Load locally from translated file name

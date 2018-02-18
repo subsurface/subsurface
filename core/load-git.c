@@ -50,10 +50,13 @@ static void save_picture_from_git(struct picture *picture)
 	struct picture_entry_list *pic_entry = pel;
 
 	while (pic_entry) {
-		if (same_string(pic_entry->hash, picture->hash)) {
-			savePictureLocal(picture, pic_entry->data, pic_entry->len);
+		char *hash = hashstring(picture->filename);
+		if (same_string(pic_entry->hash, hash)) {
+			savePictureLocal(picture, hash, pic_entry->data, pic_entry->len);
+			free(hash);
 			return;
 		}
+		free(hash);
 		pic_entry = pic_entry->next;
 	}
 	fprintf(stderr, "didn't find picture entry for %s\n", picture->filename);
@@ -971,7 +974,9 @@ static void parse_picture_hash(char *line, struct membuffer *str, void *_pic)
 {
 	(void) line;
 	struct picture *pic = _pic;
-	pic->hash = get_utf8(str);
+	char *hash = get_utf8(str);
+	register_hash(pic->filename, get_utf8(str));
+	free(hash);
 }
 
 /* These need to be sorted! */

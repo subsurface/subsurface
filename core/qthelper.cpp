@@ -1075,10 +1075,20 @@ QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
 QHash <QString, QImage > thumbnailCache;
 
-extern "C" char * hashstring(const char *filename)
+static QByteArray getHash(const QString &filename)
 {
 	QMutexLocker locker(&hashOfMutex);
-	return strdup(hashOf[QString(filename)].toHex().data());
+	return hashOf[filename];
+}
+
+QString hashString(const char *filename)
+{
+	return getHash(QString(filename)).toHex();
+}
+
+extern "C" char * hashstring(const char *filename)
+{
+	return strdup(qPrintable(hashString(filename)));
 }
 
 const QString hashfile_name()
@@ -1136,6 +1146,21 @@ void add_hash(const QString &filename, const QByteArray &hash)
 	localFilenameOf[hash] = filename;
 }
 
+// Add hash if not already known
+extern "C" void register_hash(const char *filename, const char *hash)
+{
+	if (empty_string(filename) || empty_string(hash))
+		return;
+	QString filenameString(filename);
+
+	QMutexLocker locker(&hashOfMutex);
+	if (!hashOf.contains(filenameString)) {
+		QByteArray hashBuf = QByteArray::fromHex(hash);
+		hashOf[filename] =  hashBuf;
+		localFilenameOf[hashBuf] = filenameString;
+	}
+}
+
 QByteArray hashFile(const QString &filename)
 {
 	QCryptographicHash hash(QCryptographicHash::Sha1);
@@ -1174,22 +1199,14 @@ QString localFilePath(const QString &originalFilename)
 		return originalFilename;
 }
 
-QString fileFromHash(const char *hash)
-{
-	if (empty_string(hash))
-		return "";
-	QMutexLocker locker(&hashOfMutex);
-
-	return localFilenameOf[QByteArray::fromHex(hash)];
-}
-
 // This needs to operate on a copy of picture as it frees it after finishing!
 void hashPicture(struct picture *picture)
 {
 	if (!picture)
 		return;
+	QByteArray oldHash = getHash(QString(picture->filename));
 	QByteArray hash = hashFile(localFilePath(picture->filename));
-	if (!hash.isNull() && !same_string(hash.toHex().data(), picture->hash))
+	if (!hash.isNull() && hash != oldHash)
 		mark_divelist_changed(true);
 	picture_free(picture);
 }
@@ -1230,23 +1247,16 @@ void learnImages(const QDir dir, int max_recursions)
 
 extern "C" const char *local_file_path(struct picture *picture)
 {
-	QString hashString = picture->hash;
-	if (hashString.isEmpty()) {
-		QByteArray hash = hashFile(picture->filename);
-		free(picture->hash);
-		picture->hash = strdup(hash.toHex().data());
-	}
-	QString localFileName = fileFromHash(picture->hash);
-	if (localFileName.isEmpty())
-		localFileName = picture->filename;
-	return strdup(qPrintable(localFileName));
+	return strdup(qPrintable(localFilePath(picture->filename)));
 }
 
 extern "C" bool picture_exists(struct picture *picture)
 {
-	QString localFilename = fileFromHash(picture->hash);
-	QByteArray hash = hashFile(localFilename);
-	return same_string(hash.toHex().data(), picture->hash);
+	QString localPath = localFilePath(picture->filename);
+	if (localPath.isEmpty())
+		return false;
+	QByteArray hash = hashFile(localPath);
+	return !hash.isEmpty() && getHash(QString(picture->filename)) == hash;
 }
 
 const QString picturedir()
@@ -1262,19 +1272,19 @@ extern "C" char *picturedir_string()
 /* when we get a picture from git storage (local or remote) and can't find the picture
  * based on its hash, we create a local copy with the hash as filename and the appropriate
  * suffix */
-extern "C" void savePictureLocal(struct picture *picture, const char *data, int len)
+extern "C" void savePictureLocal(struct picture *picture, const char *hash, const char *data, int len)
 {
 	QString dirname = picturedir();
 	QDir localPictureDir(dirname);
 	localPictureDir.mkpath(dirname);
 	QString suffix(picture->filename);
 	suffix.replace(QRegularExpression(".*\\."), "");
-	QString filename(dirname + picture->hash + "." + suffix);
+	QString filename(dirname + hash + "." + suffix);
 	QSaveFile out(filename);
 	if (out.open(QIODevice::WriteOnly)) {
 		out.write(data, len);
 		out.commit();
-		add_hash(filename, QByteArray::fromHex(picture->hash));
+		add_hash(filename, QByteArray::fromHex(hash));
 	}
 }
 
