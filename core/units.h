@@ -110,6 +110,11 @@ typedef struct
 
 typedef struct
 {
+	uint64_t mkelvin; // up to 18446744073 MdegK (temperatures in K are always positive)
+} temperature_sum_t;
+
+typedef struct
+{
 	int mliter;
 } volume_t;
 

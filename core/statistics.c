@@ -24,23 +24,23 @@ stats_t *stats_by_type = NULL;
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
-	int min_temp, mean_temp, max_temp = 0;
+	temperature_t min_temp, mean_temp, max_temp = {.mkelvin = 0};
 
-	max_temp = dp->maxtemp.mkelvin;
-	if (max_temp && (!stats->max_temp || max_temp > stats->max_temp))
-		stats->max_temp = max_temp;
+	max_temp.mkelvin = dp->maxtemp.mkelvin;
+	if (max_temp.mkelvin && (!stats->max_temp.mkelvin || max_temp.mkelvin > stats->max_temp.mkelvin))
+		stats->max_temp.mkelvin = max_temp.mkelvin;
 
-	min_temp = dp->mintemp.mkelvin;
-	if (min_temp && (!stats->min_temp || min_temp < stats->min_temp))
-		stats->min_temp = min_temp;
+	min_temp.mkelvin = dp->mintemp.mkelvin;
+	if (min_temp.mkelvin && (!stats->min_temp.mkelvin || min_temp.mkelvin < stats->min_temp.mkelvin))
+		stats->min_temp.mkelvin = min_temp.mkelvin;
 
-	if (min_temp || max_temp) {
-		mean_temp = min_temp;
-		if (mean_temp)
-			mean_temp = (mean_temp + max_temp) / 2;
+	if (min_temp.mkelvin || max_temp.mkelvin) {
+		mean_temp.mkelvin = min_temp.mkelvin;
+		if (mean_temp.mkelvin)
+			mean_temp.mkelvin = (mean_temp.mkelvin + max_temp.mkelvin) / 2;
 		else
-			mean_temp = max_temp;
-		stats->combined_temp += get_temp_units(mean_temp, NULL);
+			mean_temp.mkelvin = max_temp.mkelvin;
+		stats->combined_temp.mkelvin += mean_temp.mkelvin;
 		stats->combined_count++;
 	}
 }

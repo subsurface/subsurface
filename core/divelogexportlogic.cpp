@@ -99,12 +99,15 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 			out << "\"AVG_SAC\":\"" << get_volume_string(stats_yearly[i].avg_sac) << "\",";
 			out << "\"MIN_SAC\":\"" << get_volume_string(stats_yearly[i].min_sac) << "\",";
 			out << "\"MAX_SAC\":\"" << get_volume_string(stats_yearly[i].max_sac) << "\",";
-			if ( stats_yearly[i].combined_count )
-				out << "\"AVG_TEMP\":\"" << QString::number(stats_yearly[i].combined_temp / stats_yearly[i].combined_count, 'f', 1) << "\",";
-			else
+			if ( stats_yearly[i].combined_count ) {
+				temperature_t avg_temp;
+				avg_temp.mkelvin = stats_yearly[i].combined_temp.mkelvin / stats_yearly[i].combined_count;
+				out << "\"AVG_TEMP\":\"" << get_temperature_string(avg_temp) << "\",";
+			} else {
 				out << "\"AVG_TEMP\":\"0.0\",";
-			out << "\"MIN_TEMP\":\"" << ( stats_yearly[i].min_temp == 0 ? 0 : get_temp_units(stats_yearly[i].min_temp, NULL)) << "\",";
-			out << "\"MAX_TEMP\":\"" << ( stats_yearly[i].max_temp == 0 ? 0 : get_temp_units(stats_yearly[i].max_temp, NULL)) << "\",";
+			}
+			out << "\"MIN_TEMP\":\"" << ( stats_yearly[i].min_temp.mkelvin == 0 ? 0 : get_temperature_string(stats_yearly[i].min_temp)) << "\",";
+			out << "\"MAX_TEMP\":\"" << ( stats_yearly[i].max_temp.mkelvin == 0 ? 0 : get_temperature_string(stats_yearly[i].max_temp)) << "\",";
 			out << "},";
 			total_stats.selection_size += stats_yearly[i].selection_size;
 			total_stats.total_time.seconds += stats_yearly[i].total_time.seconds;

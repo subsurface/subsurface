@@ -104,13 +104,9 @@ if (property == "year") {
 } else if (property == "dives") {
 	return object.year->selection_size;
 } else if (property == "min_temp") {
-	const char *unit;
-	double temp = get_temp_units(object.year->min_temp, &unit);
-	return object.year->min_temp == 0 ? "0" : QString::number(temp, 'g', 2) + unit;
+	return object.year->min_temp.mkelvin == 0 ? "0" : get_temperature_string(object.year->min_temp, true);
 } else if (property == "max_temp") {
-	const char *unit;
-	double temp = get_temp_units(object.year->max_temp, &unit);
-	return object.year->max_temp == 0 ? "0" : QString::number(temp, 'g', 2) + unit;
+	return object.year->max_temp.mkelvin == 0 ? "0" : get_temperature_string(object.year->max_temp, true);
 } else if (property == "total_time") {
 	return get_dive_duration_string(object.year->total_time.seconds, QObject::tr("h"),
 									QObject::tr("min"), QObject::tr("sec"), " ");
