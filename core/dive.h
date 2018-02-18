@@ -412,7 +412,6 @@ struct dive_components {
 /* picture list and methods related to dive picture handling */
 struct picture {
 	char *filename;
-	char *hash;
 	offset_t offset;
 	degrees_t latitude;
 	degrees_t longitude;
