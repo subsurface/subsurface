@@ -1190,11 +1190,9 @@ void hashPicture(struct picture *picture)
 {
 	if (!picture)
 		return;
-	char *oldHash = copy_string(picture->hash);
-	learnHash(picture, hashFile(localFilePath(picture->filename)));
-	if (!empty_string(picture->hash) && !same_string(picture->hash, oldHash))
+	QByteArray hash = hashFile(localFilePath(picture->filename));
+	if (!hash.isNull() && !same_string(hash.toHex().data(), picture->hash))
 		mark_divelist_changed(true);
-	free(oldHash);
 	picture_free(picture);
 }
 
