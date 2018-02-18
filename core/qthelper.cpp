@@ -1149,12 +1149,13 @@ QByteArray hashFile(const QString filename)
 	}
 }
 
-void learnHash(const struct picture *picture, QByteArray hash)
+void learnHash(const QString &originalName, const QString &localName, const QByteArray &hash)
 {
 	if (hash.isNull())
 		return;
+	add_hash(localName, hash);
 	QMutexLocker locker(&hashOfMutex);
-	hashOf[QString(picture->filename)] = hash;
+	hashOf[originalName] = hash;
 }
 
 static bool haveHash(const QString &filename)

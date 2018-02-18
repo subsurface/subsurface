@@ -12,6 +12,11 @@ void TestPicture::initTestCase()
 	Q_INIT_RESOURCE(subsurface);
 }
 
+#define PIC1_NAME "/dives/images/wreck.jpg"
+#define PIC2_NAME "/dives/images/data_after_EOI.jpg"
+#define PIC1_HASH "929ad9499b7ae7a9e39ef63eb6c239604ac2adfa"
+#define PIC2_HASH "fa8bd48f8f24017a81e1204f52300bd98b43d4a7"
+
 void TestPicture::addPicture()
 {
 	struct dive *dive;
@@ -41,10 +46,16 @@ void TestPicture::addPicture()
 
 	QVERIFY(pic1->hash == NULL);
 	QVERIFY(pic2->hash == NULL);
-	learnHash(pic1, hashFile(localFilePath(pic1->filename)));
-	learnHash(pic2, hashFile(localFilePath(pic2->filename)));
-	QCOMPARE(hashstring(pic1->filename), "929ad9499b7ae7a9e39ef63eb6c239604ac2adfa");
-	QCOMPARE(hashstring(pic2->filename), "fa8bd48f8f24017a81e1204f52300bd98b43d4a7");
+	QByteArray hash1 = hashFile(localFilePath(pic1->filename));
+	QByteArray hash2 = hashFile(localFilePath(pic2->filename));
+	learnHash(pic1->filename, PIC1_NAME, hash1);
+	learnHash(pic2->filename, PIC2_NAME, hash2);
+	QCOMPARE(hashstring(pic1->filename), PIC1_HASH);
+	QCOMPARE(hashstring(pic2->filename), PIC2_HASH);
+	QCOMPARE(hashstring(PIC1_NAME), PIC1_HASH);
+	QCOMPARE(hashstring(PIC2_NAME), PIC2_HASH);
+	QCOMPARE(fileFromHash(PIC1_HASH), QString(PIC1_NAME));
+	QCOMPARE(fileFromHash(PIC2_HASH), QString(PIC2_NAME));
 }
 
 
