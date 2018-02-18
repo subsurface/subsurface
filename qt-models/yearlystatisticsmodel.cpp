@@ -39,7 +39,6 @@ YearStatisticsItem::YearStatisticsItem(stats_t interval) : stats_interval(interv
 
 QVariant YearStatisticsItem::data(int column, int role) const
 {
-	double value;
 	QVariant ret;
 
 	if (role == Qt::FontRole) {
@@ -91,19 +90,19 @@ QVariant YearStatisticsItem::data(int column, int role) const
 		ret = get_volume_string(stats_interval.max_sac);
 		break;
 	case AVG_TEMP:
-		if (stats_interval.combined_temp && stats_interval.combined_count) {
-			ret = QString::number(stats_interval.combined_temp / stats_interval.combined_count, 'f', 1);
+		if (stats_interval.combined_temp.mkelvin && stats_interval.combined_count) {
+			temperature_t avg_temp;
+			avg_temp.mkelvin = stats_interval.combined_temp.mkelvin / stats_interval.combined_count;
+			ret = get_temperature_string(avg_temp);
 		}
 		break;
 	case MIN_TEMP:
-		value = get_temp_units(stats_interval.min_temp, NULL);
-		if (value > -100.0)
-			ret = QString::number(value, 'f', 1);
+		if (stats_interval.min_temp.mkelvin)
+			ret = get_temperature_string(stats_interval.min_temp);
 		break;
 	case MAX_TEMP:
-		value = get_temp_units(stats_interval.max_temp, NULL);
-		if (value > -100.0)
-			ret = QString::number(value, 'f', 1);
+		if (stats_interval.max_temp.mkelvin)
+			ret = get_temperature_string(stats_interval.max_temp);
 		break;
 	}
 	return ret;

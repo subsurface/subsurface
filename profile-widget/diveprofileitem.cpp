@@ -591,16 +591,15 @@ void DiveTemperatureItem::modelDataChanged(const QModelIndex &topLeft, const QMo
 
 void DiveTemperatureItem::createTextItem(int sec, int mkelvin)
 {
-	double deg;
-	const char *unit;
-	deg = get_temp_units(mkelvin, &unit);
+	temperature_t temp;
+	temp.mkelvin = mkelvin;
 
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignBottom);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis->posAtValue(sec), vAxis->posAtValue(mkelvin)));
 	text->setScale(0.8); // need to call this BEFORE setText()
-	text->setText(QString("%1%2").arg(deg, 0, 'f', 1).arg(unit));
+	text->setText(get_temperature_string(temp, true));
 	texts.append(text);
 }
 

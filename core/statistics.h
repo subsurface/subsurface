@@ -28,9 +28,9 @@ typedef struct
 	volume_t max_sac;
 	volume_t min_sac;
 	volume_t avg_sac;
-	int max_temp;
-	int min_temp;
-	double combined_temp;
+	temperature_t max_temp;
+	temperature_t min_temp;
+	temperature_sum_t combined_temp;
 	unsigned int combined_count;
 	unsigned int selection_size;
 	unsigned int total_sac_time;

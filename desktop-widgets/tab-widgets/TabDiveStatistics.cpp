@@ -71,15 +71,12 @@ void TabDiveStatistics::updateData()
 	else
 		ui->sacLimits->setAverage("");
 
-	temperature_t temp;
-	temp.mkelvin = stats_selection.max_temp;
-	ui->tempLimits->setMaximum(get_temperature_string(temp, true));
-	temp.mkelvin = stats_selection.min_temp;
-	ui->tempLimits->setMinimum(get_temperature_string(temp, true));
-	if (stats_selection.combined_temp && stats_selection.combined_count) {
-		const char *unit;
-		get_temp_units(0, &unit);
-		ui->tempLimits->setAverage(QString("%1%2").arg(stats_selection.combined_temp / stats_selection.combined_count, 0, 'f', 1).arg(unit));
+	ui->tempLimits->setMaximum(get_temperature_string(stats_selection.max_temp, true));
+	ui->tempLimits->setMinimum(get_temperature_string(stats_selection.min_temp, true));
+	if (stats_selection.combined_temp.mkelvin && stats_selection.combined_count) {
+		temperature_t avg_temp;
+		avg_temp.mkelvin = stats_selection.combined_temp.mkelvin / stats_selection.combined_count;
+		ui->tempLimits->setAverage(get_temperature_string(avg_temp, true));
 	}
 
 
