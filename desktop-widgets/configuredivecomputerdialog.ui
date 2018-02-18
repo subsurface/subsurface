@@ -677,7 +677,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> s</string>
+               <string>s</string>
               </property>
               <property name="minimum">
                <number>60</number>
@@ -717,7 +717,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -742,7 +742,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -764,7 +764,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -910,7 +910,7 @@
             <item row="2" column="1">
              <widget class="QSpinBox" name="lastDecoSpinBox">
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="minimum">
                <number>3</number>
@@ -949,7 +949,7 @@
             <item row="0" column="4">
              <widget class="QSpinBox" name="pressureSensorOffsetSpinBox">
               <property name="suffix">
-               <string> mbar</string>
+               <string>mbar</string>
               </property>
               <property name="minimum">
                <number>-20</number>
@@ -979,7 +979,7 @@
             <item row="1" column="1">
              <widget class="QSpinBox" name="futureTTSSpinBox">
               <property name="suffix">
-               <string> min</string>
+               <string>min</string>
               </property>
               <property name="maximum">
                <number>9</number>
@@ -1139,7 +1139,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -1155,7 +1155,7 @@
             <item row="13" column="4">
              <widget class="QSpinBox" name="decoGasConsumption">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -1509,7 +1509,7 @@
             <item row="4" column="3">
              <widget class="QSpinBox" name="ppO2MaxSpinBox">
               <property name="suffix">
-               <string> cbar</string>
+               <string>cbar</string>
               </property>
               <property name="minimum">
                <number>120</number>
@@ -1525,7 +1525,7 @@
             <item row="5" column="3">
              <widget class="QSpinBox" name="ppO2MinSpinBox">
               <property name="suffix">
-               <string> cbar</string>
+               <string>cbar</string>
               </property>
               <property name="minimum">
                <number>16</number>
@@ -2168,7 +2168,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> s</string>
+               <string>s</string>
               </property>
               <property name="minimum">
                <number>10</number>
@@ -2187,7 +2187,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -2212,7 +2212,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -2234,7 +2234,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -2313,7 +2313,7 @@
             <item row="2" column="1">
              <widget class="QSpinBox" name="lastDecoSpinBox_3">
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="minimum">
                <number>3</number>
@@ -2375,7 +2375,7 @@
             <item row="1" column="1">
              <widget class="QSpinBox" name="futureTTSSpinBox_3">
               <property name="suffix">
-               <string> min</string>
+               <string>min</string>
               </property>
               <property name="maximum">
                <number>9</number>
@@ -2526,7 +2526,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="decoGasConsumption_3">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -2542,7 +2542,7 @@
             <item row="11" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption_3">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -2817,7 +2817,7 @@
             <item row="3" column="3">
              <widget class="QSpinBox" name="ppO2MaxSpinBox_3">
               <property name="suffix">
-               <string> cbar</string>
+               <string>cbar</string>
               </property>
               <property name="minimum">
                <number>120</number>
@@ -2833,7 +2833,7 @@
             <item row="4" column="3">
              <widget class="QSpinBox" name="ppO2MinSpinBox_3">
               <property name="suffix">
-               <string> cbar</string>
+               <string>cbar</string>
               </property>
               <property name="minimum">
                <number>16</number>
@@ -3202,7 +3202,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> s</string>
+               <string>s</string>
               </property>
               <property name="minimum">
                <number>60</number>
@@ -3235,7 +3235,7 @@
                <bool>false</bool>
               </property>
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="decimals">
                <number>1</number>
@@ -3354,7 +3354,7 @@
             <item row="3" column="1">
              <widget class="QSpinBox" name="lastDecoSpinBox_4">
               <property name="suffix">
-               <string> m</string>
+               <string>m</string>
               </property>
               <property name="minimum">
                <number>3</number>
@@ -3390,7 +3390,7 @@
             <item row="0" column="4">
              <widget class="QSpinBox" name="pressureSensorOffsetSpinBox_4">
               <property name="suffix">
-               <string> mbar</string>
+               <string>mbar</string>
               </property>
               <property name="minimum">
                <number>-20</number>
@@ -3425,7 +3425,7 @@
             <item row="2" column="1">
              <widget class="QSpinBox" name="futureTTSSpinBox_4">
               <property name="suffix">
-               <string> min</string>
+               <string>min</string>
               </property>
               <property name="maximum">
                <number>9</number>
@@ -3489,7 +3489,7 @@
             <item row="12" column="4">
              <widget class="QSpinBox" name="travelGasConsumption_4">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -3505,7 +3505,7 @@
             <item row="13" column="4">
              <widget class="QSpinBox" name="bottomGasConsumption_4">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -3521,7 +3521,7 @@
             <item row="14" column="4">
              <widget class="QSpinBox" name="decoGasConsumption_4">
               <property name="suffix">
-               <string> ℓ/min</string>
+               <string>ℓ/min</string>
               </property>
               <property name="minimum">
                <number>5</number>
@@ -3892,7 +3892,7 @@
             <item row="4" column="3">
              <widget class="QSpinBox" name="ppO2MaxSpinBox_4">
               <property name="suffix">
-               <string> cbar</string>
+               <string>cbar</string>
               </property>
               <property name="minimum">
                <number>120</number>
@@ -3908,7 +3908,7 @@
             <item row="5" column="3">
              <widget class="QSpinBox" name="ppO2MinSpinBox_4">
               <property name="suffix">
-               <string> cbar</string>
+               <string>cbar</string>
               </property>
               <property name="minimum">
                <number>16</number>
