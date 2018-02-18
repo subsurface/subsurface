@@ -804,7 +804,7 @@ void DiveGasPressureItem::plotPressureValue(int mbar, int sec, QFlags<Qt::Alignm
 	int pressure = get_pressure_units(mbar, &unit);
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setPos(hAxis->posAtValue(sec), vAxis->posAtValue(mbar) + pressure_offset );
-	text->setText(QString("%1 %2").arg(pressure).arg(unit));
+	text->setText(QString("%1%2").arg(pressure).arg(unit));
 	text->setAlignment(align);
 	text->setBrush(getColor(PRESSURE_TEXT));
 	texts.push_back(text);
