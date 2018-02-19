@@ -46,10 +46,10 @@ QString weight_string(int weight_in_grams)
 	QString str;
 	if (get_units()->weight == units::KG) {
 		double kg = (double) weight_in_grams / 1000.0;
-		str = QString("%1").arg(kg, 0, 'f', kg >= 20.0 ? 0 : 1);
+		str = QString("%L1").arg(kg, 0, 'f', kg >= 20.0 ? 0 : 1);
 	} else {
 		double lbs = grams_to_lbs(weight_in_grams);
-		str = QString("%1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
+		str = QString("%L1").arg(lbs, 0, 'f', lbs >= 40.0 ? 0 : 1);
 	}
 	return str;
 }
@@ -582,10 +582,10 @@ QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
 		double meters = mm / 1000.0;
-		return QString("%1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? translate("gettextFromC", "m") : "");
+		return QString("%L1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? translate("gettextFromC", "m") : "");
 	} else {
 		double feet = mm_to_feet(mm);
-		return QString("%1%2").arg(feet, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "ft") : "");
+		return QString("%L1%2").arg(feet, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "ft") : "");
 	}
 }
 
@@ -627,10 +627,10 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 		return ""; //temperature not defined
 	} else if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
-		return QString("%1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "C") : "");
+		return QString("%L1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "C") : "");
 	} else {
 		double fahrenheit = mkelvin_to_F(temp.mkelvin);
-		return QString("%1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "F") : "");
+		return QString("%L1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "F") : "");
 	}
 }
 
@@ -642,12 +642,17 @@ QString get_temp_unit()
 		return QString(UTF8_DEGREE "F");
 }
 
-QString get_volume_string(volume_t volume, bool showunit)
+QString get_volume_string(int mliter, bool showunit)
 {
 	const char *unit;
 	int decimals;
-	double value = get_volume_units(volume.mliter, &decimals, &unit);
-	return QString("%1%2").arg(value, 0, 'f', decimals).arg(showunit ? unit : "");
+	double value = get_volume_units(mliter, &decimals, &unit);
+	return QString("%L1%2").arg(value, 0, 'f', decimals).arg(showunit ? unit : "");
+}
+
+QString get_volume_string(volume_t volume, bool showunit)
+{
+	return get_volume_string(volume.mliter, showunit);
 }
 
 QString get_volume_unit()
@@ -661,10 +666,10 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 {
 	if (prefs.units.pressure == units::BAR) {
 		double bar = pressure.mbar / 1000.0;
-		return QString("%1%2").arg(bar, 0, 'f', 1).arg(showunit ? translate("gettextFromC", "bar") : "");
+		return QString("%L1%2").arg(bar, 0, 'f', 1).arg(showunit ? translate("gettextFromC", "bar") : "");
 	} else {
 		double psi = mbar_to_PSI(pressure.mbar);
-		return QString("%1%2").arg(psi, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "psi") : "");
+		return QString("%L1%2").arg(psi, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "psi") : "");
 	}
 }
 

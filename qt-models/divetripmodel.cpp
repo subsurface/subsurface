@@ -387,28 +387,18 @@ QString DiveItem::displayTemperatureWithUnit() const
 
 QString DiveItem::displaySac() const
 {
-	QString str;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (dive->sac) {
-		const char *unit;
-		int decimal;
-		double value = get_volume_units(dive->sac, &decimal, &unit);
-		return QString::number(value, 'f', decimal);
-	}
-	return QString("");
+	if (!dive->sac)
+		return QString();
+	return get_volume_string(dive->sac, false);
 }
 
 QString DiveItem::displaySacWithUnit() const
 {
-	QString str;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (dive->sac) {
-		const char *unit;
-		int decimal;
-		double value = get_volume_units(dive->sac, &decimal, &unit);
-		return QString::number(value, 'f', decimal) + QString(unit).append(tr("/min"));
-	}
-	return QString("");
+	if (!dive->sac)
+		return QString();
+	return get_volume_string(dive->sac, true).append(tr("/min"));
 }
 
 QString DiveItem::displayWeight() const
