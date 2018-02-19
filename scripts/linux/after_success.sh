@@ -13,4 +13,4 @@ ls -lh Subsurface*.AppImage
 # get and run the upload script
 wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
 bash ./upload.sh Subsurface*.AppImage Subsurface*.AppImage.zsync
-
+bash ./upload.sh smtk2ssrf*.AppImage

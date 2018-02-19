@@ -15,3 +15,7 @@ source ${TRAVIS_BUILD_DIR}/scripts/release-message.sh
 # get and run the upload script
 wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
 bash ./upload.sh subsurface*.exe*
+
+# upload smtk2ssrf
+cd ${TRAVIS_BUILD_DIR}/../win32/smtk-import
+bash ../subsurface/upload.sh smtk2ssrf*.exe*
