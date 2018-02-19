@@ -134,9 +134,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
 		dive->notes = strdup(buffer);
-		free((void *)buffer);
-		free((void *)temp);
-		return;
+		goto finished;
 	} else if (diveplan->surface_interval >= 48 * 60 *60) {
 		const char *current_date = get_current_date();
 		len += snprintf(buffer + len, sz_buffer - len, "<div><b>%s (%s) %s %s</b><br>",
