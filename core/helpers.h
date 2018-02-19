@@ -20,6 +20,7 @@ QString get_weight_unit();
 QString get_temperature_string(temperature_t temp, bool showunit = false);
 QString get_temp_unit();
 QString get_volume_string(volume_t volume, bool showunit = false);
+QString get_volume_string(int mliter, bool showunit = false);
 QString get_volume_unit();
 QString get_pressure_string(pressure_t pressure, bool showunit = false);
 QString get_pressure_unit();

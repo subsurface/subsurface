@@ -271,7 +271,7 @@ void DiveCartesianAxis::animateChangeLine(const QLineF &newLine)
 
 QString DiveCartesianAxis::textForValue(double value)
 {
-	return QString::number(value);
+	return QString("%L1").arg(value, 0, 'g', 4);
 }
 
 void DiveCartesianAxis::setTickSize(qreal size)

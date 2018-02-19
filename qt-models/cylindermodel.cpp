@@ -57,7 +57,7 @@ static QString get_cylinder_string(cylinder_t *cyl)
 		unit = CylindersModel::tr("ℓ");
 	}
 
-	return QString("%1").arg(value, 0, 'f', decimals) + unit;
+	return QString("%L1").arg(value, 0, 'f', decimals) + unit;
 }
 
 static QString gas_volume_string(int ml, const char *tail)
@@ -69,7 +69,7 @@ static QString gas_volume_string(int ml, const char *tail)
 	vol = get_volume_units(ml, NULL, &unit);
 	decimals = (vol > 20.0) ? 0 : (vol > 2.0) ? 1 : 2;
 
-	return QString("%1 %2 %3").arg(vol, 0, 'f', decimals).arg(unit).arg(tail);
+	return QString("%L1 %2 %3").arg(vol, 0, 'f', decimals).arg(unit).arg(tail);
 }
 
 static QVariant gas_wp_tooltip(cylinder_t *cyl);
@@ -126,7 +126,7 @@ static QVariant percent_string(fraction_t fraction)
 
 	if (!permille)
 		return QVariant();
-	return QString("%1%").arg(permille / 10.0, 0, 'f', 1);
+	return QString("%L1%").arg(permille / 10.0, 0, 'f', 1);
 }
 
 QVariant CylindersModel::data(const QModelIndex &index, int role) const

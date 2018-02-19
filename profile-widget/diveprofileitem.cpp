@@ -260,11 +260,9 @@ void DiveProfileItem::settingsChanged()
 
 void DiveProfileItem::plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color)
 {
-	int decimals;
-	double d = get_depth_units(entry->depth, &decimals, NULL);
 	DiveTextItem *item = new DiveTextItem(this);
 	item->setPos(hAxis->posAtValue(entry->sec), vAxis->posAtValue(entry->depth));
-	item->setText(QString("%1").arg(d, 0, 'f', 1));
+	item->setText(get_depth_string(entry->depth, true));
 	item->setAlignment(flags);
 	item->setBrush(color);
 	texts.append(item);
@@ -670,15 +668,12 @@ void DiveMeanDepthItem::createTextItem() {
 	int sec = entry[dataModel->rowCount()-1].sec;
 	qDeleteAll(texts);
 	texts.clear();
-	int decimals;
-	const char *unitText;
-	double d = get_depth_units(lrint(lastRunningSum), &decimals, &unitText);
 	DiveTextItem *text = new DiveTextItem(this);
 	text->setAlignment(Qt::AlignRight | Qt::AlignTop);
 	text->setBrush(getColor(TEMP_TEXT));
 	text->setPos(QPointF(hAxis->posAtValue(sec) + 1, vAxis->posAtValue(lastRunningSum)));
 	text->setScale(0.8); // need to call this BEFORE setText()
-	text->setText(QString("%1%2").arg(d, 0, 'f', 1).arg(unitText));
+	text->setText(get_depth_string(lrint(lastRunningSum), true));
 	texts.append(text);
 }
 
