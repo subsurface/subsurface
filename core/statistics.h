@@ -33,7 +33,7 @@ typedef struct
 	temperature_sum_t combined_temp;
 	unsigned int combined_count;
 	unsigned int selection_size;
-	unsigned int total_sac_time;
+	duration_t total_sac_time;
 	bool is_year;
 	bool is_trip;
 	char *location;
