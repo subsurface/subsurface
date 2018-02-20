@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=smtk2ssrf
+GenericName=SmartTrak log importer
+Exec=smtk2ssrf
+Icon=subsurface-icon
+Terminal=false
+Categories=Utility;
+Keywords=scuba;divelog;divecomputer;dive;
