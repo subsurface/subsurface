@@ -223,14 +223,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			if (dp->depth.mm != lastprintdepth) {
 				if (plan_display_transitions || dp->entered || !dp->next || (gaschange_after && dp->next && dp->depth.mm != nextdp->depth.mm)) {
 					if (dp->setpoint) {
-						snprintf(temp, sz_temp, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
+						snprintf(temp, sz_temp, translate("gettextFromC", "%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
+							 dp->depth.mm < lastprintdepth ? translate("gettextFromC", "Ascend") : translate("gettextFromC", "Descend"),
 							 decimals, depthvalue, depth_unit,
 							 FRACTION(dp->time - lasttime, 60),
 							 FRACTION(dp->time, 60),
 							 gasname(&gasmix),
 							 (double) dp->setpoint / 1000.0);
 					} else {
-						snprintf(temp, sz_temp, translate("gettextFromC", "Transition to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
+						snprintf(temp, sz_temp, translate("gettextFromC", "%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
+							 dp->depth.mm < lastprintdepth ? translate("gettextFromC", "Ascend") : translate("gettextFromC", "Descend"),
 							 decimals, depthvalue, depth_unit,
 							 FRACTION(dp->time - lasttime, 60),
 							 FRACTION(dp->time, 60),
