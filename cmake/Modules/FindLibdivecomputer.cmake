@@ -14,7 +14,9 @@ IF ( LIBDIVECOMPUTER_INCLUDE_DIR AND LIBDIVECOMPUTER_LIBRARIES )
 ENDIF ( LIBDIVECOMPUTER_INCLUDE_DIR AND LIBDIVECOMPUTER_LIBRARIES )
 
 FIND_PATH( LIBDIVECOMPUTER_INCLUDE_DIR
-NAMES libdivecomputer/hw.h
+NAMES
+    libdivecomputer/device.h
+    libdivecomputer/descriptor.h
 HINTS
     ${CMAKE_CURRENT_SOURCE_DIR}/../install-root/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../libdivecomputer/include/
