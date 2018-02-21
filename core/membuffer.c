@@ -52,7 +52,7 @@ static void oom(void)
 	exit(1);
 }
 
-static void make_room(struct membuffer *b, unsigned int size)
+void make_room(struct membuffer *b, unsigned int size)
 {
 	unsigned int needed = b->len + size;
 	if (needed > b->alloc) {
@@ -138,6 +138,15 @@ void put_format(struct membuffer *b, const char *fmt, ...)
 
 	va_start(args, fmt);
 	put_vformat(b, fmt, args);
+	va_end(args);
+}
+
+void put_format_loc(struct membuffer *b, const char *fmt, ...)
+{
+	va_list args;
+
+	va_start(args, fmt);
+	put_vformat_loc(b, fmt, args);
 	va_end(args);
 }
 

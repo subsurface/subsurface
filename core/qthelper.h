@@ -6,7 +6,13 @@
 #include "dive.h"
 #include "divelist.h"
 
-// 1) Types
+// 1) Types and macros
+
+#ifdef __GNUC__
+#define __printf(x, y) __attribute__((__format__(__printf__, x, y)))
+#else
+#define __printf(x, y)
+#endif
 
 enum inertgas {N2, HE};
 
@@ -47,6 +53,9 @@ void init_proxy();
 QString getUUID();
 QStringList imageExtensionFilters();
 char *intdup(int index);
+__printf(1, 2) QString asprintf_loc(const char *cformat, ...);
+__printf(1, 0) QString vasprintf_loc(const char *cformat, va_list ap);
+
 #endif
 
 // 3) Functions visible to C and C++
@@ -81,10 +90,11 @@ void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 void print_qt_versions();
 void lock_planner();
 void unlock_planner();
+__printf(3, 4) int snprintf_loc(char *dst, size_t size, const char *cformat, ...);
+__printf(3, 0) int vsnprintf_loc(char *dst, size_t size, const char *cformat, va_list ap);
 
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif // QTHELPER_H
