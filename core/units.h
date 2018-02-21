@@ -105,7 +105,7 @@ typedef struct
 
 typedef struct
 {
-	uint32_t mkelvin; // up to 1750 degrees K (temperatures in K are always positive)
+	uint32_t mkelvin; // up to 4 MdegK (temperatures in K are always positive)
 } temperature_t;
 
 typedef struct
