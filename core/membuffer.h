@@ -22,6 +22,7 @@ struct membuffer {
 
 extern char *detach_buffer(struct membuffer *b);
 extern void free_buffer(struct membuffer *);
+extern void make_room(struct membuffer *b, unsigned int size);
 extern void flush_buffer(struct membuffer *, FILE *);
 extern void put_bytes(struct membuffer *, const char *, int);
 extern void put_string(struct membuffer *, const char *);
@@ -29,7 +30,9 @@ extern void put_quoted(struct membuffer *, const char *, int, int);
 extern void strip_mb(struct membuffer *);
 extern const char *mb_cstring(struct membuffer *);
 extern __printf(2, 0) void put_vformat(struct membuffer *, const char *, va_list);
+extern __printf(2, 0) void put_vformat_loc(struct membuffer *, const char *, va_list);
 extern __printf(2, 3) void put_format(struct membuffer *, const char *fmt, ...);
+extern __printf(2, 3) void put_format_loc(struct membuffer *, const char *fmt, ...);
 extern __printf(2, 0) char *add_to_string_va(const char *old, const char *fmt, va_list args);
 extern __printf(2, 3) char *add_to_string(const char *old, const char *fmt, ...);
 
