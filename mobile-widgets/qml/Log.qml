@@ -10,15 +10,13 @@ import org.kde.kirigami 2.2 as Kirigami
 
 Kirigami.ScrollablePage {
 	id: logWindow
-	width: parent.width - Kirigami.Units.gridUnit
-	anchors.margins: Kirigami.Units.gridUnit / 2
+	width: subsurfaceTheme.columnWidth
 	objectName: "Log"
 	title: qsTr("Application Log")
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
 	ListView {
 		anchors.fill: parent
-		anchors.topMargin: Kirigami.Units.gridUnit * 2
 		model: logModel
 		currentIndex: -1
 		boundsBehavior: Flickable.StopAtBounds
@@ -32,6 +30,7 @@ Kirigami.ScrollablePage {
 			color: Kirigami.Theme.textColor
 			text : message
 			font.pointSize: subsurfaceTheme.smallPointSize
+			leftPadding: Kirigami.Units.gridUnit / 2
 		}
 	}
 }
