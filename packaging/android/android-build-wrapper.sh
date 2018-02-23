@@ -22,7 +22,7 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 # these are the current versions for Qt, Android SDK & NDK:
 
 QT_VERSION=5.9
-LATEST_QT=5.9.1
+LATEST_QT=5.9.3
 NDK_VERSION=r14b
 SDK_VERSION=3859397  # if you change this version, you'll likely have to change the android-sdk-license key fallback below
 
