@@ -1600,7 +1600,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	avg_depth /= stop->sec - start->sec;
 	avg_speed /= stop->sec - start->sec;
 
-	snprintf_loc(buf, bufsize, translate("gettextFromC", "%sT: %d:%02d min"), UTF8_DELTA, delta_time / 60, delta_time % 60);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%sT:%d:%02dmin"), UTF8_DELTA, delta_time / 60, delta_time % 60);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
@@ -1635,7 +1635,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	if (bar_used) {
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sP:%d%s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
 		cylinder_t *cyl = displayed_dive.cylinder + 0;
 		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
 		if (!crossed_tankchange && cyl->type.size.mliter) {
@@ -1660,7 +1660,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			int sac = lrint(volume_used / atm * 60 / delta_time);
 			memcpy(buf2, buf, bufsize);
 			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
-			snprintf_loc(buf, bufsize, translate("gettextFromC", "%s SAC: %.*f%s"), buf2, volume_precision, volume_value, volume_unit);
+			snprintf_loc(buf, bufsize, translate("gettextFromC", "%s SAC:%.*f%s/min"), buf2, volume_precision, volume_value, volume_unit);
 		}
 	}
 
