@@ -540,7 +540,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	/* For trimix OC dives, if an icd table header and icd data were printed to buffer, then add the ICD table here */
-	if (!icdtableheader) {
+	if (!icdtableheader && prefs.show_icd) {
 		icdlen += snprintf(icdbuffer + icdlen, sz_icdbuf - icdlen,"</tbody></table>"); // End the ICD table
 		len += snprintf(buffer + len, sz_buffer - len, "%s", icdbuffer); // ..and add it to the html buffer
 		if (icdwarning) { // If necessary, add warning
