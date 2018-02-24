@@ -1374,7 +1374,7 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 	const char *unit;
 
 	depthvalue = get_depth_units(entry->depth, NULL, &depth_unit);
-	put_format(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
+	put_format_loc(b, translate("gettextFromC", "@: %d:%02d\nD: %.1f%s\n"), FRACTION(entry->sec, 60), depthvalue, depth_unit);
 	for (cyl = 0; cyl < MAX_CYLINDERS; cyl++) {
 		struct gasmix *mix;
 		int mbar = GET_PRESSURE(entry, cyl);
@@ -1382,31 +1382,31 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 			continue;
 		mix = &displayed_dive.cylinder[cyl].gasmix;
 		pressurevalue = get_pressure_units(mbar, &pressure_unit);
-		put_format(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
+		put_format_loc(b, translate("gettextFromC", "P: %d%s (%s)\n"), pressurevalue, pressure_unit, gasname(mix));
 	}
 	if (entry->temperature) {
 		tempvalue = get_temp_units(entry->temperature, &temp_unit);
-		put_format(b, translate("gettextFromC", "T: %.1f%s\n"), tempvalue, temp_unit);
+		put_format_loc(b, translate("gettextFromC", "T: %.1f%s\n"), tempvalue, temp_unit);
 	}
 	speedvalue = get_vertical_speed_units(abs(entry->speed), NULL, &vertical_speed_unit);
 	/* Ascending speeds are positive, descending are negative */
 	if (entry->speed > 0)
 		speedvalue *= -1;
-	put_format(b, translate("gettextFromC", "V: %.1f%s\n"), speedvalue, vertical_speed_unit);
+	put_format_loc(b, translate("gettextFromC", "V: %.1f%s\n"), speedvalue, vertical_speed_unit);
 	sacvalue = get_volume_units(entry->sac, &decimals, &unit);
 	if (entry->sac && prefs.show_sac)
-		put_format(b, translate("gettextFromC", "SAC: %.*f%s/min\n"), decimals, sacvalue, unit);
+		put_format_loc(b, translate("gettextFromC", "SAC: %.*f%s/min\n"), decimals, sacvalue, unit);
 	if (entry->cns)
-		put_format(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
+		put_format_loc(b, translate("gettextFromC", "CNS: %u%%\n"), entry->cns);
 	if (prefs.pp_graphs.po2 && entry->pressures.o2 > 0)
-		put_format(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.o2);
+		put_format_loc(b, translate("gettextFromC", "pO%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.o2);
 	if (prefs.pp_graphs.pn2 && entry->pressures.n2 > 0)
-		put_format(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.n2);
+		put_format_loc(b, translate("gettextFromC", "pN%s: %.2fbar\n"), UTF8_SUBSCRIPT_2, entry->pressures.n2);
 	if (prefs.pp_graphs.phe && entry->pressures.he > 0)
-		put_format(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
+		put_format_loc(b, translate("gettextFromC", "pHe: %.2fbar\n"), entry->pressures.he);
 	if (prefs.mod && entry->mod > 0) {
 		mod = lrint(get_depth_units(lrint(entry->mod), NULL, &depth_unit));
-		put_format(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
+		put_format_loc(b, translate("gettextFromC", "MOD: %d%s\n"), mod, depth_unit);
 	}
 	eadd = lrint(get_depth_units(lrint(entry->eadd), NULL, &depth_unit));
 
@@ -1415,18 +1415,18 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		case NITROX:
 			if (entry->ead > 0) {
 				ead = lrint(get_depth_units(lrint(entry->ead), NULL, &depth_unit));
-				put_format(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), ead, depth_unit, eadd, depth_unit, entry->density);
+				put_format_loc(b, translate("gettextFromC", "EAD: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), ead, depth_unit, eadd, depth_unit, entry->density);
 				break;
 			}
 		case TRIMIX:
 			if (entry->end > 0) {
 				end = lrint(get_depth_units(lrint(entry->end), NULL, &depth_unit));
-				put_format(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), end, depth_unit, eadd, depth_unit, entry->density);
+				put_format_loc(b, translate("gettextFromC", "END: %d%s\nEADD: %d%s / %.1fg/ℓ\n"), end, depth_unit, eadd, depth_unit, entry->density);
 				break;
 			}
 		case AIR:
 			if (entry->density > 0) {
-				put_format(b, translate("gettextFromC", "Density: %.1fg/ℓ\n"), entry->density);
+				put_format_loc(b, translate("gettextFromC", "Density: %.1fg/ℓ\n"), entry->density);
 			}
 		case FREEDIVING:
 			/* nothing */
@@ -1438,31 +1438,31 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		if (entry->ndl > 0) {
 			/* this is a safety stop as we still have ndl */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC", "Safety stop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
-					   depthvalue, depth_unit);
+				put_format_loc(b, translate("gettextFromC", "Safety stop: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
+					       depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Safety stop: unknown time @ %.0f%s\n"),
-					   depthvalue, depth_unit);
+				put_format_loc(b, translate("gettextFromC", "Safety stop: unknown time @ %.0f%s\n"),
+					       depthvalue, depth_unit);
 		} else {
 			/* actual deco stop */
 			if (entry->stoptime)
-				put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
-					   depthvalue, depth_unit);
+				put_format_loc(b, translate("gettextFromC", "Deco: %umin @ %.0f%s\n"), DIV_UP(entry->stoptime, 60),
+					       depthvalue, depth_unit);
 			else
-				put_format(b, translate("gettextFromC", "Deco: unknown time @ %.0f%s\n"),
-					   depthvalue, depth_unit);
+				put_format_loc(b, translate("gettextFromC", "Deco: unknown time @ %.0f%s\n"),
+					       depthvalue, depth_unit);
 		}
 	} else if (entry->in_deco) {
 		put_string(b, translate("gettextFromC", "In deco\n"));
 	} else if (entry->ndl >= 0) {
-		put_format(b, translate("gettextFromC", "NDL: %umin\n"), DIV_UP(entry->ndl, 60));
+		put_format_loc(b, translate("gettextFromC", "NDL: %umin\n"), DIV_UP(entry->ndl, 60));
 	}
 	if (entry->tts)
-		put_format(b, translate("gettextFromC", "TTS: %umin\n"), DIV_UP(entry->tts, 60));
+		put_format_loc(b, translate("gettextFromC", "TTS: %umin\n"), DIV_UP(entry->tts, 60));
 	if (entry->stopdepth_calc && entry->stoptime_calc) {
 		depthvalue = get_depth_units(entry->stopdepth_calc, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC", "Deco: %umin @ %.0f%s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),
-			   depthvalue, depth_unit);
+		put_format_loc(b, translate("gettextFromC", "Deco: %umin @ %.0f%s (calc)\n"), DIV_UP(entry->stoptime_calc, 60),
+				  depthvalue, depth_unit);
 	} else if (entry->in_deco_calc) {
 		/* This means that we have no NDL left,
 		 * and we have no deco stop,
@@ -1472,38 +1472,38 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 		put_string(b, translate("gettextFromC", "In deco (calc)\n"));
 	} else if (prefs.calcndltts && entry->ndl_calc != 0) {
 		if(entry->ndl_calc < MAX_PROFILE_DECO)
-			put_format(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
+			put_format_loc(b, translate("gettextFromC", "NDL: %umin (calc)\n"), DIV_UP(entry->ndl_calc, 60));
 		else
-			put_format(b, "%s", translate("gettextFromC", "NDL: >2h (calc)\n"));
+			put_string(b, translate("gettextFromC", "NDL: >2h (calc)\n"));
 	}
 	if (entry->tts_calc) {
 		if (entry->tts_calc < MAX_PROFILE_DECO)
-			put_format(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
+			put_format_loc(b, translate("gettextFromC", "TTS: %umin (calc)\n"), DIV_UP(entry->tts_calc, 60));
 		else
-			put_format(b, "%s", translate("gettextFromC", "TTS: >2h (calc)\n"));
+			put_string(b, translate("gettextFromC", "TTS: >2h (calc)\n"));
 	}
 	if (entry->rbt)
-		put_format(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
+		put_format_loc(b, translate("gettextFromC", "RBT: %umin\n"), DIV_UP(entry->rbt, 60));
 	if (entry->ceiling) {
 		depthvalue = get_depth_units(entry->ceiling, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
+		put_format_loc(b, translate("gettextFromC", "Calculated ceiling %.0f%s\n"), depthvalue, depth_unit);
 		if (prefs.calcalltissues) {
 			int k;
 			for (k = 0; k < 16; k++) {
 				if (entry->ceilings[k]) {
 					depthvalue = get_depth_units(entry->ceilings[k], NULL, &depth_unit);
-					put_format(b, translate("gettextFromC", "Tissue %.0fmin: %.1f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
+					put_format_loc(b, translate("gettextFromC", "Tissue %.0fmin: %.1f%s\n"), buehlmann_N2_t_halflife[k], depthvalue, depth_unit);
 				}
 			}
 		}
 	}
 	if (entry->heartbeat && prefs.hrgraph)
-		put_format(b, translate("gettextFromC", "heart rate: %d\n"), entry->heartbeat);
+		put_format_loc(b, translate("gettextFromC", "heart rate: %d\n"), entry->heartbeat);
 	if (entry->bearing >= 0)
-		put_format(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
+		put_format_loc(b, translate("gettextFromC", "bearing: %d\n"), entry->bearing);
 	if (entry->running_sum) {
 		depthvalue = get_depth_units(entry->running_sum / entry->sec, NULL, &depth_unit);
-		put_format(b, translate("gettextFromC", "mean depth to here %.1f%s\n"), depthvalue, depth_unit);
+		put_format_loc(b, translate("gettextFromC", "mean depth to here %.1f%s\n"), depthvalue, depth_unit);
 	}
 
 	strip_mb(b);
@@ -1600,42 +1600,42 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 	avg_depth /= stop->sec - start->sec;
 	avg_speed /= stop->sec - start->sec;
 
-	snprintf(buf, bufsize, translate("gettextFromC", "%sT: %d:%02d min"), UTF8_DELTA, delta_time / 60, delta_time % 60);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%sT: %d:%02d min"), UTF8_DELTA, delta_time / 60, delta_time % 60);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(delta_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DELTA, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(min_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_DOWNWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(max_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s"), buf2, UTF8_UPWARDS_ARROW, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	depthvalue = get_depth_units(avg_depth, NULL, &depth_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sD:%.1f%s\n"), buf2, UTF8_AVERAGE, depthvalue, depth_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(max_desc_speed), NULL, &vertical_speed_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s%sV:%.2f%s"), buf2, UTF8_DOWNWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(max_asc_speed), NULL, &vertical_speed_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_UPWARDS_ARROW, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	speedvalue = get_vertical_speed_units(abs(avg_speed), NULL, &vertical_speed_unit);
-	snprintf(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_AVERAGE, speedvalue, vertical_speed_unit);
+	snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sV:%.2f%s"), buf2, UTF8_AVERAGE, speedvalue, vertical_speed_unit);
 	memcpy(buf2, buf, bufsize);
 
 	/* Only print if gas has been used */
 	if (bar_used) {
 		pressurevalue = get_pressure_units(bar_used, &pressure_unit);
 		memcpy(buf2, buf, bufsize);
-		snprintf(buf, bufsize, translate("gettextFromC", "%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
+		snprintf_loc(buf, bufsize, translate("gettextFromC", "%s %sP:%d %s"), buf2, UTF8_DELTA, pressurevalue, pressure_unit);
 		cylinder_t *cyl = displayed_dive.cylinder + 0;
 		/* if we didn't cross a tank change and know the cylidner size as well, show SAC rate */
 		if (!crossed_tankchange && cyl->type.size.mliter) {
@@ -1660,7 +1660,7 @@ void compare_samples(struct plot_data *e1, struct plot_data *e2, char *buf, int 
 			int sac = lrint(volume_used / atm * 60 / delta_time);
 			memcpy(buf2, buf, bufsize);
 			volume_value = get_volume_units(sac, &volume_precision, &volume_unit);
-			snprintf(buf, bufsize, translate("gettextFromC", "%s SAC: %.*f%s"), buf2, volume_precision, volume_value, volume_unit);
+			snprintf_loc(buf, bufsize, translate("gettextFromC", "%s SAC: %.*f%s"), buf2, volume_precision, volume_value, volume_unit);
 		}
 	}
 
