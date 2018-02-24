@@ -16,8 +16,8 @@
 #include <QAndroidJniEnvironment>
 #endif
 
-void saveBtDeviceInfo(const char* devaddr, QBluetoothDeviceInfo deviceInfo);
-QBluetoothDeviceInfo getBtDeviceInfo(const char* devaddr);
+void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
+QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
 
 class BTDiscovery : public QObject {
 	Q_OBJECT

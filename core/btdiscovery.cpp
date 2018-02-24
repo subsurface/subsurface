@@ -169,7 +169,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 	// On mobile (iOS) the current ConnectionListModel does not support
 	// additional data, so just save all discovered devices.
 
-	saveBtDeviceInfo(btDeviceAddress(&device, false).toUtf8().constData(), device);
+	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
 #endif
 
 	btDeviceDiscoveredMain(this_d);
@@ -287,12 +287,12 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 
 QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
 
-void saveBtDeviceInfo(const char* devaddr, QBluetoothDeviceInfo deviceInfo)
+void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)
 {
 	btDeviceInfo[devaddr] = deviceInfo;
 }
 
-QBluetoothDeviceInfo getBtDeviceInfo(const char* devaddr)
+QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 {
 	if (btDeviceInfo.contains(devaddr))
 		return btDeviceInfo[devaddr];

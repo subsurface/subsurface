@@ -298,7 +298,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	qputenv("QT_DEFAULT_CENTRAL_SERVICES", "1");
 
 #if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
-	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(devaddr);
+	QBluetoothDeviceInfo remoteDevice = getBtDeviceInfo(QString(devaddr));
 	QLowEnergyController *controller = QLowEnergyController::createCentral(remoteDevice);
 #else
 	// this is deprecated but given that we don't use Qt to scan for
