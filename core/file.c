@@ -13,7 +13,7 @@
 #include "divelist.h"
 #include "file.h"
 #include "git-access.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "import-csv.h"
 
 /* For SAMPLE_* */

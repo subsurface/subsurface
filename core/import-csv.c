@@ -9,7 +9,7 @@
 #include "divelist.h"
 #include "gettext.h"
 #include "import-csv.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 
 #define MATCH(buffer, pattern) \
 	memcmp(buffer, pattern, strlen(pattern))

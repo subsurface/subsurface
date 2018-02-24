@@ -44,7 +44,7 @@
 #include "divelist.h"
 #include "display.h"
 #include "planner.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "git-access.h"
 
 static bool dive_list_changed = false;

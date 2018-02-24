@@ -49,6 +49,4 @@ signals:
 	void pluginObjectChanged();
 };
 
-extern "C" const char *printGPSCoords(int lat, int lon);
-
 #endif

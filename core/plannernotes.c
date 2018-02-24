@@ -15,7 +15,7 @@
 #include "planner.h"
 #include "gettext.h"
 #include "libdivecomputer/parser.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "version.h"
 
 int diveplan_duration(struct diveplan *diveplan)

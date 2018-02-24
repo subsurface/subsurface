@@ -137,7 +137,6 @@ HEADERS += \
     ../../../core/save-html.h \
     ../../../core/statistics.h \
     ../../../core/units.h \
-    ../../../core/qthelperfromc.h \
     ../../../core/version.h \
     ../../../core/planner.h \
     ../../../core/divesite.h \

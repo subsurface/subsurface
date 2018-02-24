@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "gettext.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "git-access.h"
 #include "libdivecomputer/version.h"
 
