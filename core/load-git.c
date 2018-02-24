@@ -24,7 +24,7 @@
 #include "device.h"
 #include "membuffer.h"
 #include "git-access.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 
 const char *saved_git_id = NULL;
 
@@ -172,9 +172,6 @@ static int get_index(const char *line)
 
 static int get_hex(const char *line)
 { return strtoul(line, NULL, 16); }
-
-/* this is in qthelper.cpp, so including the .h file is a pain */
-extern const char *printGPSCoords(int lat, int lon);
 
 static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {

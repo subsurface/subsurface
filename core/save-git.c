@@ -22,7 +22,7 @@
 #include "membuffer.h"
 #include "git-access.h"
 #include "version.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "gettext.h"
 
 #define VA_BUF(b, fmt) do { va_list args; va_start(args, fmt); put_vformat(b, fmt, args); va_end(args); } while (0)

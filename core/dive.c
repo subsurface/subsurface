@@ -10,7 +10,7 @@
 #include "libdivecomputer.h"
 #include "device.h"
 #include "divelist.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it

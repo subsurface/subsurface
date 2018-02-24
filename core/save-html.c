@@ -5,7 +5,7 @@
 #endif
 
 #include "save-html.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "gettext.h"
 #include "stdio.h"
 

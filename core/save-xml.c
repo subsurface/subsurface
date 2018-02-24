@@ -19,7 +19,7 @@
 #include "membuffer.h"
 #include "strndup.h"
 #include "git-access.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 
 /*
  * We're outputting utf8 in xml.

@@ -22,7 +22,7 @@
 #include "dive.h"
 #include <assert.h>
 #include "core/planner.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 
 #define cube(x) (x * x * x)
 
@@ -31,8 +31,6 @@
 // was introduced in v4.6.3 this can be set to a value of 1.0 which means no correction.
 #define subsurface_conservatism_factor 1.0
 
-
-extern bool in_planner();
 extern int plot_depth;
 
 //! Option structure for Buehlmann decompression.

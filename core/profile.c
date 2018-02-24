@@ -17,7 +17,7 @@
 #include "libdivecomputer/parser.h"
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 
 //#define DEBUG_GAS 1
 
@@ -29,8 +29,6 @@ unsigned int dc_number = 0;
 
 static struct plot_data *last_pi_entry_new = NULL;
 void populate_pressure_information(struct dive *, struct divecomputer *, struct plot_info *, int);
-
-extern bool in_planner();
 
 #ifdef DEBUG_PI
 /* debugging tool - not normally used */

@@ -19,7 +19,7 @@
 #include "dive.h"
 #include "membuffer.h"
 #include "strndup.h"
-#include "qthelperfromc.h"
+#include "qthelper.h"
 #include "git-access.h"
 #include "gettext.h"
 

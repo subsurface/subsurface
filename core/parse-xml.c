@@ -1102,9 +1102,6 @@ static void gps_location(char *buffer, struct dive_site *ds)
 	ds->longitude = parse_degrees(end, &end);
 }
 
-/* this is in qthelper.cpp, so including the .h file is a pain */
-extern const char *printGPSCoords(int lat, int lon);
-
 static void gps_in_dive(char *buffer, struct dive *dive)
 {
 	char *end;
