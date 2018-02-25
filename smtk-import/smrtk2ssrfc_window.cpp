@@ -92,7 +92,7 @@ void Smrtk2ssrfcWindow::on_importButton_clicked()
 		ui->plainTextEdit->appendPlainText(error_buf);
 	}
 	ui->progressBar->setValue(inputFiles.size());
-	save_dives_logic(outputFile.toUtf8().data(), false);
+	save_dives_logic(qPrintable(outputFile), false);
 	ui->progressBar->setDisabled(true);
 }
 

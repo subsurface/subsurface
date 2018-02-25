@@ -1082,7 +1082,7 @@ void MainTab::on_buddy_textChanged()
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 
-	if (same_string(displayed_dive.buddy, ui.buddy->toPlainText().toUtf8().data()))
+	if (same_string(displayed_dive.buddy, qPrintable(ui.buddy->toPlainText())))
 		return;
 
 	QStringList text_list = ui.buddy->toPlainText().split(",", QString::SkipEmptyParts);
@@ -1090,7 +1090,7 @@ void MainTab::on_buddy_textChanged()
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
 	free(displayed_dive.buddy);
-	displayed_dive.buddy = strdup(text.toUtf8().data());
+	displayed_dive.buddy = strdup(qPrintable(text));
 	markChangedWidget(ui.buddy);
 }
 
@@ -1099,7 +1099,7 @@ void MainTab::on_divemaster_textChanged()
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 
-	if (same_string(displayed_dive.divemaster, ui.divemaster->toPlainText().toUtf8().data()))
+	if (same_string(displayed_dive.divemaster, qPrintable(ui.divemaster->toPlainText())))
 		return;
 
 	QStringList text_list = ui.divemaster->toPlainText().split(",", QString::SkipEmptyParts);
@@ -1107,7 +1107,7 @@ void MainTab::on_divemaster_textChanged()
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
 	free(displayed_dive.divemaster);
-	displayed_dive.divemaster = strdup(text.toUtf8().data());
+	displayed_dive.divemaster = strdup(qPrintable(text));
 	markChangedWidget(ui.divemaster);
 }
 
@@ -1241,7 +1241,7 @@ void MainTab::saveTags()
 	taglist_free(displayed_dive.tag_list);
 	displayed_dive.tag_list = NULL;
 	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
-		taglist_add_tag(&displayed_dive.tag_list, tag.toUtf8().data());
+		taglist_add_tag(&displayed_dive.tag_list, qPrintable(tag));
 	taglist_cleanup(&displayed_dive.tag_list);
 
 	// figure out which tags were added and which tags were removed
@@ -1352,7 +1352,7 @@ void MainTab::on_tagWidget_textChanged()
 		return;
 
 	taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
-	if (same_string(buf, ui.tagWidget->toPlainText().toUtf8().data()))
+	if (same_string(buf, qPrintable(ui.tagWidget->toPlainText())))
 		return;
 
 	markChangedWidget(ui.tagWidget);
@@ -1407,7 +1407,7 @@ void MainTab::on_suit_textChanged(const QString &text)
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	free(displayed_dive.suit);
-	displayed_dive.suit = strdup(text.toUtf8().data());
+	displayed_dive.suit = strdup(qPrintable(text));
 	markChangedWidget(ui.suit);
 }
 
@@ -1416,18 +1416,18 @@ void MainTab::on_notes_textChanged()
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	if (currentTrip) {
-		if (same_string(displayedTrip.notes, ui.notes->toPlainText().toUtf8().data()))
+		if (same_string(displayedTrip.notes, qPrintable(ui.notes->toPlainText())))
 			return;
 		free(displayedTrip.notes);
-		displayedTrip.notes = strdup(ui.notes->toPlainText().toUtf8().data());
+		displayedTrip.notes = strdup(qPrintable(ui.notes->toPlainText()));
 	} else {
-		if (same_string(displayed_dive.notes, ui.notes->toPlainText().toUtf8().data()))
+		if (same_string(displayed_dive.notes, qPrintable(ui.notes->toPlainText())))
 			return;
 		free(displayed_dive.notes);
 		if (ui.notes->toHtml().indexOf("<table") != -1)
-			displayed_dive.notes = strdup(ui.notes->toHtml().toUtf8().data());
+			displayed_dive.notes = strdup(qPrintable(ui.notes->toHtml()));
 		else
-			displayed_dive.notes = strdup(ui.notes->toPlainText().toUtf8().data());
+			displayed_dive.notes = strdup(qPrintable(ui.notes->toPlainText()));
 	}
 	markChangedWidget(ui.notes);
 }

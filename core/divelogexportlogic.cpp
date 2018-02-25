@@ -143,7 +143,7 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 
 	exportHTMLsettings(json_settings, hes);
 	exportHTMLstatistics(stat_file, hes);
-	export_translation(translation.toUtf8().data());
+	export_translation(qPrintable(translation));
 
 	export_HTML(qPrintable(json_dive_data), qPrintable(photosDirectory), hes.selectedOnly, hes.listOnly);
 

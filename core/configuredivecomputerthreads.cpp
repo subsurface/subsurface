@@ -293,7 +293,7 @@ static dc_status_t write_suunto_vyper_settings(dc_device_t *device, DeviceDetail
 
 	rc = dc_device_write(device, SUUNTO_VYPER_CUSTOM_TEXT,
 			     // Convert the customText to a 30 char wide padded with " "
-			     (const unsigned char *)QString("%1").arg(m_deviceDetails->customText, -30, QChar(' ')).toUtf8().data(),
+			     (const unsigned char *)qPrintable(QString("%1").arg(m_deviceDetails->customText, -30, QChar(' '))),
 			     SUUNTO_VYPER_CUSTOM_TEXT_LENGTH);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
@@ -812,7 +812,7 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write general settings
 	//custom text
-	rc = hw_ostc3_device_customtext(device, m_deviceDetails->customText.toUtf8().data());
+	rc = hw_ostc3_device_customtext(device, qPrintable(m_deviceDetails->customText));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	EMIT_PROGRESS();
@@ -1356,7 +1356,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	//write general settings
 	//custom text
-	rc = hw_ostc3_device_customtext(device, m_deviceDetails->customText.toUtf8().data());
+	rc = hw_ostc3_device_customtext(device, qPrintable(m_deviceDetails->customText));
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 
@@ -1891,7 +1891,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	} else {
 		data[64] = 1;
 		// Copy the string to the right place in the memory, padded with 0x20 (" ")
-		strncpy((char *)data + 65, QString("%1").arg(m_deviceDetails->customText, -23, QChar(' ')).toUtf8().data(), 23);
+		strncpy((char *)data + 65, qPrintable(QString("%1").arg(m_deviceDetails->customText, -23, QChar(' '))), 23);
 		// And terminate the string.
 		if (m_deviceDetails->customText.length() <= 23)
 			data[65 + m_deviceDetails->customText.length()] = '}';
@@ -2227,10 +2227,10 @@ void FirmwareUpdateThread::run()
 	switch (dc_device_get_type(m_data->device)) {
 #if DC_VERSION_CHECK(0, 5, 0)
 	case DC_FAMILY_HW_OSTC3:
-		rc = hw_ostc3_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName));
 		break;
 	case DC_FAMILY_HW_OSTC:
-		rc = hw_ostc_device_fwupdate(m_data->device, m_fileName.toUtf8().data());
+		rc = hw_ostc_device_fwupdate(m_data->device, qPrintable(m_fileName));
 		break;
 #endif // divecomputer 0.5.0
 	default:

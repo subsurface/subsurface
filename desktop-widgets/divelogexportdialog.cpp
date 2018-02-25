@@ -154,7 +154,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 			filename = QFileDialog::getSaveFileName(this, tr("Export world map"), lastDir,
 								tr("HTML files") + " (*.html)");
 			if (!filename.isNull() && !filename.isEmpty())
-				export_worldmap_HTML(filename.toUtf8().data(), ui->exportSelected->isChecked());
+				export_worldmap_HTML(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportSubsurfaceXML->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export Subsurface XML"), lastDir,
 								tr("Subsurface files") + " (*.ssrf *.xml)");
@@ -167,11 +167,11 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
 			if (!filename.isNull() && !filename.isEmpty())
-				export_depths(filename.toUtf8().data(), ui->exportSelected->isChecked());
+				export_depths(qPrintable(filename), ui->exportSelected->isChecked());
 		} else if (ui->exportTeX->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Export to TeX file"), lastDir, tr("TeX files") + " (*.tex)");
 			if (!filename.isNull() && !filename.isEmpty())
-				export_TeX(filename.toUtf8().data(), ui->exportSelected->isChecked());
+				export_TeX(qPrintable(filename), ui->exportSelected->isChecked());
 		}
 		break;
 	case 1:
@@ -226,7 +226,7 @@ void DiveLogExportDialog::export_depths(const char *filename, const bool selecte
 
 	f = subsurface_fopen(filename, "w+");
 	if (!f) {
-		report_error(tr("Can't open file %s").toUtf8().data(), filename);
+		report_error(qPrintable(tr("Can't open file %s")), filename);
 	} else {
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);
@@ -325,7 +325,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		site ? put_format(&buf, "\\def\\gpslat{%f}\n", site->latitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslat{}\n");
 		site ? put_format(&buf, "\\def\\gpslon{%f}\n", site->longitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
 		put_format(&buf, "\\def\\computer{%s}\n", dive->dc.model);
-		put_format(&buf, "\\def\\country{%s}\n", country.toUtf8().data());
+		put_format(&buf, "\\def\\country{%s}\n", qPrintable(country));
 		put_format(&buf, "\\def\\time{%u:%02u}\n", FRACTION(dive->duration.seconds, 60));
 
 		put_format(&buf, "\n%% Dive Profile Details:\n");
@@ -337,8 +337,8 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		dive->meandepth.mm ? put_format(&buf, "\\def\\meandepth{%.1f\\depthunit}\n", get_depth_units(dive->meandepth.mm, NULL, &unit)) : put_format(&buf, "\\def\\meandepth{}\n");
 
 		put_format(&buf, "\\def\\type{%s}\n", dive->tag_list ? dive->tag_list->tag->name : "");
-		put_format(&buf, "\\def\\viz{%s}\n", viz.toUtf8().data());
-		put_format(&buf, "\\def\\rating{%s}\n", rating.toUtf8().data());
+		put_format(&buf, "\\def\\viz{%s}\n", qPrintable(viz));
+		put_format(&buf, "\\def\\rating{%s}\n", qPrintable(rating));
 		put_format(&buf, "\\def\\plot{\\includegraphics[width=9cm,height=4cm]{profile%d}}\n", dive->number);
 		put_format(&buf, "\\def\\comment{%s}\n", dive->notes ? dive->notes : "");
 		put_format(&buf, "\\def\\buddy{%s}\n", dive->buddy ? dive->buddy : "");
@@ -408,7 +408,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 
 	f = subsurface_fopen(filename, "w+");
 	if (!f) {
-		report_error(tr("Can't open file %s").toUtf8().data(), filename);
+		report_error(qPrintable(tr("Can't open file %s")), filename);
 	} else {
 		flush_buffer(&buf, f); /*check for writing errors? */
 		fclose(f);

@@ -324,7 +324,7 @@ void TankUseDelegate::setEditorData(QWidget * editor, const QModelIndex & index)
 {
 	QComboBox *comboBox = qobject_cast<QComboBox*>(editor);
 	QString indexString = index.data().toString();
-	comboBox->setCurrentIndex(cylinderuse_from_text(indexString.toUtf8().data()));
+	comboBox->setCurrentIndex(cylinderuse_from_text(qPrintable(indexString)));
 }
 
 void TankUseDelegate::setModelData(QWidget * editor, QAbstractItemModel * model, const QModelIndex & index) const

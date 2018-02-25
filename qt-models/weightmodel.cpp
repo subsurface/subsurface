@@ -114,14 +114,14 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 					}
 				}
 				if (ws_info[i].name == NULL) // didn't find a match
-					ws->description = strdup(vString.toUtf8().constData());
+					ws->description = strdup(qPrintable(vString));
 				changed = true;
 			}
 		}
 		break;
 	case WEIGHT:
 		if (CHANGED()) {
-			ws->weight = string_to_weight(vString.toUtf8().data());
+			ws->weight = string_to_weight(qPrintable(vString));
 			// now update the ws_info
 			changed = true;
 			WSInfoModel *wsim = WSInfoModel::instance();

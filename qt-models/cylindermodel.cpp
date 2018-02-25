@@ -320,7 +320,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			TankInfoModel *tanks = TankInfoModel::instance();
 			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
 
-			cyl->type.size = string_to_volume(vString.toUtf8().data(), cyl->type.workingpressure);
+			cyl->type.size = string_to_volume(qPrintable(vString), cyl->type.workingpressure);
 			mark_divelist_changed(true);
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::ML), cyl->type.size.mliter);
@@ -331,7 +331,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (CHANGED()) {
 			TankInfoModel *tanks = TankInfoModel::instance();
 			QModelIndexList matches = tanks->match(tanks->index(0, 0), Qt::DisplayRole, cyl->type.description);
-			cyl->type.workingpressure = string_to_pressure(vString.toUtf8().data());
+			cyl->type.workingpressure = string_to_pressure(qPrintable(vString));
 			if (!matches.isEmpty())
 				tanks->setData(tanks->index(matches.first().row(), TankInfoModel::BAR), cyl->type.workingpressure.mbar / 1000.0);
 			changed = true;
@@ -339,20 +339,20 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case START:
 		if (CHANGED()) {
-			cyl->start = string_to_pressure(vString.toUtf8().data());
+			cyl->start = string_to_pressure(qPrintable(vString));
 			changed = true;
 		}
 		break;
 	case END:
 		if (CHANGED()) {
-			//&& (!cyl->start.mbar || string_to_pressure(vString.toUtf8().data()).mbar <= cyl->start.mbar)) {
-			cyl->end = string_to_pressure(vString.toUtf8().data());
+			//&& (!cyl->start.mbar || string_to_pressure(qPrintable(vString)).mbar <= cyl->start.mbar)) {
+			cyl->end = string_to_pressure(qPrintable(vString));
 			changed = true;
 		}
 		break;
 	case O2:
 		if (CHANGED()) {
-			cyl->gasmix.o2 = string_to_fraction(vString.toUtf8().data());
+			cyl->gasmix.o2 = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(&cyl->gasmix) + get_he(&cyl->gasmix) > 1000)
 				cyl->gasmix.he.permille = 1000 - get_o2(&cyl->gasmix);
@@ -369,7 +369,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case HE:
 		if (CHANGED()) {
-			cyl->gasmix.he = string_to_fraction(vString.toUtf8().data());
+			cyl->gasmix.he = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
 			if (get_o2(&cyl->gasmix) + get_he(&cyl->gasmix) > 1000)
 				cyl->gasmix.o2.permille = 1000 - get_he(&cyl->gasmix);
@@ -379,20 +379,20 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case DEPTH:
 		if (CHANGED()) {
-			cyl->depth = string_to_depth(vString.toUtf8().data());
+			cyl->depth = string_to_depth(qPrintable(vString));
 			changed = true;
 		}
 		break;
 	case MOD:
 		if (CHANGED()) {
-			if (QString::compare(vString.toUtf8().data(), "*") == 0) {
+			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl->bestmix_o2 = true;
 				// Calculate fO2 for max. depth
 				cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
 			} else {
 				cyl->bestmix_o2 = false;
 				// Calculate fO2 for input depth
-				cyl->gasmix.o2 = best_o2(string_to_depth(vString.toUtf8().data()), &displayed_dive);
+				cyl->gasmix.o2 = best_o2(string_to_depth(qPrintable(vString)), &displayed_dive);
 			}
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
@@ -402,14 +402,14 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		break;
 	case MND:
 		if (CHANGED()) {
-			if (QString::compare(vString.toUtf8().data(), "*") == 0) {
+			if (QString::compare(qPrintable(vString), "*") == 0) {
 				cyl->bestmix_he = true;
 				// Calculate fO2 for max. depth
 				cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive);
 			} else {
 				cyl->bestmix_he = false;
 				// Calculate fHe for input depth
-				cyl->gasmix.he = best_he(string_to_depth(vString.toUtf8().data()), &displayed_dive);
+				cyl->gasmix.he = best_he(string_to_depth(qPrintable(vString)), &displayed_dive);
 			}
 			changed = true;
 		}

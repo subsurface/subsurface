@@ -161,7 +161,7 @@ void DivePictureModel::removePicture(const QString &fileUrl, bool last)
 	int i;
 	struct dive *dive;
 	for_each_dive (i, dive) {
-		if (dive->selected && dive_remove_picture(dive, fileUrl.toUtf8().data()))
+		if (dive->selected && dive_remove_picture(dive, qPrintable(fileUrl)))
 			break;
 	}
 	if (last) {

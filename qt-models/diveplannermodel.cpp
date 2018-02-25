@@ -160,7 +160,7 @@ void DivePlannerPointsModel::setupCylinders()
 	}
 	if (cylinder_none(&displayed_dive.cylinder[0])) {
 		// roughly an AL80
-		displayed_dive.cylinder[0].type.description = strdup(tr("unknown").toUtf8().constData());
+		displayed_dive.cylinder[0].type.description = strdup(qPrintable(tr("unknown")));
 		displayed_dive.cylinder[0].type.size.mliter = 11100;
 		displayed_dive.cylinder[0].type.workingpressure.mbar = 207000;
 	}
@@ -1063,9 +1063,9 @@ void DivePlannerPointsModel::computeVariations(struct diveplan *original_plan, s
 		restore_deco_state(save, &ds, false);
 
 		char buf[200];
-		sprintf(buf, ", %s: + %d:%02d /%s + %d:%02d /min", tr("Stop times").toUtf8().data(),
-			FRACTION(analyzeVariations(shallower, original, deeper, depth_units.toUtf8().data()), 60), depth_units.toUtf8().data(),
-			FRACTION(analyzeVariations(shorter, original, longer, time_units.toUtf8().data()), 60));
+		sprintf(buf, ", %s: + %d:%02d /%s + %d:%02d /min", qPrintable(tr("Stop times")),
+			FRACTION(analyzeVariations(shallower, original, deeper, qPrintable(depth_units)), 60), qPrintable(depth_units),
+			FRACTION(analyzeVariations(shorter, original, longer, qPrintable(time_units)), 60));
 
 		emit variationsComputed(QString(buf));
 #ifdef DEBUG_STOPVAR
@@ -1123,7 +1123,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		// Deal with line breaks
 		oldnotes.replace("\n", "<br>");
 		oldnotes.append(displayed_dive.notes);
-		displayed_dive.notes = strdup(oldnotes.toUtf8().data());
+		displayed_dive.notes = strdup(qPrintable(oldnotes));
 		// If we save as new create a copy of the dive here
 		if (replanCopy) {
 			struct dive *copy = alloc_dive();

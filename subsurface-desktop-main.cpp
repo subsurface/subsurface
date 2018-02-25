@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 		if (a.isEmpty())
 			continue;
 		if (a.at(0) == '-') {
-			parse_argument(a.toLocal8Bit().data());
+			parse_argument(qPrintable(a));
 			continue;
 		}
 		if (imported) {
@@ -142,7 +142,7 @@ void validateGL()
 	if (!quickBackend.isEmpty()) {
 		if (verbose) {
 			qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "'QT_QUICK_BACKEND' is set to '%1'. "
-				"Skipping validation.").arg(quickBackend).toUtf8().data();
+				"Skipping validation.").arg(quickBackend);
 		}
 		return;
 	}
@@ -160,7 +160,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "created OpenGLContext.").toUtf8().data();
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "created OpenGLContext.");
 	ctx.makeCurrent(&surface);
 	func = ctx.functions();
 	if (!func) {
@@ -168,7 +168,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.").toUtf8().data();
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "obtained QOpenGLFunctions.");
 	// detect version for legacy profiles
 	verChar = (const char *)func->glGetString(GL_VERSION);
 	if (verChar) {
@@ -178,7 +178,7 @@ void validateGL()
 			 "Attempting to run with the available profile!\n"
 			 "If this fails try manually setting the environment variable\n"
 			 "'QT_QUICK_BACKEND' with the value of 'software'\n"
-			 "before running Subsurface!\n").toUtf8().data();
+			 "before running Subsurface!\n");
 			 return;
 		}
 		int min, maj;
@@ -197,7 +197,7 @@ void validateGL()
 		goto exit;
 	}
 	if (verbose)
-		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "detected OpenGL version %1.%2.").arg(verMajor).arg(verMinor).toUtf8().data();
+		qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "detected OpenGL version %1.%2.").arg(verMajor).arg(verMinor);
 	if (verMajor * 10 + verMinor < 21) { // set 2.1 as the minimal version
 		glError = "OpenGL 2.1 or later is required";
 		goto exit;
@@ -211,10 +211,10 @@ exit:
 		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "ERROR: %1.\n"
 			"Cannot automatically fallback to a software renderer!\n"
 			"Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
-			"before running Subsurface!\n").arg(glError).toUtf8().data();
+			"before running Subsurface!\n").arg(glError);
 		exit(0);
 #else
-		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError).toUtf8().data();
+		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError);
 		QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Software);
 #endif
 	}
