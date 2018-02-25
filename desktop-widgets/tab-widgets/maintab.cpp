@@ -1018,15 +1018,6 @@ void MainTab::resetPallete()
 	ui.depth->setPalette(p);
 }
 
-#define EDIT_TEXT2(what, text)         \
-	textByteArray = text.toUtf8(); \
-	free(what);                    \
-	what = strdup(textByteArray.data());
-
-#define FREE_IF_DIFFERENT(what)              \
-	if (displayed_dive.what != cd->what) \
-		free(displayed_dive.what)
-
 void MainTab::rejectChanges()
 {
 	EditMode lastMode = editMode;
@@ -1074,7 +1065,6 @@ void MainTab::rejectChanges()
 	weightModel->updateDive();
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
-#undef EDIT_TEXT2
 
 void MainTab::markChangedWidget(QWidget *w)
 {
