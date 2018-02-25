@@ -788,10 +788,10 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 	params[pnr++] = intdup(ui->CSVUnits->currentIndex());
 	if (hw.length()) {
 		params[pnr++] = strdup("hw");
-		params[pnr++] = strdup(hw.toUtf8().data());
+		params[pnr++] = strdup(qPrintable(hw));
 	} else if (ui->knownImports->currentText().length() > 0) {
 		params[pnr++] = strdup("hw");
-		params[pnr++] = strdup(ui->knownImports->currentText().prepend("\"").append("\"").toUtf8().data());
+		params[pnr++] = strdup(qPrintable(ui->knownImports->currentText().prepend("\"").append("\"")));
 	}
 	params[pnr++] = NULL;
 
@@ -850,7 +850,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
 
-				parse_seabear_log(fileNames[i].toUtf8().data());
+				parse_seabear_log(qPrintable(fileNames[i]));
 
 			} else {
 				char *params[49];
@@ -866,8 +866,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					params[pnr++] = strdup("1" + apdRe.cap(2).toLatin1());
 				}
 				pnr = setup_csv_params(r, params, pnr);
-				parse_csv_file(fileNames[i].toUtf8().data(), params, pnr - 1,
-						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv");
+				parse_csv_file(qPrintable(fileNames[i]), params, pnr - 1,
+						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv");
 			}
 		}
 	} else {
@@ -927,7 +927,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = intdup(r.indexOf(tr("Water temp.")));
 				params[pnr++] = NULL;
 
-				parse_manual_file(fileNames[i].toUtf8().data(), params, pnr - 1);
+				parse_manual_file(qPrintable(fileNames[i]), params, pnr - 1);
 			} else {
 				char *params[51];
 				int pnr = 0;
@@ -942,8 +942,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 					params[pnr++] = strdup("1" + apdRe.cap(2).toLatin1());
 				}
 				pnr = setup_csv_params(r, params, pnr);
-				parse_csv_file(fileNames[i].toUtf8().data(), params, pnr - 1,
-						specialCSV.contains(ui->knownImports->currentIndex()) ? CSVApps[ui->knownImports->currentIndex()].name.toUtf8().data() : "csv");
+				parse_csv_file(qPrintable(fileNames[i]), params, pnr - 1,
+						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv");
 			}
 		}
 	}

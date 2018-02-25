@@ -250,7 +250,7 @@ void TemplateLayout::writeTemplate(QString template_name, QString grantlee_templ
 {
 	QFile qfile(getPrintingTemplatePathUser() + QDir::separator() + template_name);
 	if (qfile.open(QFile::ReadWrite | QFile::Text)) {
-		qfile.write(grantlee_template.toUtf8().data());
+		qfile.write(qPrintable(grantlee_template));
 		qfile.resize(qfile.pos());
 		qfile.close();
 	}

@@ -94,12 +94,12 @@ extern "C" const char *printGPSCoords(int lat, int lon)
 		latsec = (latmin % 1000000) * 60;
 		lonsec = (lonmin % 1000000) * 60;
 		result.sprintf("%u%s%02d\'%06.3f\"%s %u%s%02d\'%06.3f\"%s",
-			       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, lath.toUtf8().data(),
-			       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, lonh.toUtf8().data());
+			       latdeg, UTF8_DEGREE, latmin / 1000000, latsec / 1000000, qPrintable(lath),
+			       londeg, UTF8_DEGREE, lonmin / 1000000, lonsec / 1000000, qPrintable(lonh));
 	} else {
 		result.sprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
 	}
-	return strdup(result.toUtf8().data());
+	return strdup(qPrintable(result));
 }
 
 /**
@@ -354,7 +354,7 @@ extern "C" timestamp_t picture_get_timestamp(const char *filename)
 	int retval;
 
 	// filename might not be the actual filename, so let's go via the hash.
-	if (readfile(localFilePath(QString(filename)).toUtf8().data(), &mem) <= 0)
+	if (readfile(qPrintable(localFilePath(QString(filename))), &mem) <= 0)
 		return 0;
 	retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
 	free(mem.buffer);
@@ -998,7 +998,7 @@ QString get_short_dive_date_string(timestamp_t when)
 const char *get_dive_date_c_string(timestamp_t when)
 {
 	QString text = get_dive_date_string(when);
-	return strdup(text.toUtf8().data());
+	return strdup(qPrintable(text));
 }
 
 extern "C" const char *get_current_date()
@@ -1008,7 +1008,7 @@ extern "C" const char *get_current_date()
 
 	current_date = loc.toString(ts, QString(prefs.date_format_short));
 
-	return strdup(current_date.toUtf8().data());
+	return strdup(qPrintable(current_date));
 }
 
 bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
@@ -1066,7 +1066,7 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 		QJsonObject address = obj.value("address").toObject();
 		qDebug() << "found country:" << address.value("country").toString();
 		struct dive_site *ds = get_dive_site_by_uuid(uuid);
-		ds->notes = add_to_string(ds->notes, "countrytag: %s", address.value("country").toString().toUtf8().data());
+		ds->notes = add_to_string(ds->notes, "countrytag: %s", qPrintable(address.value("country").toString()));
 	}
 }
 
@@ -1098,7 +1098,7 @@ const QString hashfile_name()
 
 extern "C" char *hashfile_name_string()
 {
-	return strdup(hashfile_name().toUtf8().data());
+	return strdup(qPrintable(hashfile_name()));
 }
 
 void read_hashes()
@@ -1266,7 +1266,7 @@ const QString picturedir()
 
 extern "C" char *picturedir_string()
 {
-	return strdup(picturedir().toUtf8().data());
+	return strdup(qPrintable(picturedir()));
 }
 
 /* when we get a picture from git storage (local or remote) and can't find the picture
@@ -1293,7 +1293,7 @@ extern "C" void picture_load_exif_data(struct picture *p)
 	easyexif::EXIFInfo exif;
 	memblock mem;
 
-	if (readfile(localFilePath(QString(p->filename)).toUtf8().data(), &mem) <= 0)
+	if (readfile(qPrintable(localFilePath(QString(p->filename))), &mem) <= 0)
 		goto picture_load_exit;
 	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
 		goto picture_load_exit;
@@ -1458,7 +1458,7 @@ extern "C" char *cloud_url()
 {
 	QString filename;
 	getCloudURL(filename);
-	return strdup(filename.toUtf8().data());
+	return strdup(qPrintable(filename));
 }
 
 extern "C" bool getProxyString(char **buffer)
@@ -1558,7 +1558,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//DIVE NR: ")) {
 			params[pnr++] = strdup("diveNro");
-			params[pnr++] = strdup(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1("")).toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1(""))));
 			break;
 		}
 	}
@@ -1573,7 +1573,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Hardware Version: ")) {
 			params[pnr++] = strdup("hw");
-			params[pnr++] = strdup(parseLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\"").toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\"")));
 			break;
 		}
 	}
@@ -1586,7 +1586,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Log interval: ")) {
 			params[pnr++] = strdup("delta");
-			params[pnr++] = strdup(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s")).toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"))));
 			break;
 		}
 	}
@@ -1601,7 +1601,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//Mode: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("diveMode");
-			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1614,7 +1614,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//Firmware Version: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("Firmware");
-			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1623,7 +1623,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//Serial number: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("Serial");
-			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1632,7 +1632,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//GF: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("GF");
-			params[pnr++] = strdup(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"").toUtf8().data());
+			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
 		}
 	}
 	f.seek(0);
@@ -1735,7 +1735,7 @@ extern "C" void cache_insert(int tissue, int timestep, enum inertgas inertgas, d
 
 extern "C" void print_qt_versions()
 {
-	printf("%s\n", QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion()).toUtf8().data());
+	printf("%s\n", qPrintable(QStringLiteral("built with Qt Version %1, runtime from Qt Version %2").arg(QT_VERSION_STR).arg(qVersion())));
 }
 
 QMutex planLock;

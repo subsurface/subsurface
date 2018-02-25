@@ -158,7 +158,7 @@ void LocationInformationWidget::acceptChanges()
 {
 	char *uiString;
 	struct dive_site *currentDs;
-	uiString = copy_string(ui.diveSiteName->text().toUtf8().data());
+	uiString = copy_string(qPrintable(ui.diveSiteName->text()));
 	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL) {
 		currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
 	} else {
@@ -175,14 +175,14 @@ void LocationInformationWidget::acceptChanges()
 	} else {
 		free(uiString);
 	}
-	uiString = copy_string(ui.diveSiteDescription->text().toUtf8().data());
+	uiString = copy_string(qPrintable(ui.diveSiteDescription->text()));
 	if (!same_string(uiString, currentDs->description)) {
 		free(currentDs->description);
 		currentDs->description = uiString;
 	} else {
 		free(uiString);
 	}
-	uiString = copy_string(ui.diveSiteCountry->text().toUtf8().data());
+	uiString = copy_string(qPrintable(ui.diveSiteCountry->text()));
 	// if the user entered a different contriy, first update the taxonomy
 	// for the displayed dive site; this below will get copied into the currentDs
 	if (!same_string(uiString, taxonomy_get_country(&displayed_dive_site.taxonomy)) &&
@@ -193,7 +193,7 @@ void LocationInformationWidget::acceptChanges()
 	// now update the currentDs (which we then later copy back ontop of displayed_dive_site
 	copy_dive_site_taxonomy(&displayed_dive_site, currentDs);
 
-	uiString = copy_string(ui.diveSiteNotes->document()->toPlainText().toUtf8().data());
+	uiString = copy_string(qPrintable(ui.diveSiteNotes->document()->toPlainText()));
 	if (!same_string(uiString, currentDs->notes)) {
 		free(currentDs->notes);
 		currentDs->notes = uiString;

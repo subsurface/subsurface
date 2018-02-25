@@ -334,7 +334,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 		return DC_STATUS_IO;
 	default:
 		qDebug() << "failed to connect to the controller " << devaddr << "with error" << controller->errorString();
-		report_error("Failed to connect to %s: '%s'", devaddr, controller->errorString().toUtf8().data());
+		report_error("Failed to connect to %s: '%s'", devaddr, qPrintable(controller->errorString()));
 		delete controller;
 		return DC_STATUS_IO;
 	}

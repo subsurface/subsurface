@@ -52,7 +52,7 @@ static const char *system_default_path_append(const char *append)
 	if (append)
 		path += QString("/%1").arg(append);
 
-	return strdup(path.toUtf8().data());
+	return strdup(qPrintable(path));
 }
 
 const char *system_default_directory(void)

@@ -1582,7 +1582,7 @@ void ProfileWidget2::changeGas()
 			gasChangeEvent = gasChangeEvent->next;
 		}
 	}
-	validate_gas(gas.toUtf8().constData(), &gasmix);
+	validate_gas(qPrintable(gas), &gasmix);
 	QRegExp rx("\\(\\D*(\\d+)");
 	int tank;
 	if (rx.indexIn(action->text()) > -1) {
@@ -1667,8 +1667,8 @@ void ProfileWidget2::editName()
 		// order is important! first update the current dive (by matching the unchanged event),
 		// then update the displayed dive (as event is part of the events on displayed dive
 		// and will be freed as part of changing the name!
-		update_event_name(current_dive, event, newName.toUtf8().data());
-		update_event_name(&displayed_dive, event, newName.toUtf8().data());
+		update_event_name(current_dive, event, qPrintable(newName));
+		update_event_name(&displayed_dive, event, qPrintable(newName));
 		invalidate_dive_cache(current_dive);
 		mark_divelist_changed(true);
 		replot();

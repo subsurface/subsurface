@@ -335,7 +335,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 			bool d_eq_f = (qDialogUid == qFileUid);
 			if (!d_eq_f || s_eq_d)
 				s.setValue("subsurface_webservice_uid", qDialogUid);
-			set_userid(qDialogUid.toLocal8Bit().data());
+			set_userid(qPrintable(qDialogUid));
 		}
 		s.sync();
 		hide();

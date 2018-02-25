@@ -60,11 +60,11 @@
 	else                                                             \
 		prefs.field = defval
 
-#define GET_TXT(name, field)                                             \
-	v = s.value(QString(name));                                      \
-	if (v.isValid())                                                 \
-		prefs.field = strdup(v.toString().toUtf8().constData()); \
-	else                                                             \
+#define GET_TXT(name, field)                                    \
+	v = s.value(QString(name));                             \
+	if (v.isValid())                                        \
+		prefs.field = strdup(qPrintable(v.toString())); \
+	else                                                    \
 		prefs.field = copy_string(default_prefs.field)
 
 #define SAVE_OR_REMOVE_SPECIAL(_setting, _default, _compare, _value)     \

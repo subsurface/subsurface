@@ -1914,9 +1914,9 @@ void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
 	s.beginGroup(group);
 	s.setValue("divelist_font", value);
 
-	if (!subsurface_ignore_font(newValue.toUtf8().constData())) {
+	if (!subsurface_ignore_font(qPrintable(newValue))) {
 		free((void *)prefs.divelist_font);
-		prefs.divelist_font = strdup(newValue.toUtf8().constData());
+		prefs.divelist_font = strdup(qPrintable(newValue));
 		qApp->setFont(QFont(newValue));
 	}
 	emit divelistFontChanged(newValue);
@@ -2265,11 +2265,11 @@ void SettingsObjectWrapper::load()
 	QString fontName = defaultFont.toString();
 	if (fontName.contains(","))
 		fontName = fontName.left(fontName.indexOf(","));
-	if (subsurface_ignore_font(fontName.toUtf8().constData())) {
+	if (subsurface_ignore_font(qPrintable(fontName))) {
 		defaultFont = QFont(prefs.divelist_font);
 	} else {
 		free((void *)prefs.divelist_font);
-		prefs.divelist_font = strdup(fontName.toUtf8().constData());
+		prefs.divelist_font = strdup(qPrintable(fontName));
 	}
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);

@@ -319,7 +319,7 @@ void ShiftImageTimesDialog::syncCameraClicked()
 	scene->addPixmap(picture.scaled(ui.DCImage->size()));
 	ui.DCImage->setScene(scene);
 
-	dcImageEpoch = picture_get_timestamp(fileNames.at(0).toUtf8().data());
+	dcImageEpoch = picture_get_timestamp(qPrintable(fileNames.at(0)));
 	QDateTime dcDateTime = QDateTime::fromTime_t(dcImageEpoch, Qt::UTC);
 	ui.dcTime->setDateTime(dcDateTime);
 	connect(ui.dcTime, SIGNAL(dateTimeChanged(const QDateTime &)), this, SLOT(dcDateTimeChanged(const QDateTime &)));
@@ -393,11 +393,11 @@ void ShiftImageTimesDialog::updateInvalid()
 	ui.invalidFilesText->append(tr("\nFiles with inappropriate date/time") + ":");
 
 	Q_FOREACH (const QString &fileName, fileNames) {
-		if (picture_check_valid(fileName.toUtf8().data(), m_amount))
+		if (picture_check_valid(qPrintable(fileName), m_amount))
 			continue;
 
 		// We've found invalid image
-		timestamp = picture_get_timestamp(fileName.toUtf8().data());
+		timestamp = picture_get_timestamp(qPrintable(fileName));
 		time_first.setTime_t(timestamp + m_amount);
 		if (timestamp == 0)
 			ui.invalidFilesText->append(fileName + " - " + tr("No Exif date/time found"));

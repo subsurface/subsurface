@@ -57,11 +57,11 @@ const DiveComputerNode *DiveComputerList::get(const QString &m)
 void DiveComputerNode::showchanges(const QString &n, const QString &s, const QString &f) const
 {
 	if (nickName != n)
-		qDebug("new nickname %s for DC model %s deviceId 0x%x", n.toUtf8().data(), model.toUtf8().data(), deviceId);
+		qDebug("new nickname %s for DC model %s deviceId 0x%x", qPrintable(n), qPrintable(model), deviceId);
 	if (serialNumber != s)
-		qDebug("new serial number %s for DC model %s deviceId 0x%x", s.toUtf8().data(), model.toUtf8().data(), deviceId);
+		qDebug("new serial number %s for DC model %s deviceId 0x%x", qPrintable(s), qPrintable(model), deviceId);
 	if (firmware != f)
-		qDebug("new firmware version %s for DC model %s deviceId 0x%x", f.toUtf8().data(), model.toUtf8().data(), deviceId);
+		qDebug("new firmware version %s for DC model %s deviceId 0x%x", qPrintable(f), qPrintable(model), deviceId);
 }
 
 void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QString f)
@@ -132,8 +132,8 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 			found = true;
 		}
 		if (found)
-			callback(f, node->model.toUtf8().data(), node->deviceId, node->nickName.toUtf8().data(),
-				 node->serialNumber.toUtf8().data(), node->firmware.toUtf8().data());
+			callback(f, qPrintable(node->model), node->deviceId, qPrintable(node->nickName),
+				 qPrintable(node->serialNumber), qPrintable(node->firmware));
 	}
 }
 

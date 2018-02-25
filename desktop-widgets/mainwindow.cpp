@@ -623,12 +623,12 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 		information()->acceptChanges();
 
 	showProgressBar();
-	int error = save_dives(filename.toUtf8().data());
+	int error = save_dives(qPrintable(filename));
 	hideProgressBar();
 	if (error)
 		return;
 
-	setCurrentFile(filename.toUtf8().data());
+	setCurrentFile(qPrintable(filename));
 	mark_divelist_changed(false);
 }
 
@@ -935,7 +935,7 @@ void MainWindow::updateVariations(QString variations)
 {
 	QString notes = QString(displayed_dive.notes);
 	free(displayed_dive.notes);
-	displayed_dive.notes = strdup(notes.replace("VARIATIONS", variations).toUtf8().data());
+	displayed_dive.notes = strdup(qPrintable(notes.replace("VARIATIONS", variations)));
 	plannerDetails()->divePlanOutput()->setHtml(displayed_dive.notes);
 }
 
@@ -1683,10 +1683,10 @@ int MainWindow::file_save_as(void)
 	if (information()->isEditing())
 		information()->acceptChanges();
 
-	if (save_dives(filename.toUtf8().data()))
+	if (save_dives(qPrintable(filename)))
 		return -1;
 
-	setCurrentFile(filename.toUtf8().data());
+	setCurrentFile(qPrintable(filename));
 	mark_divelist_changed(false);
 	addRecentFile(filename, true);
 	return 0;

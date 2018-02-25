@@ -42,7 +42,7 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	beginInsertRows(QModelIndex(), rowCount(), rowCount());
 	m_data.append({message, type});
 	endInsertRows();
-	INFO("%s", message.toUtf8().constData());
+	INFO("%s", qPrintable(message));
 #if defined (Q_OS_ANDROID)
 	writeToAppLogFile(message);
 #endif
