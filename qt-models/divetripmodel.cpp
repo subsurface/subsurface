@@ -369,19 +369,17 @@ QString DiveItem::displayDuration() const
 
 QString DiveItem::displayTemperature() const
 {
-	QString str;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
 	if (!dive->watertemp.mkelvin)
-		return str;
+		return QString();
 	return get_temperature_string(dive->watertemp, false);
 }
 
 QString DiveItem::displayTemperatureWithUnit() const
 {
-	QString str;
 	struct dive *dive = get_dive_by_uniq_id(diveId);
 	if (!dive->watertemp.mkelvin)
-		return str;
+		return QString();
 	return get_temperature_string(dive->watertemp, true);
 }
 
@@ -403,14 +401,12 @@ QString DiveItem::displaySacWithUnit() const
 
 QString DiveItem::displayWeight() const
 {
-	QString str = weight_string(weight());
-	return str;
+	return weight_string(weight());
 }
 
 QString DiveItem::displayWeightWithUnit() const
 {
-	QString str = weight_string(weight()) + ((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
-	return str;
+	return weight_string(weight()) + ((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
 }
 
 int DiveItem::weight() const
