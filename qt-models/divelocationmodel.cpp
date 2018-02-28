@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "core/units.h"
 #include "qt-models/divelocationmodel.h"
-#include "core/dive.h"
+#include "core/qthelper.h"
 #include <QDebug>
 #include <QLineEdit>
 #include <QIcon>
@@ -149,7 +149,7 @@ bool LocationInformationModel::setData(const QModelIndex &index, const QVariant 
 
 	struct dive_site *ds = get_dive_site(index.row());
 	free(ds->name);
-	ds->name = copy_string(qPrintable(value.toString()));
+	ds->name = copy_qstring(value.toString());
 	emit dataChanged(index, index);
 	return true;
 }

@@ -160,7 +160,7 @@ void DivePlannerPointsModel::setupCylinders()
 	}
 	if (cylinder_none(&displayed_dive.cylinder[0])) {
 		// roughly an AL80
-		displayed_dive.cylinder[0].type.description = strdup(qPrintable(tr("unknown")));
+		displayed_dive.cylinder[0].type.description = copy_qstring(tr("unknown"));
 		displayed_dive.cylinder[0].type.size.mliter = 11100;
 		displayed_dive.cylinder[0].type.workingpressure.mbar = 207000;
 	}
@@ -1123,7 +1123,7 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		// Deal with line breaks
 		oldnotes.replace("\n", "<br>");
 		oldnotes.append(displayed_dive.notes);
-		displayed_dive.notes = strdup(qPrintable(oldnotes));
+		displayed_dive.notes = copy_qstring(oldnotes);
 		// If we save as new create a copy of the dive here
 		if (replanCopy) {
 			struct dive *copy = alloc_dive();

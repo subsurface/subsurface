@@ -114,7 +114,7 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 					}
 				}
 				if (ws_info[i].name == NULL) // didn't find a match
-					ws->description = strdup(qPrintable(vString));
+					ws->description = copy_qstring(vString);
 				changed = true;
 			}
 		}

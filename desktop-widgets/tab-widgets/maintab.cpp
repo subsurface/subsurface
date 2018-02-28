@@ -745,7 +745,7 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 		if(createdNewDive) {
 			copy_dive_site(origDs, newDs);
 			free(newDs->name);
-			newDs->name = copy_string(qPrintable(ui.location->text().constData()));
+			newDs->name = copy_qstring(ui.location->text());
 			newDs->uuid = pickedUuid;
 			qDebug() << "Creating and copying dive site";
 		} else if (newDs->latitude.udeg == 0 && newDs->longitude.udeg == 0) {
@@ -1090,7 +1090,7 @@ void MainTab::on_buddy_textChanged()
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
 	free(displayed_dive.buddy);
-	displayed_dive.buddy = strdup(qPrintable(text));
+	displayed_dive.buddy = copy_qstring(text);
 	markChangedWidget(ui.buddy);
 }
 
@@ -1107,7 +1107,7 @@ void MainTab::on_divemaster_textChanged()
 		text_list[i] = text_list[i].trimmed();
 	QString text = text_list.join(", ");
 	free(displayed_dive.divemaster);
-	displayed_dive.divemaster = strdup(qPrintable(text));
+	displayed_dive.divemaster = copy_qstring(text);
 	markChangedWidget(ui.divemaster);
 }
 
@@ -1303,7 +1303,7 @@ void MainTab::saveTaggedStrings()
 			}
 		}
 		free(mydive->buddy);
-		mydive->buddy = copy_string(qPrintable(newString));
+		mydive->buddy = copy_qstring(newString);
 	);
 	addedList.clear();
 	removedList.clear();
@@ -1325,7 +1325,7 @@ void MainTab::saveTaggedStrings()
 			}
 		}
 		free(mydive->divemaster);
-		mydive->divemaster = copy_string(qPrintable(newString));
+		mydive->divemaster = copy_qstring(newString);
 	);
 }
 
@@ -1397,7 +1397,7 @@ void MainTab::on_diveTripLocation_textEdited(const QString& text)
 {
 	if (currentTrip) {
 		free(displayedTrip.location);
-		displayedTrip.location = strdup(qPrintable(text));
+		displayedTrip.location = copy_qstring(text);
 		markChangedWidget(ui.diveTripLocation);
 	}
 }
@@ -1407,7 +1407,7 @@ void MainTab::on_suit_textChanged(const QString &text)
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 	free(displayed_dive.suit);
-	displayed_dive.suit = strdup(qPrintable(text));
+	displayed_dive.suit = copy_qstring(text);
 	markChangedWidget(ui.suit);
 }
 
@@ -1419,15 +1419,15 @@ void MainTab::on_notes_textChanged()
 		if (same_string(displayedTrip.notes, qPrintable(ui.notes->toPlainText())))
 			return;
 		free(displayedTrip.notes);
-		displayedTrip.notes = strdup(qPrintable(ui.notes->toPlainText()));
+		displayedTrip.notes = copy_qstring(ui.notes->toPlainText());
 	} else {
 		if (same_string(displayed_dive.notes, qPrintable(ui.notes->toPlainText())))
 			return;
 		free(displayed_dive.notes);
 		if (ui.notes->toHtml().indexOf("<table") != -1)
-			displayed_dive.notes = strdup(qPrintable(ui.notes->toHtml()));
+			displayed_dive.notes = copy_qstring(ui.notes->toHtml());
 		else
-			displayed_dive.notes = strdup(qPrintable(ui.notes->toPlainText()));
+			displayed_dive.notes = copy_qstring(ui.notes->toPlainText());
 	}
 	markChangedWidget(ui.notes);
 }

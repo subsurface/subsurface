@@ -1,5 +1,6 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
+#include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QDebug>
 #include <QRegularExpression>
@@ -281,12 +282,12 @@ int DCDeviceData::diveId() const
 
 void DCDeviceData::setVendor(const QString& vendor)
 {
-	data.vendor = strdup(qPrintable(vendor));
+	data.vendor = copy_qstring(vendor);
 }
 
 void DCDeviceData::setProduct(const QString& product)
 {
-	data.product = strdup(qPrintable(product));
+	data.product = copy_qstring(product);
 }
 
 void DCDeviceData::setDevName(const QString& devName)
@@ -303,11 +304,11 @@ void DCDeviceData::setDevName(const QString& devName)
 			QString back = devName.mid(idx1 + 1, idx2 - idx1 - 1);
 			QString newDevName = back.indexOf(':') >= 0 ? back : front;
 			qWarning() << "Found invalid bluetooth device" << devName << "corrected to" << newDevName << ".";
-			data.devname = strdup(qPrintable(newDevName));
+			data.devname = copy_qstring(newDevName);
 			return;
 		}
 	}
-	data.devname = strdup(qPrintable(devName));
+	data.devname = copy_qstring(devName);
 }
 
 void DCDeviceData::setDevBluetoothName(const QString& name)

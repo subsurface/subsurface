@@ -935,7 +935,7 @@ void MainWindow::updateVariations(QString variations)
 {
 	QString notes = QString(displayed_dive.notes);
 	free(displayed_dive.notes);
-	displayed_dive.notes = strdup(qPrintable(notes.replace("VARIATIONS", variations)));
+	displayed_dive.notes = copy_qstring(notes.replace("VARIATIONS", variations));
 	plannerDetails()->divePlanOutput()->setHtml(displayed_dive.notes);
 }
 
@@ -1652,7 +1652,7 @@ int MainWindow::file_save_as(void)
 		filename.remove(prefs.cloud_git_url);
 		filename.remove(0, filename.indexOf("[") + 1);
 		filename.replace("]", ".ssrf");
-		default_filename = strdup(qPrintable(filename));
+		default_filename = copy_qstring(filename);
 	}
 	// create a file dialog that allows us to save to a new file
 	QFileDialog selection_dialog(this, tr("Save file as"), default_filename,

@@ -6,7 +6,6 @@
 #include <QDate>
 #include <QNetworkProxy>
 
-#include "core/dive.h" // TODO: remove copy_string from dive.h
 #include "core/helpers.h"
 
 DiveComputerSettings::DiveComputerSettings(QObject *parent):
@@ -48,7 +47,7 @@ void DiveComputerSettings::setVendor(const QString& vendor)
 	s.beginGroup(group);
 	s.setValue("dive_computer_vendor", vendor);
 	free((void *)prefs.dive_computer.vendor);
-	prefs.dive_computer.vendor = copy_string(qPrintable(vendor));
+	prefs.dive_computer.vendor = copy_qstring(vendor);
 }
 
 void DiveComputerSettings::setProduct(const QString& product)
@@ -60,7 +59,7 @@ void DiveComputerSettings::setProduct(const QString& product)
 	s.beginGroup(group);
 	s.setValue("dive_computer_product", product);
 	free((void *)prefs.dive_computer.product);
-	prefs.dive_computer.product = copy_string(qPrintable(product));
+	prefs.dive_computer.product = copy_qstring(product);
 }
 
 void DiveComputerSettings::setDevice(const QString& device)
@@ -72,7 +71,7 @@ void DiveComputerSettings::setDevice(const QString& device)
 	s.beginGroup(group);
 	s.setValue("dive_computer_device", device);
 	free((void *)prefs.dive_computer.device);
-	prefs.dive_computer.device = copy_string(qPrintable(device));
+	prefs.dive_computer.device = copy_qstring(device);
 }
 
 void DiveComputerSettings::setDeviceName(const QString& device_name)
@@ -84,7 +83,7 @@ void DiveComputerSettings::setDeviceName(const QString& device_name)
 	s.beginGroup(group);
 	s.setValue("dive_computer_device_name", device_name);
 	free((void *)prefs.dive_computer.device_name);
-	prefs.dive_computer.device_name = copy_string(qPrintable(device_name));
+	prefs.dive_computer.device_name = copy_qstring(device_name);
 }
 
 void DiveComputerSettings::setDownloadMode(int mode)
@@ -145,7 +144,7 @@ void UpdateManagerSettings::setLastVersionUsed(const QString& value)
 	s.beginGroup(group);
 	s.setValue("LastVersionUsed", value);
 	free((void *)prefs.update_manager.last_version_used);
-	prefs.update_manager.last_version_used = copy_string(qPrintable(value));
+	prefs.update_manager.last_version_used = copy_qstring(value);
 	emit lastVersionUsedChanged(value);
 }
 
@@ -158,7 +157,7 @@ void UpdateManagerSettings::setNextCheck(const QDate& date)
 	s.beginGroup(group);
 	s.setValue("NextCheck", date);
 	free((void *)prefs.update_manager.next_check);
-	prefs.update_manager.next_check = copy_string(qPrintable(date.toString("dd/MM/yyyy")));
+	prefs.update_manager.next_check = copy_qstring(date.toString("dd/MM/yyyy"));
 	emit nextCheckChanged(date);
 }
 
@@ -765,7 +764,7 @@ void FacebookSettings::setAccessToken (const QString& value)
 	s.setValue("ConnectToken", value);
 #endif
 	free((void *)prefs.facebook.access_token);
-	prefs.facebook.access_token = copy_string(qPrintable(value));
+	prefs.facebook.access_token = copy_qstring(value);
 	emit accessTokenChanged(value);
 }
 
@@ -780,7 +779,7 @@ void FacebookSettings::setUserId(const QString& value)
 	s.setValue("UserId", value);
 #endif
 	free((void *)prefs.facebook.user_id);
-	prefs.facebook.user_id = copy_string(qPrintable(value));
+	prefs.facebook.user_id = copy_qstring(value);
 	emit userIdChanged(value);
 }
 
@@ -795,7 +794,7 @@ void FacebookSettings::setAlbumId(const QString& value)
 	s.setValue("AlbumId", value);
 #endif
 	free((void *)prefs.facebook.album_id);
-	prefs.facebook.album_id = copy_string(qPrintable(value));
+	prefs.facebook.album_id = copy_qstring(value);
 	emit albumIdChanged(value);
 }
 
@@ -908,7 +907,7 @@ void ProxySettings::setHost(const QString& value)
 	s.beginGroup(group);
 	s.setValue("proxy_host", value);
 	free((void *)prefs.proxy_host);
-	prefs.proxy_host = copy_string(qPrintable(value));
+	prefs.proxy_host = copy_qstring(value);
 	emit hostChanged(value);
 }
 
@@ -942,7 +941,7 @@ void ProxySettings::setUser(const QString& value)
 	s.beginGroup(group);
 	s.setValue("proxy_user", value);
 	free((void *)prefs.proxy_user);
-	prefs.proxy_user = copy_string(qPrintable(value));
+	prefs.proxy_user = copy_qstring(value);
 	emit userChanged(value);
 }
 
@@ -954,7 +953,7 @@ void ProxySettings::setPass(const QString& value)
 	s.beginGroup(group);
 	s.setValue("proxy_pass", value);
 	free((void *)prefs.proxy_pass);
-	prefs.proxy_pass = copy_string(qPrintable(value));
+	prefs.proxy_pass = copy_qstring(value);
 	emit passChanged(value);
 }
 
@@ -1022,7 +1021,7 @@ void CloudStorageSettings::setPassword(const QString& value)
 	s.beginGroup(group);
 	s.setValue("password", value);
 	free((void *)prefs.cloud_storage_password);
-	prefs.cloud_storage_password = copy_string(qPrintable(value));
+	prefs.cloud_storage_password = copy_qstring(value);
 	emit passwordChanged(value);
 }
 
@@ -1032,7 +1031,7 @@ void CloudStorageSettings::setNewPassword(const QString& value)
 		return;
 	/*TODO: This looks like wrong, but 'new password' is not saved on disk, why it's on prefs? */
 	free((void *)prefs.cloud_storage_newpassword);
-	prefs.cloud_storage_newpassword = copy_string(qPrintable(value));
+	prefs.cloud_storage_newpassword = copy_qstring(value);
 	emit newPasswordChanged(value);
 }
 
@@ -1044,7 +1043,7 @@ void CloudStorageSettings::setEmail(const QString& value)
 	s.beginGroup(group);
 	s.setValue("email", value);
 	free((void *)prefs.cloud_storage_email);
-	prefs.cloud_storage_email = copy_string(qPrintable(value));
+	prefs.cloud_storage_email = copy_qstring(value);
 	emit emailChanged(value);
 }
 
@@ -1056,7 +1055,7 @@ void CloudStorageSettings::setUserId(const QString& value)
 	QSettings s;
 	s.setValue("subsurface_webservice_uid", value);
 	free((void *)prefs.userid);
-	prefs.userid = copy_string(qPrintable(value));
+	prefs.userid = copy_qstring(value);
 	emit userIdChanged(value);
 }
 
@@ -1066,7 +1065,7 @@ void CloudStorageSettings::setEmailEncoded(const QString& value)
 		return;
 	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
 	free((void *)prefs.cloud_storage_email_encoded);
-	prefs.cloud_storage_email_encoded = copy_string(qPrintable(value));
+	prefs.cloud_storage_email_encoded = copy_qstring(value);
 	emit emailEncodedChanged(value);
 }
 
@@ -1119,8 +1118,8 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 	QSettings s;
 	s.beginGroup(group);
 	s.setValue("cloud_base_url", value);
-	prefs.cloud_base_url = copy_string(qPrintable(value));
-	prefs.cloud_git_url = copy_string(qPrintable(QString(prefs.cloud_base_url) + "/git"));
+	prefs.cloud_base_url = copy_qstring(value);
+	prefs.cloud_git_url = copy_qstring(QString(prefs.cloud_base_url) + "/git");
 }
 
 void CloudStorageSettings::setGitUrl(const QString& value)
@@ -1796,7 +1795,7 @@ void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 	s.beginGroup(group);
 	s.setValue("default_filename", value);
 	free((void *)prefs.default_filename);
-	prefs.default_filename = copy_string(qPrintable(value));
+	prefs.default_filename = copy_qstring(value);
 	emit defaultFilenameChanged(value);
 }
 
@@ -1809,7 +1808,7 @@ void GeneralSettingsObjectWrapper::setDefaultCylinder(const QString& value)
 	s.beginGroup(group);
 	s.setValue("default_cylinder", value);
 	free((void *)prefs.default_cylinder);
-	prefs.default_cylinder = copy_string(qPrintable(value));
+	prefs.default_cylinder = copy_qstring(value);
 	emit defaultCylinderChanged(value);
 }
 
@@ -1916,7 +1915,7 @@ void DisplaySettingsObjectWrapper::setDivelistFont(const QString& value)
 
 	if (!subsurface_ignore_font(qPrintable(newValue))) {
 		free((void *)prefs.divelist_font);
-		prefs.divelist_font = strdup(qPrintable(newValue));
+		prefs.divelist_font = copy_qstring(newValue);
 		qApp->setFont(QFont(newValue));
 	}
 	emit divelistFontChanged(newValue);
@@ -2013,7 +2012,7 @@ void  LanguageSettingsObjectWrapper::setLangLocale(const QString &value)
 	s.beginGroup(group);
 	s.setValue("UiLangLocale", value);
 	free((void *)prefs.locale.lang_locale);
-	prefs.locale.lang_locale = copy_string(qPrintable(value));
+	prefs.locale.lang_locale = copy_qstring(value);
 	emit langLocaleChanged(value);
 }
 
@@ -2025,7 +2024,7 @@ void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
 	s.beginGroup(group);
 	s.setValue("UiLanguage", value);
 	free((void *)prefs.locale.language);
-	prefs.locale.language = copy_string(qPrintable(value));
+	prefs.locale.language = copy_qstring(value);
 	emit languageChanged(value);
 }
 
@@ -2037,7 +2036,7 @@ void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
 	s.beginGroup(group);
 	s.setValue("time_format", value);
 	free((void *)prefs.time_format);
-	prefs.time_format = copy_string(qPrintable(value));
+	prefs.time_format = copy_qstring(value);
 	emit timeFormatChanged(value);
 }
 
@@ -2050,7 +2049,7 @@ void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
 	s.beginGroup(group);
 	s.setValue("date_format", value);
 	free((void *)prefs.date_format);
-	prefs.date_format = copy_string(qPrintable(value));
+	prefs.date_format = copy_qstring(value);
 	emit dateFormatChanged(value);
 }
 
@@ -2063,7 +2062,7 @@ void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
 	s.beginGroup(group);
 	s.setValue("date_format_short", value);
 	free((void *)prefs.date_format_short);
-	prefs.date_format_short = copy_string(qPrintable(value));
+	prefs.date_format_short = copy_qstring(value);
 	emit dateFormatShortChanged(value);
 }
 
@@ -2269,7 +2268,7 @@ void SettingsObjectWrapper::load()
 		defaultFont = QFont(prefs.divelist_font);
 	} else {
 		free((void *)prefs.divelist_font);
-		prefs.divelist_font = strdup(qPrintable(fontName));
+		prefs.divelist_font = copy_qstring(fontName);
 	}
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
@@ -2306,7 +2305,7 @@ void SettingsObjectWrapper::load()
 	// creating the git url here is simply a convenience when C code wants
 	// to compare against that git URL - it's always derived from the base URL
 	GET_TXT("cloud_base_url", cloud_base_url);
-	prefs.cloud_git_url = strdup(qPrintable(QString(prefs.cloud_base_url) + "/git"));
+	prefs.cloud_git_url = copy_qstring(QString(prefs.cloud_base_url) + "/git");
 	s.endGroup();
 
 	// Subsurface webservice id is stored outside of the groups
@@ -2368,7 +2367,7 @@ void SettingsObjectWrapper::load()
 	prefs.update_manager.dont_check_exists = s.contains("DontCheckForUpdates");
 	GET_BOOL("DontCheckForUpdates", update_manager.dont_check_for_updates);
 	GET_TXT("LastVersionUsed", update_manager.last_version_used);
-	prefs.update_manager.next_check = copy_string(qPrintable(s.value("NextCheck").toDate().toString("dd/MM/yyyy")));
+	prefs.update_manager.next_check = copy_qstring(s.value("NextCheck").toDate().toString("dd/MM/yyyy"));
 	s.endGroup();
 
 	s.beginGroup("Language");

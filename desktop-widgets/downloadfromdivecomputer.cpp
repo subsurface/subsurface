@@ -297,7 +297,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 #endif
 	if (data->vendor() == "Uemis") {
 		char *colon;
-		char *devname = strdup(qPrintable(ui.device->currentText()));
+		char *devname = copy_qstring(ui.device->currentText());
 
 		if ((colon = strstr(devname, ":\\ (UEMISSDA)")) != NULL) {
 			*(colon + 2) = '\0';
@@ -362,7 +362,7 @@ void DownloadFromDCWidget::pickLogFile()
 					       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {
 		free(logfile_name);
-		logfile_name = copy_string(qPrintable(logFile));
+		logfile_name = copy_qstring(logFile);
 	}
 }
 
@@ -388,7 +388,7 @@ void DownloadFromDCWidget::pickDumpFile()
 						filename, tr("Dump files") + " (*.bin)");
 	if (!dumpFile.isEmpty()) {
 		free(dumpfile_name);
-		dumpfile_name = copy_string(qPrintable(dumpFile));
+		dumpfile_name = copy_qstring(dumpFile);
 	}
 }
 

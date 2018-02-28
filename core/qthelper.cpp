@@ -99,7 +99,7 @@ extern "C" const char *printGPSCoords(int lat, int lon)
 	} else {
 		result.sprintf("%f %f", (double) lat / 1000000.0, (double) lon / 1000000.0);
 	}
-	return strdup(qPrintable(result));
+	return copy_qstring(result);
 }
 
 /**
@@ -387,13 +387,13 @@ extern "C" char *move_away(const char *old_path)
 #endif
 			return strdup("");
 	}
-	return strdup(qPrintable(newPath));
+	return copy_qstring(newPath);
 }
 
 extern "C" char *get_file_name(const char *fileName)
 {
 	QFileInfo fileInfo(fileName);
-	return strdup(fileInfo.fileName().toUtf8());
+	return copy_qstring(fileInfo.fileName());
 }
 
 extern "C" void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName)
@@ -473,7 +473,7 @@ extern "C" const char *subsurface_user_agent()
 {
 	static QString uA = getUserAgent();
 
-	return strdup(qPrintable(uA));
+	return copy_qstring(uA);
 }
 
 /* TOOD: Move this to SettingsObjectWrapper, and also fix this complexity.
@@ -504,7 +504,7 @@ QString uiLanguage(QLocale *callerLoc)
 		uiLang = languages[2];
 	else
 		uiLang = languages[0];
-	prefs.locale.lang_locale = copy_string(qPrintable(uiLang));
+	prefs.locale.lang_locale = copy_qstring(uiLang);
 	GET_BOOL("time_format_override", time_format_override);
 	GET_BOOL("date_format_override", date_format_override);
 	GET_TXT("time_format", time_format);
@@ -540,11 +540,11 @@ QString uiLanguage(QLocale *callerLoc)
 		dateFormat.replace("'en' 'den' d:'e'", " d");
 		if (!prefs.date_format_override || empty_string(prefs.date_format)) {
 			free((void *)prefs.date_format);
-			prefs.date_format = strdup(qPrintable(dateFormat));
+			prefs.date_format = copy_qstring(dateFormat);
 		}
 		if (!prefs.date_format_override || empty_string(prefs.date_format_short)) {
 			free((void *)prefs.date_format_short);
-			prefs.date_format_short = strdup(qPrintable(shortDateFormat));
+			prefs.date_format_short = copy_qstring(shortDateFormat);
 		}
 	}
 	if (!prefs.time_format_override || empty_string(prefs.time_format)) {
@@ -552,7 +552,7 @@ QString uiLanguage(QLocale *callerLoc)
 		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
 		free((void *)prefs.time_format);
-		prefs.time_format = strdup(qPrintable(timeFormat));
+		prefs.time_format = copy_qstring(timeFormat);
 	}
 	return uiLang;
 }
@@ -998,7 +998,7 @@ QString get_short_dive_date_string(timestamp_t when)
 const char *get_dive_date_c_string(timestamp_t when)
 {
 	QString text = get_dive_date_string(when);
-	return strdup(qPrintable(text));
+	return copy_qstring(text);
 }
 
 extern "C" const char *get_current_date()
@@ -1008,7 +1008,7 @@ extern "C" const char *get_current_date()
 
 	current_date = loc.toString(ts, QString(prefs.date_format_short));
 
-	return strdup(qPrintable(current_date));
+	return copy_qstring(current_date);
 }
 
 bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
@@ -1098,7 +1098,7 @@ const QString hashfile_name()
 
 extern "C" char *hashfile_name_string()
 {
-	return strdup(qPrintable(hashfile_name()));
+	return copy_qstring(hashfile_name());
 }
 
 void read_hashes()
@@ -1247,7 +1247,7 @@ void learnImages(const QDir dir, int max_recursions)
 
 extern "C" const char *local_file_path(struct picture *picture)
 {
-	return strdup(qPrintable(localFilePath(picture->filename)));
+	return copy_qstring(localFilePath(picture->filename));
 }
 
 extern "C" bool picture_exists(struct picture *picture)
@@ -1266,7 +1266,7 @@ const QString picturedir()
 
 extern "C" char *picturedir_string()
 {
-	return strdup(qPrintable(picturedir()));
+	return copy_qstring(picturedir());
 }
 
 /* when we get a picture from git storage (local or remote) and can't find the picture
@@ -1446,7 +1446,7 @@ int getCloudURL(QString &filename)
 		return report_error("Please configure Cloud storage email and password in the preferences");
 	if (email != prefs.cloud_storage_email_encoded) {
 		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = strdup(qPrintable(email));
+		prefs.cloud_storage_email_encoded = copy_qstring(email);
 	}
 	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);
 	if (verbose)
@@ -1458,7 +1458,7 @@ extern "C" char *cloud_url()
 {
 	QString filename;
 	getCloudURL(filename);
-	return strdup(qPrintable(filename));
+	return copy_qstring(filename);
 }
 
 extern "C" bool getProxyString(char **buffer)
@@ -1471,7 +1471,7 @@ extern "C" bool getProxyString(char **buffer)
 		else
 			proxy = QString("http://%1:%2").arg(prefs.proxy_host).arg(prefs.proxy_port);
 		if (buffer)
-			*buffer = strdup(qPrintable(proxy));
+			*buffer = copy_qstring(proxy);
 		return true;
 	}
 	return false;
@@ -1558,7 +1558,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//DIVE NR: ")) {
 			params[pnr++] = strdup("diveNro");
-			params[pnr++] = strdup(qPrintable(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1(""))));
+			params[pnr++] = copy_qstring(parseLine.replace(QString::fromLatin1("//DIVE NR: "), QString::fromLatin1("")));
 			break;
 		}
 	}
@@ -1573,7 +1573,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Hardware Version: ")) {
 			params[pnr++] = strdup("hw");
-			params[pnr++] = strdup(qPrintable(parseLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\"")));
+			params[pnr++] = copy_qstring(parseLine.replace(QString::fromLatin1("//Hardware Version: "), QString::fromLatin1("\"Seabear ")).trimmed().append("\""));
 			break;
 		}
 	}
@@ -1586,7 +1586,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 	while ((parseLine = f.readLine().trimmed()).length() > 0 && !f.atEnd()) {
 		if (parseLine.contains("//Log interval: ")) {
 			params[pnr++] = strdup("delta");
-			params[pnr++] = strdup(qPrintable(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s"))));
+			params[pnr++] = copy_qstring(parseLine.remove(QString::fromLatin1("//Log interval: ")).trimmed().remove(QString::fromLatin1(" s")));
 			break;
 		}
 	}
@@ -1601,7 +1601,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//Mode: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("diveMode");
-			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
+			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
 		}
 	}
 	f.seek(0);
@@ -1614,7 +1614,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//Firmware Version: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("Firmware");
-			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
+			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
 		}
 	}
 	f.seek(0);
@@ -1623,7 +1623,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//Serial number: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("Serial");
-			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
+			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
 		}
 	}
 	f.seek(0);
@@ -1632,7 +1632,7 @@ int parse_seabear_header(const char *filename, char **params, int pnr)
 		QString needle = "//GF: ";
 		if (parseLine.contains(needle)) {
 			params[pnr++] = strdup("GF");
-			params[pnr++] = strdup(qPrintable(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\"")));
+			params[pnr++] = copy_qstring(parseLine.replace(needle, QString::fromLatin1("")).prepend("\"").append("\""));
 		}
 	}
 	f.seek(0);
@@ -2142,4 +2142,9 @@ extern "C" void put_vformat_loc(struct membuffer *b, const char *fmt, va_list ar
 	make_room(b, utf8_size);
 	memcpy(b->buffer + b->len, data, utf8_size);
 	b->len += utf8_size;
+}
+
+char *copy_qstring(const QString &s)
+{
+	return strdup(qPrintable(s));
 }
