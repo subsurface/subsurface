@@ -144,7 +144,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
 	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
-	logfile_name = strdup(qPrintable(libdcLogFileName));
+	logfile_name = copy_qstring(libdcLogFileName);
 #if defined(Q_OS_ANDROID)
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
 	appLogFile.setFileName(appLogFileName);
@@ -416,7 +416,7 @@ void QMLManager::saveCloudCredentials()
 	s.sync();
 	if (!same_string(prefs.cloud_storage_email, qPrintable(m_cloudUserName))) {
 		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = strdup(qPrintable(m_cloudUserName));
+		prefs.cloud_storage_email = copy_qstring(m_cloudUserName);
 		cloudCredentialsChanged = true;
 	}
 
@@ -429,7 +429,7 @@ void QMLManager::saveCloudCredentials()
 
 	if (!same_string(prefs.cloud_storage_password, qPrintable(m_cloudPassword))) {
 		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = strdup(qPrintable(m_cloudPassword));
+		prefs.cloud_storage_password = copy_qstring(m_cloudPassword);
 	}
 	if (m_cloudUserName.isEmpty() || m_cloudPassword.isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
@@ -577,7 +577,7 @@ void QMLManager::retrieveUserid()
 	if (!userid.isEmpty()) {
 		// overwrite the existing userid
 		free((void *)prefs.userid);
-		prefs.userid = strdup(qPrintable(userid));
+		prefs.userid = copy_qstring(userid);
 		QSettings s;
 		s.setValue("subsurface_webservice_uid", prefs.userid);
 		s.sync();
@@ -1020,14 +1020,14 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			}
 
 		}
-		d->cylinder[0].type.description = strdup(qPrintable(cylinder));
+		d->cylinder[0].type.description = copy_qstring(cylinder);
 		d->cylinder[0].type.size.mliter = size;
 		d->cylinder[0].type.workingpressure.mbar = wp;
 	}
 	if (myDive->suit() != suit) {
 		diveChanged = true;
 		free(d->suit);
-		d->suit = strdup(qPrintable(suit));
+		d->suit = copy_qstring(suit);
 	}
 	if (myDive->buddy() != buddy) {
 		if (buddy.contains(",")){
@@ -1035,12 +1035,12 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		}
 		diveChanged = true;
 		free(d->buddy);
-		d->buddy = strdup(qPrintable(buddy));
+		d->buddy = copy_qstring(buddy);
 	}
 	if (myDive->divemaster() != diveMaster) {
 		diveChanged = true;
 		free(d->divemaster);
-		d->divemaster = strdup(qPrintable(diveMaster));
+		d->divemaster = copy_qstring(diveMaster);
 	}
 	if (myDive->rating() != rating) {
 		diveChanged = true;
@@ -1053,7 +1053,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	if (myDive->notes() != notes) {
 		diveChanged = true;
 		free(d->notes);
-		d->notes = strdup(qPrintable(notes));
+		d->notes = copy_qstring(notes);
 	}
 	// now that we have it all figured out, let's see what we need
 	// to update

@@ -788,10 +788,10 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 	params[pnr++] = intdup(ui->CSVUnits->currentIndex());
 	if (hw.length()) {
 		params[pnr++] = strdup("hw");
-		params[pnr++] = strdup(qPrintable(hw));
+		params[pnr++] = copy_qstring(hw);
 	} else if (ui->knownImports->currentText().length() > 0) {
 		params[pnr++] = strdup("hw");
-		params[pnr++] = strdup(qPrintable(ui->knownImports->currentText().prepend("\"").append("\"")));
+		params[pnr++] = copy_qstring(ui->knownImports->currentText().prepend("\"").append("\""));
 	}
 	params[pnr++] = NULL;
 

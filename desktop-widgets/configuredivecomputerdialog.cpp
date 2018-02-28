@@ -910,9 +910,9 @@ void ConfigureDiveComputerDialog::getDeviceData()
 #else
 	QString device = ui.device->currentText();
 #endif
-	device_data.devname = strdup(qPrintable(device));
-	device_data.vendor = strdup(qPrintable(selected_vendor));
-	device_data.product = strdup(qPrintable(selected_product));
+	device_data.devname = copy_qstring(device);
+	device_data.vendor = copy_qstring(selected_vendor);
+	device_data.product = copy_qstring(selected_product);
 
 	device_data.descriptor = descriptorLookup.value(selected_vendor + selected_product);
 	device_data.deviceid = device_data.diveid = 0;
@@ -1479,7 +1479,7 @@ void ConfigureDiveComputerDialog::pickLogFile()
 					       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {
 		free(logfile_name);
-		logfile_name = strdup(qPrintable(logFile));
+		logfile_name = copy_qstring(logFile);
 	}
 }
 

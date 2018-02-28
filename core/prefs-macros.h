@@ -2,6 +2,8 @@
 #ifndef PREFSMACROS_H
 #define PREFSMACROS_H
 
+#include "core/qthelper.h"
+
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
 
 #define GET_UNIT(name, field, f, t)                                 \
@@ -60,11 +62,11 @@
 	else                                                             \
 		prefs.field = defval
 
-#define GET_TXT(name, field)                                    \
-	v = s.value(QString(name));                             \
-	if (v.isValid())                                        \
-		prefs.field = strdup(qPrintable(v.toString())); \
-	else                                                    \
+#define GET_TXT(name, field)                                   \
+	v = s.value(QString(name));                            \
+	if (v.isValid())                                       \
+		prefs.field = copy_qstring(v.toString());      \
+	else                                                   \
 		prefs.field = copy_string(default_prefs.field)
 
 #define SAVE_OR_REMOVE_SPECIAL(_setting, _default, _compare, _value)     \

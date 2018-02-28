@@ -95,7 +95,7 @@ void ReverseGeoLookupThread::run()
 					ds->taxonomy.category[ri].category = j;
 					ds->taxonomy.category[ri].origin = taxonomy_origin::GEOCODED;
 					free((void *)ds->taxonomy.category[ri].value);
-					ds->taxonomy.category[ri].value = copy_string(qPrintable(firstData[taxonomy_api_names[j]].toString()));
+					ds->taxonomy.category[ri].value = copy_qstring(firstData[taxonomy_api_names[j]].toString());
 					ri++;
 				}
 			}
@@ -156,7 +156,7 @@ void ReverseGeoLookupThread::run()
 			if (idx < TC_NR_CATEGORIES) {
 				ds->taxonomy.category[idx].category = TC_OCEAN;
 				ds->taxonomy.category[idx].origin = taxonomy_origin::GEOCODED;
-				ds->taxonomy.category[idx].value = copy_string(qPrintable(oceanName["name"].toString()));
+				ds->taxonomy.category[idx].value = copy_qstring(oceanName["name"].toString());
 				if (idx == ds->taxonomy.nr)
 					ds->taxonomy.nr++;
 			}

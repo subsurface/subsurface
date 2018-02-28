@@ -2,6 +2,7 @@
 /* implements Android specific functions */
 #include "dive.h"
 #include "display.h"
+#include "qthelper.h"
 #include <string.h>
 #include <sys/types.h>
 #include <dirent.h>
@@ -52,7 +53,7 @@ static const char *system_default_path_append(const char *append)
 	if (append)
 		path += QString("/%1").arg(append);
 
-	return strdup(qPrintable(path));
+	return copy_qstring(path);
 }
 
 const char *system_default_directory(void)

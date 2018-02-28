@@ -54,9 +54,9 @@ void init_proxy();
 QString getUUID();
 QStringList imageExtensionFilters();
 char *intdup(int index);
+char *copy_qstring(const QString &);
 __printf(1, 2) QString asprintf_loc(const char *cformat, ...);
 __printf(1, 0) QString vasprintf_loc(const char *cformat, va_list ap);
-
 #endif
 
 // 3) Functions visible to C and C++
