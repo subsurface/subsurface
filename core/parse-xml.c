@@ -26,6 +26,7 @@
 #include "divelist.h"
 #include "device.h"
 #include "membuffer.h"
+#include "qthelper.h"
 
 int verbose, quit, force_root;
 int last_xml_version = -1;
