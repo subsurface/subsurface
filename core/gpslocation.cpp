@@ -592,7 +592,7 @@ void GpsLocation::downloadFromServer()
 		timer.stop();
 		if (!reply->error()) {
 			QString response = reply->readAll();
-			QJsonDocument json = QJsonDocument::fromJson(response.toLocal8Bit());
+			QJsonDocument json = QJsonDocument::fromJson(response.toUtf8());
 			QJsonObject object = json.object();
 			if (object.value("download").toString() != "ok") {
 				qDebug() << "problems downloading GPS fixes";

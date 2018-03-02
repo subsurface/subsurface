@@ -144,7 +144,7 @@ void FacebookManager::createFacebookAlbum()
 	QNetworkRequest request(albumListUrl());
 	request.setHeader(QNetworkRequest::ContentTypeHeader, "application/octet-stream");
 
-	QNetworkReply *reply = manager->post(request, params.query().toLocal8Bit());
+	QNetworkReply *reply = manager->post(request, params.query().toUtf8());
 	connect(reply, &QNetworkReply::finished, this, &FacebookManager::facebookAlbumCreated);
 }
 
@@ -255,7 +255,7 @@ void FacebookManager::sendDiveToAlbum(const QString& albumId)
 	QString bound="margin";
 
 	//according to rfc 1867 we need to put this string here:
-	QByteArray data(QString("--" + bound + "\r\n").toLocal8Bit());
+	QByteArray data(QString("--" + bound + "\r\n").toUtf8());
 	data.append("Content-Disposition: form-data; name=\"action\"\r\n\r\n");
 	data.append(graphApi + "\r\n");
 	data.append("--" + bound + "\r\n");   //according to rfc 1867
@@ -273,8 +273,8 @@ void FacebookManager::sendDiveToAlbum(const QString& albumId)
 	data.append("\r\n");
 	data.append("--" + bound + "--\r\n");  //closing boundary according to rfc 1867
 
-	request.setRawHeader(QByteArray("Content-Type"),QString("multipart/form-data; boundary=" + bound).toLocal8Bit());
-	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toLocal8Bit());
+	request.setRawHeader(QByteArray("Content-Type"),QString("multipart/form-data; boundary=" + bound).toUtf8());
+	request.setRawHeader(QByteArray("Content-Length"), QString::number(data.length()).toUtf8());
 	QNetworkReply *reply = manager->post(request,data);
 
 	connect(reply, &QNetworkReply::finished, this, &FacebookManager::uploadFinished);

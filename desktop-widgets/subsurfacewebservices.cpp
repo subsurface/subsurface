@@ -305,7 +305,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		memset(&gps_location_table, 0, sizeof(dive_table));
 		(void)changed;
 		clear_table(&gps_location_table);
-		QByteArray url = tr("Webservice").toLocal8Bit();
+		QByteArray url = tr("Webservice").toUtf8();
 		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL);
 		// make sure we mark all the dive sites that were created
 		for (i = 0; i < gps_location_table.nr; i++) {
