@@ -47,6 +47,9 @@ Signed-off-by: Your Name
 
 That header line really should be meaningful, and really should be just one line. The header line is what is shown by tools like gitk and shortlog, and should summarize the change in one readable line of text, independently of the longer explanation.
 
+The prefered way to write a commit message is using imperative mood, e.g. "Make foo do xyz" instead of "This patch makes foo do xyz" or "I made foo do xyz", as if you are giving commands or requests to the code base.
+https://en.wikipedia.org/wiki/Imperative_mood
+
 ![gitk sample][10]
 
 Example with gitk
