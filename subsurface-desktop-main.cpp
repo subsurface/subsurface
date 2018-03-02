@@ -224,7 +224,7 @@ exit:
 void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
 {
 	Q_UNUSED(ctx);
-	QByteArray localMsg = msg.toLocal8Bit();
+	QByteArray localMsg = msg.toUtf8();
 	switch (type) {
 	case QtDebugMsg:
 		fprintf(stdout, "%s\n", localMsg.constData());

@@ -326,7 +326,7 @@ void ColumnDropCSVView::mousePressEvent(QMouseEvent *press)
 	QDrag *drag = new QDrag(this);
 	QMimeData *mimeData = new QMimeData;
 	mimeData->setData(subsurface_mimedata, atClick.data().toByteArray());
-	mimeData->setData(subsurface_index, QString::number(atClick.column()).toLocal8Bit());
+	mimeData->setData(subsurface_index, QString::number(atClick.column()).toUtf8());
 	drag->setPixmap(pix);
 	drag->setMimeData(mimeData);
 	if (drag->exec() != Qt::IgnoreAction){
