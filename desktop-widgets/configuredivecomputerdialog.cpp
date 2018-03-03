@@ -899,7 +899,7 @@ void ConfigureDiveComputerDialog::configMessage(QString msg)
 
 void ConfigureDiveComputerDialog::configError(QString err)
 {
-	ui.progressBar->setFormat("Error: " + err);
+	ui.progressBar->setFormat(tr("Error") + ": " + err);
 }
 
 void ConfigureDiveComputerDialog::getDeviceData()
@@ -1501,7 +1501,7 @@ void ConfigureDiveComputerDialog::bluetoothSelectionDialogIsFinished(int result)
 		ui.device->setCurrentText(btDeviceSelectionDialog->getSelectedDeviceText());
 		device_data.bluetooth_mode = true;
 
-		ui.progressBar->setFormat("Connecting to device...");
+		ui.progressBar->setFormat(tr("Connecting to device..."));
 		dc_open();
 	}
 }
@@ -1528,7 +1528,7 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.logToFile->setEnabled(false);
 	if (fw_upgrade_possible)
 		ui.updateFirmwareButton->setEnabled(true);
-	ui.progressBar->setFormat("Connected to device");
+	ui.progressBar->setFormat(tr("Connected to device"));
 }
 
 void ConfigureDiveComputerDialog::dc_close()
@@ -1548,6 +1548,6 @@ void ConfigureDiveComputerDialog::dc_close()
 	ui.DiveComputerList->setEnabled(true);
 	ui.logToFile->setEnabled(true);
 	ui.updateFirmwareButton->setEnabled(false);
-	ui.progressBar->setFormat("Disconnected from device");
+	ui.progressBar->setFormat(tr("Disconnected from device"));
 	ui.progressBar->setValue(0);
 }
