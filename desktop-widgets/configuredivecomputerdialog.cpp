@@ -1526,8 +1526,7 @@ void ConfigureDiveComputerDialog::dc_open()
 	ui.bluetoothMode->setEnabled(false);
 	ui.DiveComputerList->setEnabled(false);
 	ui.logToFile->setEnabled(false);
-	if (fw_upgrade_possible)
-		ui.updateFirmwareButton->setEnabled(true);
+	ui.updateFirmwareButton->setEnabled(fw_upgrade_possible);
 	ui.progressBar->setFormat(tr("Connected to device"));
 }
 
