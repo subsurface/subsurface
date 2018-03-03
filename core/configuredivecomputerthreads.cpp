@@ -2133,7 +2133,7 @@ void ReadSettingsThread::run()
 		} else if (rc == DC_STATUS_UNSUPPORTED) {
 			emit error(tr("This feature is not yet available for the selected dive computer."));
 		} else {
-			emit error("Failed!");
+			emit error(tr("Failed!"));
 		}
 		break;
 #if DC_VERSION_CHECK(0, 5, 0)
@@ -2142,7 +2142,7 @@ void ReadSettingsThread::run()
 		if (rc == DC_STATUS_SUCCESS)
 			emit devicedetails(m_deviceDetails);
 		else
-			emit error("Failed!");
+			emit error(tr("Failed!"));
 		break;
 #endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
@@ -2153,7 +2153,7 @@ void ReadSettingsThread::run()
 		if (rc == DC_STATUS_SUCCESS)
 			emit devicedetails(m_deviceDetails);
 		else
-			emit error("Failed!");
+			emit error(tr("Failed!"));
 		break;
 	default:
 		emit error(tr("This feature is not yet available for the selected dive computer."));
