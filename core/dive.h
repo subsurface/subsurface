@@ -430,7 +430,7 @@ extern struct picture *clone_picture(struct picture *src);
 extern bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timestamp);
 extern void dive_create_picture(struct dive *d, const char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
-extern bool dive_remove_picture(struct dive *d, char *filename);
+extern bool dive_remove_picture(struct dive *d, const char *filename);
 extern unsigned int dive_get_picture_count(struct dive *d);
 extern bool picture_check_valid(const char *filename, int shift_time);
 extern void picture_load_exif_data(struct picture *p);
@@ -816,7 +816,7 @@ extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
-extern void update_event_name(struct dive *d, struct event* event, char *name);
+extern void update_event_name(struct dive *d, struct event* event, const char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(struct dive *dive, struct event *ev);
@@ -1011,9 +1011,9 @@ extern double strtod_flags(const char *str, const char **ptr, unsigned int flags
 
 #define ascii_strtod(str, ptr) strtod_flags(str, ptr, STRTOD_ASCII)
 
-extern void set_userid(char *user_id);
-extern void set_informational_units(char *units);
-extern void set_git_prefs(char *prefs);
+extern void set_userid(const char *user_id);
+extern void set_informational_units(const char *units);
+extern void set_git_prefs(const char *prefs);
 
 extern const char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(struct dive *dive, struct divecomputer *dc);
