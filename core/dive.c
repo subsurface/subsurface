@@ -205,7 +205,7 @@ void remove_event(struct event *event)
  * have to actually remove the existing event and replace it with a new one.
  * WARNING, WARNING... this may end up freeing event in case that event is indeed
  * WARNING, WARNING... part of this divecomputer on this dive! */
-void update_event_name(struct dive *d, struct event *event, char *name)
+void update_event_name(struct dive *d, struct event *event, const char *name)
 {
 	if (!d || !event)
 		return;
@@ -3633,7 +3633,7 @@ timestamp_t get_times()
 	return dive->when;
 }
 
-void set_userid(char *rUserId)
+void set_userid(const char *rUserId)
 {
 	char *userid = strdup(rUserId);
 	if (strlen(userid) > 30)
@@ -3653,7 +3653,7 @@ void set_userid(char *rUserId)
  * functionality for the core library that Subsurface itself doesn't
  * use but that another consumer of the library (like an HTML exporter)
  * will need */
-void set_informational_units(char *units)
+void set_informational_units(const char *units)
 {
 	if (strstr(units, "METRIC")) {
 		git_prefs.unit_system = METRIC;
@@ -3691,7 +3691,7 @@ void set_informational_units(char *units)
 
 }
 
-void set_git_prefs(char *prefs)
+void set_git_prefs(const char *prefs)
 {
 	if (strstr(prefs, "TANKBAR"))
 		git_prefs.tankbar = 1;
@@ -3850,7 +3850,7 @@ struct picture *clone_picture(struct picture *src)
 }
 
 // Return true if picture was found and deleted
-bool dive_remove_picture(struct dive *d, char *filename)
+bool dive_remove_picture(struct dive *d, const char *filename)
 {
 	struct picture **picture = &d->picture_list;
 	while (*picture && !same_string((*picture)->filename, filename))
