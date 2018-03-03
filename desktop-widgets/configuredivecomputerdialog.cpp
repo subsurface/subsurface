@@ -417,16 +417,16 @@ void ConfigureDiveComputerDialog::populateDeviceDetails()
 {
 	switch (ui.dcStackedWidget->currentIndex()) {
 	case 0:
-		populateDeviceDetailsOSTC3();
-		break;
-	case 1:
-		populateDeviceDetailsSuuntoVyper();
-		break;
-	case 2:
 		populateDeviceDetailsOSTC();
 		break;
-	case 3:
+	case 1:
+		populateDeviceDetailsOSTC3();
+		break;
+	case 2:
 		populateDeviceDetailsOSTC4();
+		break;
+	case 3:
+		populateDeviceDetailsSuuntoVyper();
 		break;
 	}
 }
@@ -954,16 +954,16 @@ void ConfigureDiveComputerDialog::reloadValues()
 
 	switch (ui.dcStackedWidget->currentIndex()) {
 	case 0:
-		reloadValuesOSTC3();
-		break;
-	case 1:
-		reloadValuesSuuntoVyper();
-		break;
-	case 2:
 		reloadValuesOSTC();
 		break;
-	case 3:
+	case 1:
+		reloadValuesOSTC3();
+		break;
+	case 2:
 		reloadValuesOSTC4();
+		break;
+	case 3:
+		reloadValuesSuuntoVyper();
 		break;
 	}
 }
@@ -1431,23 +1431,23 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 	switch (currentRow) {
 	case 0:
 		selected_vendor = "Heinrichs Weikamp";
-		selected_product = "OSTC 3";
-		fw_upgrade_possible = true;
-		break;
-	case 1:
-		selected_vendor = "Suunto";
-		selected_product = "Vyper";
-		fw_upgrade_possible = false;
-		break;
-	case 2:
-		selected_vendor = "Heinrichs Weikamp";
 		selected_product = "OSTC 2N";
 		fw_upgrade_possible = true;
 		break;
-	case 3:
+	case 1:
+		selected_vendor = "Heinrichs Weikamp";
+		selected_product = "OSTC 3";
+		fw_upgrade_possible = true;
+		break;
+	case 2:
 		selected_vendor = "Heinrichs Weikamp";
 		selected_product = "OSTC 4";
 		fw_upgrade_possible = true;
+		break;
+	case 3:
+		selected_vendor = "Suunto";
+		selected_product = "Vyper";
+		fw_upgrade_possible = false;
 	default:
 		/* Not Supported */
 		return;
