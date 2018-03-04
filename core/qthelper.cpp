@@ -1054,7 +1054,8 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 QHash<QString, QByteArray> hashOf;
 QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
-QHash <QString, QImage > thumbnailCache;
+QHash <QString, QImage> thumbnailCache;
+QHash <QString, QImage> videoThumbnailCache;
 
 static QByteArray getHash(const QString &filename)
 {
@@ -1091,6 +1092,7 @@ void read_hashes()
 		stream >> localFilenameOf;
 		stream >> hashOf;
 		stream >> thumbnailCache;
+		stream >> videoThumbnailCache;
 		hashfile.close();
 	}
 	localFilenameOf.remove("");
@@ -1112,6 +1114,7 @@ void write_hashes()
 		stream << localFilenameOf;
 		stream << hashOf;
 		stream << thumbnailCache;
+		stream << videoThumbnailCache;
 		hashfile.commit();
 	} else {
 		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();
@@ -1199,11 +1202,20 @@ extern "C" void cache_picture(struct picture *picture)
 		QtConcurrent::run(hashPicture, clone_picture(picture));
 }
 
+
+// TODO: Apparently Qt has no simple way of listing the supported video
+// codecs? Do we have to query them by hand using QMediaPlayer::hasSupport()?
+const QStringList videoExtensionsList = {
+	".avi", ".mp4", ".mpeg", ".mpg", ".wmv"
+};
+
 QStringList imageExtensionFilters() {
 	QStringList filters;
 	foreach (QString format, QImageReader::supportedImageFormats()) {
 		filters.append(QString("*.").append(format));
 	}
+	foreach (const QString &format, videoExtensionsList)
+		filters.append("*" + format);
 	return filters;
 }
 

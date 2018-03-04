@@ -19,6 +19,8 @@ private:
 	struct picture *picture;
 };
 
-QImage getHashedImage(struct picture *picture);
+// Currently, if we suspect a video, return a null image and true.
+// TODO: return an actual still frame from the video.
+std::pair<QImage, bool> getHashedImage(struct picture *picture);
 
 #endif // IMAGEDOWNLOADER_H

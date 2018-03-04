@@ -103,23 +103,38 @@ static void loadPicture(struct picture *picture, bool fromHash)
 	download.load(fromHash);
 }
 
-// Overwrite QImage::load() so that we can perform better error reporting.
-static QImage loadImage(const QString &fileName, const char *format = nullptr)
+static bool isVideoFile(const QString &filename)
 {
+	// At the moment, we're very crude:
+	// If a file exists and ends in a supported filename, we consider it a video.
+	if (std::none_of(videoExtensionsList.begin(), videoExtensionsList.end(),
+			 [&filename](const QString &extension)
+			 { return filename.endsWith(extension, Qt::CaseInsensitive); }))
+		return false;
+	QFileInfo fi(filename);
+	return fi.exists() && fi.isFile();
+}
+
+static std::pair<QImage,bool> loadImage(const QString &fileName, const char *format = nullptr)
+{
+	std::pair<QImage,bool> res { {}, false };
 	QImageReader reader(fileName, format);
-	QImage res = reader.read();
-	if (res.isNull())
-		qInfo() << "Error loading image" << fileName << (int)reader.error() << reader.errorString();
+	res.first = reader.read();
+	if (res.first.isNull()) {
+		res.second = isVideoFile(fileName);
+		if (!res.second)
+			qInfo() << "Error loading image" << fileName << (int)reader.error() << reader.errorString();
+	}
 	return res;
 }
 
-QImage getHashedImage(struct picture *picture)
+std::pair<QImage,bool> getHashedImage(struct picture *picture)
 {
-	QImage res;
+	std::pair<QImage,bool> res { {}, false };
 	QUrl url = QUrl::fromUserInput(localFilePath(QString(picture->filename)));
-	if(url.isLocalFile())
+	if (url.isLocalFile())
 		res = loadImage(url.toLocalFile());
-	if (res.isNull()) {
+	if (res.first.isNull() && !res.second) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filename = localFilePath(picture->filename);
@@ -131,8 +146,8 @@ QImage getHashedImage(struct picture *picture)
 			QtConcurrent::run(loadPicture, clone_picture(picture), true);
 		} else {
 			// Load locally from translated file name
-			res = loadImage(filename);
-			if (!res.isNull()) {
+			res = loadImage(url.toLocalFile());
+			if (!res.first.isNull() || res.second) {
 				// Make sure the hash still matches the image file
 				qDebug() << "Loaded picture from translated filename" << filename;
 				QtConcurrent::run(hashPicture, clone_picture(picture));

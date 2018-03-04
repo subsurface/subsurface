@@ -12,6 +12,7 @@ struct PictureEntry {
 	QImage image;
 	QImage imageProfile;	// For the profile widget keep a copy of a constant sized image
 	int offsetSeconds;
+	bool isVideo;
 };
 
 class DivePictureModel : public QAbstractTableModel {
