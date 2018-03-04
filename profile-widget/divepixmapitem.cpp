@@ -12,11 +12,11 @@
 #include <QUrl>
 #include <QGraphicsSceneMouseEvent>
 
-DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
+DivePixmapItem::DivePixmapItem(QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
 {
 }
 
-DiveButtonItem::DiveButtonItem(QObject *parent): DivePixmapItem(parent)
+DiveButtonItem::DiveButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
 {
 }
 
@@ -26,9 +26,7 @@ void DiveButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	emit clicked();
 }
 
-// If we have many many pictures on screen, maybe a shared-pixmap would be better to
-// paint on screen, but for now, this.
-CloseButtonItem::CloseButtonItem(QObject *parent): DiveButtonItem(parent)
+CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DiveButtonItem(parent)
 {
 	static QPixmap p = QPixmap(":list-remove-icon");
 	setPixmap(p);
@@ -45,9 +43,10 @@ void CloseButtonItem::show()
 	DiveButtonItem::show();
 }
 
-DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent),
+DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	canvas(new QGraphicsRectItem(this)),
-	shadow(new QGraphicsRectItem(this))
+	shadow(new QGraphicsRectItem(this)),
+	button(new CloseButtonItem(this))
 {
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
@@ -67,6 +66,10 @@ DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent),
 	shadow->setBrush(QColor(Qt::lightGray));
 	shadow->setFlag(ItemStacksBehindParent);
 	shadow->setZValue(-2);
+
+	button->setScale(0.2);
+	button->setZValue(7);
+	button->hide();
 }
 
 void DivePictureItem::settingsChanged()
@@ -80,28 +83,19 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 	QRectF r = boundingRect();
 	canvas->setRect(0 - 10, 0 -10, r.width() + 20, r.height() + 20);
 	shadow->setRect(canvas->rect());
+	button->setPos(boundingRect().width() - button->boundingRect().width() * 0.2,
+				   boundingRect().height() - button->boundingRect().height() * 0.2);
 }
 
-CloseButtonItem *button = NULL;
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
 	Animations::scaleTo(this, 1.0);
 	setZValue(5);
 
-	if(!button) {
-		button = new CloseButtonItem();
-		button->setScale(0.2);
-		button->setZValue(7);
-		scene()->addItem(button);
-	}
-	button->setParentItem(this);
-	button->setPos(boundingRect().width() - button->boundingRect().width() * 0.2,
-				   boundingRect().height() - button->boundingRect().height() * 0.2);
 	button->setOpacity(0);
 	button->show();
 	Animations::show(button);
-	button->disconnect();
 	connect(button, SIGNAL(clicked()), this, SLOT(removePicture()));
 }
 
@@ -115,17 +109,7 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 	Q_UNUSED(event);
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
-	if(button){
-		button->setParentItem(NULL);
-		Animations::hide(button);
-	}
-}
-
-DivePictureItem::~DivePictureItem(){
-	if(button){
-		button->setParentItem(NULL);
-		Animations::hide(button);
-	}
+	Animations::hide(button);
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

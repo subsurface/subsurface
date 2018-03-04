@@ -12,15 +12,33 @@ class DivePixmapItem : public QObject, public QGraphicsPixmapItem {
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
-	DivePixmapItem(QObject *parent = 0);
+	DivePixmapItem(QGraphicsItem *parent = 0);
+};
+
+class DiveButtonItem : public DivePixmapItem {
+	Q_OBJECT
+public:
+	DiveButtonItem(QGraphicsItem *parent = 0);
+protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+signals:
+	void clicked();
+};
+
+class CloseButtonItem : public DiveButtonItem {
+	Q_OBJECT
+public:
+	CloseButtonItem(QGraphicsItem *parent = 0);
+public slots:
+	void hide();
+	void show();
 };
 
 class DivePictureItem : public DivePixmapItem {
 	Q_OBJECT
 	Q_PROPERTY(qreal scale WRITE setScale READ scale)
 public:
-	DivePictureItem(QObject *parent = 0);
-	virtual ~DivePictureItem();
+	DivePictureItem(QGraphicsItem *parent = 0);
 	void setPixmap(const QPixmap& pix);
 public slots:
 	void settingsChanged();
@@ -36,25 +54,7 @@ private:
 	QString fileUrl;
 	QGraphicsRectItem *canvas;
 	QGraphicsRectItem *shadow;
-};
-
-class DiveButtonItem : public DivePixmapItem {
-	Q_OBJECT
-public:
-	DiveButtonItem(QObject *parent = 0);
-protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-signals:
-	void clicked();
-};
-
-class CloseButtonItem : public DiveButtonItem {
-	Q_OBJECT
-public:
-	CloseButtonItem(QObject *parent = 0);
-public slots:
-	void hide();
-	void show();
+	DiveButtonItem *button;
 };
 
 #endif // DIVEPIXMAPITEM_H
