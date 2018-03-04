@@ -19,10 +19,6 @@ private:
 	struct picture *picture;
 };
 
-class SHashedImage : public QImage {
-	bool load(const QString &fileName, const char *format=nullptr);
-public:
-	SHashedImage(struct picture *picture);
-};
+QImage getHashedImage(struct picture *picture);
 
 #endif // IMAGEDOWNLOADER_H
