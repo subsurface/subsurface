@@ -12,7 +12,7 @@
 extern struct ev_select *ev_namelist;
 extern int evn_used;
 
-DiveEventItem::DiveEventItem(QObject *parent) : DivePixmapItem(parent),
+DiveEventItem::DiveEventItem(QGraphicsItem *parent) : DivePixmapItem(parent),
 	vAxis(NULL),
 	hAxis(NULL),
 	dataModel(NULL),
