@@ -104,26 +104,22 @@ static void loadPicture(struct picture *picture, bool fromHash)
 }
 
 // Overwrite QImage::load() so that we can perform better error reporting.
-bool SHashedImage::load(const QString &fileName, const char *format)
+static QImage loadImage(const QString &fileName, const char *format = nullptr)
 {
 	QImageReader reader(fileName, format);
-	static_cast<QImage&>(*this) = reader.read();
-	if (isNull())
+	QImage res = reader.read();
+	if (res.isNull())
 		qInfo() << "Error loading image" << fileName << (int)reader.error() << reader.errorString();
-	return !isNull();
+	return res;
 }
 
-SHashedImage::SHashedImage(struct picture *picture) : QImage()
+QImage getHashedImage(struct picture *picture)
 {
+	QImage res;
 	QUrl url = QUrl::fromUserInput(localFilePath(QString(picture->filename)));
-	if (url.isLocalFile()) {
-		load(url.toLocalFile());
-		if (isNull())
-			qInfo() << "Failed loading picture" << url.toLocalFile();
-		else
-			qDebug() << "Loaded picture" << url.toLocalFile();
-	}
-	if (isNull()) {
+	if(url.isLocalFile())
+		res = loadImage(url.toLocalFile());
+	if (res.isNull()) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filename = localFilePath(picture->filename);
@@ -135,8 +131,8 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 			QtConcurrent::run(loadPicture, clone_picture(picture), true);
 		} else {
 			// Load locally from translated file name
-			load(filename);
-			if (!isNull()) {
+			res = loadImage(filename);
+			if (!res.isNull()) {
 				// Make sure the hash still matches the image file
 				qDebug() << "Loaded picture from translated filename" << filename;
 				QtConcurrent::run(hashPicture, clone_picture(picture));
@@ -150,5 +146,5 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 		// We loaded successfully. Now, make sure hash is up to date.
 		QtConcurrent::run(hashPicture, clone_picture(picture));
 	}
+	return res;
 }
-

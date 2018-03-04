@@ -24,7 +24,7 @@ static void scaleImages(PictureEntry &entry, int size, int maxSize)
 	// Rescale in such a case to avoid resizing artifacts.
 	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
 		qDebug() << "No thumbnail in cache for" << entry.filename;
-		thumbnail = SHashedImage(entry.picture).scaled(maxSize, maxSize, Qt::KeepAspectRatio);
+		thumbnail = getHashedImage(entry.picture).scaled(maxSize, maxSize, Qt::KeepAspectRatio);
 		QMutexLocker l(&thumbnailMutex);
 		thumbnailCache.insert(entry.filename, thumbnail);
 	}
