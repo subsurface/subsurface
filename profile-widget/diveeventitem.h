@@ -11,7 +11,7 @@ struct event;
 class DiveEventItem : public DivePixmapItem {
 	Q_OBJECT
 public:
-	DiveEventItem(QObject *parent = 0);
+	DiveEventItem(QGraphicsItem *parent = 0);
 	virtual ~DiveEventItem();
 	void setEvent(struct event *ev, struct gasmix *lastgasmix);
 	struct event *getEvent();
