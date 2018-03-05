@@ -2020,6 +2020,9 @@ void ProfileWidget2::plotPictures()
 		}
 		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
 		item->setFileUrl(m->index(i, 1).data().toString());
+		bool isVideo = m->index(i, 0).data(Qt::UserRole + 1).value<bool>();
+		if (isVideo)
+			item->setVideo(m->index(i, 1).data().toString(), scene());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		x = timeAxis->posAtValue(offsetSeconds);

@@ -153,6 +153,9 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 		case Qt::UserRole:	// Used by profile widget to access bigger thumbnails
 			ret = entry.imageProfile;
 			break;
+		case Qt::UserRole + 1:
+			ret = entry.isVideo;
+			break;
 		case Qt::DisplayRole:
 			ret = QFileInfo(entry.filename).fileName();
 			break;

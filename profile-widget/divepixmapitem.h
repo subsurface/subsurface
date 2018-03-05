@@ -4,6 +4,8 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
+#include <QAbstractVideoSurface>
+#include <QMediaPlayer>
 
 class DivePixmapItem : public QObject, public QGraphicsPixmapItem {
 	Q_OBJECT
@@ -34,12 +36,23 @@ public slots:
 	void show();
 };
 
+class DivePictureItem;
+class VideoProjector : public QAbstractVideoSurface {
+	bool present(const QVideoFrame &frame);
+	QList<QVideoFrame::PixelFormat> supportedPixelFormats(QAbstractVideoBuffer::HandleType) const;
+	DivePictureItem *divePictureItem;
+public:
+	VideoProjector(DivePictureItem *);
+};
+
 class DivePictureItem : public DivePixmapItem {
 	Q_OBJECT
 	Q_PROPERTY(qreal scale WRITE setScale READ scale)
 public:
 	DivePictureItem(QGraphicsItem *parent = 0);
 	void setPixmap(const QPixmap& pix);
+	void setVideo(const QString &filename, QGraphicsScene *scene);
+	void showVideoFrame(const QImage &img);
 public slots:
 	void settingsChanged();
 #ifndef SUBSURFACE_MOBILE
@@ -55,6 +68,10 @@ private:
 	QGraphicsRectItem *canvas;
 	QGraphicsRectItem *shadow;
 	DiveButtonItem *button;
+	QMediaPlayer *player;
+	VideoProjector *video_projector;
+	QSize frameSize;
+	void updateSize(const QPixmap &pix);
 };
 
 #endif // DIVEPIXMAPITEM_H
