@@ -1642,6 +1642,34 @@ static void fixup_dc_gasswitch(struct dive *dive, struct divecomputer *dc)
 	}
 }
 
+static void fixup_no_o2sensors(struct divecomputer *dc)
+{
+	// Its only relevant to look for sensor values on CCR and PSCR dives without any no_o2sensors recorded.
+	if (dc->no_o2sensors != 0 || !(dc->divemode == CCR || dc->divemode == PSCR))
+		return;
+
+	for (int i = 0; i < dc->samples; i++) {
+		int nsensor = 0;
+		struct sample *s = dc->sample + i;
+
+		// How many o2 sensors can we find in this sample?
+		if (s->o2sensor[0].mbar)
+			nsensor++;
+		if (s->o2sensor[1].mbar)
+			nsensor++;
+		if (s->o2sensor[2].mbar)
+			nsensor++;
+
+		// If we fond more than the previous found max, record it.
+		if (nsensor > dc->no_o2sensors)
+			dc->no_o2sensors = nsensor;
+
+		// Already found the maximum posible amount.
+		if (nsensor == 3)
+			return;
+	}
+}
+
 static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 {
 	/* Add device information to table */
@@ -1667,6 +1695,9 @@ static void fixup_dive_dc(struct dive *dive, struct divecomputer *dc)
 	fixup_dive_pressures(dive, dc);
 
 	fixup_dc_events(dc);
+
+	/* Fixup CCR / PSCR dives with o2sensor values, but without no_o2sensors */
+	fixup_no_o2sensors(dc);
 }
 
 struct dive *fixup_dive(struct dive *dive)
