@@ -24,6 +24,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
+#include "core/metadata.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -2068,11 +2069,14 @@ void ProfileWidget2::updatePictures(const QModelIndex &from, const QModelIndex &
 	DivePictureModel *m = DivePictureModel::instance();
 	for (int picNr = from.row(); picNr <= to.row(); ++picNr) {
 		int picItemNr = picNr - m->rowDDStart;
-		if (picItemNr < 0 || (size_t)picItemNr >= pictures.size())
-			return;
-		if (!pictures[picItemNr])
-			return;
+		if (picItemNr >= (int)pictures.size())
+			break;
+		if (picItemNr < 0 || !pictures[picItemNr])
+			continue;
 
+		quint32 type = m->index(picNr, 0).data(Qt::UserRole + 1).value<quint32>();
+		if (type == MEDIATYPE_VIDEO)
+			pictures[picItemNr]->setVideo();
 		pictures[picItemNr]->setPixmap(m->index(picNr, 0).data(Qt::UserRole).value<QPixmap>());
 	}
 }
@@ -2102,6 +2106,9 @@ void ProfileWidget2::plotPictures()
 		item->setVisible(prefs.show_pictures_in_profile);
 		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
 		item->setFileUrl(m->index(i, 1).data().toString());
+		quint32 type = m->index(i, 0).data(Qt::UserRole + 1).value<quint32>();
+		if (type == MEDIATYPE_VIDEO)
+			item->setVideo();
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
 		x = timeAxis->posAtValue(offsetSeconds);

@@ -18,6 +18,6 @@ docker exec -t builder apt-get install -y wget unzip bzip2 \
 	qt5-default qt5-qmake qtchooser qttools5-dev-tools libqt5svg5-dev \
 	libqt5webkit5-dev libqt5qml5 libqt5quick5 qtdeclarative5-dev \
 	qtscript5-dev libssh2-1-dev libcurl4-openssl-dev qttools5-dev \
-	qtconnectivity5-dev qtlocation5-dev qtpositioning5-dev \
+	qtconnectivity5-dev qtlocation5-dev qtpositioning5-dev qtmultimedia5-dev \
 	libcrypto++-dev libssl-dev qml-module-qtpositioning qml-module-qtlocation \
 	qml-module-qtquick2

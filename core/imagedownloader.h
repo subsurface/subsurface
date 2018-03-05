@@ -47,7 +47,7 @@ public slots:
 	void imageDownloaded(QString filename);
 	void imageDownloadFailed(QString filename);
 signals:
-	void thumbnailChanged(QString filename, QImage thumbnail);
+	void thumbnailChanged(QString filename, QImage thumbnail, mediatype_t type);
 private:
 	Thumbnailer();
 	void recalculate(QString filename);
