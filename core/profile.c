@@ -578,7 +578,7 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->tts = sample->tts.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
-		if (dc->divemode == CCR) {
+		if (dc->divemode == CCR || (dc->divemode == PSCR && dc->no_o2sensors)) {
 			entry->o2pressure.mbar = entry->o2setpoint.mbar = sample->setpoint.mbar;     // for rebreathers
 			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar; // for up to three rebreather O2 sensors
 			entry->o2sensor[1].mbar = sample->o2sensor[1].mbar;
@@ -1255,7 +1255,7 @@ void fill_o2_values(struct dive *dive, struct divecomputer *dc, struct plot_info
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
 
-		if (dc->divemode == CCR) {
+		if (dc->divemode == CCR || (dc->divemode == PSCR && dc->no_o2sensors)) {
 			if (i == 0) { // For 1st iteration, initialise the last_sensor values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j].mbar = pi->entry->o2sensor[j].mbar;
