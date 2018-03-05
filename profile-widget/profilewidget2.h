@@ -21,6 +21,7 @@
 #include "core/display.h"
 #include "core/color.h"
 #include "core/units.h"
+#include "core/metadata.h"
 
 class RulerItem2;
 struct dive;
@@ -127,7 +128,7 @@ slots: // Necessary to call from QAction's signals.
 	void deleteCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
-	void updateThumbnail(QString filename, QImage thumbnail);
+	void updateThumbnail(QString filename, QImage thumbnail, mediatype_t type);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();

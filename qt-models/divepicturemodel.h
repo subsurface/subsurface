@@ -2,6 +2,7 @@
 #ifndef DIVEPICTUREMODEL_H
 #define DIVEPICTUREMODEL_H
 
+#include "core/metadata.h"
 #include <QAbstractTableModel>
 #include <QImage>
 #include <QFuture>
@@ -11,6 +12,7 @@ struct PictureEntry {
 	QString filename;
 	QImage image;
 	int offsetSeconds;
+	mediatype_t type;
 };
 
 class DivePictureModel : public QAbstractTableModel {
@@ -27,7 +29,7 @@ signals:
 	void picturesRemoved(const QVector<QString> &fileUrls);
 public slots:
 	void setZoomLevel(int level);
-	void updateThumbnail(QString filename, QImage thumbnail);
+	void updateThumbnail(QString filename, QImage thumbnail, mediatype_t);
 private:
 	DivePictureModel();
 	QVector<PictureEntry> pictures;

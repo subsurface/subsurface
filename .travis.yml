@@ -71,6 +71,7 @@ matrix:
             - qt510connectivity
             - qt510declarative
             - qt510location
+            - qt510multimedia
             - qt510quickcontrols
             - qt510quickcontrols2
             - qt510script

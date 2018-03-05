@@ -8,6 +8,12 @@
 
 #include <QFileInfo>
 
+// To be able to pass the mediatype_t enum through Qt's signal/slot system,
+// we have to first declare it as a metatype using a macro and then call
+// qRegisterMetaType(). We must do this before connecting the first signal
+// with tis signature. Not a friendly interface!
+Q_DECLARE_METATYPE(mediatype_t)
+
 DivePictureModel *DivePictureModel::instance()
 {
 	static DivePictureModel *self = new DivePictureModel();
@@ -16,6 +22,8 @@ DivePictureModel *DivePictureModel::instance()
 
 DivePictureModel::DivePictureModel() : zoomLevel(0.0)
 {
+	qRegisterMetaType<mediatype_t>();
+
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
 		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
 }
@@ -57,7 +65,7 @@ void DivePictureModel::updateDivePictures()
 	for_each_dive (i, dive) {
 		if (dive->selected) {
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({picture, picture->filename, {}, picture->offset.seconds});
+				pictures.push_back({picture, picture->filename, {}, picture->offset.seconds, MEDIATYPE_UNKNOWN});
 		}
 	}
 
@@ -157,10 +165,11 @@ int DivePictureModel::findPictureId(const QString &filename)
 	return -1;
 }
 
-void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail)
+void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, mediatype_t type)
 {
 	int i = findPictureId(filename);
 	if (i >= 0) {
+		pictures[i].type = type;
 		pictures[i].image = thumbnail;
 		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
 	}

@@ -2066,7 +2066,7 @@ void ProfileWidget2::clearPictures()
 
 // This function is called asynchronously by the thumbnailer if a thumbnail
 // was fetched from disk or freshly calculated.
-void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail)
+void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail, mediatype_t type)
 {
 	// Find the picture with the given filename
 	auto it = std::find_if(pictures.begin(), pictures.end(), [&filename](const PictureEntry &e)
@@ -2078,6 +2078,8 @@ void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail)
 		// Replace the pixmap of the thumbnail with the newly calculated one.
 		int size = Thumbnailer::defaultThumbnailSize();
 		it->thumbnail->setPixmap(QPixmap::fromImage(thumbnail.scaled(size, size, Qt::KeepAspectRatio)));
+		if (type == MEDIATYPE_VIDEO)
+			it->thumbnail->setVideo();
 	}
 }
 
