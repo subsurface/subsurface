@@ -592,7 +592,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		currentdc = fake_dc(currentdc, false);
 	}
 
-	bool setpointflag = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
+	bool pscr_o2 = (currentdc->divemode == PSCR);
+	bool ccr_o2 = (currentdc->divemode == CCR) && prefs.pp_graphs.po2 && current_dive;
+	bool setpointflag = pscr_o2 || ccr_o2;
 	bool sensorflag = setpointflag && prefs.show_ccr_sensors;
 	o2SetpointGasItem->setVisible(setpointflag && prefs.show_ccr_setpoint);
 	ccrsensor1GasItem->setVisible(sensorflag);
@@ -700,8 +702,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		pn2GasItem->setVisible(false);
 		po2GasItem->setVisible(false);
 		pheGasItem->setVisible(false);
-		o2SetpointGasItem->setVisible(false);
-		ccrsensor1GasItem->setVisible(false);
+		o2SetpointGasItem->setVisible(currentdc->divemode == PSCR && currentdc->no_o2sensors);
+		ccrsensor1GasItem->setVisible(currentdc->divemode == PSCR && currentdc->no_o2sensors);
 		ccrsensor2GasItem->setVisible(false);
 		ccrsensor3GasItem->setVisible(false);
 	}

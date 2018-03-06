@@ -501,12 +501,13 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 
-	int idx, maxtime, nr, i;
+	int idx, maxtime, nr, i, setpointval;
 	int lastdepth, lasttime, lasttemp = 0;
 	struct plot_data *plot_data;
 	struct event *ev = dc->events;
 	(void) dive;
 	maxtime = pi->maxtime;
+	struct gasmix *gasmix = NULL;
 
 	/*
 	 * We want to have a plot_info event at least every 10s (so "maxtime/10+1"),
@@ -578,11 +579,17 @@ struct plot_data *populate_plot_entries(struct dive *dive, struct divecomputer *
 		entry->tts = sample->tts.seconds;
 		entry->in_deco = sample->in_deco;
 		entry->cns = sample->cns;
-		if (dc->divemode == CCR) {
-			entry->o2pressure.mbar = entry->o2setpoint.mbar = sample->setpoint.mbar;     // for rebreathers
+		if (dc->divemode == CCR || dc->divemode == PSCR) {
+			if (dc->divemode == CCR) // for CCR rebreathers, the setpoint is the pre-set value:
+				setpointval = sample->setpoint.mbar;
+			else // for PSCR, setpoint is the OC pO2:
+				setpointval = (int) depth_to_mbar(entry->depth, dive) * get_o2(get_gasmix(dive, dc, entry->sec, &ev, gasmix)) / 1000;
+			entry->o2pressure.mbar = entry->o2setpoint.mbar = setpointval;
 			entry->o2sensor[0].mbar = sample->o2sensor[0].mbar; // for up to three rebreather O2 sensors
 			entry->o2sensor[1].mbar = sample->o2sensor[1].mbar;
 			entry->o2sensor[2].mbar = sample->o2sensor[2].mbar;
+			if (dc->no_o2sensors == 0 && sample->o2sensor[0].mbar) // We assume only a single O2 sensor
+				dc->no_o2sensors = 1; // If there are indeed monitored o2 values, set the dc's no of sensors to 1
 		} else {
 			entry->pressures.o2 = sample->setpoint.mbar / 1000.0;
 		}
@@ -1254,8 +1261,7 @@ void fill_o2_values(struct dive *dive, struct divecomputer *dc, struct plot_info
 
 	for (i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-
-		if (dc->divemode == CCR) {
+		if (dc->divemode == CCR || (dc->divemode == PSCR && dc->no_o2sensors)) {
 			if (i == 0) { // For 1st iteration, initialise the last_sensor values
 				for (j = 0; j < dc->no_o2sensors; j++)
 					last_sensor[j].mbar = pi->entry->o2sensor[j].mbar;

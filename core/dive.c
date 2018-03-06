@@ -1030,7 +1030,7 @@ void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
-			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, OC);
+			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, dc->divemode);
 			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				dc->sample[i].setpoint.mbar = 0;
 		}
@@ -2006,47 +2006,36 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
 	return delta_he + delta_o2;
 }
 
-/* fill_pressures(): Compute partial gas pressures in bar from gasmix and ambient pressures, possibly for OC or CCR, to be
- * extended to PSCT. This function does the calculations of gas pressures applicable to a single point on the dive profile.
+/* fill_pressures(): Compute partial gas pressures in bar from gasmix and ambient pressures
+ * for OC, PSCR or CCR. This function calculates gas pressures for a single point on the dive profile.
  * The structure "pressures" is used to return calculated gas pressures to the calling software.
  * Call parameters:	po2 = po2 value applicable to the record in calling function
  *			amb_pressure = ambient pressure applicable to the record in calling function
  *			*pressures = structure for communicating o2 sensor values from and gas pressures to the calling function.
  *			*mix = structure containing cylinder gas mixture information.
- * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
+ * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c as well as plannernotes.c.
  */
 extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type divemode)
 {
-	if (po2) {	// This is probably a CCR dive where pressures->o2 is defined
-		if (po2 >= amb_pressure) {
+	if (po2) {	// This is a CCR or PSCR dive where pO2 values result from external O2 sensor(s)
+		if (po2 >= amb_pressure || get_o2(mix) == 1000) {
 			pressures->o2 = amb_pressure;
 			pressures->n2 = pressures->he = 0.0;
 		} else {
-			pressures->o2 = po2;
-			if (get_o2(mix) == 1000) {
-				pressures->he = pressures->n2 = 0;
+			if (pressures->o2 < 0) { // He's dead, Jim.
+				pressures->o2 = 0;
 			} else {
+				pressures->o2 = po2;
 				pressures->he = (amb_pressure - pressures->o2) * (double)get_he(mix) / (1000 - get_o2(mix));
 				pressures->n2 = amb_pressure - pressures->o2 - pressures->he;
 			}
 		}
-	} else {
-		if (divemode == PSCR) { /* The steady state approximation should be good enough */
-			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio / 1000.0);
-			if (pressures->o2 < 0) // He's dead, Jim.
-				pressures->o2 = 0;
-			if (get_o2(mix) != 1000) {
-				pressures->he = (amb_pressure - pressures->o2) * get_he(mix) / (1000.0 - get_o2(mix));
-				pressures->n2 = (amb_pressure - pressures->o2) * (1000 - get_o2(mix) - get_he(mix)) / (1000.0 - get_o2(mix));
-			} else {
-				pressures->he = pressures->n2 = 0;
-			}
-		} else {
-			// Open circuit dives: no gas pressure values available, they need to be calculated
-			pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; // These calculations are also used if the CCR calculation above..
-			pressures->he = get_he(mix) / 1000.0 * amb_pressure; // ..returned a po2 of zero (i.e. o2 sensor data not resolvable)
-			pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
-		}
+	} else { // Open circuit or PSCR dives without O2 sensor: no gas pressure values available, they need to be calculated
+		pressures->o2 = get_o2(mix) / 1000.0 * amb_pressure; 
+		if (divemode == PSCR) // For PSCR the steady state approximation should be good enough
+			pressures->o2 = pressures->o2 - (1.0 - get_o2(mix) / 1000.0) * prefs.o2consumption / (prefs.bottomsac * prefs.pscr_ratio / 1000.0);
+		pressures->he = get_he(mix) / 1000.0 * amb_pressure; // ..returned a po2 of zero (i.e. o2 sensor data not resolvable)
+		pressures->n2 = (1000 - get_o2(mix) - get_he(mix)) / 1000.0 * amb_pressure;
 	}
 }
 
