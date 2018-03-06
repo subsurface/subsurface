@@ -7,7 +7,7 @@
 #include <QNetworkReply>
 
 class ImageDownloader : public QObject {
-	Q_OBJECT;
+	Q_OBJECT
 public:
 	ImageDownloader(struct picture *picture);
 	~ImageDownloader();

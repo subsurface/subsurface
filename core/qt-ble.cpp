@@ -190,7 +190,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		while (msec > 0 && receivedPackets.isEmpty()) {
 			waitFor(100);
 			msec -= 100;
-		};
+		}
 	}
 
 	// Still no packet?
@@ -236,7 +236,7 @@ dc_status_t BLEObject::setHwCredit(unsigned int c)
 	while (msec > 0 && !isCharacteristicWritten) {
 		waitFor(100);
 		msec -= 100;
-	};
+	}
 	if (!isCharacteristicWritten)
 		return DC_STATUS_TIMEOUT;
 	return DC_STATUS_SUCCESS;
@@ -321,7 +321,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	while (msec > 0 && controller->state() == QLowEnergyController::ConnectingState) {
 		waitFor(100);
 		msec -= 100;
-	};
+	}
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
@@ -353,7 +353,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	while (msec > 0 && controller->state() == QLowEnergyController::DiscoveringState) {
 		waitFor(100);
 		msec -= 100;
-	};
+	}
 
 	qDebug() << " .. done discovering services";
 	if (ble->preferredService() == nullptr) {
@@ -368,7 +368,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	while (msec > 0 && ble->preferredService()->state() == QLowEnergyService::DiscoveringServices) {
 		waitFor(100);
 		msec -= 100;
-	};
+	}
 
 	if (ble->preferredService()->state() != QLowEnergyService::ServiceDiscovered) {
 		qDebug() << "failed to find suitable service on" << devaddr;
