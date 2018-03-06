@@ -599,6 +599,11 @@ void MultiFilter::filterFinished()
 void MultiFilter::adjustHeight()
 {
 	ui.scrollArea->setVisible(!ui.scrollArea->isVisible());
+	if (ui.scrollArea->isVisible()) {
+		ui.maximize->setIcon(QIcon::fromTheme("hide", QIcon(":hide-icon")));
+	} else {
+		ui.maximize->setIcon(QIcon::fromTheme("show", QIcon(":show-icon")));
+	}
 }
 
 void MultiFilter::closeFilter()

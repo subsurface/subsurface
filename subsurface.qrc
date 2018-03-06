@@ -15,6 +15,7 @@
         <file alias="zoom-out-icon">icons/diving/scalable/actions/zoom-out.svg</file>
         <file alias="graph-icon">icons/diving/scalable/emblems/graph.svg</file>
         <file alias="hide-icon">icons/diving/scalable/actions/hide.svg</file>
+        <file alias="show-icon">icons/diving/scalable/actions/show.svg</file>
         <file alias="star-icon">icons/diving/scalable/emblems/star.svg</file>
         <file alias="subsurface-icon">icons/diving/scalable/apps/subsurface.svg</file>
         <file alias="subsurface-mobile-icon">icons/diving/scalable/apps/subsurface-mobile.svg</file>
