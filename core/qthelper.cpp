@@ -1240,23 +1240,20 @@ QString localFilePath(const QString &originalFilename)
 		return originalFilename;
 }
 
-// This needs to operate on a copy of picture as it frees it after finishing!
-void hashPicture(struct picture *picture)
+// This works on a copy of the string, because it runs in asynchronous context
+void hashPicture(QString filename)
 {
-	if (!picture)
-		return;
-	QByteArray oldHash = getHash(QString(picture->filename));
-	QByteArray hash = hashFile(localFilePath(picture->filename));
+	QByteArray oldHash = getHash(filename);
+	QByteArray hash = hashFile(localFilePath(filename));
 	if (!hash.isNull() && hash != oldHash)
 		mark_divelist_changed(true);
-	picture_free(picture);
 }
 
 extern "C" void cache_picture(struct picture *picture)
 {
 	QString filename = picture->filename;
 	if (!haveHash(filename))
-		QtConcurrent::run(hashPicture, clone_picture(picture));
+		QtConcurrent::run(hashPicture, filename);
 }
 
 QStringList imageExtensionFilters() {
