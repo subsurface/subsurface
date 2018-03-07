@@ -3843,18 +3843,6 @@ void picture_free(struct picture *picture)
 	free(picture);
 }
 
-// When handling pictures in different threads, we need to copy them so we don't
-// run into problems when the main thread frees the picture.
-
-struct picture *clone_picture(struct picture *src)
-{
-	struct picture *dst;
-
-	dst = alloc_picture();
-	copy_pl(src, dst);
-	return dst;
-}
-
 // Return true if picture was found and deleted
 bool dive_remove_picture(struct dive *d, const char *filename)
 {
