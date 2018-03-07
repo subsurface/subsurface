@@ -16,23 +16,17 @@ static QUrl cloudImageURL(const char *filename)
 	return QUrl::fromUserInput(QString("https://cloud.subsurface-divelog.org/images/").append(hash));
 }
 
-ImageDownloader::ImageDownloader(struct picture *pic)
+ImageDownloader::ImageDownloader(const QString &filename_in) : filename(filename_in)
 {
-	picture = pic;
-}
-
-ImageDownloader::~ImageDownloader()
-{
-	picture_free(picture);
 }
 
 void ImageDownloader::load(bool fromHash)
 {
-	if (fromHash && loadFromUrl(cloudImageURL(picture->filename)))
+	if (fromHash && loadFromUrl(cloudImageURL(qPrintable(filename))))
 		return;
 
 	// If loading from hash failed, try to load from filename
-	loadFromUrl(QUrl::fromUserInput(QString(picture->filename)));
+	loadFromUrl(QUrl::fromUserInput(filename));
 }
 
 bool ImageDownloader::loadFromUrl(const QUrl &url)
@@ -75,7 +69,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
 		stream.writeRawData(imageData.data(), imageData.length());
 		imageFile.waitForBytesWritten(-1);
 		imageFile.close();
-		learnHash(QString(picture->filename), imageFile.fileName(), hash.result());
+		learnHash(filename, imageFile.fileName(), hash.result());
 	}
 	// This should be called to make the picture actually show.
 	// Problem is DivePictureModel is not in core.
@@ -84,22 +78,18 @@ void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
 
 }
 
-static void loadPicture(struct picture *picture, bool fromHash)
+static void loadPicture(QString filename, bool fromHash)
 {
 	static QSet<QString> queuedPictures;
 	static QMutex pictureQueueMutex;
 
-	if (!picture)
-		return;
 	QMutexLocker locker(&pictureQueueMutex);
-	if (queuedPictures.contains(QString(picture->filename))) {
-		picture_free(picture);
+	if (queuedPictures.contains(filename))
 		return;
-	}
-	queuedPictures.insert(QString(picture->filename));
+	queuedPictures.insert(filename);
 	locker.unlock();
 
-	ImageDownloader download(picture);
+	ImageDownloader download(filename);
 	download.load(fromHash);
 }
 
@@ -128,38 +118,36 @@ static std::pair<QImage,bool> loadImage(const QString &fileName, const char *for
 	return res;
 }
 
-std::pair<QImage,bool> getHashedImage(struct picture *picture)
+std::pair<QImage,bool> getHashedImage(const QString &file)
 {
 	std::pair<QImage,bool> res { {}, false };
-	QUrl url = QUrl::fromUserInput(localFilePath(QString(picture->filename)));
+	QUrl url = QUrl::fromUserInput(localFilePath(file));
 	if (url.isLocalFile())
 		res = loadImage(url.toLocalFile());
 	if (res.first.isNull() && !res.second) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
-		QString filename = localFilePath(picture->filename);
-		qDebug() << QStringLiteral("Translated filename: %1 -> %2").arg(picture->filename, filename);
-		if (filename.isNull()) {
+		QString filenameLocal = localFilePath(qPrintable(file));
+		qDebug() << QStringLiteral("Translated filename: %1 -> %2").arg(file, filenameLocal);
+		if (filenameLocal.isNull()) {
 			// That didn't produce a local filename.
 			// Try the cloud server
 			// TODO: This is dead code at the moment.
-			QtConcurrent::run(loadPicture, clone_picture(picture), true);
+			QtConcurrent::run(loadPicture, file, true);
 		} else {
 			// Load locally from translated file name
-			res = loadImage(url.toLocalFile());
+			res = loadImage(filenameLocal);
 			if (!res.first.isNull() || res.second) {
 				// Make sure the hash still matches the image file
-				qDebug() << "Loaded picture from translated filename" << filename;
-				QtConcurrent::run(hashPicture, clone_picture(picture));
+				QtConcurrent::run(hashPicture, filenameLocal);
 			} else {
 				// Interpret filename as URL
-				qInfo() << "Failed loading picture from translated filename" << filename;
-				QtConcurrent::run(loadPicture, clone_picture(picture), false);
+				QtConcurrent::run(loadPicture, filenameLocal, false);
 			}
 		}
 	} else {
 		// We loaded successfully. Now, make sure hash is up to date.
-		QtConcurrent::run(hashPicture, clone_picture(picture));
+		QtConcurrent::run(hashPicture, file);
 	}
 	return res;
 }

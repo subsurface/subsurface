@@ -33,7 +33,7 @@ static void scaleImages(PictureEntry &entry, int size, int maxSize)
 	// Rescale in such a case to avoid resizing artifacts.
 	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
 		qDebug() << "No thumbnail in cache for" << entry.filename;
-		auto res = getHashedImage(entry.picture);
+		auto res = getHashedImage(QString(entry.picture->filename));
 		thumbnail = res.first.scaled(maxSize, maxSize, Qt::KeepAspectRatio);
 		entry.isVideo = res.second;
 		QMutexLocker l(&thumbnailMutex);

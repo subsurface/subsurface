@@ -32,7 +32,7 @@ QByteArray hashFile(const QString &filename);
 QString hashString(const char *filename);
 void learnImages(const QDir dir, int max_recursions);
 void add_hash(const QString &filename, const QByteArray &hash);
-void hashPicture(struct picture *picture);
+void hashPicture(QString filename);
 extern "C" char *hashstring(const char *filename);
 QString localFilePath(const QString &originalFilename);
 void learnHash(const QString &originalName, const QString &localName, const QByteArray &hash);
