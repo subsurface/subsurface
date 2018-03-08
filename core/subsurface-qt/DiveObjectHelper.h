@@ -20,6 +20,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QString location READ location CONSTANT)
 	Q_PROPERTY(QString gps READ gps CONSTANT)
 	Q_PROPERTY(QString gps_decimal READ gps_decimal CONSTANT)
+	Q_PROPERTY(QVariant dive_site_uuid READ dive_site_uuid CONSTANT)
 	Q_PROPERTY(QString duration READ duration CONSTANT)
 	Q_PROPERTY(bool noDive READ noDive CONSTANT)
 	Q_PROPERTY(QString depth READ depth CONSTANT)
@@ -60,6 +61,7 @@ public:
 	QString location() const;
 	QString gps() const;
 	QString gps_decimal() const;
+	QVariant dive_site_uuid() const;
 	QString duration() const;
 	bool noDive() const;
 	QString depth() const;
