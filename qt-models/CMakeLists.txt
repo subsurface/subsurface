@@ -34,6 +34,7 @@ set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
 	divelistmodel.cpp
 	messagehandlermodel.cpp
 	gpslistmodel.cpp
+	maplocationmodel.cpp
 )
 
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")

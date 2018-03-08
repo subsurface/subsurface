@@ -170,8 +170,10 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		set(SUBSURFACE_TARGET subsurface-mobile)
 	endif()
 	list(APPEND QT_EXTRA_COMPONENTS Quick)
+	list(APPEND QT_EXTRA_COMPONENTS Location)
 	list(APPEND QT_EXTRA_COMPONENTS QuickControls2)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Quick)
+	list(APPEND QT_EXTRA_LIBRARIES Qt5::Location)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::QuickControls2)
 	add_definitions(-DSUBSURFACE_MOBILE)
 	message(STATUS "Building Subsurface-mobile requires BT support")
@@ -292,6 +294,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
+		map-widget/qmlmapwidgethelper.cpp
 	)
 	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/src/libkirigami)
 	if(NOT ANDROID AND NOT iOS)
