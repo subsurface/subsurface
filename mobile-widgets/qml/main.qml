@@ -133,6 +133,15 @@ Kirigami.ApplicationWindow {
 			},
 			Kirigami.Action {
 				icon {
+					name: "icons/map-globe.svg"
+				}
+				text: mapPage.title
+				onTriggered: {
+					showMap()
+				}
+			},
+			Kirigami.Action {
+				icon {
 					name: "icons/ic_sync.svg"
 				}
 				text: qsTr("Dive management")
