@@ -104,7 +104,7 @@ if [ "$PLATFORM" = "Darwin" ] ; then
 	export ANDROID_NDK_HOST=darwin-x86_64
 else
 	export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-linux}
-	export ANDROID_NDK_HOST=linux-x86
+	export ANDROID_NDK_HOST=linux-x86_64
 fi
 
 # Which versions are we building against?
@@ -161,6 +161,32 @@ if [ "$PLATFORM" = "Darwin" ] ; then
 else
 	export JAVA_HOME=/usr
 fi
+
+
+# find qmake
+QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
+$QMAKE -query
+
+# build google maps plugin
+if [ ! -e googlemaps ] ; then
+	git clone https://github.com/Subsurface-divelog/googlemaps.git
+fi
+cd googlemaps
+git checkout master
+git pull --rebase
+mkdir -p build-"$ARCH"
+cd build-"$ARCH"
+$QMAKE ../googlemaps.pro
+# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+# since things compile fine with c++11, let's just hack that away
+# similarly, don't use -Wdata-time
+mv Makefile Makefile.bak
+cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
+make -j4
+QT_PLUGINS_PATH=`$QMAKE -query QT_INSTALL_PLUGINS`
+GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
+$QMAKE -install qinstall -exe $GOOGLEMAPS_BIN $QT_PLUGINS_PATH/geoservices/$GOOGLEMAPS_BIN
+cd ../../
 
 if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
 	wget http://www.sqlite.org/2017/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
