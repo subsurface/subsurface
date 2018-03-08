@@ -25,11 +25,25 @@
 		<file>SsrfSwitch.qml</file>
 		<file>SsrfCheckBox.qml</file>
 		<file>SsrfButton.qml</file>
+		<file>MapPage.qml</file>
+		<file alias="MapWidget.qml">../../map-widget/qml/MapWidget.qml</file>
+		<file alias="MapWidgetContextMenu.qml">../../map-widget/qml/MapWidgetContextMenu.qml</file>
+	</qresource>
+	<qresource prefix="/">
+		<file alias="mapwidget-context-menu.png">../../map-widget/qml/icons/mapwidget-context-menu.png</file>
+		<file alias="mapwidget-marker.png">../../map-widget/qml/icons/mapwidget-marker.png</file>
+		<file alias="mapwidget-marker-gray.png">../../map-widget/qml/icons/mapwidget-marker-gray.png</file>
+		<file alias="mapwidget-marker-selected.png">../../map-widget/qml/icons/mapwidget-marker-selected.png</file>
+		<file alias="mapwidget-toggle-satellite.png">../../map-widget/qml/icons/mapwidget-toggle-satellite.png</file>
+		<file alias="mapwidget-toggle-street.png">../../map-widget/qml/icons/mapwidget-toggle-street.png</file>
+		<file alias="mapwidget-zoom-in.png">../../map-widget/qml/icons/mapwidget-zoom-in.png</file>
+		<file alias="mapwidget-zoom-out.png">../../map-widget/qml/icons/mapwidget-zoom-out.png</file>
 	</qresource>
 	<qresource prefix="/">
 		<file>qtquickcontrols2.conf</file>
 	</qresource>
 	<qresource prefix="/org/kde/kirigami">
+		<file alias="icons/map-globe.svg">kirigami/icons/map-globe.svg</file>
 		<file alias="icons/go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
 		<file alias="icons/go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>
 		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
