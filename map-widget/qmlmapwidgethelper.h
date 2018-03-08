@@ -3,8 +3,9 @@
 #define QMLMAPWIDGETHELPER_H
 
 #include <QObject>
+#include <QGeoCoordinate>
+#include <QVariant>
 
-class QGeoCoordinate;
 class MapLocationModel;
 class MapLocation;
 struct dive_site;
