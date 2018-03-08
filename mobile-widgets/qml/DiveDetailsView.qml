@@ -51,8 +51,8 @@ Item {
 				anchors.fill: parent
 				enabled: dive.gps_decimal !== ""
 				onClicked: {
-					if (dive.gps_decimal !== "")
-						showMap(dive.gps_decimal)
+					showMap()
+					mapPage.centerOnDiveSiteUUID(dive.dive_site_uuid)
 				}
 			}
 		}
@@ -62,8 +62,8 @@ Item {
 			enabled: dive.gps !== ""
 			text: qsTr("Map it")
 			onClicked: {
-				if (dive.gps_decimal !== "")
-					showMap(dive.gps_decimal)
+				showMap()
+				mapPage.centerOnDiveSiteUUID(dive.dive_site_uuid)
 			}
 		}
 		Row {

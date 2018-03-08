@@ -67,12 +67,10 @@ Kirigami.ApplicationWindow {
 		diveList.scrollToTop()
 	}
 
-	function showMap(location) {
-		var urlPrefix = "https://www.google.com/maps/place/"
-		var locationPair = location + "/@" + location
-		var urlSuffix = ",5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
-		Qt.openUrlExternally(urlPrefix + locationPair + urlSuffix)
-
+	function showMap() {
+		globalDrawer.close()
+		returnTopPage()
+		stackView.push(mapPage)
 	}
 
 	function startAddDive() {
