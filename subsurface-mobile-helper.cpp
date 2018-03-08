@@ -25,6 +25,8 @@
 #include "core/connectionlistmodel.h"
 #include "qt-models/diveimportedmodel.h"
 #include "qt-models/messagehandlermodel.h"
+#include "map-widget/qmlmapwidgethelper.h"
+#include "qt-models/maplocationmodel.h"
 
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 
@@ -56,6 +58,10 @@ void run_ui()
 	qmlRegisterType<DCDeviceData>("org.subsurfacedivelog.mobile", 1, 0, "DCDeviceData");
 	qmlRegisterType<DownloadThread>("org.subsurfacedivelog.mobile", 1, 0, "DCDownloadThread");
 	qmlRegisterType<DiveImportedModel>("org.subsurfacedivelog.mobile", 1, 0, "DCImportModel");
+
+	qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
+	qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
+	qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
 
 	QQmlApplicationEngine engine;
 	KirigamiPlugin::getInstance().registerTypes();
