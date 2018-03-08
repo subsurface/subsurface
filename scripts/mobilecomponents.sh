@@ -54,6 +54,7 @@ rm -rf $MC
 mkdir -p $MC/icons
 cp -R $PMMC/* $MC/
 
+cp $BREEZE/icons/actions/22/map-globe.svg $MC/icons
 cp $BREEZE/icons/actions/24/dialog-cancel.svg $MC/icons
 cp $BREEZE/icons/actions/24/distribute-horizontal-x.svg $MC/icons
 cp $BREEZE/icons/actions/24/document-edit.svg $MC/icons
