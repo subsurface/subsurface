@@ -512,6 +512,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
+	MapPage {
+		id: mapPage
+		visible: false
+		anchors.fill: parent
+	}
+
 	ThemeTest {
 		id: themetest
 		visible: false
