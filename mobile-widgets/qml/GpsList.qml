@@ -86,7 +86,8 @@ Kirigami.ScrollablePage {
 						name: "gps"
 					}
 					onTriggered: {
-						showMap(latitude + " " + longitude)
+						showMap()
+						mapPage.centerOnLocation(latitude, longitude)
 					}
 				}
 

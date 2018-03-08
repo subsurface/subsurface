@@ -170,7 +170,8 @@ Kirigami.Page {
 			name: "gps"
 		}
 		onTriggered: {
-			showMap(currentItem.modelData.dive.gps_decimal)
+			showMap()
+			mapPage.centerOnDiveSiteUUID(currentItem.modelData.dive.dive_site_uuid)
 		}
 	}
 
