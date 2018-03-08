@@ -33,12 +33,15 @@ void MapWidgetHelper::centerOnDiveSiteUUID(QVariant dive_site_uuid)
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
-	int idx;
-	struct dive *dive;
 	QVector<struct dive_site *> selDS;
 	QVector<QGeoCoordinate> selGC;
 	QGeoCoordinate dsCoord;
 
+// selection of multiple dives is only possible on the desktop.
+// in the case of the mobile version only handle the passed dive_site.
+#ifndef SUBSURFACE_MOBILE
+	int idx;
+	struct dive *dive;
 	for_each_dive (idx, dive) {
 		struct dive_site *dss = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(dss) || !dive->selected)
@@ -48,6 +51,13 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 		selGC.append(QGeoCoordinate(dss->latitude.udeg * 0.000001,
 		                            dss->longitude.udeg * 0.000001));
 	}
+#else
+	if (dive_site_has_gps_location(ds)) {
+		selDS.append(ds);
+		selGC.append(QGeoCoordinate(ds->latitude.udeg * 0.000001,
+		                            ds->longitude.udeg * 0.000001));
+	}
+#endif
 	if (!dive_site_has_gps_location(ds) && !selDS.size()) {
 		// only a single dive site with no GPS selected
 		m_mapLocationModel->setSelectedUuid(ds ? ds->uuid : 0, false);
@@ -146,12 +156,24 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
 			continue;
+#ifndef SUBSURFACE_MOBILE
 		const qreal latitude = ds->latitude.udeg * 0.000001;
 		const qreal longitude = ds->longitude.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
 		if (locationCoord.distanceTo(dsCoord) < m_smallCircleRadius)
 			m_selectedDiveIds.append(idx);
 	}
+#else // the mobile version doesn't support multi-dive selection
+		if (ds->uuid == location->uuid())
+			m_selectedDiveIds.append(dive->id); // use id here instead of index
+	}
+	int last; // get latest dive chronologically
+	if (!m_selectedDiveIds.isEmpty()) {
+		 last = m_selectedDiveIds.last();
+		 m_selectedDiveIds.clear();
+		 m_selectedDiveIds.append(last);
+	}
+#endif
 	emit selectedDivesChanged(m_selectedDiveIds);
 }
 
@@ -176,9 +198,21 @@ void MapWidgetHelper::selectVisibleLocations()
 				m_mapLocationModel->setSelectedUuid(ds->uuid, false);
 				selectedFirst = true;
 			}
+#ifndef SUBSURFACE_MOBILE // indexes on desktop
 			m_selectedDiveIds.append(idx);
 		}
 	}
+#else // use id on mobile instead of index
+			m_selectedDiveIds.append(dive->id);
+		}
+	}
+	int last; // get latest dive chronologically
+	if (!m_selectedDiveIds.isEmpty()) {
+		 last = m_selectedDiveIds.last();
+		 m_selectedDiveIds.clear();
+		 m_selectedDiveIds.append(last);
+	}
+#endif
 	emit selectedDivesChanged(m_selectedDiveIds);
 }
 
