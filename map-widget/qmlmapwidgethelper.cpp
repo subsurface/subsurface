@@ -23,6 +23,14 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 	        this, SLOT(selectedLocationChanged(MapLocation *)));
 }
 
+void MapWidgetHelper::centerOnDiveSiteUUID(QVariant dive_site_uuid)
+{
+	const uint32_t uuid = qvariant_cast<uint32_t>(dive_site_uuid);
+	struct dive_site *ds = get_dive_site_by_uuid(uuid);
+	if (ds)
+		centerOnDiveSite(ds);
+}
+
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
 	int idx;

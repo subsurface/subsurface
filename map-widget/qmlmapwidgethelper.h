@@ -22,7 +22,8 @@ public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
 	void centerOnDiveSite(struct dive_site *);
-	void reloadMapLocations();
+	Q_INVOKABLE void centerOnDiveSiteUUID(QVariant dive_site_uuid);
+	Q_INVOKABLE void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
