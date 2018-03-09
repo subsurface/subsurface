@@ -242,10 +242,11 @@ Kirigami.Page {
 		watertemp = currentItem.modelData.dive.waterTemp
 		suitIndex = manager.suitList.indexOf(currentItem.modelData.dive.suit)
 		if (currentItem.modelData.dive.buddy.indexOf(",") > 0) {
-			buddyText = currentItem.modelData.dive.buddy;
+			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy.split(",", 1).toString())
 		} else {
 			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy)
 		}
+		buddyText = currentItem.modelData.dive.buddy;
 		divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
 		notes = currentItem.modelData.dive.notes
 		if (currentItem.modelData.dive.singleWeight) {
