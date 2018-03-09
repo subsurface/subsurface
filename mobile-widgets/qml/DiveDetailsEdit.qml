@@ -11,8 +11,8 @@ Item {
 	property int dive_id
 	property int number
 	property alias dateText: txtDate.text
-	property alias locationText: txtLocation.editText
-	property alias locationIndex: txtLocation.currentIndex
+	property alias locationText: locationBox.editText
+	property alias locationIndex: locationBox.currentIndex
 	property alias gpsText: txtGps.text
 	property alias airtempText: txtAirTemp.text
 	property alias watertempText: txtWaterTemp.text
@@ -36,7 +36,7 @@ Item {
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
 	property alias cylinderModel: cylinderBox.model
-	property alias locationModel: txtLocation.model
+	property alias locationModel: locationBox.model
 	property int rating
 	property int visibility
 
@@ -63,7 +63,7 @@ Item {
 	function saveData() {
 		diveDetailsPage.state = "view" // run the transition
 		// apply the changes to the dive_table
-		manager.commitChanges(dive_id, detailsEdit.dateText, detailsEdit.locationText, detailsEdit.gpsText, detailsEdit.durationText,
+		manager.commitChanges(dive_id, detailsEdit.dateText, locationBox.editText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
 				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText, buddyBox.editText,
 				      divemasterBox.currentText != "" ? divemasterBox.currentText : divemasterBox.editText,
@@ -81,7 +81,7 @@ Item {
 		var newIdx = diveModel.getIdxForId(dive_id)
 		diveDetailsListView.currentIndex = newIdx
 		diveDetailsListView.currentItem.modelData.date = detailsEdit.dateText
-		diveDetailsListView.currentItem.modelData.location = detailsEdit.locationText
+		diveDetailsListView.currentItem.modelData.location = locationBox.currentText
 		diveDetailsListView.currentItem.modelData.duration = detailsEdit.durationText
 		diveDetailsListView.currentItem.modelData.depth = detailsEdit.depthText
 		diveDetailsListView.currentItem.modelData.airtemp = detailsEdit.airtempText
@@ -133,7 +133,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.ComboBox {
-				id: txtLocation
+				id: locationBox
 				editable: true
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
