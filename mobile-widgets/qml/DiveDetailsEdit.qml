@@ -12,6 +12,7 @@ Item {
 	property int number
 	property alias dateText: txtDate.text
 	property alias locationText: txtLocation.editText
+	property alias locationIndex: txtLocation.currentIndex
 	property alias gpsText: txtGps.text
 	property alias airtempText: txtAirTemp.text
 	property alias watertempText: txtWaterTemp.text
@@ -136,7 +137,7 @@ Item {
 				editable: true
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
-					diveDetailsListView.currentItem.modelData.dive.locationList : null
+					manager.locationList : null
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onAccepted: {

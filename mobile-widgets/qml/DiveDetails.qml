@@ -26,6 +26,7 @@ Kirigami.Page {
 	property alias duration: detailsEdit.durationText
 	property alias location: detailsEdit.locationText
 	property alias locationModel: detailsEdit.locationModel
+	property alias locationIndex: detailsEdit.locationIndex
 	property alias gps: detailsEdit.gpsText
 	property alias notes: detailsEdit.notesText
 	property alias suitIndex: detailsEdit.suitIndex
@@ -233,6 +234,7 @@ Kirigami.Page {
 		number = currentItem.modelData.dive.number
 		date = currentItem.modelData.dive.date + " " + currentItem.modelData.dive.time
 		location = currentItem.modelData.dive.location
+		locationIndex = manager.locationList.indexOf(currentItem.modelData.dive.location)
 		gps = currentItem.modelData.dive.gps
 		gpsCheckbox = false
 		duration = currentItem.modelData.dive.duration
