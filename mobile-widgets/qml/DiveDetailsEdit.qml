@@ -142,7 +142,11 @@ Item {
 				Layout.fillWidth: true
 				onAccepted: {
 					focus = false
-					gpsText = manager.getGpsFromSiteName(text)
+					gpsText = manager.getGpsFromSiteName(editText)
+				}
+				onActivated: {
+					focus = false
+					gpsText = manager.getGpsFromSiteName(editText)
 				}
 			}
 
