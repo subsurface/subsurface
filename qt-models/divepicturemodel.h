@@ -26,6 +26,7 @@ public:
 	int rowDDStart, rowDDEnd;
 public slots:
 	void setZoomLevel(int level);
+	void updateThumbnail(QString filename, QImage thumbnail);
 private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
