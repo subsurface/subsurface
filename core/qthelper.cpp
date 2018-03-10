@@ -11,6 +11,9 @@
 #include "gettextfromc.h"
 #include "metadata.h"
 #include <sys/time.h>
+#include "exif.h"
+#include "file.h"
+#include "imagedownloader.h"
 #include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>

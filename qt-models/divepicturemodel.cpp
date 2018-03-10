@@ -5,72 +5,10 @@
 #include "core/divelist.h"
 #include "core/imagedownloader.h"
 #include "core/qthelper.h"
-#include "core/metadata.h"
 
-#include <QtConcurrent>
+#include <QFileInfo>
 
 static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
-
-static QImage getThumbnailFromCache(const PictureEntry &entry)
-{
-	// First, check if we know a hash for this filename
-	QString filename = thumbnailFileName(entry.filename);
-	if (filename.isEmpty())
-		return QImage();
-
-	QFile file(filename);
-	if (!file.open(QIODevice::ReadOnly))
-		return QImage();
-	QDataStream stream(&file);
-
-	// Each thumbnail file is composed of a media-type and an image file.
-	// Currently, the type is ignored. This will be used to mark videos.
-	quint32 type;
-	QImage res;
-	stream >> type;
-	stream >> res;
-	return res;
-}
-
-static void addThumbnailToCache(const QImage &thumbnail, const PictureEntry &entry)
-{
-	if (thumbnail.isNull())
-		return;
-
-	QString filename = thumbnailFileName(entry.filename);
-
-	// If we got a thumbnail, we are guaranteed to have its hash and therefore
-	// thumbnailFileName() should return a filename.
-	if (filename.isEmpty()) {
-		qWarning() << "Internal error: can't get filename of recently created thumbnail";
-		return;
-	}
-
-	QSaveFile file(filename);
-	if (!file.open(QIODevice::WriteOnly))
-		return;
-	QDataStream stream(&file);
-
-	// For format of the file, see comments in getThumnailForCache
-	quint32 type = MEDIATYPE_PICTURE;
-	stream << type;
-	stream << thumbnail;
-	file.commit();
-}
-
-static void scaleImages(PictureEntry &entry, int maxSize)
-{
-	QImage thumbnail = getThumbnailFromCache(entry);
-	// If thumbnails were written by an earlier version, they might be smaller than needed.
-	// Rescale in such a case to avoid resizing artifacts.
-	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
-		qDebug() << "No thumbnail in cache for" << entry.filename;
-		thumbnail = getHashedImage(QString(entry.picture->filename));
-		addThumbnailToCache(thumbnail, entry);
-	}
-
-	entry.image = thumbnail;
-}
 
 DivePictureModel *DivePictureModel::instance()
 {
@@ -121,7 +59,8 @@ void DivePictureModel::updateThumbnails()
 {
 	int maxSize = defaultSize * maxZoom;
 	updateZoom();
-	QtConcurrent::blockingMap(pictures, [maxSize](PictureEntry &entry){scaleImages(entry, maxSize);});
+	for (PictureEntry &entry: pictures)
+		entry.image = Thumbnailer::instance()->fetchThumbnail(entry, maxSize);
 }
 
 void DivePictureModel::updateDivePictures()
@@ -131,6 +70,7 @@ void DivePictureModel::updateDivePictures()
 		pictures.clear();
 		endRemoveRows();
 		rowDDStart = rowDDEnd = 0;
+		Thumbnailer::instance()->clearWorkQueue();
 	}
 
 	// if the dive_table is empty, quit
