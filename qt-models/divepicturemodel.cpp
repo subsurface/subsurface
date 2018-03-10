@@ -5,44 +5,13 @@
 #include "core/divelist.h"
 #include "core/imagedownloader.h"
 
-#include <QtConcurrent>
+#include <QFileInfo>
 
-extern QHash <QString, QImage> thumbnailCache;
-extern QHash <QString, QImage> videoThumbnailCache;
-static QMutex thumbnailMutex;
 static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
 
-static QImage getThumbnailFromCache(PictureEntry &entry, int maxSize)
+static void setThumbnail(PictureEntry &entry, int size, int maxSize)
 {
-	QMutexLocker l(&thumbnailMutex);
-
-	// Currently we only save a null picture in the videoThumbnailCache
-	// as a marker that this was identified as a video. In the future,
-	// use the videoThumbnail cache to save an actual still image.
-	entry.isVideo = videoThumbnailCache.contains(entry.filename);
-	if (entry.isVideo)
-		return QImage(":video-icon").scaled(maxSize, maxSize, Qt::KeepAspectRatio);
-
-	return thumbnailCache.value(entry.filename);
-}
-
-static void scaleImages(PictureEntry &entry, int size, int maxSize)
-{
-	QImage thumbnail = getThumbnailFromCache(entry, maxSize);
-	// If thumbnails were written by an earlier version, they might be smaller than needed.
-	// Rescale in such a case to avoid resizing artifacts.
-	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
-		qDebug() << "No thumbnail in cache for" << entry.filename;
-		auto res = getHashedImage(QString(entry.picture->filename));
-		thumbnail = res.first.scaled(maxSize, maxSize, Qt::KeepAspectRatio);
-		entry.isVideo = res.second;
-		QMutexLocker l(&thumbnailMutex);
-		if (entry.isVideo)
-			videoThumbnailCache.insert(entry.filename, thumbnail);
-		else
-			thumbnailCache.insert(entry.filename, thumbnail);
-	}
-
+	QImage thumbnail = Thumbnailer::instance()->getThumbnail(entry, maxSize);
 	entry.imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
 	entry.image = size == maxSize ? thumbnail
 				      : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
@@ -92,7 +61,8 @@ void DivePictureModel::updateThumbnails()
 	int defaultSize = defaultIconMetrics().sz_pic;
 	int maxSize = defaultSize * maxZoom;
 	int size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
-	QtConcurrent::blockingMap(pictures, [size, maxSize](PictureEntry &entry){scaleImages(entry, size, maxSize);});
+	for (PictureEntry &entry: pictures)
+		setThumbnail(entry, size, maxSize);
 }
 
 void DivePictureModel::updateDivePictures()

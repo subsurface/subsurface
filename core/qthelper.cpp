@@ -10,6 +10,9 @@
 #include "time.h"
 #include "gettextfromc.h"
 #include <sys/time.h>
+#include "exif.h"
+#include "file.h"
+#include "imagedownloader.h"
 #include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
@@ -1054,8 +1057,6 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 QHash<QString, QByteArray> hashOf;
 QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
-QHash <QString, QImage> thumbnailCache;
-QHash <QString, QImage> videoThumbnailCache;
 
 static QByteArray getHash(const QString &filename)
 {
@@ -1091,8 +1092,7 @@ void read_hashes()
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
 		stream >> hashOf;
-		stream >> thumbnailCache;
-		stream >> videoThumbnailCache;
+		Thumbnailer::instance()->readHashes(stream);
 		hashfile.close();
 	}
 	localFilenameOf.remove("");
@@ -1113,8 +1113,7 @@ void write_hashes()
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
 		stream << hashOf;
-		stream << thumbnailCache;
-		stream << videoThumbnailCache;
+		Thumbnailer::instance()->writeHashes(stream);
 		hashfile.commit();
 	} else {
 		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();

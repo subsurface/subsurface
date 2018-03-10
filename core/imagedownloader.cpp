@@ -4,9 +4,11 @@
 #include "divelist.h"
 #include "qthelper.h"
 #include "imagedownloader.h"
+#include "qt-models/divepicturemodel.h"
 #include <unistd.h>
 #include <QString>
 #include <QImageReader>
+#include <QDataStream>
 
 #include <QtConcurrent>
 
@@ -133,21 +135,92 @@ std::pair<QImage,bool> getHashedImage(const QString &file)
 			// That didn't produce a local filename.
 			// Try the cloud server
 			// TODO: This is dead code at the moment.
-			QtConcurrent::run(loadPicture, file, true);
+			loadPicture(file, true);
 		} else {
 			// Load locally from translated file name
 			res = loadImage(filenameLocal);
 			if (!res.first.isNull() || res.second) {
 				// Make sure the hash still matches the image file
-				QtConcurrent::run(hashPicture, filenameLocal);
+				hashPicture(filenameLocal);
 			} else {
 				// Interpret filename as URL
-				QtConcurrent::run(loadPicture, filenameLocal, false);
+				loadPicture(filenameLocal, false);
 			}
 		}
 	} else {
 		// We loaded successfully. Now, make sure hash is up to date.
-		QtConcurrent::run(hashPicture, file);
+		hashPicture(file);
 	}
 	return res;
+}
+
+Thumbnailer *Thumbnailer::instance()
+{
+	static Thumbnailer self;
+	return &self;
+}
+
+void Thumbnailer::processItem(QString filename, int size)
+{
+	auto res = getHashedImage(filename);
+	QImage thumbnail = res.first;
+	bool isVideo = res.second;
+
+	if (thumbnail.isNull() && !isVideo) {
+		// TODO: Don't misuse filter close icon
+		thumbnail = QImage(":filter-close").scaled(size, size, Qt::KeepAspectRatio);
+	} else {
+		thumbnail = isVideo ?
+			QImage(":video-icon").scaled(size, size, Qt::KeepAspectRatio) :
+			res.first.scaled(size, size, Qt::KeepAspectRatio);
+		QMutexLocker l(&lock);
+		if (isVideo)
+			videoThumbnailCache.insert(filename, QImage());
+		else
+			thumbnailCache.insert(filename, thumbnail);
+	}
+	emit thumbnailChanged(filename, thumbnail, isVideo);
+	workingOn.remove(filename);
+}
+
+void Thumbnailer::writeHashes(QDataStream &stream) const
+{
+	QMutexLocker l(&lock);
+	stream << thumbnailCache;
+	stream << videoThumbnailCache;
+}
+
+void Thumbnailer::readHashes(QDataStream &stream)
+{
+	QMutexLocker l(&lock);
+	stream >> thumbnailCache;
+	stream >> videoThumbnailCache;
+}
+
+QImage Thumbnailer::getThumbnail(PictureEntry &entry, int size)
+{
+	QMutexLocker l(&lock);
+
+	// Currently we only save a null picture in the videoThumbnailCache
+	// as a marker that this was identified as a video. In the future,
+	// use the videoThumbnail cache to save an actual still image.
+	entry.isVideo = videoThumbnailCache.contains(entry.filename);
+	if (entry.isVideo)
+		return QImage(":video-icon").scaled(size, size, Qt::KeepAspectRatio);
+
+	QString filename = entry.filename;
+	if (thumbnailCache.contains(filename)) {
+		// If thumbnails were written by an earlier version, they might be smaller than needed.
+		// Rescale in such a case to avoid resizing artifacts.
+		QImage res = thumbnailCache.value(filename);
+		if (!res.isNull() && (res.size().width() >= size || res.size().height() >= size))
+			return res;
+	}
+
+	// We didn't find an entry for this picture - schedule thumbnail calculation and return dummy icon
+	if (!workingOn.contains(filename)) {
+		workingOn.insert(filename);
+		QtConcurrent::run([this, filename, size]() { processItem(filename, size); });
+	}
+	return QImage(":photo-icon").scaled(size, size, Qt::KeepAspectRatio);
 }
