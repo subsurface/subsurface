@@ -21,6 +21,8 @@ DivePictureModel::DivePictureModel() : rowDDStart(0),
 				       zoomLevel(0.0),
 				       defaultSize(defaultIconMetrics().sz_pic)
 {
+	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
+		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
 }
 
 void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
@@ -159,4 +161,14 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return pictures.count();
+}
+
+void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail)
+{
+	for (int i = 0; i < pictures.size(); ++i) {
+		if (pictures[i].filename != filename)
+			continue;
+		pictures[i].image = thumbnail;
+		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
+	}
 }
