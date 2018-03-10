@@ -9,12 +9,10 @@
 
 static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
 
-static void setThumbnail(PictureEntry &entry, int size, int maxSize)
+void PictureEntry::setThumbnail(const QImage &thumbnail, int size, int maxSize)
 {
-	QImage thumbnail = Thumbnailer::instance()->getThumbnail(entry, maxSize);
-	entry.imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
-	entry.image = size == maxSize ? thumbnail
-				      : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+	imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
+	image = size == maxSize ? thumbnail : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -27,6 +25,8 @@ DivePictureModel::DivePictureModel() : rowDDStart(0),
 				       rowDDEnd(0),
 				       zoomLevel(0.0)
 {
+	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
+		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
 }
 
 void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
@@ -49,7 +49,7 @@ void DivePictureModel::setZoomLevel(int level)
 	layoutChanged();
 }
 
-void DivePictureModel::updateThumbnails()
+std::pair<int, int> DivePictureModel::thumbnailSize() const
 {
 	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
 	// We use exponential scaling so that the central point is the standard
@@ -61,8 +61,16 @@ void DivePictureModel::updateThumbnails()
 	int defaultSize = defaultIconMetrics().sz_pic;
 	int maxSize = defaultSize * maxZoom;
 	int size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
-	for (PictureEntry &entry: pictures)
-		setThumbnail(entry, size, maxSize);
+	return { size, maxSize };
+}
+
+void DivePictureModel::updateThumbnails()
+{
+	auto sizes = thumbnailSize();
+	for (PictureEntry &entry: pictures) {
+		QImage thumbnail = Thumbnailer::instance()->getThumbnail(entry, sizes.second);
+		entry.setThumbnail(thumbnail, sizes.first, sizes.second);
+	}
 }
 
 void DivePictureModel::updateDivePictures()
@@ -163,4 +171,16 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return pictures.count();
+}
+
+void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, bool isVideo)
+{
+	auto sizes = thumbnailSize();
+	for (int i = 0; i < pictures.size(); ++i) {
+		if (pictures[i].filename != filename)
+			continue;
+		pictures[i].isVideo = isVideo;
+		pictures[i].setThumbnail(thumbnail, sizes.first, sizes.second);
+		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
+	}
 }
