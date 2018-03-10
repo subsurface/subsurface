@@ -4,9 +4,12 @@
 #include "divelist.h"
 #include "qthelper.h"
 #include "imagedownloader.h"
+#include "qt-models/divepicturemodel.h"
+#include "metadata.h"
 #include <unistd.h>
 #include <QString>
 #include <QImageReader>
+#include <QDataStream>
 
 #include <QtConcurrent>
 
@@ -118,21 +121,122 @@ QImage getHashedImage(const QString &file)
 			// That didn't produce a local filename.
 			// Try the cloud server
 			// TODO: This is dead code at the moment.
-			QtConcurrent::run(loadPicture, file, true);
+			loadPicture(file, true);
 		} else {
 			// Load locally from translated file name
 			res = loadImage(filenameLocal);
 			if (!res.isNull()) {
 				// Make sure the hash still matches the image file
-				QtConcurrent::run(hashPicture, filenameLocal);
+				hashPicture(filenameLocal);
 			} else {
 				// Interpret filename as URL
-				QtConcurrent::run(loadPicture, filenameLocal, false);
+				loadPicture(filenameLocal, false);
 			}
 		}
 	} else {
 		// We loaded successfully. Now, make sure hash is up to date.
-		QtConcurrent::run(hashPicture, file);
+		hashPicture(file);
 	}
 	return res;
+}
+
+Thumbnailer::Thumbnailer()
+{
+	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
+	// calculating multiple thumbnails at once and this hopefully helps.
+	pool.setMaxThreadCount(1);
+}
+
+Thumbnailer *Thumbnailer::instance()
+{
+	static Thumbnailer self;
+	return &self;
+}
+
+static QImage getThumbnailFromCache(const QString &picture_filename)
+{
+	// First, check if we know a hash for this filename
+	QString filename = thumbnailFileName(picture_filename);
+	if (filename.isEmpty())
+		return QImage();
+
+	QFile file(filename);
+	if (!file.open(QIODevice::ReadOnly))
+		return QImage();
+	QDataStream stream(&file);
+
+	// Each thumbnail file is composed of a media-type and an image file.
+	// Currently, the type is ignored. This will be used to mark videos.
+	quint32 type;
+	QImage res;
+	stream >> type;
+	stream >> res;
+	return res;
+}
+
+static void addThumbnailToCache(const QImage &thumbnail, const QString &picture_filename)
+{
+	if (thumbnail.isNull())
+		return;
+
+	QString filename = thumbnailFileName(picture_filename);
+
+	// If we got a thumbnail, we are guaranteed to have its hash and therefore
+	// thumbnailFileName() should return a filename.
+	if (filename.isEmpty()) {
+		qWarning() << "Internal error: can't get filename of recently created thumbnail";
+		return;
+	}
+
+	QSaveFile file(filename);
+	if (!file.open(QIODevice::WriteOnly))
+		return;
+	QDataStream stream(&file);
+
+	// For format of the file, see comments in getThumnailForCache
+	quint32 type = MEDIATYPE_PICTURE;
+	stream << type;
+	stream << thumbnail;
+	file.commit();
+}
+
+void Thumbnailer::processItem(QString filename, int size)
+{
+	QImage thumbnail = getThumbnailFromCache(filename);
+
+	if (thumbnail.isNull()) {
+		thumbnail = getHashedImage(filename);
+		if (thumbnail.isNull()) {
+			// TODO: Don't misuse filter close icon
+			thumbnail = QImage(":filter-close").scaled(size, size, Qt::KeepAspectRatio);
+		} else {
+			thumbnail = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+			addThumbnailToCache(thumbnail, filename);
+		}
+	}
+
+	QMutexLocker l(&lock);
+	emit thumbnailChanged(filename, thumbnail);
+	workingOn.remove(filename);
+}
+
+QImage Thumbnailer::fetchThumbnail(PictureEntry &entry, int size)
+{
+	QMutexLocker l(&lock);
+
+	// We are not currently fetching this thumbnail - add it to the list.
+	const QString &filename = entry.filename;
+	if (!workingOn.contains(filename)) {
+		workingOn.insert(filename,
+				 QtConcurrent::run(&pool, [this, filename, size]() { processItem(filename, size); }));
+	}
+	return QImage(":photo-icon").scaled(size, size, Qt::KeepAspectRatio);
+}
+
+void Thumbnailer::clearWorkQueue()
+{
+	QMutexLocker l(&lock);
+	for (auto it = workingOn.begin(); it != workingOn.end(); ++it)
+		it->cancel();
+	workingOn.clear();
 }
