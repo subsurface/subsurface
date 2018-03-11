@@ -160,11 +160,12 @@ Thumbnailer *Thumbnailer::instance()
 	return &self;
 }
 
-void Thumbnailer::processItem(QString filename, int size)
+void Thumbnailer::processItem(QString filename)
 {
 	auto res = getHashedImage(filename);
 	QImage thumbnail = res.first;
 	bool isVideo = res.second;
+	int size = maxThumbnailSize();
 
 	if (thumbnail.isNull() && !isVideo) {
 		// TODO: Don't misuse filter close icon
@@ -197,8 +198,9 @@ void Thumbnailer::readHashes(QDataStream &stream)
 	stream >> videoThumbnailCache;
 }
 
-QImage Thumbnailer::getThumbnail(PictureEntry &entry, int size)
+QImage Thumbnailer::getThumbnail(PictureEntry &entry)
 {
+	int size = maxThumbnailSize();
 	QMutexLocker l(&lock);
 
 	// Currently we only save a null picture in the videoThumbnailCache
@@ -220,7 +222,31 @@ QImage Thumbnailer::getThumbnail(PictureEntry &entry, int size)
 	// We didn't find an entry for this picture - schedule thumbnail calculation and return dummy icon
 	if (!workingOn.contains(filename)) {
 		workingOn.insert(filename);
-		QtConcurrent::run([this, filename, size]() { processItem(filename, size); });
+		QtConcurrent::run([this, filename]() { processItem(filename); });
 	}
 	return QImage(":photo-icon").scaled(size, size, Qt::KeepAspectRatio);
+}
+
+static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
+
+int Thumbnailer::defaultThumbnailSize()
+{
+	return defaultIconMetrics().sz_pic;
+}
+
+int Thumbnailer::maxThumbnailSize()
+{
+	return defaultThumbnailSize() * maxZoom;
+}
+
+int Thumbnailer::thumbnailSize(double zoomLevel)
+{
+	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
+	// We use exponential scaling so that the central point is the standard
+	// size and the minimum and maximum extreme points are a third respectively
+	// three times the standard size.
+	// Naturally, these three zoom levels are then represented by
+	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
+	// calculated as standard_size*3.0^zoomLevel.
+	return static_cast<int>(round(defaultThumbnailSize() * pow(maxZoom, zoomLevel)));
 }

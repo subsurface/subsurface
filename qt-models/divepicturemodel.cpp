@@ -7,12 +7,10 @@
 
 #include <QFileInfo>
 
-static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
-
-void PictureEntry::setThumbnail(const QImage &thumbnail, int size, int maxSize)
+void PictureEntry::setThumbnail(const QImage &thumbnail, int size, int defaultSize)
 {
-	imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
-	image = size == maxSize ? thumbnail : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+	imageProfile = thumbnail.scaled(defaultSize, defaultSize, Qt::KeepAspectRatio);
+	image = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -49,27 +47,13 @@ void DivePictureModel::setZoomLevel(int level)
 	layoutChanged();
 }
 
-std::pair<int, int> DivePictureModel::thumbnailSize() const
-{
-	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
-	// We use exponential scaling so that the central point is the standard
-	// size and the minimum and maximum extreme points are a third respectively
-	// three times the standard size.
-	// Naturally, these three zoom levels are then represented by
-	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
-	// calculated as standard_size*3.0^zoomLevel.
-	int defaultSize = defaultIconMetrics().sz_pic;
-	int maxSize = defaultSize * maxZoom;
-	int size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
-	return { size, maxSize };
-}
-
 void DivePictureModel::updateThumbnails()
 {
-	auto sizes = thumbnailSize();
+	int size = Thumbnailer::thumbnailSize(zoomLevel);
+	int defaultSize = Thumbnailer::defaultThumbnailSize();
 	for (PictureEntry &entry: pictures) {
-		QImage thumbnail = Thumbnailer::instance()->getThumbnail(entry, sizes.second);
-		entry.setThumbnail(thumbnail, sizes.first, sizes.second);
+		QImage thumbnail = Thumbnailer::instance()->getThumbnail(entry);
+		entry.setThumbnail(thumbnail, size, defaultSize);
 	}
 }
 
@@ -175,12 +159,13 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 
 void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, bool isVideo)
 {
-	auto sizes = thumbnailSize();
+	int size = Thumbnailer::thumbnailSize(zoomLevel);
+	int defaultSize = Thumbnailer::defaultThumbnailSize();
 	for (int i = 0; i < pictures.size(); ++i) {
 		if (pictures[i].filename != filename)
 			continue;
 		pictures[i].isVideo = isVideo;
-		pictures[i].setThumbnail(thumbnail, sizes.first, sizes.second);
+		pictures[i].setThumbnail(thumbnail, size, defaultSize);
 		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
 	}
 }

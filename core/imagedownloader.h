@@ -26,13 +26,16 @@ public:
 	static Thumbnailer *instance();
 
 	// Get thumbnail from cache. If it is a video, the video flag will of entry be set.
-	QImage getThumbnail(PictureEntry &entry, int maxSize);
+	QImage getThumbnail(PictureEntry &entry);
 	void writeHashes(QDataStream &) const;
 	void readHashes(QDataStream &);
+	static int maxThumbnailSize();
+	static int defaultThumbnailSize();
+	static int thumbnailSize(double zoomLevel);
 signals:
 	void thumbnailChanged(QString filename, QImage thumbnail, bool isVideo);
 private:
-	void processItem(QString filename, int size);
+	void processItem(QString filename);
 
 	mutable QMutex lock;
 
