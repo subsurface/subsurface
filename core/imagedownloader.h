@@ -10,13 +10,17 @@
 class ImageDownloader : public QObject {
 	Q_OBJECT
 public:
-	ImageDownloader(const QString &filename);
-	void load(bool fromHash);
-
+	static ImageDownloader *instance();
+	ImageDownloader();
+public slots:
+	void load(QString filename, bool fromHash);
+signals:
+	void loaded(QString filename);
+	void failed(QString filename);
 private:
-	bool loadFromUrl(const QUrl &);	// return true on success
-	void saveImage(QNetworkReply *reply, bool &success);
-	QString filename;
+	QNetworkAccessManager manager;
+	void loadFromUrl(const QString &filename, const QUrl &);
+	void saveImage(QNetworkReply *reply);
 };
 
 class PictureEntry;
@@ -32,9 +36,13 @@ public:
 	static int maxThumbnailSize();
 	static int defaultThumbnailSize();
 	static int thumbnailSize(double zoomLevel);
+public slots:
+	void imageDownloaded(QString filename);
+	void imageDownloadFailed(QString filename);
 signals:
 	void thumbnailChanged(QString filename, QImage thumbnail, bool isVideo);
 private:
+	Thumbnailer();
 	void processItem(QString filename);
 
 	mutable QMutex lock;
@@ -43,9 +51,5 @@ private:
 	QHash<QString, QImage> videoThumbnailCache;
 	QSet<QString> workingOn;
 };
-
-// Currently, if we suspect a video, return a null image and true.
-// TODO: return an actual still frame from the video.
-std::pair<QImage, bool> getHashedImage(const QString &filename);
 
 #endif // IMAGEDOWNLOADER_H

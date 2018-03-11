@@ -18,81 +18,71 @@ static QUrl cloudImageURL(const char *filename)
 	return QUrl::fromUserInput(QString("https://cloud.subsurface-divelog.org/images/").append(hash));
 }
 
-ImageDownloader::ImageDownloader(const QString &filename_in) : filename(filename_in)
+// Note: this is a global instead of a function-local variable on purpose.
+// We don't want this to be generated in a different thread context if
+// ImageDownloader::instance() is called from a worker thread.
+static ImageDownloader imageDownloader;
+ImageDownloader *ImageDownloader::instance()
 {
+	return &imageDownloader;
 }
 
-void ImageDownloader::load(bool fromHash)
+ImageDownloader::ImageDownloader()
 {
-	if (fromHash && loadFromUrl(cloudImageURL(qPrintable(filename))))
-		return;
-
-	// If loading from hash failed, try to load from filename
-	loadFromUrl(QUrl::fromUserInput(filename));
+	connect(&manager, &QNetworkAccessManager::finished, this, &ImageDownloader::saveImage);
 }
 
-bool ImageDownloader::loadFromUrl(const QUrl &url)
+void ImageDownloader::load(QString filename, bool fromHash)
 {
-	bool success = false;
-	if (url.isValid()) {
-		QEventLoop loop;
-		QNetworkAccessManager manager;
-		QNetworkRequest request(url);
-		connect(&manager, &QNetworkAccessManager::finished, this,
-			[this,&success] (QNetworkReply *reply) { saveImage(reply, success); });
-		connect(&manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
-		qDebug() << "Downloading image from" << url;
-		QNetworkReply *reply = manager.get(request);
-		loop.exec();
-		delete reply;
+	QUrl url = fromHash ? cloudImageURL(qPrintable(filename)) : QUrl::fromUserInput(filename);
+
+	if (!url.isValid())
+		emit failed(filename);
+
+	QNetworkRequest request(url);
+	request.setAttribute(QNetworkRequest::User, filename);
+	request.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), fromHash);
+	manager.get(request);
+}
+
+void ImageDownloader::saveImage(QNetworkReply *reply)
+{
+	QString filename = reply->request().attribute(QNetworkRequest::User).toString();
+
+	if (reply->error() != QNetworkReply::NoError) {
+		bool fromHash = reply->request().attribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1)).toBool();
+		if (fromHash)
+			load(filename, false);
+		else
+			emit failed(filename);
+	} else {
+		QByteArray imageData = reply->readAll();
+		QCryptographicHash hash(QCryptographicHash::Sha1);
+		hash.addData(imageData);
+		QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+		QDir dir(path);
+		if (!dir.exists())
+			dir.mkpath(path);
+		QFile imageFile(path.append("/").append(hash.result().toHex()));
+		if (imageFile.open(QIODevice::WriteOnly)) {
+			qDebug() << "Write image to" << imageFile.fileName();
+			QDataStream stream(&imageFile);
+			stream.writeRawData(imageData.data(), imageData.length());
+			imageFile.waitForBytesWritten(-1);
+			imageFile.close();
+			learnHash(filename, imageFile.fileName(), hash.result());
+		}
+		emit loaded(filename);
 	}
-	return success;
-}
 
-void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
-{
-	success = false;
-	QByteArray imageData = reply->readAll();
-	QImage image;
-	image.loadFromData(imageData);
-	if (image.isNull())
-		return;
-	success = true;
-	QCryptographicHash hash(QCryptographicHash::Sha1);
-	hash.addData(imageData);
-	QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
-	QDir dir(path);
-	if (!dir.exists())
-		dir.mkpath(path);
-	QFile imageFile(path.append("/").append(hash.result().toHex()));
-	if (imageFile.open(QIODevice::WriteOnly)) {
-		qDebug() << "Write image to" << imageFile.fileName();
-		QDataStream stream(&imageFile);
-		stream.writeRawData(imageData.data(), imageData.length());
-		imageFile.waitForBytesWritten(-1);
-		imageFile.close();
-		learnHash(filename, imageFile.fileName(), hash.result());
-	}
-	// This should be called to make the picture actually show.
-	// Problem is DivePictureModel is not in core.
-	// Nevertheless, the image shows when the dive is selected the next time.
-	// DivePictureModel::instance()->updateDivePictures();
-
+	reply->deleteLater();
 }
 
 static void loadPicture(QString filename, bool fromHash)
 {
-	static QSet<QString> queuedPictures;
-	static QMutex pictureQueueMutex;
-
-	QMutexLocker locker(&pictureQueueMutex);
-	if (queuedPictures.contains(filename))
-		return;
-	queuedPictures.insert(filename);
-	locker.unlock();
-
-	ImageDownloader download(filename);
-	download.load(fromHash);
+	// This has to be done in UI main thread, because QNetworkManager refuses
+	// to treat requests from other threads.
+	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QString, filename), Q_ARG(bool, fromHash));
 }
 
 static bool isVideoFile(const QString &filename)
@@ -120,13 +110,17 @@ static std::pair<QImage,bool> loadImage(const QString &fileName, const char *for
 	return res;
 }
 
-std::pair<QImage,bool> getHashedImage(const QString &file)
+// Returns: thumbnail, isVideo, still loading
+// Currently, if we suspect a video, return a null image and true.
+// TODO: return an actual still frame from the video.
+static std::tuple<QImage,bool,bool> getHashedImage(const QString &file)
 {
-	std::pair<QImage,bool> res { {}, false };
+	std::pair<QImage,bool> thumb { {}, false };
+	bool stillLoading = false;
 	QUrl url = QUrl::fromUserInput(localFilePath(file));
 	if (url.isLocalFile())
-		res = loadImage(url.toLocalFile());
-	if (res.first.isNull() && !res.second) {
+		thumb = loadImage(url.toLocalFile());
+	if (thumb.first.isNull() && !thumb.second) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filenameLocal = localFilePath(qPrintable(file));
@@ -136,22 +130,24 @@ std::pair<QImage,bool> getHashedImage(const QString &file)
 			// Try the cloud server
 			// TODO: This is dead code at the moment.
 			loadPicture(file, true);
+			stillLoading = true;
 		} else {
 			// Load locally from translated file name
-			res = loadImage(filenameLocal);
-			if (!res.first.isNull() || res.second) {
+			thumb = loadImage(filenameLocal);
+			if (!thumb.first.isNull() || thumb.second) {
 				// Make sure the hash still matches the image file
 				hashPicture(filenameLocal);
 			} else {
 				// Interpret filename as URL
 				loadPicture(filenameLocal, false);
+				stillLoading = true;
 			}
 		}
 	} else {
 		// We loaded successfully. Now, make sure hash is up to date.
 		hashPicture(file);
 	}
-	return res;
+	return { thumb.first, thumb.second, stillLoading };
 }
 
 Thumbnailer *Thumbnailer::instance()
@@ -160,27 +156,52 @@ Thumbnailer *Thumbnailer::instance()
 	return &self;
 }
 
+Thumbnailer::Thumbnailer()
+{
+	connect(ImageDownloader::instance(), &ImageDownloader::loaded, this, &Thumbnailer::imageDownloaded);
+	connect(ImageDownloader::instance(), &ImageDownloader::failed, this, &Thumbnailer::imageDownloadFailed);
+}
+
 void Thumbnailer::processItem(QString filename)
 {
 	auto res = getHashedImage(filename);
-	QImage thumbnail = res.first;
-	bool isVideo = res.second;
-	int size = maxThumbnailSize();
+	if (std::get<2>(res))
+		return;
+	QImage thumbnail = std::get<0>(res);
+	bool isVideo = std::get<1>(res);
 
 	if (thumbnail.isNull() && !isVideo) {
-		// TODO: Don't misuse filter close icon
-		thumbnail = QImage(":filter-close").scaled(size, size, Qt::KeepAspectRatio);
+		imageDownloadFailed(filename);
+		return;
 	} else {
+		int size = maxThumbnailSize();
 		thumbnail = isVideo ?
 			QImage(":video-icon").scaled(size, size, Qt::KeepAspectRatio) :
-			res.first.scaled(size, size, Qt::KeepAspectRatio);
+			thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 		QMutexLocker l(&lock);
 		if (isVideo)
 			videoThumbnailCache.insert(filename, QImage());
 		else
 			thumbnailCache.insert(filename, thumbnail);
+		workingOn.remove(filename);
 	}
 	emit thumbnailChanged(filename, thumbnail, isVideo);
+}
+
+void Thumbnailer::imageDownloaded(QString filename)
+{
+	// Image was downloaded and the filename connected with a hash.
+	// Try thumbnailing again.
+	QtConcurrent::run([this, filename]() { processItem(filename); });
+}
+
+void Thumbnailer::imageDownloadFailed(QString filename)
+{
+	int size = maxThumbnailSize();
+	// TODO: Don't misuse filter close icon
+	QImage thumbnail = QImage(":filter-close").scaled(size, size, Qt::KeepAspectRatio);
+	emit thumbnailChanged(filename, thumbnail, false);
+	QMutexLocker l(&lock);
 	workingOn.remove(filename);
 }
 
