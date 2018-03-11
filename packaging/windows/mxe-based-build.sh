@@ -221,6 +221,7 @@ rm -rf subsurface
 # first copy the Qt plugins in place
 QT_PLUGIN_DIRECTORIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
+$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/mediaservice \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/geoservices \
 $BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
