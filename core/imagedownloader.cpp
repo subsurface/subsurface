@@ -85,6 +85,110 @@ static void loadPicture(QString filename, bool fromHash)
 	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QString, filename), Q_ARG(bool, fromHash));
 }
 
+// Note: this is a global instead of a function-local variable on purpose.
+// We don't want this to be generated in a different thread context if
+// ImageDownloader::instance() is called from a worker thread.
+static VideoFrameExtractor frameExtractor;
+VideoFrameExtractor *VideoFrameExtractor::instance()
+{
+	return &frameExtractor;
+}
+
+VideoFrameExtractor::VideoFrameExtractor() : player(nullptr),
+	processingItem(false),
+	doneExtracting(false)
+{
+	connect(this, &VideoFrameExtractor::extracted, Thumbnailer::instance(), &Thumbnailer::frameExtracted);
+	connect(this, &VideoFrameExtractor::failed, Thumbnailer::instance(), &Thumbnailer::imageDownloadFailed);
+}
+
+void VideoFrameExtractor::extract(QString originalFilename, QString filename)
+{
+	qDebug() << QString("VideoFrameExtractor: extract %1 (=%2)").arg(originalFilename, qPrintable(filename));
+	workQueue.enqueue({originalFilename, filename});
+	processItem();
+}
+
+void VideoFrameExtractor::playerStateChanged(QMediaPlayer::State state)
+{
+	qDebug() << "VideoFrameExtractor: state changed to " << (int)state;
+	if (state != QMediaPlayer::StoppedState)
+		return;
+	qDebug() << "VideoFrameExtractor: state stopped";
+	if (!doneExtracting) {
+		qInfo() << "VideoFrameExtractor: stopped before getting image!";
+		// State changed to stopped without a frame having been processed.
+		// Count this as an error.
+		emit failed(originalFilename);
+		doneExtracting = true;
+	}
+	processingItem = false;
+	processItem();
+}
+
+void VideoFrameExtractor::processItem()
+{
+	qDebug() << "VideoFrameExtractor: process item - queue length " << workQueue.size();
+	if (processingItem || workQueue.empty())
+		return;
+
+	if (!player) {
+		player = new QMediaPlayer();
+		connect(player, &QMediaPlayer::stateChanged, this, &VideoFrameExtractor::playerStateChanged);
+		player->setVideoOutput(this);
+		player->setVolume(0);
+	}
+	processingItem = true;
+	auto item = workQueue.dequeue();
+	qDebug() << QString("VideoFrameExtractor: processing item %1 (=%2)").arg(item.first, item.second);
+
+	// Create a new extractor. It will delete itself on either failure or success.
+	QString filename = item.second;
+	originalFilename = item.first;
+	player->setMedia(QUrl::fromLocalFile(filename));
+	doneExtracting = false;
+	player->play();
+}
+
+bool VideoFrameExtractor::present(const QVideoFrame &frame_in)
+{
+	qDebug() << "VideoFrameExtractor: present frame " << workQueue.size();
+	// We're getting a additional present() calls after the first (not yet sure why). Let's just nop if we do.
+	if (doneExtracting) {
+		qDebug() << "VideoFrameExtractor: present frame after stopping" << workQueue.size();
+		return false;
+	}
+	doneExtracting = true;
+
+	QVideoFrame frame(frame_in);	// Copy so that we can map
+	frame.map(QAbstractVideoBuffer::ReadOnly);
+	QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
+	bool ret = format != QImage::Format_Invalid;
+	if (ret) {
+		QImage img(frame.bits(), frame.width(), frame.height(), format);
+		qDebug() << "VideoFrameExtractor: extracted " << originalFilename;
+		emit extracted(originalFilename, img);
+	} else {
+		qInfo() << "VideoFrameExtractor: failed frame extraction from " << originalFilename;
+		emit failed(originalFilename);
+	}
+
+	qDebug() << "VideoFrameExtractor: stopping player";
+	player->stop();
+	player->setMedia(QMediaContent());
+	return ret;
+}
+
+QList<QVideoFrame::PixelFormat> VideoFrameExtractor::supportedPixelFormats(QAbstractVideoBuffer::HandleType) const
+{
+	return {
+		QVideoFrame::Format_ARGB32,
+		QVideoFrame::Format_RGB32,
+		QVideoFrame::Format_RGB24,
+		QVideoFrame::Format_Jpeg
+	};
+}
+
 static bool isVideoFile(const QString &filename)
 {
 	// At the moment, we're very crude:
@@ -97,30 +201,31 @@ static bool isVideoFile(const QString &filename)
 	return fi.exists() && fi.isFile();
 }
 
-static std::pair<QImage,bool> loadImage(const QString &fileName, const char *format = nullptr)
+static std::pair<QImage,bool> loadImage(const QString &originalFileName, const QString &fileName)
 {
 	std::pair<QImage,bool> res { {}, false };
-	QImageReader reader(fileName, format);
+	QImageReader reader(fileName);
 	res.first = reader.read();
 	if (res.first.isNull()) {
 		res.second = isVideoFile(fileName);
 		if (!res.second)
 			qInfo() << "Error loading image" << fileName << (int)reader.error() << reader.errorString();
 	}
+	if (res.second) // Got a video - process frames in background
+		QMetaObject::invokeMethod(VideoFrameExtractor::instance(), "extract", Qt::AutoConnection, Q_ARG(QString, originalFileName), Q_ARG(QString, fileName));
 	return res;
 }
 
-// Returns: thumbnail, isVideo, still loading
-// Currently, if we suspect a video, return a null image and true.
-// TODO: return an actual still frame from the video.
-static std::tuple<QImage,bool,bool> getHashedImage(const QString &file)
+// Returns: thumbnail, still loading
+static std::pair<QImage,bool> getHashedImage(const QString &file)
 {
 	std::pair<QImage,bool> thumb { {}, false };
-	bool stillLoading = false;
 	QUrl url = QUrl::fromUserInput(localFilePath(file));
 	if (url.isLocalFile())
-		thumb = loadImage(url.toLocalFile());
-	if (thumb.first.isNull() && !thumb.second) {
+		thumb = loadImage(file, url.toLocalFile());
+	if (thumb.second)
+		return thumb;	// Got a video - wait for background processing to finish.
+	if (thumb.first.isNull()) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filenameLocal = localFilePath(qPrintable(file));
@@ -130,24 +235,26 @@ static std::tuple<QImage,bool,bool> getHashedImage(const QString &file)
 			// Try the cloud server
 			// TODO: This is dead code at the moment.
 			loadPicture(file, true);
-			stillLoading = true;
+			thumb.second = true;
 		} else {
 			// Load locally from translated file name
-			thumb = loadImage(filenameLocal);
-			if (!thumb.first.isNull() || thumb.second) {
+			thumb = loadImage(file, filenameLocal);
+			if (thumb.second)
+				return thumb;	// Got a video - wait for background processing to finish.
+			if (!thumb.first.isNull()) {
 				// Make sure the hash still matches the image file
 				hashPicture(filenameLocal);
 			} else {
 				// Interpret filename as URL
 				loadPicture(filenameLocal, false);
-				stillLoading = true;
+				thumb.second = true;
 			}
 		}
 	} else {
 		// We loaded successfully. Now, make sure hash is up to date.
 		hashPicture(file);
 	}
-	return { thumb.first, thumb.second, stillLoading };
+	return thumb;
 }
 
 Thumbnailer *Thumbnailer::instance()
@@ -164,28 +271,39 @@ Thumbnailer::Thumbnailer()
 
 void Thumbnailer::processItem(QString filename)
 {
+	// getHashedImage() only returns an image for image files.
+	// Videos will be processed in the background.
 	auto res = getHashedImage(filename);
-	if (std::get<2>(res))
+	if (res.second)
 		return;
-	QImage thumbnail = std::get<0>(res);
-	bool isVideo = std::get<1>(res);
+	QImage thumbnail = res.first;
 
-	if (thumbnail.isNull() && !isVideo) {
+	if (thumbnail.isNull()) {
 		imageDownloadFailed(filename);
 		return;
 	} else {
 		int size = maxThumbnailSize();
-		thumbnail = isVideo ?
-			QImage(":video-icon").scaled(size, size, Qt::KeepAspectRatio) :
-			thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+		thumbnail = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 		QMutexLocker l(&lock);
-		if (isVideo)
-			videoThumbnailCache.insert(filename, QImage());
-		else
-			thumbnailCache.insert(filename, thumbnail);
+		thumbnailCache.insert(filename, thumbnail);
 		workingOn.remove(filename);
 	}
-	emit thumbnailChanged(filename, thumbnail, isVideo);
+	emit thumbnailChanged(filename, thumbnail, false);
+}
+
+void Thumbnailer::frameExtracted(QString filename, QImage thumbnail)
+{
+	if (thumbnail.isNull()) {
+		imageDownloadFailed(filename);
+		return;
+	} else {
+		int size = maxThumbnailSize();
+		thumbnail = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+		QMutexLocker l(&lock);
+		videoThumbnailCache.insert(filename, thumbnail);
+		workingOn.remove(filename);
+	}
+	emit thumbnailChanged(filename, thumbnail, true);
 }
 
 void Thumbnailer::imageDownloaded(QString filename)
@@ -224,21 +342,18 @@ QImage Thumbnailer::getThumbnail(PictureEntry &entry)
 	int size = maxThumbnailSize();
 	QMutexLocker l(&lock);
 
-	// Currently we only save a null picture in the videoThumbnailCache
-	// as a marker that this was identified as a video. In the future,
-	// use the videoThumbnail cache to save an actual still image.
-	entry.isVideo = videoThumbnailCache.contains(entry.filename);
-	if (entry.isVideo)
-		return QImage(":video-icon").scaled(size, size, Qt::KeepAspectRatio);
-
+	QImage res;
 	QString filename = entry.filename;
-	if (thumbnailCache.contains(filename)) {
-		// If thumbnails were written by an earlier version, they might be smaller than needed.
-		// Rescale in such a case to avoid resizing artifacts.
-		QImage res = thumbnailCache.value(filename);
-		if (!res.isNull() && (res.size().width() >= size || res.size().height() >= size))
-			return res;
-	}
+	entry.isVideo = videoThumbnailCache.contains(filename);
+	if (entry.isVideo)
+		res = videoThumbnailCache.value(filename);
+	else if (thumbnailCache.contains(filename))
+		res = thumbnailCache.value(filename);
+
+	// If thumbnails were written by an earlier version, they might be smaller than needed.
+	// Rescale in such a case to avoid resizing artifacts.
+	if (!res.isNull() && (res.size().width() >= size || res.size().height() >= size))
+		return res;
 
 	// We didn't find an entry for this picture - schedule thumbnail calculation and return dummy icon
 	if (!workingOn.contains(filename)) {

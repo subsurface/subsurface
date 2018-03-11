@@ -6,6 +6,9 @@
 #include <QFuture>
 #include <QNetworkReply>
 #include <QThread>
+#include <QMediaPlayer>
+#include <QAbstractVideoSurface>
+#include <QQueue>
 
 class ImageDownloader : public QObject {
 	Q_OBJECT
@@ -21,6 +24,29 @@ private:
 	QNetworkAccessManager manager;
 	void loadFromUrl(const QString &filename, const QUrl &);
 	void saveImage(QNetworkReply *reply);
+};
+
+class VideoFrameExtractor : public QAbstractVideoSurface {
+	Q_OBJECT
+public:
+	VideoFrameExtractor();
+	static VideoFrameExtractor *instance();
+signals:
+	void extracted(QString filename, QImage);
+	void failed(QString filename);
+public slots:
+	void extract(QString originalFilename, QString filename);
+	void processItem();
+	void playerStateChanged(QMediaPlayer::State state);
+private:
+	QMediaPlayer *player;
+	QString originalFilename;
+	bool processingItem;
+	bool doneExtracting;
+	QQueue<QPair<QString, QString>> workQueue;
+	void doit();
+	QList<QVideoFrame::PixelFormat> supportedPixelFormats(QAbstractVideoBuffer::HandleType) const;
+	bool present(const QVideoFrame &frame);
 };
 
 class PictureEntry;
@@ -39,6 +65,7 @@ public:
 public slots:
 	void imageDownloaded(QString filename);
 	void imageDownloadFailed(QString filename);
+	void frameExtracted(QString filename, QImage thumbnail);
 signals:
 	void thumbnailChanged(QString filename, QImage thumbnail, bool isVideo);
 private:
