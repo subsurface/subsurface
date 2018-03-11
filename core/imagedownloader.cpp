@@ -140,7 +140,8 @@ QImage getHashedImage(const QString &file)
 	return res;
 }
 
-Thumbnailer::Thumbnailer()
+Thumbnailer::Thumbnailer() : failImage(QImage(":filter-close").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio)), // TODO: Don't misuse filter close icon
+			     dummyImage(QImage(":photo-icon").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio)) // TODO: Don't misuse photo-icon
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.
@@ -200,16 +201,16 @@ static void addThumbnailToCache(const QImage &thumbnail, const QString &picture_
 	file.commit();
 }
 
-void Thumbnailer::processItem(QString filename, int size)
+void Thumbnailer::processItem(QString filename)
 {
 	QImage thumbnail = getThumbnailFromCache(filename);
 
 	if (thumbnail.isNull()) {
 		thumbnail = getHashedImage(filename);
 		if (thumbnail.isNull()) {
-			// TODO: Don't misuse filter close icon
-			thumbnail = QImage(":filter-close").scaled(size, size, Qt::KeepAspectRatio);
+			thumbnail = failImage;
 		} else {
+			int size = maxThumbnailSize();
 			thumbnail = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 			addThumbnailToCache(thumbnail, filename);
 		}
@@ -220,7 +221,7 @@ void Thumbnailer::processItem(QString filename, int size)
 	workingOn.remove(filename);
 }
 
-QImage Thumbnailer::fetchThumbnail(PictureEntry &entry, int size)
+QImage Thumbnailer::fetchThumbnail(PictureEntry &entry)
 {
 	QMutexLocker l(&lock);
 
@@ -228,9 +229,9 @@ QImage Thumbnailer::fetchThumbnail(PictureEntry &entry, int size)
 	const QString &filename = entry.filename;
 	if (!workingOn.contains(filename)) {
 		workingOn.insert(filename,
-				 QtConcurrent::run(&pool, [this, filename, size]() { processItem(filename, size); }));
+				 QtConcurrent::run(&pool, [this, filename]() { processItem(filename); }));
 	}
-	return QImage(":photo-icon").scaled(size, size, Qt::KeepAspectRatio);
+	return dummyImage;
 }
 
 void Thumbnailer::clearWorkQueue()
@@ -239,4 +240,28 @@ void Thumbnailer::clearWorkQueue()
 	for (auto it = workingOn.begin(); it != workingOn.end(); ++it)
 		it->cancel();
 	workingOn.clear();
+}
+
+static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
+
+int Thumbnailer::defaultThumbnailSize()
+{
+	return defaultIconMetrics().sz_pic;
+}
+
+int Thumbnailer::maxThumbnailSize()
+{
+	return defaultThumbnailSize() * maxZoom;
+}
+
+int Thumbnailer::thumbnailSize(double zoomLevel)
+{
+	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
+	// We use exponential scaling so that the central point is the standard
+	// size and the minimum and maximum extreme points are a third respectively
+	// three times the standard size.
+	// Naturally, these three zoom levels are then represented by
+	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
+	// calculated as standard_size*3.0^zoomLevel.
+	return static_cast<int>(round(defaultThumbnailSize() * pow(maxZoom, zoomLevel)));
 }

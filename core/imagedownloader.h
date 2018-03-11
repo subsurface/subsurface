@@ -28,18 +28,23 @@ public:
 	// Schedule a thumbnail for fetching or calculation.
 	// Returns a placehlder thumbnail. The actual thumbnail will be sent
 	// via a signal later.
-	QImage fetchThumbnail(PictureEntry &entry, int size);
+	QImage fetchThumbnail(PictureEntry &entry);
 
 	// If we change dive, clear all unfinished thumbnail creations
 	void clearWorkQueue();
+	static int maxThumbnailSize();
+	static int defaultThumbnailSize();
+	static int thumbnailSize(double zoomLevel);
 signals:
 	void thumbnailChanged(QString filename, QImage thumbnail);
 private:
 	Thumbnailer();
-	void processItem(QString filename, int size);
+	void processItem(QString filename);
 
 	mutable QMutex lock;
 	QThreadPool pool;
+	QImage failImage;		// Shown when image-fetching fails
+	QImage dummyImage;		// Shown before thumbnail is fetched
 
 	QMap<QString,QFuture<void>> workingOn;
 };

@@ -31,8 +31,8 @@ private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
 	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
-	int defaultSize;
 	int size;
+	int defaultSize;
 	void updateThumbnails();
 	void updateZoom();
 };
