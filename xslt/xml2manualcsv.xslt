@@ -13,10 +13,10 @@
   <xsl:template match="/divelog/dives">
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth (ft)&quot;', $fs, '&quot;avgdepth (ft)&quot;', $fs, '&quot;airtemp (F)&quot;', $fs, '&quot;watertemp (F)&quot;', $fs, '&quot;cylinder size (cuft)&quot;', $fs, '&quot;startpressure (psi)&quot;', $fs, '&quot;endpressure (psi)&quot;', $fs, '&quot;o2&quot;', $fs, '&quot;he&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;', $fs, '&quot;weight (lbs)&quot;', $fs, '&quot;tags&quot;')"/>
+        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration (min)&quot;', $fs, '&quot;maxdepth (ft)&quot;', $fs, '&quot;avgdepth (ft)&quot;', $fs, '&quot;airtemp (F)&quot;', $fs, '&quot;watertemp (F)&quot;', $fs, '&quot;cylinder size (cuft)&quot;', $fs, '&quot;startpressure (psi)&quot;', $fs, '&quot;endpressure (psi)&quot;', $fs, '&quot;o2 (%)&quot;', $fs, '&quot;he (%)&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;', $fs, '&quot;weight (lbs)&quot;', $fs, '&quot;tags&quot;')"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration&quot;', $fs, '&quot;maxdepth (m)&quot;', $fs, '&quot;avgdepth (m)&quot;', $fs, '&quot;airtemp (C)&quot;', $fs, '&quot;watertemp (C)&quot;', $fs, '&quot;cylinder size (l)&quot;', $fs, '&quot;startpressure (bar)&quot;', $fs, '&quot;endpressure (bar)&quot;', $fs, '&quot;o2&quot;', $fs, '&quot;he&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;', $fs, '&quot;weight (kg)&quot;', $fs, '&quot;tags&quot;')"/>
+        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;duration (min)&quot;', $fs, '&quot;maxdepth (m)&quot;', $fs, '&quot;avgdepth (m)&quot;', $fs, '&quot;airtemp (C)&quot;', $fs, '&quot;watertemp (C)&quot;', $fs, '&quot;cylinder size (l)&quot;', $fs, '&quot;startpressure (bar)&quot;', $fs, '&quot;endpressure (bar)&quot;', $fs, '&quot;o2 (%)&quot;', $fs, '&quot;he (%)&quot;', $fs, '&quot;location&quot;', $fs, '&quot;gps&quot;', $fs, '&quot;divemaster&quot;', $fs, '&quot;buddy&quot;', $fs, '&quot;suit&quot;', $fs, '&quot;rating&quot;', $fs, '&quot;visibility&quot;', $fs, '&quot;notes&quot;', $fs, '&quot;weight (kg)&quot;', $fs, '&quot;tags&quot;')"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>
@@ -40,7 +40,7 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@duration"/>
+    <xsl:value-of select="substring-before(@duration, ' ')"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:choose>
       <xsl:when test="divecomputer[1]/depth/@mean|divecomputer[1]/depth/@max != ''">
@@ -123,11 +123,11 @@
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
-        <xsl:value-of select="cylinder[1]/@o2"/>
+        <xsl:value-of select="substring-before(cylinder[1]/@o2, '%')"/>
         <xsl:text>&quot;</xsl:text>
         <xsl:value-of select="$fs"/>
         <xsl:text>&quot;</xsl:text>
-        <xsl:value-of select="cylinder[1]/@he"/>
+        <xsl:value-of select="substring-before(cylinder[1]/@he, '%')"/>
         <xsl:text>&quot;</xsl:text>
       </xsl:otherwise>
     </xsl:choose>
@@ -310,11 +310,11 @@
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@o2"/>
+    <xsl:value-of select="substring-before(@o2, '%')"/>
     <xsl:text>&quot;</xsl:text>
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@he"/>
+    <xsl:value-of select="substring-before(@he, '%')"/>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="location">
