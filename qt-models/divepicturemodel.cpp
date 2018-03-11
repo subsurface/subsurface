@@ -8,8 +8,6 @@
 
 #include <QFileInfo>
 
-static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
-
 DivePictureModel *DivePictureModel::instance()
 {
 	static DivePictureModel *self = new DivePictureModel();
@@ -19,7 +17,7 @@ DivePictureModel *DivePictureModel::instance()
 DivePictureModel::DivePictureModel() : rowDDStart(0),
 				       rowDDEnd(0),
 				       zoomLevel(0.0),
-				       defaultSize(defaultIconMetrics().sz_pic)
+				       defaultSize(Thumbnailer::defaultThumbnailSize())
 {
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
 		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
@@ -47,22 +45,14 @@ void DivePictureModel::setZoomLevel(int level)
 
 void DivePictureModel::updateZoom()
 {
-	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
-	// We use exponential scaling so that the central point is the standard
-	// size and the minimum and maximum extreme points are a third respectively
-	// three times the standard size.
-	// Naturally, these three zoom levels are then represented by
-	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
-	// calculated as standard_size*3.0^zoomLevel.
-	size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
+	size = Thumbnailer::thumbnailSize(zoomLevel);
 }
 
 void DivePictureModel::updateThumbnails()
 {
-	int maxSize = defaultSize * maxZoom;
 	updateZoom();
 	for (PictureEntry &entry: pictures)
-		entry.image = Thumbnailer::instance()->fetchThumbnail(entry, maxSize);
+		entry.image = Thumbnailer::instance()->fetchThumbnail(entry);
 }
 
 void DivePictureModel::updateDivePictures()
