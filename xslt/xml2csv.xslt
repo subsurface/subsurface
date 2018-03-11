@@ -9,10 +9,10 @@
   <xsl:template match="/divelog/dives">
     <xsl:choose>
       <xsl:when test="$units = 1">
-        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time&quot;', $fs, '&quot;sample depth (ft)&quot;', $fs, '&quot;sample temperature (F)&quot;', $fs, '&quot;sample pressure (psi)&quot;')"/>
+        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time (min)&quot;', $fs, '&quot;sample depth (ft)&quot;', $fs, '&quot;sample temperature (F)&quot;', $fs, '&quot;sample pressure (psi)&quot;', $fs, '&quot;sample heartrate&quot;')"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time&quot;', $fs, '&quot;sample depth (m)&quot;', $fs, '&quot;sample temperature (C)&quot;', $fs, '&quot;sample pressure (bar)&quot;')"/>
+        <xsl:value-of select="concat('&quot;dive number&quot;', $fs, '&quot;date&quot;', $fs, '&quot;time&quot;', $fs, '&quot;sample time (min)&quot;', $fs, '&quot;sample depth (m)&quot;', $fs, '&quot;sample temperature (C)&quot;', $fs, '&quot;sample pressure (bar)&quot;', $fs, '&quot;sample heartrate&quot;')"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>
@@ -70,6 +70,11 @@
             <xsl:value-of select="concat('&quot;', substring-before(@pressure, ' '), '&quot;')"/>
           </xsl:otherwise>
         </xsl:choose>
+      </xsl:if>
+
+      <xsl:value-of select="$fs"/>
+      <xsl:if test="@heartbeat != ''">
+        <xsl:value-of select="concat('&quot;', @heartbeat, '&quot;')"/>
       </xsl:if>
 
       <xsl:text>
