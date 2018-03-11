@@ -66,8 +66,6 @@ typedef struct ftdi_serial_t {
 	 * Custom implementation using libftdi functions could be done.
 	 */
 
-	/* Half-duplex settings */
-	int halfduplex;
 	unsigned int baudrate;
 	unsigned int nbits;
 	unsigned int databits;
@@ -173,7 +171,6 @@ static dc_status_t serial_ftdi_open (dc_custom_io_t *io, dc_context_t *context, 
 	device->timeout = -1;
 
 	// Default to full-duplex.
-	device->halfduplex = 0;
 	device->baudrate = 0;
 	device->nbits = 0;
 	device->databits = 0;
@@ -365,21 +362,6 @@ static dc_status_t serial_ftdi_set_timeout (dc_custom_io_t *io, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_set_halfduplex (dc_custom_io_t *io, unsigned int value)
-{
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
-
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	// Most ftdi chips support full duplex operation. ft232rl does.
-	// Crosscheck other chips.
-
-	device->halfduplex = value;
-
-	return DC_STATUS_SUCCESS;
-}
-
 static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size, size_t *actual)
 {
 	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
@@ -432,13 +414,6 @@ static dc_status_t serial_ftdi_write (dc_custom_io_t *io, const void *data, size
 		return DC_STATUS_INVALIDARGS;
 
 	struct timeval tve, tvb;
-	if (device->halfduplex) {
-		// Get the current time.
-		if (gettimeofday (&tvb, NULL) != 0) {
-			SYSERROR (device->context, errno);
-			return DC_STATUS_IO;
-		}
-	}
 
 	unsigned int nbytes = 0;
 	while (nbytes < size) {
@@ -454,33 +429,6 @@ static dc_status_t serial_ftdi_write (dc_custom_io_t *io, const void *data, size
 		}
 
 		nbytes += n;
-	}
-
-	if (device->halfduplex) {
-		// Get the current time.
-		if (gettimeofday (&tve, NULL) != 0) {
-			SYSERROR (device->context, errno);
-			return DC_STATUS_IO;
-		}
-
-		// Calculate the elapsed time (microseconds).
-		struct timeval tvt;
-		timersub (&tve, &tvb, &tvt);
-		unsigned long elapsed = tvt.tv_sec * 1000000 + tvt.tv_usec;
-
-		// Calculate the expected duration (microseconds). A 2 millisecond fudge
-		// factor is added because it improves the success rate significantly.
-		unsigned long expected = 1000000.0 * device->nbits / device->baudrate * size + 0.5 + 2000;
-
-		// Wait for the remaining time.
-		if (elapsed < expected) {
-			unsigned long remaining = expected - elapsed;
-
-			// The remaining time is rounded up to the nearest millisecond to
-			// match the Windows implementation. The higher resolution is
-			// pointless anyway, since we already added a fudge factor above.
-			serial_ftdi_sleep (device, (remaining + 999) / 1000);
-		}
 	}
 
 	INFO (device->context, "Wrote %d bytes", nbytes);
@@ -608,7 +556,6 @@ dc_custom_io_t serial_ftdi_ops = {
 	.serial_configure = serial_ftdi_configure,
 	.serial_set_dtr = serial_ftdi_set_dtr,
 	.serial_set_rts = serial_ftdi_set_rts,
-	.serial_set_halfduplex = serial_ftdi_set_halfduplex,
 // Can't be done in ftdi?
 // only used in vyper2
 	.serial_set_break = serial_ftdi_set_break,

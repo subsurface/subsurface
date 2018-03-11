@@ -70,7 +70,6 @@ static dc_custom_io_t ble_serial_ops = {
 	.serial_configure = NULL,
 	.serial_set_dtr = NULL,
 	.serial_set_rts = NULL,
-	.serial_set_halfduplex = NULL,
 	.serial_set_break = NULL,
 
 	.packet_size  = 20,
@@ -605,7 +604,6 @@ dc_custom_io_t qt_serial_ops = {
 	.serial_configure = NULL,
 	.serial_set_dtr = NULL,
 	.serial_set_rts = NULL,
-	.serial_set_halfduplex = NULL,
 	.serial_set_break = NULL,
 
 #ifdef BLE_SUPPORT
