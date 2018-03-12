@@ -61,7 +61,7 @@ public:
 	};
 
 	static QMLManager *instance();
-	Q_INVOKABLE void registerError(const QString &error);
+	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
 
 	QString cloudUserName() const;
