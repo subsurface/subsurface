@@ -241,7 +241,7 @@
         <xsl:value-of select="concat(format-number((substring-before(@mean, ' ') div 0.3048), '#.##'), '')"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="substring-before(@mean, ' ')"/>
+        <xsl:value-of select="format-number(substring-before(@mean, ' '), '#.##')"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:text>&quot;</xsl:text>
