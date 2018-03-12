@@ -1,5 +1,7 @@
 - Map-widget: try to match the zoom level in Google Maps
 - Map-widget: improve context menu texts
+- Desktop: Fix format of CSV export for dive list and dive profile
+  (#1157, #1158)
 - Mobile: enable the built-in map widget
 - Desktop: Change strategy when to allow to delete a cylinder (#869)
 - Desktop/Mobile: Format numbers according to selected Subsurface
