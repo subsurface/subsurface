@@ -33,7 +33,7 @@ QString get_divepoint_gas_string(struct dive *d, const divedatapoint& dp);
 void read_hashes();
 void write_hashes();
 void updateHash(struct picture *picture);
-QByteArray hashFile(const QString &filename);
+QByteArray hashFile(QString filename);
 QString hashString(const char *filename);
 void learnImages(const QDir dir, int max_recursions);
 void add_hash(const QString &filename, const QByteArray &hash);

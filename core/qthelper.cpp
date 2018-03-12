@@ -1161,7 +1161,7 @@ extern "C" void register_hash(const char *filename, const char *hash)
 	}
 }
 
-QByteArray hashFile(const QString &filename)
+QByteArray hashFile(QString filename)
 {
 	QCryptographicHash hash(QCryptographicHash::Sha1);
 	QFile imagefile(filename);
