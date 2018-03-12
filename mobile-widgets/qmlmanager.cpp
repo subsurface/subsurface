@@ -89,7 +89,7 @@ extern "C" int gitProgressCB(const char *text)
 	return 0;
 }
 
-void QMLManager::registerError(const QString &error)
+void QMLManager::registerError(QString error)
 {
 	appendTextToLog(error);
 	if (!m_lastError.isEmpty())
