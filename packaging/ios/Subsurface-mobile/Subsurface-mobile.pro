@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../subsurface-mobile-helper.cpp \
+    ../../../map-widget/qmlmapwidgethelper.cpp \
     ../../../core/cloudstorage.cpp \
     ../../../core/configuredivecomputerthreads.cpp \
     ../../../core/devicedetails.cpp \
@@ -85,6 +86,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../qt-models/gpslistmodel.cpp \
     ../../../qt-models/completionmodels.cpp \
     ../../../qt-models/divelocationmodel.cpp \
+    ../../../qt-models/maplocationmodel.cpp \
     ../../../qt-models/diveimportedmodel.cpp \
     ../../../qt-models/messagehandlermodel.cpp \
     ../../../profile-widget/divecartesianaxis.cpp \
@@ -181,12 +183,14 @@ HEADERS += \
     ../../../core/subsurface-qt/SettingsObjectWrapper.h \
     ../../../mobile-widgets/qmlmanager.h \
     ../../../mobile-widgets/qmlprofile.h \
+    ../../../map-widget/qmlmapwidgethelper.h \
     ../../../qt-models/divelistmodel.h \
     ../../../qt-models/diveplotdatamodel.h \
     ../../../qt-models/gpslistmodel.h \
     ../../../qt-models/divelocationmodel.h \
     ../../../qt-models/completionmodels.h \
     ../../../qt-models/weigthsysteminfomodel.h \
+    ../../../qt-models/maplocationmodel.h \
     ../../../qt-models/diveimportedmodel.h \
     ../../../qt-models/messagehandlermodel.h \
     ../../../profile-widget/diveprofileitem.h \
