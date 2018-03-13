@@ -1,3 +1,4 @@
+- Dive pictures: Don't load whole file for parsing EXIF data
 - Mobile: enable the built-in map widget
 - Desktop: Change strategy when to allow to delete a cylinder (#869)
 - Desktop/Mobile: Format numbers according to selected Subsurface
