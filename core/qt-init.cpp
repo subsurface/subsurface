@@ -16,11 +16,9 @@ void init_qt_late()
 	// note: on Linux, "system" == "environment variables"
 	QNetworkProxyFactory::setUseSystemConfiguration(true);
 
-	// for Win32 and Qt5 we try to set the locale codec to UTF-8.
-	// this makes QFile::encodeName() work.
-#ifdef Q_OS_WIN
+	// Set the locale codec to UTF-8.
+	// This makes QFile::encodeName() work on Windows and qPrintable() is equivalent to qUtf8Printable().
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
-#endif
 
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
