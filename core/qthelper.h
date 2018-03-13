@@ -79,7 +79,7 @@ char *picturedir_string();
 const char *subsurface_user_agent();
 enum deco_mode decoMode();
 int parse_seabear_header(const char *filename, char **params, int pnr);
-const char *get_current_date();
+char *get_current_date();
 double cache_value(int tissue, int timestep, enum inertgas gas);
 void cache_insert(int tissue, int timestep, enum inertgas gas, double value);
 void print_qt_versions();
