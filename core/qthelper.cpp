@@ -976,13 +976,13 @@ QString get_short_dive_date_string(timestamp_t when)
 	return loc.toString(ts.toUTC(), QString(prefs.date_format_short) + " " + prefs.time_format);
 }
 
-const char *get_dive_date_c_string(timestamp_t when)
+char *get_dive_date_c_string(timestamp_t when)
 {
 	QString text = get_dive_date_string(when);
 	return copy_qstring(text);
 }
 
-extern "C" const char *get_current_date()
+extern "C" char *get_current_date()
 {
 	QDateTime ts(QDateTime::currentDateTime());;
 	QString current_date;

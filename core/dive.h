@@ -1016,7 +1016,7 @@ extern void set_userid(const char *user_id);
 extern void set_informational_units(const char *units);
 extern void set_git_prefs(const char *prefs);
 
-extern const char *get_dive_date_c_string(timestamp_t when);
+extern char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(struct dive *dive, struct divecomputer *dc);
 #ifdef __cplusplus
 }
