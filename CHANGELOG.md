@@ -2,6 +2,7 @@
 - Map-widget: improve context menu texts
 - Desktop: Fix format of CSV export for dive list and dive profile
   (#1157, #1158)
+- Dive pictures: Don't load whole file for parsing EXIF data
 - Mobile: enable the built-in map widget
 - Desktop: Change strategy when to allow to delete a cylinder (#869)
 - Desktop/Mobile: Format numbers according to selected Subsurface
