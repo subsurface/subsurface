@@ -19,7 +19,7 @@
 #include "format.h"
 #include "version.h"
 
-int diveplan_duration(struct diveplan *diveplan)
+static int diveplan_duration(struct diveplan *diveplan)
 {
 	struct divedatapoint *dp = diveplan->dp;
 	int duration = 0;
@@ -41,7 +41,7 @@ int diveplan_duration(struct diveplan *diveplan)
  *             5) Pointers to gas mixes in the gas change: gas-from and gas-to.
  * Returns:    The size of the output buffer that has been used after the new results have been added.
  */
-int add_icd_entry(char *icdbuffer, unsigned int maxsize, struct icd_data *icdvalues, bool printheader, int time_seconds, int ambientpressure_mbar, struct gasmix *gas_from, struct gasmix *gas_to)
+static int add_icd_entry(char *icdbuffer, unsigned int maxsize, struct icd_data *icdvalues, bool printheader, int time_seconds, int ambientpressure_mbar, struct gasmix *gas_from, struct gasmix *gas_to)
 {
 	int len = 0;
 	if (printheader) { // Create a table description and a table header if no icd data have been written yet.
