@@ -8,6 +8,7 @@ CONFIG += c++11
 
 SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../subsurface-mobile-helper.cpp \
+    ../../../map-widget/qmlmapwidgethelper.cpp \
     ../../../core/cloudstorage.cpp \
     ../../../core/configuredivecomputerthreads.cpp \
     ../../../core/devicedetails.cpp \
@@ -85,6 +86,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../qt-models/gpslistmodel.cpp \
     ../../../qt-models/completionmodels.cpp \
     ../../../qt-models/divelocationmodel.cpp \
+    ../../../qt-models/maplocationmodel.cpp \
     ../../../qt-models/diveimportedmodel.cpp \
     ../../../qt-models/messagehandlermodel.cpp \
     ../../../profile-widget/divecartesianaxis.cpp \
