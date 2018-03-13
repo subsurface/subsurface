@@ -402,8 +402,12 @@ static int parseExif(const QString &filename, easyexif::EXIFInfo &exif)
 extern "C" timestamp_t picture_get_timestamp(const char *filename)
 {
 	easyexif::EXIFInfo exif;
-	if (parseExif(localFilePath(QString(filename)), exif) != PARSE_EXIF_SUCCESS)
-		return 0;
+	if (parseExif(localFilePath(QString(filename)), exif) != PARSE_EXIF_SUCCESS) {
+		// If we couldn't parse EXIF data, use file creation date.
+		// TODO: QFileInfo::created is deprecated in newer Qt versions.
+		QDateTime created = QFileInfo(QString(filename)).created();
+		return created.toSecsSinceEpoch();
+	}
 	return exif.epoch();
 }
 
