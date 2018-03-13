@@ -11,7 +11,6 @@
 #include "gettextfromc.h"
 #include <sys/time.h>
 #include "exif.h"
-#include "file.h"
 #include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
@@ -346,19 +345,64 @@ extern "C" xsltStylesheetPtr get_stylesheet(const char *name)
 	return xslt;
 }
 
+// Fetch quint16 in big endian mode from QFile and return 0 on error.
+// This is a very specialized function for parsing JPEGs, therefore we can get away with such an in-band error code.
+static inline quint16 getShortBE(QFile &f)
+{
+	unsigned char buf[2];
+	if (f.read(reinterpret_cast<char *>(buf), 2) != 2)
+		return 0;
+	return (buf[0] << 8) | buf[1];
+}
+
+static int parseExif(const QString &filename, easyexif::EXIFInfo &exif)
+{
+	QFile f { filename };
+	if (!f.open(QIODevice::ReadOnly))
+		return PARSE_EXIF_ERROR_NO_JPEG;
+	if (getShortBE(f) != 0xffd8)
+		return PARSE_EXIF_ERROR_NO_JPEG;
+	for (;;) {
+		switch (getShortBE(f)) {
+		case 0xffc0:
+		case 0xffc2:
+		case 0xffc4:
+		case 0xffd0 ... 0xffd7:
+		case 0xffdb:
+		case 0xffdd:
+		case 0xffe0:
+		case 0xffe2 ... 0xffef:
+		case 0xfffe: {
+			quint16 len = getShortBE(f);
+			if (len < 2)
+				return PARSE_EXIF_ERROR_NO_JPEG;
+			f.seek(f.pos() + len - 2); // TODO: switch to QFile::skip()
+			break;
+		}
+		case 0xffe1: {
+			quint16 len = getShortBE(f);
+			if (len < 2)
+				return PARSE_EXIF_ERROR_NO_JPEG;
+			len -= 2;
+			QByteArray data = f.read(len);
+			if (data.size() != len)
+				return PARSE_EXIF_ERROR_NO_JPEG;
+			return exif.parseFromEXIFSegment(reinterpret_cast<const unsigned char *>(data.constData()), len);
+		}
+		case 0xffda:
+		case 0xffd9:
+			// We expect EXIF data before any scan data
+			return PARSE_EXIF_ERROR_NO_EXIF;
+		default:
+			return PARSE_EXIF_ERROR_NO_JPEG;
+		}
+	}
+}
 
 extern "C" timestamp_t picture_get_timestamp(const char *filename)
 {
 	easyexif::EXIFInfo exif;
-	memblock mem;
-	int retval;
-
-	// filename might not be the actual filename, so let's go via the hash.
-	if (readfile(qPrintable(localFilePath(QString(filename))), &mem) <= 0)
-		return 0;
-	retval = exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size);
-	free(mem.buffer);
-	if (retval != PARSE_EXIF_SUCCESS)
+	if (parseExif(localFilePath(QString(filename)), exif) != PARSE_EXIF_SUCCESS)
 		return 0;
 	return exif.epoch();
 }
@@ -1291,18 +1335,10 @@ extern "C" void savePictureLocal(struct picture *picture, const char *hash, cons
 extern "C" void picture_load_exif_data(struct picture *p)
 {
 	easyexif::EXIFInfo exif;
-	memblock mem;
-
-	if (readfile(qPrintable(localFilePath(QString(p->filename))), &mem) <= 0)
-		goto picture_load_exit;
-	if (exif.parseFrom((const unsigned char *)mem.buffer, (unsigned)mem.size) != PARSE_EXIF_SUCCESS)
-		goto picture_load_exit;
+	if (parseExif(localFilePath(QString(p->filename)), exif) != PARSE_EXIF_SUCCESS)
+		return;
 	p->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
 	p->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
-
-picture_load_exit:
-	free(mem.buffer);
-	return;
 }
 
 QString get_gas_string(struct gasmix gas)
