@@ -7,6 +7,7 @@ set(SUBSURFACE_GENERIC_MODELS_LIB_SRCS
 	diveimportedmodel.cpp
 	completionmodels.cpp
 	divelocationmodel.cpp
+	maplocationmodel.cpp
 )
 
 # models exclusively used in desktop builds
@@ -16,7 +17,6 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	models.cpp
 	tankinfomodel.cpp
 	treemodel.cpp
-	maplocationmodel.cpp
 	cylindermodel.cpp
 	yearlystatisticsmodel.cpp
 	weigthsysteminfomodel.cpp
@@ -34,7 +34,6 @@ set(SUBSURFACE_MOBILE_MODELS_LIB_SRCS
 	divelistmodel.cpp
 	messagehandlermodel.cpp
 	gpslistmodel.cpp
-	maplocationmodel.cpp
 )
 
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
