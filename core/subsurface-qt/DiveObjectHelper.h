@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QString>
 #include <QStringList>
+#include <QVariant>
 
 class DiveObjectHelper : public QObject {
 	Q_OBJECT
