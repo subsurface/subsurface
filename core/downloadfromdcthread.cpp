@@ -77,7 +77,7 @@ static void fill_supported_mobile_list()
 	mobileProductList["Genesis"] =
 		QStringList({{"React Pro"}, {"React Pro White"}});
 	mobileProductList["Heinrichs Weikamp"] =
-		QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC cR"}});
+		QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC cR"}, {"OSTC 2 TR"}});
 	mobileProductList["Hollis"] =
 		QStringList({{"DG02"}, {"DG03"}, {"TX1"}});
 	mobileProductList["Oceanic"] =
@@ -105,7 +105,7 @@ static void fill_supported_mobile_list()
 #if defined(Q_OS_IOS)
 	/* BLE only, Qt does not support classic BT on iOS */
 	mobileProductList["Heinrichs Weikamp"] =
-		QStringList({{"OSTC 2"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Plus"}, {"OSTC Sport"}});
+		QStringList({{"OSTC 2"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC 2 TR"}});
 	mobileProductList["Scubapro"] =
 		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
 	mobileProductList["Shearwater"] =
