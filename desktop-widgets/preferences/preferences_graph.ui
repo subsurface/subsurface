@@ -158,18 +158,72 @@
       <item row="5" column="1" colspan="2">
        <widget class="QCheckBox" name="show_ccr_sensors">
         <property name="text">
-         <string>Show individual O₂ sensor values when viewing pO₂</string>
+         <string>Show O₂ sensor values when viewing pO₂</string>
         </property>
        </widget>
       </item>
       <item row="6" column="1" colspan="2">
        <widget class="QCheckBox" name="show_ccr_setpoint">
         <property name="text">
-         <string>Show setpoints when viewing pO₂</string>
+         <string>Show CCR setpoints when viewing pO₂</string>
         </property>
        </widget>
       </item>
       <item row="7" column="0">
+       <widget class="QLabel" name="pSCR">
+        <property name="text">
+         <string>pSCR options:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QLabel" name="MetabolicRate">
+        <property name="text">
+         <string>pSCR metabolic rate O₂</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="2">
+       <widget class="QDoubleSpinBox" name="psro2rate">
+        <property name="suffix">
+         <string>ℓ/min</string>
+        </property>
+        <property name="decimals">
+         <number>3</number>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="3">
+       <widget class="QLabel" name="label_28">
+        <property name="text">
+         <string>Dilution ratio</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="4">
+       <widget class="QSpinBox" name="pscrfactor">
+        <property name="suffix">
+         <string/>
+        </property>
+        <property name="prefix">
+         <string>1:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QCheckBox" name="show_scr_ocpo2">
+        <property name="text">
+         <string>Show equivalent OC pO₂ with pSCR pO₂</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
        <widget class="QCheckBox" name="show_icd">
         <property name="text">
          <string>Show warnings for isobaric counterdiffusion</string>
@@ -195,16 +249,6 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="4">
-       <widget class="QSpinBox" name="pscrfactor">
-        <property name="suffix">
-         <string/>
-        </property>
-        <property name="prefix">
-         <string>1:</string>
-        </property>
-       </widget>
-      </item>
       <item row="3" column="0">
        <widget class="QRadioButton" name="buehlmann">
         <property name="text">
@@ -222,16 +266,6 @@
         </property>
         <property name="text">
          <string>Algorithm for calculated ceiling:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="3">
-       <widget class="QLabel" name="label_28">
-        <property name="text">
-         <string>Dilution ratio</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -271,16 +305,6 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QLabel" name="MetabolicRate">
-        <property name="text">
-         <string>Metabolic rate O₂</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignCenter</set>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0" colspan="2">
        <widget class="QCheckBox" name="red_ceiling">
         <property name="enabled">
@@ -288,16 +312,6 @@
         </property>
         <property name="text">
          <string>Draw dive computer reported ceiling red</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="2">
-       <widget class="QDoubleSpinBox" name="psro2rate">
-        <property name="suffix">
-         <string>ℓ/min</string>
-        </property>
-        <property name="decimals">
-         <number>3</number>
         </property>
        </widget>
       </item>
@@ -318,13 +332,6 @@
         </property>
         <property name="maximum">
          <number>150</number>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="pSCR">
-        <property name="text">
-         <string>pSCR options:</string>
         </property>
        </widget>
       </item>
@@ -386,16 +393,18 @@
   <tabstop>pheThreshold</tabstop>
   <tabstop>maxpo2</tabstop>
   <tabstop>defaultSetpoint</tabstop>
-  <tabstop>show_ccr_setpoint</tabstop>
   <tabstop>show_ccr_sensors</tabstop>
+  <tabstop>show_ccr_setpoint</tabstop>
+  <tabstop>psro2rate</tabstop>
+  <tabstop>pscrfactor</tabstop>
+  <tabstop>show_scr_ocpo2</tabstop>
+  <tabstop>show_icd</tabstop>
   <tabstop>red_ceiling</tabstop>
   <tabstop>vpmb</tabstop>
   <tabstop>vpmb_conservatism</tabstop>
   <tabstop>buehlmann</tabstop>
   <tabstop>gflow</tabstop>
   <tabstop>gfhigh</tabstop>
-  <tabstop>psro2rate</tabstop>
-  <tabstop>pscrfactor</tabstop>
   <tabstop>display_unused_tanks</tabstop>
   <tabstop>show_average_depth</tabstop>
  </tabstops>

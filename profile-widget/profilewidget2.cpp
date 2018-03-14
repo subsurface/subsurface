@@ -109,6 +109,7 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	ccrsensor1GasItem(new PartialPressureGasItem()),
 	ccrsensor2GasItem(new PartialPressureGasItem()),
 	ccrsensor3GasItem(new PartialPressureGasItem()),
+	ocpo2GasItem(new PartialPressureGasItem()),
 #ifndef SUBSURFACE_MOBILE
 	diveCeiling(new DiveCalculatedCeiling(this)),
 	decoModelParameters(new DiveTextItem()),
@@ -198,6 +199,7 @@ void ProfileWidget2::addItemsToScene()
 	scene()->addItem(ccrsensor1GasItem);
 	scene()->addItem(ccrsensor2GasItem);
 	scene()->addItem(ccrsensor3GasItem);
+	scene()->addItem(ocpo2GasItem);
 #ifndef SUBSURFACE_MOBILE
 	scene()->addItem(toolTipItem);
 	scene()->addItem(diveCeiling);
@@ -315,6 +317,7 @@ void ProfileWidget2::setupItemOnScene()
 	createPPGas(ccrsensor1GasItem, DivePlotDataModel::CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
 	createPPGas(ccrsensor2GasItem, DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
 	createPPGas(ccrsensor3GasItem, DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
+	createPPGas(ocpo2GasItem, DivePlotDataModel::SCR_OC_PO2, SCR_OCPO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
 
 #undef CREATE_PP_GAS
 #ifndef SUBSURFACE_MOBILE
@@ -327,6 +330,7 @@ void ProfileWidget2::setupItemOnScene()
 
 	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
@@ -598,6 +602,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 	ccrsensor1GasItem->setVisible(sensorflag);
 	ccrsensor2GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 1));
 	ccrsensor3GasItem->setVisible(sensorflag && (currentdc->no_o2sensors > 2));
+	ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
 
 	/* This struct holds all the data that's about to be plotted.
 	 * I'm not sure this is the best approach ( but since we are
@@ -693,6 +698,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		ccrsensor1GasItem->setVisible(prefs.show_ccr_sensors);
 		ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
 		ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
+		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
 		temperatureItem->setVisible(false);
 	} else {
 		tankItem->setVisible(prefs.tankbar);
@@ -704,6 +710,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		ccrsensor1GasItem->setVisible(false);
 		ccrsensor2GasItem->setVisible(false);
 		ccrsensor3GasItem->setVisible(false);
+		ocpo2GasItem->setVisible(false);
 	}
 #endif
 	tankItem->setData(dataModel, &plotInfo, &displayed_dive);
@@ -1059,6 +1066,7 @@ void ProfileWidget2::setEmptyState()
 	ccrsensor1GasItem->setVisible(false);
 	ccrsensor2GasItem->setVisible(false);
 	ccrsensor3GasItem->setVisible(false);
+	ocpo2GasItem->setVisible(false);
 #ifndef SUBSURFACE_MOBILE
 	toolTipItem->setVisible(false);
 	diveCeiling->setVisible(false);
@@ -1178,6 +1186,7 @@ void ProfileWidget2::setProfileState()
 	ccrsensor1GasItem->setVisible(sensorflag);
 	ccrsensor2GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 1));
 	ccrsensor3GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 2));
+	ocpo2GasItem->setVisible((current_dc->divemode == PSCR) && prefs.show_scr_ocpo2);
 
 	heartBeatItem->setVisible(prefs.hrgraph);
 	diveCeiling->setVisible(prefs.calcceiling);

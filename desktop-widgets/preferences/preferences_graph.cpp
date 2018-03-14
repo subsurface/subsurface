@@ -40,6 +40,7 @@ void PreferencesGraph::refreshSettings()
 	ui->vpmb_conservatism->setValue(prefs.vpmb_conservatism);
 	ui->show_ccr_setpoint->setChecked(prefs.show_ccr_setpoint);
 	ui->show_ccr_sensors->setChecked(prefs.show_ccr_sensors);
+	ui->show_scr_ocpo2->setChecked(prefs.show_scr_ocpo2);
 	ui->defaultSetpoint->setValue((double)prefs.defaultsetpoint / 1000.0);
 	ui->psro2rate->setValue(prefs.o2consumption / 1000.0);
 	ui->pscrfactor->setValue(lrint(1000.0 / prefs.pscr_ratio));
@@ -71,6 +72,7 @@ void PreferencesGraph::syncSettings()
 	tech->setVpmbConservatism(ui->vpmb_conservatism->value());
 	tech->setShowCCRSetpoint(ui->show_ccr_setpoint->isChecked());
 	tech->setShowCCRSensors(ui->show_ccr_sensors->isChecked());
+	tech->setShowSCROCpO2(ui->show_scr_ocpo2->isChecked());
 	tech->setDisplayUnusedTanks(ui->display_unused_tanks->isChecked());
 	tech->setShowAverageDepth(ui->show_average_depth->isChecked());
 	tech->setShowIcd(ui->show_icd->isChecked());

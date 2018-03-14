@@ -135,6 +135,7 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool rulergraph       READ rulerGraph      WRITE setRulerGraph      NOTIFY rulerGraphChanged)
 	Q_PROPERTY(bool show_ccr_setpoint READ showCCRSetpoint WRITE setShowCCRSetpoint NOTIFY showCCRSetpointChanged)
 	Q_PROPERTY(bool show_ccr_sensors  READ showCCRSensors  WRITE setShowCCRSensors  NOTIFY showCCRSensorsChanged)
+	Q_PROPERTY(bool show_scr_ocpo2   READ showSCROCpO2    WRITE setShowSCROCpO2    NOTIFY showSCROCpO2Changed)
 	Q_PROPERTY(bool zoomed_plot      READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
 	Q_PROPERTY(bool show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
 	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
@@ -165,6 +166,7 @@ public:
 	bool rulerGraph() const;
 	bool showCCRSetpoint() const;
 	bool showCCRSensors() const;
+	bool showSCROCpO2() const;
 	bool zoomedPlot() const;
 	bool showSac() const;
 	bool displayUnusedTanks() const;
@@ -193,6 +195,7 @@ public slots:
 	void setRulerGraph(bool value);
 	void setShowCCRSetpoint(bool value);
 	void setShowCCRSensors(bool value);
+	void setShowSCROCpO2(bool value);
 	void setZoomedPlot(bool value);
 	void setShowSac(bool value);
 	void setDisplayUnusedTanks(bool value);
@@ -221,6 +224,7 @@ signals:
 	void rulerGraphChanged(bool value);
 	void showCCRSetpointChanged(bool value);
 	void showCCRSensorsChanged(bool value);
+	void showSCROCpO2Changed(bool value);
 	void zoomedPlotChanged(bool value);
 	void showSacChanged(bool value);
 	void displayUnusedTanksChanged(bool value);

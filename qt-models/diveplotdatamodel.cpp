@@ -63,6 +63,8 @@ QVariant DivePlotDataModel::data(const QModelIndex &index, int role) const
 			return item.o2sensor[1].mbar / 1000.0;
 		case CCRSENSOR3:
 			return item.o2sensor[2].mbar / 1000.0;
+		case SCR_OC_PO2:
+			return item.scr_OC_pO2.mbar / 1000.0;
 		case HEARTBEAT:
 			return item.heartbeat;
 		case AMBPRESSURE:
