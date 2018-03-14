@@ -18,6 +18,7 @@
 #include "libdivecomputer/version.h"
 #include "membuffer.h"
 #include "qthelper.h"
+#include "format.h"
 
 //#define DEBUG_GAS 1
 
