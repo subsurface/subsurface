@@ -324,10 +324,33 @@ Item {
 		}
 	}
 
+	/*
+	 * open coordinates in google maps while attempting to roughly preserve
+	 * the zoom level. the mapping between the QML map zoom level and the
+	 * Google Maps zoom level is done via exponential regression:
+	 *     y = a * exp(b * x)
+	 *
+	 * data set:
+	 *     qml (x)            gmaps (y in meters)
+	 *     21                 257
+	 *     15.313216749178913 3260
+	 *     12.553216749178931 20436
+	 *     11.11321674917894  52883
+	 *     9.313216749178952  202114
+	 *     7.51321674917896   737136
+	 *     5.593216749178958  2495529
+	 *     4.153216749178957  3895765
+	 *     1.753216749178955  18999949
+	 */
 	function openLocationInGoogleMaps(latitude, longitude) {
 		var loc = latitude + "," + longitude
-		var url = "https://www.google.com/maps/place/@" + loc + ",5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
+		var x = map.zoomLevel
+		var a = 53864950.831693
+		var b = -0.60455861606547030630
+		var zoom = Math.floor(a * Math.exp(b * x))
+		var url = "https://www.google.com/maps/place/@" + loc + "," + zoom + "m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
 		Qt.openUrlExternally(url)
+		console.log("openLocationInGoogleMaps() map.zoomLevel: " + x + ", url: " + url)
 	}
 
 	MapWidgetContextMenu {
