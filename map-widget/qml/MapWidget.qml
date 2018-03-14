@@ -325,8 +325,8 @@ Item {
 	}
 
 	function openLocationInGoogleMaps(latitude, longitude) {
-		var loc = latitude + " " + longitude
-		var url = "https://www.google.com/maps/place/" + loc + "/@" + loc + ",5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
+		var loc = latitude + "," + longitude
+		var url = "https://www.google.com/maps/place/@" + loc + ",5000m/data=!3m1!1e3!4m2!3m1!1s0x0:0x0"
 		Qt.openUrlExternally(url)
 	}
 
