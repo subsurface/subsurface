@@ -392,6 +392,11 @@ bool TechnicalDetailsSettings::rulerGraph() const
 	return prefs.rulergraph;
 }
 
+bool TechnicalDetailsSettings::showSCROCpO2() const
+{
+	return prefs.show_scr_ocpo2;
+}
+
 bool TechnicalDetailsSettings::showCCRSetpoint() const
 {
 	return prefs.show_ccr_setpoint;
@@ -665,6 +670,18 @@ void TechnicalDetailsSettings::setShowCCRSetpoint(bool value)
 	s.setValue("show_ccr_setpoint", value);
 	prefs.show_ccr_setpoint = value;
 	emit showCCRSetpointChanged(value);
+}
+
+void TechnicalDetailsSettings::setShowSCROCpO2(bool value)
+{
+	if (value == prefs.show_scr_ocpo2)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("show_scr_ocpo2", value);
+	prefs.show_scr_ocpo2 = value;
+	emit showSCROCpO2Changed(value);
 }
 
 void TechnicalDetailsSettings::setShowCCRSensors(bool value)
@@ -2222,6 +2239,7 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
 	GET_BOOL("show_ccr_setpoint",show_ccr_setpoint);
 	GET_BOOL("show_ccr_sensors",show_ccr_sensors);
+	GET_BOOL("show_scr_ocpo2",show_scr_ocpo2);
 	GET_BOOL("zoomed_plot", zoomed_plot);
 	set_gf(prefs.gflow, prefs.gfhigh);
 	set_vpmb_conservatism(prefs.vpmb_conservatism);

@@ -202,6 +202,7 @@ private:
 	PartialPressureGasItem *ccrsensor1GasItem;
 	PartialPressureGasItem *ccrsensor2GasItem;
 	PartialPressureGasItem *ccrsensor3GasItem;
+	PartialPressureGasItem *ocpo2GasItem;
 #ifndef SUBSURFACE_MOBILE
 	DiveCalculatedCeiling *diveCeiling;
 	DiveTextItem *decoModelParameters;

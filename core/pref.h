@@ -87,6 +87,7 @@ struct preferences {
 	bool gf_low_at_maxdepth;
 	bool show_ccr_setpoint;
 	bool show_ccr_sensors;
+	bool show_scr_ocpo2;
 	bool display_invalid_dives;
 	short unit_system;
 	struct units units;

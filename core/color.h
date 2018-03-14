@@ -29,6 +29,7 @@
 #define PERSIANRED1 QColor::fromRgbF(0.8, 0.2, 0.2, 1)
 #define TUSCANY1 QColor::fromRgbF(0.8, 0.4, 0.2, 1)
 #define PIRATEGOLD1 QColor::fromRgbF(0.8, 0.5, 0.0, 1)
+#define PIRATEGOLD1_MED_TRANS QColor::fromRgbF(0.8, 0.5, 0.0, 0.75)
 #define HOKEYPOKEY1 QColor::fromRgbF(0.8, 0.6, 0.2, 1)
 #define CINNABAR1 QColor::fromRgbF(0.9, 0.3, 0.2, 1)
 #define REDORANGE1 QColor::fromRgbF(1.0, 0.2, 0.2, 1)
@@ -102,6 +103,7 @@ typedef enum {
 	CCRSENSOR1,
 	CCRSENSOR2,
 	CCRSENSOR3,
+	SCR_OCPO2,
 	PP_LINES,
 
 	/* Other colors */

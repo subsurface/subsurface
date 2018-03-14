@@ -42,6 +42,7 @@ struct preferences default_prefs = {
 	.gf_low_at_maxdepth = false,
 	.show_ccr_setpoint = false,
 	.show_ccr_sensors = false,
+	.show_scr_ocpo2 = false,
 	.font_size = -1,
 	.display_invalid_dives = false,
 	.show_sac = false,
