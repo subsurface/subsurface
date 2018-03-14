@@ -306,6 +306,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	char *params[55];
 	int pnr = 0;
 
+	// Numbers are column numbers
 	params[pnr++] = strdup("numberField");
 	params[pnr++] = intdup(0);
 	params[pnr++] = strdup("dateField");
@@ -314,14 +315,28 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	params[pnr++] = intdup(2);
 	params[pnr++] = strdup("durationField");
 	params[pnr++] = intdup(3);
-	params[pnr++] = strdup("locationField");
-	params[pnr++] = intdup(13);
-	params[pnr++] = strdup("gpsField");
-	params[pnr++] = intdup(14);
 	params[pnr++] = strdup("maxDepthField");
 	params[pnr++] = intdup(4);
 	params[pnr++] = strdup("meanDepthField");
 	params[pnr++] = intdup(5);
+	params[pnr++] = strdup("airtempField");
+	params[pnr++] = intdup(6);
+	params[pnr++] = strdup("watertempField");
+	params[pnr++] = intdup(7);
+	params[pnr++] = strdup("cylindersizeField");
+	params[pnr++] = intdup(8);
+	params[pnr++] = strdup("startpressureField");
+	params[pnr++] = intdup(9);
+	params[pnr++] = strdup("endpressureField");
+	params[pnr++] = intdup(10);
+	params[pnr++] = strdup("o2Field");
+	params[pnr++] = intdup(11);
+	params[pnr++] = strdup("heField");
+	params[pnr++] = intdup(12);
+	params[pnr++] = strdup("locationField");
+	params[pnr++] = intdup(13);
+	params[pnr++] = strdup("gpsField");
+	params[pnr++] = intdup(14);
 	params[pnr++] = strdup("divemasterField");
 	params[pnr++] = intdup(15);
 	params[pnr++] = strdup("buddyField");
@@ -334,28 +349,15 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	params[pnr++] = intdup(21);
 	params[pnr++] = strdup("tagsField");
 	params[pnr++] = intdup(22);
+	// Numbers are indexes of possible options
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(0);
-	params[pnr++] = strdup("units");
-	params[pnr++] = intdup(units);
 	params[pnr++] = strdup("datefmt");
 	params[pnr++] = intdup(2);
 	params[pnr++] = strdup("durationfmt");
 	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("cylindersizeField");
-	params[pnr++] = intdup(8);
-	params[pnr++] = strdup("startpressureField");
-	params[pnr++] = intdup(9);
-	params[pnr++] = strdup("endpressureField");
-	params[pnr++] = intdup(10);
-	params[pnr++] = strdup("o2Field");
-	params[pnr++] = intdup(11);
-	params[pnr++] = strdup("heField");
-	params[pnr++] = intdup(12);
-	params[pnr++] = strdup("airtempField");
-	params[pnr++] = intdup(6);
-	params[pnr++] = strdup("watertempField");
-	params[pnr++] = intdup(7);
+	params[pnr++] = strdup("units");
+	params[pnr++] = intdup(units);
 	params[pnr++] = NULL;
 
 	return parse_manual_file(file.c_str(), params, pnr - 1);
@@ -385,14 +387,13 @@ int TestParse::parseCSVprofile(int units, std::string file)
 	char *params[55];
 	int pnr = 0;
 
-	params[pnr++] = strdup("dateField");
-	params[pnr++] = intdup(1);
-	params[pnr++] = strdup("datefmt");
-	params[pnr++] = intdup(2);
-	params[pnr++] = strdup("starttimeField");
-	params[pnr++] = intdup(2);
+	// Numbers are column numbers
 	params[pnr++] = strdup("numberField");
 	params[pnr++] = intdup(0);
+	params[pnr++] = strdup("dateField");
+	params[pnr++] = intdup(1);
+	params[pnr++] = strdup("starttimeField");
+	params[pnr++] = intdup(2);
 	params[pnr++] = strdup("timeField");
 	params[pnr++] = intdup(3);
 	params[pnr++] = strdup("depthField");
@@ -401,6 +402,9 @@ int TestParse::parseCSVprofile(int units, std::string file)
 	params[pnr++] = intdup(5);
 	params[pnr++] = strdup("pressureField");
 	params[pnr++] = intdup(6);
+	// Numbers are indexes of possible options
+	params[pnr++] = strdup("datefmt");
+	params[pnr++] = intdup(2);
 	params[pnr++] = strdup("units");
 	params[pnr++] = intdup(units);
 	params[pnr++] = NULL;
