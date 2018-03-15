@@ -11,6 +11,7 @@
 #include "device.h"
 #include "divelist.h"
 #include "qthelper.h"
+#include "metadata.h"
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
