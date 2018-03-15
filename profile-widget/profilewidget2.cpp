@@ -644,8 +644,20 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 
 #ifndef SUBSURFACE_MOBILE
 	if (plotInfo.maxhr) {
-		heartBeatAxis->setMinimum(plotInfo.minhr);
-		heartBeatAxis->setMaximum(plotInfo.maxhr);
+		int heartBeatAxisMin = lrint(plotInfo.minhr / 5.0 - 0.5) * 5;
+		int heartBeatAxisMax, heartBeatAxisTick;
+		if (plotInfo.maxhr - plotInfo.minhr < 40)
+			heartBeatAxisTick = 10;
+		else if (plotInfo.maxhr - plotInfo.minhr < 80)
+			heartBeatAxisTick = 20;
+		else if (plotInfo.maxhr - plotInfo.minhr < 100)
+			heartBeatAxisTick = 25;
+		else
+			heartBeatAxisTick = 50;
+		for (heartBeatAxisMax = heartBeatAxisMin; heartBeatAxisMax < plotInfo.maxhr; heartBeatAxisMax += heartBeatAxisTick);
+		heartBeatAxis->setMinimum(heartBeatAxisMin);
+		heartBeatAxis->setMaximum(heartBeatAxisMax + 1);
+		heartBeatAxis->setTickInterval(heartBeatAxisTick);
 		heartBeatAxis->updateTicks(HR_AXIS); // this shows the ticks
 	}
 	heartBeatAxis->setVisible(prefs.hrgraph && plotInfo.maxhr);
