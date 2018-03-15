@@ -106,9 +106,14 @@ static QString fmt_float(double d, char type, vasprintf_flags flags, int field_w
 }
 
 // Helper to extract integers from C-style format strings.
-// The default returned value, if no digits are found is 0.
-static int parse_fmt_int(const char **act)
+// The default returned value, if no digits are found, is 0.
+// A '*' means fetch from varargs as int.
+static int parse_fmt_int(const char **act, va_list *ap)
 {
+	if (**act == '*') {
+		++(*act);
+		return va_arg(*ap, int);
+	}
 	if (!isdigit(**act))
 		return 0;
 	int res = 0;
@@ -119,8 +124,10 @@ static int parse_fmt_int(const char **act)
 	return res;
 }
 
-QString vqasprintf_loc(const char *fmt, va_list ap)
+QString vqasprintf_loc(const char *fmt, va_list ap_in)
 {
+	va_list ap;
+	va_copy(ap, ap_in);	// Allows us to pass as pointer to helper functions
 	const char *act = fmt;
 	QString ret;
 	for (;;) {
@@ -169,24 +176,13 @@ QString vqasprintf_loc(const char *fmt, va_list ap)
 		}
 
 		// Field width
-		int field_width;
-		if (*act == '*') {
-			field_width = va_arg(ap, int);
-			++act;
-		} else {
-			field_width = parse_fmt_int(&act);
-		}
+		int field_width = parse_fmt_int(&act, &ap);
 
 		// Precision
 		int precision = -1;
 		if (*act == '.') {
 			++act;
-			if (*act == '*') {
-				precision = va_arg(ap, int);
-				++act;
-			} else {
-				precision = parse_fmt_int(&act);
-			}
+			precision = parse_fmt_int(&act, &ap);
 		}
 
 		// Length modifier
@@ -343,6 +339,7 @@ QString vqasprintf_loc(const char *fmt, va_list ap)
 			break;
 		}
 	}
+	va_end(ap);
 	return ret;
 }
 
