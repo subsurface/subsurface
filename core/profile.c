@@ -439,7 +439,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 				maxpressure = pressure;
 			if (heartbeat > maxhr)
 				maxhr = heartbeat;
-			if (heartbeat < minhr)
+			if (heartbeat && heartbeat < minhr)
 				minhr = heartbeat;
 
 			if (depth > maxdepth)
@@ -469,7 +469,7 @@ struct plot_info calculate_max_limits_new(struct dive *dive, struct divecomputer
 	if (minpressure > maxpressure)
 		minpressure = 0;
 	if (minhr > maxhr)
-		minhr = 0;
+		minhr = maxhr;
 
 	memset(&pi, 0, sizeof(pi));
 	pi.maxdepth = maxdepth;
