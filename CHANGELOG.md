@@ -1,3 +1,5 @@
+- Map-widget: try to match the zoom level in Google Maps
+- Map-widget: improve context menu texts
 - Mobile: enable the built-in map widget
 - Desktop: Change strategy when to allow to delete a cylinder (#869)
 - Desktop/Mobile: Format numbers according to selected Subsurface
