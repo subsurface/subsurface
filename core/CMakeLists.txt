@@ -76,6 +76,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	gettextfromc.cpp
 	# dirk ported some core functionality to c++.
 	qthelper.cpp
+	metadata.cpp
 	divecomputer.cpp
 	exif.cpp
 	subsurfacesysinfo.cpp

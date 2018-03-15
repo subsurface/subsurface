@@ -20,6 +20,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "desktop-widgets/undocommands.h"
 #include "core/qthelper.h"
+#include "core/metadata.h"
 
 class MinMaxAvgWidgetPrivate {
 public:
