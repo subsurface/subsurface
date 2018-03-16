@@ -54,31 +54,32 @@ static dc_status_t ble_serial_purge(dc_custom_io_t *io, dc_direction_t queue);
 static dc_status_t ble_serial_get_available(dc_custom_io_t *io, size_t *available);
 static dc_status_t ble_serial_set_timeout(dc_custom_io_t *io, long timeout);
 
-static dc_custom_io_t ble_serial_ops = {
-	.userdata = NULL,
-	.user_device = NULL,
+static dc_custom_io_t ble_serial_ops = []() -> dc_custom_io_t {
+	auto self = dc_custom_io_t{};
+    self.userdata = NULL;
+	self.user_device = NULL;
 
-	.serial_open = ble_serial_open,
-	.serial_close = ble_serial_close,
-	.serial_read = ble_serial_read,
-	.serial_write = ble_serial_write,
-	.serial_purge = ble_serial_purge,
-	.serial_get_available = ble_serial_get_available,
-	.serial_set_timeout = ble_serial_set_timeout,
+	self.serial_open = ble_serial_open;
+	self.serial_close = ble_serial_close;
+	self.serial_read = ble_serial_read;
+	self.serial_write = ble_serial_write;
+	self.serial_purge = ble_serial_purge;
+	self.serial_get_available = ble_serial_get_available;
+	self.serial_set_timeout = ble_serial_set_timeout;
 // These doesn't make sense over bluetooth
 // NULL means NOP
-	.serial_configure = NULL,
-	.serial_set_dtr = NULL,
-	.serial_set_rts = NULL,
-	.serial_set_break = NULL,
+	self.serial_configure = NULL;
+	self.serial_set_dtr = NULL;
+	self.serial_set_rts = NULL;
+	self.serial_set_break = NULL;
 
-	.packet_size  = 20,
-	.packet_open  = qt_ble_open,
-	.packet_close = qt_ble_close,
-	.packet_read  = qt_ble_read,
-	.packet_write = qt_ble_write,
-};
-
+	self.packet_size  = 20;
+	self.packet_open  = qt_ble_open;
+	self.packet_close = qt_ble_close;
+	self.packet_read  = qt_ble_read;
+	self.packet_write = qt_ble_write;
+    return self;
+}();
 
 static dc_status_t ble_serial_open(dc_custom_io_t *io, dc_context_t *context, const char* devaddr)
 {
@@ -589,31 +590,33 @@ static dc_status_t qt_serial_set_timeout(dc_custom_io_t *io, long timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-dc_custom_io_t qt_serial_ops = {
-	.userdata = NULL,
-	.user_device = NULL,
-	.serial_open = qt_serial_open,
-	.serial_close = qt_serial_close,
-	.serial_read = qt_serial_read,
-	.serial_write = qt_serial_write,
-	.serial_purge = qt_serial_purge,
-	.serial_get_available = qt_serial_get_available,
-	.serial_set_timeout = qt_serial_set_timeout,
+dc_custom_io_t qt_serial_ops = []() -> dc_custom_io_t {
+    auto self = dc_custom_io_t{};
+	self.userdata = NULL;
+	self.user_device = NULL;
+	self.serial_open = qt_serial_open;
+	self.serial_close = qt_serial_close;
+	self.serial_read = qt_serial_read;
+	self.serial_write = qt_serial_write;
+	self.serial_purge = qt_serial_purge;
+	self.serial_get_available = qt_serial_get_available;
+	self.serial_set_timeout = qt_serial_set_timeout;
 // These doesn't make sense over bluetooth
 // NULL means NOP
-	.serial_configure = NULL,
-	.serial_set_dtr = NULL,
-	.serial_set_rts = NULL,
-	.serial_set_break = NULL,
+	self.serial_configure = NULL;
+	self.serial_set_dtr = NULL;
+	self.serial_set_rts = NULL;
+	self.serial_set_break = NULL;
 
 #ifdef BLE_SUPPORT
-	.packet_size  = 20,
-	.packet_open  = qt_ble_open,
-	.packet_close = qt_ble_close,
-	.packet_read  = qt_ble_read,
-	.packet_write = qt_ble_write,
+	self.packet_size  = 20;
+	self.packet_open  = qt_ble_open;
+	self.packet_close = qt_ble_close;
+	self.packet_read  = qt_ble_read;
+	self.packet_write = qt_ble_write;
 #endif
-};
+    return self;
+}();
 
 dc_custom_io_t* get_qt_serial_ops() {
 	return (dc_custom_io_t*) &qt_serial_ops;
