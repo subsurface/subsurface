@@ -292,6 +292,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profTankbar,        &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setTankBar);
 	connect(ui.profTissues,        &QAction::triggered, sWrapper->techDetails, &TechnicalDetailsSettings::setPercentageGraph);
 
+	connect(ui.profTissues,        &QAction::triggered, this, &MainWindow::unsetProfHR);
+	connect(ui.profHR,             &QAction::triggered, this, &MainWindow::unsetProfTissues);
+
 	connect(ui.profPhe, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPhe);
 	connect(ui.profPn2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPn2);
 	connect(ui.profPO2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPo2);
@@ -2036,4 +2039,20 @@ void MainWindow::hideProgressBar()
 		progressDialog->deleteLater();
 		progressDialog = NULL;
 	}
+}
+
+void MainWindow::unsetProfHR()
+{
+	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
+
+	ui.profHR->setChecked(false);
+	sWrapper->techDetails->setHRgraph(false);
+}
+
+void MainWindow::unsetProfTissues()
+{
+	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
+
+	ui.profTissues->setChecked(false);
+	sWrapper->techDetails->setPercentageGraph(false);
 }
