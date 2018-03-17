@@ -149,6 +149,8 @@ slots:
 	void setDefaultState();
 	void setAutomaticTitle();
 	void cancelCloudStorageOperation();
+	void unsetProfHR();
+	void unsetProfTissues();
 
 protected:
 	void closeEvent(QCloseEvent *);
