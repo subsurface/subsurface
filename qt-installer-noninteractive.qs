@@ -9,7 +9,7 @@ function Controller() {
 }
 
 Controller.prototype.WelcomePageCallback = function() {
-    gui.clickButton(buttons.NextButton);
+    gui.clickButton(buttons.NextButton,3000);
 }
 
 Controller.prototype.CredentialsPageCallback = function() {
@@ -31,8 +31,8 @@ Controller.prototype.TargetDirectoryPageCallback = function()
 Controller.prototype.ComponentSelectionPageCallback = function() {
     var widget = gui.currentPageWidget();
 
-    widget.selectAll();
-    widget.deselectComponent('qt.59.src');
+    widget.deselectAll();
+    widget.selectComponent('qt.qt5.5101.android_armv7');
 
     gui.clickButton(buttons.NextButton);
 }
