@@ -12,16 +12,17 @@ CheckBox {
 		y: parent.height / 2 - height / 2
 		radius: 4
 		border.color: root.down ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.primaryColor
-		color: subsurfaceTheme.drawerColor
+		border.width: 2
+		color: subsurfaceTheme.backgroundColor
 
 		Rectangle {
-		    width: 12
-		    height: 12
-		    x: 4
-		    y: 4
-		    radius: 3
+			width: 12
+			height: 12
+			x: 4
+			y: 4
+			radius: 3
 			color: root.down ? subsurfaceTheme.darkerPrimaryColor : subsurfaceTheme.primaryColor
-		    visible: root.checked
+			visible: root.checked
 		}
 	}
 }
