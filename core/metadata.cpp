@@ -98,12 +98,3 @@ extern "C" timestamp_t picture_get_timestamp(const char *filename)
 	get_metadata(filename, &data);
 	return data.timestamp;
 }
-
-extern "C" void picture_load_exif_data(struct picture *p)
-{
-	struct metadata data;
-	if (get_metadata(p->filename, &data) == MEDIATYPE_IO_ERROR)
-		return;
-	p->longitude = data.longitude;
-	p->latitude = data.latitude;
-}
