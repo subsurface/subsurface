@@ -204,10 +204,14 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
 fi
 
 if [ ! -e libxml2-${LIBXML2_VERSION}.tar.gz ] ; then
-	wget ftp://xmlsoft.org/libxml2/libxml2-${LIBXML2_VERSION}.tar.gz
+	wget http://api.github.com/repos/GNOME/libxml2/tarball/v${LIBXML2_VERSION} -O libxml2-${LIBXML2_VERSION}.tar.gz
 fi
 if [ ! -e libxml2-${LIBXML2_VERSION} ] ; then
-	tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz
+	mkdir -p libxml2-${LIBXML2_VERSION}
+	tar -xzf libxml2-${LIBXML2_VERSION}.tar.gz --strip 1 -C libxml2-${LIBXML2_VERSION}
+	pushd libxml2-${LIBXML2_VERSION}
+	autoreconf --install
+	popd
 fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 	mkdir -p libxml2-build-"$ARCH"
@@ -221,12 +225,14 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 fi
 
 if [ ! -e libxslt-${LIBXSLT_VERSION}.tar.gz ] ; then
-	wget ftp://xmlsoft.org/libxml2/libxslt-${LIBXSLT_VERSION}.tar.gz
+	wget http://api.github.com/repos/GNOME/libxslt/tarball/v${LIBXSLT_VERSION} -O libxslt-${LIBXSLT_VERSION}.tar.gz
 fi
 if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
-	tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz
-	# libxslt have too old config.sub for android
-	cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
+	mkdir -p libxslt-${LIBXSLT_VERSION}
+	tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz --strip 1 -C libxslt-${LIBXSLT_VERSION}
+	pushd libxslt-${LIBXSLT_VERSION}
+	autoreconf --install
+	popd
 fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
 	mkdir -p libxslt-build-"$ARCH"
