@@ -3780,16 +3780,18 @@ bool picture_check_valid(const char *filename, int shift_time)
 
 void dive_create_picture(struct dive *dive, const char *filename, int shift_time, bool match_all)
 {
-	timestamp_t timestamp = picture_get_timestamp(filename);
+	struct metadata metadata;
+	get_metadata(filename, &metadata);
 	if (!new_picture_for_dive(dive, filename))
 		return;
-	if (!match_all && !dive_check_picture_time(dive, shift_time, timestamp))
+	if (!match_all && !dive_check_picture_time(dive, shift_time, metadata.timestamp))
 		return;
 
 	struct picture *picture = alloc_picture();
 	picture->filename = strdup(filename);
-	picture->offset.seconds = timestamp - dive->when + shift_time;
-	picture_load_exif_data(picture);
+	picture->offset.seconds = metadata.timestamp - dive->when + shift_time;
+	picture->longitude = metadata.longitude;
+	picture->latitude = metadata.latitude;
 
 	dive_add_picture(dive, picture);
 	dive_set_geodata_from_picture(dive, picture);

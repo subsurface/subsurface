@@ -22,7 +22,6 @@ extern "C" {
 
 enum mediatype_t get_metadata(const char *filename, struct metadata *data);
 timestamp_t picture_get_timestamp(const char *filename);
-void picture_load_exif_data(struct picture *p);
 
 #ifdef __cplusplus
 }
