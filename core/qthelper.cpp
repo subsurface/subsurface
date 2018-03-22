@@ -406,7 +406,7 @@ extern "C" timestamp_t picture_get_timestamp(const char *filename)
 		// If we couldn't parse EXIF data, use file creation date.
 		// TODO: QFileInfo::created is deprecated in newer Qt versions.
 		QDateTime created = QFileInfo(QString(filename)).created();
-		return created.toSecsSinceEpoch();
+		return created.toMSecsSinceEpoch() / 1000;
 	}
 	return exif.epoch();
 }
