@@ -63,6 +63,14 @@ matrix:
 #          directories:
 #              - 3pp
 
+    - env: SUBSURFACE_PLATFORM="qt55"
+      # Currently hard coded to arm
+      os: linux
+      language: c++
+      filter_secrets: false
+      services:
+          - docker
+
 before_install:
     - source ${TRAVIS_BUILD_DIR}/scripts/${SUBSURFACE_PLATFORM}/before_install.sh
 
