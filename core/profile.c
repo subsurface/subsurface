@@ -1194,22 +1194,43 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
 	}
 }
 
+struct event *get_next_divemodechange(struct event *ev)
+{
+	char *eventname[3] = { "OC", "CCR", "PSCR" }; // string representations of the divemodes
+	while (ev) { // Step through the events.
+		for (int i=0; i<3; i++) { // For each event name search for one of the above strings
+			if (!strcmp(ev->name,eventname[i])) { // if the event name is one of the divemode names
+				ev->divemode = i; // set the event type to the dive mode
+				return (ev);
+			}
+		}
+		ev = ev->next;
+	}
+	return (ev);
+}
+
 static void calculate_gas_information_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	int i;
+	int i, current_divemode;
 	double amb_pressure;
 	struct gasmix *gasmix = NULL;
-	struct event *ev = NULL;
+	struct event *nextev, *evNULL = NULL;
+
+	current_divemode = dc->divemode;
+	nextev = get_next_divemodechange(dc->events);
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 
-		gasmix = get_gasmix(dive, dc, entry->sec, &ev, gasmix);
+		gasmix = get_gasmix(dive, dc, entry->sec, &evNULL, gasmix);
 
+		if (nextev && (entry->sec > nextev->time.seconds)) { // If there are divemode changes and sample time
+			current_divemode = nextev->divemode; // has reached that of the current divemode event, then set the
+			nextev = get_next_divemodechange(nextev->next); // current divemode and find the next divemode event
+		}
 		amb_pressure = depth_to_bar(entry->depth, dive);
-
-		fill_pressures(&entry->pressures, amb_pressure, gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
+		fill_pressures(&entry->pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 

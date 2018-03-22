@@ -140,6 +140,7 @@ struct event {
 		 * case, the get_cylinder_index() function will give the best
 		 * match with the cylinders in the dive based on gasmix.
 		 */
+		int divemode; // For divemode switch events during dive
 		struct {
 			int index;
 			struct gasmix mix;
