@@ -108,6 +108,7 @@ export CXXFLAGS=-std=c++11
 if [[ "$1" == "debug" ]] ; then
 	RELEASE="Debug"
 	RELEASE_MAIN="Debug"
+	RELEASE_GM="debug"
 	DLL_SUFFIX="d"
 	shift
 	if [[ -f Release ]] ; then
@@ -117,6 +118,7 @@ if [[ "$1" == "debug" ]] ; then
 else
 	RELEASE="Release"
 	RELEASE_MAIN="RelWithDebInfo"
+	RELEASE_GM="release"
 	DLL_SUFFIX=""
 	if [[ -f Debug ]] ; then
 		rm -rf *
@@ -202,8 +204,8 @@ if [[ ! -d googlemaps || -f build.googlemaps ]] ; then
 	mkdir -p googlemaps
 	cd googlemaps
 	"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/qmake PREFIX=$"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared "$BASEDIR"/googlemaps/googlemaps.pro
-	make $JOBS
-	make install
+	make $JOBS $RELEASE_GM
+	make "$RELEASE_GM"-install
 fi
 
 ###############
