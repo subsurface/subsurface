@@ -9,6 +9,7 @@
 #include <QString>
 #include <QImageReader>
 #include <QDataStream>
+#include <QPainter>
 
 #include <QtConcurrent>
 
@@ -291,6 +292,18 @@ void Thumbnailer::processItem(QString filename)
 	emit thumbnailChanged(filename, thumbnail, false);
 }
 
+// Put a marker on a thumbnail to identify it as a video.
+static void markVideoThumbnail(QImage &img)
+{
+	if (img.isNull())
+		return;
+	QSize size = img.size();
+	QSize markSize = size / 4;
+	QImage mark = QImage(":video-icon").scaled(markSize, Qt::KeepAspectRatio);
+	QPainter p(&img);
+	p.drawImage(0, 0, mark);
+}
+
 void Thumbnailer::frameExtracted(QString filename, QImage thumbnail)
 {
 	if (thumbnail.isNull()) {
@@ -303,6 +316,7 @@ void Thumbnailer::frameExtracted(QString filename, QImage thumbnail)
 		videoThumbnailCache.insert(filename, thumbnail);
 		workingOn.remove(filename);
 	}
+	markVideoThumbnail(thumbnail);
 	emit thumbnailChanged(filename, thumbnail, true);
 }
 
@@ -352,8 +366,11 @@ QImage Thumbnailer::getThumbnail(PictureEntry &entry)
 
 	// If thumbnails were written by an earlier version, they might be smaller than needed.
 	// Rescale in such a case to avoid resizing artifacts.
-	if (!res.isNull() && (res.size().width() >= size || res.size().height() >= size))
+	if (!res.isNull() && (res.size().width() >= size || res.size().height() >= size)) {
+		if (entry.isVideo)
+			markVideoThumbnail(res);
 		return res;
+	}
 
 	// We didn't find an entry for this picture - schedule thumbnail calculation and return dummy icon
 	if (!workingOn.contains(filename)) {
