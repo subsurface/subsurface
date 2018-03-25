@@ -44,6 +44,7 @@ bool ImageDownloader::loadFromUrl(const QUrl &url)
 		connect(&manager, &QNetworkAccessManager::finished, this,
 			[this,&success] (QNetworkReply *reply) { saveImage(reply, success); });
 		connect(&manager, &QNetworkAccessManager::finished, &loop, &QEventLoop::quit);
+		qDebug() << "Downloading image from" << url;
 		QNetworkReply *reply = manager.get(request);
 		loop.exec();
 		delete reply;
@@ -68,6 +69,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply, bool &success)
 		dir.mkpath(path);
 	QFile imageFile(path.append("/").append(hash.result().toHex()));
 	if (imageFile.open(QIODevice::WriteOnly)) {
+		qDebug() << "Write image to" << imageFile.fileName();
 		QDataStream stream(&imageFile);
 		stream.writeRawData(imageData.data(), imageData.length());
 		imageFile.waitForBytesWritten(-1);
@@ -103,12 +105,18 @@ static void loadPicture(struct picture *picture, bool fromHash)
 SHashedImage::SHashedImage(struct picture *picture) : QImage()
 {
 	QUrl url = QUrl::fromUserInput(localFilePath(QString(picture->filename)));
-	if(url.isLocalFile())
+	if (url.isLocalFile()) {
 		load(url.toLocalFile());
+		if (isNull())
+			qInfo() << "Failed loading picture" << url.toLocalFile();
+		else
+			qDebug() << "Loaded picture" << url.toLocalFile();
+	}
 	if (isNull()) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filename = localFilePath(picture->filename);
+		qDebug() << QStringLiteral("Translated filename: %1 -> %2").arg(picture->filename, filename);
 		if (filename.isNull()) {
 			// That didn't produce a local filename.
 			// Try the cloud server
@@ -119,9 +127,11 @@ SHashedImage::SHashedImage(struct picture *picture) : QImage()
 			load(filename);
 			if (!isNull()) {
 				// Make sure the hash still matches the image file
+				qDebug() << "Loaded picture from translated filename" << filename;
 				QtConcurrent::run(hashPicture, clone_picture(picture));
 			} else {
 				// Interpret filename as URL
+				qInfo() << "Failed loading picture from translated filename" << filename;
 				QtConcurrent::run(loadPicture, clone_picture(picture), false);
 			}
 		}
