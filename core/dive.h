@@ -874,6 +874,7 @@ struct divedatapoint {
 	int setpoint;
 	bool entered;
 	struct divedatapoint *next;
+	enum dive_comp_type divemode;
 };
 
 struct diveplan {
@@ -890,7 +891,7 @@ struct diveplan {
 	int surface_interval;
 };
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered);
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum dive_comp_type divemode);
 struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2);
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);
