@@ -252,6 +252,8 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 				return (p.time - divepoints.at(index.row() - 1).time) / 60;
 			else
 				return p.time / 60;
+		case DIVEMODE:
+			return QString(divemode_text[p.divemode]);
 		case GAS:
 			/* Check if we have the same gasmix two or more times
 			 * If yes return more verbose string */
@@ -330,6 +332,12 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 				CylindersModel::instance()->moveAtFirst(value.toInt());
 			CylindersModel::instance()->updateTrashIcon();
 			break;
+		case DIVEMODE:
+			if (value.toInt() < FREEDIVE) // FIXME: I want to be a combo box and translate strings to enum values
+				p.divemode = (enum dive_comp_type) value.toInt();
+			if (index.row() == 0)
+				displayed_dive.dc.divemode = (enum dive_comp_type) value.toInt();
+			break;
 		}
 		editStop(index.row(), p);
 	}
@@ -367,6 +375,8 @@ QVariant DivePlannerPointsModel::headerData(int section, Qt::Orientation orienta
 			return tr("Used gas");
 		case CCSETPOINT:
 			return tr("CC setpoint");
+		case DIVEMODE:
+			return tr("Dive mode");
 		}
 	} else if (role == Qt::FontRole) {
 		return defaultModelFont();
@@ -457,8 +467,10 @@ void DivePlannerPointsModel::setRebreatherMode(int mode)
 {
 	int i;
 	displayed_dive.dc.divemode = (dive_comp_type) mode;
-	for (i=0; i < rowCount(); i++)
+	for (i=0; i < rowCount(); i++) {
 		divepoints[i].setpoint = mode == CCR ? prefs.defaultsetpoint : 0;
+		divepoints[i].divemode = (enum dive_comp_type) mode;
+	}
 	emitDataChanged();
 }
 
@@ -661,6 +673,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 {
 	int cylinderid = 0;
 	bool usePrevious = false;
+	enum dive_comp_type divemode = displayed_dive.dc.divemode;
 	if (cylinderid_in >= 0)
 		cylinderid = cylinderid_in;
 	else
@@ -703,8 +716,10 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	if (usePrevious) {
 		if (row  < divepoints.count()) {
 			cylinderid = divepoints.at(row).cylinderid;
+			divemode = divepoints.at(row).divemode;
 		} else if (row > 0) {
 			cylinderid = divepoints.at(row - 1).cylinderid;
+			divemode = divepoints.at(row - 1).divemode;
 		}
 	}
 
@@ -716,6 +731,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	point.cylinderid = cylinderid;
 	point.setpoint = ccpoint;
 	point.entered = entered;
+	point.divemode = divemode;
 	point.next = NULL;
 	divepoints.append(point);
 	std::sort(divepoints.begin(), divepoints.end(), divePointsLessThan);
@@ -864,11 +880,11 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		lastIndex = i;
 		if (i == 0 && mode == PLAN && prefs.drop_stone_mode) {
 			/* Okay, we add a first segment where we go down to depth */
-			plan_add_segment(&diveplan, p.depth.mm / prefs.descrate, p.depth.mm, p.cylinderid, p.setpoint, true);
+			plan_add_segment(&diveplan, p.depth.mm / prefs.descrate, p.depth.mm, p.cylinderid, p.setpoint, true, p.divemode);
 			deltaT -= p.depth.mm / prefs.descrate;
 		}
 		if (p.entered)
-			plan_add_segment(&diveplan, deltaT, p.depth.mm, p.cylinderid, p.setpoint, true);
+			plan_add_segment(&diveplan, deltaT, p.depth.mm, p.cylinderid, p.setpoint, true, p.divemode);
 	}
 
 	// what does the cache do???

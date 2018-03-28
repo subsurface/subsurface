@@ -18,6 +18,7 @@ public:
 		RUNTIME,
 		GAS,
 		CCSETPOINT,
+		DIVEMODE,
 		COLUMNS
 	};
 	enum Mode {

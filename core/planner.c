@@ -336,6 +336,11 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 			finish_sample(dc);
 			lastcylid = dp->cylinderid;
 		}
+		if (dp->divemode != type) {
+			type = dp->divemode;
+			add_event(dc, lasttime, 50 + type, 0, 0, divemode_text[type]);
+		}
+
 		/* Create sample */
 		sample = prepare_sample(dc);
 		/* set po2 at beginning of this segment */
@@ -409,10 +414,11 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		dp->time += lasttime;
 }
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered)
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum dive_comp_type divemode)
 {
 	struct divedatapoint *dp = create_dp(duration, depth, cylinderid, po2);
 	dp->entered = entered;
+	dp->divemode = divemode;
 	add_to_end_of_diveplan(diveplan, dp);
 	return dp;
 }
@@ -690,6 +696,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int laststoptime = timestep;
 	bool o2breaking = false;
 	int decostopcounter = 0;
+	enum dive_comp_type divemode = dive->dc.divemode;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);
@@ -724,6 +731,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	bottom_time = clock = previous_point_time = dive->dc.sample[dive->dc.samples - 1].time.seconds;
 
 	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
+	// FIXME: This needs a function to find the divemode at the end of the dive like in
+	// divemode = get_divemode_at_time(dive, &dive->dc, sample->time);
 	gas = dive->cylinder[current_cylinder].gasmix;
 
 	po2 = sample->setpoint.mbar;
@@ -737,7 +746,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		 * same ascent rate as in fake_dc(). If you change it here, also change it there.
 		 */
 		transitiontime = lrint(depth / (double)prefs.ascratelast6m);
-		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false);
+		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, is_planner);
 		return false;
 	}
@@ -794,13 +803,13 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		// so we don't really have to compute the deco state.
 		update_cylinder_pressure(dive, depth, depth, -timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false);
 		clock -= timestep;
-		plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, true);
+		plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, true, divemode);
 		previous_point_time = clock;
 		do {
 			/* Ascend to surface */
 			int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 			if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
-				plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
+				plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
 			}
@@ -810,15 +819,15 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			clock += TIMESTEP;
 			depth -= deltad;
 			if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
-				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false);
+				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				clock += 180;
-				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false);
+				plan_add_segment(diveplan, clock - previous_point_time, 5000, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				safety_stop = false;
 			}
 		} while (depth > 0);
-		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
+		plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
 		create_dive_from_plan(diveplan, dive, is_planner);
 		add_plan_to_notes(diveplan, dive, show_disclaimer, error);
 		fixup_dc_duration(&dive->dc);
@@ -891,7 +900,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 				if (ascent_velocity(depth, avg_depth, bottom_time) != last_ascend_rate) {
 					if (is_final_plan)
-						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
+						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 					previous_point_time = clock;
 					stopping = false;
 					last_ascend_rate = ascent_velocity(depth, avg_depth, bottom_time);
@@ -917,7 +926,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 				/* We have reached a gas change.
 				 * Record this in the dive plan */
 				if (is_final_plan)
-					plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
+					plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				stopping = true;
 
@@ -975,7 +984,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 					/* The last segment was an ascend segment.
 					 * Add a waypoint for start of this deco stop */
 					if (is_final_plan)
-						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
+						plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 					previous_point_time = clock;
 					stopping = true;
 				}
@@ -1029,7 +1038,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 							o2break_next = true;
 							breakfrom_cylinder = current_cylinder;
 							if (is_final_plan)
-								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
+								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false, divemode);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = break_cylinder;
 							gas = dive->cylinder[current_cylinder].gasmix;
@@ -1041,7 +1050,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 							o2breaking  = true;
 							o2break_next = false;
 							if (is_final_plan)
-								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false);
+								plan_add_segment(diveplan, laststoptime, depth, current_cylinder, po2, false, divemode);
 							previous_point_time = clock + laststoptime;
 							current_cylinder = breakfrom_cylinder;
 							gas = dive->cylinder[current_cylinder].gasmix;
@@ -1062,7 +1071,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 			if (stopping) {
 				/* Next we will ascend again. Add a waypoint if we have spend deco time */
 				if (is_final_plan)
-					plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false);
+					plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, false, divemode);
 				previous_point_time = clock;
 				stopping = false;
 			}
@@ -1075,7 +1084,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	} while (!is_final_plan);
 	decostoptable[decostopcounter].depth = 0;
 
-	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false);
+	plan_add_segment(diveplan, clock - previous_point_time, 0, current_cylinder, po2, false, divemode);
 	if (decoMode() == VPMB) {
 		diveplan->eff_gfhigh = lrint(100.0 * regressionb());
 		diveplan->eff_gflow = lrint(100.0 * (regressiona() * first_stop_depth + regressionb()));
