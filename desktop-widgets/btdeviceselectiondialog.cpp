@@ -274,7 +274,6 @@ void BtDeviceSelectionDialog::startScan()
 			remoteDeviceDiscoveryAgent->wait();
 #endif
 		}
-		ui->discoveredDevicesList->clear();
 		maxPriority = 0;
 		remoteDeviceDiscoveryAgent->start();
 		ui->dialogStatus->setText(tr("Scanning for remote devices..."));
@@ -351,13 +350,26 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 							      remoteDeviceInfo.address().toString(),
 							      pairingStatusLabel);
 #endif
-	// Create the new item, set its information and add it to the list
-	QListWidgetItem *item = new QListWidgetItem(deviceLabel);
+	// Check if item is already in list. Add it, if it isn't
+	int numRows = ui->discoveredDevicesList->count();
+	int row;
+	QListWidgetItem *item;
+	for (row = 0; row < numRows; ++row) {
+		item = ui->discoveredDevicesList->item(row);
+		if (item->data(Qt::UserRole).value<QBluetoothDeviceInfo>() == remoteDeviceInfo)
+			break;
+	}
 
+	if (row >= numRows) {
+		// Create the new item and add it to the list
+		item = new QListWidgetItem;
+		ui->discoveredDevicesList->addItem(item);
+	}
+
+	item->setText(deviceLabel);
 	item->setData(Qt::UserRole, QVariant::fromValue(remoteDeviceInfo));
 	item->setBackgroundColor(pairingColor);
 
-	ui->discoveredDevicesList->addItem(item);
 	int priority = getDevicePriority(connectable, remoteDeviceInfo);
 	if (priority > maxPriority) {
 		maxPriority = priority;
