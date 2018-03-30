@@ -20,6 +20,7 @@ private:
 };
 
 class SHashedImage : public QImage {
+	bool load(const QString &fileName, const char *format=nullptr);
 public:
 	SHashedImage(struct picture *picture);
 };

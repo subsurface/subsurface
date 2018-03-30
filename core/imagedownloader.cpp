@@ -6,6 +6,7 @@
 #include "imagedownloader.h"
 #include <unistd.h>
 #include <QString>
+#include <QImageReader>
 
 #include <QtConcurrent>
 
@@ -100,6 +101,16 @@ static void loadPicture(struct picture *picture, bool fromHash)
 
 	ImageDownloader download(picture);
 	download.load(fromHash);
+}
+
+// Overwrite QImage::load() so that we can perform better error reporting.
+bool SHashedImage::load(const QString &fileName, const char *format)
+{
+	QImageReader reader(fileName, format);
+	static_cast<QImage&>(*this) = reader.read();
+	if (isNull())
+		qInfo() << "Error loading image" << fileName << (int)reader.error() << reader.errorString();
+	return !isNull();
 }
 
 SHashedImage::SHashedImage(struct picture *picture) : QImage()
