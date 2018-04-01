@@ -102,6 +102,8 @@ private:
 	void showEvent(QShowEvent *event);
 	void initializeDeviceList();
 	int getDevicePriority(bool connectable, const QBluetoothDeviceInfo &remoteDeviceInfo);
+	void saveDeviceList();
+	void loadDeviceList();
 };
 
 #endif // BTDEVICESELECTIONDIALOG_H

@@ -7,6 +7,7 @@
 #include "core/btdiscovery.h"
 
 #include <QBluetoothUuid>
+#include <QSettings>
 
 #include "ui_btdeviceselectiondialog.h"
 #include "btdeviceselectiondialog.h"
@@ -121,6 +122,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(const QString &address, dc_desc
 	if (localDevice->isValid())
 		initializeDeviceDiscoveryAgent();
 #endif
+	loadDeviceList();
 }
 
 BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
@@ -153,6 +155,66 @@ void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
 #endif
 }
 
+static quint32 deviceInfoToClass(const QBluetoothDeviceInfo &info)
+{
+	return (info.minorDeviceClass() << 2) |
+	       (info.majorDeviceClass() << 8) |
+	       ((quint32)info.serviceClasses() << 13);
+}
+
+static QString addressOrUuid(const QBluetoothDeviceInfo &info)
+{
+	return info.address().isNull() ? info.deviceUuid().toString() : info.address().toString();
+}
+
+// Compare Bluetooth devices by address or UUID.
+// When using QBluetoothDeviceInfo::operator==(), scanned and loaded (from the settings)
+// device-infos don't compare as equal, for yet unknown reasons.
+static bool sameDevice(const QBluetoothDeviceInfo &d1, const QBluetoothDeviceInfo &d2)
+{
+	return addressOrUuid(d1) == addressOrUuid(d2);
+}
+
+void BtDeviceSelectionDialog::saveDeviceList()
+{
+	int numRows = ui->discoveredDevicesList->count();
+	QSettings s;
+	s.beginGroup("Bluetooth");
+	s.beginWriteArray("devices", numRows);
+	for (int i = 0; i < numRows; ++i) {
+		QBluetoothDeviceInfo info = ui->discoveredDevicesList->item(i)->data(Qt::UserRole).value<QBluetoothDeviceInfo>();
+		s.setArrayIndex(i);
+		s.setValue("name", info.name());
+		s.setValue("address", addressOrUuid(info));
+		s.setValue("class", deviceInfoToClass(info));
+	}
+	s.endArray();
+	s.endGroup();
+}
+
+void BtDeviceSelectionDialog::loadDeviceList()
+{
+	QSettings s;
+	s.beginGroup("Bluetooth");
+	int numRows = s.beginReadArray("devices");
+	for (int i = 0; i < numRows; ++i) {
+		s.setArrayIndex(i);
+		QBluetoothDeviceInfo info(
+			// For Mac, we saved an UUID, for Windows and Linux the Bluetooth address.
+#if defined(Q_OS_MACOS) || defined(Q_OS_IOS)
+			QBluetoothUuid(s.value("address").toString()),
+#else
+			QBluetoothAddress(s.value("address").toString()),
+#endif
+			s.value("name").toString(),
+			s.value("class").toUInt()
+		);
+		addRemoteDevice(info);
+	}
+	s.endArray();
+	s.endGroup();
+}
+
 void BtDeviceSelectionDialog::on_save_clicked()
 {
 	// Get the selected device. There will be always a selected device if the save button is enabled.
@@ -161,11 +223,11 @@ void BtDeviceSelectionDialog::on_save_clicked()
 
 	// Save the selected device
 	selectedRemoteDeviceInfo.reset(new QBluetoothDeviceInfo(remoteDeviceInfo));
-	QString address = remoteDeviceInfo.address().isNull() ? remoteDeviceInfo.deviceUuid().toString() :
-								remoteDeviceInfo.address().toString();
+	QString address = addressOrUuid(remoteDeviceInfo);
 	saveBtDeviceInfo(address, remoteDeviceInfo);
 	previousDevice = address;
 	stopScan();
+	saveDeviceList();
 
 	// Close the device selection dialog and set the result code to Accepted
 	accept();
@@ -174,6 +236,7 @@ void BtDeviceSelectionDialog::on_save_clicked()
 void BtDeviceSelectionDialog::on_quit_clicked()
 {
 	stopScan();
+	saveDeviceList();
 
 	// Close the device selection dialog and set the result code to Rejected
 	reject();
@@ -311,6 +374,8 @@ int BtDeviceSelectionDialog::getDevicePriority(bool connectable, const QBluetoot
 
 void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remoteDeviceInfo)
 {
+	if (!remoteDeviceInfo.isValid())
+		return;
 #if defined(Q_OS_WIN)
 	// On Windows we cannot obtain the pairing status so we set only the name and the address of the device
 	bool connectable = true;
@@ -356,7 +421,7 @@ void BtDeviceSelectionDialog::addRemoteDevice(const QBluetoothDeviceInfo &remote
 	QListWidgetItem *item;
 	for (row = 0; row < numRows; ++row) {
 		item = ui->discoveredDevicesList->item(row);
-		if (item->data(Qt::UserRole).value<QBluetoothDeviceInfo>() == remoteDeviceInfo)
+		if (sameDevice(item->data(Qt::UserRole).value<QBluetoothDeviceInfo>(), remoteDeviceInfo))
 			break;
 	}
 
@@ -685,7 +750,6 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		this, SLOT(remoteDeviceScanFinished()));
 	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
 		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
-	// On Windows scans block the UI, therefore we might not want to force the user to scan.
 	if (isPoweredOn())
 		setScanStatusOff();
 	else
