@@ -12,6 +12,7 @@ Kirigami.Page {
 	topPadding: 0
 	rightPadding: 0
 	bottomPadding: 0
+	property bool firstRun: true
 
 	MapWidget {
 		id: mapWidget
@@ -40,10 +41,27 @@ Kirigami.Page {
 			console.warn("main.qml: centerOnDiveSiteUUI(): uuid is undefined!")
 			return
 		}
+		// on firstRun, hard pan/center the map to the desired location so that
+		// we don't start at an arbitrary location such as [0,0] or London.
+		if (firstRun) {
+			var coord = mapWidget.mapHelper.getCoordinatesForUUID(uuid)
+			centerOnLocationHard(coord.latitude, coord.longitude)
+			firstRun = false
+		} // continue here as centerOnDiveSiteUUID() also does marker selection.
 		mapWidget.mapHelper.centerOnDiveSiteUUID(uuid)
 	}
 
 	function centerOnLocation(lat, lon) {
+		if (firstRun) {
+			centerOnLocationHard(lat, lon)
+			firstRun = false
+			return // no need to animate via centerOnCoordinate().
+		}
 		mapWidget.map.centerOnCoordinate(QtPositioning.coordinate(lat, lon))
+	}
+
+	function centerOnLocationHard(lat, lon) {
+		mapWidget.map.zoomLevel = mapWidget.map.defaultZoomIn
+		mapWidget.map.center = QtPositioning.coordinate(lat, lon)
 	}
 }
