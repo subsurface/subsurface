@@ -241,6 +241,63 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 	}
 }
 
+struct event *get_next_divemodechange(struct event **evd)
+{ /* Starting at the event pointed to by evd, find the next divemode change event and initialise its
+   * type and divemode. Requires an external pointer (evd) to a divemode change event, usually
+   * initialised to dc->events. This function is self-tracking and the value of evd needs no
+   * setting or manipulation outside of this function. */
+	struct event *ev = *evd;
+	while (ev) { // Step through the events.
+		for (int i=0; i<3; i++) { // For each event name search for one of the above strings
+			if (!strcmp(ev->name,divemode_text[i])) { // if the event name is one of the divemode names
+				ev->type = DIVEMODECHANGE_EVENTTYPE + i;
+				ev->divemode = i; // set the event type to the dive mode
+				*evd = ev->next;
+				return (ev);
+			}
+		}
+		ev = ev->next;
+	}
+	*evd = NULL;
+	return (NULL);
+}
+
+struct event *peek_next_divemodechange(struct event *evd)
+{ // Starting at event evd, return the subsequent divemode change event, remembering its divemode.
+	struct event *ev = evd;
+	while (ev) { // Step through the events.
+		for (int i=0; i<3; i++) { // For each event name search for one of the above strings
+			if (!strcmp(ev->name,divemode_text[i])) { // if the event name is one of the divemode names
+				ev->divemode = i;
+				return (ev); // ... then return the event.
+			}
+		}
+		ev = ev->next;
+	}
+	return (NULL);
+}
+
+enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc)
+{ /* For a particular dive computer and its linked list of events, find the divemode dtime seconds
+   * into the dive. Requires an external pointer (ev_dmc) to a divemode change event, usually
+   * initialised by a call to get_next_divemodechange(dc->events). This function is self-tracking
+   * and the value of ev_dmc needs no setting or manipulation outside of this function. */
+	enum dive_comp_type mode;
+	struct event *ev = *ev_dmc; // ev_dmc points to event initialised by get_next_divemodechange()
+	if (!ev) 
+		mode = dc->divemode; // if there is no divemodechange event, default to dc->divemode
+	else {
+		mode = ev->divemode; // If there is a starting divemodechange event, use the divemode of that event.
+		while (ev && (dtime >= ev->time.seconds)) { // If dtime is AFTER this event time, store divemode
+			mode = ev->divemode;
+			*ev_dmc = ev;
+			ev = peek_next_divemodechange(ev->next); // peek at the time of the following divemode change event
+		}
+	}
+	return (mode); 
+}
+
+
 /* this returns a pointer to static variable - so use it right away after calling */
 struct gasmix *get_gasmix_from_event(struct dive *dive, struct event *ev)
 {
@@ -2050,11 +2107,12 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
  *			amb_pressure = ambient pressure applicable to the record in calling function
  *			*pressures = structure for communicating o2 sensor values from and gas pressures to the calling function.
  *			*mix = structure containing cylinder gas mixture information.
+ *			divemode = the dive mode pertaining to this point in the dive profile.
  * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
  */
 extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type divemode)
 {
-	if (po2) {	// This is probably a CCR dive where pressures->o2 is defined
+	if ((divemode != OC) && po2) {	// This is a rebreather dive where pressures->o2 is defined
 		if (po2 >= amb_pressure) {
 			pressures->o2 = amb_pressure;
 			pressures->n2 = pressures->he = 0.0;

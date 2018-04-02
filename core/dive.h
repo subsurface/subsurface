@@ -14,7 +14,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "divesite.h"
-
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
@@ -92,6 +91,7 @@ struct event {
 		 * case, the get_cylinder_index() function will give the best
 		 * match with the cylinders in the dive based on gasmix.
 		 */
+		enum dive_comp_type divemode;
 		struct {
 			int index;
 			struct gasmix mix;
@@ -363,6 +363,9 @@ struct dive_components {
 	unsigned int cylinders : 1;
 	unsigned int weights : 1;
 };
+
+extern struct event *get_next_divemodechange(struct event **evd);
+extern enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc);
 
 /* picture list and methods related to dive picture handling */
 struct picture {

@@ -537,12 +537,26 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	/* Print warnings for pO2 */
 	dp = diveplan->dp;
 	bool o2warning_exist = false;
+	enum dive_comp_type current_divemode;
+	double amb;
+	struct event *nextev, *evd = dive->dc.events;
+
+	current_divemode = dive->dc.divemode;
+	nextev = get_next_divemodechange(&evd);
+
 	if (dive->dc.divemode != CCR) {
 		while (dp) {
 			if (dp->time != 0) {
 				struct gas_pressures pressures;
 				struct gasmix *gasmix = &dive->cylinder[dp->cylinderid].gasmix;
-				fill_pressures(&pressures, depth_to_atm(dp->depth.mm, dive), gasmix, 0.0, dive->dc.divemode);
+
+				if (nextev && (dp->time >= nextev->time.seconds)) { // If there are divemode changes and divedatapoint time
+					current_divemode = nextev->divemode; // has reached that of the current divemode event, then set the
+					nextev = get_next_divemodechange(&evd); // current divemode and find the next divemode event
+				}
+
+				amb = depth_to_atm(dp->depth.mm, dive);
+				fill_pressures(&pressures, amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix->o2.permille / 1000.0, current_divemode);
 
 				if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
 					const char *depth_unit;
