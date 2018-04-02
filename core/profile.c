@@ -1200,19 +1200,25 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
 static void calculate_gas_information_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i;
+	enum dive_comp_type current_divemode;
 	double amb_pressure;
 	struct gasmix *gasmix = NULL;
-	struct event *ev = NULL;
+	struct event *nextev, *evg = NULL, *evd = dc->events;
+
+	current_divemode = dc->divemode;
+	nextev = get_next_divemodechange(&evd);
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 
-		gasmix = get_gasmix(dive, dc, entry->sec, &ev, gasmix);
-
+		gasmix = get_gasmix(dive, dc, entry->sec, &evg, gasmix);
+		if (nextev && (entry->sec > nextev->time.seconds)) { // If there are divemode changes and sample time
+			current_divemode = nextev->divemode; // has reached that of the current divemode event, then set the
+			nextev = get_next_divemodechange(&evd); // current divemode and find the next divemode event
+		}
 		amb_pressure = depth_to_bar(entry->depth, dive);
-
-		fill_pressures(&entry->pressures, amb_pressure, gasmix, entry->o2pressure.mbar / 1000.0, dive->dc.divemode);
+		fill_pressures(&entry->pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 		if (dc->divemode == PSCR) // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
