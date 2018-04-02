@@ -19,4 +19,6 @@
     <usb-device vendor-id="11884" product-id="12801"/>
     <!-- Scubapro Aladin Square -->
     <usb-device vendor-id="49745" product-id="8198"/>
+    <!-- Atomics Aquatics Cobalt -->
+    <usb-device vendor-id="1137" product-id="2184"/>
 </resources>
