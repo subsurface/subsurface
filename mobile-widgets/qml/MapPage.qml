@@ -30,6 +30,10 @@ Kirigami.Page {
 			}
 			diveList.setCurrentDiveListIndex(idx, true)
 		}
+		Component.onCompleted: {
+			mapWidget.map.zoomLevel = mapWidget.map.defaultZoomOut
+			mapWidget.map.center = mapWidget.map.defaultCenter
+		}
 	}
 
 	function reloadMap() {
