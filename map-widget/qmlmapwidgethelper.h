@@ -22,6 +22,7 @@ public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
 	void centerOnDiveSite(struct dive_site *);
+	Q_INVOKABLE QGeoCoordinate getCoordinatesForUUID(QVariant dive_site_uuid);
 	Q_INVOKABLE void centerOnDiveSiteUUID(QVariant dive_site_uuid);
 	Q_INVOKABLE void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
