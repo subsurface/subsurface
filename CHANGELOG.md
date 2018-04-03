@@ -10,6 +10,12 @@
 - Add imperial support for UDCF import
 - Desktop: combo box with fresh, sea water and EN 13319 in dive planner
 - Desktop: Changed "salinity" to "water type" at dive planner and dive info
+- New dive computers supported:
+  - Heinrichs Weikamp OSTC 2 TR
+  - Scubapro Aladin Sport Matrix, Aladin Square
+  - Seac Jack
+  - Shearwater Nerd 2
+  - Suunto EON Core
 # Always add new entries at the very top of this file above other
 # existing entries.
 # Use this layout for new entries:
