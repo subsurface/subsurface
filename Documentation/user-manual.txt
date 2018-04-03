@@ -2356,6 +2356,13 @@ the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing
 air diving at a depth equaling the END.
 
+If at some point a isobaric counter diffusion situation is encountered
+in the leading tissue (defined to be a moment in time where helium is
+off-gassing while nitrogen is on-gassing and the net effect is
+on-gassing) this is indicated in the infobox as well. Note that this
+condition not only depends on the gas that is currently breathed but
+on the tissue loadings as well.
+
 Figure (*B*) above shows an information box with a nearly complete set of data.
 
 
