@@ -35,6 +35,118 @@
 
 struct dive_table gps_location_table;
 
+// we don't overwrite any existing GPS info in the dive
+// so get the dive site and if there is none or there is one without GPS fix, add it
+static void copy_gps_location(struct dive *from, struct dive *to)
+{
+	struct dive_site *ds = get_dive_site_for_dive(to);
+	if (!ds || !dive_site_has_gps_location(ds)) {
+		struct dive_site *gds = get_dive_site_for_dive(from);
+		if (!ds) {
+			// simply link to the one created for the fake dive
+			to->dive_site_uuid = gds->uuid;
+		} else {
+			ds->latitude = gds->latitude;
+			ds->longitude = gds->longitude;
+			if (same_string(ds->name, ""))
+				ds->name = copy_string(gds->name);
+		}
+	}
+}
+
+#define SAME_GROUP 6 * 3600 // six hours
+#define SET_LOCATION(_dive, _gpsfix, _mark) \
+{                                           \
+	copy_gps_location(_gpsfix, _dive);  \
+	changed ++;                         \
+	tracer = _mark;                     \
+}
+
+//TODO: C Code. static functions are not good if we plan to have a test for them.
+static bool merge_locations_into_dives(void)
+{
+	int i, j, tracer=0, changed=0;
+	struct dive *gpsfix, *nextgpsfix, *dive;
+
+	sort_table(&gps_location_table);
+
+	for_each_dive (i, dive) {
+		if (!dive_has_gps_location(dive)) {
+			for (j = tracer; (gpsfix = get_dive_from_table(j, &gps_location_table)) !=NULL; j++) {
+				if (time_during_dive_with_offset(dive, gpsfix->when, SAME_GROUP)) {
+					if (verbose)
+						qDebug() << "processing gpsfix @" << get_dive_date_string(gpsfix->when) <<
+							    "which is withing six hours of dive from" <<
+							    get_dive_date_string(dive->when) << "until" <<
+							    get_dive_date_string(dive_endtime(dive));
+					/*
+					 * If position is fixed during dive. This is the good one.
+					 * Asign and mark position, and end gps_location loop
+					 */
+					if (time_during_dive_with_offset(dive, gpsfix->when, 0)) {
+						if (verbose)
+							qDebug() << "gpsfix is during the dive, pick that one";
+						SET_LOCATION(dive, gpsfix, j);
+						break;
+					} else {
+						/*
+						 * If it is not, check if there are more position fixes in SAME_GROUP range
+						 */
+						if ((nextgpsfix = get_dive_from_table(j + 1, &gps_location_table)) &&
+						    time_during_dive_with_offset(dive, nextgpsfix->when, SAME_GROUP)) {
+							if (verbose)
+								qDebug() << "look at the next gps fix @" << get_dive_date_string(nextgpsfix->when);
+							/* we know the gps fixes are sorted; if they are both before the dive, ignore the first,
+							 * if theay are both after the dive, take the first,
+							 * if the first is before and the second is after, take the closer one */
+							if (nextgpsfix->when < dive->when) {
+								if (verbose)
+									qDebug() << "which is closer to the start of the dive, do continue with that";
+								continue;
+							} else if (gpsfix->when > dive_endtime(dive)) {
+								if (verbose)
+									qDebug() << "which is even later after the end of the dive, so pick the previous one";
+								SET_LOCATION(dive, gpsfix, j);
+								break;
+							} else {
+								/* ok, gpsfix is before, nextgpsfix is after */
+								if (dive->when - gpsfix->when <= nextgpsfix->when - dive_endtime(dive)) {
+									if (verbose)
+										qDebug() << "pick the one before as it's closer to the start";
+									SET_LOCATION(dive, gpsfix, j);
+									break;
+								} else {
+									if (verbose)
+										qDebug() << "pick the one after as it's closer to the start";
+									SET_LOCATION(dive, nextgpsfix, j + 1);
+									break;
+								}
+							}
+						/*
+						 * If no more positions in range, the actual is the one. Asign, mark and end loop.
+						 */
+						} else {
+							if (verbose)
+								qDebug() << "which seems to be the best one for this dive, so pick it";
+							SET_LOCATION(dive, gpsfix, j);
+							break;
+						}
+					}
+				} else {
+					/* If position is out of SAME_GROUP range and in the future, mark position for
+					 * next dive iteration and end the gps_location loop
+					 */
+					if (gpsfix->when >= dive_endtime(dive) + SAME_GROUP) {
+						tracer = j;
+						break;
+					}
+				}
+			}
+		}
+	}
+	return changed > 0;
+}
+
 // TODO: This looks like should be ported to C code. or a big part of it.
 bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
@@ -315,7 +427,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 				ds->notes = strdup("SubsurfaceWebservice");
 		}
 		/* now merge the data in the gps_location table into the dive_table */
-		if (GpsLocation::instance()->applyLocations()) {
+		if (merge_locations_into_dives()) {
 			changed = true;
 			mark_divelist_changed(true);
 			MainWindow::instance()->information()->updateDiveInfo();
