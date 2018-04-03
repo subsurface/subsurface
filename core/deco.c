@@ -478,14 +478,14 @@ void calc_crushing_pressure(struct deco_state *ds, double pressure)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, const struct dive *dive, int sac)
+void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, enum dive_comp_type divemode, int sac)
 {
 	(void) sac;
 	int ci;
 	struct gas_pressures pressures;
 	bool icd = false;
 	fill_pressures(&pressures, pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
-		       gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
+		       gasmix, (double) ccpo2 / 1000.0, divemode);
 
 	for (ci = 0; ci < 16; ci++) {
 		double pn2_oversat = pressures.n2 - ds->tissue_n2_sat[ci];

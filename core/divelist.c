@@ -415,6 +415,7 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	struct divecomputer *dc = &dive->dc;
 	struct gasmix *gasmix = NULL;
 	struct event *ev = NULL;
+	struct event *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc);
 	int i;
 
 	if (!dc)
@@ -430,7 +431,8 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
 			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
-			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar, dive, dive->sac);
+			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar,
+				get_divemode_at_time(dc, j, &ev_dmt), dive->sac);
 		}
 	}
 }
@@ -584,7 +586,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 #endif
 				return surface_time;
 			}
-			add_segment(ds, surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
+			add_segment(ds, surface_pressure, &air, surface_time, 0, dive->dc.divemode, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 			dump_tissues(ds);
@@ -622,7 +624,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 #endif
 			return surface_time;
 		}
-		add_segment(ds, surface_pressure, &air, surface_time, 0, dive, prefs.decosac);
+		add_segment(ds, surface_pressure, &air, surface_time, 0, dive->dc.divemode, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 		dump_tissues(ds);

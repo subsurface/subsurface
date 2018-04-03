@@ -83,6 +83,7 @@ struct event {
 	/* This is the annoying libdivecomputer format. */
 	int flags, value;
 	/* .. and this is our "extended" data for some event types */
+	enum dive_comp_type divemode;
 	union {
 		/*
 		 * Currently only for gas switch events.
@@ -91,7 +92,6 @@ struct event {
 		 * case, the get_cylinder_index() function will give the best
 		 * match with the cylinders in the dive based on gasmix.
 		 */
-		enum dive_comp_type divemode;
 		struct {
 			int index;
 			struct gasmix mix;
@@ -854,7 +854,7 @@ struct deco_state {
 	bool icd_warning;
 };
 
-extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);
+extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, enum dive_comp_type divemode, int sac);
 extern void clear_deco(struct deco_state *ds, double surface_pressure);
 extern void dump_tissues(struct deco_state *ds);
 extern void set_gf(short gflow, short gfhigh);

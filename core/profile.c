@@ -907,7 +907,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 #ifndef SUBSURFACE_MOBILE
 /* calculate DECO STOP / TTS / NDL */
-static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct plot_data *entry, struct gasmix *gasmix, double surface_pressure)
+static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct plot_data *entry, struct gasmix *gasmix, double surface_pressure,enum dive_comp_type divemode)
 {
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
@@ -942,7 +942,7 @@ static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct p
 		       ) {
 			entry->ndl_calc += time_stepsize;
 			add_segment(ds, depth_to_bar(entry->depth, dive),
-				    gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.bottomsac);
+				    gasmix, time_stepsize, entry->o2pressure.mbar, divemode, prefs.bottomsac);
 		}
 		/* we don't need to calculate anything else */
 		return;
@@ -954,7 +954,7 @@ static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct p
 	/* Add segments for movement to stopdepth */
 	for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_step, entry->tts_calc += ascent_s_per_step) {
 		add_segment(ds, depth_to_bar(ascent_depth, dive),
-			    gasmix, ascent_s_per_step, entry->o2pressure.mbar, dive, prefs.decosac);
+			    gasmix, ascent_s_per_step, entry->o2pressure.mbar, divemode, prefs.decosac);
 		next_stop = ROUND_UP(deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(ascent_depth, dive)),
 							surface_pressure, dive, 1), deco_stepsize);
 	}
@@ -975,13 +975,13 @@ static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct p
 		if (entry->tts_calc > MAX_PROFILE_DECO)
 			break;
 		add_segment(ds, depth_to_bar(ascent_depth, dive),
-			    gasmix, time_stepsize, entry->o2pressure.mbar, dive, prefs.decosac);
+			    gasmix, time_stepsize, entry->o2pressure.mbar, divemode, prefs.decosac);
 
 		if (deco_allowed_depth(tissue_tolerance_calc(ds, dive, depth_to_bar(ascent_depth,dive)), surface_pressure, dive, 1) <= next_stop) {
 			/* move to the next stop and add the travel between stops */
 			for (; ascent_depth > next_stop; ascent_depth -= ascent_mm_per_deco_step, entry->tts_calc += ascent_s_per_deco_step)
 				add_segment(ds, depth_to_bar(ascent_depth, dive),
-					    gasmix, ascent_s_per_deco_step, entry->o2pressure.mbar, dive, prefs.decosac);
+					    gasmix, ascent_s_per_deco_step, entry->o2pressure.mbar, divemode, prefs.decosac);
 			ascent_depth = next_stop;
 			next_stop -= deco_stepsize;
 		}
@@ -996,6 +996,8 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
+	enum dive_comp_type current_divemode;
+
 	if (!in_planner()) {
 		ds->deco_time = 0;
 	} else {
@@ -1010,18 +1012,20 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 	}
 	/* For VPM-B outside the planner, iterate until deco time converges (usually one or two iterations after the initial)
 	 * Set maximum number of iterations to 10 just in case */
+
 	while ((abs(prev_deco_time - ds->deco_time) >= 30) && (count_iteration < 10)) {
 		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling = 0, final_tts = 0 , time_clear_ceiling = 0;
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
-		struct event *ev = NULL;
+		struct event *ev = NULL, *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc);
 
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
 			int j, t0 = (entry - 1)->sec, t1 = entry->sec;
 			int time_stepsize = 20;
 
+			current_divemode = get_divemode_at_time(dc, entry->sec, &ev_dmt);
 			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
 
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
@@ -1037,7 +1041,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 				add_segment(ds, depth_to_bar(depth, dive),
-					    gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+					    gasmix, time_stepsize, entry->o2pressure.mbar, current_divemode, entry->sac);
 				entry->icd_warning = ds->icd_warning;
 				if ((t1 - j < time_stepsize) && (j < t1))
 					time_stepsize = t1 - j;
@@ -1112,7 +1116,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 				/* We are going to mess up deco state, so store it for later restore */
 				struct deco_state *cache_data = NULL;
 				cache_deco_state(ds, &cache_data);
-				calculate_ndl_tts(ds, dive, entry, gasmix, surface_pressure);
+				calculate_ndl_tts(ds, dive, entry, gasmix, surface_pressure, current_divemode);
 				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
@@ -1146,6 +1150,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 			prev_deco_time = ds->deco_time = 0;
 		}
 	}
+
 	free(cache_data_initial);
 #if DECO_CALC_DEBUG & 1
 	dump_tissues(ds);
