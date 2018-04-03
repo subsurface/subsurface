@@ -1,3 +1,5 @@
+- Desktop: revert change that inadvertantly broke applying GPS
+  coordinates to dives
 - Map-widget: try to match the zoom level in Google Maps
 - Map-widget: improve context menu texts
 - Desktop: Fix format of CSV export for dive list and dive profile
