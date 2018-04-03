@@ -33,6 +33,8 @@
 #define PATH_MAX 4096
 #endif
 
+struct dive_table gps_location_table;
+
 // TODO: This looks like should be ported to C code. or a big part of it.
 bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, const bool selected)
 {
@@ -301,8 +303,6 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		struct dive *d;
 		struct dive_site *ds;
 		bool changed = false;
-		struct dive_table gps_location_table;
-		memset(&gps_location_table, 0, sizeof(dive_table));
 		(void)changed;
 		clear_table(&gps_location_table);
 		QByteArray url = tr("Webservice").toUtf8();
