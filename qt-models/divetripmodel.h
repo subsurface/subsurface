@@ -23,6 +23,7 @@ public:
 		SAC,
 		OTU,
 		MAXCNS,
+		TAGS,
 		PHOTOS,
 		COUNTRY,
 		LOCATION,
@@ -43,6 +44,7 @@ public:
 	QString displayWeightWithUnit() const;
 	QString displaySac() const;
 	QString displaySacWithUnit() const;
+	QString displayTags() const;
 	int countPhotos(dive *dive) const;
 	int weight() const;
 	QString icon_names[4];
@@ -72,6 +74,7 @@ public:
 		SAC,
 		OTU,
 		MAXCNS,
+		TAGS,
 		PHOTOS,
 		COUNTRY,
 		LOCATION,

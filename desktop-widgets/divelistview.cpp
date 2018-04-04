@@ -480,7 +480,8 @@ void DiveListView::reloadHeaderActions()
 						    i == DiveTripModel::TOTALWEIGHT ||
 						    i == DiveTripModel::SUIT ||
 						    i == DiveTripModel::CYLINDER ||
-						    i == DiveTripModel::SAC);
+						    i == DiveTripModel::SAC ||
+						    i == DiveTripModel::TAGS);
 			bool shown = s.value(settingName, showHeaderFirstRun).toBool();
 			a->setCheckable(true);
 			a->setChecked(shown);
