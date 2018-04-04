@@ -473,7 +473,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
-		ret = dive_table_alignment(section);
+		ret = (QVariant)(Qt::AlignLeft | Qt::AlignVCenter);
 		break;
 	case Qt::FontRole:
 		ret = defaultModelFont();
