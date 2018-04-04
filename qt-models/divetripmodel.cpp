@@ -36,6 +36,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModel::SUIT:
 	case DiveTripModel::CYLINDER:
 	case DiveTripModel::GAS:
+	case DiveTripModel::TAGS:
 	case DiveTripModel::PHOTOS:
 	case DiveTripModel::COUNTRY:
 	case DiveTripModel::LOCATION:
@@ -136,6 +137,9 @@ QVariant DiveItem::data(int column, int role) const
 		case MAXCNS:
 			retVal = dive->maxcns;
 			break;
+		case TAGS:
+			retVal = displayTags();
+			break;
 		case PHOTOS:
 			retVal = countPhotos(dive);
 			break;
@@ -185,6 +189,9 @@ QVariant DiveItem::data(int column, int role) const
 				retVal = QString("%1%").arg(dive->maxcns);
 			else
 				retVal = dive->maxcns;
+			break;
+		case TAGS:
+			retVal = displayTags();
 			break;
 		case PHOTOS:
 			break;
@@ -264,6 +271,9 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case MAXCNS:
 			retVal = tr("Max. CNS");
+			break;
+		case TAGS:
+			retVal = tr("Tags");
 			break;
 		case PHOTOS:
 			retVal = tr("Photos before/during/after dive");
@@ -409,6 +419,17 @@ QString DiveItem::displayWeightWithUnit() const
 	return weight_string(weight()) + ((get_units()->weight == units::KG) ? tr("kg") : tr("lbs"));
 }
 
+QString DiveItem::displayTags() const
+{
+	struct dive *dive = get_dive_by_uniq_id(diveId);
+	if (!dive->tag_list)
+		return QString();
+
+	char buf[1024];
+	taglist_get_tagstring(dive->tag_list, buf, 1024);
+	return QString(buf);
+}
+
 int DiveItem::weight() const
 {
 	struct dive *dive = get_dive_by_uniq_id(diveId);
@@ -498,6 +519,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 		case MAXCNS:
 			ret = tr("Max CNS");
 			break;
+		case TAGS:
+			ret = tr("Tags");
+			break;
 		case PHOTOS:
 			ret = tr("Photos");
 			break;
@@ -551,6 +575,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			break;
 		case MAXCNS:
 			ret = tr("Max CNS");
+			break;
+		case TAGS:
+			ret = tr("Tags");
 			break;
 		case PHOTOS:
 			ret = tr("Photos before/during/after dive");

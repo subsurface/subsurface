@@ -1,3 +1,4 @@
+- Desktop: Add Tags column in dive list view
 - Desktop: revert change that inadvertantly broke applying GPS
   coordinates to dives
 - Map-widget: try to match the zoom level in Google Maps
