@@ -1394,7 +1394,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3519"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3535"/>
         <source>cbar</source>
-        <translation type="unfinished"/>
+        <translation>cbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1884"/>
