@@ -83,16 +83,14 @@ struct event {
 	/* This is the annoying libdivecomputer format. */
 	int flags, value;
 	/* .. and this is our "extended" data for some event types */
-	enum dive_comp_type divemode;
 	union {
+		enum dive_comp_type divemode; // for divemode change events
 		/*
-		 * Currently only for gas switch events.
-		 *
 		 * NOTE! The index may be -1, which means "unknown". In that
 		 * case, the get_cylinder_index() function will give the best
 		 * match with the cylinders in the dive based on gasmix.
 		 */
-		struct {
+		struct { // for gas switch events
 			int index;
 			struct gasmix mix;
 		} gas;
