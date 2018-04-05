@@ -84,6 +84,10 @@ void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (empty_string(internalEvent->name)) {
 		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
+	} else if (same_string_caseinsensitive(internalEvent->name, "OC")) {
+		setPixmap(EVENT_PIXMAP(":bailout-icon"));
+	} else if (same_string_caseinsensitive(internalEvent->name, "CCR") || same_string_caseinsensitive(internalEvent->name, "PSCR")) { 
+			setPixmap(EVENT_PIXMAP(":onCCRLoop-icon"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));
 	} else if (event_is_gaschange(internalEvent)) {
