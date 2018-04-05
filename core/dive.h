@@ -362,7 +362,7 @@ struct dive_components {
 	unsigned int weights : 1;
 };
 
-extern struct event *get_next_divemodechange(struct event **evd);
+extern struct event *get_next_divemodechange(struct event **evd, bool update_pointer);
 extern enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc);
 
 /* picture list and methods related to dive picture handling */

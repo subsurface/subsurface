@@ -241,58 +241,28 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
 	}
 }
 
-struct event *get_next_divemodechange(struct event **evd)
+struct event *get_next_divemodechange(struct event **evd, bool update_pointer)
 { /* Starting at the event pointed to by evd, find the next divemode change event and initialise its
    * type and divemode. Requires an external pointer (evd) to a divemode change event, usually
-   * a copy of dc->events. This function is self-tracking and the value of evd needs no
-   * setting or manipulation outside of this function. */
+   * a copy of dc->events. This function is self-tracking if update_pointer is TRUE and the value
+   * of evd needs no manipulation outside of this function. If update_pointer is FALSE, pointer evd
+   * is NOT updated with the address of the last examined event in the while() loop. */
 	struct event *ev = *evd;
 	while (ev) { // Step through the events.
 		for (int i=0; i<3; i++) { // For each event name search for one of the above strings
 			if (!strcmp(ev->name,divemode_text[i])) { // if the event name is one of the divemode names
 				ev->divemode = i; // set the event type to the dive mode
-				*evd = ev->next;
+				if (update_pointer) 
+					*evd = ev->next;
 				return (ev);
 			}
 		}
 		ev = ev->next;
 	}
-	*evd = NULL;
+	if (update_pointer) 
+		*evd = NULL;
 	return (NULL);
 }
-
-struct event *peek_next_divemodechange(struct event *evd)
-{ // Starting at event evd, return the subsequent divemode change event, remembering its divemode.
-	struct event *ev = evd;
-	while (ev) { // Step through the events.
-		for (int i=0; i<3; i++) { // For each event name search for one of the above strings
-			if (!strcmp(ev->name,divemode_text[i])) { // if the event name is one of the divemode names
-				ev->divemode = i;
-				return (ev); // ... then return the event.
-			}
-		}
-		ev = ev->next;
-	}
-	return (NULL);
-}
-
-/*
-enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int divetime, struct event **ev_dmc)
-{ // The dummy version of this function, call parameters compatible with self-tracking version.
- return dc->divemode;
-}
-
-enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int divetime, struct event **ev_dmc)
-{ // The non-self-tracking version of this function, call parameters compatible with self-tracking version.
-	struct event *ev, *ev_ndc = dc->events;
-	enum dive_comp_type mode = dc->divemode;
-	ev = get_next_divemodechange(&ev_ndc);
-	while (ev && (divetime >= ev->time.seconds)) {
-		mode = ev->divemode;
-		ev = get_next_divemodechange(&ev_ndc);
-	}
-	return mode;
-} */
 
 enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc)
 { /* For a particular dive computer and its linked list of events, find the divemode dtime seconds
@@ -304,7 +274,8 @@ enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int dtime, str
 	while (ev && (dtime >= ev->time.seconds)) { // If dtime is AFTER this event time, store divemode
 		mode = ev->divemode;
 		ev_last = ev;
-		ev = peek_next_divemodechange(ev->next); // peek at the time of the following divemode change event
+//		ev = peek_next_divemodechange(ev->next); // peek at the time of the following divemode change event
+		ev = get_next_divemodechange(&ev->next, FALSE);
 	}
 	*ev_dmc = ev_last;
 	return (mode); 

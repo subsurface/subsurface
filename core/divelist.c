@@ -415,7 +415,7 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	struct divecomputer *dc = &dive->dc;
 	struct gasmix *gasmix = NULL;
 	struct event *ev = NULL;
-	struct event *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc);
+	struct event *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc, TRUE);
 	int i;
 
 	if (!dc)
