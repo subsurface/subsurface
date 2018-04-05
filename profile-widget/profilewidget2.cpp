@@ -1976,10 +1976,8 @@ void ProfileWidget2::keyEscAction()
 
 void ProfileWidget2::plotPictures()
 {
-	Q_FOREACH (DivePictureItem *item, pictures) {
-		item->hide();
-		item->deleteLater();
-	}
+	Q_FOREACH (DivePictureItem *item, pictures)
+		delete item;
 	pictures.clear();
 
 	if (printMode)
