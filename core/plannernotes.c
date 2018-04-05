@@ -542,7 +542,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	struct event *nextev, *evd = dive->dc.events;
 
 	current_divemode = dive->dc.divemode;
-	nextev = get_next_divemodechange(&evd);
+	nextev = get_next_divemodechange(&evd, TRUE);
 
 	if (dive->dc.divemode != CCR) {
 		while (dp) {
@@ -552,7 +552,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 
 				if (nextev && (dp->time >= nextev->time.seconds)) { // If there are divemode changes and divedatapoint time
 					current_divemode = nextev->divemode; // has reached that of the current divemode event, then set the
-					nextev = get_next_divemodechange(&evd); // current divemode and find the next divemode event
+					nextev = get_next_divemodechange(&evd, TRUE); // current divemode and find the next divemode event
 				}
 
 				amb = depth_to_atm(dp->depth.mm, dive);

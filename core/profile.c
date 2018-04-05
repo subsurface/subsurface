@@ -1018,7 +1018,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
-		struct event *ev = NULL, *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc);
+		struct event *ev = NULL, *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc, TRUE);
 
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
@@ -1211,7 +1211,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 	struct event *nextev, *evg = NULL, *evd = dc->events;
 
 	current_divemode = dc->divemode;
-	nextev = get_next_divemodechange(&evd);
+	nextev = get_next_divemodechange(&evd, TRUE);
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
@@ -1220,7 +1220,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 		gasmix = get_gasmix(dive, dc, entry->sec, &evg, gasmix);
 		if (nextev && (entry->sec > nextev->time.seconds)) { // If there are divemode changes and sample time
 			current_divemode = nextev->divemode; // has reached that of the current divemode event, then set the
-			nextev = get_next_divemodechange(&evd); // current divemode and find the next divemode event
+			nextev = get_next_divemodechange(&evd, TRUE); // current divemode and find the next divemode event
 		}
 		amb_pressure = depth_to_bar(entry->depth, dive);
 		fill_pressures(&entry->pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
