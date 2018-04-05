@@ -2,6 +2,30 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.7.8
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: Add Tags column in dive list view
+- Desktop: revert change that inadvertantly broke applying GPS
+  coordinates to dives
+- Desktop: Fix format of CSV export for dive list and dive profile
+  (#1157, #1158)
+- Desktop: Change strategy when to allow to delete a cylinder (#869)
+- Desktop/Mobile: Format numbers according to selected Subsurface
+  language (#1119)
+- Desktop: combo box with fresh, sea water and EN 13319 in dive planner
+- Desktop: Changed "salinity" to "water type" at dive planner and dive info
+- Map-widget: try to match the zoom level in Google Maps
+- Map-widget: improve context menu texts
+- Dive pictures: Don't load whole file for parsing EXIF data
+- Dive log import: Add imperial support for UDCF import
+- Mobile: enable the built-in map widget
+- New dive computers supported:
+  - Heinrichs Weikamp OSTC 2 TR
+  - Scubapro Aladin Sport Matrix, Aladin Square
+  - Seac Jack
+  - Shearwater Nerd 2
+  - Suunto EON Core
+
 New in _Subsurface_ 4.7.7
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Desktop: Fix bug that alters manually entered dive durations

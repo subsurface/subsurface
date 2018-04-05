@@ -1,24 +1,4 @@
-- Desktop: Add Tags column in dive list view
-- Desktop: revert change that inadvertantly broke applying GPS
-  coordinates to dives
-- Map-widget: try to match the zoom level in Google Maps
-- Map-widget: improve context menu texts
-- Desktop: Fix format of CSV export for dive list and dive profile
-  (#1157, #1158)
-- Dive pictures: Don't load whole file for parsing EXIF data
-- Mobile: enable the built-in map widget
-- Desktop: Change strategy when to allow to delete a cylinder (#869)
-- Desktop/Mobile: Format numbers according to selected Subsurface
-  language (#1119)
-- Add imperial support for UDCF import
-- Desktop: combo box with fresh, sea water and EN 13319 in dive planner
-- Desktop: Changed "salinity" to "water type" at dive planner and dive info
-- New dive computers supported:
-  - Heinrichs Weikamp OSTC 2 TR
-  - Scubapro Aladin Sport Matrix, Aladin Square
-  - Seac Jack
-  - Shearwater Nerd 2
-  - Suunto EON Core
+
 # Always add new entries at the very top of this file above other
 # existing entries.
 # Use this layout for new entries:
