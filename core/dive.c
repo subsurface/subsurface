@@ -250,7 +250,6 @@ struct event *get_next_divemodechange(struct event **evd)
 	while (ev) { // Step through the events.
 		for (int i=0; i<3; i++) { // For each event name search for one of the above strings
 			if (!strcmp(ev->name,divemode_text[i])) { // if the event name is one of the divemode names
-				ev->type = DIVEMODECHANGE_EVENTTYPE + i;
 				ev->divemode = i; // set the event type to the dive mode
 				*evd = ev->next;
 				return (ev);
