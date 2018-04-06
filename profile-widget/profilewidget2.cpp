@@ -778,7 +778,10 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
 	}
-	plotPictures();
+	if (printMode)
+		clearPictures();
+	else
+		plotPictures();
 #endif
 
 	// OK, how long did this take us? Anything above the second is way too long,
@@ -1103,7 +1106,7 @@ void ProfileWidget2::setProfileState()
 
 	disconnectTemporaryConnections();
 #ifndef SUBSURFACE_MOBILE
-	connect(DivePictureModel::instance(), SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), &DivePictureModel::dataChanged, this, &ProfileWidget2::updatePictures);
 	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
 	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
 #endif
@@ -1974,26 +1977,47 @@ void ProfileWidget2::keyEscAction()
 		plannerModel->cancelPlan();
 }
 
+void ProfileWidget2::clearPictures()
+{
+	pictures.clear();
+}
+
+void ProfileWidget2::updatePictures(const QModelIndex &from, const QModelIndex &to)
+{
+	DivePictureModel *m = DivePictureModel::instance();
+	for (int picNr = from.row(); picNr <= to.row(); ++picNr) {
+		int picItemNr = picNr - m->rowDDStart;
+		if (picItemNr < 0 || (size_t)picItemNr >= pictures.size())
+			return;
+		if (!pictures[picItemNr])
+			return;
+
+		pictures[picItemNr]->setPixmap(m->index(picNr, 0).data(Qt::UserRole).value<QPixmap>());
+	}
+}
+
 void ProfileWidget2::plotPictures()
 {
-	Q_FOREACH (DivePictureItem *item, pictures) {
-		item->hide();
-		item->deleteLater();
-	}
-	pictures.clear();
-
-	if (printMode)
-		return;
+	DivePictureModel *m = DivePictureModel::instance();
+	pictures.resize(m->rowDDEnd - m->rowDDStart);
 
 	double x, y, lastX = -1.0, lastY = -1.0;
-	DivePictureModel *m = DivePictureModel::instance();
 	for (int i = m->rowDDStart; i < m->rowDDEnd; i++) {
+		int picItemNr = i - m->rowDDStart;
 		int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
 		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
-		// information area.
-		if (!offsetSeconds)
+		// information area. A null pointer in the pictures array indicates that this picture is not
+		// shown.
+		if (!offsetSeconds) {
+			pictures[picItemNr].reset();
 			continue;
-		DivePictureItem *item = new DivePictureItem();
+		}
+		DivePictureItem *item = pictures[picItemNr].get();
+		if (!item) {
+			item = new DivePictureItem;
+			pictures[picItemNr].reset(item);
+			scene()->addItem(item);
+		}
 		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
 		item->setFileUrl(m->index(i, 1).data().toString());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
@@ -2008,8 +2032,6 @@ void ProfileWidget2::plotPictures()
 		lastX = x;
 		lastY = y;
 		item->setPos(x, y);
-		scene()->addItem(item);
-		pictures.push_back(item);
 	}
 }
 #endif

@@ -3,6 +3,8 @@
 #define PROFILEWIDGET2_H
 
 #include <QGraphicsView>
+#include <vector>
+#include <memory>
 
 // /* The idea of this widget is to display and edit the profile.
 //  * It has:
@@ -121,6 +123,7 @@ slots: // Necessary to call from QAction's signals.
 	void deleteCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
+	void updatePictures(const QModelIndex &from, const QModelIndex &to);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -164,6 +167,7 @@ private: /*methods*/
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
 	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
 			 double *thresholdSettingsMin, double *thresholdSettingsMax);
+	void clearPictures();
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;
@@ -217,7 +221,9 @@ private:
 	bool printMode;
 
 	QList<QGraphicsSimpleTextItem *> gases;
-	QList<DivePictureItem *> pictures;
+
+	// Use std::vector<> and std::unique_ptr<>, because QVector<QScopedPointer<...>> is unsupported.
+	std::vector<std::unique_ptr<DivePictureItem>> pictures;
 
 	//specifics for ADD and PLAN
 #ifndef SUBSURFACE_MOBILE
