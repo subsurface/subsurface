@@ -294,17 +294,17 @@ echo next building for $ARCH
 		popd
 	fi
 
-# build googlemaps
-	if [ ! -d googlemaps ] ; then
-		git clone git://github.com/subsurface-divelog/googlemaps
-	fi
-	mkdir -p googlemaps-build-$ARCH
-	pushd googlemaps-build-$ARCH
-	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../googlemaps/googlemaps.pro
-	make
-	make install
-	popd
 done
+
+# build googlemaps
+if [ ! -d googlemaps ] ; then
+	git clone git://github.com/subsurface-divelog/googlemaps
+fi
+mkdir -p googlemaps-build
+pushd googlemaps-build
+${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../googlemaps/googlemaps.pro CONFIG+=release
+make
+popd
 
 # now combine the arm libraries into fat libraries
 rm -rf install-root
