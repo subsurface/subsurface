@@ -110,6 +110,7 @@ LIBS += ../install-root/lib/libdivecomputer.a \
         ../install-root/lib/libzip.a \
         ../install-root/lib/libxslt.a \
         ../install-root/lib/libxml2.a \
+        ../googlemaps-build/libqtgeoservices_googlemaps.a \
         -liconv
 
 INCLUDEPATH += ../install-root/include/ \
