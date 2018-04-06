@@ -6,6 +6,11 @@
 #include <QGeoCoordinate>
 #include <QVariant>
 
+#if defined(Q_OS_IOS)
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(QGeoServiceProviderFactoryGooglemaps)
+#endif
+
 class MapLocationModel;
 class MapLocation;
 struct dive_site;
