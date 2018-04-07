@@ -474,7 +474,9 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 			float *temp = (float *)&(sampleBlob[i * block_size + 11]);
 			cur_sample->temperature.mkelvin = C_to_mkelvin(*temp);
 		} else {
-			cur_sample->temperature.mkelvin = C_to_mkelvin(sampleBlob[i * block_size + 11]);
+			if ((sampleBlob[i * block_size + 11]) != 0x7F) {
+				cur_sample->temperature.mkelvin = C_to_mkelvin(sampleBlob[i * block_size + 11]);
+			}
 		}
 
 		/*
