@@ -54,6 +54,27 @@ https://en.wikipedia.org/wiki/Imperative_mood
 
 Example with gitk
 
+Additionally when important changes to behaviors, fixes or new feature are introduced an entry must be added to  CHANGELOG.md file. Always add new entries at the very top of the file above other existing entries. Use this layout for new entries:
+
+Area: Details about the change [reference thread / issue]
+
+When multiple areas are affected list the areas separated with a /:
+
+Area1/Area2: Detail about the change [reference thread / issue]
+
+Here is a (non exhaustive) list of Areas that can be used:
+* Bluetooth
+* Cloud-storage
+* Desktop
+* Dive pictures
+* Import
+* Libdivecomputer
+* Map-widget
+* Mobile
+* Planner
+* Printing
+* Profile
+
 [1]: http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 [2]: http://freenode.net/
 [3]: https://www.transifex.com/
@@ -64,6 +85,3 @@ Example with gitk
 [8]: https://subsurface-divelog.org/building/
 [9]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
 [10]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
-
-  
-
