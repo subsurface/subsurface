@@ -84,9 +84,10 @@ void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
 #define EVENT_PIXMAP_BIGGER(PIX) QPixmap(QString(PIX)).scaled(sz_bigger, sz_bigger, Qt::KeepAspectRatio, Qt::SmoothTransformation)
 	if (empty_string(internalEvent->name)) {
 		setPixmap(EVENT_PIXMAP(":status-warning-icon"));
-	} else if (same_string_caseinsensitive(internalEvent->name, "OC")) {
-		setPixmap(EVENT_PIXMAP(":bailout-icon"));
-	} else if (same_string_caseinsensitive(internalEvent->name, "CCR") || same_string_caseinsensitive(internalEvent->name, "PSCR")) { 
+	} else if (same_string_caseinsensitive(internalEvent->name, "modechange")) {
+		if (internalEvent->value == 0)
+			setPixmap(EVENT_PIXMAP(":bailout-icon"));
+		else
 			setPixmap(EVENT_PIXMAP(":onCCRLoop-icon"));
 	} else if (internalEvent->type == SAMPLE_EVENT_BOOKMARK) {
 		setPixmap(EVENT_PIXMAP(":dive-bookmark-icon"));
@@ -192,6 +193,8 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 			free_buffer(&mb);
 		}
 		*lastgasmix = *mix;
+	} else if (same_string(internalEvent->name, "modechange")) {
+		name += tr(": %1").arg(divemode_text[internalEvent->value]);
 	} else if (value) {
 		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
