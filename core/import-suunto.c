@@ -425,6 +425,17 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 		cur_dive->dc.surface_pressure.mbar = (atoi(data[14]) / 100);
 
 	interval = data[16] ? atoi(data[16]) : 0;
+
+	/*
+	 * sampleBlob[0]	version number, indicates the size of one sample
+	 *
+	 * Following ones describe single sample, bugs in interpretation of the binary blob are likely:
+	 *
+	 * sampleBlob[3]	depth
+	 * sampleBlob[7-9]	pressure
+	 * sampleBlob[11]	temperature - either full Celsius or float, might be different field for some version of DM
+	 */
+
 	sampleBlob = (unsigned const char *)data[24];
 
 	if (sampleBlob) {
