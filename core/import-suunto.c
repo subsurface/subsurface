@@ -364,6 +364,7 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 	(void) columns;
 	(void) column;
 	int i;
+	int tempformat = 0;
 	int interval, retval = 0, block_size;
 	sqlite3 *handle = (sqlite3 *)param;
 	unsigned const char *sampleBlob;
@@ -451,6 +452,8 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 				block_size = 23;
 				break;
 			case 4:
+				// Temperature is stored in float
+				tempformat = 1;
 				block_size = 26;
 				break;
 			default:
@@ -461,18 +464,22 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 
 	for (i = 0; interval && sampleBlob && i * interval < cur_dive->duration.seconds; i++) {
 		float *depth = (float *)&sampleBlob[i * block_size + 3];
-		int32_t temp = (sampleBlob[i * block_size + 10] << 8) + sampleBlob[i * block_size + 11];
 		int32_t pressure = (sampleBlob[i * block_size + 9] << 16) + (sampleBlob[i * block_size + 8] << 8) + sampleBlob[i * block_size + 7];
 
 		sample_start();
 		cur_sample->time.seconds = i * interval;
 		cur_sample->depth.mm = lrintf(depth[0] * 1000.0f);
+
+		if (tempformat == 1) {
+			float *temp = (float *)&(sampleBlob[i * block_size + 11]);
+			cur_sample->temperature.mkelvin = C_to_mkelvin(*temp);
+		} else {
+			cur_sample->temperature.mkelvin = C_to_mkelvin(sampleBlob[i * block_size + 11]);
+		}
+
 		/*
-		 * Limit temperatures and cylinder pressures to somewhat
-		 * sensible values
+		 * Limit cylinder pressures to somewhat sensible values
 		 */
-		if (temp >= -10 && temp < 50)
-			cur_sample->temperature.mkelvin = C_to_mkelvin(temp);
 		if (pressure >= 0 && pressure < 350000)
 			cur_sample->pressure[0].mbar = pressure;
 		sample_end();
