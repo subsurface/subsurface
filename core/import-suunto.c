@@ -440,6 +440,10 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 
 	if (sampleBlob) {
 		switch (sampleBlob[0]) {
+			case 1:
+				// Log is converted from DM4 to DM5
+				block_size = 16;
+				break;
 			case 2:
 				block_size = 19;
 				break;
