@@ -1413,6 +1413,12 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
+	QAction *OCAction = m.addAction(tr("Add OC switch"), this, SLOT(addOCSwitch()));
+	OCAction->setData(event->globalPos());
+	QAction *CCRAction = m.addAction(tr("Add CCR switch"), this, SLOT(addCCRSwitch()));
+	CCRAction->setData(event->globalPos());
+	QAction *PSCRAction = m.addAction(tr("Add PSCR switch"), this, SLOT(addPSCRSwitch()));
+	PSCRAction->setData(event->globalPos());
 
 	if (same_string(current_dc->model, "manually added dive"))
 		m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
@@ -1569,6 +1575,36 @@ void ProfileWidget2::addBookmark()
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), SAMPLE_EVENT_BOOKMARK, 0, 0, "bookmark");
+	invalidate_dive_cache(current_dive);
+	mark_divelist_changed(true);
+	replot();
+}
+
+void ProfileWidget2::addOCSwitch()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, 0, "modechange");
+	invalidate_dive_cache(current_dive);
+	mark_divelist_changed(true);
+	replot();
+}
+
+void ProfileWidget2::addCCRSwitch()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, 1, "modechange");
+	invalidate_dive_cache(current_dive);
+	mark_divelist_changed(true);
+	replot();
+}
+
+void ProfileWidget2::addPSCRSwitch()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, 2, "modechange");
 	invalidate_dive_cache(current_dive);
 	mark_divelist_changed(true);
 	replot();
