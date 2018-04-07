@@ -1220,7 +1220,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
 		if (dc->divemode == PSCR) // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
-			entry->scr_OC_pO2.mbar = (int) depth_to_mbar(entry->depth, dive) * get_o2(get_gasmix(dive, dc, entry->sec, &ev, gasmix)) / 1000;
+			entry->scr_OC_pO2.mbar = (int) depth_to_mbar(entry->depth, dive) * get_o2(get_gasmix(dive, dc, entry->sec, &evg, gasmix)) / 1000;
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
