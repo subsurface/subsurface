@@ -115,6 +115,9 @@ slots: // Necessary to call from QAction's signals.
 	void changeGas();
 	void addSetpointChange();
 	void addBookmark();
+	void addOCSwitch();
+	void addCCRSwitch();
+	void addPSCRSwitch();
 	void hideEvents();
 	void unhideEvents();
 	void removeEvent();
