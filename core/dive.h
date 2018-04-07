@@ -27,7 +27,7 @@ extern "C" {
 
 extern int last_xml_version;
 
-enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE, UNDEF_COMP_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];

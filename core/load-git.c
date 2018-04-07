@@ -723,6 +723,15 @@ static void parse_dc_time(char *line, struct membuffer *str, void *_dc)
 static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
 { (void) str; struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
 
+
+int get_divemode(const char *divemodestring) {
+	for (int i = 0; i < NUM_DC_TYPE; i++) {
+		if (!strcmp(divemodestring, divemode_text[i]))
+			return i;
+	}
+	return 0;
+}
+
 static void parse_event_keyvalue(void *_event, const char *key, const char *value)
 {
 	struct event *event = _event;
@@ -736,6 +745,8 @@ static void parse_event_keyvalue(void *_event, const char *key, const char *valu
 		event->value = val;
 	} else if (!strcmp(key, "name")) {
 		/* We get the name from the string handling */
+	} else if (!strcmp(key,"divemode")) {
+		event->value = get_divemode(value);
 	} else if (!strcmp(key, "cylinder")) {
 		/* NOTE! We add one here as a marker that "yes, we got a cylinder index" */
 		event->gas.index = 1+get_index(value);

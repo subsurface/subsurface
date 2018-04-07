@@ -428,7 +428,7 @@ static void event_name(char *buffer, char *name)
 {
 	int size = trimspace(buffer);
 	if (size >= MAX_EVENT_NAME)
-		size = MAX_EVENT_NAME-1;
+		size = MAX_EVENT_NAME - 1;
 	memcpy(name, buffer, size);
 	name[size] = 0;
 }
@@ -445,6 +445,24 @@ static void get_dc_type(char *buffer, enum dive_comp_type *dct)
 				*dct = i;
 			else if (strcmp(buffer, libdc_divemode_text[i]) == 0)
 				*dct = i;
+		}
+	}
+}
+
+/* For divemode_text[] (defined in dive.h) determine the index of
+ * the string contained in the xml divemode attribute and passed
+ * in buffer, below. Typical xml input would be:
+ * <event name='modechange' divemode='OC' /> */
+static void event_divemode(char *buffer, int *value)
+{
+	int size = trimspace(buffer);
+	if (size >= MAX_EVENT_NAME)
+		size = MAX_EVENT_NAME - 1;
+	buffer[size] = 0x0;
+	for (int i = 0; i < NUM_DC_TYPE; i++) {
+		if (!strcmp(buffer,divemode_text[i])) {
+			*value = i;
+			break;
 		}
 	}
 }
@@ -707,6 +725,8 @@ static void try_to_fill_event(const char *name, char *buf)
 	if (MATCH("flags", get_index, &cur_event.flags))
 		return;
 	if (MATCH("value", get_index, &cur_event.value))
+		return;
+	if (MATCH("divemode", event_divemode, &cur_event.value))
 		return;
 	if (MATCH("cylinder", get_index, &cur_event.gas.index)) {
 		/* We add one to indicate that we got an actual cylinder index value */
