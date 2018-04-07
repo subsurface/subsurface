@@ -996,7 +996,6 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
 	bool first_iteration = true;
 	int prev_deco_time = 10000000, time_deep_ceiling = 0;
-	enum dive_comp_type current_divemode;
 
 	if (!in_planner()) {
 		ds->deco_time = 0;
@@ -1018,16 +1017,16 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
-		struct event *ev = NULL, *ev_dmc = dc->events, *ev_dmt = get_next_divemodechange(&ev_dmc, TRUE);
+		struct event *ev = NULL, *evd = NULL;
+		enum dive_comp_type current_divemode = UNDEF_COMP_TYPE;
 
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
 			int j, t0 = (entry - 1)->sec, t1 = entry->sec;
 			int time_stepsize = 20;
 
-			current_divemode = get_divemode_at_time(dc, entry->sec, &ev_dmt);
+			current_divemode = get_current_divemode(dc, entry->sec, &evd, &current_divemode);
 			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
-
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
 			entry->gfline = get_gf(ds, entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
@@ -1205,24 +1204,18 @@ static int calculate_ccr_po2(struct plot_data *entry, struct divecomputer *dc)
 static void calculate_gas_information_new(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	int i;
-	enum dive_comp_type current_divemode;
 	double amb_pressure;
 	struct gasmix *gasmix = NULL;
-	struct event *nextev, *evg = NULL, *evd = dc->events;
-
-	current_divemode = dc->divemode;
-	nextev = get_next_divemodechange(&evd, TRUE);
+	struct event *evg = NULL, *evd = NULL;
+	enum dive_comp_type current_divemode = UNDEF_COMP_TYPE;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 
 		gasmix = get_gasmix(dive, dc, entry->sec, &evg, gasmix);
-		if (nextev && (entry->sec > nextev->time.seconds)) { // If there are divemode changes and sample time
-			current_divemode = nextev->divemode; // has reached that of the current divemode event, then set the
-			nextev = get_next_divemodechange(&evd, TRUE); // current divemode and find the next divemode event
-		}
 		amb_pressure = depth_to_bar(entry->depth, dive);
+		current_divemode = get_current_divemode(dc, entry->sec, &evd, &current_divemode);
 		fill_pressures(&entry->pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
