@@ -253,7 +253,8 @@ enum dive_comp_type get_current_divemode(struct divecomputer *dc, int time, stru
 		ev = dc ? dc->events : NULL;
 	}
 	while (ev && ev->time.seconds < time) {
-		*divemode = (enum dive_comp_type) ev->value;
+		if (ev != dc->events)
+			*divemode = (enum dive_comp_type) ev->value;
 		ev = get_next_event(ev->next, "modechange");
 	}
 	*evp = ev;
