@@ -1413,12 +1413,14 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
-	QAction *OCAction = m.addAction(tr("Add OC switch"), this, SLOT(addOCSwitch()));
-	OCAction->setData(event->globalPos());
-	QAction *CCRAction = m.addAction(tr("Add CCR switch"), this, SLOT(addCCRSwitch()));
-	CCRAction->setData(event->globalPos());
-	QAction *PSCRAction = m.addAction(tr("Add PSCR switch"), this, SLOT(addPSCRSwitch()));
-	PSCRAction->setData(event->globalPos());
+	if(current_dc->divemode) {
+		QAction *OCAction = m.addAction(tr("Add OC switch"), this, SLOT(addOCSwitch()));
+		OCAction->setData(event->globalPos());
+		QAction *CCRAction = m.addAction(tr("Add CCR switch"), this, SLOT(addCCRSwitch()));
+		CCRAction->setData(event->globalPos());
+		QAction *PSCRAction = m.addAction(tr("Add PSCR switch"), this, SLOT(addPSCRSwitch()));
+		PSCRAction->setData(event->globalPos());
+	}
 
 	if (same_string(current_dc->model, "manually added dive"))
 		m.addAction(tr("Edit the profile"), this, SIGNAL(editCurrentDive()));
