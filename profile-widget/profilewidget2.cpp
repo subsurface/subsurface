@@ -1413,13 +1413,35 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
-	if(current_dc->divemode) {
-		QAction *OCAction = m.addAction(tr("Add OC switch"), this, SLOT(addOCSwitch()));
-		OCAction->setData(event->globalPos());
-		QAction *CCRAction = m.addAction(tr("Add CCR switch"), this, SLOT(addCCRSwitch()));
-		CCRAction->setData(event->globalPos());
-		QAction *PSCRAction = m.addAction(tr("Add PSCR switch"), this, SLOT(addPSCRSwitch()));
-		PSCRAction->setData(event->globalPos());
+	struct event *ev = NULL;
+	enum dive_comp_type divemode = UNDEF_COMP_TYPE;
+	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
+	QString gas = action->text();
+	qreal sec_val = timeAxis->valueAt(scenePos);
+	int seconds = (sec_val < 0.0) ? 0 : (int)sec_val;
+
+	get_current_divemode(current_dc, seconds, &ev, &divemode);
+	QMenu *changeMode = m.addMenu(tr("Change divemode"));
+	if (divemode != OC) {
+		QAction *action = new QAction(&m);
+		action->setText("OC");
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwith()));
+		action->setData(event->globalPos());
+		changeMode->addAction(action);
+	}
+	if (divemode != CCR) {
+		QAction *action = new QAction(&m);
+		action->setText("CCR");
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwith()));
+		action->setData(event->globalPos());
+		changeMode->addAction(action);
+	}
+	if (divemode != PSCR) {
+		QAction *action = new QAction(&m);
+		action->setText("PSCR");
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwith()));
+		action->setData(event->globalPos());
+		changeMode->addAction(action);
 	}
 
 	if (same_string(current_dc->model, "manually added dive"))
@@ -1582,31 +1604,14 @@ void ProfileWidget2::addBookmark()
 	replot();
 }
 
-void ProfileWidget2::addOCSwitch()
+void ProfileWidget2::addDivemodeSwith()
 {
+	int i;
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, 0, "modechange");
-	invalidate_dive_cache(current_dive);
-	mark_divelist_changed(true);
-	replot();
-}
-
-void ProfileWidget2::addCCRSwitch()
-{
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, 1, "modechange");
-	invalidate_dive_cache(current_dive);
-	mark_divelist_changed(true);
-	replot();
-}
-
-void ProfileWidget2::addPSCRSwitch()
-{
-	QAction *action = qobject_cast<QAction *>(sender());
-	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
-	add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, 2, "modechange");
+	for (i = 0; i < UNDEF_COMP_TYPE; i++)
+		if (QString(divemode_text[i]) == action->text())
+			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, i, "modechange");
 	invalidate_dive_cache(current_dive);
 	mark_divelist_changed(true);
 	replot();
