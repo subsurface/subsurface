@@ -1,4 +1,42 @@
 // SPDX-License-Identifier: GPL-2.0
+/*
+ * Helper functions used to deal with string manipulation
+ * 'membuffer' functions will manage memory allocation avoiding performance
+ * issues related to superfluous re-allocation. See 'make_room' function
+ *
+ * Before using it membuffer struct should be properly initialized
+ *
+ *     struct membuffer mb = { 0 };
+ *
+ * Internal membuffer buffer will not by default contain null terminator,
+ * adding it should be done using 'mb_cstring' function
+ *
+ *     mb_cstring(&mb);
+ *
+ * String concatenation is done with consecutive calls to put_xxx functions
+ *
+ *     put_string(&mb, "something");
+ *     put_string(&mb, ", something else");
+ *     printf("%s", mb_cstring(&mb));
+ *
+ * Will result in
+ *
+ *     "something, something else"
+ *
+ * Unless ownership to the buffer is given away say to a caller
+ *
+ *     mb_cstring(&mb);
+ *     return detach_buffer(&mb);
+ *
+ * or via a callback
+ *
+ *     mb_cstring(&mb);
+ *     cb(detach_buffer(&mb));
+ *
+ * otherwise allocated memory should be freed
+ *
+ *     free_buffer(&mb);
+ */
 #ifndef MEMBUFFER_H
 #define MEMBUFFER_H
 
