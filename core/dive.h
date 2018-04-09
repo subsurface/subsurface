@@ -264,10 +264,13 @@ struct tag_entry *taglist_added(struct tag_entry *original_list, struct tag_entr
 void dump_taglist(const char *intro, struct tag_entry *tl);
 
 /*
- * Writes all divetags in tag_list to buffer, limited by the buffer's (len)gth.
- * Returns the characters written
+ * Writes all divetags form tag_list into internally allocated buffer
+ * Function returns pointer to allocated buffer
+ * Buffer contains comma separated list of tags names or null terminated string
+ *
+ * NOTE! The returned buffer must be freed once used.
  */
-int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len);
+char *taglist_get_tagstring(struct tag_entry *tag_list);
 
 /* cleans up a list: removes empty tags and duplicates */
 void taglist_cleanup(struct tag_entry **tag_list);

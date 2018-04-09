@@ -12,6 +12,7 @@
 #include "divelist.h"
 #include "qthelper.h"
 #include "metadata.h"
+#include "membuffer.h"
 
 /* one could argue about the best place to have this variable -
  * it's used in the UI, but it seems to make the most sense to have it
@@ -3020,30 +3021,28 @@ void taglist_cleanup(struct tag_entry **tag_list)
 	}
 }
 
-int taglist_get_tagstring(struct tag_entry *tag_list, char *buffer, int len)
+char *taglist_get_tagstring(struct tag_entry *tag_list)
 {
-	int i = 0;
-	struct tag_entry *tmp;
-	tmp = tag_list;
-	memset(buffer, 0, len);
+	bool first_tag = true;
+	struct membuffer b = { 0 };
+	struct tag_entry *tmp = tag_list;
 	while (tmp != NULL) {
-		int newlength = strlen(tmp->tag->name);
-		if (i > 0)
-			newlength += 2;
-		if ((i + newlength) < len) {
-			if (i > 0) {
-				strcpy(buffer + i, ", ");
-				strcpy(buffer + i + 2, tmp->tag->name);
+		if (!empty_string(tmp->tag->name)) {
+			if (first_tag) {
+				put_format(&b, "%s", tmp->tag->name);
+				first_tag = false;
 			} else {
-				strcpy(buffer, tmp->tag->name);
+				put_format(&b, ", %s", tmp->tag->name);
 			}
-		} else {
-			return i;
 		}
-		i += newlength;
 		tmp = tmp->next;
 	}
-	return i;
+	/* Ensures we do return null terminated empty string for:
+	 *  - empty tag list
+	 *  - tag list with empty tag only
+	 */
+	mb_cstring(&b);
+	return detach_buffer(&b);
 }
 
 static inline void taglist_free_divetag(struct divetag *tag)

@@ -422,12 +422,7 @@ QString DiveItem::displayWeightWithUnit() const
 QString DiveItem::displayTags() const
 {
 	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (!dive->tag_list)
-		return QString();
-
-	char buf[1024];
-	taglist_get_tagstring(dive->tag_list, buf, 1024);
-	return QString(buf);
+	return get_taglist_string(dive->tag_list);
 }
 
 int DiveItem::weight() const

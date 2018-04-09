@@ -1282,6 +1282,14 @@ QString get_divepoint_gas_string(struct dive *d, const divedatapoint &p)
 	return get_gas_string(d->cylinder[idx].gasmix);
 }
 
+QString get_taglist_string(struct tag_entry *tag_list)
+{
+	char *buffer = taglist_get_tagstring(tag_list);
+	QString ret = QString::fromUtf8(buffer);
+	free(buffer);
+	return ret;
+}
+
 weight_t string_to_weight(const char *str)
 {
 	const char *end;

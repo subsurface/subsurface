@@ -87,6 +87,7 @@ TEST(TestGitStorage testgitstorage.cpp)
 TEST(TestPreferences testpreferences.cpp)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
+TEST(TestTagList testtaglist.cpp)
 
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
@@ -102,6 +103,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestRenumber
 	TestPicture
 	TestMerge
+	TestTagList
 )
 
 # useful for debugging CMake issues
