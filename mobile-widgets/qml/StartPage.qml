@@ -38,7 +38,7 @@ Kirigami.ScrollablePage {
 				"If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) " +
 				"and a password of your choice (letters and numbers).<br/><br/>" +
 				"To use Subsurface-mobile only with local data on this device, select " +
-				"the no cloud buttton above.")
+				"the no cloud button above.")
 			wrapMode: Text.WordWrap
 		}
 		Controls.Label {
