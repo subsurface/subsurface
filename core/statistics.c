@@ -4,7 +4,6 @@
  * core logic for the Info & Stats page -
  * char *get_minutes(int seconds);
  * void process_all_dives(struct dive *dive, struct dive **prev_dive);
- * void get_selected_dives_text(char *buffer, int size);
  */
 #include "gettext.h"
 #include <string.h>
@@ -233,74 +232,6 @@ void process_selected_dives(void)
 		}
 	}
 	stats_selection.selection_size = nr;
-}
-
-/* this gets called when at least two but not all dives are selected */
-static void get_ranges(char *buffer, int size)
-{
-	int i, len;
-	int first = -1, last = -1;
-	struct dive *dive;
-
-	snprintf(buffer, size, "%s", translate("gettextFromC", "for dives #"));
-	for_each_dive (i, dive) {
-		if (!dive->selected)
-			continue;
-		if (dive->number < 1) {
-			/* uhh - weird numbers - bail */
-			snprintf(buffer, size, "%s", translate("gettextFromC", "for selected dives"));
-			return;
-		}
-		len = strlen(buffer);
-		if (last == -1) {
-			snprintf(buffer + len, size - len, "%d", dive->number);
-			first = last = dive->number;
-		} else {
-			if (dive->number == last + 1) {
-				last++;
-				continue;
-			} else {
-				if (first == last)
-					snprintf(buffer + len, size - len, ", %d", dive->number);
-				else if (first + 1 == last)
-					snprintf(buffer + len, size - len, ", %d, %d", last, dive->number);
-				else
-					snprintf(buffer + len, size - len, "-%d, %d", last, dive->number);
-				first = last = dive->number;
-			}
-		}
-	}
-	len = strlen(buffer);
-	if (first != last) {
-		if (first + 1 == last)
-			snprintf(buffer + len, size - len, ", %d", last);
-		else
-			snprintf(buffer + len, size - len, "-%d", last);
-	}
-}
-
-void get_selected_dives_text(char *buffer, size_t size)
-{
-	if (amount_selected == 1) {
-		if (current_dive)
-			snprintf(buffer, size, translate("gettextFromC", "for dive #%d"), current_dive->number);
-		else
-			snprintf(buffer, size, "%s", translate("gettextFromC", "for selected dive"));
-	} else if (amount_selected == (unsigned int)dive_table.nr) {
-		snprintf(buffer, size, "%s", translate("gettextFromC", "for all dives"));
-	} else if (amount_selected == 0) {
-		snprintf(buffer, size, "%s", translate("gettextFromC", "(no dives)"));
-	} else {
-		get_ranges(buffer, size);
-		if (strlen(buffer) == size - 1) {
-			/* add our own ellipse... the way Pango does this is ugly
-			 * as it will leave partial numbers there which I don't like */
-			size_t offset = 4;
-			while (offset < size && isdigit(buffer[size - offset]))
-				offset++;
-			strcpy(buffer + size - offset, "...");
-		}
-	}
 }
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
