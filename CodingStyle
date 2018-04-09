@@ -19,7 +19,7 @@ Basic rules
 ===========
 
 - all indentation is tabs (set to 8 char) with the exception of
-  continuation lines that are alligned with tabs and then spaces
+  continuation lines that are aligned with tabs and then spaces
 
 - all keywords followed by a '(' have a space in between
 
@@ -65,7 +65,7 @@ Basic rules
 
 - continuation lines have the operator / comma at the end
 
-	if (very_long_conditiont_1 ||
+	if (very_long_condition_1 ||
 	    condition_2)
 
 	b = a + (c + d +
@@ -126,13 +126,13 @@ Basic rules
 
 
 - UI text style
-  These guidleines are designed to ensure consitency in presentation within
+  These guidelines are designed to ensure consistency in presentation within
   Subsurface.
-  Only the first word of multi-word text strings should be captalized unless
-  a word would normally be capitalized mid-sentance, like Africa. This applies
+  Only the first word of multi-word text strings should be capitalized unless
+  a word would normally be capitalized mid-sentence, like Africa. This applies
   to all UI text including menus, menu items, tool-tips, button text and label
   text etc. e.g. "Check for updates" rather than "Check for Updates".
-  We also captialize Subsurface (NOTE: not SubSurface) when referring to the
+  We also capitalize Subsurface (NOTE: not SubSurface) when referring to the
   application itself.
   Abbreviations should end with a period, e.g. "temp." not "temp" for
   temperature

@@ -37,7 +37,7 @@ Body of commit message is a few lines of text, explaining things
 in more detail, possibly giving some background about the issue  
 being fixed, etc etc.
 
-The body of the commit message can be several paragrahps, and  
+The body of the commit message can be several paragraphs, and  
 please do proper word-wrap and keep columns shorter than about  
 74 characters or so. That way "git log" will show things  
 nicely even when it's indented.
@@ -47,7 +47,7 @@ Signed-off-by: Your Name
 
 That header line really should be meaningful, and really should be just one line. The header line is what is shown by tools like gitk and shortlog, and should summarize the change in one readable line of text, independently of the longer explanation.
 
-The prefered way to write a commit message is using imperative mood, e.g. "Make foo do xyz" instead of "This patch makes foo do xyz" or "I made foo do xyz", as if you are giving commands or requests to the code base.
+The preferred way to write a commit message is using imperative mood, e.g. "Make foo do xyz" instead of "This patch makes foo do xyz" or "I made foo do xyz", as if you are giving commands or requests to the code base.
 https://en.wikipedia.org/wiki/Imperative_mood
 
 ![gitk sample][10]

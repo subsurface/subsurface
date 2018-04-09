@@ -69,7 +69,7 @@ trip		 dives are grouped into "trips" based on their
 
 UDDF		 standardized file format
 
-GFHigh, GFLow	 Gradient Factors of the Buehlman algorithm. These
+GFHigh, GFLow	 Gradient Factors of the Buehlmann algorithm. These
 		 impact the way the deco obligations are calculated
 		 in Subsurface. Typically these are between 20 and 100.
 		 Lower is more conservative (i.e., more deco). It's
@@ -106,7 +106,7 @@ rbt		 remaining bottom time
 
 rgt		 remaining gas time
 
-workload	 is this a strenous dive?
+workload	 is this a strenuous dive?
 
 deepstop	 stop well below the ceiling
 
@@ -114,7 +114,7 @@ safety stop	 stop at the end of a recreational dive, typically
 		 3 minutes at 5 meters
 
 below floor	 event showing dive is below the depth where the dive
-		 is acruing additional deco time
+		 is accruing additional deco time
 
 OLF		 Oxygen Limit Fraction; Suunto specific term for CNS
 
