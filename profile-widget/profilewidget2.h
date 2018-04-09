@@ -222,11 +222,11 @@ private:
 
 	QList<QGraphicsSimpleTextItem *> gases;
 
+	//specifics for ADD and PLAN
+#ifndef SUBSURFACE_MOBILE
 	// Use std::vector<> and std::unique_ptr<>, because QVector<QScopedPointer<...>> is unsupported.
 	std::vector<std::unique_ptr<DivePictureItem>> pictures;
 
-	//specifics for ADD and PLAN
-#ifndef SUBSURFACE_MOBILE
 	QList<DiveHandler *> handles;
 	void repositionDiveHandlers();
 	int fixHandlerIndex(DiveHandler *activeHandler);
