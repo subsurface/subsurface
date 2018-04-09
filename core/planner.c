@@ -342,7 +342,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		}
 		if (dp->divemode != type) {
 			type = dp->divemode;
-			add_event(dc, lasttime, 50 + type, 0, 0, divemode_text[type]);
+			add_event(dc, lasttime, 8, 0, type, "modechange");
 		}
 
 		/* Create sample */
@@ -736,7 +736,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
 	// FIXME: This needs a function to find the divemode at the end of the dive like in
-	// divemode = get_divemode_at_time(dive, &dive->dc, sample->time);
+	// divemode = get_current_divemode(&dive->dc, 1e5, &ev, &divemode);
 	gas = dive->cylinder[current_cylinder].gasmix;
 
 	po2 = sample->setpoint.mbar;
@@ -786,7 +786,6 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	diveplan->surface_interval = tissue_at_end(ds, dive, cached_datap);
 	nuclear_regeneration(ds, clock);
 	vpmb_start_gradient(ds);
-
 	if (decoMode() == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
 		track_ascent_gas(depth, &dive->cylinder[current_cylinder], avg_depth, bottom_time, safety_stop);
@@ -1014,7 +1013,8 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 					pendinggaschange = false;
 				}
 
-				int new_clock = wait_until(ds, dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, divemode);
+				int new_clock = wait_until(ds, dive, clock, clock, laststoptime * 2 + 1, timestep, depth, stoplevels[stopidx], avg_depth,
+					bottom_time, &dive->cylinder[current_cylinder].gasmix, po2, diveplan->surface_pressure / 1000.0, divemode);
 				laststoptime = new_clock - clock;
 				/* Finish infinite deco */
 				if (laststoptime >= 48 * 3600 && depth >= 6000) {
