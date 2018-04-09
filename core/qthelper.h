@@ -30,6 +30,7 @@ bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_te
 QList<int> getDivesInTrip(dive_trip_t *trip);
 QString get_gas_string(struct gasmix gas);
 QString get_divepoint_gas_string(struct dive *d, const divedatapoint& dp);
+QString get_taglist_string(struct tag_entry *tag_list);
 void read_hashes();
 void write_hashes();
 void updateHash(struct picture *picture);

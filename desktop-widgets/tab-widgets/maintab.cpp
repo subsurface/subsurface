@@ -417,7 +417,6 @@ void MainTab::updateDiveInfo(bool clear)
 	// for the trip in the Info tab, otherwise we show the info of the
 	// selected_dive
 	struct dive *prevd;
-	char buf[1024];
 
 	process_selected_dives();
 	process_all_dives(&displayed_dive, &prevd);
@@ -570,8 +569,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.equipmentTab->setEnabled(true);
 			cylindersModel->updateDive();
 			weightModel->updateDive();
-			taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
-			ui.tagWidget->setText(QString(buf));
+			ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
 			if (current_dive) {
 				bool isManual = same_string(current_dive->dc.model, "manually added dive");
 				ui.depth->setVisible(isManual);
@@ -1347,13 +1345,10 @@ void MainTab::diffTaggedStrings(QString currentString, QString displayedString, 
 
 void MainTab::on_tagWidget_textChanged()
 {
-	char buf[1024];
-
 	if (editMode == IGNORE || acceptingEdit == true)
 		return;
 
-	taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
-	if (same_string(buf, qPrintable(ui.tagWidget->toPlainText())))
+	if (get_taglist_string(displayed_dive.tag_list) == ui.tagWidget->toPlainText())
 		return;
 
 	markChangedWidget(ui.tagWidget);
@@ -1524,9 +1519,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.divesite)
 		ui.location->setCurrentDiveSiteUuid(displayed_dive.dive_site_uuid);
 	if (what.tags) {
-		char buf[1024];
-		taglist_get_tagstring(displayed_dive.tag_list, buf, 1024);
-		ui.tagWidget->setText(QString(buf));
+		ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
 	}
 	if (what.cylinders) {
 		cylindersModel->updateDive();

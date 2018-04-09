@@ -192,9 +192,7 @@ QString DiveObjectHelper::notes() const
 
 QString DiveObjectHelper::tags() const
 {
-	static char buffer[256];
-	taglist_get_tagstring(m_dive->tag_list, buffer, 256);
-	return QString(buffer);
+	return get_taglist_string(m_dive->tag_list);
 }
 
 QString DiveObjectHelper::gas() const
