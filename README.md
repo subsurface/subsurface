@@ -14,7 +14,7 @@ https://github.com/Subsurface-divelog/subsurface/issues
 
 License: GPLv2
 
-We frequently make new test versions of Subsurface avilable at
+We frequently make new test versions of Subsurface available at
 http://subsurface-divelog.org/downloads/test/
 These tend to contain the latest bug fixes and features, but also
 occasionally the latest bugs and issues. Please understand when using them
@@ -101,7 +101,7 @@ to subscribe.
 If you want to contribute code, please open a pull request with signed-off
 commits at https://github.com/Subsurface-divelog/subsurface/pulls
 (alternatively, you can also send your patches as emails to the developer
-mailing lsit).
+mailing list).
 
 Either way, if you don't sign off your patches, we will not accept them.
 This means adding a line that says "Signed-off-by: Name <email>" at the
