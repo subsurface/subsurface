@@ -574,5 +574,6 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	put_string(&buf, "</div>");
 finished:
 	mb_cstring(&buf);
+	free(dive->notes);
 	dive->notes = detach_buffer(&buf);
 }
