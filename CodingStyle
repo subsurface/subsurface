@@ -1,9 +1,9 @@
 Coding Style
 ============
 
-Here are some of the basics that we are trying to enforce for our coding
-style. The existing code (as of the commit that adds these lines) is not
-yet fully consistent to these rules, but following these rules will make
+Here are some of the basics that we are trying to enforce for our coding style
+and conventions. The existing code (as of the commit that adds these lines) is
+not yet fully consistent to these rules, but following these rules will make
 sure that no one yells at you about your patches.
 
 We have a script that can be used to reformat code to be reasonably close
@@ -106,6 +106,9 @@ Basic rules
 	}
 	}
 
+Coding conventions
+==================
+
 - variable declarations
   in C code we really like them to be at the beginning of a code block,
   not interspersed in the middle.
@@ -142,6 +145,21 @@ Basic rules
   Where more than one term exists for something, please choose the one already
   in use within Subsurface e.g. Cylinder vs. Tank.
 
+
+- string manipulation
+
+ -- user interface
+    In UI part of the code use of QString methods is preferred, see this pretty
+    good guide in QString documentation:
+    http://doc.qt.io/qt-5/qstring.html#manipulating-string-data
+
+ -- core components
+    In the core part of the code, C-string should be used.
+    C-string manipulation is not always straightforward specifically when
+    it comes to memory allocation, a set of helper functions has been developed
+    to help with this. Documentation and usage examples can be found in
+    core/membuffer.h file:
+    https://github.com/Subsurface-divelog/subsurface/blob/master/core/membuffer.h
 
 Sample Settings
 ===============
