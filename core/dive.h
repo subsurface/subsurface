@@ -896,6 +896,7 @@ struct deco_state {
 	int ci_pointing_to_guiding_tissue;
 	double gf_low_pressure_this_dive;
 	int deco_time;
+	bool icd_warning;
 };
 
 extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, const struct dive *dive, int sac);

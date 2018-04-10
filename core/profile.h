@@ -63,6 +63,7 @@ struct plot_data {
 	double ambpressure;
 	double gfline;
 	double density;
+	bool icd_warning;
 };
 
 struct ev_select {

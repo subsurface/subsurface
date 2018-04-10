@@ -482,7 +482,7 @@ void add_segment(struct deco_state *ds, double pressure, const struct gasmix *ga
 	(void) sac;
 	int ci;
 	struct gas_pressures pressures;
-
+	bool icd = false;
 	fill_pressures(&pressures, pressure - ((in_planner() && (decoMode() == VPMB)) ? WV_PRESSURE_SCHREINER : WV_PRESSURE),
 		       gasmix, (double) ccpo2 / 1000.0, dive->dc.divemode);
 
@@ -494,6 +494,11 @@ void add_segment(struct deco_state *ds, double pressure, const struct gasmix *ga
 		double n2_satmult = pn2_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
 		double he_satmult = phe_oversat > 0 ? buehlmann_config.satmult : buehlmann_config.desatmult;
 
+		// Report ICD if N2 is more on-gasing than He off-gasing in leading tissue
+		if (ci == ds->ci_pointing_to_guiding_tissue && pn2_oversat > 0.0 && phe_oversat < 0.0 &&
+		    pn2_oversat * n2_satmult * n2_f + phe_oversat * he_satmult * he_f > 0)
+			icd = true;
+
 		ds->tissue_n2_sat[ci] += n2_satmult * pn2_oversat * n2_f;
 		ds->tissue_he_sat[ci] += he_satmult * phe_oversat * he_f;
 		ds->tissue_inertgas_saturation[ci] = ds->tissue_n2_sat[ci] + ds->tissue_he_sat[ci];
@@ -501,6 +506,7 @@ void add_segment(struct deco_state *ds, double pressure, const struct gasmix *ga
 	}
 	if (decoMode() == VPMB)
 		calc_crushing_pressure(ds, pressure);
+	ds->icd_warning = icd;
 	return;
 }
 

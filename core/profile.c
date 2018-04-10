@@ -1036,7 +1036,8 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 				add_segment(ds, depth_to_bar(depth, dive),
-					gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+					    gasmix, time_stepsize, entry->o2pressure.mbar, dive, entry->sac);
+				entry->icd_warning = ds->icd_warning;
 				if ((t1 - j < time_stepsize) && (j < t1))
 					time_stepsize = t1 - j;
 			}
@@ -1498,6 +1499,8 @@ static void plot_string(struct plot_info *pi, struct plot_data *entry, struct me
 			}
 		}
 	}
+	if (entry->icd_warning)
+		put_format(b, "%s", translate("gettextFromC", "ICD in leading tissue\n"));
 	if (entry->heartbeat && prefs.hrgraph)
 		put_format_loc(b, translate("gettextFromC", "heart rate: %d\n"), entry->heartbeat);
 	if (entry->bearing >= 0)
