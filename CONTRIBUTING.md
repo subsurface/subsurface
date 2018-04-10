@@ -75,6 +75,8 @@ Here is a (non exhaustive) list of Areas that can be used:
 * Printing
 * Profile
 
+In order to make reviews simpler and have contributions merged faster in the code base, please follow Subsurface project's coding style and coding conventions described in the [CodingStyle][11] file.
+
 [1]: http://lists.subsurface-divelog.org/cgi-bin/mailman/listinfo/subsurface
 [2]: http://freenode.net/
 [3]: https://www.transifex.com/
@@ -85,3 +87,5 @@ Here is a (non exhaustive) list of Areas that can be used:
 [8]: https://subsurface-divelog.org/building/
 [9]: https://gerrit-review.googlesource.com/Documentation/user-signedoffby.html
 [10]: https://subsurface-divelog.org/wp-content/uploads/2011/10/Screenshot-gitk-subsurface-1.png "Example with gitk"
+[11]: https://github.com/Subsurface-divelog/subsurface/blob/master/CodingStyle
+[12]: https://github.com/Subsurface-divelog/subsurface/blob/master/CONVENTIONS.md
