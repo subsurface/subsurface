@@ -17,7 +17,7 @@ static QImage getThumbnailFromCache(const PictureEntry &entry)
 	return thumbnailCache.value(entry.filename);
 }
 
-static void scaleImages(PictureEntry &entry, int size, int maxSize)
+static void scaleImages(PictureEntry &entry, int maxSize)
 {
 	QImage thumbnail = getThumbnailFromCache(entry);
 	// If thumbnails were written by an earlier version, they might be smaller than needed.
@@ -29,9 +29,7 @@ static void scaleImages(PictureEntry &entry, int size, int maxSize)
 		thumbnailCache.insert(entry.filename, thumbnail);
 	}
 
-	entry.imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
-	entry.image = size == maxSize ? thumbnail
-				      : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+	entry.image = thumbnail;
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -42,7 +40,8 @@ DivePictureModel *DivePictureModel::instance()
 
 DivePictureModel::DivePictureModel() : rowDDStart(0),
 				       rowDDEnd(0),
-				       zoomLevel(0.0)
+				       zoomLevel(0.0),
+				       defaultSize(defaultIconMetrics().sz_pic)
 {
 }
 
@@ -62,11 +61,11 @@ void DivePictureModel::setZoomLevel(int level)
 		zoomLevel = -1.0;
 	if (zoomLevel > 1.0)
 		zoomLevel = 1.0;
-	updateThumbnails();
+	updateZoom();
 	layoutChanged();
 }
 
-void DivePictureModel::updateThumbnails()
+void DivePictureModel::updateZoom()
 {
 	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
 	// We use exponential scaling so that the central point is the standard
@@ -75,10 +74,14 @@ void DivePictureModel::updateThumbnails()
 	// Naturally, these three zoom levels are then represented by
 	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
 	// calculated as standard_size*3.0^zoomLevel.
-	int defaultSize = defaultIconMetrics().sz_pic;
+	size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
+}
+
+void DivePictureModel::updateThumbnails()
+{
 	int maxSize = defaultSize * maxZoom;
-	int size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
-	QtConcurrent::blockingMap(pictures, [size, maxSize](PictureEntry &entry){scaleImages(entry, size, maxSize);});
+	updateZoom();
+	QtConcurrent::blockingMap(pictures, [maxSize](PictureEntry &entry){scaleImages(entry, maxSize);});
 }
 
 void DivePictureModel::updateDivePictures()
@@ -101,7 +104,7 @@ void DivePictureModel::updateDivePictures()
 			if (dive->id == displayed_dive.id)
 				rowDDStart = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({picture, picture->filename, {}, {}, picture->offset.seconds});
+				pictures.push_back({picture, picture->filename, {}, picture->offset.seconds});
 			if (dive->id == displayed_dive.id)
 				rowDDEnd = pictures.count();
 		}
@@ -134,10 +137,10 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			ret = entry.filename;
 			break;
 		case Qt::DecorationRole:
-			ret = entry.image;
+			ret = entry.image.scaled(size, size, Qt::KeepAspectRatio);
 			break;
 		case Qt::UserRole:	// Used by profile widget to access bigger thumbnails
-			ret = entry.imageProfile;
+			ret = entry.image.scaled(defaultSize, defaultSize, Qt::KeepAspectRatio);
 			break;
 		case Qt::DisplayRole:
 			ret = QFileInfo(entry.filename).fileName();
