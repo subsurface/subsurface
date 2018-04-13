@@ -266,7 +266,7 @@ static dc_status_t qt_serial_open(dc_custom_io_t *io, dc_context_t *context, con
 				(LPSOCKADDR) &socketBthAddress,
 				&socketBthAddressBth
 				) != 0) {
-		qDebug() << "FAiled to convert the address " << address;
+		qDebug() << "Failed to convert the address " << address;
 		free(address);
 
 		return DC_STATUS_IO;

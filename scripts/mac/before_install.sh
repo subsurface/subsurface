@@ -21,7 +21,7 @@ git describe
 if curl --output /dev/null --silent --head --fail \
 	http://subsurface-divelog.org/downloads/TravisMacBuildCache.tar.xz
 then
-	echo "Download Homebrew with all our packages and overwritw /usr/local"
+	echo "Download Homebrew with all our packages and overwrite /usr/local"
 	curl --output ${TRAVIS_BUILD_DIR}/TravisMacBuildCache.tar.xz \
 		https://storage.googleapis.com/travis-cache/TravisMacBuildCache.tar.xz
 #	curl --output ${TRAVIS_BUILD_DIR}/TravisMacBuildCache.tar.xz \
