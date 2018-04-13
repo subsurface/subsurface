@@ -145,7 +145,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 
 	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
 	logfile_name = copy_qstring(libdcLogFileName);
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
 	appLogFile.setFileName(appLogFileName);
 	if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {

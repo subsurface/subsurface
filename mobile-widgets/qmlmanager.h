@@ -245,7 +245,7 @@ private:
 	bool m_btEnabled;
 	void updateAllGlobalLists();
 
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
 	QFile appLogFile;
 	bool appLogFileOpen;
