@@ -54,5 +54,9 @@
 	<string>Subsurface-mobile can track your location to match imported dives</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Subsurface-mobile can track your location to match imported dives</string>
+	<key>UIFileSharingEnabled</key>
+	<string>YES</string>
+	<key>LSSupportsOpeningDocumentsInPlace</key>
+	<string>YES</string>
 </dict>
 </plist>
