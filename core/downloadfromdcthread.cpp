@@ -62,9 +62,6 @@ void DownloadThread::run()
 
 static void fill_supported_mobile_list()
 {
-	// This segment of the source is automatically generated
-	// please edit scripts/dcTransport.pl , regenerated the code and copy it here
-
 #if defined(Q_OS_ANDROID)
 	/* BT, BLE and FTDI devices */
 	mobileProductList["Aeris"] =
@@ -81,6 +78,8 @@ static void fill_supported_mobile_list()
 		QStringList({{"Frog"}, {"OSTC"}, {"OSTC 2"}, {"OSTC 2C"}, {"OSTC 2N"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Mk2"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC cR"}, {"OSTC 2 TR"}});
 	mobileProductList["Hollis"] =
 		QStringList({{"DG02"}, {"DG03"}, {"TX1"}});
+	mobileProductList["Mares"] =
+		QStringList({{"Puck Pro"}, {"Smart"}, {"Quad"}});
 	mobileProductList["Oceanic"] =
 		QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
 	mobileProductList["Scubapro"] =
@@ -107,6 +106,8 @@ static void fill_supported_mobile_list()
 	/* BLE only, Qt does not support classic BT on iOS */
 	mobileProductList["Heinrichs Weikamp"] =
 		QStringList({{"OSTC 2"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC 2 TR"}});
+	mobileProductList["Mares"] =
+		QStringList({{"Puck Pro"}, {"Smart"}, {"Quad"}});
 	mobileProductList["Scubapro"] =
 		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
 	mobileProductList["Shearwater"] =
@@ -115,7 +116,6 @@ static void fill_supported_mobile_list()
 		QStringList({{"EON Core"}, {"EON Steel"}});
 
 #endif
-	// end of the automatically generated code
 }
 
 void fill_computer_list()
