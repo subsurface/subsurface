@@ -23,7 +23,7 @@
 #include <libdivecomputer/custom_io.h>
 
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
-#define DEBUG_THRESHOLD 20
+#define DEBUG_THRESHOLD 50
 static int debugCounter;
 
 #define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
