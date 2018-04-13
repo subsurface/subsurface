@@ -134,8 +134,11 @@ echo next building for $ARCH
 		wget http://api.github.com/repos/GNOME/libxml2/tarball/v${LIBXML2_VERSION} -O libxml2-${LIBXML2_VERSION}.tar.gz
 	fi
 	if [ ! -e libxml2-${LIBXML2_VERSION} ] ; then
+		mkdir -p libxml2-${LIBXML2_VERSION}
 		tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz --strip 1 -C libxml2-${LIBXML2_VERSION}
-		tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz
+		pushd libxml2-${LIBXML2_VERSION}
+		autoreconf --install
+		popd
 	fi
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
 		mkdir -p libxml2-build-$ARCH
@@ -161,6 +164,9 @@ echo next building for $ARCH
 		tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz --strip 1 -C libxslt-${LIBXSLT_VERSION}
 		# libxslt have too old config.sub
 		cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
+		pushd libxslt-${LIBXSLT_VERSION}
+		autoreconf --install
+		popd
 	fi
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
 		mkdir -p libxslt-build-$ARCH_NAME
