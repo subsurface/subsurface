@@ -37,7 +37,7 @@ SOURCES += ../../../subsurface-mobile-main.cpp \
     ../../../core/windowtitleupdate.cpp \
     ../../../core/file.c \
     ../../../core/subsurfacestartup.c \
-    ../../../core/macos.c \
+    ../../../core/ios.cpp \
     ../../../core/profile.c \
     ../../../core/device.c \
     ../../../core/dive.c \
