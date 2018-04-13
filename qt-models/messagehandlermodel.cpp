@@ -5,9 +5,12 @@
 #if !defined(Q_OS_ANDROID)
 #define INFO(fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
 #else
-extern void writeToAppLogFile(QString logText);
 #include <android/log.h>
 #define INFO(fmt, ...)	__android_log_print(ANDROID_LOG_DEBUG, __FILE__, "INFO: " fmt "\n", ##__VA_ARGS__);
+#endif
+
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+extern void writeToAppLogFile(QString logText);
 #endif
 
 void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -43,7 +46,7 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 	m_data.append({message, type});
 	endInsertRows();
 	INFO("%s", qPrintable(message));
-#if defined (Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	writeToAppLogFile(message);
 #endif
 }

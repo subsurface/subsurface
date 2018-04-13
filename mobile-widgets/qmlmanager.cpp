@@ -373,7 +373,7 @@ void QMLManager::finishSetup()
 
 QMLManager::~QMLManager()
 {
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	if (appLogFileOpen)
 		appLogFile.close();
 #endif
@@ -1630,7 +1630,7 @@ void QMLManager::setBtEnabled(bool value)
 	m_btEnabled = value;
 }
 
-#if defined (Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 
 void writeToAppLogFile(QString logText)
 {
@@ -1649,7 +1649,9 @@ void QMLManager::writeToAppLogFile(QString logText)
 		appLogFile.flush();
 	}
 }
+#endif
 
+#if defined(Q_OS_ANDROID)
 //HACK to color the system bar on Android, use qtandroidextras and call the appropriate Java methods
 //this code is based on code in the Kirigami example app for Android (under LGPL-2) Copyright 2017 Marco Martin
 

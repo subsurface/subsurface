@@ -143,7 +143,7 @@ public:
 	Q_INVOKABLE void setStatusbarColor(QColor color);
 	void btHostModeChange(QBluetoothLocalDevice::HostMode state);
 
-#if defined(Q_OS_ANDROID)
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	void writeToAppLogFile(QString logText);
 #endif
 
