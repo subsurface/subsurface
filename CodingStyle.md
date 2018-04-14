@@ -1,5 +1,4 @@
-Coding Style
-============
+# Coding Style
 
 Here are some of the basics that we are trying to enforce for our coding style
 and conventions. The existing code (as of the commit that adds these lines) is
@@ -15,38 +14,44 @@ At the end of this file are some ideas for your .emacs file (if that's
 your editor of choice) as well as for QtCreator. If you have settings for
 other editors that implement this coding style, please add them here.
 
-Basic rules
-===========
+## Basic rules
 
-- all indentation is tabs (set to 8 char) with the exception of
+* all indentation is tabs (set to 8 char) with the exception of
   continuation lines that are aligned with tabs and then spaces
 
-- all keywords followed by a '(' have a space in between
+* all keywords followed by a '(' have a space in between
 
+```
 	if (condition)
 
 	for (i = 0; i < 5; i++)
+```
 
-- function calls do NOT have a space between their name and argument
+* function calls do NOT have a space between their name and argument
 
+```
 	i = some_function(argument);
+```
 
-- usually there is no space on the inside of parenthesis (see examples
+* usually there is no space on the inside of parenthesis (see examples
   above)
 
-- function / method implementations have their opening curly braces in
+* function / method implementations have their opening curly braces in
   column 1
 
-- all other opening curly braces follow at the end of the line, with a
+* all other opening curly braces follow at the end of the line, with a
   space separating them:
 
+```
 	if (condition) {
 		dosomething();
 		dosomethingelse();
 	}
+```
 
-- both sides of an if / else clause either use or do not use curly braces:
+* both sides of an if / else clause either use or do not use curly braces:
 
+```
 	if (condition)
 		i = 4;
 	else
@@ -58,43 +63,55 @@ Basic rules
 		i = 4;
 		j = 6;
 	}
+```
 
-- use space to make visual separation easier
+* use space to make visual separation easier
 
+```
 	a = b + 3 + e / 4;
+```
 
-- continuation lines have the operator / comma at the end
+* continuation lines have the operator / comma at the end
 
+```
 	if (very_long_condition_1 ||
 	    condition_2)
 
 	b = a + (c + d +
 		 f + z);
+```
 
-- in a C++ constructor initialization list, the colon is on the same line and
+* in a C++ constructor initialization list, the colon is on the same line and
   continuation lines are aligned as the rule above:
 
+```
 	ClassName::ClassName() : x(1),
 		y(2),
 		z(3)
 	{
 	}
+```
 
-- unfortunate inconsistency:
-  -- C code usually uses underscores to structure names
+* unfortunate inconsistency
+ * C code usually uses underscores to structure names
 
+```
 	variable_in_C
+```
 
-  -- C++ code usually uses camelCase
+ * C++ code usually uses camelCase
 
+```
 	variableInCPlusPlus
+```
 
   where the two meet, use your best judgment and go for best consistency
   (i.e., where does the variable "originate")
 
-- switch statements with blocks are a little bit special (to avoid indenting
+* switch statements with blocks are a little bit special (to avoid indenting
   too far)
 
+```
 	switch (foo) {
 	case FIRST:
 		whatever();
@@ -105,30 +122,32 @@ Basic rules
 			do_something(i);
 	}
 	}
+```
 
-Coding conventions
-==================
+## Coding conventions
 
-- variable declarations
+* variable declarations
   in C code we really like them to be at the beginning of a code block,
   not interspersed in the middle.
   in C++ we are a bit less strict about this - but still, try not to go
   crazy.
 
-- text strings
+* text strings
   The default language of subsurface is US English so please use US English
   spelling and terminology.
   Where at all possible strings should be passed to the tr() function to enable
   translation into other languages.
 
-  -- like this
+ * like this
+```
 	QString msgTitle = tr("Submit user survey.");
-
-  -- rather than
+```
+ * rather than
+```
 	QString msgTitle = "Submit user survey.";
+```
 
-
-- UI text style
+* UI text style
   These guidelines are designed to ensure consistency in presentation within
   Subsurface.
   Only the first word of multi-word text strings should be capitalized unless
@@ -146,30 +165,28 @@ Coding conventions
   in use within Subsurface e.g. Cylinder vs. Tank.
 
 
-- string manipulation
+* string manipulation
 
- -- user interface
+ * user interface
     In UI part of the code use of QString methods is preferred, see this pretty
-    good guide in QString documentation:
-    http://doc.qt.io/qt-5/qstring.html#manipulating-string-data
+    good guide in [QString documentation][1]
 
- -- core components
+ * core components
     In the core part of the code, C-string should be used.
     C-string manipulation is not always straightforward specifically when
     it comes to memory allocation, a set of helper functions has been developed
     to help with this. Documentation and usage examples can be found in
-    core/membuffer.h file:
-    https://github.com/Subsurface-divelog/subsurface/blob/master/core/membuffer.h
+    [core/membuffer.h][2]
 
-Sample Settings
-===============
 
-Emacs
------
+## Sample Settings
+
+### Emacs
 
 These lines in your .emacs file should get you fairly close when it comes
 to indentation - many of the other rules you have to follow manually
 
+```
 ;; indentation
 (defun c-lineup-arglist-tabs-only (ignored)
   "Line up argument lists by tabs, not spaces"
@@ -203,10 +220,9 @@ to indentation - many of the other rules you have to follow manually
               ;; Enable kernel mode for the appropriate files
                 (setq indent-tabs-mode t)
                 (c-set-style "linux-tabs-only"))))
+```
 
-
-QtCreator
----------
+### QtCreator
 
 These settings seem to get indentation right in QtCreator. Making TAB
 always adjust indent makes it hard to add hard tabs before '\' when
@@ -218,7 +234,7 @@ in QtCreator, pick C++ in the left column and then click on Import...
 to open the file you just created. Now you should have a "Subsurface"
 style that you can select which should work well for our coding style.
 
-
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorCodeStyle>
 <!-- Written by QtCreator 3.0.0, 2014-02-27T07:52:57. -->
@@ -258,15 +274,15 @@ style that you can select which should work well for our coding style.
   <value type="QString">Subsurface</value>
  </data>
 </qtcreator>
+```
 
-
-Vim
----------
+### Vim
 
 As everybody knows vim is a way better editor than emacs and thus needs to be
 in this file too. Put this into your .vimrc and this should produce something
 close to our coding standards.
 
+```
 " Subsurface coding style
 filetype plugin indent on
 filetype detect
@@ -288,3 +304,7 @@ highlight ExtraWhitespace ctermbg=red guibg=red
 
 " Show trailing whitespace and spaces before a tab:
 match ExtraWhitespace /\s\+$\| \+\ze\t/
+```
+
+[1]: http://doc.qt.io/qt-5/qstring.html#manipulating-string-data
+[2]: https://github.com/Subsurface-divelog/subsurface/blob/master/core/membuffer.h
