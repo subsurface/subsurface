@@ -134,14 +134,20 @@ QString GpsLocation::currentPosition()
 	qDebug() << "current position requested";
 	if (!hasLocationsSource())
 		return tr("Unknown GPS location (no GPS source)");
-	if (m_trackers.count() && m_trackers.lastKey() + 300 >= QDateTime::currentMSecsSinceEpoch() / 1000) {
-		// we can simply use the last position that we tracked
-		gpsTracker gt = m_trackers.last();
-		QString gpsString = printGPSCoords(gt.latitude.udeg, gt.longitude.udeg);
-		qDebug() << "returning last position" << gpsString;
-		return gpsString;
-	} else {
-		qDebug() << "last position saved was too old" << QDateTime().fromMSecsSinceEpoch(m_trackers.lastKey() * 1000).toString();
+	if (m_trackers.count()) {
+		QDateTime lastFixTime =	QDateTime().fromMSecsSinceEpoch((m_trackers.lastKey() - gettimezoneoffset(m_trackers.lastKey())) * 1000);
+		QDateTime now = QDateTime::currentDateTime();
+		int delta = lastFixTime.secsTo(now);
+		qDebug() << "lastFixTime" << lastFixTime.toString() << "now" << now.toString() << "delta" << delta;
+		if (delta < 300) {
+			// we can simply use the last position that we tracked
+			gpsTracker gt = m_trackers.last();
+			QString gpsString = printGPSCoords(gt.latitude.udeg, gt.longitude.udeg);
+			qDebug() << "returning last position" << gpsString;
+			return gpsString;
+		} else {
+			qDebug() << "last position saved was too old" << lastFixTime.toString();
+		}
 	}
 	qDebug() << "requesting new GPS position";
 	m_GpsSource->requestUpdate();
@@ -179,7 +185,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		gt.longitude.udeg = lrint(pos.coordinate().longitude() * 1000000);
 		addFixToStorage(gt);
 		gpsTracker gtNew = m_trackers.last();
-		qDebug() << "newest fix is now at" << QDateTime().fromSecsSinceEpoch(gtNew.when).toString();
+		qDebug() << "newest fix is now at" << QDateTime().fromSecsSinceEpoch(gtNew.when - gettimezoneoffset(gtNew.when)).toString();
 	}
 }
 
