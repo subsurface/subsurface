@@ -60,7 +60,7 @@ void GpsLocation::setGpsTimeThreshold(int seconds)
 {
 	if (m_GpsSource) {
 		m_GpsSource->setUpdateInterval(seconds * 1000);
-		status(QString("Set GPS service update interval to %1").arg(m_GpsSource->updateInterval()));
+		status(QString("Set GPS service update interval to %1 s").arg(m_GpsSource->updateInterval() / 1000));
 	}
 }
 
@@ -131,14 +131,17 @@ void GpsLocation::serviceEnable(bool toggle)
 
 QString GpsLocation::currentPosition()
 {
+	qDebug() << "current position requested";
 	if (!hasLocationsSource())
-		return tr("Unknown GPS location");
+		return tr("Unknown GPS location (no GPS source)");
 	if (m_trackers.count() && m_trackers.lastKey() + 300 >= QDateTime::currentMSecsSinceEpoch() / 1000) {
 		// we can simply use the last position that we tracked
 		gpsTracker gt = m_trackers.last();
 		QString gpsString = printGPSCoords(gt.latitude.udeg, gt.longitude.udeg);
 		qDebug() << "returning last position" << gpsString;
 		return gpsString;
+	} else {
+		qDebug() << "last position saved was too old" << QDateTime().fromMSecsSinceEpoch(m_trackers.lastKey() * 1000).toString();
 	}
 	qDebug() << "requesting new GPS position";
 	m_GpsSource->requestUpdate();
@@ -165,8 +168,8 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	int64_t delta = (int64_t)pos.timestamp().toTime_t() + gettimezoneoffset() - lastTime;
 	if (!nr || waitingForPosition || delta > prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
-		QString msg("received new position %1 after delta %2 threshold %3");
-		status(qPrintable(msg.arg(pos.coordinate().toString()).arg(delta).arg(prefs.time_threshold)));
+		QString msg("received new position %1 after delta %2 threshold %3 (now %4 last %5)");
+		status(qPrintable(msg.arg(pos.coordinate().toString()).arg(delta).arg(prefs.time_threshold).arg(pos.timestamp().toString()).arg(QDateTime().fromSecsSinceEpoch(lastTime).toString())));
 		waitingForPosition = false;
 		gpsTracker gt;
 		gt.when = pos.timestamp().toTime_t();
@@ -174,6 +177,8 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		gt.latitude.udeg = lrint(pos.coordinate().latitude() * 1000000);
 		gt.longitude.udeg = lrint(pos.coordinate().longitude() * 1000000);
 		addFixToStorage(gt);
+		gpsTracker gtNew = m_trackers.last();
+		qDebug() << "newest fix is now at" << QDateTime().fromSecsSinceEpoch(gtNew.when).toString();
 	}
 }
 
