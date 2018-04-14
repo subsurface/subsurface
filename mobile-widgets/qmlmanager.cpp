@@ -841,6 +841,7 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 	bool diveChanged = false;
 	uint32_t uuid = 0;
 	struct dive_site *ds = get_dive_site_for_dive(d);
+	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << myDive->location() << "gps" << myDive->gas();
 	if (myDive->location() != location) {
 		diveChanged = true;
 		if (!ds)
@@ -855,13 +856,16 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 	if (myDive->gps() != gps) {
 		double lat, lon;
 		if (parseGpsText(gps, &lat, &lon)) {
+			qDebug() << "parsed GPS, using it";
 			// there are valid GPS coordinates - just use them
 			setupDivesite(d, ds, lat, lon, qPrintable(myDive->location()));
 			diveChanged = true;
 		} else if (gps == GPS_CURRENT_POS) {
+			qDebug() << "gps was our default text for no GPS";
 			// user asked to use current pos
 			QString gpsString = getCurrentPosition();
 			if (gpsString != GPS_CURRENT_POS) {
+				qDebug() << "but now I got a valid location" << gpsString;
 				if (parseGpsText(qPrintable(gpsString), &lat, &lon)) {
 					setupDivesite(d, ds, lat, lon, qPrintable(myDive->location()));
 					diveChanged = true;
