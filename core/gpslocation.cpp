@@ -171,6 +171,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		QString msg("received new position %1 after delta %2 threshold %3 (now %4 last %5)");
 		status(qPrintable(msg.arg(pos.coordinate().toString()).arg(delta).arg(prefs.time_threshold).arg(pos.timestamp().toString()).arg(QDateTime().fromSecsSinceEpoch(lastTime).toString())));
 		waitingForPosition = false;
+		acquiredPosition();
 		gpsTracker gt;
 		gt.when = pos.timestamp().toTime_t();
 		gt.when += gettimezoneoffset(gt.when);

@@ -59,6 +59,7 @@ private:
 
 signals:
 	void haveSourceChanged();
+	void acquiredPosition();
 
 public slots:
 	void serviceEnable(bool toggle);
