@@ -177,6 +177,12 @@ Item {
 						gpsText = manager.getCurrentPosition()
 				}
 			}
+			Connections {
+				target: manager
+				onWaitingForPositionChanged: {
+					gpsText = manager.getCurrentPosition()
+				}
+			}
 
 			Controls.Label {
 				Layout.alignment: Qt.AlignRight

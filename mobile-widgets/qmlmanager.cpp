@@ -1297,7 +1297,12 @@ QString QMLManager::getCurrentPosition()
 	if (!hasLocationSource)
 		return tr("Unknown GPS location");
 
-	return locationProvider->currentPosition();
+	QString positionResponse = locationProvider->currentPosition();
+	if (positionResponse == GPS_CURRENT_POS)
+		connect(locationProvider, &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged, Qt::UniqueConnection);
+	else
+		disconnect(locationProvider, &GpsLocation::acquiredPosition, this, &QMLManager::waitingForPositionChanged);
+	return positionResponse;
 }
 
 void QMLManager::applyGpsData()

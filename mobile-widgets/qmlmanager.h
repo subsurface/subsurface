@@ -280,6 +280,7 @@ signals:
 	void buddyListChanged();
 	void divemasterListChanged();
 	void locationListChanged();
+	void waitingForPositionChanged();
 };
 
 #endif
