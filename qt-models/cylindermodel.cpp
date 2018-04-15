@@ -7,6 +7,8 @@
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"
+#include <algorithm>
+#include <numeric>
 
 CylindersModel::CylindersModel(QObject *parent) :
 	CleanerTableModel(parent),
@@ -482,15 +484,28 @@ static bool show_cylinder(struct dive *dive, int i)
 
 void CylindersModel::updateDive()
 {
-	clear();
-	rows = 0;
+	int i, j;
+	int invisible_rows = 0;
+	int last_row = 0;
 #ifdef DEBUG_CYL
 	dump_cylinders(&displayed_dive, true);
 #endif
-	for (int i = 0; i < MAX_CYLINDERS; i++) {
-		if (show_cylinder(&displayed_dive, i))
-			rows = i + 1;
+	// Find last row
+	for (i = 0; i < MAX_CYLINDERS; i++) {
+		if (!cylinder_none(&displayed_dive.cylinder[i]))
+			last_row = i;
 	}
+	// Move invisible cylinders to the end of the list
+	for (i = j = 0; j <= last_row; i++, j++) {
+		if (!show_cylinder(&displayed_dive, i)) {
+			moveAtPos(i, last_row);
+			invisible_rows++;
+			if (i != last_row) 
+				i--;
+		}
+	}
+	clear();
+	rows = last_row + 1 - invisible_rows;
 	if (rows > 0) {
 		beginInsertRows(QModelIndex(), 0, rows - 1);
 		endInsertRows();
@@ -575,6 +590,29 @@ void CylindersModel::moveAtFirst(int cylid)
 	mapping[cylid] = 0;
 	for (int i = cylid + 1; i < MAX_CYLINDERS; i++)
 		mapping[i] = i;
+	cylinder_renumber(&displayed_dive, mapping);
+	if (in_planner())
+		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
+	changed = true;
+	endMoveRows();
+}
+
+void CylindersModel::moveAtPos(int cylid, int pos)
+{
+	if (cylid == pos || pos > (MAX_CYLINDERS - 1))
+		return;
+
+	beginMoveRows(QModelIndex(), cylid, cylid, QModelIndex(), pos + 1);
+	int mapping[MAX_CYLINDERS];
+	std::iota(&mapping[0], &mapping[MAX_CYLINDERS], 0); // Fill with 0..MAX_CYLINDERS-1
+	auto &cylinder = displayed_dive.cylinder;
+	if (pos > cylid) {
+		std::rotate(&cylinder[cylid], &cylinder[cylid + 1], &cylinder[pos + 1]);
+		std::rotate(&mapping[cylid], &mapping[pos], &mapping[pos + 1]);
+	} else {
+		std::rotate(&cylinder[pos], &cylinder[cylid], &cylinder[cylid + 1]);
+		std::rotate(&mapping[pos], &mapping[pos + 1], &mapping[cylid + 1]);
+	}
 	cylinder_renumber(&displayed_dive, mapping);
 	if (in_planner())
 		DivePlannerPointsModel::instance()->cylinderRenumber(mapping);
