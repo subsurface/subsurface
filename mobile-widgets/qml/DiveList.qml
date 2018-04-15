@@ -20,6 +20,7 @@ Kirigami.ScrollablePage {
 	property color textColor: subsurfaceTheme.textColor
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
+	property string activeTrip
 
 	supportsRefreshing: true
 	onRefreshingChanged: {
@@ -48,7 +49,8 @@ Kirigami.ScrollablePage {
 			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
-			height: diveListEntry.height + Kirigami.Units.smallSpacing
+			height: dive.tripMeta === activeTrip ?  diveListEntry.height + Kirigami.Units.smallSpacing : 0
+			visible: dive.tripMeta === activeTrip
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
@@ -186,7 +188,7 @@ Kirigami.ScrollablePage {
 		id: tripHeading
 		Item {
 			width: page.width
-			height: childrenRect.height - Kirigami.Units.smallSpacing
+			height: childrenRect.height
 			Rectangle {
 				id: headingBackground
 				height: section == "" ? 0 : sectionText.height + Kirigami.Units.gridUnit
@@ -222,7 +224,12 @@ Kirigami.ScrollablePage {
 						}
 					}
 				}
-
+				MouseArea {
+					anchors.fill: headingBackground
+					onClicked: {
+						activeTrip = section
+					}
+				}
 				Controls.Label {
 					id: sectionText
 					text: {
@@ -249,6 +256,12 @@ Kirigami.ScrollablePage {
 						right: parent.right
 					}
 					color: subsurfaceTheme.lightPrimaryTextColor
+				}
+				MouseArea {
+					anchors.fill: sectionText
+					onClicked: {
+						activeTrip = section
+					}
 				}
 			}
 			Rectangle {
