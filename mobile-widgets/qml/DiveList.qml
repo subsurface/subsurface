@@ -11,6 +11,7 @@ Kirigami.ScrollablePage {
 	id: page
 	objectName: "DiveList"
 	title: qsTr("Dive list")
+	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 	background: Rectangle {
 		color: subsurfaceTheme.backgroundColor
 	}
