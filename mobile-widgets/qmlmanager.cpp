@@ -1093,6 +1093,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			d->meandepth.mm = d->dc.meandepth.mm = 0;
 			d->dc = *fake_dc(&d->dc, true);
 		}
+		fixup_dive(d);
 		DiveListModel::instance()->updateDive(modelIdx, d);
 		invalidate_dive_cache(d);
 		mark_divelist_changed(true);
