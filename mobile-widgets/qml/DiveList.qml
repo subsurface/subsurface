@@ -280,7 +280,10 @@ Kirigami.ScrollablePage {
 				MouseArea {
 					anchors.fill: headingBackground
 					onClicked: {
-						activeTrip = section
+						if (activeTrip === section)
+							activeTrip = ""
+						else
+							activeTrip = section
 					}
 				}
 				Controls.Label {
@@ -313,7 +316,10 @@ Kirigami.ScrollablePage {
 				MouseArea {
 					anchors.fill: sectionText
 					onClicked: {
-						activeTrip = section
+						if (activeTrip === section)
+							activeTrip = ""
+						else
+							activeTrip = section
 					}
 				}
 			}
