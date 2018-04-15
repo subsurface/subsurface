@@ -42,6 +42,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(QList<CylinderObjectHelper*> cylinderObjects READ cylinderObjects CONSTANT)
 	Q_PROPERTY(QString trip READ trip CONSTANT)
 	Q_PROPERTY(QString tripMeta READ tripMeta CONSTANT)
+	Q_PROPERTY(int tripNrDives READ tripNrDives CONSTANT)
 	Q_PROPERTY(int maxcns READ maxcns CONSTANT)
 	Q_PROPERTY(int otu READ otu CONSTANT)
 	Q_PROPERTY(QString sumWeight READ sumWeight CONSTANT)
@@ -85,6 +86,7 @@ public:
 	QList<CylinderObjectHelper*> cylinderObjects() const;
 	QString trip() const;
 	QString tripMeta() const;
+	int tripNrDives() const;
 	int maxcns() const;
 	int otu() const;
 	QString sumWeight() const;

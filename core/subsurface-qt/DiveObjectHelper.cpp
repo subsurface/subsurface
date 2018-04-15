@@ -360,6 +360,12 @@ QString DiveObjectHelper::tripMeta() const
 	return ret;
 }
 
+int DiveObjectHelper::tripNrDives() const
+{
+	struct dive_trip *dt = m_dive->divetrip;
+	return dt ? dt->nrdives : 0;
+}
+
 int DiveObjectHelper::maxcns() const
 {
 	return m_dive->maxcns;
