@@ -49,13 +49,66 @@ Kirigami.ScrollablePage {
 			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
-			height: dive.tripMeta === activeTrip ?  diveListEntry.height + Kirigami.Units.smallSpacing : 0
-			visible: dive.tripMeta === activeTrip
+			height: 0
+			visible: false
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
 
 			property real detailsOpacity : 0
+
+			states: [
+				State {
+					name: "isHidden";
+					when: dive.tripMeta !== activeTrip
+					PropertyChanges {
+						target: innerListItem
+						height: 0
+						visible: false
+					}
+				},
+				State {
+					name: "isVisible";
+					when: dive.tripMeta === activeTrip
+					PropertyChanges {
+						target: innerListItem
+						height: diveListEntry.height + Kirigami.Units.smallSpacing
+						visible: true
+					}
+				}
+			]
+			transitions: [
+				Transition {
+					from: "isHidden"
+					to: "isVisible"
+					SequentialAnimation {
+						NumberAnimation {
+							property: "visible"
+							duration: 1
+						}
+						NumberAnimation {
+							property: "height"
+							duration: 200 + 20 * dive.tripNrDives
+							easing.type: Easing.InOutQuad
+						}
+					}
+				},
+				Transition {
+					from: "isVisible"
+					to: "isHidden"
+					SequentialAnimation {
+						NumberAnimation {
+							property: "height"
+							duration: 200 + 20 * dive.tripNrDives
+							easing.type: Easing.InOutQuad
+						}
+						NumberAnimation {
+							property: "visible"
+							duration: 1
+						}
+					}
+				}
+			]
 
 			// When clicked, the mode changes to details view
 			onClicked: {
