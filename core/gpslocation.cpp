@@ -175,7 +175,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 	if (!nr || waitingForPosition || delta > prefs.time_threshold ||
 	    lastCoord.distanceTo(pos.coordinate()) > prefs.distance_threshold) {
 		QString msg("received new position %1 after delta %2 threshold %3 (now %4 last %5)");
-		status(qPrintable(msg.arg(pos.coordinate().toString()).arg(delta).arg(prefs.time_threshold).arg(pos.timestamp().toString()).arg(QDateTime().fromSecsSinceEpoch(lastTime).toString())));
+		status(qPrintable(msg.arg(pos.coordinate().toString()).arg(delta).arg(prefs.time_threshold).arg(pos.timestamp().toString()).arg(QDateTime().fromMSecsSinceEpoch(lastTime * 1000).toString())));
 		waitingForPosition = false;
 		acquiredPosition();
 		gpsTracker gt;
@@ -185,7 +185,7 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		gt.longitude.udeg = lrint(pos.coordinate().longitude() * 1000000);
 		addFixToStorage(gt);
 		gpsTracker gtNew = m_trackers.last();
-		qDebug() << "newest fix is now at" << QDateTime().fromSecsSinceEpoch(gtNew.when - gettimezoneoffset(gtNew.when)).toString();
+		qDebug() << "newest fix is now at" << QDateTime().fromMSecsSinceEpoch(gtNew.when - gettimezoneoffset(gtNew.when) * 1000).toString();
 	}
 }
 
