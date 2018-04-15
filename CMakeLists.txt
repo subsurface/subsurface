@@ -287,8 +287,10 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
 		mobile-widgets/qml/kirigami/src/settings.cpp
 		mobile-widgets/qml/kirigami/src/enums.cpp
-                mobile-widgets/qml/kirigami/src/formlayoutattached.cpp
-                mobile-widgets/qml/kirigami/src/mnemonicattached.cpp
+		mobile-widgets/qml/kirigami/src/formlayoutattached.cpp
+		mobile-widgets/qml/kirigami/src/mnemonicattached.cpp
+		mobile-widgets/qml/kirigami/src/delegaterecycler.cpp
+		mobile-widgets/qml/kirigami/src/desktopicon.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/basictheme.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/kirigamipluginfactory.cpp
 		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
@@ -297,9 +299,6 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		map-widget/qmlmapwidgethelper.cpp
 	)
 	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/src/libkirigami)
-	if(NOT ANDROID AND NOT iOS)
-		set(MOBILE_SRC ${MOBILE_SRC} mobile-widgets/qml/kirigami/src/desktopicon.cpp)
-	endif()
 	add_definitions(-DKIRIGAMI_BUILD_TYPE_STATIC)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/mobile-resources.qrc)
 	qt5_add_resources(MOBILE_RESOURCES mobile-widgets/qml/kirigami/kirigami.qrc)
