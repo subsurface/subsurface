@@ -55,8 +55,6 @@ Kirigami.ScrollablePage {
 			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
 
-			property real detailsOpacity : 0
-
 			states: [
 				State {
 					name: "isHidden";

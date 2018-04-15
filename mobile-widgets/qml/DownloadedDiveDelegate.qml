@@ -20,7 +20,6 @@ Kirigami.AbstractListItem {
 	height: Math.round(Kirigami.Units.gridUnit * 1.8)
 	padding: 0
 
-	property real detailsOpacity : 0
 	property color textColor: subsurfaceTheme.secondaryTextColor
 
 	Row {
