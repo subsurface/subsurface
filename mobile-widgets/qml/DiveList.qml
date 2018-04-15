@@ -49,8 +49,8 @@ Kirigami.ScrollablePage {
 			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
-			height: 0
-			visible: false
+			height: dive.tripNrDives == 0 ? diveListEntry.height + Kirigami.Units.smallSpacing : 0
+			visible: dive.tripNrDives == 0
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
@@ -60,7 +60,7 @@ Kirigami.ScrollablePage {
 			states: [
 				State {
 					name: "isHidden";
-					when: dive.tripMeta !== activeTrip
+					when: dive.tripMeta !== activeTrip && dive.tripNrDives != 0
 					PropertyChanges {
 						target: innerListItem
 						height: 0
@@ -69,7 +69,7 @@ Kirigami.ScrollablePage {
 				},
 				State {
 					name: "isVisible";
-					when: dive.tripMeta === activeTrip
+					when: dive.tripMeta === activeTrip || dive.tripNrDives == 0
 					PropertyChanges {
 						target: innerListItem
 						height: diveListEntry.height + Kirigami.Units.smallSpacing
