@@ -208,7 +208,7 @@ Kirigami.ApplicationWindow {
 					enabled: manager.credentialStatus !== QMLManager.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
-						if (syncToCloud) {
+						if (!syncToCloud) {
 							showPassiveNotification(qsTr("Turning off automatic sync to cloud causes all data to only be \
 stored locally. This can be very useful in situations with limited or no network access. Please choose 'Manual sync with cloud' \
 if you have network connectivity and want to sync your data to cloud storage."), 10000)
