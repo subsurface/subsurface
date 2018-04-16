@@ -140,7 +140,7 @@ Kirigami.ScrollablePage {
 				Item {
 					id: diveListEntry
 					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
-					height: childrenRect.height + Kirigami.Units.smallSpacing
+					height: Math.ceil(childrenRect.height + Kirigami.Units.smallSpacing)
 					anchors.left: leftBarDive.right
 					Controls.Label {
 						id: locationText
