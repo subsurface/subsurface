@@ -17,7 +17,7 @@ Kirigami.ScrollablePage {
 	Component {
 		id: gpsDelegate
 		Kirigami.SwipeListItem {
-			id: gpsFix
+			id: listItem
 			enabled: true
 			width: parent.width
 			GridLayout {
