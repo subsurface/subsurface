@@ -390,7 +390,7 @@ Kirigami.ScrollablePage {
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
-		cacheBuffer: 0 // seems to avoid empty rendered profiles
+		cacheBuffer: 40 // this will increase memory use, but should help with scrolling
 		section.property: "dive.tripMeta"
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
