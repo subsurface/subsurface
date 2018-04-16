@@ -204,7 +204,7 @@ Kirigami.ApplicationWindow {
 				icon {
 					name: syncToCloud ? "icons/ic_cloud_off.svg" : "icons/ic_cloud_done.svg"
 				}
-				text: syncToCloud ? qsTr("Offline mode") : qsTr("Auto cloud sync enabled")
+				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
 					enabled: manager.credentialStatus !== QMLManager.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
