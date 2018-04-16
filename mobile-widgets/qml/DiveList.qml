@@ -43,6 +43,8 @@ Kirigami.ScrollablePage {
 	Component {
 		id: diveDelegate
 		Kirigami.AbstractListItem {
+			// this looks weird, but it's how we can tell that this dive isn't in a trip
+			property bool diveOutsideTrip: dive.tripNrDives === 0
 			leftPadding: 0
 			topPadding: 0
 			id: innerListItem
@@ -50,8 +52,8 @@ Kirigami.ScrollablePage {
 			supportsMouseEvents: true
 			checked: diveListView.currentIndex === model.index
 			width: parent.width
-			height: dive.tripNrDives == 0 ? diveListEntry.height + Kirigami.Units.smallSpacing : 0
-			visible: dive.tripNrDives == 0
+			height: diveOutsideTrip ? diveListEntry.height + Kirigami.Units.smallSpacing : 0
+			visible: diveOutsideTrip
 			backgroundColor: checked ? subsurfaceTheme.primaryColor : subsurfaceTheme.backgroundColor
 			activeBackgroundColor: subsurfaceTheme.primaryColor
 			textColor: checked ? subsurfaceTheme.primaryTextColor : subsurfaceTheme.textColor
@@ -59,7 +61,7 @@ Kirigami.ScrollablePage {
 			states: [
 				State {
 					name: "isHidden";
-					when: dive.tripMeta !== activeTrip && dive.tripNrDives != 0
+					when: dive.tripMeta !== activeTrip && ! diveOutsideTrip
 					PropertyChanges {
 						target: innerListItem
 						height: 0
@@ -68,7 +70,7 @@ Kirigami.ScrollablePage {
 				},
 				State {
 					name: "isVisible";
-					when: dive.tripMeta === activeTrip || dive.tripNrDives == 0
+					when: dive.tripMeta === activeTrip || diveOutsideTrip
 					PropertyChanges {
 						target: innerListItem
 						height: diveListEntry.height + Kirigami.Units.smallSpacing
