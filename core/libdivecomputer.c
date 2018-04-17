@@ -15,6 +15,10 @@
 #include "display.h"
 
 #include <libdivecomputer/version.h>
+#include <libdivecomputer/usbhid.h>
+#include <libdivecomputer/serial.h>
+#include <libdivecomputer/irda.h>
+
 #include "libdivecomputer.h"
 #include "core/version.h"
 
@@ -1061,6 +1065,89 @@ void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, un
 	}
 }
 
+dc_status_t divecomputer_device_open(device_data_t *data)
+{
+	dc_status_t rc;
+	dc_descriptor_t *descriptor = data->descriptor;
+	dc_context_t *context = data->context;
+	unsigned int transports;
+	transports = dc_descriptor_get_transports(descriptor);
+
+#ifdef BLE_SUPPORT
+	if (data->bluetooth_mode && (transports & DC_TRANSPORT_BLE)) {
+		rc = ble_packet_open(&data->iostream, context, data->devname, data);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
+	}
+#endif
+
+#ifdef BT_SUPPORT
+	if (data->bluetooth_mode && (transports & DC_TRANSPORT_BLUETOOTH)) {
+		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
+	}
+#endif
+
+	if (transports & DC_TRANSPORT_USBHID) {
+		// Discover the usbhid device.
+		dc_iterator_t *iterator = NULL;
+		dc_usbhid_device_t *device = NULL;
+		dc_usbhid_iterator_new (&iterator, context, descriptor);
+		while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS)
+			break;
+		dc_iterator_free (iterator);
+
+		if (device) {
+			rc = dc_usbhid_open(&data->iostream, context, device);
+			dc_usbhid_device_free(device);
+			if (rc == DC_STATUS_SUCCESS)
+				return rc;
+		}
+	}
+
+	/* The dive computer backend does this all internally */
+	if (transports & DC_TRANSPORT_USB)
+		return DC_STATUS_SUCCESS;
+
+	if (transports & DC_TRANSPORT_SERIAL) {
+		rc = dc_serial_open(&data->iostream, context, data->devname);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
+
+#ifdef SERIAL_FTDI
+		if (!strcmp(data->devname, "ftdi")) {
+			rc = ftdi_open(&data->iostream, context);
+			if (rc == DC_STATUS_SUCCESS)
+				return rc;
+		}
+#endif
+	}
+
+	if (transports & DC_TRANSPORT_IRDA) {
+		unsigned int address = 0;
+
+		dc_iterator_t *iterator = NULL;
+		dc_irda_device_t *device = NULL;
+		dc_irda_iterator_new (&iterator, context, descriptor);
+		while (dc_iterator_next (iterator, &device) == DC_STATUS_SUCCESS) {
+			address = dc_irda_device_get_address (device);
+			dc_irda_device_free (device);
+			break;
+		}
+		dc_iterator_free (iterator);
+
+		if (!address)
+			address = strtoul(data->devname, NULL, 0);
+
+		rc = dc_irda_open(&data->iostream, context, address, 1);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
+	}
+
+	return DC_STATUS_UNSUPPORTED;
+}
+
 const char *do_libdivecomputer_import(device_data_t *data)
 {
 	dc_status_t rc;
@@ -1091,17 +1178,13 @@ const char *do_libdivecomputer_import(device_data_t *data)
 
 	err = translate("gettextFromC", "Unable to open %s %s (%s)");
 
-	if (data->bluetooth_mode) {
-#if defined(BT_SUPPORT)
-		rc = ble_packet_open(&data->iostream, data->context, data->devname, data);
-#endif
-	}
+	rc = divecomputer_device_open(data);
 
 	if (rc != DC_STATUS_SUCCESS) {
 		report_error(errmsg(rc));
 	} else {
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
-		INFO(0, "dc_deveice_open error value of %d", rc);
+		INFO(0, "dc_device_open error value of %d", rc);
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
 			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 	}
