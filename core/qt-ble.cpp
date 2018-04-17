@@ -18,10 +18,6 @@
 #include "core/qt-ble.h"
 #include "core/btdiscovery.h"
 
-#if defined(SSRF_CUSTOM_IO)
-
-#include <libdivecomputer/custom_io.h>
-
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
 #define DEBUG_THRESHOLD 50
 static int debugCounter;
@@ -152,6 +148,8 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	Q_UNUSED(actual) // that seems like it might cause problems
 
+	if (actual) *actual = 0;
+
 	if (!receivedPackets.isEmpty()) {
 		qDebug() << ".. write HIT with still incoming packets in queue";
 	}
@@ -170,10 +168,8 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 			QLowEnergyService::WriteWithoutResponse :
 			QLowEnergyService::WriteWithResponse;
 
-	if (IS_SHEARWATER(device))
-		bytes.prepend("\1\0", 2);
-
 	preferredService()->writeCharacteristic(c, bytes, mode);
+	if (actual) *actual = size;
 	return DC_STATUS_SUCCESS;
 }
 
@@ -198,9 +194,6 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		return DC_STATUS_IO;
 
 	QByteArray packet = receivedPackets.takeFirst();
-
-	if (IS_SHEARWATER(device))
-		packet.remove(0,2);
 
 	if ((size_t)packet.size() > size)
 		return DC_STATUS_NOMEMORY;
@@ -278,7 +271,7 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 	return setHwCredit(MAXIMAL_HW_CREDIT);
 }
 
-dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *devaddr)
+dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, dc_user_device_t *user_device)
 {
 	Q_UNUSED(context)
 	debugCounter = 0;
@@ -310,7 +303,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 #endif
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
-	if (IS_SHEARWATER(io->user_device))
+	if (IS_SHEARWATER(user_device))
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 
 	// Try to connect to the device
@@ -342,7 +335,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	// We need to discover services etc here!
 	// Note that ble takes ownership of controller and henceforth deleting ble will
 	// take care of deleting controller.
-	BLEObject *ble = new BLEObject(controller, io->user_device);
+	BLEObject *ble = new BLEObject(controller, user_device);
 	ble->connect(controller, SIGNAL(serviceDiscovered(QBluetoothUuid)), SLOT(addService(QBluetoothUuid)));
 
 	qDebug() << "  .. discovering services";
@@ -386,7 +379,7 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	if (!list.isEmpty()) {
 		const QLowEnergyCharacteristic &c = list.constLast();
 
-		if (IS_HW(io->user_device)) {
+		if (IS_HW(user_device)) {
 			dc_status_t r = ble->setupHwTerminalIo(list);
 			if (r != DC_STATUS_SUCCESS) {
 				delete ble;
@@ -422,15 +415,14 @@ dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *d
 	}
 
 	// Fill in info
-	io->userdata = (void *)ble;
+	*io = (void *)ble;
 	return DC_STATUS_SUCCESS;
 }
 
-dc_status_t qt_ble_close(dc_custom_io_t *io)
+dc_status_t qt_ble_close(void *io)
 {
-	BLEObject *ble = (BLEObject *) io->userdata;
+	BLEObject *ble = (BLEObject *) io;
 
-	io->userdata = NULL;
 	delete ble;
 
 	return DC_STATUS_SUCCESS;
@@ -443,19 +435,18 @@ static void checkThreshold()
 	}
 }
 
-dc_status_t qt_ble_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual)
+dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual)
 {
 	checkThreshold();
-	BLEObject *ble = (BLEObject *) io->userdata;
+	BLEObject *ble = (BLEObject *) io;
 	return ble->read(data, size, actual);
 }
 
-dc_status_t qt_ble_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual)
+dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual)
 {
 	checkThreshold();
-	BLEObject *ble = (BLEObject *) io->userdata;
+	BLEObject *ble = (BLEObject *) io;
 	return ble->write(data, size, actual);
 }
 
 } /* extern "C" */
-#endif

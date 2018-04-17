@@ -44,8 +44,8 @@
 #define SYSERROR(context, errcode)	;
 
 #include "libdivecomputer.h"
-#include <libdivecomputer/custom_io.h>
 #include <libdivecomputer/context.h>
+#include <libdivecomputer/custom.h>
 
 #define VID 0x0403 // Vendor ID of FTDI
 
@@ -73,9 +73,9 @@ typedef struct ftdi_serial_t {
 	unsigned int parity;
 } ftdi_serial_t;
 
-static dc_status_t serial_ftdi_get_received (dc_custom_io_t *io, size_t *value)
+static dc_status_t serial_ftdi_get_received (void *io, size_t *value)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -147,7 +147,7 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 //
 // Open the serial port.
 // Initialise ftdi_context and use it to open the device
-static dc_status_t serial_ftdi_open (dc_custom_io_t *io, dc_context_t *context, const char* name)
+static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 {
 	INFO(0, "serial_ftdi_open called");
 	// Allocate memory.
@@ -207,7 +207,7 @@ static dc_status_t serial_ftdi_open (dc_custom_io_t *io, dc_context_t *context, 
 
 	device->ftdi_ctx = ftdi_ctx;
 
-	io->userdata = device;
+	*io = device;
 
 	return DC_STATUS_SUCCESS;
 }
@@ -215,9 +215,9 @@ static dc_status_t serial_ftdi_open (dc_custom_io_t *io, dc_context_t *context, 
 //
 // Close the serial port.
 //
-static dc_status_t serial_ftdi_close (dc_custom_io_t *io)
+static dc_status_t serial_ftdi_close (void *io)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_SUCCESS;
@@ -237,17 +237,15 @@ static dc_status_t serial_ftdi_close (dc_custom_io_t *io)
 	// Free memory.
 	free (device);
 
-	io->userdata = NULL;
-
 	return DC_STATUS_SUCCESS;
 }
 
 //
 // Configure the serial port (baudrate, databits, parity, stopbits and flowcontrol).
 //
-static dc_status_t serial_ftdi_configure (dc_custom_io_t *io, unsigned int baudrate, unsigned int databits, dc_parity_t parity, dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
+static dc_status_t serial_ftdi_configure (void *io, unsigned int baudrate, unsigned int databits, dc_parity_t parity, dc_stopbits_t stopbits, dc_flowcontrol_t flowcontrol)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -348,23 +346,23 @@ static dc_status_t serial_ftdi_configure (dc_custom_io_t *io, unsigned int baudr
 //
 // Configure the serial port (timeouts).
 //
-static dc_status_t serial_ftdi_set_timeout (dc_custom_io_t *io, long timeout)
+static dc_status_t serial_ftdi_set_timeout (void *io, int timeout)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "Timeout: value=%li", timeout);
+	INFO (device->context, "Timeout: value=%i", timeout);
 
 	device->timeout = timeout;
 
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size, size_t *actual)
+static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *actual)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -380,7 +378,7 @@ static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size
 	int slept = 0;
 	unsigned int nbytes = 0;
 	while (nbytes < size) {
-		int n = ftdi_read_data (device->ftdi_ctx, (char *) data + nbytes, size - nbytes);
+		int n = ftdi_read_data (device->ftdi_ctx, (unsigned char *) data + nbytes, size - nbytes);
 		if (n < 0) {
 			if (n == LIBUSB_ERROR_INTERRUPTED)
 				continue; //Retry.
@@ -406,19 +404,17 @@ static dc_status_t serial_ftdi_read (dc_custom_io_t *io, void *data, size_t size
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_write (dc_custom_io_t *io, const void *data, size_t size, size_t *actual)
+static dc_status_t serial_ftdi_write (void *io, const void *data, size_t size, size_t *actual)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	struct timeval tve, tvb;
-
 	unsigned int nbytes = 0;
 	while (nbytes < size) {
 
-		int n = ftdi_write_data (device->ftdi_ctx, (char *) data + nbytes, size - nbytes);
+		int n = ftdi_write_data (device->ftdi_ctx, (unsigned char *) data + nbytes, size - nbytes);
 		if (n < 0) {
 			if (n == LIBUSB_ERROR_INTERRUPTED)
 				continue; // Retry.
@@ -439,9 +435,9 @@ static dc_status_t serial_ftdi_write (dc_custom_io_t *io, const void *data, size
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_flush (dc_custom_io_t *io, dc_direction_t queue)
+static dc_status_t serial_ftdi_purge (void *io, dc_direction_t queue)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -476,26 +472,9 @@ static dc_status_t serial_ftdi_flush (dc_custom_io_t *io, dc_direction_t queue)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_send_break (dc_custom_io_t *io)
+static dc_status_t serial_ftdi_set_break (void *io, unsigned int level)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
-
-	if (device == NULL)
-		return DC_STATUS_INVALIDARGS;
-
-	INFO (device->context, "Break : One time period.");
-
-	// no direct functions for sending break signals in libftdi.
-	// there is a suggestion to lower the baudrate and sending NUL
-	// and resetting the baudrate up again. But it has flaws.
-	// Not implementing it before researching more.
-
-	return DC_STATUS_UNSUPPORTED;
-}
-
-static dc_status_t serial_ftdi_set_break (dc_custom_io_t *io, unsigned int level)
-{
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
@@ -510,16 +489,16 @@ static dc_status_t serial_ftdi_set_break (dc_custom_io_t *io, unsigned int level
 	return DC_STATUS_UNSUPPORTED;
 }
 
-static dc_status_t serial_ftdi_set_dtr (dc_custom_io_t *io, int level)
+static dc_status_t serial_ftdi_set_dtr (void *io, unsigned int value)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "DTR: value=%i", level);
+	INFO (device->context, "DTR: value=%u", value);
 
-	if (ftdi_setdtr(device->ftdi_ctx, level)) {
+	if (ftdi_setdtr(device->ftdi_ctx, value)) {
 		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 		return DC_STATUS_IO;
 	}
@@ -527,14 +506,14 @@ static dc_status_t serial_ftdi_set_dtr (dc_custom_io_t *io, int level)
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t serial_ftdi_set_rts (dc_custom_io_t *io, int level)
+static dc_status_t serial_ftdi_set_rts (void *io, unsigned int level)
 {
-	ftdi_serial_t *device = (ftdi_serial_t*) io->userdata;
+	ftdi_serial_t *device = io;
 
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "RTS: value=%i", level);
+	INFO (device->context, "RTS: value=%u", level);
 
 	if (ftdi_setrts(device->ftdi_ctx, level)) {
 		ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
@@ -544,19 +523,31 @@ static dc_status_t serial_ftdi_set_rts (dc_custom_io_t *io, int level)
 	return DC_STATUS_SUCCESS;
 }
 
-dc_custom_io_t serial_ftdi_ops = {
-	.userdata = NULL,
-	.serial_open = serial_ftdi_open,
-	.serial_close = serial_ftdi_close,
-	.serial_read = serial_ftdi_read,
-	.serial_write = serial_ftdi_write,
-	.serial_purge = serial_ftdi_flush,
-	.serial_get_available = serial_ftdi_get_received,
-	.serial_set_timeout = serial_ftdi_set_timeout,
-	.serial_configure = serial_ftdi_configure,
-	.serial_set_dtr = serial_ftdi_set_dtr,
-	.serial_set_rts = serial_ftdi_set_rts,
-// Can't be done in ftdi?
-// only used in vyper2
-	.serial_set_break = serial_ftdi_set_break,
-};
+dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context)
+{
+	dc_status_t rc = DC_STATUS_SUCCESS;
+	void *io = NULL;
+
+	static const dc_custom_cbs_t callbacks = {
+		serial_ftdi_set_timeout, /* set_timeout */
+		NULL, /* set_latency */
+		serial_ftdi_set_break, /* set_break */
+		serial_ftdi_set_dtr, /* set_dtr */
+		serial_ftdi_set_rts, /* set_rts */
+		NULL, /* get_lines */
+		serial_ftdi_get_received, /* get_received */
+		serial_ftdi_configure, /* configure */
+		serial_ftdi_read, /* read */
+		serial_ftdi_write, /* write */
+		NULL, /* flush */
+		serial_ftdi_purge, /* purge */
+		NULL, /* sleep */
+		serial_ftdi_close, /* close */
+	};
+
+	rc = serial_ftdi_open(&io, context);
+	if (rc != DC_STATUS_SUCCESS)
+		return rc;
+
+	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, io);
+}

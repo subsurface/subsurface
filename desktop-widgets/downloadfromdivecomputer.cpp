@@ -84,7 +84,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadCancelRetryButton->setText(tr("Download"));
 
 	QString deviceText = dc->dc_device();
-#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
+#if defined(BT_SUPPORT)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
 	ui.bluetoothMode->setChecked(dc->downloadMode() == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
@@ -318,7 +318,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	dc->setProduct(data->product());
 	dc->setDevice(data->devName());
 
-#if defined(BT_SUPPORT) && defined(SSRF_CUSTOM_IO)
+#if defined(BT_SUPPORT)
 	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
 
@@ -477,7 +477,7 @@ void DownloadFromDCWidget::updateDeviceEnabled()
 	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
-	if (dc_descriptor_get_transport(descriptor) == DC_TRANSPORT_SERIAL) {
+	if (dc_descriptor_get_transports(descriptor) & DC_TRANSPORT_SERIAL) {
 		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
 		ui.device->setEnabled(true);
 	} else {

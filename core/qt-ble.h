@@ -54,10 +54,10 @@ private:
 
 
 extern "C" {
-dc_status_t qt_ble_open(dc_custom_io_t *io, dc_context_t *context, const char *name);
-dc_status_t qt_ble_read(dc_custom_io_t *io, void* data, size_t size, size_t *actual);
-dc_status_t qt_ble_write(dc_custom_io_t *io, const void* data, size_t size, size_t *actual);
-dc_status_t qt_ble_close(dc_custom_io_t *io);
+dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, dc_user_device_t *user_device);
+dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual);
+dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual);
+dc_status_t qt_ble_close(void *io);
 }
 
 #endif

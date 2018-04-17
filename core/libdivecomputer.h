@@ -11,9 +11,6 @@
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
-#ifdef SSRF_CUSTOM_IO
-#include <libdivecomputer/custom_io.h>
-#endif
 
 #include "dive.h"
 
@@ -32,6 +29,7 @@ typedef struct dc_user_device_t
 	uint32_t deviceid, diveid;
 	dc_device_t *device;
 	dc_context_t *context;
+	dc_iostream_t *iostream;
 	struct dive_trip *trip;
 	int preexisting;
 	bool force_download;
@@ -57,13 +55,9 @@ extern double progress_bar_fraction;
 extern char *logfile_name;
 extern char *dumpfile_name;
 
-#if SSRF_CUSTOM_IO
-// WTF. this symbol never shows up at link time
-//extern dc_custom_io_t qt_serial_ops;
-// Thats why I've worked around it with a stupid helper returning it.
-dc_custom_io_t* get_qt_serial_ops();
-extern dc_custom_io_t serial_ftdi_ops;
-#endif
+dc_status_t ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata);
+dc_status_t rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr);
+dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context);
 
 #ifdef __cplusplus
 }
