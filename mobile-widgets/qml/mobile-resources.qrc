@@ -42,7 +42,7 @@
 	<qresource prefix="/">
 		<file>qtquickcontrols2.conf</file>
 	</qresource>
-	<qresource prefix="/org/kde/kirigami">
+	<qresource>
 		<file alias="icons/map-globe.svg">kirigami/icons/map-globe.svg</file>
 		<file alias="icons/go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
 		<file alias="icons/go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>

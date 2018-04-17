@@ -210,7 +210,7 @@ Kirigami.ScrollablePage {
 							horizontalCenter: parent.horizontalCenter
 							verticalCenter: parent.verticalCenter
 						}
-						source: "trash-empty"
+						source: ":/icons/trash-empty"
 					}
 					MouseArea {
 						anchors.fill: parent
@@ -403,7 +403,7 @@ Kirigami.ScrollablePage {
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
 		icon {
-			name: "downloadDC"
+			name: ":/icons/downloadDC"
 			color: subsurfaceTheme.primaryColor
 		}
 		onTriggered: {
@@ -414,7 +414,7 @@ Kirigami.ScrollablePage {
 
 	property QtObject addDiveAction: Kirigami.Action {
 		icon {
-			name: "list-add"
+			name: ":/icons/list-add"
 		}
 		onTriggered: {
 			startAddDive()

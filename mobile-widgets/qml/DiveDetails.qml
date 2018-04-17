@@ -141,7 +141,7 @@ Kirigami.Page {
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon {
-			name: "trash-empty"
+			name: ":/icons/trash-empty"
 		}
 		onTriggered: {
 			var deletedId = currentItem.modelData.dive.id
@@ -158,7 +158,7 @@ Kirigami.Page {
 	property QtObject cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
 		icon {
-			name: "dialog-cancel"
+			name: ":/icons/dialog-cancel"
 		}
 		onTriggered: {
 			endEditMode()
@@ -168,7 +168,7 @@ Kirigami.Page {
 	property QtObject mapAction: Kirigami.Action {
 		text: qsTr("Show on map")
 		icon {
-			name: "gps"
+			name: ":/icons/gps"
 		}
 		onTriggered: {
 			showMap()
@@ -178,7 +178,7 @@ Kirigami.Page {
 
 	actions.main: Kirigami.Action {
 		icon {
-			name: state !== "view" ? "document-save" : "document-edit"
+			name: state !== "view" ? ":/icons/document-save" : ":/icons/document-edit"
 			color: subsurfaceTheme.primaryColor
 		}
 		onTriggered: {
