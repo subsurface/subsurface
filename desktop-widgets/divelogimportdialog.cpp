@@ -780,7 +780,7 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 	params[pnr++] = intdup(r.indexOf(tr("Sample stopdepth")));
 	params[pnr++] = strdup("pressureField");
 	params[pnr++] = intdup(r.indexOf(tr("Sample pressure")));
-	params[pnr++] = strdup("setpointFiend");
+	params[pnr++] = strdup("setpointField");
 	params[pnr++] = intdup(r.indexOf(tr("Sample setpoint")));
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
