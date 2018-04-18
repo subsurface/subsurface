@@ -203,7 +203,7 @@ void TestParse::testParseHUDC()
 	params[pnr++] = intdup(-1);
 	params[pnr++] = strdup("pressureField");
 	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("setpointFiend");
+	params[pnr++] = strdup("setpointField");
 	params[pnr++] = intdup(-1);
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(2);
@@ -491,7 +491,7 @@ void TestParse::parseDL7()
 	params[pnr++] = intdup(-1);
 	params[pnr++] = strdup("pressureField");
 	params[pnr++] = intdup(-1);
-	params[pnr++] = strdup("setpointFiend");
+	params[pnr++] = strdup("setpointField");
 	params[pnr++] = intdup(-1);
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(3);
