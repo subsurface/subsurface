@@ -32,9 +32,7 @@ static int debugCounter;
 #define MAXIMAL_HW_CREDIT	255
 #define MINIMAL_HW_CREDIT	32
 
-extern "C" {
-
-void waitFor(int ms) {
+static void waitFor(int ms) {
 	Q_ASSERT(QCoreApplication::instance());
 	Q_ASSERT(QThread::currentThread());
 
@@ -47,6 +45,8 @@ void waitFor(int ms) {
 		QThread::msleep(10);
 	} while (timer.elapsed() < ms);
 }
+
+extern "C" {
 
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
 {
