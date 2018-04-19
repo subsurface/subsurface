@@ -100,10 +100,6 @@ void run_ui()
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
 
-	// call again to be able to log
-	// FIXME - this is redundant - but otherwise they don't end up in the AppLog
-	fill_computer_list();
-
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
@@ -117,6 +113,9 @@ void run_ui()
 	QScreen *screen = qml_window->screen();
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager *manager = QMLManager::instance();
+	// now that the log file is initialized...
+	show_computer_list();
+
 	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
 	manager->dlSortModel = sortModel;
 	manager->screenChanged(screen);

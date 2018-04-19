@@ -148,7 +148,6 @@ void fill_computer_list()
 			productList[vendor].append(product);
 
 		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
-		qDebug() << "added supported DC: " << vendor << " " << product;
 	}
 	dc_iterator_free(iterator);
 	Q_FOREACH (QString vendor, vendorList)
@@ -181,6 +180,18 @@ void fill_computer_list()
 	qSort(vendorList);
 }
 
+void show_computer_list()
+{
+	qDebug() << "Supported dive computers:";
+	Q_FOREACH (QString vendor, vendorList) {
+		QString msg = vendor + ": ";
+		Q_FOREACH (QString product, productList[vendor]) {
+			msg += product + ", ";
+		}
+		msg.chop(2);
+		qDebug() << msg;
+	}
+}
 DCDeviceData *DCDeviceData::m_instance = NULL;
 
 DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
