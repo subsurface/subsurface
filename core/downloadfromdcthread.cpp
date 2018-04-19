@@ -102,20 +102,6 @@ static void fill_supported_mobile_list()
 		QStringList({{"Cobalt"}, {"Cobalt 2"}});
 
 #endif
-#if defined(Q_OS_IOS)
-	/* BLE only, Qt does not support classic BT on iOS */
-	mobileProductList["Heinrichs Weikamp"] =
-		QStringList({{"OSTC 2"}, {"OSTC 3"}, {"OSTC 3+"}, {"OSTC 4"}, {"OSTC Plus"}, {"OSTC Sport"}, {"OSTC 2 TR"}});
-	mobileProductList["Mares"] =
-		QStringList({{"Puck Pro"}, {"Smart"}, {"Quad"}});
-	mobileProductList["Scubapro"] =
-		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
-	mobileProductList["Shearwater"] =
-		QStringList({{"Perdix"}, {"Perdix AI"}, {"Petrel"}, {"Petrel 2"}});
-	mobileProductList["Suunto"] =
-		QStringList({{"EON Core"}, {"EON Steel"}});
-
-#endif
 }
 
 void fill_computer_list()
@@ -123,10 +109,31 @@ void fill_computer_list()
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
 
+	int transportMask = 0;
+#if defined(BT_SUPPORT)
+	transportMask |= DC_TRANSPORT_BLUETOOTH;
+#endif
+#if defined(BLE_SUPPORT)
+	transportMask |= DC_TRANSPORT_BLE;
+#endif
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS) && !defined(Q_OS_MAC)
+	transportMask |= DC_TRANSPORT_IRDA;
+#endif
+#if !defined(Q_OS_IOS)
+	transportMask |= DC_TRANSPORT_USB | DC_TRANSPORT_USBHID;
+#endif
+#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
+	transportMask |= DC_TRANSPORT_SERIAL;
+#endif
+
 	fill_supported_mobile_list();
 
 	dc_descriptor_iterator(&iterator);
 	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
+		if ((dc_descriptor_get_transports(descriptor) & transportMask) == 0)
+			// none of the transports are available, skip
+			continue;
+
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
