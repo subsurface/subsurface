@@ -109,21 +109,20 @@ void fill_computer_list()
 	dc_iterator_t *iterator = NULL;
 	dc_descriptor_t *descriptor = NULL;
 
-	int transportMask = 0;
+	// start out with the list of transports that libdivecomputer claims to support
+	// dc_context_get_transports ignores its context argument...
+	int transportMask = dc_context_get_transports(NULL);
+
+	// then add the ones that we have our own implementations for
 #if defined(BT_SUPPORT)
 	transportMask |= DC_TRANSPORT_BLUETOOTH;
 #endif
 #if defined(BLE_SUPPORT)
 	transportMask |= DC_TRANSPORT_BLE;
 #endif
-#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS) && !defined(Q_OS_MAC)
-	transportMask |= DC_TRANSPORT_IRDA;
-#endif
-#if !defined(Q_OS_IOS)
-	transportMask |= DC_TRANSPORT_USB | DC_TRANSPORT_USBHID;
-#endif
-#if !defined(Q_OS_ANDROID) && !defined(Q_OS_IOS)
-	transportMask |= DC_TRANSPORT_SERIAL;
+#if defined(Q_OS_IOS)
+	// libdivecomputer always claims to support serial, but on iOS we actually don't support that
+	transportMask &= ~DC_TRANSPORT_SERIAL;
 #endif
 
 	fill_supported_mobile_list();
