@@ -63,7 +63,7 @@ void DownloadThread::run()
 static void fill_supported_mobile_list()
 {
 #if defined(Q_OS_ANDROID)
-	/* BT, BLE and FTDI devices */
+	/* USB or FTDI devices that are supported on Android - this does NOT include the BLE or BT only devices */
 	mobileProductList["Aeris"] =
 		QStringList({{"500 AI"}, {"A300"}, {"A300 AI"}, {"A300CS"}, {"Atmos 2"}, {"Atmos AI"}, {"Atmos AI 2"}, {"Compumask"}, {"Elite"}, {"Elite T3"}, {"Epic"}, {"F10"}, {"F11"}, {"Manta"}, {"XR-1 NX"}, {"XR-2"}});
 	mobileProductList["Aqualung"] =
@@ -83,11 +83,9 @@ static void fill_supported_mobile_list()
 	mobileProductList["Oceanic"] =
 		QStringList({{"Atom 1.0"}, {"Atom 2.0"}, {"Atom 3.0"}, {"Atom 3.1"}, {"Datamask"}, {"F10"}, {"F11"}, {"Geo"}, {"Geo 2.0"}, {"OC1"}, {"OCS"}, {"OCi"}, {"Pro Plus 2"}, {"Pro Plus 2.1"}, {"Pro Plus 3"}, {"VT 4.1"}, {"VT Pro"}, {"VT3"}, {"VT4"}, {"VTX"}, {"Veo 1.0"}, {"Veo 180"}, {"Veo 2.0"}, {"Veo 200"}, {"Veo 250"}, {"Veo 3.0"}, {"Versa Pro"}});
 	mobileProductList["Scubapro"] =
-		QStringList({{"Aladin Sport Matrix"}, {"Aladin Square"}, {"G2"}});
+		QStringList({{"Aladin Square"}, {"G2"}});
 	mobileProductList["Seemann"] =
 		QStringList({{"XP5"}});
-	mobileProductList["Shearwater"] =
-		QStringList({{"Nerd"}, {"Perdix"}, {"Perdix AI"}, {"Petrel"}, {"Petrel 2"}, {"Predator"}});
 	mobileProductList["Sherwood"] =
 		QStringList({{"Amphos"}, {"Amphos Air"}, {"Insight"}, {"Insight 2"}, {"Vision"}, {"Wisdom"}, {"Wisdom 2"}, {"Wisdom 3"}});
 	mobileProductList["Subgear"] =
@@ -129,24 +127,25 @@ void fill_computer_list()
 
 	dc_descriptor_iterator(&iterator);
 	while (dc_iterator_next(iterator, &descriptor) == DC_STATUS_SUCCESS) {
-		if ((dc_descriptor_get_transports(descriptor) & transportMask) == 0)
+		// mask out the transports that aren't supported
+		int transports = dc_descriptor_get_transports(descriptor) & transportMask;
+		if (transports == 0)
 			// none of the transports are available, skip
 			continue;
 
 		const char *vendor = dc_descriptor_get_vendor(descriptor);
 		const char *product = dc_descriptor_get_product(descriptor);
-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-		if (!mobileProductList.contains(vendor))
-			continue;
+#if defined(Q_OS_ANDROID)
+		if ((transports & ~(DC_TRANSPORT_SERIAL | DC_TRANSPORT_USB | DC_TRANSPORT_USBHID)) == 0)
+			// if the only available transports are serial/USB, then check against
+			// the ones that we explicitly support on Android
+			if (!mobileProductList.contains(vendor) || !mobileProductList[vendor].contains(product))
+				continue;
 #endif
 		if (!vendorList.contains(vendor))
 			vendorList.append(vendor);
-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-		if (!mobileProductList[vendor].contains(product))
-			continue;
-#endif
 		if (!productList[vendor].contains(product))
-			productList[vendor].push_back(product);
+			productList[vendor].append(product);
 
 		descriptorLookup[QString(vendor) + QString(product)] = descriptor;
 		qDebug() << "added supported DC: " << vendor << " " << product;
