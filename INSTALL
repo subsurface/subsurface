@@ -15,7 +15,7 @@ All of the prebuilt binaries that we provide (right now Windows, Mac,
 Ubuntu/Debian/LinuxMint, and openSUSE/Fedora) are built using our own
 custom "flavors" of libdivecomputer. You can get these from
 
-git://git.subsurface-divelog.org/libdc (in the Subsurface-branch branch)
+https://github.com/Subsurface-divelog/libdc.git (in the Subsurface-branch branch)
 
 Those branches won't have a pretty history and will include ugly merges,
 but they should always allow a fast forward pull that tracks what we believe
