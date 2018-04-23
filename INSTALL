@@ -24,15 +24,6 @@ You keep it updated by doing:
     git checkout master
     git pull -r
     
-If you plan on making pull requests, you need furthermore to:
-   - clone subsurface.git to your GitHub account
-   - make a new local work branch, name it after the patch like e.g. myFirstPatch
-   - Do the work you want to do (including testing it)
-   - Commit and Push myFirstPatch to your forked repo on github
-   - Make the pull request
-   - REMEMBER do not delete this branch, until your pull request is merged
-     this is because if changes are requested, you simply add a new commit/push
-   - Also remember 1 pull-request == 1 branch
    
 
 Getting our flavor of libdivecomputer
@@ -97,10 +88,8 @@ add a symbol link (do something like
 ln -s <Qt location>/<version>/<type>/bin/qmake /usr/local/bin/qmake
 
 QtWebKit is needed, if you want to print, but no longer part of Qt5,
-so you need to download it and compile. We want to replace QtWebKit,
-but at the moment the print process depends on functions only available
-in QtWebKit. In case you just want to test without print possibility
-omit this step.
+so you need to download it and compile. In case you just want to test
+without print possibility omit this step.
 
 
 Other third party library dependencies
@@ -240,8 +229,9 @@ sudo ldconfig ~/src/install-root/lib
 Building Subsurface under MacOSX
 --------------------------------
 
-You have 2 options for the first time install, either using homebrew or manual,
-depending on what else you have installed on your mac.
+You have 2 options for the first time install, either using homebrew
+or by manually building the dependencies from source, depending on
+what else you have installed on your mac.
 
 0) You need to have XCode installed. The first time (and possibly after updating OSX)
 
@@ -269,15 +259,10 @@ Manual option:
 
 2.2) tar -xzf autoconf-latest.tar.gz
 
-2.3) cd autoconf-*
+2.3) cd autoconf-*; ./configure && make && sudo make install; cd ..
 
-2.4) ./configure && make && sudo make install
+3) cd <repo>/..; bash <repo>/scripts/build.sh -build-deps -desktop
 
-2.5) cd ..
-
-3) install 
-
-4) cd <repo>/..; bash <repo>/scripts/build.sh -build-deps -desktop
 
 After the above is done, Subsurface.app will be available in the
 subsurface/build directory. You can run Subsurface with the command
