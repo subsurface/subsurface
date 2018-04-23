@@ -203,6 +203,10 @@ echo next building for $ARCH
 	fi
 	if [ ! -e libgit2-${LIBGIT2_VERSION} ] ; then
 		tar -zxf libgit2-${LIBGIT2_VERSION}.tar.gz
+		# libgit2 with -Wall on iOS creates megabytes of warnings...
+		pushd libgit2-${LIBGIT2_VERSION}
+		sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
+		popd
 	fi
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 		mkdir -p libgit2-build-$ARCH
@@ -218,6 +222,7 @@ echo next building for $ARCH
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
 			../libgit2-${LIBGIT2_VERSION}/
+		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' CMakeFiles/git2.dir/flags.make
 		make
 		make install
 		# Patch away pkg-config dependency to zlib, its there, i promise
