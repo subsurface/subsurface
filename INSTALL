@@ -76,16 +76,15 @@ To save time and disk space you can unselect Android and IOS packages
 - Qt Network Authorization
 - Qt Remote Objects
 - Qt WebGL Streaming
-- Qt Script
 - Qt 3D2
 - Qt Canvas 3D
 - Qt Extras
 This can be done later by use of MaintenanceTool.app in your Qt folder.
 
-Remark: most Qt installations does not make Qt available on the command
+Remark: most Qt installations do not make Qt available on the command
 line, which is needed. In order to make Qt available you need to 
-add a symbol link (do something like
-ln -s <Qt location>/<version>/<type>/bin/qmake /usr/local/bin/qmake
+add qmake to the path, do something like
+PATH=$PATH:<Qt location>/<version>/<type>/bin
 
 QtWebKit is needed, if you want to print, but no longer part of Qt5,
 so you need to download it and compile. In case you just want to test
@@ -102,9 +101,8 @@ libgit2 0.23 or newer.
 cmake build system
 ------------------
 
-As of Subsurface 4.5 we have switched our build system to cmake.
-qmake based builds are no longer supported. Remark even though
-no longer supported, qmake is still used by googlemaps and the iOS build.
+Our main build system is based on cmake. But qmake is needed
+for the googlemaps plugin and the iOS build.
 
 Download from https://cmake.org/download and follow the instructions
 to install it or alternatively follow the instruction specific to a
