@@ -17,13 +17,23 @@ Getting Subsurface source
 -------------------------
 
 You can get the sources to the latest development version from our git
-repository http://github.com/Subsurface-divelog/subsurface.git
+repository:
+    git clone http://github.com/Subsurface-divelog/subsurface.git
 
-Remark, if you plan on making pull requests, the best way is to clone
-subsurface.git to your GitHub account, make a new branch (e.g. myPatches).
-Then clone that to your local computer. Doing this makes it very simple
-to generate pull requests.
-
+You keep it updated by doing:
+    git checkout master
+    git pull -r
+    
+If you plan on making pull requests, you need furthermore to:
+   - clone subsurface.git to your GitHub account
+   - make a new local work branch, name it after the patch like e.g. myFirstPatch
+   - Do the work you want to do (including testing it)
+   - Commit and Push myFirstPatch to your forked repo on github
+   - Make the pull request
+   - REMEMBER do not delete this branch, until your pull request is merged
+     this is because if changes are requested, you simply add a new commit/push
+   - Also remember 1 pull-request == 1 branch
+   
 
 Getting our flavor of libdivecomputer
 -------------------------------------
@@ -86,9 +96,11 @@ line, which is needed. In order to make Qt available you need to
 add a symbol link (do something like
 ln -s <Qt location>/<version>/<type>/bin/qmake /usr/local/bin/qmake
 
-QtWebKit is needed, but no longer part of Qt5, so you need to download it and compile.
-We want to replace QtWebKit, but at the moment the print process depends on functions
-only available in QtWebKit
+QtWebKit is needed, if you want to print, but no longer part of Qt5,
+so you need to download it and compile. We want to replace QtWebKit,
+but at the moment the print process depends on functions only available
+in QtWebKit. In case you just want to test without print possibility
+omit this step.
 
 
 Other third party library dependencies
@@ -114,7 +126,7 @@ distribution (see build instructions).
 Build options for Subsurface
 ----------------------------
 
-The following options are recognised when passed to make:
+The following options are recognised when passed to cmake:
 
  -DCMAKE_BUILD_TYPE=Release	create a release build
  -DCMAKE_BUILD_TYPE=Debug	create a debug build
@@ -228,16 +240,22 @@ sudo ldconfig ~/src/install-root/lib
 Building Subsurface under MacOSX
 --------------------------------
 
-Simple version:
-
-brew install libzip cmake libusb pkg-config automake libtool hidapi curl libssh2
-
+You have 2 options for the first time install, either using homebrew or manual,
+depending on what else you have installed on your mac.
 
 0) You need to have XCode installed. The first time (and possibly after updating OSX)
 
 0.1) run "xcode-select --install"
 
-1) You also need to install pkg-config
+homebrew option:
+
+1) brew install libzip cmake libusb pkg-config automake libtool hidapi curl libssh2
+
+2) cd <repo>/..; bash <repo>/scripts/build.sh
+
+
+Manual option:
+1) install pkg-config
 
 1.1) download http://sourceforge.net/projects/macpkg/files/PkgConfig/0.26/PkgConfig.pkg/download
 
@@ -259,19 +277,20 @@ brew install libzip cmake libusb pkg-config automake libtool hidapi curl libssh2
 
 3) install 
 
-4) run the build script
-
-4.1) cd <repo>/..
-
-4.2) run "bash <repo>/scripts/build.sh -build-deps -desktop
+4) cd <repo>/..; bash <repo>/scripts/build.sh -build-deps -desktop
 
 After the above is done, Subsurface.app will be available in the
 subsurface/build directory. You can run Subsurface with the command
 
-4) open subsurface/build/Subsurface.app
+A) open subsurface/build/Subsurface.app
+   this will however not show diagnostic output
 
-5) or you can move this folder to /Applications to install Subsurface for
-every user.
+B) subsurface/build/Subsurface.app/Contents/MacOS/Subsurface
+   the TAB key is your friend :-)
+   
+Debugging can be done with either Xcode or QtCreator.
+
+To install the app for all users, move subsurface/build/Subsurface.app to /Applications.
 
 
 Cross-building Subsurface on MacOSX for iOS
@@ -304,7 +323,7 @@ person who regularly does this. The Subsurface team does not provide support
 for Windows binary build from sources natively under Windows...
 
 The lack of a working package management system for Windows makes it
-really painful to buildSubsurface natively under Windows,
+really painful to build Subsurface natively under Windows,
 so we don't support that at all.
 
 
