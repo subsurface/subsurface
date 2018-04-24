@@ -202,6 +202,7 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		if [ ! -d libzip-${CURRENT_LIBZIP} ] ; then
 			curl -O https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
 			tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
+			rm libzip-${CURRENT_LIBZIP}.tar.gz
 		fi
 		cd libzip-${CURRENT_LIBZIP}
 		mkdir -p build
