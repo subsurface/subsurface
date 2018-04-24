@@ -4,11 +4,32 @@
 set -x
 set -e
 
-if [ "$1" = "-debug" ] ; then
-	DEBUG=1
-else
-	DEBUG=0
-fi
+DEBUGRELEASE="Release"
+DRCONFIG="release"
+ARCHS="armv7 arm64 x86_64"
+TARGET="iphoneos"
+TARGET2="Device"
+# deal with all the command line arguments
+while [[ $# -gt 0 ]] ; do
+	arg="$1"
+	case $arg in
+		-debug)
+			# build for debugging
+			DEBUGRELEASE="Debug"
+			DRCONFIG="qml_debug"
+			;;
+		-simulator)
+			# build for the simulator instead of for a device
+			ARCHS="x86_64"
+			TARGET="iphonesimulator"
+			TARGET2="simulator"
+			;;
+		*)
+			echo "Unknown command line argument $arg"
+			;;
+	esac
+	shift
+done
 
 # set up easy to use variables with the important paths
 TOP=$(pwd)
@@ -57,7 +78,7 @@ popd
 
 # now build all the dependencies for the three relevant architectures (x86_64 is for the simulator)
 
-for ARCH in armv7 arm64 x86_64; do
+for ARCH in $ARCHS; do
 
 echo next building for $ARCH
 
@@ -323,14 +344,16 @@ ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../googlemaps/googlemaps.pro CONFIG+=relea
 make
 popd
 
-# now combine the arm libraries into fat libraries
+# now combine the libraries into fat libraries
 rm -rf install-root
-cp -a install-root-arm64 install-root
-pushd install-root/lib
-for LIB in $(find . -type f -name \*.a); do
-	lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
-done
-popd
+cp -a install-root-x86_64 install-root
+if [ "$TARGET" = "iphoneos"] ; then
+	pushd install-root/lib
+	for LIB in $(find . -type f -name \*.a); do
+		lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
+	done
+	popd
+fi
 
 pushd ${SUBSURFACE_SOURCE}/translations
 SRCS=$(ls *.ts | grep -v source)
@@ -344,15 +367,10 @@ popd
 
 # in order to be able to use xcode without going through Qt Creator
 # call qmake directly
-if [ "$DEBUG" = "1" ] ; then
-	mkdir -p build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-Debug
-	cd build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-Debug
-	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile/Subsurface-mobile.pro \
-		-spec macx-ios-clang CONFIG+=iphoneos CONFIG+=device CONFIG+=qml_debug
-else
-	mkdir -p build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-Release
-	cd build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-Release
-	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile/Subsurface-mobile.pro \
-		-spec macx-ios-clang CONFIG+=iphoneos CONFIG+=device CONFIG+=release
-fi
+
+mkdir -p build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELEASE}
+cd build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELEASE}
+${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile/Subsurface-mobile.pro \
+	-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
+
 make qmake_all
