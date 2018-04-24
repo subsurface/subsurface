@@ -8,6 +8,9 @@
 #include <unistd.h>
 #include <inttypes.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include "gettext.h"
 #include "dive.h"
 #include "device.h"
@@ -21,6 +24,9 @@
 
 #include "libdivecomputer.h"
 #include "core/version.h"
+#include "core/qthelper.h"
+#include "core/membuffer.h"
+#include "core/file.h"
 
 //
 // If we have an old libdivecomputer, it doesn't
@@ -785,6 +791,16 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 	dive->dc.model = strdup(devdata->model);
 	dive->dc.diveid = calculate_diveid(fingerprint, fsize);
 
+	/* Should we add it to the cached fingerprint file? */
+	if (fingerprint && fsize && !devdata->fingerprint) {
+		devdata->fingerprint = calloc(fsize, 1);
+		if (devdata->fingerprint) {
+			devdata->fsize = fsize;
+			devdata->fdiveid = dive->dc.diveid;
+			memcpy(devdata->fingerprint, fingerprint, fsize);
+		}
+	}
+
 	// Parse the dive's header data
 	rc = libdc_header_parser (parser, devdata, dive);
 	if (rc != DC_STATUS_SUCCESS) {
@@ -924,6 +940,121 @@ static unsigned int fixup_suunto_versions(device_data_t *devdata, const dc_event
 
 	return serial;
 }
+#ifndef O_BINARY
+  #define O_BINARY 0
+#endif
+static void do_save_fingerprint(device_data_t *devdata, const char *tmp, const char *final)
+{
+	int fd, written = -1;
+
+	fd = subsurface_open(tmp, O_WRONLY | O_BINARY | O_CREAT | O_TRUNC, 0666);
+	if (fd < 0)
+		return;
+
+	/* The fingerprint itself.. */
+	written = write(fd, devdata->fingerprint, devdata->fsize);
+
+	/* ..followed by the dive ID of the fingerprinted dive */
+	if (write(fd, &devdata->fdiveid, 4) != 4)
+		written = -1;
+
+	/* I'd like to do fsync() here too, but does Windows support it? */
+	if (close(fd) < 0)
+		written = -1;
+
+	if (written == devdata->fsize) {
+		if (!subsurface_rename(tmp, final))
+			return;
+	}
+	unlink(tmp);
+}
+
+/*
+ * Save the fingerprint after a successful download
+ */
+static void save_fingerprint(device_data_t *devdata)
+{
+	char *dir, *tmp, *final;
+
+	if (!devdata->fingerprint)
+		return;
+
+	dir = format_string("%s/fingerprints", system_default_directory());
+	subsurface_mkdir(dir);
+	tmp = format_string("%s/%04x.tmp", dir, devdata->deviceid);
+	final = format_string("%s/%04x", dir, devdata->deviceid);
+	free(dir);
+
+	do_save_fingerprint(devdata, tmp, final);
+	free(tmp);
+	free(final);
+	free(devdata->fingerprint);
+	devdata->fingerprint = NULL;
+}
+
+static int has_dive(unsigned int deviceid, unsigned int diveid)
+{
+	int i;
+	struct dive *dive;
+
+	for_each_dive (i, dive) {
+		struct divecomputer *dc;
+
+		for_each_dc (dive, dc) {
+			if (dc->deviceid != deviceid)
+				continue;
+			if (dc->diveid != diveid)
+				continue;
+			return 1;
+		}
+	}
+	return 0;
+}
+
+/*
+ * The fingerprint cache files contain the actual libdivecomputer
+ * fingerprint, followed by 4 bytes of diveid data. Before we use
+ * the fingerprint data, verify that we actually do have that
+ * fingerprinted dive.
+ */
+static void verify_fingerprint(dc_device_t *device, device_data_t *devdata, const unsigned char *buffer, size_t size)
+{
+	unsigned int diveid, deviceid;
+
+	if (size <= 4)
+		return;
+	size -= 4;
+
+	/* Get the dive ID from the end of the fingerprint cache file.. */
+	memcpy(&diveid, buffer + size, 4);
+	/* .. and the device ID from the device data */
+	deviceid = devdata->deviceid;
+
+	/* Only use it if we *have* that dive! */
+	if (has_dive(deviceid, diveid))
+		dc_device_set_fingerprint(device, buffer, size);
+}
+
+/*
+ * Look up the fingerprint from the fingerprint caches, and
+ * give it to libdivecomputer to avoid downloading already
+ * downloaded dives.
+ */
+static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
+{
+	char *cachename;
+	struct memblock mem;
+
+	if (devdata->force_download)
+		return;
+	cachename = format_string("%s/fingerprints/%04x",
+		system_default_directory(), devdata->deviceid);
+	if (readfile(cachename, &mem) > 0) {
+		verify_fingerprint(device, devdata, mem.buffer, mem.size);
+		free(mem.buffer);
+	}
+	free(cachename);
+}
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
@@ -964,6 +1095,7 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 				devinfo->firmware, devinfo->firmware,
 				devinfo->serial, devinfo->serial);
 		}
+
 		/*
 		 * libdivecomputer doesn't give serial numbers in the proper string form,
 		 * so we have to see if we can do some vendor-specific munging.
@@ -977,6 +1109,9 @@ static void event_cb(dc_device_t *device, dc_event_type_t event, const void *dat
 		 * DC_FIELD_STRING interface instead */
 		devdata->libdc_serial = devinfo->serial;
 		devdata->libdc_firmware = devinfo->firmware;
+
+		lookup_fingerprint(device, devdata);
+
 		break;
 	case DC_EVENT_CLOCK:
 		dev_info(devdata, translate("gettextFromC", "Event: systime=%" PRId64 ", devtime=%u\n"),
@@ -1159,6 +1294,8 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	data->device = NULL;
 	data->context = NULL;
 	data->iostream = NULL;
+	data->fingerprint = NULL;
+	data->fsize = 0;
 
 	if (data->libdc_log && logfile_name)
 		fp = subsurface_fopen(logfile_name, "w");
@@ -1206,6 +1343,15 @@ const char *do_libdivecomputer_import(device_data_t *data)
 	if (fp) {
 		fclose(fp);
 	}
+
+	/*
+	 * Note that we save the fingerprint unconditionally.
+	 * This is ok because we only have fingerprint data if
+	 * we got a dive header, and because we will use the
+	 * dive id to verify that we actually have the dive
+	 * it refers to before we use the fingerprint data.
+	 */
+	save_fingerprint(data);
 
 	return err;
 }

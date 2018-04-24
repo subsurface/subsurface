@@ -25,6 +25,8 @@ typedef struct dc_user_device_t
 	dc_descriptor_t *descriptor;
 	const char *vendor, *product, *devname;
 	const char *model;
+	unsigned char *fingerprint;
+	unsigned int fsize, fdiveid;
 	uint32_t libdc_firmware, libdc_serial;
 	uint32_t deviceid, diveid;
 	dc_device_t *device;
