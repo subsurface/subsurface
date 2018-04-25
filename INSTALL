@@ -41,7 +41,7 @@ In order to get the modified sources, do
 The branches won't have a pretty history and will include ugly merges,
 but they should always allow a fast forward pull that tracks what we
 believe developers should build against. All our patches are contained
-in the "Subsurface-branch" which are also HEAD.
+in the "Subsurface-NG".
 
 This should allow distros to see which patches we have applied on top of
 upstream. They will receive force pushes as we rebase to newer versions of
