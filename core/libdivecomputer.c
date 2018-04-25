@@ -1200,25 +1200,59 @@ void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, un
 	}
 }
 
+/*
+ * Get the transports supported by us (as opposed to
+ * the list of transports supported by a particular
+ * dive computer).
+ *
+ * This could have various platform rules too..
+ */
+static unsigned int get_supported_transports(device_data_t *data)
+{
+	unsigned int supported;
+
+	/*
+	 * We don't support BT or BLE unless bluetooth_mode was set,
+	 * and if it was we won't try any of the other transports.
+	 */
+	supported = ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
+	if (data->bluetooth_mode) {
+		supported = ~supported;
+		if (!strncmp(data->devname, "LE:", 3))
+			supported = DC_TRANSPORT_BLE;
+	}
+
+	return supported;
+}
+
+
 dc_status_t divecomputer_device_open(device_data_t *data)
 {
 	dc_status_t rc;
 	dc_descriptor_t *descriptor = data->descriptor;
 	dc_context_t *context = data->context;
-	unsigned int transports;
-	transports = dc_descriptor_get_transports(descriptor);
+	unsigned int transports, supported;
 
-#ifdef BLE_SUPPORT
-	if (data->bluetooth_mode && (transports & DC_TRANSPORT_BLE)) {
-		rc = ble_packet_open(&data->iostream, context, data->devname, data);
+	transports = dc_descriptor_get_transports(descriptor);
+	supported = get_supported_transports(data);
+
+	transports &= supported;
+	if (!transports) {
+		report_error("Dive computer transport not supported");
+		return DC_STATUS_UNSUPPORTED;
+	}
+
+#ifdef BT_SUPPORT
+	if (transports & DC_TRANSPORT_BLUETOOTH) {
+		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
 #endif
 
-#ifdef BT_SUPPORT
-	if (data->bluetooth_mode && (transports & DC_TRANSPORT_BLUETOOTH)) {
-		rc = rfcomm_stream_open(&data->iostream, context, data->devname);
+#ifdef BLE_SUPPORT
+	if (transports & DC_TRANSPORT_BLE) {
+		rc = ble_packet_open(&data->iostream, context, data->devname, data);
 		if (rc == DC_STATUS_SUCCESS)
 			return rc;
 	}
