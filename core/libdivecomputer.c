@@ -1200,6 +1200,28 @@ void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, un
 	}
 }
 
+char *transport_string[] = {
+	"SERIAL",
+	"USB",
+	"USBHID",
+	"IRDA",
+	"BT",
+	"BLE"
+};
+
+static char *transport_to_string(int t)
+{
+	static char buf[1024];
+	buf[0] = '\0';
+	for (int i = 0; i < 6; i++) {
+		if (t & (1<<i)) {
+			strncat(buf, transport_string[i], 1024);
+			strncat(buf, " ", 1024);
+		}
+	}
+	return buf;
+}
+
 /*
  * Get the transports supported by us (as opposed to
  * the list of transports supported by a particular
@@ -1221,10 +1243,10 @@ static unsigned int get_supported_transports(device_data_t *data)
 		if (!strncmp(data->devname, "LE:", 3))
 			supported = DC_TRANSPORT_BLE;
 	}
-
+	report_error("get_supported_transports returns");
+	report_error(transport_to_string(supported));
 	return supported;
 }
-
 
 dc_status_t divecomputer_device_open(device_data_t *data)
 {
@@ -1234,6 +1256,8 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 	unsigned int transports, supported;
 
 	transports = dc_descriptor_get_transports(descriptor);
+	report_error("dc_descriptor_get_transports");
+	report_error(transport_to_string(transports));
 	supported = get_supported_transports(data);
 
 	transports &= supported;
