@@ -902,7 +902,7 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 57;
+	progress.maximum = 56;
 	unsigned char hardware[1];
 
 	//Read hardware type
@@ -1128,7 +1128,6 @@ static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_dev
 	READ_SETTING(OSTC3_AGF_LOW, aGFLow);
 	READ_SETTING(OSTC3_CALIBRATION_GAS_O2, calibrationGas);
 	READ_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
-	READ_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
 	READ_SETTING(OSTC3_LEFT_BUTTON_SENSIVITY, leftButtonSensitivity);
 	READ_SETTING(OSTC3_RIGHT_BUTTON_SENSIVITY, rightButtonSensitivity);
 	READ_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
@@ -1178,7 +1177,7 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	dc_status_t rc;
 	dc_event_progress_t progress;
 	progress.current = 0;
-	progress.maximum = 56;
+	progress.maximum = 55;
 
 	//write gas values
 	unsigned char gas1Data[4] = {
@@ -1395,7 +1394,6 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 	WRITE_SETTING(OSTC3_AGF_LOW, aGFLow);
 	WRITE_SETTING(OSTC3_CALIBRATION_GAS_O2, calibrationGas);
 	WRITE_SETTING(OSTC3_FLIP_SCREEN, flipScreen);
-	WRITE_SETTING(OSTC3_SETPOINT_FALLBACK, setPointFallback);
 	WRITE_SETTING(OSTC3_LEFT_BUTTON_SENSIVITY, leftButtonSensitivity);
 	WRITE_SETTING(OSTC3_RIGHT_BUTTON_SENSIVITY, rightButtonSensitivity);
 	WRITE_SETTING(OSTC3_BOTTOM_GAS_CONSUMPTION, bottomGasConsumption);
