@@ -365,7 +365,15 @@ if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
 	rm "$PREFIX"/lib/libftdi1.so*
 fi
 
-if [ ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
+if [ ! -f libdivecomputer-${ARCH}.SHA ] ; then
+	echo "" > libdivecomputer-${ARCH}.SHA
+fi
+pushd subsurface
+git submodule update --recursive
+popd
+CURRENT_SHA=$(cd subsurface/libdivecomputer ; git describe)
+PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
+if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" || ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
 	mkdir -p libdivecomputer-build-"$ARCH"
 	pushd libdivecomputer-build-"$ARCH"
 	"$SUBSURFACE_SOURCE"/libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
