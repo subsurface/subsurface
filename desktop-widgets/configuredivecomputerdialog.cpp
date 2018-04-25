@@ -463,7 +463,6 @@ void ConfigureDiveComputerDialog::populateDeviceDetailsOSTC3()
 	deviceDetails->aGFLow = ui.aGFLowSpinBox->value();
 	deviceDetails->calibrationGas = ui.calibrationGasSpinBox->value();
 	deviceDetails->flipScreen = ui.flipScreenCheckBox->isChecked();
-	deviceDetails->setPointFallback = ui.setPointFallbackCheckBox->isChecked();
 	deviceDetails->leftButtonSensitivity = ui.leftButtonSensitivity->value();
 	deviceDetails->rightButtonSensitivity = ui.rightButtonSensitivity->value();
 	deviceDetails->bottomGasConsumption = ui.bottomGasConsumption->value();
@@ -1000,7 +999,6 @@ void ConfigureDiveComputerDialog::reloadValuesOSTC3()
 	ui.aGFLowSpinBox->setValue(deviceDetails->aGFLow);
 	ui.calibrationGasSpinBox->setValue(deviceDetails->calibrationGas);
 	ui.flipScreenCheckBox->setChecked(deviceDetails->flipScreen);
-	ui.setPointFallbackCheckBox->setChecked(deviceDetails->setPointFallback);
 	ui.leftButtonSensitivity->setValue(deviceDetails->leftButtonSensitivity);
 	ui.rightButtonSensitivity->setValue(deviceDetails->rightButtonSensitivity);
 	ui.bottomGasConsumption->setValue(deviceDetails->bottomGasConsumption);
