@@ -63,6 +63,8 @@ dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context);
 
 dc_status_t divecomputer_device_open(device_data_t *data);
 
+unsigned int get_supported_transports(device_data_t *data);
+
 #ifdef __cplusplus
 }
 #endif

@@ -1229,19 +1229,37 @@ static char *transport_to_string(int t)
  *
  * This could have various platform rules too..
  */
-static unsigned int get_supported_transports(device_data_t *data)
+unsigned int get_supported_transports(device_data_t *data)
 {
-	unsigned int supported;
+	// start out with the list of transports that libdivecomputer claims to support
+	// dc_context_get_transports ignores its context argument...
+	unsigned int supported = dc_context_get_transports(NULL);
 
-	/*
-	 * We don't support BT or BLE unless bluetooth_mode was set,
-	 * and if it was we won't try any of the other transports.
-	 */
-	supported = ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
-	if (data->bluetooth_mode) {
-		supported = ~supported;
-		if (!strncmp(data->devname, "LE:", 3))
-			supported = DC_TRANSPORT_BLE;
+	// then add the ones that we have our own implementations for
+#if defined(BT_SUPPORT)
+	supported |= DC_TRANSPORT_BLUETOOTH;
+#endif
+#if defined(BLE_SUPPORT)
+	supported |= DC_TRANSPORT_BLE;
+#endif
+#if defined(Q_OS_IOS)
+	// libdivecomputer always claims to support serial, but on iOS we actually don't support that
+	supported &= ~DC_TRANSPORT_SERIAL;
+#endif
+
+	if (data) {
+		/*
+		 * If we have device data available, we can refine this:
+		 * We don't support BT or BLE unless bluetooth_mode was set,
+		 * and if it was we won't try any of the other transports.
+		 */
+		if (data->bluetooth_mode) {
+			supported &= (DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
+			if (!strncmp(data->devname, "LE:", 3))
+				supported &= DC_TRANSPORT_BLE;
+		} else {
+			supported &= ~(DC_TRANSPORT_BLUETOOTH | DC_TRANSPORT_BLE);
+		}
 	}
 	report_error("get_supported_transports returns");
 	report_error(transport_to_string(supported));
