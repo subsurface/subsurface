@@ -41,8 +41,6 @@ typedef struct qt_serial_t {
 	long timeout;
 } qt_serial_t;
 
-#ifdef BLE_SUPPORT
-
 static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t *context, const char* devaddr)
 {
 	// Allocate memory.
@@ -398,8 +396,7 @@ static dc_status_t qt_serial_set_timeout(void *io, int timeout)
 	return DC_STATUS_SUCCESS;
 }
 
-#endif
-
+#ifdef BLE_SUPPORT
 dc_status_t
 ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata)
 {
@@ -430,6 +427,8 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 
 	return dc_custom_open (iostream, context, DC_TRANSPORT_BLE, &callbacks, io);
 }
+#endif /* BLE_SUPPORT */
+
 
 dc_status_t
 rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr)
