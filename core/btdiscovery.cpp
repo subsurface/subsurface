@@ -247,15 +247,16 @@ void BTDiscovery::getBluetoothDevices()
 				continue;
 			}
 			jint btType = dev.callMethod<jint>("getType", "()I");
+			// 1 means Classic. 2 means BLE, 3 means dual stack
 			result.address = dev.callObjectMethod("getAddress","()Ljava/lang/String;").toString();
-			if (btType == 2) // DEVICE_TYPE_LE
-				result.address = QString("LE:%1").arg(result.address);
 			result.name = dev.callObjectMethod("getName", "()Ljava/lang/String;").toString();
-			qDebug() << "paired Device type" << btType << "with address" << result.address;
-			btPairedDevices.append(result);
-			if (btType == 3) { // DEVICE_TYPE_DUAL
+			if (btType & 1) { // DEVICE_TYPE_CLASSIC
+				qDebug() << "paired BT classic device type" << btType << "with address" << result.address;
+				btPairedDevices.append(result);
+			}
+			if (btType & 2) { // DEVICE_TYPE_LE
 				result.address = QString("LE:%1").arg(result.address);
-				qDebug() << "paired Device type" << btType << "with address" << result.address;
+				qDebug() << "paired BLE device type" << btType << "with address" << result.address;
 				btPairedDevices.append(result);
 			}
 		}
