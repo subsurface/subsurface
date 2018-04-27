@@ -190,7 +190,7 @@ int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **
 				ds->max_bottom_ceiling_pressure.mbar = ceiling_pressure.mbar;
 		}
 
-		divemode = get_current_divemode(&dive->dc, t0.seconds, &evdm, &divemode);
+		divemode = get_current_divemode(&dive->dc, t0.seconds + 1, &evdm, &divemode);
 		interpolate_transition(ds, dive, t0, t1, lastdepth, sample->depth, &gas, setpoint, divemode);
 		psample = sample;
 		t0 = t1;
@@ -367,7 +367,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	}
 	dive->dc.last_manual_time.seconds = last_manual_point;
 
-	dc->divemode = type;
 #if DEBUG_PLAN & 32
 	save_dive(stdout, &displayed_dive);
 #endif
