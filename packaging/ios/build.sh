@@ -347,7 +347,7 @@ popd
 # now combine the libraries into fat libraries
 rm -rf install-root
 cp -a install-root-x86_64 install-root
-if [ "$TARGET" = "iphoneos"] ; then
+if [ "$TARGET" = "iphoneos" ] ; then
 	pushd install-root/lib
 	for LIB in $(find . -type f -name \*.a); do
 		lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
