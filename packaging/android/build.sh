@@ -373,7 +373,7 @@ git submodule update --recursive
 popd
 CURRENT_SHA=$(cd subsurface/libdivecomputer ; git describe)
 PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
-if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" || ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
+if [[ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" || ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ]] ; then
 	mkdir -p libdivecomputer-build-"$ARCH"
 	pushd libdivecomputer-build-"$ARCH"
 	"$SUBSURFACE_SOURCE"/libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
