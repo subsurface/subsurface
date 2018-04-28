@@ -26,6 +26,8 @@
   <xsl:param name="cylindersizeField" select="cylindersizeField"/>
   <xsl:param name="startpressureField" select="startpressureField"/>
   <xsl:param name="endpressureField" select="endpressureField"/>
+  <xsl:param name="visibilityField" select="visibilityField"/>
+  <xsl:param name="ratingField" select="ratingField"/>
   <xsl:param name="o2Field" select="o2Field"/>
   <xsl:param name="heField" select="heField"/>
   <xsl:output method="xml" encoding="utf-8" indent="yes"/>
@@ -200,6 +202,24 @@
         <xsl:attribute name="tags">
           <xsl:call-template name="getFieldByIndex">
             <xsl:with-param name="index" select="$tagsField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:attribute>
+      </xsl:if>
+
+      <xsl:if test="$visibilityField >= 0">
+        <xsl:attribute name="visibility">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$visibilityField"/>
+            <xsl:with-param name="line" select="$line"/>
+          </xsl:call-template>
+        </xsl:attribute>
+      </xsl:if>
+
+      <xsl:if test="$ratingField >= 0">
+        <xsl:attribute name="rating">
+          <xsl:call-template name="getFieldByIndex">
+            <xsl:with-param name="index" select="$ratingField"/>
             <xsl:with-param name="line" select="$line"/>
           </xsl:call-template>
         </xsl:attribute>

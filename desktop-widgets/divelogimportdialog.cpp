@@ -49,7 +49,7 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 		       tr("O₂") << tr("He") << tr("Sample time") << tr("Sample depth") << tr("Sample temperature") << tr("Sample pO₂") << tr("Sample CNS") << tr("Sample NDL") <<
 		       tr("Sample TTS") << tr("Sample stopdepth") << tr("Sample pressure") <<
 		       tr("Sample sensor1 pO₂") << tr("Sample sensor2 pO₂") << tr("Sample sensor3 pO₂") <<
-		       tr("Sample setpoint");
+		       tr("Sample setpoint") << tr("Visibility") << tr("Rating");
 }
 
 bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
@@ -784,6 +784,10 @@ int DiveLogImportDialog::setup_csv_params(QStringList r, char **params, int pnr)
 	params[pnr++] = intdup(r.indexOf(tr("Sample pressure")));
 	params[pnr++] = strdup("setpointField");
 	params[pnr++] = intdup(r.indexOf(tr("Sample setpoint")));
+	params[pnr++] = strdup("visibilityField");
+	params[pnr++] = intdup(r.indexOf(tr("Visibility")));
+	params[pnr++] = strdup("ratingField");
+	params[pnr++] = intdup(r.indexOf(tr("Rating")));
 	params[pnr++] = strdup("separatorIndex");
 	params[pnr++] = intdup(ui->CSVSeparator->currentIndex());
 	params[pnr++] = strdup("units");
@@ -875,7 +879,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	} else {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (r.indexOf(tr("Sample time")) < 0) {
-				char *params[55];
+				char *params[59];
 				int pnr = 0;
 				params[pnr++] = strdup("numberField");
 				params[pnr++] = intdup(r.indexOf(tr("Dive #")));
@@ -927,6 +931,10 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = intdup(r.indexOf(tr("Air temp.")));
 				params[pnr++] = strdup("watertempField");
 				params[pnr++] = intdup(r.indexOf(tr("Water temp.")));
+				params[pnr++] = strdup("visibilityField");
+				params[pnr++] = intdup(r.indexOf(tr("Visibility")));
+				params[pnr++] = strdup("ratingField");
+				params[pnr++] = intdup(r.indexOf(tr("Rating")));
 				params[pnr++] = NULL;
 
 				parse_manual_file(qPrintable(fileNames[i]), params, pnr - 1);
