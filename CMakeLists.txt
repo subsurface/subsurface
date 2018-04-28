@@ -34,6 +34,8 @@ option(LIBGRANTLEE_FROM_PKGCONFIG "use pkg-config to retrieve grantlee" OFF)
 option(FORCE_LIBSSH "force linking with libssh to workaround libgit2 bug" ON)
 option(LIBGIT2_DYNAMIC "search for libgit2.so before libgit2.a" OFF)
 
+option(GCC_OPTIMIZATION_FLAGS "optimization flags in debug builds" -O2)
+
 #Options regarding disabling parts of subsurface.
 option(NO_DOCS "disable the docs" OFF)
 option(NO_PRINTING "disable the printing support" OFF)
@@ -105,9 +107,10 @@ endif()
 set (CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall")
 
-# optimize -O2 even for debug builds
-set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -O2")
-set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -O2")
+# by detault optimize with -O2 even for debug builds
+message (STATUS "GCC optimization flags: " ${GCC_OPTIMIZATION_FLAGS})
+set (CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
+set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${GCC_OPTIMIZATION_FLAGS}")
 
 # pkgconfig for required libraries
 find_package(PkgConfig)
