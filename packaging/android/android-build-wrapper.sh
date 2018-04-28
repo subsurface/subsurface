@@ -77,6 +77,9 @@ if [ ! -d $ANDROID_SDK ] ; then
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
 	unzip -q ../$SDK_TOOLS
+	mkdir -p licenses
+	# use this fix from https://stackoverflow.com/a/47150411 or sdkmanager throws Java exceptions
+	export SDKMANAGER_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 	yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
 	cat licenses/android-sdk-license
 	echo ""
