@@ -100,7 +100,9 @@ int ColumnNameProvider::rowCount(const QModelIndex &parent) const
 int ColumnNameProvider::mymatch(QString value) const
 {
 	QString searchString = value.toLower();
-	searchString.replace("\"", "").replace(" ", "").replace(".", "").replace("\n","");
+	QRegExp re(" \\(.*\\)");
+
+	searchString.replace("\"", "").replace(re, "").replace(" ", "").replace(".", "").replace("\n","");
 	for (int i = 0; i < columnNames.count(); i++) {
 		QString name = columnNames.at(i).toLower();
 		name.replace("\"", "").replace(" ", "").replace(".", "").replace("\n","");
