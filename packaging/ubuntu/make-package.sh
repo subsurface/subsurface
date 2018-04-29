@@ -13,7 +13,7 @@ if [[ $(pwd | grep "subsurface$") || ! -d subsurface || ! -d subsurface/libdivec
 	exit 1;
 fi
 
-GITVERSION=$(cd subsurface ; git describe | sed -e 's/-g.*$// ; s/^v//')
+GITVERSION=$(cd subsurface ; git describe --abbrev=12 | sed -e 's/-g.*$// ; s/^v//')
 GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
@@ -75,31 +75,25 @@ rev=$(($rev+1))
 		break
 	fi
 done
-dch -v $VERSION-$rev~trusty -D trusty -M -m "next daily build"
+if [[ "$RELEASE" = "1" ]] ; then
+	dch -v $VERSION-$rev~xenial -D xenial -M -m "Next release build - please check https://subsurface-divelog.org/category/news/ for details"
+else
+	dch -v $VERSION-$rev~xenial -D xenial -M -m "next daily build"
+fi
 mv ~/src/debian.changelog ~/src/debian.changelog.previous
 cp debian/changelog ~/src/debian.changelog
 
 debuild -S
 
 #create builds for the newer Ubuntu releases that Launchpad supports
-rel=trusty
-others="vivid wily xenial yakkety"
+rel=xenial
+others="artful bionic"
 for next in $others
 do
 	sed -i "s/${rel}/${next}/g" debian/changelog
 	debuild -S
 	rel=$next
 done
-
-# and now for precise (precise can't build Qt5 based packages)
-# with the switch to cmake the amount of effort to build Qt4 packages
-# on precise just doesn't seem worth it anymore
-#prev=vivid
-#rel=precise
-#sed -i "s/${prev}/${rel}/g" debian/changelog
-#cp debian/12.04.control debian/control
-#cp debian/12.04.rules debian/rules
-#debuild -S
 
 cd ..
 
