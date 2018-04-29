@@ -257,8 +257,11 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	mkdir -p libzip-build-"$ARCH"
 	pushd libzip-build-"$ARCH"
-	# ../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
-	cmake ../libzip-${LIBZIP_VERSION}
+	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
+	# the build fails with missing fts_*() functions in the NDK toolchains.
+	# cmake cannot find ZLIB while configure decides that HAVE_FTS_H should be set.
+	# hack: use configure but replace the HAVE_FTS_H macro with HAVE_FTS_H__ to ignore fts_*()
+	sed -i 's/HAVE_FTS_H/HAVE_FTS_H__/' ../libzip-${LIBZIP_VERSION}/src/zipcmp.c
 	make
 	make install
 	popd
