@@ -30,6 +30,7 @@ void write_hashes();
 void updateHash(struct picture *picture);
 QByteArray hashFile(const QString &filename);
 QString hashString(const char *filename);
+QString thumbnailFileName(const QString &filename);
 void learnImages(const QDir dir, int max_recursions);
 void add_hash(const QString &filename, const QByteArray &hash);
 void hashPicture(struct picture *picture);
