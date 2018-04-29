@@ -23,7 +23,7 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 QT_VERSION=5.10
 LATEST_QT=5.10.1
-NDK_VERSION=r14b
+NDK_VERSION=r16b
 SDK_VERSION=3859397  # if you change this version, you'll likely have to change the android-sdk-license key fallback below
 
 ANDROID_NDK=android-ndk-${NDK_VERSION}

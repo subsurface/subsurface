@@ -77,7 +77,7 @@ done
 export ARCH
 
 # Configure where we can find things here
-export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r14b}
+export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r16b}
 
 if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
