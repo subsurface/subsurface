@@ -313,7 +313,7 @@ void ProfileWidget2::setupItemOnScene()
 	createPPGas(pn2GasItem, DivePlotDataModel::PN2, PN2, PN2_ALERT, NULL, &prefs.pp_graphs.pn2_threshold);
 	createPPGas(pheGasItem, DivePlotDataModel::PHE, PHE, PHE_ALERT, NULL, &prefs.pp_graphs.phe_threshold);
 	createPPGas(po2GasItem, DivePlotDataModel::PO2, PO2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
-	createPPGas(o2SetpointGasItem, DivePlotDataModel::O2SETPOINT, PO2_ALERT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
+	createPPGas(o2SetpointGasItem, DivePlotDataModel::O2SETPOINT, O2SETPOINT, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
 	createPPGas(ccrsensor1GasItem, DivePlotDataModel::CCRSENSOR1, CCRSENSOR1, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
 	createPPGas(ccrsensor2GasItem, DivePlotDataModel::CCRSENSOR2, CCRSENSOR2, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
 	createPPGas(ccrsensor3GasItem, DivePlotDataModel::CCRSENSOR3, CCRSENSOR3, PO2_ALERT, &prefs.pp_graphs.po2_threshold_min, &prefs.pp_graphs.po2_threshold_max);
@@ -326,10 +326,10 @@ void ProfileWidget2::setupItemOnScene()
 	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPheChanged, pheGasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPo2Changed, po2GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPn2Changed, pn2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPo2Changed, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
 
 	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.
+	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSetpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
 	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
