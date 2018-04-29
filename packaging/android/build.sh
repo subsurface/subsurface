@@ -149,8 +149,10 @@ export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
 export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
-export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
-export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
+CC_NAME=clang
+CXX_NAME=clang++
+export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-${CC_NAME}
+export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-${CXX_NAME}
 # autoconf seems to get lost without this
 export SYSROOT=${BUILDROOT}/ndk-$ARCH/sysroot
 export CFLAGS=--sysroot=${SYSROOT}
@@ -276,8 +278,8 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 	env SYSTEM=android \
 		CROSS_COMPILE=${BUILDCHAIN}- \
 		MACHINE=$OPENSSL_MACHINE \
-		HOSTCC=gcc \
-		CC=gcc \
+		HOSTCC=${CC_NAME} \
+		CC=${CC_NAME} \
 		ANDROID_DEV="$PREFIX" \
 		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
 #	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
