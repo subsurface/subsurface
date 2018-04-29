@@ -40,6 +40,7 @@ SUBSURFACE_DESKTOP=OFF
 ARCH=arm
 # Which SDK buildtools revision is used?
 ANDROID_BUILDTOOLS_REVISION=25.0.3
+ANDROID_API=16
 
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
@@ -142,7 +143,7 @@ else
 fi
 
 if [ ! -e ndk-"$ARCH" ] ; then
-	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=16
+	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api="$ANDROID_API"
 fi
 export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
@@ -302,6 +303,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 	mkdir -p libgit2-build-"$ARCH"
 	pushd libgit2-build-"$ARCH"
 	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
+		-DCMAKE_C_FLAGS=-D__ANDROID_API__="$ANDROID_API" \
 		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 		-DCURL=OFF \
@@ -355,7 +357,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
 	mkdir -p libftdi1-build-"$ARCH"
 	pushd libftdi1-build-"$ARCH"
-	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
+	cmake ../libftdi1-${LIBFTDI_VERSION} -CMAKE_C_FLAGS=-D__ANDROID_API__="$ANDROID_API" -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
 	make
 	make install
 	popd
@@ -427,6 +429,8 @@ fi
 
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
+	-DCMAKE_C_FLAGS=-D__ANDROID_API__="$ANDROID_API" \
+	-DCMAKE_CXX_FLAGS=-D__ANDROID_API__="$ANDROID_API" \
 	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
 	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
 	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \
