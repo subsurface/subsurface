@@ -1054,7 +1054,6 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 QHash<QString, QByteArray> hashOf;
 QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
-QHash <QString, QImage > thumbnailCache;
 
 static QByteArray getHash(const QString &filename)
 {
@@ -1077,6 +1076,19 @@ const QString hashfile_name()
 	return QString(system_default_directory()).append("/hashes");
 }
 
+static QString thumbnailDir()
+{
+	return QString(system_default_directory()) + "/thumbnails/";
+}
+
+// Return filename of thumbnail if it is known to us.
+// If this is an unknown thumbnail, return an empty string.
+QString thumbnailFileName(const QString &filename)
+{
+	QString hash = getHash(filename).toHex();
+	return hash.isEmpty() ? QString() : thumbnailDir() + hash;
+}
+
 extern "C" char *hashfile_name_string()
 {
 	return copy_qstring(hashfile_name());
@@ -1090,7 +1102,8 @@ void read_hashes()
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
 		stream >> hashOf;
-		stream >> thumbnailCache;
+		QHash <QString, QImage> thumbnailCache;
+		stream >> thumbnailCache;		// For backwards compatibility
 		hashfile.close();
 	}
 	localFilenameOf.remove("");
@@ -1100,6 +1113,9 @@ void read_hashes()
 		if (iter.value().isEmpty())
 			iter.remove();
 	}
+
+	// Make sure that the thumbnail directory exists
+	QDir().mkpath(thumbnailDir());
 }
 
 void write_hashes()
@@ -1111,7 +1127,7 @@ void write_hashes()
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
 		stream << hashOf;
-		stream << thumbnailCache;
+		stream << QHash<QString,QImage>();	// Empty thumbnailCache - for backwards compatibility
 		hashfile.commit();
 	} else {
 		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();

@@ -4,17 +4,58 @@
 #include "core/metrics.h"
 #include "core/divelist.h"
 #include "core/imagedownloader.h"
+#include "core/qthelper.h"
+#include "core/metadata.h"
 
 #include <QtConcurrent>
 
-extern QHash <QString, QImage> thumbnailCache;
-static QMutex thumbnailMutex;
 static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
 
 static QImage getThumbnailFromCache(const PictureEntry &entry)
 {
-	QMutexLocker l(&thumbnailMutex);
-	return thumbnailCache.value(entry.filename);
+	// First, check if we know a hash for this filename
+	QString filename = thumbnailFileName(entry.filename);
+	if (filename.isEmpty())
+		return QImage();
+
+	QFile file(filename);
+	if (!file.open(QIODevice::ReadOnly))
+		return QImage();
+	QDataStream stream(&file);
+
+	// Each thumbnail file is composed of a media-type and an image file.
+	// Currently, the type is ignored. This will be used to mark videos.
+	quint32 type;
+	QImage res;
+	stream >> type;
+	stream >> res;
+	return res;
+}
+
+static void addThumbnailToCache(const QImage &thumbnail, const PictureEntry &entry)
+{
+	if (thumbnail.isNull())
+		return;
+
+	QString filename = thumbnailFileName(entry.filename);
+
+	// If we got a thumbnail, we are guaranteed to have its hash and therefore
+	// thumbnailFileName() should return a filename.
+	if (filename.isEmpty()) {
+		qWarning() << "Internal error: can't get filename of recently created thumbnail";
+		return;
+	}
+
+	QSaveFile file(filename);
+	if (!file.open(QIODevice::WriteOnly))
+		return;
+	QDataStream stream(&file);
+
+	// For format of the file, see comments in getThumnailForCache
+	quint32 type = MEDIATYPE_PICTURE;
+	stream << type;
+	stream << thumbnail;
+	file.commit();
 }
 
 static void scaleImages(PictureEntry &entry, int maxSize)
@@ -25,8 +66,7 @@ static void scaleImages(PictureEntry &entry, int maxSize)
 	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
 		qDebug() << "No thumbnail in cache for" << entry.filename;
 		thumbnail = SHashedImage(entry.picture).scaled(maxSize, maxSize, Qt::KeepAspectRatio);
-		QMutexLocker l(&thumbnailMutex);
-		thumbnailCache.insert(entry.filename, thumbnail);
+		addThumbnailToCache(thumbnail, entry);
 	}
 
 	entry.image = thumbnail;
