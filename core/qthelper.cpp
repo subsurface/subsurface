@@ -9,6 +9,7 @@
 #include "divecomputer.h"
 #include "time.h"
 #include "gettextfromc.h"
+#include "metadata.h"
 #include <sys/time.h>
 #include "prefs-macros.h"
 #include <QFile>
@@ -28,6 +29,7 @@
 #include <QFont>
 #include <QApplication>
 #include <QTextDocument>
+#include <QProgressDialog>	// TODO: remove with convertThumbnails()
 #include <cstdarg>
 #include <cstdint>
 
@@ -1094,18 +1096,60 @@ extern "C" char *hashfile_name_string()
 	return copy_qstring(hashfile_name());
 }
 
+// During a transition period, convert old thumbnail-hashes to individual files
+// TODO: remove this code in due course
+static void convertThumbnails(const QHash <QString, QImage> &thumbnails)
+{
+	if (thumbnails.empty())
+		return;
+	// This is a singular occurrence, therefore translating the strings seems not worth it
+	QProgressDialog progress("Convert thumbnails...", "Abort", 0, thumbnails.size());
+	progress.setWindowModality(Qt::WindowModal);
+
+	int count = 0;
+	for (const QString &name: thumbnails.keys()) {
+		const QImage thumbnail = thumbnails[name];
+
+		if (thumbnail.isNull())
+			continue;
+
+		// This is duplicate code (see qt-models/divepicturemodel.cpp)
+		// Not a problem, since this routine will be removed in due course.
+		QString filename = thumbnailFileName(name);
+		if (filename.isEmpty())
+			continue;
+
+		QSaveFile file(filename);
+		if (!file.open(QIODevice::WriteOnly))
+			return;
+		QDataStream stream(&file);
+
+		quint32 type = MEDIATYPE_PICTURE;
+		stream << type;
+		stream << thumbnail;
+		file.commit();
+
+		progress.setValue(++count);
+		if (progress.wasCanceled())
+			break;
+	}
+}
+
 void read_hashes()
 {
 	QFile hashfile(hashfile_name());
-	QMutexLocker locker(&hashOfMutex);
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
+		QMutexLocker locker(&hashOfMutex);
 		stream >> hashOf;
+		locker.unlock();
 		QHash <QString, QImage> thumbnailCache;
 		stream >> thumbnailCache;		// For backwards compatibility
 		hashfile.close();
+		convertThumbnails(thumbnailCache);
 	}
+	QMutexLocker locker(&hashOfMutex);
 	localFilenameOf.remove("");
 	QMutableHashIterator<QString, QByteArray> iter(hashOf);
 	while (iter.hasNext()) {
