@@ -283,9 +283,15 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 		HOSTCC=${CC_NAME} \
 		CC=${CC_NAME} \
 		ANDROID_DEV="$PREFIX" \
-		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
+		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm --openssldir="$PREFIX"
 #	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 	make depend
+	# remove the -mandroid flag for clang as it's not supported
+	# also remove all _ASM defines as those throw errors
+	if [ ${CC_NAME} = "clang" ]; then
+		sed -i 's/-mandroid//' Makefile
+		# sed -i 's/-DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DAES_ASM -DBSAES_ASM -DGHASH_ASM//' Makefile
+	fi
 	make
 	# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
 	perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
