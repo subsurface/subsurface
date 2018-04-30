@@ -167,7 +167,6 @@ else
 	export JAVA_HOME=/usr
 fi
 
-
 # find qmake
 QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
 $QMAKE -query
