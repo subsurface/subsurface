@@ -11,12 +11,13 @@
 #include <QGraphicsView>
 #include <QUrl>
 #include <QGraphicsSceneMouseEvent>
+#include <QMediaPlayer>
 
-DivePixmapItem::DivePixmapItem(QObject *parent) : QObject(parent), QGraphicsPixmapItem()
+DivePixmapItem::DivePixmapItem(QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
 {
 }
 
-DiveButtonItem::DiveButtonItem(QObject *parent): DivePixmapItem(parent)
+DiveButtonItem::DiveButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
 {
 }
 
@@ -26,9 +27,7 @@ void DiveButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	emit clicked();
 }
 
-// If we have many many pictures on screen, maybe a shared-pixmap would be better to
-// paint on screen, but for now, this.
-CloseButtonItem::CloseButtonItem(QObject *parent): DiveButtonItem(parent)
+CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DiveButtonItem(parent)
 {
 	static QPixmap p = QPixmap(":list-remove-icon");
 	setPixmap(p);
@@ -45,9 +44,12 @@ void CloseButtonItem::show()
 	DiveButtonItem::show();
 }
 
-DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent),
+DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	canvas(new QGraphicsRectItem(this)),
-	shadow(new QGraphicsRectItem(this))
+	shadow(new QGraphicsRectItem(this)),
+	button(new CloseButtonItem(this)),
+	player(nullptr),
+	video_projector(nullptr)
 {
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
@@ -67,6 +69,10 @@ DivePictureItem::DivePictureItem(QObject *parent): DivePixmapItem(parent),
 	shadow->setBrush(QColor(Qt::lightGray));
 	shadow->setFlag(ItemStacksBehindParent);
 	shadow->setZValue(-2);
+
+	button->setScale(0.2);
+	button->setZValue(7);
+	button->hide();
 }
 
 void DivePictureItem::settingsChanged()
@@ -77,32 +83,79 @@ void DivePictureItem::settingsChanged()
 void DivePictureItem::setPixmap(const QPixmap &pix)
 {
 	DivePixmapItem::setPixmap(pix);
+	updateSize(pix);
+}
+
+void DivePictureItem::updateSize(const QPixmap &pix)
+{
+	frameSize = pix.size();
 	QRectF r = boundingRect();
 	canvas->setRect(0 - 10, 0 -10, r.width() + 20, r.height() + 20);
 	shadow->setRect(canvas->rect());
+	button->setPos(r.width() - button->boundingRect().width() * 0.2,
+			r.height() - button->boundingRect().height() * 0.2);
 }
 
-CloseButtonItem *button = NULL;
+VideoProjector::VideoProjector(DivePictureItem *parent) : QAbstractVideoSurface(parent),
+	divePictureItem(parent)
+{
+}
+
+bool VideoProjector::present(const QVideoFrame &frame_in)
+{
+	QVideoFrame frame(frame_in);	// Copy so that we can map
+	frame.map(QAbstractVideoBuffer::ReadOnly);
+	QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
+	if (format == QImage::Format_Invalid)
+		return false;
+	QImage img(frame.bits(), frame.width(), frame.height(), format);
+	divePictureItem->showVideoFrame(img);
+
+	return true;
+}
+
+QList<QVideoFrame::PixelFormat> VideoProjector::supportedPixelFormats(QAbstractVideoBuffer::HandleType) const
+{
+	return {
+		QVideoFrame::Format_ARGB32,
+		QVideoFrame::Format_RGB32,
+		QVideoFrame::Format_RGB24,
+		QVideoFrame::Format_Jpeg
+	};
+}
+
+void DivePictureItem::setVideo(const QString &filename, QGraphicsScene *scene)
+{
+	if (!video_projector) {
+		video_projector = new VideoProjector(this);
+		player = new QMediaPlayer(this);
+		player->setVideoOutput(video_projector);
+	}
+	player->setMedia(QUrl::fromLocalFile(filename));
+}
+
+void DivePictureItem::showVideoFrame(const QImage &img)
+{
+	QPixmap pix = QPixmap::fromImage(img.scaled(frameSize, Qt::KeepAspectRatio));
+	DivePixmapItem::setPixmap(pix);
+	if (pix.size() != frameSize)
+		// Ooops. Aspect ration changed. Move the close button, so that the
+		// user can reach it without provoking the hoverLeaveEvent.
+		updateSize(pix);
+}
+
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 {
 	Q_UNUSED(event);
 	Animations::scaleTo(this, 1.0);
 	setZValue(5);
 
-	if(!button) {
-		button = new CloseButtonItem();
-		button->setScale(0.2);
-		button->setZValue(7);
-		scene()->addItem(button);
-	}
-	button->setParentItem(this);
-	button->setPos(boundingRect().width() - button->boundingRect().width() * 0.2,
-				   boundingRect().height() - button->boundingRect().height() * 0.2);
 	button->setOpacity(0);
 	button->show();
 	Animations::show(button);
-	button->disconnect();
 	connect(button, SIGNAL(clicked()), this, SLOT(removePicture()));
+	if (player)
+		player->play();
 }
 
 void DivePictureItem::setFileUrl(const QString &s)
@@ -115,17 +168,9 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
 	Q_UNUSED(event);
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
-	if(button){
-		button->setParentItem(NULL);
-		Animations::hide(button);
-	}
-}
-
-DivePictureItem::~DivePictureItem(){
-	if(button){
-		button->setParentItem(NULL);
-		Animations::hide(button);
-	}
+	Animations::hide(button);
+	if (player)
+		player->stop();
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)

@@ -5,33 +5,12 @@
 #include "core/divelist.h"
 #include "core/imagedownloader.h"
 
-#include <QtConcurrent>
+#include <QFileInfo>
 
-extern QHash <QString, QImage> thumbnailCache;
-static QMutex thumbnailMutex;
-static const int maxZoom = 3;	// Maximum zoom: thrice of standard size
-
-static QImage getThumbnailFromCache(const PictureEntry &entry)
+void PictureEntry::setThumbnail(const QImage &thumbnail, int size, int defaultSize)
 {
-	QMutexLocker l(&thumbnailMutex);
-	return thumbnailCache.value(entry.filename);
-}
-
-static void scaleImages(PictureEntry &entry, int size, int maxSize)
-{
-	QImage thumbnail = getThumbnailFromCache(entry);
-	// If thumbnails were written by an earlier version, they might be smaller than needed.
-	// Rescale in such a case to avoid resizing artifacts.
-	if (thumbnail.isNull() || (thumbnail.size().width() < maxSize && thumbnail.size().height() < maxSize)) {
-		qDebug() << "No thumbnail in cache for" << entry.filename;
-		thumbnail = SHashedImage(entry.picture).scaled(maxSize, maxSize, Qt::KeepAspectRatio);
-		QMutexLocker l(&thumbnailMutex);
-		thumbnailCache.insert(entry.filename, thumbnail);
-	}
-
-	entry.imageProfile = thumbnail.scaled(maxSize / maxZoom, maxSize / maxZoom, Qt::KeepAspectRatio);
-	entry.image = size == maxSize ? thumbnail
-				      : thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+	imageProfile = thumbnail.scaled(defaultSize, defaultSize, Qt::KeepAspectRatio);
+	image = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
 }
 
 DivePictureModel *DivePictureModel::instance()
@@ -44,6 +23,8 @@ DivePictureModel::DivePictureModel() : rowDDStart(0),
 				       rowDDEnd(0),
 				       zoomLevel(0.0)
 {
+	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
+		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
 }
 
 void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
@@ -68,17 +49,12 @@ void DivePictureModel::setZoomLevel(int level)
 
 void DivePictureModel::updateThumbnails()
 {
-	// Calculate size of thumbnails. The standard size is defaultIconMetrics().sz_pic.
-	// We use exponential scaling so that the central point is the standard
-	// size and the minimum and maximum extreme points are a third respectively
-	// three times the standard size.
-	// Naturally, these three zoom levels are then represented by
-	// -1.0 (minimum), 0 (standard) and 1.0 (maximum). The actual size is
-	// calculated as standard_size*3.0^zoomLevel.
-	int defaultSize = defaultIconMetrics().sz_pic;
-	int maxSize = defaultSize * maxZoom;
-	int size = static_cast<int>(round(defaultSize * pow(maxZoom, zoomLevel)));
-	QtConcurrent::blockingMap(pictures, [size, maxSize](PictureEntry &entry){scaleImages(entry, size, maxSize);});
+	int size = Thumbnailer::thumbnailSize(zoomLevel);
+	int defaultSize = Thumbnailer::defaultThumbnailSize();
+	for (PictureEntry &entry: pictures) {
+		QImage thumbnail = Thumbnailer::instance()->getThumbnail(entry);
+		entry.setThumbnail(thumbnail, size, defaultSize);
+	}
 }
 
 void DivePictureModel::updateDivePictures()
@@ -101,7 +77,7 @@ void DivePictureModel::updateDivePictures()
 			if (dive->id == displayed_dive.id)
 				rowDDStart = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({picture, picture->filename, {}, {}, picture->offset.seconds});
+				pictures.push_back({picture, picture->filename, {}, {}, picture->offset.seconds, false});
 			if (dive->id == displayed_dive.id)
 				rowDDEnd = pictures.count();
 		}
@@ -138,6 +114,9 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			break;
 		case Qt::UserRole:	// Used by profile widget to access bigger thumbnails
 			ret = entry.imageProfile;
+			break;
+		case Qt::UserRole + 1:
+			ret = entry.isVideo;
 			break;
 		case Qt::DisplayRole:
 			ret = QFileInfo(entry.filename).fileName();
@@ -176,4 +155,17 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 {
 	Q_UNUSED(parent);
 	return pictures.count();
+}
+
+void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, bool isVideo)
+{
+	int size = Thumbnailer::thumbnailSize(zoomLevel);
+	int defaultSize = Thumbnailer::defaultThumbnailSize();
+	for (int i = 0; i < pictures.size(); ++i) {
+		if (pictures[i].filename != filename)
+			continue;
+		pictures[i].isVideo = isVideo;
+		pictures[i].setThumbnail(thumbnail, size, defaultSize);
+		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
+	}
 }

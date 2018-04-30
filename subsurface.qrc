@@ -45,6 +45,7 @@
         <file alias="scale-icon">icons/scale.png</file>
         <file alias="ruler-icon">icons/ruler.png</file>
         <file alias="poster-icon">icons/poster.png</file>
+        <file alias="video-icon">icons/video.png</file>
         <file>xslt/commonTemplates.xsl</file>
         <file>xslt/csv2xml.xslt</file>
         <file>xslt/divelogs-export.xslt</file>

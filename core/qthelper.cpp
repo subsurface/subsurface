@@ -10,6 +10,9 @@
 #include "time.h"
 #include "gettextfromc.h"
 #include <sys/time.h>
+#include "exif.h"
+#include "file.h"
+#include "imagedownloader.h"
 #include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
@@ -1054,7 +1057,6 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 QHash<QString, QByteArray> hashOf;
 QMutex hashOfMutex;
 QHash<QByteArray, QString> localFilenameOf;
-QHash <QString, QImage > thumbnailCache;
 
 static QByteArray getHash(const QString &filename)
 {
@@ -1090,7 +1092,7 @@ void read_hashes()
 		QDataStream stream(&hashfile);
 		stream >> localFilenameOf;
 		stream >> hashOf;
-		stream >> thumbnailCache;
+		Thumbnailer::instance()->readHashes(stream);
 		hashfile.close();
 	}
 	localFilenameOf.remove("");
@@ -1111,7 +1113,7 @@ void write_hashes()
 		QDataStream stream(&hashfile);
 		stream << localFilenameOf;
 		stream << hashOf;
-		stream << thumbnailCache;
+		Thumbnailer::instance()->writeHashes(stream);
 		hashfile.commit();
 	} else {
 		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();
@@ -1180,30 +1182,36 @@ QString localFilePath(const QString &originalFilename)
 		return originalFilename;
 }
 
-// This needs to operate on a copy of picture as it frees it after finishing!
-void hashPicture(struct picture *picture)
+// This works on a copy of the string, because it runs in asynchronous context
+void hashPicture(QString filename)
 {
-	if (!picture)
-		return;
-	QByteArray oldHash = getHash(QString(picture->filename));
-	QByteArray hash = hashFile(localFilePath(picture->filename));
+	QByteArray oldHash = getHash(filename);
+	QByteArray hash = hashFile(localFilePath(filename));
 	if (!hash.isNull() && hash != oldHash)
 		mark_divelist_changed(true);
-	picture_free(picture);
 }
 
 extern "C" void cache_picture(struct picture *picture)
 {
 	QString filename = picture->filename;
 	if (!haveHash(filename))
-		QtConcurrent::run(hashPicture, clone_picture(picture));
+		QtConcurrent::run(hashPicture, filename);
 }
+
+
+// TODO: Apparently Qt has no simple way of listing the supported video
+// codecs? Do we have to query them by hand using QMediaPlayer::hasSupport()?
+const QStringList videoExtensionsList = {
+	".avi", ".mp4", ".mpeg", ".mpg", ".wmv"
+};
 
 QStringList imageExtensionFilters() {
 	QStringList filters;
 	foreach (QString format, QImageReader::supportedImageFormats()) {
 		filters.append(QString("*.").append(format));
 	}
+	foreach (const QString &format, videoExtensionsList)
+		filters.append("*" + format);
 	return filters;
 }
 

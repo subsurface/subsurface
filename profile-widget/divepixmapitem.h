@@ -4,6 +4,8 @@
 
 #include <QObject>
 #include <QGraphicsPixmapItem>
+#include <QAbstractVideoSurface>
+#include <QMediaPlayer>
 
 class DivePixmapItem : public QObject, public QGraphicsPixmapItem {
 	Q_OBJECT
@@ -12,16 +14,45 @@ class DivePixmapItem : public QObject, public QGraphicsPixmapItem {
 	Q_PROPERTY(qreal x WRITE setX READ x)
 	Q_PROPERTY(qreal y WRITE setY READ y)
 public:
-	DivePixmapItem(QObject *parent = 0);
+	DivePixmapItem(QGraphicsItem *parent = 0);
+};
+
+class DiveButtonItem : public DivePixmapItem {
+	Q_OBJECT
+public:
+	DiveButtonItem(QGraphicsItem *parent = 0);
+protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
+signals:
+	void clicked();
+};
+
+class CloseButtonItem : public DiveButtonItem {
+	Q_OBJECT
+public:
+	CloseButtonItem(QGraphicsItem *parent = 0);
+public slots:
+	void hide();
+	void show();
+};
+
+class DivePictureItem;
+class VideoProjector : public QAbstractVideoSurface {
+	bool present(const QVideoFrame &frame);
+	QList<QVideoFrame::PixelFormat> supportedPixelFormats(QAbstractVideoBuffer::HandleType) const;
+	DivePictureItem *divePictureItem;
+public:
+	VideoProjector(DivePictureItem *);
 };
 
 class DivePictureItem : public DivePixmapItem {
 	Q_OBJECT
 	Q_PROPERTY(qreal scale WRITE setScale READ scale)
 public:
-	DivePictureItem(QObject *parent = 0);
-	virtual ~DivePictureItem();
+	DivePictureItem(QGraphicsItem *parent = 0);
 	void setPixmap(const QPixmap& pix);
+	void setVideo(const QString &filename, QGraphicsScene *scene);
+	void showVideoFrame(const QImage &img);
 public slots:
 	void settingsChanged();
 #ifndef SUBSURFACE_MOBILE
@@ -36,25 +67,11 @@ private:
 	QString fileUrl;
 	QGraphicsRectItem *canvas;
 	QGraphicsRectItem *shadow;
-};
-
-class DiveButtonItem : public DivePixmapItem {
-	Q_OBJECT
-public:
-	DiveButtonItem(QObject *parent = 0);
-protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-signals:
-	void clicked();
-};
-
-class CloseButtonItem : public DiveButtonItem {
-	Q_OBJECT
-public:
-	CloseButtonItem(QObject *parent = 0);
-public slots:
-	void hide();
-	void show();
+	DiveButtonItem *button;
+	QMediaPlayer *player;
+	VideoProjector *video_projector;
+	QSize frameSize;
+	void updateSize(const QPixmap &pix);
 };
 
 #endif // DIVEPIXMAPITEM_H

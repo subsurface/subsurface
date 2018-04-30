@@ -12,6 +12,8 @@ struct PictureEntry {
 	QImage image;
 	QImage imageProfile;	// For the profile widget keep a copy of a constant sized image
 	int offsetSeconds;
+	bool isVideo;
+	void setThumbnail(const QImage &thumbnail, int size, int maxSize);
 };
 
 class DivePictureModel : public QAbstractTableModel {
@@ -27,6 +29,7 @@ public:
 	int rowDDStart, rowDDEnd;
 public slots:
 	void setZoomLevel(int level);
+	void updateThumbnail(QString filename, QImage thumbnail, bool isVideo);
 private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
