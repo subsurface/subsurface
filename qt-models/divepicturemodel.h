@@ -24,12 +24,14 @@ public:
 	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePicture(const QString& fileUrl, bool last);
 	int rowDDStart, rowDDEnd;
+	void updateDivePictureOffset(const QString &filename, int offsetSeconds);
 public slots:
 	void setZoomLevel(int level);
 	void updateThumbnail(QString filename, QImage thumbnail);
 private:
 	DivePictureModel();
 	QList<PictureEntry> pictures;
+	int findPictureId(const QString &filename);	// Return -1 if not found
 	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
 	int size;
 	int defaultSize;

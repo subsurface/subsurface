@@ -2060,14 +2060,14 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 			if (QString(picture->filename) == filename) {
 				picture->offset.seconds = lrint(timeAxis->valueAt(mappedPos));
 				mark_divelist_changed(true);
+#ifndef SUBSURFACE_MOBILE
+				DivePictureModel::instance()->updateDivePictureOffset(filename, picture->offset.seconds);
+				plotPictures();
+#endif
 				break;
 			}
 		}
 		copy_dive(current_dive, &displayed_dive);
-#ifndef SUBSURFACE_MOBILE
-		DivePictureModel::instance()->updateDivePictures();
-#endif
-
 
 		if (event->source() == this) {
 			event->setDropAction(Qt::MoveAction);

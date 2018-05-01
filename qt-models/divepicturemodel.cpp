@@ -153,12 +153,28 @@ int DivePictureModel::rowCount(const QModelIndex &parent) const
 	return pictures.count();
 }
 
+int DivePictureModel::findPictureId(const QString &filename)
+{
+	for (int i = 0; i < pictures.size(); ++i)
+		if (pictures[i].filename == filename)
+			return i;
+	return -1;
+}
+
 void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail)
 {
-	for (int i = 0; i < pictures.size(); ++i) {
-		if (pictures[i].filename != filename)
-			continue;
+	int i = findPictureId(filename);
+	if (i >= 0) {
 		pictures[i].image = thumbnail;
+		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
+	}
+}
+
+void DivePictureModel::updateDivePictureOffset(const QString &filename, int offsetSeconds)
+{
+	int i = findPictureId(filename);
+	if (i >= 0) {
+		pictures[i].offsetSeconds = offsetSeconds;
 		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
 	}
 }
