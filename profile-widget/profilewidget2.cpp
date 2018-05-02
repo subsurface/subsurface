@@ -1201,7 +1201,7 @@ void ProfileWidget2::setProfileState()
 	ccrsensor1GasItem->setVisible(sensorflag);
 	ccrsensor2GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 1));
 	ccrsensor3GasItem->setVisible(sensorflag && (current_dc->no_o2sensors > 2));
-	ocpo2GasItem->setVisible((current_dc->divemode == PSCR) && prefs.show_scr_ocpo2);
+	ocpo2GasItem->setVisible(current_dive && (current_dc->divemode == PSCR) && prefs.show_scr_ocpo2);
 
 	heartBeatItem->setVisible(prefs.hrgraph);
 	diveCeiling->setVisible(prefs.calcceiling);
