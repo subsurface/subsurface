@@ -1228,6 +1228,61 @@ void MainWindow::on_actionViewAll_triggered()
 	ui.bottomSplitter->setCollapsible(1,false);
 }
 
+void MainWindow::enterEditState()
+{
+	stateBeforeEdit = state;
+	if (state == VIEWALL || state == INFO_MAXIMIZED)
+		return;
+	toggleCollapsible(true);
+	beginChangeState(EDIT);
+	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
+	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
+	int appW = qApp->desktop()->size().width();
+	QList<int> infoProfileSizes { (int)lrint(appW * 0.3), (int)lrint(appW * 0.7) };
+
+	QSettings settings;
+	settings.beginGroup("MainWindow");
+	if (settings.value("mainSplitter").isValid()) {
+		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
+		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
+			ui.topSplitter->setSizes(infoProfileSizes);
+	} else {
+		ui.topSplitter->setSizes(infoProfileSizes);
+	}
+}
+
+void MainWindow::exitEditState()
+{
+	if (stateBeforeEdit == state)
+		return;
+	enterState(stateBeforeEdit);
+}
+
+void MainWindow::enterState(CurrentState newState)
+{
+	state = newState;
+	switch (state) {
+	case VIEWALL:
+		on_actionViewAll_triggered();
+		break;
+	case MAP_MAXIMIZED:
+		on_actionViewMap_triggered();
+		break;
+	case INFO_MAXIMIZED:
+		on_actionViewInfo_triggered();
+		break;
+	case LIST_MAXIMIZED:
+		on_actionViewList_triggered();
+		break;
+	case PROFILE_MAXIMIZED:
+		on_actionViewProfile_triggered();
+		break;
+	case EDIT:
+	default:
+		break;
+	}
+}
+
 void MainWindow::beginChangeState(CurrentState s)
 {
 	if (state == VIEWALL && state != s) {
@@ -1433,24 +1488,7 @@ void MainWindow::initialUiSetup()
 		restoreState(settings.value("windowState", 0).toByteArray());
 	}
 
-	state = (CurrentState)settings.value("lastState", 0).toInt();
-	switch (state) {
-	case VIEWALL:
-		on_actionViewAll_triggered();
-		break;
-	case MAP_MAXIMIZED:
-		on_actionViewMap_triggered();
-		break;
-	case INFO_MAXIMIZED:
-		on_actionViewInfo_triggered();
-		break;
-	case LIST_MAXIMIZED:
-		on_actionViewList_triggered();
-		break;
-	case PROFILE_MAXIMIZED:
-		on_actionViewProfile_triggered();
-		break;
-	}
+	enterState((CurrentState)settings.value("lastState", 0).toInt());
 	settings.endGroup();
 	show();
 }

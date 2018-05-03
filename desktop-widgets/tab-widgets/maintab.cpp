@@ -334,6 +334,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	ui.editDiveSiteButton->setEnabled(false);
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
+	MainWindow::instance()->enterEditState();
 
 	if (isTripEdit) {
 		// we are editing trip location and notes
@@ -991,6 +992,7 @@ void MainTab::acceptChanges()
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 	MainWindow::instance()->dive_list()->setFocus();
+	MainWindow::instance()->exitEditState();
 	cylindersModel->changed = false;
 	weightModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
@@ -1058,6 +1060,7 @@ void MainTab::rejectChanges()
 	// show the profile and dive info
 	MainWindow::instance()->graphics()->replot();
 	MainWindow::instance()->setEnabledToolbar(true);
+	MainWindow::instance()->exitEditState();
 	cylindersModel->changed = false;
 	weightModel->changed = false;
 	cylindersModel->updateDive();

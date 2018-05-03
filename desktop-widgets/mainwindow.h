@@ -54,7 +54,8 @@ public:
 		MAP_MAXIMIZED,
 		INFO_MAXIMIZED,
 		PROFILE_MAXIMIZED,
-		LIST_MAXIMIZED
+		LIST_MAXIMIZED,
+		EDIT
 	};
 
 	MainWindow();
@@ -87,6 +88,8 @@ public:
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
 	void setCheckedActionFilterTags(bool checked);
+	void enterEditState();
+	void exitEditState();
 
 private
 slots:
@@ -190,6 +193,7 @@ private:
 	QAction *actionPreviousDive;
 	UserManual *helpView;
 	CurrentState state;
+	CurrentState stateBeforeEdit;
 	QString filter_open();
 	QString filter_import();
 	static MainWindow *m_Instance;
@@ -210,6 +214,7 @@ private:
 	QString lastUsedDir();
 	void updateLastUsedDir(const QString &s);
 	void registerApplicationState(const QByteArray& state, QWidget *topLeft, QWidget *topRight, QWidget *bottomLeft, QWidget *bottomRight);
+	void enterState(CurrentState);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
 
