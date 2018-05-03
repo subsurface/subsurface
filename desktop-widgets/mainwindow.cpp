@@ -1096,25 +1096,7 @@ void MainWindow::on_actionAddDive_triggered()
 
 void MainWindow::on_actionEditDive_triggered()
 {
-	if (information()->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
-		QMessageBox::warning(this, tr("Warning"), tr("Please, first finish the current edition before trying to do another."));
-		return;
-	}
-
-	const bool isTripEdit = dive_list()->selectedTrips().count() >= 1;
-	if (!current_dive || isTripEdit || (current_dive->dc.model && strcmp(current_dive->dc.model, "manually added dive"))) {
-		QMessageBox::warning(this, tr("Warning"), tr("Trying to edit a dive that's not a manually added dive."));
-		return;
-	}
-
-	DivePlannerPointsModel::instance()->clear();
-	disableShortcuts();
-	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
-	graphics()->setAddState();
-	MapWidget::instance()->endGetDiveCoordinates();
-	setApplicationState("EditDive");
-	DivePlannerPointsModel::instance()->loadFromDive(current_dive);
-	information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+	editCurrentDive();
 }
 
 void MainWindow::on_actionRenumber_triggered()
@@ -1881,6 +1863,9 @@ void MainWindow::on_actionImportDiveLog_triggered()
 
 void MainWindow::editCurrentDive()
 {
+	if (!current_dive)
+		return;
+
 	if (information()->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please, first finish the current edition before trying to do another."));
 		return;
@@ -1889,19 +1874,21 @@ void MainWindow::editCurrentDive()
 	struct dive *d = current_dive;
 	QString defaultDC(d->dc.model);
 	DivePlannerPointsModel::instance()->clear();
+	disableShortcuts();
 	if (defaultDC == "manually added dive") {
-		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::ADD);
 		graphics()->setAddState();
 		setApplicationState("EditDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
-		disableShortcuts();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 		setApplicationState("EditPlannedDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
 		information()->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+	} else {
+		setApplicationState("EditDive");
+		information()->enableEdition();
 	}
 }
 
