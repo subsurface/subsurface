@@ -1,3 +1,4 @@
+- Desktop: fix time format in main tab [#1234]
 - Mobile: recalculate derived values after dive edit
 - Mobile: fold dive trips to give better overview for large dive lists
 - Mobile: fix using current GPS position when editing or adding dives
