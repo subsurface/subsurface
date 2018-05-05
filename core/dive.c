@@ -823,6 +823,18 @@ void fixup_dc_duration(struct divecomputer *dc)
 	}
 }
 
+duration_t last_manually_entered_sample(struct divecomputer *dc)
+{
+	duration_t zero_duration = { 0 };
+	if (!dc)
+		return zero_duration;
+	for (int i = dc->samples - 1; i >= 0; i--) {
+		if (dc->sample[i].manually_entered)
+			return dc->sample[i].time;
+	}
+	return zero_duration;
+}
+
 /* Which cylinders had gas used? */
 #define SOME_GAS 5000
 static unsigned int get_cylinder_used(struct dive *dive)

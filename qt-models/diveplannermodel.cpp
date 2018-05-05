@@ -107,8 +107,9 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	int j = 0;
 	int cylinderid = 0;
 	last_sp.mbar = 0;
+	duration_t last_manual_sample = last_manually_entered_sample(dc);
 	for (int i = 0; i < plansamples - 1; i++) {
-		if (dc->last_manual_time.seconds && dc->last_manual_time.seconds > 120 && lasttime.seconds >= dc->last_manual_time.seconds)
+		if (last_manual_sample.seconds && last_manual_sample.seconds > 120 && lasttime.seconds >= last_manual_sample.seconds)
 			break;
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
@@ -132,7 +133,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
-	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
+	if (!hasMarkedSamples && last_manual_sample.seconds)
 		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true);
 	recalc = oldRec;
 	emitDataChanged();
