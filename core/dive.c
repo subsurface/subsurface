@@ -714,22 +714,26 @@ void copy_samples(struct divecomputer *s, struct divecomputer *d)
 		memcpy(d->sample, s->sample, nr * sizeof(struct sample));
 }
 
+/* make room for num samples; if not enough space is available, the sample
+ * array is reallocated and the existing samples are copied. */
+void alloc_samples(struct divecomputer *dc, int num)
+{
+	if (num > dc->alloc_samples) {
+		dc->alloc_samples = (dc->alloc_samples * 3) / 2 + 10;
+		dc->sample = realloc(dc->sample, dc->alloc_samples * sizeof(struct sample));
+		if (!dc->sample)
+			dc->samples = dc->alloc_samples = 0;
+	}
+}
+
 struct sample *prepare_sample(struct divecomputer *dc)
 {
 	if (dc) {
 		int nr = dc->samples;
-		int alloc_samples = dc->alloc_samples;
 		struct sample *sample;
-		if (nr >= alloc_samples) {
-			struct sample *newsamples;
-
-			alloc_samples = (alloc_samples * 3) / 2 + 10;
-			newsamples = realloc(dc->sample, alloc_samples * sizeof(struct sample));
-			if (!newsamples)
-				return NULL;
-			dc->alloc_samples = alloc_samples;
-			dc->sample = newsamples;
-		}
+		alloc_samples(dc, nr + 1);
+		if (!dc->sample)
+			return NULL;
 		sample = dc->sample + nr;
 		memset(sample, 0, sizeof(*sample));
 
@@ -922,7 +926,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 		return;
 	}
 	if (!dc->samples)
-		dc = fake_dc(dc, false);
+		fake_dc(dc);
 	struct event *ev = get_next_event(dc->events, "gaschange");
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;

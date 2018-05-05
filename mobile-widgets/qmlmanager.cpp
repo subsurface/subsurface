@@ -1089,9 +1089,9 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 			// so we have depth > 0, a manually added dive and no samples
 			// let's create an actual profile so the desktop version can work it
 			// first clear out the mean depth (or the fake_dc() function tries
-			// to be too clever
+			// to be too clever)
 			d->meandepth.mm = d->dc.meandepth.mm = 0;
-			d->dc = *fake_dc(&d->dc, true);
+			fake_dc(&d->dc);
 		}
 		fixup_dive(d);
 		DiveListModel::instance()->updateDive(modelIdx, d);

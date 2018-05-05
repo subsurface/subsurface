@@ -109,33 +109,29 @@ static void fill_samples_no_avg(struct sample *s, int max_d, int max_t, double s
 	}
 }
 
-struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
+void fake_dc(struct divecomputer *dc)
 {
-	static struct sample fake_samples[6];
-	static struct divecomputer fakedc;
-	struct sample *fake = fake_samples;
+	alloc_samples(dc, 6);
+	struct sample *fake = dc->sample;
 	int i;
 
-	fakedc = (*dc);
-	if (alloc)
-		fake = malloc(sizeof(fake_samples));
-
-	fakedc.sample = fake;
-	fakedc.samples = 6;
+	dc->samples = 6;
 
 	/* The dive has no samples, so create a few fake ones */
 	int max_t = dc->duration.seconds;
 	int max_d = dc->maxdepth.mm;
 	int avg_d = dc->meandepth.mm;
 
-	memset(fake, 0, sizeof(fake_samples));
+	memset(fake, 0, 6 * sizeof(struct sample));
 	fake[5].time.seconds = max_t;
 	for (i = 0; i < 6; i++) {
-		fake_samples[i].bearing.degrees = -1;
-		fake_samples[i].ndl.seconds = -1;
+		fake[i].bearing.degrees = -1;
+		fake[i].ndl.seconds = -1;
 	}
-	if (!max_t || !max_d)
-		return &fakedc;
+	if (!max_t || !max_d) {
+		dc->samples = 0;
+		return;
+	}
 
 	/*
 	 * We want to fake the profile so that the average
@@ -149,10 +145,10 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 		 * the user supplied data */
 		fill_samples_no_avg(fake, max_d, max_t, MAX(2.0 * max_d / max_t, 5000.0 / 60));
 		if (fake[3].time.seconds == 0) { // just a 4 point profile
-			fakedc.samples = 4;
+			dc->samples = 4;
 			fake[3].time.seconds = max_t;
 		}
-		return &fakedc;
+		return;
 	}
 	if (avg_d < max_d / 10 || avg_d >= max_d) {
 		avg_d = (max_d + 10000) / 3;
@@ -167,7 +163,7 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 	 * rate (5 meters per minute) and d_frac (1/3).
 	 */
 	if (fill_samples(fake, max_d, avg_d, max_t, 5000.0 / 60, 0.33))
-		return &fakedc;
+		return;
 
 	/*
 	 * Ok, assume that didn't work because we cannot make the
@@ -175,7 +171,7 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 	 * followed by a much shallower region
 	 */
 	if (fill_samples(fake, max_d, avg_d, max_t, 10000.0 / 60, 0.10))
-		return &fakedc;
+		return;
 
 	/*
 	 * Uhhuh. That didn't work. We'd need to find a good combination that
@@ -183,10 +179,9 @@ struct divecomputer *fake_dc(struct divecomputer *dc, bool alloc)
 	 * slopes.
 	 */
 	if (fill_samples(fake, max_d, avg_d, max_t, 10000.0, 0.01))
-		return &fakedc;
+		return;
 
 	/* Even that didn't work? Give up, there's something wrong */
-	return &fakedc;
 }
 
 static void match_id(void *_dc, const char *model, uint32_t deviceid,
