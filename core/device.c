@@ -146,7 +146,7 @@ void fake_dc(struct divecomputer *dc)
 	if (avg_d == 0) {
 		/* we try for a sane slope, but bow to the insanity of
 		 * the user supplied data */
-		fill_samples_no_avg(fake, max_d, max_t, MAX(2.0 * max_d / max_t, 5000.0 / 60));
+		fill_samples_no_avg(fake, max_d, max_t, MAX(2.0 * max_d / max_t, (double)prefs.ascratelast6m));
 		if (fake[3].time.seconds == 0) { // just a 4 point profile
 			dc->samples = 4;
 			fake[3].time.seconds = max_t;
@@ -165,7 +165,7 @@ void fake_dc(struct divecomputer *dc)
 	 * Ok, first we try a basic profile with a specific ascent
 	 * rate (5 meters per minute) and d_frac (1/3).
 	 */
-	if (fill_samples(fake, max_d, avg_d, max_t, 5000.0 / 60, 0.33))
+	if (fill_samples(fake, max_d, avg_d, max_t, (double)prefs.ascratelast6m, 0.33))
 		return;
 
 	/*

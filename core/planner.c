@@ -732,7 +732,10 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	/* if all we wanted was the dive just get us back to the surface */
 	if (!is_planner) {
-		transitiontime = depth / 75; /* this still needs to be made configurable */
+		/* Attn: for manually entered dives, we depend on the last segment having the
+		 * same ascent rate as in fake_dc(). If you change it here, also change it there.
+		 */
+		transitiontime = lrint(depth / (double)prefs.ascratelast6m);
 		plan_add_segment(diveplan, transitiontime, 0, current_cylinder, po2, false);
 		create_dive_from_plan(diveplan, dive, is_planner);
 		return false;
