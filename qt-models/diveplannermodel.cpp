@@ -99,7 +99,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	if (dc->samples)
 		hasMarkedSamples = dc->sample[0].manually_entered;
 	else
-		dc = fake_dc(dc, true);
+		fake_dc(dc);
 
 	// if this dive has more than 100 samples (so it is probably a logged dive),
 	// average samples so we end up with a total of 100 samples.
