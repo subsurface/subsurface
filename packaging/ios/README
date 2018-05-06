@@ -1,36 +1,25 @@
 Tool repo to crosscompile subsurface for iOS
 --------------------------------------------
 
-The interaction between the different tools seems quite fragile.
-
 Dependencies:
 
 - This only works on a Mac
-- XCode with iOS SDK and Qt5.6 or later
+- XCode with iOS SDK and Qt5.9 or later
 - cmake
 
-Steps to install:
+Follow the instruction in:
+<repo>/INSTALL
 
-Step 1.
-Install current XCode with the iOS SDK
-And QT for android from: http://qt-project.org/downloads, including the iOS bits
+and then continue here:
 
-Step 2.
-Extract and install these into known directories.
-Have a look in the top of build.sh for where the cross build tool expects
-them. Create a symbolic link named Qt in this directory to point to the top
-of the Qt installation, e.g.
-ln -s ~/Qt5.7.1 Qt
+1) cd <repo>/packaging/ios
+2) ./build.sh
+note: this builds all dependencies and is only needed first time
+      it currently build for armv7 arm64 and x86_64 (simulator)
 
-Step 3.
-Run bash build.sh in the terminal.
-The script will download and build the whole dependency chain, but not the actual
-Subsurface-mobile binary
-
-Step 4.
-Launch the version of QtCreator that was installed in Step 2 above and open
-Subsurface-mobile/Subsurface-mobile.pro
-Build Subsurface-mobile in QtCreator - you can build for the simulator and for
+1) cd <repo>/..
+2) Launch QtCreator and open subsurface/packaging/ios/Subsurface-mobile/Subsurface-mobile.pro
+3) Build Subsurface-mobile in QtCreator - you can build for the simulator and for
 a device and even deploy to a connected device.
 
 Everything up to here you can do without paying for an Apple Developer account.
