@@ -40,6 +40,7 @@ SUBSURFACE_DESKTOP=OFF
 ARCH=arm
 # Which SDK buildtools revision is used?
 ANDROID_BUILDTOOLS_REVISION=25.0.3
+ANDROID_API=16
 
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
@@ -76,7 +77,7 @@ done
 export ARCH
 
 # Configure where we can find things here
-export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r14b}
+export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r16b}
 
 if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
@@ -142,14 +143,16 @@ else
 fi
 
 if [ ! -e ndk-"$ARCH" ] ; then
-	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=16
+	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api="$ANDROID_API"
 fi
 export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
 export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
-export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
-export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
+CC_NAME=clang
+CXX_NAME=clang++
+export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-${CC_NAME}
+export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-${CXX_NAME}
 # autoconf seems to get lost without this
 export SYSROOT=${BUILDROOT}/ndk-$ARCH/sysroot
 export CFLAGS=--sysroot=${SYSROOT}
@@ -163,7 +166,6 @@ if [ "$PLATFORM" = "Darwin" ] ; then
 else
 	export JAVA_HOME=/usr
 fi
-
 
 # find qmake
 QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
@@ -255,6 +257,10 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	mkdir -p libzip-build-"$ARCH"
 	pushd libzip-build-"$ARCH"
 	../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
+	# the build fails with missing fts_*() functions in the NDK toolchains.
+	# cmake cannot find ZLIB while configure decides that HAVE_FTS_H should be set.
+	# hack: use configure but replace the HAVE_FTS_H macro with HAVE_FTS_H__ to ignore fts_*()
+	sed -i 's/HAVE_FTS_H/HAVE_FTS_H__/' ../libzip-${LIBZIP_VERSION}/src/zipcmp.c
 	make
 	make install
 	popd
@@ -274,12 +280,18 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 	env SYSTEM=android \
 		CROSS_COMPILE=${BUILDCHAIN}- \
 		MACHINE=$OPENSSL_MACHINE \
-		HOSTCC=gcc \
-		CC=gcc \
+		HOSTCC=${CC_NAME} \
+		CC=${CC_NAME} \
 		ANDROID_DEV="$PREFIX" \
-		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
+		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm --openssldir="$PREFIX"
 #	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 	make depend
+	# remove the -mandroid flag for clang as it's not supported
+	# also remove all _ASM defines as those throw errors
+	if [ ${CC_NAME} = "clang" ]; then
+		sed -i 's/-mandroid//' Makefile
+		# sed -i 's/-DSHA1_ASM -DSHA256_ASM -DSHA512_ASM -DAES_ASM -DBSAES_ASM -DGHASH_ASM//' Makefile
+	fi
 	make
 	# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
 	perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
@@ -302,6 +314,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 	mkdir -p libgit2-build-"$ARCH"
 	pushd libgit2-build-"$ARCH"
 	cmake -DCMAKE_SYSTEM_NAME=Android -DSHA1_TYPE=builtin \
+		-DCMAKE_C_FLAGS=-D__ANDROID_API__="$ANDROID_API" \
 		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
 		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
 		-DCURL=OFF \
@@ -355,7 +368,7 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
 	mkdir -p libftdi1-build-"$ARCH"
 	pushd libftdi1-build-"$ARCH"
-	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
+	cmake ../libftdi1-${LIBFTDI_VERSION} -CMAKE_C_FLAGS=-D__ANDROID_API__="$ANDROID_API" -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
 	make
 	make install
 	popd
@@ -427,6 +440,8 @@ fi
 
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
+	-DCMAKE_C_FLAGS=-D__ANDROID_API__="$ANDROID_API" \
+	-DCMAKE_CXX_FLAGS=-D__ANDROID_API__="$ANDROID_API" \
 	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
 	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
 	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \

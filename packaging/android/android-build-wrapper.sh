@@ -23,7 +23,7 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 QT_VERSION=5.10
 LATEST_QT=5.10.1
-NDK_VERSION=r14b
+NDK_VERSION=r16b
 SDK_VERSION=3859397  # if you change this version, you'll likely have to change the android-sdk-license key fallback below
 
 ANDROID_NDK=android-ndk-${NDK_VERSION}
@@ -46,7 +46,7 @@ fi
 
 # make sure we have the required commands installed
 MISSING=
-for i in git cmake autoconf libtool java ant wget unzip; do
+for i in git cmake autoconf libtool java ant wget unzip makedepend; do
 	command -v $i >/dev/null ||
 		if [ $i = libtool ] ; then
 			MISSING="${MISSING}libtool-bin "
@@ -77,6 +77,9 @@ if [ ! -d $ANDROID_SDK ] ; then
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
 	unzip -q ../$SDK_TOOLS
+	mkdir -p licenses
+	# use this fix from https://stackoverflow.com/a/47150411 or sdkmanager throws Java exceptions
+	export SDKMANAGER_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 	yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
 	cat licenses/android-sdk-license
 	echo ""
