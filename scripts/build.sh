@@ -73,7 +73,7 @@ CURRENT_LIBCURL="curl-7_54_1"
 CURRENT_LIBUSB="v1.0.21"
 CURRENT_OPENSSL="OpenSSL_1_1_0f"
 CURRENT_LIBSSH2="libssh2-1.8.0"
-CURRENT_LIBGIT2="v0.26.0"
+CURRENT_LIBGIT2="v0.27.0"
 
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
