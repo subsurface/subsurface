@@ -12,7 +12,7 @@ VERSION=$(echo $GITVERSION | sed -e 's/-/./')
 echo "preparing dependencies for Subsurface-mobile ${VERSION} for iOS"
 
 cd packaging/ios
-bash -x build.sh -simulator
+bash -x build.sh -simulator -official
 
 echo "now it's time to build Subsurface-mobile ${VERSION} for iOS"
 

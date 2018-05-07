@@ -4,6 +4,7 @@
 set -x
 set -e
 
+PRODUCT_BUNDLE_IDENTIFIER="\$(PRODUCT_BUNDLE_IDENTIFIER)"
 DEBUGRELEASE="Release"
 DRCONFIG="release"
 ARCHS="armv7 arm64 x86_64"
@@ -13,6 +14,12 @@ TARGET2="Device"
 while [[ $# -gt 0 ]] ; do
 	arg="$1"
 	case $arg in
+		-official)
+			# build an app identified as org.subsurface-divelog.subsurface-mobile
+			# without having to set this explicitly in Xcode (this way this works,
+			# e.g., in Travis)
+			PRODUCT_BUNDLE_IDENTIFIER="org.subsurface-divelog.subsurface-mobile"
+			;;
 		-debug)
 			# build for debugging
 			DEBUGRELEASE="Debug"
@@ -80,7 +87,7 @@ echo "#define CANONICAL_VERSION_STRING \"$CANONICALVERSION\"" >> subsurface-mobi
 echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-mobile/ssrf-version.h
 
 # create Info.plist with the correct versions
-cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION@/$CANONICALVERSION/" > Info.plist
+cat Info.plist.in | sed "s/@MOBILE_VERSION@/$MOBILEVERSION/;s/@CANONICAL_VERSION@/$CANONICALVERSION/;s/@PRODUCT_BUNDLE_IDENTIFIER@/$PRODUCT_BUNDLE_IDENTIFIER/" > Info.plist
 
 if [ "$1" = "version" ] ; then
 	exit 0

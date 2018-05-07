@@ -11,7 +11,7 @@
 	<key>CFBundleIconName</key>
 	<string>AppIcon</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.subsurface-divelog.subsurface-mobile</string>
+	<string>@PRODUCT_BUNDLE_IDENTIFIER@</string>
 	<key>CFBundleName</key>
 	<string>Subsurface-mobile</string>
 	<key>CFBundlePackageType</key>
