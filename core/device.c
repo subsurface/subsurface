@@ -133,6 +133,9 @@ void fake_dc(struct divecomputer *dc)
 		return;
 	}
 
+	/* Set last manually entered time to the total dive length */
+	dc->last_manual_time = dc->duration;
+
 	/*
 	 * We want to fake the profile so that the average
 	 * depth ends up correct. However, in the absence of
