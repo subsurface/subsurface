@@ -209,7 +209,7 @@ Kirigami.Page {
 
 	function showDiveIndex(index) {
 		currentIndex = index;
-		//diveDetailsListView.positionViewAtIndex(index, ListView.End);
+		diveDetailsListView.positionViewAtIndex(index, ListView.End);
 	}
 
 	function endEditMode() {
