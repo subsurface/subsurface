@@ -395,8 +395,6 @@ static void save_events(struct membuffer *b, struct dive *dive, struct event *ev
 static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer *dc)
 {
 	show_utf8(b, "model ", dc->model, "\n");
-	if (dc->last_manual_time.seconds)
-		put_duration(b, dc->last_manual_time, "lastmanualtime ", "min\n");
 	if (dc->deviceid)
 		put_format(b, "deviceid %08x\n", dc->deviceid);
 	if (dc->diveid)

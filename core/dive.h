@@ -305,7 +305,7 @@ struct extra_data {
  */
 struct divecomputer {
 	timestamp_t when;
-	duration_t duration, surfacetime, last_manual_time;
+	duration_t duration, surfacetime;
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;
 	pressure_t surface_pressure;
@@ -800,6 +800,7 @@ extern int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc)
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);
+extern duration_t last_manually_entered_sample(struct divecomputer *dc);
 extern int dive_getUniqID(struct dive *d);
 extern unsigned int dc_airtemp(struct divecomputer *dc);
 extern unsigned int dc_watertemp(struct divecomputer *dc);
