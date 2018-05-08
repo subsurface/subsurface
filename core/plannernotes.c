@@ -537,7 +537,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	/* Print warnings for pO2 */
 	dp = diveplan->dp;
 	bool o2warning_exist = false;
-	enum dive_comp_type current_divemode;
+	enum divemode_t current_divemode;
 	double amb;
 	struct event *evd = NULL;
 	current_divemode = UNDEF_COMP_TYPE;

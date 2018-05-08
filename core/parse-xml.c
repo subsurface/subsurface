@@ -437,10 +437,10 @@ static void event_name(char *buffer, char *name)
 const char *libdc_divemode_text[] = { "oc", "cc", "pscr", "freedive", "gauge"};
 
 /* Extract the dive computer type from the xml text buffer */
-static void get_dc_type(char *buffer, enum dive_comp_type *dct)
+static void get_dc_type(char *buffer, enum divemode_t *dct)
 {
 	if (trimspace(buffer)) {
-		for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
+		for (enum divemode_t i = 0; i < NUM_DIVEMODE; i++) {
 			if (strcmp(buffer, divemode_text[i]) == 0)
 				*dct = i;
 			else if (strcmp(buffer, libdc_divemode_text[i]) == 0)
@@ -459,7 +459,7 @@ static void event_divemode(char *buffer, int *value)
 	if (size >= MAX_EVENT_NAME)
 		size = MAX_EVENT_NAME - 1;
 	buffer[size] = 0x0;
-	for (int i = 0; i < NUM_DC_TYPE; i++) {
+	for (int i = 0; i < NUM_DIVEMODE; i++) {
 		if (!strcmp(buffer,divemode_text[i])) {
 			*value = i;
 			break;

@@ -1414,7 +1414,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
 	struct event *ev = NULL;
-	enum dive_comp_type divemode = UNDEF_COMP_TYPE;
+	enum divemode_t divemode = UNDEF_COMP_TYPE;
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
 	QString gas = action->text();
 	qreal sec_val = timeAxis->valueAt(scenePos);

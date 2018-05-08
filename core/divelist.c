@@ -416,7 +416,7 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	struct gasmix *gasmix = NULL;
 	int i;
 	struct event *ev = NULL, *evd = NULL;
-	enum dive_comp_type current_divemode = UNDEF_COMP_TYPE;
+	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 	if (!dc)
 		return;

@@ -27,7 +27,7 @@ extern "C" {
 
 extern int last_xml_version;
 
-enum dive_comp_type {OC, CCR, PSCR, FREEDIVE, NUM_DC_TYPE, UNDEF_COMP_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
+enum divemode_t {OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE};	// Flags (Open-circuit and Closed-circuit-rebreather) for setting dive computer type
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];
@@ -84,7 +84,7 @@ struct event {
 	int flags, value;
 	/* .. and this is our "extended" data for some event types */
 	union {
-		enum dive_comp_type divemode; // for divemode change events
+		enum divemode_t divemode; // for divemode change events
 		/*
 		 * NOTE! The index may be -1, which means "unknown". In that
 		 * case, the get_cylinder_index() function will give the best
@@ -132,7 +132,7 @@ struct gas_pressures {
 	double o2, n2, he;
 };
 
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type dctype);
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum divemode_t dctype);
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
@@ -259,7 +259,7 @@ struct divecomputer {
 	depth_t maxdepth, meandepth;
 	temperature_t airtemp, watertemp;
 	pressure_t surface_pressure;
-	enum dive_comp_type divemode;	// dive computer type: OC(default) or CCR
+	enum divemode_t divemode;	// dive computer type: OC(default) or CCR
 	uint8_t no_o2sensors;		// rebreathers: number of O2 sensors used
 	int salinity; 			// kg per 10000 l
 	const char *model, *serial, *fw_version;
@@ -362,9 +362,9 @@ struct dive_components {
 	unsigned int weights : 1;
 };
 
-extern enum dive_comp_type get_current_divemode(struct divecomputer *dc, int time, struct event **evp, enum dive_comp_type *divemode);
+extern enum divemode_t get_current_divemode(struct divecomputer *dc, int time, struct event **evp, enum divemode_t *divemode);
 extern struct event *get_next_divemodechange(struct event **evd, bool update_pointer);
-extern enum dive_comp_type get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc);
+extern enum divemode_t get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc);
 
 /* picture list and methods related to dive picture handling */
 struct picture {
@@ -853,7 +853,7 @@ struct deco_state {
 	bool icd_warning;
 };
 
-extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, enum dive_comp_type divemode, int sac);
+extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
 extern void clear_deco(struct deco_state *ds, double surface_pressure);
 extern void dump_tissues(struct deco_state *ds);
 extern void set_gf(short gflow, short gfhigh);
@@ -874,7 +874,7 @@ struct divedatapoint {
 	int setpoint;
 	bool entered;
 	struct divedatapoint *next;
-	enum dive_comp_type divemode;
+	enum divemode_t divemode;
 };
 
 struct diveplan {
@@ -891,7 +891,7 @@ struct diveplan {
 	int surface_interval;
 };
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum dive_comp_type divemode);
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode);
 struct divedatapoint *create_dp(int time_incr, int depth, int cylinderid, int po2);
 #if DEBUG_PLAN
 void dump_plan(struct diveplan *diveplan);

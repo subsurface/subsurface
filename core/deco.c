@@ -478,7 +478,7 @@ void calc_crushing_pressure(struct deco_state *ds, double pressure)
 }
 
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
-void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, enum dive_comp_type divemode, int sac)
+void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int sac)
 {
 	(void) sac;
 	int ci;
