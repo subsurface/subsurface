@@ -40,6 +40,9 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		-mobile)
 			# we are building Subsurface-mobile
+			# Note that this will run natively on the host OS.
+			# To cross build for Android or iOS (including simulator) 
+			# use the scripts in packaging/xxx
 			BUILD_MOBILE="1"
 			;;
 		-desktop)
