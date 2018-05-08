@@ -115,7 +115,7 @@ int get_gasidx(struct dive *dive, struct gasmix *mix)
 	return find_best_gasmix_match(mix, dive->cylinder, 0);
 }
 
-void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2, enum dive_comp_type divemode)
+void interpolate_transition(struct deco_state *ds, struct dive *dive, duration_t t0, duration_t t1, depth_t d0, depth_t d1, const struct gasmix *gasmix, o2pressure_t po2, enum divemode_t divemode)
 {
 	int32_t j;
 
@@ -152,7 +152,7 @@ int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **
 	psample = sample = dc->sample;
 
 	struct event *evdm = NULL;
-	enum dive_comp_type divemode = UNDEF_COMP_TYPE;
+	enum divemode_t divemode = UNDEF_COMP_TYPE;
 
 	for (i = 0; i < dc->samples; i++, sample++) {
 		o2pressure_t setpoint;
@@ -231,7 +231,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 
 /* calculate the new end pressure of the cylinder, based on its current end pressure and the
  * latest segment. */
-static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco, enum dive_comp_type divemode)
+static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco, enum divemode_t divemode)
 {
 	volume_t gas_used;
 	pressure_t delta_p;
@@ -267,7 +267,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	int lasttime = 0, last_manual_point = 0;
 	depth_t lastdepth = {.mm = 0};
 	int lastcylid;
-	enum dive_comp_type type = dive->dc.divemode;
+	enum divemode_t type = dive->dc.divemode;
 
 	if (!diveplan || !diveplan->dp)
 		return;
@@ -417,7 +417,7 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		dp->time += lasttime;
 }
 
-struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum dive_comp_type divemode)
+struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
 {
 	struct divedatapoint *dp = create_dp(duration, depth, cylinderid, po2);
 	dp->entered = entered;
@@ -553,7 +553,7 @@ int ascent_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop, enum dive_comp_type divemode)
+void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop, enum divemode_t divemode)
 {
 	while (depth > 0) {
 		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
@@ -569,7 +569,7 @@ void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom
 }
 
 // Determine whether ascending to the next stop will break the ceiling.  Return true if the ascent is ok, false if it isn't.
-bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure, struct dive *dive, enum dive_comp_type divemode)
+bool trial_ascent(struct deco_state *ds, int wait_time, int trial_depth, int stoplevel, int avg_depth, int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure, struct dive *dive, enum divemode_t divemode)
 {
 
 	bool clear_to_ascend = true;
@@ -634,7 +634,7 @@ bool enough_gas(int current_cylinder)
  * So we always test at the upper bundary, not in the middle!
  */
 
-int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure, enum dive_comp_type divemode)
+int wait_until(struct deco_state *ds, struct dive *dive, int clock, int min, int leap, int stepsize, int depth, int target_depth, int avg_depth, int bottom_time, struct gasmix *gasmix, int po2, double surface_pressure, enum divemode_t divemode)
 {
 	// When a deco stop exceeds two days, there is something wrong...
 	if (min >= 48 * 3600)
@@ -699,7 +699,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	int laststoptime = timestep;
 	bool o2breaking = false;
 	int decostopcounter = 0;
-	enum dive_comp_type divemode = dive->dc.divemode;
+	enum divemode_t divemode = dive->dc.divemode;
 
 	set_gf(diveplan->gflow, diveplan->gfhigh);
 	set_vpmb_conservatism(diveplan->vpmb_conservatism);

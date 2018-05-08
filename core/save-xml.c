@@ -402,7 +402,7 @@ static void save_dc(struct membuffer *b, struct dive *dive, struct divecomputer 
 	if (dc->duration.seconds && dc->duration.seconds != dive->dc.duration.seconds)
 		put_duration(b, dc->duration, " duration='", " min'");
 	if (dc->divemode != OC) {
-		for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++)
+		for (enum divemode_t i = 0; i < NUM_DIVEMODE; i++)
 			if (dc->divemode == i)
 				show_utf8(b, divemode_text[i], " dctype='", "'", 1);
 		if (dc->no_o2sensors)

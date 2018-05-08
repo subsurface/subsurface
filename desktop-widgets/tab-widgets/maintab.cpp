@@ -1164,7 +1164,7 @@ void MainTab::divetype_Changed(int index)
 {
 	if (editMode == IGNORE)
 		return;
-	displayed_dc->divemode = (enum dive_comp_type) index;
+	displayed_dc->divemode = (enum divemode_t) index;
 	update_setpoint_events(&displayed_dive, displayed_dc);
 	markChangedWidget(ui.DiveType);
 	MainWindow::instance()->graphics()->recalcCeiling();

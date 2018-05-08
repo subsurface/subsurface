@@ -907,7 +907,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 #ifndef SUBSURFACE_MOBILE
 /* calculate DECO STOP / TTS / NDL */
-static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct plot_data *entry, struct gasmix *gasmix, double surface_pressure,enum dive_comp_type divemode)
+static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct plot_data *entry, struct gasmix *gasmix, double surface_pressure,enum divemode_t divemode)
 {
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
@@ -1018,7 +1018,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix *gasmix = NULL;
 		struct event *ev = NULL, *evd = NULL;
-		enum dive_comp_type current_divemode = UNDEF_COMP_TYPE;
+		enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 		for (i = 1; i < pi->nr; i++) {
 			struct plot_data *entry = pi->entry + i;
@@ -1207,7 +1207,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 	double amb_pressure;
 	struct gasmix *gasmix = NULL;
 	struct event *evg = NULL, *evd = NULL;
-	enum dive_comp_type current_divemode = UNDEF_COMP_TYPE;
+	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 	for (i = 1; i < pi->nr; i++) {
 		int fn2, fhe;

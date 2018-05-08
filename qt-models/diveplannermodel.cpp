@@ -334,9 +334,9 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			break;
 		case DIVEMODE:
 			if (value.toInt() < FREEDIVE) // FIXME: I want to be a combo box and translate strings to enum values
-				p.divemode = (enum dive_comp_type) value.toInt();
+				p.divemode = (enum divemode_t) value.toInt();
 			if (index.row() == 0)
-				displayed_dive.dc.divemode = (enum dive_comp_type) value.toInt();
+				displayed_dive.dc.divemode = (enum divemode_t) value.toInt();
 			break;
 		}
 		editStop(index.row(), p);
@@ -466,10 +466,10 @@ void DivePlannerPointsModel::setGFLow(const int gflow)
 void DivePlannerPointsModel::setRebreatherMode(int mode)
 {
 	int i;
-	displayed_dive.dc.divemode = (dive_comp_type) mode;
+	displayed_dive.dc.divemode = (divemode_t) mode;
 	for (i=0; i < rowCount(); i++) {
 		divepoints[i].setpoint = mode == CCR ? prefs.defaultsetpoint : 0;
-		divepoints[i].divemode = (enum dive_comp_type) mode;
+		divepoints[i].divemode = (enum divemode_t) mode;
 	}
 	emitDataChanged();
 }
@@ -673,7 +673,7 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 {
 	int cylinderid = 0;
 	bool usePrevious = false;
-	enum dive_comp_type divemode = displayed_dive.dc.divemode;
+	enum divemode_t divemode = displayed_dive.dc.divemode;
 	if (cylinderid_in >= 0)
 		cylinderid = cylinderid_in;
 	else

@@ -123,7 +123,7 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	free(stats_by_type);
 
 	size = sizeof(stats_t) * (dive_table.nr + 1);
-	tsize = sizeof(stats_t) * (NUM_DC_TYPE + 1);
+	tsize = sizeof(stats_t) * (NUM_DIVEMODE + 1);
 	stats_yearly = malloc(size);
 	stats_monthly = malloc(size);
 	stats_by_trip = malloc(size);

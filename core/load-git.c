@@ -162,9 +162,9 @@ static duration_t get_duration(const char *line)
 	return d;
 }
 
-static enum dive_comp_type get_dctype(const char *line)
+static enum divemode_t get_dctype(const char *line)
 {
-	for (enum dive_comp_type i = 0; i < NUM_DC_TYPE; i++) {
+	for (enum divemode_t i = 0; i < NUM_DIVEMODE; i++) {
 		if (strcmp(line, divemode_text[i]) == 0)
 			return i;
 	}
@@ -725,7 +725,7 @@ static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
 
 
 int get_divemode(const char *divemodestring) {
-	for (int i = 0; i < NUM_DC_TYPE; i++) {
+	for (int i = 0; i < NUM_DIVEMODE; i++) {
 		if (!strcmp(divemodestring, divemode_text[i]))
 			return i;
 	}

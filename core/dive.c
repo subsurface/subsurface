@@ -245,7 +245,7 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
  * saving the dive mode for each event. When the events occur AFTER 'time' seconds, the last stored divemode
  * is returned. This function is self-tracking, relying on setting the event pointer 'evp' so that, in each iteration
  * that calls this function, the search does not have to begin at the first event of the dive */
-enum dive_comp_type get_current_divemode(struct divecomputer *dc, int time, struct event **evp, enum dive_comp_type *divemode)
+enum divemode_t get_current_divemode(struct divecomputer *dc, int time, struct event **evp, enum divemode_t *divemode)
 {
 	struct event *ev = *evp;
 	if (*divemode == UNDEF_COMP_TYPE) {
@@ -253,7 +253,7 @@ enum dive_comp_type get_current_divemode(struct divecomputer *dc, int time, stru
 		ev = dc ? get_next_event(dc->events, "modechange") : NULL;
 	}
 	while (ev && ev->time.seconds < time) {
-		*divemode = (enum dive_comp_type) ev->value;
+		*divemode = (enum divemode_t) ev->value;
 		ev = get_next_event(ev->next, "modechange");
 	}
 	*evp = ev;
@@ -2071,7 +2071,7 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
  *			divemode = the dive mode pertaining to this point in the dive profile.
  * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
  */
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum dive_comp_type divemode)
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum divemode_t divemode)
 {
 	if ((divemode != OC) && po2) {	// This is a rebreather dive where pressures->o2 is defined
 		if (po2 >= amb_pressure) {
