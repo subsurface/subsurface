@@ -51,28 +51,10 @@ fi
 
 # Which versions are we building against?
 LIBXSLT_VERSION=1.1.28
-LIBZIP_VERSION=0.11.2
-LIBGIT2_VERSION=0.26.0
-
-# not on iOS so far, but kept here for completeness
-LIBUSB_VERSION=1.0.19
-LIBFTDI_VERSION=1.2
-
-# NOTE: NOT IDENTICAL TO OTHER PLATFORMS
-#       in order not to make "technical version" bumps
-# script/build.sh contains:
-#
-# CURRENT_LIBZIP="1.2.0" (very different)
-# CURRENT_HIDAPI="hidapi-0.7.0" (not used)
-# CURRENT_LIBCURL="curl-7_54_1" (not used)
-# CURRENT_LIBUSB="v1.0.21" (different but not used)
-# CURRENT_OPENSSL="OpenSSL_1_1_0f" (not used)
-# CURRENT_LIBSSH2="libssh2-1.8.0" (not used)
-# CURRENT_LIBGIT2="v0.26.0" (different, remark the v, which is the branch name)
-#
-# LIBXSLT are only used on this platform
-#
-
+LIBZIP_VERSION=1.2.0
+LIBGIT2_VERSION=v0.26.0
+# remark LIBXSLT are only used on this platform
+# due to Apple not publizing the version included in iOS
 
 # set up the Subsurface versions by hand
 GITVERSION=$(git describe --abbrev=12)
@@ -190,7 +172,7 @@ echo next building for $ARCH
 	fi
 	pushd libgit2
 	git fetch origin
-	if ! git checkout v$LIBGIT2_VERSION ; then
+	if ! git checkout $LIBGIT2_VERSION ; then
 		echo "Can't find the right tag in libgit2 - giving up"
 		exit 1
 	fi
