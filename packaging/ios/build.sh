@@ -44,7 +44,6 @@ if [ -z $QT_VERSION ] ; then
 fi
 
 # Which versions are we building against?
-LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=0.11.2
 LIBGIT2_VERSION=0.26.0
@@ -65,10 +64,8 @@ LIBFTDI_VERSION=1.2
 # CURRENT_LIBSSH2="libssh2-1.8.0" (not used)
 # CURRENT_LIBGIT2="v0.26.0" (different, remark the v, which is the branch name)
 #
-# LIBXSLT and LIBXML2 are only used on this platform
+# LIBXSLT are only used on this platform
 #
-# LIBXML2 states a version number, but the repo, does not contain a branch pr release
-# so master is used.
 
 
 # set up the Subsurface versions by hand
@@ -152,37 +149,10 @@ echo next building for $ARCH
 	target=$ARCH
 	hosttarget=$ARCH
 
-	if [ ! -d libxml2 ] ; then
-		git clone https://github.com/GNOME/libxml2.git libxml2
-	fi
-	pushd libxml2
-	if ! git checkout v$LIBXML2_VERSION ; then
-		echo "Can't find the right tag in libxml2 - giving up"
-		exit 1
-	fi
-	autoreconf --install
-	popd
-	if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
-		mkdir -p libxml2-build-$ARCH
-		pushd libxml2-build-$ARCH
-		if [ "$ARCH_NAME" == "x86_64" ]; then
-			../libxml2/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
-		else
-			../libxml2/configure --host=arm-apple-darwin --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
-		fi
-		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
-		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
-		make
-		make install
-
-		popd
-	fi
-
 	if [ ! -d libxslt ] ; then
 		git clone https://github.com/GNOME/libxslt.git libxslt
 	fi
 	# libxslt have too old config.sub
-	cp libxml2/config.sub libxslt
 	pushd libxslt
 	if ! git checkout v$LIBXSLT_VERSION ; then
 		echo "Can't find the right tag in libxslt - giving up"
@@ -193,7 +163,7 @@ echo next building for $ARCH
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
 		mkdir -p libxslt-build-$ARCH_NAME
 		pushd libxslt-build-$ARCH_NAME
-		../libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+		../libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
 		popd

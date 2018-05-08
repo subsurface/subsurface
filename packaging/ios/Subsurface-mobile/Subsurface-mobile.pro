@@ -109,20 +109,20 @@ LIBS += ../install-root/lib/libdivecomputer.a \
         ../install-root/lib/libgit2.a \
         ../install-root/lib/libzip.a \
         ../install-root/lib/libxslt.a \
-        ../install-root/lib/libxml2.a \
         ../googlemaps-build/libqtgeoservices_googlemaps.a \
         -liconv \
-	-lsqlite3
+	-lsqlite3 \
+	-lxml2
 
 INCLUDEPATH += ../install-root/include/ \
                ../install-root/lib/libzip/include \
-               ../install-root/include/libxml2 \
                ../install-root/include/libxstl \
                ../install-root/include/libexstl \
                ../install-root/include/openssl \
                ../../.. \
 	       ../../../core \
-	       ../../../mobile-widgets/qml/kirigami/src/libkirigami
+	       ../../../mobile-widgets/qml/kirigami/src/libkirigami \
+               /usr/include/libxml2
 
 HEADERS += \
     ../../../core/libdivecomputer.h \
