@@ -735,7 +735,9 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
 	// FIXME: This needs a function to find the divemode at the end of the dive like in
-	// divemode = get_current_divemode(&dive->dc, 1e5, &ev, &divemode);
+	struct event *ev = NULL;
+	divemode = UNDEF_COMP_TYPE;
+	divemode = get_current_divemode(&dive->dc, bottom_time, &ev, &divemode);
 	gas = dive->cylinder[current_cylinder].gasmix;
 
 	po2 = sample->setpoint.mbar;
