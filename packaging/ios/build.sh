@@ -44,7 +44,6 @@ if [ -z $QT_VERSION ] ; then
 fi
 
 # Which versions are we building against?
-SQLITE_VERSION=3090200
 LIBXML2_VERSION=2.9.2
 LIBXSLT_VERSION=1.1.28
 LIBZIP_VERSION=0.11.2
@@ -66,7 +65,7 @@ LIBFTDI_VERSION=1.2
 # CURRENT_LIBSSH2="libssh2-1.8.0" (not used)
 # CURRENT_LIBGIT2="v0.26.0" (different, remark the v, which is the branch name)
 #
-# SQLITE, LIBXSLT and LIBXML2 are only used on this platform
+# LIBXSLT and LIBXML2 are only used on this platform
 #
 # LIBXML2 states a version number, but the repo, does not contain a branch pr release
 # so master is used.
@@ -134,7 +133,7 @@ echo next building for $ARCH
 	declare -x LD=`xcrun -sdk $SDK_NAME -find ld`
 	declare -x CFLAGS="-arch $ARCH_NAME -isysroot $SDK_DIR -miphoneos-version-min=6.0 -I$SDK_DIR/usr/include -fembed-bitcode"
 	declare -x CXXFLAGS="$CFLAGS"
-	declare -x LDFLAGS="$CFLAGS  -lpthread -lc++ -L$SDK_DIR/usr/lib -fembed-bitcode"
+	declare -x LDFLAGS="$CFLAGS -lsqlite3 -lpthread -lc++ -L$SDK_DIR/usr/lib -fembed-bitcode"
 
 
 	# openssl build stuff.
@@ -152,33 +151,6 @@ echo next building for $ARCH
 
 	target=$ARCH
 	hosttarget=$ARCH
-
-	if [ ! -e sqlite-autoconf-${SQLITE_VERSION}.tar.gz ] ; then
-		curl -O http://www.sqlite.org/2015/sqlite-autoconf-${SQLITE_VERSION}.tar.gz
-	fi
-	if [ ! -e sqlite-autoconf-${SQLITE_VERSION} ] ; then
-		tar -zxf sqlite-autoconf-${SQLITE_VERSION}.tar.gz
-	fi
-	if [ ! -e $PKG_CONFIG_LIBDIR/sqlite3.pc ] ; then
-		mkdir -p sqlite-build-$ARCH_NAME
-		pushd sqlite-build-$ARCH_NAME
-		CFLAGS="${CFLAGS} -DSQLITE_ENABLE_LOCKING_STYLE=0"
-
-		../sqlite-autoconf-${SQLITE_VERSION}/configure \
-		--prefix="$PREFIX" \
-		--host="$BUILDCHAIN" \
-		--enable-static \
-		--disable-shared \
-		--disable-readline \
-		--disable-dynamic-extensions
-
-		# running make tries to build the command line executable which fails
-		# so let's hack around that
-		make libsqlite3.la
-		touch sqlite3
-		make install-libLTLIBRARIES install-pkgconfigDATA
-		popd
-	fi
 
 	if [ ! -d libxml2 ] ; then
 		git clone https://github.com/GNOME/libxml2.git libxml2

@@ -107,12 +107,12 @@ RESOURCES += qml.qrc ../../../subsurface.qrc ../../../mobile-widgets/qml/mobile-
 
 LIBS += ../install-root/lib/libdivecomputer.a \
         ../install-root/lib/libgit2.a \
-        ../install-root/lib/libsqlite3.a \
         ../install-root/lib/libzip.a \
         ../install-root/lib/libxslt.a \
         ../install-root/lib/libxml2.a \
         ../googlemaps-build/libqtgeoservices_googlemaps.a \
-        -liconv
+        -liconv \
+	-lsqlite3
 
 INCLUDEPATH += ../install-root/include/ \
                ../install-root/lib/libzip/include \
