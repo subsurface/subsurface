@@ -281,17 +281,18 @@ echo next building for $ARCH
 	if [ ! -d ../../libdivecomputer/src ] ; then
 		pushd ../..
 		git submodule init
-		git submodule update --recursive
-		pushd libdivecomputer
-		autoreconf --install
-		autoreconf --install
 		popd
+	fi
+	git submodule update --recursive
+	if [ ! -f ../../libdivecomputer/configure ] ; then
+		pushd ../../libdivecomputer
+		autoreconf --install
+		autoreconf --install
 		popd
 	fi
 	if [ ! -f libdivecomputer-${ARCH}.SHA ] ; then
 		echo "" > libdivecomputer-${ARCH}.SHA
 	fi
-	git submodule update --recursive
 	CURRENT_SHA=$(cd ../../libdivecomputer ; git describe)
 	PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
