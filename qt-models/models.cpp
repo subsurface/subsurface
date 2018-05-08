@@ -67,6 +67,36 @@ QVariant GasSelectionModel::data(const QModelIndex &index, int role) const
 	}
 	return QStringListModel::data(index, role);
 }
+// Dive Type Model for the divetype combo box
+
+Qt::ItemFlags DiveTypeSelectionModel::flags(const QModelIndex &index) const
+{
+	Q_UNUSED(index);
+	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+DiveTypeSelectionModel *DiveTypeSelectionModel::instance()
+{
+	static DiveTypeSelectionModel self;
+	return &self;
+}
+
+void DiveTypeSelectionModel::repopulate()
+{
+	QStringList modes = QStringList();
+	for (int i = 0; i < FREEDIVE; i++)
+		modes.append(QString(divemode_text[i]));
+	setStringList(modes);
+}
+
+QVariant DiveTypeSelectionModel::data(const QModelIndex &index, int role) const
+{
+	if (role == Qt::FontRole) {
+		return defaultModelFont();
+	}
+	return QStringListModel::data(index, role);
+}
+
 
 // Language Model, The Model to populate the list of possible Languages.
 

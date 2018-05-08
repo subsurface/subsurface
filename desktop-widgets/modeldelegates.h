@@ -92,6 +92,16 @@ slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
+class DiveTypesDelegate : public ComboBoxDelegate {
+	Q_OBJECT
+public:
+	explicit DiveTypesDelegate(QObject *parent = 0);
+	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+public
+slots:
+	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+};
+
 class SpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:

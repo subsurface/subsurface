@@ -407,6 +407,24 @@ AirTypesDelegate::AirTypesDelegate(QObject *parent) : ComboBoxDelegate(GasSelect
 {
 }
 
+void DiveTypesDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
+{
+	Q_UNUSED(widget)
+	Q_UNUSED(hint)
+}
+
+void DiveTypesDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return;
+	QComboBox *combo = qobject_cast<QComboBox *>(editor);
+	model->setData(index, QVariant(combo->currentIndex()));
+}
+
+DiveTypesDelegate::DiveTypesDelegate(QObject *parent) : ComboBoxDelegate(DiveTypeSelectionModel::instance(), parent, false)
+{
+}
+
 SpinBoxDelegate::SpinBoxDelegate(int min, int max, int step, QObject *parent):
 	QStyledItemDelegate(parent),
 	min(min),
