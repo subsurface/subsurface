@@ -282,7 +282,8 @@ Cross-building Subsurface on MacOSX for iOS
 1) build SubSurface under MacOSX
 2) build as described in subsurface/packaging/ios
 
-
+Note: running subsurface/scripts/build.sh -mobile, does NOT generate
+an iOS application, it generates a macos application with the mobile UI.
 
 
 Cross-building Subsurface on Linux for Windows
