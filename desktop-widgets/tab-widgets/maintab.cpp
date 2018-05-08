@@ -19,11 +19,11 @@
 #include "core/divesitehelpers.h"
 #include "qt-models/cylindermodel.h"
 #include "qt-models/weightmodel.h"
+#include "qt-models/regulatormodel.h"
 #include "qt-models/divecomputerextradatamodel.h"
 #include "qt-models/divelocationmodel.h"
 #include "qt-models/filtermodels.h"
 #include "core/divesite.h"
-#include "desktop-widgets/locationinformation.h"
 #include "desktop-widgets/locationinformation.h"
 
 #include "TabDiveExtraInfo.h"
@@ -42,6 +42,7 @@
 MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	weightModel(new WeightModel(this)),
 	cylindersModel(new CylindersModel(this)),
+	regulatorModel(new RegulatorModel(this)),
 	editMode(NONE),
 	copyPaste(false),
 	lastSelectedDive(true),
@@ -70,9 +71,11 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// this is needed to save the column sizes.
 	cylindersModel->setParent(ui.cylinders);
 	weightModel->setParent(ui.weights);
+	regulatorModel->setParent(ui.regulators);
 
 	ui.cylinders->setModel(cylindersModel);
 	ui.weights->setModel(weightModel);
+	ui.regulators->setModel(regulatorModel);
 	closeMessage();
 
 	connect(ui.editDiveSiteButton, SIGNAL(clicked()), MainWindow::instance(), SIGNAL(startDiveSiteEdit()));
@@ -106,6 +109,10 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	ui.weights->setTitle(tr("Weights"));
 	ui.weights->setBtnToolTip(tr("Add weight system"));
 	connect(ui.weights, SIGNAL(addButtonClicked()), this, SLOT(addWeight_clicked()));
+	
+	ui.regulators->setTitle(tr("Regulators"));
+	ui.regulators->setBtnToolTip(tr("Add regulator set or component"));
+	connect(ui.regulators, SIGNAL(addButtonClicked()), this, SLOT(addRegulator_clicked()));
 
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	ui.DiveType->insertItems(0, QStringList() << tr("OC") << tr("CCR") << tr("pSCR") << tr("Freedive"));
@@ -113,10 +120,14 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(ui.cylinders->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editCylinderWidget(QModelIndex)));
 	connect(ui.weights->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editWeightWidget(QModelIndex)));
+	connect(ui.regulators->view(), SIGNAL(clicked(QModelIndex)), this, SLOT(editRegulatorWidget(QModelIndex)));
 
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::TYPE, new TankInfoDelegate(this));
 	ui.cylinders->view()->setItemDelegateForColumn(CylindersModel::USE, new TankUseDelegate(this));
 	ui.weights->view()->setItemDelegateForColumn(WeightModel::TYPE, new WSInfoDelegate(this));
+	ui.regulators->view()->setItemDelegateForColumn(RegulatorModel::TYPE, new RegInfoDelegate(this));
+	//ui.regulators->view()->setItemDelegateForColumn(RegulatorModel::LAST_SERVICE, new RegInfoDelegateDate(this));
+	// TODO ALL OF THE FIELDS
 	ui.cylinders->view()->setColumnHidden(CylindersModel::DEPTH, true);
 	completers.buddy = new QCompleter(&buddyModel, ui.buddy);
 	completers.divemaster = new QCompleter(&diveMasterModel, ui.divemaster);
@@ -173,6 +184,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	}
 	ui.cylinders->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	ui.weights->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	ui.regulators->view()->horizontalHeader()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
 	QSettings s;
 	s.beginGroup("cylinders_dialog");
@@ -356,6 +368,7 @@ void MainTab::clearEquipment()
 {
 	cylindersModel->clear();
 	weightModel->clear();
+	regulatorModel->clear();
 }
 
 void MainTab::nextInputField(QKeyEvent *event)
@@ -569,6 +582,7 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.equipmentTab->setEnabled(true);
 			cylindersModel->updateDive();
 			weightModel->updateDive();
+			regulatorModel->updateDive();
 			ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
 			if (current_dive) {
 				bool isManual = same_string(current_dive->dc.model, "manually added dive");
@@ -653,6 +667,13 @@ void MainTab::addWeight_clicked()
 	if (editMode == NONE)
 		enableEdition();
 	weightModel->add();
+}
+
+void MainTab::addRegulator_clicked()
+{
+	if (editMode == NONE)
+		enableEdition();
+	regulatorModel->add();
 }
 
 void MainTab::reload()
@@ -916,6 +937,22 @@ void MainTab::acceptChanges()
 				cd->weightsystem[i].description = copy_string(displayed_dive.weightsystem[i].description);
 			}
 		}
+		
+		if (regulatorModel->changed) {
+			mark_divelist_changed(true);
+			MODIFY_SELECTED_DIVES(
+				for (int i = 0; i < MAX_REGULATORS; i++) {
+					if (mydive != cd && (copyPaste || same_string(mydive->regulators[i].description, cd->regulators[i].description))) {
+						mydive->regulators[i] = displayed_dive.regulators[i];
+						mydive->regulators[i].description = copy_string(displayed_dive.regulators[i].description);
+					}
+				}
+			);
+			for (int i = 0; i < MAX_REGULATORS; i++) {
+				cd->regulators[i] = displayed_dive.regulators[i];
+				cd->regulators[i].description = copy_string(displayed_dive.regulators[i].description);
+			}
+		}
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
 		uint32_t oldUuid = cd->dive_site_uuid;
@@ -993,6 +1030,7 @@ void MainTab::acceptChanges()
 	MainWindow::instance()->dive_list()->setFocus();
 	cylindersModel->changed = false;
 	weightModel->changed = false;
+	regulatorModel->changed = false;
 	MainWindow::instance()->setEnabledToolbar(true);
 	acceptingEdit = false;
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
@@ -1024,7 +1062,8 @@ void MainTab::rejectChanges()
 	if (lastMode != NONE && current_dive &&
 	    (modified ||
 	     memcmp(&current_dive->cylinder[0], &displayed_dive.cylinder[0], sizeof(cylinder_t) * MAX_CYLINDERS) ||
-	     memcmp(&current_dive->cylinder[0], &displayed_dive.weightsystem[0], sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS))) {
+	     memcmp(&current_dive->weightsystem[0], &displayed_dive.weightsystem[0], sizeof(weightsystem_t) * MAX_WEIGHTSYSTEMS) ||
+	     memcmp(&current_dive->regulators[0], &displayed_dive.regulators[0], sizeof(regulator_t) * MAX_REGULATORS))) {
 		if (QMessageBox::warning(MainWindow::instance(), TITLE_OR_TEXT(tr("Discard the changes?"),
 									       tr("You are about to discard your changes.")),
 					 QMessageBox::Discard | QMessageBox::Cancel, QMessageBox::Discard) != QMessageBox::Discard) {
@@ -1060,8 +1099,10 @@ void MainTab::rejectChanges()
 	MainWindow::instance()->setEnabledToolbar(true);
 	cylindersModel->changed = false;
 	weightModel->changed = false;
+	regulatorModel->changed = false;
 	cylindersModel->updateDive();
 	weightModel->updateDive();
+	regulatorModel->updateDive();
 	ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 }
 
@@ -1478,6 +1519,16 @@ void MainTab::editWeightWidget(const QModelIndex &index)
 		ui.weights->edit(index);
 }
 
+void MainTab::editRegulatorWidget(const QModelIndex &index)
+{
+	if (editMode == NONE)
+		enableEdition();
+
+	if (index.isValid() && index.column() != RegulatorModel::REMOVE)
+		ui.regulators->edit(index);
+	// TODO MORE MAGIC
+}
+
 void MainTab::escDetected()
 {
 	if (editMode != NONE)
@@ -1528,5 +1579,9 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.weights) {
 		weightModel->updateDive();
 		weightModel->changed = true;
+	}
+	if (what.regulators) {
+		regulatorModel->updateDive();
+		regulatorModel->changed = true;
 	}
 }

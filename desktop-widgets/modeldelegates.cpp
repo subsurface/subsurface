@@ -11,6 +11,8 @@
 #include "qt-models/weigthsysteminfomodel.h"
 #include "qt-models/weightmodel.h"
 #include "qt-models/divetripmodel.h"
+#include "qt-models/regulatorinfomodel.h"
+#include "qt-models/regulatormodel.h"
 #include "core/qthelper.h"
 
 #include <QCompleter>
@@ -386,6 +388,72 @@ QWidget *WSInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewIte
 	weightsystem_t *ws = mymodel->weightSystemAt(index);
 	currWeight.type = copy_string(ws->description);
 	currWeight.weight = ws->weight.grams;
+	return editor;
+}
+
+struct RevertRegulatortData {
+	QString type;
+	timestamp_t last_service;
+	int service_interval_time_months;
+	int service_interval_number_of_dives;
+} currRegulator;
+
+void RegInfoDelegate::revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint)
+{
+	Q_UNUSED(widget)
+	if (hint == QAbstractItemDelegate::NoHint ||
+	    hint == QAbstractItemDelegate::RevertModelCache) {
+		RegulatorModel *mymodel = qobject_cast<RegulatorModel *>(currCombo.model);
+		mymodel->setData(IDX(RegulatorModel::TYPE), currRegulator.type, Qt::EditRole);
+		mymodel->passInData(IDX(RegulatorModel::SERVICE_INTERVAL_TIME), currRegulator.service_interval_time_months);
+		mymodel->passInData(IDX(RegulatorModel::SERVICE_INTERVAL_DIVES), currRegulator.service_interval_number_of_dives);
+		mymodel->passInData(IDX(RegulatorModel::LAST_SERVICE), (qlonglong) currRegulator.last_service);
+	}
+}
+
+void RegInfoDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &thisindex) const
+{
+	Q_UNUSED(editor)
+	Q_UNUSED(model)
+	Q_UNUSED(thisindex)
+
+	RegulatorModel *mymodel = qobject_cast<RegulatorModel *>(currCombo.model);
+	RegInfoModel *regim = RegInfoModel::instance();
+	QModelIndexList matches = regim->match(regim->index(0, 0), Qt::DisplayRole, currCombo.activeText);
+	
+	int row;
+	if (matches.isEmpty()) {
+		regim->insertRows(regim->rowCount(), 1);
+		regim->setData(regim->index(regim->rowCount() - 1, 0), currCombo.activeText);
+		row = regim->rowCount() - 1;
+	} else {
+		row = matches.first().row();
+	}
+	long int last_service = regim->data(regim->index(row, RegInfoModel::LAST_SERVICE)).toLongLong();
+	int service_interval_time_months = regim->data(regim->index(row, RegInfoModel::SERVICE_INTERVAL_TIME)).toInt();
+	int service_interval_number_of_dives = regim->data(regim->index(row, RegInfoModel::SERVICE_INTERVAL_DIVES)).toInt();
+	QVariant v = QString(currCombo.activeText);
+	
+	mymodel->setData(IDX(RegulatorModel::TYPE), v, Qt::EditRole);
+	mymodel->passInData(IDX(RegulatorModel::LAST_SERVICE), (qlonglong) last_service);
+	mymodel->passInData(IDX(RegulatorModel::SERVICE_INTERVAL_TIME), service_interval_time_months);
+	mymodel->passInData(IDX(RegulatorModel::SERVICE_INTERVAL_DIVES), service_interval_number_of_dives);
+}
+
+RegInfoDelegate::RegInfoDelegate(QObject *parent) : ComboBoxDelegate(RegInfoModel::instance(), parent, true)
+{
+}
+
+QWidget *RegInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+	/* First, call the combobox-create editor, it will setup our globals. */
+	QWidget *editor = ComboBoxDelegate::createEditor(parent, option, index);
+	RegulatorModel *mymodel = qobject_cast<RegulatorModel *>(currCombo.model);
+	regulator_t *reg = mymodel->regulatorAt(index);
+	currRegulator.type = copy_string(reg->description);
+	currRegulator.last_service = reg->last_service;
+	currRegulator.service_interval_number_of_dives = reg->service_interval_number_of_dives;
+	currRegulator.service_interval_time_months = reg->service_interval_time_months;
 	return editor;
 }
 

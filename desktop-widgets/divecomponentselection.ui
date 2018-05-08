@@ -137,6 +137,13 @@
         </property>
        </widget>
       </item>
+      <item row="5" column="1">
+       <widget class="QCheckBox" name="regulators">
+        <property name="text">
+         <string>Regulators</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>

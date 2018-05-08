@@ -560,6 +560,7 @@
                 </property>
                 <widget class="TableView" name="cylinders" native="true"/>
                 <widget class="TableView" name="weights" native="true"/>
+                <widget class="TableView" name="regulators" native="true"/>
                </widget>
               </item>
              </layout>

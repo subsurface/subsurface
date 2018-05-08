@@ -1739,6 +1739,10 @@ struct dive *fixup_dive(struct dive *dive)
 		weightsystem_t *ws = dive->weightsystem + i;
 		add_weightsystem_description(ws);
 	}
+	for (i = 0; i < MAX_REGULATORS; i++) {
+		regulator_t *reg = dive->regulators + i;
+		add_regulator_description(reg);
+	}
 	/* we should always have a uniq ID as that gets assigned during alloc_dive(),
 	 * but we want to make sure... */
 	if (!dive->id)

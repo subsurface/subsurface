@@ -19,6 +19,7 @@
 #include "core/dive.h"
 
 class WeightModel;
+class RegulatorModel;
 class CylindersModel;
 class ExtraDataModel;
 class DivePictureModel;
@@ -65,6 +66,7 @@ public
 slots:
 	void addCylinder_clicked();
 	void addWeight_clicked();
+	void addRegulator_clicked();
 	void updateDiveInfo(bool clear = false);
 	void updateDepthDuration();
 	void acceptChanges();
@@ -89,6 +91,7 @@ slots:
 	void on_tagWidget_textChanged();
 	void editCylinderWidget(const QModelIndex &index);
 	void editWeightWidget(const QModelIndex &index);
+	void editRegulatorWidget(const QModelIndex &index);
 	void addDiveStarted();
 	void addMessageAction(QAction *action);
 	void hideMessage();
@@ -107,6 +110,7 @@ private:
 	Ui::MainTab ui;
 	WeightModel *weightModel;
 	CylindersModel *cylindersModel;
+	RegulatorModel *regulatorModel;
 	EditMode editMode;
 	BuddyCompletionModel buddyModel;
 	DiveMasterCompletionModel diveMasterModel;

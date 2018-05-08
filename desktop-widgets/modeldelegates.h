@@ -82,6 +82,17 @@ slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
 };
 
+class RegInfoDelegate : public ComboBoxDelegate {
+	Q_OBJECT
+public:
+	explicit RegInfoDelegate(QObject *parent = 0);
+	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+public
+slots:
+	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
+};
+
 class AirTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:

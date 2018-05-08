@@ -27,6 +27,8 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	diveplannermodel.cpp
 	divecomputerextradatamodel.cpp
 	ssrfsortfilterproxymodel.cpp
+	regulatormodel.cpp
+	regulatorinfomodel.cpp
 )
 
 # models exclusively used in mobile builds

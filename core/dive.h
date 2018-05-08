@@ -114,6 +114,14 @@ typedef struct
 	const char *description; /* "integrated", "belt", "ankle" */
 } weightsystem_t;
 
+typedef struct
+{
+	const char *description; /* "Regulator set", "First stage", "Second stage" */
+	timestamp_t last_service;
+	int service_interval_time_months;
+	int service_interval_number_of_dives;
+} regulator_t;
+
 struct icd_data { // This structure provides communication between function isobaric_counterdiffusion() and the calling software.
 	int dN2;      // The change in fraction (permille) of nitrogen during the change
 	int dHe;      // The change in fraction (permille) of helium during the change
@@ -323,6 +331,7 @@ struct divecomputer {
 
 #define MAX_CYLINDERS (20)
 #define MAX_WEIGHTSYSTEMS (6)
+#define MAX_REGULATORS (6)
 #define MAX_TANK_INFO (100)
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
@@ -366,6 +375,7 @@ struct dive {
 	int visibility; /* 0 - 5 star rating */
 	cylinder_t cylinder[MAX_CYLINDERS];
 	weightsystem_t weightsystem[MAX_WEIGHTSYSTEMS];
+	regulator_t regulators[MAX_REGULATORS];
 	char *suit;
 	int sac, otu, cns, maxcns;
 
@@ -410,6 +420,7 @@ struct dive_components {
 	unsigned int tags : 1;
 	unsigned int cylinders : 1;
 	unsigned int weights : 1;
+	unsigned int regulators : 1;
 };
 
 /* picture list and methods related to dive picture handling */
@@ -831,6 +842,7 @@ extern int nr_weightsystems(struct dive *dive);
 
 extern void add_cylinder_description(cylinder_type_t *);
 extern void add_weightsystem_description(weightsystem_t *);
+extern void add_regulator_description(regulator_t *regulator);
 extern void remember_event(const char *eventname);
 extern void invalidate_dive_cache(struct dive *dc);
 
@@ -989,13 +1001,25 @@ struct ws_info_t {
 };
 extern struct ws_info_t ws_info[100];
 
+struct reg_info_t {
+	const char *name;
+	timestamp_t last_service;
+	int service_interval_time_months;
+	int service_interval_number_of_dives;
+};
+extern struct reg_info_t reg_info[100];
+
 extern bool cylinder_nodata(const cylinder_t *cyl);
 extern bool cylinder_none(void *_data);
 extern bool weightsystem_none(void *_data);
 extern bool no_weightsystems(weightsystem_t *ws);
+extern bool regulator_none(void *_data);
+extern bool no_regulators(regulator_t *reg);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
+extern void remove_regulator(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
+extern int get_dives_since_service(regulator_t *reg, timestamp_t stop_date);
 #ifdef DEBUG_CYL
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif

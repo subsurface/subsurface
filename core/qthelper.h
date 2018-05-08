@@ -37,6 +37,7 @@ extern "C" char *hashstring(const char *filename);
 QString localFilePath(const QString &originalFilename);
 void learnHash(const QString &originalName, const QString &localName, const QByteArray &hash);
 weight_t string_to_weight(const char *str);
+QDateTime string_to_date(const char *str);
 depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
 volume_t string_to_volume(const char *str, pressure_t workp);

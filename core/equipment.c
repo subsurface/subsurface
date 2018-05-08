@@ -56,6 +56,31 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 	}
 }
 
+void add_regulator_description(regulator_t *regulator)
+{
+	const char *desc;
+	int i;
+
+	desc = regulator->description;
+	if (!desc)
+		return;
+	for (i = 0; i < 100 && reg_info[i].name != NULL; i++) {
+		if (strcmp(reg_info[i].name, desc) == 0) {
+			reg_info[i].last_service = regulator->last_service;
+			reg_info[i].service_interval_number_of_dives = regulator->service_interval_number_of_dives;
+			reg_info[i].service_interval_time_months = regulator->service_interval_time_months;
+			return;
+		}
+	}
+	if (i < 100) {
+		/* Add entry to reg_info */
+		reg_info[i].name = strdup(desc);
+		reg_info[i].last_service = regulator->last_service;
+		reg_info[i].service_interval_number_of_dives = regulator->service_interval_number_of_dives;
+		reg_info[i].service_interval_time_months = regulator->service_interval_time_months;
+	}
+}
+
 bool cylinder_nodata(const cylinder_t *cyl)
 {
 	return !cyl->type.size.mliter &&
@@ -111,6 +136,20 @@ bool no_weightsystems(weightsystem_t *ws)
 {
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		if (!weightsystem_none(ws + i))
+			return false;
+	return true;
+}
+
+bool regulator_none(void *_data)
+{
+	regulator_t *reg = _data;
+	return !reg->description;
+}
+
+bool no_regulators(regulator_t *reg)
+{
+	for (int i = 0; i < MAX_REGULATORS; i++)
+		if (!regulator_none(reg + i))
 			return false;
 	return true;
 }
@@ -189,6 +228,12 @@ struct ws_info_t ws_info[100] = {
 	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
 };
 
+struct reg_info_t reg_info[100] = {
+	{ QT_TRANSLATE_NOOP("gettextFromC", "Regulator set"), -1, 12, 100 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "First stage"), -1, 12, 100 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "Second stage"), -1, 12, 100 },
+};
+
 void remove_cylinder(struct dive *dive, int idx)
 {
 	cylinder_t *cyl = dive->cylinder + idx;
@@ -203,6 +248,14 @@ void remove_weightsystem(struct dive *dive, int idx)
 	int nr = MAX_WEIGHTSYSTEMS - idx - 1;
 	memmove(ws, ws + 1, nr * sizeof(*ws));
 	memset(ws + nr, 0, sizeof(*ws));
+}
+
+void remove_regulator(struct dive *dive, int idx)
+{
+	regulator_t *reg = dive->regulators + idx;
+	int nr = MAX_REGULATORS - idx - 1;
+	memmove(reg, reg + 1, nr * sizeof(*reg));
+	memset(reg + nr, 0, sizeof(*reg));
 }
 
 /* when planning a dive we need to make sure that all cylinders have a sane depth assigned
@@ -222,6 +275,29 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 		cyl->gas_used.mliter = 0;
 		cyl->deco_gas_used.mliter = 0;
 	}
+}
+
+/*
+ * Compute the number of logged dives between the last service and "stop_date"
+ * \param regulator_t - regulator information
+ * \param int64 - only search until stop_date is reached
+ * \return number of logged dives between last service and stop date
+ */
+int get_dives_since_service(regulator_t *reg, timestamp_t stop_date) {
+	int i, j, dives_since_service = 0;
+	struct dive *dive;
+	for_each_dive(i, dive) {
+		for (j = 0; j < MAX_REGULATORS; j++) {
+			if (dive->regulators[j].description != NULL
+			    && !strcmp(dive->regulators[j].description, reg->description)
+			    && dive->when > reg->last_service
+			    && dive->when < stop_date) {
+				// Dive was after last service
+				dives_since_service++;
+			}
+		}
+	}
+	return dives_since_service;
 }
 
 #ifdef DEBUG_CYL

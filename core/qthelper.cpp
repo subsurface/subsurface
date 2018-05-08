@@ -654,6 +654,11 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 	}
 }
 
+QString get_interval_time_string(int months)
+{
+	return QString("%1 %2").arg(months).arg(translate("gettextFromC", "months"));
+}
+
 QString getSubsurfaceDataPath(QString folderToFind)
 {
 	QString execdir;
@@ -1288,6 +1293,62 @@ QString get_taglist_string(struct tag_entry *tag_list)
 	QString ret = QString::fromUtf8(buffer);
 	free(buffer);
 	return ret;
+}
+
+QDateTime string_to_date(const char *str)
+{
+	QString input = QString(str);
+	QString year, month, day;
+	QDateTime dt;
+	if (input.contains("-")) {
+		QStringList elements = input.split("-");
+		if (elements.size() == 3) {
+			/* Expected format: yyyy-MM-dd */
+			year = elements.at(0);
+			month = elements.at(1);
+			day = elements.at(2);
+		}
+	} else if (input.contains(".")) {
+		QStringList elements = input.split(".");
+		if (elements.size() == 3) {
+			/* Expected format: dd.MM.yyyy */
+			day = elements.at(0);
+			month = elements.at(1);
+			year = elements.at(2);
+		}
+	} else if (input.contains("/")) {
+		QStringList elements = input.split("/");
+		if (elements.size() == 3) {
+			/* Expected format: MM/dd/yyyy */
+			month = elements.at(0);
+			day = elements.at(1);
+			year = elements.at(2);
+		}
+	}
+	
+	if (year.length() == 2) {
+		// Only an assumption, but a likely one
+		year.prepend("20");
+	}
+	
+	if (month.length() == 1) {
+		month.prepend("0");
+	}
+	
+	if (day.length() == 1) {
+		day.prepend(("0"));
+	}
+	
+	if (year.length() == 4 && 
+	    month.length() == 2 &&
+	    day.length() == 2) {
+		QString formatedDateString = QString("%1-%2-%3")
+		                             .arg(year)
+		                             .arg(month)
+		                             .arg(day);
+		dt = QDateTime::fromString(formatedDateString, QString("yyyy-MM-dd"));
+	}
+	return dt;
 }
 
 weight_t string_to_weight(const char *str)
