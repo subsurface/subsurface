@@ -55,6 +55,7 @@ void DivePlannerPointsModel::createSimpleDive()
 	}
 	updateMaxDepth();
 	GasSelectionModel::instance()->repopulate();
+	DiveTypeSelectionModel::instance()->repopulate();
 }
 
 void DivePlannerPointsModel::setupStartTime()
