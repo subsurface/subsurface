@@ -222,4 +222,5 @@ ios {
     images.files = ../../../icons/subsurface-mobile-icon.png
     QMAKE_BUNDLE_DATA += app_launch_images images
     QMAKE_INFO_PLIST = ../Info.plist
+    QMAKE_IOS_DEPLOYMENT_TARGET = 8.0
 }
