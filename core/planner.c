@@ -231,14 +231,14 @@ void fill_default_cylinder(cylinder_t *cyl)
 
 /* calculate the new end pressure of the cylinder, based on its current end pressure and the
  * latest segment. */
-static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco)
+static void update_cylinder_pressure(struct dive *d, int old_depth, int new_depth, int duration, int sac, cylinder_t *cyl, bool in_deco, enum dive_comp_type divemode)
 {
 	volume_t gas_used;
 	pressure_t delta_p;
 	depth_t mean_depth;
 	int factor = 1000;
 
-	if (d->dc.divemode == PSCR)
+	if (divemode == PSCR)
 		factor = prefs.pscr_ratio;
 
 	if (!cyl)
@@ -358,7 +358,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
 		if (track_gas && !sample[-1].setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
 			update_cylinder_pressure(dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
-					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered);
+					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered, type);
 			if (cyl->type.workingpressure.mbar)
 				sample->pressure[0].mbar = cyl->end.mbar;
 		}
@@ -553,15 +553,15 @@ int ascent_velocity(int depth, int avg_depth, int bottom_time)
 	}
 }
 
-void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop)
+void track_ascent_gas(int depth, cylinder_t *cylinder, int avg_depth, int bottom_time, bool safety_stop, enum dive_comp_type divemode)
 {
 	while (depth > 0) {
 		int deltad = ascent_velocity(depth, avg_depth, bottom_time) * TIMESTEP;
 		if (deltad > depth)
 			deltad = depth;
-		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true);
+		update_cylinder_pressure(&displayed_dive, depth, depth - deltad, TIMESTEP, prefs.decosac, cylinder, true, divemode);
 		if (depth <= 5000 && depth >= (5000 - deltad) && safety_stop) {
-			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.decosac, cylinder, true);
+			update_cylinder_pressure(&displayed_dive, 5000, 5000, 180, prefs.decosac, cylinder, true, divemode);
 			safety_stop = false;
 		}
 		depth -= deltad;
@@ -789,13 +789,13 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 	vpmb_start_gradient(ds);
 	if (decoMode() == RECREATIONAL) {
 		bool safety_stop = prefs.safetystop && max_depth >= 10000;
-		track_ascent_gas(depth, &dive->cylinder[current_cylinder], avg_depth, bottom_time, safety_stop);
+		track_ascent_gas(depth, &dive->cylinder[current_cylinder], avg_depth, bottom_time, safety_stop, divemode);
 		// How long can we stay at the current depth and still directly ascent to the surface?
 		do {
 			add_segment(ds, depth_to_bar(depth, dive),
 				    &dive->cylinder[current_cylinder].gasmix,
 				    timestep, po2, divemode, prefs.bottomsac);
-			update_cylinder_pressure(dive, depth, depth, timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false);
+			update_cylinder_pressure(dive, depth, depth, timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false, divemode);
 			clock += timestep;
 		} while (trial_ascent(ds, 0, depth, 0, avg_depth, bottom_time, &dive->cylinder[current_cylinder].gasmix,
 				      po2, diveplan->surface_pressure / 1000.0, dive, divemode) &&
@@ -805,7 +805,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 		// In the best of all worlds, we would roll back also the last add_segment in terms of caching deco state, but
 		// let's ignore that since for the eventual ascent in recreational mode, nobody looks at the ceiling anymore,
 		// so we don't really have to compute the deco state.
-		update_cylinder_pressure(dive, depth, depth, -timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false);
+		update_cylinder_pressure(dive, depth, depth, -timestep, prefs.bottomsac, &dive->cylinder[current_cylinder], false, divemode);
 		clock -= timestep;
 		plan_add_segment(diveplan, clock - previous_point_time, depth, current_cylinder, po2, true, divemode);
 		previous_point_time = clock;
