@@ -279,9 +279,13 @@ To install the app for all users, move subsurface/build/Subsurface.app to /Appli
 Cross-building Subsurface on MacOSX for iOS
 -------------------------------------------
 
-1) build SubSurface under MacOSX
-2) build as described in subsurface/packaging/ios
+1) build SubSurface under MacOSX and iOS
 
+1.1) cd <repo>/..; bash <repo>/scripts/build.sh -build-deps -both
+note: this is mainly done to ensure all external dependencies are downloaded and set
+      to the correct versions
+
+2) continue as described in subsurface/packaging/ios
 
 
 
