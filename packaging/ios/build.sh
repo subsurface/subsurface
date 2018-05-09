@@ -53,6 +53,24 @@ LIBGIT2_VERSION=0.26.0
 LIBUSB_VERSION=1.0.19
 LIBFTDI_VERSION=1.2
 
+# NOTE: NOT IDENTICAL TO OTHER PLATFORMS
+#       in order not to make "technical version" bumps
+# script/build.sh contains:
+#
+# CURRENT_LIBZIP="1.2.0" (very different)
+# CURRENT_HIDAPI="hidapi-0.7.0" (not used)
+# CURRENT_LIBCURL="curl-7_54_1" (not used)
+# CURRENT_LIBUSB="v1.0.21" (different but not used)
+# CURRENT_OPENSSL="OpenSSL_1_1_0f" (not used)
+# CURRENT_LIBSSH2="libssh2-1.8.0" (not used)
+# CURRENT_LIBGIT2="v0.26.0" (different, remark the v, which is the branch name)
+#
+# SQLITE, LIBXSLT and LIBXML2 are only used on this platform
+#
+# LIBXML2 states a version number, but the repo, does not contain a branch pr release
+# so master is used.
+
+
 # set up the Subsurface versions by hand
 GITVERSION=$(git describe --abbrev=12)
 CANONICALVERSION=$(git describe --abbrev=12 | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
@@ -156,56 +174,55 @@ echo next building for $ARCH
 		popd
 	fi
 
-	if [ ! -e libxml2-${LIBXML2_VERSION}.tar.gz ] ; then
-		# wget ftp://xmlsoft.org/libxml2/libxml2-${LIBXML2_VERSION}.tar.gz
-		wget http://api.github.com/repos/GNOME/libxml2/tarball/v${LIBXML2_VERSION} -O libxml2-${LIBXML2_VERSION}.tar.gz
+	if [ ! -d libxml2 ] ; then
+		git clone https://github.com/GNOME/libxml2.git libxml2
 	fi
-	if [ ! -e libxml2-${LIBXML2_VERSION} ] ; then
-		mkdir -p libxml2-${LIBXML2_VERSION}
-		tar -zxf libxml2-${LIBXML2_VERSION}.tar.gz --strip 1 -C libxml2-${LIBXML2_VERSION}
-		pushd libxml2-${LIBXML2_VERSION}
-		autoreconf --install
-		popd
+	pushd libxml2
+	if ! git checkout v$LIBXML2_VERSION ; then
+		echo "Can't find the right tag in libxml2 - giving up"
+		exit 1
 	fi
+	autoreconf --install
+	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxml-2.0.pc ] ; then
 		mkdir -p libxml2-build-$ARCH
 		pushd libxml2-build-$ARCH
 		if [ "$ARCH_NAME" == "x86_64" ]; then
-			../libxml2-${LIBXML2_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+			../libxml2/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
 		else
-			../libxml2-${LIBXML2_VERSION}/configure --host=arm-apple-darwin --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
+			../libxml2/configure --host=arm-apple-darwin --prefix=${PREFIX} --without-python --without-iconv --enable-static --disable-shared
 		fi
 		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
 		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
 		make
 		make install
+
 		popd
 	fi
 
-	if [ ! -e libxslt-${LIBXSLT_VERSION}.tar.gz ] ; then
-		# wget ftp://xmlsoft.org/libxml2/libxslt-${LIBXSLT_VERSION}.tar.gz
-		wget http://api.github.com/repos/GNOME/libxslt/tarball/v${LIBXSLT_VERSION} -O libxslt-${LIBXSLT_VERSION}.tar.gz
+	if [ ! -d libxslt ] ; then
+		git clone https://github.com/GNOME/libxslt.git libxslt
 	fi
-	if [ ! -e libxslt-${LIBXSLT_VERSION} ] ; then
-		mkdir -p libxslt-${LIBXSLT_VERSION}
-		tar -zxf libxslt-${LIBXSLT_VERSION}.tar.gz --strip 1 -C libxslt-${LIBXSLT_VERSION}
-		# libxslt have too old config.sub
-		cp libxml2-${LIBXML2_VERSION}/config.sub libxslt-${LIBXSLT_VERSION}
-		pushd libxslt-${LIBXSLT_VERSION}
-		autoreconf --install
-		popd
+	# libxslt have too old config.sub
+	cp libxml2/config.sub libxslt
+	pushd libxslt
+	if ! git checkout v$LIBXSLT_VERSION ; then
+		echo "Can't find the right tag in libxslt - giving up"
+		exit 1
 	fi
+	autoreconf --install
+	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
 		mkdir -p libxslt-build-$ARCH_NAME
 		pushd libxslt-build-$ARCH_NAME
-		../libxslt-${LIBXSLT_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+		../libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --with-libxml-prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
 		popd
 	fi
 
 	if [ ! -e libzip-${LIBZIP_VERSION}.tar.gz ] ; then
-		wget http://www.nih.at/libzip/libzip-${LIBZIP_VERSION}.tar.gz
+		curl -O https://libzip.org/download/libzip-${LIBZIP_VERSION}.tar.gz
 	fi
 	if [ ! -e libzip-${LIBZIP_VERSION} ] ; then
 		tar -zxf libzip-${LIBZIP_VERSION}.tar.gz
@@ -219,20 +236,23 @@ echo next building for $ARCH
 		popd
 	fi
 
-	if [ ! -e libgit2-${LIBGIT2_VERSION}.tar.gz ] ; then
-		wget -O libgit2-${LIBGIT2_VERSION}.tar.gz https://github.com/libgit2/libgit2/archive/v${LIBGIT2_VERSION}.tar.gz
+	if [ ! -d libgit2 ] ; then
+		git clone https://github.com/libgit2/libgit2.git
 	fi
-	if [ ! -e libgit2-${LIBGIT2_VERSION} ] ; then
-		tar -zxf libgit2-${LIBGIT2_VERSION}.tar.gz
-		# libgit2 with -Wall on iOS creates megabytes of warnings...
-		pushd libgit2-${LIBGIT2_VERSION}
-		sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
-		popd
+	pushd libgit2
+	git fetch origin
+	if ! git checkout v$LIBGIT2_VERSION ; then
+		echo "Can't find the right tag in libgit2 - giving up"
+		exit 1
 	fi
+	# libgit2 with -Wall on iOS creates megabytes of warnings...
+	sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
+	popd
+
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 		mkdir -p libgit2-build-$ARCH
 		pushd libgit2-build-$ARCH
-		cmake ../libgit2-${LIBGIT2_VERSION} \
+		cmake ../libgit2 \
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
 		    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
@@ -242,7 +262,7 @@ echo next building for $ARCH
 			-DCMAKE_PREFIX_PATH=${PREFIX} \
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
-			../libgit2-${LIBGIT2_VERSION}/
+			../libgit2/
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' CMakeFiles/git2.dir/flags.make
 		make
 		make install
@@ -250,60 +270,6 @@ echo next building for $ARCH
 		perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' $PKG_CONFIG_LIBDIR/libgit2.pc
 		popd
 	fi
-
-# let's skip libusb and libftdi for the moment...
-# not sure if / when we'll be able to use USB devices on iOS
-#
-# if [ ! -e libusb-${LIBUSB_VERSION}.tar.gz ] ; then
-# 	wget -O libusb-${LIBUSB_VERSION}.tar.gz https://github.com/libusb/libusb/archive/v${LIBUSB_VERSION}.tar.gz
-# fi
-# if [ ! -e libusb-${LIBUSB_VERSION} ] ; then
-# 	tar -zxf libusb-${LIBUSB_VERSION}.tar.gz
-# fi
-# if ! grep -q libusb_set_android_open_callback libusb-${LIBUSB_VERSION}/libusb/libusb.h ; then
-# 	# Patch in our libusb callback
-# 	pushd libusb-${LIBUSB_VERSION}
-# 	patch -p1 < $SUBSURFACE_SOURCE/packaging/android/patches/libusb-android.patch
-# 	popd
-# fi
-# if [ ! -e libusb-${LIBUSB_VERSION}/configure ] ; then
-# 	pushd libusb-${LIBUSB_VERSION}
-# 	mkdir m4
-# 	autoreconf -i
-# 	popd
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libusb-1.0.pc ] ; then
-# 	mkdir -p libusb-build-$ARCH
-# 	pushd libusb-build-$ARCH
-# 	../libusb-${LIBUSB_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --disable-udev --enable-system-log
-# 	# --enable-debug-log
-# 	make
-# 	make install
-# 	popd
-# 	# Patch libusb-1.0.pc due to bug in there
-# 	# Fix comming in 1.0.20
-# 	sed -ie 's/Libs.private:  -c/Libs.private: /' $PKG_CONFIG_LIBDIR/libusb-1.0.pc
-# fi
-#
-# if [ ! -e libftdi1-${LIBFTDI_VERSION}.tar.bz2 ] ; then
-# 	wget -O libftdi1-${LIBFTDI_VERSION}.tar.bz2 http://www.intra2net.com/en/developer/libftdi/download/libftdi1-${LIBFTDI_VERSION}.tar.bz2
-# fi
-# if [ ! -e libftdi1-${LIBFTDI_VERSION} ] ; then
-# 	tar -jxf libftdi1-${LIBFTDI_VERSION}.tar.bz2
-# fi
-# if [ ! -e $PKG_CONFIG_LIBDIR/libftdi1.pc ] && [ $PLATFORM != Darwin ] ; then
-# 	mkdir -p libftdi1-build-$ARCH
-# 	pushd libftdi1-build-$ARCH
-# 	cmake ../libftdi1-${LIBFTDI_VERSION} -DCMAKE_C_COMPILER=${CC} -DCMAKE_INSTALL_PREFIX=${PREFIX} -DCMAKE_PREFIX_PATH=${PREFIX} -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
-# 	make
-# 	make install
-# 	popd
-# fi
-# # Blast away the shared version to force static linking
-# if [ -e $PREFIX/lib/libftdi1.so ] ; then
-# 	rm $PREFIX/lib/libftdi1.so*
-# fi
-#
 
 # build libdivecomputer
 	if [ ! -d ../../libdivecomputer/src ] ; then
