@@ -10,6 +10,8 @@
 #include <QString>
 #include <QImageReader>
 #include <QDataStream>
+#include <QSvgRenderer>
+#include <QPainter>
 
 #include <QtConcurrent>
 
@@ -140,8 +142,17 @@ QImage getHashedImage(const QString &file)
 	return res;
 }
 
-Thumbnailer::Thumbnailer() : failImage(QImage(":filter-close").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio)), // TODO: Don't misuse filter close icon
-			     dummyImage(QImage(":photo-icon").scaled(maxThumbnailSize(), maxThumbnailSize(), Qt::KeepAspectRatio)) // TODO: Don't misuse photo-icon
+static QImage renderIcon(const char *id, int size)
+{
+	QImage res(size, size, QImage::Format_ARGB32);
+	QSvgRenderer svg{QString(id)};
+	QPainter painter(&res);
+	svg.render(&painter);
+	return res;
+}
+
+Thumbnailer::Thumbnailer() : failImage(renderIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
+			     dummyImage(renderIcon(":camera-icon", maxThumbnailSize()))
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.
