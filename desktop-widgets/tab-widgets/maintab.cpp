@@ -24,7 +24,6 @@
 #include "qt-models/filtermodels.h"
 #include "core/divesite.h"
 #include "desktop-widgets/locationinformation.h"
-#include "desktop-widgets/locationinformation.h"
 
 #include "TabDiveExtraInfo.h"
 #include "TabDiveInformation.h"
