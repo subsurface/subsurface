@@ -1,6 +1,7 @@
 - Desktop: allow editing from list-view [#1213]
 - Desktop: don't add six seconds to dive duration [#554]
 - Desktop: fix manual editing of dive duration [#1211]
+- Desktop: Implement bailout events in logbook and planner
 - Desktop: fix time format in main tab [#1234]
 - Mobile: recalculate derived values after dive edit
 - Mobile: fold dive trips to give better overview for large dive lists
