@@ -19,7 +19,7 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	treemodel.cpp
 	cylindermodel.cpp
 	yearlystatisticsmodel.cpp
-	weigthsysteminfomodel.cpp
+	weightsysteminfomodel.cpp
 	weightmodel.cpp
 	filtermodels.cpp
 	divecomputermodel.cpp

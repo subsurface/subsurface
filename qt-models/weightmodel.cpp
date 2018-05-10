@@ -4,7 +4,7 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/helpers.h"
-#include "qt-models/weigthsysteminfomodel.h"
+#include "qt-models/weightsysteminfomodel.h"
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),
 	changed(false),
@@ -103,7 +103,7 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 	switch (index.column()) {
 	case TYPE:
 		if (!value.isNull()) {
-			//TODO: C-function weigth_system_set_description ?
+			//TODO: C-function weight_system_set_description ?
 			if (!ws->description || gettextFromC::instance()->tr(ws->description) != vString) {
 				// loop over translations to see if one matches
 				int i = -1;
