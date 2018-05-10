@@ -42,4 +42,5 @@ packaging/ios/libdivecomputer-*
 packaging/ios/libgit2*
 packaging/ios/libxslt*
 packaging/ios/libzip*
-
+packaging/ios/Info.plist
+packaging/ios/Qt
