@@ -33,7 +33,7 @@
 #include "desktop-widgets/printdialog.h"
 #endif
 #include "qt-models/tankinfomodel.h"
-#include "qt-models/weigthsysteminfomodel.h"
+#include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
 #include "qt-models/diveplannermodel.h"
 #include "qt-models/cylindermodel.h"

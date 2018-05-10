@@ -8,7 +8,7 @@
 #include "desktop-widgets/starwidget.h"
 #include "profile-widget/profilewidget2.h"
 #include "qt-models/tankinfomodel.h"
-#include "qt-models/weigthsysteminfomodel.h"
+#include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/weightmodel.h"
 #include "qt-models/divetripmodel.h"
 #include "core/qthelper.h"
