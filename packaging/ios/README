@@ -13,7 +13,8 @@ Follow the instruction in:
 and then continue here:
 
 1) cd <repo>/packaging/ios
-2) ./build.sh
+2) export IOS_BUNDLE_PRODUCT_IDENTIFIER="<your apple id>.subsurface-divelog.subsurface-mobile"
+3) ./build.sh
 note: this builds all dependencies and is only needed first time
       it currently build for armv7 arm64 and x86_64 (simulator)
 
@@ -41,4 +42,8 @@ build.sh script so that the Info.plist used by QtCreator (well, by Xcode under
 the hood) gets updated. Otherwise you will continue to see the old version
 number, even though the sources have been recompiled which can be very
 confusing.
+
+Do a simply version update by running:
+build.sh version
+and then rebuilding in Qt Creator
 
