@@ -60,7 +60,7 @@ echo "#define MOBILE_VERSION_STRING \"$MOBILEVERSION\"" >> subsurface-mobile/ssr
 
 BUNDLE=org.subsurface-divelog.subsurface-mobile
 if [ "${IOS_BUNDLE_PRODUCT_IDENTIFIER}" != "" ] ; then
-  BUNDLE=${IOS_BUNDLE_PRODUCT_IDENTIFIER}
+	BUNDLE=${IOS_BUNDLE_PRODUCT_IDENTIFIER}
 fi
 
 # create Info.plist with the correct versions
