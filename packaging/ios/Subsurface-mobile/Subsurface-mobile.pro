@@ -191,7 +191,7 @@ HEADERS += \
 	../../../qt-models/gpslistmodel.h \
 	../../../qt-models/divelocationmodel.h \
 	../../../qt-models/completionmodels.h \
-	../../../qt-models/weigthsysteminfomodel.h \
+	../../../qt-models/weightsysteminfomodel.h \
 	../../../qt-models/maplocationmodel.h \
 	../../../qt-models/diveimportedmodel.h \
 	../../../qt-models/messagehandlermodel.h \
