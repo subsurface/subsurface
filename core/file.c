@@ -10,6 +10,7 @@
 #include <time.h>
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "divelist.h"
 #include "file.h"
 #include "git-access.h"

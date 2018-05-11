@@ -3,6 +3,7 @@
 #include <libdivecomputer/parser.h>
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "divelist.h"
 #include "file.h"
 #include "parse.h"

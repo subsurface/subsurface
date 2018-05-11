@@ -17,6 +17,7 @@
 #include "libdivecomputer.h"
 #include "core/qt-ble.h"
 #include "core/btdiscovery.h"
+#include "core/subsurface-string.h"
 
 #define BLE_TIMEOUT 12000 // 12 seconds seems like a very long time to wait
 #define DEBUG_THRESHOLD 50

@@ -2,6 +2,7 @@
 /* divesite.c */
 #include "divesite.h"
 #include "dive.h"
+#include "subsurface-string.h"
 #include "divelist.h"
 #include "membuffer.h"
 

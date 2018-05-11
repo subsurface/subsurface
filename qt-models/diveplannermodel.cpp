@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "diveplannermodel.h"
 #include "core/dive.h"
+#include "core/subsurface-string.h"
 #include "core/helpers.h"
 #include "qt-models/cylindermodel.h"
 #include "core/planner.h"

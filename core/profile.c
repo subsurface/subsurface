@@ -8,6 +8,7 @@
 #include <assert.h>
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "display.h"
 #include "divelist.h"
 

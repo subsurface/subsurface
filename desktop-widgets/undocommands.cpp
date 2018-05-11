@@ -2,6 +2,7 @@
 #include "desktop-widgets/undocommands.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/divelist.h"
+#include "core/subsurface-string.h"
 
 UndoDeleteDive::UndoDeleteDive(QList<dive *> deletedDives) : diveList(deletedDives)
 {

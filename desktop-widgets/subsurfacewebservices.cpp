@@ -13,6 +13,7 @@
 #include <errno.h>
 #include "core/cloudstorage.h"
 #include "core/dive.h"
+#include "core/subsurface-string.h"
 
 #include <QDir>
 #include <QHttpMultiPart>

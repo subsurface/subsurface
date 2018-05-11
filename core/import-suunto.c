@@ -5,6 +5,7 @@
 #endif
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "parse.h"
 #include "divelist.h"
 #include "device.h"

@@ -4,6 +4,7 @@
 #include <string.h>
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "gettext.h"
 #include "divelist.h"
 #include "libdivecomputer.h"

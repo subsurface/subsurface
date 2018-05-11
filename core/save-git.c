@@ -17,6 +17,7 @@
 #include <git2.h>
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "divelist.h"
 #include "device.h"
 #include "membuffer.h"

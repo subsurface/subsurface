@@ -20,6 +20,7 @@
 #include <math.h>
 #include <string.h>
 #include "dive.h"
+#include "subsurface-string.h"
 #include <assert.h>
 #include "core/planner.h"
 #include "qthelper.h"

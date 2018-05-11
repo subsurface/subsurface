@@ -4,6 +4,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/display.h"
+#include "core/subsurface-string.h"
 #include "core/uemis.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "qt-models/models.h"

@@ -2,6 +2,7 @@
 /* linux.c */
 /* implements Linux specific functions */
 #include "dive.h"
+#include "subsurface-string.h"
 #include "display.h"
 #include "membuffer.h"
 #include <string.h>

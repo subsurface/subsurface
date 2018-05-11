@@ -2,6 +2,8 @@
 #ifndef DIVE_H
 #define DIVE_H
 
+// dive and dive computer related structures and helpers
+
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -12,56 +14,6 @@
 #include <string.h>
 #include <sys/stat.h>
 #include "divesite.h"
-
-/* Windows has no MIN/MAX macros - so let's just roll our own */
-#define MIN(x, y) ({                \
-	__typeof__(x) _min1 = (x);          \
-	__typeof__(y) _min2 = (y);          \
-	(void) (&_min1 == &_min2);      \
-	_min1 < _min2 ? _min1 : _min2; })
-
-#define MAX(x, y) ({                \
-	__typeof__(x) _max1 = (x);          \
-	__typeof__(y) _max2 = (y);          \
-	(void) (&_max1 == &_max2);      \
-	_max1 > _max2 ? _max1 : _max2; })
-
-#define IS_FP_SAME(_a, _b) (fabs((_a) - (_b)) <= 0.000001 * MAX(fabs(_a), fabs(_b)))
-
-static inline bool same_string(const char *a, const char *b)
-{
-	return !strcmp(a ?: "", b ?: "");
-}
-
-static inline bool same_string_caseinsensitive(const char *a, const char *b)
-{
-	return !strcasecmp(a ?: "", b ?: "");
-}
-
-static inline bool empty_string(const char *s)
-{
-	return !s || !*s;
-}
-
-static inline bool includes_string_caseinsensitive(const char *haystack, const char *needle)
-{
-	if (!needle)
-		return 1; /* every string includes the NULL string */
-	if (!haystack)
-		return 0; /* nothing is included in the NULL string */
-	int len = strlen(needle);
-	while (*haystack) {
-		if (strncasecmp(haystack, needle, len))
-			return 1;
-		haystack++;
-	}
-	return 0;
-}
-
-static inline char *copy_string(const char *s)
-{
-	return (s && *s) ? strdup(s) : NULL;
-}
 
 #include <libxml/tree.h>
 #include <libxslt/transform.h>
@@ -230,7 +182,7 @@ struct sample                         // BASE TYPE BYTES  UNITS    RANGE        
 	volume_t sac;                     //            4  ml/min                          predefined SAC
 	bool in_deco;                     // bool       1    y/n      y/n                  this sample is part of deco
 	bool manually_entered;            // bool       1    y/n      y/n                  this sample was entered by the user,
-	                                  //                                               not calculated when planning a dive
+					  //                                               not calculated when planning a dive
 };	                                  // Total size of structure: 57 bytes, excluding padding at end
 
 struct divetag {
@@ -1000,25 +952,13 @@ extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
 
-/*
- * String handling.
- */
-#define STRTOD_NO_SIGN 0x01
-#define STRTOD_NO_DOT 0x02
-#define STRTOD_NO_COMMA 0x04
-#define STRTOD_NO_EXPONENT 0x08
-extern double strtod_flags(const char *str, const char **ptr, unsigned int flags);
-
-#define STRTOD_ASCII (STRTOD_NO_COMMA)
-
-#define ascii_strtod(str, ptr) strtod_flags(str, ptr, STRTOD_ASCII)
-
 extern void set_userid(const char *user_id);
 extern void set_informational_units(const char *units);
 extern void set_git_prefs(const char *prefs);
 
 extern char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(struct dive *dive, struct divecomputer *dc);
+
 #ifdef __cplusplus
 }
 #endif

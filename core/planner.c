@@ -10,6 +10,7 @@
 #include <ctype.h>
 #include <string.h>
 #include "dive.h"
+#include "subsurface-string.h"
 #include "deco.h"
 #include "divelist.h"
 #include "planner.h"
