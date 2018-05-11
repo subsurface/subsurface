@@ -13,6 +13,7 @@
 #include <fcntl.h>
 #include "gettext.h"
 #include "dive.h"
+#include "subsurface-string.h"
 #include "device.h"
 #include "divelist.h"
 #include "display.h"

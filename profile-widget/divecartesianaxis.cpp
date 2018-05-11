@@ -2,6 +2,7 @@
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/divetextitem.h"
 #include "core/helpers.h"
+#include "core/subsurface-string.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"

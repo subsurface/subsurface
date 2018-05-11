@@ -8,6 +8,7 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/membuffer.h"
+#include "core/subsurface-string.h"
 
 extern struct ev_select *ev_namelist;
 extern int evn_used;

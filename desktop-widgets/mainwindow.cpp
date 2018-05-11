@@ -15,6 +15,7 @@
 #include <QStatusBar>
 
 #include "core/version.h"
+#include "core/subsurface-string.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/downloadfromdivecomputer.h"
 #include "desktop-widgets/subsurfacewebservices.h"

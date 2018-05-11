@@ -27,6 +27,7 @@
 #endif
 
 #include "core/dive.h"
+#include "core/subsurface-string.h"
 #include "core/gettext.h"
 #include "core/divelist.h"
 #include "core/libdivecomputer.h"

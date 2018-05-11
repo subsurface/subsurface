@@ -6,6 +6,7 @@
 #include "divesitehelpers.h"
 
 #include "divesite.h"
+#include "subsurface-string.h"
 #include "helpers.h"
 #include "membuffer.h"
 #include <QDebug>

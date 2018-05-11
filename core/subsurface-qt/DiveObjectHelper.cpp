@@ -4,9 +4,10 @@
 #include <QDateTime>
 #include <QTextDocument>
 
-#include "../qthelper.h"
-#include "../helpers.h"
-#include "../../qt-models/tankinfomodel.h"
+#include "core/qthelper.h"
+#include "core/helpers.h"
+#include "core/subsurface-string.h"
+#include "qt-models/tankinfomodel.h"
 
 static QString EMPTY_DIVE_STRING = QStringLiteral("");
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};

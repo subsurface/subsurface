@@ -11,6 +11,7 @@
 #include "gettext.h"
 #include "datatrak.h"
 #include "dive.h"
+#include "subsurface-string.h"
 #include "units.h"
 #include "device.h"
 #include "file.h"

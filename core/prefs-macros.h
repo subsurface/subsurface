@@ -3,6 +3,7 @@
 #define PREFSMACROS_H
 
 #include "core/qthelper.h"
+#include "subsurface-string.h"
 
 #define SB(V, B) s.setValue(V, (int)(B->isChecked() ? 1 : 0))
 

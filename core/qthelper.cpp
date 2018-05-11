@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qthelper.h"
+#include "subsurface-string.h"
 #include "helpers.h"
+#include "subsurface-string.h"
 #include "gettextfromc.h"
 #include "statistics.h"
 #include "membuffer.h"

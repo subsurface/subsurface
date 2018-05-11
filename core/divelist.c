@@ -41,6 +41,7 @@
 #include <libxslt/transform.h>
 
 #include "dive.h"
+#include "subsurface-string.h"
 #include "divelist.h"
 #include "display.h"
 #include "planner.h"

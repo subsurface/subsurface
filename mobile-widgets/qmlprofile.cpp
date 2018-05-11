@@ -3,6 +3,7 @@
 #include "qmlmanager.h"
 #include "profile-widget/profilewidget2.h"
 #include "core/dive.h"
+#include "core/subsurface-string.h"
 #include "core/metrics.h"
 #include <QTransform>
 #include <QScreen>

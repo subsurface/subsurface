@@ -2,6 +2,7 @@
 #include "qt-models/filtermodels.h"
 #include "qt-models/models.h"
 #include "core/display.h"
+#include "core/subsurface-string.h"
 #include "qt-models/divetripmodel.h"
 
 #if !defined(SUBSURFACE_MOBILE)

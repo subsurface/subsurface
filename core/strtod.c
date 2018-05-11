@@ -28,7 +28,7 @@
  * they have locales with commas", just pass in a zero flag.
  */
 #include <ctype.h>
-#include "dive.h"
+#include "subsurface-string.h"
 
 double strtod_flags(const char *str, const char **ptr, unsigned int flags)
 {
