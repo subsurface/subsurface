@@ -362,6 +362,16 @@ if [ ! -f ../configure ] ; then
 	autoreconf --install ..
 fi
 CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" ../configure --prefix=$INSTALL_ROOT --disable-examples
+if [ $PLATFORM = Darwin ] ; then
+	# it seems that on my Mac some of the configure tests for libdivecomputer
+	# pass even though the feature tested for is actually missing
+	# let's hack around that
+	sed -i .bak 's/^#define HAVE_CLOCK_GETTIME 1/\/* #undef HAVE_CLOCK_GETTIME *\//' config.h
+	for i in $(find . -name Makefile)
+	do
+		sed -i .bak 's/-Wrestrict//;s/-Wno-unused-but-set-variable//' $i
+	done
+fi
 make -j4
 make install
 
