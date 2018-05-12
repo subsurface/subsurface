@@ -166,13 +166,38 @@ void fill_computer_list()
 	qSort(vendorList);
 }
 
+#define NUMTRANSPORTS 6
+static QString transportStringTable[NUMTRANSPORTS] = {
+	QStringLiteral("SERIAL"),
+	QStringLiteral("USB"),
+	QStringLiteral("USBHID"),
+	QStringLiteral("IRDA"),
+	QStringLiteral("BT"),
+	QStringLiteral("BLE")
+};
+
+static QString getTransportString(unsigned int transport)
+{
+	QString ts;
+	for (int i = 0; i < NUMTRANSPORTS; i++) {
+		if (transport & 1 << i)
+			ts += transportStringTable[i] + ", ";
+	}
+	ts.chop(2);
+	return ts;
+}
+
 void show_computer_list()
 {
+	unsigned int transportMask = get_supported_transports(NULL);
 	qDebug() << "Supported dive computers:";
 	Q_FOREACH (QString vendor, vendorList) {
 		QString msg = vendor + ": ";
 		Q_FOREACH (QString product, productList[vendor]) {
-			msg += product + ", ";
+			dc_descriptor_t *descriptor = descriptorLookup[vendor + product];
+			unsigned int transport = dc_descriptor_get_transports(descriptor) & transportMask;
+			QString transportString = getTransportString(transport);
+			msg += product + " (" + transportString +"), ";
 		}
 		msg.chop(2);
 		qDebug() << msg;
