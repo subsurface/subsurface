@@ -152,7 +152,7 @@ fi
 # QtPositioning headers aren't bundled. Download them if necessary.
 if [ $PLATFORM = Linux ] ; then
 	QT_HEADERS_PATH=`$QMAKE -query QT_INSTALL_HEADERS`
-	QT_VERSION=`$QMAKE -v | grep "Qt" | cut -d" " -f4`
+	QT_VERSION=`$QMAKE -query QT_VERSION`
 
 	if [ ! -d "$QT_HEADERS_PATH/QtLocation/$QT_VERSION/QtLocation/private" ] &&
            [ ! -d $INSTALL_ROOT/include/QtLocation/private ] ; then
