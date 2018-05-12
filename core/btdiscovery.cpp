@@ -40,10 +40,22 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		product = "EON Steel";
 	}
 
+	if (btName.startsWith("EON Core")) {
+		vendor = "Suunto";
+		product = "EON Core";
+	}
+
 	if (btName.startsWith("G2")  || btName.startsWith("Aladin")) {
 		vendor = "Scubapro";
 		if (btName.startsWith("G2")) product = "G2";
 		if (btName.startsWith("Aladin")) product = "Aladin Sport Matrix";
+	}
+
+	if (btName == "Mares bluelink pro") {
+		vendor = "Mares";
+		// we don't know which of the dive computers it is,
+		// so let's just randomly pick one
+		product = "Quad";
 	}
 
 	if (!vendor.isEmpty() && !product.isEmpty())
