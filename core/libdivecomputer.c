@@ -27,6 +27,7 @@
 #include "core/qthelper.h"
 #include "core/membuffer.h"
 #include "core/file.h"
+#include <QtGlobal>
 
 //
 // If we have an old libdivecomputer, it doesn't
