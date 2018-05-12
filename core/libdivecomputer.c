@@ -1231,6 +1231,10 @@ static char *transport_to_string(int t)
  */
 unsigned int get_supported_transports(device_data_t *data)
 {
+#if defined(Q_OS_IOS)
+	// BLE only - don't bother with being clever.
+	return DC_TRANSPORT_BLE;
+#endif
 	// start out with the list of transports that libdivecomputer claims to support
 	// dc_context_get_transports ignores its context argument...
 	unsigned int supported = dc_context_get_transports(NULL);
@@ -1241,10 +1245,6 @@ unsigned int get_supported_transports(device_data_t *data)
 #endif
 #if defined(BLE_SUPPORT)
 	supported |= DC_TRANSPORT_BLE;
-#endif
-#if defined(Q_OS_IOS)
-	// libdivecomputer always claims to support serial, but on iOS we actually don't support that
-	supported &= ~DC_TRANSPORT_SERIAL;
 #endif
 
 	if (data) {
