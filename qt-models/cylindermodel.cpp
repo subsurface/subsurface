@@ -3,7 +3,6 @@
 #include "tankinfomodel.h"
 #include "models.h"
 #include "core/helpers.h"
-#include "core/dive.h"
 #include "core/color.h"
 #include "qt-models/diveplannermodel.h"
 #include "core/gettextfromc.h"

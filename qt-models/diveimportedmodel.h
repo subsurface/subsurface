@@ -2,7 +2,6 @@
 #define DIVEIMPORTEDMODEL_H
 
 #include <QAbstractTableModel>
-#include "core/dive.h"
 
 class DiveImportedModel : public QAbstractTableModel
 {

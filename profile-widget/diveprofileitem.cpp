@@ -4,14 +4,12 @@
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/animationfunctions.h"
-#include "core/dive.h"
 #include "core/profile.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 #include "qt-models/diveplannermodel.h"
 #include "core/helpers.h"
-#include "core/dive.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"

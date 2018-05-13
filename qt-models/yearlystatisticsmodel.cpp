@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/yearlystatisticsmodel.h"
-#include "core/dive.h"
 #include "core/helpers.h"
 #include "core/metrics.h"
 #include "core/statistics.h"

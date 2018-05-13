@@ -5,7 +5,6 @@
 #include <QModelIndex>
 
 #include "mapwidget.h"
-#include "core/dive.h"
 #include "core/divesite.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"

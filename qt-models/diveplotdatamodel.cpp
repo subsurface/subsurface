@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/diveplotdatamodel.h"
 #include "qt-models/diveplannermodel.h"
-#include "core/dive.h"
 #include "core/profile.h"
 #include "core/divelist.h"
 #include "core/color.h"

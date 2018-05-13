@@ -4,7 +4,6 @@
 
 #include <QUndoCommand>
 #include <QMap>
-#include "core/dive.h"
 
 class UndoDeleteDive : public QUndoCommand {
 public:

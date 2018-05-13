@@ -6,7 +6,6 @@
 #include <core/helpers.h>
 #include <core/statistics.h>
 #include <core/display.h>
-#include <core/dive.h>
 
 TabDiveInformation::TabDiveInformation(QWidget *parent) : TabBase(parent), ui(new Ui::TabDiveInformation())
 {

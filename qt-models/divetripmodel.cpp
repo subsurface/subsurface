@@ -4,7 +4,6 @@
 #include "core/metrics.h"
 #include "core/divelist.h"
 #include "core/helpers.h"
-#include "core/dive.h"
 #include "core/subsurface-string.h"
 #include <QIcon>
 #include <QDebug>
