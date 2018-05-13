@@ -44,7 +44,6 @@
 	</qresource>
 	<qresource>
 		<file alias="icons/map-globe.svg">kirigami/icons/map-globe.svg</file>
-		<file alias="icons/go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
 		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
 		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
 		<file alias="icons/handle-right.svg">kirigami/icons/handle-right.svg</file>
@@ -86,5 +85,6 @@
 	</qresource>
 	<qresource prefix="/org/kde/kirigami/icons/">
 		<file alias="go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>
+		<file alias="go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
 	</qresource>
 </RCC>
