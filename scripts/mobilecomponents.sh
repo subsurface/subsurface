@@ -80,6 +80,10 @@ sed -i -e "s/visible: root.action/visible: root.action \&\& \!Qt.inputMethod.vis
 sed -i -e "s/visible: root.leftAction/visible: root.leftAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
 sed -i -e "s/visible: root.rightAction/visible: root.rightAction \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
 
+# kirigami hack: passive notification hijacks area even after disabled.
+# https://bugs.kde.org/show_bug.cgi?id=394204
+sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRect/g" src/controls/templates/private/PassiveNotification.qml
+
 # another hack. Do not include the Kirigami resources (on static build). It causes
 # double defined symbols in our setting. I would like a nicer fix for this
 # issue, but failed to find one. For example, not adding the resource in
