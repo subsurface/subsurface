@@ -203,7 +203,7 @@ double calculate_cns_dive(struct dive *dive)
 	size_t j;
 	struct divecomputer *dc = &dive->dc;
 	double cns = 0.0;
-	
+
 	/* Caclulate the CNS for each sample in this dive and sum them */
 	for (n = 1; n < dc->samples; n++) {
 		int t;
@@ -227,7 +227,7 @@ double calculate_cns_dive(struct dive *dive)
 		j--;
 		cns += ((double)t) / ((double)cns_table[j][1]) * 100;
 	}
-	
+
 	return cns;
 }
 
@@ -247,9 +247,9 @@ static int calculate_cns(struct dive *dive)
 	divenr = get_divenr(dive);
 	i = divenr >= 0 ? divenr : dive_table.nr;
 #if DECO_CALC_DEBUG & 2
-	if (i >= 0 && i < dive_table.nr) 
+	if (i >= 0 && i < dive_table.nr)
 		printf("\n\n*** CNS for dive #%d %d\n", i, get_dive(i)->number);
-	else 
+	else
 		printf("\n\n*** CNS for dive #%d\n", i);
 #endif
 	/* Look at next dive in dive list table and correct i when needed */
@@ -282,7 +282,7 @@ static int calculate_cns(struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip) {
 #if DECO_CALC_DEBUG & 2
-			printf("No - other dive trip\n"); 
+			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
@@ -306,7 +306,7 @@ static int calculate_cns(struct dive *dive)
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip) {
 #if DECO_CALC_DEBUG & 2
-			printf("No - other dive trip\n"); 
+			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
@@ -329,7 +329,7 @@ static int calculate_cns(struct dive *dive)
 #endif
 
 		/* CNS reduced with 90min halftime during surface interval */
-		if (last_endtime) 
+		if (last_endtime)
 			cns /= pow(2, (pdive->when - last_endtime) / (90.0 * 60.0));
 #if DECO_CALC_DEBUG & 2
 		printf("CNS after surface interval: %f\n", cns);
@@ -343,7 +343,7 @@ static int calculate_cns(struct dive *dive)
 		last_starttime = pdive->when;
 		last_endtime = dive_endtime(pdive);
 	}
-	
+
 	/* CNS reduced with 90min halftime during surface interval */
 	if (last_endtime)
 		cns /= pow(2, (dive->when - last_endtime) / (90.0 * 60.0));
@@ -517,7 +517,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 		 * for how far back we need to go */
 		if (dive->divetrip && pdive->divetrip != dive->divetrip) {
 #if DECO_CALC_DEBUG & 2
-			printf("No - other dive trip\n"); 
+			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
@@ -541,7 +541,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 		/* again skip dives from different trips */
 		if (dive->divetrip && dive->divetrip != pdive->divetrip) {
 #if DECO_CALC_DEBUG & 2
-			printf("No - other dive trip\n"); 
+			printf("No - other dive trip\n");
 #endif
 			continue;
 		}
@@ -606,7 +606,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 	/* We don't have had a previous dive at all? */
 	if (!deco_init) {
 #if DECO_CALC_DEBUG & 2
-		printf("Init deco\n");		
+		printf("Init deco\n");
 #endif
 		clear_deco(ds, surface_pressure);
 #if DECO_CALC_DEBUG & 2
