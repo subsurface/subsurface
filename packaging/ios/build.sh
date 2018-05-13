@@ -43,13 +43,6 @@ if [ -z $QT_VERSION ] ; then
 	exit 1
 fi
 
-# Which versions are we building against?
-LIBXSLT_VERSION=1.1.28
-LIBZIP_VERSION=1.2.0
-LIBGIT2_VERSION=v0.26.0
-# remark LIBXSLT are only used on this platform
-# due to Apple not publizing the version included in iOS
-
 # set up the Subsurface versions by hand
 GITVERSION=$(git describe --abbrev=12)
 CANONICALVERSION=$(git describe --abbrev=12 | sed -e 's/-g.*$// ; s/^v//' | sed -e 's/-/./')
@@ -131,15 +124,10 @@ echo next building for $ARCH
 	target=$ARCH
 	hosttarget=$ARCH
 
-	if [ ! -d libxslt ] ; then
-		git clone https://github.com/GNOME/libxslt.git libxslt
-	fi
+	../../scripts/get-dep-lib.sh ios .
+
 	# libxslt have too old config.sub
 	pushd libxslt
-	if ! git checkout v$LIBXSLT_VERSION ; then
-		echo "Can't find the right tag in libxslt - giving up"
-		exit 1
-	fi
 	autoreconf --install
 	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
@@ -151,30 +139,16 @@ echo next building for $ARCH
 		popd
 	fi
 
-	if [ ! -e libzip-${LIBZIP_VERSION}.tar.gz ] ; then
-		curl -O https://libzip.org/download/libzip-${LIBZIP_VERSION}.tar.gz
-	fi
-	if [ ! -e libzip-${LIBZIP_VERSION} ] ; then
-		tar -zxf libzip-${LIBZIP_VERSION}.tar.gz
-	fi
 	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
 		mkdir -p libzip-build-$ARCH_NAME
 		pushd libzip-build-$ARCH_NAME
-		../libzip-${LIBZIP_VERSION}/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+		../libzip/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
 		make
 		make install
 		popd
 	fi
 
-	if [ ! -d libgit2 ] ; then
-		git clone https://github.com/libgit2/libgit2.git
-	fi
 	pushd libgit2
-	git fetch origin
-	if ! git checkout $LIBGIT2_VERSION ; then
-		echo "Can't find the right tag in libgit2 - giving up"
-		exit 1
-	fi
 	# libgit2 with -Wall on iOS creates megabytes of warnings...
 	sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
 	popd
@@ -205,9 +179,9 @@ echo next building for $ARCH
 	if [ ! -d ../../libdivecomputer/src ] ; then
 		pushd ../..
 		git submodule init
+		git submodule update --recursive
 		popd
 	fi
-	git submodule update --recursive
 	if [ ! -f ../../libdivecomputer/configure ] ; then
 		pushd ../../libdivecomputer
 		autoreconf --install
@@ -232,9 +206,6 @@ echo next building for $ARCH
 done
 
 # build googlemaps
-if [ ! -d googlemaps ] ; then
-	git clone git://github.com/subsurface-divelog/googlemaps
-fi
 mkdir -p googlemaps-build
 pushd googlemaps-build
 ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../googlemaps/googlemaps.pro CONFIG+=release
