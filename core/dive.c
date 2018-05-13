@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "gettext.h"
-#include "dive.h"
 #include "subsurface-string.h"
 #include "libdivecomputer.h"
 #include "device.h"

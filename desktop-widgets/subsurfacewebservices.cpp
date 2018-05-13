@@ -12,7 +12,6 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <errno.h>
 #include "core/cloudstorage.h"
-#include "core/dive.h"
 #include "core/subsurface-string.h"
 
 #include <QDir>

@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "preferences_network.h"
 #include "ui_preferences_network.h"
-#include "core/dive.h"
 #include "subsurfacewebservices.h"
 #include "core/prefs-macros.h"
 #include "core/cloudstorage.h"

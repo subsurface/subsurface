@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/locationinformation.h"
-#include "core/dive.h"
 #include "core/subsurface-string.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"

@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "core/dive.h"
 #include "core/qt-gui.h"
 #include "core/subsurfacestartup.h"
 #include "desktop-widgets/mainwindow.h"

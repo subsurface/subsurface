@@ -3,7 +3,6 @@
 #define DEVICE_H
 
 #ifdef __cplusplus
-#include "dive.h"
 extern "C" {
 #endif
 

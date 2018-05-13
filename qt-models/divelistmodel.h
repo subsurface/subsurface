@@ -5,7 +5,6 @@
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
 
-#include "core/dive.h"
 #include "core/helpers.h"
 #include "core/subsurface-qt/DiveObjectHelper.h"
 

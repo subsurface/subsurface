@@ -5,7 +5,6 @@
 #include <QVector>
 
 #include "qmlmapwidgethelper.h"
-#include "core/dive.h"
 #include "core/divesite.h"
 #include "core/helpers.h"
 #include "qt-models/maplocationmodel.h"

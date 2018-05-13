@@ -9,7 +9,6 @@
 #define HELPERS_H
 
 #include <QString>
-#include "dive.h"
 #include "qthelper.h"
 
 QString get_depth_string(depth_t depth, bool showunit = false, bool showdecimal = true);

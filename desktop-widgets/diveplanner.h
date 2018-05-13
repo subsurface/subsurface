@@ -8,7 +8,6 @@
 #include <QDateTime>
 #include <QSignalMapper>
 
-#include "core/dive.h"
 
 class QListView;
 class QModelIndex;

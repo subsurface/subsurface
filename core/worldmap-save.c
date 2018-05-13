@@ -9,7 +9,6 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "dive.h"
 #include "membuffer.h"
 #include "save-html.h"
 #include "worldmap-save.h"
