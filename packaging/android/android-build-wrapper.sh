@@ -46,7 +46,7 @@ fi
 
 # make sure we have the required commands installed
 MISSING=
-for i in git cmake autoconf libtool java ant wget unzip; do
+for i in git cmake autoconf libtool java wget unzip; do
 	command -v $i >/dev/null ||
 		if [ $i = libtool ] ; then
 			MISSING="${MISSING}libtool-bin "
