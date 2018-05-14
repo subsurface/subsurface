@@ -28,6 +28,21 @@ bool is_subsurface_cloud = false;
 
 int (*update_progress_cb)(const char *) = NULL;
 
+static bool includes_string_caseinsensitive(const char *haystack, const char *needle)
+{
+	if (!needle)
+		return 1; /* every string includes the NULL string */
+	if (!haystack)
+		return 0; /* nothing is included in the NULL string */
+	int len = strlen(needle);
+	while (*haystack) {
+		if (strncasecmp(haystack, needle, len))
+			return 1;
+		haystack++;
+	}
+	return 0;
+}
+
 void set_git_update_cb(int(*cb)(const char *))
 {
 	update_progress_cb = cb;
