@@ -45,21 +45,6 @@ static inline bool empty_string(const char *s)
 	return !s || !*s;
 }
 
-static inline bool includes_string_caseinsensitive(const char *haystack, const char *needle)
-{
-	if (!needle)
-		return 1; /* every string includes the NULL string */
-	if (!haystack)
-		return 0; /* nothing is included in the NULL string */
-	int len = strlen(needle);
-	while (*haystack) {
-		if (strncasecmp(haystack, needle, len))
-			return 1;
-		haystack++;
-	}
-	return 0;
-}
-
 static inline char *copy_string(const char *s)
 {
 	return (s && *s) ? strdup(s) : NULL;
