@@ -610,13 +610,21 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	refreshDisplay();
 }
 
+// Return whether saving to cloud is OK. If it isn't, show an error return false.
+static bool saveToCloudOK()
+{
+	if (!dive_table.nr) {
+		report_error(qPrintable(QObject::tr("Don't save an empty log to the cloud")));
+		return false;
+	}
+	return true;
+}
+
 void MainWindow::on_actionCloudstoragesave_triggered()
 {
 	QString filename;
-	if (!dive_table.nr) {
-		report_error(qPrintable(tr("Don't save an empty log to the cloud")));
+	if (!saveToCloudOK())
 		return;
-	}
 	if (getCloudURL(filename))
 		return;
 
@@ -1725,6 +1733,8 @@ int MainWindow::file_save(void)
 		return file_save_as();
 
 	is_cloud = (strncmp(existing_filename, "http", 4) == 0);
+	if (is_cloud && !saveToCloudOK())
+		return -1;
 
 	if (information()->isEditing())
 		information()->acceptChanges();
