@@ -10,7 +10,7 @@ git describe
 docker run -v $PWD:/workspace/subsurface --name=builder -w /workspace -d ubuntu:xenial /bin/sleep 60m
 docker exec -t builder apt-get update
 # subsurface android build dependencies
-docker exec -t builder apt-get install -y git cmake autoconf libtool-bin openjdk-8-jdk-headless ant wget unzip python bzip2 pkg-config
+docker exec -t builder apt-get install -y git cmake autoconf libtool-bin openjdk-8-jdk-headless wget unzip python bzip2 pkg-config
 # Qt installer dependencies
 docker exec -t builder apt-get install -y libx11-xcb1 libgl1-mesa-glx libglib2.0-0
 # Inject cached 3pp's (if none exists in 3pp dir, we inject zero ones, and all is downloaded in the container)
