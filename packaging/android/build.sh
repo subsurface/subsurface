@@ -182,8 +182,7 @@ $QMAKE ../googlemaps.pro
 # on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 # since things compile fine with c++11, let's just hack that away
 # similarly, don't use -Wdata-time
-mv Makefile Makefile.bak
-cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
+sed -i.bak -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
 make -j4
 QT_PLUGINS_PATH=`$QMAKE -query QT_INSTALL_PLUGINS`
 GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
