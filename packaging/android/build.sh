@@ -368,10 +368,10 @@ fi
 if [ ! -f libdivecomputer-${ARCH}.SHA ] ; then
 	echo "" > libdivecomputer-${ARCH}.SHA
 fi
-pushd subsurface
+pushd "$SUBSURFACE_SOURCE"
 git submodule update --recursive
 popd
-CURRENT_SHA=$(cd subsurface/libdivecomputer ; git describe)
+CURRENT_SHA=$(cd "$SUBSURFACE_SOURCE"/libdivecomputer ; git describe)
 PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
 if [[ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" || ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ]] ; then
 	mkdir -p libdivecomputer-build-"$ARCH"
