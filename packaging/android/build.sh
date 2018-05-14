@@ -366,21 +366,19 @@ if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
 	rm "$PREFIX"/lib/libftdi1.so*
 fi
 
-if [ ! -f libdivecomputer-${ARCH}.SHA ] ; then
-	echo "" > libdivecomputer-${ARCH}.SHA
-fi
 pushd "$SUBSURFACE_SOURCE"
 git submodule update --recursive
 popd
 CURRENT_SHA=$(cd "$SUBSURFACE_SOURCE"/libdivecomputer ; git describe)
-PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
-if [[ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" || ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ]] ; then
+PREVIOUS_SHA=$(cat "libdivecomputer-${ARCH}.SHA" 2>/dev/null || echo)
+if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -e "$PKG_CONFIG_LIBDIR/libdivecomputer.pc" ] ; then
 	mkdir -p libdivecomputer-build-"$ARCH"
 	pushd libdivecomputer-build-"$ARCH"
 	"$SUBSURFACE_SOURCE"/libdivecomputer/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --enable-examples=no
 	make
 	make install
 	popd
+	echo "$CURRENT_SHA" > "libdivecomputer-${ARCH}.SHA"
 fi
 
 if [ ! -e qt-android-cmake ] ; then
