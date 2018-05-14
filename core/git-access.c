@@ -14,6 +14,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <fcntl.h>
+#include <stdarg.h>
 #include <git2.h>
 
 #include "subsurface-string.h"
