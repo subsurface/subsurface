@@ -92,5 +92,6 @@
         <file alias="preferences-desktop-locale-icon">icons/language.png</file>
         <file alias="preferences-other-icon">icons/defaults.png</file>
         <file alias="camera-icon">icons/camera.svg</file>
+        <file alias="video-icon">icons/video.svg</file>
     </qresource>
 </RCC>
