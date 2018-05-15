@@ -54,10 +54,8 @@ set -e
 # get ready to download needed sources
 cd ${INSTDIR}
 
-if [[ $BUILD = *"libcurl"* ]]; then
-	if [ ! -d libcurl ] ; then
-		git clone https://github.com/curl/curl libcurl
-	fi
+if [[ "$BUILD" = *"libcurl"* && ! -d libcurl ]]; then
+	git clone https://github.com/curl/curl libcurl
 	pushd libcurl
 	git fetch origin
 	if ! git checkout $CURRENT_LIBCURL ; then
@@ -67,18 +65,14 @@ if [[ $BUILD = *"libcurl"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"libftdi"* ]]; then
-	if [ ! -d libftdi1 ] ; then
-		curl -O https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-		tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+if [[ "$BUILD" = *"libftdi"* && ! -d libftdi1 ]]; then
+	curl -O https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+	tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
 	mv libftdi1-${CURRENT_LIBFTDI} libftdi1
-	fi
 fi
 
-if [[ $BUILD = *"libgit2"* ]]; then
-	if [ ! -d libgit2 ] ; then
-		git clone https://github.com/libgit2/libgit2.git
-	fi
+if [[ "$BUILD" = *"libgit2"* && ! -d libgit2 ]]; then
+	git clone https://github.com/libgit2/libgit2.git
 	pushd libgit2
 	git fetch origin
 	if ! git checkout ${CURRENT_LIBGIT2} ; then
@@ -88,10 +82,8 @@ if [[ $BUILD = *"libgit2"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"libssh2"* ]]; then
-	if [ ! -d libssh2 ] ; then
-		git clone https://github.com/libssh2/libssh2
-	fi
+if [[ "$BUILD" = *"libssh2"* && ! -d libssh2 ]]; then
+	git clone https://github.com/libssh2/libssh2
 	pushd libssh2
 	git fetch origin
 	if ! git checkout $CURRENT_LIBSSH2 ; then
@@ -101,10 +93,8 @@ if [[ $BUILD = *"libssh2"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"libusb"* ]]; then
-	if [ ! -d libusb ] ; then
-		git clone https://github.com/libusb/libusb
-	fi
+if [[ "$BUILD" = *"libusb"* && ! -d libusb ]]; then
+	git clone https://github.com/libusb/libusb
 	pushd libusb
 	git fetch origin
 	if ! git checkout $CURRENT_LIBUSB ; then
@@ -114,10 +104,8 @@ if [[ $BUILD = *"libusb"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"libxml2"* ]]; then
-	if [ ! -d libxml2 ] ; then
-		git clone https://github.com/GNOME/libxml2.git
-	fi
+if [[ "$BUILD" = *"libxml2"* && ! -d libxml2 ]]; then
+	git clone https://github.com/GNOME/libxml2.git
 	pushd libxml2
 	git fetch origin
 	if ! git checkout $CURRENT_LIBXML2 ; then
@@ -127,10 +115,8 @@ if [[ $BUILD = *"libxml2"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"libxslt"* ]]; then
-	if [ ! -d libxslt ] ; then
-		git clone https://github.com/GNOME/libxslt.git
-	fi
+if [[ "$BUILD" = *"libxslt"* && ! -d libxslt ]]; then
+	git clone https://github.com/GNOME/libxslt.git
 	pushd libxslt
 	git fetch origin
 	if ! git checkout $CURRENT_LIBXSLT ; then
@@ -140,18 +126,14 @@ if [[ $BUILD = *"libxslt"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"libzip"* ]]; then
-	if [ ! -d libzip ] ; then
-		curl -O https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
-		tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
-		mv libzip-${CURRENT_LIBZIP} libzip
-	fi
+if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
+	curl -O https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
+	tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
+	mv libzip-${CURRENT_LIBZIP} libzip
 fi
 
-if [[ $BUILD = *"googlemaps"* ]]; then
-	if [ ! -d googlemaps ] ; then
-		git clone https://github.com/Subsurface-divelog/googlemaps.git
-	fi
+if [[ "$BUILD" = *"googlemaps"* && ! -d googlemaps ]]; then
+	git clone https://github.com/Subsurface-divelog/googlemaps.git
 	pushd googlemaps
 	git fetch origin
 	git checkout master
@@ -159,23 +141,20 @@ if [[ $BUILD = *"googlemaps"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"hidapi"* ]]; then
-	if [ ! -d hidapi ] ; then
-		git clone https://github.com/signal11/hidapi
-	fi
+if [[ "$BUILD" = *"hidapi"* && ! -d hidapi ]]; then
+	git clone https://github.com/signal11/hidapi
 	pushd hidapi
 	git fetch origin
-	if ! git checkout $CURRENT_HIDAPI ; then
-		echo "Can't find the right tag in hidapi - giving up"
-		exit -1
-	fi
+	# there is no good tag, so just build master
+#	if ! git checkout $CURRENT_HIDAPI ; then
+#		echo "Can't find the right tag in hidapi - giving up"
+#		exit -1
+#	fi
 	popd
 fi
 
-if [[ $BUILD = *"openssl"* ]]; then
-	if [ ! -d openssl ] ; then
-		git clone https://github.com/openssl/openssl
-	fi
+if [[ "$BUILD" = *"openssl"* && ! -d openssl ]]; then
+	git clone https://github.com/openssl/openssl
 	pushd openssl
 	git fetch origin
 	if ! git checkout $CURRENT_OPENSSL ; then
@@ -185,12 +164,8 @@ if [[ $BUILD = *"openssl"* ]]; then
 	popd
 fi
 
-if [[ $BUILD = *"sqlite"* ]]; then
-	if [ ! -d sqlite ] ; then
-		curl -O http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-		tar -zxf sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-		mv sqlite-autoconf-${CURRENT_SQLITE} sqlite
-	fi
+if [[ "$BUILD" = *"sqlite"* && ! -d sqlite ]]; then
+	curl -O http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+	tar -zxf sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+	mv sqlite-autoconf-${CURRENT_SQLITE} sqlite
 fi
-
-exit 0
