@@ -2033,14 +2033,46 @@ To log pSCR dives, no special procedures are required. Use the normal steps outl
   Define all the appropriate cylinders as described above
   and indicate the cylinder/gas changes as described above in the section on xref:S_MulticylinderDives[multicylinder dives].
 
-If a pSCR _Dive Mode_ has been selected, the dive ceiling for that is adjusted for the oxygen
-drop across the mouthpiece, which often requires longer decompression periods. Below is a dive profile
+In pSCR diving, the inspired gas often has a pO~2~ below that of the fresh gas from cylinder. This is
+because fresh gas is only supplied at a slow rate and the diver continuously uses oxygen from the loop for metabolism,
+resulting in the so-called "pO~2~ drop over the mouthpiece". For pSCR dive profiles the dive ceiling is adjusted for this oxygen
+drop, and often requires longer decompression periods. Below is a dive profile
 of a pSCR dive using EAN36 as bottom gas and oxygen for decompression. Note that this dive lasted
 over two hours.
 
 image::images/pSCR_profile.jpg["FIGURE: pSCR profile",align="center"]
 
+_Visualising the pO~2~ drop_: The difference between the pO~2~ of the fresh cylinder gas and the pO~2~
+in the loop can be visualised in _Subsurface_ by opening the _Profile_
+panel in the _File -> Preferences_ menu item and then providing suitable information in the section
+labelled _pSCR options_. The _pSCR metabolic rate_ is your rate of oxygen metabolism in liters/min (commonly
+between 0.5 and 2.5). The _Dilution ratio_ is the ratio indicating how much gas in the loop is replaced with
+fresh gas, relative to the gas being breathed (common values are between 1:3 and 1:10). These values are also
+used when planning pSCR dives. If the oxygen content of the loop is not recorded by an oxygen sensor, _Subsurface_
+estimates the pO~2~ in the loop using the information supplied above. This pO~2~ is shown as the green line
+representing the oxygen partial pressure in the dive profile. If the oxygen pressure in the loop is measured using
+an oxygen sensor connected to a dive computer, this information is probably recorded by the dive computer and these
+measured pO~2~ values are shown on the dive profile. In addition, the _Preferences_ panel allows one to activate
+a checkbox labelled _Show equivalent OC pO~2~ with pSCR pO~2~_. This activates display of the pO~2~ in the
+fresh gas from the cylinder (an orange line). The vertical distance between the orange graph and the green graph
+indicates the "pO~2~ drop over the mouthpiece". Much of pSCR diving involves managing this pO~2~ difference.
 
+[icon="images/DiveModeChange.jpg"]
+[NOTE]
+_pSCR and bailout_: Gases used in pSCR often yield very low pO~2~ values in shallow water. For this reason the diver
+often completes the shallow sections of a dive using open circuit (OC) rather than the rebreather. In this case
+parts of the dive are
+performed OC, while the rest of the dive is performed on the pSCR loop. To indicate such changes in divemode,
+right-click on the dive profile at the appropriate time. From the context menu, select _Change divemode_ and choose
+the appropriate option (see image on left). Some dive computers record such changes in divemode as part of the dive log.
+The appropriate icon is shown on the depth profile (see image below).
+Below is a pSCR dive with the shallow
+sections using OC. An OC divemode was entered right at the start, followed by
+a change to pSCR at 18m. During the ascent, there was a bailout to OC at 14m. Note,
+for the OC sections, the pO~2~ is identical to the OC-pO~2~ whereas for the pSCR section, the pO~2~ (green line)
+differs from the OC-pO~2~ (orange line).
+
+image::images/pSCR_profile_bailout.jpg["FIGURE: pSCR profile with bailout",align="center"]
 
 [[S_CCR_dives]]
 ==== Closed circuit rebreather (CCR) dives
@@ -2116,7 +2148,7 @@ image::images/CCR_preferences_f20.jpg["FIGURE: CCR preferences panel",align="cen
 
 Checking any of these boxes allows the display of additional oxygen-related
 information whenever the pO~2~ toolbar button on the _Profile_ panel is activated.
-The first checkbox allows the display of setpoint information. This is a red line
+The first checkbox allows the display of setpoint information. This is an orange line
 superimposed on the green oxygen partial pressure graph and allows a comparison of the
 mean measured oxygen partial pressure and the setpoint values, as shown below.
 
@@ -2143,7 +2175,41 @@ _Events_: Several events are logged, e.g. switching the mouthpiece to open circu
 These events are indicated by yellow triangles and, if you hover over a triangle,
 a description of that event is given as the bottom line in the xref:S_InfoBox[Information Box].
 
-_Cylinder pressures_: Some CCR dive computers like the Poseidon MkVI record the
+_Bailout_: Bailout events during a CCR dive can be recorded in a _Subsurface_ divelog. Right-click
+on the dive profile to generate a dive profile context menu. Select _Change divemode_ and choose
+the appropriate bailout option (probably OC). An appropriate icon is shown on the depth profile (see
+image below). In most CCR equipment it is also
+possible to bailout to pSCR, especially in cases where the electronics died and the diluent supply
+is limited. This can also be reflected in the dive log and Subsurface will calculate and graph the
+appropriate pO~2~ values. The case during CCR training is more complex if the instructor prefers
+a low setpoint such as 0.7 to be maintained during bailout. In this case the CCR equipment
+maintains the low setpoint and overrides the OC or pSCR conditions. In such cases it is probably
+more accurate not to record a bailout event in the dive log since _Subsurface_ will calculate pO~2~
+values based on the erroneous assumption that there is no setpoint.
+Below is a dive profile for a CCR dive with bailout at 57 minutes. In this profile
+the green pO~2~ graph diverges from the setpoint value and reflects the pO~2~ in the OC diluent gas
+(in this case air).
+The pO~2~ in the loop (shown as a meandering graph for each oxygen sensor) is irrelevant because
+the actual inspired gas comes directly from the diluent cylinder. In cases where bailout occurs using
+a stage cylinder, indicate the bailout as well as the gas change event and _Subsurface_ will calculate
+all the appropriate pO~2~ values. Some dive computers record bailout events as well as gas change
+events: in this case the events are shown automatically in the dive log.
+
+image::images/CCR_bailout.jpg["FIGURE: CCR bailout profileh",align="center"]
+
+_Deco ceiling_: The deco ceiling calculated by Subsurface is not very accurate because the precise pressure of nitrogen
+in the loop can usually not be determined from the dive log imported from the CCR equipment. Many CCR dive
+computers, however, report an internally-calculated deco ceiling that is reported in the dive log,
+reflecting a more accurate assessment. The display of this ceiling is activated
+by clicking the appropriate button to the left of the dive profile:
+
+image::images/icons/cceiling.jpg["DC ceiling icon"]
+
+The default color of the computer-generated deco ceiling is white. This can be set to red
+by checking the appropriate check box after selecting _File  ->  Preferences  ->  Profile_.
+The profile above indicates the dive computer-generated deco ceiling in red.
+
+_Cylinder pressures_: Some CCR dive computers like Poseidon record the
 pressures of the oxygen and diluent cylinders. The pressures of these two cylinders
 are shown as green lines overlapping the depth profile. In addition, start and
 end pressures for both oxygen and diluent cylinders are shown in the _Equipment Tab_.
@@ -2157,22 +2223,8 @@ _Equipment-specific information_: Equipment-specific information gathered by
 _Subsurface_ is shown in the xref:S_ExtraDataTab[Extra data tab]. This may include setup information
 or metadata about the dive.
 
-The deco ceiling calculated by Subsurface is not very accurate because the precise pressure of nitrogen
-in the loop can usually not be determined from the dive log imported from the CCR equipment. Many CCR dive
-computers, however, report an internally-calculated deco ceiling that is reported in the dive log,
-reflecting a more accurate assessment. The display of this ceiling is activated
-by clicking the appropriate button to the left of the dive profile:
-
-image::images/icons/cceiling.jpg["DC ceiling icon"]
-
-The default color of the computer-generated deco ceiling is white. This can be set to red
-by checking the appropriate check box after selecting _File  ->  Preferences  ->  Profile_.
-Below is a dive profile indicating the dive computer-generated deco ceiling:
-
-image::images/CCR_dive_ceilingF22.jpg["FIGURE: CCR computer-generated deco ceiling",align="center"]
-
-More equipment-specific information for downloading CCR dive logs for
-Poseidon MkVI and APD equipment can be found in xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B].
+More equipment-specific procedures and information for downloading CCR dive logs for
+Poseidon and APD equipment can be found in xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Appendix B].
 
 == Obtaining more information about dives entered into the logbook
 
@@ -3375,13 +3427,27 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
     during a particular dive. Setpoint changes during the dive can be added via the
     profile context menu.
 
+*** _CCR: Show O~2~ sensor values when viewing pO~2~:_ Show the pO~2~
+    values associated with each of the individual oxygen sensors of a CCR system.
+    See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+
 *** _CCR: Show setpoints when viewing pO~2~:_ With this checkbox activated, the pO~2~
     graph on the dive profile has an overlay in red which indicates the CCR setpoint
     values. See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
 
-*** _CCR: Show individual O~2~ sensor values when viewing pO~2~:_ Show the pO~2~
-    values associated with each of the individual oxygen sensors of a CCR system.
-    See the section on xref:S_CCR_dives[Closed Circuit Rebreather dives].
+**  _pSCR options_. These preferences determine how passive semi-closed circuit (pSCR) dives
+    are planned and how the pSCR deco ceiling is calculated:
+
+*** _Metabolic rate:_ this is the
+    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
+    and decompression calculations.
+
+*** _pSCR ratio:_ The dilution ratio (or dump ratio) is the ratio of gas released to the
+    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
+
+*** _Show equivalent OC with pSCR pO~2~_: The pO~2~ in the pSCR loop is usually lower than the
+    pO~2~ of the fresh gas from the cylinder. Activating this checkbox allows the pO~2~ graph
+    in the dive profile to also show the pO~2~ of the fresh gas entering the loop.
 
 * *Ceiling display setup*. These settings mostly deal with nitrogen and helium management
    by determining how the decompression ceiling (ascent ceiling) is calculated and displayed:
@@ -3415,15 +3481,6 @@ image::images/Pref4_f23.jpg["FIGURE: Preferences Graph page",align="center"]
 
  *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
 
- **  _pSCR options_. These preferences determine how passive semi-closed circuit (pSCR) dives
-    are planned and how the pSCR deco ceiling is calculated:
-
- *** _Metabolic rate:_ this is the
-    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
-    and decompression calculations.
-
- *** _pSCR ratio:_ The dilution ratio (or dump ratio) is the ratio of gas released to the
-    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
 
 * *Misc*
 
