@@ -1209,11 +1209,19 @@ QString localFilePath(const QString &originalFilename)
 	return localFilenameOf.value(originalFilename, originalFilename);
 }
 
+// TODO: Apparently Qt has no simple way of listing the supported video
+// codecs? Do we have to query them by hand using QMediaPlayer::hasSupport()?
+const QStringList videoExtensionsList = {
+	".avi", ".mp4", ".mpeg", ".mpg", ".wmv"
+};
+
 QStringList imageExtensionFilters() {
 	QStringList filters;
 	foreach (QString format, QImageReader::supportedImageFormats()) {
 		filters.append(QString("*.").append(format));
 	}
+	foreach (const QString &format, videoExtensionsList)
+		filters.append("*" + format);
 	return filters;
 }
 
