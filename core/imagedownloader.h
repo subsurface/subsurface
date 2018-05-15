@@ -2,6 +2,7 @@
 #ifndef IMAGEDOWNLOADER_H
 #define IMAGEDOWNLOADER_H
 
+#include "metadata.h"
 #include <QImage>
 #include <QFuture>
 #include <QNetworkReply>
@@ -51,11 +52,15 @@ private:
 	Thumbnailer();
 	void recalculate(QString filename);
 	void processItem(QString filename, bool tryDownload);
+	std::pair<QImage, mediatype_t> getThumbnailFromCache(const QString &picture_filename);
+	std::pair<QImage, mediatype_t> fetchImage(const QString &filename, const QString &originalFilename, bool tryDownload);
+	std::pair<QImage, mediatype_t> getHashedImage(const QString &filename, bool tryDownload);
 
 	mutable QMutex lock;
 	QThreadPool pool;
 	QImage failImage;		// Shown when image-fetching fails
 	QImage dummyImage;		// Shown before thumbnail is fetched
+	QImage videoImage;		// Place holder for videos
 
 	QMap<QString,QFuture<void>> workingOn;
 };
