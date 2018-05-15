@@ -39,8 +39,11 @@ void ImageDownloader::load(QString filename, bool fromHash)
 {
 	QUrl url = fromHash ? cloudImageURL(qPrintable(filename)) : QUrl::fromUserInput(filename);
 
-	if (!url.isValid())
+	// If this is a file, we tried previously -> don't bother trying it again
+	if (url.scheme() == "file" || !url.isValid()) {
 		emit failed(filename);
+		return;
+	}
 
 	QNetworkRequest request(url);
 	request.setAttribute(QNetworkRequest::User, filename);
@@ -99,14 +102,18 @@ static QImage loadImage(const QString &fileName, const char *format = nullptr)
 }
 
 // Returns: thumbnail, still loading
-static std::pair<QImage,bool> getHashedImage(const QString &file)
+static std::pair<QImage,bool> getHashedImage(const QString &file_in, bool tryDownload)
 {
+	QString file = file_in.startsWith("file://", Qt::CaseInsensitive) ? file_in.mid(7) : file_in;
 	QImage thumb;
 	bool stillLoading = false;
 	QUrl url = QUrl::fromUserInput(localFilePath(file));
 	if (url.isLocalFile())
 		thumb = loadImage(url.toLocalFile());
-	if (thumb.isNull()) {
+	if (!thumb.isNull()) {
+		// We loaded successfully. Now, make sure hash is up to date.
+		hashPicture(file);
+	} else if (tryDownload) {
 		// This did not load anything. Let's try to get the image from other sources
 		// Let's try to load it locally via its hash
 		QString filenameLocal = localFilePath(qPrintable(file));
@@ -129,9 +136,6 @@ static std::pair<QImage,bool> getHashedImage(const QString &file)
 				stillLoading = true;
 			}
 		}
-	} else {
-		// We loaded successfully. Now, make sure hash is up to date.
-		hashPicture(file);
 	}
 	return { thumb, stillLoading };
 }
@@ -208,12 +212,12 @@ static void addThumbnailToCache(const QImage &thumbnail, const QString &picture_
 	file.commit();
 }
 
-void Thumbnailer::processItem(QString filename)
+void Thumbnailer::processItem(QString filename, bool tryDownload)
 {
 	QImage thumbnail = getThumbnailFromCache(filename);
 
 	if (thumbnail.isNull()) {
-		auto res = getHashedImage(filename);
+		auto res = getHashedImage(filename, tryDownload);
 		if (res.second)
 			return;
 		thumbnail = res.first;
@@ -237,7 +241,7 @@ void Thumbnailer::imageDownloaded(QString filename)
 	// Image was downloaded and the filename connected with a hash.
 	// Try thumbnailing again.
 	QMutexLocker l(&lock);
-	workingOn[filename] = QtConcurrent::run(&pool, [this, filename]() { processItem(filename); });
+	workingOn[filename] = QtConcurrent::run(&pool, [this, filename]() { processItem(filename, false); });
 }
 
 void Thumbnailer::imageDownloadFailed(QString filename)
@@ -255,7 +259,7 @@ QImage Thumbnailer::fetchThumbnail(PictureEntry &entry)
 	const QString &filename = entry.filename;
 	if (!workingOn.contains(filename)) {
 		workingOn.insert(filename,
-				 QtConcurrent::run(&pool, [this, filename]() { processItem(filename); }));
+				 QtConcurrent::run(&pool, [this, filename]() { processItem(filename, true); }));
 	}
 	return dummyImage;
 }

@@ -46,7 +46,7 @@ signals:
 	void thumbnailChanged(QString filename, QImage thumbnail);
 private:
 	Thumbnailer();
-	void processItem(QString filename);
+	void processItem(QString filename, bool tryDownload);
 
 	mutable QMutex lock;
 	QThreadPool pool;
