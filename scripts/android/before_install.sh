@@ -7,7 +7,7 @@ git pull --tags
 git describe
 
 # Ugly, but keeps it running during the build
-docker run -v $PWD:/workspace/subsurface --name=builder -w /workspace -d ubuntu:xenial /bin/sleep 60m
+docker run -v $PWD:/workspace/subsurface --name=builder -w /workspace -d ubuntu:bionic /bin/sleep 60m
 docker exec -t builder apt-get update
 # subsurface android build dependencies
 docker exec -t builder apt-get install -y git cmake autoconf libtool-bin openjdk-8-jdk-headless wget unzip python bzip2 pkg-config
