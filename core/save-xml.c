@@ -302,7 +302,7 @@ static void save_one_event(struct membuffer *b, struct dive *dive, struct event 
 	show_index(b, ev->type, "type='", "'");
 	show_index(b, ev->flags, "flags='", "'");
 	if (!strcmp(ev->name,"modechange"))
-		show_utf8(b, divemode_text[ev->value], "divemode='", "'",1);
+		show_utf8(b, divemode_text[ev->value], " divemode='", "'",1);
 	else
 		show_index(b, ev->value, "value='", "'");
 	show_utf8(b, ev->name, " name='", "'", 1);

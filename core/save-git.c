@@ -376,7 +376,7 @@ static void save_one_event(struct membuffer *b, struct dive *dive, struct event 
 	show_index(b, ev->flags, "flags=", "");
 
 	if (!strcmp(ev->name,"modechange"))
-		show_utf8(b, "divemode=", divemode_text[ev->value], "");
+		show_utf8(b, " divemode=", divemode_text[ev->value], "");
 	else
 		show_index(b, ev->value, "value=", "");
 	show_utf8(b, " name=", ev->name, "");
