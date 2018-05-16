@@ -41,7 +41,7 @@ void Printer::putProfileImage(QRect profilePlaceholder, QRect viewPort, QPainter
 	int y = profilePlaceholder.y() - viewPort.y();
 	// use the placeHolder and the viewPort position to calculate the relative position of the dive profile.
 	QRect pos(x, y, profilePlaceholder.width(), profilePlaceholder.height());
-	profile->plotDive(dive, true);
+	profile->plotDive(dive, true, true);
 
 	if (!printOptions->color_selected) {
 		QImage image(pos.width(), pos.height(), QImage::Format_ARGB32);
@@ -204,7 +204,7 @@ void Printer::render(int Pages = 0)
 	prefs.animation_speed = animationOriginal;
 
 	//replot the dive after returning the settings
-	profile->plotDive(0, true);
+	profile->plotDive(0, true, true);
 }
 
 //value: ranges from 0 : 100 and shows the progress of the templating engine

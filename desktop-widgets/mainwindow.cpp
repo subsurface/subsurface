@@ -531,7 +531,7 @@ void MainWindow::current_dive_changed(int divenr)
 	if (divenr >= 0) {
 		select_dive(divenr);
 	}
-	graphics()->plotDive();
+	graphics()->plotDive(nullptr, false, true);
 	information()->updateDiveInfo();
 	configureToolbar();
 	MapWidget::instance()->reload();
@@ -1095,7 +1095,7 @@ void MainWindow::on_actionAddDive_triggered()
 	graphics()->setAddState();
 	DivePlannerPointsModel::instance()->createSimpleDive();
 	configureToolbar();
-	graphics()->plotDive();
+	graphics()->plotDive(nullptr, false, true);
 	fixup_dc_duration(&displayed_dive.dc);
 	displayed_dive.duration = displayed_dive.dc.duration;
 
@@ -1314,7 +1314,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	configureToolbar();
-	graphics()->plotDive();
+	graphics()->plotDive(nullptr, false, true);
 	information()->updateDiveInfo();
 }
 
@@ -1323,7 +1323,7 @@ void MainWindow::on_actionNextDC_triggered()
 	unsigned nrdc = number_of_computers(current_dive);
 	dc_number = (dc_number + 1) % nrdc;
 	configureToolbar();
-	graphics()->plotDive();
+	graphics()->plotDive(nullptr, false, true);
 	information()->updateDiveInfo();
 }
 
