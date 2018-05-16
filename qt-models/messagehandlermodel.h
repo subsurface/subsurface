@@ -14,6 +14,7 @@ public:
 	QVariant data(const QModelIndex& idx, int role) const override;
 	QHash<int, QByteArray> roleNames() const override;
 	void addLog(QtMsgType type, const QString& message);
+	const QString logAsString();
 
 	/* call this to clear the debug data */
 	Q_INVOKABLE void reset();
