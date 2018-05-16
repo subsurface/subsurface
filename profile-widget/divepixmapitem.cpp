@@ -16,31 +16,26 @@ DivePixmapItem::DivePixmapItem(QGraphicsItem *parent) : QGraphicsPixmapItem(pare
 {
 }
 
-DiveButtonItem::DiveButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
-{
-}
-
-void DiveButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
-{
-	QGraphicsItem::mousePressEvent(event);
-	emit clicked();
-}
-
-CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DiveButtonItem(parent)
+CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
 {
 	static QPixmap p = QPixmap(":list-remove-icon");
 	setPixmap(p);
 	setFlag(ItemIgnoresTransformations);
 }
 
+void CloseButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+{
+	qgraphicsitem_cast<DivePictureItem*>(parentItem())->removePicture();
+}
+
 void CloseButtonItem::hide()
 {
-	DiveButtonItem::hide();
+	DivePixmapItem::hide();
 }
 
 void CloseButtonItem::show()
 {
-	DiveButtonItem::show();
+	DivePixmapItem::show();
 }
 
 DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
@@ -96,7 +91,6 @@ void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
 	button->setOpacity(0);
 	button->show();
 	Animations::show(button);
-	connect(button, SIGNAL(clicked()), this, SLOT(removePicture()));
 }
 
 void DivePictureItem::setFileUrl(const QString &s)
@@ -119,9 +113,9 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-#ifndef SUBSURFACE_MOBILE
 void DivePictureItem::removePicture()
 {
+#ifndef SUBSURFACE_MOBILE
 	DivePictureModel::instance()->removePicture(fileUrl, true);
-}
 #endif
+}
