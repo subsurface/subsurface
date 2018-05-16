@@ -69,15 +69,6 @@ while [[ $# -gt 0 ]] ; do
 	shift
 done
 
-# most of these will only be needed with -build-deps on a Mac
-CURRENT_LIBZIP="1.2.0"
-CURRENT_HIDAPI="hidapi-0.7.0"
-CURRENT_LIBCURL="curl-7_54_1"
-CURRENT_LIBUSB="v1.0.21"
-CURRENT_OPENSSL="OpenSSL_1_1_0f"
-CURRENT_LIBSSH2="libssh2-1.8.0"
-CURRENT_LIBGIT2="v0.26.0"
-
 # Verify that the Xcode Command Line Tools are installed
 if [ $PLATFORM = Darwin ] ; then
 	if [ -d /Developer/SDKs ] ; then
@@ -202,23 +193,18 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 	# feature). So we painfully need to build the dependencies ourselves.
 
 	if [ "$BUILD_DEPS" == "1" ] ; then
-		if [ ! -d libzip-${CURRENT_LIBZIP} ] ; then
-			curl -O https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
-			tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
-		fi
-		cd libzip-${CURRENT_LIBZIP}
+		./subsurface/scripts/get-dep-lib.sh single . libzip
+		pushd libzip
 		mkdir -p build
 		cd build
 		../configure CFLAGS="$OLDER_MAC" --prefix=$INSTALL_ROOT
 		make -j4
 		make install
+		popd
 
-		cd $SRC
 
-		if [ ! -d hidapi ] ; then
-			git clone https://github.com/signal11/hidapi
-		fi
-		cd hidapi
+		./subsurface/scripts/get-dep-lib.sh single . hidapi
+		pushd hidapi
 		# there is no good tag, so just build master
 		bash ./bootstrap
 		mkdir -p build
@@ -226,17 +212,10 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT
 		make -j4
 		make install
+		popd
 
-		cd $SRC
-
-		if [ ! -d libcurl ] ; then
-			git clone https://github.com/curl/curl libcurl
-		fi
-		cd libcurl
-		if ! git checkout $CURRENT_LIBCURL ; then
-			echo "Can't find the right tag in libcurl - giving up"
-			exit 1
-		fi
+		./subsurface/scripts/get-dep-lib.sh single . libcurl
+		pushd libcurl
 		bash ./buildconf
 		mkdir -p build
 		cd build
@@ -244,34 +223,20 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 			--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
 		make -j4
 		make install
+		popd
 
-		cd $SRC
-
-		if [ ! -d libusb ] ; then
-			git clone https://github.com/libusb/libusb
-		fi
-		cd libusb
-		if ! git checkout $CURRENT_LIBUSB ; then
-			echo "Can't find the right tag in libusb - giving up"
-			exit 1
-		fi
+		./subsurface/scripts/get-dep-lib.sh single . libusb
+		pushd libusb
 		bash ./bootstrap.sh
 		mkdir -p build
 		cd build
 		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --disable-examples
 		make -j4
 		make install
+		popd
 
-		cd $SRC
-
-		if [ ! -d openssl ] ; then
-			git clone https://github.com/openssl/openssl
-		fi
-		cd openssl
-		if ! git checkout $CURRENT_OPENSSL ; then
-			echo "Can't find the right tag in openssl - giving up"
-			exit 1
-		fi
+		./subsurface/scripts/get-dep-lib.sh single . openssl
+		pushd openssl
 		mkdir -p build
 		cd build
 		../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
@@ -279,22 +244,16 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 		# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
 		make -j4 -k
 		make -k install
+		popd
 
-		cd $SRC
-
-		if [ ! -d libssh2 ] ; then
-			git clone https://github.com/libssh2/libssh2
-		fi
-		cd libssh2
-		if ! git checkout $CURRENT_LIBSSH2 ; then
-			echo "Can't find the right tag in libssh2 - giving up"
-			exit 1
-		fi
+		./subsurface/scripts/get-dep-lib.sh single . libssh2
+		pushd libssh2
 		mkdir -p build
 		cd build
 		cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
 		make -j4
 		make install
+		popd
 	else
 		# we are getting libusb and hidapi from pkg-config and that goes wrong
 		# or more specifically, the way libdivecomputer references
@@ -307,25 +266,14 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 
 	cd $SRC
 
-	if [ ! -d libgit2 ] ; then
-		if [[ $1 = local ]] ; then
-			git clone $SRC/../libgit2 libgit2
-		else
-			git clone https://github.com/libgit2/libgit2.git
-		fi
-	fi
-	cd libgit2
-	# let's build with a recent enough version of master for the latest features
-	git fetch origin
-	if ! git checkout $CURRENT_LIBGIT2 ; then
-		echo "Can't find the right tag in libgit2 - giving up"
-		exit 1
-	fi
+	./subsurface/scripts/get-dep-lib.sh single . libgit2
+	pushd libgit2
 	mkdir -p build
 	cd build
 	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
 	make -j4
 	make install
+	popd
 
 	if [ $PLATFORM = Darwin ] ; then
 		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
@@ -456,6 +404,7 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	git pull --rebase
 
 	mkdir -p build
+	mkdir -p J10build
 	cd build
 	$QMAKE -query
 	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
