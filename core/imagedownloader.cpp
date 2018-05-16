@@ -115,7 +115,6 @@ static std::pair<QImage,bool> getHashedImage(const QString &file_in, bool tryDow
 		hashPicture(file);
 	} else if (tryDownload) {
 		// This did not load anything. Let's try to get the image from other sources
-		// Let's try to load it locally via its hash
 		QString filenameLocal = localFilePath(qPrintable(file));
 		qDebug() << QStringLiteral("Translated filename: %1 -> %2").arg(file, filenameLocal);
 		if (filenameLocal.isNull()) {
@@ -125,8 +124,9 @@ static std::pair<QImage,bool> getHashedImage(const QString &file_in, bool tryDow
 			loadPicture(file, true);
 			stillLoading = true;
 		} else {
-			// Load locally from translated file name
-			thumb = loadImage(filenameLocal);
+			// Load locally from translated file name if it is different
+			if (filenameLocal != file)
+				thumb = loadImage(filenameLocal);
 			if (!thumb.isNull()) {
 				// Make sure the hash still matches the image file
 				hashPicture(filenameLocal);
