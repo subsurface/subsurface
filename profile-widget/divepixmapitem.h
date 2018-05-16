@@ -15,20 +15,12 @@ public:
 	DivePixmapItem(QGraphicsItem *parent = 0);
 };
 
-class DiveButtonItem : public DivePixmapItem {
-	Q_OBJECT
-public:
-	DiveButtonItem(QGraphicsItem *parent = 0);
-protected:
-	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
-signals:
-	void clicked();
-};
-
-class CloseButtonItem : public DiveButtonItem {
+class CloseButtonItem : public DivePixmapItem {
 	Q_OBJECT
 public:
 	CloseButtonItem(QGraphicsItem *parent = 0);
+protected:
+	virtual void mousePressEvent(QGraphicsSceneMouseEvent *event);
 public slots:
 	void hide();
 	void show();
@@ -42,9 +34,7 @@ public:
 	void setPixmap(const QPixmap& pix);
 public slots:
 	void settingsChanged();
-#ifndef SUBSURFACE_MOBILE
 	void removePicture();
-#endif
 	void setFileUrl(const QString& s);
 protected:
 	void hoverEnterEvent(QGraphicsSceneHoverEvent *event);
@@ -54,7 +44,7 @@ private:
 	QString fileUrl;
 	QGraphicsRectItem *canvas;
 	QGraphicsRectItem *shadow;
-	DiveButtonItem *button;
+	CloseButtonItem *button;
 };
 
 #endif // DIVEPIXMAPITEM_H
