@@ -12,12 +12,14 @@
 #include <QElapsedTimer>
 #include <QTimer>
 #include <QDateTime>
+#include <QClipboard>
 
 #include <QBluetoothLocalDevice>
 
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/completionmodels.h"
+#include "qt-models/messagehandlermodel.h"
 #include "core/divelist.h"
 #include "core/device.h"
 #include "core/pref.h"
@@ -330,6 +332,16 @@ void QMLManager::cancelCredentialsPinSetup()
 	setStartPageText(tr("Starting..."));
 
 	setShowPin(false);
+}
+
+void QMLManager::copyAppLogToClipboard()
+{
+	/*
+	 * The user clicked the button, so copy the log file
+	 * to the clipboard for easy access
+	 */
+	QString copyString =  MessageHandlerModel::self()->logAsString();
+	QApplication::clipboard()->setText(copyString, QClipboard::Clipboard);
 }
 
 void QMLManager::finishSetup()

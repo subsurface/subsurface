@@ -178,6 +178,7 @@ public slots:
 	void clearGpsData();
 	void clearCredentials();
 	void cancelCredentialsPinSetup();
+	void copyAppLogToClipboard();
 	void finishSetup();
 	void openLocalThenRemote(QString url);
 	void mergeLocalRepo();

@@ -51,6 +51,15 @@ void MessageHandlerModel::addLog(QtMsgType type, const QString& message)
 #endif
 }
 
+const QString MessageHandlerModel::logAsString()
+{
+	QString copyString;
+
+	// Loop through m_data and build big string to be put on the clipboard
+	for(const MessageData &data: m_data)
+		copyString += data.message + "\n";
+	return copyString;
+}
 QVariant MessageHandlerModel::data(const QModelIndex& idx, int role) const
 {
 	switch(role) {
