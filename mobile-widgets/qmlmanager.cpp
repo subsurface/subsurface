@@ -725,8 +725,8 @@ static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, doub
 		ds->longitude.udeg = lrint(lon * 1000000);
 	} else {
 		degrees_t latData, lonData;
-		latData.udeg = lrint(lat);
-		lonData.udeg = lrint(lon);
+		latData.udeg = lrint(lat * 1000000);
+		lonData.udeg = lrint(lon * 1000000);
 		d->dive_site_uuid = create_dive_site_with_gps(locationtext, latData, lonData, d->when);
 	}
 }
