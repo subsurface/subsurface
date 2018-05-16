@@ -357,7 +357,7 @@ void ProfileWidget2::replot(struct dive *d)
 	if (!replotEnabled)
 		return;
 	dataModel->clear();
-	plotDive(d, true);
+	plotDive(d, true, false);
 }
 
 void ProfileWidget2::createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
@@ -526,7 +526,7 @@ void ProfileWidget2::resetZoom()
 }
 
 // Currently just one dive, but the plan is to enable All of the selected dives.
-void ProfileWidget2::plotDive(struct dive *d, bool force)
+void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 {
 	static bool firstCall = true;
 #ifndef SUBSURFACE_MOBILE
@@ -785,7 +785,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force)
 		DivePlannerPointsModel *model = DivePlannerPointsModel::instance();
 		model->deleteTemporaryPlan();
 	}
-	if (printMode)
+	if (doClearPictures)
 		clearPictures();
 	else
 		plotPictures();
@@ -1525,7 +1525,7 @@ void ProfileWidget2::deleteCurrentDC()
 	delete_current_divecomputer();
 	mark_divelist_changed(true);
 	// we need to force it since it's likely the same dive and same dc_number - but that's a different dive computer now
-	plotDive(0, true);
+	plotDive(0, true, false);
 
 	emit refreshDisplay(true);
 }
