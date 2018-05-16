@@ -198,6 +198,8 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 	} else if (value) {
 		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
+		// this is a bad idea - we are abusing an existing event type that is supposed to
+		// warn of high or low pO₂ and are turning it into a setpoint change event
 		} else if (type == SAMPLE_EVENT_CEILING && same_string(internalEvent->name, "planned waypoint above ceiling")) {
 			const char *depth_unit;
 			double depth_value = get_depth_units(value*1000, NULL, &depth_unit);
@@ -205,11 +207,8 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 		} else {
 			name += QString(": %1").arg(value);
 		}
-	} else if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
-		// this is a bad idea - we are abusing an existing event type that is supposed to
-		// warn of high or low pO₂ and are turning it into a setpoint change event
-		name += ":\n" + tr("Manual switch to OC");
-	} else {
+	} 
+	else {
 		name += internalEvent->flags & SAMPLE_FLAGS_BEGIN ? tr(" begin", "Starts with space!") :
 								    internalEvent->flags & SAMPLE_FLAGS_END ? tr(" end", "Starts with space!") : "";
 	}

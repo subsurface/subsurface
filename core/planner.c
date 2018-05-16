@@ -260,13 +260,14 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 {
 	struct divedatapoint *dp;
 	struct divecomputer *dc;
-	struct sample *sample;
+	struct sample *sample, *s;
 	struct event *ev;
 	cylinder_t *cyl;
 	int oldpo2 = 0;
 	int lasttime = 0, last_manual_point = 0;
 	depth_t lastdepth = {.mm = 0};
 	int lastcylid;
+	bool bailout_happened = false;
 	enum divemode_t type = dive->dc.divemode;
 
 	if (!diveplan || !diveplan->dp)
@@ -349,14 +350,28 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 		sample = prepare_sample(dc);
 		/* set po2 at beginning of this segment */
 		/* and keep it valid for last sample - where it likely doesn't matter */
-		sample[-1].setpoint.mbar = po2;
-		sample->setpoint.mbar = po2;
+		if (type == CCR) {
+			sample[-1].setpoint.mbar = po2;
+			sample->setpoint.mbar = po2;
+		}
+		else { // If this is not a CCR segment, default to OC calculations
+			sample[-1].setpoint.mbar = 0;
+			sample->setpoint.mbar = 0;
+			/* If CCR bailout occurs, enable display of cylinder pressures by
+			 * initialising all previous cylinder pressures to cyl working pressure. */
+			if (!bailout_happened && dc->divemode == CCR) {
+				bailout_happened = true;
+				s = dc->sample;
+				for (int i = 0; i < dc->samples; i++, s++)
+					s->pressure[0].mbar = cyl->type.workingpressure.mbar;
+			}
+		}
 		sample->time.seconds = lasttime = time;
 		if (dp->entered) last_manual_point = dp->time;
 		sample->depth = lastdepth = depth;
 		sample->manually_entered = dp->entered;
 		sample->sac.mliter = dp->entered ? prefs.bottomsac : prefs.decosac;
-		if (track_gas && !sample[-1].setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
+		if (track_gas && !sample->setpoint.mbar) {    /* Don't track gas usage for CCR legs of dive */
 			update_cylinder_pressure(dive, sample[-1].depth.mm, depth.mm, time - sample[-1].time.seconds,
 					dp->entered ? diveplan->bottomsac : diveplan->decosac, cyl, !dp->entered, type);
 			if (cyl->type.workingpressure.mbar)
