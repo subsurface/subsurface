@@ -17,11 +17,16 @@ CURRENT_LIBFTDI="1.3"
 
 
 # deal with all the command line arguments
-if [ $# -ne 2 ] ; then
+if [[ $# -ne 2 && $# -ne 3 ]] ; then
 	echo "wrong number of parameters, format:"
-	echo "get-dep-lib <platform> <install dir>"
-	echo "where platform is one of scripts, ios or android"
+	echo "get-dep-lib.sh <platform> <install dir>"
+	echo "or"
+	echo "get-dep-lib.sh single <install dir> <lib>"
+	echo "where"
+	echo "<platform> is one of scripts, ios or android"
 	echo "(the name of the directory where build.sh resides)"
+	echo "<install dir> is the directory to clone in"
+	echo "<lib> is the name to be cloned"
 	exit -1
 fi
 
@@ -41,6 +46,9 @@ case ${PLATFORM} in
 		;;
 	android)
 		BUILD="libzip libgit2 googlemaps libxslt sqlite libxml2 openssl libftdi libusb"
+		;;
+	single)
+		BUILD="$3"
 		;;
 	*)
 		echo "Unknown platform ${PLATFORM}, choose between native, ios or android"
