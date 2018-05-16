@@ -1074,7 +1074,7 @@ static int get_authorship(git_repository *repo, git_signature **authorp)
 	/* Default name information, with potential OS overrides */
 	struct user_info user = {
 		.name = "Subsurface",
-		.email = "subsurace@subsurface-divelog.org"
+		.email = "subsurface-app-account@subsurface-divelog.org"
 	};
 
 	subsurface_user_info(&user);
