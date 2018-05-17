@@ -14,14 +14,12 @@ CURRENT_SQLITE="3190200"
 CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="1.3"
 
-
-
 # deal with all the command line arguments
 if [[ $# -ne 2 && $# -ne 3 ]] ; then
 	echo "wrong number of parameters, format:"
 	echo "get-dep-lib.sh <platform> <install dir>"
-	echo "or"
 	echo "get-dep-lib.sh single <install dir> <lib>"
+	echo "get-dep-lib.sh singleAndroid <install dir> <lib>"
 	echo "where"
 	echo "<platform> is one of scripts, ios or android"
 	echo "(the name of the directory where build.sh resides)"
@@ -37,6 +35,19 @@ if [ ! -d ${INSTDIR} ] ; then
 	mkdir -p ${INSTDIR}
 fi
 
+# FIX FOR ANDROID,
+if [ "$PLATFORM" == "singleAndroid" ] ; then
+	CURRENT_LIBZIP="1.1.3"
+	CURRENT_LIBUSB="v1.0.20"
+	CURRENT_OPENSSL="OpenSSL_1_0_2l"
+fi
+# no curl and old libs (never version breaks)
+# check whether to use curl or wget
+if [ "`which curl`" == "" ] ; then
+	CURL="wget "
+else
+	CURL="curl -O "
+fi
 case ${PLATFORM} in
 	scripts)
 		BUILD="libzip libgit2 googlemaps hidapi libcurl libusb openssl libssh2"
@@ -48,6 +59,9 @@ case ${PLATFORM} in
 		BUILD="libzip libgit2 googlemaps libxslt sqlite libxml2 openssl libftdi libusb"
 		;;
 	single)
+		BUILD="$3"
+		;;
+	singleAndroid)
 		BUILD="$3"
 		;;
 	*)
@@ -74,7 +88,7 @@ if [[ "$BUILD" = *"libcurl"* && ! -d libcurl ]]; then
 fi
 
 if [[ "$BUILD" = *"libftdi"* && ! -d libftdi1 ]]; then
-	curl -O https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+	${CURL} https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
 	tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
 	mv libftdi1-${CURRENT_LIBFTDI} libftdi1
 fi
@@ -135,7 +149,7 @@ if [[ "$BUILD" = *"libxslt"* && ! -d libxslt ]]; then
 fi
 
 if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
-	curl -O https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
+	${CURL} https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
 	tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
 	mv libzip-${CURRENT_LIBZIP} libzip
 fi
@@ -173,7 +187,7 @@ if [[ "$BUILD" = *"openssl"* && ! -d openssl ]]; then
 fi
 
 if [[ "$BUILD" = *"sqlite"* && ! -d sqlite ]]; then
-	curl -O http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+	${CURL} http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
 	tar -zxf sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
 	mv sqlite-autoconf-${CURRENT_SQLITE} sqlite
 fi
