@@ -447,7 +447,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	disableDecoElements((int) prefs.planner_deco_mode);
 
 	// should be the same order as in dive_comp_type!
-	rebreather_modes << tr("Open circuit") << tr("CCR") << tr("pSCR");
+	for (int i=0; i < FREEDIVE; i++)
+		rebreather_modes.append(QString(divemode_text_ui[i]));
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
 	modeMapper = new QSignalMapper(this);
