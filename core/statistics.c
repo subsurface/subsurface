@@ -44,10 +44,10 @@ static void process_temperatures(struct dive *dp, stats_t *stats)
 	}
 }
 
-static void process_dive(struct dive *dp, stats_t *stats)
+static void process_dive(struct dive *dive, stats_t *stats)
 {
 	int old_tadt, sac_time = 0;
-	int32_t duration = dp->duration.seconds;
+	int32_t duration = dive->duration.seconds;
 
 	old_tadt = stats->total_average_depth_time.seconds;
 	stats->total_time.seconds += duration;
@@ -55,31 +55,31 @@ static void process_dive(struct dive *dp, stats_t *stats)
 		stats->longest_time.seconds = duration;
 	if (stats->shortest_time.seconds == 0 || duration < stats->shortest_time.seconds)
 		stats->shortest_time.seconds = duration;
-	if (dp->maxdepth.mm > stats->max_depth.mm)
-		stats->max_depth.mm = dp->maxdepth.mm;
-	if (stats->min_depth.mm == 0 || dp->maxdepth.mm < stats->min_depth.mm)
-		stats->min_depth.mm = dp->maxdepth.mm;
+	if (dive->maxdepth.mm > stats->max_depth.mm)
+		stats->max_depth.mm = dive->maxdepth.mm;
+	if (stats->min_depth.mm == 0 || dive->maxdepth.mm < stats->min_depth.mm)
+		stats->min_depth.mm = dive->maxdepth.mm;
 
-	process_temperatures(dp, stats);
+	process_temperatures(dive, stats);
 
 	/* Maybe we should drop zero-duration dives */
 	if (!duration)
 		return;
-	if (dp->meandepth.mm) {
+	if (dive->meandepth.mm) {
 		stats->total_average_depth_time.seconds += duration;
 		stats->avg_depth.mm = lrint((1.0 * old_tadt * stats->avg_depth.mm +
-					duration * dp->meandepth.mm) /
+					duration * dive->meandepth.mm) /
 					stats->total_average_depth_time.seconds);
 	}
-	if (dp->sac > 100) { /* less than .1 l/min is bogus, even with a pSCR */
+	if (dive->sac > 100) { /* less than .1 l/min is bogus, even with a pSCR */
 		sac_time = stats->total_sac_time.seconds + duration;
 		stats->avg_sac.mliter = lrint((1.0 * stats->total_sac_time.seconds * stats->avg_sac.mliter +
-					 duration * dp->sac) /
+					 duration * dive->sac) /
 					 sac_time);
-		if (dp->sac > stats->max_sac.mliter)
-			stats->max_sac.mliter = dp->sac;
-		if (stats->min_sac.mliter == 0 || dp->sac < stats->min_sac.mliter)
-			stats->min_sac.mliter = dp->sac;
+		if (dive->sac > stats->max_sac.mliter)
+			stats->max_sac.mliter = dive->sac;
+		if (stats->min_sac.mliter == 0 || dive->sac < stats->min_sac.mliter)
+			stats->min_sac.mliter = dive->sac;
 		stats->total_sac_time.seconds = sac_time;
 	}
 }
