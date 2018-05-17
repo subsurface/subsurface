@@ -35,7 +35,17 @@ static const char *default_tags[] = {
 const char *cylinderuse_text[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
 };
-const char *divemode_text[] = { "OC", "CCR", "PSCR", "Freedive" };
+
+// For user visible text
+const char *divemode_text_ui[] = {
+	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
+	QT_TRANSLATE_NOOP("gettextFromC", "CCR"),
+	QT_TRANSLATE_NOOP("gettextFromC", "pSCR"),
+	QT_TRANSLATE_NOOP("gettextFromC", "Freedive")
+};
+
+// For writing/reading files.
+const char *divemode_text[] = {"OC", "CCR", "pSCR", "Freedive"};
 
 /*
  * Adding a cylinder pressure sample field is not quite as trivial as it

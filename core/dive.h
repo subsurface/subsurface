@@ -31,6 +31,7 @@ enum divemode_t {OC, CCR, PSCR, FREEDIVE, NUM_DIVEMODE, UNDEF_COMP_TYPE};	// Fla
 enum cylinderuse {OC_GAS, DILUENT, OXYGEN, NOT_USED, NUM_GAS_USE}; // The different uses for cylinders
 
 extern const char *cylinderuse_text[];
+extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
 struct gasmix {
