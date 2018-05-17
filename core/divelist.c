@@ -374,8 +374,16 @@ static double calculate_airuse(struct dive *dive)
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
-		if (!end.mbar || start.mbar <= end.mbar)
-			continue;
+		if (!end.mbar || start.mbar <= end.mbar) {
+			// If a cylinder is used but we do not have info on amout of gas used
+			// better not pretend we know the total gas use.
+			// Eventually, logic should be fixed to compute average depth and total time
+			// for those segments where cylinders with known pressure drop are breathed from.
+			if (is_cylinder_used(dive, i))
+				return 0.0;
+			else
+				continue;
+		}
 
 		airuse += gas_volume(cyl, start) - gas_volume(cyl, end);
 	}
