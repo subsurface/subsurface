@@ -322,7 +322,8 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 			/* this is a bad idea - we should get a different SAMPLE_EVENT type
 			 * reserved for this in libdivecomputer... overloading SMAPLE_EVENT_PO2
 			 * with a different meaning will only cause confusion elsewhere in the code */
-			add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
+			if (dp->divemode == type)
+				add_event(dc, lasttime, SAMPLE_EVENT_PO2, 0, po2, QT_TRANSLATE_NOOP("gettextFromC", "SP change"));
 			oldpo2 = po2;
 		}
 
@@ -419,7 +420,7 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 
 struct divedatapoint *plan_add_segment(struct diveplan *diveplan, int duration, int depth, int cylinderid, int po2, bool entered, enum divemode_t divemode)
 {
-	struct divedatapoint *dp = create_dp(duration, depth, cylinderid, po2);
+	struct divedatapoint *dp = create_dp(duration, depth, cylinderid, divemode == CCR ? po2 : 0);
 	dp->entered = entered;
 	dp->divemode = divemode;
 	add_to_end_of_diveplan(diveplan, dp);
