@@ -23,7 +23,7 @@ private:
 	void saveImage(QNetworkReply *reply);
 };
 
-class PictureEntry;
+struct PictureEntry;
 class Thumbnailer : public QObject {
 	Q_OBJECT
 public:
