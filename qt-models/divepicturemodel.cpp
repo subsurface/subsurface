@@ -57,10 +57,9 @@ void DivePictureModel::updateThumbnails()
 
 void DivePictureModel::updateDivePictures()
 {
+	beginResetModel();
 	if (!pictures.isEmpty()) {
-		beginRemoveRows(QModelIndex(), 0, pictures.count() - 1);
 		pictures.clear();
-		endRemoveRows();
 		rowDDStart = rowDDEnd = 0;
 		Thumbnailer::instance()->clearWorkQueue();
 	}
@@ -83,11 +82,7 @@ void DivePictureModel::updateDivePictures()
 	}
 
 	updateThumbnails();
-
-	if (!pictures.isEmpty()) {
-		beginInsertRows(QModelIndex(), 0, pictures.count() - 1);
-		endInsertRows();
-	}
+	endResetModel();
 }
 
 int DivePictureModel::columnCount(const QModelIndex &parent) const
