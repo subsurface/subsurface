@@ -33,12 +33,12 @@ namespace Animations {
 	{
 		if (prefs.animation_speed != 0) {
 			QPropertyAnimation *animation = new QPropertyAnimation(obj, "opacity");
-			obj->connect(animation, SIGNAL(finished()), SLOT(deleteLater()));
+			obj->connect(animation, &QPropertyAnimation::finished, &QObject::deleteLater);
 			animation->setStartValue(1);
 			animation->setEndValue(0);
 			animation->start(QAbstractAnimation::DeleteWhenStopped);
 		} else {
-			obj->setProperty("opacity", 0);
+			delete obj;
 		}
 	}
 
