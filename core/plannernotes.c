@@ -524,6 +524,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	/* For trimix OC dives, if an icd table header and icd data were printed to buffer, then add the ICD table here */
 	if (!icdtableheader && prefs.show_icd) {
 		put_string(&icdbuf, "</tbody></table>"); // End the ICD table
+		mb_cstring(&icdbuf);
 		put_string(&buf, icdbuf.buffer); // ..and add it to the html buffer
 		if (icdwarning) { // If necessary, add warning
 			put_format(&buf, "<span style='color: red;'>%s</span> %s",
