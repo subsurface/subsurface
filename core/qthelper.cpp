@@ -735,7 +735,7 @@ int gettimezoneoffset(timestamp_t when)
 		dt1 = QDateTime::fromMSecsSinceEpoch(when * 1000);
 	dt2 = dt1.toUTC();
 	dt1.setTimeSpec(Qt::UTC);
-	return dt2.secsTo(dt1);
+	return (int)dt2.secsTo(dt1);
 }
 
 QString render_seconds_to_string(int seconds)
@@ -766,7 +766,7 @@ int parseDurationToSeconds(const QString &text)
 		hours = "0";
 		minutes = numOnly;
 	}
-	secs = lrint(hours.toDouble() * 3600 + minutes.toDouble() * 60 + seconds.toDouble());
+	secs = (int)lrint(hours.toDouble() * 3600 + (int)minutes.toDouble() * 60 + seconds.toDouble());
 	return secs;
 }
 
@@ -779,16 +779,16 @@ int parseLengthToMm(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("m"), Qt::CaseInsensitive)) {
-		mm = lrint(number * 1000);
+		mm = (int)lrint(number * 1000);
 	} else if (text.contains(QObject::tr("ft"), Qt::CaseInsensitive)) {
-		mm = feet_to_mm(number);
+		mm = (int)feet_to_mm(number);
 	} else {
 		switch (prefs.units.length) {
 		case units::FEET:
-			mm = feet_to_mm(number);
+			mm = (int)feet_to_mm(number);
 			break;
 		case units::METERS:
-			mm = lrint(number * 1000);
+			mm = (int)lrint(number * 1000);
 			break;
 		default:
 			mm = 0;
@@ -807,16 +807,16 @@ int parseTemperatureToMkelvin(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("C"), Qt::CaseInsensitive)) {
-		mkelvin = C_to_mkelvin(number);
+		mkelvin = (int)C_to_mkelvin(number);
 	} else if (text.contains(QObject::tr("F"), Qt::CaseInsensitive)) {
-		mkelvin = F_to_mkelvin(number);
+		mkelvin = (int)F_to_mkelvin(number);
 	} else {
 		switch (prefs.units.temperature) {
 		case units::CELSIUS:
-			mkelvin = C_to_mkelvin(number);
+			mkelvin = (int)C_to_mkelvin(number);
 			break;
 		case units::FAHRENHEIT:
-			mkelvin = F_to_mkelvin(number);
+			mkelvin = (int)F_to_mkelvin(number);
 			break;
 		default:
 			mkelvin = 0;
@@ -834,13 +834,13 @@ int parseWeightToGrams(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("kg"), Qt::CaseInsensitive)) {
-		grams = lrint(number * 1000);
+		grams = (int)lrint(number * 1000);
 	} else if (text.contains(QObject::tr("lbs"), Qt::CaseInsensitive)) {
 		grams = lbs_to_grams(number);
 	} else {
 		switch (prefs.units.weight) {
 		case units::KG:
-			grams = lrint(number * 1000);
+			grams = (int)lrint(number * 1000);
 			break;
 		case units::LBS:
 			grams = lbs_to_grams(number);
@@ -861,16 +861,16 @@ int parsePressureToMbar(const QString &text)
 		return 0;
 	double number = numOnly.toDouble();
 	if (text.contains(QObject::tr("bar"), Qt::CaseInsensitive)) {
-		mbar = lrint(number * 1000);
+		mbar = (int)lrint(number * 1000);
 	} else if (text.contains(QObject::tr("psi"), Qt::CaseInsensitive)) {
-		mbar = psi_to_mbar(number);
+		mbar = (int)psi_to_mbar(number);
 	} else {
 		switch (prefs.units.pressure) {
 		case units::BAR:
-			mbar = lrint(number * 1000);
+			mbar = (int)lrint(number * 1000);
 			break;
 		case units::PSI:
-			mbar = psi_to_mbar(number);
+			mbar = (int)psi_to_mbar(number);
 			break;
 		default:
 			mbar = 0;
@@ -917,9 +917,9 @@ int parseGasMixHE(const QString &text)
 QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText, QString separator, bool isFreeDive)
 {
 	int hrs, mins, fullmins, secs;
-	mins = (when + 30) / 60;
-	fullmins = when / 60;
-	secs = when - 60 * fullmins;
+	mins = (int)(when + 30) / 60;
+	fullmins = (int)(when / 60);
+	secs = (int)(when - 60 * fullmins);
 	hrs = mins / 60;
 
 	QString displayTime;
@@ -955,9 +955,9 @@ QString get_dive_duration_string(timestamp_t when, QString hoursText, QString mi
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator, int maxdays)
 {
 	int days, hrs, mins;
-	days = when / 3600 / 24;
-	hrs = (when - days * 3600 * 24) / 3600;
-	mins = (when + 30 - days * 3600 * 24 - hrs * 3600) / 60;
+	days = (int)(when / 3600 / 24);
+	hrs = (int)((when - days * 3600 * 24) / 3600);
+	mins = (int)((when + 30 - days * 3600 * 24 - hrs * 3600) / 60);
 
 	QString displayInt;
 	if (maxdays && days > maxdays) displayInt = QString(translate("gettextFromC", "more than %1 days")).arg(maxdays);
@@ -1369,7 +1369,7 @@ weight_t string_to_weight(const char *str)
 	if (prefs.units.weight == prefs.units.LBS)
 		goto lbs;
 kg:
-	weight.grams = lrint(value * 1000);
+	weight.grams = (int)lrint(value * 1000);
 	return weight;
 lbs:
 	weight.grams = lbs_to_grams(value);
@@ -1394,10 +1394,10 @@ depth_t string_to_depth(const char *str)
 	if (prefs.units.length == prefs.units.FEET)
 		goto ft;
 m:
-	depth.mm = lrint(value * 1000);
+	depth.mm = (int)lrint(value * 1000);
 	return depth;
 ft:
-	depth.mm = feet_to_mm(value);
+	depth.mm = (int)feet_to_mm(value);
 	return depth;
 }
 
@@ -1417,10 +1417,10 @@ pressure_t string_to_pressure(const char *str)
 	if (prefs.units.pressure == prefs.units.PSI)
 		goto psi;
 bar:
-	pressure.mbar = lrint(value * 1000);
+	pressure.mbar = (int)lrint(value * 1000);
 	return pressure;
 psi:
-	pressure.mbar = psi_to_mbar(value);
+	pressure.mbar = (int)psi_to_mbar(value);
 	return pressure;
 }
 
@@ -1451,7 +1451,7 @@ cuft:
 		value /= bar_to_atm(workp.mbar / 1000.0);
 	value = cuft_to_l(value);
 l:
-	volume.mliter = lrint(value * 1000);
+	volume.mliter = (int)lrint(value * 1000);
 	return volume;
 }
 
@@ -1461,7 +1461,7 @@ fraction_t string_to_fraction(const char *str)
 	double value = strtod_flags(str, &end, 0);
 	fraction_t fraction;
 
-	fraction.permille = lrint(value * 10);
+	fraction.permille = (int)lrint(value * 10);
 	/*
 	 * Don't permit values less than zero or greater than 100%
 	 */

@@ -173,7 +173,7 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
 	// in ft * 128.0
-	int depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
+	int depth = (int)feet_to_mm(data[0] << 8 ^ data[1]) / 128;
 	m_deviceDetails->maxDepth = depth;
 	EMIT_PROGRESS();
 
@@ -269,7 +269,7 @@ static dc_status_t read_suunto_vyper_settings(dc_device_t *device, DeviceDetails
 	rc = dc_device_read(device, SUUNTO_VYPER_ALARM_DEPTH, data, 2);
 	if (rc != DC_STATUS_SUCCESS)
 		return rc;
-	depth = feet_to_mm(data[0] << 8 ^ data[1]) / 128;
+	depth = (int)feet_to_mm(data[0] << 8 ^ data[1]) / 128;
 	m_deviceDetails->alarmDepth = depth;
 	EMIT_PROGRESS();
 
@@ -2072,7 +2072,7 @@ static dc_status_t write_ostc_settings(dc_device_t *device, DeviceDetails *m_dev
 	//sync date and time
 	if (m_deviceDetails->syncTime) {
 		QDateTime timeToSet = QDateTime::currentDateTime();
-		dc_datetime_t time = { 0 };
+		dc_datetime_t time = { 0,0,0,0,0,0,0 };
 		time.year = timeToSet.date().year();
 		time.month = timeToSet.date().month();
 		time.day = timeToSet.date().day();
@@ -2106,7 +2106,7 @@ void DeviceThread::event_cb(dc_device_t *device, dc_event_type_t event, const vo
 
 	switch (event) {
 	case DC_EVENT_PROGRESS:
-		dt->progressCB(lrint(100.0 * (double)progress->current / (double)progress->maximum));
+		dt->progressCB((double)lrint(100.0 * (double)progress->current / (double)progress->maximum));
 		break;
 	default:
 		emit dt->error("Unexpected event recived");
