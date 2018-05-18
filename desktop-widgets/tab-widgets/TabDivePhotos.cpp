@@ -60,23 +60,21 @@ void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 
 void TabDivePhotos::removeSelectedPhotos()
 {
-	bool last = false;
 	if (!ui->photosView->selectionModel()->hasSelection())
 		return;
 	QModelIndexList indexes =  ui->photosView->selectionModel()->selectedRows();
 	if (indexes.count() == 0)
 		indexes = ui->photosView->selectionModel()->selectedIndexes();
-	QModelIndex photo = indexes.first();
-	do {
-		photo = indexes.first();
-		last = indexes.count() == 1;
+	QVector<QString> photosToDelete;
+	photosToDelete.reserve(indexes.count());
+	for (const auto &photo: indexes) {
 		if (photo.isValid()) {
 			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
-			if (fileUrl.length() > 0)
-				DivePictureModel::instance()->removePicture(fileUrl, last);
+			if (!fileUrl.isEmpty())
+				photosToDelete.push_back(fileUrl);
 		}
-		indexes.removeFirst();
-	} while(!indexes.isEmpty());
+	}
+	DivePictureModel::instance()->removePictures(photosToDelete);
 }
 
 //TODO: This looks overly wrong. We shouldn't call MainWindow to retrieve the DiveList to add Images.

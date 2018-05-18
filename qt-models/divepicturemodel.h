@@ -22,7 +22,7 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual void updateDivePictures();
 	void updateDivePicturesWhenDone(QList<QFuture<void>>);
-	void removePicture(const QString& fileUrl, bool last);
+	void removePictures(const QVector<QString> &fileUrls);
 	int rowDDStart, rowDDEnd;
 	void updateDivePictureOffset(const QString &filename, int offsetSeconds);
 public slots:
