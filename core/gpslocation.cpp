@@ -136,7 +136,7 @@ QString GpsLocation::currentPosition()
 	if (m_trackers.count()) {
 		QDateTime lastFixTime =	QDateTime().fromMSecsSinceEpoch((m_trackers.lastKey() - gettimezoneoffset(m_trackers.lastKey())) * 1000);
 		QDateTime now = QDateTime::currentDateTime();
-		int delta = lastFixTime.secsTo(now);
+		int delta = (int)lastFixTime.secsTo(now);
 		qDebug() << "lastFixTime" << lastFixTime.toString() << "now" << now.toString() << "delta" << delta;
 		if (delta < 300) {
 			// we can simply use the last position that we tracked
@@ -180,8 +180,8 @@ void GpsLocation::newPosition(QGeoPositionInfo pos)
 		gpsTracker gt;
 		gt.when = pos.timestamp().toTime_t();
 		gt.when += gettimezoneoffset(gt.when);
-		gt.latitude.udeg = lrint(pos.coordinate().latitude() * 1000000);
-		gt.longitude.udeg = lrint(pos.coordinate().longitude() * 1000000);
+		gt.latitude.udeg = (int)lrint(pos.coordinate().latitude() * 1000000);
+		gt.longitude.udeg = (int)lrint(pos.coordinate().longitude() * 1000000);
 		addFixToStorage(gt);
 		gpsTracker gtNew = m_trackers.last();
 		qDebug() << "newest fix is now at" << QDateTime().fromMSecsSinceEpoch(gtNew.when - gettimezoneoffset(gtNew.when) * 1000).toString();
@@ -489,7 +489,7 @@ void GpsLocation::deleteFixesFromServer()
 	QList<qint64> keys = m_trackers.keys();
 	while (!m_deletedTrackers.isEmpty()) {
 		gpsTracker gt = m_deletedTrackers.takeFirst();
-		QDateTime dt = QDateTime::fromTime_t(gt.when, Qt::UTC);
+		QDateTime dt = QDateTime::fromTime_t((unsigned int)gt.when, Qt::UTC);
 		QUrlQuery data;
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
@@ -534,7 +534,7 @@ void GpsLocation::uploadToServer()
 	QUrl url(GPS_FIX_ADD_URL);
 	Q_FOREACH(qint64 key,  m_trackers.keys()) {
 		struct gpsTracker gt = m_trackers.value(key);
-		QDateTime dt = QDateTime::fromTime_t(gt.when, Qt::UTC);
+		QDateTime dt = QDateTime::fromTime_t((unsigned int)gt.when, Qt::UTC);
 		QUrlQuery data;
 		data.addQueryItem("login", prefs.userid);
 		data.addQueryItem("dive_date", dt.toString("yyyy-MM-dd"));
@@ -626,8 +626,8 @@ void GpsLocation::downloadFromServer()
 
 				struct gpsTracker gt;
 				gt.when = timestamp.toMSecsSinceEpoch() / 1000;
-				gt.latitude.udeg = lrint(latitude.toDouble() * 1000000);
-				gt.longitude.udeg = lrint(longitude.toDouble() * 1000000);
+				gt.latitude.udeg = (int)lrint(latitude.toDouble() * 1000000);
+				gt.longitude.udeg = (int)lrint(longitude.toDouble() * 1000000);
 				gt.name = name;
 				// add this GPS fix to the QMap and the settings (remove existing fix at the same timestamp first)
 				if (m_trackers.keys().contains(gt.when)) {
