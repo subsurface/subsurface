@@ -151,7 +151,7 @@ static inline int interpolate(int a, int b, int part, int whole)
 	/* It is doubtful that we actually need floating point for this, but whatever */
 	if (whole) {
 		double x = (double)a * (whole - part) + (double)b * part;
-		return lrint(x / whole);
+		return (int)lrint(x / whole);
 	}
 	return (a+b)/2;
 }
@@ -452,7 +452,7 @@ static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
 	if (dive->dc.salinity)
 		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
 	/* whole mbar gives us cm precision */
-	cm = lrint(mbar / specific_weight);
+	cm = (int)lrint(mbar / specific_weight);
 	return cm * 10;
 }
 
@@ -471,7 +471,7 @@ static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct d
 	depth_t rounded_depth;
 
 	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix), dive);
-	rounded_depth.mm = lrint(depth / roundto) * roundto;
+	rounded_depth.mm = (int)lrint(depth / roundto) * roundto;
 	return rounded_depth;
 }
 
@@ -481,8 +481,8 @@ static inline depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive
 	pressure_t ppo2n2;
 	ppo2n2.mbar = depth_to_mbar(end.mm, dive);
 
-	int maxambient = lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0));
-	rounded_depth.mm = lrint(((double)mbar_to_depth(maxambient, dive)) / roundto) * roundto;
+	int maxambient = (int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0));
+	rounded_depth.mm = (int)lrint(((double)mbar_to_depth(maxambient, dive)) / roundto) * roundto;
 	return rounded_depth;
 }
 
