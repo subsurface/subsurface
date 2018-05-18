@@ -116,6 +116,6 @@ void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 void DivePictureItem::removePicture()
 {
 #ifndef SUBSURFACE_MOBILE
-	DivePictureModel::instance()->removePicture(fileUrl, true);
+	DivePictureModel::instance()->removePictures({ fileUrl });
 #endif
 }

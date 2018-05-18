@@ -127,19 +127,29 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 	return ret;
 }
 
-void DivePictureModel::removePicture(const QString &fileUrl, bool last)
+// Return true if we actually removed a picture
+static bool removePictureFromSelectedDive(const char *fileUrl)
 {
 	int i;
 	struct dive *dive;
 	for_each_dive (i, dive) {
-		if (dive->selected && dive_remove_picture(dive, qPrintable(fileUrl)))
-			break;
+		if (dive->selected && dive_remove_picture(dive, fileUrl))
+			return true;
 	}
-	if (last) {
-		copy_dive(current_dive, &displayed_dive);
-		updateDivePictures();
-		mark_divelist_changed(true);
-	}
+	return false;
+}
+
+void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
+{
+	bool removed = false;
+	for (const QString &fileUrl: fileUrls)
+		removed |= removePictureFromSelectedDive(qPrintable(fileUrl));
+	if (!removed)
+		return;
+	copy_dive(current_dive, &displayed_dive);
+	mark_divelist_changed(true);
+
+	updateDivePictures();
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
