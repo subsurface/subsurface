@@ -146,7 +146,7 @@ static inline double grams_to_lbs(int grams)
 
 static inline int lbs_to_grams(double lbs)
 {
-	return lrint(lbs * 453.6);
+	return (int)lrint(lbs * 453.6);
 }
 
 static inline double ml_to_cuft(int ml)
@@ -176,7 +176,7 @@ static inline unsigned long feet_to_mm(double feet)
 
 static inline int to_feet(depth_t depth)
 {
-	return lrint(mm_to_feet(depth.mm));
+	return (int)lrint(mm_to_feet(depth.mm));
 }
 
 static inline double mkelvin_to_C(int mkelvin)
@@ -211,7 +211,7 @@ static inline long psi_to_mbar(double psi)
 
 static inline int to_PSI(pressure_t pressure)
 {
-	return lrint(pressure.mbar * 0.0145037738);
+	return (int)lrint(pressure.mbar * 0.0145037738);
 }
 
 static inline double bar_to_atm(double bar)
