@@ -253,8 +253,8 @@ void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool form
 	bool savep = prefs.coordinates_traditional;
 	prefs.coordinates_traditional = formatTraditional;
 
-	const int lat = lrint(1000000.0 * coord.latitude());
-	const int lon = lrint(1000000.0 * coord.longitude());
+	const int lat = (int)lrint(1000000.0 * coord.latitude());
+	const int lon = (int)lrint(1000000.0 * coord.longitude());
 	const char *coordinates = printGPSCoords(lat, lon);
 	QApplication::clipboard()->setText(QString(coordinates), QClipboard::Clipboard);
 
@@ -267,8 +267,8 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeo
 	MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(uuid);
 	if (loc)
 		loc->setCoordinate(coord);
-	displayed_dive_site.latitude.udeg = lrint(coord.latitude() * 1000000.0);
-	displayed_dive_site.longitude.udeg = lrint(coord.longitude() * 1000000.0);
+	displayed_dive_site.latitude.udeg = (int)lrint(coord.latitude() * 1000000.0);
+	displayed_dive_site.longitude.udeg = (int)lrint(coord.longitude() * 1000000.0);
 	emit coordinatesChanged();
 }
 
@@ -300,8 +300,8 @@ void MapWidgetHelper::setEditMode(bool editMode)
 		} else {
 			coord = exists->coordinate();
 		}
-		displayed_dive_site.latitude.udeg = lrint(coord.latitude() * 1000000.0);
-		displayed_dive_site.longitude.udeg = lrint(coord.longitude() * 1000000.0);
+		displayed_dive_site.latitude.udeg = (int)lrint(coord.latitude() * 1000000.0);
+		displayed_dive_site.longitude.udeg = (int)lrint(coord.longitude() * 1000000.0);
 		emit coordinatesChanged();
 	}
 	emit editModeChanged();
