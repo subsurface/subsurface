@@ -43,6 +43,7 @@ typedef struct qt_serial_t {
 
 static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t *context, const char* devaddr)
 {
+	Q_UNUSED(context);
 	// Allocate memory.
 	qt_serial_t *serial_port = (qt_serial_t *) malloc (sizeof (qt_serial_t));
 	if (serial_port == NULL) {
@@ -248,7 +249,7 @@ static dc_status_t qt_serial_read(void *io, void* data, size_t size, size_t *act
 
 	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
 	{
-		rc = device->socket->read((char *) data + nbytes, size - nbytes);
+		rc = (int)device->socket->read((char *) data + nbytes, size - nbytes);
 
 		if (rc < 0) {
 			if (errno == EINTR || errno == EAGAIN)
@@ -262,7 +263,7 @@ static dc_status_t qt_serial_read(void *io, void* data, size_t size, size_t *act
 			timer.setSingleShot(true);
 			loop.connect(&timer, SIGNAL(timeout()), SLOT(quit()));
 			loop.connect(device->socket, SIGNAL(readyRead()), SLOT(quit()));
-			timer.start(device->timeout);
+			timer.start((int)device->timeout);
 			loop.exec();
 
 			if (!timer.isActive())
@@ -307,7 +308,7 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 
 	while(nbytes < size && device->socket->state() == QBluetoothSocket::ConnectedState)
 	{
-		rc = device->socket->write((char *) data + nbytes, size - nbytes);
+		rc = (int)device->socket->write((char *) data + nbytes, size - nbytes);
 
 		if (rc < 0) {
 			if (errno == EINTR || errno == EAGAIN)
@@ -380,7 +381,7 @@ static int qt_serial_get_transmitted(qt_serial_t *device)
 	if (device == NULL || device->socket == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	return device->socket->bytesToWrite();
+	return (int)device->socket->bytesToWrite();
 #endif
 }
 
