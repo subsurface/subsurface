@@ -55,6 +55,46 @@ matrix:
             - libglib2.0-dev
             - mdbtools-dev
 
+    - env: SUBSURFACE_PLATFORM='linux2'
+      os: linux
+      dist: trusty
+      language: c++
+      addons:
+        apt:
+          sources:
+            - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
+              key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x10C56D0DE9977759'
+          packages:
+            - qt510base
+            - qt510connectivity
+            - qt510declarative
+            - qt510location
+            - qt510quickcontrols
+            - qt510quickcontrols2
+            - qt510script
+            - qt510translations
+            - qt510svg
+            - qt510tools
+            - git
+            - g++
+            - make
+            - autoconf
+            - automake
+            - libtool
+            - cmake
+            - pkg-config
+            - libxml2-dev
+            - libxslt1-dev
+            - libzip-dev
+            - libsqlite3-dev
+            - libusb-1.0-0-dev
+            - libssl-dev
+            - libssh2-1-dev
+            - libcurl4-openssl-dev
+            # Not a subsurface dependency, but a Qt dependency
+            - mesa-common-dev
+            - libxcb-xinerama0
+
     - env: SUBSURFACE_PLATFORM="android"
       # Currently hard coded to arm
       os: linux
