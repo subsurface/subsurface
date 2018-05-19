@@ -7,7 +7,7 @@ CURRENT_LIBGIT2="v0.26.0"
 CURRENT_HIDAPI="hidapi-0.7.0"
 CURRENT_LIBCURL="curl-7_54_1"
 CURRENT_LIBUSB="v1.0.21"
-CURRENT_OPENSSL="OpenSSL_1_1_0f"
+CURRENT_OPENSSL="OpenSSL_1_1_0h"
 CURRENT_LIBSSH2="libssh2-1.8.0"
 CURRENT_XSLT="v1.1.29"
 CURRENT_SQLITE="3190200"
@@ -38,8 +38,7 @@ fi
 # FIX FOR ANDROID,
 if [ "$PLATFORM" == "singleAndroid" ] ; then
 	CURRENT_LIBZIP="1.1.3"
-	CURRENT_LIBUSB="v1.0.20"
-	CURRENT_OPENSSL="OpenSSL_1_0_2l"
+	CURRENT_OPENSSL="OpenSSL_1_0_2o"
 fi
 # no curl and old libs (never version breaks)
 # check whether to use curl or wget
