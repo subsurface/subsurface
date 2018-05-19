@@ -1,0 +1,151 @@
+name: subsurface
+version: git
+version-script: |
+  git describe
+icon: icons/subsurface-icon.svg
+summary: Open source divelog program for recreational, tech, and free-divers
+description: |
+  Subsurface can plan and track single- and multi-tank dives using air, Nitrox
+  or TriMix. It allows tracking of dive locations including GPS coordinates
+  (which can also conveniently be entered using a map interface), logging of
+  equipment used and names of other divers, and lets users rate dives and
+  provide additional notes.
+
+grade: stable
+confinement: strict
+
+apps:
+  subsurface:
+    command: desktop-launch $SNAP/bin/subsurface
+    desktop: share/applications/subsurface.desktop
+    plugs:
+    - bluez
+    - home
+    - network
+    - opengl
+    - unity7
+
+parts:
+  googlemaps:
+    source: git://github.com/Subsurface-divelog/googlemaps.git
+    build-packages:
+    - wget
+    override-pull: |
+      snapcraftctl pull
+      export QT_SELECT=5
+      export QT_VERSION=$( qmake -query QT_VERSION )
+      mkdir -p QtHeaders/QtLocation/private QtHeaders/QtPositioning/private
+      cd QtHeaders/QtLocation/private
+      for HEADER in \
+          maps/qcache3q \
+          maps/qgeocameracapabilities \
+          maps/qgeocameradata \
+          maps/qgeomap \
+          maps/qgeomapcontroller \
+          maps/qgeomappingmanager \
+          maps/qgeomappingmanagerengine \
+          maps/qgeomaptype \
+          maps/qgeotilecache \
+          maps/qgeotiledmap \
+          maps/qgeotiledmappingmanagerengine \
+          maps/qgeotiledmapreply \
+          maps/qgeotilefetcher \
+          maps/qgeotilespec \
+          places/unsupportedreplies
+      do
+        wget --no-verbose --content-disposition \
+          http://code.qt.io/cgit/qt/qtlocation.git/plain/src/location/${HEADER}_p.h?h=v${QT_VERSION}
+      done
+      cd -
+      cd QtHeaders/QtPositioning/private
+      for HEADER in \
+          qdoublevector2d \
+          qgeoprojection
+      do
+        wget --no-verbose --content-disposition \
+          http://code.qt.io/cgit/qt/qtlocation.git/plain/src/positioning/${HEADER}_p.h?h=v${QT_VERSION}
+      done
+    plugin: qmake
+    options:
+    - INCLUDEPATH+=QtHeaders
+
+  libdc:
+    plugin: autotools
+    source-subdir: libdivecomputer
+    build-packages:
+    - libbluetooth-dev
+    - libhidapi-dev
+    - libusb-dev
+    override-build: |
+      sed -i 's/\[HIDAPI\], \[hidapi\]/[HIDAPI], [hidapi-libusb]/' libdivecomputer/configure.ac
+      snapcraftctl build
+    stage-packages:
+    - libbluetooth3
+    - libftdi1-2
+    - libhidapi-libusb0
+    - libusb-1.0-0
+
+  subsurface:
+    after: [desktop-qt5, googlemaps, libdc]
+    plugin: cmake
+    configflags:
+    - -DMAKE_TESTS=OFF
+    - -DLIBGIT2_DYNAMIC=ON
+    - -DFTDISUPPORT=ON
+    - -DLIBDIVECOMPUTER_LIBRARIES=../../../stage/lib/libdivecomputer.so
+    source-type: git
+    build-packages:
+    - build-essential
+    - libcurl4-gnutls-dev
+    - libftdi1-dev
+    - libgrantlee5-dev
+    - libgit2-dev
+    - libqt5svg5-dev
+    - libqt5webkit5-dev
+    - libsqlite3-dev
+    - libssh2-1-dev
+    - libssl-dev
+    - libxml2-dev
+    - libxslt-dev
+    - libzip-dev
+    - pkg-config
+    - qtconnectivity5-dev
+    - qtlocation5-dev
+    - qtpositioning5-dev
+    - qttools5-dev-tools
+    override-build: |
+      mkdir -p ../install-root
+      ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \
+        ../install-root/
+      sed -i 's@^Icon=.*@Icon=${SNAP}/share/icons/hicolor/scalable/apps/subsurface-icon.svg@' ../src/subsurface.desktop
+      snapcraftctl build
+    stage-packages:
+    - libcurl3-gnutls
+    - libftdi1-2
+    - libgit2-24
+    - libgrantlee-templates5
+    - libqt5bluetooth5
+    - libqt5concurrent5
+    - libqt5core5a
+    - libqt5gui5
+    - libqt5location5
+    - libqt5network5
+    - libqt5positioning5
+    - libqt5printsupport5
+    - libqt5qml5
+    - libqt5quick5
+    - libqt5quickwidgets5
+    - libqt5svg5
+    - libqt5webkit5
+    - libqt5widgets5
+    - libsqlite3-0
+    - libssh2-1
+    - libssl1.0.0
+    - libusb-1.0-0
+    - libxml2
+    - libxslt1.1
+    - libzip4
+    - qml-module-qtlocation
+    - qml-module-qtpositioning
+    - qml-module-qtquick2
+    - zlib1g
