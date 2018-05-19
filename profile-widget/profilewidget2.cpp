@@ -1118,7 +1118,7 @@ void ProfileWidget2::setProfileState()
 #ifndef SUBSURFACE_MOBILE
 	connect(DivePictureModel::instance(), &DivePictureModel::dataChanged, this, &ProfileWidget2::updatePictures);
 	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
-	connect(DivePictureModel::instance(), SIGNAL(rowsRemoved(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), &DivePictureModel::rowsRemoved, this, &ProfileWidget2::removePictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
 #endif
 	/* show the same stuff that the profile shows. */
@@ -2089,6 +2089,19 @@ void ProfileWidget2::plotPictures()
 		item->setPos(x, y);
 	}
 }
+
+void ProfileWidget2::removePictures(const QModelIndex &, int first, int last)
+{
+	DivePictureModel *m = DivePictureModel::instance();
+	first = std::max(0, first - m->rowDDStart);
+	// Note that last points *to* the last item and not *past* the last item,
+	// therefore we add 1 to achieve conventional C++ semantics.
+	last = std::min((int)pictures.size(), last + 1 - m->rowDDStart);
+	if (first >= (int)pictures.size() || last <= first)
+		return;
+	pictures.erase(pictures.begin() + first, pictures.begin() + last);
+}
+
 #endif
 
 void ProfileWidget2::dropEvent(QDropEvent *event)

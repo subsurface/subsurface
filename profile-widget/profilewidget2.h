@@ -110,6 +110,7 @@ slots: // Necessary to call from QAction's signals.
 	void replot(dive *d = 0);
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
+	void removePictures(const QModelIndex &, int first, int last);
 	void setPlanState();
 	void setAddState();
 	void changeGas();
