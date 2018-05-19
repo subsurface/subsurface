@@ -83,7 +83,8 @@
         </activity>
     </application>
 
-    <uses-sdk android:minSdkVersion="16" />
+    <uses-sdk android:minSdkVersion="16"
+	      android:targetSdkVersion="26" />
 
     <supports-screens
         android:anyDensity="true"
