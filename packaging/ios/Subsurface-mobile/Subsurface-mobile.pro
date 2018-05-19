@@ -216,6 +216,10 @@ include(deployment.pri)
 
 include(../../../mobile-widgets/qml/kirigami/kirigami.pri)
 
+# Supress some warnings
+QMAKE_CXXFLAGS += -w
+QMAKE_CFLAGS   += -w
+
 ios {
 	QMAKE_ASSET_CATALOGS += ../storeIcon.xcassets
 	app_launch_images.files = ../SubsurfaceMobileLaunch.xib $$files(../SubsurfaceMobileLaunchImage*.png)
