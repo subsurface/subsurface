@@ -128,13 +128,11 @@ void DiveCartesianAxis::setLinesVisible(bool arg1)
 }
 
 template <typename T>
-void emptyList(QList<T *> &list, double steps)
+void emptyList(QList<T *> &list, int steps)
 {
-	if (!list.isEmpty() && list.size() > steps) {
-		while (list.size() > steps) {
-			T *removedItem = list.takeLast();
-			Animations::animDelete(removedItem);
-		}
+	while (list.size() > steps) {
+		T *removedItem = list.takeLast();
+		Animations::animDelete(removedItem);
 	}
 }
 
@@ -145,7 +143,8 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 	QLineF m = line();
 	// unused so far:
 	// QGraphicsView *view = scene()->views().first();
-	double steps = (max - min) / interval;
+	double stepsInRange = (max - min) / interval;
+	int steps = (int)stepsInRange;
 	double currValueText = min;
 	double currValueLine = min;
 
@@ -155,8 +154,8 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 	emptyList(labels, steps);
 	emptyList(lines, steps);
 
-	// Move the remaining Ticks / Text to it's corerct position
-	// Regartind the possibly new values for the Axis
+	// Move the remaining ticks / text to their correct positions
+	// regarding the possible new values for the axis
 	qreal begin, stepSize;
 	if (orientation == TopToBottom) {
 		begin = m.y1();
@@ -171,7 +170,7 @@ void DiveCartesianAxis::updateTicks(color_index_t color)
 		begin = m.x2();
 		stepSize = (m.x2() - m.x1());
 	}
-	stepSize = stepSize / steps;
+	stepSize /= stepsInRange;
 
 	for (int i = 0, count = labels.size(); i < count; i++, currValueText += interval) {
 		qreal childPos = (orientation == TopToBottom || orientation == LeftToRight) ?
