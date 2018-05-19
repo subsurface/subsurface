@@ -90,7 +90,6 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	windowtitleupdate.cpp
 	divelogexportlogic.cpp
 	qt-init.cpp
-	qtserialbluetooth.cpp
 	metrics.cpp
 	color.cpp
 	pluginmanager.cpp
