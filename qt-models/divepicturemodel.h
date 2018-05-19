@@ -30,7 +30,7 @@ public slots:
 	void updateThumbnail(QString filename, QImage thumbnail);
 private:
 	DivePictureModel();
-	QList<PictureEntry> pictures;
+	QVector<PictureEntry> pictures;
 	int findPictureId(const QString &filename);	// Return -1 if not found
 	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
 	int size;

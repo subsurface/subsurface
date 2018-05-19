@@ -149,7 +149,22 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
 	copy_dive(current_dive, &displayed_dive);
 	mark_divelist_changed(true);
 
-	updateDivePictures();
+	for (int i = 0; i < pictures.size(); ++i) {
+		// Find range [i j) of pictures to remove
+		if (std::find(fileUrls.begin(), fileUrls.end(), pictures[i].filename) == fileUrls.end())
+			continue;
+		int j;
+		for (j = i + 1; j < pictures.size(); ++j) {
+			if (std::find(fileUrls.begin(), fileUrls.end(), pictures[j].filename) == fileUrls.end())
+				break;
+		}
+
+		// Qt's model-interface is surprisingly idiosyncratic: you don't pass [first last), but [first last] ranges.
+		// For example, an empty list would be [0 -1].
+		beginRemoveRows(QModelIndex(), i, j - 1);
+		pictures.erase(pictures.begin() + i, pictures.begin() + j);
+		endRemoveRows();
+	}
 }
 
 int DivePictureModel::rowCount(const QModelIndex &parent) const
