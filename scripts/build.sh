@@ -194,6 +194,32 @@ else
 	fi
 fi
 
+if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
+	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
+	# because that always requires the latest OS (how stupid is that - and they consider it a
+	# feature). So we painfully need to build the dependencies ourselves.
+	cd $SRC
+	./subsurface/scripts/get-dep-lib.sh single . libcurl
+	pushd libcurl
+	bash ./buildconf
+	mkdir -p build
+	cd build
+	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --with-darwinssl \
+		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
+	make -j4
+	make install
+	popd
+
+	./subsurface/scripts/get-dep-lib.sh single . libssh2
+	pushd libssh2
+	mkdir -p build
+	cd build
+	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+	make -j4
+	make install
+	popd
+fi
+
 if [[ "$LIBGIT" < "24" ]] ; then
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
 
@@ -232,7 +258,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make install
 	popd
 
-
 	./subsurface/scripts/get-dep-lib.sh single . hidapi
 	pushd hidapi
 	# there is no good tag, so just build master
@@ -240,17 +265,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	mkdir -p build
 	cd build
 	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT
-	make -j4
-	make install
-	popd
-
-	./subsurface/scripts/get-dep-lib.sh single . libcurl
-	pushd libcurl
-	bash ./buildconf
-	mkdir -p build
-	cd build
-	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --with-darwinssl \
-		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
 	make -j4
 	make install
 	popd
@@ -274,15 +288,6 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
 	make -j4 -k
 	make -k install
-	popd
-
-	./subsurface/scripts/get-dep-lib.sh single . libssh2
-	pushd libssh2
-	mkdir -p build
-	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
-	make -j4
-	make install
 	popd
 else
 	# we are getting libusb and hidapi from pkg-config and that goes wrong
