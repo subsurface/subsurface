@@ -222,7 +222,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
-
+	cd $SRC
 	./subsurface/scripts/get-dep-lib.sh single . libzip
 	pushd libzip
 	mkdir -p build
