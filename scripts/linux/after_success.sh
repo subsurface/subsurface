@@ -12,5 +12,11 @@ ls -lh Subsurface*.AppImage
 
 # get and run the upload script
 wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
-bash ./upload.sh Subsurface*.AppImage Subsurface*.AppImage.zsync
+
+# don't fail if the zsync file is missing
+if [ -f Subsurface*.AppImage.zsync ] ; then
+	bash ./upload.sh Subsurface*.AppImage Subsurface*.AppImage.zsync
+else
+	bash ./upload.sh Subsurface*.AppImage
+fi
 bash ./upload.sh smtk2ssrf*.AppImage
