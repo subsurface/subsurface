@@ -26,7 +26,7 @@ LIBRARY_PATH=${DIR}/install-root/lib make install
 EXECUTABLE=Subsurface.app/Contents/MacOS/Subsurface
 for i in libgit2 libGrantlee_TextDocument.dylib libGrantlee_Templates.dylib; do
 	OLD=$(otool -L ${EXECUTABLE} | grep $i | cut -d\  -f1 | tr -d "\t")
-	if [ ! -z ${OLD} ] ; then
+	if [[ ! -z ${OLD} && ! -f Subsurface.app/Contents/Frameworks/$(basename ${OLD}) ]] ; then
 		# copy the library into the bundle and make sure its id and the reference to it are correct
 		cp ${DIR}/install-root/lib/$(basename ${OLD}) Subsurface.app/Contents/Frameworks
 		SONAME=$(basename $OLD)
