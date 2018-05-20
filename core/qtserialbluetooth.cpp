@@ -43,6 +43,8 @@ typedef struct qt_serial_t {
 
 static dc_status_t qt_serial_open(qt_serial_t **io, dc_context_t *context, const char* devaddr)
 {
+	Q_UNUSED(context);
+
 	// Allocate memory.
 	qt_serial_t *serial_port = (qt_serial_t *) malloc (sizeof (qt_serial_t));
 	if (serial_port == NULL) {
