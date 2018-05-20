@@ -121,7 +121,8 @@ static std::pair<QImage, bool> getHashedImage(const QString &filename, bool tryD
 
 static QImage renderIcon(const char *id, int size)
 {
-	QImage res(size, size, QImage::Format_ARGB32);
+	QImage res(size, size, QImage::Format_RGB32);
+	res.fill(Qt::white);
 	QSvgRenderer svg{QString(id)};
 	QPainter painter(&res);
 	svg.render(&painter);
