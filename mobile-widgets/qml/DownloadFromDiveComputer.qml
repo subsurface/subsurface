@@ -169,6 +169,7 @@ Kirigami.Page {
 						downloadThread.deviceData.bluetoothMode = true
 					else
 						downloadThread.deviceData.bluetoothMode = false
+					downloadThread.deviceData.devName = comboConnection.currentText
 				}
 			}
 		}
