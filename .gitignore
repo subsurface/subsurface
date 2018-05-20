@@ -35,7 +35,7 @@ Subsurface.app
 !android/**/*.xml
 build*
 mobile-widgets/qml/kirigami
-packaging/ios/Subsurface-mobile/translations/
+packaging/ios/translations/
 packaging/ios/googlemaps*
 packaging/ios/install-root*
 packaging/ios/libdivecomputer-*
