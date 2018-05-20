@@ -239,4 +239,4 @@ cd build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELE
 ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile.pro \
 	-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
-make all
+make qmake_all
