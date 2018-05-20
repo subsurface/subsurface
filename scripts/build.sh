@@ -181,87 +181,20 @@ if [ $PLATFORM = Darwin ] ; then
 else
 	SH_LIB_EXT=so
 
-	# check if we need to build libgit2 (and do so if necessary)
-
 	LIBGIT_ARGS=" -DLIBGIT2_DYNAMIC=ON "
-	LIBGIT=$(ldconfig -p | grep libgit2\\.so\\. | awk -F. '{ print $NF }')
+	# check if we need to build libgit2 (and do so if necessary)
+	# first check pkgconfig (that will capture our own local build if
+	# this script has been run before)
+	if pkg-config --exists libgit2 ; then
+		LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
+	fi
+	if [[ "$LIBGIT" < "24" ]] ; then
+		# maybe there's a system version that's new enough?
+		LIBGIT=$(ldconfig -p | grep libgit2\\.so\\. | awk -F. '{ print $NF }')
+	fi
 fi
 
-if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
-	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
-	# because that always requires the latest OS (how stupid is that - and they consider it a
-	# feature). So we painfully need to build the dependencies ourselves.
-
-	if [ "$BUILD_DEPS" == "1" ] ; then
-		./subsurface/scripts/get-dep-lib.sh single . libzip
-		pushd libzip
-		mkdir -p build
-		cd build
-		../configure CFLAGS="$OLDER_MAC" --prefix=$INSTALL_ROOT
-		make -j4
-		make install
-		popd
-
-
-		./subsurface/scripts/get-dep-lib.sh single . hidapi
-		pushd hidapi
-		# there is no good tag, so just build master
-		bash ./bootstrap
-		mkdir -p build
-		cd build
-		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT
-		make -j4
-		make install
-		popd
-
-		./subsurface/scripts/get-dep-lib.sh single . libcurl
-		pushd libcurl
-		bash ./buildconf
-		mkdir -p build
-		cd build
-		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --with-darwinssl \
-			--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
-		make -j4
-		make install
-		popd
-
-		./subsurface/scripts/get-dep-lib.sh single . libusb
-		pushd libusb
-		bash ./bootstrap.sh
-		mkdir -p build
-		cd build
-		CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --disable-examples
-		make -j4
-		make install
-		popd
-
-		./subsurface/scripts/get-dep-lib.sh single . openssl
-		pushd openssl
-		mkdir -p build
-		cd build
-		../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
-		make depend
-		# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
-		make -j4 -k
-		make -k install
-		popd
-
-		./subsurface/scripts/get-dep-lib.sh single . libssh2
-		pushd libssh2
-		mkdir -p build
-		cd build
-		cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
-		make -j4
-		make install
-		popd
-	else
-		# we are getting libusb and hidapi from pkg-config and that goes wrong
-		# or more specifically, the way libdivecomputer references
-		# the include files goes wrong
-		pkg-config --exists libusb-1.0 && LIBDC_CFLAGS=-I$(dirname $(pkg-config --cflags libusb-1.0 | sed -e 's/^-I//'))
-		pkg-config --exists hidapi && LIBDC_CFLAGS="${LIBDC_CFLAGS} -I$(dirname $(pkg-config --cflags hidapi | sed -e 's/^-I//'))"
-	fi
-
+if [[ "$LIBGIT" < "24" ]] ; then
 	LIBGIT_ARGS=" -DLIBGIT2_INCLUDE_DIR=$INSTALL_ROOT/include -DLIBGIT2_LIBRARIES=$INSTALL_ROOT/lib/libgit2.$SH_LIB_EXT "
 
 	cd $SRC
@@ -283,6 +216,80 @@ if [[ $PLATFORM = Darwin || "$LIBGIT" < "24" ]] ; then
 			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
 		fi
 	fi
+fi
+
+if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
+	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
+	# because that always requires the latest OS (how stupid is that - and they consider it a
+	# feature). So we painfully need to build the dependencies ourselves.
+
+	./subsurface/scripts/get-dep-lib.sh single . libzip
+	pushd libzip
+	mkdir -p build
+	cd build
+	../configure CFLAGS="$OLDER_MAC" --prefix=$INSTALL_ROOT
+	make -j4
+	make install
+	popd
+
+
+	./subsurface/scripts/get-dep-lib.sh single . hidapi
+	pushd hidapi
+	# there is no good tag, so just build master
+	bash ./bootstrap
+	mkdir -p build
+	cd build
+	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT
+	make -j4
+	make install
+	popd
+
+	./subsurface/scripts/get-dep-lib.sh single . libcurl
+	pushd libcurl
+	bash ./buildconf
+	mkdir -p build
+	cd build
+	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --with-darwinssl \
+		--disable-tftp --disable-ftp --disable-ldap --disable-ldaps --disable-imap --disable-pop3 --disable-smtp --disable-gopher --disable-smb --disable-rtsp
+	make -j4
+	make install
+	popd
+
+	./subsurface/scripts/get-dep-lib.sh single . libusb
+	pushd libusb
+	bash ./bootstrap.sh
+	mkdir -p build
+	cd build
+	CFLAGS="$OLDER_MAC" ../configure --prefix=$INSTALL_ROOT --disable-examples
+	make -j4
+	make install
+	popd
+
+	./subsurface/scripts/get-dep-lib.sh single . openssl
+	pushd openssl
+	mkdir -p build
+	cd build
+	../Configure --prefix=$INSTALL_ROOT --openssldir=$INSTALL_ROOT $OLDER_MAC darwin64-x86_64-cc
+	make depend
+	# all the tests fail because the assume that openssl is already installed. Odd? Still thinks work
+	make -j4 -k
+	make -k install
+	popd
+
+	./subsurface/scripts/get-dep-lib.sh single . libssh2
+	pushd libssh2
+	mkdir -p build
+	cd build
+	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+	make -j4
+	make install
+	popd
+else
+	# we are getting libusb and hidapi from pkg-config and that goes wrong
+	# or more specifically, the way libdivecomputer references
+	# the include files goes wrong
+	pkg-config --exists libusb-1.0 && LIBDC_CFLAGS=-I$(dirname $(pkg-config --cflags libusb-1.0 | sed -e 's/^-I//'))
+	pkg-config --exists hidapi && LIBDC_CFLAGS="${LIBDC_CFLAGS} -I$(dirname $(pkg-config --cflags hidapi | sed -e 's/^-I//'))"
 fi
 
 
