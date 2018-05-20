@@ -307,38 +307,6 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 		}
 		GridLayout {
-			id: libdclogprefs
-			columns: 2
-			width: parent.width
-			Kirigami.Heading {
-				text: qsTr("Dive computer")
-				color: subsurfaceTheme.textColor
-				level: 4
-				Layout.topMargin: Kirigami.Units.largeSpacing
-				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
-				Layout.columnSpan: 2
-			}
-
-			Controls.Label {
-				text: qsTr("Save detailed log")
-				Layout.preferredWidth: gridWidth * 0.75
-			}
-			SsrfSwitch {
-				id: libdclogButton
-				checked: manager.libdcLog
-				Layout.preferredWidth: gridWidth * 0.25
-				onClicked: {
-					manager.libdcLog = checked
-				}
-			}
-		}
-		Rectangle {
-			color: subsurfaceTheme.darkerPrimaryColor
-			height: 1
-			opacity: 0.5
-			Layout.fillWidth: true
-		}
-		GridLayout {
 			id: developer
 			columns: 2
 			width: parent.width - Kirigami.Units.gridUnit

@@ -44,7 +44,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QStringList cylinderInit READ cylinderInit CONSTANT)
 	Q_PROPERTY(bool showPin MEMBER m_showPin WRITE setShowPin NOTIFY showPinChanged)
 	Q_PROPERTY(QString progressMessage MEMBER m_progressMessage WRITE setProgressMessage NOTIFY progressMessageChanged)
-	Q_PROPERTY(bool libdcLog MEMBER m_libdcLog WRITE setLibdcLog NOTIFY libdcLogChanged)
 	Q_PROPERTY(bool developer MEMBER m_developer WRITE setDeveloper NOTIFY developerChanged)
 	Q_PROPERTY(bool btEnabled MEMBER m_btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
 
@@ -121,9 +120,6 @@ public:
 
 	QString progressMessage() const;
 	void setProgressMessage(QString text);
-
-	bool libdcLog() const;
-	void setLibdcLog(bool value);
 
 	bool developer() const;
 	void setDeveloper(bool value);
@@ -241,7 +237,6 @@ private:
 	bool m_showPin;
 	DCDeviceData *m_device_data;
 	QString m_progressMessage;
-	bool m_libdcLog;
 	bool m_developer;
 	bool m_btEnabled;
 	void updateAllGlobalLists();
@@ -274,7 +269,6 @@ signals:
 	void showPinChanged();
 	void sendScreenChanged(QScreen *screen);
 	void progressMessageChanged();
-	void libdcLogChanged();
 	void developerChanged();
 	void btEnabledChanged();
 	void suitListChanged();

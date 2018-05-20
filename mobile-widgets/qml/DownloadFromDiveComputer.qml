@@ -34,7 +34,7 @@ Kirigami.Page {
 		deviceData.deviceId : 0
 		deviceData.diveId : 0
 		deviceData.saveDump : false
-		deviceData.saveLog : false
+		deviceData.saveLog : true
 
 		onFinished : {
 			importModel.repopulate()
