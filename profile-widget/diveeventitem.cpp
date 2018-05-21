@@ -216,11 +216,9 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 	setToolTip(name);
 }
 
-void DiveEventItem::eventVisibilityChanged(const QString &eventName, bool visible)
+void DiveEventItem::eventVisibilityChanged(const QString&, bool)
 {
 	//WARN: lookslike we should implement this.
-	Q_UNUSED(eventName);
-	Q_UNUSED(visible);
 }
 
 bool DiveEventItem::shouldBeHidden()

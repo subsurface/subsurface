@@ -815,9 +815,8 @@ void ProfileWidget2::dateTimeChanged()
 	emit dateTimeChangedItems();
 }
 
-void ProfileWidget2::actionRequestedReplot(bool triggered)
+void ProfileWidget2::actionRequestedReplot(bool)
 {
-	Q_UNUSED(triggered);
 	settingsChanged();
 }
 
@@ -1765,11 +1764,8 @@ void ProfileWidget2::disconnectTemporaryConnections()
 }
 
 #ifndef SUBSURFACE_MOBILE
-void ProfileWidget2::pointInserted(const QModelIndex &parent, int start, int end)
+void ProfileWidget2::pointInserted(const QModelIndex&, int, int)
 {
-	Q_UNUSED(parent)
-	Q_UNUSED(start)
-	Q_UNUSED(end)
 	DiveHandler *item = new DiveHandler();
 	scene()->addItem(item);
 	handles << item;

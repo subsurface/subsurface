@@ -82,9 +82,8 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 				   boundingRect().height() - button->boundingRect().height() * 0.2);
 }
 
-void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
+void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
-	Q_UNUSED(event);
 	Animations::scaleTo(this, 1.0);
 	setZValue(5);
 
@@ -98,9 +97,8 @@ void DivePictureItem::setFileUrl(const QString &s)
 	fileUrl = s;
 }
 
-void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent *event)
+void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
-	Q_UNUSED(event);
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
 	Animations::hide(button);

@@ -82,10 +82,8 @@ void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
 	label->setZValue(101);
 }
 
-void TankItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
+void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 {
-	Q_UNUSED(topLeft);
-	Q_UNUSED(bottomRight);
 	// We don't have enougth data to calculate things, quit.
 	if (!dataModel || !pInfoEntry || !pInfoNr)
 		return;
