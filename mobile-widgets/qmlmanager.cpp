@@ -340,7 +340,22 @@ void QMLManager::copyAppLogToClipboard()
 	 * The user clicked the button, so copy the log file
 	 * to the clipboard for easy access
 	 */
-	QString copyString =  MessageHandlerModel::self()->logAsString();
+
+	// Add heading and append subsurface.log
+	QString copyString = "---------- subsurface.log ----------\n";
+	copyString += MessageHandlerModel::self()->logAsString();
+
+	// Add heading and append libdivecomputer.log
+	QFile f(logfile_name);
+	if (f.open(QFile::ReadOnly | QFile::Text)) {
+		copyString += "\n\n\n---------- libdivecomputer.log ----------\n";
+
+		QTextStream in(&f);
+		copyString += in.readAll();
+	}
+	copyString += "---------- finish ----------\n";
+
+	// and copy to clipboard
 	QApplication::clipboard()->setText(copyString, QClipboard::Clipboard);
 }
 
