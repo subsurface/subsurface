@@ -47,10 +47,8 @@ static void waitFor(int ms) {
 
 extern "C" {
 
-void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState s)
+void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState)
 {
-	Q_UNUSED(s)
-
 	QList<QLowEnergyCharacteristic> list;
 
 	auto service = qobject_cast<QLowEnergyService*>(sender());
@@ -92,10 +90,8 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 	}
 }
 
-void BLEObject::writeCompleted(const QLowEnergyDescriptor &d, const QByteArray &value)
+void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 {
-	Q_UNUSED(value)
-	Q_UNUSED(d)
 	qDebug() << "BLE write completed";
 }
 
@@ -149,8 +145,6 @@ BLEObject::~BLEObject()
 
 dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
-	Q_UNUSED(actual) // that seems like it might cause problems
-
 	if (actual) *actual = 0;
 
 	if (!receivedPackets.isEmpty()) {
@@ -274,9 +268,8 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 	return setHwCredit(MAXIMAL_HW_CREDIT);
 }
 
-dc_status_t qt_ble_open(void **io, dc_context_t *context, const char *devaddr, dc_user_device_t *user_device)
+dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_device_t *user_device)
 {
-	Q_UNUSED(context)
 	debugCounter = 0;
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 

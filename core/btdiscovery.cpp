@@ -64,10 +64,9 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	return NULL;
 }
 
-BTDiscovery::BTDiscovery(QObject *parent) : m_btValid(false),
+BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	discoveryAgent(NULL)
 {
-	Q_UNUSED(parent)
 	if (m_instance) {
 		qDebug() << "trying to create an additional BTDiscovery object";
 		return;

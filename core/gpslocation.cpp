@@ -466,15 +466,13 @@ void GpsLocation::clearGpsData()
 }
 #endif
 
-void GpsLocation::postError(QNetworkReply::NetworkError error)
+void GpsLocation::postError(QNetworkReply::NetworkError)
 {
-	Q_UNUSED(error);
 	status(QString("error when sending a GPS fix: %1").arg(reply->errorString()));
 }
 
-void GpsLocation::getUseridError(QNetworkReply::NetworkError error)
+void GpsLocation::getUseridError(QNetworkReply::NetworkError)
 {
-	Q_UNUSED(error);
 	status(QString("error when retrieving Subsurface webservice user id: %1").arg(reply->errorString()));
 }
 
