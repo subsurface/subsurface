@@ -15,19 +15,17 @@ const QString &TankInfoModel::biggerString() const
 	return biggerEntry;
 }
 
-bool TankInfoModel::insertRows(int row, int count, const QModelIndex &parent)
+bool TankInfoModel::insertRows(int, int count, const QModelIndex &parent)
 {
-	Q_UNUSED(row);
 	beginInsertRows(parent, rowCount(), rowCount());
 	rows += count;
 	endInsertRows();
 	return true;
 }
 
-bool TankInfoModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool TankInfoModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	//WARN Seems wrong, we need to check for role == Qt::EditRole
-	Q_UNUSED(role);
 
 	if (index.row() < 0 || index.row() > MAX_TANK_INFO - 1)
 		return false;
@@ -84,9 +82,8 @@ QVariant TankInfoModel::data(const QModelIndex &index, int role) const
 	return ret;
 }
 
-int TankInfoModel::rowCount(const QModelIndex &parent) const
+int TankInfoModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return rows + 1;
 }
 

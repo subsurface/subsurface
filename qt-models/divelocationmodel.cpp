@@ -24,15 +24,13 @@ LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTabl
 {
 }
 
-int LocationInformationModel::columnCount(const QModelIndex &parent) const
+int LocationInformationModel::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return COLUMNS;
 }
 
-int LocationInformationModel::rowCount(const QModelIndex &parent) const
+int LocationInformationModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return internalRowCount + 2;
 }
 
@@ -154,10 +152,8 @@ bool LocationInformationModel::setData(const QModelIndex &index, const QVariant 
 	return true;
 }
 
-bool LocationInformationModel::removeRows(int row, int count, const QModelIndex & parent)
+bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 {
-	Q_UNUSED(count);
-	Q_UNUSED(parent);
 	if(row >= rowCount())
 		return false;
 

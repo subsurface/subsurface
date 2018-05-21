@@ -46,9 +46,8 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 	return ret;
 }
 
-int DiveComputerModel::rowCount(const QModelIndex &parent) const
+int DiveComputerModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return numRows;
 }
 
@@ -78,10 +77,9 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
 	return flags;
 }
 
-bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	// We should test if the role == Qt::EditRole
-	Q_UNUSED(role);
 
 	// WARN: This seems wrong - The values don't are ordered - we need a map from the Key to Index, or something.
 	QList<DiveComputerNode> values = dcWorkingMap.values();

@@ -6,9 +6,8 @@ CleanerTableModel::CleanerTableModel(QObject *parent) : QAbstractTableModel(pare
 {
 }
 
-int CleanerTableModel::columnCount(const QModelIndex &parent) const
+int CleanerTableModel::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return headers.count();
 }
 

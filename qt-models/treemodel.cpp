@@ -12,9 +12,8 @@ TreeItem::~TreeItem()
 	qDeleteAll(children);
 }
 
-Qt::ItemFlags TreeItem::flags(const QModelIndex &index) const
+Qt::ItemFlags TreeItem::flags(const QModelIndex&) const
 {
-	Q_UNUSED(index);
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -25,10 +24,8 @@ int TreeItem::row() const
 	return 0;
 }
 
-QVariant TreeItem::data(int column, int role) const
+QVariant TreeItem::data(int, int) const
 {
-	Q_UNUSED(column);
-	Q_UNUSED(role);
 	return QVariant();
 }
 
@@ -57,11 +54,8 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
 		return val;
 }
 
-bool TreeItem::setData(const QModelIndex &index, const QVariant &value, int role)
+bool TreeItem::setData(const QModelIndex&, const QVariant&, int)
 {
-	Q_UNUSED(index);
-	Q_UNUSED(value);
-	Q_UNUSED(role);
 	return false;
 }
 
@@ -104,8 +98,7 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 	return amount;
 }
 
-int TreeModel::columnCount(const QModelIndex &parent) const
+int TreeModel::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return columns;
 }

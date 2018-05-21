@@ -24,9 +24,8 @@ const QPixmap &trashForbiddenIcon()
 	return trash;
 }
 
-Qt::ItemFlags GasSelectionModel::flags(const QModelIndex &index) const
+Qt::ItemFlags GasSelectionModel::flags(const QModelIndex&) const
 {
-	Q_UNUSED(index);
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -69,9 +68,8 @@ QVariant GasSelectionModel::data(const QModelIndex &index, int role) const
 }
 // Dive Type Model for the divetype combo box
 
-Qt::ItemFlags DiveTypeSelectionModel::flags(const QModelIndex &index) const
+Qt::ItemFlags DiveTypeSelectionModel::flags(const QModelIndex&) const
 {
-	Q_UNUSED(index);
 	return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
@@ -134,8 +132,7 @@ QVariant LanguageModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-int LanguageModel::rowCount(const QModelIndex &parent) const
+int LanguageModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return languages.count();
 }

@@ -77,9 +77,8 @@ QHash<int, QByteArray> MapLocationModel::roleNames() const
 	return m_roles;
 }
 
-int MapLocationModel::rowCount(const QModelIndex &parent) const
+int MapLocationModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return m_mapLocations.size();
 }
 

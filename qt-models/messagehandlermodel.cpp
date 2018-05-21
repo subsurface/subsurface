@@ -13,9 +13,8 @@
 extern void writeToAppLogFile(QString logText);
 #endif
 
-void logMessageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void logMessageHandler(QtMsgType type, const QMessageLogContext&, const QString &msg)
 {
-	Q_UNUSED(context)
 	MessageHandlerModel::self()->addLog(type, msg);
 }
 
@@ -25,16 +24,14 @@ MessageHandlerModel * MessageHandlerModel::self()
 	return self;
 }
 
-MessageHandlerModel::MessageHandlerModel(QObject *parent)
+MessageHandlerModel::MessageHandlerModel(QObject*)
 {
-	Q_UNUSED(parent)
 	// no more than one message handler.
 	qInstallMessageHandler(logMessageHandler);
 }
 
-int MessageHandlerModel::rowCount(const QModelIndex& parent) const
+int MessageHandlerModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent)
 	return m_data.size();
 }
 

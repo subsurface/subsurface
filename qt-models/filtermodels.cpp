@@ -132,11 +132,8 @@ int SuitsFilterModel::countDives(const char *s) const
 	return count_dives_with_suit(s);
 }
 
-bool SuitsFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
+bool SuitsFilterModel::doFilter(dive *d, QModelIndex&, QAbstractItemModel*) const
 {
-	Q_UNUSED(index0);
-	Q_UNUSED(sourceModel);
-
 	// rowCount() == 0 should never happen, because we have the "no suits" row
 	// let's handle it gracefully anyway.
 	if (!anyChecked || rowCount() == 0)
@@ -199,11 +196,8 @@ void TagFilterModel::repopulate()
 	updateList(list);
 }
 
-bool TagFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
+bool TagFilterModel::doFilter(dive *d, QModelIndex&, QAbstractItemModel*) const
 {
-	Q_UNUSED(index0);
-	Q_UNUSED(sourceModel);
-
 	// If there's nothing checked, this should show everything
 	// rowCount() == 0 should never happen, because we have the "no tags" row
 	// let's handle it gracefully anyway.
@@ -240,11 +234,8 @@ int BuddyFilterModel::countDives(const char *s) const
 	return count_dives_with_person(s);
 }
 
-bool BuddyFilterModel::doFilter(dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
+bool BuddyFilterModel::doFilter(dive *d, QModelIndex&, QAbstractItemModel*) const
 {
-	Q_UNUSED(index0);
-	Q_UNUSED(sourceModel);
-
 	// If there's nothing checked, this should show everything
 	// rowCount() == 0 should never happen, because we have the "no tags" row
 	// let's handle it gracefully anyway.
@@ -298,11 +289,8 @@ int LocationFilterModel::countDives(const char *s) const
 	return count_dives_with_location(s);
 }
 
-bool LocationFilterModel::doFilter(struct dive *d, QModelIndex &index0, QAbstractItemModel *sourceModel) const
+bool LocationFilterModel::doFilter(struct dive *d, QModelIndex&, QAbstractItemModel*) const
 {
-	Q_UNUSED(index0);
-	Q_UNUSED(sourceModel);
-
 	// rowCount() == 0 should never happen, because we have the "no location" row
 	// let's handle it gracefully anyway.
 	if (!anyChecked || rowCount() == 0)
