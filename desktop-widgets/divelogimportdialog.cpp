@@ -52,20 +52,16 @@ ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(par
 		       tr("Sample setpoint") << tr("Visibility") << tr("Rating");
 }
 
-bool ColumnNameProvider::insertRows(int row, int count, const QModelIndex &parent)
+bool ColumnNameProvider::insertRows(int row, int, const QModelIndex&)
 {
-	Q_UNUSED(count)
-	Q_UNUSED(parent)
 	beginInsertRows(QModelIndex(), row, row);
 	columnNames.append(QString());
 	endInsertRows();
 	return true;
 }
 
-bool ColumnNameProvider::removeRows(int row, int count, const QModelIndex &parent)
+bool ColumnNameProvider::removeRows(int row, int, const QModelIndex&)
 {
-	Q_UNUSED(count)
-	Q_UNUSED(parent)
 	beginRemoveRows(QModelIndex(), row, row);
 	columnNames.removeAt(row);
 	endRemoveRows();
@@ -91,9 +87,8 @@ QVariant ColumnNameProvider::data(const QModelIndex &index, int role) const
 	return QVariant(columnNames[index.row()]);
 }
 
-int ColumnNameProvider::rowCount(const QModelIndex &parent) const
+int ColumnNameProvider::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent)
 	return columnNames.count();
 }
 
@@ -114,9 +109,8 @@ int ColumnNameProvider::mymatch(QString value) const
 
 
 
-ColumnNameView::ColumnNameView(QWidget *parent)
+ColumnNameView::ColumnNameView(QWidget*)
 {
-	Q_UNUSED(parent)
 	setAcceptDrops(true);
 	setDragEnabled(true);
 }
@@ -145,9 +139,8 @@ void ColumnNameView::mousePressEvent(QMouseEvent *press)
 	}
 }
 
-void ColumnNameView::dragLeaveEvent(QDragLeaveEvent *leave)
+void ColumnNameView::dragLeaveEvent(QDragLeaveEvent*)
 {
-	Q_UNUSED(leave);
 }
 
 void ColumnNameView::dragEnterEvent(QDragEnterEvent *event)
@@ -176,15 +169,13 @@ void ColumnNameView::dropEvent(QDropEvent *event)
 	}
 }
 
-ColumnDropCSVView::ColumnDropCSVView(QWidget *parent)
+ColumnDropCSVView::ColumnDropCSVView(QWidget*)
 {
-	Q_UNUSED(parent)
 	setAcceptDrops(true);
 }
 
-void ColumnDropCSVView::dragLeaveEvent(QDragLeaveEvent *leave)
+void ColumnDropCSVView::dragLeaveEvent(QDragLeaveEvent*)
 {
-	Q_UNUSED(leave);
 }
 
 void ColumnDropCSVView::dragEnterEvent(QDragEnterEvent *event)
@@ -272,15 +263,13 @@ QVariant ColumnNameResult::data(const QModelIndex &index, int role) const
 		return QVariant();
 }
 
-int ColumnNameResult::rowCount(const QModelIndex &parent) const
+int ColumnNameResult::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return columnValues.count() + 1; // +1 == the header.
 }
 
-int ColumnNameResult::columnCount(const QModelIndex &parent) const
+int ColumnNameResult::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return columnNames.count();
 }
 

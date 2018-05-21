@@ -241,9 +241,8 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 	fill_device_list(dcType);
 }
 
-void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product)
+void DownloadFromDCWidget::on_product_currentIndexChanged(const QString&)
 {
-	Q_UNUSED(product)
 	updateDeviceEnabled();
 }
 

@@ -515,9 +515,8 @@ void DiveListView::toggleColumnVisibilityByIndex()
 	setColumnWidth(lastVisibleColumn(), 10);
 }
 
-void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)
+void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex&)
 {
-	Q_UNUSED(previous)
 	if (!isVisible())
 		return;
 	if (!current.isValid())

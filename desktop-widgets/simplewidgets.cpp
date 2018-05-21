@@ -68,9 +68,8 @@ double MinMaxAvgWidget::minimum() const
 	return d->minValue->text().toDouble();
 }
 
-MinMaxAvgWidget::MinMaxAvgWidget(QWidget *parent) : d(new MinMaxAvgWidgetPrivate(this))
+MinMaxAvgWidget::MinMaxAvgWidget(QWidget*) : d(new MinMaxAvgWidgetPrivate(this))
 {
-	Q_UNUSED(parent)
 }
 
 MinMaxAvgWidget::~MinMaxAvgWidget()
@@ -261,9 +260,8 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 	}
 }
 
-void ShiftTimesDialog::showEvent(QShowEvent *event)
+void ShiftTimesDialog::showEvent(QShowEvent*)
 {
-	Q_UNUSED(event)
 	ui.timeEdit->setTime(QTime(0, 0, 0, 0));
 	when = get_times(); //get time of first selected dive
 	ui.currentTime->setText(get_dive_date_string(when));

@@ -1655,10 +1655,8 @@ void MainWindow::updateRecentFiles()
 	updateRecentFilesMenu();
 }
 
-void MainWindow::recentFileTriggered(bool checked)
+void MainWindow::recentFileTriggered(bool)
 {
-	Q_UNUSED(checked);
-
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
 		return;
 
