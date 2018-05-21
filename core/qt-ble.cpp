@@ -38,7 +38,9 @@ static void waitFor(int ms) {
 
 	do {
 		QCoreApplication::processEvents(QEventLoop::AllEvents, ms);
+#if !defined(Q_OS_IOS)
 		QCoreApplication::sendPostedEvents(nullptr, QEvent::DeferredDelete);
+#endif
 		QThread::msleep(10);
 	} while (timer.elapsed() < ms);
 }
