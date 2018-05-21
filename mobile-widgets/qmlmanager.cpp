@@ -144,15 +144,16 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	timer.start();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
 
-	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
-	logfile_name = copy_qstring(libdcLogFileName);
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
+	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
 #elif defined(Q_OS_IOS)
 	// on iOS we should save the data to the DocumentsLocation so it becomes accessible to the user
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first() + "/subsurface.log";
+	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first() + "/libdivecomputer.log";
 #endif
+	logfile_name = copy_qstring(libdcLogFileName);
 	appLogFile.setFileName(appLogFileName);
 	if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
 		appLogFileOpen = false;
