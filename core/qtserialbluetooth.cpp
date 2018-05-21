@@ -327,11 +327,10 @@ static dc_status_t qt_serial_write(void *io, const void* data, size_t size, size
 	return DC_STATUS_SUCCESS;
 }
 
-static dc_status_t qt_serial_purge(void *io, dc_direction_t queue)
+static dc_status_t qt_serial_purge(void *io, dc_direction_t)
 {
 	qt_serial_t *device = (qt_serial_t*) io;
 
-	(void)queue;
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 #if !defined(Q_OS_WIN)
