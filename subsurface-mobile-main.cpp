@@ -24,8 +24,11 @@ int main(int argc, char **argv)
 	int i;
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
-	QApplication *application = new QApplication(argc, argv);
-	(void)application;
+
+	// Start application
+	new QApplication(argc, argv);
+
+	// and get comand line arguments
 	QStringList arguments = QCoreApplication::arguments();
 
 	subsurface_console_init();
