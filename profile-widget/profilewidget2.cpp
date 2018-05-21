@@ -532,6 +532,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 #ifndef SUBSURFACE_MOBILE
 	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
+#else
+	Q_UNUSED(doClearPictures);
 #endif
 	if (currentState != ADD && currentState != PLAN) {
 		if (!d) {
