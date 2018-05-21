@@ -23,7 +23,7 @@ CloseButtonItem::CloseButtonItem(QGraphicsItem *parent): DivePixmapItem(parent)
 	setFlag(ItemIgnoresTransformations);
 }
 
-void CloseButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
+void CloseButtonItem::mousePressEvent(QGraphicsSceneMouseEvent *)
 {
 	qgraphicsitem_cast<DivePictureItem*>(parentItem())->removePicture();
 }
