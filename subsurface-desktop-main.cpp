@@ -220,9 +220,8 @@ exit:
 }
 
 // install this message handler primarily so that the Windows build can log to files
-void messageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString &msg)
+void messageHandler(QtMsgType type, const QMessageLogContext&, const QString &msg)
 {
-	Q_UNUSED(ctx);
 	QByteArray localMsg = msg.toUtf8();
 	switch (type) {
 	case QtDebugMsg:
