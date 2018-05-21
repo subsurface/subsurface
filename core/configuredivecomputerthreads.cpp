@@ -2097,10 +2097,8 @@ void DeviceThread::progressCB(int percent)
 	emit progress(percent);
 }
 
-void DeviceThread::event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
+void DeviceThread::event_cb(dc_device_t *, dc_event_type_t event, const void *data, void *userdata)
 {
-	Q_UNUSED(device);
-
 	const dc_event_progress_t *progress = (dc_event_progress_t *) data;
 	DeviceThread *dt = static_cast<DeviceThread*>(userdata);
 

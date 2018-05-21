@@ -29,17 +29,15 @@ void subsurface_OS_pref_setup(void)
 	// nothing
 }
 
-bool subsurface_ignore_font(const char *font)
+bool subsurface_ignore_font(const char*)
 {
 	// there are no old default fonts that we would want to ignore
-	Q_UNUSED(font);
 	return false;
 }
 
-void subsurface_user_info(struct user_info *user)
+void subsurface_user_info(struct user_info *)
 {
-	// We	 use of at least libgit2-0.20
-	Q_UNUSED(user);
+	// We use of at least libgit2-0.20
 }
 
 static const char *system_default_path_append(const char *append)
@@ -70,12 +68,9 @@ const char *system_default_filename(void)
 	return path;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
+int enumerate_devices(device_callback_t, void *, int)
 {
 	// we can't read from devices on iOS
-	Q_UNUSED(callback)
-	Q_UNUSED(userdata)
-	Q_UNUSED(dc_type)
 	return -1;
 }
 

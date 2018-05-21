@@ -30,9 +30,8 @@ QString ConnectionListModel::address(int idx) const
 	return m_addresses[idx];
 }
 
-int ConnectionListModel::rowCount(const QModelIndex &parent) const
+int ConnectionListModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent)
 	return m_addresses.count();
 }
 
