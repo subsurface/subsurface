@@ -217,8 +217,8 @@ include(./deployment.pri)
 include(../../mobile-widgets/qml/kirigami/kirigami.pri)
 
 # Supress some warnings
-QMAKE_CXXFLAGS += -w
-QMAKE_CFLAGS   += -w
+QMAKE_CXXFLAGS += -Wno-shorten-64-to-32 -Wno-missing-field-initializers
+QMAKE_CFLAGS   += -Wno-shorten-64-to-32 -Wno-missing-field-initializers
 
 ios {
 	QMAKE_ASSET_CATALOGS += ./storeIcon.xcassets
