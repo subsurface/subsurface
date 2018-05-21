@@ -4,10 +4,9 @@
 
 #include <QDebug>
 
-FacebookPlugin::FacebookPlugin(QObject* parent) :
+FacebookPlugin::FacebookPlugin(QObject*) :
 	fbConnectWidget(new FacebookConnectWidget())
 {
-	Q_UNUSED(parent)
 }
 
 bool FacebookPlugin::isConnected()
