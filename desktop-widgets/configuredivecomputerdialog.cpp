@@ -21,10 +21,8 @@ GasSpinBoxItemDelegate::~GasSpinBoxItemDelegate()
 {
 }
 
-QWidget *GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
 {
-	Q_UNUSED(option)
-	Q_UNUSED(index)
 	// Create the spinbox and give it it's settings
 	QSpinBox *sb = new QSpinBox(parent);
 	if (type == PERCENT) {
@@ -67,10 +65,8 @@ GasTypeComboBoxItemDelegate::~GasTypeComboBoxItemDelegate()
 {
 }
 
-QWidget *GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
 {
-	Q_UNUSED(option)
-	Q_UNUSED(index)
 	// Create the combobox and populate it
 	QComboBox *cb = new QComboBox(parent);
 	cb->addItem(QString("Disabled"));
@@ -362,9 +358,8 @@ ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 	delete config;
 }
 
-void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *event)
+void ConfigureDiveComputerDialog::closeEvent(QCloseEvent*)
 {
-	Q_UNUSED(event)
 	dc_close();
 
 	QSettings settings;

@@ -340,16 +340,14 @@ void LocationInformationWidget::updateLocationOnMap()
 	emit coordinatesChanged();
 }
 
-DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject *parent)
+DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)
 {
-	Q_UNUSED(parent)
 }
 
 DiveLocationLineEdit *location_line_edit = 0;
 
-bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex&) const
 {
-	Q_UNUSED(source_parent)
 	if (source_row == 0)
 		return true;
 
@@ -363,9 +361,8 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 }
 
 
-DiveLocationModel::DiveLocationModel(QObject *o)
+DiveLocationModel::DiveLocationModel(QObject*)
 {
-	Q_UNUSED(o)
 	resetModel();
 }
 
@@ -424,21 +421,18 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	return QVariant();
 }
 
-int DiveLocationModel::columnCount(const QModelIndex &parent) const
+int DiveLocationModel::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent)
 	return COLUMNS;
 }
 
-int DiveLocationModel::rowCount(const QModelIndex &parent) const
+int DiveLocationModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent)
 	return dive_site_table.nr + 2;
 }
 
-bool DiveLocationModel::setData(const QModelIndex &index, const QVariant &value, int role)
+bool DiveLocationModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
-	Q_UNUSED(role)
 	if (!index.isValid())
 		return false;
 	if (index.row() > 1)
@@ -481,9 +475,8 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	connect(view, &DiveLocationListView::currentIndexChanged, this, &DiveLocationLineEdit::currentChanged);
 }
 
-bool DiveLocationLineEdit::eventFilter(QObject *o, QEvent *e)
+bool DiveLocationLineEdit::eventFilter(QObject*, QEvent *e)
 {
-	Q_UNUSED(o)
 	if (e->type() == QEvent::KeyPress) {
 		QKeyEvent *keyEv = (QKeyEvent *)e;
 
@@ -565,9 +558,8 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 	return NULL;
 }
 
-void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString &s)
+void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString&)
 {
-	Q_UNUSED(s)
 	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
 	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
 	model->setData(i0, text());
@@ -676,9 +668,8 @@ uint32_t DiveLocationLineEdit::currDiveSiteUuid() const
 	return currUuid;
 }
 
-DiveLocationListView::DiveLocationListView(QWidget *parent)
+DiveLocationListView::DiveLocationListView(QWidget*)
 {
-	Q_UNUSED(parent)
 }
 
 void DiveLocationListView::currentChanged(const QModelIndex &current, const QModelIndex &previous)

@@ -61,9 +61,8 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 	update();
 }
 
-void StarWidget::paintEvent(QPaintEvent *event)
+void StarWidget::paintEvent(QPaintEvent*)
 {
-	Q_UNUSED(event)
 	QPainter p(this);
 	QImage star = hasFocus() ? focusedImage(starActive()) : starActive();
 	QPixmap selected = QPixmap::fromImage(star);

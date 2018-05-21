@@ -112,9 +112,8 @@ void DiveLogExportDialog::exportHtmlInit(const QString &filename)
 	exportHtmlInitLogic(filename, hes);
 }
 
-void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton *button)
+void DiveLogExportDialog::on_exportGroup_buttonClicked(QAbstractButton*)
 {
-	Q_UNUSED(button)
 	showExplanation();
 }
 

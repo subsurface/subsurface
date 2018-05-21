@@ -958,9 +958,8 @@ void DivelogsDeWebServices::uploadFinished()
 	}
 }
 
-void DivelogsDeWebServices::setStatusText(int status)
+void DivelogsDeWebServices::setStatusText(int)
 {
-	Q_UNUSED(status)
 }
 
 void DivelogsDeWebServices::downloadError(QNetworkReply::NetworkError)
