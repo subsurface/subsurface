@@ -22,18 +22,13 @@ void YearlyStatisticsWidget::setModel(YearlyStatisticsModel *m)
 	modelRowsInserted(QModelIndex(),0,m_model->rowCount()-1);
 }
 
-void YearlyStatisticsWidget::modelRowsInserted(const QModelIndex &index, int first, int last)
+void YearlyStatisticsWidget::modelRowsInserted(const QModelIndex&, int, int)
 {
-	Q_UNUSED(index)
-	Q_UNUSED(first)
-	Q_UNUSED(last)
 	// stub
 }
 
-void YearlyStatisticsWidget::modelDataChanged(const QModelIndex &topLeft, const QModelIndex& bottomRight)
+void YearlyStatisticsWidget::modelDataChanged(const QModelIndex&, const QModelIndex&)
 {
-	Q_UNUSED(topLeft);
-	Q_UNUSED(bottomRight);
 	scene()->clear();
 	modelRowsInserted(QModelIndex(),0,m_model->rowCount()-1);
 }
