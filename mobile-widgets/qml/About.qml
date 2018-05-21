@@ -59,7 +59,7 @@ Kirigami.ScrollablePage {
 		SsrfButton {
 			id: copyAppLogToClipboard
 			Layout.alignment: Qt.AlignHCenter
-			text: qsTr("Copy app log to clipboard")
+			text: qsTr("Copy logs to clipboard")
 			onClicked: {
 				manager.copyAppLogToClipboard()
 				rootItem.returnTopPage()
