@@ -1139,9 +1139,8 @@ void CloudStorageSettings::setBaseUrl(const QString& value)
 	prefs.cloud_git_url = copy_qstring(QString(prefs.cloud_base_url) + "/git");
 }
 
-void CloudStorageSettings::setGitUrl(const QString& value)
+void CloudStorageSettings::setGitUrl(const QString&)
 {
-	Q_UNUSED(value); /* no op */
 }
 
 void CloudStorageSettings::setGitLocalOnly(bool value)
