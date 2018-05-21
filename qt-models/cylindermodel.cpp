@@ -427,9 +427,8 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 	return true;
 }
 
-int CylindersModel::rowCount(const QModelIndex &parent) const
+int CylindersModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return rows;
 }
 

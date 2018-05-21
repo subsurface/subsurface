@@ -231,9 +231,8 @@ bool DivePlannerPointsModel::recalcQ()
 	return recalc;
 }
 
-int DivePlannerPointsModel::columnCount(const QModelIndex &parent) const
+int DivePlannerPointsModel::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return COLUMNS; // to disable CCSETPOINT subtract one
 }
 
@@ -393,9 +392,8 @@ Qt::ItemFlags DivePlannerPointsModel::flags(const QModelIndex &index) const
 		return QAbstractItemModel::flags(index);
 }
 
-int DivePlannerPointsModel::rowCount(const QModelIndex &parent) const
+int DivePlannerPointsModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return divepoints.count();
 }
 

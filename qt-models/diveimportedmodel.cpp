@@ -11,15 +11,13 @@ DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	diveTable = &downloadTable;
 }
 
-int DiveImportedModel::columnCount(const QModelIndex &model) const
+int DiveImportedModel::columnCount(const QModelIndex&) const
 {
-	Q_UNUSED(model)
 	return 3;
 }
 
-int DiveImportedModel::rowCount(const QModelIndex &model) const
+int DiveImportedModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(model)
 	return lastIndex - firstIndex + 1;
 }
 

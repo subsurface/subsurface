@@ -142,9 +142,8 @@ Qt::ItemFlags WeightModel::flags(const QModelIndex &index) const
 	return QAbstractItemModel::flags(index) | Qt::ItemIsEditable;
 }
 
-int WeightModel::rowCount(const QModelIndex &parent) const
+int WeightModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return rows;
 }
 

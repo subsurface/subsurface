@@ -27,9 +27,8 @@ void GpsListModel::clear()
 	}
 }
 
-int GpsListModel::rowCount(const QModelIndex &parent) const
+int GpsListModel::rowCount(const QModelIndex&) const
 {
-	Q_UNUSED(parent);
 	return m_gpsFixes.count();
 }
 
