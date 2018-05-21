@@ -194,9 +194,8 @@ void ToolTipItem::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 	}
 }
 
-void ToolTipItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+void ToolTipItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget*)
 {
-	Q_UNUSED(widget);
 	painter->save();
 	painter->setClipRect(option->rect);
 	painter->setPen(pen());

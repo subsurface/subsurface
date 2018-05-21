@@ -99,9 +99,8 @@ void DiveCartesianAxis::setOrientation(Orientation o)
 	changed = true;
 }
 
-QColor DiveCartesianAxis::colorForValue(double value)
+QColor DiveCartesianAxis::colorForValue(double)
 {
-	Q_UNUSED(value)
 	return QColor(Qt::black);
 }
 
@@ -355,9 +354,8 @@ QString DepthAxis::textForValue(double value)
 	return get_depth_string(lrint(value), false, false);
 }
 
-QColor DepthAxis::colorForValue(double value)
+QColor DepthAxis::colorForValue(double)
 {
-	Q_UNUSED(value);
 	return QColor(Qt::red);
 }
 
@@ -384,9 +382,8 @@ TimeAxis::TimeAxis(ProfileWidget2 *widget) : DiveCartesianAxis(widget)
 {
 }
 
-QColor TimeAxis::colorForValue(double value)
+QColor TimeAxis::colorForValue(double)
 {
-	Q_UNUSED(value);
 	return QColor(Qt::blue);
 }
 
