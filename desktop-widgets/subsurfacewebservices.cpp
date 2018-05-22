@@ -415,7 +415,6 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		struct dive *d;
 		struct dive_site *ds;
 		bool changed = false;
-		(void)changed;
 		clear_table(&gps_location_table);
 		QByteArray url = tr("Webservice").toUtf8();
 		parse_xml_buffer(url.data(), downloadedData.data(), downloadedData.length(), &gps_location_table, NULL);
