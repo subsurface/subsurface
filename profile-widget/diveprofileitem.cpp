@@ -163,7 +163,6 @@ int DiveProfileItem::maxCeiling(int row)
 void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
 {
 	bool eventAdded = false;
-	(void)eventAdded;
 	if (!shouldCalculateStuff(topLeft, bottomRight))
 		return;
 
@@ -175,7 +174,9 @@ void DiveProfileItem::modelDataChanged(const QModelIndex &topLeft, const QModelI
 	reported_ceiling_in_red = prefs.redceiling;
 	profileColor = getColor(DEPTH_BOTTOM);
 
-#ifndef SUBSURFACE_MOBILE
+#ifdef SUBSURFACE_MOBILE
+	Q_UNUSED(eventAdded);
+#else
 	int currState = qobject_cast<ProfileWidget2 *>(scene()->views().first())->currentState;
 	if (currState == ProfileWidget2::PLAN) {
 		plot_data *entry = dataModel->data().entry;
