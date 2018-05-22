@@ -1,3 +1,4 @@
+#include "ssrf.h"
 #include <stdio.h>
 #include <assert.h>
 #include <stdarg.h>
@@ -195,7 +196,7 @@ bool is_dive(void)
 void reset_dc_info(struct divecomputer *dc)
 {
 	/* WARN: reset dc info does't touch the dc? */
-	(void) dc;
+	UNUSED(dc);
 	lastcylinderindex = 0;
 }
 

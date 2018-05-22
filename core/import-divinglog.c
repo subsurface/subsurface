@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
 #include "parse.h"
@@ -14,9 +15,9 @@
 
 extern int divinglog_cylinder(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	short dbl = 1;
 	//char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d";
@@ -60,9 +61,9 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 
 extern int divinglog_profile(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	int sinterval = 0;
 	unsigned long time;
@@ -197,7 +198,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			int ppo2_2 = atoi_n(ptr5 + 3, 3);
 			int ppo2_3 = atoi_n(ptr5 + 6, 3);
 			int otu = atoi_n(ptr5 + 9, 4);
-			(void) otu; // we seem to not store this? Do we understand its format?
+			UNUSED(otu); // we seem to not store this? Do we understand its format?
 			int cns = atoi_n(ptr5 + 13, 4);
 			int setpoint = atoi_n(ptr5 + 17, 2);
 
@@ -267,8 +268,8 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 extern int divinglog_dive(void *param, int columns, char **data, char **column)
 {
-	(void) columns;
-	(void) column;
+	UNUSED(columns);
+	UNUSED(column);
 
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
@@ -397,8 +398,8 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
-	(void) buffer;
-	(void) size;
+	UNUSED(buffer);
+	UNUSED(size);
 
 	int retval;
 	char *err = NULL;

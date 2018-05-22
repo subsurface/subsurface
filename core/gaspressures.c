@@ -18,6 +18,7 @@
  *  pr_track_t is defined in gaspressures.h
  */
 
+#include "ssrf.h"
 #include "dive.h"
 #include "display.h"
 #include "profile.h"
@@ -343,7 +344,7 @@ static void debug_print_pressures(struct plot_info *pi)
  */
 void populate_pressure_information(struct dive *dive, struct divecomputer *dc, struct plot_info *pi, int sensor)
 {
-	(void) dc;
+	UNUSED(dc);
 	int first, last, cyl;
 	cylinder_t *cylinder = dive->cylinder + sensor;
 	pr_track_t *track = NULL;

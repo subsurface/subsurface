@@ -1,9 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#ifdef __clang__
-// Clang has a bug on zero-initialization of C structs.
-#pragma clang diagnostic ignored "-Wmissing-field-initializers"
-#endif
-
+#include "ssrf.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -179,7 +175,7 @@ static int get_hex(const char *line)
 
 static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {
-	(void) str;
+	UNUSED(str);
 	uint32_t uuid;
 	degrees_t latitude = parse_degrees(line, &line);
 	degrees_t longitude = parse_degrees(line, &line);
@@ -206,7 +202,7 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 
 static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 {
-	(void) line;
+	UNUSED(line);
 	uint32_t uuid;
 	char *name = get_utf8(str);
 	struct dive *dive = _dive;
@@ -230,19 +226,19 @@ static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 }
 
 static void parse_dive_divemaster(char *line, struct membuffer *str, void *_dive)
-{ (void) line; struct dive *dive = _dive; dive->divemaster = get_utf8(str); }
+{ UNUSED(line); struct dive *dive = _dive; dive->divemaster = get_utf8(str); }
 
 static void parse_dive_buddy(char *line, struct membuffer *str, void *_dive)
-{ (void) line; struct dive *dive = _dive; dive->buddy = get_utf8(str); }
+{ UNUSED(line); struct dive *dive = _dive; dive->buddy = get_utf8(str); }
 
 static void parse_dive_suit(char *line, struct membuffer *str, void *_dive)
-{ (void) line; struct dive *dive = _dive; dive->suit = get_utf8(str); }
+{ UNUSED(line); struct dive *dive = _dive; dive->suit = get_utf8(str); }
 
 static void parse_dive_notes(char *line, struct membuffer *str, void *_dive)
-{ (void) line; struct dive *dive = _dive; dive->notes = get_utf8(str); }
+{ UNUSED(line); struct dive *dive = _dive; dive->notes = get_utf8(str); }
 
 static void parse_dive_divesiteid(char *line, struct membuffer *str, void *_dive)
-{ (void) str; struct dive *dive = _dive; dive->dive_site_uuid = get_hex(line); }
+{ UNUSED(str); struct dive *dive = _dive; dive->dive_site_uuid = get_hex(line); }
 
 /*
  * We can have multiple tags in the membuffer. They are separated by
@@ -250,7 +246,7 @@ static void parse_dive_divesiteid(char *line, struct membuffer *str, void *_dive
  */
 static void parse_dive_tags(char *line, struct membuffer *str, void *_dive)
 {
-	(void) line;
+	UNUSED(line);
 	struct dive *dive = _dive;
 	const char *tag;
 	int len = str->len;
@@ -273,40 +269,40 @@ static void parse_dive_tags(char *line, struct membuffer *str, void *_dive)
 }
 
 static void parse_dive_airtemp(char *line, struct membuffer *str, void *_dive)
-{ (void) str; struct dive *dive = _dive; dive->airtemp = get_temperature(line); }
+{ UNUSED(str); struct dive *dive = _dive; dive->airtemp = get_temperature(line); }
 
 static void parse_dive_watertemp(char *line, struct membuffer *str, void *_dive)
-{ (void) str; struct dive *dive = _dive; dive->watertemp = get_temperature(line); }
+{ UNUSED(str); struct dive *dive = _dive; dive->watertemp = get_temperature(line); }
 
 static void parse_dive_duration(char *line, struct membuffer *str, void *_dive)
-{ (void) str; struct dive *dive = _dive; dive->duration = get_duration(line); }
+{ UNUSED(str); struct dive *dive = _dive; dive->duration = get_duration(line); }
 
 static void parse_dive_rating(char *line, struct membuffer *str, void *_dive)
-{ (void) str; struct dive *dive = _dive; dive->rating = get_index(line); }
+{ UNUSED(str); struct dive *dive = _dive; dive->rating = get_index(line); }
 
 static void parse_dive_visibility(char *line, struct membuffer *str, void *_dive)
-{ (void) str; struct dive *dive = _dive; dive->visibility = get_index(line); }
+{ UNUSED(str); struct dive *dive = _dive; dive->visibility = get_index(line); }
 
 static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
 {
-	(void) str;
-	(void) line;
+	UNUSED(str);
+	UNUSED(line);
 	struct dive *dive = _dive; dive->tripflag = NO_TRIP;
 }
 
 static void parse_site_description(char *line, struct membuffer *str, void *_ds)
-{ (void) line; struct dive_site *ds = _ds; ds->description = strdup(mb_cstring(str)); }
+{ UNUSED(line); struct dive_site *ds = _ds; ds->description = strdup(mb_cstring(str)); }
 
 static void parse_site_name(char *line, struct membuffer *str, void *_ds)
-{ (void) line; struct dive_site *ds = _ds; ds->name = strdup(mb_cstring(str)); }
+{ UNUSED(line); struct dive_site *ds = _ds; ds->name = strdup(mb_cstring(str)); }
 
 static void parse_site_notes(char *line, struct membuffer *str, void *_ds)
-{ (void) line; struct dive_site *ds = _ds; ds->notes = strdup(mb_cstring(str)); }
+{ UNUSED(line); struct dive_site *ds = _ds; ds->notes = strdup(mb_cstring(str)); }
 
 extern degrees_t parse_degrees(char *buf, char **end);
 static void parse_site_gps(char *line, struct membuffer *str, void *_ds)
 {
-	(void) str;
+	UNUSED(str);
 	struct dive_site *ds = _ds;
 
 	ds->latitude = parse_degrees(line, &line);
@@ -676,52 +672,52 @@ static void sample_parser(char *line, struct divecomputer *dc)
 }
 
 static void parse_dc_airtemp(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->airtemp = get_temperature(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->airtemp = get_temperature(line); }
 
 static void parse_dc_date(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; update_date(&dc->when, line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; update_date(&dc->when, line); }
 
 static void parse_dc_deviceid(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; set_dc_deviceid(dc, get_hex(line)); }
+{ UNUSED(str); struct divecomputer *dc = _dc; set_dc_deviceid(dc, get_hex(line)); }
 
 static void parse_dc_diveid(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->diveid = get_hex(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->diveid = get_hex(line); }
 
 static void parse_dc_duration(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->duration = get_duration(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->duration = get_duration(line); }
 
 static void parse_dc_dctype(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->divemode = get_dctype(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->divemode = get_dctype(line); }
 
 static void parse_dc_lastmanualtime(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->last_manual_time = get_duration(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->last_manual_time = get_duration(line); }
 
 static void parse_dc_maxdepth(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->maxdepth = get_depth(line); }
 
 static void parse_dc_meandepth(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->meandepth = get_depth(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->meandepth = get_depth(line); }
 
 static void parse_dc_model(char *line, struct membuffer *str, void *_dc)
-{ (void) line; struct divecomputer *dc = _dc; dc->model = get_utf8(str); }
+{ UNUSED(line); struct divecomputer *dc = _dc; dc->model = get_utf8(str); }
 
 static void parse_dc_numberofoxygensensors(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->no_o2sensors = get_index(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->no_o2sensors = get_index(line); }
 
 static void parse_dc_surfacepressure(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->surface_pressure = get_pressure(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->surface_pressure = get_pressure(line); }
 
 static void parse_dc_salinity(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->salinity = get_salinity(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->salinity = get_salinity(line); }
 
 static void parse_dc_surfacetime(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->surfacetime = get_duration(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->surfacetime = get_duration(line); }
 
 static void parse_dc_time(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; update_time(&dc->when, line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; update_time(&dc->when, line); }
 
 static void parse_dc_watertemp(char *line, struct membuffer *str, void *_dc)
-{ (void) str; struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
+{ UNUSED(str); struct divecomputer *dc = _dc; dc->watertemp = get_temperature(line); }
 
 
 int get_divemode(const char *divemodestring) {
@@ -832,37 +828,37 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 }
 
 static void parse_trip_date(char *line, struct membuffer *str, void *_trip)
-{ (void) str; dive_trip_t *trip = _trip; update_date(&trip->when, line); }
+{ UNUSED(str); dive_trip_t *trip = _trip; update_date(&trip->when, line); }
 
 static void parse_trip_time(char *line, struct membuffer *str, void *_trip)
-{ (void) str; dive_trip_t *trip = _trip; update_time(&trip->when, line); }
+{ UNUSED(str); dive_trip_t *trip = _trip; update_time(&trip->when, line); }
 
 static void parse_trip_location(char *line, struct membuffer *str, void *_trip)
-{ (void) line; dive_trip_t *trip = _trip; trip->location = get_utf8(str); }
+{ UNUSED(line); dive_trip_t *trip = _trip; trip->location = get_utf8(str); }
 
 static void parse_trip_notes(char *line, struct membuffer *str, void *_trip)
-{ (void) line; dive_trip_t *trip = _trip; trip->notes = get_utf8(str); }
+{ UNUSED(line); dive_trip_t *trip = _trip; trip->notes = get_utf8(str); }
 
 static void parse_settings_autogroup(char *line, struct membuffer *str, void *_unused)
 {
-	(void) line;
-	(void) str;
-	(void) _unused;
+	UNUSED(line);
+	UNUSED(str);
+	UNUSED(_unused);
 	set_autogroup(true);
 }
 
 static void parse_settings_units(char *line, struct membuffer *str, void *unused)
 {
-	(void) str;
-	(void) unused;
+	UNUSED(str);
+	UNUSED(unused);
 	if (line)
 		set_informational_units(line);
 }
 
 static void parse_settings_userid(char *line, struct membuffer *str, void *_unused)
 {
-	(void) str;
-	(void) _unused;
+	UNUSED(str);
+	UNUSED(_unused);
 	if (line) {
 		prefs.save_userid_local = true;
 		set_userid(line);
@@ -871,8 +867,8 @@ static void parse_settings_userid(char *line, struct membuffer *str, void *_unus
 
 static void parse_settings_prefs(char *line, struct membuffer *str, void *unused)
 {
-	(void) str;
-	(void) unused;
+	UNUSED(str);
+	UNUSED(unused);
 	if (line)
 		set_git_prefs(line);
 }
@@ -886,8 +882,8 @@ static void parse_settings_prefs(char *line, struct membuffer *str, void *unused
  */
 static void parse_settings_version(char *line, struct membuffer *str, void *_unused)
 {
-	(void) str;
-	(void) _unused;
+	UNUSED(str);
+	UNUSED(_unused);
 	int version = atoi(line);
 	report_datafile_version(version);
 	if (version > DATAFORMAT_VERSION)
@@ -897,9 +893,9 @@ static void parse_settings_version(char *line, struct membuffer *str, void *_unu
 /* The string in the membuffer is the version string of subsurface that saved things, just FYI */
 static void parse_settings_subsurface(char *line, struct membuffer *str, void *_unused)
 {
-	(void) line;
-	(void) str;
-	(void) _unused;
+	UNUSED(line);
+	UNUSED(str);
+	UNUSED(_unused);
 }
 
 struct divecomputerid {
@@ -947,7 +943,7 @@ static void parse_divecomputerid_keyvalue(void *_cid, const char *key, const cha
  */
 static void parse_settings_divecomputerid(char *line, struct membuffer *str, void *_unused)
 {
-	(void) _unused;
+	UNUSED(_unused);
 	struct divecomputerid id = { mb_cstring(str) };
 
 	id.cstr = id.model + strlen(id.model) + 1;
@@ -968,14 +964,14 @@ static void parse_settings_divecomputerid(char *line, struct membuffer *str, voi
 
 static void parse_picture_filename(char *line, struct membuffer *str, void *_pic)
 {
-	(void) line;
+	UNUSED(line);
 	struct picture *pic = _pic;
 	pic->filename = get_utf8(str);
 }
 
 static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
 {
-	(void) str;
+	UNUSED(str);
 	struct picture *pic = _pic;
 
 	pic->latitude = parse_degrees(line, &line);
@@ -984,7 +980,7 @@ static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
 
 static void parse_picture_hash(char *line, struct membuffer *str, void *_pic)
 {
-	(void) line;
+	UNUSED(line);
 	struct picture *pic = _pic;
 	char *hash = get_utf8(str);
 	register_hash(pic->filename, get_utf8(str));
@@ -1056,7 +1052,7 @@ static struct keyword_action settings_action[] = {
 
 static void settings_parser(char *line, struct membuffer *str, void *_unused)
 {
-	(void) _unused;
+	UNUSED(_unused);
 	match_action(line, str, NULL, settings_action, ARRAY_SIZE(settings_action));
 }
 
@@ -1383,8 +1379,8 @@ static int dive_directory(const char *root, const git_tree_entry *entry, const c
 
 static int picture_directory(const char *root, const char *name)
 {
-	(void) root;
-	(void) name;
+	UNUSED(root);
+	UNUSED(name);
 	if (!active_dive)
 		return GIT_WALK_SKIP;
 	return GIT_WALK_OK;
@@ -1521,7 +1517,7 @@ static struct divecomputer *create_new_dc(struct dive *dive)
  */
 static int parse_divecomputer_entry(git_repository *repo, const git_tree_entry *entry, const char *suffix)
 {
-	(void) suffix;
+	UNUSED(suffix);
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 
 	if (!blob)

@@ -5,6 +5,7 @@
  *
  * (c) Dirk Hohndel 2013
  */
+#include "ssrf.h"
 #include <assert.h>
 #include <unistd.h>
 #include <ctype.h>
@@ -533,7 +534,7 @@ static int *sort_stops(int *dstops, int dnr, struct gaschanges *gstops, int gnr)
 
 int ascent_velocity(int depth, int avg_depth, int bottom_time)
 {
-	(void) bottom_time;
+	UNUSED(bottom_time);
 	/* We need to make this configurable */
 
 	/* As an example (and possibly reasonable default) this is the Tech 1 provedure according

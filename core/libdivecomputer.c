@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <inttypes.h>
@@ -429,7 +430,7 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 
 static void dev_info(device_data_t *devdata, const char *fmt, ...)
 {
-	(void) devdata;
+	UNUSED(devdata);
 	static char buffer[1024];
 	va_list ap;
 
@@ -445,7 +446,7 @@ static int import_dive_number = 0;
 
 static int parse_samples(device_data_t *devdata, struct divecomputer *dc, dc_parser_t *parser)
 {
-	(void) devdata;
+	UNUSED(devdata);
 	// Parse the sample data.
 	return dc_parser_samples_foreach(parser, sample_cb, dc);
 }
@@ -549,8 +550,8 @@ static uint32_t calculate_string_hash(const char *str)
  */
 static void dc_match_serial(void *_dc, const char *model, uint32_t deviceid, const char *nickname, const char *serial, const char *firmware)
 {
-	(void)nickname;
-	(void)firmware;
+	UNUSED(nickname);
+	UNUSED(firmware);
 
 	struct divecomputer *dc = _dc;
 
@@ -1060,7 +1061,7 @@ static void lookup_fingerprint(dc_device_t *device, device_data_t *devdata)
 
 static void event_cb(dc_device_t *device, dc_event_type_t event, const void *data, void *userdata)
 {
-	(void) device;
+	UNUSED(device);
 	const dc_event_progress_t *progress = data;
 	const dc_event_devinfo_t *devinfo = data;
 	const dc_event_clock_t *clock = data;
@@ -1140,7 +1141,7 @@ int import_thread_cancelled;
 
 static int cancel_cb(void *userdata)
 {
-	(void) userdata;
+	UNUSED(userdata);
 	return import_thread_cancelled;
 }
 
@@ -1190,7 +1191,7 @@ static const char *do_device_import(device_data_t *data)
 
 void logfunc(dc_context_t *context, dc_loglevel_t loglevel, const char *file, unsigned int line, const char *function, const char *msg, void *userdata)
 {
-	(void) context;
+	UNUSED(context);
 	const char *loglevels[] = { "NONE", "ERROR", "WARNING", "INFO", "DEBUG", "ALL" };
 
 	FILE *fp = (FILE *)userdata;

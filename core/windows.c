@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /* windows.c */
 /* implements Windows specific functions */
+#include "ssrf.h"
 #include <io.h>
 #include "dive.h"
 #include "display.h"
@@ -391,7 +392,7 @@ static struct {
 
 void subsurface_console_init(void)
 {
-	(void)console_desc;
+	UNUSED(console_desc);
 	/* if this is a console app already, do nothing */
 #ifndef WIN32_CONSOLE_APP
 

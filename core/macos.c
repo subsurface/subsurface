@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /* macos.c */
 /* implements Mac OS X specific functions */
+#include "ssrf.h"
 #include <stdlib.h>
 #include <dirent.h>
 #include <fnmatch.h>
@@ -19,7 +20,7 @@
 
 void subsurface_user_info(struct user_info *info)
 {
-	(void) info;
+	UNUSED(info);
 	/* Nothing, let's use libgit2-20 on MacOS */
 }
 
@@ -46,7 +47,7 @@ void subsurface_OS_pref_setup(void)
 
 bool subsurface_ignore_font(const char *font)
 {
-	(void) font;
+	UNUSED(font);
 	// there are no old default fonts to ignore
 	return false;
 }

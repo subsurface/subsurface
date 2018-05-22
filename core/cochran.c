@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -592,7 +593,7 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 		offset += config.sample_size;
 		sample_cnt++;
 	}
-	(void)ascent_rate; // mark the variable as unused
+	UNUSED(ascent_rate); // mark the variable as unused
 
 	if (sample_cnt > 0)
 		*duration = sample_cnt * profile_period - 1;
@@ -792,7 +793,7 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 
 int try_to_open_cochran(const char *filename, struct memblock *mem)
 {
-	(void) filename;
+	UNUSED(filename);
 	unsigned int i;
 	unsigned int mod;
 	unsigned int *offsets, dive1, dive2;

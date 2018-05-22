@@ -17,6 +17,7 @@
  * restore_deco_state()
  * dump_tissues()
  */
+#include "ssrf.h"
 #include <math.h>
 #include <string.h>
 #include "dive.h"
@@ -480,7 +481,7 @@ void calc_crushing_pressure(struct deco_state *ds, double pressure)
 /* add period_in_seconds at the given pressure and gas to the deco calculation */
 void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int ccpo2, enum divemode_t divemode, int sac)
 {
-	(void) sac;
+	UNUSED(sac);
 	int ci;
 	struct gas_pressures pressures;
 	bool icd = false;

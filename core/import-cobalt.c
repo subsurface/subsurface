@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
 #include "parse.h"
@@ -14,9 +15,9 @@
 
 extern int cobalt_profile_sample(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	sample_start();
 	if (data[0])
@@ -33,9 +34,9 @@ extern int cobalt_profile_sample(void *handle, int columns, char **data, char **
 
 extern int cobalt_cylinders(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	cylinder_start();
 	if (data[0])
@@ -57,9 +58,9 @@ extern int cobalt_cylinders(void *handle, int columns, char **data, char **colum
 
 extern int cobalt_buddies(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	if (data[0])
 		utf8_string(data[0], &cur_dive->buddy);
@@ -74,18 +75,18 @@ extern int cobalt_buddies(void *handle, int columns, char **data, char **column)
 
 extern int cobalt_visibility(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
-	(void) data;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
+	UNUSED(data);
 	return 0;
 }
 
 extern int cobalt_location(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	static char *location = NULL;
 	if (data[0]) {
@@ -108,8 +109,8 @@ extern int cobalt_location(void *handle, int columns, char **data, char **column
 
 extern int cobalt_dive(void *param, int columns, char **data, char **column)
 {
-	(void) columns;
-	(void) column;
+	UNUSED(columns);
+	UNUSED(column);
 
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
@@ -217,8 +218,8 @@ extern int cobalt_dive(void *param, int columns, char **data, char **column)
 int parse_cobalt_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
-	(void) buffer;
-	(void) size;
+	UNUSED(buffer);
+	UNUSED(size);
 
 	int retval;
 	char *err = NULL;
