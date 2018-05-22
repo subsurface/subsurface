@@ -6,6 +6,10 @@
 extern "C" {
 #endif
 
+#ifdef __clang__
+// Clang has a bug on zero-initialization of C structs.
+#pragma clang diagnostic ignored "-Wmissing-field-initializers"
+#endif
 
 #ifdef __cplusplus
 }
