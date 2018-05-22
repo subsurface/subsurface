@@ -738,7 +738,9 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	struct event *event = currentdc->events;
 	struct event *ev;
 	struct gasmix lastgasmix = *get_gasmix(&displayed_dive, current_dc, 1, &ev, NULL);
+
 	while (event) {
+#ifndef SUBSURFACE_MOBILE
 		// if print mode is selected only draw headings, SP change, gas events or bookmark event
 		if (printMode) {
 			if (empty_string(event->name) ||
@@ -750,6 +752,10 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 				continue;
 			}
 		}
+#else
+		// printMode is always selected for SUBSURFACE_MOBILE due to font problems
+		// BUT events are wanted.
+#endif
 		DiveEventItem *item = new DiveEventItem();
 		item->setHorizontalAxis(timeAxis);
 		item->setVerticalAxis(profileYAxis);
@@ -760,6 +766,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 		eventItems.push_back(item);
 		event = event->next;
 	}
+
 	// Only set visible the events that should be visible
 	Q_FOREACH (DiveEventItem *event, eventItems) {
 		event->setVisible(!event->shouldBeHidden());

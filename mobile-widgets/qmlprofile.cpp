@@ -15,7 +15,7 @@ QMLProfile::QMLProfile(QQuickItem *parent) :
 	setAntialiasing(true);
 	m_profileWidget = new ProfileWidget2(0);
 	m_profileWidget->setProfileState();
-	m_profileWidget->setPrintMode(false);
+	m_profileWidget->setPrintMode(true);
 	m_profileWidget->setFontPrintScale(0.8);
 	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
 	setDevicePixelRatio(QMLManager::instance()->lastDevicePixelRatio());
