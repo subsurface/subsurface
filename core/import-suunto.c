@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
 #include "parse.h"
@@ -14,9 +15,9 @@
 
 extern int dm4_events(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	event_start();
 	if (data[1])
@@ -147,9 +148,9 @@ extern int dm4_events(void *handle, int columns, char **data, char **column)
 
 extern int dm4_tags(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	if (data[0])
 		taglist_add_tag(&cur_dive->tag_list, data[0]);
@@ -159,8 +160,8 @@ extern int dm4_tags(void *handle, int columns, char **data, char **column)
 
 extern int dm4_dive(void *param, int columns, char **data, char **column)
 {
-	(void) columns;
-	(void) column;
+	UNUSED(columns);
+	UNUSED(column);
 	int i;
 	int interval, retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
@@ -289,8 +290,8 @@ extern int dm4_dive(void *param, int columns, char **data, char **column)
 int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 		     struct dive_table *table)
 {
-	(void) buffer;
-	(void) size;
+	UNUSED(buffer);
+	UNUSED(size);
 
 	int retval;
 	char *err = NULL;
@@ -312,9 +313,9 @@ int parse_dm4_buffer(sqlite3 *handle, const char *url, const char *buffer, int s
 
 extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	cylinder_start();
 	if (data[7] && atoi(data[7]) > 0 && atoi(data[7]) < 350000)
@@ -340,9 +341,9 @@ extern int dm5_cylinders(void *handle, int columns, char **data, char **column)
 
 extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	event_start();
 	if (data[0])
@@ -362,8 +363,8 @@ extern int dm5_gaschange(void *handle, int columns, char **data, char **column)
 
 extern int dm5_dive(void *param, int columns, char **data, char **column)
 {
-	(void) columns;
-	(void) column;
+	UNUSED(columns);
+	UNUSED(column);
 	int i;
 	int tempformat = 0;
 	int interval, retval = 0, block_size;
@@ -546,8 +547,8 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 int parse_dm5_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 		     struct dive_table *table)
 {
-	(void) buffer;
-	(void) size;
+	UNUSED(buffer);
+	UNUSED(size);
 
 	int retval;
 	char *err = NULL;

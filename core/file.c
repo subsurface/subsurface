@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+#include "ssrf.h"
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/stat.h>
@@ -118,9 +119,9 @@ int try_to_open_zip(const char *filename)
 
 static int db_test_func(void *param, int columns, char **data, char **column)
 {
-	(void) param;
-	(void) columns;
-	(void) column;
+	UNUSED(param);
+	UNUSED(columns);
+	UNUSED(column);
 	return *data[0] == '0';
 }
 

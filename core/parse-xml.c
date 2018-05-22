@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -404,8 +405,8 @@ static void gasmix(char *buffer, fraction_t *fraction)
 
 static void gasmix_nitrogen(char *buffer, struct gasmix *gasmix)
 {
-	(void) buffer;
-	(void) gasmix;
+	UNUSED(buffer);
+	UNUSED(gasmix);
 	/* Ignore n2 percentages. There's no value in them. */
 }
 
@@ -925,7 +926,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 
 static void try_to_fill_userid(const char *name, char *buf)
 {
-	(void) name;
+	UNUSED(name);
 	if (prefs.save_userid_local)
 		set_userid(buf);
 }
@@ -1606,7 +1607,7 @@ static const char *preprocess_divelog_de(const char *buffer)
 int parse_xml_buffer(const char *url, const char *buffer, int size,
 		      struct dive_table *table, const char **params)
 {
-	(void) size;
+	UNUSED(size);
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
 	int ret = 0;

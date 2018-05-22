@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <string.h>
 
+#include "ssrf.h"
 #include "dive.h"
 #include "divelist.h"
 #include "file.h"
@@ -36,10 +37,10 @@ struct lv_sensor_ids sensor_ids;
 
 static int handle_event_ver2(int code, const unsigned char *ps, unsigned int ps_ptr, struct lv_event *event)
 {
-	(void) code;
-	(void) ps;
-	(void) ps_ptr;
-	(void) event;
+	UNUSED(code);
+	UNUSED(ps);
+	UNUSED(ps_ptr);
+	UNUSED(event);
 
 	// Skip 4 bytes
 	return 4;
@@ -288,9 +289,9 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 			break;
 		}
 		// we aren't using the start_cns, dive_mode, and algorithm, yet
-		(void)start_cns;
-		(void)dive_mode;
-		(void)algorithm;
+		UNUSED(start_cns);
+		UNUSED(dive_mode);
+		UNUSED(algorithm);
 
 		ptr += 4;
 
@@ -443,7 +444,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 int try_to_open_liquivision(const char *filename, struct memblock *mem)
 {
-	(void) filename;
+	UNUSED(filename);
 	const unsigned char *buf = mem->buffer;
 	unsigned int buf_size = mem->size;
 	unsigned int ptr;

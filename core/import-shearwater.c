@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
 #include "parse.h"
@@ -14,9 +15,9 @@
 
 extern int shearwater_cylinders(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	int o2 = lrint(strtod_flags(data[0], NULL, 0) * 1000);
 	int he = lrint(strtod_flags(data[1], NULL, 0) * 1000);
@@ -36,9 +37,9 @@ extern int shearwater_cylinders(void *handle, int columns, char **data, char **c
 
 extern int shearwater_changes(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	if (columns != 3) {
 		return 1;
@@ -78,9 +79,9 @@ extern int shearwater_changes(void *handle, int columns, char **data, char **col
 
 extern int shearwater_profile_sample(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	sample_start();
 	if (data[0])
@@ -111,9 +112,9 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 
 extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	sample_start();
 	if (data[0])
@@ -146,9 +147,9 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 
 extern int shearwater_mode(void *handle, int columns, char **data, char **column)
 {
-	(void) handle;
-	(void) columns;
-	(void) column;
+	UNUSED(handle);
+	UNUSED(columns);
+	UNUSED(column);
 
 	if (data[0])
 		cur_dive->dc.divemode = atoi(data[0]) == 0 ? CCR : OC;
@@ -158,8 +159,8 @@ extern int shearwater_mode(void *handle, int columns, char **data, char **column
 
 extern int shearwater_dive(void *param, int columns, char **data, char **column)
 {
-	(void) columns;
-	(void) column;
+	UNUSED(columns);
+	UNUSED(column);
 
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
@@ -278,8 +279,8 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 int parse_shearwater_buffer(sqlite3 *handle, const char *url, const char *buffer, int size,
 			    struct dive_table *table)
 {
-	(void) buffer;
-	(void) size;
+	UNUSED(buffer);
+	UNUSED(size);
 
 	int retval;
 	char *err = NULL;

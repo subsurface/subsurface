@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -1021,11 +1022,11 @@ static int notify_cb(git_checkout_notify_t why,
 	const git_diff_file *workdir,
 	void *payload)
 {
-	(void) baseline;
-	(void) target;
-	(void) workdir;
-	(void) payload;
-	(void) why;
+	UNUSED(baseline);
+	UNUSED(target);
+	UNUSED(workdir);
+	UNUSED(payload);
+	UNUSED(why);
 	report_error("File '%s' does not match in working tree", path);
 	return 0; /* Continue with checkout */
 }

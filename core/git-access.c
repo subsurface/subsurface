@@ -4,6 +4,7 @@
 #pragma clang diagnostic ignored "-Wmissing-field-initializers"
 #endif
 
+#include "ssrf.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -66,8 +67,8 @@ int git_storage_update_progress(const char *text)
 // map the git progress to 20% of overall progress
 static void progress_cb(const char *path, size_t completed_steps, size_t total_steps, void *payload)
 {
-	(void) path;
-	(void) payload;
+	UNUSED(path);
+	UNUSED(payload);
 	char buf[80];
 	snprintf(buf, sizeof(buf),  translate("gettextFromC", "Checkout from storage (%lu/%lu)"), completed_steps, total_steps);
 	(void)git_storage_update_progress(buf);
@@ -78,7 +79,7 @@ static void progress_cb(const char *path, size_t completed_steps, size_t total_s
 // if the user cancels the dialog this is passed back to libgit2
 static int transfer_progress_cb(const git_transfer_progress *stats, void *payload)
 {
-	(void) payload;
+	UNUSED(payload);
 
 	static int last_done = -1;
 	char buf[80];
@@ -109,8 +110,8 @@ static int transfer_progress_cb(const git_transfer_progress *stats, void *payloa
 // the initial push to sync the repos is mapped to 10% of overall progress
 static int push_transfer_progress_cb(unsigned int current, unsigned int total, size_t bytes, void *payload)
 {
-	(void) bytes;
-	(void) payload;
+	UNUSED(bytes);
+	UNUSED(payload);
 	char buf[80];
 	snprintf(buf, sizeof(buf), translate("gettextFromC", "Transfer to storage (%d/%d)"), current, total);
 	return git_storage_update_progress(buf);
@@ -143,7 +144,7 @@ static char *move_local_cache(const char *remote, const char *branch)
 
 static int check_clean(const char *path, unsigned int status, void *payload)
 {
-	(void) payload;
+	UNUSED(payload);
 	status &= ~GIT_STATUS_CURRENT | GIT_STATUS_IGNORED;
 	if (!status)
 		return 0;
@@ -220,9 +221,9 @@ int credential_ssh_cb(git_cred **out,
 		  unsigned int allowed_types,
 		  void *payload)
 {
-	(void) url;
-	(void) payload;
-	(void) username_from_url;
+	UNUSED(url);
+	UNUSED(payload);
+	UNUSED(username_from_url);
 
 	const char *username = prefs.cloud_storage_email_encoded;
 	const char *passphrase = prefs.cloud_storage_password ? prefs.cloud_storage_password : "";
@@ -259,10 +260,10 @@ int credential_https_cb(git_cred **out,
 			unsigned int allowed_types,
 			void *payload)
 {
-	(void) url;
-	(void) username_from_url;
-	(void) payload;
-	(void) allowed_types;
+	UNUSED(url);
+	UNUSED(username_from_url);
+	UNUSED(payload);
+	UNUSED(allowed_types);
 
 	if (exceeded_auth_attempts())
 		return GIT_EUSER;
@@ -276,7 +277,7 @@ int credential_https_cb(git_cred **out,
 #define KNOWN_CERT "\xfd\xb8\xf7\x73\x76\xe2\x75\x53\x93\x37\xdc\xfe\x1e\x55\x43\x3d\xf2\x2c\x18\x2c"
 int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payload)
 {
-	(void) payload;
+	UNUSED(payload);
 	if (same_string(host, "cloud.subsurface-divelog.org") && cert->cert_type == GIT_CERT_X509) {
 		SHA_CTX ctx;
 		unsigned char hash[21];
@@ -297,8 +298,8 @@ int certificate_check_cb(git_cert *cert, int valid, const char *host, void *payl
 
 static int update_remote(git_repository *repo, git_remote *origin, git_reference *local, git_reference *remote, enum remote_transport rt)
 {
-	(void) repo;
-	(void) remote;
+	UNUSED(repo);
+	UNUSED(remote);
 
 	git_push_options opts = GIT_PUSH_OPTIONS_INIT;
 	git_strarray refspec;
@@ -331,7 +332,7 @@ extern int update_git_checkout(git_repository *repo, git_object *parent, git_tre
 
 static int try_to_git_merge(git_repository *repo, git_reference **local_p, git_reference *remote, git_oid *base, const git_oid *local_id, const git_oid *remote_id)
 {
-	(void) remote;
+	UNUSED(remote);
 	git_tree *local_tree, *remote_tree, *base_tree;
 	git_commit *local_commit, *remote_commit, *base_commit;
 	git_index *merged_index;
@@ -683,7 +684,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 
 static int repository_create_cb(git_repository **out, const char *path, int bare, void *payload)
 {
-	(void) payload;
+	UNUSED(payload);
 	char *proxy_string;
 	git_config *conf;
 

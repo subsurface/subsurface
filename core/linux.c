@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 /* linux.c */
 /* implements Linux specific functions */
+#include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
 #include "display.h"
@@ -22,7 +23,7 @@ double system_divelist_default_font_size = -1.0;
 bool subsurface_ignore_font(const char *font)
 {
 	// there are no old default fonts to ignore
-	(void)font;
+	UNUSED(font);
 	return false;
 }
 

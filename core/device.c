@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+#include "ssrf.h"
 #include <string.h>
 #include "dive.h"
 #include "subsurface-string.h"
@@ -192,7 +193,7 @@ static void match_id(void *_dc, const char *model, uint32_t deviceid,
 		     const char *nickname, const char *serial, const char *firmware)
 {
 	// here nickname is unused
-	(void)nickname;
+	UNUSED(nickname);
 
 	struct divecomputer *dc = _dc;
 
