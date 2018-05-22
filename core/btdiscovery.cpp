@@ -72,9 +72,6 @@ BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 		return;
 	}
 	m_instance = this;
-#if defined(BT_SUPPORT)
-	BTDiscoveryReDiscover();
-#endif
 }
 
 void BTDiscovery::BTDiscoveryReDiscover()
