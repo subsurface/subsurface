@@ -38,9 +38,8 @@ mobile-widgets/qml/kirigami
 packaging/ios/translations/
 packaging/ios/googlemaps*
 packaging/ios/install-root*
-packaging/ios/libdivecomputer-*
-packaging/ios/libgit2*
-packaging/ios/libxslt*
-packaging/ios/libzip*
+packaging/ios/lib*
+packaging/ios/kirigami
+packaging/ios/breeze-icons
 packaging/ios/Info.plist
 packaging/ios/Qt
