@@ -611,7 +611,6 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	char sign = '+';
 	char *hash;
 	unsigned h;
-	int error;
 
 	show_utf8(&buf, "filename ", pic->filename, "\n");
 	show_gps(&buf, pic->latitude, pic->longitude);
@@ -628,21 +627,8 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	/* Use full hh:mm:ss format to make it all sort nicely */
 	h = offset / 3600;
 	offset -= h *3600;
-	error = blob_insert(repo, dir, &buf, "%c%02u=%02u=%02u",
+	return blob_insert(repo, dir, &buf, "%c%02u=%02u=%02u",
 		sign, h, FRACTION(offset, 60));
-#if 0
-	/* storing pictures into git was a mistake. This makes for HUGE git repositories */
-	if (!error) {
-		/* next store the actual picture; we prefix all picture names
-		 * with "PIC-" to make things easier on the parsing side */
-		struct membuffer namebuf = { 0 };
-		const char *localfn = local_file_path(pic);
-		put_format(&namebuf, "PIC-%s", pic->hash);
-		error = blob_insert_fromdisk(repo, dir, localfn, mb_cstring(&namebuf));
-		free((void *)localfn);
-	}
-#endif
-	return error;
 }
 
 static int save_pictures(git_repository *repo, struct dir *dir, struct dive *dive)
