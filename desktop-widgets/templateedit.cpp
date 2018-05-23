@@ -5,6 +5,7 @@
 #include "ui_templateedit.h"
 
 #include <QMessageBox>
+#include <QButtonGroup>
 #include <QColorDialog>
 
 TemplateEdit::TemplateEdit(QWidget *parent, struct print_options *printOptions, struct template_options *templateOptions) :
