@@ -13,7 +13,7 @@ public:
 	static ImageDownloader *instance();
 	ImageDownloader();
 public slots:
-	void load(QString filename, bool fromHash);
+	void load(QString filename);
 signals:
 	void loaded(QString filename);
 	void failed(QString filename);
