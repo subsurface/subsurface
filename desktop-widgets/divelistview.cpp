@@ -18,6 +18,7 @@
 #include <QNetworkReply>
 #include <QStandardPaths>
 #include <QMessageBox>
+#include <QHeaderView>
 #include "core/qthelper.h"
 #include "desktop-widgets/undocommands.h"
 #include "desktop-widgets/divelistview.h"
