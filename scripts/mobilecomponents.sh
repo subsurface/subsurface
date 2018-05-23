@@ -14,41 +14,19 @@ if [ ! -d "$SRC/subsurface" ] || [ ! -d "mobile-widgets" ] || [ ! -d "core" ] ; 
 	exit 1
 fi
 
-if [ "$1" = "-nopull" ] ; then
-	NOPULL=1
-fi
-
 # now bring in the latest Kirigami mobile components plus a couple of icons that we need
 # first, get the latest from upstream
 # yes, this is a bit overkill as we clone a lot of stuff for just a few files, but this way
 # we stop having to manually merge our code with upstream all the time
 # as we get closer to shipping a production version we'll likely check out specific tags
 # or SHAs from upstream
-cd $SRC
-if [ ! -d kirigami ] ; then
-	git clone -b master https://github.com/KDE/kirigami.git
-fi
-if [ "$NOPULL" = "" ] ; then
-	pushd kirigami
-	git checkout master
-	git pull origin master
-	# if we want to pin a specific Kirigami version, we can do this here
-	git checkout 70c025ef6f6dc63c85180867f70f5e00ba5a8dba
-	popd
-fi
-if [ ! -d breeze-icons ] ; then
-	git clone https://github.com/kde/breeze-icons
-fi
-if [ "$NOPULL" = "" ] ; then
-	pushd breeze-icons
-	git pull
-	popd
-fi
+./scripts/get-dep-lib.sh single .. kirigami
+./scripts/get-dep-lib.sh single .. breeze-icons
 
 # now copy the components and a couple of icons into plae
 MC=$SRC/subsurface/mobile-widgets/qml/kirigami
-PMMC=kirigami
-BREEZE=breeze-icons
+PMMC=../kirigami
+BREEZE=../breeze-icons
 
 rm -rf $MC
 mkdir -p $MC/icons
@@ -73,7 +51,7 @@ cp $BREEZE/icons/actions/22/overflow-menu.svg $MC/icons
 
 # kirigami now needs the breeze-icons internally as well
 pushd $MC
-ln -s $SRC/$BREEZE .
+ln -s $SRC/breeze-icons .
 
 # do not show the action buttons when the keyboard is open
 sed -i -e "s/visible: root.action/visible: root.action \&\& \!Qt.inputMethod.visible/g" src/controls/private/ActionButton.qml
