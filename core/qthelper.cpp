@@ -1293,15 +1293,6 @@ extern "C" const char *local_file_path(struct picture *picture)
 	return copy_qstring(localFilePath(picture->filename));
 }
 
-extern "C" bool picture_exists(struct picture *picture)
-{
-	QString localPath = localFilePath(picture->filename);
-	if (localPath.isEmpty())
-		return false;
-	QByteArray hash = hashFile(localPath);
-	return !hash.isEmpty() && getHash(QString(picture->filename)) == hash;
-}
-
 const QString picturedir()
 {
 	return QString(system_default_directory()).append("/picturedata/");
@@ -1310,25 +1301,6 @@ const QString picturedir()
 extern "C" char *picturedir_string()
 {
 	return copy_qstring(picturedir());
-}
-
-/* when we get a picture from git storage (local or remote) and can't find the picture
- * based on its hash, we create a local copy with the hash as filename and the appropriate
- * suffix */
-extern "C" void savePictureLocal(struct picture *picture, const char *hash, const char *data, int len)
-{
-	QString dirname = picturedir();
-	QDir localPictureDir(dirname);
-	localPictureDir.mkpath(dirname);
-	QString suffix(picture->filename);
-	suffix.replace(QRegularExpression(".*\\."), "");
-	QString filename(dirname + hash + "." + suffix);
-	QSaveFile out(filename);
-	if (out.open(QIODevice::WriteOnly)) {
-		out.write(data, len);
-		out.commit();
-		add_hash(filename, QByteArray::fromHex(hash));
-	}
 }
 
 QString get_gas_string(struct gasmix gas)
