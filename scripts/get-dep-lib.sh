@@ -13,6 +13,8 @@ CURRENT_XSLT="v1.1.29"
 CURRENT_SQLITE="3190200"
 CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="1.3"
+CURRENT_KIRIGAMI="70c025ef6f6dc63c85180867f70f5e00ba5a8dba"
+CURRENT_BREEZE_ICONS=""
 
 # deal with all the command line arguments
 if [[ $# -ne 2 && $# -ne 3 ]] ; then
@@ -47,15 +49,16 @@ if [ "`which curl`" == "" ] ; then
 else
 	CURL="curl -O "
 fi
+BUILD_COMMON="libzip libgit2 googlemaps kirigami breeze-icons"
 case ${PLATFORM} in
 	scripts)
-		BUILD="libzip libgit2 googlemaps hidapi libcurl libusb openssl libssh2"
+		BUILD="${BUILD_COMMON} hidapi libcurl libusb openssl libssh2"
 		;;
 	ios)
-		BUILD="libzip libgit2 googlemaps libxslt"
+		BUILD="${BUILD_COMMON} libxslt"
 		;;
 	android)
-		BUILD="libzip libgit2 googlemaps libxslt sqlite libxml2 openssl libftdi libusb"
+		BUILD="${BUILD_COMMON} libxslt sqlite libxml2 openssl libftdi libusb"
 		;;
 	single)
 		BUILD="$3"
@@ -153,6 +156,13 @@ if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
 	mv libzip-${CURRENT_LIBZIP} libzip
 fi
 
+if [[ "$BUILD" = *"breeze-icons"* && ! -d breeze-icons ]]; then
+	git clone https://github.com/kde/breeze-icons
+	pushd breeze-icons
+	git pull --rebase
+	popd
+fi
+
 if [[ "$BUILD" = *"googlemaps"* && ! -d googlemaps ]]; then
 	git clone https://github.com/Subsurface-divelog/googlemaps.git
 	pushd googlemaps
@@ -171,6 +181,16 @@ if [[ "$BUILD" = *"hidapi"* && ! -d hidapi ]]; then
 #		echo "Can't find the right tag in hidapi - giving up"
 #		exit -1
 #	fi
+	popd
+fi
+
+if [[ "$BUILD" = *"kirigami"* && ! -d kirigami ]]; then
+	git clone -b master https://github.com/KDE/kirigami.git
+	pushd kirigami
+	if ! git checkout $CURRENT_KIRIGAMI ; then
+		echo "Can't find the right tag in openssl - giving up"
+		exit -1
+	fi
 	popd
 fi
 
