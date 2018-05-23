@@ -15,12 +15,6 @@
 
 #include <QtConcurrent>
 
-static QUrl cloudImageURL(const char *filename)
-{
-	QString hash = hashString(filename);
-	return QUrl::fromUserInput(QString("https://cloud.subsurface-divelog.org/images/").append(hash));
-}
-
 // Note: this is a global instead of a function-local variable on purpose.
 // We don't want this to be generated in a different thread context if
 // ImageDownloader::instance() is called from a worker thread.
@@ -35,9 +29,9 @@ ImageDownloader::ImageDownloader()
 	connect(&manager, &QNetworkAccessManager::finished, this, &ImageDownloader::saveImage);
 }
 
-void ImageDownloader::load(QString filename, bool fromHash)
+void ImageDownloader::load(QString filename)
 {
-	QUrl url = fromHash ? cloudImageURL(qPrintable(filename)) : QUrl::fromUserInput(filename);
+	QUrl url = QUrl::fromUserInput(filename);
 
 	// If this is a file, we tried previously -> don't bother trying it again
 	if (url.scheme() == "file" || !url.isValid()) {
@@ -47,7 +41,6 @@ void ImageDownloader::load(QString filename, bool fromHash)
 
 	QNetworkRequest request(url);
 	request.setAttribute(QNetworkRequest::User, filename);
-	request.setAttribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1), fromHash);
 	manager.get(request);
 }
 
@@ -56,11 +49,7 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	QString filename = reply->request().attribute(QNetworkRequest::User).toString();
 
 	if (reply->error() != QNetworkReply::NoError) {
-		bool fromHash = reply->request().attribute(static_cast<QNetworkRequest::Attribute>(QNetworkRequest::User + 1)).toBool();
-		if (fromHash)
-			load(filename, false);
-		else
-			emit failed(filename);
+		emit failed(filename);
 	} else {
 		QByteArray imageData = reply->readAll();
 		QCryptographicHash hash(QCryptographicHash::Sha1);
@@ -84,11 +73,11 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static void loadPicture(QString filename, bool fromHash)
+static void loadPicture(QString filename)
 {
 	// This has to be done in UI main thread, because QNetworkManager refuses
 	// to treat requests from other threads.
-	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QString, filename), Q_ARG(bool, fromHash));
+	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QString, filename));
 }
 
 // Overwrite QImage::load() so that we can perform better error reporting.
@@ -117,24 +106,16 @@ static std::pair<QImage,bool> getHashedImage(const QString &file_in, bool tryDow
 		// This did not load anything. Let's try to get the image from other sources
 		QString filenameLocal = localFilePath(qPrintable(file));
 		qDebug() << QStringLiteral("Translated filename: %1 -> %2").arg(file, filenameLocal);
-		if (filenameLocal.isNull()) {
-			// That didn't produce a local filename.
-			// Try the cloud server
-			// TODO: This is dead code at the moment.
-			loadPicture(file, true);
-			stillLoading = true;
+		// Load locally from translated file name if it is different
+		if (filenameLocal != file)
+			thumb = loadImage(filenameLocal);
+		if (!thumb.isNull()) {
+			// Make sure the hash still matches the image file
+			hashPicture(filenameLocal);
 		} else {
-			// Load locally from translated file name if it is different
-			if (filenameLocal != file)
-				thumb = loadImage(filenameLocal);
-			if (!thumb.isNull()) {
-				// Make sure the hash still matches the image file
-				hashPicture(filenameLocal);
-			} else {
-				// Interpret filename as URL
-				loadPicture(filenameLocal, false);
-				stillLoading = true;
-			}
+			// Interpret filename as URL
+			loadPicture(filenameLocal);
+			stillLoading = true;
 		}
 	}
 	return { thumb, stillLoading };
