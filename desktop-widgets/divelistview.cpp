@@ -425,13 +425,12 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	QAbstractItemModel *oldModel = m->sourceModel();
-	if (oldModel) {
-		oldModel->deleteLater();
-	}
 	tripModel = new DiveTripModel(this);
 	tripModel->setLayout(layout);
 
 	m->setSourceModel(tripModel);
+	if (oldModel)
+		delete oldModel;
 
 	if (!forceSort)
 		return;
