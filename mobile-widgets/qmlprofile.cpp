@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qmlprofile.h"
 #include "qmlmanager.h"
-#include "profile-widget/profilewidget2.h"
 #include "core/subsurface-string.h"
 #include "core/metrics.h"
 #include <QTransform>
@@ -10,20 +9,15 @@
 QMLProfile::QMLProfile(QQuickItem *parent) :
 	QQuickPaintedItem(parent),
 	m_devicePixelRatio(1.0),
-	m_margin(0)
+	m_margin(0),
+	m_profileWidget(new ProfileWidget2)
 {
 	setAntialiasing(true);
-	m_profileWidget = new ProfileWidget2(0);
 	m_profileWidget->setProfileState();
 	m_profileWidget->setPrintMode(true);
 	m_profileWidget->setFontPrintScale(0.8);
 	connect(QMLManager::instance(), &QMLManager::sendScreenChanged, this, &QMLProfile::screenChanged);
 	setDevicePixelRatio(QMLManager::instance()->lastDevicePixelRatio());
-}
-
-QMLProfile::~QMLProfile()
-{
-	m_profileWidget->deleteLater();
 }
 
 void QMLProfile::paint(QPainter *painter)
