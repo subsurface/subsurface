@@ -148,7 +148,6 @@ Thumbnailer *Thumbnailer::instance()
 
 static QImage getThumbnailFromCache(const QString &picture_filename)
 {
-	// First, check if we know a hash for this filename
 	QString filename = thumbnailFileName(picture_filename);
 	if (filename.isEmpty())
 		return QImage();
@@ -173,14 +172,6 @@ static void addThumbnailToCache(const QImage &thumbnail, const QString &picture_
 		return;
 
 	QString filename = thumbnailFileName(picture_filename);
-
-	// If we got a thumbnail, we are guaranteed to have its hash and therefore
-	// thumbnailFileName() should return a filename.
-	if (filename.isEmpty()) {
-		qWarning() << "Internal error: can't get filename of recently created thumbnail";
-		return;
-	}
-
 	QSaveFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
 		return;
