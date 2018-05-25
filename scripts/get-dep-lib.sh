@@ -79,7 +79,7 @@ set -e
 cd ${INSTDIR}
 
 if [[ "$BUILD" = *"libcurl"* && ! -d libcurl ]]; then
-	git clone https://github.com/curl/curl libcurl
+	git clone https://github.com/curl/curl.git libcurl
 	pushd libcurl
 	git fetch origin
 	if ! git checkout $CURRENT_LIBCURL ; then
@@ -107,7 +107,7 @@ if [[ "$BUILD" = *"libgit2"* && ! -d libgit2 ]]; then
 fi
 
 if [[ "$BUILD" = *"libssh2"* && ! -d libssh2 ]]; then
-	git clone https://github.com/libssh2/libssh2
+	git clone https://github.com/libssh2/libssh2.git
 	pushd libssh2
 	git fetch origin
 	if ! git checkout $CURRENT_LIBSSH2 ; then
@@ -118,7 +118,7 @@ if [[ "$BUILD" = *"libssh2"* && ! -d libssh2 ]]; then
 fi
 
 if [[ "$BUILD" = *"libusb"* && ! -d libusb ]]; then
-	git clone https://github.com/libusb/libusb
+	git clone https://github.com/libusb/libusb.git
 	pushd libusb
 	git fetch origin
 	if ! git checkout $CURRENT_LIBUSB ; then
@@ -157,7 +157,7 @@ if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
 fi
 
 if [[ "$BUILD" = *"breeze-icons"* && ! -d breeze-icons ]]; then
-	git clone https://github.com/kde/breeze-icons
+	git clone https://github.com/kde/breeze-icons.git
 	pushd breeze-icons
 	git pull --rebase
 	popd
@@ -173,7 +173,7 @@ if [[ "$BUILD" = *"googlemaps"* && ! -d googlemaps ]]; then
 fi
 
 if [[ "$BUILD" = *"hidapi"* && ! -d hidapi ]]; then
-	git clone https://github.com/signal11/hidapi
+	git clone https://github.com/signal11/hidapi.git
 	pushd hidapi
 	git fetch origin
 	# there is no good tag, so just build master
@@ -195,7 +195,7 @@ if [[ "$BUILD" = *"kirigami"* && ! -d kirigami ]]; then
 fi
 
 if [[ "$BUILD" = *"openssl"* && ! -d openssl ]]; then
-	git clone https://github.com/openssl/openssl
+	git clone https://github.com/openssl/openssl.git
 	pushd openssl
 	git fetch origin
 	if ! git checkout $CURRENT_OPENSSL ; then
