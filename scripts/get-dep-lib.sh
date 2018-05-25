@@ -49,7 +49,7 @@ if [ "`which curl`" == "" ] ; then
 else
 	CURL="curl -O "
 fi
-BUILD_COMMON="libzip libgit2 googlemaps kirigami breeze-icons"
+BUILD_COMMON="libzip libgit2 googlemaps"
 case ${PLATFORM} in
 	scripts)
 		BUILD="${BUILD_COMMON} hidapi libcurl libusb openssl libssh2"
