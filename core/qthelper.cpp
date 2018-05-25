@@ -1088,12 +1088,14 @@ static QString thumbnailDir()
 	return QString(system_default_directory()) + "/thumbnails/";
 }
 
-// Return filename of thumbnail if it is known to us.
-// If this is an unknown thumbnail, return an empty string.
+// Calculate thumbnail filename by hashing name of file.
 QString thumbnailFileName(const QString &filename)
 {
-	QString hash = getHash(filename).toHex();
-	return hash.isEmpty() ? QString() : thumbnailDir() + hash;
+	if (filename.isEmpty())
+		return QString();
+	QCryptographicHash hash(QCryptographicHash::Sha1);
+	hash.addData(filename.toUtf8());
+	return thumbnailDir() + hash.result().toHex();
 }
 
 extern "C" char *hashfile_name_string()
