@@ -1354,18 +1354,16 @@ void MainWindow::on_action_Check_for_Updates_triggered()
 void MainWindow::on_actionUserManual_triggered()
 {
 #ifndef NO_USERMANUAL
-	if (!helpView) {
-		helpView = new UserManual();
-	}
+	if (!helpView)
+		helpView = new UserManual(this);
 	helpView->show();
 #endif
 }
 
 void MainWindow::on_actionUserSurvey_triggered()
 {
-	if(!survey) {
+	if(!survey)
 		survey = new UserSurvey(this);
-	}
 	survey->show();
 }
 
@@ -1559,18 +1557,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 		on_actionQuit_triggered();
 		event->ignore();
 		return;
-	}
-
-#ifndef NO_USERMANUAL
-	if (helpView && helpView->isVisible()) {
-		helpView->close();
-		helpView->deleteLater();
-	}
-#endif
-
-	if (survey && survey->isVisible()) {
-		survey->close();
-		survey->deleteLater();
 	}
 
 	if (unsaved_changes() && (askSaveChanges() == false)) {
@@ -2070,7 +2056,7 @@ void MainWindow::hideProgressBar()
 {
 	if (progressDialog) {
 		progressDialog->setValue(100);
-		progressDialog->deleteLater();
+		delete progressDialog;
 		progressDialog = NULL;
 	}
 }
