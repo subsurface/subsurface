@@ -2,9 +2,8 @@
 #ifndef QMLPROFILE_H
 #define QMLPROFILE_H
 
+#include "profile-widget/profilewidget2.h"
 #include <QQuickPaintedItem>
-
-class ProfileWidget2;
 
 class QMLProfile : public QQuickPaintedItem
 {
@@ -14,7 +13,6 @@ class QMLProfile : public QQuickPaintedItem
 
 public:
 	explicit QMLProfile(QQuickItem *parent = 0);
-	virtual ~QMLProfile();
 
 	void paint(QPainter *painter);
 
@@ -30,7 +28,7 @@ private:
 	QString m_diveId;
 	qreal m_devicePixelRatio;
 	int m_margin;
-	ProfileWidget2 *m_profileWidget;
+	QScopedPointer<ProfileWidget2> m_profileWidget;
 
 signals:
 	void rightAlignedChanged();
