@@ -130,7 +130,6 @@ void QMLManager::btRescan()
 
 QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_verboseEnabled(false),
-	reply(0),
 	deletedDive(0),
 	deletedTrip(0),
 	m_updateSelectedDive(-1),
@@ -537,13 +536,13 @@ void QMLManager::tryRetrieveDataFromBackend()
 		// now check the redirect URL to make sure everything is set up on the cloud server
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
 		QUrl url(CLOUDREDIRECTURL);
-		request = QNetworkRequest(url);
+		QNetworkRequest request(url);
 		request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 		request.setRawHeader("Accept", "text/html");
-		reply = manager()->get(request);
+		QNetworkReply *reply = manager()->get(request);
 		connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(handleError(QNetworkReply::NetworkError)));
 		connect(reply, &QNetworkReply::sslErrors, this, &QMLManager::handleSslErrors);
-		connect(reply, &QNetworkReply::finished, this, &QMLManager::retrieveUserid, Qt::UniqueConnection);
+		connect(reply, &QNetworkReply::finished, this, &QMLManager::retrieveUserid);
 	}
 }
 
@@ -566,6 +565,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 
 void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 {
+	auto *reply = qobject_cast<QNetworkReply *>(sender());
 	setStartPageText(RED_FONT + tr("Cannot open cloud storage: Error creating https connection") + END_FONT);
 	Q_FOREACH (QSslError e, errors) {
 		appendTextToLog(e.errorString());
@@ -577,6 +577,7 @@ void QMLManager::handleSslErrors(const QList<QSslError> &errors)
 
 void QMLManager::handleError(QNetworkReply::NetworkError nError)
 {
+	auto *reply = qobject_cast<QNetworkReply *>(sender());
 	QString errorString = reply->errorString();
 	appendTextToLog(QStringLiteral("handleError ") + nError + QStringLiteral(": ") + errorString);
 	setStartPageText(RED_FONT + tr("Cannot open cloud storage: %1").arg(errorString) + END_FONT);
@@ -587,6 +588,7 @@ void QMLManager::handleError(QNetworkReply::NetworkError nError)
 
 void QMLManager::retrieveUserid()
 {
+	auto *reply = qobject_cast<QNetworkReply *>(sender());
 	if (reply->attribute(QNetworkRequest::HttpStatusCodeAttribute) != 302) {
 		appendTextToLog(QStringLiteral("Cloud storage connection not working correctly: (%1) %2")
 				.arg(reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt())

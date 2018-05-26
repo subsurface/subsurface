@@ -216,8 +216,6 @@ private:
 	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
 	static QMLManager *m_instance;
-	QNetworkReply *reply;
-	QNetworkRequest request;
 	struct dive *deletedDive;
 	struct dive_trip *deletedTrip;
 	QString m_notificationText;
