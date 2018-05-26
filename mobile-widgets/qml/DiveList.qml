@@ -211,6 +211,8 @@ Kirigami.ScrollablePage {
 							verticalCenter: parent.verticalCenter
 						}
 						source: ":/icons/trash-empty"
+						width: Kirigami.Units.iconSizes.smallMedium
+						height: width
 					}
 					MouseArea {
 						anchors.fill: parent
