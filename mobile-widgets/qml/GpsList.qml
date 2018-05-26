@@ -74,7 +74,7 @@ Kirigami.ScrollablePage {
 			actions: [
 				Kirigami.Action {
 					icon {
-						name: "trash-empty"
+						name: ":/icons/trash-empty"
 					}
 					onTriggered: {
 						print("delete this!")
@@ -83,7 +83,7 @@ Kirigami.ScrollablePage {
 				},
 				Kirigami.Action {
 					icon {
-						name: "gps"
+						name: ":/icons/gps"
 					}
 					onTriggered: {
 						showMap()
