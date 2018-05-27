@@ -187,7 +187,7 @@
                 <xsl:value-of select="concat(format-number((tank1pressurePSI * 2 div 14.5037738007), '#.##'), ' bar')"/>
               </xsl:attribute>
             </xsl:if>
-            <xsl:if test="currentNdl != ''">
+            <xsl:if test="currentNdl != '' and currentNdl != 0">
               <xsl:attribute name="ndl">
                 <xsl:value-of select="concat(currentNdl, ':00 min')"/>
               </xsl:attribute>
