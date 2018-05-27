@@ -54,27 +54,38 @@ void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 	popup.addSeparator();
 	popup.addAction(tr("Delete selected images"), this, SLOT(removeSelectedPhotos()));
 	popup.addAction(tr("Delete all images"), this, SLOT(removeAllPhotos()));
+	popup.addAction(tr("Recalculate selected thumbnails"), this, SLOT(recalculateSelectedThumbnails()));
 	popup.exec(event->globalPos());
 	event->accept();
 }
 
-void TabDivePhotos::removeSelectedPhotos()
+QVector<QString> TabDivePhotos::getSelectedFilenames() const
 {
+	QVector<QString> selectedPhotos;
 	if (!ui->photosView->selectionModel()->hasSelection())
-		return;
-	QModelIndexList indexes =  ui->photosView->selectionModel()->selectedRows();
+		return selectedPhotos;
+	QModelIndexList indexes = ui->photosView->selectionModel()->selectedRows();
 	if (indexes.count() == 0)
 		indexes = ui->photosView->selectionModel()->selectedIndexes();
-	QVector<QString> photosToDelete;
-	photosToDelete.reserve(indexes.count());
+	selectedPhotos.reserve(indexes.count());
 	for (const auto &photo: indexes) {
 		if (photo.isValid()) {
 			QString fileUrl = photo.data(Qt::DisplayPropertyRole).toString();
 			if (!fileUrl.isEmpty())
-				photosToDelete.push_back(fileUrl);
+				selectedPhotos.push_back(fileUrl);
 		}
 	}
-	DivePictureModel::instance()->removePictures(photosToDelete);
+	return selectedPhotos;
+}
+
+void TabDivePhotos::removeSelectedPhotos()
+{
+	DivePictureModel::instance()->removePictures(getSelectedFilenames());
+}
+
+void TabDivePhotos::recalculateSelectedThumbnails()
+{
+	Thumbnailer::instance()->calculateThumbnails(getSelectedFilenames());
 }
 
 //TODO: This looks overly wrong. We shouldn't call MainWindow to retrieve the DiveList to add Images.

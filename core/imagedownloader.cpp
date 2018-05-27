@@ -184,6 +184,23 @@ static void addThumbnailToCache(const QImage &thumbnail, const QString &picture_
 	file.commit();
 }
 
+void Thumbnailer::recalculate(QString filename)
+{
+	auto res = getHashedImage(filename, true);
+
+	// If we couldn't load the image from disk -> leave old thumbnail.
+	// The case "load from web" is a bit inconsistent: it will call into processItem() later
+	// and therefore a "broken" image symbol may be shown.
+	if (res.second || res.first.isNull())
+		return;
+	QImage thumbnail = res.first;
+	addThumbnailToCache(thumbnail, filename);
+
+	QMutexLocker l(&lock);
+	emit thumbnailChanged(filename, thumbnail);
+	workingOn.remove(filename);
+}
+
 void Thumbnailer::processItem(QString filename, bool tryDownload)
 {
 	QImage thumbnail = getThumbnailFromCache(filename);
@@ -234,6 +251,17 @@ QImage Thumbnailer::fetchThumbnail(PictureEntry &entry)
 				 QtConcurrent::run(&pool, [this, filename]() { processItem(filename, true); }));
 	}
 	return dummyImage;
+}
+
+void Thumbnailer::calculateThumbnails(const QVector<QString> &filenames)
+{
+	QMutexLocker l(&lock);
+	for (const QString &filename: filenames) {
+		if (!workingOn.contains(filename)) {
+			workingOn.insert(filename,
+					 QtConcurrent::run(&pool, [this, filename]() { recalculate(filename); }));
+		}
+	}
 }
 
 void Thumbnailer::clearWorkQueue()
