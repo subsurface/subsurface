@@ -97,8 +97,24 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
 	if (data[5])
 		cur_sample->cns = atoi(data[5]);
-	if (data[6])
-		cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+	if (data[6]) {
+		if (atoi(data[6]) > 0) {
+			cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+			cur_sample->in_deco = 1;
+		} else if (data[7]) {
+			if (atoi(data[7]) > 0) {
+				cur_sample->stopdepth.mm = metric ? atoi(data[7]) * 1000 : feet_to_mm(atoi(data[7]));
+				if (data[8]) {
+					cur_sample->stoptime.seconds = atoi(data[8]) * 60;
+				}
+				cur_sample->in_deco = 1;
+			} else {
+				cur_sample->in_deco = 0;
+			}
+		} else {
+			cur_sample->in_deco = 0;
+		}
+	}
 
 	/* We don't actually have data[3], but it should appear in the
 	 * SQL query at some point.
@@ -130,8 +146,24 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 		cur_sample->ndl.seconds = atoi(data[4]) * 60;
 	if (data[5])
 		cur_sample->cns = atoi(data[5]);
-	if (data[6])
-		cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+	if (data[6]) {
+		if (atoi(data[6]) > 0) {
+			cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+			cur_sample->in_deco = 1;
+		} else if (data[9]) {
+			if (atoi(data[9]) > 0) {
+				cur_sample->stopdepth.mm = metric ? atoi(data[9]) * 1000 : feet_to_mm(atoi(data[9]));
+				if (data[10]) {
+					cur_sample->stoptime.seconds = atoi(data[10]) * 60;
+				}
+				cur_sample->in_deco = 1;
+			} else {
+				cur_sample->in_deco = 0;
+			}
+		} else {
+			cur_sample->in_deco = 0;
+		}
+	}
 
 	/* Weird unit conversion but seems to produce correct results.
 	 * Also missing values seems to be reported as a 4092 (564 bar) */
@@ -165,8 +197,8 @@ extern int shearwater_dive(void *param, int columns, char **data, char **column)
 	int retval = 0;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
-	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling from dive_log_records where diveLogId=%d";
-	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI from dive_log_records where diveLogId = %d";
+	char get_profile_template[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,firstStopDepth,firstStopTime from dive_log_records where diveLogId=%d";
+	char get_profile_template_ai[] = "select currentTime,currentDepth,waterTemp,averagePPO2,currentNdl,CNSPercent,decoCeiling,aiSensor0_PressurePSI,aiSensor1_PressurePSI,firstStopDepth,firstStopTime from dive_log_records where diveLogId = %d";
 	char get_cylinder_template[] = "select fractionO2,fractionHe from dive_log_records where diveLogId = %d group by fractionO2,fractionHe";
 	char get_changes_template[] = "select a.currentTime,a.fractionO2,a.fractionHe from dive_log_records as a,dive_log_records as b where (a.id - 1) = b.id and (a.fractionO2 != b.fractionO2 or a.fractionHe != b.fractionHe) and a.diveLogId=b.divelogId and a.diveLogId = %d";
 	char get_mode_template[] = "select distinct currentCircuitSetting from dive_log_records where diveLogId = %d";
