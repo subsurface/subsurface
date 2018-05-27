@@ -21,16 +21,16 @@ Kirigami.ScrollablePage {
 			Layout.topMargin: Kirigami.Units.gridUnit
 			Layout.alignment: Qt.AlignHCenter
 			Layout.maximumWidth: pageWidth
-			wrapMode: TextEdit.WrapAtWordBoundaryOrAnywhere
+			wrapMode: TextEdit.NoWrap
+			fontSizeMode: Text.Fit
 		}
 		Image {
 			id: image
 			source: "qrc:/qml/subsurface-mobile-icon.png"
-			width: pageWidth / 2
-			height: width
-			fillMode: Image.Stretch
-			Layout.alignment: Qt.AlignCenter
-			horizontalAlignment: Image.AlignHCenter
+			fillMode: Image.PreserveAspectCrop
+			Layout.alignment: Qt.AlignHCenter + Qt.AlignVCenter
+			Layout.maximumWidth: pageWidth / 2
+			Layout.maximumHeight: Layout.maximumWidth
 		}
 
 		Kirigami.Heading {
