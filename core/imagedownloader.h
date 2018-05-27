@@ -34,6 +34,9 @@ public:
 	// via a signal later.
 	QImage fetchThumbnail(PictureEntry &entry);
 
+	// Schedule multiple thumbnails for forced recalculation
+	void calculateThumbnails(const QVector<QString> &filenames);
+
 	// If we change dive, clear all unfinished thumbnail creations
 	void clearWorkQueue();
 	static int maxThumbnailSize();
@@ -46,6 +49,7 @@ signals:
 	void thumbnailChanged(QString filename, QImage thumbnail);
 private:
 	Thumbnailer();
+	void recalculate(QString filename);
 	void processItem(QString filename, bool tryDownload);
 
 	mutable QMutex lock;

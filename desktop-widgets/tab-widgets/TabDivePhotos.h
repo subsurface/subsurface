@@ -26,11 +26,13 @@ private slots:
 	void addPhotosFromURL();
 	void removeAllPhotos();
 	void removeSelectedPhotos();
+	void recalculateSelectedThumbnails();
 	void changeZoomLevel(int delta);
 
 private:
 	Ui::TabDivePhotos *ui;
 	DivePictureModel *divePictureModel;
+	QVector<QString> getSelectedFilenames() const;
 };
 
 #endif
