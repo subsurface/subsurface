@@ -7,6 +7,18 @@
 
   <xsl:template match="/">
     <divelog program='subsurface-import' version='2'>
+      <settings>
+        <xsl:for-each select="/dive/diveLog">
+          <divecomputerid deviceid="{computerSerial}">
+            <xsl:attribute name="model">
+              <xsl:value-of select="'Shearwater'" />
+            </xsl:attribute>
+            <xsl:attribute name="serial">
+              <xsl:value-of select="computerSerial" />
+            </xsl:attribute>
+          </divecomputerid>
+        </xsl:for-each>
+      </settings>
       <dives>
         <xsl:apply-templates select="/dive/diveLog"/>
       </dives>
@@ -86,9 +98,6 @@
       </xsl:for-each>
 
       <divecomputer>
-        <xsl:attribute name="model">
-          <xsl:value-of select="'Shearwater'"/>
-        </xsl:attribute>
         <xsl:attribute name="deviceid">
           <xsl:value-of select="computerSerial"/>
         </xsl:attribute>
