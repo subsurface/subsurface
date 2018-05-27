@@ -151,8 +151,24 @@ static QImage getThumbnailFromCache(const QString &picture_filename)
 	QString filename = thumbnailFileName(picture_filename);
 	if (filename.isEmpty())
 		return QImage();
-
 	QFile file(filename);
+
+	if (prefs.auto_recalculate_thumbnails) {
+		// Check if thumbnails is older than the (local) image file
+		QString filenameLocal = localFilePath(qPrintable(picture_filename));
+		QFileInfo pictureInfo(filenameLocal);
+		QFileInfo thumbnailInfo(file);
+		if (pictureInfo.exists() && thumbnailInfo.exists()) {
+			QDateTime pictureTime = pictureInfo.lastModified();
+			QDateTime thumbnailTime = thumbnailInfo.lastModified();
+			if (pictureTime.isValid() && thumbnailTime.isValid() && thumbnailTime < pictureTime) {
+				// Both files exist, have valid timestamps and thumbnail was calculated before picture.
+				// Return an empty thumbnail to signal recalculation of the thumbnail
+				return QImage();
+			}
+		}
+	}
+
 	if (!file.open(QIODevice::ReadOnly))
 		return QImage();
 	QDataStream stream(&file);

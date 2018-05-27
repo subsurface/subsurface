@@ -47,6 +47,7 @@ void PreferencesGraph::refreshSettings()
 
 	ui->display_unused_tanks->setChecked(prefs.display_unused_tanks);
 	ui->show_average_depth->setChecked(prefs.show_average_depth);
+	ui->auto_recalculate_thumbnails->setChecked(prefs.auto_recalculate_thumbnails);
 	ui->show_icd->setChecked(prefs.show_icd);
 }
 
@@ -56,6 +57,7 @@ void PreferencesGraph::syncSettings()
 	general->setDefaultSetPoint(lrint(ui->defaultSetpoint->value() * 1000.0));
 	general->setO2Consumption(lrint(ui->psro2rate->value() *1000.0));
 	general->setPscrRatio(lrint(1000.0 / ui->pscrfactor->value()));
+	general->setAutoRecalculateThumbnails(ui->auto_recalculate_thumbnails->isChecked());
 
 	auto pp_gas = SettingsObjectWrapper::instance()->pp_gas;
 	pp_gas->setPheThreshold(ui->pheThreshold->value());
