@@ -1802,6 +1802,11 @@ int GeneralSettingsObjectWrapper::pscrRatio() const
 	return prefs.pscr_ratio;
 }
 
+bool GeneralSettingsObjectWrapper::autoRecalculateThumbnails() const
+{
+	return prefs.auto_recalculate_thumbnails;
+}
+
 void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 {
 	if (value == prefs.default_filename)
@@ -1893,6 +1898,18 @@ void GeneralSettingsObjectWrapper::setPscrRatio(int value)
 	s.setValue("pscr_ratio", value);
 	prefs.pscr_ratio = value;
 	emit pscrRatioChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setAutoRecalculateThumbnails(bool value)
+{
+	if (value == prefs.auto_recalculate_thumbnails)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("auto_recalculate_thumbnails", value);
+	prefs.auto_recalculate_thumbnails = value;
+	emit autoRecalculateThumbnailsChanged(value);
 }
 
 DisplaySettingsObjectWrapper::DisplaySettingsObjectWrapper(QObject *parent) :
@@ -2266,6 +2283,7 @@ void SettingsObjectWrapper::load()
 	GET_INT("defaultsetpoint", defaultsetpoint);
 	GET_INT("o2consumption", o2consumption);
 	GET_INT("pscr_ratio", pscr_ratio);
+	GET_BOOL("auto_recalculate_thumbnails", auto_recalculate_thumbnails);
 	s.endGroup();
 
 	s.beginGroup("Display");

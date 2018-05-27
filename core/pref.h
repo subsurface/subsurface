@@ -154,6 +154,7 @@ struct preferences {
 	int distance_threshold;
 	bool git_local_only;
 	short cloud_timeout;
+	bool auto_recalculate_thumbnails;
 	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
 	update_manager_prefs_t update_manager;
 	dive_computer_prefs_t dive_computer;

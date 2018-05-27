@@ -99,6 +99,7 @@ struct preferences default_prefs = {
 #else
 	.cloud_timeout = 5,
 #endif
+	.auto_recalculate_thumbnails = true,
 };
 
 int run_survey;
