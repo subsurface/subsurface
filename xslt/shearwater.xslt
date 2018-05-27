@@ -192,6 +192,33 @@
                 <xsl:value-of select="concat(currentNdl, ':00 min')"/>
               </xsl:attribute>
             </xsl:if>
+            <xsl:if test="firstStopDepth != ''">
+              <xsl:attribute name="stopdepth">
+                <xsl:choose>
+                  <xsl:when test="$units = 'imperial'">
+                    <xsl:value-of select="concat(format-number(firstStopDepth * 0.3048, '0.00'), ' m')"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="concat(firstStopDepth, ' m')"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+              </xsl:attribute>
+              <xsl:attribute name="stoptime">
+                <xsl:value-of select="concat(firstStopTime, ' min')"/>
+              </xsl:attribute>
+              <xsl:choose>
+                <xsl:when test="firstStopDepth = 0">
+                  <xsl:attribute name="in_deco">
+                    <xsl:value-of select="'0'"/>
+                  </xsl:attribute>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:attribute name="in_deco">
+                    <xsl:value-of select="'1'"/>
+                  </xsl:attribute>
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:if>
           </sample>
         </xsl:for-each>
       </divecomputer>
