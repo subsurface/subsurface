@@ -82,6 +82,7 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	UNUSED(handle);
 	UNUSED(columns);
 	UNUSED(column);
+	int d6, d7;
 
 	sample_start();
 	if (data[0])
@@ -98,12 +99,14 @@ extern int shearwater_profile_sample(void *handle, int columns, char **data, cha
 	if (data[5])
 		cur_sample->cns = atoi(data[5]);
 	if (data[6]) {
-		if (atoi(data[6]) > 0) {
-			cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+		d6 = atoi(data[6]);
+		if (d6 > 0) {
+			cur_sample->stopdepth.mm = metric ? d6 * 1000 : feet_to_mm(d6);
 			cur_sample->in_deco = 1;
 		} else if (data[7]) {
-			if (atoi(data[7]) > 0) {
-				cur_sample->stopdepth.mm = metric ? atoi(data[7]) * 1000 : feet_to_mm(atoi(data[7]));
+			d7 = atoi(data[7]);
+			if (d7 > 0) {
+				cur_sample->stopdepth.mm = metric ? d7 * 1000 : feet_to_mm(d7);
 				if (data[8]) {
 					cur_sample->stoptime.seconds = atoi(data[8]) * 60;
 				}
@@ -131,6 +134,7 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 	UNUSED(handle);
 	UNUSED(columns);
 	UNUSED(column);
+	int d6, d9;
 
 	sample_start();
 	if (data[0])
@@ -147,12 +151,14 @@ extern int shearwater_ai_profile_sample(void *handle, int columns, char **data, 
 	if (data[5])
 		cur_sample->cns = atoi(data[5]);
 	if (data[6]) {
-		if (atoi(data[6]) > 0) {
-			cur_sample->stopdepth.mm = metric ? atoi(data[6]) * 1000 : feet_to_mm(atoi(data[6]));
+		d6 = atoi(data[6]);
+		if (d6 > 0) {
+			cur_sample->stopdepth.mm = metric ? d6 * 1000 : feet_to_mm(d6);
 			cur_sample->in_deco = 1;
 		} else if (data[9]) {
-			if (atoi(data[9]) > 0) {
-				cur_sample->stopdepth.mm = metric ? atoi(data[9]) * 1000 : feet_to_mm(atoi(data[9]));
+			d9 = atoi(data[9]);
+			if (d9 > 0) {
+				cur_sample->stopdepth.mm = metric ? d9 * 1000 : feet_to_mm(d9);
 				if (data[10]) {
 					cur_sample->stoptime.seconds = atoi(data[10]) * 60;
 				}
