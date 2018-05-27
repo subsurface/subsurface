@@ -1,3 +1,4 @@
+- Shearwater import: include DC reported ceiling
 - Desktop: allow editing from list-view [#1213]
 - Desktop: don't add six seconds to dive duration [#554]
 - Desktop: fix manual editing of dive duration [#1211]
