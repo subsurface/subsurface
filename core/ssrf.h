@@ -19,4 +19,17 @@ extern "C" {
 #define UNUSED(x) (void)x
 #endif
 
+#ifdef STARTUP_TIMER
+// Block to help determine where time is "lost" in
+// the mobile version during startup
+#include <QTime>
+extern QTime stpDuration;
+extern QString stpText;
+#define LOG_STP(x) stpText +=QString("STP ") \
+							.append(QString::number(stpDuration.elapsed())) \
+							.append(" ms, ") \
+							.append(x) \
+							.append("\n")
+#endif
+
 #endif // SSRF_H
