@@ -32,7 +32,6 @@
 #include "qt-models/tankinfomodel.h"
 #include "core/downloadfromdcthread.h"
 
-#define STARTUP_TIMER
 #include "core/ssrf.h"
 
 QMLManager *QMLManager::m_instance = NULL;
@@ -362,6 +361,7 @@ void QMLManager::copyAppLogToClipboard()
 		QTextStream in(&f);
 		copyString += in.readAll();
 	}
+	LOG_STP_CLIPBOARD(&copyString);
 	copyString += "---------- finish ----------\n";
 
 	// and copy to clipboard
