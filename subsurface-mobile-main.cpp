@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 /* main.c */
-#include <locale.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -21,12 +20,11 @@
 
 #define STARTUP_TIMER
 #include "core/ssrf.h"
-QTime stpDuration;
-QString stpText;
+STP_SETUP();
 
 int main(int argc, char **argv)
 {
-	stpDuration.start();
+	STP_RUN();
 	LOG_STP("main starting");
 
 	int i;

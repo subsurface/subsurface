@@ -362,8 +362,10 @@ void QMLManager::copyAppLogToClipboard()
 		QTextStream in(&f);
 		copyString += in.readAll();
 	}
+#ifdef ENABLE_STARTUP_TIMING
 	copyString += "---------- startup timer ----------\n";
 	copyString += stpText;
+#endif
 	copyString += "---------- finish ----------\n";
 
 	// and copy to clipboard
