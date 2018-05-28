@@ -21,12 +21,17 @@
 
 // Implementation of STP logging 
 #include "core/ssrf.h"
+#ifdef ENABLE_STARTUP_TIMING
 #include <QElapsedTimer>
+#include <QMutex>
+#include <QMutexLocker>
 void log_stp(const char *ident, void *buf)
 {
 	static bool firstCall = true;
 	static QElapsedTimer stpDuration;
 	static QString stpText;
+
+	QMutexLocker l(&logMutex);
 
 	if (firstCall) {
 		firstCall = false;
@@ -43,6 +48,7 @@ void log_stp(const char *ident, void *buf)
 		*buf += stpText;
 	}
 }
+#endif // ENABLE_STARTUP_TIMING
 
 
 int main(int argc, char **argv)
