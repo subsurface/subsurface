@@ -12,6 +12,21 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
+
+#ifdef SUBSURFACE_MOBILE
+#ifdef ENABLE_STARTUP_TIMING
+// Declare generic function, will be seen only in CPP code
+// Use void parameters to avoid extra includes
+extern void log_stp(const char *ident, QString *buf);
+
+#define LOG_STP(x) log_stp(x, NULL)
+#define LOG_STP_CLIPBOARD(x) log_stp(NULL, x)
+#else
+#define LOG_STP(x)
+#define LOG_STP_CLIPBOARD(x)
+#endif // ENABLE_STARTUP_TIMING
+#endif // SUBSURFACE_MOBILE
+
 }
 #else
 
