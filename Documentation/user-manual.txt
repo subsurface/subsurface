@@ -4020,6 +4020,31 @@ image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center
 Note that, in the _Dive plan details_, the gas consumption for a CCR segment is not calculated,
 so gas consumptions of 0 liters are the norm.
 
+==== Planning for CCR bailout
+
+[icon="images/CCR_b1.jpg"]
+[NOTE]
+It is often necessary to plan for a worst-case bailout event in order to ensure sufficient bailout gas to reach the
+surface, taking into account decompression. This is done by defining a 1-minute segment at the end of the bottom part
+of the dive, as in the image on the left where a CCR dive to 40m for 21 minutes is planned. 
+
+
+[icon="images/CCR_b2.jpg"]
+[NOTE]
+In the dive planner points
+table, change the _Dive mode_ of this 1-minute segment to _OC_. This signifies bailout. In this case there is bailout to
+the existing diluent cylinder (assuming this cylinder has sufficient gas). The appropriate pO~2~ and cylinder pressure
+graphs are shown in the dive profile, as in the image on the left. Note that the setpoint drops to zero after bailout, since
+this value does not apply to breathed bailout gas.
+
+
+[icon="images/CCR_b3.jpg"]
+[NOTE]
+In order to plan for bailout to an external bailout cylinder, change  the _Used gas_ for the 1-minute segment to the
+appropriate cylinder, as in the example on the left. Note that the cylinder change as well as the bailout are indicated with
+overlapping icons.
+
+
 [[S_Replan]]
 === Modifying an existing dive plan
 
