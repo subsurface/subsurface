@@ -12,6 +12,14 @@ extern "C" {
 #endif
 
 #ifdef __cplusplus
+
+// Declare generic function, will be seen only in CPP code
+// Use void parameters to avoid extra includes
+extern void log_stp(const char *ident, void *buf); 
+
+#define LOG_STP(x) log_stp(x, NULL) 
+#define LOG_STP_CLIPBOARD(x) log_stp(NULL, x) 
+
 }
 #else
 
