@@ -33,6 +33,7 @@
 #include <QWheelEvent>
 #include <QSettings>
 #include <QMenu>
+#include <QElapsedTimer>
 
 #ifndef QT_NO_DEBUG
 #include <QTableView>
@@ -530,7 +531,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 {
 	static bool firstCall = true;
 #ifndef SUBSURFACE_MOBILE
-	QTime measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
+	QElapsedTimer measureDuration; // let's measure how long this takes us (maybe we'll turn of TTL calculation later
 	measureDuration.start();
 #else
 	Q_UNUSED(doClearPictures);
