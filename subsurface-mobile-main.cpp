@@ -25,7 +25,7 @@
 #include <QElapsedTimer>
 #include <QMutex>
 #include <QMutexLocker>
-void log_stp(const char *ident, void *buf)
+void log_stp(const char *ident, QString *buf)
 {
 	static bool firstCall = true;
 	static QElapsedTimer stpDuration;
