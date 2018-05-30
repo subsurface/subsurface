@@ -19,14 +19,49 @@
 #include <QLocale>
 #include <git2.h>
 
+// Implementation of STP logging 
+#include "core/ssrf.h"
+#ifdef ENABLE_STARTUP_TIMING
+#include <QElapsedTimer>
+#include <QMutex>
+#include <QMutexLocker>
+void log_stp(const char *ident, QString *buf)
+{
+	static bool firstCall = true;
+	static QElapsedTimer stpDuration;
+	static QString stpText;
+
+	QMutexLocker l(&logMutex);
+
+	if (firstCall) {
+		firstCall = false;
+		stpDuration.start();
+	}
+	if (ident)
+		stpText += QString("STP ") \
+					.append(QString::number(stpDuration.elapsed())) \
+					.append(" ms, ") \
+					.append(ident) \
+					.append("\n");
+	if (buf) {
+		*buf += "---------- startup timer ----------\n";
+		*buf += stpText;
+	}
+}
+#endif // ENABLE_STARTUP_TIMING
+
+
 int main(int argc, char **argv)
 {
+	LOG_STP("main starting");
+
 	int i;
 	QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 
 	// Start application
 	new QApplication(argc, argv);
+	LOG_STP("main Qt started");
 
 	// and get comand line arguments
 	QStringList arguments = QCoreApplication::arguments();
@@ -41,6 +76,7 @@ int main(int argc, char **argv)
 		}
 	}
 	git_libgit2_init();
+	LOG_STP("main git loaded");
 	setup_system_prefs();
 	if (QLocale().measurementSystem() == QLocale::MetricSystem)
 		default_prefs.units = SI_units;
@@ -51,8 +87,11 @@ int main(int argc, char **argv)
 	fill_computer_list();
 
 	parse_xml_init();
+	LOG_STP("main xml parsed");
 	taglist_init_global();
+	LOG_STP("main taglist done");
 	init_ui();
+	LOG_STP("main init_ui done");
 	if (prefs.default_file_behavior == LOCAL_DEFAULT_FILE)
 		set_filename(prefs.default_filename);
 	else
@@ -66,6 +105,7 @@ int main(int argc, char **argv)
 
 	init_proxy();
 
+	LOG_STP("main call run_ui (continue in qmlmanager)");
 	if (!quit)
 		run_ui();
 	exit_ui();
