@@ -56,7 +56,7 @@ MyQWebEngineView::MyQWebEngineView(QWidget* parent)
 }
 #endif
 
-UserManual::UserManual(QWidget *parent) : QWidget(parent)
+UserManual::UserManual(QWidget *parent) : QDialog(parent)
 {
 	QShortcut *closeKey = new QShortcut(QKeySequence(Qt::CTRL + Qt::Key_W), this);
 	connect(closeKey, SIGNAL(activated()), this, SLOT(close()));

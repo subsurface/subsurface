@@ -191,7 +191,9 @@ private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
+#ifndef NO_USERMANUAL
 	UserManual *helpView;
+#endif
 	CurrentState state;
 	CurrentState stateBeforeEdit;
 	QString filter_open();
