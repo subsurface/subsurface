@@ -8,6 +8,7 @@
 #else
 #include <QWebView>
 #endif
+#include <QDialog>
 #include "ui_searchbar.h"
 
 class SearchBar : public QWidget{
@@ -47,7 +48,7 @@ public:
 #endif
 
 
-class UserManual : public QWidget {
+class UserManual : public QDialog {
 	Q_OBJECT
 
 public:

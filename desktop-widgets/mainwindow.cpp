@@ -100,7 +100,9 @@ extern "C" void showErrorFromC(char *buf)
 MainWindow::MainWindow() : QMainWindow(),
 	actionNextDive(0),
 	actionPreviousDive(0),
+#ifndef NO_USERMANUAL
 	helpView(0),
+#endif
 	state(VIEWALL),
 	survey(0)
 {
