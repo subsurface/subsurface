@@ -60,7 +60,7 @@ mkdir -p ./smtk2ssrf_appdir/usr/share
 mkdir -p ./smtk2ssrf_appdir/usr/plugins
 mkdir -p ./smtk2ssrf_appdir/usr/bin
 mkdir -p ./smtk2ssrf_appdir/usr/lib
-cp -f subsurface/icons/subsurface-icon.svg smtk2ssrf_appdir/
+cp -f subsurface/icons/diving/scalable/apps/subsurface.svg smtk2ssrf_appdir/
 cp -f subsurface/smtk-import/smtk2ssrf.desktop smtk2ssrf_appdir/
 cp -f install-root/bin/smtk2ssrf smtk2ssrf_appdir/usr/bin/
 cp -f install-root/lib/libdivecomputer.so.0 smtk2ssrf_appdir/usr/lib/

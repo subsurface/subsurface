@@ -153,7 +153,7 @@ desktop-file-install --dir=%{buildroot}/%{_datadir}/applications subsurface.desk
 %{_bindir}/subsurface*
 %{_libdir}/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so
 %{_datadir}/applications/subsurface.desktop
-%{_datadir}/icons/hicolor/*/apps/subsurface-icon.*
+%{_datadir}/icons/hicolor/*/apps/subsurface.*
 %{_datadir}/subsurface/
 
 %changelog

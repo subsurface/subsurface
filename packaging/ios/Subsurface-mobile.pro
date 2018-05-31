@@ -256,7 +256,7 @@ QMAKE_CFLAGS   += -Wno-shorten-64-to-32 -Wno-missing-field-initializers
 ios {
 	QMAKE_ASSET_CATALOGS += ./storeIcon.xcassets
 	app_launch_images.files = ./SubsurfaceMobileLaunch.xib $$files(./SubsurfaceMobileLaunchImage*.png)
-	images.files = ../../icons/subsurface-mobile-icon.png
+	images.files = ../../icons/diving/scalable/apps/subsurface-mobile.svg
 	QMAKE_BUNDLE_DATA += app_launch_images images
 	QMAKE_INFO_PLIST = ./Info.plist
 	QMAKE_IOS_DEPLOYMENT_TARGET = 10.0
