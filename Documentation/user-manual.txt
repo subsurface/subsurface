@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.7, October 2017_#
+[blue]#_Version 4.7, May 2018_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -3993,6 +3993,40 @@ in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.
 
 image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
 
+==== Planning for pSCR bailout
+
+[icon="images/pscr_b1.jpg"]
+[NOTE]
+Open circuit diving is often part of a pSCR dive because, at shallow depths, the pO~2~ in the loop is often
+too low for breathing and the shallow parts of a pSCR dive are often done on OC. The change
+from rebreather mode to OC or _vice versa_ is indicated using bailout events. The image on the
+left shows a pSCR dive plan (using three cylinders) where the shallow parts of the dive are performed using EAN50 in
+order to have a sufficient pO~2~. The bottom part of the dive is perfomed with EAN31 (Cyl. 2 in the
+*Available gases* table, also indicated in the *Dive planner points* table). The third cylinder,
+also EAN31, is a bailout cylinder which is, initially, not used.
+In this case the plan is for a cave dive with a bottom time of 20 minutes
+and the turning point in the bottom part of the dive is at 16 minutes (i.e. ten minutes
+into the bottom part of the dive). The orange pO~2~ graph indicates the equivalent OC pO~2~ during
+the dive and the green pO~2~ indicates the estimated pO~2~ in the loop, the
+whole dive being performed in rebreather mode. We wish to plan
+for a worst-case scenario with bailout at the turning point (i.e. the furthest point into
+the cave). In the *Dive planner points* table, change the *Dive mode* of the last two segments
+to *OC* (indicated in the left-hand image, labled *A*, below). In this case the existing EAN31
+cylinder (Cyl.2 in the *Dive planner points* table is used for bailout (i.e. the bailout
+cylinder [Cyl. 3] has not been used yet). Note that the pO~2~ graph now indicates the appropriate
+pO~2~ values, since the gas breathed now has the pO~2~ of an OC configuration. In order to switch
+to the bailout cylinder (Cyl. 3), indicate this by selecting the appropriate cylinder in the *Dive planner points* table as
+indicated in the image on the right, below (labeled *B*). The icon on the depth profile
+now shows an overlapping bailout event with cylinder change. As in the graph on the left, the appropriate
+pO~2~ values are shown in the pO~2~ graphs. The volumes of gas required can be obtained at the bottom of the
+*Dive plan details* panel.
+
+image::images/pscr_b2.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+
+In the case of a pSCR dive plan for open water, the worst-case scenario is probably bailout at the end of the deepest part of the dive.
+Create a 1-minute segment at the end of the deepest part of the dive plan. This
+last segment (represented by the bottom row of the *Dive planner points* table) is then manipulated using the *Dive mode* and *Used gas*
+columns, as in the cave example, above. See the example of bailout for a CCR dive, below, that uses this approach.
 
 === Planning CCR dives
 
@@ -4044,6 +4078,7 @@ In order to plan for bailout to an external bailout cylinder, change  the _Used 
 appropriate cylinder, as in the example on the left. Note that the cylinder change as well as the bailout are indicated with
 overlapping icons.
 
+The volumes of gases required for bailout can be found at the bottom of the *Dive plan details* panel.
 
 [[S_Replan]]
 === Modifying an existing dive plan
