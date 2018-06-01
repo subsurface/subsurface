@@ -5035,6 +5035,12 @@ Only a subset of the dive data is exported:
 |firstGas| (*string*) first used gas
 |=====================
 
+Please note that some of the variables like 'notes' need to be extended with '|safe' to support HTML tags:
+....
+	<p> {{ dive.notes|safe }} </p>
+....
+Otherwise tags like 'br' would not be converted to line breaks. 
+
 _Subsurface_ also exports *template_options* data. This data must be used as _CSS_ values to provide a dynamically
 editable template. The exported data is shown in the following table:
 |====================
