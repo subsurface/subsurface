@@ -999,7 +999,7 @@ void DiveListView::loadImageFromURL(QUrl url)
 			stream.writeRawData(imageData.data(), imageData.length());
 			imageFile.waitForBytesWritten(-1);
 			imageFile.close();
-			learnHash(url.toString(), imageFile.fileName(), hash.result());
+			learnPictureFilename(url.toString(), imageFile.fileName());
 			matchImagesToDives(QStringList(url.toString()));
 		}
 	}

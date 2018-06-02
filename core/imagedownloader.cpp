@@ -44,22 +44,27 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 		emit failed(filename);
 	} else {
 		QByteArray imageData = reply->readAll();
-		QCryptographicHash hash(QCryptographicHash::Sha1);
-		hash.addData(imageData);
-		QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
-		QDir dir(path);
-		if (!dir.exists())
-			dir.mkpath(path);
-		QFile imageFile(path.append("/").append(hash.result().toHex()));
-		if (imageFile.open(QIODevice::WriteOnly)) {
-			qDebug() << "Write image to" << imageFile.fileName();
-			QDataStream stream(&imageFile);
-			stream.writeRawData(imageData.data(), imageData.length());
-			imageFile.waitForBytesWritten(-1);
-			imageFile.close();
-			learnHash(filename, imageFile.fileName(), hash.result());
+		if (imageData.isEmpty()) {
+			emit failed(filename);
+		} else {
+			QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+			QDir dir(path);
+			if (!dir.exists())
+				dir.mkpath(path);
+			QCryptographicHash hash(QCryptographicHash::Sha1);
+			hash.addData(filename.toUtf8());
+			QFile imageFile(path.append("/").append(hash.result().toHex()));
+			if (imageFile.open(QIODevice::WriteOnly)) {
+				qDebug() << "Write image to" << imageFile.fileName();
+				QDataStream stream(&imageFile);
+				stream.writeRawData(imageData.data(), imageData.length());
+				imageFile.waitForBytesWritten(-1);
+				imageFile.close();
+				learnPictureFilename(filename, imageFile.fileName());
+				hashPicture(filename);	// hashPicture transforms canonical into local filename
+			}
+			emit loaded(filename);
 		}
-		emit loaded(filename);
 	}
 
 	reply->deleteLater();
