@@ -133,7 +133,6 @@ HEADERS += \
 	../../core/dive.h \
 	../../core/git-access.h \
 	../../core/gpslocation.h \
-	../../core/helpers.h \
 	../../core/imagedownloader.h \
 	../../core/pref.h \
 	../../core/profile.h \

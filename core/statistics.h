@@ -9,6 +9,9 @@
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
+#include "core/units.h"
+#include "core/dive.h"	// For MAX_CYLINDERS
+
 #ifdef __cplusplus
 extern "C" {
 #endif

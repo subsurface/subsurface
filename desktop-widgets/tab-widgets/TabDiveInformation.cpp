@@ -3,7 +3,7 @@
 #include "ui_TabDiveInformation.h"
 #include "../tagwidget.h"
 
-#include <core/helpers.h>
+#include <core/qthelper.h>
 #include <core/statistics.h>
 #include <core/display.h>
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/subsurfacewebservices.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/webservice.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/usersurvey.h"

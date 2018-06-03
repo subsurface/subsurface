@@ -3,7 +3,7 @@
 /* Qt UI implementation */
 #include "core/display.h"
 #include "desktop-widgets/mainwindow.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/pluginmanager.h"
 
 #include <QApplication>

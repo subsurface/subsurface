@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "printoptions.h"
 #include "templateedit.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 #include <QDebug>
 #include <QFileDialog>

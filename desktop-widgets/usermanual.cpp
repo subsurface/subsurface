@@ -5,7 +5,7 @@
 
 #include "desktop-widgets/usermanual.h"
 #include "desktop-widgets/mainwindow.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 SearchBar::SearchBar(QWidget *parent): QWidget(parent)
 {

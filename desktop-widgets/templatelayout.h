@@ -8,7 +8,6 @@
 #include "printoptions.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
-#include "core/helpers.h"
 #include "core/subsurface-qt/DiveObjectHelper.h"
 
 int getTotalWork(print_options *printOptions);

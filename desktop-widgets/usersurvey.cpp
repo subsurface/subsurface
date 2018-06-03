@@ -9,7 +9,7 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "desktop-widgets/updatemanager.h"
 
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/subsurfacesysinfo.h"
 
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),

@@ -6,7 +6,7 @@
 #include <QEventLoop>
 
 #include "pref.h"
-#include "helpers.h"
+#include "qthelper.h"
 #include "git-access.h"
 
 #include "checkcloudconnection.h"

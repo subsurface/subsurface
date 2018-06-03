@@ -6,7 +6,7 @@
 #include <QDate>
 #include <QNetworkProxy>
 
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 DiveComputerSettings::DiveComputerSettings(QObject *parent):
 	QObject(parent)

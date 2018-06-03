@@ -3,7 +3,7 @@
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "qt-models/weightsysteminfomodel.h"
 
 WeightModel::WeightModel(QObject *parent) : CleanerTableModel(parent),

@@ -9,7 +9,7 @@
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 #include "qt-models/diveplannermodel.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"

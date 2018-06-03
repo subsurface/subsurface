@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/updatemanager.h"
-#include "core/helpers.h"
 #include "core/qthelper.h"
 #include <QtNetwork>
 #include <QMessageBox>

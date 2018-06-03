@@ -7,7 +7,7 @@
 
 #include "divesite.h"
 #include "subsurface-string.h"
-#include "helpers.h"
+#include "qthelper.h"
 #include "membuffer.h"
 #include <QDebug>
 #include <QJsonDocument>

@@ -3,7 +3,7 @@
 #include <QNetworkProxy>
 #include <QLibraryInfo>
 #include <QTextCodec>
-#include "helpers.h"
+#include "qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 char *settings_suffix = NULL;

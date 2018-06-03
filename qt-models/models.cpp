@@ -6,7 +6,7 @@
  *
  */
 #include "qt-models/models.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 #include <QLocale>
 

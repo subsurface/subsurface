@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qthelper.h"
 #include "subsurface-string.h"
-#include "helpers.h"
 #include "subsurface-string.h"
 #include "gettextfromc.h"
 #include "statistics.h"
@@ -556,7 +555,7 @@ void set_filename(const char *filename)
 	existing_filename = copy_string(filename);
 }
 
-const QString get_dc_nickname(const char *model, uint32_t deviceid)
+QString get_dc_nickname(const char *model, uint32_t deviceid)
 {
 	const DiveComputerNode *existNode = dcList.getExact(model, deviceid);
 

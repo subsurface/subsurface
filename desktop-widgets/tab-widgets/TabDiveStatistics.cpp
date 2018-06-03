@@ -2,7 +2,7 @@
 #include "TabDiveStatistics.h"
 #include "ui_TabDiveStatistics.h"
 
-#include <core/helpers.h>
+#include <core/qthelper.h>
 #include <core/display.h>
 #include <core/statistics.h>
 

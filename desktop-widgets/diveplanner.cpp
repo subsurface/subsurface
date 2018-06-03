@@ -3,7 +3,7 @@
 #include "desktop-widgets/modeldelegates.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/planner.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include "qt-models/cylindermodel.h"

@@ -3,7 +3,7 @@
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/divelist.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include <QIcon>
 #include <QDebug>

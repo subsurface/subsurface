@@ -6,7 +6,7 @@
 
 #include "qmlmapwidgethelper.h"
 #include "core/divesite.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "qt-models/maplocationmodel.h"
 
 #define MIN_DISTANCE_BETWEEN_DIVE_SITES_M 50.0

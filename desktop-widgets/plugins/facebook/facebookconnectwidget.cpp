@@ -26,7 +26,7 @@
 #include "profile-widget/profilewidget2.h"
 
 #include "core/pref.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include "ui_socialnetworksdialog.h"
