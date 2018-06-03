@@ -712,7 +712,7 @@ QString getPrintingTemplatePathBundle()
 	return path;
 }
 
-void copyPath(QString src, QString dst)
+static void copyPath(QString src, QString dst)
 {
 	QDir dir(src);
 	if (!dir.exists())
