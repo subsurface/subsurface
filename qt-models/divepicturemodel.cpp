@@ -23,14 +23,6 @@ DivePictureModel::DivePictureModel() : rowDDStart(0),
 		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
 }
 
-void DivePictureModel::updateDivePicturesWhenDone(QList<QFuture<void>> futures)
-{
-	Q_FOREACH (QFuture<void> f, futures) {
-		f.waitForFinished();
-	}
-	updateDivePictures();
-}
-
 void DivePictureModel::setZoomLevel(int level)
 {
 	zoomLevel = level / 10.0;

@@ -1277,37 +1277,95 @@ QStringList imageExtensionFilters() {
 	return filters;
 }
 
-// This works on a copy of the string, because it runs in asynchronous context
-static void learnImage(QString filename)
+// Compare two full paths and return the number of matching levels, starting from the filename.
+// String comparison is case-insensitive.
+static int matchFilename(const QString &path1, const QString &path2)
 {
+	QFileInfo f1(path1);
+	QFileInfo f2(path2);
+
+	int score = 0;
+	for (;;) {
+		QString fn1 = f1.fileName();
+		QString fn2 = f2.fileName();
+		if (fn1.isEmpty() || fn2.isEmpty())
+			break;
+		if (fn1 == ".") {
+			f1 = QFileInfo(f1.path());
+			continue;
+		}
+		if (fn2 == ".") {
+			f2 = QFileInfo(f2.path());
+			continue;
+		}
+		if (QString::compare(fn1, fn2, Qt::CaseInsensitive) != 0)
+			break;
+		f1 = QFileInfo(f1.path());
+		f2 = QFileInfo(f2.path());
+		++score;
+	}
+	return score;
+}
+
+struct ImageMatch {
+	QString localFilename;
+	int score;
+};
+
+static void learnImage(const QString &filename, QMap<QString, ImageMatch> &matches)
+{
+	// Find the original filenames with the highest match-score
+	QStringList newMatches;
 	QByteArray hash = hashFile(filename);
-	// TODO: This is inefficient: we search the hash map by value. But firstly,
-	// this is running in asynchronously, so it doesn't block the UI. Secondly,
-	// we might not want to learn pictures by hash anyway (the user might have
-	// edited the picture, which changes the hash.
+	int bestScore = 1;
 	for (auto it = hashOf.cbegin(); it != hashOf.cend(); ++it) {
-		if (it.value() == hash)
-			learnPictureFilename(it.key(), filename);
+		int score = matchFilename(filename, it.key());
+		if (score < bestScore)
+			continue;
+		if (score > bestScore)
+			newMatches.clear();
+		newMatches.append(it.key());
+		bestScore = score;
+	}
+
+	// Add the new original filenames to the list of matches, if the score is higher than previously
+	for (const QString &originalFilename: newMatches) {
+		auto it = matches.find(originalFilename);
+		if (it == matches.end())
+			matches.insert(originalFilename, { filename, bestScore });
+		else if (it->score < bestScore)
+			*it = { filename, bestScore };
 	}
 }
 
-void learnImages(const QDir dir, int max_recursions)
+void learnImages(const QStringList &dirNames, int max_recursions)
 {
-	QStringList files;
 	QStringList filters = imageExtensionFilters();
+	QMap<QString, ImageMatch> matches;
 
-	if (max_recursions) {
-		foreach (QString dirname, dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs)) {
-			learnImages(QDir(dir.filePath(dirname)), max_recursions - 1);
+	QVector<QStringList> stack; // Use a stack to recurse into directories
+	stack.reserve(max_recursions + 1);
+	stack.append(dirNames);
+	while (!stack.isEmpty()) {
+		if (stack.last().isEmpty()) {
+			stack.removeLast();
+			continue;
+		}
+		QDir dir(stack.last().takeLast());
+
+		for (const QString &file: dir.entryList(filters, QDir::Files))
+			learnImage(dir.absoluteFilePath(file), matches);
+		if (stack.size() <= max_recursions) {
+			stack.append(QStringList());
+			for (const QString &dirname: dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs))
+				stack.last().append(dir.filePath(dirname));
 		}
 	}
 
+	for (auto it = matches.begin(); it != matches.end(); ++it)
+		learnPictureFilename(it.key(), it->localFilename);
 
-	foreach (QString file, dir.entryList(filters, QDir::Files)) {
-		files.append(dir.absoluteFilePath(file));
-	}
-
-	QtConcurrent::blockingMap(files, learnImage);
+	write_hashes();
 }
 
 extern "C" const char *local_file_path(struct picture *picture)

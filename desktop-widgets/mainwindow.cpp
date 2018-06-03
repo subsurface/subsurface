@@ -701,13 +701,10 @@ void MainWindow::on_actionCloudOnline_triggered()
 	updateCloudOnlineStatus();
 }
 
-void learnImageDirs(QStringList dirnames)
+static void learnImageDirs(QStringList dirnames)
 {
-	QList<QFuture<void> > futures;
-	foreach (QString dir, dirnames) {
-		futures << QtConcurrent::run(learnImages, QDir(dir), 10);
-	}
-	DivePictureModel::instance()->updateDivePicturesWhenDone(futures);
+	learnImages(dirnames, 10);
+	DivePictureModel::instance()->updateDivePictures();
 }
 
 void MainWindow::on_actionHash_images_triggered()
