@@ -3,6 +3,7 @@
 #include "profile-widget/animationfunctions.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/pref.h"
+#include "core/qthelper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
@@ -106,9 +107,8 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton) {
-		QDesktopServices::openUrl(QUrl::fromLocalFile(fileUrl));
-	}
+	if (event->button() == Qt::LeftButton)
+		QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath(fileUrl)));
 }
 
 void DivePictureItem::removePicture()
