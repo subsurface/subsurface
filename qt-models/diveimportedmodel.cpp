@@ -1,5 +1,5 @@
 #include "diveimportedmodel.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 DiveImportedModel::DiveImportedModel(QObject *o) : QAbstractTableModel(o),
 	firstIndex(0),

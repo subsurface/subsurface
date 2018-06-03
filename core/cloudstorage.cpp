@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "cloudstorage.h"
 #include "pref.h"
-#include "helpers.h"
+#include "qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QApplication>
 

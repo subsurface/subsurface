@@ -24,7 +24,6 @@
 #include "desktop-widgets/divelistview.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
-#include "core/helpers.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
 	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false)

@@ -10,7 +10,6 @@
 #include "core/subsurfacestartup.h"
 #include "core/color.h"
 #include "core/qthelper.h"
-#include "core/helpers.h"
 #include "core/downloadfromdcthread.h"
 
 #include <QStringList>

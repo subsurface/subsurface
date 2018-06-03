@@ -3,7 +3,6 @@
 #include <string>
 
 #include "templatelayout.h"
-#include "core/helpers.h"
 #include "core/display.h"
 
 QList<QString> grantlee_templates, grantlee_statistics_templates;

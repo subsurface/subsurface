@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/gpslistmodel.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include <QVector>
 
 GpsListModel *GpsListModel::m_instance = NULL;

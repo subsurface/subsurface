@@ -4,7 +4,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/save-html.h"
 #include "desktop-widgets/subsurfacewebservices.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/cloudstorage.h"
 
 #include <QDesktopServices>

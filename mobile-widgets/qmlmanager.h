@@ -8,6 +8,7 @@
 #include <QScreen>
 #include <QElapsedTimer>
 #include <QColor>
+#include <QFile>
 
 #include "core/btdiscovery.h"
 #include "core/gpslocation.h"

@@ -2,7 +2,7 @@
 #include "profile-widget/profilewidget2.h"
 #include "qt-models/diveplotdatamodel.h"
 #include "core/subsurface-string.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/profile.h"
 #include "profile-widget/diveeventitem.h"
 #include "profile-widget/divetextitem.h"

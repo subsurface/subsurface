@@ -5,7 +5,6 @@
 #include <QDialog>
 #include <QTextStream>
 #include <QFuture>
-#include "core/helpers.h"
 #include "core/statistics.h"
 
 class QAbstractButton;

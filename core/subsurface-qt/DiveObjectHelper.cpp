@@ -5,7 +5,6 @@
 #include <QTextDocument>
 
 #include "core/qthelper.h"
-#include "core/helpers.h"
 #include "core/subsurface-string.h"
 #include "qt-models/tankinfomodel.h"
 

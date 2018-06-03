@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "profile-widget/divecartesianaxis.h"
 #include "profile-widget/divetextitem.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE

@@ -8,7 +8,7 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/mapwidget.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 #include "core/statistics.h"
 #include "desktop-widgets/modeldelegates.h"
 #include "qt-models/diveplannermodel.h"

@@ -2,7 +2,7 @@
 /* qt-gui.cpp */
 /* Qt UI implementation */
 #include "core/display.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 #include <QApplication>
 #include <QDesktopWidget>

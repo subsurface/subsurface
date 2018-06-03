@@ -5,7 +5,7 @@
 #include <QDir>
 #include <QTextStream>
 #include "divelogexportlogic.h"
-#include "helpers.h"
+#include "qthelper.h"
 #include "units.h"
 #include "statistics.h"
 #include "save-html.h"

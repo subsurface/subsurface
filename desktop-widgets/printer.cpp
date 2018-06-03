@@ -2,7 +2,7 @@
 #include "printer.h"
 #include "templatelayout.h"
 #include "core/statistics.h"
-#include "core/helpers.h"
+#include "core/qthelper.h"
 
 #include <algorithm>
 #include <QPainter>
