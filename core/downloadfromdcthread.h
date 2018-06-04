@@ -52,7 +52,6 @@ public:
 
 	Q_INVOKABLE int getDetectedVendorIndex();
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
-	Q_INVOKABLE QString getDetectedDeviceAddress(const QString &currentProductText);
 
 public slots:
 	void setVendor(const QString& vendor);
