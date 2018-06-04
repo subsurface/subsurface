@@ -438,19 +438,3 @@ int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 #endif
 	return -1;
 }
-
-QString DCDeviceData::getDetectedDeviceAddress(const QString &currentProductText)
-{
-#if defined(BT_SUPPORT)
-	// Pull the vendor from the found devices that are possible real dive computers
-	// HACK: this assumes that dive computer names are unique across vendors
-	//       and will only give you the first of multiple identically named dive computers
-	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
-	BTDiscovery::btVendorProduct btDC;
-	Q_FOREACH(btDC, btDCs) {
-		if (currentProductText.startsWith(dc_descriptor_get_product(btDC.dcDescriptor)))
-			return btDC.btpdi.address;
-	}
-#endif
-	return QStringLiteral("cannot determine address of dive computer");
-}
