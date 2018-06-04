@@ -52,30 +52,30 @@
 
 	<qresource>
 		<!-- ********** icons ********** -->
-		<file alias="icons/Blue_gps.svg">icons/Blue_gps.svg</file>
-		<file alias="icons/cloud_sync.svg">icons/cloud_sync_24px.svg</file>
+		<file>icons/Blue_gps.svg</file>
+		<file>icons/cloud_sync.svg</file>
 		<file alias="icons/Dark_gps.svg">icons/Blue_gps.svg</file>
 		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
 		<file alias="icons/downloadDC-black.svg">../../icons/button-download-dc-black_icon.svg</file>
-		<file alias="icons/ic_adb.svg">icons/ic_adb_black_24px.svg</file>
-		<file alias="icons/ic_add.svg">icons/ic_add_black_24px.svg</file>
-		<file alias="icons/ic_add_location.svg">icons/ic_add_location_24px.svg</file>
-		<file alias="icons/ic_clear.svg">icons/ic_clear_black_24px.svg</file>
-		<file alias="icons/ic_cloud_done.svg">icons/ic_cloud_done_black_24px.svg</file>
-		<file alias="icons/ic_cloud_download.svg">icons/ic_cloud_download_24px.svg</file>
-		<file alias="icons/ic_cloud_off.svg">icons/ic_cloud_off_black_24px.svg</file>
-		<file alias="icons/ic_cloud_upload.svg">icons/ic_cloud_upload_24px.svg</file>
-		<file alias="icons/ic_gps_fixed.svg">icons/ic_gps_fixed_24px.svg</file>
-		<file alias="icons/ic_help_outline.svg">icons/ic_help_outline_24px.svg</file>
-		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
-		<file alias="icons/ic_info_outline.svg">icons/ic_info_outline_24px.svg</file>
-		<file alias="icons/ic_location_off.svg">icons/ic_location_off_black_24px.svg</file>
-		<file alias="icons/ic_place.svg">icons/ic_place_black_24px.svg</file>
-		<file alias="icons/ic_settings.svg">icons/ic_settings_24px.svg</file>
-		<file alias="icons/ic_star.svg">icons/ic_star_black_24px.svg</file>
-		<file alias="icons/ic_star_border.svg">icons/ic_star_border_black_24px.svg</file>
-		<file alias="icons/ic_sync.svg">icons/ic_sync_24px.svg</file>
-		<file alias="icons/Pink_gps.svg">icons/Pink_gps.svg</file>
+		<file>icons/ic_adb.svg</file>
+		<file>icons/ic_add.svg</file>
+		<file>icons/ic_add_location.svg</file>
+		<file>icons/ic_clear.svg</file>
+		<file>icons/ic_cloud_done.svg</file>
+		<file>icons/ic_cloud_download.svg</file>
+		<file>icons/ic_cloud_off.svg</file>
+		<file>icons/ic_cloud_upload.svg</file>
+		<file>icons/ic_gps_fixed.svg</file>
+		<file>icons/ic_help_outline.svg</file>
+		<file>icons/ic_home.svg</file>
+		<file>icons/ic_info_outline.svg</file>
+		<file>icons/ic_location_off.svg</file>
+		<file>icons/ic_place.svg</file>
+		<file>icons/ic_settings.svg</file>
+		<file>icons/ic_star.svg</file>
+		<file>icons/ic_star_border.svg</file>
+		<file>icons/ic_sync.svg</file>
+		<file>icons/Pink_gps.svg</file>
 
 		<!-- ********** kirigami icons ********** -->
 		<file alias="icons/application-menu.svg">kirigami/icons/application-menu.svg</file>
