@@ -2077,6 +2077,7 @@ void ProfileWidget2::plotPictures()
 			pictures[picItemNr].reset(item);
 			scene()->addItem(item);
 		}
+		item->setVisible(prefs.show_pictures_in_profile);
 		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
 		item->setFileUrl(m->index(i, 1).data().toString());
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile

@@ -50,7 +50,6 @@ DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 #ifndef SUBSURFACE_MOBILE
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(settingsChanged()));
 #endif
-	setVisible(prefs.show_pictures_in_profile);
 
 	canvas->setPen(Qt::NoPen);
 	canvas->setBrush(QColor(Qt::white));
