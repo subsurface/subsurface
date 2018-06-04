@@ -1,90 +1,102 @@
 <RCC>
 	<qresource prefix="/qml">
-		<file>main.qml</file>
+		<!-- ********** qml ********** -->
 		<file>About.qml</file>
 		<file>CloudCredentials.qml</file>
-		<file>DiveList.qml</file>
 		<file>DiveDetails.qml</file>
 		<file>DiveDetailsEdit.qml</file>
 		<file>DiveDetailsView.qml</file>
+		<file>DiveList.qml</file>
 		<file>DownloadFromDiveComputer.qml</file>
 		<file>DownloadedDiveDelegate.qml</file>
 		<file>GpsList.qml</file>
 		<file>HintsTextEdit.qml</file>
 		<file>Log.qml</file>
-		<file>Settings.qml</file>
-		<file>ThemeTest.qml</file>
-		<file>StartPage.qml</file>
-		<file>dive.jpg</file>
-		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
-		<file alias="main-menu.png">icons/main-menu.png</file>
-		<file alias="context-menu.png">icons/context-menu.png</file>
-		<file alias="menu-edit.png">icons/menu-edit.png</file>
-		<file alias="menu-back.png">icons/menu-back.png</file>
-		<file alias="nocloud.svg">icons/nocloud.svg</file>
-		<file>SsrfSwitch.qml</file>
-		<file>SsrfCheckBox.qml</file>
-		<file>SsrfButton.qml</file>
+		<file>main.qml</file>
 		<file>MapPage.qml</file>
 		<file alias="MapWidget.qml">../../map-widget/qml/MapWidget.qml</file>
 		<file alias="MapWidgetContextMenu.qml">../../map-widget/qml/MapWidgetContextMenu.qml</file>
+		<file>Settings.qml</file>
+		<file>ThemeTest.qml</file>
+		<file>StartPage.qml</file>
+		<file>SsrfButton.qml</file>
+		<file>SsrfCheckBox.qml</file>
+		<file>SsrfSwitch.qml</file>
+
+		<!-- ********** pictures ********** -->
+		<file alias="context-menu.png">icons/context-menu.png</file>
+		<file>dive.jpg</file>
+		<file alias="menu-back.png">icons/menu-back.png</file>
+		<file alias="menu-edit.png">icons/menu-edit.png</file>
+		<file alias="main-menu.png">icons/main-menu.png</file>
+		<file alias="nocloud.svg">icons/nocloud.svg</file>
+		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
 	</qresource>
+
 	<qresource prefix="/">
+		<!-- ********** mapwidget pictures ********** -->
 		<file alias="mapwidget-context-menu.png">../../map-widget/qml/icons/mapwidget-context-menu.png</file>
 		<file alias="mapwidget-marker.png">../../map-widget/qml/icons/mapwidget-marker.png</file>
 		<file alias="mapwidget-marker-gray.png">../../map-widget/qml/icons/mapwidget-marker-gray.png</file>
-		<file alias="mapwidget-marker-selected.png">../../map-widget/qml/icons/mapwidget-marker-selected.png</file>
 		<file alias="mapwidget-toggle-satellite.png">../../map-widget/qml/icons/mapwidget-toggle-satellite.png</file>
+		<file alias="mapwidget-marker-selected.png">../../map-widget/qml/icons/mapwidget-marker-selected.png</file>
 		<file alias="mapwidget-toggle-street.png">../../map-widget/qml/icons/mapwidget-toggle-street.png</file>
 		<file alias="mapwidget-zoom-in.png">../../map-widget/qml/icons/mapwidget-zoom-in.png</file>
 		<file alias="mapwidget-zoom-out.png">../../map-widget/qml/icons/mapwidget-zoom-out.png</file>
 	</qresource>
+
 	<qresource prefix="/">
+		<!-- ********** qtQuick.2 configuration ********** -->
 		<file>qtquickcontrols2.conf</file>
 	</qresource>
+
 	<qresource>
-		<file alias="icons/map-globe.svg">kirigami/icons/map-globe.svg</file>
-		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
-		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
-		<file alias="icons/handle-right.svg">kirigami/icons/handle-right.svg</file>
+		<!-- ********** icons ********** -->
+		<file alias="icons/Blue_gps.svg">icons/Blue_gps.svg</file>
+		<file alias="icons/cloud_sync.svg">icons/cloud_sync_24px.svg</file>
+		<file alias="icons/Dark_gps.svg">icons/Blue_gps.svg</file>
+		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
+		<file alias="icons/downloadDC-black.svg">../../icons/button-download-dc-black_icon.svg</file>
+		<file alias="icons/ic_adb.svg">icons/ic_adb_black_24px.svg</file>
+		<file alias="icons/ic_add.svg">icons/ic_add_black_24px.svg</file>
+		<file alias="icons/ic_add_location.svg">icons/ic_add_location_24px.svg</file>
+		<file alias="icons/ic_clear.svg">icons/ic_clear_black_24px.svg</file>
+		<file alias="icons/ic_cloud_done.svg">icons/ic_cloud_done_black_24px.svg</file>
+		<file alias="icons/ic_cloud_download.svg">icons/ic_cloud_download_24px.svg</file>
+		<file alias="icons/ic_cloud_off.svg">icons/ic_cloud_off_black_24px.svg</file>
+		<file alias="icons/ic_cloud_upload.svg">icons/ic_cloud_upload_24px.svg</file>
+		<file alias="icons/ic_gps_fixed.svg">icons/ic_gps_fixed_24px.svg</file>
+		<file alias="icons/ic_help_outline.svg">icons/ic_help_outline_24px.svg</file>
+		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
+		<file alias="icons/ic_info_outline.svg">icons/ic_info_outline_24px.svg</file>
+		<file alias="icons/ic_location_off.svg">icons/ic_location_off_black_24px.svg</file>
+		<file alias="icons/ic_place.svg">icons/ic_place_black_24px.svg</file>
+		<file alias="icons/ic_settings.svg">icons/ic_settings_24px.svg</file>
+		<file alias="icons/ic_star.svg">icons/ic_star_black_24px.svg</file>
+		<file alias="icons/ic_star_border.svg">icons/ic_star_border_black_24px.svg</file>
+		<file alias="icons/ic_sync.svg">icons/ic_sync_24px.svg</file>
+		<file alias="icons/Pink_gps.svg">icons/Pink_gps.svg</file>
+
+		<!-- ********** kirigami icons ********** -->
+		<file alias="icons/application-menu.svg">kirigami/icons/application-menu.svg</file>
+		<file alias="icons/dialog-cancel.svg">kirigami/icons/dialog-cancel.svg</file>
 		<file alias="icons/distribute-horizontal-x.svg">kirigami/icons/distribute-horizontal-x.svg</file>
 		<file alias="icons/document-edit.svg">kirigami/icons/document-edit.svg</file>
 		<file alias="icons/document-save.svg">kirigami/icons/document-save.svg</file>
-		<file alias="icons/view-readermode.svg">kirigami/icons/view-readermode.svg</file>
-		<file alias="icons/dialog-cancel.svg">kirigami/icons/dialog-cancel.svg</file>
-		<file alias="icons/application-menu.svg">kirigami/icons/application-menu.svg</file>
+		<file alias="icons/go-up.svg">kirigami/icons/go-up.svg</file>
 		<file alias="icons/gps.svg">kirigami/icons/gps.svg</file>
-		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
+		<file alias="icons/handle-left.svg">kirigami/icons/handle-left.svg</file>
+		<file alias="icons/handle-right.svg">kirigami/icons/handle-right.svg</file>
+		<file alias="icons/map-globe.svg">kirigami/icons/map-globe.svg</file>
 		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
 		<file alias="icons/overflow-menu.svg">kirigami/icons/overflow-menu.svg</file>
-		<file alias="icons/downloadDC.svg">../../icons/button-download-dc_icon.svg</file>
-		<file alias="icons/downloadDC-black.svg">../../icons/button-download-dc-black_icon.svg</file>
-		<file alias="icons/ic_home.svg">icons/ic_home_24px.svg</file>
-		<file alias="icons/ic_info_outline.svg">icons/ic_info_outline_24px.svg</file>
-		<file alias="icons/ic_help_outline.svg">icons/ic_help_outline_24px.svg</file>
-		<file alias="icons/ic_settings.svg">icons/ic_settings_24px.svg</file>
-		<file alias="icons/ic_adb.svg">icons/ic_adb_black_24px.svg</file>
-		<file alias="icons/ic_place.svg">icons/ic_place_black_24px.svg</file>
-		<file alias="icons/ic_sync.svg">icons/ic_sync_24px.svg</file>
-		<file alias="icons/ic_add_location.svg">icons/ic_add_location_24px.svg</file>
-		<file alias="icons/ic_add.svg">icons/ic_add_black_24px.svg</file>
-		<file alias="icons/cloud_sync.svg">icons/cloud_sync_24px.svg</file>
-		<file alias="icons/ic_gps_fixed.svg">icons/ic_gps_fixed_24px.svg</file>
-		<file alias="icons/ic_cloud_off.svg">icons/ic_cloud_off_black_24px.svg</file>
-		<file alias="icons/ic_cloud_done.svg">icons/ic_cloud_done_black_24px.svg</file>
-		<file alias="icons/ic_cloud_upload.svg">icons/ic_cloud_upload_24px.svg</file>
-		<file alias="icons/ic_cloud_download.svg">icons/ic_cloud_download_24px.svg</file>
-		<file alias="icons/ic_clear.svg">icons/ic_clear_black_24px.svg</file>
-		<file alias="icons/ic_location_off.svg">icons/ic_location_off_black_24px.svg</file>
-		<file alias="icons/Blue_gps.svg">icons/Blue_gps.svg</file>
-		<file alias="icons/Pink_gps.svg">icons/Pink_gps.svg</file>
-		<file alias="icons/Dark_gps.svg">icons/Blue_gps.svg</file>
-		<file alias="icons/ic_star.svg">icons/ic_star_black_24px.svg</file>
-		<file alias="icons/ic_star_border.svg">icons/ic_star_border_black_24px.svg</file>
-
+		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
+		<file alias="icons/view-readermode.svg">kirigami/icons/view-readermode.svg</file>
 	</qresource>
+
 	<qresource prefix="/org/kde/kirigami/icons/">
-		<file alias="go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>
+		<!-- ********** kirigami icons ********** -->
 		<file alias="go-next-symbolic.svg">kirigami/icons/go-next.svg</file>
+		<file alias="go-previous-symbolic.svg">kirigami/icons/go-previous.svg</file>
 	</qresource>
 </RCC>
