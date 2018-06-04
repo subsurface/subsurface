@@ -67,12 +67,11 @@ Kirigami.Page {
 			}
 			columns: 2
 			Controls.Label { text: qsTr(" Vendor name: ") }
-			property var vendoridx: downloadThread.data().getDetectedVendorIndex()
 			Controls.ComboBox {
 				id: comboVendor
 				Layout.fillWidth: true
 				model: vendorList
-				currentIndex: parent.vendoridx
+				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboVendor.width
 					contentItem: Text {
@@ -100,10 +99,9 @@ Kirigami.Page {
 			Controls.Label { text: qsTr(" Dive Computer:") }
 			Controls.ComboBox {
 				id: comboProduct
-				property var productidx: downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
 				Layout.fillWidth: true
 				model: null
-				currentIndex: productidx
+				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboProduct.width
 					contentItem: Text {
@@ -303,6 +301,14 @@ Kirigami.Page {
 				onClicked : {
 					importModel.selectNone()
 				}
+			}
+		}
+
+		onVisibleChanged: {
+			if (visible) {
+				comboVendor.currentIndex = downloadThread.data().getDetectedVendorIndex()
+				comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
+				comboDevice.currentIndex = downloadThread.data().getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
 			}
 		}
 	}
