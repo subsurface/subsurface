@@ -109,7 +109,7 @@ Kirigami.ApplicationWindow {
 		title: qsTr("Subsurface")
 		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
 
-		bannerImageSource: "dive.jpg"
+		bannerImageSource: ":/icons/dive.jpg"
 		resetMenuOnTriggered: false
 
 		actions: [
