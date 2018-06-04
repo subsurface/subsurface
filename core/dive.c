@@ -45,7 +45,7 @@ const char *divemode_text_ui[] = {
 };
 
 // For writing/reading files.
-const char *divemode_text[] = {"OC", "CCR", "pSCR", "Freedive"};
+const char *divemode_text[] = {"OC", "CCR", "PSCR", "Freedive"};
 
 /*
  * Adding a cylinder pressure sample field is not quite as trivial as it
