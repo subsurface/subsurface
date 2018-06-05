@@ -127,7 +127,7 @@ Kirigami.Page {
 				}
 
 				onModelChanged: {
-					currentIndex = productidx
+					currentIndex = downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
 				}
 			}
 			Controls.Label { text: qsTr(" Connection:") }
