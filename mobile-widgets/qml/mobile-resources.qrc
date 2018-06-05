@@ -35,6 +35,8 @@
 
 	<qresource prefix="/">
 		<!-- ********** mapwidget pictures ********** -->
+		<file alias="map-style-photo-icon">../../map-widget/qml/icons/mapwidget-toggle-satellite.png</file>
+		<file alias="map-style-map-icon">../../map-widget/qml/icons/mapwidget-toggle-street.png</file>
 		<file alias="mapwidget-context-menu.png">../../map-widget/qml/icons/mapwidget-context-menu.png</file>
 		<file alias="mapwidget-marker.png">../../map-widget/qml/icons/mapwidget-marker.png</file>
 		<file alias="mapwidget-marker-gray.png">../../map-widget/qml/icons/mapwidget-marker-gray.png</file>
@@ -43,6 +45,9 @@
 		<file alias="mapwidget-toggle-street.png">../../map-widget/qml/icons/mapwidget-toggle-street.png</file>
 		<file alias="mapwidget-zoom-in.png">../../map-widget/qml/icons/mapwidget-zoom-in.png</file>
 		<file alias="mapwidget-zoom-out.png">../../map-widget/qml/icons/mapwidget-zoom-out.png</file>
+		<file alias="open-menu-icon">../../map-widget/qml/icons/mapwidget-context-menu.png</file>
+		<file alias="zoom-in-icon">../../map-widget/qml/icons/mapwidget-zoom-in.png</file>
+		<file alias="zoom-out-icon">../../map-widget/qml/icons/mapwidget-zoom-out.png</file>
 	</qresource>
 
 	<qresource prefix="/">
