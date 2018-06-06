@@ -23,6 +23,7 @@
 #include "display.h"
 #include "profile.h"
 #include "gaspressures.h"
+#include "pref.h"
 
 static pr_track_t *pr_track_alloc(int start, int t_start)
 {
@@ -349,8 +350,10 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	cylinder_t *cylinder = dive->cylinder + sensor;
 	pr_track_t *track = NULL;
 	pr_track_t *current = NULL;
-	struct event *ev;
+	struct event *ev, *b_ev;
 	int missing_pr = 0, dense = 1;
+	enum divemode_t dmode = dc->divemode;
+	const double gasfactor[5] = {1.0, 0.0, prefs.pscr_ratio/1000.0, 1.0, 1.0 };
 
 	/* if we have no pressure data whatsoever, this is pointless, so let's just return */
 	if (!cylinder->start.mbar && !cylinder->end.mbar &&
@@ -386,21 +389,27 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	ev = NULL;
 	if (has_gaschange_event(dive, dc, sensor))
 		ev = get_next_event(dc->events, "gaschange");
+	b_ev = get_next_event(dc->events, "modechange");
 
 	for (int i = first; i <= last; i++) {
 		struct plot_data *entry = pi->entry + i;
 		unsigned pressure = SENSOR_PRESSURE(entry, sensor);
 		int time = entry->sec;
 
-		while (ev && ev->time.seconds <= time) {
-			cyl = get_cylinder_index(dive, ev);
+		while (ev && ev->time.seconds <= time) {   // Find 1st gaschange event after 
+			cyl = get_cylinder_index(dive, ev); // the current gas change.
 			if (cyl < 0)
 				cyl = sensor;
 			ev = get_next_event(ev->next, "gaschange");
 		}
 
-		if (current) {
-			entry->pressure_time = calc_pressure_time(dive, entry - 1, entry);
+		while (b_ev && b_ev->time.seconds <= time) { // Keep existing divemode, then
+			dmode = b_ev->value; // find 1st divemode change event after the current 
+			b_ev = get_next_event(b_ev->next, "modechange"); // divemode change.
+		}
+
+		if (current) { // calculate pressure-time, taking into account the dive mode for this specific segment.
+			entry->pressure_time = (int)(calc_pressure_time(dive, entry - 1, entry) * gasfactor[dmode] + 0.5);
 			current->pressure_time += entry->pressure_time;
 			current->t_end = entry->sec;
 			if (pressure)
