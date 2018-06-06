@@ -73,6 +73,9 @@ popd
 
 # now build all the dependencies for the three relevant architectures (x86_64 is for the simulator)
 
+# get all 3rd part libraries
+../../scripts/get-dep-lib.sh ios .
+
 for ARCH in $ARCHS; do
 
 echo next building for $ARCH
@@ -123,8 +126,6 @@ echo next building for $ARCH
 
 	target=$ARCH
 	hosttarget=$ARCH
-
-	../../scripts/get-dep-lib.sh ios .
 
 	# libxslt have too old config.sub
 	pushd libxslt
