@@ -222,6 +222,8 @@ if [ "$TARGET" = "iphoneos" ] ; then
 	done
 	popd
 fi
+# and remember googlemaps
+cp googlemaps-build/lib* install-root/lib
 
 pushd ${SUBSURFACE_SOURCE}/translations
 SRCS=$(ls *.ts | grep -v source)

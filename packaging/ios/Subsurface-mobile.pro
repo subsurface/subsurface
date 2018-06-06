@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick quickcontrols2 widgets positioning concurrent svg bluetooth
+QT +=	qml quick quickcontrols2 widgets positioning concurrent svg bluetooth 
 
 DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
 
@@ -103,13 +103,13 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../profile-widget/diverectitem.cpp \
 	../../profile-widget/divetextitem.cpp
 
-RESOURCES += ./qml.qrc ../../subsurface.qrc ../../mobile-widgets/qml/mobile-resources.qrc ./translations.qrc
+RESOURCES += ../../subsurface.qrc ../../mobile-widgets/qml/mobile-resources.qrc ./translations.qrc
 
 LIBS += ./install-root/lib/libdivecomputer.a \
 	./install-root/lib/libgit2.a \
 	./install-root/lib/libzip.a \
 	./install-root/lib/libxslt.a \
-	./googlemaps-build/libqtgeoservices_googlemaps.a \
+	./install-root/lib/libqtgeoservices_googlemaps.a \
 	-liconv \
 	-lsqlite3 \
 	-lxml2
