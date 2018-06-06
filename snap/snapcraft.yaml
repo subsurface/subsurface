@@ -13,6 +13,7 @@ description: |
 
 grade: stable
 confinement: strict
+base: core18
 
 apps:
   subsurface:
@@ -37,15 +38,17 @@ parts:
       mkdir -p QtHeaders/QtLocation/private QtHeaders/QtPositioning/private
       cd QtHeaders/QtLocation/private
       for HEADER in \
+          qlocationglobal \
+          maps/qabstractgeotilecache \
           maps/qcache3q \
           maps/qgeocameracapabilities \
           maps/qgeocameradata \
           maps/qgeomap \
-          maps/qgeomapcontroller \
           maps/qgeomappingmanager \
           maps/qgeomappingmanagerengine \
           maps/qgeomaptype \
-          maps/qgeotilecache \
+          maps/qgeofiletilecache \
+          maps/qgeoprojection \
           maps/qgeotiledmap \
           maps/qgeotiledmappingmanagerengine \
           maps/qgeotiledmapreply \
@@ -59,8 +62,10 @@ parts:
       cd -
       cd QtHeaders/QtPositioning/private
       for HEADER in \
+          qdoublematrix4x4 \
           qdoublevector2d \
-          qgeoprojection
+          qdoublevector3d \
+          qpositioningglobal
       do
         wget --no-verbose --content-disposition \
           http://code.qt.io/cgit/qt/qtlocation.git/plain/src/positioning/${HEADER}_p.h?h=v${QT_VERSION}
@@ -112,7 +117,7 @@ parts:
     - qtconnectivity5-dev
     - qtlocation5-dev
     - qtpositioning5-dev
-    - qttools5-dev-tools
+    - qttools5-dev
     override-build: |
       mkdir -p ../install-root
       ln -sf ../../../stage/usr/lib/*/qt5/plugins/geoservices/libqtgeoservices_googlemaps.so \
@@ -120,9 +125,11 @@ parts:
       sed -i 's@^Icon=.*@Icon=${SNAP}/share/icons/hicolor/scalable/apps/subsurface-icon.svg@' ../src/subsurface.desktop
       snapcraftctl build
     stage-packages:
+    - libcap2
     - libcurl3-gnutls
+    - libdb5.3
     - libftdi1-2
-    - libgit2-24
+    - libgit2-26
     - libgrantlee-templates5
     - libqt5bluetooth5
     - libqt5concurrent5
