@@ -113,7 +113,6 @@ char *hashstring(const char *filename);
 void register_hash(const char *filename, const char *hash);
 char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
-void cache_picture(struct picture *picture);
 char *cloud_url();
 char *hashfile_name_string();
 char *picturedir_string();

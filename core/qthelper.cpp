@@ -1216,12 +1216,6 @@ void learnHash(const QString &originalName, const QString &localName, const QByt
 	hashOf[originalName] = hash;
 }
 
-static bool haveHash(const QString &filename)
-{
-	QMutexLocker locker(&hashOfMutex);
-	return hashOf.contains(filename);
-}
-
 QString localFilePath(const QString &originalFilename)
 {
 	QMutexLocker locker(&hashOfMutex);
@@ -1239,13 +1233,6 @@ void hashPicture(QString filename)
 	QByteArray hash = hashFile(localFilePath(filename));
 	if (!hash.isNull() && hash != oldHash)
 		mark_divelist_changed(true);
-}
-
-extern "C" void cache_picture(struct picture *picture)
-{
-	QString filename = picture->filename;
-	if (!haveHash(filename))
-		QtConcurrent::run(hashPicture, filename);
 }
 
 QStringList imageExtensionFilters() {
