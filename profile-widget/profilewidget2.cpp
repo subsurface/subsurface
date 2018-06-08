@@ -391,19 +391,21 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.depth.pos.off.setX(-2);
 	itemPos.depth.pos.off.setY(3);
 	itemPos.depth.expanded.setP1(QPointF(0, 0));
+#ifndef SUBSURFACE_MOBILE
 	itemPos.depth.expanded.setP2(QPointF(0, 85));
+#else
+	itemPos.depth.expanded.setP2(QPointF(0, 65));
+#endif
 	itemPos.depth.shrinked.setP1(QPointF(0, 0));
 	itemPos.depth.shrinked.setP2(QPointF(0, 55));
 	itemPos.depth.intermediate.setP1(QPointF(0, 0));
 	itemPos.depth.intermediate.setP2(QPointF(0, 65));
-#ifdef SUBSURFACE_MOBILE
-	itemPos.depth.expanded.setP2(QPointF(0, 65));
-#endif
 
 	// Time Axis Config
 	itemPos.time.pos.on.setX(3);
+#ifndef SUBSURFACE_MOBILE
 	itemPos.time.pos.on.setY(95);
-#ifdef SUBSURFACE_MOBILE
+#else
 	itemPos.time.pos.on.setY(89.5);
 #endif
 	itemPos.time.pos.off.setX(3);
@@ -413,15 +415,17 @@ void ProfileWidget2::setupItemSizes()
 
 	// Partial Gas Axis Config
 	itemPos.partialPressure.pos.on.setX(97);
+#ifndef SUBSURFACE_MOBILE
 	itemPos.partialPressure.pos.on.setY(75);
-#ifdef SUBSURFACE_MOBILE
+#else
 	itemPos.partialPressure.pos.on.setY(70);
 #endif
 	itemPos.partialPressure.pos.off.setX(110);
 	itemPos.partialPressure.pos.off.setY(63);
 	itemPos.partialPressure.expanded.setP1(QPointF(0, 0));
+#ifndef SUBSURFACE_MOBILE
 	itemPos.partialPressure.expanded.setP2(QPointF(0, 19));
-#ifdef SUBSURFACE_MOBILE
+#else
 	itemPos.partialPressure.expanded.setP2(QPointF(0, 20));
 #endif
 	itemPos.partialPressureWithTankBar = itemPos.partialPressure;
@@ -445,21 +449,20 @@ void ProfileWidget2::setupItemSizes()
 
 	// Temperature axis config
 	itemPos.temperature.pos.on.setX(3);
-	itemPos.temperature.pos.on.setY(60);
-	itemPos.temperatureAll.pos.on.setY(51);
 	itemPos.temperature.pos.off.setX(-10);
 	itemPos.temperature.pos.off.setY(40);
 	itemPos.temperature.expanded.setP1(QPointF(0, 20));
 	itemPos.temperature.expanded.setP2(QPointF(0, 33));
 	itemPos.temperature.shrinked.setP1(QPointF(0, 2));
 	itemPos.temperature.shrinked.setP2(QPointF(0, 12));
+#ifndef SUBSURFACE_MOBILE
+	itemPos.temperature.pos.on.setY(60);
+	itemPos.temperatureAll.pos.on.setY(51);
 	itemPos.temperature.intermediate.setP1(QPointF(0, 2));
 	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
-#ifdef SUBSURFACE_MOBILE
+#else
 	itemPos.temperature.pos.on.setY(51);
 	itemPos.temperatureAll.pos.on.setY(47);
-	itemPos.temperature.expanded.setP1(QPointF(0, 20));
-	itemPos.temperature.expanded.setP2(QPointF(0, 33));
 	itemPos.temperature.intermediate.setP1(QPointF(0, 2));
 	itemPos.temperature.intermediate.setP2(QPointF(0, 12));
 #endif
@@ -486,8 +489,9 @@ void ProfileWidget2::setupItemSizes()
 	itemPos.dcLabel.off.setY(100);
 
 	itemPos.tankBar.on.setX(0);
+#ifndef SUBSURFACE_MOBILE
 	itemPos.tankBar.on.setY(91.95);
-#ifdef SUBSURFACE_MOBILE
+#else
 	itemPos.tankBar.on.setY(86.4);
 #endif
 }
@@ -1107,11 +1111,9 @@ void ProfileWidget2::setEmptyState()
 #ifndef SUBSURFACE_MOBILE
 	hideAll(allTissues);
 	hideAll(allPercentages);
-#endif
-	hideAll(eventItems);
-#ifndef SUBSURFACE_MOBILE
 	hideAll(handles);
 #endif
+	hideAll(eventItems);
 	hideAll(gases);
 }
 
