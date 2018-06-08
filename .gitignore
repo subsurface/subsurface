@@ -35,11 +35,6 @@ Subsurface.app
 !android/**/*.xml
 build*
 mobile-widgets/qml/kirigami
-packaging/ios/translations/
-packaging/ios/googlemaps*
-packaging/ios/install-root*
-packaging/ios/lib*
-packaging/ios/kirigami
-packaging/ios/breeze-icons
+packaging/ios/install-root
 packaging/ios/Info.plist
 packaging/ios/Qt

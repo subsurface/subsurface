@@ -109,7 +109,7 @@ LIBS += ./install-root/lib/libdivecomputer.a \
 	./install-root/lib/libgit2.a \
 	./install-root/lib/libzip.a \
 	./install-root/lib/libxslt.a \
-	./googlemaps-build/libqtgeoservices_googlemaps.a \
+	./build-ios/googlemaps-build/libqtgeoservices_googlemaps.a \
 	-liconv \
 	-lsqlite3 \
 	-lxml2
