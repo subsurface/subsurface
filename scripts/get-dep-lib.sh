@@ -151,8 +151,8 @@ if [[ "$BUILD" = *"libxslt"* && ! -d libxslt ]]; then
 fi
 
 if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
-	${CURL} https://libzip.org/download/libzip-${CURRENT_LIBZIP}.tar.gz
-	tar xzf libzip-${CURRENT_LIBZIP}.tar.gz
+	${CURL} https://subsurface-divelog.org/downloads/libzip-${CURRENT_LIBZIP}.tar.xz
+	tar xJf libzip-${CURRENT_LIBZIP}.tar.xz
 	mv libzip-${CURRENT_LIBZIP} libzip
 fi
 
