@@ -39,6 +39,9 @@ pushd ${SUBSURFACE_SOURCE}/..
 SSRF_CLONE=$(pwd)
 popd
 
+# prepare build dir
+mkdir -p build-ios
+
 IOS_QT=${TOP}/Qt
 QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
 
@@ -84,7 +87,7 @@ for ARCH in $ARCHS; do
 
 	echo next building for $ARCH
 
-	INSTALL_ROOT=$TOP/install-root-$ARCH
+	INSTALL_ROOT=$TOP/build-ios/install-root-$ARCH
 	mkdir -p $INSTALL_ROOT/lib $INSTALL_ROOT/bin $INSTALL_ROOT/include
 	PKG_CONFIG_LIBDIR=$INSTALL_ROOT/lib/pkgconfig
 
@@ -136,8 +139,8 @@ for ARCH in $ARCHS; do
 	autoreconf --install
 	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
-		mkdir -p libxslt-build-$ARCH_NAME
-		pushd libxslt-build-$ARCH_NAME
+		mkdir -p build-ios/libxslt-build-$ARCH_NAME
+		pushd build-ios/libxslt-build-$ARCH_NAME
 		${SSRF_CLONE}/libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
@@ -145,8 +148,8 @@ for ARCH in $ARCHS; do
 	fi
 
 	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
-		mkdir -p libzip-build-$ARCH_NAME
-		pushd libzip-build-$ARCH_NAME
+		mkdir -p build-ios/libzip-build-$ARCH_NAME
+		pushd build-ios/libzip-build-$ARCH_NAME
 		${SSRF_CLONE}/libzip/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
 		make
 		make install
@@ -159,8 +162,8 @@ for ARCH in $ARCHS; do
 	popd
 
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
-		mkdir -p libgit2-build-$ARCH
-		pushd libgit2-build-$ARCH
+		mkdir -p build-ios/libgit2-build-$ARCH
+		pushd build-ios/libgit2-build-$ARCH
 		cmake ${SSRF_CLONE}/libgit2 \
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
@@ -193,16 +196,16 @@ for ARCH in $ARCHS; do
 		autoreconf --install
 		popd
 	fi
-	if [ ! -f libdivecomputer-${ARCH}.SHA ] ; then
-		echo "" > libdivecomputer-${ARCH}.SHA
+	if [ ! -f build-ios/libdivecomputer-${ARCH}.SHA ] ; then
+		echo "" > build-ios/libdivecomputer-${ARCH}.SHA
 	fi
 	CURRENT_SHA=$(cd ../../libdivecomputer ; git describe)
-	PREVIOUS_SHA=$(cat libdivecomputer-${ARCH}.SHA)
+	PREVIOUS_SHA=$(cat build-ios/libdivecomputer-${ARCH}.SHA)
 	if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] ; then
-		echo $CURRENT_SHA > libdivecomputer-${ARCH}.SHA
-		mkdir -p libdivecomputer-build-$ARCH
-		pushd libdivecomputer-build-$ARCH
-		../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
+		echo $CURRENT_SHA > build-ios/libdivecomputer-${ARCH}.SHA
+		mkdir -p build-ios/libdivecomputer-build-$ARCH
+		pushd build-ios/libdivecomputer-build-$ARCH
+		../../../../libdivecomputer/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared --enable-examples=no --without-libusb --without-hidapi --enable-ble
 		make
 		make install
 		popd
@@ -211,19 +214,19 @@ for ARCH in $ARCHS; do
 done
 
 # build googlemaps
-mkdir -p googlemaps-build
-pushd googlemaps-build
+mkdir -p build-ios/googlemaps-build
+pushd build-ios/googlemaps-build
 ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=release
 make
 popd
 
 # now combine the libraries into fat libraries
 rm -rf install-root
-cp -a install-root-x86_64 install-root
+cp -a build-ios/install-root-x86_64 install-root
 if [ "$TARGET" = "iphoneos" ] ; then
 	pushd install-root/lib
 	for LIB in $(find . -type f -name \*.a); do
-		lipo ../../install-root-armv7/lib/$LIB ../../install-root-arm64/lib/$LIB ../../install-root-x86_64/lib/$LIB -create -output $LIB
+		lipo ../../build-ios/install-root-armv7/lib/$LIB ../../build-ios/install-root-arm64/lib/$LIB ../../build-ios/install-root-x86_64/lib/$LIB -create -output $LIB
 	done
 	popd
 fi
@@ -231,16 +234,17 @@ fi
 pushd ${SUBSURFACE_SOURCE}/translations
 SRCS=$(ls *.ts | grep -v source)
 popd
-mkdir -p translations
+mkdir -p build-ios/translations
 for src in $SRCS; do
-	${IOS_QT}/${QT_VERSION}/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm translations/${src/.ts/.qm}
+	${IOS_QT}/${QT_VERSION}/ios/bin/lrelease ${SUBSURFACE_SOURCE}/translations/$src -qm build-ios/translations/${src/.ts/.qm}
 done
 
 # in order to be able to use xcode without going through Qt Creator
 # call qmake directly
 
-mkdir -p build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELEASE}
-cd build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELEASE}
+BUILDX=build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELEASE}
+mkdir -p ${BUILDX}
+cd ${BUILDX}
 ${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile.pro \
 	-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
