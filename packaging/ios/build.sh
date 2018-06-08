@@ -35,6 +35,10 @@ done
 # set up easy to use variables with the important paths
 TOP=$(pwd)
 SUBSURFACE_SOURCE=${TOP}/../../../subsurface
+pushd ${SUBSURFACE_SOURCE}/..
+SSRF_CLONE=$(pwd)
+popd
+
 IOS_QT=${TOP}/Qt
 QT_VERSION=$(cd ${IOS_QT}; ls -d [1-9]* | awk -F. '{ printf("%02d.%02d.%02d\n", $1,$2,$3); }' | sort -n | tail -1 | sed -e 's/\.0/\./g;s/^0//')
 
@@ -74,11 +78,11 @@ popd
 # now build all the dependencies for the three relevant architectures (x86_64 is for the simulator)
 
 # get all 3rd part libraries
-../../scripts/get-dep-lib.sh ios .
+../../scripts/get-dep-lib.sh ios ${SSRF_CLONE}
 
 for ARCH in $ARCHS; do
 
-echo next building for $ARCH
+	echo next building for $ARCH
 
 	INSTALL_ROOT=$TOP/install-root-$ARCH
 	mkdir -p $INSTALL_ROOT/lib $INSTALL_ROOT/bin $INSTALL_ROOT/include
@@ -128,13 +132,13 @@ echo next building for $ARCH
 	hosttarget=$ARCH
 
 	# libxslt have too old config.sub
-	pushd libxslt
+	pushd ${SSRF_CLONE}/libxslt
 	autoreconf --install
 	popd
 	if [ ! -e $PKG_CONFIG_LIBDIR/libxslt.pc ] ; then
 		mkdir -p libxslt-build-$ARCH_NAME
 		pushd libxslt-build-$ARCH_NAME
-		../libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
+		${SSRF_CLONE}/libxslt/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --without-python --without-crypto --enable-static --disable-shared
 		make
 		make install
 		popd
@@ -143,13 +147,13 @@ echo next building for $ARCH
 	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
 		mkdir -p libzip-build-$ARCH_NAME
 		pushd libzip-build-$ARCH_NAME
-		../libzip/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+		${SSRF_CLONE}/libzip/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
 		make
 		make install
 		popd
 	fi
 
-	pushd libgit2
+	pushd ${SSRF_CLONE}/libgit2
 	# libgit2 with -Wall on iOS creates megabytes of warnings...
 	sed -i.bak 's/ADD_C_FLAG_IF_SUPPORTED(-W/# ADD_C_FLAG_IF_SUPPORTED(-W/' CMakeLists.txt
 	popd
@@ -157,7 +161,7 @@ echo next building for $ARCH
 	if [ ! -e $PKG_CONFIG_LIBDIR/libgit2.pc ] ; then
 		mkdir -p libgit2-build-$ARCH
 		pushd libgit2-build-$ARCH
-		cmake ../libgit2 \
+		cmake ${SSRF_CLONE}/libgit2 \
 		    -G "Unix Makefiles" \
 		    -DBUILD_SHARED_LIBS="OFF" \
 		    -DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
@@ -167,7 +171,7 @@ echo next building for $ARCH
 			-DCMAKE_PREFIX_PATH=${PREFIX} \
 			-DCURL=OFF \
 			-DUSE_SSH=OFF \
-			../libgit2/
+			${SSRF_CLONE}/libgit2/
 		sed -i.bak 's/C_FLAGS = /C_FLAGS = -Wno-nullability-completeness -Wno-expansion-to-defined /' CMakeFiles/git2.dir/flags.make
 		make
 		make install
@@ -209,7 +213,7 @@ done
 # build googlemaps
 mkdir -p googlemaps-build
 pushd googlemaps-build
-${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../googlemaps/googlemaps.pro CONFIG+=release
+${IOS_QT}/${QT_VERSION}/ios/bin/qmake ${SSRF_CLONE}/googlemaps/googlemaps.pro CONFIG+=release
 make
 popd
 
