@@ -285,7 +285,6 @@ endif()
 if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 	set(MOBILE_SRC
 		mobile-widgets/qmlmanager.cpp
-		mobile-widgets/qmlprofile.cpp
 		mobile-widgets/qml/kirigami/src/kirigamiplugin.cpp
 		mobile-widgets/qml/kirigami/src/settings.cpp
 		mobile-widgets/qml/kirigami/src/enums.cpp
@@ -298,6 +297,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/libkirigami/platformtheme.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
+		profile-widget/qmlprofile.cpp
 		map-widget/qmlmapwidgethelper.cpp
 	)
 	include_directories(${CMAKE_SOURCE_DIR}/mobile-widgets/qml/kirigami/src/libkirigami)

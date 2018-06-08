@@ -81,7 +81,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
-	../../mobile-widgets/qmlprofile.cpp \
 	../../qt-models/divelistmodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
 	../../qt-models/gpslistmodel.cpp \
@@ -90,6 +89,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../qt-models/maplocationmodel.cpp \
 	../../qt-models/diveimportedmodel.cpp \
 	../../qt-models/messagehandlermodel.cpp \
+	../../profile-widget/qmlprofile.cpp \
 	../../profile-widget/divecartesianaxis.cpp \
 	../../profile-widget/diveeventitem.cpp \
 	../../profile-widget/diveprofileitem.cpp \
@@ -183,7 +183,6 @@ HEADERS += \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
 	../../mobile-widgets/qmlmanager.h \
-	../../mobile-widgets/qmlprofile.h \
 	../../map-widget/qmlmapwidgethelper.h \
 	../../qt-models/divelistmodel.h \
 	../../qt-models/diveplotdatamodel.h \
@@ -194,6 +193,7 @@ HEADERS += \
 	../../qt-models/maplocationmodel.h \
 	../../qt-models/diveimportedmodel.h \
 	../../qt-models/messagehandlermodel.h \
+	../../profile-widget/qmlprofile.h \
 	../../profile-widget/diveprofileitem.h \
 	../../profile-widget/profilewidget2.h \
 	../../profile-widget/ruleritem.h \
