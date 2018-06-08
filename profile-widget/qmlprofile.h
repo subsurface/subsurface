@@ -2,7 +2,7 @@
 #ifndef QMLPROFILE_H
 #define QMLPROFILE_H
 
-#include "profile-widget/profilewidget2.h"
+#include "profilewidget2.h"
 #include <QQuickPaintedItem>
 
 class QMLProfile : public QQuickPaintedItem

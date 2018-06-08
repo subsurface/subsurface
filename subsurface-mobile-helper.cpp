@@ -19,7 +19,7 @@
 #include "mobile-widgets/qmlmanager.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
-#include "mobile-widgets/qmlprofile.h"
+#include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "core/connectionlistmodel.h"
 #include "qt-models/diveimportedmodel.h"
