@@ -8,7 +8,7 @@
 class QMLProfile : public QQuickPaintedItem
 {
 	Q_OBJECT
-	Q_PROPERTY(QString diveId READ diveId WRITE setDiveId NOTIFY diveIdChanged)
+	Q_PROPERTY(QString diveId MEMBER m_diveId WRITE setDiveId)
 	Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio WRITE setDevicePixelRatio NOTIFY devicePixelRatioChanged)
 
 public:
@@ -32,7 +32,6 @@ private:
 
 signals:
 	void rightAlignedChanged();
-	void diveIdChanged();
 	void devicePixelRatioChanged();
 };
 
