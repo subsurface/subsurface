@@ -138,7 +138,7 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_selectedDiveTimestamp(0),
 	m_credentialStatus(CS_UNKNOWN),
 	alreadySaving(false),
-	m_device_data(new DCDeviceData(this))
+	m_device_data(new DCDeviceData)
 {
 	LOG_STP("qmlmgr starting");
 	m_instance = this;

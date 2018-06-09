@@ -12,25 +12,9 @@
 #include "core/btdiscovery.h"
 #endif
 /* Helper object for access of Device Data in QML */
-class DCDeviceData : public QObject {
-	Q_OBJECT
-#ifdef SUBSURFACE_MOBILE
-	Q_PROPERTY(QString vendor READ vendor WRITE setVendor)
-	Q_PROPERTY(QString product READ product WRITE setProduct)
-	Q_PROPERTY(bool bluetoothMode READ bluetoothMode WRITE setBluetoothMode)
-	Q_PROPERTY(QString devName READ devName WRITE setDevName)
-	Q_PROPERTY(QString devBluetoothName READ devBluetoothName WRITE setDevBluetoothName)
-	Q_PROPERTY(QString descriptor READ descriptor)
-	Q_PROPERTY(bool forceDownload READ forceDownload WRITE setForceDownload)
-	Q_PROPERTY(bool createNewTrip READ createNewTrip WRITE setCreateNewTrip)
-	Q_PROPERTY(int deviceId READ deviceId WRITE setDeviceId)
-	Q_PROPERTY(int diveId READ diveId WRITE setDiveId)
-	Q_PROPERTY(bool saveDump READ saveDump WRITE setSaveDump)
-	Q_PROPERTY(bool saveLog READ saveLog WRITE setSaveLog)
-#endif // SUBSURFACE_MOBILE
-
+class DCDeviceData {
 public:
-	DCDeviceData(QObject *parent = nullptr);
+	DCDeviceData();
 	static DCDeviceData *instance();
 
 	QString vendor() const;
@@ -39,39 +23,24 @@ public:
 	bool bluetoothMode() const;
 	bool saveDump() const;
 	QString devBluetoothName() const;
-#ifdef SUBSURFACE_MOBILE
 	QString descriptor() const;
 	bool forceDownload() const;
 	bool createNewTrip() const;
 	bool saveLog() const;
 	int deviceId() const;
 	int diveId() const;
-#endif // SUBSURFACE_MOBILE
 
 	/* this needs to be a pointer to make the C-API happy */
 	device_data_t* internalData();
 
-#ifdef SUBSURFACE_MOBILE
-	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
-	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
-
-	Q_INVOKABLE int getDetectedVendorIndex();
-	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
-#else
 	QStringList getProductListFromVendor(const QString& vendor);
 	int getMatchingAddress(const QString &vendor, const QString &product);
 
 	int getDetectedVendorIndex();
 	int getDetectedProductIndex(const QString &currentVendorText);
-#endif // SUBSURFACE_MOBILE
 
-#ifdef SUBSURFACE_MOBILE
-public slots:
 	void setDeviceId(int deviceId);
 	void setDiveId(int diveId);
-#else
-public:
-#endif // SUBSURFACE_MOBILE
 	void setVendor(const QString& vendor);
 	void setProduct(const QString& product);
 	void setDevName(const QString& devName);
@@ -91,9 +60,6 @@ private:
 
 class DownloadThread : public QThread {
 	Q_OBJECT
-#ifdef SUBSURFACE_MOBILE
-	Q_PROPERTY(DCDeviceData* deviceData MEMBER m_data)
-#endif // SUBSURFACE_MOBILE
 
 public:
 	DownloadThread();
