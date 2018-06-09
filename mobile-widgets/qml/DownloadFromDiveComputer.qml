@@ -23,18 +23,6 @@ Kirigami.Page {
 
 	DCDownloadThread {
 		id: downloadThread
-		deviceData.vendor : comboVendor.currentText
-		deviceData.product : comboProduct.currentText
-		deviceData.devName : comboConnection.currentText
-
-		//TODO: Make this the default on the C++
-		deviceData.bluetoothMode : true
-		deviceData.forceDownload : false
-		deviceData.createNewTrip : false
-		deviceData.deviceId : 0
-		deviceData.diveId : 0
-		deviceData.saveDump : false
-		deviceData.saveLog : true
 
 		onFinished : {
 			importModel.repopulate()
@@ -164,10 +152,10 @@ Kirigami.Page {
 						btAddr = /\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}/;
 
 					if (btAddr.test(currentText))
-						downloadThread.deviceData.bluetoothMode = true
+						downloadThread.manager.DC_bluetoothMode = true
 					else
-						downloadThread.deviceData.bluetoothMode = false
-					downloadThread.deviceData.devName = comboConnection.currentText
+						downloadThread.manager.DC_bluetoothMode = false
+					downloadThread.manager.DC_devName = comboConnection.currentText
 				}
 			}
 		}
@@ -198,9 +186,9 @@ Kirigami.Page {
 				onClicked: {
 					text = qsTr("Retry")
 					// strip any BT Name from the address
-					var devName = downloadThread.deviceData.devName
-					downloadThread.deviceData.devName = devName.replace(/^(.*) /, "")
-					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.deviceData.product + " on "+ downloadThread.deviceData.devName)
+					var devName = downloadThread.manager.devName
+					downloadThread.manager.devName = devName.replace(/^(.*) /, "")
+					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.manager.product + " on "+ downloadThread.manager.devName)
 					progressBar.visible = true
 					downloadThread.start()
 				}
@@ -309,6 +297,9 @@ Kirigami.Page {
 				comboVendor.currentIndex = downloadThread.data().getDetectedVendorIndex()
 				comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
 				comboDevice.currentIndex = downloadThread.data().getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
+				manager.DC_vendor = comboVendor.currentText
+				manager.DC_product = comboProduct.currentText
+				manager.DC_devName = comboConnection.currentText
 			}
 		}
 	}
