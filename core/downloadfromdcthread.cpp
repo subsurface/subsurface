@@ -277,16 +277,19 @@ QString DCDeviceData::devBluetoothName() const
 	return m_devBluetoothName;
 }
 
+#ifdef SUBSURFACE_MOBILE
 QString DCDeviceData::descriptor() const
 {
 	return "";
 }
+#endif // SUBSURFACE_MOBILE
 
 bool DCDeviceData::bluetoothMode() const
 {
 	return data.bluetooth_mode;
 }
 
+#ifdef SUBSURFACE_MOBILE
 bool DCDeviceData::forceDownload() const
 {
 	return data.force_download;
@@ -306,6 +309,7 @@ int DCDeviceData::diveId() const
 {
 	return data.diveid;
 }
+#endif // SUBSURFACE_MOBILE
 
 void DCDeviceData::setVendor(const QString& vendor)
 {
@@ -358,6 +362,7 @@ void DCDeviceData::setCreateNewTrip(bool create)
 	data.create_new_trip = create;
 }
 
+#ifdef SUBSURFACE_MOBILE
 void DCDeviceData::setDeviceId(int deviceId)
 {
 	data.deviceid = deviceId;
@@ -367,6 +372,7 @@ void DCDeviceData::setDiveId(int diveId)
 {
 	data.diveid = diveId;
 }
+#endif // SUBSURFACE_MOBILE
 
 void DCDeviceData::setSaveDump(bool save)
 {
@@ -383,10 +389,13 @@ void DCDeviceData::setSaveLog(bool saveLog)
 	data.libdc_log = saveLog;
 }
 
+#ifdef SUBSURFACE_MOBILE
 bool DCDeviceData::saveLog() const
 {
 	return data.libdc_log;
 }
+#endif // SUBSURFACE_MOBILE
+
 
 device_data_t* DCDeviceData::internalData()
 {
