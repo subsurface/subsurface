@@ -22,7 +22,6 @@ public:
 
 private:
 	Ui::Smrtk2ssrfcWindow *ui;
-	QString lastUsedDir();
 	QString filter();
 	void updateLastUsedDir(const QString &s);
 	void closeCurrentFile();

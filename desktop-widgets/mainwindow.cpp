@@ -544,6 +544,18 @@ void MainWindow::on_actionNew_triggered()
 	on_actionClose_triggered();
 }
 
+static QString lastUsedDir()
+{
+	QSettings settings;
+	QString lastDir = QDir::homePath();
+
+	settings.beginGroup("FileDialog");
+	if (settings.contains("LastDir"))
+		if (QDir(settings.value("LastDir").toString()).exists())
+			lastDir = settings.value("LastDir").toString();
+	return lastDir;
+}
+
 void MainWindow::on_actionOpen_triggered()
 {
 	if (!okToClose(tr("Please save or cancel the current dive edit before opening a new file.")))
@@ -782,18 +794,6 @@ void MainWindow::on_actionClose_triggered()
 		ui.multiFilter->closeFilter();
 		recreateDiveList();
 	}
-}
-
-QString MainWindow::lastUsedDir()
-{
-	QSettings settings;
-	QString lastDir = QDir::homePath();
-
-	settings.beginGroup("FileDialog");
-	if (settings.contains("LastDir"))
-		if (QDir(settings.value("LastDir").toString()).exists())
-			lastDir = settings.value("LastDir").toString();
-	return lastDir;
 }
 
 void MainWindow::updateLastUsedDir(const QString &dir)
