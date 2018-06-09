@@ -24,7 +24,6 @@
 		<file>SsrfSwitch.qml</file>
 
 		<!-- ********** pictures ********** -->
-		<file alias="context-menu.png">icons/context-menu.png</file>
 		<file>icons/dive.jpg</file>
 		<file alias="nocloud.svg">icons/nocloud.svg</file>
 		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
