@@ -1723,3 +1723,138 @@ void QMLManager::setStatusbarColor(QColor)
 }
 
 #endif
+
+QString QMLManager::DC_vendor() const
+{
+	return m_device_data->vendor();
+}
+
+QString QMLManager::DC_product() const
+{
+	return m_device_data->product();
+}
+
+QString QMLManager::DC_devName() const
+{
+	return m_device_data->devName();
+}
+
+QString QMLManager::DC_devBluetoothName() const
+{
+	return m_device_data->devBluetoothName();
+}
+
+QString QMLManager::DC_descriptor() const
+{
+	return m_device_data->descriptor();
+}
+
+bool QMLManager::DC_forceDownload() const
+{
+	return m_device_data->forceDownload();
+}
+
+bool QMLManager::DC_bluetoothMode() const
+{
+	return m_device_data->bluetoothMode();
+}
+
+bool QMLManager::DC_createNewTrip() const
+{
+	return m_device_data->createNewTrip();
+}
+
+bool QMLManager::DC_saveDump() const
+{
+	return m_device_data->saveDump();
+}
+
+bool QMLManager::DC_saveLog() const
+{
+	return m_device_data->saveLog();
+}
+
+int QMLManager::DC_deviceId() const
+{
+	return m_device_data->deviceId();
+}
+
+int QMLManager::DC_diveId() const
+{
+	return m_device_data->diveId();
+}
+
+void QMLManager::DC_setDeviceId(int deviceId)
+{
+	m_device_data->setDeviceId(deviceId);
+}
+
+void QMLManager::DC_setDiveId(int diveId)
+{
+	m_device_data->setDiveId(diveId);
+}
+
+void QMLManager::DC_setVendor(const QString& vendor)
+{
+	m_device_data->setVendor(vendor);
+}
+
+void QMLManager::DC_setProduct(const QString& product)
+{
+	m_device_data->setProduct(product);
+}
+
+void QMLManager::DC_setDevName(const QString& devName)
+{
+	m_device_data->setDevName(devName);
+}
+
+void QMLManager::DC_setDevBluetoothName(const QString& devBluetoothName)
+{
+	m_device_data->setDevBluetoothName(devBluetoothName);
+}
+
+void QMLManager::DC_setBluetoothMode(bool mode)
+{
+	m_device_data->setBluetoothMode(mode);
+}
+
+void QMLManager::DC_setForceDownload(bool force)
+{
+	m_device_data->setForceDownload(force);
+}
+
+void QMLManager::DC_setCreateNewTrip(bool create)
+{
+	m_device_data->setCreateNewTrip(create);
+}
+
+void QMLManager::DC_setSaveDump(bool dumpMode)
+{
+	m_device_data->setSaveDump(dumpMode);
+}
+
+void QMLManager::DC_setSaveLog(bool saveLog)
+{
+	m_device_data->setSaveLog(saveLog);
+}
+
+QStringList QMLManager::getProductListFromVendor(const QString &vendor)
+{
+	return m_device_data->getProductListFromVendor(vendor);
+}
+
+int QMLManager::getMatchingAddress(const QString &vendor, const QString &product)
+{
+	return m_device_data->getMatchingAddress(vendor, product);
+}
+
+int QMLManager::getDetectedVendorIndex()
+{
+	return m_device_data->getDetectedVendorIndex();
+}
+
+int QMLManager::getDetectedProductIndex(const QString &currentVendorText)
+{
+	return m_device_data->getDetectedProductIndex(currentVendorText);
+}

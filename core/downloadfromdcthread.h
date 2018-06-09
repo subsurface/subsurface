@@ -99,11 +99,7 @@ public:
 	DownloadThread();
 	void run() override;
 
-#ifdef SUBSURFACE_MOBILE
-	Q_INVOKABLE DCDeviceData *data();
-#else
 	DCDeviceData *data();
-#endif // SUBSURFACE_MOBILE
 	QString error;
 
 private:

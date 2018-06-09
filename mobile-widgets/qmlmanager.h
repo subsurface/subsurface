@@ -48,10 +48,62 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool developer MEMBER m_developer WRITE setDeveloper NOTIFY developerChanged)
 	Q_PROPERTY(bool btEnabled MEMBER m_btEnabled WRITE setBtEnabled NOTIFY btEnabledChanged)
 
+	Q_PROPERTY(QString DC_vendor READ DC_vendor WRITE DC_setVendor)
+	Q_PROPERTY(QString DC_product READ DC_product WRITE DC_setProduct)
+	Q_PROPERTY(QString DC_devName READ DC_devName WRITE DC_setDevName)
+	Q_PROPERTY(QString DC_devBluetoothName READ DC_devBluetoothName WRITE DC_setDevBluetoothName)
+	Q_PROPERTY(QString descriptor READ DC_descriptor)
+	Q_PROPERTY(bool DC_forceDownload READ DC_forceDownload WRITE DC_setForceDownload)
+	Q_PROPERTY(bool DC_bluetoothMode READ DC_bluetoothMode WRITE DC_setBluetoothMode)
+	Q_PROPERTY(bool DC_createNewTrip READ DC_createNewTrip WRITE DC_setCreateNewTrip)
+	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
+	Q_PROPERTY(bool DC_saveLog READ DC_saveLog WRITE DC_setSaveLog)
+	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
+	Q_PROPERTY(int DC_diveId READ DC_diveId WRITE DC_setDiveId)
 public:
 	QMLManager();
 	~QMLManager();
 
+	QString DC_vendor() const;
+	void DC_setVendor(const QString& vendor);
+
+	QString DC_product() const;
+	void DC_setProduct(const QString& product);
+
+	QString DC_devName() const;
+	void DC_setDevName(const QString& devName);
+
+	QString DC_devBluetoothName() const;
+	void DC_setDevBluetoothName(const QString& devBluetoothName);
+
+	QString DC_descriptor() const;
+
+	bool DC_forceDownload() const;
+	void DC_setForceDownload(bool force);
+
+	bool DC_bluetoothMode() const;
+	void DC_setBluetoothMode(bool mode);
+
+	bool DC_createNewTrip() const;
+	void DC_setCreateNewTrip(bool create);
+
+	bool DC_saveDump() const;
+	void DC_setSaveDump(bool dumpMode);
+
+	bool DC_saveLog() const;
+	void DC_setSaveLog(bool saveLog);
+
+	int DC_deviceId() const;
+	void DC_setDeviceId(int deviceId);
+
+	int DC_diveId() const;
+	void DC_setDiveId(int diveId);
+
+	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
+	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
+	Q_INVOKABLE int getDetectedVendorIndex();
+	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
+public:
 	enum cloud_status_qml {
 		CS_UNKNOWN,
 		CS_INCORRECT_USER_PASSWD,
@@ -234,7 +286,7 @@ private:
 	bool checkDepth(DiveObjectHelper *myDive, struct dive *d, QString depth);
 	bool currentGitLocalOnly;
 	bool m_showPin;
-	DCDeviceData *m_device_data;
+	Q_INVOKABLE DCDeviceData *m_device_data;
 	QString m_progressMessage;
 	bool m_developer;
 	bool m_btEnabled;
