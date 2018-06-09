@@ -212,6 +212,11 @@ DCDeviceData::DCDeviceData(QObject *parent) : QObject(parent)
 	data.download_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
+	data.bluetooth_mode = true;
+	data.force_download = false;
+	data.create_new_trip = false;
+	data.libdc_dump = false;
+	data.libdc_log = false;
 	if (m_instance) {
 		qDebug() << "already have an instance of DCDevieData";
 		return;
