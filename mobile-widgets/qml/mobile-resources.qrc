@@ -26,9 +26,6 @@
 		<!-- ********** pictures ********** -->
 		<file alias="context-menu.png">icons/context-menu.png</file>
 		<file>icons/dive.jpg</file>
-		<file alias="menu-back.png">icons/menu-back.png</file>
-		<file alias="menu-edit.png">icons/menu-edit.png</file>
-		<file alias="main-menu.png">icons/main-menu.png</file>
 		<file alias="nocloud.svg">icons/nocloud.svg</file>
 		<file alias="subsurface-mobile-icon.png">../../icons/subsurface-mobile-icon.png</file>
 	</qresource>
