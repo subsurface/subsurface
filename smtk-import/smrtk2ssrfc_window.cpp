@@ -35,7 +35,7 @@ Smrtk2ssrfcWindow::~Smrtk2ssrfcWindow()
 	delete ui;
 }
 
-QString Smrtk2ssrfcWindow::lastUsedDir()
+static QString lastUsedDir()
 {
 	QSettings settings;
 	QString lastDir = QDir::homePath();

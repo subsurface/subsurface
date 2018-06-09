@@ -35,6 +35,7 @@ public:
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
 	QList<dive_trip_t *> selectedTrips();
+	static QString lastUsedImageDir();
 public
 slots:
 	void toggleColumnVisibilityByIndex();
@@ -56,7 +57,6 @@ slots:
 	void shiftTimes();
 	void loadImages();
 	void loadWebImages();
-	static QString lastUsedImageDir();
 
 signals:
 	void currentDiveChanged(int divenr);
