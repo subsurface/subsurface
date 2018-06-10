@@ -36,6 +36,7 @@ public:
 	void contextMenuEvent(QContextMenuEvent *event);
 	QList<dive_trip_t *> selectedTrips();
 	static QString lastUsedImageDir();
+	static void updateLastUsedImageDir(const QString &s);
 public
 slots:
 	void toggleColumnVisibilityByIndex();
@@ -80,7 +81,6 @@ private:
 	void restoreExpandedRows();
 	int lastVisibleColumn();
 	void selectTrip(dive_trip_t *trip);
-	void updateLastUsedImageDir(const QString &s);
 	void updateLastImageTimeOffset(int offset);
 	int lastImageTimeOffset();
 	void addToTrip(int delta);
