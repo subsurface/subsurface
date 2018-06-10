@@ -6,7 +6,6 @@ set -e
 
 doVersion=$1
 DEBUGRELEASE="Release"
-DRCONFIG="release"
 ARCHS="armv7 arm64 x86_64"
 TARGET="iphoneos"
 TARGET2="Device"
@@ -17,13 +16,16 @@ while [[ $# -gt 0 ]] ; do
 		-debug)
 			# build for debugging
 			DEBUGRELEASE="Debug"
-			DRCONFIG="qml_debug"
 			;;
 		-simulator)
 			# build for the simulator instead of for a device
 			ARCHS="x86_64"
 			TARGET="iphonesimulator"
 			TARGET2="simulator"
+			;;
+		-all)
+			# build both debug and release for all devices
+			DEBUGRELEASE="All"
 			;;
 		*)
 			echo "Unknown command line argument $arg"
@@ -242,10 +244,24 @@ done
 # in order to be able to use xcode without going through Qt Creator
 # call qmake directly
 
-BUILDX=build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${DEBUGRELEASE}
-mkdir -p ${BUILDX}
-cd ${BUILDX}
-${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile.pro \
-	-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
+if [ "$DEBUGRELEASE" = "All" ] ; then
+	BUILD_LOOP="Debug Release"
+else
+	BUILD_LOOP=$DEBUGRELEASE
+fi
+for BUILD_NOW in $BUILD_LOOP; do
+	echo "Building for $BUILD_NOW"
+	if [ "$BUILD_NOW" == "Debug" ] ; then
+		DRCONFIG="qml_debug"
+	else
+		DRCONFIG="release"
+	fi
+	BUILDX=build-Subsurface-mobile-Qt_$(echo ${QT_VERSION} | tr . _)_for_iOS-${BUILD_NOW}
+	mkdir -p ${BUILDX}
+	pushd ${BUILDX}
+	${IOS_QT}/${QT_VERSION}/ios/bin/qmake ../Subsurface-mobile.pro \
+		-spec macx-ios-clang CONFIG+=$TARGET CONFIG+=$TARGET2 CONFIG+=$DRCONFIG
 
-make qmake_all
+	make qmake_all
+	popd
+done
