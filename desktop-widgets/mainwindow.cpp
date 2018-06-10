@@ -701,9 +701,9 @@ void MainWindow::on_actionCloudOnline_triggered()
 	updateCloudOnlineStatus();
 }
 
-static void learnImageDirs(QStringList dirnames)
+static void learnImageDirs(QStringList dirnames, QVector<QString> imageFilenames)
 {
-	learnImages(dirnames, 10);
+	learnImages(dirnames, 10, imageFilenames);
 	DivePictureModel::instance()->updateDivePictures();
 }
 
@@ -720,7 +720,13 @@ void MainWindow::on_actionHash_images_triggered()
 		dirnames = dialog.selectedFiles();
 	if (dirnames.isEmpty())
 		return;
-	future = QtConcurrent::run(learnImageDirs,dirnames);
+	QVector<QString> imageFilenames;
+	int i;
+	struct dive *dive;
+	for_each_dive (i, dive)
+		FOR_EACH_PICTURE(dive)
+			imageFilenames.append(QString(picture->filename));
+	future = QtConcurrent::run(learnImageDirs, dirnames, imageFilenames);
 	MainWindow::instance()->getNotificationWidget()->showNotification(tr("Scanning images...(this can take a while)"), KMessageWidget::Information);
 	MainWindow::instance()->getNotificationWidget()->setFuture(future);
 

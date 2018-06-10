@@ -1042,27 +1042,10 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 	}
 }
 
-QHash<QString, QByteArray> hashOf;
-QMutex hashOfMutex;
-QHash<QString, QString> localFilenameOf;
+static QMutex hashOfMutex;
+static QHash<QString, QString> localFilenameOf;
 
-static QByteArray getHash(const QString &filename)
-{
-	QMutexLocker locker(&hashOfMutex);
-	return hashOf[filename];
-}
-
-QString hashString(const char *filename)
-{
-	return getHash(QString(filename)).toHex();
-}
-
-extern "C" char * hashstring(const char *filename)
-{
-	return strdup(qPrintable(hashString(filename)));
-}
-
-const QString hashfile_name()
+static const QString hashfile_name()
 {
 	return QString(system_default_directory()).append("/hashes");
 }
@@ -1137,7 +1120,7 @@ struct HashToFile {
 
 // During a transition period, convert the hash->localFilename into a canonicalFilename->localFilename.
 // TODO: remove this code in due course
-static void convertLocalFilename(const QHash<QByteArray, QString> &hashToLocal)
+static void convertLocalFilename(const QHash<QString, QByteArray> &hashOf, const QHash<QByteArray, QString> &hashToLocal)
 {
 	// Bail out early if there is nothing to do
 	if (hashToLocal.isEmpty())
@@ -1172,25 +1155,20 @@ void read_hashes()
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
 		QHash<QByteArray, QString> localFilenameByHash;
+		QHash<QString, QByteArray> hashOf;
 		stream >> localFilenameByHash;		// For backwards compatibility
-		QMutexLocker locker(&hashOfMutex);
-		stream >> hashOf;
-		locker.unlock();
+		stream >> hashOf;			// For backwards compatibility
 		QHash <QString, QImage> thumbnailCache;
 		stream >> thumbnailCache;		// For backwards compatibility
+		QMutexLocker locker(&hashOfMutex);
 		stream >> localFilenameOf;
+		locker.unlock();
 		hashfile.close();
 		convertThumbnails(thumbnailCache);
-		convertLocalFilename(localFilenameByHash);
+		convertLocalFilename(hashOf, localFilenameByHash);
 	}
 	QMutexLocker locker(&hashOfMutex);
 	localFilenameOf.remove("");
-	QMutableHashIterator<QString, QByteArray> iter(hashOf);
-	while (iter.hasNext()) {
-		iter.next();
-		if (iter.value().isEmpty())
-			iter.remove();
-	}
 
 	// Make sure that the thumbnail directory exists
 	QDir().mkpath(thumbnailDir());
@@ -1204,38 +1182,12 @@ void write_hashes()
 	if (hashfile.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&hashfile);
 		stream << QHash<QByteArray, QString>();	// Empty hash to filename - for backwards compatibility
-		stream << hashOf;
+		stream << QHash<QString, QByteArray>(); // Empty hashes - for backwards compatibility
 		stream << QHash<QString,QImage>();	// Empty thumbnailCache - for backwards compatibility
 		stream << localFilenameOf;
 		hashfile.commit();
 	} else {
 		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();
-	}
-}
-
-// Add hash if not already known
-extern "C" void register_hash(const char *filename, const char *hash)
-{
-	if (empty_string(filename) || empty_string(hash))
-		return;
-	QString filenameString(filename);
-
-	QMutexLocker locker(&hashOfMutex);
-	if (!hashOf.contains(filenameString)) {
-		QByteArray hashBuf = QByteArray::fromHex(hash);
-		hashOf[filename] =  hashBuf;
-	}
-}
-
-QByteArray hashFile(const QString &filename)
-{
-	QCryptographicHash hash(QCryptographicHash::Sha1);
-	QFile imagefile(filename);
-	if (imagefile.exists() && imagefile.open(QIODevice::ReadOnly)) {
-		hash.addData(&imagefile);
-		return hash.result();
-	} else {
-		return QByteArray();
 	}
 }
 
@@ -1255,18 +1207,6 @@ QString localFilePath(const QString &originalFilename)
 {
 	QMutexLocker locker(&hashOfMutex);
 	return localFilenameOf.value(originalFilename, originalFilename);
-}
-
-// This works on a copy of the string, because it runs in asynchronous context
-void hashPicture(QString filename)
-{
-	QByteArray oldHash = getHash(filename);
-	QByteArray hash = hashFile(localFilePath(filename));
-	if (!hash.isEmpty() && hash != oldHash) {
-		QMutexLocker locker(&hashOfMutex);
-		hashOf[filename] =  hash;
-		mark_divelist_changed(true);
-	}
 }
 
 QStringList imageExtensionFilters() {
@@ -1312,19 +1252,19 @@ struct ImageMatch {
 	int score;
 };
 
-static void learnImage(const QString &filename, QMap<QString, ImageMatch> &matches)
+static void learnImage(const QString &filename, QMap<QString, ImageMatch> &matches, const QVector<QString> &imageFilenames)
 {
 	// Find the original filenames with the highest match-score
 	QStringList newMatches;
-	QByteArray hash = hashFile(filename);
 	int bestScore = 1;
-	for (auto it = hashOf.cbegin(); it != hashOf.cend(); ++it) {
-		int score = matchFilename(filename, it.key());
+
+	for (const QString &originalFilename: imageFilenames) {
+		int score = matchFilename(filename, originalFilename);
 		if (score < bestScore)
 			continue;
 		if (score > bestScore)
 			newMatches.clear();
-		newMatches.append(it.key());
+		newMatches.append(originalFilename);
 		bestScore = score;
 	}
 
@@ -1338,7 +1278,7 @@ static void learnImage(const QString &filename, QMap<QString, ImageMatch> &match
 	}
 }
 
-void learnImages(const QStringList &dirNames, int max_recursions)
+void learnImages(const QStringList &dirNames, int max_recursions, const QVector<QString> &imageFilenames)
 {
 	QStringList filters = imageExtensionFilters();
 	QMap<QString, ImageMatch> matches;
@@ -1354,7 +1294,7 @@ void learnImages(const QStringList &dirNames, int max_recursions)
 		QDir dir(stack.last().takeLast());
 
 		for (const QString &file: dir.entryList(filters, QDir::Files))
-			learnImage(dir.absoluteFilePath(file), matches);
+			learnImage(dir.absoluteFilePath(file), matches, imageFilenames);
 		if (stack.size() <= max_recursions) {
 			stack.append(QStringList());
 			for (const QString &dirname: dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs))

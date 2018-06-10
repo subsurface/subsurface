@@ -180,7 +180,7 @@ void print_files()
 	printf("Cloud URL: %s\n", filename);
 	free((void *)filename);
 	char *tmp = hashfile_name_string();
-	printf("Image hashes: %s\n", tmp);
+	printf("Image filename table: %s\n", tmp);
 	free(tmp);
 	tmp = picturedir_string();
 	printf("Local picture directory: %s\n\n", tmp);
