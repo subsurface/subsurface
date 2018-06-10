@@ -28,7 +28,6 @@ QString get_taglist_string(struct tag_entry *tag_list);
 void read_hashes();
 void write_hashes();
 QString thumbnailFileName(const QString &filename);
-void learnImages(const QStringList &dirNames, int max_recursions, const QVector<QString> &imageFilenames);
 void learnPictureFilename(const QString &originalName, const QString &localName);
 QString localFilePath(const QString &originalFilename);
 weight_t string_to_weight(const char *str);

@@ -42,6 +42,7 @@
 #include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/usersurvey.h"
+#include "desktop-widgets/findmovedimagesdialog.h"
 #include "core/divesitehelpers.h"
 #include "core/windowtitleupdate.h"
 #include "desktop-widgets/locationinformation.h"
@@ -108,7 +109,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	helpView(0),
 #endif
 	state(VIEWALL),
-	survey(0)
+	survey(0),
+	findMovedImagesDialog(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -699,37 +701,6 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 	setTitle();
 	updateCloudOnlineStatus();
-}
-
-static void learnImageDirs(QStringList dirnames, QVector<QString> imageFilenames)
-{
-	learnImages(dirnames, 10, imageFilenames);
-	DivePictureModel::instance()->updateDivePictures();
-}
-
-void MainWindow::on_actionHash_images_triggered()
-{
-	QFuture<void> future;
-	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir());
-	dialog.setFileMode(QFileDialog::Directory);
-	dialog.setViewMode(QFileDialog::Detail);
-	dialog.setLabelText(QFileDialog::Accept, tr("Scan"));
-	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
-	QStringList dirnames;
-	if (dialog.exec())
-		dirnames = dialog.selectedFiles();
-	if (dirnames.isEmpty())
-		return;
-	QVector<QString> imageFilenames;
-	int i;
-	struct dive *dive;
-	for_each_dive (i, dive)
-		FOR_EACH_PICTURE(dive)
-			imageFilenames.append(QString(picture->filename));
-	future = QtConcurrent::run(learnImageDirs, dirnames, imageFilenames);
-	MainWindow::instance()->getNotificationWidget()->showNotification(tr("Scanning images...(this can take a while)"), KMessageWidget::Information);
-	MainWindow::instance()->getNotificationWidget()->setFuture(future);
-
 }
 
 ProfileWidget2 *MainWindow::graphics() const
@@ -1373,6 +1344,13 @@ void MainWindow::on_actionUserSurvey_triggered()
 	if(!survey)
 		survey = new UserSurvey(this);
 	survey->show();
+}
+
+void MainWindow::on_actionHash_images_triggered()
+{
+	if(!findMovedImagesDialog)
+		findMovedImagesDialog = new FindMovedImagesDialog(this);
+	findMovedImagesDialog->show();
 }
 
 QString MainWindow::filter_open()
