@@ -61,7 +61,6 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 				imageFile.waitForBytesWritten(-1);
 				imageFile.close();
 				learnPictureFilename(filename, imageFile.fileName());
-				hashPicture(filename);	// hashPicture transforms canonical into local filename
 			}
 			emit loaded(filename);
 		}
@@ -83,10 +82,6 @@ static std::pair<QImage, bool> fetchImage(const QString &filename, const QString
 	QUrl url = QUrl::fromUserInput(filename);
 	if (url.isLocalFile()) {
 		thumb.load(url.toLocalFile());
-		// If we loaded successfully, make sure the hash is up to date.
-		// Note that hashPicture() takes the *original* filename.
-		if (!thumb.isNull())
-			hashPicture(originalFilename);
 	} else if (tryDownload) {
 		// This has to be done in UI main thread, because QNetworkManager refuses
 		// to treat requests from other threads. invokeMethod() is Qt's way of calling a
@@ -247,8 +242,7 @@ void Thumbnailer::processItem(QString filename, bool tryDownload)
 
 void Thumbnailer::imageDownloaded(QString filename)
 {
-	// Image was downloaded and the filename connected with a hash.
-	// Try thumbnailing again.
+	// Image was downloaded -> try thumbnailing again.
 	QMutexLocker l(&lock);
 	workingOn[filename] = QtConcurrent::run(&pool, [this, filename]() { processItem(filename, false); });
 }

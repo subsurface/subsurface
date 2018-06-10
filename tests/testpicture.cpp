@@ -44,12 +44,8 @@ void TestPicture::addPicture()
 	QVERIFY(pic1->longitude.udeg == 11334500);
 	QVERIFY(pic2->offset.seconds == 1321);
 
-	hashPicture(pic1->filename);
-	hashPicture(pic2->filename);
 	learnPictureFilename(pic1->filename, PIC1_NAME);
 	learnPictureFilename(pic2->filename, PIC2_NAME);
-	QCOMPARE(hashstring(pic1->filename), PIC1_HASH);
-	QCOMPARE(hashstring(pic2->filename), PIC2_HASH);
 	QCOMPARE(localFilePath(pic1->filename), QString(PIC1_NAME));
 	QCOMPARE(localFilePath(pic2->filename), QString(PIC2_NAME));
 }

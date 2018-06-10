@@ -953,15 +953,6 @@ static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
 	pic->longitude = parse_degrees(line, &line);
 }
 
-static void parse_picture_hash(char *line, struct membuffer *str, void *_pic)
-{
-	UNUSED(line);
-	struct picture *pic = _pic;
-	char *hash = get_utf8(str);
-	register_hash(pic->filename, get_utf8(str));
-	free(hash);
-}
-
 /* These need to be sorted! */
 struct keyword_action dc_action[] = {
 #undef D
@@ -1035,7 +1026,7 @@ static void settings_parser(char *line, struct membuffer *str, void *_unused)
 static struct keyword_action picture_action[] = {
 #undef D
 #define D(x) { #x, parse_picture_ ## x }
-	D(filename), D(gps), D(hash)
+	D(filename), D(gps)
 };
 
 static void picture_parser(char *line, struct membuffer *str, void *_pic)
