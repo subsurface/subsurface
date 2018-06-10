@@ -79,9 +79,9 @@ Kirigami.Page {
 					elide: Text.ElideRight
 				}
 				onCurrentTextChanged: {
-					comboProduct.model = downloadThread.data().getProductListFromVendor(currentText)
-					if (currentIndex == downloadThread.data().getDetectedVendorIndex())
-						comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(currentText)
+					comboProduct.model = manager.getProductListFromVendor(currentText)
+					if (currentIndex == manager.getDetectedVendorIndex())
+						comboProduct.currentIndex = manager.getDetectedProductIndex(currentText)
 				}
 			}
 			Controls.Label { text: qsTr(" Dive Computer:") }
@@ -109,13 +109,13 @@ Kirigami.Page {
 					elide: Text.ElideRight
 				}
 				onCurrentTextChanged: {
-					var newIdx = downloadThread.data().getMatchingAddress(comboVendor.currentText, currentText)
+					var newIdx = manager.getMatchingAddress(comboVendor.currentText, currentText)
 					if (newIdx != -1)
 						comboConnection.currentIndex = newIdx
 				}
 
 				onModelChanged: {
-					currentIndex = downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
+					currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
 				}
 			}
 			Controls.Label { text: qsTr(" Connection:") }
@@ -294,9 +294,9 @@ Kirigami.Page {
 
 		onVisibleChanged: {
 			if (visible) {
-				comboVendor.currentIndex = downloadThread.data().getDetectedVendorIndex()
-				comboProduct.currentIndex = downloadThread.data().getDetectedProductIndex(comboVendor.currentText)
-				comboDevice.currentIndex = downloadThread.data().getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
+				comboVendor.currentIndex = manager.getDetectedVendorIndex()
+				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
+				comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
 				manager.DC_vendor = comboVendor.currentText
 				manager.DC_product = comboProduct.currentText
 				manager.DC_devName = comboConnection.currentText
