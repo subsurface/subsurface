@@ -24,6 +24,7 @@ apps:
     - home
     - network
     - opengl
+    - raw-usb
     - unity7
 
 parts:
