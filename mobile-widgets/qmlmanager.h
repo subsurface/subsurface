@@ -17,6 +17,8 @@
 #include "qt-models/completionmodels.h"
 #include "qt-models/divelocationmodel.h"
 
+#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
+
 class QMLManager : public QObject {
 	Q_OBJECT
 	Q_ENUMS(cloud_status_qml)

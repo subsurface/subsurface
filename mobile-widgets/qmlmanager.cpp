@@ -39,8 +39,6 @@ QMLManager *QMLManager::m_instance = NULL;
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
 #define END_FONT QLatin1Literal("</font>")
 
-#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
-
 extern "C" void showErrorFromC(char *buf)
 {
 	QString error(buf);
