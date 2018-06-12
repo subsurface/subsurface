@@ -29,16 +29,8 @@ ImageDownloader::ImageDownloader()
 	connect(&manager, &QNetworkAccessManager::finished, this, &ImageDownloader::saveImage);
 }
 
-void ImageDownloader::load(QString filename)
+void ImageDownloader::load(QUrl url, QString filename)
 {
-	QUrl url = QUrl::fromUserInput(filename);
-
-	// If this is a file, we tried previously -> don't bother trying it again
-	if (url.scheme() == "file" || !url.isValid()) {
-		emit failed(filename);
-		return;
-	}
-
 	QNetworkRequest request(url);
 	request.setAttribute(QNetworkRequest::User, filename);
 	manager.get(request);
@@ -73,21 +65,11 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static void loadPicture(QString filename)
+static void loadPicture(QUrl url, QString filename)
 {
 	// This has to be done in UI main thread, because QNetworkManager refuses
 	// to treat requests from other threads.
-	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QString, filename));
-}
-
-// Overwrite QImage::load() so that we can perform better error reporting.
-static QImage loadImage(const QString &fileName, const char *format = nullptr)
-{
-	QImageReader reader(fileName, format);
-	QImage res = reader.read();
-	if (res.isNull())
-		qInfo() << "Error loading image" << fileName << (int)reader.error() << reader.errorString();
-	return res;
+	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QUrl, url), Q_ARG(QString, filename));
 }
 
 // Returns: thumbnail, still loading
@@ -98,26 +80,30 @@ static std::pair<QImage,bool> getHashedImage(const QString &file_in, bool tryDow
 	bool stillLoading = false;
 	QUrl url = QUrl::fromUserInput(localFilePath(file));
 	if (url.isLocalFile())
-		thumb = loadImage(url.toLocalFile());
+		thumb.load(url.toLocalFile());
 	if (!thumb.isNull()) {
 		// We loaded successfully. Now, make sure hash is up to date.
 		hashPicture(file);
 	} else if (tryDownload) {
 		// This did not load anything. Let's try to get the image from other sources
-		QString filenameLocal = localFilePath(qPrintable(file));
-		qDebug() << QStringLiteral("Translated filename: %1 -> %2").arg(file, filenameLocal);
+		QString filenameLocal = localFilePath(file);
 		// Load locally from translated file name if it is different
 		if (filenameLocal != file)
-			thumb = loadImage(filenameLocal);
+			thumb.load(filenameLocal);
 		if (!thumb.isNull()) {
 			// Make sure the hash still matches the image file
 			hashPicture(filenameLocal);
 		} else {
 			// Interpret filename as URL
-			loadPicture(filenameLocal);
-			stillLoading = true;
+			QUrl url = QUrl::fromUserInput(filenameLocal);
+			if (!url.isLocalFile() && url.isValid()) {
+				loadPicture(url, file);
+				stillLoading = true;
+			}
 		}
 	}
+	if (thumb.isNull() && !stillLoading)
+		qInfo() << "Error loading image" << file << "[local:" << localFilePath(file) << "]";
 	return { thumb, stillLoading };
 }
 
