@@ -492,6 +492,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
+	QMLPrefs {
+		id: prefs
+	}
+
 	QMLManager {
 		id: manager
 	}
