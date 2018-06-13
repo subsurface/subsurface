@@ -223,8 +223,6 @@ enum cloud_status {
 
 extern struct preferences prefs, default_prefs, git_prefs;
 
-#define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
-
 extern const char *system_divelist_default_font;
 extern double system_divelist_default_font_size;
 
