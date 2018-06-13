@@ -59,106 +59,147 @@ typedef struct {
 	int download_mode;
 } dive_computer_prefs_t;
 
+// ********** PREFERENCES **********
+// This struct is kept global for all of ssrf
+// most of the fields are loaded from git as
+// part of the dives, but some fields are loaded
+// from local storage (QSettings)
+// The struct is divided in groups (sorted)
+// and elements within the group is sorted
+//
+// When adding items to this list, please keep
+// the list sorted (easier to find something)
 struct preferences {
-	const char *divelist_font;
-	const char *default_filename;
-	const char *default_cylinder;
+	// ********** Animations **********
+	int	animation_speed;
+
+	// ********** CloudStorage **********
 	const char *cloud_base_url;
 	const char *cloud_git_url;
-	const char *time_format;
-	const char *date_format;
-	const char *date_format_short;
-	bool time_format_override;
-	bool date_format_override;
-	double font_size;
-	partial_pressure_graphs_t pp_graphs;
-	bool mod;
-	double modpO2;
-	bool ead;
-	bool dcceiling;
-	bool redceiling;
-	bool calcceiling;
-	bool calcceiling3m;
-	bool calcalltissues;
-	bool calcndltts;
-	short gflow;
-	short gfhigh;
-	int animation_speed;
-	bool gf_low_at_maxdepth;
-	bool show_ccr_setpoint;
-	bool show_ccr_sensors;
-	bool show_scr_ocpo2;
-	bool display_invalid_dives;
-	short unit_system;
-	struct units units;
-	bool coordinates_traditional;
-	bool show_sac;
-	bool display_unused_tanks;
-	bool show_average_depth;
-	bool show_icd;
-	bool zoomed_plot;
-	bool hrgraph;
-	bool percentagegraph;
-	bool rulergraph;
-	bool tankbar;
-	bool save_userid_local;
-	const char *userid;
-	int ascrate75; // All rates in mm / sec
-	int ascrate50;
-	int ascratestops;
-	int ascratelast6m;
-	int descrate;
-	int sacfactor;
-	int problemsolvingtime;
-	int bottompo2;
-	int decopo2;
-	enum deco_mode display_deco_mode;
-	depth_t bestmixend;
-	int proxy_type;
-	const char *proxy_host;
-	int proxy_port;
-	bool proxy_auth;
-	const char *proxy_user;
-	const char *proxy_pass;
-	bool doo2breaks;
-	bool drop_stone_mode;
-	bool last_stop;   // At 6m?
-	bool verbatim_plan;
-	bool display_runtime;
-	bool display_duration;
-	bool display_transitions;
-	bool display_variations;
-	bool safetystop;
-	bool switch_at_req_stop;
-	int reserve_gas;
-	int min_switch_duration; // seconds
-	int bottomsac;
-	int decosac;
-	int o2consumption; // ml per min
-	int pscr_ratio; // dump ratio times 1000
-	int defaultsetpoint; // default setpoint in mbar
-	bool show_pictures_in_profile;
-	bool use_default_file;
-	short default_file_behavior;
-	facebook_prefs_t facebook;
-	const char *cloud_storage_password;
-	const char *cloud_storage_newpassword;
 	const char *cloud_storage_email;
 	const char *cloud_storage_email_encoded;
-	bool save_password_local;
-	short cloud_verification_status;
-	geocoding_prefs_t geocoding;
-	enum deco_mode planner_deco_mode;
-	short vpmb_conservatism;
-	int time_threshold;
-	int distance_threshold;
-	bool git_local_only;
-	short cloud_timeout;
-	bool auto_recalculate_thumbnails;
-	locale_prefs_t locale; //: TODO: move the rest of locale based info here.
-	update_manager_prefs_t update_manager;
+	const char *cloud_storage_newpassword;
+	const char *cloud_storage_password;
+	const char *cloud_storage_pin;
+	short		cloud_timeout;
+	short		cloud_verification_status;
+	bool		git_local_only;
+	bool		save_password_local;
+	bool		save_userid_local;
+	const char *userid;
+
+	// ********** DiveComputer **********
 	dive_computer_prefs_t dive_computer;
+
+	// ********** Display **********
+	bool		display_invalid_dives;
+	const char *divelist_font;
+	double		font_size;
+	bool		showDeveloper;
+ 	const char *theme;
+
+	// ********** Facebook **********
+	facebook_prefs_t facebook;
+
+	// ********** General **********
+	bool		auto_recalculate_thumbnails;
+	int			defaultsetpoint; // default setpoint in mbar
+	const char *default_cylinder;
+	const char *default_filename;
+	short		default_file_behavior;
+	int			o2consumption; // ml per min
+	int			pscr_ratio; // dump ratio times 1000
+	bool		use_default_file;
+
+	// ********** Geocoding **********
+	geocoding_prefs_t geocoding;
+
+	// ********** Language **********
+	const char *	date_format;
+	bool			date_format_override;
+	const char *	date_format_short;
+	locale_prefs_t	locale; //: TODO: move the rest of locale based info here.
+	const char *	time_format;
+	bool			time_format_override;
+
+	// ********** LocationService **********
+	int	time_threshold;
+	int	distance_threshold;
+
+	// ********** Network **********
+	bool		proxy_auth;
+	const char *proxy_host;
+	int			proxy_port;
+	int			proxy_type;
+	const char *proxy_user;
+	const char *proxy_pass;
+
+	// ********** Planner **********
+	int				ascratelast6m;
+	int				ascratestops;
+	int				ascrate50;
+	int				ascrate75; // All rates in mm / sec
+	depth_t			bestmixend;
+	int				bottompo2;
+	int				bottomsac;
+	int				decopo2;
+	int				decosac;
+	int				descrate;
+	bool			display_duration;
+	bool			display_runtime;
+	bool			display_transitions;
+	bool			display_variations;
+	bool			doo2breaks;
+	bool			drop_stone_mode;
+	bool			last_stop;   // At 6m?
+	int				min_switch_duration; // seconds
+	enum deco_mode	planner_deco_mode;
+	int				problemsolvingtime;
+	int				reserve_gas;
+	int				sacfactor;
+	bool			safetystop;
+	bool			switch_at_req_stop;
+	bool			verbatim_plan;
+
+	// ********** TecDetails **********
+	bool						calcalltissues;
+	bool						calcceiling;
+	bool						calcceiling3m;
+	bool						calcndltts;
+	bool						dcceiling;
+	enum deco_mode				display_deco_mode;
+	bool						display_unused_tanks;
+	bool						ead;
+	short						gfhigh;
+	short						gflow;
+	bool						gf_low_at_maxdepth;
+	bool						hrgraph;
+	bool						mod;
+	double						modpO2;
+	bool						percentagegraph;
+	partial_pressure_graphs_t	pp_graphs;
+	bool						redceiling;
+	bool						rulergraph;
+	bool						show_average_depth;
+	bool						show_ccr_sensors;
+	bool						show_ccr_setpoint;
+	bool						show_icd;
+	bool						show_pictures_in_profile;
+	bool						show_sac;
+	bool						show_scr_ocpo2;
+	bool						tankbar;
+	short						vpmb_conservatism;
+	bool						zoomed_plot;
+
+	// ********** Units **********
+	bool			coordinates_traditional;
+	short			unit_system;
+	struct units	units;
+
+	// ********** UpdateManager **********
+	update_manager_prefs_t update_manager;
 };
+
 enum unit_system_values {
 	METRIC,
 	IMPERIAL,
@@ -181,8 +222,6 @@ enum cloud_status {
 };
 
 extern struct preferences prefs, default_prefs, git_prefs;
-
-#define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
 extern const char *system_divelist_default_font;
 extern double system_divelist_default_font_size;
