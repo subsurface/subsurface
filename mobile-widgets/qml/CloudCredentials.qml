@@ -15,9 +15,9 @@ Item {
 	property string password: password.text;
 
 	function saveCredentials() {
-		manager.cloudUserName = login.text
-		manager.cloudPassword = password.text
-		manager.cloudPin = pin.text
+		prefs.cloudUserName = login.text
+		prefs.cloudPassword = password.text
+		prefs.cloudPin = pin.text
 		manager.saveCloudCredentials()
 	}
 
@@ -60,7 +60,7 @@ Item {
 
 		Controls.TextField {
 			id: login
-			text: manager.cloudUserName
+			text: prefs.cloudUserName
 			visible: !rootItem.showPin
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
@@ -76,7 +76,7 @@ Item {
 
 		Controls.TextField {
 			id: password
-			text: manager.cloudPassword
+			text: prefs.cloudPassword
 			visible: !rootItem.showPin
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
@@ -146,7 +146,7 @@ Item {
 				text: qsTr("No cloud mode")
 				onClicked: {
 					manager.syncToCloud = false
-					manager.credentialStatus = QMLManager.CS_NOCLOUD
+					manager.credentialStatus = QMLPrefs.CS_NOCLOUD
 					manager.saveCloudCredentials()
 					manager.openNoCloudRepo()
 				}

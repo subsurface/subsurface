@@ -20,11 +20,11 @@ Kirigami.ApplicationWindow {
 		maximumHeight: Kirigami.Units.gridUnit * 2
 		background: Rectangle { color: subsurfaceTheme.primaryColor }
 	}
-	property alias oldStatus: manager.oldStatus
+	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
 	property alias syncToCloud: manager.syncToCloud
 	property alias locationServiceEnabled: manager.locationServiceEnabled
-	property alias showPin: manager.showPin
+	property alias showPin: prefs.showPin
 	onNotificationTextChanged: {
 		if (notificationText != "") {
 			// there's a risk that we have a >5 second gap in update events;
@@ -119,12 +119,12 @@ Kirigami.ApplicationWindow {
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
-					manager.appendTextToLog("requested dive list with credential status " + manager.credentialStatus)
-					if (manager.credentialStatus == QMLManager.CS_UNKNOWN) {
+					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
+					if (prefs.credentialStatus == QMLPrefs.CS_UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == QMLManager.CS_VERIFIED) {
-							manager.credentialStatus = oldStatus
+						if (oldStatus == QMLPrefs.CS_VERIFIED) {
+							prefs.credentialStatus = oldStatus
 						}
 					}
 					returnTopPage()
@@ -150,7 +150,8 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
-					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
+					enabled: prefs.credentialStatus === QMLPrefs.CS_VERIFIED ||
+							prefs.credentialStatus === QMLPrefs.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -184,13 +185,14 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: manager.credentialStatus === QMLManager.CS_VERIFIED || manager.credentialStatus === QMLManager.CS_NOCLOUD
+					enabled: prefs.credentialStatus === QMLPrefs.CS_VERIFIED ||
+							prefs.credentialStatus === QMLPrefs.CS_NOCLOUD
 					onTriggered: {
-						if (manager.credentialStatus === QMLManager.CS_NOCLOUD) {
+						if (prefs.credentialStatus === QMLPrefs.CS_NOCLOUD) {
 							returnTopPage()
-							oldStatus = manager.credentialStatus
+							oldStatus = prefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
-							manager.credentialStatus = QMLManager.CS_UNKNOWN
+							prefs.credentialStatus = QMLPrefs.CS_UNKNOWN
 							globalDrawer.close()
 						} else {
 							globalDrawer.close()
@@ -205,7 +207,7 @@ Kirigami.ApplicationWindow {
 					name: syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					enabled: manager.credentialStatus !== QMLManager.CS_NOCLOUD
+					enabled: prefs.credentialStatus !== QMLPrefs.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
@@ -307,7 +309,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/ic_adb.svg"
 				}
 				text: qsTr("Developer")
-				visible: manager.developer
+				visible: prefs.developer
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {
@@ -452,7 +454,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
 			// this needs to pick the theme from persistent preference settings
-			var theme = manager.theme
+			var theme = prefs.theme
 			if (theme == "Blue")
 				blueTheme()
 			else if (theme == "Pink")

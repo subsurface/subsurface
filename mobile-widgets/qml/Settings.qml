@@ -42,7 +42,8 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: manager.credentialStatus === QMLManager.CS_NOCLOUD ? qsTr("Not applicable") : manager.cloudUserName
+				text: prefs.credentialStatus === QMLPrefs.CS_NOCLOUD ? qsTr("Not applicable") :
+																		prefs.cloudUserName
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -63,7 +64,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: describe[manager.credentialStatus]
+				text: describe[prefs.credentialStatus]
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -136,8 +137,8 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Blue"
 				onClicked: {
 					blueTheme()
-					manager.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					prefs.theme = subsurfaceTheme.currentTheme
+					prefs.savePreferences()
 				}
 			}
 
@@ -189,8 +190,8 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Pink"
 				onClicked: {
 					pinkTheme()
-					manager.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					prefs.theme = subsurfaceTheme.currentTheme
+					prefs.savePreferences()
 				}
 			}
 
@@ -241,8 +242,8 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Dark"
 				onClicked: {
 					darkTheme()
-					manager.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					prefs.theme = subsurfaceTheme.currentTheme
+					prefs.savePreferences()
 				}
 			}
 		}
@@ -275,11 +276,11 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: distanceThreshold
-				text: manager.distanceThreshold
+				text: prefs.distanceThreshold
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					manager.distanceThreshold = distanceThreshold.text
-					manager.savePreferences()
+					prefs.distanceThreshold = distanceThreshold.text
+					prefs.savePreferences()
 				}
 			}
 
@@ -291,11 +292,11 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: timeThreshold
-				text: manager.timeThreshold
+				text: prefs.timeThreshold
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					manager.timeThreshold = timeThreshold.text
-					manager.savePreferences()
+					prefs.timeThreshold = timeThreshold.text
+					prefs.savePreferences()
 				}
 			}
 
@@ -325,10 +326,10 @@ Kirigami.ScrollablePage {
 			}
 			SsrfSwitch {
 				id: developerButton
-				checked: manager.developer
+				checked: prefs.developer
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					manager.developer = checked
+					prefs.developer = checked
 				}
 			}
 		}
