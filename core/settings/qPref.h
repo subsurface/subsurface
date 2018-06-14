@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
-#ifndef QMLPREFS_H
-#define QMLPREFS_H
+#ifndef QPREF_H
+#define QPREF_H
 
 #include <QObject>
 
 
-class QMLPrefs : public QObject {
+class qPref : public QObject {
 	Q_OBJECT
 	Q_ENUMS(cloud_status_qml)
 	Q_PROPERTY(QString cloudPassword
@@ -50,10 +50,10 @@ class QMLPrefs : public QObject {
 				NOTIFY timeThresholdChanged)
 
 public:
-	QMLPrefs();
-	~QMLPrefs();
+	qPref();
+	~qPref();
 
-	static QMLPrefs *instance();
+	static qPref *instance();
 
 	enum cloud_status_qml {
 		CS_UNKNOWN,
@@ -86,8 +86,8 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 
-	int  timeThreshold() const;
-	void setTimeThreshold(int time);
+	int		timeThreshold() const;
+	void	setTimeThreshold(int time);
 
 	const QString theme() const;
 	void setTheme(QString theme);
@@ -103,7 +103,7 @@ private:
 	cloud_status_qml m_credentialStatus;
 	bool m_developer;
 	int m_distanceThreshold;
-	static QMLPrefs *m_instance;
+	static qPref *m_instance;
 	cloud_status_qml m_oldStatus;
 	bool m_showPin;
 	int m_timeThreshold;
@@ -120,5 +120,7 @@ signals:
 	void themeChanged();
 	void timeThresholdChanged();
 };
+
+#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
 #endif

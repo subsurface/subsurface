@@ -80,8 +80,8 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
+	../../core/settings/qPref.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
-	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
 	../../qt-models/gpslistmodel.cpp \
@@ -183,11 +183,11 @@ HEADERS += \
 	../../core/btdiscovery.h \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
+	../../core/settings/qPref.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
 	../../mobile-widgets/qmlmanager.h \
-	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \
 	../../qt-models/divelistmodel.h \
 	../../qt-models/diveplotdatamodel.h \

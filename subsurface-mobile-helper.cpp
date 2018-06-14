@@ -17,12 +17,12 @@
 #include <QQmlContext>
 #include <QSortFilterProxyModel>
 #include "mobile-widgets/qmlmanager.h"
-#include "mobile-widgets/qmlprefs.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "core/connectionlistmodel.h"
+#include "core/settings/qPref.h"
 #include "qt-models/diveimportedmodel.h"
 #include "qt-models/messagehandlermodel.h"
 #include "map-widget/qmlmapwidgethelper.h"
@@ -56,7 +56,7 @@ void run_ui()
 {
 	LOG_STP("run_ui starting");
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
-	qmlRegisterType<QMLPrefs>("org.subsurfacedivelog.mobile", 1, 0, "QMLPrefs");
+	qmlRegisterType<qPref>("org.subsurfacedivelog.mobile", 1, 0, "QMLPrefs");
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
 
 	qmlRegisterType<DownloadThread>("org.subsurfacedivelog.mobile", 1, 0, "DCDownloadThread");

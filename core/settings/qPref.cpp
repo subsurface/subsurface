@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "qmlprefs.h"
-#include "qmlmanager.h"
+#include "qPref.h"
 
-#include "core/membuffer.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
-#include "core/gpslocation.h"
+#include "../membuffer.h"
+#include "../subsurface-qt/SettingsObjectWrapper.h"
+#include "../gpslocation.h"
 
 
 /*** Global and constructors ***/
-QMLPrefs *QMLPrefs::m_instance = NULL;
+qPref *qPref::m_instance = NULL;
 
-QMLPrefs::QMLPrefs() :
+qPref::qPref() :
 	m_credentialStatus(CS_UNKNOWN),
 	m_developer(false),
 	m_distanceThreshold(1000),
@@ -24,62 +23,62 @@ QMLPrefs::QMLPrefs() :
 		m_instance = this;
 }
 
-QMLPrefs::~QMLPrefs()
+qPref::~qPref()
 {
 	m_instance = NULL;
 }
 
-QMLPrefs *QMLPrefs::instance()
+qPref *qPref::instance()
 {
 	return m_instance;
 }
 
 
 /*** public functions ***/
-const QString QMLPrefs::cloudPassword() const
+const QString qPref::cloudPassword() const
 {
 	return m_cloudPassword;
 }
 
-void QMLPrefs::setCloudPassword(const QString &cloudPassword)
+void qPref::setCloudPassword(const QString &cloudPassword)
 {
 	m_cloudPassword = cloudPassword;
 	emit cloudPasswordChanged();
 }
 
-const QString QMLPrefs::cloudPin() const
+const QString qPref::cloudPin() const
 {
 	return m_cloudPin;
 }
 
-void QMLPrefs::setCloudPin(const QString &cloudPin)
+void qPref::setCloudPin(const QString &cloudPin)
 {
 	m_cloudPin = cloudPin;
 	emit cloudPinChanged();
 }
 
-const QString QMLPrefs::cloudUserName() const
+const QString qPref::cloudUserName() const
 {
 	return m_cloudUserName;
 }
 
-void QMLPrefs::setCloudUserName(const QString &cloudUserName)
+void qPref::setCloudUserName(const QString &cloudUserName)
 {
 	m_cloudUserName = cloudUserName.toLower();
 	emit cloudUserNameChanged();
 }
 
-QMLPrefs::cloud_status_qml QMLPrefs::credentialStatus() const
+qPref::cloud_status_qml qPref::credentialStatus() const
 {
 	return m_credentialStatus;
 }
 
-void QMLPrefs::setCredentialStatus(const cloud_status_qml value)
+void qPref::setCredentialStatus(const cloud_status_qml value)
 {
 	if (m_credentialStatus != value) {
 		setOldStatus(m_credentialStatus);
 		if (value == CS_NOCLOUD) {
-			QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
+			qDebug() << "Switching to no cloud mode";
 			set_filename(NOCLOUD_LOCALSTORAGE);
 			clearCredentials();
 		}
@@ -88,29 +87,29 @@ void QMLPrefs::setCredentialStatus(const cloud_status_qml value)
 	}
 }
 
-void QMLPrefs::setDeveloper(bool value)
+void qPref::setDeveloper(bool value)
 {
 	m_developer = value;
 	emit developerChanged();
 }
 
-int QMLPrefs::distanceThreshold() const
+int qPref::distanceThreshold() const
 {
 	return m_distanceThreshold;
 }
 
-void QMLPrefs::setDistanceThreshold(int distance)
+void qPref::setDistanceThreshold(int distance)
 {
 	m_distanceThreshold = distance;
 	emit distanceThresholdChanged();
 }
 
-QMLPrefs::cloud_status_qml QMLPrefs::oldStatus() const
+qPref::cloud_status_qml qPref::oldStatus() const
 {
 	return m_oldStatus;
 }
 
-void QMLPrefs::setOldStatus(const cloud_status_qml value)
+void qPref::setOldStatus(const cloud_status_qml value)
 {
 	if (m_oldStatus != value) {
 		m_oldStatus = value;
@@ -118,37 +117,37 @@ void QMLPrefs::setOldStatus(const cloud_status_qml value)
 	}
 }
 
-bool QMLPrefs::showPin() const
+bool qPref::showPin() const
 {
 	return m_showPin;
 }
 
-void QMLPrefs::setShowPin(bool enable)
+void qPref::setShowPin(bool enable)
 {
 	m_showPin = enable;
 	emit showPinChanged();
 }
 
-int QMLPrefs::timeThreshold() const
+int qPref::timeThreshold() const
 {
 	return m_timeThreshold;
 }
 
-void QMLPrefs::setTimeThreshold(int time)
+void qPref::setTimeThreshold(int time)
 {
 	m_timeThreshold = time;
 	GpsLocation::instance()->setGpsTimeThreshold(m_timeThreshold * 60);
 	emit timeThresholdChanged();
 }
 
-const QString QMLPrefs::theme() const
+const QString qPref::theme() const
 {
 	QSettings s;
 	s.beginGroup("Theme");
 	return s.value("currentTheme", "Blue").toString();
 }
 
-void QMLPrefs::setTheme(QString theme)
+void qPref::setTheme(QString theme)
 {
 	QSettings s;
 	s.beginGroup("Theme");
@@ -159,8 +158,8 @@ void QMLPrefs::setTheme(QString theme)
 
 
 /*** public slot functions ***/
-void QMLPrefs::cancelCredentialsPinSetup()
-{   
+void qPref::cancelCredentialsPinSetup()
+{
 	/* 
 	 * The user selected <cancel> on the final stage of the
 	 * cloud account generation (entering the emailed PIN).
@@ -183,12 +182,12 @@ void QMLPrefs::cancelCredentialsPinSetup()
 	s.setValue("password", m_cloudPassword);
 	s.setValue("cloud_verification_status", m_credentialStatus);
 	s.sync();
-	QMLManager::instance()->setStartPageText(tr("Starting..."));
+//FIX for now	QMLManager::instance()->setStartPageText(tr("Starting..."));
 	
 	setShowPin(false);
 }
 
-void QMLPrefs::clearCredentials()
+void qPref::clearCredentials()
 {
 	setCloudUserName(NULL);
 	setCloudPassword(NULL);

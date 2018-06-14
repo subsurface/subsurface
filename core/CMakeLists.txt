@@ -100,6 +100,9 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	downloadfromdcthread.cpp
 	connectionlistmodel.cpp
 
+    # classes to manage struct preferences for QWidget and QML
+	settings/qPref.cpp
+
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
 	subsurface-qt/CylinderObjectHelper.cpp
