@@ -301,9 +301,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profTissues,        &QAction::triggered, this, &MainWindow::unsetProfHR);
 	connect(ui.profHR,             &QAction::triggered, this, &MainWindow::unsetProfTissues);
 
-	connect(ui.profPhe, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPhe);
-	connect(ui.profPn2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPn2);
-	connect(ui.profPO2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPo2);
+	connect(ui.profPhe, &QAction::triggered, sWrapper->pp_gas, &qPrefGas::setShowPhe);
+	connect(ui.profPn2, &QAction::triggered, sWrapper->pp_gas, &qPrefGas::setShowPn2);
+	connect(ui.profPO2, &QAction::triggered, sWrapper->pp_gas, &qPrefGas::setShowPo2);
 
 	connect(sWrapper->techDetails, &qPrefTec::calcalltissuesChanged        , graphics(), &ProfileWidget2::actionRequestedReplot);
 	connect(sWrapper->techDetails, &qPrefTec::calcceilingChanged           , graphics(), &ProfileWidget2::actionRequestedReplot);
@@ -320,9 +320,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(sWrapper->techDetails, &qPrefTec::tankBarChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
 	connect(sWrapper->techDetails, &qPrefTec::percentageGraphChanged       , graphics(), &ProfileWidget2::actionRequestedReplot);
 
-	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPheChanged, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPn2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPo2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &qPrefGas::showPheChanged, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &qPrefGas::showPn2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &qPrefGas::showPo2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
 
 	// now let's set up some connections
 	connect(graphics(), &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);

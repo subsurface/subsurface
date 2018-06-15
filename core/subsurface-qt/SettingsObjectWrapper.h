@@ -39,49 +39,6 @@ private:
 	const QString group = QStringLiteral("UpdateManager");
 };
 
-/* Control the state of the Partial Pressure Graphs preferences */
-class PartialPressureGasSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(bool   show_po2          READ showPo2         WRITE setShowPo2         NOTIFY showPo2Changed)
-	Q_PROPERTY(bool   show_pn2          READ showPn2         WRITE setShowPn2         NOTIFY showPn2Changed)
-	Q_PROPERTY(bool   show_phe	    READ showPhe         WRITE setShowPhe         NOTIFY showPheChanged)
-	Q_PROPERTY(double po2_threshold_min READ po2ThresholdMin WRITE setPo2ThresholdMin NOTIFY po2ThresholdMinChanged)
-	Q_PROPERTY(double po2_threshold_max READ po2ThresholdMax WRITE setPo2ThresholdMax NOTIFY po2ThresholdMaxChanged)
-	Q_PROPERTY(double pn2_threshold     READ pn2Threshold    WRITE setPn2Threshold    NOTIFY pn2ThresholdChanged)
-	Q_PROPERTY(double phe_threshold     READ pheThreshold    WRITE setPheThreshold    NOTIFY pheThresholdChanged)
-
-public:
-	PartialPressureGasSettings(QObject *parent);
-	bool showPo2() const;
-	bool showPn2() const;
-	bool showPhe() const;
-	double po2ThresholdMin() const;
-	double po2ThresholdMax() const;
-	double pn2Threshold() const;
-	double pheThreshold() const;
-
-public slots:
-	void setShowPo2(bool value);
-	void setShowPn2(bool value);
-	void setShowPhe(bool value);
-	void setPo2ThresholdMin(double value);
-	void setPo2ThresholdMax(double value);
-	void setPn2Threshold(double value);
-	void setPheThreshold(double value);
-
-signals:
-	void showPo2Changed(bool value);
-	void showPn2Changed(bool value);
-	void showPheChanged(bool value);
-	void po2ThresholdMaxChanged(double value);
-	void po2ThresholdMinChanged(double value);
-	void pn2ThresholdChanged(double value);
-	void pheThresholdChanged(double value);
-
-private:
-	const QString group = QStringLiteral("TecDetails");
-};
-
 
 /* Control the state of the FFacebookSettingsacebook preferences */
 class FacebookSettings : public QObject {
@@ -149,7 +106,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 
 	Q_PROPERTY(qPrefTec*   techical_details MEMBER techDetails CONSTANT)
-	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
+	Q_PROPERTY(qPrefGas* pp_gas           MEMBER pp_gas CONSTANT)
 	Q_PROPERTY(qPrefFacebook*           facebook         MEMBER facebook CONSTANT)
 	Q_PROPERTY(qPrefGeocoding*       geocoding        MEMBER geocoding CONSTANT)
 	Q_PROPERTY(qPrefProxy*              proxy            MEMBER proxy CONSTANT)
@@ -168,7 +125,7 @@ public:
 	static SettingsObjectWrapper *instance();
 
 	qPrefTec *techDetails;
-	PartialPressureGasSettings *pp_gas;
+	qPrefGas *pp_gas;
 	qPrefFacebook *facebook;
 	qPrefGeocoding *geocoding;
 	qPrefCS *cloud_storage;

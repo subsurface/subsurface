@@ -11,6 +11,7 @@
 #include "qPrefDC.h"
 #include "qPrefDisplay.h"
 #include "qPrefFacebook.h"
+#include "qPrefGas.h"
 #include "qPrefGeneral.h"
 #include "qPrefGeocoding.h"
 #include "qPrefLanguage.h"

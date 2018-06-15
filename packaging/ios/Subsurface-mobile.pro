@@ -86,6 +86,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefDC.cpp \
 	../../core/settings/qPrefDisplay.cpp \
 	../../core/settings/qPrefFacebook.cpp \
+	../../core/settings/qPrefGas.cpp \
 	../../core/settings/qPrefGeneral.cpp \
 	../../core/settings/qPrefGeocoding.cpp \
 	../../core/settings/qPrefLanguage.cpp \
@@ -202,6 +203,7 @@ HEADERS += \
 	../../core/settings/qPrefDC.h \
 	../../core/settings/qPrefDisplay.h \
 	../../core/settings/qPrefFacebook.h \
+	../../core/settings/qPrefGas.h \
 	../../core/settings/qPrefGeneral.h \
 	../../core/settings/qPrefGeocoding.h \
 	../../core/settings/qPrefLanguage.h \

@@ -108,6 +108,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefDC.cpp
 	settings/qPrefDisplay.cpp
 	settings/qPrefFacebook.cpp
+	settings/qPrefGas.cpp
 	settings/qPrefGeneral.cpp
 	settings/qPrefGeocoding.cpp
 	settings/qPrefLanguage.cpp
