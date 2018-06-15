@@ -10,6 +10,7 @@
 #include "qPrefDiveComputer.h"
 #include "qPrefDisplay.h"
 #include "qPrefFacebook.h"
+#include "qPrefGeneral.h"
 
 
 class qPref : public QObject {
