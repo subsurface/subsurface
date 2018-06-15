@@ -20,21 +20,17 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::
 void DiveComputerManagementDialog::init()
 {
 	model.reset(new DiveComputerModel(dcList.dcMap));
+	model->update();
 	ui.tableView->setModel(model.data());
+	ui.tableView->resizeColumnsToContents();
+	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
+	layout()->activate();
 }
 
 DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
 {
 	static DiveComputerManagementDialog *self = new DiveComputerManagementDialog(MainWindow::instance());
 	return self;
-}
-
-void DiveComputerManagementDialog::update()
-{
-	model->update();
-	ui.tableView->resizeColumnsToContents();
-	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
-	layout()->activate();
 }
 
 void DiveComputerManagementDialog::tryRemove(const QModelIndex &index)
