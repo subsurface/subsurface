@@ -442,51 +442,6 @@ private:
 	const QString group = QStringLiteral("Units");
 };
 
-class GeneralSettingsObjectWrapper : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString default_filename         READ defaultFilename           WRITE setDefaultFilename           NOTIFY defaultFilenameChanged)
-	Q_PROPERTY(QString default_cylinder         READ defaultCylinder           WRITE setDefaultCylinder           NOTIFY defaultCylinderChanged)
-	Q_PROPERTY(short default_file_behavior      READ defaultFileBehavior       WRITE setDefaultFileBehavior       NOTIFY defaultFileBehaviorChanged)
-	Q_PROPERTY(bool use_default_file            READ useDefaultFile            WRITE setUseDefaultFile            NOTIFY useDefaultFileChanged)
-	Q_PROPERTY(int defaultsetpoint              READ defaultSetPoint           WRITE setDefaultSetPoint           NOTIFY defaultSetPointChanged)
-	Q_PROPERTY(int o2consumption                READ o2Consumption             WRITE setO2Consumption             NOTIFY o2ConsumptionChanged)
-	Q_PROPERTY(int pscr_ratio                   READ pscrRatio                 WRITE setPscrRatio                 NOTIFY pscrRatioChanged)
-	Q_PROPERTY(bool auto_recalculate_thumbnails READ autoRecalculateThumbnails WRITE setAutoRecalculateThumbnails NOTIFY autoRecalculateThumbnailsChanged)
-
-public:
-	GeneralSettingsObjectWrapper(QObject *parent);
-	QString defaultFilename() const;
-	QString defaultCylinder() const;
-	short defaultFileBehavior() const;
-	bool useDefaultFile() const;
-	int defaultSetPoint() const;
-	int o2Consumption() const;
-	int pscrRatio() const;
-	bool autoRecalculateThumbnails() const;
-
-public slots:
-	void setDefaultFilename           (const QString& value);
-	void setDefaultCylinder           (const QString& value);
-	void setDefaultFileBehavior       (short value);
-	void setUseDefaultFile            (bool value);
-	void setDefaultSetPoint           (int value);
-	void setO2Consumption             (int value);
-	void setPscrRatio                 (int value);
-	void setAutoRecalculateThumbnails (bool value);
-
-signals:
-	void defaultFilenameChanged(const QString& value);
-	void defaultCylinderChanged(const QString& value);
-	void defaultFileBehaviorChanged(short value);
-	void useDefaultFileChanged(bool value);
-	void defaultSetPointChanged(int value);
-	void o2ConsumptionChanged(int value);
-	void pscrRatioChanged(int value);
-	void autoRecalculateThumbnailsChanged(int value);
-private:
-	const QString group = QStringLiteral("GeneralSettings");
-};
-
 class LanguageSettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString language          READ language           WRITE setLanguage           NOTIFY languageChanged)
@@ -561,9 +516,8 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(qPrefCS*       cloud_storage    MEMBER cloud_storage CONSTANT)
 	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
 	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
-
-	Q_PROPERTY(GeneralSettingsObjectWrapper*         general   MEMBER general_settings CONSTANT)
 	Q_PROPERTY(qPrefDisplay*         display   MEMBER display_settings CONSTANT)
+	Q_PROPERTY(qPrefGeneral*         general   MEMBER general_settings CONSTANT)
 	Q_PROPERTY(LanguageSettingsObjectWrapper*        language  MEMBER language_settings CONSTANT)
 	Q_PROPERTY(qPrefAnimations*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
@@ -581,7 +535,7 @@ public:
 	qPrefCS *cloud_storage;
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
-	GeneralSettingsObjectWrapper *general_settings;
+	qPrefGeneral *general_settings;
 	qPrefDisplay *display_settings;
 	LanguageSettingsObjectWrapper *language_settings;
 	qPrefAnimations *animation_settings;
