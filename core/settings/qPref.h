@@ -3,7 +3,10 @@
 #define QPREF_H
 
 #include <QObject>
+#include <QSettings>
 #include "core/pref.h"
+
+#include "qPrefDisplay.h"
 
 class qPref : public QObject {
 	Q_OBJECT
