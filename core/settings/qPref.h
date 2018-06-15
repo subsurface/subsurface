@@ -7,6 +7,7 @@
 
 #include "qPrefAnimations.h"
 #include "qPrefCS.h"
+#include "qPrefDC.h"
 
 
 

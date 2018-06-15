@@ -14,39 +14,6 @@
  * and QWidget frontends. This class will be huge, since
  * I need tons of properties, one for each option. */
 
-class DiveComputerSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString vendor READ dc_vendor WRITE setVendor NOTIFY vendorChanged)
-	Q_PROPERTY(QString product READ dc_product WRITE setProduct NOTIFY productChanged)
-	Q_PROPERTY(QString device READ dc_device WRITE setDevice NOTIFY deviceChanged)
-	Q_PROPERTY(QString device_name READ dc_device_name WRITE setDeviceName NOTIFY deviceNameChanged)
-	Q_PROPERTY(int download_mode READ downloadMode WRITE setDownloadMode NOTIFY downloadModeChanged)
-public:
-	DiveComputerSettings(QObject *parent);
-	QString dc_vendor() const;
-	QString dc_product() const;
-	QString dc_device() const;
-	QString dc_device_name() const;
-	int downloadMode() const;
-
-public slots:
-	void setVendor(const QString& vendor);
-	void setProduct(const QString& product);
-	void setDevice(const QString& device);
-	void setDeviceName(const QString& device_name);
-	void setDownloadMode(int mode);
-
-signals:
-	void vendorChanged(const QString& vendor);
-	void productChanged(const QString& product);
-	void deviceChanged(const QString& device);
-	void deviceNameChanged(const QString& device_name);
-	void downloadModeChanged(int mode);
-private:
-	const QString group = QStringLiteral("DiveComputer");
-
-};
-
 class UpdateManagerSettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool dont_check_for_updates READ dontCheckForUpdates WRITE setDontCheckForUpdates NOTIFY dontCheckForUpdatesChanged)
@@ -643,7 +610,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
 
 	Q_PROPERTY(UpdateManagerSettings* update MEMBER update_manager_settings CONSTANT)
-	Q_PROPERTY(DiveComputerSettings* dive_computer MEMBER dive_computer_settings CONSTANT)
+	Q_PROPERTY(qPrefDC* dive_computer MEMBER dive_computer_settings CONSTANT)
 public:
 	static SettingsObjectWrapper *instance();
 
@@ -661,7 +628,7 @@ public:
 	qPrefAnimations *animation_settings;
 	LocationServiceSettingsObjectWrapper *location_settings;
 	UpdateManagerSettings *update_manager_settings;
-	DiveComputerSettings *dive_computer_settings;
+	qPrefDC *dive_computer_settings;
 
 	void sync();
 	void load();

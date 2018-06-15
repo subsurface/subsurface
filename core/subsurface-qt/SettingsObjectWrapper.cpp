@@ -8,95 +8,6 @@
 
 #include "core/qthelper.h"
 
-DiveComputerSettings::DiveComputerSettings(QObject *parent):
-	QObject(parent)
-{
-}
-
-QString DiveComputerSettings::dc_vendor() const
-{
-	return prefs.dive_computer.vendor;
-}
-
-QString DiveComputerSettings::dc_product() const
-{
-	return prefs.dive_computer.product;
-}
-
-QString DiveComputerSettings::dc_device() const
-{
-	return prefs.dive_computer.device;
-}
-
-QString DiveComputerSettings::dc_device_name() const
-{
-	return prefs.dive_computer.device_name;
-}
-
-int DiveComputerSettings::downloadMode() const
-{
-	return prefs.dive_computer.download_mode;
-}
-
-void DiveComputerSettings::setVendor(const QString& vendor)
-{
-	if (vendor == prefs.dive_computer.vendor)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_vendor", vendor);
-	free((void *)prefs.dive_computer.vendor);
-	prefs.dive_computer.vendor = copy_qstring(vendor);
-}
-
-void DiveComputerSettings::setProduct(const QString& product)
-{
-	if (product == prefs.dive_computer.product)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_product", product);
-	free((void *)prefs.dive_computer.product);
-	prefs.dive_computer.product = copy_qstring(product);
-}
-
-void DiveComputerSettings::setDevice(const QString& device)
-{
-	if (device == prefs.dive_computer.device)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_device", device);
-	free((void *)prefs.dive_computer.device);
-	prefs.dive_computer.device = copy_qstring(device);
-}
-
-void DiveComputerSettings::setDeviceName(const QString& device_name)
-{
-	if (device_name == prefs.dive_computer.device_name)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_device_name", device_name);
-	free((void *)prefs.dive_computer.device_name);
-	prefs.dive_computer.device_name = copy_qstring(device_name);
-}
-
-void DiveComputerSettings::setDownloadMode(int mode)
-{
-	if (mode == prefs.dive_computer.download_mode)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_download_mode", mode);
-	prefs.dive_computer.download_mode = mode;
-}
-
 UpdateManagerSettings::UpdateManagerSettings(QObject *parent) : QObject(parent)
 {
 
@@ -1997,7 +1908,7 @@ QObject(parent),
 	animation_settings(new qPrefAnimations(this)),
 	location_settings(new LocationServiceSettingsObjectWrapper(this)),
 	update_manager_settings(new UpdateManagerSettings(this)),
-	dive_computer_settings(new DiveComputerSettings(this))
+	dive_computer_settings(new qPrefDC(this))
 {
 }
 
