@@ -32,7 +32,6 @@ void DiveShareExportDialog::UIDFromBrowser()
 DiveShareExportDialog *DiveShareExportDialog::instance()
 {
 	static DiveShareExportDialog *self = new DiveShareExportDialog(MainWindow::instance());
-	self->setAttribute(Qt::WA_QuitOnClose, false);
 	self->ui->txtResult->setHtml("");
 	self->ui->buttonBox->setStandardButtons(QDialogButtonBox::Cancel);
 	return self;

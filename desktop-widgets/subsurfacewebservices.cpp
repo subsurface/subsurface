@@ -691,7 +691,6 @@ out:
 DivelogsDeWebServices *DivelogsDeWebServices::instance()
 {
 	static DivelogsDeWebServices *self = new DivelogsDeWebServices(MainWindow::instance());
-	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
 }
 
