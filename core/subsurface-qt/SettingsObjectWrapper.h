@@ -410,23 +410,6 @@ private:
 	const QString group = QStringLiteral("Units");
 };
 
-class LocationServiceSettingsObjectWrapper : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(int time_threshold            READ timeThreshold         WRITE setTimeThreshold         NOTIFY timeThresholdChanged)
-	Q_PROPERTY(int distance_threshold        READ distanceThreshold     WRITE setDistanceThreshold     NOTIFY distanceThresholdChanged)
-public:
-	LocationServiceSettingsObjectWrapper(QObject *parent);
-	int timeThreshold() const;
-	int distanceThreshold() const;
-public slots:
-	void setTimeThreshold(int value);
-	void setDistanceThreshold(int value);
-signals:
-	void timeThresholdChanged(int value);
-	void distanceThresholdChanged(int value);
-private:
-	const QString group = QStringLiteral("LocationService");
-};
 
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
@@ -443,7 +426,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(qPrefGeneral*         general   MEMBER general_settings CONSTANT)
 	Q_PROPERTY(qPrefLanguage*        language  MEMBER language_settings CONSTANT)
 	Q_PROPERTY(qPrefAnimations*      animation MEMBER animation_settings CONSTANT)
-	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
+	Q_PROPERTY(qPrefLocationService* Location  MEMBER location_settings CONSTANT)
 
 	Q_PROPERTY(UpdateManagerSettings* update MEMBER update_manager_settings CONSTANT)
 	Q_PROPERTY(qPrefDiveComputer* dive_computer MEMBER dive_computer_settings CONSTANT)
@@ -462,7 +445,7 @@ public:
 	qPrefDisplay *display_settings;
 	qPrefLanguage *language_settings;
 	qPrefAnimations *animation_settings;
-	LocationServiceSettingsObjectWrapper *location_settings;
+	qPrefLocationService *location_settings;
 	UpdateManagerSettings *update_manager_settings;
 	qPrefDiveComputer *dive_computer_settings;
 
