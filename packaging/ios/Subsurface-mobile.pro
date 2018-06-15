@@ -80,6 +80,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPref.cpp \
 	../../core/settings/qPrefAnimations.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
+	../../core/settings/qPrefDiveComputer.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -189,6 +190,7 @@ HEADERS += \
 	../../core/settings/qPref.h \
 	../../core/settings/qPrefAnimations.h \
 	../../core/settings/qPrefCloudStorage.h \
+	../../core/settings/qPrefDiveComputer.h \
 	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \

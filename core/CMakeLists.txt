@@ -1,7 +1,7 @@
 set(PLATFORM_SRC unknown_platform.c)
 message(STATUS "system name ${CMAKE_SYSTEM_NAME}")
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-	if(ANDROID)
+if(ANDROID)
 		set(PLATFORM_SRC android.cpp)
 	else()
 		set(PLATFORM_SRC linux.c)
@@ -102,6 +102,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPref.cpp
 	settings/qPrefAnimations.cpp
 	settings/qPrefCloudStorage.cpp
+	settings/qPrefDiveComputer.cpp
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
