@@ -7,25 +7,38 @@ DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap
 {
 	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
 	dcWorkingMap = dcMap;
-	numRows = 0;
+}
+
+// The backing store of this model is a QMultiMap. But access is done via a sequential
+// index. This function turns an index into a map iterator. Not pretty, but still better
+// than converting into a list on every access.
+template <typename T>
+auto getNthElement(T &map, int n) -> decltype(map.begin())
+{
+	if (n <= 0)
+		return map.begin();
+	if (n >= map.size())
+		return map.end();
+	return std::next(map.begin(), n);
 }
 
 QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 {
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	DiveComputerNode node = values.at(index.row());
-
 	QVariant ret;
+	auto it = getNthElement(dcWorkingMap, index.row());
+	if (it == dcWorkingMap.end())
+		return ret;
+
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column()) {
 		case ID:
-			ret = QString("0x").append(QString::number(node.deviceId, 16));
+			ret = QString("0x").append(QString::number(it->deviceId, 16));
 			break;
 		case MODEL:
-			ret = node.model;
+			ret = it->model;
 			break;
 		case NICKNAME:
-			ret = node.nickName;
+			ret = it->nickName;
 			break;
 		}
 	}
@@ -48,25 +61,7 @@ QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 
 int DiveComputerModel::rowCount(const QModelIndex&) const
 {
-	return numRows;
-}
-
-void DiveComputerModel::update()
-{
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	int count = values.count();
-
-	if (numRows) {
-		beginRemoveRows(QModelIndex(), 0, numRows - 1);
-		numRows = 0;
-		endRemoveRows();
-	}
-
-	if (count) {
-		beginInsertRows(QModelIndex(), 0, count - 1);
-		numRows = count;
-		endInsertRows();
-	}
+	return dcWorkingMap.size();
 }
 
 Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
@@ -80,28 +75,22 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
 bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	// We should test if the role == Qt::EditRole
-
-	// WARN: This seems wrong - The values don't are ordered - we need a map from the Key to Index, or something.
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	DiveComputerNode node = values.at(index.row());
-	dcWorkingMap.remove(node.model, node);
-	node.nickName = value.toString();
-	dcWorkingMap.insert(node.model, node);
+	auto it = getNthElement(dcWorkingMap, index.row());
+	if (it == dcWorkingMap.end())
+		return false;
+	it->nickName = value.toString();
 	emit dataChanged(index, index);
 	return true;
 }
 
 void DiveComputerModel::remove(const QModelIndex &index)
 {
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	DiveComputerNode node = values.at(index.row());
-	dcWorkingMap.remove(node.model, node);
-	update();
-}
-
-void DiveComputerModel::dropWorkingList()
-{
-	// how do I prevent the memory leak ?
+	auto it = getNthElement(dcWorkingMap, index.row());
+	if (it == dcWorkingMap.end())
+		return;
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
+	dcWorkingMap.erase(it);
+	endRemoveRows();
 }
 
 void DiveComputerModel::keepWorkingList()
