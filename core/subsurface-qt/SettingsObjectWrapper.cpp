@@ -661,110 +661,6 @@ void TechnicalDetailsSettings::setShowIcd(bool value)
 	emit showIcdChanged(value);
 }
 
-ProxySettings::ProxySettings(QObject *parent) :
-	QObject(parent)
-{
-}
-
-int ProxySettings::type() const
-{
-	return prefs.proxy_type;
-}
-
-QString ProxySettings::host() const
-{
-	return prefs.proxy_host;
-}
-
-int ProxySettings::port() const
-{
-	return prefs.proxy_port;
-}
-
-bool ProxySettings::auth() const
-{
-	return prefs.proxy_auth;
-}
-
-QString ProxySettings::user() const
-{
-	return prefs.proxy_user;
-}
-
-QString ProxySettings::pass() const
-{
-	return prefs.proxy_pass;
-}
-
-void ProxySettings::setType(int value)
-{
-	if (value == prefs.proxy_type)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_type", value);
-	prefs.proxy_type = value;
-	emit typeChanged(value);
-}
-
-void ProxySettings::setHost(const QString& value)
-{
-	if (value == prefs.proxy_host)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_host", value);
-	free((void *)prefs.proxy_host);
-	prefs.proxy_host = copy_qstring(value);
-	emit hostChanged(value);
-}
-
-void ProxySettings::setPort(int value)
-{
-	if (value == prefs.proxy_port)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_port", value);
-	prefs.proxy_port = value;
-	emit portChanged(value);
-}
-
-void ProxySettings::setAuth(bool value)
-{
-	if (value == prefs.proxy_auth)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_auth", value);
-	prefs.proxy_auth = value;
-	emit authChanged(value);
-}
-
-void ProxySettings::setUser(const QString& value)
-{
-	if (value == prefs.proxy_user)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_user", value);
-	free((void *)prefs.proxy_user);
-	prefs.proxy_user = copy_qstring(value);
-	emit userChanged(value);
-}
-
-void ProxySettings::setPass(const QString& value)
-{
-	if (value == prefs.proxy_pass)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_pass", value);
-	free((void *)prefs.proxy_pass);
-	prefs.proxy_pass = copy_qstring(value);
-	emit passChanged(value);
-}
-
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
 	QObject(parent)
 {
@@ -1379,7 +1275,7 @@ QObject(parent),
 	pp_gas(new PartialPressureGasSettings(this)),
 	facebook(new qPrefFacebook(this)),
 	geocoding(new qPrefGeocoding(this)),
-	proxy(new ProxySettings(this)),
+	proxy(new qPrefProxy(this)),
 	cloud_storage(new qPrefCloudStorage(this)),
 	planner_settings(new DivePlannerSettings(this)),
 	unit_settings(new UnitsSettings(this)),

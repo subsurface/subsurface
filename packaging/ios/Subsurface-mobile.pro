@@ -87,6 +87,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefGeocoding.cpp \
 	../../core/settings/qPrefLanguage.cpp \
 	../../core/settings/qPrefLocationService.cpp \
+	../../core/settings/qPrefProxy.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -203,6 +204,7 @@ HEADERS += \
 	../../core/settings/qPrefGeocoding.h \
 	../../core/settings/qPrefLanguage.h \
 	../../core/settings/qPrefLocationService.h \
+	../../core/settings/qPrefProxy.h \
 	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \

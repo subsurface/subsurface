@@ -14,6 +14,7 @@
 #include "qPrefGeocoding.h"
 #include "qPrefLanguage.h"
 #include "qPrefLocationService.h"
+#include "qPrefProxy.h"
 
 
 class qPref : public QObject {

@@ -109,6 +109,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefGeocoding.cpp
 	settings/qPrefLanguage.cpp
 	settings/qPrefLocationService.cpp
+	settings/qPrefProxy.cpp
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
