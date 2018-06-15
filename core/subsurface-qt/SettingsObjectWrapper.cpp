@@ -661,72 +661,6 @@ void TechnicalDetailsSettings::setShowIcd(bool value)
 	emit showIcdChanged(value);
 }
 
-FacebookSettings::FacebookSettings(QObject *parent) :
-	QObject(parent),
-	group(QStringLiteral("WebApps")),
-	subgroup(QStringLiteral("Facebook"))
-{
-}
-
-QString FacebookSettings::accessToken() const
-{
-	return QString(prefs.facebook.access_token);
-}
-
-QString FacebookSettings::userId() const
-{
-	return QString(prefs.facebook.user_id);
-}
-
-QString FacebookSettings::albumId() const
-{
-	return QString(prefs.facebook.album_id);
-}
-
-void FacebookSettings::setAccessToken (const QString& value)
-{
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup(group);
-	s.beginGroup(subgroup);
-	s.setValue("ConnectToken", value);
-#endif
-	free((void *)prefs.facebook.access_token);
-	prefs.facebook.access_token = copy_qstring(value);
-	emit accessTokenChanged(value);
-}
-
-void FacebookSettings::setUserId(const QString& value)
-{
-	if (value == prefs.facebook.user_id)
-		return;
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup(group);
-	s.beginGroup(subgroup);
-	s.setValue("UserId", value);
-#endif
-	free((void *)prefs.facebook.user_id);
-	prefs.facebook.user_id = copy_qstring(value);
-	emit userIdChanged(value);
-}
-
-void FacebookSettings::setAlbumId(const QString& value)
-{
-	if (value == prefs.facebook.album_id)
-		return;
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup(group);
-	s.beginGroup(subgroup);
-	s.setValue("AlbumId", value);
-#endif
-	free((void *)prefs.facebook.album_id);
-	prefs.facebook.album_id = copy_qstring(value);
-	emit albumIdChanged(value);
-}
-
-
 GeocodingPreferences::GeocodingPreferences(QObject *parent) :
 	QObject(parent)
 {
@@ -1827,7 +1761,7 @@ SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
 	techDetails(new TechnicalDetailsSettings(this)),
 	pp_gas(new PartialPressureGasSettings(this)),
-	facebook(new FacebookSettings(this)),
+	facebook(new qPrefFacebook(this)),
 	geocoding(new GeocodingPreferences(this)),
 	proxy(new ProxySettings(this)),
 	cloud_storage(new qPrefCS(this)),

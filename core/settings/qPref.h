@@ -9,6 +9,7 @@
 #include "qPrefCS.h"
 #include "qPrefDC.h"
 #include "qPrefDisplay.h"
+#include "qPrefFacebook.h"
 
 
 
