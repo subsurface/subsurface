@@ -213,43 +213,6 @@ private:
 	QString subgroup;
 };
 
-class ProxySettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(int type     READ type WRITE setType NOTIFY typeChanged)
-	Q_PROPERTY(QString host READ host WRITE setHost NOTIFY hostChanged)
-	Q_PROPERTY(int port     READ port WRITE setPort NOTIFY portChanged)
-	Q_PROPERTY(bool  auth READ auth WRITE setAuth NOTIFY authChanged)
-	Q_PROPERTY(QString user READ user WRITE setUser NOTIFY userChanged)
-	Q_PROPERTY(QString pass READ pass WRITE setPass NOTIFY passChanged)
-
-public:
-	ProxySettings(QObject *parent);
-	int type() const;
-	QString host() const;
-	int port() const;
-	bool auth() const;
-	QString user() const;
-	QString pass() const;
-
-public slots:
-	void setType(int value);
-	void setHost(const QString& value);
-	void setPort(int value);
-	void setAuth(bool value);
-	void setUser(const QString& value);
-	void setPass(const QString& value);
-
-signals:
-	void typeChanged(int value);
-	void hostChanged(const QString& value);
-	void portChanged(int value);
-	void authChanged(bool value);
-	void userChanged(const QString& value);
-	void passChanged(const QString& value);
-private:
-	const QString group = QStringLiteral("Network");
-};
-
 class DivePlannerSettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool last_stop           READ lastStop             WRITE setLastStop             NOTIFY lastStopChanged)
@@ -425,7 +388,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
 	Q_PROPERTY(qPrefFacebook*           facebook         MEMBER facebook CONSTANT)
 	Q_PROPERTY(qPrefGeocoding*       geocoding        MEMBER geocoding CONSTANT)
-	Q_PROPERTY(ProxySettings*              proxy            MEMBER proxy CONSTANT)
+	Q_PROPERTY(qPrefProxy*              proxy            MEMBER proxy CONSTANT)
 	Q_PROPERTY(qPrefCS*       cloud_storage    MEMBER cloud_storage CONSTANT)
 	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
 	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
@@ -444,8 +407,8 @@ public:
 	PartialPressureGasSettings *pp_gas;
 	qPrefFacebook *facebook;
 	qPrefGeocoding *geocoding;
-	ProxySettings *proxy;
 	qPrefCS *cloud_storage;
+	qPrefProxy *proxy;
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
 	qPrefGeneral *general_settings;

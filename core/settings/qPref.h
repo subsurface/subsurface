@@ -15,6 +15,7 @@
 #include "qPrefGeocoding.h"
 #include "qPrefLanguage.h"
 #include "qPrefLocation.h"
+#include "qPrefProxy.h"
 
 
 
