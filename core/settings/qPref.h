@@ -14,6 +14,7 @@
 #include "qPrefGeneral.h"
 #include "qPrefGeocoding.h"
 #include "qPrefLanguage.h"
+#include "qPrefLocation.h"
 
 
 

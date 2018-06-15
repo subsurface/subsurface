@@ -1373,44 +1373,6 @@ void UnitsSettings::setUnitSystem(const QString& value)
 	// TODO: emit the other values here?
 }
 
-LocationServiceSettingsObjectWrapper::LocationServiceSettingsObjectWrapper(QObject* parent):
-	QObject(parent)
-{
-}
-
-int LocationServiceSettingsObjectWrapper::distanceThreshold() const
-{
-	return prefs.distance_threshold;
-}
-
-int LocationServiceSettingsObjectWrapper::timeThreshold() const
-{
-	return prefs.time_threshold;
-}
-
-void LocationServiceSettingsObjectWrapper::setDistanceThreshold(int value)
-{
-	if (value == prefs.distance_threshold)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("distance_threshold", value);
-	prefs.distance_threshold = value;
-	emit distanceThresholdChanged(value);
-}
-
-void LocationServiceSettingsObjectWrapper::setTimeThreshold(int value)
-{
-	if (value == prefs.time_threshold)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("time_threshold", value);
-	prefs.time_threshold = value;
-	emit timeThresholdChanged(value);
-}
-
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
 	techDetails(new TechnicalDetailsSettings(this)),
@@ -1425,7 +1387,7 @@ QObject(parent),
 	display_settings(new qPrefDisplay(this)),
 	language_settings(new qPrefLanguage(this)),
 	animation_settings(new qPrefAnimations(this)),
-	location_settings(new LocationServiceSettingsObjectWrapper(this)),
+	location_settings(new qPrefLocation(this)),
 	update_manager_settings(new UpdateManagerSettings(this)),
 	dive_computer_settings(new qPrefDC(this))
 {
