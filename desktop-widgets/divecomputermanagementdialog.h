@@ -12,7 +12,6 @@ class DiveComputerManagementDialog : public QDialog {
 
 public:
 	static DiveComputerManagementDialog *instance();
-	void update();
 	void init();
 
 public

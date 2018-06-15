@@ -21,6 +21,9 @@ void DiveComputerManagementDialog::init()
 {
 	model.reset(new DiveComputerModel(dcList.dcMap));
 	ui.tableView->setModel(model.data());
+	ui.tableView->resizeColumnsToContents();
+	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
+	layout()->activate();
 }
 
 DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
@@ -28,13 +31,6 @@ DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
 	static DiveComputerManagementDialog *self = new DiveComputerManagementDialog(MainWindow::instance());
 	self->setAttribute(Qt::WA_QuitOnClose, false);
 	return self;
-}
-
-void DiveComputerManagementDialog::update()
-{
-	ui.tableView->resizeColumnsToContents();
-	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
-	layout()->activate();
 }
 
 void DiveComputerManagementDialog::tryRemove(const QModelIndex &index)
