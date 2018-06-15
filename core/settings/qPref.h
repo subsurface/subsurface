@@ -16,7 +16,10 @@
 #include "qPrefLanguage.h"
 #include "qPrefLocationService.h"
 #include "qPrefProxy.h"
+#include "qPrefTechnicalDetails.h"
 
+
+#define TechnicalDetailsSettings qPrefTechnicalDetails
 
 class qPref : public QObject {
 	Q_OBJECT

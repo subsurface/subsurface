@@ -82,128 +82,6 @@ private:
 	const QString group = QStringLiteral("TecDetails");
 };
 
-class TechnicalDetailsSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(double modpO2         READ modpO2          WRITE setModpO2          NOTIFY modpO2Changed)
-	Q_PROPERTY(bool ead              READ ead             WRITE setEad             NOTIFY eadChanged)
-	Q_PROPERTY(bool mod              READ mod             WRITE setMod             NOTIFY modChanged)
-	Q_PROPERTY(bool dcceiling        READ dcceiling       WRITE setDCceiling       NOTIFY dcceilingChanged)
-	Q_PROPERTY(bool redceiling       READ redceiling      WRITE setRedceiling      NOTIFY redceilingChanged)
-	Q_PROPERTY(bool calcceiling      READ calcceiling     WRITE setCalcceiling     NOTIFY calcceilingChanged)
-	Q_PROPERTY(bool calcceiling3m    READ calcceiling3m   WRITE setCalcceiling3m   NOTIFY calcceiling3mChanged)
-	Q_PROPERTY(bool calcalltissues   READ calcalltissues  WRITE setCalcalltissues  NOTIFY calcalltissuesChanged)
-	Q_PROPERTY(bool calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
-	Q_PROPERTY(bool buehlmann        READ buehlmann       WRITE setBuehlmann       NOTIFY buehlmannChanged)
-	Q_PROPERTY(int gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
-	Q_PROPERTY(int gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
-	Q_PROPERTY(short vpmb_conservatism READ vpmbConservatism WRITE setVpmbConservatism NOTIFY vpmbConservatismChanged)
-	Q_PROPERTY(bool hrgraph          READ hrgraph         WRITE setHRgraph         NOTIFY hrgraphChanged)
-	Q_PROPERTY(bool tankbar          READ tankBar         WRITE setTankBar         NOTIFY tankBarChanged)
-	Q_PROPERTY(bool percentagegraph  READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged)
-	Q_PROPERTY(bool rulergraph       READ rulerGraph      WRITE setRulerGraph      NOTIFY rulerGraphChanged)
-	Q_PROPERTY(bool show_ccr_setpoint READ showCCRSetpoint WRITE setShowCCRSetpoint NOTIFY showCCRSetpointChanged)
-	Q_PROPERTY(bool show_ccr_sensors  READ showCCRSensors  WRITE setShowCCRSensors  NOTIFY showCCRSensorsChanged)
-	Q_PROPERTY(bool show_scr_ocpo2   READ showSCROCpO2    WRITE setShowSCROCpO2    NOTIFY showSCROCpO2Changed)
-	Q_PROPERTY(bool zoomed_plot      READ zoomedPlot      WRITE setZoomedPlot      NOTIFY zoomedPlotChanged)
-	Q_PROPERTY(bool show_sac             READ showSac            WRITE setShowSac            NOTIFY showSacChanged)
-	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged)
-	Q_PROPERTY(bool show_average_depth   READ showAverageDepth   WRITE setShowAverageDepth   NOTIFY showAverageDepthChanged)
-	Q_PROPERTY(bool show_icd         READ showIcd         WRITE setShowIcd         NOTIFY showIcdChanged)
-	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged)
-	Q_PROPERTY(deco_mode deco READ deco WRITE setDecoMode NOTIFY decoModeChanged)
-
-public:
-	TechnicalDetailsSettings(QObject *parent);
-
-	double modpO2() const;
-	bool ead() const;
-	bool mod() const;
-	bool dcceiling() const;
-	bool redceiling() const;
-	bool calcceiling() const;
-	bool calcceiling3m() const;
-	bool calcalltissues() const;
-	bool calcndltts() const;
-	bool buehlmann() const;
-	int gflow() const;
-	int gfhigh() const;
-	short vpmbConservatism() const;
-	bool hrgraph() const;
-	bool tankBar() const;
-	bool percentageGraph() const;
-	bool rulerGraph() const;
-	bool showCCRSetpoint() const;
-	bool showCCRSensors() const;
-	bool showSCROCpO2() const;
-	bool zoomedPlot() const;
-	bool showSac() const;
-	bool displayUnusedTanks() const;
-	bool showAverageDepth() const;
-	bool showIcd() const;
-	bool showPicturesInProfile() const;
-	deco_mode deco() const;
-
-public slots:
-	void setMod(bool value);
-	void setModpO2(double value);
-	void setEad(bool value);
-	void setDCceiling(bool value);
-	void setRedceiling(bool value);
-	void setCalcceiling(bool value);
-	void setCalcceiling3m(bool value);
-	void setCalcalltissues(bool value);
-	void setCalcndltts(bool value);
-	void setBuehlmann(bool value);
-	void setGflow(int value);
-	void setGfhigh(int value);
-	void setVpmbConservatism(short);
-	void setHRgraph(bool value);
-	void setTankBar(bool value);
-	void setPercentageGraph(bool value);
-	void setRulerGraph(bool value);
-	void setShowCCRSetpoint(bool value);
-	void setShowCCRSensors(bool value);
-	void setShowSCROCpO2(bool value);
-	void setZoomedPlot(bool value);
-	void setShowSac(bool value);
-	void setDisplayUnusedTanks(bool value);
-	void setShowAverageDepth(bool value);
-	void setShowIcd(bool value);
-	void setShowPicturesInProfile(bool value);
-	void setDecoMode(deco_mode d);
-
-signals:
-	void modpO2Changed(double value);
-	void eadChanged(bool value);
-	void modChanged(bool value);
-	void dcceilingChanged(bool value);
-	void redceilingChanged(bool value);
-	void calcceilingChanged(bool value);
-	void calcceiling3mChanged(bool value);
-	void calcalltissuesChanged(bool value);
-	void calcndlttsChanged(bool value);
-	void buehlmannChanged(bool value);
-	void gflowChanged(int value);
-	void gfhighChanged(int value);
-	void vpmbConservatismChanged(short value);
-	void hrgraphChanged(bool value);
-	void tankBarChanged(bool value);
-	void percentageGraphChanged(bool value);
-	void rulerGraphChanged(bool value);
-	void showCCRSetpointChanged(bool value);
-	void showCCRSensorsChanged(bool value);
-	void showSCROCpO2Changed(bool value);
-	void zoomedPlotChanged(bool value);
-	void showSacChanged(bool value);
-	void displayUnusedTanksChanged(bool value);
-	void showAverageDepthChanged(bool value);
-	void showIcdChanged(bool value);
-	void showPicturesInProfileChanged(bool value);
-	void decoModeChanged(deco_mode m);
-
-private:
-	const QString group = QStringLiteral("TecDetails");
-};
 
 
 class UnitsSettings : public QObject {
@@ -263,7 +141,7 @@ private:
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 
-	Q_PROPERTY(TechnicalDetailsSettings*   techical_details MEMBER techDetails CONSTANT)
+	Q_PROPERTY(qPrefTechnicalDetails*   techical_details MEMBER techDetails CONSTANT)
 	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
 	Q_PROPERTY(qPrefFacebook*           facebook         MEMBER facebook CONSTANT)
 	Q_PROPERTY(qPrefGeocoding*       geocoding        MEMBER geocoding CONSTANT)
@@ -282,7 +160,7 @@ class SettingsObjectWrapper : public QObject {
 public:
 	static SettingsObjectWrapper *instance();
 
-	TechnicalDetailsSettings *techDetails;
+	qPrefTechnicalDetails *techDetails;
 	PartialPressureGasSettings *pp_gas;
 	qPrefFacebook *facebook;
 	qPrefGeocoding *geocoding;
