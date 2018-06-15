@@ -103,6 +103,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefAnimations.cpp
 	settings/qPrefCloudStorage.cpp
 	settings/qPrefDiveComputer.cpp
+	settings/qPrefDisplay.cpp
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
