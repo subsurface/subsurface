@@ -6,8 +6,7 @@
 #include <QMessageBox>
 #include <QShortcut>
 
-DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
-	model(0)
+DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 	init();
@@ -20,9 +19,8 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::
 
 void DiveComputerManagementDialog::init()
 {
-	delete model;
-	model = new DiveComputerModel(dcList.dcMap);
-	ui.tableView->setModel(model);
+	model.reset(new DiveComputerModel(dcList.dcMap));
+	ui.tableView->setModel(model.data());
 }
 
 DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
