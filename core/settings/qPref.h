@@ -13,6 +13,7 @@
 #include "qPrefFacebook.h"
 #include "qPrefGeneral.h"
 #include "qPrefGeocoding.h"
+#include "qPrefLanguage.h"
 
 
 

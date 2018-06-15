@@ -110,6 +110,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefFacebook.cpp
 	settings/qPrefGeneral.cpp
 	settings/qPrefGeocoding.cpp
+	settings/qPrefLanguage.cpp
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
