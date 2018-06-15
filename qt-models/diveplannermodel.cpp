@@ -508,35 +508,35 @@ void DivePlannerPointsModel::setLastStop6m(bool value)
 void DivePlannerPointsModel::setAscrate75(int rate)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
-	planner->setAscrate75(lrint(rate * UNIT_FACTOR));
+	planner->setAscRate75(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscrate50(int rate)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
-	planner->setAscrate50(lrint(rate * UNIT_FACTOR));
+	planner->setAscRate50(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscratestops(int rate)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
-	planner->setAscratestops(lrint(rate * UNIT_FACTOR));
+	planner->setAscRateStops(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscratelast6m(int rate)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
-	planner->setAscratelast6m(lrint(rate * UNIT_FACTOR));
+	planner->setAscRateLast6m(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDescrate(int rate)
 {
 	auto planner = SettingsObjectWrapper::instance()->planner_settings;
-	planner->setDescrate(lrint(rate * UNIT_FACTOR));
+	planner->setDescRate(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
