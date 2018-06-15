@@ -3,9 +3,9 @@
 #define DIVECOMPUTERMANAGEMENTDIALOG_H
 #include <QDialog>
 #include "ui_divecomputermanagementdialog.h"
+#include "qt-models/divecomputermodel.h"
 
 class QModelIndex;
-class DiveComputerModel;
 
 class DiveComputerManagementDialog : public QDialog {
 	Q_OBJECT
@@ -24,7 +24,7 @@ slots:
 private:
 	explicit DiveComputerManagementDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	Ui::DiveComputerManagementDialog ui;
-	DiveComputerModel *model;
+	QScopedPointer<DiveComputerModel> model;
 };
 
 #endif // DIVECOMPUTERMANAGEMENTDIALOG_H
