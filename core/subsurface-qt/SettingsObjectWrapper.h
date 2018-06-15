@@ -205,33 +205,6 @@ private:
 	const QString group = QStringLiteral("TecDetails");
 };
 
-/* Control the state of the Facebook preferences */
-class FacebookSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString  accessToken READ accessToken WRITE setAccessToken NOTIFY accessTokenChanged)
-	Q_PROPERTY(QString  userId      READ userId      WRITE setUserId      NOTIFY userIdChanged)
-	Q_PROPERTY(QString  albumId     READ albumId     WRITE setAlbumId     NOTIFY albumIdChanged)
-
-public:
-	FacebookSettings(QObject *parent);
-	QString accessToken() const;
-	QString userId() const;
-	QString albumId() const;
-
-public slots:
-	void setAccessToken (const QString& value);
-	void setUserId(const QString& value);
-	void setAlbumId(const QString& value);
-
-signals:
-	void accessTokenChanged(const QString& value);
-	void userIdChanged(const QString& value);
-	void albumIdChanged(const QString& value);
-private:
-	QString group;
-	QString subgroup;
-};
-
 /* Control the state of the Geocoding preferences */
 class GeocodingPreferences : public QObject {
 	Q_OBJECT
@@ -574,7 +547,7 @@ class SettingsObjectWrapper : public QObject {
 
 	Q_PROPERTY(TechnicalDetailsSettings*   techical_details MEMBER techDetails CONSTANT)
 	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
-	Q_PROPERTY(FacebookSettings*           facebook         MEMBER facebook CONSTANT)
+	Q_PROPERTY(qPrefFacebook*           facebook         MEMBER facebook CONSTANT)
 	Q_PROPERTY(GeocodingPreferences*       geocoding        MEMBER geocoding CONSTANT)
 	Q_PROPERTY(ProxySettings*              proxy            MEMBER proxy CONSTANT)
 	Q_PROPERTY(qPrefCloudStorage*          cloud_storage    MEMBER cloud_storage CONSTANT)
@@ -594,7 +567,7 @@ public:
 
 	TechnicalDetailsSettings *techDetails;
 	PartialPressureGasSettings *pp_gas;
-	FacebookSettings *facebook;
+	qPrefFacebook *facebook;
 	GeocodingPreferences *geocoding;
 	ProxySettings *proxy;
 	qPrefCloudStorage *cloud_storage;
