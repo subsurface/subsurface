@@ -334,11 +334,11 @@ void ProfileWidget2::setupItemOnScene()
 
 	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSetpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTec::showCCRSetpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTec::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTec::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTec::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTec::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);

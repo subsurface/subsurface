@@ -17,6 +17,7 @@
 #include "qPrefLocation.h"
 #include "qPrefPlanner.h"
 #include "qPrefProxy.h"
+#include "qPrefTec.h"
 
 
 

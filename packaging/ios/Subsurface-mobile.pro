@@ -92,6 +92,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefLocation.cpp \
 	../../core/settings/qPrefPlanner.cpp \
 	../../core/settings/qPrefProxy.cpp \
+	../../core/settings/qPrefTec.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../qt-models/divelistmodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
@@ -207,6 +208,7 @@ HEADERS += \
 	../../core/settings/qPrefLocation.h \
 	../../core/settings/qPrefPlanner.h \
 	../../core/settings/qPrefProxy.h \
+	../../core/settings/qPrefTec.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
