@@ -77,6 +77,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/btdiscovery.cpp \
 	../../core/connectionlistmodel.cpp \
 	../../core/qt-ble.cpp \
+	../../core/settings/qPref.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -183,6 +184,8 @@ HEADERS += \
 	../../core/btdiscovery.h \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
+	../../core/settings/qPref.h \
+	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
