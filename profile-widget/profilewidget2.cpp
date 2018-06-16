@@ -2057,19 +2057,40 @@ void ProfileWidget2::updatePictures(const QModelIndex &from, const QModelIndex &
 	}
 }
 
+void ProfileWidget2::calculatePictureYPositions()
+{
+	double lastX = -1.0, lastY;
+	for (std::unique_ptr<DivePictureItem> &pic: pictures) {
+		if (!pic)
+			continue;
+		// let's put the picture at the correct time, but at a fixed "depth" on the profile
+		// not sure this is ideal, but it seems to look right.
+		double x = pic->x();
+		double y;
+		if (lastX <= 0.0)
+			y = 10;
+		else if (fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
+			y = lastY + 3;
+		else
+			y = 10;
+		lastX = x;
+		lastY = y;
+		pic->setY(y);
+	}
+}
+
 void ProfileWidget2::plotPictures()
 {
 	DivePictureModel *m = DivePictureModel::instance();
 	pictures.resize(m->rowDDEnd - m->rowDDStart);
 
-	double x, y, lastX = -1.0, lastY = -1.0;
 	for (int i = m->rowDDStart; i < m->rowDDEnd; i++) {
 		int picItemNr = i - m->rowDDStart;
 		int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
-		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
-		// information area. A null pointer in the pictures array indicates that this picture is not
-		// shown.
-		if (!offsetSeconds) {
+		// it's a correct picture, but doesn't have a timestamp during the dive: only show in
+		// the DivePhotoTab, not on the profile. A null pointer in the pictures array indicates
+		// that this picture is not shown in the profile.
+		if (offsetSeconds <= 0) {
 			pictures[picItemNr].reset();
 			continue;
 		}
@@ -2082,19 +2103,13 @@ void ProfileWidget2::plotPictures()
 		item->setVisible(prefs.show_pictures_in_profile);
 		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
 		item->setFileUrl(m->index(i, 1).data().toString());
-		// let's put the picture at the correct time, but at a fixed "depth" on the profile
-		// not sure this is ideal, but it seems to look right.
-		x = timeAxis->posAtValue(offsetSeconds);
-		if (i == 0)
-			y = 10;
-		else if (fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
-			y = lastY + 3;
-		else
-			y = 10;
-		lastX = x;
-		lastY = y;
-		item->setPos(x, y);
+
+		// Here, we only set the x-coordinate of the picture. The y-coordinate
+		// will be set later in calculatePictureYPositions().
+		double x = timeAxis->posAtValue(offsetSeconds);
+		item->setX(x);
 	}
+	calculatePictureYPositions();
 }
 
 void ProfileWidget2::removePictures(const QModelIndex &, int first, int last)
@@ -2107,6 +2122,7 @@ void ProfileWidget2::removePictures(const QModelIndex &, int first, int last)
 	if (first >= (int)pictures.size() || last <= first)
 		return;
 	pictures.erase(pictures.begin() + first, pictures.begin() + last);
+	calculatePictureYPositions();
 }
 
 #endif
