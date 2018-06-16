@@ -8,6 +8,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import org.subsurfacedivelog.mobile 1.0
 import org.kde.kirigami 2.2 as Kirigami
+import QtGraphicalEffects 1.0
 
 Kirigami.ApplicationWindow {
 	id: rootItem
@@ -106,10 +107,63 @@ Kirigami.ApplicationWindow {
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
-		title: qsTr("Subsurface")
-		titleIcon: "qrc:/qml/subsurface-mobile-icon.png"
+		topContent: Image {
+			source: "qrc:/qml/icons/dive.jpg"
+			Layout.fillWidth: true
+			sourceSize.width: parent.width
+			fillMode: Image.PreserveAspectFit
+			asynchronous: true
+			LinearGradient {
+				anchors {
+					left: parent.left
+					right: parent.right
+					top: parent.top
+				}
+				height: textblock.height * 2
+				start: Qt.point(0, 0)
+				end: Qt.point(0, height)
+				gradient: Gradient {
+					GradientStop {
+						position: 0.0
+						color: Qt.rgba(0, 0, 0, 0.8)
+					}
+					GradientStop {
+						position: 1.0
+						color: "transparent"
+					}
+				}
+			}
+			ColumnLayout {
+				id: textblock
+				anchors {
+					left: parent.left
+					top: parent.top
+				}
+				RowLayout {
+					width: Math.min(implicitWidth, parent.width)
+					Layout.margins: Kirigami.Units.smallSpacing
+					Image {
+						source: "qrc:/qml/subsurface-mobile-icon.png"
+						fillMode: Image.PreserveAspectCrop
+						sourceSize.width: Kirigami.Units.iconSizes.large
+						width: Kirigami.Units.iconSizes.large
+						Layout.margins: Kirigami.Units.smallSpacing
+					}
+					Kirigami.Heading {
+						Layout.fillWidth: true
+						visible: text.length > 0
+						level: 1
+						color: "white"
+						text: "Subsurface"
+						wrapMode: Text.NoWrap
+						elide: Text.ElideRight
+						font.weight: Font.Normal
+						Layout.margins: Kirigami.Units.smallSpacing
+					}
+				}
+			}
+		}
 
-		bannerImageSource: "qrc:/qml/icons/dive.jpg"
 		resetMenuOnTriggered: false
 
 		actions: [
