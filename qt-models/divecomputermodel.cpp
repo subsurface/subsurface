@@ -3,70 +3,45 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 
-DiveComputerModel::DiveComputerModel(QMultiMap<QString, DiveComputerNode> &dcMap, QObject *parent) : CleanerTableModel(parent)
+DiveComputerModel::DiveComputerModel(QObject *parent) : CleanerTableModel(parent),
+	dcs(dcList.dcs)
 {
 	setHeaderDataStrings(QStringList() << "" << tr("Model") << tr("Device ID") << tr("Nickname"));
-	dcWorkingMap = dcMap;
-	numRows = 0;
 }
 
 QVariant DiveComputerModel::data(const QModelIndex &index, int role) const
 {
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	DiveComputerNode node = values.at(index.row());
+	if (index.row() < 0 || index.row() >= dcs.size())
+		return QVariant();
+	const DiveComputerNode &node = dcs[index.row()];
 
-	QVariant ret;
 	if (role == Qt::DisplayRole || role == Qt::EditRole) {
 		switch (index.column()) {
 		case ID:
-			ret = QString("0x").append(QString::number(node.deviceId, 16));
-			break;
+			return QString("0x").append(QString::number(node.deviceId, 16));
 		case MODEL:
-			ret = node.model;
-			break;
+			return node.model;
 		case NICKNAME:
-			ret = node.nickName;
-			break;
+			return node.nickName;
 		}
 	}
 
 	if (index.column() == REMOVE) {
 		switch (role) {
 		case Qt::DecorationRole:
-			ret = trashIcon();
-			break;
+			return trashIcon();
 		case Qt::SizeHintRole:
-			ret = trashIcon().size();
-			break;
+			return trashIcon().size();
 		case Qt::ToolTipRole:
-			ret = tr("Clicking here will remove this dive computer.");
-			break;
+			return tr("Clicking here will remove this dive computer.");
 		}
 	}
-	return ret;
+	return QVariant();
 }
 
 int DiveComputerModel::rowCount(const QModelIndex&) const
 {
-	return numRows;
-}
-
-void DiveComputerModel::update()
-{
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	int count = values.count();
-
-	if (numRows) {
-		beginRemoveRows(QModelIndex(), 0, numRows - 1);
-		numRows = 0;
-		endRemoveRows();
-	}
-
-	if (count) {
-		beginInsertRows(QModelIndex(), 0, count - 1);
-		numRows = count;
-		endInsertRows();
-	}
+	return dcs.size();
 }
 
 Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
@@ -80,33 +55,27 @@ Qt::ItemFlags DiveComputerModel::flags(const QModelIndex &index) const
 bool DiveComputerModel::setData(const QModelIndex &index, const QVariant &value, int)
 {
 	// We should test if the role == Qt::EditRole
+	if (index.row() < 0 || index.row() >= dcs.size())
+		return false;
 
-	// WARN: This seems wrong - The values don't are ordered - we need a map from the Key to Index, or something.
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	DiveComputerNode node = values.at(index.row());
-	dcWorkingMap.remove(node.model, node);
+	DiveComputerNode &node = dcs[index.row()];
 	node.nickName = value.toString();
-	dcWorkingMap.insert(node.model, node);
 	emit dataChanged(index, index);
 	return true;
 }
 
 void DiveComputerModel::remove(const QModelIndex &index)
 {
-	QList<DiveComputerNode> values = dcWorkingMap.values();
-	DiveComputerNode node = values.at(index.row());
-	dcWorkingMap.remove(node.model, node);
-	update();
-}
-
-void DiveComputerModel::dropWorkingList()
-{
-	// how do I prevent the memory leak ?
+	if (index.row() < 0 || index.row() >= dcs.size())
+		return;
+	beginRemoveRows(QModelIndex(), index.row(), index.row());
+	dcs.remove(index.row());
+	endRemoveRows();
 }
 
 void DiveComputerModel::keepWorkingList()
 {
-	if (dcList.dcMap != dcWorkingMap)
+	if (dcList.dcs != dcs)
 		mark_divelist_changed(true);
-	dcList.dcMap = dcWorkingMap;
+	dcList.dcs = dcs;
 }

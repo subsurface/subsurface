@@ -3,13 +3,14 @@
 #define DIVECOMPUTER_H
 
 #include <QString>
-#include <QMap>
+#include <QVector>
 #include <stdint.h>
 
 class DiveComputerNode {
 public:
 	bool operator==(const DiveComputerNode &a) const;
 	bool operator!=(const DiveComputerNode &a) const;
+	bool operator<(const DiveComputerNode &a) const;
 	bool changesValues(const DiveComputerNode &b) const;
 	void showchanges(const QString &n, const QString &s, const QString &f) const;
 	QString model;
@@ -26,7 +27,9 @@ public:
 	void addDC(QString m, uint32_t d, QString n = QString(), QString s = QString(), QString f = QString());
 	DiveComputerNode matchDC(const QString &m, uint32_t d);
 	DiveComputerNode matchModel(const QString &m);
-	QMultiMap<QString, DiveComputerNode> dcMap;
+
+	// Keep the dive computers in a vector sorted by (model, deviceId)
+	QVector<DiveComputerNode> dcs;
 };
 
 extern DiveComputerList dcList;
