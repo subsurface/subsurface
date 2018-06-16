@@ -184,6 +184,7 @@ HEADERS += \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
 	../../core/settings/qPref.h \
+	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
