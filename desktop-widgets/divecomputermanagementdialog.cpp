@@ -6,8 +6,7 @@
 #include <QMessageBox>
 #include <QShortcut>
 
-DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
-	model(0)
+DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
 	ui.setupUi(this);
 	init();
@@ -20,23 +19,17 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::
 
 void DiveComputerManagementDialog::init()
 {
-	delete model;
-	model = new DiveComputerModel(dcList.dcMap);
-	ui.tableView->setModel(model);
+	model.reset(new DiveComputerModel(dcList.dcMap));
+	ui.tableView->setModel(model.data());
+	ui.tableView->resizeColumnsToContents();
+	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
+	layout()->activate();
 }
 
 DiveComputerManagementDialog *DiveComputerManagementDialog::instance()
 {
 	static DiveComputerManagementDialog *self = new DiveComputerManagementDialog(MainWindow::instance());
 	return self;
-}
-
-void DiveComputerManagementDialog::update()
-{
-	model->update();
-	ui.tableView->resizeColumnsToContents();
-	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
-	layout()->activate();
 }
 
 void DiveComputerManagementDialog::tryRemove(const QModelIndex &index)
@@ -63,7 +56,6 @@ void DiveComputerManagementDialog::accept()
 
 void DiveComputerManagementDialog::reject()
 {
-	model->dropWorkingList();
 	hide();
 	close();
 }

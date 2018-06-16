@@ -19,16 +19,13 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual Qt::ItemFlags flags(const QModelIndex &index) const;
 	virtual bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	void update();
 	void keepWorkingList();
-	void dropWorkingList();
 
 public
 slots:
 	void remove(const QModelIndex &index);
 
 private:
-	int numRows;
 	QMultiMap<QString, DiveComputerNode> dcWorkingMap;
 };
 

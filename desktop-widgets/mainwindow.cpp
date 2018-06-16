@@ -892,7 +892,6 @@ void MainWindow::on_actionDivelogs_de_triggered()
 void MainWindow::on_actionEditDeviceNames_triggered()
 {
 	DiveComputerManagementDialog::instance()->init();
-	DiveComputerManagementDialog::instance()->update();
 	DiveComputerManagementDialog::instance()->show();
 }
 
