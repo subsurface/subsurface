@@ -36,7 +36,7 @@ const char *cylinderuse_text[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "OC-gas"), QT_TRANSLATE_NOOP("gettextFromC", "diluent"), QT_TRANSLATE_NOOP("gettextFromC", "oxygen"), QT_TRANSLATE_NOOP("gettextFromC", "not used")
 };
 
-// For user visible text
+// For user visible text but still not translated
 const char *divemode_text_ui[] = {
 	QT_TRANSLATE_NOOP("gettextFromC", "Open circuit"),
 	QT_TRANSLATE_NOOP("gettextFromC", "CCR"),

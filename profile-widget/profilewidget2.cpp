@@ -1436,21 +1436,21 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	QMenu *changeMode = m.addMenu(tr("Change divemode"));
 	if (divemode != OC) {
 		QAction *action = new QAction(&m);
-		action->setText(divemode_text_ui[OC]);
+		action->setText(tr(divemode_text_ui[OC]));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
 		action->setData(event->globalPos());
 		changeMode->addAction(action);
 	}
 	if (divemode != CCR) {
 		QAction *action = new QAction(&m);
-		action->setText(divemode_text_ui[CCR]);
+		action->setText(tr(divemode_text_ui[CCR]));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
 		action->setData(event->globalPos());
 		changeMode->addAction(action);
 	}
 	if (divemode != PSCR) {
 		QAction *action = new QAction(&m);
-		action->setText(divemode_text_ui[PSCR]);
+		action->setText(tr(divemode_text_ui[PSCR]));
 		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
 		action->setData(event->globalPos());
 		changeMode->addAction(action);
@@ -1622,7 +1622,7 @@ void ProfileWidget2::addDivemodeSwitch()
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	for (i = 0; i < UNDEF_COMP_TYPE; i++)
-		if (QString(divemode_text_ui[i]) == action->text())
+		if (QString(tr(divemode_text_ui[i])) == action->text())
 			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, i,
 				QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
 	invalidate_dive_cache(current_dive);
