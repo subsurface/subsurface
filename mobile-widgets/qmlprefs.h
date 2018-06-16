@@ -3,11 +3,12 @@
 #define QMLPREFS_H
 
 #include <QObject>
+#include "core/settings/qPref.h"
 
 
 class QMLPrefs : public QObject {
 	Q_OBJECT
-	Q_ENUMS(cloud_status_qml)
+	Q_ENUMS(cloud_status)
 	Q_PROPERTY(QString cloudPassword
 				MEMBER m_cloudPassword
 				WRITE setCloudPassword
@@ -20,7 +21,7 @@ class QMLPrefs : public QObject {
 				MEMBER m_cloudUserName
 				WRITE setCloudUserName
 				NOTIFY cloudUserNameChanged)
-	Q_PROPERTY(cloud_status_qml credentialStatus
+	Q_PROPERTY(cloud_status credentialStatus
 				MEMBER m_credentialStatus
 				WRITE setCredentialStatus
 				NOTIFY credentialStatusChanged)
@@ -36,7 +37,7 @@ class QMLPrefs : public QObject {
 				MEMBER m_showPin
 				WRITE setShowPin
 				NOTIFY showPinChanged)
-	Q_PROPERTY(cloud_status_qml oldStatus
+	Q_PROPERTY(cloud_status oldStatus
 				MEMBER m_oldStatus
 				WRITE setOldStatus
 				NOTIFY oldStatusChanged)
@@ -55,14 +56,6 @@ public:
 
 	static QMLPrefs *instance();
 
-	enum cloud_status_qml {
-		CS_UNKNOWN,
-		CS_INCORRECT_USER_PASSWD,
-		CS_NEED_TO_VERIFY,
-		CS_VERIFIED,
-		CS_NOCLOUD
-	};
-
 	const QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
 
@@ -72,16 +65,16 @@ public:
 	const QString cloudUserName() const;
 	void setCloudUserName(const QString &cloudUserName);
 
-	cloud_status_qml credentialStatus() const;
-	void setCredentialStatus(const cloud_status_qml value);
+	cloud_status credentialStatus() const;
+	void setCredentialStatus(const cloud_status value);
 
 	void setDeveloper(bool value);
 
 	int distanceThreshold() const;
 	void setDistanceThreshold(int distance);
 
-	cloud_status_qml oldStatus() const;
-	void setOldStatus(const cloud_status_qml value);
+	cloud_status oldStatus() const;
+	void setOldStatus(const cloud_status value);
 
 	bool showPin() const;
 	void setShowPin(bool enable);
@@ -100,11 +93,11 @@ private:
 	QString m_cloudPassword;
 	QString m_cloudPin;
 	QString m_cloudUserName;
-	cloud_status_qml m_credentialStatus;
+	cloud_status m_credentialStatus;
 	bool m_developer;
 	int m_distanceThreshold;
 	static QMLPrefs *m_instance;
-	cloud_status_qml m_oldStatus;
+	cloud_status m_oldStatus;
 	bool m_showPin;
 	int m_timeThreshold;
 

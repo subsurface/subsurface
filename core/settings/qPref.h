@@ -7,10 +7,10 @@
 
 class qPref : public QObject {
 	Q_OBJECT
+	Q_ENUMS(cloud_status);
 
 public:
-	qPref(QObject *parent = NULL) : QObject(parent) {};
-	~qPref() {};
+	qPref(QObject *parent = NULL);
 	static qPref *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -19,7 +19,6 @@ public:
 public:
 
 private:
-	static qPref *m_instance;
 };
 
 #endif

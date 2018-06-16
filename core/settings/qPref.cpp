@@ -2,16 +2,15 @@
 #include "qPref_private.h"
 #include "qPref.h"
 
-
-qPref *qPref::m_instance = NULL;
+qPref::qPref(QObject *parent) : 
+	QObject(parent)
+{
+}
 qPref *qPref::instance()
 {
-	if (!m_instance)
-		m_instance = new qPref;
-	return m_instance;
+static qPref *self = new qPref;
+	return self;
 }
-
-
 
 void qPref::loadSync(bool doSync)
 {
