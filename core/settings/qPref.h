@@ -10,6 +10,7 @@
 
 class qPref : public QObject {
 	Q_OBJECT
+	Q_ENUMS(cloud_status);
 
 public:
 	qPref(QObject *parent = NULL) : QObject(parent) {};
@@ -20,6 +21,13 @@ public:
 	void loadSync(bool doSync);
 
 public:
+	enum cloud_status {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
+	};
 
 
 private:

@@ -46,6 +46,7 @@
 #include "core/windowtitleupdate.h"
 #include "desktop-widgets/locationinformation.h"
 #include "preferences/preferencesdialog.h"
+#include "core/settings/qPref.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
@@ -439,8 +440,8 @@ void MainWindow::on_actionDiveSiteEdit_triggered() {
 
 void MainWindow::enableDisableCloudActions()
 {
-	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
-	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == CS_VERIFIED);
+	ui.actionCloudstorageopen->setEnabled(prefs.cloud_verification_status == qPref::CS_VERIFIED);
+	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == qPref::CS_VERIFIED);
 }
 
 PlannerDetails *MainWindow::plannerDetails() const {
@@ -776,7 +777,7 @@ void MainWindow::closeCurrentFile()
 
 void MainWindow::updateCloudOnlineStatus()
 {
-	bool is_cloud = existing_filename && prefs.cloud_git_url && prefs.cloud_verification_status == CS_VERIFIED &&
+	bool is_cloud = existing_filename && prefs.cloud_git_url && prefs.cloud_verification_status == qPref::CS_VERIFIED &&
 			strstr(existing_filename, prefs.cloud_git_url);
 	ui.actionCloudOnline->setEnabled(is_cloud);
 	ui.actionCloudOnline->setChecked(is_cloud && !prefs.git_local_only);
