@@ -8,8 +8,6 @@
 
 class DiveComputerNode {
 public:
-	DiveComputerNode(QString m, uint32_t d, QString s, QString f, QString n)
-	    : model(m), deviceId(d), serialNumber(s), firmware(f), nickName(n) {};
 	bool operator==(const DiveComputerNode &a) const;
 	bool operator!=(const DiveComputerNode &a) const;
 	bool changesValues(const DiveComputerNode &b) const;
@@ -23,15 +21,12 @@ public:
 
 class DiveComputerList {
 public:
-	DiveComputerList();
-	~DiveComputerList();
 	const DiveComputerNode *getExact(const QString &m, uint32_t d);
 	const DiveComputerNode *get(const QString &m);
 	void addDC(QString m, uint32_t d, QString n = QString(), QString s = QString(), QString f = QString());
 	DiveComputerNode matchDC(const QString &m, uint32_t d);
 	DiveComputerNode matchModel(const QString &m);
 	QMultiMap<QString, DiveComputerNode> dcMap;
-	QMultiMap<QString, DiveComputerNode> dcWorkingMap;
 };
 
 extern DiveComputerList dcList;
