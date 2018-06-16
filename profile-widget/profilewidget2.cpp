@@ -1437,21 +1437,21 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	if (divemode != OC) {
 		QAction *action = new QAction(&m);
 		action->setText(divemode_text_ui[OC]);
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwith()));
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
 		action->setData(event->globalPos());
 		changeMode->addAction(action);
 	}
 	if (divemode != CCR) {
 		QAction *action = new QAction(&m);
 		action->setText(divemode_text_ui[CCR]);
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwith()));
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
 		action->setData(event->globalPos());
 		changeMode->addAction(action);
 	}
 	if (divemode != PSCR) {
 		QAction *action = new QAction(&m);
 		action->setText(divemode_text_ui[PSCR]);
-		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwith()));
+		connect(action, SIGNAL(triggered(bool)), this, SLOT(addDivemodeSwitch()));
 		action->setData(event->globalPos());
 		changeMode->addAction(action);
 	}
@@ -1616,7 +1616,7 @@ void ProfileWidget2::addBookmark()
 	replot();
 }
 
-void ProfileWidget2::addDivemodeSwith()
+void ProfileWidget2::addDivemodeSwitch()
 {
 	int i;
 	QAction *action = qobject_cast<QAction *>(sender());
