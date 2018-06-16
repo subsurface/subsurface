@@ -2,6 +2,7 @@
 #include "cloudstorage.h"
 #include "pref.h"
 #include "qthelper.h"
+#include "settings/qPref.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QApplication>
 

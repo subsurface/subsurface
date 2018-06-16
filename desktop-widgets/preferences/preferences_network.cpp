@@ -2,8 +2,8 @@
 #include "preferences_network.h"
 #include "ui_preferences_network.h"
 #include "subsurfacewebservices.h"
-#include "core/dive.h"
 #include "core/cloudstorage.h"
+#include "core/dive.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QNetworkProxy>
 
