@@ -1,3 +1,8 @@
+- Mobile: Add button to About page to copy logs to clipboard; this makes it
+  easier to provide the required information when reporting issues
+- Mobile/iOS: Ajusted launch page to be centered
+- Mobile: Adjusted size of about page for small screen (no scrolling)
+- Mobile: Download page now remembers last used connection
 - Shearwater import: include DC reported ceiling
 - Desktop: allow editing from list-view [#1213]
 - Desktop: don't add six seconds to dive duration [#554]
