@@ -1623,7 +1623,8 @@ void ProfileWidget2::addDivemodeSwitch()
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	for (i = 0; i < UNDEF_COMP_TYPE; i++)
 		if (QString(divemode_text_ui[i]) == action->text())
-			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, i, "modechange");
+			add_event(current_dc, lrint(timeAxis->valueAt(scenePos)), 8, 0, i,
+				QT_TRANSLATE_NOOP("gettextFromC", "modechange"));
 	invalidate_dive_cache(current_dive);
 	mark_divelist_changed(true);
 	replot();
