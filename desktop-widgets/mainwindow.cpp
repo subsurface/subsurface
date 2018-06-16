@@ -77,10 +77,13 @@ extern "C" int updateProgress(const char *text)
 	if (verbose)
 		qDebug() << "git storage:" << text;
 	if (progressDialog) {
+		// apparently we don't always get enough space to show the full label
+		// so let's manually make enough space (but don't shrink the existing size)
+		int width = QFontMetrics(qApp->font()).width(text) + 100;
+		if (width > progressDialog->width())
+			progressDialog->resize(width + 20, progressDialog->height());
 		progressDialog->setLabelText(text);
 		progressDialog->setValue(++progressCounter);
-		int width = QFontMetrics(qApp->font()).width(text) + 100;
-		progressDialog->resize(width, progressDialog->height());
 		if (progressCounter == 100)
 			progressCounter = 0; // yes this is silly, but we really don't know how long it will take
 	}
