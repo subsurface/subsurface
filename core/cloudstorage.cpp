@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "cloudstorage.h"
 #include "pref.h"
+#include "settings/qPref.h"
 #include "qthelper.h"
 #include "settings/qPref.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
@@ -49,7 +50,7 @@ void CloudStorageAuthenticate::uploadFinished()
 
 	QString cloudAuthReply(reply->readAll());
 	qDebug() << "Completed connection with cloud storage backend, response" << cloudAuthReply;
-	CloudStorageSettings csSettings(parent());
+	qPrefCS csSettings(parent());
 
 	if (cloudAuthReply == QLatin1String("[VERIFIED]") || cloudAuthReply == QLatin1String("[OK]")) {
 		csSettings.setVerificationStatus(qPref::CS_VERIFIED);

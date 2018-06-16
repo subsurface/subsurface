@@ -2,9 +2,12 @@
 #ifndef QPREF_H
 #define QPREF_H
 
-#include "qPrefAnimations.h"
 
 #include <QObject>
+
+#include "qPrefAnimations.h"
+#include "qPrefCS.h"
+
 
 
 class qPref : public QObject {
