@@ -16,6 +16,37 @@ CURRENT_LIBFTDI="1.3"
 CURRENT_KIRIGAMI="70c025ef6f6dc63c85180867f70f5e00ba5a8dba"
 CURRENT_BREEZE_ICONS=""
 
+# Checkout library from git
+# Ensure specified version is checked out,
+# while avoiding cloning/fetching if unnecessary.
+#
+# Arguments:
+#	name - used as directory name
+#	version - any tag/sha usable by git
+#	url - repository url
+#
+git_checkout_library() {
+	[ $# -ne 3 ] && return -1
+
+	# for clarity
+	local name=$1
+	local version=$2
+	local url=$3
+
+	if [ ! -d "$name" ]; then
+		git clone "$url" "$name"
+	fi
+	pushd "$name"
+
+	git fetch origin
+	if ! git checkout "$version" ; then
+		echo "Can't find the right tag in $name - giving up"
+		return -1
+	fi
+	popd
+}
+
+
 # deal with all the command line arguments
 if [[ $# -ne 2 && $# -ne 3 ]] ; then
 	echo "wrong number of parameters, format:"
@@ -78,76 +109,48 @@ set -e
 # get ready to download needed sources
 cd ${INSTDIR}
 
-if [[ "$BUILD" = *"libcurl"* && ! -d libcurl ]]; then
-	git clone https://github.com/curl/curl.git libcurl
-	pushd libcurl
-	git fetch origin
-	if ! git checkout $CURRENT_LIBCURL ; then
-		echo "Can't find the right tag in libcurl - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"libcurl"* ]]; then
+	git_checkout_library libcurl $CURRENT_LIBCURL https://github.com/curl/curl.git
 fi
 
-if [[ "$BUILD" = *"libftdi"* && ! -d libftdi1 ]]; then
-	${CURL} https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-	tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-	mv libftdi1-${CURRENT_LIBFTDI} libftdi1
+if [[ "$BUILD" = *"libgit2"* ]]; then
+	git_checkout_library libgit2 $CURRENT_LIBGIT2 https://github.com/libgit2/libgit2.git
 fi
 
-if [[ "$BUILD" = *"libgit2"* && ! -d libgit2 ]]; then
-	git clone https://github.com/libgit2/libgit2.git
-	pushd libgit2
-	git fetch origin
-	if ! git checkout ${CURRENT_LIBGIT2} ; then
-		echo "Can't find the right tag in libgit2 - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"libssh2"* ]]; then
+	git_checkout_library libssh2 $CURRENT_LIBSSH2 https://github.com/libssh2/libssh2.git
 fi
 
-if [[ "$BUILD" = *"libssh2"* && ! -d libssh2 ]]; then
-	git clone https://github.com/libssh2/libssh2.git
-	pushd libssh2
-	git fetch origin
-	if ! git checkout $CURRENT_LIBSSH2 ; then
-		echo "Can't find the right tag in libssh2 - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"libusb"* ]]; then
+	git_checkout_library libusb $CURRENT_LIBUSB https://github.com/libusb/libusb.git
 fi
 
-if [[ "$BUILD" = *"libusb"* && ! -d libusb ]]; then
-	git clone https://github.com/libusb/libusb.git
-	pushd libusb
-	git fetch origin
-	if ! git checkout $CURRENT_LIBUSB ; then
-		echo "Can't find the right tag in libusb - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"libxml2"* ]];then
+	git_checkout_library libxml2 $CURRENT_LIBXML2 https://github.com/GNOME/libxml2.git
 fi
 
-if [[ "$BUILD" = *"libxml2"* && ! -d libxml2 ]]; then
-	git clone https://github.com/GNOME/libxml2.git
-	pushd libxml2
-	git fetch origin
-	if ! git checkout $CURRENT_LIBXML2 ; then
-		echo "Can't find the right tag in libxml2 - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"libxslt"* ]]; then
+	git_checkout_library libxslt $CURRENT_XSLT https://github.com/GNOME/libxslt.git
 fi
 
-if [[ "$BUILD" = *"libxslt"* && ! -d libxslt ]]; then
-	git clone https://github.com/GNOME/libxslt.git
-	pushd libxslt
-	git fetch origin
-	if ! git checkout $CURRENT_LIBXSLT ; then
-		echo "Can't find the right tag in libxslt - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"breeze-icons"* ]]; then
+	git_checkout_library breeze-icons master https://github.com/kde/breeze-icons.git
+fi
+
+if [[ "$BUILD" = *"googlemaps"* ]]; then
+	git_checkout_library googlemaps master https://github.com/Subsurface-divelog/googlemaps.git
+fi
+
+if [[ "$BUILD" = *"hidapi"* ]]; then
+	git_checkout_library hidapi master https://github.com/signal11/hidapi.git
+fi
+
+if [[ "$BUILD" = *"kirigami"* ]]; then
+	git_checkout_library kirigami $CURRENT_KIRIGAMI https://github.com/KDE/kirigami.git
+fi
+
+if [[ "$BUILD" = *"openssl"* ]]; then
+	git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
 fi
 
 if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
@@ -156,53 +159,10 @@ if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
 	mv libzip-${CURRENT_LIBZIP} libzip
 fi
 
-if [[ "$BUILD" = *"breeze-icons"* && ! -d breeze-icons ]]; then
-	git clone https://github.com/kde/breeze-icons.git
-	pushd breeze-icons
-	git pull --rebase
-	popd
-fi
-
-if [[ "$BUILD" = *"googlemaps"* && ! -d googlemaps ]]; then
-	git clone https://github.com/Subsurface-divelog/googlemaps.git
-	pushd googlemaps
-	git fetch origin
-	git checkout master
-	git pull --rebase
-	popd
-fi
-
-if [[ "$BUILD" = *"hidapi"* && ! -d hidapi ]]; then
-	git clone https://github.com/signal11/hidapi.git
-	pushd hidapi
-	git fetch origin
-	# there is no good tag, so just build master
-#	if ! git checkout $CURRENT_HIDAPI ; then
-#		echo "Can't find the right tag in hidapi - giving up"
-#		exit -1
-#	fi
-	popd
-fi
-
-if [[ "$BUILD" = *"kirigami"* && ! -d kirigami ]]; then
-	git clone -b master https://github.com/KDE/kirigami.git
-	pushd kirigami
-	if ! git checkout $CURRENT_KIRIGAMI ; then
-		echo "Can't find the right tag in openssl - giving up"
-		exit -1
-	fi
-	popd
-fi
-
-if [[ "$BUILD" = *"openssl"* && ! -d openssl ]]; then
-	git clone https://github.com/openssl/openssl.git
-	pushd openssl
-	git fetch origin
-	if ! git checkout $CURRENT_OPENSSL ; then
-		echo "Can't find the right tag in openssl - giving up"
-		exit -1
-	fi
-	popd
+if [[ "$BUILD" = *"libftdi"* && ! -d libftdi1 ]]; then
+	${CURL} https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+	tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+	mv libftdi1-${CURRENT_LIBFTDI} libftdi1
 fi
 
 if [[ "$BUILD" = *"sqlite"* && ! -d sqlite ]]; then
