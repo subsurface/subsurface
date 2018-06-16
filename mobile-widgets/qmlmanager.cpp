@@ -511,12 +511,12 @@ void QMLManager::tryRetrieveDataFromBackend()
 		}
 		myTimer.stop();
 		qPref::instance()->setCloudPin("");
-		if (prefs.cloud_verification_status == CS_INCORRECT_USER_PASSWD) {
+		if (prefs.cloud_verification_status == qPref::CS_INCORRECT_USER_PASSWD) {
 			appendTextToLog(QStringLiteral("Incorrect cloud credentials"));
 			setStartPageText(RED_FONT + tr("Incorrect cloud credentials") + END_FONT);
 			revertToNoCloudIfNeeded();
 			return;
-		} else if (prefs.cloud_verification_status != CS_VERIFIED) {
+		} else if (prefs.cloud_verification_status != qPref::CS_VERIFIED) {
 			// here we need to enter the PIN
 			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN"));
 			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);

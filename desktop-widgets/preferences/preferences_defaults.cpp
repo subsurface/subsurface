@@ -2,6 +2,7 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
 #include "core/prefs-macros.h"
+#include "core/settings/qPref.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include <QFileDialog>
@@ -61,7 +62,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->velocitySlider->setValue(prefs.animation_speed);
 	ui->btnUseDefaultFile->setChecked(prefs.use_default_file);
 
-	if (prefs.cloud_verification_status == CS_VERIFIED) {
+	if (prefs.cloud_verification_status == qPref::CS_VERIFIED) {
 		ui->cloudDefaultFile->setEnabled(true);
 	} else {
 		if (ui->cloudDefaultFile->isChecked())
