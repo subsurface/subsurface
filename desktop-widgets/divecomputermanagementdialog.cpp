@@ -19,8 +19,7 @@ DiveComputerManagementDialog::DiveComputerManagementDialog(QWidget *parent, Qt::
 
 void DiveComputerManagementDialog::init()
 {
-	model.reset(new DiveComputerModel(dcList.dcMap));
-	model->update();
+	model.reset(new DiveComputerModel);
 	ui.tableView->setModel(model.data());
 	ui.tableView->resizeColumnsToContents();
 	ui.tableView->setColumnWidth(DiveComputerModel::REMOVE, 22);
@@ -57,7 +56,6 @@ void DiveComputerManagementDialog::accept()
 
 void DiveComputerManagementDialog::reject()
 {
-	model->dropWorkingList();
 	hide();
 	close();
 }

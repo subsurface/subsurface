@@ -767,7 +767,7 @@ void MainWindow::closeCurrentFile()
 
 	clear_events();
 
-	dcList.dcMap.clear();
+	dcList.dcs.clear();
 }
 
 void MainWindow::updateCloudOnlineStatus()
