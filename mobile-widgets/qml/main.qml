@@ -161,6 +161,19 @@ Kirigami.ApplicationWindow {
 						Layout.margins: Kirigami.Units.smallSpacing
 					}
 				}
+				RowLayout {
+					Layout.margins: Kirigami.Units.smallSpacing
+					Kirigami.Heading {
+						Layout.fillWidth: true
+						visible: text.length > 0
+						level: 1
+						color: "white"
+						text: prefs.cloudUserName
+						wrapMode: Text.NoWrap
+						elide: Text.ElideRight
+						font.weight: Font.Normal
+					}
+				}
 			}
 		}
 
