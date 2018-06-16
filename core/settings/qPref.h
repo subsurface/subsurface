@@ -6,6 +6,7 @@
 #include <QObject>
 #include "core/pref.h"
 #include "qPrefAnimations.h"
+#include "qPrefCloudStorage.h"
 
 
 class qPref : public QObject {

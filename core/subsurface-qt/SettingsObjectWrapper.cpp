@@ -974,186 +974,6 @@ void ProxySettings::setPass(const QString& value)
 	emit passChanged(value);
 }
 
-CloudStorageSettings::CloudStorageSettings(QObject *parent) :
-	QObject(parent)
-{
-
-}
-
-bool CloudStorageSettings::gitLocalOnly() const
-{
-	return prefs.git_local_only;
-}
-
-QString CloudStorageSettings::password() const
-{
-	return QString(prefs.cloud_storage_password);
-}
-
-QString CloudStorageSettings::newPassword() const
-{
-	return QString(prefs.cloud_storage_newpassword);
-}
-
-QString CloudStorageSettings::email() const
-{
-	return QString(prefs.cloud_storage_email);
-}
-
-QString CloudStorageSettings::emailEncoded() const
-{
-	return QString(prefs.cloud_storage_email_encoded);
-}
-
-bool CloudStorageSettings::savePasswordLocal() const
-{
-	return prefs.save_password_local;
-}
-
-short CloudStorageSettings::verificationStatus() const
-{
-	return prefs.cloud_verification_status;
-}
-
-QString CloudStorageSettings::userId() const
-{
-	return QString(prefs.userid);
-}
-
-QString CloudStorageSettings::baseUrl() const
-{
-	return QString(prefs.cloud_base_url);
-}
-
-QString CloudStorageSettings::gitUrl() const
-{
-	return QString(prefs.cloud_git_url);
-}
-
-void CloudStorageSettings::setPassword(const QString& value)
-{
-	if (value == prefs.cloud_storage_password)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("password", value);
-	free((void *)prefs.cloud_storage_password);
-	prefs.cloud_storage_password = copy_qstring(value);
-	emit passwordChanged(value);
-}
-
-void CloudStorageSettings::setNewPassword(const QString& value)
-{
-	if (value == prefs.cloud_storage_newpassword)
-		return;
-	/*TODO: This looks like wrong, but 'new password' is not saved on disk, why it's on prefs? */
-	free((void *)prefs.cloud_storage_newpassword);
-	prefs.cloud_storage_newpassword = copy_qstring(value);
-	emit newPasswordChanged(value);
-}
-
-void CloudStorageSettings::setEmail(const QString& value)
-{
-	if (value == prefs.cloud_storage_email)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("email", value);
-	free((void *)prefs.cloud_storage_email);
-	prefs.cloud_storage_email = copy_qstring(value);
-	emit emailChanged(value);
-}
-
-void CloudStorageSettings::setUserId(const QString& value)
-{
-	if (value == prefs.userid)
-		return;
-	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
-	QSettings s;
-	s.setValue("subsurface_webservice_uid", value);
-	free((void *)prefs.userid);
-	prefs.userid = copy_qstring(value);
-	emit userIdChanged(value);
-}
-
-void CloudStorageSettings::setEmailEncoded(const QString& value)
-{
-	if (value == prefs.cloud_storage_email_encoded)
-		return;
-	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
-	free((void *)prefs.cloud_storage_email_encoded);
-	prefs.cloud_storage_email_encoded = copy_qstring(value);
-	emit emailEncodedChanged(value);
-}
-
-void CloudStorageSettings::setSavePasswordLocal(bool value)
-{
-	if (value == prefs.save_password_local)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("save_password_local", value);
-	prefs.save_password_local = value;
-	emit savePasswordLocalChanged(value);
-}
-
-void CloudStorageSettings::setVerificationStatus(short value)
-{
-	if (value == prefs.cloud_verification_status)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cloud_verification_status", value);
-	prefs.cloud_verification_status = value;
-	emit verificationStatusChanged(value);
-}
-
-void CloudStorageSettings::setSaveUserIdLocal(bool value)
-{
-	//TODO: this is not saved on disk?
-	if (value == prefs.save_userid_local)
-		return;
-	prefs.save_userid_local = value;
-	emit saveUserIdLocalChanged(value);
-}
-
-bool CloudStorageSettings::saveUserIdLocal() const
-{
-	return prefs.save_userid_local;
-}
-
-void CloudStorageSettings::setBaseUrl(const QString& value)
-{
-	if (value == prefs.cloud_base_url)
-		return;
-
-	// dont free data segment.
-	if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
-		free((void *)prefs.cloud_base_url);
-		free((void *)prefs.cloud_git_url);
-	}
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cloud_base_url", value);
-	prefs.cloud_base_url = copy_qstring(value);
-	prefs.cloud_git_url = copy_qstring(QString(prefs.cloud_base_url) + "/git");
-}
-
-void CloudStorageSettings::setGitUrl(const QString&)
-{
-}
-
-void CloudStorageSettings::setGitLocalOnly(bool value)
-{
-	if (value == prefs.git_local_only)
-		return;
-	QSettings s;
-	s.beginGroup("CloudStorage");
-	s.setValue("git_local_only", value);
-	prefs.git_local_only = value;
-	emit gitLocalOnlyChanged(value);
-}
-
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
 	QObject(parent)
 {
@@ -2168,7 +1988,7 @@ QObject(parent),
 	facebook(new FacebookSettings(this)),
 	geocoding(new GeocodingPreferences(this)),
 	proxy(new ProxySettings(this)),
-	cloud_storage(new CloudStorageSettings(this)),
+	cloud_storage(new qPrefCloudStorage(this)),
 	planner_settings(new DivePlannerSettings(this)),
 	unit_settings(new UnitsSettings(this)),
 	general_settings(new GeneralSettingsObjectWrapper(this)),
@@ -2304,6 +2124,7 @@ void SettingsObjectWrapper::load()
 
 	s.beginGroup("CloudStorage");
 	GET_TXT("email", cloud_storage_email);
+	GET_TXT("email_encoded", cloud_storage_email_encoded);
 #ifndef SUBSURFACE_MOBILE
 	GET_BOOL("save_password_local", save_password_local);
 #else
