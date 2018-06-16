@@ -5,14 +5,6 @@
 
 DiveComputerList dcList;
 
-DiveComputerList::DiveComputerList()
-{
-}
-
-DiveComputerList::~DiveComputerList()
-{
-}
-
 bool DiveComputerNode::operator==(const DiveComputerNode &a) const
 {
 	return model == a.model &&
@@ -89,8 +81,7 @@ void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QStrin
 		dcMap.remove(m, *existNode);
 	}
 
-	DiveComputerNode newNode(m, d, s, f, n);
-	dcMap.insert(m, newNode);
+	dcMap.insert(m, { m, d, s, f, n });
 }
 
 extern "C" void create_device_node(const char *model, uint32_t deviceid, const char *serial, const char *firmware, const char *nickname)
