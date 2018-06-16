@@ -152,10 +152,10 @@ Kirigami.Page {
 						btAddr = /\{?[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}\}/;
 
 					if (btAddr.test(currentText))
-						downloadThread.manager.DC_bluetoothMode = true
+						manager.DC_bluetoothMode = true
 					else
-						downloadThread.manager.DC_bluetoothMode = false
-					downloadThread.manager.DC_devName = comboConnection.currentText
+						manager.DC_bluetoothMode = false
+					manager.DC_devName = comboConnection.currentText
 				}
 			}
 		}
@@ -186,9 +186,9 @@ Kirigami.Page {
 				onClicked: {
 					text = qsTr("Retry")
 					// strip any BT Name from the address
-					var devName = downloadThread.manager.devName
-					downloadThread.manager.devName = devName.replace(/^(.*) /, "")
-					manager.appendTextToLog("DCDownloadThread started for " + downloadThread.manager.product + " on "+ downloadThread.manager.devName)
+					var devName = manager.DC_devName
+					manager.DC_devName = devName.replace(/^(.*) /, "")
+					manager.appendTextToLog("DCDownloadThread started for " + manager.product + " on "+ manager.DC_devName)
 					progressBar.visible = true
 					downloadThread.start()
 				}
