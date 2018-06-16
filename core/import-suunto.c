@@ -458,6 +458,11 @@ extern int dm5_dive(void *param, int columns, char **data, char **column)
 				tempformat = 1;
 				block_size = 26;
 				break;
+			case 5:
+				// Temperature is stored in float
+				tempformat = 1;
+				block_size = 30;
+				break;
 			default:
 				block_size = 16;
 				break;
