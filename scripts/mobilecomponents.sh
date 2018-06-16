@@ -70,6 +70,14 @@ sed -i -e "s/width: backgroundRect/enabled: root.enabled;    width: backgroundRe
 # so it seems some Kirigami weirdness (but their staticcmake example compiles
 # correctly).
 sed -i -e "s/#include <qrc_kirigami.cpp>/\/\/#include <qrc_kirigami.cpp>/" src/kirigamiplugin.cpp
+
+# next hack - we want to use the topContent in the GlobalDrawer for our
+# own image / logo / text (in part because the logo display got broken, in
+# part because we want a second line of text to show the account ID
+# for this to work we need to remove the margin that the GlobalDrawer
+# forces around the topContent
+patch -p0 < $SRC/subsurface/scripts/kirigami.diff
+
 popd
 
 echo org.kde.plasma.kirigami synced from upstream

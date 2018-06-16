@@ -1,0 +1,20 @@
+diff -ur ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml
+--- ../kirigami/src/controls/GlobalDrawer.qml	2018-06-16 16:18:42.000000000 +0900
++++ src/controls/GlobalDrawer.qml	2018-06-17 05:05:31.000000000 +0900
+@@ -249,15 +249,11 @@
+                     id: topContent
+                     spacing: 0
+-                    Layout.alignment: Qt.AlignHCenter
+-                    Layout.leftMargin: root.leftPadding
+-                    Layout.rightMargin: root.rightPadding
+                     Layout.bottomMargin: Units.smallSpacing
+-                    Layout.topMargin: root.topPadding
+                     Layout.fillWidth: true
+                     Layout.fillHeight: true
+                     //NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
+                     //as items are added only after this column creation
+-                    Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
++                    Layout.minimumWidth: parent.width
+                     visible: children.length > 0 && childrenRect.height > 0
+                 }
+ 
