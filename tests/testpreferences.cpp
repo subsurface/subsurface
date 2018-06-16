@@ -373,12 +373,12 @@ void TestPreferences::testPreferences()
 	TEST(planner->decoMode(),RECREATIONAL);
 
 	auto units = pref->unit_settings;
-	units->setLength(0);
-	units->setPressure(0);
-	units->setVolume(0);
-	units->setTemperature(0);
-	units->setWeight(0);
-	units->setVerticalSpeedTime(0);
+	units->setLength(units::METERS);
+	units->setPressure(units::BAR);
+	units->setVolume(units::LITER);
+	units->setTemperature(units::CELSIUS);
+	units->setWeight(units::KG);
+	units->setVerticalSpeedTime(units::SECONDS);
 	units->setUnitSystem(QStringLiteral("metric"));
 	units->setCoordinatesTraditional(false);
 
@@ -391,12 +391,12 @@ void TestPreferences::testPreferences()
 	TEST(units->unitSystem(),QStringLiteral("metric"));
 	TEST(units->coordinatesTraditional(),false);
 
-	units->setLength(1);
-	units->setPressure(1);
-	units->setVolume(1);
-	units->setTemperature(1);
-	units->setWeight(1);
-	units->setVerticalSpeedTime(1);
+	units->setLength(units::FEET);
+	units->setPressure(units::PSI);
+	units->setVolume(units::CUFT);
+	units->setTemperature(units::FAHRENHEIT);
+	units->setWeight(units::LBS);
+	units->setVerticalSpeedTime(units::MINUTES);
 	units->setUnitSystem(QStringLiteral("fake-metric-system"));
 	units->setCoordinatesTraditional(true);
 

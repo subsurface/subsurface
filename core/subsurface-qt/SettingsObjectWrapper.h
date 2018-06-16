@@ -48,60 +48,6 @@ private:
 	QString subgroup;
 };
 
-class UnitsSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(int length           READ length                 WRITE setLength                 NOTIFY lengthChanged)
-	Q_PROPERTY(int pressure       READ pressure               WRITE setPressure               NOTIFY pressureChanged)
-	Q_PROPERTY(int volume           READ volume                 WRITE setVolume                 NOTIFY volumeChanged)
-	Q_PROPERTY(int temperature READ temperature            WRITE setTemperature            NOTIFY temperatureChanged)
-	Q_PROPERTY(int weight           READ weight                 WRITE setWeight                 NOTIFY weightChanged)
-	Q_PROPERTY(QString unit_system            READ unitSystem             WRITE setUnitSystem             NOTIFY unitSystemChanged)
-	Q_PROPERTY(bool coordinates_traditional   READ coordinatesTraditional WRITE setCoordinatesTraditional NOTIFY coordinatesTraditionalChanged)
-	Q_PROPERTY(int vertical_speed_time READ verticalSpeedTime    WRITE setVerticalSpeedTime    NOTIFY verticalSpeedTimeChanged)
-	Q_PROPERTY(int duration_units          READ durationUnits        WRITE setDurationUnits         NOTIFY durationUnitChanged)
-	Q_PROPERTY(bool show_units_table          READ showUnitsTable        WRITE setShowUnitsTable         NOTIFY showUnitsTableChanged)
-
-public:
-	UnitsSettings(QObject *parent = 0);
-	int length() const;
-	int pressure() const;
-	int volume() const;
-	int temperature() const;
-	int weight() const;
-	int verticalSpeedTime() const;
-	int durationUnits() const;
-	bool showUnitsTable() const;
-	QString unitSystem() const;
-	bool coordinatesTraditional() const;
-
-public slots:
-	void setLength(int value);
-	void setPressure(int value);
-	void setVolume(int value);
-	void setTemperature(int value);
-	void setWeight(int value);
-	void setVerticalSpeedTime(int value);
-	void setDurationUnits(int value);
-	void setShowUnitsTable(bool value);
-	void setUnitSystem(const QString& value);
-	void setCoordinatesTraditional(bool value);
-
-signals:
-	void lengthChanged(int value);
-	void pressureChanged(int value);
-	void volumeChanged(int value);
-	void temperatureChanged(int value);
-	void weightChanged(int value);
-	void verticalSpeedTimeChanged(int value);
-	void unitSystemChanged(const QString& value);
-	void coordinatesTraditionalChanged(bool value);
-	void durationUnitChanged(int value);
-	void showUnitsTableChanged(bool value);
-private:
-	const QString group = QStringLiteral("Units");
-};
-
-
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 
@@ -112,10 +58,10 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(qPrefProxy*              proxy            MEMBER proxy CONSTANT)
 	Q_PROPERTY(qPrefCS*       cloud_storage    MEMBER cloud_storage CONSTANT)
 	Q_PROPERTY(qPrefPlanner*        planner          MEMBER planner_settings CONSTANT)
-	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
 	Q_PROPERTY(qPrefDisplay*         display   MEMBER display_settings CONSTANT)
 	Q_PROPERTY(qPrefGeneral*         general   MEMBER general_settings CONSTANT)
 	Q_PROPERTY(qPrefLanguage*        language  MEMBER language_settings CONSTANT)
+	Q_PROPERTY(qPrefUnits*              units            MEMBER unit_settings CONSTANT)
 	Q_PROPERTY(qPrefAnimations*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(qPrefLocation* Location  MEMBER location_settings CONSTANT)
 
@@ -131,8 +77,8 @@ public:
 	qPrefCS *cloud_storage;
 	qPrefProxy *proxy;
 	qPrefPlanner *planner_settings;
-	UnitsSettings *unit_settings;
 	qPrefGeneral *general_settings;
+	qPrefUnits *unit_settings;
 	qPrefDisplay *display_settings;
 	qPrefLanguage *language_settings;
 	qPrefAnimations *animation_settings;
