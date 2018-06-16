@@ -81,6 +81,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
 	../../core/settings/qPref.cpp \
+	../../core/settings/qPrefAnimations.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../qt-models/divelistmodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
@@ -185,6 +186,7 @@ HEADERS += \
 	../../core/qt-ble.h \
 	../../core/settings/qPref.h \
 	../../core/settings/qPref_private.h \
+	../../core/settings/qPrefAnimations.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \

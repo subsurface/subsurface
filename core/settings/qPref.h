@@ -2,6 +2,8 @@
 #ifndef QPREF_H
 #define QPREF_H
 
+#include "qPrefAnimations.h"
+
 #include <QObject>
 
 
