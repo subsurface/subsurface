@@ -38,10 +38,15 @@ git_checkout_library() {
 	fi
 	pushd "$name"
 
-	git fetch origin
-	if ! git checkout "$version" ; then
-		echo "Can't find the right tag in $name - giving up"
-		return -1
+	local current_sha=$(git rev-parse HEAD)
+	local target_sha=$(git rev-parse "$version")
+
+	if [ ! "$current_sha" = "$target_sha" ] ; then
+		git fetch origin
+		if ! git checkout "$version" ; then
+			echo "Can't find the right tag in $name - giving up"
+			return -1
+		fi
 	fi
 	popd
 }
