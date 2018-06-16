@@ -20,6 +20,7 @@
 #include "qPrefProxy.h"
 #include "qPrefTec.h"
 #include "qPrefUnits.h"
+#include "qPrefUpdate.h"
 
 
 
