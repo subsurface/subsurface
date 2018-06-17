@@ -58,12 +58,14 @@ matrix:
     - env: SUBSURFACE_PLATFORM='linux2'
       os: linux
       dist: trusty
+      sudo: required
       language: c++
       addons:
         apt:
           sources:
             - sourceline: 'ppa:beineri/opt-qt-5.10.1-trusty'
               key_url: 'https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x10C56D0DE9977759'
+            - ubuntu-toolchain-r-test
           packages:
             - qt510base
             - qt510connectivity
@@ -76,7 +78,8 @@ matrix:
             - qt510svg
             - qt510tools
             - git
-            - g++
+            - gcc-5
+            - g++-5
             - make
             - autoconf
             - automake
