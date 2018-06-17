@@ -7,7 +7,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.2 as Controls
 import org.subsurfacedivelog.mobile 1.0
-import org.kde.kirigami 2.2 as Kirigami
+import org.kde.kirigami 2.4 as Kirigami
 
 Item {
 	id: detailsView
