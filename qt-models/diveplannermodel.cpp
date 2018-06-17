@@ -114,9 +114,10 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 			break;
 		while (j * plansamples <= i * dc->samples) {
 			const sample &s = dc->sample[j];
+			const sample &prev = dc->sample[j-1];
 			if (s.time.seconds != 0 && (!hasMarkedSamples || s.manually_entered)) {
 				depthsum += s.depth.mm;
-				last_sp = s.setpoint;
+				last_sp = prev.setpoint;
 				++samplecount;
 				newtime = s.time;
 			}
@@ -125,7 +126,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		if (samplecount) {
 			cylinderid = get_cylinderid_at_time(d, dc, lasttime);
 			if (newtime.seconds - lastrecordedtime.seconds > 10) {
-				current_divemode = get_current_divemode(dc, newtime.seconds + 1, &evd, &current_divemode);
+				current_divemode = get_current_divemode(dc, newtime.seconds - 1, &evd, &current_divemode);
 				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
 			}
