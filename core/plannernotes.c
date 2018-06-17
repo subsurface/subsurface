@@ -84,6 +84,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	bool plan_display_transitions = prefs.display_transitions;
 	bool gaschange_after = !plan_verbatim;
 	bool gaschange_before;
+	bool rebreatherchange_after = !plan_verbatim;
+	bool rebreatherchange_before;
+	enum divemode_t lastdivemode = UNDEF_COMP_TYPE;
 	bool lastentered = true;
 	bool icdwarning = false, icdtableheader = true;
 	struct divedatapoint *nextdp = NULL;
@@ -176,15 +179,19 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			nextdp = nextdp->next;
 		if (nextdp)
 			newgasmix = dive->cylinder[nextdp->cylinderid].gasmix;
-		gaschange_after = (nextdp && (gasmix_distance(&gasmix, &newgasmix) || dp->setpoint != nextdp->setpoint));
-		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix) || lastprintsetpoint != dp->setpoint);
+		gaschange_after = (nextdp && (gasmix_distance(&gasmix, &newgasmix)));
+		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix));
+		rebreatherchange_after = (nextdp && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
+		rebreatherchange_before = lastprintsetpoint != dp->setpoint || lastdivemode != dp->divemode;
 		/* do we want to skip this leg as it is devoid of anything useful? */
 		if (!dp->entered &&
 		    nextdp &&
 		    dp->depth.mm != lastdepth &&
 		    nextdp->depth.mm != dp->depth.mm &&
 		    !gaschange_before &&
-		    !gaschange_after)
+		    !gaschange_after &&
+		    !rebreatherchange_before &&
+		    !rebreatherchange_after)
 			continue;
 		if ((dp->time - lasttime < 10 && lastdepth == dp->depth.mm) && !(gaschange_after && dp->next && dp->depth.mm != dp->next->depth.mm))
 			continue;
@@ -226,18 +233,19 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			} else {
 				if ((nextdp && dp->depth.mm != nextdp->depth.mm) || gaschange_after) {
 					if (dp->setpoint) {
-						put_format_loc(&buf, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)"),
+						put_format_loc(&buf, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)"),
 							     decimals, depthvalue, depth_unit,
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
 							     gasname(&gasmix),
 							     (double) dp->setpoint / 1000.0);
 					} else {
-						put_format_loc(&buf, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s"),
+						put_format_loc(&buf, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s"),
 							     decimals, depthvalue, depth_unit,
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
-							     gasname(&gasmix));
+							     gasname(&gasmix),
+							     divemode_text_ui[dp->divemode]);
 					}
 					put_string(&buf, "<br>");
 					newdepth = dp->depth.mm;
@@ -263,9 +271,9 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			 */
 			if (plan_display_transitions || dp->entered || !dp->next ||
 			    (nextdp && dp->depth.mm != nextdp->depth.mm) ||
-			    (!isascent && gaschange_before && nextdp && dp->depth.mm != nextdp->depth.mm) ||
-			    (gaschange_after && lastentered) || (gaschange_after && !isascent) ||
-			    (isascent && gaschange_after && nextdp && dp->depth.mm != nextdp->depth.mm ) ||
+			    (!isascent && (gaschange_before || rebreatherchange_before) && nextdp && dp->depth.mm != nextdp->depth.mm) ||
+			    ((gaschange_after || rebreatherchange_after) && lastentered) || ((gaschange_after || rebreatherchange_after)&& !isascent) ||
+			    (isascent && (gaschange_after || rebreatherchange_after) && nextdp && dp->depth.mm != nextdp->depth.mm ) ||
 			    (lastentered && !dp->entered)) {
 				// Print a symbol to indicate whether segment is an ascent, descent, constant depth (user entered) or deco stop
 				if (isascent)
@@ -298,13 +306,13 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 				 */
 				if ((isascent || dp->entered) && gaschange_after && dp->next && nextdp && (dp->depth.mm != nextdp->depth.mm || nextdp->entered)) {
 					if (dp->setpoint) {
-						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar)"), nextdp->setpoint / 1000.0);
+						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar CCR)"), dp->setpoint / 1000.0);
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
 							gasname(&newgasmix), temp);
 						free(temp);
 					} else {
-						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>",
-							gasname(&newgasmix));
+						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
+							gasname(&newgasmix), lastdivemode == dp->divemode ? "" : divemode_text_ui[dp->divemode]);
 						if (isascent && (get_he(&lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
@@ -314,17 +322,19 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							}
 						}
 					}
-					lastprintsetpoint = nextdp->setpoint;
+					lastprintsetpoint = dp->setpoint;
 					lastprintgasmix = newgasmix;
+					lastdivemode = dp->divemode;
 					gaschange_after = false;
-				} else if (gaschange_before) {
+				} else if (gaschange_before || rebreatherchange_before) {
 					// If a new gas has been used for this segment, now is the time to show it
 					if (dp->setpoint) {
-						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar)"), (double) dp->setpoint / 1000.0);
+						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar CCR)"), (double) dp->setpoint / 1000.0);
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix), temp);
 						free(temp);
 					} else {
-						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s</b></td>", gasname(&gasmix));
+						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
+							   lastdivemode == dp->divemode ? "" : divemode_text_ui[dp->divemode]);
 						if (get_he(&lastprintgasmix) > 0) {  // For a trimix gas change, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(&lastprintgasmix, &gasmix, &icdvalues))  // Do icd calculations
 								icdwarning = true;
@@ -337,6 +347,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					// Set variables so subsequent iterations can test against the last gas printed
 					lastprintsetpoint = dp->setpoint;
 					lastprintgasmix = gasmix;
+					lastdivemode = dp->divemode;
 					gaschange_after = false;
 				} else {
 					put_string(&buf, "<td>&nbsp;</td>");
