@@ -303,8 +303,6 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	lastcylid = 0;
 	while (dp) {
 		int po2 = dp->setpoint;
-		if (dp->setpoint)
-			type = CCR;
 		int time = dp->time;
 		depth_t depth = dp->depth;
 
