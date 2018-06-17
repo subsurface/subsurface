@@ -8,6 +8,10 @@
 
 set -x
 
+# make sure we use a new enough compiler
+export CC=gcc-5
+export CXX=g++-5
+
 # Travis only pulls shallow repos. But that messes with git describe.
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
