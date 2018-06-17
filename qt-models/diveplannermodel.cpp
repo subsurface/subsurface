@@ -45,12 +45,12 @@ void DivePlannerPointsModel::createSimpleDive()
 	// If we're in drop_stone_mode, don't add a first point.
 	// It will be added implicit.
 	if (!prefs.drop_stone_mode)
-		addStop(M_OR_FT(15, 45), 1 * 60, cylinderid, 0, true);
+		addStop(M_OR_FT(15, 45), 1 * 60, cylinderid, 0, true, UNDEF_COMP_TYPE);
 
-	addStop(M_OR_FT(15, 45), 20 * 60, 0, 0, true);
+	addStop(M_OR_FT(15, 45), 20 * 60, 0, 0, true, UNDEF_COMP_TYPE);
 	if (!isPlanner()) {
-		addStop(M_OR_FT(5, 15), 42 * 60, 0, cylinderid, true);
-		addStop(M_OR_FT(5, 15), 45 * 60, 0, cylinderid, true);
+		addStop(M_OR_FT(5, 15), 42 * 60, 0, cylinderid, true, UNDEF_COMP_TYPE);
+		addStop(M_OR_FT(5, 15), 45 * 60, 0, cylinderid, true, UNDEF_COMP_TYPE);
 	}
 	updateMaxDepth();
 	GasSelectionModel::instance()->repopulate();
@@ -80,6 +80,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	o2pressure_t last_sp;
 	bool oldRec = recalc;
 	struct divecomputer *dc = &(d->dc);
+	struct event *evd = NULL;
+	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	recalc = false;
 	CylindersModel::instance()->updateDive();
 	duration_t lasttime = { 0 };
@@ -123,7 +125,8 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		if (samplecount) {
 			cylinderid = get_cylinderid_at_time(d, dc, lasttime);
 			if (newtime.seconds - lastrecordedtime.seconds > 10) {
-				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true);
+				current_divemode = get_current_divemode(dc, newtime.seconds + 1, &evd, &current_divemode);
+				addStop(depthsum / samplecount, newtime.seconds, cylinderid, last_sp.mbar, true, current_divemode);
 				lastrecordedtime = newtime;
 			}
 			lasttime = newtime;
@@ -132,8 +135,9 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 		}
 	}
 	// make sure we get the last point right so the duration is correct
+	current_divemode = get_current_divemode(dc, d->dc.duration.seconds, &evd, &current_divemode);
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
-		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true);
+		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
 	recalc = oldRec;
 	emitDataChanged();
 }
@@ -667,11 +671,11 @@ int DivePlannerPointsModel::lastEnteredPoint()
 }
 
 // cylinderid_in == -1 means same gas as before.
-int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_in, int ccpoint, bool entered)
+// divemode == UNDEF_COMP_TYPE means determine from previous point.
+int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_in, int ccpoint, bool entered, enum divemode_t divemode)
 {
 	int cylinderid = 0;
 	bool usePrevious = false;
-	enum divemode_t divemode = displayed_dive.dc.divemode;
 	if (cylinderid_in >= 0)
 		cylinderid = cylinderid_in;
 	else
@@ -714,12 +718,16 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 	if (usePrevious) {
 		if (row  < divepoints.count()) {
 			cylinderid = divepoints.at(row).cylinderid;
-			divemode = divepoints.at(row).divemode;
+			if (divemode == UNDEF_COMP_TYPE)
+				divemode = divepoints.at(row).divemode;
 		} else if (row > 0) {
 			cylinderid = divepoints.at(row - 1).cylinderid;
-			divemode = divepoints.at(row - 1).divemode;
+			if (divemode == UNDEF_COMP_TYPE)
+				divemode = divepoints.at(row - 1).divemode;
 		}
 	}
+	if (divemode == UNDEF_COMP_TYPE)
+		divemode = displayed_dive.dc.divemode;
 
 	// add the new stop
 	beginInsertRows(QModelIndex(), row, row);
