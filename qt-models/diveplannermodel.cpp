@@ -722,10 +722,12 @@ int DivePlannerPointsModel::addStop(int milimeters, int seconds, int cylinderid_
 			cylinderid = divepoints.at(row).cylinderid;
 			if (divemode == UNDEF_COMP_TYPE)
 				divemode = divepoints.at(row).divemode;
+			ccpoint = divepoints.at(row).setpoint;
 		} else if (row > 0) {
 			cylinderid = divepoints.at(row - 1).cylinderid;
 			if (divemode == UNDEF_COMP_TYPE)
 				divemode = divepoints.at(row - 1).divemode;
+			ccpoint = divepoints.at(row -1).setpoint;
 		}
 	}
 	if (divemode == UNDEF_COMP_TYPE)
