@@ -58,7 +58,7 @@ QVariant WeightModel::data(const QModelIndex &index, int role) const
 	case Qt::EditRole:
 		switch (index.column()) {
 		case TYPE:
-			ret = gettextFromC::instance()->tr(ws->description);
+			ret = gettextFromC::tr(ws->description);
 			break;
 		case WEIGHT:
 			ret = get_weight_string(ws->weight, true);
@@ -104,11 +104,11 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 	case TYPE:
 		if (!value.isNull()) {
 			//TODO: C-function weight_system_set_description ?
-			if (!ws->description || gettextFromC::instance()->tr(ws->description) != vString) {
+			if (!ws->description || gettextFromC::tr(ws->description) != vString) {
 				// loop over translations to see if one matches
 				int i = -1;
 				while (ws_info[++i].name) {
-					if (gettextFromC::instance()->tr(ws_info[i].name) == vString) {
+					if (gettextFromC::tr(ws_info[i].name) == vString) {
 						ws->description = copy_string(ws_info[i].name);
 						break;
 					}
@@ -125,7 +125,7 @@ bool WeightModel::setData(const QModelIndex &index, const QVariant &value, int r
 			// now update the ws_info
 			changed = true;
 			WSInfoModel *wsim = WSInfoModel::instance();
-			QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, gettextFromC::instance()->tr(ws->description));
+			QModelIndexList matches = wsim->match(wsim->index(0, 0), Qt::DisplayRole, gettextFromC::tr(ws->description));
 			if (!matches.isEmpty())
 				wsim->setData(wsim->index(matches.first().row(), WSInfoModel::GR), ws->weight.grams);
 		}

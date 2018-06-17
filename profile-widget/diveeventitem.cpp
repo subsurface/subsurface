@@ -168,7 +168,7 @@ void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
 void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 {
 	// we display the event on screen - so translate
-	QString name = gettextFromC::instance()->tr(internalEvent->name);
+	QString name = gettextFromC::tr(internalEvent->name);
 	int value = internalEvent->value;
 	int type = internalEvent->type;
 
@@ -194,7 +194,7 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 		}
 		*lastgasmix = *mix;
 	} else if (same_string(internalEvent->name, "modechange")) {
-		name += QString(": %1").arg(gettextFromC::instance()->tr(divemode_text_ui[internalEvent->value]));
+		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[internalEvent->value]));
 	} else if (value) {
 		if (type == SAMPLE_EVENT_PO2 && same_string(internalEvent->name, "SP change")) {
 			name += QString(": %1bar").arg((double)value / 1000, 0, 'f', 1);
