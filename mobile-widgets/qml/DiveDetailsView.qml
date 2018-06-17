@@ -217,13 +217,6 @@ Item {
 				border.color: subsurfaceTheme.primaryColor
 				anchors.fill: parent
 			}
-
-			onVisibleChanged: {
-				if (visible) {
-					qmlProfile.diveId = model.dive.id;
-					qmlProfile.update();
-				}
-			}
 		}
 		Controls.Label {
 			id: noProfile
@@ -404,6 +397,8 @@ Item {
 		}
 		Component.onCompleted: {
 			qmlProfile.setMargin(Kirigami.Units.smallSpacing)
+			qmlProfile.diveId = model.dive.id;
+			qmlProfile.update();
 		}
 	}
 }
