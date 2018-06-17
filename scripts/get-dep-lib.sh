@@ -158,20 +158,26 @@ if [[ "$BUILD" = *"openssl"* ]]; then
 	git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
 fi
 
-if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
-	${CURL} https://subsurface-divelog.org/downloads/libzip-${CURRENT_LIBZIP}.tar.xz
-	tar xJf libzip-${CURRENT_LIBZIP}.tar.xz
-	mv libzip-${CURRENT_LIBZIP} libzip
+if [[ "$BUILD" = *"libzip"* ]]; then
+	if [[ ! -e libzip-${CURRENT_LIBZIP}.tar.xz || ! -d libzip ]]; then
+		${CURL} https://subsurface-divelog.org/downloads/libzip-${CURRENT_LIBZIP}.tar.xz
+		tar xJf libzip-${CURRENT_LIBZIP}.tar.xz
+		mv libzip-${CURRENT_LIBZIP} libzip
+	fi
 fi
 
-if [[ "$BUILD" = *"libftdi"* && ! -d libftdi1 ]]; then
-	${CURL} https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-	tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-	mv libftdi1-${CURRENT_LIBFTDI} libftdi1
+if [[ "$BUILD" = *"libftdi"* ]]; then
+	if [[ -e libftdi1-${CURRENT_LIBFTDI}.tar.bz2 || ! -d libftdi1 ]]; then
+		${CURL} https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+		tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+		mv libftdi1-${CURRENT_LIBFTDI} libftdi1
+	fi
 fi
 
-if [[ "$BUILD" = *"sqlite"* && ! -d sqlite ]]; then
-	${CURL} http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-	tar -zxf sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-	mv sqlite-autoconf-${CURRENT_SQLITE} sqlite
+if [[ "$BUILD" = *"sqlite"* ]]; then
+	if [[ ! -e sqlite-autoconf-${CURRENT_SQLITE}.tar.gz || ! -d sqlite ]]; then
+		${CURL} http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+		tar -zxf sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+		mv sqlite-autoconf-${CURRENT_SQLITE} sqlite
+	fi
 fi
