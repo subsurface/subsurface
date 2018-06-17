@@ -14,6 +14,7 @@
 #include <QToolBar>
 #include <QStatusBar>
 
+#include "core/gettextfromc.h"
 #include "core/version.h"
 #include "core/subsurface-string.h"
 #include "desktop-widgets/divelistview.h"
