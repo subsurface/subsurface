@@ -42,7 +42,6 @@
 const char *existing_filename;
 static QLocale loc;
 
-#define translate(_context, arg) trGettext(arg)
 static const QString DEGREE_SIGNS("dD" UTF8_DEGREE);
 
 QString weight_string(int weight_in_grams)
@@ -63,15 +62,15 @@ QString distance_string(int distanceInMeters)
 	QString str;
 	if(get_units()->length == units::METERS) {
 		if (distanceInMeters >= 1000)
-			str = QString(translate("gettextFromC", "%1km")).arg(distanceInMeters / 1000);
+			str = gettextFromC::tr("%1km").arg(distanceInMeters / 1000);
 		else
-			str = QString(translate("gettextFromC", "%1m")).arg(distanceInMeters);
+			str = gettextFromC::tr("%1m").arg(distanceInMeters);
 	} else {
 		double miles = m_to_mile(distanceInMeters);
 		if (miles >= 1.0)
-			str = QString(translate("gettextFromC", "%1mi")).arg((int)miles);
+			str = gettextFromC::tr("%1mi").arg((int)miles);
 		else
-			str = QString(translate("gettextFromC", "%1yd")).arg((int)(miles * 1760));
+			str = gettextFromC::tr("%1yd").arg((int)(miles * 1760));
 	}
 	return str;
 }
@@ -87,8 +86,8 @@ extern "C" const char *printGPSCoords(int lat, int lon)
 		return strdup("");
 
 	if (prefs.coordinates_traditional) {
-		lath = lat >= 0 ? translate("gettextFromC", "N") : translate("gettextFromC", "S");
-		lonh = lon >= 0 ? translate("gettextFromC", "E") : translate("gettextFromC", "W");
+		lath = lat >= 0 ? gettextFromC::tr("N") : gettextFromC::tr("S");
+		lonh = lon >= 0 ? gettextFromC::tr("E") : gettextFromC::tr("W");
 		lat = abs(lat);
 		lon = abs(lon);
 		latdeg = lat / 1000000U;
@@ -222,10 +221,10 @@ static bool parseSpecialCoords(const QString& txt, double& latitude, double& lon
 
 bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 {
-	static const QString POS_LAT = QString("+N") + translate("gettextFromC", "N");
-	static const QString NEG_LAT = QString("-S") + translate("gettextFromC", "S");
-	static const QString POS_LON = QString("+E") + translate("gettextFromC", "E");
-	static const QString NEG_LON = QString("-W") + translate("gettextFromC", "W");
+	static const QString POS_LAT = QString("+N") + gettextFromC::tr("N");
+	static const QString NEG_LAT = QString("-S") + gettextFromC::tr("S");
+	static const QString POS_LON = QString("+E") + gettextFromC::tr("E");
+	static const QString NEG_LON = QString("-W") + gettextFromC::tr("W");
 
 	//remove the useless spaces (but keep the ones separating numbers)
 	static const QRegExp SPACE_CLEANER("\\s*([" + POS_LAT + NEG_LAT + POS_LON +
@@ -569,10 +568,10 @@ QString get_depth_string(int mm, bool showunit, bool showdecimal)
 {
 	if (prefs.units.length == units::METERS) {
 		double meters = mm / 1000.0;
-		return QString("%L1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? translate("gettextFromC", "m") : "");
+		return QString("%L1%2").arg(meters, 0, 'f', (showdecimal && meters < 20.0) ? 1 : 0).arg(showunit ? gettextFromC::tr("m") : QString());
 	} else {
 		double feet = mm_to_feet(mm);
-		return QString("%L1%2").arg(feet, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "ft") : "");
+		return QString("%L1%2").arg(feet, 0, 'f', 0).arg(showunit ? gettextFromC::tr("ft") : QString());
 	}
 }
 
@@ -584,18 +583,18 @@ QString get_depth_string(depth_t depth, bool showunit, bool showdecimal)
 QString get_depth_unit()
 {
 	if (prefs.units.length == units::METERS)
-		return QString("%1").arg(translate("gettextFromC", "m"));
+		return gettextFromC::tr("m");
 	else
-		return QString("%1").arg(translate("gettextFromC", "ft"));
+		return gettextFromC::tr("ft");
 }
 
 QString get_weight_string(weight_t weight, bool showunit)
 {
 	QString str = weight_string(weight.grams);
 	if (get_units()->weight == units::KG) {
-		str = QString("%1%2").arg(str).arg(showunit ? translate("gettextFromC", "kg") : "");
+		str = QString("%1%2").arg(str, showunit ? gettextFromC::tr("kg") : QString());
 	} else {
-		str = QString("%1%2").arg(str).arg(showunit ? translate("gettextFromC", "lbs") : "");
+		str = QString("%1%2").arg(str, showunit ? gettextFromC::tr("lbs") : QString());
 	}
 	return str;
 }
@@ -603,9 +602,9 @@ QString get_weight_string(weight_t weight, bool showunit)
 QString get_weight_unit()
 {
 	if (prefs.units.weight == units::KG)
-		return QString("%1").arg(translate("gettextFromC", "kg"));
+		return gettextFromC::tr("kg");
 	else
-		return QString("%1").arg(translate("gettextFromC", "lbs"));
+		return gettextFromC::tr("lbs");
 }
 
 QString get_temperature_string(temperature_t temp, bool showunit)
@@ -614,10 +613,10 @@ QString get_temperature_string(temperature_t temp, bool showunit)
 		return ""; //temperature not defined
 	} else if (prefs.units.temperature == units::CELSIUS) {
 		double celsius = mkelvin_to_C(temp.mkelvin);
-		return QString("%L1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "C") : "");
+		return QString("%L1%2%3").arg(celsius, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? gettextFromC::tr("C") : QString());
 	} else {
 		double fahrenheit = mkelvin_to_F(temp.mkelvin);
-		return QString("%L1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? translate("gettextFromC", "F") : "");
+		return QString("%L1%2%3").arg(fahrenheit, 0, 'f', 1).arg(showunit ? (UTF8_DEGREE) : "").arg(showunit ? gettextFromC::tr("F") : QString());
 	}
 }
 
@@ -653,10 +652,10 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 {
 	if (prefs.units.pressure == units::BAR) {
 		double bar = pressure.mbar / 1000.0;
-		return QString("%L1%2").arg(bar, 0, 'f', 1).arg(showunit ? translate("gettextFromC", "bar") : "");
+		return QString("%L1%2").arg(bar, 0, 'f', 1).arg(showunit ? gettextFromC::tr("bar") : QString());
 	} else {
 		double psi = mbar_to_PSI(pressure.mbar);
-		return QString("%L1%2").arg(psi, 0, 'f', 0).arg(showunit ? translate("gettextFromC", "psi") : "");
+		return QString("%L1%2").arg(psi, 0, 'f', 0).arg(showunit ? gettextFromC::tr("psi") : QString());
 	}
 }
 
@@ -945,7 +944,7 @@ QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hour
 	mins = (when + 30 - days * 3600 * 24 - hrs * 3600) / 60;
 
 	QString displayInt;
-	if (maxdays && days > maxdays) displayInt = QString(translate("gettextFromC", "more than %1 days")).arg(maxdays);
+	if (maxdays && days > maxdays) displayInt = gettextFromC::tr("more than %1 days").arg(maxdays);
 	else if (days) displayInt = QString("%1%2%3%4%5%6%7%8").arg(days).arg(daysText).arg(separator)
 		.arg(hrs).arg(hoursText).arg(separator)
 		.arg(mins).arg(minutesText);
