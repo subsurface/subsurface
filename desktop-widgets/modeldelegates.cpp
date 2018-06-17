@@ -301,7 +301,7 @@ QWidget *TankUseDelegate::createEditor(QWidget * parent, const QStyleOptionViewI
 {
 	QComboBox *comboBox = new QComboBox(parent);
 	for (int i = 0; i < NUM_GAS_USE; i++)
-		comboBox->addItem(gettextFromC::instance()->trGettext(cylinderuse_text[i]));
+		comboBox->addItem(gettextFromC::tr(cylinderuse_text[i]));
 	return comboBox;
 }
 

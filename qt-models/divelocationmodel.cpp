@@ -176,7 +176,7 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 	QStringList list;
 	int i;
 	for (i = 0; i < TC_NR_CATEGORIES; i++)
-		list << gettextFromC::instance()->trGettext(taxonomy_category_names[i]);
+		list << gettextFromC::tr(taxonomy_category_names[i]);
 	setStringList(list);
 }
 
