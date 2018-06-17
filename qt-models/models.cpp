@@ -7,6 +7,7 @@
  */
 #include "qt-models/models.h"
 #include "core/qthelper.h"
+#include "core/gettextfromc.h"
 
 #include <QLocale>
 
@@ -83,7 +84,7 @@ void DiveTypeSelectionModel::repopulate()
 {
 	QStringList modes = QStringList();
 	for (int i = 0; i < FREEDIVE; i++)
-		modes.append(QString(tr(divemode_text_ui[i])));
+		modes.append(gettextFromC::instance()->tr(divemode_text_ui[i]));
 	setStringList(modes);
 }
 

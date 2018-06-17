@@ -5,6 +5,7 @@
 #include "core/planner.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/gettextfromc.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
@@ -448,7 +449,7 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 
 	// should be the same order as in dive_comp_type!
 	for (int i=0; i < FREEDIVE; i++)
-		rebreather_modes.append(QString(tr(divemode_text_ui[i])));
+		rebreather_modes.append(gettextFromC::instance()->tr(divemode_text_ui[i]));
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
 	modeMapper = new QSignalMapper(this);

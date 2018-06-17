@@ -24,6 +24,7 @@
 #include "qt-models/filtermodels.h"
 #include "core/divesite.h"
 #include "core/subsurface-string.h"
+#include "core/gettextfromc.h"
 #include "desktop-widgets/locationinformation.h"
 
 #include "TabDiveExtraInfo.h"
@@ -111,7 +112,7 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 	// This needs to be the same order as enum dive_comp_type in dive.h!
 	QStringList types = QStringList();
 	for (int i = 0; i < NUM_DIVEMODE; i++)
-		types.append(QString(tr(divemode_text_ui[i])));
+		types.append(gettextFromC::instance()->tr(divemode_text_ui[i]));
 	ui.DiveType->insertItems(0, types);
 	connect(ui.DiveType, SIGNAL(currentIndexChanged(int)), this, SLOT(divetype_Changed(int)));
 
