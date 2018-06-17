@@ -137,7 +137,7 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					blueTheme()
 					prefs.theme = subsurfaceTheme.currentTheme
-					prefs.savePreferences()
+					manager.savePreferences()
 				}
 			}
 
@@ -190,7 +190,7 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					pinkTheme()
 					prefs.theme = subsurfaceTheme.currentTheme
-					prefs.savePreferences()
+					manager.savePreferences()
 				}
 			}
 
@@ -242,7 +242,7 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					darkTheme()
 					prefs.theme = subsurfaceTheme.currentTheme
-					prefs.savePreferences()
+					manager.savePreferences()
 				}
 			}
 		}
@@ -279,7 +279,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
 					prefs.distanceThreshold = distanceThreshold.text
-					prefs.savePreferences()
+					manager.savePreferences()
 				}
 			}
 
@@ -295,7 +295,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
 					prefs.timeThreshold = timeThreshold.text
-					prefs.savePreferences()
+					manager.savePreferences()
 				}
 			}
 
