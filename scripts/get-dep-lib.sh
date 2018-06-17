@@ -51,6 +51,28 @@ git_checkout_library() {
 	popd
 }
 
+# Download and extract tarball dependencies
+#
+# Arguments:
+#	name - used as output directory
+#	base_url -
+#	filename - tarball file name
+#
+curl_download_library() {
+	[ $# -ne 3 ] && return -1
+
+	local name=$1
+	local base_url=$2
+	local filename=$3
+
+	if [ ! -f "$filename" ]; then
+		${CURL} "${base_url}${filename}"
+		rm -rf "$name"
+		mkdir "$name"
+		tar -C "$name" --strip-components=1 -xf "$filename"
+	fi
+}
+
 
 # deal with all the command line arguments
 if [[ $# -ne 2 && $# -ne 3 ]] ; then
@@ -158,20 +180,14 @@ if [[ "$BUILD" = *"openssl"* ]]; then
 	git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
 fi
 
-if [[ "$BUILD" = *"libzip"* && ! -d libzip ]]; then
-	${CURL} https://subsurface-divelog.org/downloads/libzip-${CURRENT_LIBZIP}.tar.xz
-	tar xJf libzip-${CURRENT_LIBZIP}.tar.xz
-	mv libzip-${CURRENT_LIBZIP} libzip
+if [[ "$BUILD" = *"libzip"* ]]; then
+	curl_download_library libzip https://subsurface-divelog.org/downloads/ libzip-${CURRENT_LIBZIP}.tar.xz
 fi
 
-if [[ "$BUILD" = *"libftdi"* && ! -d libftdi1 ]]; then
-	${CURL} https://www.intra2net.com/en/developer/libftdi/download/libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-	tar -jxf libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-	mv libftdi1-${CURRENT_LIBFTDI} libftdi1
+if [[ "$BUILD" = *"libftdi"* ]]; then
+	curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
 fi
 
-if [[ "$BUILD" = *"sqlite"* && ! -d sqlite ]]; then
-	${CURL} http://www.sqlite.org/2017/sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-	tar -zxf sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-	mv sqlite-autoconf-${CURRENT_SQLITE} sqlite
+if [[ "$BUILD" = *"sqlite"* ]]; then
+	curl_download_library sqlite http://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
 fi
