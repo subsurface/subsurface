@@ -141,7 +141,7 @@ Kirigami.Page {
 	property QtObject deleteAction: Kirigami.Action {
 		text: qsTr("Delete dive")
 		icon {
-			name: ":/icons/trash-empty"
+			name: ":/icons/trash-empty.svg"
 		}
 		onTriggered: {
 			var deletedId = currentItem.modelData.dive.id
@@ -158,7 +158,7 @@ Kirigami.Page {
 	property QtObject cancelAction: Kirigami.Action {
 		text: qsTr("Cancel edit")
 		icon {
-			name: ":/icons/dialog-cancel"
+			name: ":/icons/dialog-cancel.svg"
 		}
 		onTriggered: {
 			endEditMode()
@@ -178,7 +178,7 @@ Kirigami.Page {
 
 	actions.main: Kirigami.Action {
 		icon {
-			name: state !== "view" ? ":/icons/document-save" : ":/icons/document-edit"
+			name: state !== "view" ? ":/icons/document-save.svg" : ":/icons/document-edit.svg"
 			color: subsurfaceTheme.primaryColor
 		}
 		onTriggered: {
