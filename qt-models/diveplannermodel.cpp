@@ -337,8 +337,10 @@ bool DivePlannerPointsModel::setData(const QModelIndex &index, const QVariant &v
 			CylindersModel::instance()->updateTrashIcon();
 			break;
 		case DIVEMODE:
-			if (value.toInt() < FREEDIVE) // FIXME: I want to be a combo box and translate strings to enum values
+			if (value.toInt() < FREEDIVE) {
 				p.divemode = (enum divemode_t) value.toInt();
+				p.setpoint = p.divemode == CCR ? prefs.defaultsetpoint : 0;
+			}
 			if (index.row() == 0)
 				displayed_dive.dc.divemode = (enum divemode_t) value.toInt();
 			break;
