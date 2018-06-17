@@ -253,7 +253,7 @@ QVariant DivePlannerPointsModel::data(const QModelIndex &index, int role) const
 			else
 				return p.time / 60;
 		case DIVEMODE:
-			return gettextFromC::instance()->tr(divemode_text_ui[p.divemode]);
+			return gettextFromC::tr(divemode_text_ui[p.divemode]);
 		case GAS:
 			/* Check if we have the same gasmix two or more times
 			 * If yes return more verbose string */

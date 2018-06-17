@@ -58,7 +58,7 @@ QVariant WSInfoModel::data(const QModelIndex &index, int role) const
 			ret = gr;
 			break;
 		case DESCRIPTION:
-			ret = gettextFromC::instance()->tr(info->name);
+			ret = gettextFromC::tr(info->name);
 			break;
 		}
 		break;
@@ -81,7 +81,7 @@ WSInfoModel::WSInfoModel() : rows(-1)
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("kg"));
 	struct ws_info_t *info = ws_info;
 	for (info = ws_info; info->name; info++, rows++) {
-		QString wsInfoName = gettextFromC::instance()->tr(info->name);
+		QString wsInfoName = gettextFromC::tr(info->name);
 		if (wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
 	}
@@ -99,7 +99,7 @@ void WSInfoModel::updateInfo()
 	endRemoveRows();
 	rows = -1;
 	for (info = ws_info; info->name; info++, rows++) {
-		QString wsInfoName = gettextFromC::instance()->tr(info->name);
+		QString wsInfoName = gettextFromC::tr(info->name);
 		if (wsInfoName.count() > biggerEntry.count())
 			biggerEntry = wsInfoName;
 	}
