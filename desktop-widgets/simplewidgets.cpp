@@ -412,10 +412,15 @@ void ShiftImageTimesDialog::updateInvalid()
 
 void ShiftImageTimesDialog::timeEditChanged(const QTime &time)
 {
+	QDateTimeEdit::Section timeEditSection = ui.timeEdit->currentSection();
+	ui.timeEdit->setEnabled(false);
 	m_amount = time.hour() * 3600 + time.minute() * 60;
 	if (ui.backwards->isChecked())
 		m_amount *= -1;
 	updateInvalid();
+	ui.timeEdit->setEnabled(true);
+	ui.timeEdit->setFocus();
+	ui.timeEdit->setSelectedSection(timeEditSection);
 }
 
 void ShiftImageTimesDialog::timeEditChanged()
