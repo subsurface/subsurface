@@ -222,7 +222,7 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 				ret = get_depth_string(gas_mnd(&cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
 			break;
 		case USE:
-			ret = gettextFromC::instance()->trGettext(cylinderuse_text[cyl->cylinder_use]);
+			ret = gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
 			break;
 		}
 		break;
