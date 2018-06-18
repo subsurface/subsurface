@@ -67,6 +67,9 @@ curl_download_library() {
 
 	if [ ! -f "$filename" ]; then
 		${CURL} "${base_url}${filename}"
+	fi
+
+	if [ ! -d "$name" ] || [ "$name" -ot "$filename" ] ; then
 		rm -rf "$name"
 		mkdir "$name"
 		tar -C "$name" --strip-components=1 -xf "$filename"
