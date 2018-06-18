@@ -26,7 +26,7 @@ CURRENT_BREEZE_ICONS=""
 #	url - repository url
 #
 git_checkout_library() {
-	[ $# -ne 3 ] && return -1
+	[ $# -ne 3 ] && return 1
 
 	# for clarity
 	local name=$1
@@ -45,7 +45,7 @@ git_checkout_library() {
 		git fetch origin
 		if ! git checkout "$version" ; then
 			echo "Can't find the right tag in $name - giving up"
-			return -1
+			return 1
 		fi
 	fi
 	popd
@@ -59,7 +59,7 @@ git_checkout_library() {
 #	filename - tarball file name
 #
 curl_download_library() {
-	[ $# -ne 3 ] && return -1
+	[ $# -ne 3 ] && return 1
 
 	local name=$1
 	local base_url=$2
@@ -75,7 +75,7 @@ curl_download_library() {
 
 
 # deal with all the command line arguments
-if [[ $# -ne 2 && $# -ne 3 ]] ; then
+if [ $# -ne 2 ] && [ $# -ne 3 ] ; then
 	echo "wrong number of parameters, format:"
 	echo "get-dep-lib.sh <platform> <install dir>"
 	echo "get-dep-lib.sh single <install dir> <lib>"
@@ -90,9 +90,9 @@ fi
 
 PLATFORM=$1
 INSTDIR=$2
-if [ ! -d ${INSTDIR} ] ; then
+if [ ! -d "${INSTDIR}" ] ; then
 	echo "creating dir"
-	mkdir -p ${INSTDIR}
+	mkdir -p "${INSTDIR}"
 fi
 
 # FIX FOR ANDROID,
@@ -102,7 +102,7 @@ if [ "$PLATFORM" == "singleAndroid" ] ; then
 fi
 # no curl and old libs (never version breaks)
 # check whether to use curl or wget
-if [ "`which curl`" == "" ] ; then
+if [ "$(which curl)" == "" ] ; then
 	CURL="wget "
 else
 	CURL="curl -O "
@@ -134,7 +134,7 @@ set -x
 set -e
 
 # get ready to download needed sources
-cd ${INSTDIR}
+cd "${INSTDIR}"
 
 if [[ "$BUILD" = *"libcurl"* ]]; then
 	git_checkout_library libcurl $CURRENT_LIBCURL https://github.com/curl/curl.git
