@@ -53,7 +53,7 @@ Kirigami.ScrollablePage {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Change")
 				onClicked: {
-					manager.cancelCredentialsPinSetup()
+					prefs.cancelCredentialsPinSetup()
 					rootItem.returnTopPage()
 				}
 			}
