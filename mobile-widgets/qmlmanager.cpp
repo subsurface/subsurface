@@ -37,6 +37,7 @@
 #include "core/ssrf.h"
 
 QMLManager *QMLManager::m_instance = NULL;
+bool noCloudToCloud = false;
 
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
 #define END_FONT QLatin1Literal("</font>")
@@ -442,6 +443,12 @@ void QMLManager::saveCloudCredentials()
 		free((void *)prefs.cloud_storage_password);
 		prefs.cloud_storage_password = copy_qstring(QMLPrefs::instance()->cloudPassword());
 	}
+	if (QMLPrefs::instance()->oldStatus() == QMLPrefs::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
+		// we came from NOCLOUD and are connecting to a cloud account;
+		// since we already have dives in the table, let's remember that so we can keep them
+		noCloudToCloud = true;
+		appendTextToLog("transitioning from no-cloud to cloud and have dives");
+	}
 	if (QMLPrefs::instance()->cloudUserName().isEmpty() ||
 		QMLPrefs::instance()->cloudPassword().isEmpty()) {
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
@@ -624,7 +631,13 @@ void QMLManager::loadDivesWithValidCredentials()
 	}
 	appendTextToLog("Cloud sync brought newer data, reloading the dive list");
 
-	clear_dive_file_data();
+	// if we aren't switching from no-cloud mode, let's clear the dive data
+	if (!noCloudToCloud) {
+		appendTextToLog("Clear out in memory dive data");
+		clear_dive_file_data();
+	} else {
+		appendTextToLog("Switching from no cloud mode; keep in memory dive data");
+	}
 	if (git != dummy_git_repository) {
 		appendTextToLog(QString("have repository and branch %1").arg(branch));
 		error = git_load_dives(git, branch);
@@ -649,13 +662,14 @@ successful_exit:
 	setLoadFromCloud(true);
 	// if we came from local storage mode, let's merge the local data into the local cache
 	// for the remote data - which then later gets merged with the remote data if necessary
-	if (QMLPrefs::instance()->oldStatus() == QMLPrefs::CS_NOCLOUD) {
+	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
 		dive_table.preexisting = dive_table.nr;
 		mergeLocalRepo();
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();
 		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(dive_table.nr));
+		noCloudToCloud = false;
 		saveChangesLocal();
 		if (m_syncToCloud == false) {
 			appendTextToLog(QStringLiteral("taking things back offline now that storage is synced"));
