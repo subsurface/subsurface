@@ -119,7 +119,7 @@ case ${PLATFORM} in
 		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt)
 		;;
 	android)
-		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt sqlite libxml2 openssl libftdi libusb)
+		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt sqlite libxml2 openssl libftdi1 libusb)
 		;;
 	single)
 		PACKAGES=("$3")
@@ -177,7 +177,7 @@ for package in "${PACKAGES[@]}" ; do
 		libzip)
 			curl_download_library libzip https://subsurface-divelog.org/downloads/ libzip-${CURRENT_LIBZIP}.tar.xz
 			;;
-		libftdi)
+		libftdi1)
 			curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
 			;;
 		sqlite)
