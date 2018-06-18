@@ -110,22 +110,22 @@ if [ "$(which curl)" == "" ] ; then
 else
 	CURL="curl -O "
 fi
-BUILD_COMMON="libzip libgit2 googlemaps"
+COMMON_PACKAGES=(libzip libgit2 googlemaps)
 case ${PLATFORM} in
 	scripts)
-		BUILD="${BUILD_COMMON} hidapi libcurl libusb openssl libssh2"
+		PACKAGES=("${COMMON_PACKAGES[@]}" hidapi libcurl libusb openssl libssh2)
 		;;
 	ios)
-		BUILD="${BUILD_COMMON} libxslt"
+		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt)
 		;;
 	android)
-		BUILD="${BUILD_COMMON} libxslt sqlite libxml2 openssl libftdi libusb"
+		PACKAGES=("${COMMON_PACKAGES[@]}" libxslt sqlite libxml2 openssl libftdi libusb)
 		;;
 	single)
-		BUILD="$3"
+		PACKAGES=("$3")
 		;;
 	singleAndroid)
-		BUILD="$3"
+		PACKAGES=("$3")
 		;;
 	*)
 		echo "Unknown platform ${PLATFORM}, choose between native, ios or android"
@@ -139,58 +139,53 @@ set -e
 # get ready to download needed sources
 cd "${INSTDIR}"
 
-if [[ "$BUILD" = *"libcurl"* ]]; then
-	git_checkout_library libcurl $CURRENT_LIBCURL https://github.com/curl/curl.git
-fi
-
-if [[ "$BUILD" = *"libgit2"* ]]; then
-	git_checkout_library libgit2 $CURRENT_LIBGIT2 https://github.com/libgit2/libgit2.git
-fi
-
-if [[ "$BUILD" = *"libssh2"* ]]; then
-	git_checkout_library libssh2 $CURRENT_LIBSSH2 https://github.com/libssh2/libssh2.git
-fi
-
-if [[ "$BUILD" = *"libusb"* ]]; then
-	git_checkout_library libusb $CURRENT_LIBUSB https://github.com/libusb/libusb.git
-fi
-
-if [[ "$BUILD" = *"libxml2"* ]];then
-	git_checkout_library libxml2 $CURRENT_LIBXML2 https://github.com/GNOME/libxml2.git
-fi
-
-if [[ "$BUILD" = *"libxslt"* ]]; then
-	git_checkout_library libxslt $CURRENT_XSLT https://github.com/GNOME/libxslt.git
-fi
-
-if [[ "$BUILD" = *"breeze-icons"* ]]; then
-	git_checkout_library breeze-icons master https://github.com/kde/breeze-icons.git
-fi
-
-if [[ "$BUILD" = *"googlemaps"* ]]; then
-	git_checkout_library googlemaps master https://github.com/Subsurface-divelog/googlemaps.git
-fi
-
-if [[ "$BUILD" = *"hidapi"* ]]; then
-	git_checkout_library hidapi master https://github.com/signal11/hidapi.git
-fi
-
-if [[ "$BUILD" = *"kirigami"* ]]; then
-	git_checkout_library kirigami $CURRENT_KIRIGAMI https://github.com/KDE/kirigami.git
-fi
-
-if [[ "$BUILD" = *"openssl"* ]]; then
-	git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
-fi
-
-if [[ "$BUILD" = *"libzip"* ]]; then
-	curl_download_library libzip https://subsurface-divelog.org/downloads/ libzip-${CURRENT_LIBZIP}.tar.xz
-fi
-
-if [[ "$BUILD" = *"libftdi"* ]]; then
-	curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
-fi
-
-if [[ "$BUILD" = *"sqlite"* ]]; then
-	curl_download_library sqlite http://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
-fi
+for package in "${PACKAGES[@]}" ; do
+	case "$package" in
+		libcurl)
+			git_checkout_library libcurl $CURRENT_LIBCURL https://github.com/curl/curl.git
+			;;
+		libgit2)
+			git_checkout_library libgit2 $CURRENT_LIBGIT2 https://github.com/libgit2/libgit2.git
+			;;
+		libssh2)
+			git_checkout_library libssh2 $CURRENT_LIBSSH2 https://github.com/libssh2/libssh2.git
+			;;
+		libusb)
+			git_checkout_library libusb $CURRENT_LIBUSB https://github.com/libusb/libusb.git
+			;;
+		libxml2)
+			git_checkout_library libxml2 $CURRENT_LIBXML2 https://github.com/GNOME/libxml2.git
+			;;
+		libxslt)
+			git_checkout_library libxslt $CURRENT_XSLT https://github.com/GNOME/libxslt.git
+			;;
+		breeze-icons)
+			git_checkout_library breeze-icons master https://github.com/kde/breeze-icons.git
+			;;
+		googlemaps)
+			git_checkout_library googlemaps master https://github.com/Subsurface-divelog/googlemaps.git
+			;;
+		hidapi)
+			git_checkout_library hidapi master https://github.com/signal11/hidapi.git
+			;;
+		kirigami)
+			git_checkout_library kirigami $CURRENT_KIRIGAMI https://github.com/KDE/kirigami.git
+			;;
+		openssl)
+			git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
+			;;
+		libzip)
+			curl_download_library libzip https://subsurface-divelog.org/downloads/ libzip-${CURRENT_LIBZIP}.tar.xz
+			;;
+		libftdi)
+			curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
+			;;
+		sqlite)
+			curl_download_library sqlite http://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+			;;
+		*)
+			echo "unknown package \"$package\""
+			exit 1
+			;;
+	esac
+done
