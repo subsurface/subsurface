@@ -117,7 +117,7 @@ Item {
 				id: cancelpin
 				text: qsTr("Cancel")
 				onClicked: {
-					manager.cancelCredentialsPinSetup()
+					prefs.cancelCredentialsPinSetup()
 					rootItem.returnTopPage()
 				}
 			}
