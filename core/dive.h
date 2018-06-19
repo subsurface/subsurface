@@ -275,6 +275,7 @@ struct divecomputer {
 #define MAX_CYLINDERS (20)
 #define MAX_WEIGHTSYSTEMS (6)
 #define MAX_TANK_INFO (100)
+#define MAX_WS_INFO (100)
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
@@ -944,7 +945,7 @@ struct ws_info_t {
 	const char *name;
 	int grams;
 };
-extern struct ws_info_t ws_info[100];
+extern struct ws_info_t ws_info[MAX_WS_INFO];
 
 extern bool cylinder_nodata(const cylinder_t *cyl);
 extern bool cylinder_none(void *_data);

@@ -43,13 +43,13 @@ void add_weightsystem_description(weightsystem_t *weightsystem)
 	desc = weightsystem->description;
 	if (!desc)
 		return;
-	for (i = 0; i < 100 && ws_info[i].name != NULL; i++) {
+	for (i = 0; i < MAX_WS_INFO && ws_info[i].name != NULL; i++) {
 		if (strcmp(ws_info[i].name, desc) == 0) {
 			ws_info[i].grams = weightsystem->weight.grams;
 			return;
 		}
 	}
-	if (i < 100) {
+	if (i < MAX_WS_INFO) {
 		// FIXME: leaked on exit
 		ws_info[i].name = strdup(desc);
 		ws_info[i].grams = weightsystem->weight.grams;
@@ -181,7 +181,7 @@ struct tank_info_t tank_info[100] = {
  * We hardcode the most common weight system types
  * This is a bit odd as the weight system types don't usually encode weight
  */
-struct ws_info_t ws_info[100] = {
+struct ws_info_t ws_info[MAX_WS_INFO] = {
 	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
