@@ -747,7 +747,7 @@ void copy_samples(struct divecomputer *s, struct divecomputer *d)
 void alloc_samples(struct divecomputer *dc, int num)
 {
 	if (num > dc->alloc_samples) {
-		dc->alloc_samples = (dc->alloc_samples * 3) / 2 + 10;
+		dc->alloc_samples = (num * 3) / 2 + 10;
 		dc->sample = realloc(dc->sample, dc->alloc_samples * sizeof(struct sample));
 		if (!dc->sample)
 			dc->samples = dc->alloc_samples = 0;
