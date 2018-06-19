@@ -927,6 +927,7 @@ bool QMLManager::checkDuration(DiveObjectHelper *myDive, struct dive *d, QString
 			free(d->dc.sample);
 			d->dc.sample = 0;
 			d->dc.samples = 0;
+			d->dc.alloc_samples = 0;
 		} else {
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
 		}
@@ -949,6 +950,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 				free(d->dc.sample);
 				d->dc.sample = 0;
 				d->dc.samples = 0;
+				d->dc.alloc_samples = 0;
 			}
 			return true;
 		}
