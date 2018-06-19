@@ -213,31 +213,6 @@ private:
 	QString subgroup;
 };
 
-/* Control the state of the Geocoding preferences */
-class GeocodingPreferences : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(taxonomy_category first_category     READ firstTaxonomyCategory  WRITE setFirstTaxonomyCategory  NOTIFY firstTaxonomyCategoryChanged)
-	Q_PROPERTY(taxonomy_category second_category    READ secondTaxonomyCategory WRITE setSecondTaxonomyCategory NOTIFY secondTaxonomyCategoryChanged)
-	Q_PROPERTY(taxonomy_category third_category     READ thirdTaxonomyCategory  WRITE setThirdTaxonomyCategory  NOTIFY thirdTaxonomyCategoryChanged)
-public:
-	GeocodingPreferences(QObject *parent);
-	taxonomy_category firstTaxonomyCategory() const;
-	taxonomy_category secondTaxonomyCategory() const;
-	taxonomy_category thirdTaxonomyCategory() const;
-
-public slots:
-	void setFirstTaxonomyCategory(taxonomy_category value);
-	void setSecondTaxonomyCategory(taxonomy_category value);
-	void setThirdTaxonomyCategory(taxonomy_category value);
-
-signals:
-	void firstTaxonomyCategoryChanged(taxonomy_category value);
-	void secondTaxonomyCategoryChanged(taxonomy_category value);
-	void thirdTaxonomyCategoryChanged(taxonomy_category value);
-private:
-	const QString group = QStringLiteral("geocoding");
-};
-
 class ProxySettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(int type     READ type WRITE setType NOTIFY typeChanged)
@@ -511,7 +486,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(TechnicalDetailsSettings*   techical_details MEMBER techDetails CONSTANT)
 	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
 	Q_PROPERTY(qPrefFacebook*           facebook         MEMBER facebook CONSTANT)
-	Q_PROPERTY(GeocodingPreferences*       geocoding        MEMBER geocoding CONSTANT)
+	Q_PROPERTY(qPrefGeocoding*       geocoding        MEMBER geocoding CONSTANT)
 	Q_PROPERTY(ProxySettings*              proxy            MEMBER proxy CONSTANT)
 	Q_PROPERTY(qPrefCS*       cloud_storage    MEMBER cloud_storage CONSTANT)
 	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
@@ -530,7 +505,7 @@ public:
 	TechnicalDetailsSettings *techDetails;
 	PartialPressureGasSettings *pp_gas;
 	qPrefFacebook *facebook;
-	GeocodingPreferences *geocoding;
+	qPrefGeocoding *geocoding;
 	ProxySettings *proxy;
 	qPrefCS *cloud_storage;
 	DivePlannerSettings *planner_settings;

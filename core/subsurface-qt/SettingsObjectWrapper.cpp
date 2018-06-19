@@ -661,60 +661,6 @@ void TechnicalDetailsSettings::setShowIcd(bool value)
 	emit showIcdChanged(value);
 }
 
-GeocodingPreferences::GeocodingPreferences(QObject *parent) :
-	QObject(parent)
-{
-
-}
-
-taxonomy_category GeocodingPreferences::firstTaxonomyCategory() const
-{
-	return prefs.geocoding.category[0];
-}
-
-taxonomy_category GeocodingPreferences::secondTaxonomyCategory() const
-{
-	return prefs.geocoding.category[1];
-}
-
-taxonomy_category GeocodingPreferences::thirdTaxonomyCategory() const
-{
-	return prefs.geocoding.category[2];
-}
-
-void GeocodingPreferences::setFirstTaxonomyCategory(taxonomy_category value)
-{
-	if (value == prefs.geocoding.category[0])
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cat0", value);
-	prefs.geocoding.category[0] = value;
-	emit firstTaxonomyCategoryChanged(value);
-}
-
-void GeocodingPreferences::setSecondTaxonomyCategory(taxonomy_category value)
-{
-	if (value == prefs.geocoding.category[1])
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cat1", value);
-	prefs.geocoding.category[1]= value;
-	emit secondTaxonomyCategoryChanged(value);
-}
-
-void GeocodingPreferences::setThirdTaxonomyCategory(taxonomy_category value)
-{
-	if (value == prefs.geocoding.category[2])
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cat2", value);
-	prefs.geocoding.category[2] = value;
-	emit thirdTaxonomyCategoryChanged(value);
-}
-
 ProxySettings::ProxySettings(QObject *parent) :
 	QObject(parent)
 {
@@ -1612,7 +1558,7 @@ QObject(parent),
 	techDetails(new TechnicalDetailsSettings(this)),
 	pp_gas(new PartialPressureGasSettings(this)),
 	facebook(new qPrefFacebook(this)),
-	geocoding(new GeocodingPreferences(this)),
+	geocoding(new qPrefGeocoding(this)),
 	proxy(new ProxySettings(this)),
 	cloud_storage(new qPrefCS(this)),
 	planner_settings(new DivePlannerSettings(this)),

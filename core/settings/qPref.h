@@ -5,12 +5,14 @@
 
 #include <QObject>
 
+#include "../pref.h"
 #include "qPrefAnimations.h"
 #include "qPrefCS.h"
 #include "qPrefDC.h"
 #include "qPrefDisplay.h"
 #include "qPrefFacebook.h"
 #include "qPrefGeneral.h"
+#include "qPrefGeocoding.h"
 
 
 
