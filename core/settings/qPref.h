@@ -11,6 +11,7 @@
 #include "qPrefDisplay.h"
 #include "qPrefFacebook.h"
 #include "qPrefGeneral.h"
+#include "qPrefGeocoding.h"
 
 
 class qPref : public QObject {

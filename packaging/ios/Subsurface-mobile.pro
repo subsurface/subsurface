@@ -84,6 +84,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefDisplay.cpp \
 	../../core/settings/qPrefFacebook.cpp \
 	../../core/settings/qPrefGeneral.cpp \
+	../../core/settings/qPrefGeocoding.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -197,6 +198,7 @@ HEADERS += \
 	../../core/settings/qPrefDisplay.h \
 	../../core/settings/qPrefFacebook.h \
 	../../core/settings/qPrefGeneral.h \
+	../../core/settings/qPrefGeocoding.h \
 	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
