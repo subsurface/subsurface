@@ -91,7 +91,7 @@ TankInfoModel::TankInfoModel() : rows(-1)
 {
 	setHeaderDataStrings(QStringList() << tr("Description") << tr("ml") << tr("bar"));
 	struct tank_info_t *info = tank_info;
-	for (info = tank_info; info->name; info++, rows++) {
+	for (info = tank_info; info->name && info < tank_info + MAX_TANK_INFO; info++, rows++) {
 		QString infoName = gettextFromC::tr(info->name);
 		if (infoName.count() > biggerEntry.count())
 			biggerEntry = infoName;
@@ -111,8 +111,7 @@ void TankInfoModel::update()
 		rows = -1;
 	}
 	struct tank_info_t *info = tank_info;
-	for (info = tank_info; info->name; info++, rows++)
-		;
+	for (info = tank_info; info->name && info < tank_info + MAX_TANK_INFO; info++, rows++);
 
 	if (rows > -1) {
 		beginInsertRows(QModelIndex(), 0, rows);
