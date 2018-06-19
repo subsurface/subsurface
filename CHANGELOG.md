@@ -1,3 +1,4 @@
+- Equipment: fix bug with the maximum number of allowed tanks [#1401]
 - Mobile: add cloud storage user name to global drawer banner
 - Mobile: add button to About page to copy logs to clipboard; this makes it
   easier to provide the required information when reporting issues
