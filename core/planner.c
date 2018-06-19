@@ -209,7 +209,7 @@ void fill_default_cylinder(cylinder_t *cyl)
 
 	if (!cyl_name)
 		return;
-	while (ti->name != NULL) {
+	while (ti->name != NULL && ti < tank_info + MAX_TANK_INFO) {
 		if (strcmp(ti->name, cyl_name) == 0)
 			break;
 		ti++;

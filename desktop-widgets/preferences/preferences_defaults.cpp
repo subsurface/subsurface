@@ -52,7 +52,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->localDefaultFile->setChecked(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
 
 	ui->default_cylinder->clear();
-	for (int i = 0; tank_info[i].name != NULL; i++) {
+	for (int i = 0; tank_info[i].name != NULL && i < MAX_TANK_INFO; i++) {
 		ui->default_cylinder->addItem(tank_info[i].name);
 		if (prefs.default_cylinder && strcmp(tank_info[i].name, prefs.default_cylinder) == 0)
 			ui->default_cylinder->setCurrentIndex(i);
