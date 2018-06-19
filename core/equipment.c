@@ -24,11 +24,11 @@ void add_cylinder_description(cylinder_type_t *type)
 	desc = type->description;
 	if (!desc)
 		return;
-	for (i = 0; i < 100 && tank_info[i].name != NULL; i++) {
+	for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
 		if (strcmp(tank_info[i].name, desc) == 0)
 			return;
 	}
-	if (i < 100) {
+	if (i < MAX_TANK_INFO) {
 		// FIXME: leaked on exit
 		tank_info[i].name = strdup(desc);
 		tank_info[i].ml = type->size.mliter;
@@ -120,7 +120,7 @@ bool no_weightsystems(weightsystem_t *ws)
  * we should pick up any other names from the dive
  * logs directly.
  */
-struct tank_info_t tank_info[100] = {
+struct tank_info_t tank_info[MAX_TANK_INFO] = {
 	/* Need an empty entry for the no-cylinder case */
 	{ "", },
 
