@@ -1681,19 +1681,9 @@ int QMLManager::DC_deviceId() const
 	return m_device_data->deviceId();
 }
 
-int QMLManager::DC_diveId() const
-{
-	return m_device_data->diveId();
-}
-
 void QMLManager::DC_setDeviceId(int deviceId)
 {
 	m_device_data->setDeviceId(deviceId);
-}
-
-void QMLManager::DC_setDiveId(int diveId)
-{
-	m_device_data->setDiveId(diveId);
 }
 
 void QMLManager::DC_setVendor(const QString& vendor)

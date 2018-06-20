@@ -50,7 +50,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
 	Q_PROPERTY(bool DC_saveLog READ DC_saveLog WRITE DC_setSaveLog)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
-	Q_PROPERTY(int DC_diveId READ DC_diveId WRITE DC_setDiveId)
 public:
 	QMLManager();
 	~QMLManager();
@@ -86,9 +85,6 @@ public:
 
 	int DC_deviceId() const;
 	void DC_setDeviceId(int deviceId);
-
-	int DC_diveId() const;
-	void DC_setDiveId(int diveId);
 
 	Q_INVOKABLE QStringList getProductListFromVendor(const QString& vendor);
 	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
