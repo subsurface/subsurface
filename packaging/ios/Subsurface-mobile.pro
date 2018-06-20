@@ -104,7 +104,10 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../profile-widget/diverectitem.cpp \
 	../../profile-widget/divetextitem.cpp
 
-RESOURCES += ./qml.qrc ../../mobile-widgets/qml/mobile-resources.qrc ./translations.qrc
+RESOURCES += ./qml.qrc \
+			../../mobile-widgets/qml/mobile-resources.qrc \
+			../../map-widget/qml/map-widget.qrc \
+			./translations.qrc
 
 LIBS += ./install-root/lib/libdivecomputer.a \
 	./install-root/lib/libgit2.a \
