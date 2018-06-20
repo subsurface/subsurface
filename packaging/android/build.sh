@@ -192,9 +192,11 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
 fi
 
 ${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libxml2
-pushd libxml2
-autoreconf --install
-popd
+if [ ! -e libxml2/configure ] ; then
+	pushd libxml2
+	autoreconf --install
+	popd
+fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 	mkdir -p libxml2-build-"$ARCH"
 	pushd libxml2-build-"$ARCH"
@@ -207,9 +209,11 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 fi
 
 ${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libxslt
-pushd libxslt
-autoreconf --install
-popd
+if [ ! -e libxslt/configure ] ; then
+	pushd libxslt
+	autoreconf --install
+	popd
+fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
 	mkdir -p libxslt-build-"$ARCH"
 	pushd libxslt-build-"$ARCH"
