@@ -65,45 +65,57 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static void loadPicture(QUrl url, QString filename)
+// Fetch a picture from the given filename. If this is a non-remote filename, fetch it from disk.
+// Remote files are fetched from the net in a background thread. In such a case, the output-flag
+// "stillLoading" is set to true.
+// If the input-flag "tryDownload" is set to false, no download attempt is made. This is to
+// prevent infinite loops, where failed image downloads would be repeated ad infinitum.
+// Returns: fetched image, stillLoading flag
+static std::pair<QImage, bool> fetchImage(const QString &filename, const QString &originalFilename, bool tryDownload)
 {
-	// This has to be done in UI main thread, because QNetworkManager refuses
-	// to treat requests from other threads.
-	QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QUrl, url), Q_ARG(QString, filename));
-}
-
-// Returns: thumbnail, still loading
-static std::pair<QImage,bool> getHashedImage(const QString &file_in, bool tryDownload)
-{
-	QString file = file_in.startsWith("file://", Qt::CaseInsensitive) ? file_in.mid(7) : file_in;
 	QImage thumb;
 	bool stillLoading = false;
-	QUrl url = QUrl::fromUserInput(localFilePath(file));
-	if (url.isLocalFile())
+	QUrl url = QUrl::fromUserInput(filename);
+	if (url.isLocalFile()) {
 		thumb.load(url.toLocalFile());
-	if (!thumb.isNull()) {
-		// We loaded successfully. Now, make sure hash is up to date.
-		hashPicture(file);
+		// If we loaded successfully, make sure the hash is up to date.
+		// Note that hashPicture() takes the *original* filename.
+		if (!thumb.isNull())
+			hashPicture(originalFilename);
 	} else if (tryDownload) {
-		// This did not load anything. Let's try to get the image from other sources
-		QString filenameLocal = localFilePath(file);
-		// Load locally from translated file name if it is different
-		if (filenameLocal != file)
-			thumb.load(filenameLocal);
-		if (!thumb.isNull()) {
-			// Make sure the hash still matches the image file
-			hashPicture(filenameLocal);
-		} else {
-			// Interpret filename as URL
-			QUrl url = QUrl::fromUserInput(filenameLocal);
-			if (!url.isLocalFile() && url.isValid()) {
-				loadPicture(url, file);
-				stillLoading = true;
-			}
-		}
+		// This has to be done in UI main thread, because QNetworkManager refuses
+		// to treat requests from other threads. invokeMethod() is Qt's way of calling a
+		// function in a different thread, namely the thread the called object is associated to.
+		QMetaObject::invokeMethod(ImageDownloader::instance(), "load", Qt::AutoConnection, Q_ARG(QUrl, url), Q_ARG(QString, originalFilename));
+		stillLoading = true;
 	}
+	return { thumb, stillLoading };
+}
+
+// Fetch a picture based on its original filename. If there is a translated filename (obtained either
+// by the find-moved-picture functionality or the filename of the local cache of a remote picture),
+// try that first. If fetching from the translated filename fails, this could mean that the image
+// was downloaded previously, but for some reason the cached picture was lost. Therefore, in such a
+// case, try the canonical filename. If that likewise fails, give up. For input and output parameters
+// see fetchImage() above.
+static std::pair<QImage, bool> getHashedImage(const QString &filename, bool tryDownload)
+{
+	QImage thumb;
+	bool stillLoading = false;
+	QString localFilename = localFilePath(filename);
+
+	// If there is a translated filename, try that first
+	if (localFilename != filename)
+		std::tie(thumb, stillLoading) = fetchImage(localFilename, filename, tryDownload);
+
+	// Note that the translated filename should never be a remote file and therefore checking for
+	// stillLoading is currently not necessary. But in the future, we might support such a use case
+	// (e.g. images stored in the cloud).
 	if (thumb.isNull() && !stillLoading)
-		qInfo() << "Error loading image" << file << "[local:" << localFilePath(file) << "]";
+		std::tie(thumb, stillLoading) = fetchImage(filename, filename, tryDownload);
+
+	if (thumb.isNull() && !stillLoading)
+		qInfo() << "Error loading image" << filename << "[local:" << localFilename << "]";
 	return { thumb, stillLoading };
 }
 
