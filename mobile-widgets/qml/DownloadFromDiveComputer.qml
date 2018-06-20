@@ -79,6 +79,7 @@ Kirigami.Page {
 					elide: Text.ElideRight
 				}
 				onCurrentTextChanged: {
+					manager.DC_vendor = currentText
 					comboProduct.model = manager.getProductListFromVendor(currentText)
 					if (currentIndex == manager.getDetectedVendorIndex())
 						comboProduct.currentIndex = manager.getDetectedProductIndex(currentText)
@@ -109,6 +110,7 @@ Kirigami.Page {
 					elide: Text.ElideRight
 				}
 				onCurrentTextChanged: {
+					manager.DC_product = currentText
 					var newIdx = manager.getMatchingAddress(comboVendor.currentText, currentText)
 					if (newIdx != -1)
 						comboConnection.currentIndex = newIdx
@@ -188,7 +190,7 @@ Kirigami.Page {
 					// strip any BT Name from the address
 					var devName = manager.DC_devName
 					manager.DC_devName = devName.replace(/^(.*) /, "")
-					manager.appendTextToLog("DCDownloadThread started for " + manager.product + " on "+ manager.DC_devName)
+					manager.appendTextToLog("DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on "+ manager.DC_devName)
 					progressBar.visible = true
 					downloadThread.start()
 				}
