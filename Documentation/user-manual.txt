@@ -1898,40 +1898,19 @@ in order to find it when the dive is opened again.
 If the photo or the whole photo collection is moved to another drive or to a different
  machine, the path to the photo changes. Now, _Subsurface_ looks for the photos at their original location before they were moved,
  cannot find them and cannot display them. Because, after moving photos, large numbers of photos
- may need to be deleted and re-imported from the new location, _Subsurface_ has a mechanism to ease this inconvenience: automatic updates using fingerprints.
-
-When a photo is loaded into _Subsurface_, a fingerprint for the image is calculated and stored with the
- other reference information for that photo. After moving a photo collection (that has already been loaded
- into _Subsurface_) to a different directory, disk or computer, _Subsurface_ can:
-
-- look through a particular directory (and all its subdirectories recursively) where photos have been moved to,
-- calculate fingerprints for all photos in this directory, and
-
-- if there is a match between a calculated fingerprint and the one calculated when a photo was
-originally loaded into _Subsurface_ (even if the original file name has changed), automatically update the directory information so that _Subsurface_ can find the photo in the new moved directory.
+ may need to be deleted and re-imported from the new location, _Subsurface_ can locate the photos based on their filename and path.
 
 This is done by selecting from the Main Menu: _File ->      Find moved images_. This brings up a window within
- which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
- the _Scan_ button towards the bottom right of the panel. The process may require several minutes to
- complete, after which _Subsurface_ will show the appropriate photographs when a particular dive is opened.
+which the searching of the images can be controlled. The search is started by clicking on _Select folder and scan_.
+Since photos taken with different cameras might have the same filename, the names of the parent folders are likewise compared.
+Therefore, the root folder of the NEW picture collection should be chosen. For finer control, it is possible to search
+only for photographs of the currently selected dive(s) by selecting the appropriate option.
 
+After the searching has finished, the original filenames and the new locations of the photographs will be shown.
+The matching parts of the paths are emphasized. Photographs that are found at their known positions are
+not listed. The proposed changes can be applied by clicking _Apply_ or rejected by clicking _Cancel_.
 
-[[Image_fingerprint_upgrade]]
-****
-*Upgrading legacy photo collections without fingerprints*
-[icon="images/icons/important.png"]
-[IMPORTANT]
-
-_Subsurface_ automatically calculates fingerprints for all images that it can access.
-When manipulating images, ensure that all the images associated with the dive log can be accessed by _Subsurface_.
-
-_Subsurface_ automatically checks and, if necessary, updates the fingerprints associated with a single dive if:
-
-- The images associated with that dive are visible as thumbnails on the *Dive Profile*.
-
-- If you edit anything in the *Notes* panel and save the edits by selecting _Apply changes_.
-
-****
+image::images/FindMovedImages1.jpg["FIGURE:Find moved images",align="center"]
 
 === Logging special types of dives
 
