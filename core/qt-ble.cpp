@@ -29,17 +29,26 @@ static int debugCounter;
 #define MAXIMAL_HW_CREDIT	255
 #define MINIMAL_HW_CREDIT	32
 
-static void waitFor(int ms) {
-	Q_ASSERT(QCoreApplication::instance());
-	Q_ASSERT(QThread::currentThread());
+#define WAITFOR(expression, ms) do {					\
+	Q_ASSERT(QCoreApplication::instance());				\
+	Q_ASSERT(QThread::currentThread());				\
+									\
+	if (expression)							\
+		break;							\
+	QElapsedTimer timer;						\
+	timer.start();							\
+									\
+	do {								\
+		QCoreApplication::processEvents(QEventLoop::AllEvents, ms); \
+		if (expression)						\
+			break;						\
+		QThread::msleep(10);					\
+	} while (timer.elapsed() < (ms));				\
+} while (0)
 
-	QElapsedTimer timer;
-	timer.start();
-
-	do {
-		QCoreApplication::processEvents(QEventLoop::AllEvents, ms);
-		QThread::msleep(10);
-	} while (timer.elapsed() < ms);
+static void waitFor(int ms)
+{
+	WAITFOR(false, ms);
 }
 
 extern "C" {
@@ -176,16 +185,10 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
-		int msec = BLE_TIMEOUT;
-		while (msec > 0 && receivedPackets.isEmpty()) {
-			waitFor(100);
-			msec -= 100;
-		}
+		WAITFOR(!receivedPackets.isEmpty(), BLE_TIMEOUT);
+		if (receivedPackets.isEmpty())
+			return DC_STATUS_IO;
 	}
-
-	// Still no packet?
-	if (receivedPackets.isEmpty())
-		return DC_STATUS_IO;
 
 	QByteArray packet = receivedPackets.takeFirst();
 
