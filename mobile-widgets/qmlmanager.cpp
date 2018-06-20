@@ -923,14 +923,10 @@ bool QMLManager::checkDuration(DiveObjectHelper *myDive, struct dive *d, QString
 			m = r6.cap(1).toInt();
 		}
 		d->dc.duration.seconds = d->duration.seconds = h * 3600 + m * 60 + s;
-		if (same_string(d->dc.model, "manually added dive")) {
-			free(d->dc.sample);
-			d->dc.sample = 0;
-			d->dc.samples = 0;
-			d->dc.alloc_samples = 0;
-		} else {
+		if (same_string(d->dc.model, "manually added dive"))
+			free_samples(&d->dc);
+		else
 			appendTextToLog("Cannot change the duration on a dive that wasn't manually added");
-		}
 		return true;
 	}
 	return false;
@@ -947,10 +943,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 			d->maxdepth.mm = depthValue;
 			if (same_string(d->dc.model, "manually added dive")) {
 				d->dc.maxdepth.mm = d->maxdepth.mm;
-				free(d->dc.sample);
-				d->dc.sample = 0;
-				d->dc.samples = 0;
-				d->dc.alloc_samples = 0;
+				free_samples(&d->dc);
 			}
 			return true;
 		}

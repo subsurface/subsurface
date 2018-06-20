@@ -284,10 +284,7 @@ static void create_dive_from_plan(struct diveplan *diveplan, struct dive *dive, 
 	dc->when = dive->when = diveplan->when;
 	dc->surface_pressure.mbar = diveplan->surface_pressure;
 	dc->salinity = diveplan->salinity;
-	free(dc->sample);
-	dc->sample = NULL;
-	dc->samples = 0;
-	dc->alloc_samples = 0;
+	free_samples(dc);
 	while ((ev = dc->events)) {
 		dc->events = dc->events->next;
 		free(ev);

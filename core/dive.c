@@ -754,6 +754,16 @@ void alloc_samples(struct divecomputer *dc, int num)
 	}
 }
 
+void free_samples(struct divecomputer *dc)
+{
+	if (dc) {
+		free(dc->sample);
+		dc->sample = 0;
+		dc->samples = 0;
+		dc->alloc_samples = 0;
+	}
+}
+
 struct sample *prepare_sample(struct divecomputer *dc)
 {
 	if (dc) {

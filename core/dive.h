@@ -747,6 +747,7 @@ extern struct dive *clone_dive(struct dive *s);
 extern void clear_table(struct dive_table *table);
 
 extern void alloc_samples(struct divecomputer *dc, int num);
+extern void free_samples(struct divecomputer *dc);
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
 extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
