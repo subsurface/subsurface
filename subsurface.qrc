@@ -1,16 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="MapWidget.qml">map-widget/qml/MapWidget.qml</file>
-        <file alias="MapWidgetError.qml">map-widget/qml/MapWidgetError.qml</file>
-        <file alias="MapWidgetContextMenu.qml">map-widget/qml/MapWidgetContextMenu.qml</file>
-        <file alias="dive-location-marker-icon">map-widget/qml/icons/mapwidget-marker.png</file>
-        <file alias="dive-location-marker-inactive-icon">map-widget/qml/icons/mapwidget-marker-gray.png</file>
-        <file alias="dive-location-marker-selected-icon">map-widget/qml/icons/mapwidget-marker-selected.png</file>
-        <file alias="map-style-photo-icon">map-widget/qml/icons/mapwidget-toggle-satellite.png</file>
-        <file alias="map-style-map-icon">map-widget/qml/icons/mapwidget-toggle-street.png</file>
-        <file alias="open-menu-icon">map-widget/qml/icons/mapwidget-context-menu.png</file>
-        <file alias="zoom-in-icon">map-widget/qml/icons/mapwidget-zoom-in.png</file>
-        <file alias="zoom-out-icon">map-widget/qml/icons/mapwidget-zoom-out.png</file>
         <file alias="satellite-icon">icons/satellite.svg</file>
         <file alias="graph-icon">icons/graph.png</file>
         <file alias="hide-icon">icons/go-top.svg</file>

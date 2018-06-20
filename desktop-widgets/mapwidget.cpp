@@ -11,8 +11,8 @@
 #include "mainwindow.h"
 #include "divelistview.h"
 
-static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/MapWidget.qml"));
-static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/MapWidgetError.qml"));
+static const QUrl urlMapWidget = QUrl(QStringLiteral("qrc:/qml/MapWidget.qml"));
+static const QUrl urlMapWidgetError = QUrl(QStringLiteral("qrc:/qml/MapWidgetError.qml"));
 static bool isReady = false;
 static bool skipReload = false;
 

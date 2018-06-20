@@ -269,7 +269,7 @@ endif()
 
 #set up the subsurface_link_libraries variable
 set(SUBSURFACE_LINK_LIBRARIES ${SUBSURFACE_LINK_LIBRARIES} ${LIBDIVECOMPUTER_LIBRARIES} ${LIBGIT2_LIBRARIES} ${LIBUSB_LIBRARIES})
-qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc)
+qt5_add_resources(SUBSURFACE_RESOURCES subsurface.qrc map-widget/qml/map-widget.qrc)
 
 # include translations
 add_subdirectory(translations)
