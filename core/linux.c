@@ -20,6 +20,11 @@ const char linux_system_divelist_default_font[] = "Sans";
 const char *system_divelist_default_font = linux_system_divelist_default_font;
 double system_divelist_default_font_size = -1.0;
 
+void subsurface_OS_pref_setup(void)
+{
+	// nothing
+}
+
 bool subsurface_ignore_font(const char *font)
 {
 	// there are no old default fonts to ignore
