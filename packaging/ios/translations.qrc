@@ -1,27 +1,27 @@
 <RCC>
-    <qresource prefix="/">
-        <file>build-ios/translations/subsurface_bg_BG.qm</file>
-        <file>build-ios/translations/subsurface_cs.qm</file>
-        <file>build-ios/translations/subsurface_da_DK.qm</file>
-        <file>build-ios/translations/subsurface_de_CH.qm</file>
-        <file>build-ios/translations/subsurface_de_DE.qm</file>
-        <file>build-ios/translations/subsurface_en_GB.qm</file>
-        <file>build-ios/translations/subsurface_en_US.qm</file>
-        <file>build-ios/translations/subsurface_es_ES.qm</file>
-        <file>build-ios/translations/subsurface_et_EE.qm</file>
-        <file>build-ios/translations/subsurface_fi_FI.qm</file>
-        <file>build-ios/translations/subsurface_fr_FR.qm</file>
-        <file>build-ios/translations/subsurface_he.qm</file>
-        <file>build-ios/translations/subsurface_it_IT.qm</file>
-        <file>build-ios/translations/subsurface_nb_NO.qm</file>
-        <file>build-ios/translations/subsurface_nl_NL.qm</file>
-        <file>build-ios/translations/subsurface_pl_PL.qm</file>
-        <file>build-ios/translations/subsurface_pt_BR.qm</file>
-        <file>build-ios/translations/subsurface_pt_PT.qm</file>
-        <file>build-ios/translations/subsurface_ro_RO.qm</file>
-        <file>build-ios/translations/subsurface_ru_RU.qm</file>
-        <file>build-ios/translations/subsurface_sk_SK.qm</file>
-        <file>build-ios/translations/subsurface_sv_SE.qm</file>
-        <file>build-ios/translations/subsurface_zh_TW.qm</file>
-    </qresource>
+	<qresource prefix="/">
+		<file>build-ios/translations/subsurface_bg_BG.qm</file>
+		<file>build-ios/translations/subsurface_cs.qm</file>
+		<file>build-ios/translations/subsurface_da_DK.qm</file>
+		<file>build-ios/translations/subsurface_de_CH.qm</file>
+		<file>build-ios/translations/subsurface_de_DE.qm</file>
+		<file>build-ios/translations/subsurface_en_GB.qm</file>
+		<file>build-ios/translations/subsurface_en_US.qm</file>
+		<file>build-ios/translations/subsurface_es_ES.qm</file>
+		<file>build-ios/translations/subsurface_et_EE.qm</file>
+		<file>build-ios/translations/subsurface_fi_FI.qm</file>
+		<file>build-ios/translations/subsurface_fr_FR.qm</file>
+		<file>build-ios/translations/subsurface_he.qm</file>
+		<file>build-ios/translations/subsurface_it_IT.qm</file>
+		<file>build-ios/translations/subsurface_nb_NO.qm</file>
+		<file>build-ios/translations/subsurface_nl_NL.qm</file>
+		<file>build-ios/translations/subsurface_pl_PL.qm</file>
+		<file>build-ios/translations/subsurface_pt_BR.qm</file>
+		<file>build-ios/translations/subsurface_pt_PT.qm</file>
+		<file>build-ios/translations/subsurface_ro_RO.qm</file>
+		<file>build-ios/translations/subsurface_ru_RU.qm</file>
+		<file>build-ios/translations/subsurface_sk_SK.qm</file>
+		<file>build-ios/translations/subsurface_sv_SE.qm</file>
+		<file>build-ios/translations/subsurface_zh_TW.qm</file>
+	</qresource>
 </RCC>
