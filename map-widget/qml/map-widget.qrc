@@ -1,0 +1,18 @@
+<RCC>
+	<qresource prefix="/qml">
+		<file>MapWidget.qml</file>
+		<file>MapWidgetContextMenu.qml</file>
+		<file>MapWidgetError.qml</file>
+	</qresource>
+
+	<qresource prefix="/">
+		<file alias="dive-location-marker-icon">icons/mapwidget-marker.png</file>
+		<file alias="dive-location-marker-inactive-icon">icons/mapwidget-marker-gray.png</file>
+		<file alias="dive-location-marker-selected-icon">icons/mapwidget-marker-selected.png</file>
+		<file alias="map-style-map-icon">icons/mapwidget-toggle-street.png</file>
+		<file alias="map-style-photo-icon">icons/mapwidget-toggle-satellite.png</file>
+		<file alias="open-menu-icon">icons/mapwidget-context-menu.png</file>
+		<file alias="zoom-in-icon">icons/mapwidget-zoom-in.png</file>
+		<file alias="zoom-out-icon">icons/mapwidget-zoom-out.png</file>
+	</qresource>
+</RCC>
