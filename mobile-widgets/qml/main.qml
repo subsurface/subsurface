@@ -112,7 +112,6 @@ Kirigami.ApplicationWindow {
 			Layout.fillWidth: true
 			sourceSize.width: parent.width
 			fillMode: Image.PreserveAspectFit
-			asynchronous: true
 			LinearGradient {
 				anchors {
 					left: parent.left
@@ -166,7 +165,7 @@ Kirigami.ApplicationWindow {
 					Kirigami.Heading {
 						Layout.fillWidth: true
 						visible: text.length > 0
-						level: 1
+						level: 3
 						color: "white"
 						text: prefs.cloudUserName
 						wrapMode: Text.NoWrap
