@@ -14,6 +14,7 @@
 #include <QTimer>
 #include <QDateTime>
 #include <QClipboard>
+#include <QFile>
 
 #include <QBluetoothLocalDevice>
 
@@ -155,6 +156,9 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first() + "/subsurface.log";
 	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first() + "/libdivecomputer.log";
 #endif
+	// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
+	QFile libdcLog(libdcLogFileName);
+	libdcLog.remove();
 	logfile_name = copy_qstring(libdcLogFileName);
 	appLogFile.setFileName(appLogFileName);
 	if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
