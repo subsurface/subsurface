@@ -1385,7 +1385,11 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		rc = dc_device_open(&data->device, data->context, data->descriptor, data->iostream);
 		INFO(0, "dc_device_open error value of %d", rc);
 		if (rc != DC_STATUS_SUCCESS && subsurface_access(data->devname, R_OK | W_OK) != 0)
+#if defined(SUBSURFACE_MOBILE)
+			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.");
+#else
 			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
+#endif
 	}
 
 	if (rc == DC_STATUS_SUCCESS) {
