@@ -49,10 +49,12 @@ void DownloadThread::run()
 		errorText = do_uemis_import(internalData);
 	else
 		errorText = do_libdivecomputer_import(internalData);
-	if (errorText)
+	if (errorText) {
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
-
-	qDebug() << "Finishing the thread" << errorText << "dives downloaded" << downloadTable.nr;
+		qDebug() << "Finishing download thread:" << error;
+	} else {
+		qDebug() << "Finishing download thread:" << downloadTable.nr << "dives downloaded";
+	}
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
 	dcs->setVendor(internalData->vendor);
 	dcs->setProduct(internalData->product);
