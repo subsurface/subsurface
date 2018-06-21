@@ -135,7 +135,7 @@ other editors that implement this coding style, please add them here.
 * text strings
   The default language of subsurface is US English so please use US English
   spelling and terminology.
-  Where at all possible strings should be passed to the tr() function to enable
+  User-visible strings should be passed to the tr() function to enable
   translation into other languages.
 
  * like this
@@ -146,6 +146,56 @@ other editors that implement this coding style, please add them here.
 ```
 	QString msgTitle = "Submit user survey.";
 ```
+
+  This works by default in classes (indirectly) derived from QObject. Each
+  string to be translated is associated with a context, which corresponds
+  to the class name. Classes that are not derived from QObject can generate
+  the tr() functions by using the Q_DECLARE_FUNCTIONS macro:
+```
+	#include <QCoreApplication>
+
+	class myClass {
+		Q_DECLARE_TR_FUNCTIONS(gettextfromC)
+		...
+	};
+```
+
+  As an alternative, which also works outside of class context, the tr()
+  function of a different class can be called. This avoids creating multiple
+  translations for the same string:
+```
+	gettextFromC::tr("%1km")
+```
+
+  The gettextFromC class in the above example was created as a catch-all
+  context for translations accessed in C code. But it can also be used
+  from C++ helper functions. To use it from C, include the "core/gettext.h"
+  header and invoke the translate() macro:
+```
+	#include "core/gettext.h"
+
+	report_error(translate("gettextFromC", "Remote storage and local data diverged"));
+```
+  It is crucial to pass "gettextFromC" as a first macro argument so that Qt
+  is able to associate the string with the correct context.
+  The translate macro returns a cached C-style string, which is generated at runtime
+  when the particular translation string is encountered for the first time.
+  It remains valid during the whole application's life time.
+
+  Outside of function context, the QT_TRANSLATE_NOOP macro can be used as in
+```
+struct ws_info_t ws_info[100] = {
+	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
+	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
+};
+```
+  Note that here, the texts will be scheduled for translation with the "gettextFromC"
+  context, but the array is only initialized with the original text. The actual
+  translation has to be performed later in code. For C-code, the QT_TRANSLATE_NOOP
+  macro is defined in the "core/gettext.h" header.
 
 * UI text style
   These guidelines are designed to ensure consistency in presentation within
