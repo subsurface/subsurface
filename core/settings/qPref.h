@@ -2,8 +2,8 @@
 #ifndef QPREF_H
 #define QPREF_H
 
-
 #include <QObject>
+
 
 #include "../pref.h"
 #include "qPrefAnimations.h"
@@ -27,6 +27,26 @@
 class qPref : public QObject {
 	Q_OBJECT
 	Q_ENUMS(cloud_status_qml)
+
+public:
+	qPref(QObject *parent = NULL) : QObject(parent) {};
+	~qPref() {};
+	static qPref *instance();
+
+	// Load/Sync local settings (disk) and struct preference
+	void loadSync(bool doSync);
+	
+	enum cloud_status_qml {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
+	};
+
+
+
+/* OLD
 	Q_PROPERTY(QString cloudPassword
 				MEMBER m_cloudPassword
 				WRITE setCloudPassword
@@ -68,19 +88,7 @@ class qPref : public QObject {
 				WRITE setTimeThreshold
 				NOTIFY timeThresholdChanged)
 
-public:
-	qPref();
-	~qPref();
 
-	static qPref *instance();
-
-	enum cloud_status_qml {
-		CS_UNKNOWN,
-		CS_INCORRECT_USER_PASSWD,
-		CS_NEED_TO_VERIFY,
-		CS_VERIFIED,
-		CS_NOCLOUD
-	};
 
 	const QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
@@ -138,6 +146,7 @@ signals:
 	void showPinChanged();
 	void themeChanged();
 	void timeThresholdChanged();
+*/
 };
 
 #define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
