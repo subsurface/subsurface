@@ -1,13 +1,52 @@
 // SPDX-License-Identifier: GPL-2.0
-#ifndef QMLPREFS_H
-#define QMLPREFS_H
+#ifndef QPREF_H
+#define QPREF_H
 
 #include <QObject>
 
 
-class QMLPrefs : public QObject {
+#include "../pref.h"
+#include "qPrefAnimations.h"
+#include "qPrefCS.h"
+#include "qPrefDC.h"
+#include "qPrefDisplay.h"
+#include "qPrefFacebook.h"
+#include "qPrefGas.h"
+#include "qPrefGeneral.h"
+#include "qPrefGeocoding.h"
+#include "qPrefLanguage.h"
+#include "qPrefLocation.h"
+#include "qPrefPlanner.h"
+#include "qPrefProxy.h"
+#include "qPrefTec.h"
+#include "qPrefUnits.h"
+#include "qPrefUpdate.h"
+
+
+
+class qPref : public QObject {
 	Q_OBJECT
 	Q_ENUMS(cloud_status_qml)
+
+public:
+	qPref(QObject *parent = NULL) : QObject(parent) {};
+	~qPref() {};
+	static qPref *instance();
+
+	// Load/Sync local settings (disk) and struct preference
+	void loadSync(bool doSync);
+	
+	enum cloud_status_qml {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
+	};
+
+
+
+/* OLD
 	Q_PROPERTY(QString cloudPassword
 				MEMBER m_cloudPassword
 				WRITE setCloudPassword
@@ -49,19 +88,7 @@ class QMLPrefs : public QObject {
 				WRITE setTimeThreshold
 				NOTIFY timeThresholdChanged)
 
-public:
-	QMLPrefs();
-	~QMLPrefs();
 
-	static QMLPrefs *instance();
-
-	enum cloud_status_qml {
-		CS_UNKNOWN,
-		CS_INCORRECT_USER_PASSWD,
-		CS_NEED_TO_VERIFY,
-		CS_VERIFIED,
-		CS_NOCLOUD
-	};
 
 	const QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);
@@ -86,8 +113,8 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 
-	int  timeThreshold() const;
-	void setTimeThreshold(int time);
+	int		timeThreshold() const;
+	void	setTimeThreshold(int time);
 
 	const QString theme() const;
 	void setTheme(QString theme);
@@ -103,7 +130,7 @@ private:
 	cloud_status_qml m_credentialStatus;
 	bool m_developer;
 	int m_distanceThreshold;
-	static QMLPrefs *m_instance;
+	static qPref *m_instance;
 	cloud_status_qml m_oldStatus;
 	bool m_showPin;
 	int m_timeThreshold;
@@ -119,6 +146,9 @@ signals:
 	void showPinChanged();
 	void themeChanged();
 	void timeThresholdChanged();
+*/
 };
+
+#define NOCLOUD_LOCALSTORAGE format_string("%s/cloudstorage/localrepo[master]", system_default_directory())
 
 #endif

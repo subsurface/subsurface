@@ -277,19 +277,19 @@ void TestPreferences::testPreferences()
 	planner->setDisplayRuntime(true);
 	planner->setDisplayDuration(true);
 	planner->setDisplayTransitions(true);
-	planner->setDoo2breaks(true);
+	planner->setDoo2Breaks(true);
 	planner->setDropStoneMode(true);
 	planner->setSafetyStop(true);
 	planner->setSwitchAtRequiredStop(true);
 
-	planner->setAscrate75(1);
-	planner->setAscrate50(2);
-	planner->setAscratestops(3);
-	planner->setAscratelast6m(4);
-	planner->setDescrate(5);
-	planner->setBottompo2(6);
-	planner->setDecopo2(7);
-	planner->setBestmixend(8);
+	planner->setAscRate75(1);
+	planner->setAscRate50(2);
+	planner->setAscRateStops(3);
+	planner->setAscRateLast6m(4);
+	planner->setDescRate(5);
+	planner->setBottomPo2(6);
+	planner->setDecoPo2(7);
+	planner->setBestmixEnd(8);
 	planner->setReserveGas(9);
 	planner->setMinSwitchDuration(10);
 	planner->setBottomSac(11);
@@ -302,19 +302,19 @@ void TestPreferences::testPreferences()
 	TEST(planner->displayRuntime(),true);
 	TEST(planner->displayDuration(),true);
 	TEST(planner->displayTransitions(),true);
-	TEST(planner->doo2breaks(),true);
+	TEST(planner->doo2Breaks(),true);
 	TEST(planner->dropStoneMode(),true);
 	TEST(planner->safetyStop(),true);
 	TEST(planner->switchAtRequiredStop(),true);
 
-	TEST(planner->ascrate75(),1);
-	TEST(planner->ascrate50(),2);
-	TEST(planner->ascratestops(),3);
-	TEST(planner->ascratelast6m(),4);
-	TEST(planner->descrate(),5);
-	TEST(planner->bottompo2(),6);
-	TEST(planner->decopo2(),7);
-	TEST(planner->bestmixend(),8);
+	TEST(planner->ascRate75(),1);
+	TEST(planner->ascRate50(),2);
+	TEST(planner->ascRateStops(),3);
+	TEST(planner->ascRateLast6m(),4);
+	TEST(planner->descRate(),5);
+	TEST(planner->bottomPo2(),6);
+	TEST(planner->decoPo2(),7);
+	TEST(planner->bestmixEnd(),8);
 	TEST(planner->reserveGas(),9);
 	TEST(planner->minSwitchDuration(),10);
 	TEST(planner->bottomSac(),11);
@@ -327,19 +327,19 @@ void TestPreferences::testPreferences()
 	planner->setDisplayRuntime(false);
 	planner->setDisplayDuration(false);
 	planner->setDisplayTransitions(false);
-	planner->setDoo2breaks(false);
+	planner->setDoo2Breaks(false);
 	planner->setDropStoneMode(false);
 	planner->setSafetyStop(false);
 	planner->setSwitchAtRequiredStop(false);
 
-	planner->setAscrate75(11);
-	planner->setAscrate50(12);
-	planner->setAscratestops(13);
-	planner->setAscratelast6m(14);
-	planner->setDescrate(15);
-	planner->setBottompo2(16);
-	planner->setDecopo2(17);
-	planner->setBestmixend(18);
+	planner->setAscRate75(11);
+	planner->setAscRate50(12);
+	planner->setAscRateStops(13);
+	planner->setAscRateLast6m(14);
+	planner->setDescRate(15);
+	planner->setBottomPo2(16);
+	planner->setDecoPo2(17);
+	planner->setBestmixEnd(18);
 	planner->setReserveGas(19);
 	planner->setMinSwitchDuration(110);
 	planner->setBottomSac(111);
@@ -352,19 +352,19 @@ void TestPreferences::testPreferences()
 	TEST(planner->displayRuntime(),false);
 	TEST(planner->displayDuration(),false);
 	TEST(planner->displayTransitions(),false);
-	TEST(planner->doo2breaks(),false);
+	TEST(planner->doo2Breaks(),false);
 	TEST(planner->dropStoneMode(),false);
 	TEST(planner->safetyStop(),false);
 	TEST(planner->switchAtRequiredStop(),false);
 
-	TEST(planner->ascrate75(),11);
-	TEST(planner->ascrate50(),12);
-	TEST(planner->ascratestops(),13);
-	TEST(planner->ascratelast6m(),14);
-	TEST(planner->descrate(),15);
-	TEST(planner->bottompo2(),16);
-	TEST(planner->decopo2(),17);
-	TEST(planner->bestmixend(),18);
+	TEST(planner->ascRate75(),11);
+	TEST(planner->ascRate50(),12);
+	TEST(planner->ascRateStops(),13);
+	TEST(planner->ascRateLast6m(),14);
+	TEST(planner->descRate(),15);
+	TEST(planner->bottomPo2(),16);
+	TEST(planner->decoPo2(),17);
+	TEST(planner->bestmixEnd(),18);
 	TEST(planner->reserveGas(),19);
 	TEST(planner->minSwitchDuration(),110);
 	TEST(planner->bottomSac(),111);
@@ -373,12 +373,12 @@ void TestPreferences::testPreferences()
 	TEST(planner->decoMode(),RECREATIONAL);
 
 	auto units = pref->unit_settings;
-	units->setLength(0);
-	units->setPressure(0);
-	units->setVolume(0);
-	units->setTemperature(0);
-	units->setWeight(0);
-	units->setVerticalSpeedTime(0);
+	units->setLength(units::METERS);
+	units->setPressure(units::BAR);
+	units->setVolume(units::LITER);
+	units->setTemperature(units::CELSIUS);
+	units->setWeight(units::KG);
+	units->setVerticalSpeedTime(units::SECONDS);
 	units->setUnitSystem(QStringLiteral("metric"));
 	units->setCoordinatesTraditional(false);
 
@@ -391,12 +391,12 @@ void TestPreferences::testPreferences()
 	TEST(units->unitSystem(),QStringLiteral("metric"));
 	TEST(units->coordinatesTraditional(),false);
 
-	units->setLength(1);
-	units->setPressure(1);
-	units->setVolume(1);
-	units->setTemperature(1);
-	units->setWeight(1);
-	units->setVerticalSpeedTime(1);
+	units->setLength(units::FEET);
+	units->setPressure(units::PSI);
+	units->setVolume(units::CUFT);
+	units->setTemperature(units::FAHRENHEIT);
+	units->setWeight(units::LBS);
+	units->setVerticalSpeedTime(units::MINUTES);
 	units->setUnitSystem(QStringLiteral("fake-metric-system"));
 	units->setCoordinatesTraditional(true);
 
@@ -539,9 +539,9 @@ void TestPreferences::testPreferences()
 
 	auto dc = pref->dive_computer_settings;
 	dc->setDevice("TomazComputer");
-	TEST(dc->dc_device(), QStringLiteral("TomazComputer"));
+	TEST(dc->device(), QStringLiteral("TomazComputer"));
 	dc->setDevice("Deepwater");
-	TEST(dc->dc_device(), QStringLiteral("Deepwater"));
+	TEST(dc->device(), QStringLiteral("Deepwater"));
 
 	dc->setDownloadMode(0);
 	TEST(dc->downloadMode(), 0);
@@ -549,14 +549,14 @@ void TestPreferences::testPreferences()
 	TEST(dc->downloadMode(), 1);
 
 	dc->setProduct("Thingy1");
-	TEST(dc->dc_product(), QStringLiteral("Thingy1"));
+	TEST(dc->product(), QStringLiteral("Thingy1"));
 	dc->setProduct("Thingy2");
-	TEST(dc->dc_product(), QStringLiteral("Thingy2"));
+	TEST(dc->product(), QStringLiteral("Thingy2"));
 
 	dc->setVendor("Sharewater");
-	TEST(dc->dc_vendor(), QStringLiteral("Sharewater"));
+	TEST(dc->vendor(), QStringLiteral("Sharewater"));
 	dc->setVendor("OSTS");
-	TEST(dc->dc_vendor(), QStringLiteral("OSTS"));
+	TEST(dc->vendor(), QStringLiteral("OSTS"));
 }
 
 QTEST_MAIN(TestPreferences)

@@ -80,8 +80,23 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
+	../../core/settings/qPref.cpp \
+	../../core/settings/qPrefAnimations.cpp \
+	../../core/settings/qPrefCS.cpp \
+	../../core/settings/qPrefDC.cpp \
+	../../core/settings/qPrefDisplay.cpp \
+	../../core/settings/qPrefFacebook.cpp \
+	../../core/settings/qPrefGas.cpp \
+	../../core/settings/qPrefGeneral.cpp \
+	../../core/settings/qPrefGeocoding.cpp \
+	../../core/settings/qPrefLanguage.cpp \
+	../../core/settings/qPrefLocation.cpp \
+	../../core/settings/qPrefPlanner.cpp \
+	../../core/settings/qPrefProxy.cpp \
+	../../core/settings/qPrefTec.cpp \
+	../../core/settings/qPrefUnits.cpp \
+	../../core/settings/qPrefUpdate.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
-	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
 	../../qt-models/diveplotdatamodel.cpp \
 	../../qt-models/gpslistmodel.cpp \
@@ -183,11 +198,27 @@ HEADERS += \
 	../../core/btdiscovery.h \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
+	../../core/settings/qPref.h \
+	../../core/settings/qPref_private.h \
+	../../core/settings/qPrefAnimations.h \
+	../../core/settings/qPrefCS.h \
+	../../core/settings/qPrefDC.h \
+	../../core/settings/qPrefDisplay.h \
+	../../core/settings/qPrefFacebook.h \
+	../../core/settings/qPrefGas.h \
+	../../core/settings/qPrefGeneral.h \
+	../../core/settings/qPrefGeocoding.h \
+	../../core/settings/qPrefLanguage.h \
+	../../core/settings/qPrefLocation.h \
+	../../core/settings/qPrefPlanner.h \
+	../../core/settings/qPrefProxy.h \
+	../../core/settings/qPrefTec.h \
+	../../core/settings/qPrefUnits.h \
+	../../core/settings/qPrefUpdate.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
 	../../mobile-widgets/qmlmanager.h \
-	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \
 	../../qt-models/divelistmodel.h \
 	../../qt-models/diveplotdatamodel.h \

@@ -124,13 +124,13 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 extern "C" int is_default_dive_computer(const char *vendor, const char *product)
 {
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	return dc->dc_vendor() == vendor && dc->dc_product() == product;
+	return dc->vendor() == vendor && dc->product() == product;
 }
 
 extern "C" int is_default_dive_computer_device(const char *name)
 {
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	return dc->dc_device() == name;
+	return dc->device() == name;
 }
 
 extern "C" void set_dc_nickname(struct dive *dive)
