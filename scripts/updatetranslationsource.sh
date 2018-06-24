@@ -27,7 +27,7 @@ popd
 # recreate make files and create translation strings
 cmake .
 pushd translations
-make translations_update > /dev/null 2>&1
+make translations_update > translationsupdate.log 2>&1
 popd
 
 # restore the CMakeLists.txt and rebuild makefiles
