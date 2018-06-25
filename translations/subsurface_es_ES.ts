@@ -9298,7 +9298,8 @@ Media</translation>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Error al abrir el dispositivo %s %s (%s).
+En la mayoría de los casos, para depurar este problema, sería útil enviar a los desarrolladores los archivos de registro. Puedes copiarlos al portapapeles en el diálogo &quot;Acerca de ...&quot;</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9579,18 +9580,18 @@ Puedes crear el archivo de registro seleccionando la casilla correspondiente en 
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Permanecer a  %.*f %s durante %d:%02d min - transcurridos %d:%02u con %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Permanecer a %.*f %s durante %d:%02d min - transcurridos %d:%02u con %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>

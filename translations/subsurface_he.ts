@@ -33,7 +33,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>העתיק לוגים ללוח</translation>
     </message>
 </context>
 <context>
@@ -3998,7 +3998,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/gpslocation.cpp" line="135"/>
         <source>Unknown GPS location (no GPS source)</source>
-        <translation type="unfinished"/>
+        <translation>נ&quot;צ לא מוכר (אין מקור GPS)</translation>
     </message>
 </context>
 <context>
@@ -5514,22 +5514,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>הצג חיישני O₂ כשמוצג pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>הצג נקודות קבועות של CCR כשמוצג pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>קצב חילוף חומרים O₂ של pSCR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>הצג pO₂ מקבילי של OC עם pO₂ של pSCR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -5544,7 +5544,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <source>Recalculate thumbnails if older than image</source>
-        <translation type="unfinished"/>
+        <translation>חשב גרסה מוקתנת של תמונות עם ישן יותר מהתמונות</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -6211,7 +6211,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1437"/>
         <source>Change divemode</source>
-        <translation type="unfinished"/>
+        <translation>שינוי מוד צלילה</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1461"/>
@@ -7173,7 +7173,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="37"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation type="unfinished"/>
+        <translation>כדי להשתמש Subsurface-Mobile עם אחסון ענן של Subsurface, אנא הכנס זיהוי הענן שלך.&lt;br/&gt;&lt;br/&gt;אם זו הפעם הראשונה שאתה משתמש באחסון ענן של Subsurface , הזן כתובת דואר אלקטרוני תקינה (באותיות קטנות בלבד) וסיסמה על פי בחירתך (אותיות ומספרים). &lt;br/&gt;&lt;br/&gt;כדי להשתמש Subsurface-Mobile עם אחסון מקותי בלבד במכשיר זה, הקש על סמל לא ענן להלן.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
@@ -7426,7 +7426,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Recalculate selected thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>חשב מחדש גרסה מוקתנת של תמונות שנבחר</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
@@ -7821,7 +7821,7 @@ mixed from Air and using:
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="125"/>
         <source>More Actions</source>
-        <translation type="unfinished"/>
+        <translation>עוד פעולות</translation>
     </message>
 </context>
 <context>
@@ -9297,7 +9297,8 @@ Maximum</source>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>שגיאה בפתיחה של% s% s (% s).
+ברוב המקרים, על מנת לדבג בעיה זו,  כדאי לשלוח את קובצי לוג.ניתן להעתיק אותם ללוח בתיבת הדו-שיח אודות.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9578,18 +9579,19 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>המתן ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה
+%d:%02u על %s (SP = %.1f בר CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>המתן ב- %.*f %s ל- %d:%02d דקות - זמן בצלילה %d:%02u על %s% s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fבר CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9879,7 +9881,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>ICD ברקמה העמוסה
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -10756,7 +10759,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1628"/>
         <source>modechange</source>
-        <translation type="unfinished"/>
+        <translation>שינוי מוד</translation>
     </message>
 </context>
 <context>
@@ -10779,7 +10782,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Disable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>בטל סנכרון ענן אוטומטי</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>

@@ -33,7 +33,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Копирай логове в клипборд</translation>
     </message>
 </context>
 <context>
@@ -3998,7 +3998,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/gpslocation.cpp" line="135"/>
         <source>Unknown GPS location (no GPS source)</source>
-        <translation type="unfinished"/>
+        <translation>Непозната GPS позиция (няма GPS източник)</translation>
     </message>
 </context>
 <context>
@@ -5513,22 +5513,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Покажи O₂ сензорни стойности когато се гледа pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Покажи CCR сетпойнт когато се гледа pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>pSRC честота на метаболизма O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Покажи еквивалентен OC pO₂ с pSCR pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -5543,7 +5543,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <source>Recalculate thumbnails if older than image</source>
-        <translation type="unfinished"/>
+        <translation>Обнови тъмбнайлове ако са по-стари от изображенията</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -6210,7 +6210,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1437"/>
         <source>Change divemode</source>
-        <translation type="unfinished"/>
+        <translation>Смени режим на гмуркане</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1461"/>
@@ -7171,7 +7171,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="37"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation type="unfinished"/>
+        <translation>За да използвате Subsurface-mobile с облаковия слад, моля въдете вашите пълномощия.&lt;br/&gt;&lt;br/&gt;Ако това е първия път, когато използвате облака, моля въведете валиден имейл адрес (малки букви) и парола (букви и цифри).&lt;br/&gt;&lt;br/&gt;За да използвате мобилната версия на Subsurface само локално, изберете опцията без облак.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
@@ -7424,7 +7424,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Recalculate selected thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Обнови избраните тъмбнайлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
@@ -7819,7 +7819,7 @@ mixed from Air and using:
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="125"/>
         <source>More Actions</source>
-        <translation type="unfinished"/>
+        <translation>Още опции</translation>
     </message>
 </context>
 <context>
@@ -9295,7 +9295,8 @@ Maximum</source>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Грешка при отваряне на у-во %s %s (%s)
+В повечето случаи за да се направи дебъг на този проблем е необходимо да се изпратят лог файлове на разработчиците. Можете да ги копирате в диалога &quot;За Subsurface&quot;.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9577,18 +9578,18 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Остани на %.*f %s за %d:%02d мин - времетраене %d:%02u на %s (SP = %.1f бара CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Остани на %.*f %s за %d:%02d мин - времетраене %d:%02u на %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1f бара CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9878,7 +9879,8 @@ EADD: %d%s / %.1fгр./л.
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>ICD в първа тъкан
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -10755,7 +10757,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1628"/>
         <source>modechange</source>
-        <translation type="unfinished"/>
+        <translation>смяна на режим</translation>
     </message>
 </context>
 <context>
@@ -10778,7 +10780,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Disable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>Изключи авто-синхронизиране с облака</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
