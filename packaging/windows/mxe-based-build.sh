@@ -173,7 +173,9 @@ if [ ! -f libdivecomputer/configure ] ; then
 fi
 
 cd "$BUILDDIR"
-if [[ ! -d libdivecomputer || -f build.libdivecomputer ]] ; then
+CURRENT_SHA=$(cd "$BASEDIR"/subsurface/libdivecomputer ; git describe)
+PREVIOUS_SHA=$(cat "libdivecomputer.SHA" 2>/dev/null || echo)
+if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -d libdivecomputer ] || [ -f build.libdivecomputer ] ; then
 	rm -f build.libdivecomputer
 	mkdir -p libdivecomputer
 	cd libdivecomputer
