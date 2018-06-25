@@ -3044,62 +3044,62 @@ Localização GPS:</translation>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="164"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="169"/>
         <source>unknown</source>
         <translation>desconhecido</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="265"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="270"/>
         <source>cyl.</source>
         <translation>cil.</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="369"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="376"/>
         <source>Final depth</source>
         <translation>Profundidade final</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="371"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="378"/>
         <source>Run time</source>
         <translation>Tempo</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="373"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="380"/>
         <source>Duration</source>
         <translation>Duração</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="375"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="382"/>
         <source>Used gas</source>
         <translation>Gás usado</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="377"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="384"/>
         <source>CC setpoint</source>
         <translation>CC setpoint</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="379"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="386"/>
         <source>Dive mode</source>
         <translation>Modo de mergulho</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1025"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1038"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1031"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1044"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1034"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1047"/>
         <source>ft</source>
         <translation>pé(s)</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1081"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1094"/>
         <source>Stop times</source>
         <translation>Tempo das paradas</translation>
     </message>
@@ -4437,7 +4437,7 @@ Tem certeza que quer continuar?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="166"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
         <source>Open</source>
         <translation>Abrir</translation>
     </message>
@@ -4733,13 +4733,13 @@ Tem certeza que quer continuar?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="245"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="246"/>
         <source>&amp;Undo</source>
         <translation>&amp;Reverter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="681"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="246"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="247"/>
         <source>&amp;Redo</source>
         <translation>&amp;Refazer</translation>
     </message>
@@ -4779,57 +4779,57 @@ Tem certeza que quer continuar?</translation>
         <translation>Armazenamento remoto online</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="372"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="408"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="373"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="409"/>
         <source>Connect to</source>
         <translation>Conectar a</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="402"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="403"/>
         <source>Disconnect from</source>
         <translation>Desconectar de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1650"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="565"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="610"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1651"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Por favor, salve ou cancele a edição atual do mergulho antes de abrir um novo arquivo.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="571"/>
         <source>Open file</source>
         <translation>Abrir arquivo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="719"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2046"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="575"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="720"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2047"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="715"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="716"/>
         <source>Traverse image directories</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="718"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="719"/>
         <source>Scan</source>
         <translation>Buscar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="726"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="727"/>
         <source>Scanning images...(this can take a while)</source>
         <translation>Procurar imagens...(isto pode demorar um pouco)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="583"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="752"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="906"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1024"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1907"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="674"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="753"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1025"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1908"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
@@ -4839,12 +4839,12 @@ Tem certeza que quer continuar?</translation>
         <translation>Tentando juntar mergulhos com %1min de intervalo entre eles</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="266"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="267"/>
         <source>Template backup created</source>
         <translation>Criada cópia de segurança do modelo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="268"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4865,214 +4865,214 @@ Localização:
 A partir desta versão do Subsurface os modelos padrão são arquivos apenas de leitura e não devem ser editados diretamente, uma vez que a aplicação poderá recriar-los na inicialização.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="674"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>Por favor salvar ou cancelar a edição do mergulho atual antes de usar o armazenamento remoto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="687"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Existem mudanças que não foram gravadas. Quer guardá-las no armazenamento remoto?
 Se responder não, o armazenamento remoto será sincronizado apenas da próxima vez que seleccionar &quot;Abrir armazenamento remoto&quot; ou &quot;Guardar no armazenamento remoto&quot;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="696"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="697"/>
         <source>Failure taking cloud storage online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="793"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="794"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Por favor, salve ou cancele a edição atual do mergulho antes de fechar o arquivo.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="906"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Por favor, salve ou cancele a edição atual do mergulho atual antes de tentar adicionar um mergulho.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="966"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="967"/>
         <source>Print runtime table</source>
         <translation>Imprimir tabela</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1024"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1025"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Tentando replanejar um mergulho que não foi criado no planejador.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1907"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1908"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Primeiro termine a edição atual antes de editar outro.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1148"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1149"/>
         <source>Yearly statistics</source>
         <translation>Estatisticas Anuais</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
         <source>Dive log files</source>
         <translation>Arquivos de registro de mergulhos</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1397"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1440"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1398"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1441"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1680"/>
         <source>Subsurface files</source>
         <translation>Arquivos subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1398"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1441"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1399"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1442"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1399"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1443"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1400"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1444"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1400"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1444"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1401"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1401"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1403"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1447"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1403"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1447"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1404"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1448"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1404"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1448"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1405"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1449"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1405"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1449"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1406"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1406"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1407"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1451"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1407"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1451"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1452"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1452"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1453"/>
         <source>MkVI files</source>
         <translation>Arquivos MkVI</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1453"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1454"/>
         <source>APD log viewer</source>
         <translation>APD log viewer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1454"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1455"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1455"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1456"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1442"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1443"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1456"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1457"/>
         <source>All files</source>
         <translation>Todos arquivos</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1467"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1468"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Você quer salvar as alterações que fez no arquivo %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1470"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1471"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Você quer salvar as alterações feitas no arquivo?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1475"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1476"/>
         <source>Save changes?</source>
         <translation>Salvar Alteraḉões?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1476"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1477"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>As alterações serão perdidas se não forem gravadas.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1678"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1679"/>
         <source>Save file as</source>
         <translation>Salvar arquivo como</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1766"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1767"/>
         <source>[local cache for] %1</source>
         <translation>[cache local para] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1768"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1769"/>
         <source>[cloud storage for] %1</source>
         <translation>[armazenamento remoto para] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1860"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1861"/>
         <source>Opening datafile from older version</source>
         <translation>Abrir arquivo de uma versão antiga</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1861"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1862"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Abriu um arquivo de uma versão antiga do Subsurface. Recomendamos que leia o manual para saber mais sobre as alterações para esta nova versão, especialmente no que diz a gestão de pontos de mergulho, que sofreu alterações importantes.
 O Subsurface tentou preencher os dados, mas pode ser importante rever o novo sistema de gestão dos pontos de mergulho para garantir que tudo está correto.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1872"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1873"/>
         <source>Open dive log file</source>
         <translation>Abrir arquivo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2046"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2047"/>
         <source>Contacting cloud service...</source>
         <translation>Contactando serviço remoto...</translation>
     </message>
@@ -6440,79 +6440,79 @@ Please export this template to a different file.</source>
         <translation>Aguardando adquirir localização GPS</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="766"/>
-        <location filename="../core/qthelper.cpp" line="1331"/>
+        <location filename="../core/qthelper.cpp" line="765"/>
+        <location filename="../core/qthelper.cpp" line="1330"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="768"/>
-        <location filename="../core/qthelper.cpp" line="1330"/>
+        <location filename="../core/qthelper.cpp" line="767"/>
+        <location filename="../core/qthelper.cpp" line="1329"/>
         <source>ft</source>
         <translation>pé(s)</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="794"/>
+        <location filename="../core/qthelper.cpp" line="793"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="796"/>
+        <location filename="../core/qthelper.cpp" line="795"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="821"/>
-        <location filename="../core/qthelper.cpp" line="1306"/>
+        <location filename="../core/qthelper.cpp" line="820"/>
+        <location filename="../core/qthelper.cpp" line="1305"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="823"/>
-        <location filename="../core/qthelper.cpp" line="1307"/>
+        <location filename="../core/qthelper.cpp" line="822"/>
+        <location filename="../core/qthelper.cpp" line="1306"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="848"/>
-        <location filename="../core/qthelper.cpp" line="1356"/>
+        <location filename="../core/qthelper.cpp" line="847"/>
+        <location filename="../core/qthelper.cpp" line="1355"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="850"/>
-        <location filename="../core/qthelper.cpp" line="1355"/>
+        <location filename="../core/qthelper.cpp" line="849"/>
+        <location filename="../core/qthelper.cpp" line="1354"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="871"/>
-        <location filename="../core/qthelper.cpp" line="1283"/>
+        <location filename="../core/qthelper.cpp" line="870"/>
+        <location filename="../core/qthelper.cpp" line="1282"/>
         <source>AIR</source>
         <translation>AR</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="873"/>
+        <location filename="../core/qthelper.cpp" line="872"/>
         <source>EAN</source>
         <translation>EAN</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="1011"/>
+        <location filename="../core/qthelper.cpp" line="1010"/>
         <source>(%n dive(s))</source>
         <translation><numerusform>(%n mergulho(s))</numerusform><numerusform>(%n mergulho(s))</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1283"/>
+        <location filename="../core/qthelper.cpp" line="1282"/>
         <source>OXYGEN</source>
         <translation>OXIGÊNIO</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1378"/>
+        <location filename="../core/qthelper.cpp" line="1377"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1379"/>
+        <location filename="../core/qthelper.cpp" line="1378"/>
         <source>cuft</source>
         <translation>pés cúbicos</translation>
     </message>
@@ -6596,7 +6596,7 @@ Please export this template to a different file.</source>
         <translation>Rótulos</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="635"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>Não salvar arquivos vazios remotamente</translation>
     </message>
@@ -8765,8 +8765,8 @@ Médio</translation>
     <message>
         <location filename="../core/dive.c" line="36"/>
         <location filename="../core/equipment.c" line="91"/>
-        <location filename="../core/planner.c" line="1163"/>
-        <location filename="../core/planner.c" line="1166"/>
+        <location filename="../core/planner.c" line="1161"/>
+        <location filename="../core/planner.c" line="1164"/>
         <source>oxygen</source>
         <translation>oxigênio</translation>
     </message>
@@ -8790,13 +8790,13 @@ Médio</translation>
         <location filename="../core/plannernotes.c" line="68"/>
         <location filename="../core/plannernotes.c" line="69"/>
         <location filename="../core/plannernotes.c" line="70"/>
-        <location filename="../core/qthelper.cpp" line="656"/>
+        <location filename="../core/qthelper.cpp" line="655"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="304"/>
-        <location filename="../core/qthelper.cpp" line="659"/>
+        <location filename="../core/qthelper.cpp" line="658"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8812,15 +8812,15 @@ Médio</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="387"/>
-        <location filename="../core/qthelper.cpp" line="572"/>
-        <location filename="../core/qthelper.cpp" line="587"/>
+        <location filename="../core/qthelper.cpp" line="571"/>
+        <location filename="../core/qthelper.cpp" line="586"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="392"/>
-        <location filename="../core/qthelper.cpp" line="575"/>
-        <location filename="../core/qthelper.cpp" line="589"/>
+        <location filename="../core/qthelper.cpp" line="574"/>
+        <location filename="../core/qthelper.cpp" line="588"/>
         <source>ft</source>
         <translation>pé(s)</translation>
     </message>
@@ -8846,23 +8846,23 @@ Médio</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="443"/>
-        <location filename="../core/qthelper.cpp" line="598"/>
-        <location filename="../core/qthelper.cpp" line="608"/>
+        <location filename="../core/qthelper.cpp" line="597"/>
+        <location filename="../core/qthelper.cpp" line="607"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="447"/>
-        <location filename="../core/qthelper.cpp" line="596"/>
-        <location filename="../core/qthelper.cpp" line="606"/>
+        <location filename="../core/qthelper.cpp" line="595"/>
+        <location filename="../core/qthelper.cpp" line="605"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
         <location filename="../core/divelist.c" line="683"/>
         <location filename="../core/equipment.c" line="87"/>
-        <location filename="../core/planner.c" line="1159"/>
-        <location filename="../core/planner.c" line="1162"/>
+        <location filename="../core/planner.c" line="1157"/>
+        <location filename="../core/planner.c" line="1160"/>
         <source>air</source>
         <translation>ar</translation>
     </message>
@@ -9362,70 +9362,70 @@ Você pode criar este arquivo de log selecionando a opção correspondente no di
         <translation>Falha na abertura da folha de estilo %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="112"/>
+        <location filename="../core/plannernotes.c" line="115"/>
         <source>DISCLAIMER / WARNING: THIS IS A NEW IMPLEMENTATION OF THE %s ALGORITHM AND A DIVE PLANNER IMPLEMENTATION BASED ON THAT WHICH HAS RECEIVED ONLY A LIMITED AMOUNT OF TESTING. WE STRONGLY RECOMMEND NOT TO PLAN DIVES SIMPLY BASED ON THE RESULTS GIVEN HERE.</source>
         <translation>AVISO: ESTA É UMA NOVA IMPLEMENTAÇÃO DO ALGORITMO %s E DE UM PLANEJADOR NELE BASEADO, OS QUAIS PASSARAM SOMENTE POR UM NÚMERO LIMITADO DE TESTES. RECOMENDA-SE FORTEMENTE QUE NÃO PLANEJE MERGULHOS SOMENTE COM BASE NOS RESULTADOS AQUI APRESENTADOS.</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="106"/>
+        <location filename="../core/plannernotes.c" line="109"/>
         <source>Decompression calculation aborted due to excessive time</source>
         <translation>Cálculo da descompressão abortada devido ao excessivo tempo de processamento</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="105"/>
-        <location filename="../core/plannernotes.c" line="453"/>
-        <location filename="../core/plannernotes.c" line="459"/>
-        <location filename="../core/plannernotes.c" line="498"/>
-        <location filename="../core/plannernotes.c" line="531"/>
-        <location filename="../core/plannernotes.c" line="565"/>
+        <location filename="../core/plannernotes.c" line="108"/>
+        <location filename="../core/plannernotes.c" line="464"/>
+        <location filename="../core/plannernotes.c" line="470"/>
+        <location filename="../core/plannernotes.c" line="509"/>
+        <location filename="../core/plannernotes.c" line="542"/>
         <location filename="../core/plannernotes.c" line="576"/>
+        <location filename="../core/plannernotes.c" line="587"/>
         <source>Warning:</source>
         <translation>Aviso:</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="398"/>
+        <location filename="../core/plannernotes.c" line="409"/>
         <source>, effective GF=%d/%d</source>
         <translation>, GF=%d/%d efetivo</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="324"/>
+        <location filename="../core/planner.c" line="322"/>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="209"/>
         <source>SP change</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="95"/>
+        <location filename="../core/plannernotes.c" line="98"/>
         <source>VPM-B</source>
         <translation>VPM-B</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="97"/>
+        <location filename="../core/plannernotes.c" line="100"/>
         <source>BUHLMANN</source>
         <translation>BUHLMANN</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="149"/>
+        <location filename="../core/plannernotes.c" line="152"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="153"/>
+        <location filename="../core/plannernotes.c" line="156"/>
         <source>depth</source>
         <translation>profundidade</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="155"/>
+        <location filename="../core/plannernotes.c" line="158"/>
         <source>duration</source>
         <translation>duração</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="49"/>
-        <location filename="../core/plannernotes.c" line="157"/>
+        <location filename="../core/plannernotes.c" line="160"/>
         <source>runtime</source>
         <translation>tempo</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="159"/>
+        <location filename="../core/plannernotes.c" line="162"/>
         <source>gas</source>
         <translation>gás</translation>
     </message>
@@ -9450,213 +9450,213 @@ Você pode criar este arquivo de log selecionando a opção correspondente no di
         <translation>max &amp;#916;N&amp;#8322;</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="229"/>
-        <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core/plannernotes.c" line="236"/>
-        <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s</source>
-        <translation>Fique em %.*f %s por %d:%02d min - durante %d:%02u em %s</translation>
-    </message>
-    <message>
-        <location filename="../core/plannernotes.c" line="282"/>
+        <location filename="../core/plannernotes.c" line="290"/>
         <source>%3.0f%s</source>
         <translation>%3.0f%s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="286"/>
-        <location filename="../core/plannernotes.c" line="291"/>
+        <location filename="../core/plannernotes.c" line="294"/>
+        <location filename="../core/plannernotes.c" line="299"/>
         <source>%3dmin</source>
         <translation>%3dmin</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="301"/>
-        <location filename="../core/plannernotes.c" line="323"/>
-        <source>(SP = %.1fbar)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core/plannernotes.c" line="354"/>
+        <location filename="../core/plannernotes.c" line="365"/>
         <source>Switch gas to %s (SP = %.1fbar)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="356"/>
+        <location filename="../core/plannernotes.c" line="367"/>
         <source>Switch gas to %s</source>
         <translation>Trocar o gás por %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="385"/>
+        <location filename="../core/plannernotes.c" line="396"/>
         <source>CNS</source>
         <translation>CNS</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="386"/>
+        <location filename="../core/plannernotes.c" line="397"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="394"/>
+        <location filename="../core/plannernotes.c" line="405"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="485"/>
+        <location filename="../core/plannernotes.c" line="496"/>
         <source>Minimum gas</source>
         <translation>Reserva</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="486"/>
+        <location filename="../core/plannernotes.c" line="497"/>
         <source>based on</source>
         <translation>baseado em</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="488"/>
+        <location filename="../core/plannernotes.c" line="499"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="507"/>
+        <location filename="../core/plannernotes.c" line="518"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="512"/>
+        <location filename="../core/plannernotes.c" line="523"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s during planned ascent)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="515"/>
+        <location filename="../core/plannernotes.c" line="526"/>
         <source>%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="121"/>
-        <location filename="../core/plannernotes.c" line="128"/>
-        <location filename="../core/plannernotes.c" line="136"/>
+        <location filename="../core/plannernotes.c" line="124"/>
+        <location filename="../core/plannernotes.c" line="131"/>
+        <location filename="../core/plannernotes.c" line="139"/>
         <source>Subsurface</source>
         <translation>Subsurface</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="138"/>
+        <location filename="../core/plannernotes.c" line="141"/>
         <source>dive plan&lt;/b&gt; (surface interval </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="140"/>
+        <location filename="../core/plannernotes.c" line="143"/>
         <source>created on</source>
         <translation>criado em</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="130"/>
+        <location filename="../core/plannernotes.c" line="133"/>
         <source>dive plan&lt;/b&gt; created on</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="123"/>
+        <location filename="../core/plannernotes.c" line="126"/>
         <source>dive plan&lt;/b&gt; (overlapping dives detected)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="146"/>
+        <location filename="../core/plannernotes.c" line="149"/>
         <source>Runtime: %dmin%s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="206"/>
+        <location filename="../core/plannernotes.c" line="213"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="207"/>
-        <location filename="../core/plannernotes.c" line="215"/>
+        <location filename="../core/plannernotes.c" line="214"/>
+        <location filename="../core/plannernotes.c" line="222"/>
         <source>Ascend</source>
         <translation>Subida</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="207"/>
-        <location filename="../core/plannernotes.c" line="215"/>
+        <location filename="../core/plannernotes.c" line="214"/>
+        <location filename="../core/plannernotes.c" line="222"/>
         <source>Descend</source>
         <translation>Descida</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="214"/>
+        <location filename="../core/plannernotes.c" line="221"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="391"/>
+        <location filename="../core/plannernotes.c" line="236"/>
+        <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.c" line="243"/>
+        <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.c" line="309"/>
+        <location filename="../core/plannernotes.c" line="332"/>
+        <source>(SP = %.1fbar CCR)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/plannernotes.c" line="402"/>
         <source>Deco model: Bühlmann ZHL-16C with GFLow = %d%% and GFHigh = %d%%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="396"/>
+        <location filename="../core/plannernotes.c" line="407"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="400"/>
+        <location filename="../core/plannernotes.c" line="411"/>
         <source>Deco model: Recreational mode based on Bühlmann ZHL-16B with GFLow = %d%% and GFHigh = %d%%</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="408"/>
+        <location filename="../core/plannernotes.c" line="419"/>
         <source>ATM pressure: %dmbar (%d%s)&lt;br&gt;&lt;/div&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="423"/>
+        <location filename="../core/plannernotes.c" line="434"/>
         <source>Gas consumption (CCR legs excluded):</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="425"/>
+        <location filename="../core/plannernotes.c" line="436"/>
         <source>Gas consumption (based on SAC</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="454"/>
+        <location filename="../core/plannernotes.c" line="465"/>
         <source>this is more gas than available in the specified cylinder!</source>
         <translation>Isso é mais gás que a capacidade do cilindro especificado</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="460"/>
+        <location filename="../core/plannernotes.c" line="471"/>
         <source>not enough reserve for gas sharing on ascent!</source>
         <translation>Sem reserva para compartilhar ar na subida</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="499"/>
+        <location filename="../core/plannernotes.c" line="510"/>
         <source>required minimum gas for ascent already exceeding start pressure of cylinder!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="504"/>
+        <location filename="../core/plannernotes.c" line="515"/>
         <source>%.0f%s/%.0f%s of &lt;span style=&apos;color: red;&apos;&gt;&lt;b&gt;%s&lt;/b&gt;&lt;/span&gt; (%.0f%s/%.0f%s in planned ascent)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="532"/>
+        <location filename="../core/plannernotes.c" line="543"/>
         <source>Isobaric counterdiffusion conditions exceeded</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="563"/>
+        <location filename="../core/plannernotes.c" line="574"/>
         <source>high pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation>valor pO₂ alto %.2f em %d:%02u com gás %s na profundidade %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/plannernotes.c" line="574"/>
+        <location filename="../core/plannernotes.c" line="585"/>
         <source>low pO₂ value %.2f at %d:%02u with gas %s at depth %.*f %s</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/planner.c" line="895"/>
+        <location filename="../core/planner.c" line="893"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Não é possivel achar gas o %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1167"/>
+        <location filename="../core/planner.c" line="1165"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
@@ -9924,61 +9924,61 @@ EADD: %d%s / %.1fg/ℓ
         <translation>%s %sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="66"/>
+        <location filename="../core/qthelper.cpp" line="65"/>
         <source>%1km</source>
         <translation>%1km</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="68"/>
+        <location filename="../core/qthelper.cpp" line="67"/>
         <source>%1m</source>
         <translation>%1m</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="72"/>
+        <location filename="../core/qthelper.cpp" line="71"/>
         <source>%1mi</source>
         <translation>%1mi</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="74"/>
+        <location filename="../core/qthelper.cpp" line="73"/>
         <source>%1yd</source>
         <translation>%1yd</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="90"/>
-        <location filename="../core/qthelper.cpp" line="225"/>
+        <location filename="../core/qthelper.cpp" line="89"/>
+        <location filename="../core/qthelper.cpp" line="224"/>
         <source>N</source>
         <translation>N</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="90"/>
-        <location filename="../core/qthelper.cpp" line="226"/>
+        <location filename="../core/qthelper.cpp" line="89"/>
+        <location filename="../core/qthelper.cpp" line="225"/>
         <source>S</source>
         <translation>S</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="91"/>
-        <location filename="../core/qthelper.cpp" line="227"/>
+        <location filename="../core/qthelper.cpp" line="90"/>
+        <location filename="../core/qthelper.cpp" line="226"/>
         <source>E</source>
         <translation>L</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="91"/>
-        <location filename="../core/qthelper.cpp" line="228"/>
+        <location filename="../core/qthelper.cpp" line="90"/>
+        <location filename="../core/qthelper.cpp" line="227"/>
         <source>W</source>
         <translation>O</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="617"/>
+        <location filename="../core/qthelper.cpp" line="616"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="620"/>
+        <location filename="../core/qthelper.cpp" line="619"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="948"/>
+        <location filename="../core/qthelper.cpp" line="947"/>
         <source>more than %1 days</source>
         <translation>mais de %1 dias</translation>
     </message>
@@ -10564,7 +10564,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="58"/>
-        <location filename="../core/plannernotes.c" line="490"/>
+        <location filename="../core/plannernotes.c" line="501"/>
         <location filename="../core/worldmap-save.c" line="46"/>
         <source>min</source>
         <translation>min</translation>
