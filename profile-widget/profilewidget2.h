@@ -111,6 +111,7 @@ slots: // Necessary to call from QAction's signals.
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
 	void removePictures(const QModelIndex &, int first, int last);
+	void movePictures(const QModelIndex &, int first, int last, const QModelIndex &, int to);
 	void setPlanState();
 	void setAddState();
 	void changeGas();
@@ -126,6 +127,7 @@ slots: // Necessary to call from QAction's signals.
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
 	void updatePictures(const QModelIndex &from, const QModelIndex &to);
+	void pictureOffsetChanged(int id);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -171,6 +173,7 @@ private: /*methods*/
 			 double *thresholdSettingsMin, double *thresholdSettingsMax);
 	void clearPictures();
 	void calculatePictureYPositions();
+	void updatePictureItem(int index, bool alwaysUpdateThumbnail);
 private:
 	DivePlotDataModel *dataModel;
 	int zoomLevel;

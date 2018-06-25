@@ -1128,7 +1128,9 @@ void ProfileWidget2::setProfileState()
 	connect(DivePictureModel::instance(), &DivePictureModel::dataChanged, this, &ProfileWidget2::updatePictures);
 	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
 	connect(DivePictureModel::instance(), &DivePictureModel::rowsRemoved, this, &ProfileWidget2::removePictures);
+	connect(DivePictureModel::instance(), &DivePictureModel::rowsMoved, this, &ProfileWidget2::movePictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
+	connect(DivePictureModel::instance(), &DivePictureModel::offsetChanged, this, &ProfileWidget2::pictureOffsetChanged);
 #endif
 	/* show the same stuff that the profile shows. */
 
@@ -2079,36 +2081,51 @@ void ProfileWidget2::calculatePictureYPositions()
 	}
 }
 
+// Update a picture item: create it if offset is during the dive, otherwise delete it.
+// This is called from two contexts:
+//	1) When repopulating the profile (i.e. after switching dives)
+//	2) When changing picture offsets
+// Only for 1) do we want to update the thumbnail and url, if the picture already existed.
+// This is controlled by the "alwaysUpdateThumbnail" argument. Admittedly, not a very clean
+// interface.
+void ProfileWidget2::updatePictureItem(int i, bool alwaysUpdateThumbnail)
+{
+	DivePictureModel *m = DivePictureModel::instance();
+	int picItemNr = i - m->rowDDStart;
+	int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
+	// it's a correct picture, but doesn't have a timestamp during the dive: only show in
+	// the DivePhotoTab, not on the profile. A null pointer in the pictures array indicates
+	// that this picture is not shown in the profile.
+	if (offsetSeconds <= 0) {
+		pictures[picItemNr].reset();
+		return;
+	}
+	DivePictureItem *item = pictures[picItemNr].get();
+	bool newItem = !item;
+	if (newItem) {
+		item = new DivePictureItem;
+		pictures[picItemNr].reset(item);
+		scene()->addItem(item);
+	}
+	if (newItem || alwaysUpdateThumbnail) {
+		item->setVisible(prefs.show_pictures_in_profile);
+		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
+		item->setFileUrl(m->index(i, 1).data().toString());
+	}
+
+	// Here, we only set the x-coordinate of the picture. The y-coordinate
+	// will be set later in calculatePictureYPositions().
+	double x = timeAxis->posAtValue(offsetSeconds);
+	item->setX(x);
+}
+
 void ProfileWidget2::plotPictures()
 {
 	DivePictureModel *m = DivePictureModel::instance();
 	pictures.resize(m->rowDDEnd - m->rowDDStart);
 
-	for (int i = m->rowDDStart; i < m->rowDDEnd; i++) {
-		int picItemNr = i - m->rowDDStart;
-		int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
-		// it's a correct picture, but doesn't have a timestamp during the dive: only show in
-		// the DivePhotoTab, not on the profile. A null pointer in the pictures array indicates
-		// that this picture is not shown in the profile.
-		if (offsetSeconds <= 0) {
-			pictures[picItemNr].reset();
-			continue;
-		}
-		DivePictureItem *item = pictures[picItemNr].get();
-		if (!item) {
-			item = new DivePictureItem;
-			pictures[picItemNr].reset(item);
-			scene()->addItem(item);
-		}
-		item->setVisible(prefs.show_pictures_in_profile);
-		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
-		item->setFileUrl(m->index(i, 1).data().toString());
-
-		// Here, we only set the x-coordinate of the picture. The y-coordinate
-		// will be set later in calculatePictureYPositions().
-		double x = timeAxis->posAtValue(offsetSeconds);
-		item->setX(x);
-	}
+	for (int i = m->rowDDStart; i < m->rowDDEnd; i++)
+		updatePictureItem(i, true);
 	calculatePictureYPositions();
 }
 
@@ -2125,6 +2142,35 @@ void ProfileWidget2::removePictures(const QModelIndex &, int first, int last)
 	calculatePictureYPositions();
 }
 
+void ProfileWidget2::movePictures(const QModelIndex &, int first, int last, const QModelIndex &, int to)
+{
+	DivePictureModel *m = DivePictureModel::instance();
+	first = std::max(0, first - m->rowDDStart);
+	// Note that last points *to* the last item and not *past* the last item,
+	// therefore we add 1 to achieve conventional C++ semantics.
+	last = std::min((int)pictures.size(), last + 1 - m->rowDDStart);
+	to -= m->rowDDStart;
+	if (first >= (int)pictures.size() || last <= first || to < 0 || to > (int)pictures.size())
+		return;
+
+	moveInVector(pictures, first, last, to);
+}
+
+void ProfileWidget2::pictureOffsetChanged(int id)
+{
+	DivePictureModel *m = DivePictureModel::instance();
+	// Check if the picture is currently on display
+	id -= m->rowDDStart;
+	if (id < 0 || id >= (int)pictures.size())
+		return;
+
+	// Show / unshow picture based on offset...
+	updatePictureItem(id, false);
+
+	// ...and update the y-coordinates
+	calculatePictureYPositions();
+}
+
 #endif
 
 void ProfileWidget2::dropEvent(QDropEvent *event)
@@ -2137,20 +2183,11 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 		QPoint offset;
 		dataStream >> filename >> offset;
 
-		QPointF mappedPos = mapToScene(event->pos());
-
-		FOR_EACH_PICTURE(current_dive) {
-			if (QString(picture->filename) == filename) {
-				picture->offset.seconds = lrint(timeAxis->valueAt(mappedPos));
-				mark_divelist_changed(true);
 #ifndef SUBSURFACE_MOBILE
-				DivePictureModel::instance()->updateDivePictureOffset(filename, picture->offset.seconds);
-				plotPictures();
+		QPointF mappedPos = mapToScene(event->pos());
+		int offsetSeconds = lrint(timeAxis->valueAt(mappedPos));
+		DivePictureModel::instance()->updateDivePictureOffset(filename, offsetSeconds);
 #endif
-				break;
-			}
-		}
-		copy_dive(current_dive, &displayed_dive);
 
 		if (event->source() == this) {
 			event->setDropAction(Qt::MoveAction);
