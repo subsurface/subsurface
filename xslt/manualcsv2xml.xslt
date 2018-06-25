@@ -431,11 +431,16 @@
       </xsl:if>
 
       <xsl:if test="$notesField >= 0">
-        <notes>
+        <xsl:variable name="note">
           <xsl:call-template name="getFieldByIndex">
             <xsl:with-param name="index" select="$notesField"/>
             <xsl:with-param name="line" select="$line"/>
             <xsl:with-param name="remaining" select="$remaining"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <notes>
+          <xsl:call-template name="new-line">
+            <xsl:with-param name="str" select="$note" />
           </xsl:call-template>
         </notes>
       </xsl:if>
@@ -466,6 +471,22 @@
 
     </dive>
   </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="new-line">
+    <xsl:param name="str"/>
+    <xsl:choose>
+      <xsl:when test="contains($str, '\n')">
+        <xsl:value-of select="substring-before($str, '\n')"/>
+        <xsl:value-of select="$lf"/>
+        <xsl:call-template name="new-line">
+          <xsl:with-param name="str" select="substring-after($str, '\n')"/>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+          <xsl:value-of select="$str"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
