@@ -97,9 +97,8 @@ Item {
 		}
 
 		RowLayout {
-			anchors.left: parent.left
-			anchors.right: parent.right
-			anchors.margins: Kirigami.Units.smallSpacing
+			Layout.fillWidth: true
+			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
 			visible: rootItem.showPin
 			SsrfButton {
@@ -124,9 +123,8 @@ Item {
 		}
 
 		RowLayout {
-			anchors.left: parent.left
-			anchors.right: parent.right
-			anchors.margins: Kirigami.Units.smallSpacing
+			Layout.fillWidth: true
+			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
 			visible: !rootItem.showPin
 

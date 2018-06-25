@@ -49,10 +49,8 @@ Kirigami.Page {
 		Layout.fillWidth: true
 		GridLayout {
 			id: buttonGrid
-			anchors {
-				top: parent.top
-				topMargin: Kirigami.Units.smallSpacing * 4
-			}
+			Layout.alignment: Qt.AlignTop
+			Layout.topMargin: Kirigami.Units.smallSpacing * 4
 			columns: 2
 			Controls.Label { text: qsTr(" Vendor name: ") }
 			Controls.ComboBox {
@@ -163,11 +161,8 @@ Kirigami.Page {
 		}
 
 		Controls.ProgressBar {
-			anchors {
-				top: buttonGrid.bottom
-				topMargin: Kirigami.Units.smallSpacing * 4
-			}
 			id: progressBar
+			Layout.topMargin: Kirigami.Units.smallSpacing * 4
 			Layout.fillWidth: true
 			indeterminate: true
 			visible: false
@@ -175,12 +170,8 @@ Kirigami.Page {
 
 		RowLayout {
 			id: buttonBar
-			anchors {
-				left: parent.left
-				right: parent.right
-				top: progressBar.bottom
-				topMargin: Kirigami.Units.smallSpacing * 2
-			}
+			Layout.fillWidth: true
+			Layout.topMargin: Kirigami.Units.smallSpacing * 2
 			spacing: Kirigami.Units.smallSpacing
 			SsrfButton {
 				id: download
@@ -227,10 +218,7 @@ Kirigami.Page {
 
 		ListView {
 			id: dlList
-			anchors {
-				top: buttonBar.bottom
-				topMargin: Kirigami.Units.smallSpacing * 4
-			}
+			Layout.topMargin: Kirigami.Units.smallSpacing * 4
 			Layout.bottomMargin: bottomButtons.height * 1.5
 			Layout.fillWidth: true
 			Layout.fillHeight: true
