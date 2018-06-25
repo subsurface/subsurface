@@ -94,8 +94,10 @@ void DiveListModel::removeDiveById(int id)
 void DiveListModel::updateDive(int i, dive *d)
 {
 	DiveObjectHelper *newDive = new DiveObjectHelper(d);
-	m_dives.replace(i, newDive);
-	emit dataChanged(createIndex(i, 0), createIndex(i, 0));
+	// we need to make sure that QML knows that this dive has changed -
+	// the only reliable way I've found is to remove and re-insert it
+	removeDive(i);
+	insertDive(i, newDive);
 }
 
 void DiveListModel::clear()
