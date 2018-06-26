@@ -7,11 +7,11 @@
 
 class qPrefDiveComputer : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString device READ dc_device WRITE setDevice NOTIFY deviceChanged);
-	Q_PROPERTY(QString device_name READ dc_device_name WRITE setDeviceName NOTIFY deviceNameChanged);
+	Q_PROPERTY(QString device READ device WRITE setDevice NOTIFY deviceChanged);
+	Q_PROPERTY(QString device_name READ device_name WRITE setDeviceName NOTIFY deviceNameChanged);
 	Q_PROPERTY(int download_mode READ downloadMode WRITE setDownloadMode NOTIFY downloadModeChanged);
-	Q_PROPERTY(QString product READ dc_product WRITE setProduct NOTIFY	productChanged);
-	Q_PROPERTY(QString vendor READ dc_vendor WRITE	setVendor NOTIFY vendorChanged);
+	Q_PROPERTY(QString product READ product WRITE setProduct NOTIFY	productChanged);
+	Q_PROPERTY(QString vendor READ vendor WRITE	setVendor NOTIFY vendorChanged);
 
 public:
 	qPrefDiveComputer(QObject *parent = NULL) : QObject(parent) {};
@@ -22,11 +22,11 @@ public:
 	void loadSync(bool doSync);
 
 public:
-	const QString dc_device() const;
-	const QString dc_device_name() const;
+	const QString device() const;
+	const QString device_name() const;
 	int downloadMode() const;
-	const QString dc_product() const;
-	const QString dc_vendor() const;
+	const QString product() const;
+	const QString vendor() const;
 
 public slots:
 	void setDevice(const QString& device);

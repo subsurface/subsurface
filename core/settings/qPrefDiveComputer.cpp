@@ -21,7 +21,7 @@ void qPrefDiveComputer::loadSync(bool doSync)
 	diskVendor(doSync);
 }
 
-const QString qPrefDiveComputer::dc_device() const
+const QString qPrefDiveComputer::device() const
 {
 	return prefs.dive_computer.device;
 }
@@ -39,7 +39,7 @@ void qPrefDiveComputer::diskDevice(bool doSync)
 }
 
 
-const QString qPrefDiveComputer::dc_device_name() const
+const QString qPrefDiveComputer::device_name() const
 {
 	return prefs.dive_computer.device_name;
 }
@@ -75,7 +75,7 @@ void qPrefDiveComputer::diskDownloadMode(bool doSync)
 }
 
 
-const QString qPrefDiveComputer::dc_product() const
+const QString qPrefDiveComputer::product() const
 {
 	return prefs.dive_computer.product;
 }
@@ -93,7 +93,7 @@ void qPrefDiveComputer::diskProduct(bool doSync)
 }
 
 
-const QString qPrefDiveComputer::dc_vendor() const
+const QString qPrefDiveComputer::vendor() const
 {
 	return prefs.dive_computer.vendor;
 }
