@@ -5,7 +5,7 @@
 
 #include <QObject>
 #include "core/pref.h"
-
+#include "qPrefAnimations.h"
 
 
 class qPref : public QObject {

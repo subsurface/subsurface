@@ -100,6 +100,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 
 	# classes to manage struct preferences for QWidget and QML
 	settings/qPref.cpp
+	settings/qPrefAnimations.cpp
 
 	#Subsurface Qt have the Subsurface structs QObjectified for easy access via QML.
 	subsurface-qt/DiveObjectHelper.cpp
