@@ -509,6 +509,9 @@ bool DiveLocationLineEdit::eventFilter(QObject*, QEvent *e)
 			return true;
 		}
 	}
+	else if (e->type() == QEvent::InputMethod) {
+		this->inputMethodEvent(static_cast<QInputMethodEvent *>(e));
+	}
 
 	return false;
 }
