@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface-manual VERSION\n"
 "Report-Msgid-Bugs-To: subsurface@subsurface-divelog.org\n"
-"POT-Creation-Date: 2018-02-07 17:43+0100\n"
+"POT-Creation-Date: 2018-06-26 10:10+0200\n"
 "PO-Revision-Date: 2018-02-07 17:48+0100\n"
 "Last-Translator: Guillaume GARDET <guillaume.gardet@free.fr>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -17,6 +17,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
+
+#.  :website: http://subsurface-divelog.org
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:13
+#, no-wrap
+msgid "Banner"
+msgstr ""
 
 #.  :website: http://subsurface-divelog.org
 #. type: Target for macro image
@@ -212,6 +219,12 @@ msgstr ""
 "l'_écran d'informations de connexion au cloud_ apparait (voir l'image ci-"
 "dessous, à gauche)."
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:81
+#, no-wrap
+msgid "FIGURE: Mobile credentials screen"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:81
 #, no-wrap
@@ -341,6 +354,12 @@ msgid ""
 "is shown in the top left corner of the screen."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:139
+#, no-wrap
+msgid "FIGURE: Action Button"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:139
 #, no-wrap
@@ -373,6 +392,12 @@ msgstr ""
 #. type: Plain text
 #: mobile-manual.txt:153
 msgid "Drag the action button visible on most screens to the right"
+msgstr ""
+
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:154
+#, no-wrap
+msgid "FIGURE: Dive management sub-panel"
 msgstr ""
 
 #. type: Target for macro image
@@ -415,6 +440,12 @@ msgid ""
 "dive on the list brings up a display of _Details View_ for that dive (see "
 "image on right below). This includes the dive profile as well as additional "
 "information and notes."
+msgstr ""
+
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:176
+#, no-wrap
+msgid "FIGURE: Dive list screen"
 msgstr ""
 
 #. type: Target for macro image
@@ -461,6 +492,12 @@ msgid ""
 "button is hidden.  Once you close the keyboard it is drawn again."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:201
+#, no-wrap
+msgid "FIGURE: Dive edit screen"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:201
 #, no-wrap
@@ -489,6 +526,12 @@ msgid ""
 "dive in _Details View_."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:217
+#, no-wrap
+msgid "FIGURE: Manual dive entry screen"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:217
 #, no-wrap
@@ -510,6 +553,12 @@ msgid ""
 "message that appears at the bottom of the screen (see image below)."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:226
+#, no-wrap
+msgid "FIGURE: Undo delete dive"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:226
 #, no-wrap
@@ -525,6 +574,12 @@ msgid ""
 "_Subsurface-mobile_ assumes that the combination of a long tap on the dive "
 "with another tap on the red dustbin is an unambiguous instruction to delete "
 "the dive."
+msgstr ""
+
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:234
+#, no-wrap
+msgid "FIGURE: delete dive from list"
 msgstr ""
 
 #. type: Target for macro image
@@ -593,6 +648,12 @@ msgid ""
 "still in some cases cannot access a dive computer through a serial port."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:268
+#, no-wrap
+msgid "FIGURE: USB-OTG cable"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:268
 #, no-wrap
@@ -648,6 +709,12 @@ msgid ""
 "the section above xref:S_Edit_Dive[Edit a dive]."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:293
+#, no-wrap
+msgid "FIGURE: DC download screen"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:293
 #, no-wrap
@@ -675,6 +742,12 @@ msgid ""
 "Alternatively, the _Details View_ has a button at the top right hand marked "
 "_Map it_. Tap this button to open Google Maps showing the dive site (image "
 "below)."
+msgstr ""
+
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:304
+#, no-wrap
+msgid "FIGURE: Map of dive site"
 msgstr ""
 
 #. type: Target for macro image
@@ -808,6 +881,12 @@ msgid ""
 "The program is now ready to collect GPS positions."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:368
+#, no-wrap
+msgid "FIGURE: GPS configure"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:368
 #, no-wrap
@@ -827,6 +906,12 @@ msgid ""
 "have given the app permission to access your location data.  Open the Main "
 "Menu and select _GPS -> Run location service_. This activates the recording "
 "of GPS locations."
+msgstr ""
+
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:377
+#, no-wrap
+msgid "FIGURE: GPS start"
 msgstr ""
 
 #. type: Target for macro image
@@ -895,6 +980,12 @@ msgid ""
 "again using the handle."
 msgstr ""
 
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:412
+#, no-wrap
+msgid "FIGURE: GPS management"
+msgstr ""
+
 #. type: Target for macro image
 #: mobile-manual.txt:412
 #, no-wrap
@@ -949,6 +1040,12 @@ msgid ""
 "This opens the _Cloud credentials_ screen.  change the credential "
 "information, then tap the button _Sign-in or register_. The appropriate dive "
 "list is shown."
+msgstr ""
+
+#. type: Positional ($1) AttributeList argument for macro 'image'
+#: mobile-manual.txt:435
+#, no-wrap
+msgid "FIGURE: Settings: Cloud & Theme"
 msgstr ""
 
 #. type: Target for macro image

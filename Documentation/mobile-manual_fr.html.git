@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc" />
 <title></title>
 <style type="text/css">
 /*
@@ -537,23 +538,23 @@ connection. The Subsurface team never accesses a user&#8217;s dive data without
 explicit permission to do so, the data are not used for any purpose other
 than providing them to the user who created them. There are no ads and no
 harvesting / analysis of the data stored in the Subsurface cloud storage.</p></div>
-<div class="paragraph"><p>Enter an e-mail address and a password in the fields indicated on the
-screen.  The e-mail address should be in lower case and the password should
-contain a combination of letters from the alphabet (upper and lower case)
-and/or numbers.  Tap the "Sign-in or Register" button. If you have already
-set up an account from the <em>Subsurface</em> desktop application, enter the same
-credentials here.  Once the dive list has been downloaded from the cloud,
-<em>Subsurface-mobile</em> usually works only with the the local copy on the mobile
-device. This avoids long delays or even failure of operations if there is a
-bad (or no) internet connection, a situation fairly common at many dive
-sites.</p></div>
-<div class="paragraph"><p>If this is a new account, a PIN screen will open (see image on right,
-above). A PIN is e-mailed to the email address entered in the previous
-step. Enter this PIN into the field indicated and tap the <em>Register</em>
-button. The user information is stored on the cloud server and access to the
-cloud is enabled. In this case the dive list is initially empty. Start
-entering dives in the dive log or download dive information from a supported
-dive computer.</p></div>
+<div class="paragraph"><p>1) Enter an e-mail address and a password in the fields indicated on the
+   screen.  The e-mail address should be in lower case and the password should
+   contain a combination of letters from the alphabet (upper and lower case)
+   and/or numbers.  Tap the "Sign-in or Register" button. If you have already
+   set up an account from the <em>Subsurface</em> desktop application, enter the same
+   credentials here.  Once the dive list has been downloaded from the cloud,
+   <em>Subsurface-mobile</em> usually works only with the the local copy on the mobile
+   device. This avoids long delays or even failure of operations if there is a
+   bad (or no) internet connection, a situation fairly common at many dive
+   sites.</p></div>
+<div class="paragraph"><p>3) If this is a new account, a PIN screen will open (see image on right,
+   above). A PIN is e-mailed to the email address entered in the previous
+   step. Enter this PIN into the field indicated and tap the <em>Register</em>
+   button. The user information is stored on the cloud server and access to the
+   cloud is enabled. In this case the dive list is initially empty. Start
+   entering dives in the dive log or download dive information from a supported
+   dive computer.</p></div>
 <div class="paragraph"><p>The dive log can be updated automatically. If there is Internet
 connectivity, <em>Subsurface-mobile</em> accesses the cloud-based dive log to
 verify that the local copy of the dive log is still the same as the log in
@@ -1019,7 +1020,7 @@ characteristics of the mobile device and the font characteristics used by
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-02-07 17:48:32 CET
+ 2018-06-26 10:17:18 CEST
 </div>
 </div>
 </body>
