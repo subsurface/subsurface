@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc" />
 <title></title>
 <style type="text/css">
 /*
@@ -445,7 +446,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.7, octobre 2017</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.7, Mai 2018</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -539,28 +540,40 @@ professionnels</p></div>
 <div class="paragraph"><p>Lorsqu&#8217;il est ouvert depuis <em>Subsurface</em>, ce manuel ne dispose pas de
 contrôles externes pour la pagination ou la sélection des pages
 précédentes. Cependant, deux options sont disponibles:</p></div>
-<div class="paragraph"><p>La fonction <em>RECHERCHE</em> est activée avec le raccourci clavier Contrôle-F ou
-Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir
-image ci-dessous). Par exemple, entrer le mot "<em>weights</em>" dans la boîte de
-texte de recherche lancera  la recherche dans tout le manuel utilisateur. À
-droite de la boîte de recherche se trouvent deux flèches, l&#8217;une vers le haut
-l&#8217;autre vers le bas. Elles mènent respectivement vers l&#8217;occurence précédente
-et suivante du terme recherché.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+La fonction <em>RECHERCHE</em> est activée avec le raccourci clavier Contrôle-F ou
+  Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir
+  image ci-dessous). Par exemple, entrer le mot "<em>weights</em>" dans la boîte de
+  texte de recherche lancera  la recherche dans tout le manuel utilisateur. À
+  droite de la boîte de recherche se trouvent deux flèches, l&#8217;une vers le haut
+  l&#8217;autre vers le bas. Elles mènent respectivement vers l&#8217;occurence précédente
+  et suivante du terme recherché.
+</p>
+</li>
+</ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/UserManualSearch.jpg" alt="User manual functions" />
 </div>
 </div>
-<div class="paragraph"><p><em>LIEN PRÉCÉDENT/SUIVANT</em>. Naviguez entre les liens (les mots soulignés qui
-vous conduisent vers des sections précises du manuel utilisateur) en
-cliquant-droit sur le texte du manuel. Cela fera apparaître un menu
-contextuel vers les liens PRÉCÉDENTS sélectionnés (voir image
-ci-dessous). Par exemple, si un lien a été sélectionné, l&#8217;option <em>Retour
-lien précédent</em> affiche le texte au lien précédent sélectionné (comme le
-fait le bouton Page Précédente d&#8217;un navigateur). Inversement, l&#8217;option
-<em>Aller au lien suivant</em> navigue vers le texte vu avant l&#8217;utilisation de
-l&#8217;option <em>Retour lien précédent</em>. L&#8217;option <em>Recharger</em> recharge le manuel
-utilisateur complet dans la fenêtre.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>LIEN PRÉCÉDENT/SUIVANT</em>. Naviguez entre les liens (les mots soulignés qui
+  vous conduisent vers des sections précises du manuel utilisateur) en
+  cliquant-droit sur le texte du manuel. Cela fera apparaître un menu
+  contextuel vers les liens PRÉCÉDENTS sélectionnés (voir image
+  ci-dessous). Par exemple, si un lien a été sélectionné, l&#8217;option <em>Retour
+  lien précédent</em> affiche le texte au lien précédent sélectionné (comme le
+  fait le bouton Page Précédente d&#8217;un navigateur). Inversement, l&#8217;option
+  <em>Aller au lien suivant</em> navigue vers le texte vu avant l&#8217;utilisation de
+  l&#8217;option <em>Retour lien précédent</em>. L&#8217;option <em>Recharger</em> recharge le manuel
+  utilisateur complet dans la fenêtre.
+</p>
+</li>
+</ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/UserManualLinksBack.jpg" alt="User manual functions" />
@@ -594,23 +607,41 @@ envoyer un nouveau sondage en démarrant <em>Subsurface</em> avec l&#8217;option
 principal</strong> (Fichier Édition Importer Journal Vue Partager Aide) en haut de
 la fenêtre (pour Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu
 Unity). Les quatre panneaux sont :</p></div>
-<div class="paragraph"><p>La <strong>liste des plongées</strong> en bas à gauche, affichant toutes les plongées du
-journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut être
-sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans
-la plupart des cas, les touches haut/bas peuvent être utilisées pour passer
-d&#8217;une plongée à l&#8217;autre. La <strong>liste des plongées</strong> est un outil important pour
-manipuler un journal (carnet) de plongée.</p></div>
-<div class="paragraph"><p>La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
-l&#8217;utilisateur, sur une carte mondiale et centrée sur le site de la dernière
-plongée sélectionnée dans la <strong>liste des plongées</strong>. L'échelle de la carte
-peut être augmentée ou réduite.</p></div>
-<div class="paragraph"><p>Les <strong>informations</strong> en haut à gauche, fournissent des informations détaillées
-sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont des
-statistiques pour la plongée sélectionnée ou pour toutes les plongées mises
-en surbrillance.</p></div>
-<div class="paragraph"><p>Le <strong>profil de plongée</strong> en haut à droite, affiche un profil de plongée
-graphique de la plongée sélectionnée dans la <strong>liste des plongées</strong>. Vous
-pouvez zoomer sur le profil de plongée pour une vue plus détaillée.</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+La <strong>liste des plongées</strong> en bas à gauche, affichant toutes les plongées du
+   journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut être
+   sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans
+   la plupart des cas, les touches haut/bas peuvent être utilisées pour passer
+   d&#8217;une plongée à l&#8217;autre. La <strong>liste des plongées</strong> est un outil important pour
+   manipuler un journal (carnet) de plongée.
+</p>
+</li>
+<li>
+<p>
+La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
+   l&#8217;utilisateur, sur une carte mondiale et centrée sur le site de la dernière
+   plongée sélectionnée dans la <strong>liste des plongées</strong>. L'échelle de la carte
+   peut être augmentée ou réduite.
+</p>
+</li>
+<li>
+<p>
+Les <strong>informations</strong> en haut à gauche, fournissent des informations détaillées
+   sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont des
+   statistiques pour la plongée sélectionnée ou pour toutes les plongées mises
+   en surbrillance.
+</p>
+</li>
+<li>
+<p>
+Le <strong>profil de plongée</strong> en haut à droite, affiche un profil de plongée
+   graphique de la plongée sélectionnée dans la <strong>liste des plongées</strong>. Vous
+   pouvez zoomer sur le profil de plongée pour une vue plus détaillée.
+</p>
+</li>
+</ol></div>
 <div class="paragraph"><p>Les séparateurs entre ces panneaux peuvent être déplacés pour modifier la
 taille de chaque panneau. <em>Subsurface</em> mémorise la position de ces
 séparateurs, pour qu&#8217;au prochain lancement <em>Subsurface</em> utilise ces
@@ -626,7 +657,7 @@ températures de l&#8217;eau et le SAC (air consommé); temps total et nombre de
 plongées sélectionnées).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
 <div class="content">
-<img src="images/main_window_f22.jpg" alt="The Main Window" />
+<img src="images/main_window_f22.jpg" alt="La fenêtre principale" />
 </div>
 </div>
 <div class="paragraph"><p>L&#8217;utilisateur décide quels panneaux sont affichés, parmi les 4, en
@@ -690,9 +721,9 @@ Importer les informations de plongée qui ont été maintenues soit dans un
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Si une plongée est enregistrée par un ordinateur de plongée, le profil de
-profondeur et de nombreuses informations supplémentaires peuvent être
-obtenues. Ces plongées peuvent être importées à partir de :</p></div>
+<div class="paragraph"><p>2) Si une plongée est enregistrée par un ordinateur de plongée, le profil de
+   profondeur et de nombreuses informations supplémentaires peuvent être
+   obtenues. Ces plongées peuvent être importées à partir de :</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1979,7 +2010,7 @@ should then be selected, after which the imported dives appear in the
 <em>Subsurface</em> <strong>Dive List</strong> panel.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Divelogs1.jpg" alt="FIGURE:Download from Divelogs.de" />
+<img src="images/Divelogs1.jpg" alt="FIGURE: Télécharger depuis Divelogs.de" />
 </div>
 </div>
 </div>
@@ -2201,12 +2232,12 @@ smaller file to make sure everything works.</td>
 <h3 id="_importation_des_coordonnées_de_plongée_depuis_un_appareil_mobile_avec_gps">5.4. Importation des coordonnées de plongée depuis un appareil mobile avec GPS.</h3>
 <div class="paragraph"><p>Un smartphone avec GPS peut être utilisé pour stocker les lieux de
 plongées. Ceci est réalisé comme suit:</p></div>
-<div class="paragraph"><p>Taking the mobile device along on the dive boat / liveabord while
-automatically collecting dive site coordinate information.</p></div>
+<div class="paragraph"><p>1) Taking the mobile device along on the dive boat / liveabord while
+   automatically collecting dive site coordinate information.</p></div>
 <div class="paragraph"><p>2) Uploading the coordinates from the mobile device to the <em>Subsurface</em>
    Internet server.</p></div>
-<div class="paragraph"><p>Syncronising the dives in the <em>Subsurface</em> dive list with the coordinates
-stored on the <em>Subsurface</em> Internet server.</p></div>
+<div class="paragraph"><p>3) Syncronising the dives in the <em>Subsurface</em> dive list with the coordinates
+   stored on the <em>Subsurface</em> Internet server.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> comporte deux outils pour réaliser cela :</p></div>
 <div class="ulist"><ul>
 <li>
@@ -2466,10 +2497,14 @@ screen:</p></div>
 Edit (pencil): Change the name of the dive location.
 </p>
 </li>
+<li>
+<p>
+Maps: Display a map showing the dive location.  After editing and saving a
+  dive location (see <strong>C</strong> above), upload it to the web service, as explained
+  below.
+</p>
+</li>
 </ul></div>
-<div class="paragraph"><p>Maps: Display a map showing the dive location.  After editing and saving a
-dive location (see <strong>C</strong> above), upload it to the web service, as explained
-below.</p></div>
 <div class="paragraph"><p><strong>Uploading dive locations</strong></p></div>
 <div class="paragraph"><p>There are several ways to send locations to the server.  The easiest is
 simply selecting the locations (See <strong>A</strong> below) and then touching the right
@@ -2562,9 +2597,13 @@ location every 50 meters.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p><em>Other</em></p></div>
-<div class="paragraph"><p><em>Mailing List.</em> The mail box for <em>Subsurface</em>. Users can send an email to
-the Subsurface mailing list.</p></div>
 <div class="ulist"><ul>
+<li>
+<p>
+<em>Mailing List.</em> The mail box for <em>Subsurface</em>. Users can send an email to
+  the Subsurface mailing list.
+</p>
+</li>
 <li>
 <p>
 <em>Subsurface website.</em> A link to the URL of Subsurface web
@@ -2887,11 +2926,15 @@ look through a particular directory (and all its subdirectories recursively)
 calculate fingerprints for all photos in this directory, and
 </p>
 </li>
+<li>
+<p>
+if there is a match between a calculated fingerprint and the one calculated
+  when a photo was originally loaded into <em>Subsurface</em> (even if the original
+  file name has changed), automatically update the directory information so
+  that <em>Subsurface</em> can find the photo in the new moved directory.
+</p>
+</li>
 </ul></div>
-<div class="paragraph"><p>if there is a match between a calculated fingerprint and the one calculated
-when a photo was originally loaded into <em>Subsurface</em> (even if the original
-file name has changed), automatically update the directory information so
-that <em>Subsurface</em> can find the photo in the new moved directory.</p></div>
 <div class="paragraph"><p>This is done by selecting from the Main Menu: <em>File &#8594;      Find moved images</em>. This brings up a window within
  which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
  the <em>Scan</em> button towards the bottom right of the panel. The process may require several minutes to
@@ -3044,7 +3087,7 @@ three steps, exactly as with multi-cylinder dives above:</p></div>
 </ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/sidemount1.jpg" alt="FIGURE: Sidemount profile" />
+<img src="images/sidemount1.jpg" alt="FIGURE: Profil Sidemount" />
 </div>
 </div>
 </div>
@@ -3084,14 +3127,64 @@ pSCR diving often involves gas changes, requiring an additional cylinder.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>If a pSCR <em>Dive Mode</em> has been selected, the dive ceiling for that is
-adjusted for the oxygen drop across the mouthpiece, which often requires
-longer decompression periods. Below is a dive profile of a pSCR dive using
-EAN36 as bottom gas and oxygen for decompression. Note that this dive lasted
-over two hours.</p></div>
+<div class="paragraph"><p>In pSCR diving, the inspired gas often has a pO<sub>2</sub> below that of the fresh
+gas from cylinder. This is because fresh gas is only supplied at a slow rate
+and the diver continuously uses oxygen from the loop for metabolism,
+resulting in the so-called "pO<sub>2</sub> drop over the mouthpiece". For pSCR dive
+profiles the dive ceiling is adjusted for this oxygen drop, and often
+requires longer decompression periods. Below is a dive profile of a pSCR
+dive using EAN36 as bottom gas and oxygen for decompression. Note that this
+dive lasted over two hours.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/pSCR_profile.jpg" alt="FIGURE: pSCR profile" />
+</div>
+</div>
+<div class="paragraph"><p><em>Visualising the pO<sub>2</sub> drop</em>: The difference between the pO<sub>2</sub> of the fresh
+cylinder gas and the pO<sub>2</sub> in the loop can be visualised in <em>Subsurface</em> by
+opening the <em>Profile</em> panel in the <em>File &#8594; Preferences</em> menu item and then
+providing suitable information in the section labelled <em>pSCR options</em>. The
+<em>pSCR metabolic rate</em> is your rate of oxygen metabolism in liters/min
+(commonly between 0.5 and 2.5). The <em>Dilution ratio</em> is the ratio indicating
+how much gas in the loop is replaced with fresh gas, relative to the gas
+being breathed (common values are between 1:3 and 1:10). These values are
+also used when planning pSCR dives. If the oxygen content of the loop is not
+recorded by an oxygen sensor, <em>Subsurface</em> estimates the pO<sub>2</sub> in the loop
+using the information supplied above. This pO<sub>2</sub> is shown as the green line
+representing the oxygen partial pressure in the dive profile. If the oxygen
+pressure in the loop is measured using an oxygen sensor connected to a dive
+computer, this information is probably recorded by the dive computer and
+these measured pO<sub>2</sub> values are shown on the dive profile. In addition, the
+<em>Preferences</em> panel allows one to activate a checkbox labelled <em>Show
+equivalent OC pO<sub>2</sub> with pSCR pO<sub>2</sub></em>. This activates display of the pO<sub>2</sub> in
+the fresh gas from the cylinder (an orange line). The vertical distance
+between the orange graph and the green graph indicates the "pO<sub>2</sub> drop over
+the mouthpiece". Much of pSCR diving involves managing this pO<sub>2</sub>
+difference.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/DiveModeChange.jpg" alt="Note" />
+</td>
+<td class="content"><em>pSCR and bailout</em>: Gases used in pSCR often yield very low pO<sub>2</sub> values in
+shallow water. For this reason the diver often completes the shallow
+sections of a dive using open circuit (OC) rather than the rebreather. In
+this case parts of the dive are performed OC, while the rest of the dive is
+performed on the pSCR loop. To indicate such changes in divemode,
+right-click on the dive profile at the appropriate time. From the context
+menu, select <em>Change divemode</em> and choose the appropriate option (see image
+on left). Some dive computers record such changes in divemode as part of the
+dive log.  The appropriate icon is shown on the depth profile (see image
+below).  Below is a pSCR dive with the shallow sections using OC. An OC
+divemode was entered right at the start, followed by a change to pSCR at
+18m. During the ascent, there was a bailout to OC at 14m. Note, for the OC
+sections, the pO<sub>2</sub> is identical to the OC-pO<sub>2</sub> whereas for the pSCR
+section, the pO<sub>2</sub> (green line)  differs from the OC-pO<sub>2</sub> (orange line).</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pSCR_profile_bailout.jpg" alt="FIGURE: pSCR profile with bailout" />
 </div>
 </div>
 </div>
@@ -3106,18 +3199,18 @@ over two hours.</p></div>
 breathed. However, they use advanced technology to maintain a breathable
 oxygen concentration:
 a) remove carbon dioxide from the exhaled gas.
-regulate the oxygen concentration to remain within safe diving limits.  The
-CCR interface of <em>Subsurface</em> is currently experimental and under active
-development. Subsurface currently supports Poseidon MkVI and APD
-Discovery/Evolution dive computers, as well as Shearwater dive computers
-connected to CCR systems. In contrast to a conventional recreational dive
-computer, a CCR system computer usually does not allow the download of a log
-containing multiple dives. Rather, each dive is stored independently. This
-means that <em>Subsurface</em> cannot download a dive log directly from a CCR dive
-computer, but that it imports individual CCR dive profiles in the same way
-it imports dive log data from other digital databases: one dive at a
-time. However, the Shearwater based CCR systems are different in this
-respect and allow multi-dive downloads.</td>
+b) regulate the oxygen concentration to remain within safe diving limits.  The
+   CCR interface of <em>Subsurface</em> is currently experimental and under active
+   development. Subsurface currently supports Poseidon MkVI and APD
+   Discovery/Evolution dive computers, as well as Shearwater dive computers
+   connected to CCR systems. In contrast to a conventional recreational dive
+   computer, a CCR system computer usually does not allow the download of a log
+   containing multiple dives. Rather, each dive is stored independently. This
+   means that <em>Subsurface</em> cannot download a dive log directly from a CCR dive
+   computer, but that it imports individual CCR dive profiles in the same way
+   it imports dive log data from other digital databases: one dive at a
+   time. However, the Shearwater based CCR systems are different in this
+   respect and allow multi-dive downloads.</td>
 </tr></table>
 </div>
 <div class="sect4">
@@ -3191,7 +3284,7 @@ appropriate toolbar button on the Dive Profile has been checked.</p></div>
 <div class="paragraph"><p>Checking any of these boxes allows the display of additional oxygen-related
 information whenever the pO<sub>2</sub> toolbar button on the <em>Profile</em> panel is
 activated.  The first checkbox allows the display of setpoint
-information. This is a red line superimposed on the green oxygen partial
+information. This is an orange line superimposed on the green oxygen partial
 pressure graph and allows a comparison of the mean measured oxygen partial
 pressure and the setpoint values, as shown below.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3234,9 +3327,53 @@ if applicable) are shown in the usual way as for open circuit dives.</p></div>
 circuit.  These events are indicated by yellow triangles and, if you hover
 over a triangle, a description of that event is given as the bottom line in
 the <a href="#S_InfoBox">Information Box</a>.</p></div>
-<div class="paragraph"><p><em>Cylinder pressures</em>: Some CCR dive computers like the Poseidon MkVI record
-the pressures of the oxygen and diluent cylinders. The pressures of these
-two cylinders are shown as green lines overlapping the depth profile. In
+<div class="paragraph"><p><em>Bailout</em>: Bailout events during a CCR dive can be recorded in a
+<em>Subsurface</em> divelog. Right-click on the dive profile to generate a dive
+profile context menu. Select <em>Change divemode</em> and choose the appropriate
+bailout option (probably OC). An appropriate icon is shown on the depth
+profile (see image below). In most CCR equipment it is also possible to
+bailout to pSCR, especially in cases where the electronics died and the
+diluent supply is limited. This can also be reflected in the dive log and
+Subsurface will calculate and graph the appropriate pO<sub>2</sub> values. The case
+during CCR training is more complex if the instructor prefers a low setpoint
+such as 0.7 to be maintained during bailout. In this case the CCR equipment
+maintains the low setpoint and overrides the OC or pSCR conditions. In such
+cases it is probably more accurate not to record a bailout event in the dive
+log since <em>Subsurface</em> will calculate pO<sub>2</sub> values based on the erroneous
+assumption that there is no setpoint.  Below is a dive profile for a CCR
+dive with bailout at 57 minutes. In this profile the green pO<sub>2</sub> graph
+diverges from the setpoint value and reflects the pO<sub>2</sub> in the OC diluent
+gas (in this case air).  The pO<sub>2</sub> in the loop (shown as a meandering graph
+for each oxygen sensor) is irrelevant because the actual inspired gas comes
+directly from the diluent cylinder. In cases where bailout occurs using a
+stage cylinder, indicate the bailout as well as the gas change event and
+<em>Subsurface</em> will calculate all the appropriate pO<sub>2</sub> values. Some dive
+computers record bailout events as well as gas change events: in this case
+the events are shown automatically in the dive log.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_bailout.jpg" alt="FIGURE: CCR bailout profileh" />
+</div>
+</div>
+<div class="paragraph"><p><em>Deco ceiling</em>: The deco ceiling calculated by Subsurface is not very
+accurate because the precise pressure of nitrogen in the loop can usually
+not be determined from the dive log imported from the CCR equipment. Many
+CCR dive computers, however, report an internally-calculated deco ceiling
+that is reported in the dive log, reflecting a more accurate assessment. The
+display of this ceiling is activated by clicking the appropriate button to
+the left of the dive profile:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/icons/cceiling.jpg" alt="DC ceiling icon" />
+</div>
+</div>
+<div class="paragraph"><p>The default color of the computer-generated deco ceiling is white. This can
+be set to red by checking the appropriate check box after selecting <em>File &#8594;
+Preferences &#8594; Profile</em>.  The profile above indicates the dive
+computer-generated deco ceiling in red.</p></div>
+<div class="paragraph"><p><em>Cylinder pressures</em>: Some CCR dive computers like Poseidon record the
+pressures of the oxygen and diluent cylinders. The pressures of these two
+cylinders are shown as green lines overlapping the depth profile. In
 addition, start and end pressures for both oxygen and diluent cylinders are
 shown in the <em>Equipment Tab</em>.  Below is a dive profile for a CCR dive,
 including an overlay of setpoint and oxygen sensor data, as well as the
@@ -3250,29 +3387,8 @@ the two oxygen sensors.</p></div>
 <div class="paragraph"><p><em>Equipment-specific information</em>: Equipment-specific information gathered by
 <em>Subsurface</em> is shown in the <a href="#S_ExtraDataTab">Extra data tab</a>. This may
 include setup information or metadata about the dive.</p></div>
-<div class="paragraph"><p>The deco ceiling calculated by Subsurface is not very accurate because the
-precise pressure of nitrogen in the loop can usually not be determined from
-the dive log imported from the CCR equipment. Many CCR dive computers,
-however, report an internally-calculated deco ceiling that is reported in
-the dive log, reflecting a more accurate assessment. The display of this
-ceiling is activated by clicking the appropriate button to the left of the
-dive profile:</p></div>
-<div class="imageblock">
-<div class="content">
-<img src="images/icons/cceiling.jpg" alt="DC ceiling icon" />
-</div>
-</div>
-<div class="paragraph"><p>The default color of the computer-generated deco ceiling is white. This can
-be set to red by checking the appropriate check box after selecting <em>File &#8594;
-Preferences &#8594; Profile</em>.  Below is a dive profile indicating the dive
-computer-generated deco ceiling:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/CCR_dive_ceilingF22.jpg" alt="FIGURE: CCR computer-generated deco ceiling" />
-</div>
-</div>
-<div class="paragraph"><p>More equipment-specific information for downloading CCR dive logs for
-Poseidon MkVI and APD equipment can be found in
+<div class="paragraph"><p>More equipment-specific procedures and information for downloading CCR dive
+logs for Poseidon and APD equipment can be found in
 <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix
 B</a>.</p></div>
 </div>
@@ -3403,7 +3519,7 @@ plus petite et la plus grande profondeur atteinte pour ces plongées.</p></div>
 <h3 id="S_DiveProfile">6.5. Le <strong>Profil de plongée</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Profile2.jpg" alt="Typical dive profile" />
+<img src="images/Profile2.jpg" alt="Profil de plongée typique" />
 </div>
 </div>
 <div class="paragraph"><p>Parmi toutes les panneaux de <em>Subsurface</em>, le profil de plongée contient les
@@ -3486,7 +3602,7 @@ position de la boîte Information est enregistrée ré-utilisée pour les
 analyses de plongée suivantes.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
+<img src="images/InfoBox2.jpg" alt="FIGURE: La boîte Information" />
 </div>
 </div>
 <div class="paragraph"><p>When the mouse points inside the <strong>Dive Profile</strong> panel, the information box
@@ -3568,10 +3684,16 @@ trimix diver can expect the same narcotic effect as a diver breathing air
 diving at a depth equaling the END.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>If at some point a isobaric counter diffusion situation is encountered in
+the leading tissue (defined to be a moment in time where helium is
+off-gassing while nitrogen is on-gassing and the net effect is on-gassing)
+this is indicated in the infobox as well. Note that this condition not only
+depends on the gas that is currently breathed but on the tissue loadings as
+well.</p></div>
 <div class="paragraph"><p>La figure (<strong>B</strong>) ci-dessous affiche une boîte d&#8217;information avec un ensemble
 quasiment complet de données.</p></div>
 <div class="sect4">
-<h5 id="S_gas_pressure_graph">The Gas Pressure Bar Graph</h5>
+<h5 id="S_gas_pressure_graph">Le graphique de pression gazeuse</h5>
 <div class="paragraph"><p>On the left of the <strong>Information Box</strong> is a vertical bar graph showing the
 pressures of the nitrogen (and other inert gases, e.g. helium, if
 applicable) that the diver was inhaling <em>at a particular instant during the
@@ -3580,7 +3702,7 @@ drawing on the left below indicates the meaning of the different parts of
 the Gas Pressure Bar Graph.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/GasPressureBarGraph.jpg" alt="FIGURE:Gas Pressure bar Graph" />
+<img src="images/GasPressureBarGraph.jpg" alt="FIGURE: Le graphique de pression gazeuse" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -4064,7 +4186,7 @@ performed using the Dive List Context Menu.  It is found by selecting either
 a single dive or a group of dives and then right-clicking.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/ContextMenu.jpg" alt="Figure: Context Menu" />
+<img src="images/ContextMenu.jpg" alt="Figure: Menu contextuel" />
 </div>
 </div>
 <div class="paragraph"><p>Le menu contextuel est utilisé pour de nombreuses fonctions décrites
@@ -4289,7 +4411,7 @@ it. The filter may also be reset and closed by selecting the <strong>red button<
 with the white cross.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Filterpanel.jpg" alt="Figure: Filter panel" />
+<img src="images/Filterpanel.jpg" alt="Figure: panneau des filtres" />
 </div>
 </div>
 <div class="paragraph"><p>Four filter criteria may be used to filter the dive list: dive tags, person
@@ -4761,9 +4883,11 @@ Printing in color, done by checking the box with <em>Print in color</em>. If thi
 </li>
 </ul></div>
 </li>
-</ol></div>
-<div class="paragraph"><p>Under <em>Template</em> select a template to be used as the page layout. There are
-several choices.  (see image <strong>B</strong>, above).</p></div>
+<li>
+<p>
+Under <em>Template</em> select a template to be used as the page layout. There are
+   several choices.  (see image <strong>B</strong>, above).
+</p>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4771,6 +4895,8 @@ several choices.  (see image <strong>B</strong>, above).</p></div>
 </p>
 </li>
 </ul></div>
+</li>
+</ol></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Print_summarylist_f22.jpg" alt="FIGURE: Print summary table" />
@@ -4868,7 +4994,7 @@ sélectionner le bon modèle d&#8217;ordinateur de plongée à partir du panneau
 gauche (voir l&#8217;image ci-dessous).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Configure_dc_f20.jpg" alt="FIGURE: Configure dive computer" />
+<img src="images/Configure_dc_f20.jpg" alt="FIGURE: Configurer un ordinateur de plongée" />
 </div>
 </div>
 <div class="paragraph"><p>En utilisant les boutons appropriés du panneau de configuration, les actions
@@ -5020,17 +5146,29 @@ as decimal degrees Choose the appropriate option.</p></div>
 <img src="images/Pref4_f23.jpg" alt="FIGURE: Preferences Graph page" />
 </div>
 </div>
-<div class="paragraph" id="S_GradientFactors"><p><strong>Gas pressure display setup</strong>. Even though nitrogen and helium pressures are also included here, these items mainly pertain to oxygen management:
-<strong> <em>Thresholds</em>: <em>Subsurface</em> can display graphs of the nitrogen, oxygen and the helium
-   partial pressures during
-   the dive, activated using the toolbar on the left of the <strong>Dive Profile</strong>
-   panel. For each of these graphs, specify a threshold value. If any of the graphs go
-   above the specified threshold, the graph is
-   highlighted in red, indicating the particular partial pressure threshold has been exceeded.
-   The pO<sub>2</sub> threshold is probably the most important one and a value of 1.6 is commonly used.
-</strong> <em>pO<sub>2</sub> in calculating MOD</em> is used for calculating the maximum operative depth for a particular
-   nitrox or trimix gas mixture. A value of 1.4 is commonly used.</p></div>
+<div class="ulist" id="S_GradientFactors"><ul>
+<li>
+<p>
+<strong>Gas pressure display setup</strong>. Even though nitrogen and helium pressures are also included here, these items mainly pertain to oxygen management:
+</p>
 <div class="ulist"><ul>
+<li>
+<p>
+<em>Thresholds</em>: <em>Subsurface</em> can display graphs of the nitrogen, oxygen and the helium
+partial pressures during
+the dive, activated using the toolbar on the left of the <strong>Dive Profile</strong>
+panel. For each of these graphs, specify a threshold value. If any of the graphs go
+above the specified threshold, the graph is
+highlighted in red, indicating the particular partial pressure threshold has been exceeded.
+The pO<sub>2</sub> threshold is probably the most important one and a value of 1.6 is commonly used.
+</p>
+</li>
+<li>
+<p>
+<em>pO<sub>2</sub> in calculating MOD</em> is used for calculating the maximum operative depth for a particular
+   nitrox or trimix gas mixture. A value of 1.4 is commonly used.
+</p>
+</li>
 <li>
 <p>
 CCR Options: These options determine oxygen management for CCR dives:
@@ -5046,28 +5184,56 @@ CCR Options: These options determine oxygen management for CCR dives:
 </li>
 <li>
 <p>
+<em>CCR: Show O<sub>2</sub> sensor values when viewing pO<sub>2</sub>:</em> Show the pO<sub>2</sub>
+    values associated with each of the individual oxygen sensors of a CCR system.
+    See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
+</p>
+</li>
+<li>
+<p>
 <em>CCR: Show setpoints when viewing pO<sub>2</sub>:</em> With this checkbox activated, the pO<sub>2</sub>
     graph on the dive profile has an overlay in red which indicates the CCR setpoint
     values. See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
 </p>
 </li>
+</ul></div>
+</li>
 <li>
 <p>
-<em>CCR: Show individual O<sub>2</sub> sensor values when viewing pO<sub>2</sub>:</em> Show the pO<sub>2</sub>
-    values associated with each of the individual oxygen sensors of a CCR system.
-    See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
+<em>pSCR options</em>. These preferences determine how passive semi-closed circuit (pSCR) dives
+    are planned and how the pSCR deco ceiling is calculated:
 </p>
 <div class="ulist"><ul>
+<li>
+<p>
+<em>Metabolic rate:</em> this is the
+    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
+    and decompression calculations.
+</p>
+</li>
+<li>
+<p>
+<em>pSCR ratio:</em> The dilution ratio (or dump ratio) is the ratio of gas released to the
+    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
+</p>
+</li>
+<li>
+<p>
+<em>Show equivalent OC with pSCR pO<sub>2</sub></em>: The pO<sub>2</sub> in the pSCR loop is usually lower than the
+    pO<sub>2</sub> of the fresh gas from the cylinder. Activating this checkbox allows the pO<sub>2</sub> graph
+    in the dive profile to also show the pO<sub>2</sub> of the fresh gas entering the loop.
+</p>
+</li>
+</ul></div>
+</li>
+</ul></div>
+</li>
 <li>
 <p>
 <strong>Ceiling display setup</strong>. These settings mostly deal with nitrogen and helium management
    by determining how the decompression ceiling (ascent ceiling) is calculated and displayed:
 </p>
-</li>
-</ul></div>
-</li>
-</ul></div>
-</li>
+<div class="ulist"><ul>
 <li>
 <p>
 <em>Draw dive computer reported ceiling red</em>: This checkbox does exactly what it says. By default
@@ -5116,34 +5282,13 @@ Bühlmann: Set the <em>gradient factors</em> (GFLow and GFHigh) for calculcating
 </li>
 </ul></div>
 </li>
-<li>
-<p>
-<em>pSCR options</em>. These preferences determine how passive semi-closed circuit (pSCR) dives
-    are planned and how the pSCR deco ceiling is calculated:
-</p>
-<div class="ulist" id="GradientFactors_Ref"><ul>
-<li>
-<p>
-<em>Metabolic rate:</em> this is the
-    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
-    and decompression calculations.
-</p>
+</ul></div>
 </li>
-<li>
-<p>
-<em>pSCR ratio:</em> The dilution ratio (or dump ratio) is the ratio of gas released to the
-    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
-</p>
-<div class="ulist"><ul>
 <li>
 <p>
 <strong>Misc</strong>
 </p>
-</li>
-</ul></div>
-</li>
-</ul></div>
-</li>
+<div class="ulist" id="GradientFactors_Ref"><ul>
 <li>
 <p>
 <em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the
@@ -5157,6 +5302,8 @@ was no gas switch to such a cylinder), then these cylinders are omitted from tha
     the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
    ascent.
 </p>
+</li>
+</ul></div>
 </li>
 </ul></div>
 </div>
@@ -5246,7 +5393,7 @@ configured, e.g. <em>Country/State/City</em> or <em>City/State/Country</em> (see
 below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Pref7_f23.jpg" alt="FIGURE: Georeference panel" />
+<img src="images/Pref7_f23.jpg" alt="FIGURE: panneau de géoréférencement" />
 </div>
 </div>
 </div>
@@ -5472,9 +5619,13 @@ dive plan, preventing recreational divers from getting close to the limits
 of getting a DCS hit. This is performed by specifying appropriate gradient
 factors for a dive plan, as explained below.</p></div>
 <div class="paragraph"><p>To plan a dive, the appropriate settings need to be defined.</p></div>
-<div class="paragraph"><p>Ensure the date and time is set to that of the intended dive. This allows
-calculation of the nitrogen load incurred during previous dives.</p></div>
 <div class="ulist"><ul>
+<li>
+<p>
+Ensure the date and time is set to that of the intended dive. This allows
+  calculation of the nitrogen load incurred during previous dives.
+</p>
+</li>
 <li>
 <p>
 Immediately under the heading <em>Planning</em> are two checkboxes <em>Recreational</em>
@@ -5553,7 +5704,7 @@ there remains a significant amount of air in the cylinder at the end of the
 dive.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: A recreational dive plan: setup" />
+<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: une planification de plongée loisir : configuration" />
 </div>
 </div>
 <div class="paragraph"><p>The dive profile in the planner shows the maximum dive time within no-deco
@@ -5738,7 +5889,7 @@ utilisant du Tx20/30 et l&#8217;algorithme Bühlmann, suivie d&#8217;une remont�
 utilisant du EAN50 et utilisant les réglages décrits ci-dessous.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_deco.jpg" alt="FIGURE: Planning a dive: setup" />
+<img src="images/Planner_OC_deco.jpg" alt="FIGURE: Planifier des plongées : configuration" />
 </div>
 </div>
 <div class="paragraph"><p>Once the above steps have been completed, save by clicking the <em>Save</em> button
@@ -5897,8 +6048,58 @@ to that of the CCR dive below, but note the longer ascent duration due to the lo
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planifier des plongées pSCR : configuration" />
 </div>
+</div>
+<div class="sect3">
+<h4 id="_planification_pour_bailout_pscr">14.3.1. Planification pour bailout pSCR</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/pscr_b1.jpg" alt="Note" />
+</td>
+<td class="content">Open circuit diving is often part of a pSCR dive because, at shallow depths,
+the pO<sub>2</sub> in the loop is often too low for breathing and the shallow parts
+of a pSCR dive are often done on OC. The change from rebreather mode to OC
+or <em>vice versa</em> is indicated using bailout events. The image on the left
+shows a pSCR dive plan (using three cylinders) where the shallow parts of
+the dive are performed using EAN50 in order to have a sufficient pO<sub>2</sub>. The
+bottom part of the dive is perfomed with EAN31 (Cyl. 2 in the <strong>Available
+gases</strong> table, also indicated in the <strong>Dive planner points</strong> table). The third
+cylinder, also EAN31, is a bailout cylinder which is, initially, not used.
+In this case the plan is for a cave dive with a bottom time of 20 minutes
+and the turning point in the bottom part of the dive is at 16 minutes
+(i.e. ten minutes into the bottom part of the dive). The orange pO<sub>2</sub> graph
+indicates the equivalent OC pO<sub>2</sub> during the dive and the green pO<sub>2</sub>
+indicates the estimated pO<sub>2</sub> in the loop, the whole dive being performed in
+rebreather mode. We wish to plan for a worst-case scenario with bailout at
+the turning point (i.e. the furthest point into the cave). In the <strong>Dive
+planner points</strong> table, change the <strong>Dive mode</strong> of the last two segments to
+<strong>OC</strong> (indicated in the left-hand image, labled <strong>A</strong>, below). In this case the
+existing EAN31 cylinder (Cyl.2 in the <strong>Dive planner points</strong> table is used
+for bailout (i.e. the bailout cylinder [Cyl. 3] has not been used yet). Note
+that the pO<sub>2</sub> graph now indicates the appropriate pO<sub>2</sub> values, since the
+gas breathed now has the pO<sub>2</sub> of an OC configuration. In order to switch to
+the bailout cylinder (Cyl. 3), indicate this by selecting the appropriate
+cylinder in the <strong>Dive planner points</strong> table as indicated in the image on the
+right, below (labeled <strong>B</strong>). The icon on the depth profile now shows an
+overlapping bailout event with cylinder change. As in the graph on the left,
+the appropriate pO<sub>2</sub> values are shown in the pO<sub>2</sub> graphs. The volumes of
+gas required can be obtained at the bottom of the <strong>Dive plan details</strong> panel.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pscr_b2.jpg" alt="FIGURE: Planifier des plongées pSCR : configuration" />
+</div>
+</div>
+<div class="paragraph"><p>In the case of a pSCR dive plan for open water, the worst-case scenario is
+probably bailout at the end of the deepest part of the dive.  Create a
+1-minute segment at the end of the deepest part of the dive plan. This last
+segment (represented by the bottom row of the <strong>Dive planner points</strong> table)
+is then manipulated using the <strong>Dive mode</strong> and <strong>Used gas</strong> columns, as in the
+cave example, above. See the example of bailout for a CCR dive, below, that
+uses this approach.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -5920,11 +6121,52 @@ this is calculated for bail out ascents.</p></div>
 <div class="paragraph"><p>The dive profile for a CCR dive may look something like the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_CCR.jpg" alt="FIGURE: Planning a CCR dive: setup" />
+<img src="images/Planner_CCR.jpg" alt="FIGURE: Planifier des plongées CCR : configuration" />
 </div>
 </div>
 <div class="paragraph"><p>Note that, in the <em>Dive plan details</em>, the gas consumption for a CCR segment
 is not calculated, so gas consumptions of 0 liters are the norm.</p></div>
+<div class="sect3">
+<h4 id="_planification_pour_bailout_ccr">14.4.1. Planification pour bailout CCR</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b1.jpg" alt="Note" />
+</td>
+<td class="content">It is often necessary to plan for a worst-case bailout event in order to
+ensure sufficient bailout gas to reach the surface, taking into account
+decompression. This is done by defining a 1-minute segment at the end of the
+bottom part of the dive, as in the image on the left where a CCR dive to 40m
+for 21 minutes is planned.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b2.jpg" alt="Note" />
+</td>
+<td class="content">In the dive planner points table, change the <em>Dive mode</em> of this 1-minute
+segment to <em>OC</em>. This signifies bailout. In this case there is bailout to
+the existing diluent cylinder (assuming this cylinder has sufficient
+gas). The appropriate pO<sub>2</sub> and cylinder pressure graphs are shown in the
+dive profile, as in the image on the left. Note that the setpoint drops to
+zero after bailout, since this value does not apply to breathed bailout gas.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b3.jpg" alt="Note" />
+</td>
+<td class="content">In order to plan for bailout to an external bailout cylinder, change the
+<em>Used gas</em> for the 1-minute segment to the appropriate cylinder, as in the
+example on the left. Note that the cylinder change as well as the bailout
+are indicated with overlapping icons.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The volumes of gases required for bailout can be found at the bottom of the
+<strong>Dive plan details</strong> panel.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="S_Replan">14.5. Modifier une planification existante</h3>
@@ -7006,10 +7248,13 @@ Within <em>Subsurface</em>, select <em>Import &#8594; Import log files</em> to o
 <p>
 In the dropdown list towards the bottom right of the dialogue (labeled
   <em>Filter:</em>), select "APD log viewer".
-On the list of file names select the <em>.apd</em> file  created. An import
-dialogue opens showing the default settings for the data in the
-<em>.apd</em> file. If changes are required,
-  do this as for <a href="#S_ImportingCSVDives">CSV imports</a>.
+</p>
+</li>
+<li>
+<p>
+On the list of file names select the <em>.apd</em> file created. An import dialogue
+  opens showing the default settings for the data in the <em>.apd</em> file. If
+  changes are required, do this as for <a href="#S_ImportingCSVDives">CSV imports</a>.
 </p>
 </li>
 </ul></div>
@@ -7693,6 +7938,13 @@ cellspacing="0" cellpadding="4">
 </tbody>
 </table>
 </div>
+<div class="paragraph"><p>Please note that some of the variables like <em>notes</em> need to be extended with
+<em>|safe</em> to support HTML tags:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>        &lt;p&gt; {{ dive.notes|safe }} &lt;/p&gt;</code></pre>
+</div></div>
+<div class="paragraph"><p>Otherwise tags like <em>br</em> would not be converted to line breaks.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> also exports <strong>template_options</strong> data. This data must be used as
 <em>CSS</em> values to provide a dynamically editable template. The exported data
 is shown in the following table:</p></div>
@@ -7963,7 +8215,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-02-07 17:48:32 CET
+ 2018-06-26 10:17:19 CEST
 </div>
 </div>
 </body>

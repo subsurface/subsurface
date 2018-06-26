@@ -109,24 +109,24 @@ explicit permission to do so, the data are not used for any purpose other
 than providing them to the user who created them. There are no ads and no
 harvesting / analysis of the data stored in the Subsurface cloud storage.
 
-Enter an e-mail address and a password in the fields indicated on the
-screen.  The e-mail address should be in lower case and the password should
-contain a combination of letters from the alphabet (upper and lower case)
-and/or numbers.  Tap the "Sign-in or Register" button. If you have already
-set up an account from the _Subsurface_ desktop application, enter the same
-credentials here.  Once the dive list has been downloaded from the cloud,
-_Subsurface-mobile_ usually works only with the the local copy on the mobile
-device. This avoids long delays or even failure of operations if there is a
-bad (or no) internet connection, a situation fairly common at many dive
-sites.
+1) Enter an e-mail address and a password in the fields indicated on the
+   screen.  The e-mail address should be in lower case and the password should
+   contain a combination of letters from the alphabet (upper and lower case)
+   and/or numbers.  Tap the "Sign-in or Register" button. If you have already
+   set up an account from the _Subsurface_ desktop application, enter the same
+   credentials here.  Once the dive list has been downloaded from the cloud,
+   _Subsurface-mobile_ usually works only with the the local copy on the mobile
+   device. This avoids long delays or even failure of operations if there is a
+   bad (or no) internet connection, a situation fairly common at many dive
+   sites.
 
-If this is a new account, a PIN screen will open (see image on right,
-above). A PIN is e-mailed to the email address entered in the previous
-step. Enter this PIN into the field indicated and tap the _Register_
-button. The user information is stored on the cloud server and access to the
-cloud is enabled. In this case the dive list is initially empty. Start
-entering dives in the dive log or download dive information from a supported
-dive computer.
+3) If this is a new account, a PIN screen will open (see image on right,
+   above). A PIN is e-mailed to the email address entered in the previous
+   step. Enter this PIN into the field indicated and tap the _Register_
+   button. The user information is stored on the cloud server and access to the
+   cloud is enabled. In this case the dive list is initially empty. Start
+   entering dives in the dive log or download dive information from a supported
+   dive computer.
 
 The dive log can be updated automatically. If there is Internet
 connectivity, _Subsurface-mobile_ accesses the cloud-based dive log to
