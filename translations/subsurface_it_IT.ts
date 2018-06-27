@@ -33,7 +33,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Copia i log nella clipboard</translation>
     </message>
 </context>
 <context>
@@ -3998,7 +3998,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/gpslocation.cpp" line="135"/>
         <source>Unknown GPS location (no GPS source)</source>
-        <translation type="unfinished"/>
+        <translation>Posizione GPS sconosciuta (GPS non trovato)</translation>
     </message>
 </context>
 <context>
@@ -5514,22 +5514,22 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Mostra i valori dei sensori O₂ when osservi la pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Mostra i setpoint CCR quando osservi la pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>pSCR consumo metabolico O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Mostra la pO₂ CA equivalente con la pO₂ pSCR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -5544,7 +5544,7 @@ Se il tuo strumento usa il Bluetooth, prima di eseguire l&apos;aggiornamento, es
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <source>Recalculate thumbnails if older than image</source>
-        <translation type="unfinished"/>
+        <translation>Rigenera le miniature se sono più vecchie delle immagini</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -6211,7 +6211,7 @@ Per favore esporta questo modello in un file diverso.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1437"/>
         <source>Change divemode</source>
-        <translation type="unfinished"/>
+        <translation>Cambia la modalità di immersione</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1461"/>
@@ -7174,7 +7174,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="37"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation type="unfinished"/>
+        <translation>Per utilizzare Subsurface-mobile con il Subsurface cloud storage, inserisci le tue credenziali per il cloud.&lt;br/&gt;&lt;br/&gt;Se questa è la prima volta che usi la memoria cloud di Subsurface, inserisci un indirizzo email valido (tutte lettere minuscole) e una password (lettere e numeri).&lt;br/&gt;&lt;br/&gt;Per usare Subsurface-mobile solo con i dati locali su questo dispositivo, seleziona il tasto no cloud in alto.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
@@ -7427,7 +7427,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Recalculate selected thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Rigenera le miniature selezionate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
@@ -7822,7 +7822,7 @@ mixati con aria e usando:
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="125"/>
         <source>More Actions</source>
-        <translation type="unfinished"/>
+        <translation>Più azioni</translation>
     </message>
 </context>
 <context>
@@ -9297,7 +9297,8 @@ Media</translation>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Errore all&apos;apertura di %s %s (%s).
+Di solito per capire il problema è utile mandare i file di log agli sviluppatori. Puoi copiarli nella clipboard attraverso la maschera Informazioni.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9579,18 +9580,18 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Rimani a %.*f %s per %d:%02d min - runtime %d:%02u su %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Rimani a %.*f %s per %d:%02d min - runtime %d:%02u con %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9881,7 +9882,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>CDI nel tessuto pilota
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -10758,7 +10760,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1628"/>
         <source>modechange</source>
-        <translation type="unfinished"/>
+        <translation>cambia modalità</translation>
     </message>
 </context>
 <context>
@@ -10781,7 +10783,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Disable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>Disabilita sincronizzazione automatica con il cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>

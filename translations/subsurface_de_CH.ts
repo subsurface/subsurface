@@ -3017,7 +3017,7 @@ Position verwenden</translation>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="180"/>
         <source>Fresh water</source>
-        <translation>Süßwasser</translation>
+        <translation>Süsswasser</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="185"/>
@@ -5521,12 +5521,12 @@ Wenn es sich um ein Bluetooth-Gerät handelt, bitte die gleichen Vorbereitungen 
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>pSCR O₂-Umsatz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Zeige äquivalente OC pO₂ zur pSCR pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -7174,7 +7174,7 @@ Dateien mit unpassendem Datum/Zeit</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
         <source>Thank you for registering with Subsurface. We sent &lt;b&gt;%1&lt;/b&gt; a PIN code to complete the registration. If you do not receive an email from us within 15 minutes, please check the correct spelling of your email address and your spam box first.&lt;br/&gt;&lt;br/&gt;In case of any problems regarding cloud account setup, please contact us at our user forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Vielen Dank für die Registrierung bei Subsurface. Wir haben einen PIN-Code an &lt;b&gt;%1&lt;/b&gt; geschickt, um die Registrierung abzuschließen. Sollte innerhalb von 15 Minuten keine E-Mail eingehen, bitte die E-Mail-Adresse auf Tippfehler überprüfen und in den Spam-Order sehen.&lt;br/&gt;&lt;br/&gt;Bei Problemen beim Erstellen des Clould-Kontos bitte eine Nachricht im Benutzerforum (https://subsurface-divelog.org/user-forum/) hinterlassen.&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Vielen Dank für die Registrierung bei Subsurface. Wir haben einen PIN-Code an &lt;b&gt;%1&lt;/b&gt; geschickt, um die Registrierung abzuschliessen. Sollte innerhalb von 15 Minuten keine E-Mail eingehen, bitte die E-Mail-Adresse auf Tippfehler überprüfen und in den Spam-Order sehen.&lt;br/&gt;&lt;br/&gt;Bei Problemen beim Erstellen des Clould-Kontos bitte eine Nachricht im Benutzerforum (https://subsurface-divelog.org/user-forum/) hinterlassen.&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>
@@ -7817,7 +7817,7 @@ den folgenden Gasen gemischt werden:
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="125"/>
         <source>More Actions</source>
-        <translation type="unfinished"/>
+        <translation>Weitere Aktionen</translation>
     </message>
 </context>
 <context>
@@ -9293,7 +9293,8 @@ Durchschnitt</translation>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Fehler beim Öffnen von Gerät %s %s (%s).
+In solchen Fällen helfen in der Regel die Logdateien den Entwicklern bei der Fehlersuche. Diese können auf der &apos;Über&apos; Seite kopiert werden.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9574,18 +9575,18 @@ Die kann durch Setzen einen Häkchens im Download-Dialog erstellt werden.</trans
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Auf %.*f %s bleiben für %d:%02d min - Runtime %d:%02u mit %s (Setpoint = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Verbleibe auf %.*f %s für %d:%02d min - Runtime %d:%02u mit %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9875,7 +9876,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>ICD im Führungsgewebe
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -10727,7 +10729,7 @@ Ist der Uemis Zürich korrekt verbunden?</translation>
     <message>
         <location filename="../core/taxonomy.c" line="14"/>
         <source>City</source>
-        <translation>Großstadt</translation>
+        <translation>Grossstadt</translation>
     </message>
     <message>
         <location filename="../core/save-git.c" line="955"/>

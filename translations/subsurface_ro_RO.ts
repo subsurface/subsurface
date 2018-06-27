@@ -9294,7 +9294,8 @@ Medie</translation>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Eroare accesare dispozitiv %s %s (%s).
+In majoritatea cazurilor, pentru a afla mai multe, este de folos trimiterea logurilor catre dezvoltatori. Puteti sa le copiati in clipboard din panoul Despre.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9575,18 +9576,18 @@ Poti crea acest jurnal selectand casuta corespunzatoare in fereastra de descarca
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Ramai la %.*f %s pentru %d:%02d  min - timp %d:%02u cu %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Ramai la %.*f %s pentru %d:%02d min - timp %d:%02u cu %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9876,7 +9877,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>ICD in primele tesuturi
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -10753,7 +10755,7 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1628"/>
         <source>modechange</source>
-        <translation type="unfinished"/>
+        <translation>schimbare mod</translation>
     </message>
 </context>
 <context>
@@ -10776,12 +10778,12 @@ Este conectat corect dispozitivul Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Disable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>Dezactiveaza sincronizarea automata cu cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Enable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>Activeaza sincronizarea automata cu cloud</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="344"/>

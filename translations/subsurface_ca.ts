@@ -9575,18 +9575,18 @@ Podeu crear aquest fitxer de registre seleccionant la casella de selecció corre
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Romandre a %.*f %s durant %d:%02d min. - temps acumulat %d:%02u amb %s (PA = %.1fbar amb CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Romandre a %.*f %s durant %d:%02d min. - temps acumulat %d:%02u amb %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(PA = %.1fbar amb CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
