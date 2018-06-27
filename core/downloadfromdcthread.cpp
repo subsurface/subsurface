@@ -220,7 +220,11 @@ DCDeviceData::DCDeviceData()
 	data.force_download = false;
 	data.create_new_trip = false;
 	data.libdc_dump = false;
+#if defined(SUBSURFACE_MOBILE)
+	data.libdc_log = true;
+#else
 	data.libdc_log = false;
+#endif
 	if (m_instance) {
 		qDebug() << "already have an instance of DCDevieData";
 		return;
