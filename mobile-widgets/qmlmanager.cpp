@@ -1675,11 +1675,6 @@ bool QMLManager::DC_saveDump() const
 	return m_device_data->saveDump();
 }
 
-bool QMLManager::DC_saveLog() const
-{
-	return m_device_data->saveLog();
-}
-
 int QMLManager::DC_deviceId() const
 {
 	return m_device_data->deviceId();
@@ -1728,11 +1723,6 @@ void QMLManager::DC_setCreateNewTrip(bool create)
 void QMLManager::DC_setSaveDump(bool dumpMode)
 {
 	m_device_data->setSaveDump(dumpMode);
-}
-
-void QMLManager::DC_setSaveLog(bool saveLog)
-{
-	m_device_data->setSaveLog(saveLog);
 }
 
 QStringList QMLManager::getProductListFromVendor(const QString &vendor)

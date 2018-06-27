@@ -48,7 +48,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool DC_bluetoothMode READ DC_bluetoothMode WRITE DC_setBluetoothMode)
 	Q_PROPERTY(bool DC_createNewTrip READ DC_createNewTrip WRITE DC_setCreateNewTrip)
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
-	Q_PROPERTY(bool DC_saveLog READ DC_saveLog WRITE DC_setSaveLog)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
 public:
 	QMLManager();
@@ -79,9 +78,6 @@ public:
 
 	bool DC_saveDump() const;
 	void DC_setSaveDump(bool dumpMode);
-
-	bool DC_saveLog() const;
-	void DC_setSaveLog(bool saveLog);
 
 	int DC_deviceId() const;
 	void DC_setDeviceId(int deviceId);
