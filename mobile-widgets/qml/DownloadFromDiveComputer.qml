@@ -209,7 +209,7 @@ Kirigami.Page {
 			}
 
 			Controls.Label {
-				Layout.maximumWidth: parent.width - download.width - quitbutton.width - rescanbutton.width
+				Layout.fillWidth: true
 				text: divesDownloaded ? qsTr(" Downloaded dives") :
 							(manager.progressMessage != "" ? qsTr("Info:") + " " + manager.progressMessage : btMessage)
 				wrapMode: Text.WrapAtWordBoundaryOrAnywhere
