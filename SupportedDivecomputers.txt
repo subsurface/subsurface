@@ -24,6 +24,7 @@ Shearwater: Nerd, Nerd 2, Perdix, Perdix AI, Petrel, Petrel 2, Predator
 Sherwood: Amphos, Amphos Air, Insight, Insight 2, Vision, Wisdom, Wisdom 2, Wisdom 3
 Subgear: XP Air, XP-10, XP-3G, XP-Air
 Suunto: Cobra, Cobra 2, Cobra 3, D3, D4, D4f, D4i, D6, D6i, D9, D9tx, DX, EON Core, EON Steel, Eon, Gekko, HelO2, Mosquito, Solution, Solution Alpha, Solution Nitrox, Spyder, Stinger, Vyper, Vyper 2, Vyper Air, Vyper Novo, Vytec, Zoop, Zoop Novo
+Tecdiving: DiveComputer.eu
 Tusa: Element II (IQ-750), IQ-700, Zen (IQ-900), Zen Air (IQ-950)
 Uemis: Zürich SDA
 Uwatec: Aladin 2G, Aladin Air Twin, Aladin Air Z, Aladin Air Z Nitrox, Aladin Air Z O2, Aladin Prime, Aladin Pro, Aladin Pro Ultra, Aladin Sport, Aladin Sport Plus, Aladin Tec, Aladin Tec 2G, Aladin Tec 3G, Galileo Luna, Galileo Sol, Galileo Terra, Galileo Trimix, Memomouse, Smart Com, Smart Pro, Smart Tec, Smart Z
