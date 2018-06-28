@@ -73,134 +73,6 @@ void UpdateManagerSettings::setNextCheck(const QDate& date)
 }
 
 
-PartialPressureGasSettings::PartialPressureGasSettings(QObject* parent):
-	QObject(parent)
-{
-
-}
-
-bool PartialPressureGasSettings::showPo2() const
-{
-	return prefs.pp_graphs.po2;
-}
-
-bool PartialPressureGasSettings::showPn2() const
-{
-	return prefs.pp_graphs.pn2;
-}
-
-bool PartialPressureGasSettings::showPhe() const
-{
-	return prefs.pp_graphs.phe;
-}
-
-double PartialPressureGasSettings::po2ThresholdMin() const
-{
-	return prefs.pp_graphs.po2_threshold_min;
-}
-
-double PartialPressureGasSettings::po2ThresholdMax() const
-{
-	return prefs.pp_graphs.po2_threshold_max;
-}
-
-
-double PartialPressureGasSettings::pn2Threshold() const
-{
-	return prefs.pp_graphs.pn2_threshold;
-}
-
-double PartialPressureGasSettings::pheThreshold() const
-{
-	return prefs.pp_graphs.phe_threshold;
-}
-
-void PartialPressureGasSettings::setShowPo2(bool value)
-{
-	if (value == prefs.pp_graphs.po2)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("po2graph", value);
-	prefs.pp_graphs.po2 = value;
-	emit showPo2Changed(value);
-}
-
-void PartialPressureGasSettings::setShowPn2(bool value)
-{
-	if (value == prefs.pp_graphs.pn2)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("pn2graph", value);
-	prefs.pp_graphs.pn2 = value;
-	emit showPn2Changed(value);
-}
-
-void PartialPressureGasSettings::setShowPhe(bool value)
-{
-	if (value == prefs.pp_graphs.phe)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("phegraph", value);
-	prefs.pp_graphs.phe = value;
-	emit showPheChanged(value);
-}
-
-void PartialPressureGasSettings::setPo2ThresholdMin(double value)
-{
-	if (value == prefs.pp_graphs.po2_threshold_min)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("po2thresholdmin", value);
-	prefs.pp_graphs.po2_threshold_min = value;
-	emit po2ThresholdMinChanged(value);
-}
-
-void PartialPressureGasSettings::setPo2ThresholdMax(double value)
-{
-	if (value == prefs.pp_graphs.po2_threshold_max)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("po2thresholdmax", value);
-	prefs.pp_graphs.po2_threshold_max = value;
-	emit po2ThresholdMaxChanged(value);
-}
-
-void PartialPressureGasSettings::setPn2Threshold(double value)
-{
-	if (value == prefs.pp_graphs.pn2_threshold)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("pn2threshold", value);
-	prefs.pp_graphs.pn2_threshold = value;
-	emit pn2ThresholdChanged(value);
-}
-
-void PartialPressureGasSettings::setPheThreshold(double value)
-{
-	if (value == prefs.pp_graphs.phe_threshold)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("phethreshold", value);
-	prefs.pp_graphs.phe_threshold = value;
-	emit pheThresholdChanged(value);
-}
-
-
-
 UnitsSettings::UnitsSettings(QObject *parent) :
 	QObject(parent)
 {
@@ -389,7 +261,7 @@ void UnitsSettings::setUnitSystem(const QString& value)
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
 	techDetails(new qPrefTechnicalDetails(this)),
-	pp_gas(new PartialPressureGasSettings(this)),
+	pp_gas(new qPrefPartialPressureGas(this)),
 	facebook(new qPrefFacebook(this)),
 	geocoding(new qPrefGeocoding(this)),
 	cloud_storage(new qPrefCloudStorage(this)),

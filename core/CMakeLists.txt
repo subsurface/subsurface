@@ -110,6 +110,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefGeocoding.cpp
 	settings/qPrefLanguage.cpp
 	settings/qPrefLocationService.cpp
+	settings/qPrefPartialPressureGas.cpp
 	settings/qPrefProxy.cpp
 	settings/qPrefTechnicalDetails.cpp
 
