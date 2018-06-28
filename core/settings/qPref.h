@@ -19,8 +19,6 @@
 #include "qPrefTechnicalDetails.h"
 
 
-#define TechnicalDetailsSettings qPrefTechnicalDetails
-
 class qPref : public QObject {
 	Q_OBJECT
 	Q_ENUMS(cloud_status);

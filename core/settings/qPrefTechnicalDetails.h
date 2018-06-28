@@ -8,123 +8,34 @@
 
 class qPrefTechnicalDetails : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool		buehlmann
-				READ	buehlmann
-				WRITE	setBuehlmann
-				NOTIFY	buehlmannChanged);
-	Q_PROPERTY(bool		calcalltissues
-				READ	calcalltissues
-				WRITE	setCalcalltissues
-				NOTIFY	calcalltissuesChanged);
-	Q_PROPERTY(bool		calcceiling
-				READ	calcceiling
-				WRITE	setCalcceiling
-				NOTIFY	calcceilingChanged);
-	Q_PROPERTY(bool		calcceiling3m
-				READ	calcceiling3m
-				WRITE	setCalcceiling3m
-				NOTIFY	calcceiling3mChanged);
-	Q_PROPERTY(bool		calcndltts
-				READ	calcndltts
-				WRITE	setCalcndltts
-				NOTIFY	calcndlttsChanged);
-	Q_PROPERTY(bool		dcceiling
-				READ	dcceiling
-				WRITE	setDCceiling
-				NOTIFY	dcceilingChanged);
-	Q_PROPERTY(deco_mode	deco_mode
-				READ		decoMode
-				WRITE		setDecoMode
-				NOTIFY      decoModeChanged);
-	Q_PROPERTY(bool		display_unused_tanks
-				READ	displayUnusedTanks
-				WRITE	setDisplayUnusedTanks
-				NOTIFY  displayUnusedTanksChanged);
-	Q_PROPERTY(bool		ead
-				READ	ead
-				WRITE	setEad
-				NOTIFY	eadChanged);
-	Q_PROPERTY(int		gfhigh
-				READ	gfhigh
-				WRITE	setGfhigh
-				NOTIFY  gfhighChanged);
-	Q_PROPERTY(int		gflow
-				READ	gflow
-				WRITE	setGflow
-				NOTIFY  gflowChanged);
-	Q_PROPERTY(int		gf_low_at_maxdepth
-				READ	gflowAtMaxDepth
-				WRITE	setGflowAtMaxDepth
-				NOTIFY  gflowAtMaxDepthChanged);
-	Q_PROPERTY(bool		hrgraph
-				READ	hrgraph
-				WRITE	setHRgraph
-				NOTIFY	hrgraphChanged);
-	Q_PROPERTY(bool		mod
-				READ	mod
-				WRITE	setMod
-				NOTIFY	modChanged);
-	Q_PROPERTY(double	modpO2
-				READ	modpO2
-				WRITE	setModpO2
-				NOTIFY  modpO2Changed);
-	Q_PROPERTY(bool		percentagegraph
-				READ	percentageGraph
-				WRITE	setPercentageGraph
-				NOTIFY	percentageGraphChanged
-				NOTIFY  percentageGraphChanged);
-	Q_PROPERTY(bool		redceiling
-				READ	redceiling
-				WRITE	setRedceiling
-				NOTIFY	redceilingChanged
-				NOTIFY  redceilingChanged);
-	Q_PROPERTY(bool		rulergraph
-				READ	rulerGraph
-				WRITE	setRulerGraph
-				NOTIFY	rulerGraphChanged
-				NOTIFY  rulerGraphChanged);
-	Q_PROPERTY(bool		show_average_depth
-				READ	showAverageDepth
-				WRITE	setShowAverageDepth
-				NOTIFY	showAverageDepthChanged
-				NOTIFY  showAverageDepthChanged);
-	Q_PROPERTY(bool		show_ccr_sensors
-				READ	showCCRSensors
-				WRITE	setShowCCRSensors
-				NOTIFY	showCCRSensorsChanged
-				NOTIFY  showCCRSensorsChanged);
-	Q_PROPERTY(bool		show_ccr_setpoint
-				READ	showCCRSetpoint
-				WRITE	setShowCCRSetpoint
-				NOTIFY	showCCRSetpointChanged);
-	Q_PROPERTY(bool		show_icd
-				READ	showIcd
-				WRITE	setShowIcd
-				NOTIFY  showIcdChanged);
-	Q_PROPERTY(bool		show_pictures_in_profile
-				READ	showPicturesInProfile
-				WRITE	setShowPicturesInProfile
-				NOTIFY	showPicturesInProfileChanged);
-	Q_PROPERTY(bool		show_sac
-				READ	showSac
-				WRITE	setShowSac
-				NOTIFY	showSacChanged);
-	Q_PROPERTY(bool		show_scr_ocpo2
-				READ	showSCROCpO2
-				WRITE	setShowSCROCpO2
-				NOTIFY	showSCROCpO2Changed);
-	Q_PROPERTY(bool		tankbar
-				READ	tankBar
-				WRITE	setTankBar
-				NOTIFY	tankBarChanged);
-	Q_PROPERTY(short	vpmb_conservatism
-				READ	vpmbConservatism
-				WRITE	setVpmbConservatism
-				NOTIFY  vpmbConservatismChanged);
-	Q_PROPERTY(bool		zoomed_plot
-				READ	zoomedPlot
-				WRITE	setZoomedPlot
-				NOTIFY	zoomedPlotChanged);
+	Q_PROPERTY(bool buehlmann READ buehlmann WRITE setBuehlmann NOTIFY buehlmannChanged);
+	Q_PROPERTY(bool calcalltissues READ calcalltissues WRITE setCalcalltissues NOTIFY calcalltissuesChanged);
+	Q_PROPERTY(bool calcceiling READ calcceiling WRITE setCalcceiling NOTIFY calcceilingChanged);
+	Q_PROPERTY(bool calcceiling3m READ calcceiling3m WRITE setCalcceiling3m NOTIFY calcceiling3mChanged);
+	Q_PROPERTY(bool calcndltts READ calcndltts WRITE setCalcndltts NOTIFY calcndlttsChanged);
+	Q_PROPERTY(bool dcceiling READ dcceiling WRITE setDCceiling NOTIFY dcceilingChanged);
+	Q_PROPERTY(deco_mode deco_mode READ decoMode WRITE setDecoMode NOTIFY decoModeChanged);
+	Q_PROPERTY(bool display_unused_tanks READ displayUnusedTanks WRITE setDisplayUnusedTanks NOTIFY displayUnusedTanksChanged);
+	Q_PROPERTY(bool ead READ ead WRITE setEad NOTIFY eadChanged);
+	Q_PROPERTY(int gfhigh READ gfhigh WRITE setGfhigh NOTIFY gfhighChanged);
+	Q_PROPERTY(int gflow READ gflow WRITE setGflow NOTIFY gflowChanged);
+	Q_PROPERTY(int gf_low_at_maxdepth READ gflowAtMaxDepth WRITE setGflowAtMaxDepth NOTIFY gflowAtMaxDepthChanged);
+	Q_PROPERTY(bool hrgraph READ hrgraph WRITE setHRgraph NOTIFY hrgraphChanged);
+	Q_PROPERTY(bool mod READ mod WRITE setMod NOTIFY modChanged);
+	Q_PROPERTY(double modpO2 READ modpO2 WRITE setModpO2 NOTIFY modpO2Changed);
+	Q_PROPERTY(bool percentagegraph READ percentageGraph WRITE setPercentageGraph NOTIFY percentageGraphChanged);
+	Q_PROPERTY(bool redceiling READ redceiling WRITE setRedceiling NOTIFY redceilingChanged);
+	Q_PROPERTY(bool rulergraph READ rulerGraph WRITE setRulerGraph NOTIFY rulerGraphChanged);
+	Q_PROPERTY(bool show_average_depth READ showAverageDepth WRITE setShowAverageDepth NOTIFY showAverageDepthChanged);
+	Q_PROPERTY(bool show_ccr_sensors READ showCCRSensors WRITE setShowCCRSensors NOTIFY showCCRSensorsChanged);
+	Q_PROPERTY(bool show_ccr_setpoint READ showCCRSetpoint WRITE setShowCCRSetpoint NOTIFY showCCRSetpointChanged);
+	Q_PROPERTY(bool show_icd READ showIcd WRITE setShowIcd NOTIFY showIcdChanged);
+	Q_PROPERTY(bool show_pictures_in_profile READ showPicturesInProfile WRITE setShowPicturesInProfile NOTIFY showPicturesInProfileChanged);
+	Q_PROPERTY(bool show_sac READ showSac WRITE setShowSac NOTIFY showSacChanged);
+	Q_PROPERTY(bool show_scr_ocpo2 READ showSCROCpO2 WRITE setShowSCROCpO2 NOTIFY showSCROCpO2Changed);
+	Q_PROPERTY(bool tankbar READ tankBar WRITE setTankBar NOTIFY tankBarChanged);
+	Q_PROPERTY(short vpmb_conservatism READ vpmbConservatism WRITE setVpmbConservatism NOTIFY vpmbConservatismChanged);
+	Q_PROPERTY(bool zoomed_plot READ zoomedPlot WRITE setZoomedPlot NOTIFY zoomedPlotChanged);
 
 public:
 	qPrefTechnicalDetails(QObject *parent = NULL) : QObject(parent) {};
