@@ -32,7 +32,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation>Tauchgang in die Zwischenablage kopieren</translation>
+        <translation>Logdateien in die Zwischenablage kopieren</translation>
     </message>
 </context>
 <context>
@@ -5101,12 +5101,12 @@ Subsurface hat bereits versucht, Daten einzutragen, aber es empfiehlt sich, die 
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="16"/>
         <source>Copy coordinates to clipboard (decimal)</source>
-        <translation>Koordinaten ins Clipboard kopieren (dezimal)</translation>
+        <translation>Koordinaten in die Zwischenablage kopieren (dezimal)</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="17"/>
         <source>Copy coordinates to clipboard (sexagesimal)</source>
-        <translation>Koordinaten ins Clipboard kopieren (sexagesimal)</translation>
+        <translation>Koordinaten in die Zwischenablage kopieren (sexagesimal)</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="18"/>

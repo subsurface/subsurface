@@ -25,12 +25,15 @@
 
 © Subsurface developer team
 2011-2018</source>
-        <translation type="unfinished"/>
+        <translation>Версия: %1
+
+© Команда разработчиков Subsurface
+2011-2018</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Копировать журнал в буфер</translation>
     </message>
 </context>
 <context>
@@ -38,7 +41,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml" line="51"/>
         <source>Navigate Back</source>
-        <translation type="unfinished"/>
+        <translation>Вернуться назад</translation>
     </message>
 </context>
 <context>
@@ -69,22 +72,22 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <source>Bluetooth mode</source>
-        <translation type="unfinished"/>
+        <translation>Режим Bluetooth</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="201"/>
         <source>Auto</source>
-        <translation type="unfinished"/>
+        <translation>Авто</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
         <source>Force LE</source>
-        <translation type="unfinished"/>
+        <translation>Только LE</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="211"/>
         <source>Force classical</source>
-        <translation type="unfinished"/>
+        <translation>Только классический</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="229"/>
@@ -224,7 +227,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="295"/>
         <source>A device needs a non-zero address for a connection.</source>
-        <translation type="unfinished"/>
+        <translation>Устройству нужен ненулевой адрес для подключения.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="318"/>
@@ -348,12 +351,12 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Ожидание подключения к облаку (прошла %n секунда)</numerusform><numerusform>Ожидание подключения к облаку (прошло %n секунды)</numerusform><numerusform>Ожидание подключения к облаку (прошло %n секунд)</numerusform><numerusform>Ожидание подключения к облаку (прошло %n секунд)</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка соединения с облаком</translation>
     </message>
 </context>
 <context>
@@ -381,7 +384,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="107"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Регистрация</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="118"/>
@@ -391,7 +394,7 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="135"/>
         <source>Sign-in or Register</source>
-        <translation type="unfinished"/>
+        <translation>Войти или зарегистрироваться</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="146"/>
@@ -718,7 +721,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
         <source>OSTC 4</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="262"/>
@@ -1225,12 +1228,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
         <source>OSTC Mk2/2N/2C</source>
-        <translation type="unfinished"/>
+        <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="506"/>
@@ -1636,22 +1639,22 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2881"/>
         <source>Travel gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Расход трэвел-газа</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2904"/>
         <source>Button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Чувствительность кнопок</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3034"/>
         <source>VPM</source>
-        <translation type="unfinished"/>
+        <translation>VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3174"/>
         <source>VPM conservatism</source>
-        <translation type="unfinished"/>
+        <translation>Консерватизм VPM</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3181"/>
@@ -1731,7 +1734,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1411"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1472"/>
@@ -1741,17 +1744,17 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1497"/>
         <source>Connecting to device...</source>
-        <translation type="unfinished"/>
+        <translation>Подключение к устройству...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1523"/>
         <source>Connected to device</source>
-        <translation type="unfinished"/>
+        <translation>Устройство подключено</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1543"/>
         <source>Disconnected from device</source>
-        <translation type="unfinished"/>
+        <translation>Устройство отключено</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1471"/>
@@ -1982,7 +1985,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="159"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"/>
+        <translation>Отмена редактирования</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="169"/>
@@ -2087,7 +2090,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="384"/>
         <source>Visibility:</source>
-        <translation type="unfinished"/>
+        <translation>Видимость:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="398"/>
@@ -2135,7 +2138,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="155"/>
         <source>Visibility:</source>
-        <translation type="unfinished"/>
+        <translation>Видимость:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="337"/>
@@ -2178,12 +2181,12 @@ GPS location:</source>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="189"/>
         <source>ΔHe</source>
-        <translation type="unfinished"/>
+        <translation>ΔHe</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="190"/>
         <source>ΔN₂</source>
-        <translation type="unfinished"/>
+        <translation>ΔN₂</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="211"/>
@@ -2619,29 +2622,29 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="139"/>
         <source>UDDF files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
         <source>CSV files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы CSV</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="154"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="178"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="159"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="171"/>
         <source>TeX files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="142"/>
@@ -2977,7 +2980,7 @@ GPS location:</source>
     <message numerus="yes">
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="339"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n погружение)</numerusform><numerusform>(%n погружения)</numerusform><numerusform>(%n погружений)</numerusform><numerusform>(%n погружений)</numerusform></translation>
     </message>
 </context>
 <context>
@@ -3010,22 +3013,22 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="131"/>
         <source>Water type</source>
-        <translation type="unfinished"/>
+        <translation>Вода</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="180"/>
         <source>Fresh water</source>
-        <translation type="unfinished"/>
+        <translation>Пресная вода</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="185"/>
         <source>Sea water</source>
-        <translation type="unfinished"/>
+        <translation>Соленая вода</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="190"/>
         <source>EN13319</source>
-        <translation type="unfinished"/>
+        <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="195"/>
@@ -3048,7 +3051,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="270"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>балл.</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="376"/>
@@ -3736,7 +3739,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="22"/>
         <source>Bluetooth is not enabled</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth выключен</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="57"/>
@@ -3751,7 +3754,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="123"/>
         <source> Connection:</source>
-        <translation type="unfinished"/>
+        <translation>Соединение:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="189"/>
@@ -3766,7 +3769,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="214"/>
         <source>Rescan</source>
-        <translation type="unfinished"/>
+        <translation>Сканировать</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="222"/>
@@ -3776,7 +3779,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="223"/>
         <source>Info:</source>
-        <translation type="unfinished"/>
+        <translation>Информация:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="263"/>
@@ -3835,7 +3838,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="193"/>
         <source>Facebook logged in successfully</source>
-        <translation type="unfinished"/>
+        <translation>Успешная авторизация Facebook</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="196"/>
@@ -3845,7 +3848,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="294"/>
         <source>Dive uploaded successfully to Facebook</source>
-        <translation type="unfinished"/>
+        <translation>Погружение выгружено в ленту Facebook</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="296"/>
@@ -3904,7 +3907,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/listfilter.ui" line="60"/>
         <source>¬</source>
-        <translation type="unfinished"/>
+        <translation>¬</translation>
     </message>
 </context>
 <context>
@@ -3943,7 +3946,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/ForwardButton.qml" line="48"/>
         <source>Navigate Forward</source>
-        <translation type="unfinished"/>
+        <translation>Перейти вперед</translation>
     </message>
 </context>
 <context>
@@ -3951,7 +3954,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/models.cpp" line="52"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>балл.</translation>
     </message>
 </context>
 <context>
@@ -4576,7 +4579,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="375"/>
         <source>&amp;Map</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Карта</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="383"/>
@@ -4711,7 +4714,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="640"/>
         <source>Toggle gas bar</source>
-        <translation type="unfinished"/>
+        <translation>Газы</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
@@ -4773,7 +4776,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="722"/>
         <source>Cloud storage online</source>
-        <translation type="unfinished"/>
+        <translation>Облачное хранилище подключено</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="373"/>
@@ -4911,13 +4914,13 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1441"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1680"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы Subsurface</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1399"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1442"/>
         <source>Cochran</source>
-        <translation type="unfinished"/>
+        <translation>Cochran</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1400"/>
@@ -4929,25 +4932,25 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1401"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
         <source>JDiveLog</source>
-        <translation type="unfinished"/>
+        <translation>JDiveLog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
         <source>Liquivision</source>
-        <translation type="unfinished"/>
+        <translation>Liquivision</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1403"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1447"/>
         <source>Suunto</source>
-        <translation type="unfinished"/>
+        <translation>Suunto</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1404"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1448"/>
         <source>UDCF</source>
-        <translation type="unfinished"/>
+        <translation>UDCF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1405"/>
@@ -4959,25 +4962,25 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1406"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
         <source>XML</source>
-        <translation type="unfinished"/>
+        <translation>XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1407"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1451"/>
         <source>Divesoft</source>
-        <translation type="unfinished"/>
+        <translation>Divesoft</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1452"/>
         <source>Datatrak/WLog</source>
-        <translation type="unfinished"/>
+        <translation>Datatrak/WLog</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1453"/>
         <source>MkVI files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы MkVI</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
@@ -4989,13 +4992,13 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1455"/>
         <source>OSTCtools</source>
-        <translation type="unfinished"/>
+        <translation>OSTCtools</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1456"/>
         <source>DAN DL7</source>
-        <translation type="unfinished"/>
+        <translation>DAN DL7</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1443"/>
@@ -5005,7 +5008,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1457"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1468"/>
@@ -5087,17 +5090,17 @@ Subsurface попытался перенести уже существующие
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="15"/>
         <source>Open in Google Maps</source>
-        <translation type="unfinished"/>
+        <translation>Открыть в картах Google</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="16"/>
         <source>Copy coordinates to clipboard (decimal)</source>
-        <translation type="unfinished"/>
+        <translation>Копировать коорд. в буфер (десятичные)</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="17"/>
         <source>Copy coordinates to clipboard (sexagesimal)</source>
-        <translation type="unfinished"/>
+        <translation>Копировать коорд. в буфер (мин/сек)</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
@@ -5161,7 +5164,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="325"/>
         <source>Firmware files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы прошивки</translation>
     </message>
 </context>
 <context>
@@ -5171,7 +5174,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../mobile-widgets/qml/kirigami/examples/qmakewithstaticplugin/src/Page1Form.ui.qml" line="26"/>
         <location filename="../mobile-widgets/qml/kirigami/examples/staticcmake/src/Page1Form.ui.qml" line="26"/>
         <source>Page 1</source>
-        <translation type="unfinished"/>
+        <translation>Стр. 1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/kirigami/examples/minimalqmake/Page1Form.ui.qml" line="37"/>
@@ -5185,7 +5188,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../mobile-widgets/qml/kirigami/examples/qmakewithstaticplugin/src/Page1Form.ui.qml" line="42"/>
         <location filename="../mobile-widgets/qml/kirigami/examples/staticcmake/src/Page1Form.ui.qml" line="49"/>
         <source>Press Me</source>
-        <translation type="unfinished"/>
+        <translation>Нажми меня</translation>
     </message>
 </context>
 <context>
@@ -5373,7 +5376,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы Subsurface</translation>
     </message>
 </context>
 <context>
@@ -5500,22 +5503,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Показывать значения датчиков O₂ при просмотре pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Показывать CCR SP при просмотре pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>pSCR метаболизм O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Показывать эквив. OC pO₂ вместе с pSCR pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -5805,12 +5808,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="140"/>
         <source>Subsurface cloud storage (incorrect password)</source>
-        <translation type="unfinished"/>
+        <translation>Облачное хранилище Subsurface (неверный пароль)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="142"/>
         <source>Subsurface cloud storage (PIN required)</source>
-        <translation type="unfinished"/>
+        <translation>Облачное хранилище Subsurface (нужен PIN)</translation>
     </message>
 </context>
 <context>
@@ -5948,37 +5951,37 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="237"/>
         <source>Duration units</source>
-        <translation type="unfinished"/>
+        <translation>Длительность погружений</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="243"/>
         <source>Show hours in duration</source>
-        <translation type="unfinished"/>
+        <translation>Показывать часы</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="250"/>
         <source>hh:mm (always)</source>
-        <translation type="unfinished"/>
+        <translation>час:мин (всегда)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="257"/>
         <source>mm (always)</source>
-        <translation type="unfinished"/>
+        <translation>мин (всегда)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="264"/>
         <source>mm (for dives shorter than 1 hour), hh:mm (otherwise)</source>
-        <translation type="unfinished"/>
+        <translation>мин (если длительность меньше часа), иначе час:мин</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="274"/>
         <source>Dive list table</source>
-        <translation type="unfinished"/>
+        <translation>Список погружений</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="280"/>
         <source>Show units in dive list table</source>
-        <translation type="unfinished"/>
+        <translation>Показывать единицы измерений</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="290"/>
@@ -6104,7 +6107,7 @@ Please export this template to a different file.</source>
         <location filename="../desktop-widgets/printoptions.cpp" line="149"/>
         <location filename="../desktop-widgets/printoptions.cpp" line="180"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="159"/>
@@ -6986,12 +6989,12 @@ Files with inappropriate date/time</source>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="60"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="71"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Все файлы</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="71"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Файлы Subsurface</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="70"/>
@@ -7342,7 +7345,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="306"/>
         <source>Water type</source>
-        <translation type="unfinished"/>
+        <translation>Вода</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="71"/>
@@ -9540,13 +9543,13 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <location filename="../core/plannernotes.c" line="214"/>
         <location filename="../core/plannernotes.c" line="222"/>
         <source>Ascend</source>
-        <translation type="unfinished"/>
+        <translation>Всплытие</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="214"/>
         <location filename="../core/plannernotes.c" line="222"/>
         <source>Descend</source>
-        <translation type="unfinished"/>
+        <translation>Спуск</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="221"/>
@@ -9727,21 +9730,26 @@ D: %.1f%s
         <location filename="../core/profile.c" line="1394"/>
         <source>P: %d%s (%s)
 </source>
-        <translation type="unfinished"/>
+        <translation>Д: %d%s (%s)
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1427"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>EAD: %d%s
+EADD: %d%s / %.1fг/л
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1433"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
-        <translation type="unfinished"/>
+        <translation>END: %d%s
+EADD: %d%s / %.1fг/л
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1438"/>
@@ -9887,7 +9895,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/profile.c" line="1674"/>
         <source>%s SAC:%.*f%s/min</source>
-        <translation type="unfinished"/>
+        <translation>%s SAC:%.*f%s/мин</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1618"/>
