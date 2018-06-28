@@ -347,7 +347,21 @@ void QMLManager::copyAppLogToClipboard()
 		copyString += in.readAll();
 	}
 	LOG_STP_CLIPBOARD(&copyString);
+
 	copyString += "---------- finish ----------\n";
+
+#if defined(Q_OS_ANDROID)
+	// on Android, the clipboard is effectively limited in size, but there is no
+	// predefined hard limit. All remote procedure calls use a shared Binder
+	// transaction buffer that is limited to 1MB. To work around this let's truncate
+	// the log once it is more than half a million characters. Qt doesn't tell us if
+	// the clipboard transaction fails, hopefully this will typically leave enough
+	// margin of error.
+	if (copyString.size() > 500000) {
+		copyString.truncate(500000);
+		copyString += "\n\n---------- truncated ----------\n";
+	}
+#endif
 
 	// and copy to clipboard
 	QApplication::clipboard()->setText(copyString, QClipboard::Clipboard);
