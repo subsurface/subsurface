@@ -164,7 +164,8 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
 		appLogFileOpen = false;
 		appendTextToLog("Failed to open logfile " + appLogFileName
-				+ " at " + QDateTime::currentDateTime().toString());
+				+ " at " + QDateTime::currentDateTime().toString()
+				+ " error: " + appLogFile.errorString());
 	} else {
 		appLogFileOpen = true;
 		appendTextToLog("Successfully opened logfile " + appLogFileName
