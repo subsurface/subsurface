@@ -8,6 +8,7 @@
 #include "qPrefAnimations.h"
 #include "qPrefCloudStorage.h"
 #include "qPrefDiveComputer.h"
+#include "qPrefDivePlanner.h"
 #include "qPrefDisplay.h"
 #include "qPrefFacebook.h"
 #include "qPrefGeneral.h"

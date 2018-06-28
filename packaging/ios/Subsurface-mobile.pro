@@ -81,6 +81,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefAnimations.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
 	../../core/settings/qPrefDiveComputer.cpp \
+	../../core/settings/qPrefDivePlanner.cpp \
 	../../core/settings/qPrefDisplay.cpp \
 	../../core/settings/qPrefFacebook.cpp \
 	../../core/settings/qPrefGeneral.cpp \
@@ -198,6 +199,7 @@ HEADERS += \
 	../../core/settings/qPrefAnimations.h \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDiveComputer.h \
+	../../core/settings/qPrefDivePlanner.h \
 	../../core/settings/qPrefDisplay.h \
 	../../core/settings/qPrefFacebook.h \
 	../../core/settings/qPrefGeneral.h \
