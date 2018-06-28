@@ -12,40 +12,40 @@ qPref *qPref::instance()
 }
 qPref::qPref(QObject *parent) :
 	QObject(parent),
-	m_qPrefAnimations(new qPrefAnimations(this)),
-	m_qPrefCloudStorage(new qPrefCloudStorage(this)),
-	m_qPrefDisplay(new qPrefDisplay(this)),
-	m_qPrefDiveComputer(new qPrefDiveComputer(this)),
-	m_qPrefDivePlanner(new qPrefDivePlanner(this)),
-	m_qPrefFacebook(new qPrefFacebook(this)),
-	m_qPrefGeneral(new qPrefGeneral(this)),
-	m_qPrefGeocoding(new qPrefGeocoding(this)),
-	m_qPrefLanguage(new qPrefLanguage(this)),
-	m_qPrefLocationService(new qPrefLocationService(this)),
-	m_qPrefPartialPressureGas(new qPrefPartialPressureGas(this)),
-	m_qPrefProxy(new qPrefProxy(this)),
-	m_qPrefTechnicalDetails(new qPrefTechnicalDetails(this)),
-	m_qPrefUnits(new qPrefUnits(this)),
-	m_qPrefUpdateManager(new qPrefUpdateManager(this))
+	animations(new qPrefAnimations(this)),
+	cloudStorage(new qPrefCloudStorage(this)),
+	display(new qPrefDisplay(this)),
+	diveComputer(new qPrefDiveComputer(this)),
+	divePlanner(new qPrefDivePlanner(this)),
+	facebook(new qPrefFacebook(this)),
+	general(new qPrefGeneral(this)),
+	geocoding(new qPrefGeocoding(this)),
+	language(new qPrefLanguage(this)),
+	locationService(new qPrefLocationService(this)),
+	partialPressureGas(new qPrefPartialPressureGas(this)),
+	proxy(new qPrefProxy(this)),
+	technicalDetails(new qPrefTechnicalDetails(this)),
+	units(new qPrefUnits(this)),
+	updateManager(new qPrefUpdateManager(this))
 {
 }
 
 
 void qPref::loadSync(bool doSync)
 {
-	m_qPrefAnimations->loadSync(doSync);
-	m_qPrefCloudStorage->loadSync(doSync);
-	m_qPrefDiveComputer->loadSync(doSync);
-	m_qPrefDivePlanner->loadSync(doSync);
-	m_qPrefDisplay->loadSync(doSync);
-	m_qPrefFacebook->loadSync(doSync);
-	m_qPrefGeneral->loadSync(doSync);
-	m_qPrefGeocoding->loadSync(doSync);
-	m_qPrefLanguage->loadSync(doSync);
-	m_qPrefLocationService->loadSync(doSync);
-	m_qPrefPartialPressureGas->loadSync(doSync);
-	m_qPrefProxy->loadSync(doSync);
-	m_qPrefTechnicalDetails->loadSync(doSync);
-	m_qPrefUnits->loadSync(doSync);
-	m_qPrefUpdateManager->loadSync(doSync);
+	animations->loadSync(doSync);
+	cloudStorage->loadSync(doSync);
+	diveComputer->loadSync(doSync);
+	divePlanner->loadSync(doSync);
+	display->loadSync(doSync);
+	facebook->loadSync(doSync);
+	general->loadSync(doSync);
+	geocoding->loadSync(doSync);
+	language->loadSync(doSync);
+	locationService->loadSync(doSync);
+	partialPressureGas->loadSync(doSync);
+	proxy->loadSync(doSync);
+	technicalDetails->loadSync(doSync);
+	units->loadSync(doSync);
+	updateManager->loadSync(doSync);
 }
