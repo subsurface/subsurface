@@ -19,7 +19,7 @@
 #include "qPrefProxy.h"
 #include "qPrefTechnicalDetails.h"
 
-#define PartialPressureGasSettings  qPrefPartialPressureGas
+
 
 class qPref : public QObject {
 	Q_OBJECT
