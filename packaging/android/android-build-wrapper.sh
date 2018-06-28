@@ -26,14 +26,7 @@ exec 1> >(tee ./build.log) 2>&1
 USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
-
-QT_VERSION=5.10
-LATEST_QT=5.10.1
-NDK_VERSION=r14b
-SDK_VERSION=3859397  # if you change this version, you'll likely have to change the android-sdk-license key fallback below
-
-ANDROID_NDK=android-ndk-${NDK_VERSION}
-ANDROID_SDK=android-sdk-linux
+source subsurface/packaging/android/variables.sh
 
 PLATFORM=$(uname)
 
@@ -76,24 +69,33 @@ if [ ! -d $ANDROID_NDK ] ; then
 	unzip -q $NDK_BINARIES
 fi
 
-if [ ! -d $ANDROID_SDK ] ; then
-	if [ ! -f $SDK_TOOLS ] ; then
-		$SLOW_PROG wget -q https://dl.google.com/android/repository/$SDK_TOOLS
+if [ ! -d $ANDROID_SDK/build-tools/${ANDROID_BUILDTOOLS_REVISION} ] ; then
+	if [ ! -d $ANDROID_SDK ] ; then
+		if [ ! -f $SDK_TOOLS ] ; then
+			$SLOW_PROG wget -q https://dl.google.com/android/repository/$SDK_TOOLS
+		fi
+		mkdir $ANDROID_SDK
+		pushd $ANDROID_SDK
+		unzip -q ../$SDK_TOOLS
+		yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
+		cat licenses/android-sdk-license
+		echo ""
+	else
+		pushd $ANDROID_SDK
+		tools/bin/sdkmanager tools platform-tools 'platforms;'${ANDROID_PLATFORMS} 'build-tools;'${ANDROID_BUILDTOOLS_REVISION}
 	fi
-	mkdir $ANDROID_SDK
-	pushd $ANDROID_SDK
-	unzip -q ../$SDK_TOOLS
-	yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
-	cat licenses/android-sdk-license
-	echo ""
-	# FIXME: Read these from build.sh varables, or install them there.
-	tools/bin/sdkmanager tools platform-tools 'platforms;android-27' 'build-tools;25.0.3'
 	popd
 fi
 
 # download the Qt installer including Android bits and unpack / install
 QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
-if [ ! -d Qt ] ; then
+if [ ! -d Qt/${LATEST_QT}/android_armv7 ] ; then
+	if [ -d Qt ] ; then
+		# Over writing an exsisting installation stalls the installation script,
+		# rename the exsisting Qt folder and notify then user.
+		mv Qt Qt_OLD
+		echo "Qt installation found, backing it up to Qt_OLD."
+	fi
 	if [ ! -f ${QT_BINARIES} ] ; then
 		$SLOW_PROG wget -q ${QT_DOWNLOAD_URL}
 	fi
