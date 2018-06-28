@@ -149,27 +149,43 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 #if defined(Q_OS_ANDROID)
-	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/subsurface.log";
-	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation).first() + "/libdivecomputer.log";
+	// on Android we first try the GenericDataLocation (typically /storage/emulated/0) and if that fails
+	// (as happened e.g. on a Sony Xperia phone) we try several other default locations, with the TempLocation as last resort
+	QStringList fileLocations =
+		QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation) +
+		QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation) +
+		QStandardPaths::standardLocations(QStandardPaths::DownloadLocation) +
+		QStandardPaths::standardLocations(QStandardPaths::TempLocation);
 #elif defined(Q_OS_IOS)
 	// on iOS we should save the data to the DocumentsLocation so it becomes accessible to the user
-	appLogFileName = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first() + "/subsurface.log";
-	QString libdcLogFileName = QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation).first() + "/libdivecomputer.log";
+	QStringList fileLocations =
+		QStandardPaths::standardLocations(QStandardPaths::DocumentsLocation);
 #endif
-	// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
-	QFile libdcLog(libdcLogFileName);
-	libdcLog.remove();
-	logfile_name = copy_qstring(libdcLogFileName);
-	appLogFile.setFileName(appLogFileName);
-	if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
-		appLogFileOpen = false;
-		appendTextToLog("Failed to open logfile " + appLogFileName
-				+ " at " + QDateTime::currentDateTime().toString()
-				+ " error: " + appLogFile.errorString());
-	} else {
-		appLogFileOpen = true;
+	appLogFileOpen = false;
+	for (const QString &fileLocation : fileLocations) {
+		appLogFileName = fileLocation + "/subsurface.log";
+		appLogFile.setFileName(appLogFileName);
+		if (!appLogFile.open(QIODevice::ReadWrite|QIODevice::Truncate)) {
+			appendTextToLog("Failed to open logfile " + appLogFileName
+					+ " at " + QDateTime::currentDateTime().toString()
+					+ " error: " + appLogFile.errorString());
+		} else {
+			// found a directory that works
+			appLogFileOpen = true;
+			break;
+		}
+	}
+	if (appLogFileOpen) {
 		appendTextToLog("Successfully opened logfile " + appLogFileName
 				+ " at " + QDateTime::currentDateTime().toString());
+		// if we were able to write the overall logfile, also write the libdivecomputer logfile
+		QString libdcLogFileName = appLogFileName.replace("/subsurface.log", "/libdivecomputer.log");
+		// remove the existing libdivecomputer logfile so we don't copy an old one by mistake
+		QFile libdcLog(libdcLogFileName);
+		libdcLog.remove();
+		logfile_name = copy_qstring(libdcLogFileName);
+	} else {
+		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
 #endif
 	LOG_STP("qmlmgr log started");
