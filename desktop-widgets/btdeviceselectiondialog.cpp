@@ -194,11 +194,12 @@ void BtDeviceSelectionDialog::on_scan_clicked()
 
 void BtDeviceSelectionDialog::remoteDeviceScanFinished()
 {
-	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::NoError) {
+	// This check is not necessary for Qt's QBluetoothDeviceDiscoveryAgent,
+	// but with the home-brew WinBluetoothDeviceDiscoveryAgent, on error we
+	// get an error() and an finished() signal. Thus, don't overwrite the
+	// error message with a success message.
+	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::NoError)
 		ui->dialogStatus->setText(tr("Scanning finished successfully."));
-	} else {
-		deviceDiscoveryError(remoteDeviceDiscoveryAgent->error());
-	}
 
 	ui->scan->setEnabled(true);
 }
