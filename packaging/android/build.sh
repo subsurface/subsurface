@@ -38,8 +38,8 @@ BUILD_NR=0
 SUBSURFACE_DESKTOP=OFF
 # Which arch should we build for?
 ARCH=arm
-# Which SDK buildtools revision is used?
-ANDROID_BUILDTOOLS_REVISION=25.0.3
+# Read build variables
+source subsurface/packaging/android/variables.sh 
 
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
@@ -76,12 +76,12 @@ done
 export ARCH
 
 # Configure where we can find things here
-export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../android-ndk-r14b}
+export ANDROID_NDK_ROOT=${ANDROID_NDK_ROOT-$SUBSURFACE_SOURCE/../${ANDROID_NDK}}
 
 if [ -n "${QT5_ANDROID+X}" ] ; then
 	echo "Using Qt5 in $QT5_ANDROID"
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.10.1" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.10.1
+elif [ -d "$SUBSURFACE_SOURCE/../Qt/${LATEST_QT}" ] ; then
+	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/${LATEST_QT}
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9.3" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9.3
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9.1" ] ; then
@@ -90,14 +90,8 @@ elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.9" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.9
 elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.8" ] ; then
 	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.8
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.7" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.7
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.6" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.6
-elif [ -d "$SUBSURFACE_SOURCE/../Qt/5.5" ] ; then
-	export QT5_ANDROID=$SUBSURFACE_SOURCE/../Qt/5.5
 else
-	echo "Cannot find Qt 5.5 or newer under $SUBSURFACE_SOURCE/../Qt"
+	echo "Cannot find Qt 5.8 or newer under $SUBSURFACE_SOURCE/../Qt"
 	exit 1
 fi
 
@@ -108,9 +102,6 @@ else
 	export ANDROID_SDK_ROOT=${ANDROID_SDK_ROOT-$SUBSURFACE_SOURCE/../android-sdk-linux}
 	export ANDROID_NDK_HOST=linux-x86_64
 fi
-
-# Which versions are we building against?
-OPENSSL_VERSION=1.0.2l
 
 if [ "$ARCH" = "arm" ] ; then
 	QT_ARCH=armv7
