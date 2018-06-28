@@ -50,10 +50,10 @@ units::DURATION qPrefUnits::durationUnits() const
 {
 	return prefs.units.duration_units;
 }
-void qPrefUnits::setDurationUnits(int value)
+void qPrefUnits::setDurationUnits(units::DURATION value)
 {
 	if (value != prefs.units.duration_units) {
-		prefs.units.duration_units = (units::DURATION)value;
+		prefs.units.duration_units = value;
 		diskDurationUnits(true);
 		emit durationUnitsChanged(value);
 	}
@@ -68,10 +68,10 @@ units::LENGTH qPrefUnits::length() const
 {
 	return prefs.units.length;
 }
-void qPrefUnits::setLength(int value)
+void qPrefUnits::setLength(units::LENGTH value)
 {
 	if (value != prefs.units.length) {
-		prefs.units.length = (units::LENGTH)value;
+		prefs.units.length = value;
 		diskLength(true);
 		emit lengthChanged(value);
 	}
@@ -86,10 +86,10 @@ units::PRESSURE qPrefUnits::pressure() const
 {
 	return prefs.units.pressure;
 }
-void qPrefUnits::setPressure(int value)
+void qPrefUnits::setPressure(units::PRESSURE value)
 {
 	if (value == prefs.units.pressure) {
-		prefs.units.pressure = (units::PRESSURE) value;
+		prefs.units.pressure = value;
 		diskPressure(true);
 		emit pressureChanged(value);
 	}
@@ -122,10 +122,10 @@ units::TEMPERATURE qPrefUnits::temperature() const
 {
 	return prefs.units.temperature;
 }
-void qPrefUnits::setTemperature(int value)
+void qPrefUnits::setTemperature(units::TEMPERATURE value)
 {
 	if (value != prefs.units.temperature) {
-		prefs.units.temperature = (units::TEMPERATURE)value;
+		prefs.units.temperature = value;
 		diskTemperature(true);
 	QSettings s;
 	s.setValue(group + "/temperature", value);
@@ -172,10 +172,10 @@ units::TIME qPrefUnits::verticalSpeedTime() const
 {
 	return prefs.units.vertical_speed_time;
 }
-void qPrefUnits::setVerticalSpeedTime(int value)
+void qPrefUnits::setVerticalSpeedTime(units::TIME value)
 {
 	if (value != prefs.units.vertical_speed_time) {
-		prefs.units.vertical_speed_time = (units::TIME)value;
+		prefs.units.vertical_speed_time = value;
 		diskVerticalSpeedTime(true);
 		emit verticalSpeedTimeChanged(value);
 	}
@@ -190,10 +190,10 @@ units::VOLUME qPrefUnits::volume() const
 {
 	return prefs.units.volume;
 }
-void qPrefUnits::setVolume(int value)
+void qPrefUnits::setVolume(units::VOLUME value)
 {
 	if (value != prefs.units.volume) {
-		prefs.units.volume = (units::VOLUME) value;
+		prefs.units.volume = value;
 		diskVolume(true);
 		emit volumeChanged(value);
 	}
@@ -208,10 +208,10 @@ units::WEIGHT qPrefUnits::weight() const
 {
 	return prefs.units.weight;
 }
-void qPrefUnits::setWeight(int value)
+void qPrefUnits::setWeight(units::WEIGHT value)
 {
 	if (value != prefs.units.weight) {
-		prefs.units.weight = (units::WEIGHT) value;
+		prefs.units.weight = value;
 		diskWeight(true);
 		emit weightChanged(value);
 	}

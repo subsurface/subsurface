@@ -41,15 +41,15 @@ public:
 
 public slots:
 	void setCoordinatesTraditional(bool value);
-	void setDurationUnits(int value);
-	void setLength(int value);
-	void setPressure(int value);
+	void setDurationUnits(units::DURATION value);
+	void setLength(units::LENGTH value);
+	void setPressure(units::PRESSURE value);
 	void setShowUnitsTable(bool value);
-	void setTemperature(int value);
+	void setTemperature(units::TEMPERATURE value);
 	void setUnitSystem(const QString& value);
-	void setVerticalSpeedTime(int value);
-	void setVolume(int value);
-	void setWeight(int value);
+	void setVerticalSpeedTime(units::TIME value);
+	void setVolume(units::VOLUME value);
+	void setWeight(units::WEIGHT value);
 
 signals:
 	void coordinatesTraditionalChanged(bool value);
