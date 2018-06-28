@@ -2,6 +2,7 @@
 #ifndef QPREFDIVEPLANNER_H
 #define QPREFDIVEPLANNER_H
 
+#include "core/pref.h"
 #include <QObject>
 
 

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testpreferences.h"
-
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/taxonomy.h"
+#include "core/settings/qPref.h"
 
 #include <QtTest>
 #include <QDate>
@@ -21,10 +21,10 @@ void TestPreferences::initTestCase()
 
 void TestPreferences::testPreferences()
 {
-	auto pref = SettingsObjectWrapper::instance();
+	auto pref = qPref::instance();
 	pref->load();
 
-	auto cloud = pref->cloud_storage;
+	auto cloud = qPrefCloudStorage::instance();
 
 	cloud->setBaseUrl("test_one");
 	TEST(cloud->baseUrl(), QStringLiteral("test_one"));
@@ -72,7 +72,7 @@ void TestPreferences::testPreferences()
 	cloud->setVerificationStatus(1);
 	TEST(cloud->verificationStatus(), (short)1);
 
-	auto tecDetails = pref->techDetails;
+	auto tecDetails = qPrefTechnicalDetails::instance();
 	tecDetails->setModpO2(0.2);
 	TEST(tecDetails->modpO2(), 0.2);
 	tecDetails->setModpO2(1.0);
@@ -175,7 +175,7 @@ void TestPreferences::testPreferences()
 	tecDetails->setShowPicturesInProfile(false);
 	TEST(tecDetails->showPicturesInProfile(), false);
 
-	auto pp = pref->pp_gas;
+	auto pp = qPrefPartialPressureGas::instance();
 	pp->setShowPn2(false);
 	pp->setShowPhe(false);
 	pp->setShowPo2(false);
@@ -208,7 +208,7 @@ void TestPreferences::testPreferences()
 	TEST(pp->po2ThresholdMin(), 4.0);
 	TEST(pp->po2ThresholdMax(), 5.0);
 
-	auto fb = pref->facebook;
+	auto fb = qPrefFacebook::instance();
 	fb->setAccessToken("rand-access-token");
 	fb->setUserId("tomaz-user-id");
 	fb->setAlbumId("album-id");
@@ -225,7 +225,7 @@ void TestPreferences::testPreferences()
 	TEST(fb->userId(),     QStringLiteral("tomaz-user-id-2"));
 	TEST(fb->albumId(),    QStringLiteral("album-id-2"));
 
-	auto geo = pref->geocoding;
+	auto geo = qPrefGeocoding::instance();
 	geo->setFirstTaxonomyCategory(TC_NONE);
 	geo->setSecondTaxonomyCategory(TC_OCEAN);
 	geo->setThirdTaxonomyCategory(TC_COUNTRY);
@@ -242,7 +242,7 @@ void TestPreferences::testPreferences()
 	TEST(geo->secondTaxonomyCategory(), TC_COUNTRY);
 	TEST(geo->thirdTaxonomyCategory(), TC_NONE);
 
-	auto proxy = pref->proxy;
+	auto proxy = qPrefProxy::instance();
 	proxy->setType(2);
 	proxy->setPort(80);
 	proxy->setAuth(true);
@@ -271,7 +271,7 @@ void TestPreferences::testPreferences()
 	TEST(proxy->user(),QStringLiteral("unknown_1"));
 	TEST(proxy->pass(),QStringLiteral("secret_1"));
 
-	auto planner = pref->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setLastStop(true);
 	planner->setVerbatimPlan(true);
 	planner->setDisplayRuntime(true);
@@ -372,7 +372,7 @@ void TestPreferences::testPreferences()
 
 	TEST(planner->decoMode(),RECREATIONAL);
 
-	auto units = pref->unit_settings;
+	auto units = qPrefUnits::instance();
 	units->setLength(units::METERS);
 	units->setPressure(units::BAR);
 	units->setVolume(units::LITER);
@@ -409,7 +409,7 @@ void TestPreferences::testPreferences()
 	TEST(units->unitSystem(),QStringLiteral("personalized"));
 	TEST(units->coordinatesTraditional(),true);
 
-	auto general = pref->general_settings;
+	auto general = qPrefGeneral::instance();
 	general->setDefaultFilename       ("filename");
 	general->setDefaultCylinder       ("cylinder_2");
 	//TODOl: Change this to a enum. 	// This is 'undefined', it will need to figure out later between no_file or use_deault file.
@@ -445,7 +445,7 @@ void TestPreferences::testPreferences()
 	TEST(general->pscrRatio(), 1);
 	TEST(general->useDefaultFile(), false);
 
-	auto display = pref->display_settings;
+	auto display = qPrefDisplay::instance();
 	display->setDivelistFont("comic");
 	display->setFontSize(10.0);
 	display->setDisplayInvalidDives(true);
@@ -462,7 +462,7 @@ void TestPreferences::testPreferences()
 	TEST(display->fontSize(), 14.0);
 	TEST(display->displayInvalidDives(), false);
 
-	auto language = pref->language_settings;
+	auto language = qPrefLanguage::instance();
 	language->setLangLocale         ("en_US");
 	language->setLanguage           ("en");
 	language->setTimeFormat         ("hh:mm");
@@ -499,12 +499,13 @@ void TestPreferences::testPreferences()
 	TEST(language->dateFormatOverride(),true);
 	TEST(language->useSystemLanguage(), true);
 
-	pref->animation_settings->setAnimationSpeed(20);
-	TEST(pref->animation_settings->animationSpeed(), 20);
-	pref->animation_settings->setAnimationSpeed(30);
-	TEST(pref->animation_settings->animationSpeed(), 30);
+	auto animations = qPrefAnimations::instance();
+	animations->setAnimationSpeed(20);
+	TEST(animations->animationSpeed(), 20);
+	animations->setAnimationSpeed(30);
+	TEST(animations->animationSpeed(), 30);
 
-	auto location = pref->location_settings;
+	auto location = qPrefLocationService::instance();
 	location->setTimeThreshold(10);
 	location->setDistanceThreshold(20);
 
@@ -517,7 +518,7 @@ void TestPreferences::testPreferences()
 	TEST(location->timeThreshold(), 30);
 	TEST(location->distanceThreshold(), 40);
 
-	auto update = pref->update_manager_settings;
+	auto update = qPrefUpdateManager::instance();
 	QDate date = QDate::currentDate();
 
 	update->setDontCheckForUpdates(true);
@@ -537,7 +538,7 @@ void TestPreferences::testPreferences()
 	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-2"));
 	TEST(update->nextCheck(), date);
 
-	auto dc = pref->dive_computer_settings;
+	auto dc = qPrefDiveComputer::instance();
 	dc->setDevice("TomazComputer");
 	TEST(dc->device(), QStringLiteral("TomazComputer"));
 	dc->setDevice("Deepwater");

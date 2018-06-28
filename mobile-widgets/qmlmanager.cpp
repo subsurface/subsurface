@@ -33,7 +33,6 @@
 #include "core/downloadfromdcthread.h"
 #include "core/subsurface-string.h"
 #include "core/pref.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #include "core/ssrf.h"
 
@@ -423,7 +422,7 @@ QMLManager *QMLManager::instance()
 
 void QMLManager::savePreferences()
 {
-    auto location = SettingsObjectWrapper::instance()->location_settings;
+    auto location = qPrefLocationService::instance();
     location->setTimeThreshold(QMLPrefs::instance()->timeThreshold() * 60);
     location->setDistanceThreshold(QMLPrefs::instance()->distanceThreshold());
 }
@@ -1191,7 +1190,7 @@ void QMLManager::openNoCloudRepo()
 	if (git == dummy_git_repository) {
 		git_create_local_repo(filename);
 		set_filename(filename);
-		auto s = SettingsObjectWrapper::instance()->general_settings;
+		auto s = qPrefGeneral::instance();
 		s->setDefaultFilename(filename);
 		s->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
 	}
@@ -1207,7 +1206,7 @@ void QMLManager::saveChangesLocal()
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				git_create_local_repo(filename);
 				set_filename(filename);
-				auto s = SettingsObjectWrapper::instance()->general_settings;
+				auto s = qPrefGeneral::instance();
 				s->setDefaultFilename(filename);
 				s->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
 			}

@@ -2,7 +2,7 @@
 #include "preferences_graph.h"
 #include "ui_preferences_graph.h"
 #include "core/prefs-macros.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 #include <QMessageBox>
 
 #include "qt-models/models.h"
@@ -53,19 +53,19 @@ void PreferencesGraph::refreshSettings()
 
 void PreferencesGraph::syncSettings()
 {
-	auto general = SettingsObjectWrapper::instance()->general_settings;
+	auto general = qPrefGeneral::instance();
 	general->setDefaultSetPoint(lrint(ui->defaultSetpoint->value() * 1000.0));
 	general->setO2Consumption(lrint(ui->psro2rate->value() *1000.0));
 	general->setPscrRatio(lrint(1000.0 / ui->pscrfactor->value()));
 	general->setAutoRecalculateThumbnails(ui->auto_recalculate_thumbnails->isChecked());
 
-	auto pp_gas = SettingsObjectWrapper::instance()->pp_gas;
+	auto pp_gas = qPrefPartialPressureGas::instance();
 	pp_gas->setPheThreshold(ui->pheThreshold->value());
 	pp_gas->setPo2ThresholdMax(ui->po2ThresholdMax->value());
 	pp_gas->setPo2ThresholdMin(ui->po2ThresholdMin->value());
 	pp_gas->setPn2Threshold(ui->pn2Threshold->value());
 
-	auto tech = SettingsObjectWrapper::instance()->techDetails;
+	auto tech = qPrefTechnicalDetails::instance();
 	tech->setModpO2(ui->maxpo2->value());
 	tech->setRedceiling(ui->red_ceiling->isChecked());
 	tech->setBuehlmann(ui->buehlmann->isChecked());

@@ -1,7 +1,7 @@
 #include "downloadfromdcthread.h"
 #include "core/libdivecomputer.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 #include <QDebug>
 #include <QRegularExpression>
 
@@ -55,7 +55,7 @@ void DownloadThread::run()
 	} else {
 		qDebug() << "Finishing download thread:" << downloadTable.nr << "dives downloaded";
 	}
-	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dcs = qPrefDiveComputer::instance();
 	dcs->setVendor(internalData->vendor);
 	dcs->setProduct(internalData->product);
 	dcs->setDevice(internalData->devname);
@@ -246,7 +246,7 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 
 int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
 {
-	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dcs = qPrefDiveComputer::instance();
 	if (dcs->vendor() == vendor &&
 	    dcs->product() == product) {
 		// we are trying to show the last dive computer selected
@@ -409,7 +409,7 @@ device_data_t* DCDeviceData::internalData()
 
 int DCDeviceData::getDetectedVendorIndex()
 {
-	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dcs = qPrefDiveComputer::instance();
 	if (!dcs->vendor().isEmpty()) {
 		// use the last one
 		for (int i = 0; i < vendorList.length(); i++) {
@@ -430,7 +430,7 @@ int DCDeviceData::getDetectedVendorIndex()
 
 int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 {
-	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dcs = qPrefDiveComputer::instance();
 	if (!dcs->vendor().isEmpty()) {
 		if (dcs->vendor() == currentVendorText) {
 			// we are trying to show the last dive computer selected

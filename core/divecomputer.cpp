@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divecomputer.h"
 #include "subsurface-string.h"
-#include "subsurface-qt/SettingsObjectWrapper.h"
+#include "dive.h"
+#include "settings/qPref.h"
 
 DiveComputerList dcList;
 
@@ -123,13 +124,13 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 
 extern "C" int is_default_dive_computer(const char *vendor, const char *product)
 {
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dc = qPrefDiveComputer::instance();
 	return dc->vendor() == vendor && dc->product() == product;
 }
 
 extern "C" int is_default_dive_computer_device(const char *name)
 {
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dc = qPrefDiveComputer::instance();
 	return dc->device() == name;
 }
 

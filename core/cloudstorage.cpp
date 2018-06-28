@@ -3,7 +3,6 @@
 #include "pref.h"
 #include "settings/qPref.h"
 #include "qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QApplication>
 
 CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :

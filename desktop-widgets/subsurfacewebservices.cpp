@@ -9,10 +9,10 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/display.h"
 #include "core/membuffer.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <errno.h>
 #include "core/cloudstorage.h"
 #include "core/subsurface-string.h"
+#include "core/settings/qPref.h"
 
 #include <QDir>
 #include <QHttpMultiPart>
@@ -436,7 +436,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		QSettings s;
 		QString qDialogUid = ui.userID->text().toUpper();
 		bool qSaveUid = ui.saveUidLocal->checkState();
-		SettingsObjectWrapper::instance()->cloud_storage->setSaveUserIdLocal(qSaveUid);
+		qPrefCloudStorage::instance()->setSaveUserIdLocal(qSaveUid);
 
 		//WARN: Dirk, this seems to be wrong, I coundn't really understand the code.
 		if (qSaveUid) {

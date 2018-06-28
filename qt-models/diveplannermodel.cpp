@@ -6,8 +6,8 @@
 #include "qt-models/models.h"
 #include "core/device.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/gettextfromc.h"
+#include "core/settings/qPref.h"
 #include <QApplication>
 #include <QTextDocument>
 #include <QtConcurrent>
@@ -426,7 +426,7 @@ void DivePlannerPointsModel::emitDataChanged()
 void DivePlannerPointsModel::setBottomSac(double sac)
 {
 	diveplan.bottomsac = units_to_sac(sac);
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setBottomSac(diveplan.bottomsac);
 	emitDataChanged();
 }
@@ -434,21 +434,21 @@ void DivePlannerPointsModel::setBottomSac(double sac)
 void DivePlannerPointsModel::setDecoSac(double sac)
 {
 	diveplan.decosac = units_to_sac(sac);
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDecoSac(diveplan.decosac);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSacFactor(double factor)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setSacFactor((int) round(factor * 100));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setProblemSolvingTime(int minutes)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setProblemSolvingTime(minutes);
 	emitDataChanged();
 }
@@ -507,84 +507,84 @@ int DivePlannerPointsModel::getSurfacePressure()
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setLastStop(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscrate75(int rate)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setAscrate75(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscrate50(int rate)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setAscrate50(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscratestops(int rate)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setAscratestops(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscratelast6m(int rate)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setAscratelast6m(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDescrate(int rate)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDescrate(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setVerbatimPlan(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayRuntime(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDisplayRuntime(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayDuration(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDisplayDuration(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayTransitions(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDisplayTransitions(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayVariations(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDisplayVariations(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDecoMode(int mode)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDecoMode(deco_mode(mode));
 	emit recreationChanged(mode == int(prefs.planner_deco_mode));
 	emitDataChanged();
@@ -592,14 +592,14 @@ void DivePlannerPointsModel::setDecoMode(int mode)
 
 void DivePlannerPointsModel::setSafetyStop(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setSafetyStop(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setReserveGas(int reserve)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	if (prefs.units.pressure == units::BAR)
 		planner->setReserveGas(reserve * 1000);
 	else
@@ -609,7 +609,7 @@ void DivePlannerPointsModel::setReserveGas(int reserve)
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setDropStoneMode(value);
 	if (prefs.drop_stone_mode) {
 	/* Remove the first entry if we enable drop_stone_mode */
@@ -632,14 +632,14 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 
 void DivePlannerPointsModel::setSwitchAtReqStop(bool value)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setSwitchAtRequiredStop(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setMinSwitchDuration(int duration)
 {
-	auto planner = SettingsObjectWrapper::instance()->planner_settings;
+	auto planner = qPrefDivePlanner::instance();
 	planner->setMinSwitchDuration(duration * 60);
 	emitDataChanged();
 }

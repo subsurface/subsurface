@@ -5,7 +5,6 @@
 #include "core/prefs-macros.h"
 #include "core/settings/qPref.h"
 #include "core/cloudstorage.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QNetworkProxy>
 
 PreferencesNetwork::PreferencesNetwork() : AbstractPreferencesWidget(tr("Network"),QIcon(":preferences-system-network-icon"), 9), ui(new Ui::PreferencesNetwork())
@@ -45,8 +44,8 @@ void PreferencesNetwork::refreshSettings()
 
 void PreferencesNetwork::syncSettings()
 {
-	auto cloud = SettingsObjectWrapper::instance()->cloud_storage;
-	auto proxy = SettingsObjectWrapper::instance()->proxy;
+	auto cloud = qPrefCloudStorage::instance();
+	auto proxy = qPrefProxy::instance();
 
 	cloud->setUserId(ui->default_uid->text().toUpper());
 	cloud->setSaveUserIdLocal(ui->save_uid_local->checkState());

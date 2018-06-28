@@ -3,7 +3,7 @@
 #include "ui_preferences_units.h"
 #include "core/prefs-macros.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 PreferencesUnits::PreferencesUnits(): AbstractPreferencesWidget(tr("Units"),QIcon(":units-icon"),1), ui(new Ui::PreferencesUnits())
 {
@@ -48,7 +48,7 @@ void PreferencesUnits::refreshSettings()
 
 void PreferencesUnits::syncSettings()
 {
-	auto units = SettingsObjectWrapper::instance()->unit_settings;
+	auto units = qPrefUnits::instance();
 	QString unitSystem[] = {"metric", "imperial", "personal"};
 	short unitValue = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
 

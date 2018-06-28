@@ -6,9 +6,9 @@
 #include "core/display.h"
 #include "core/subsurface-string.h"
 #include "core/uemis.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "qt-models/models.h"
 #include "qt-models/diveimportedmodel.h"
+#include "core/settings/qPref.h"
 
 #include <QTimer>
 #include <QFileDialog>
@@ -71,7 +71,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	MainWindow *w = MainWindow::instance();
 	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dc = qPrefDiveComputer::instance();
 	if (!dc->vendor().isEmpty()) {
 		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->vendor()));
 		productModel.setStringList(productList[dc->vendor()]);
@@ -288,7 +288,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 		} else {
-			auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+			auto dc = qPrefDiveComputer::instance();
 			data->setDevName(dc->device());
 			data->setDevBluetoothName(dc->device_name());
 		}
@@ -313,7 +313,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data->setSaveLog(ui.logToFile->isChecked());
 	data->setSaveDump(ui.dumpToFile->isChecked());
 
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dc = qPrefDiveComputer::instance();
 	dc->setVendor(data->vendor());
 	dc->setProduct(data->product());
 	dc->setDevice(data->devName());
