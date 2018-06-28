@@ -91,6 +91,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefPartialPressureGas.cpp \
 	../../core/settings/qPrefProxy.cpp \
 	../../core/settings/qPrefTechnicalDetails.cpp \
+	../../core/settings/qPrefUnits.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -211,6 +212,7 @@ HEADERS += \
 	../../core/settings/qPrefPartialPressureGas.h \
 	../../core/settings/qPrefProxy.h \
 	../../core/settings/qPrefTechnicalDetails.h \
+	../../core/settings/qPrefUnits.h \
 	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \

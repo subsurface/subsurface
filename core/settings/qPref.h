@@ -18,6 +18,7 @@
 #include "qPrefPartialPressureGas.h"
 #include "qPrefProxy.h"
 #include "qPrefTechnicalDetails.h"
+#include "qPrefUnits.h"
 
 
 
