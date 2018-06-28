@@ -138,6 +138,14 @@ static bool removePictureFromSelectedDive(const char *fileUrl)
 	return false;
 }
 
+// Calculate how many items of a range are before the given index
+static int rangeBefore(int rangeFrom, int rangeTo, int index)
+{
+	if (rangeTo <= rangeFrom)
+		return 0;
+	return std::min(rangeTo, index) - std::min(rangeFrom, index);
+}
+
 void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
 {
 	bool removed = false;
@@ -163,6 +171,12 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
 		beginRemoveRows(QModelIndex(), i, j - 1);
 		pictures.erase(pictures.begin() + i, pictures.begin() + j);
 		endRemoveRows();
+
+		// After removing pictures, we have to adjust rowDDStart and rowDDEnd.
+		// Calculate the part of the range that is before rowDDStart and rowDDEnd,
+		// respectively and subtract accordingly.
+		rowDDStart -= rangeBefore(i, j, rowDDStart);
+		rowDDEnd -= rangeBefore(i, j, rowDDEnd);
 	}
 }
 
