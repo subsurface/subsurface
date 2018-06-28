@@ -8,69 +8,6 @@
 
 #include "core/qthelper.h"
 
-UpdateManagerSettings::UpdateManagerSettings(QObject *parent) : QObject(parent)
-{
-
-}
-
-bool UpdateManagerSettings::dontCheckForUpdates() const
-{
-	return prefs.update_manager.dont_check_for_updates;
-}
-
-bool UpdateManagerSettings::dontCheckExists() const
-{
-	return prefs.update_manager.dont_check_exists;
-}
-
-QString UpdateManagerSettings::lastVersionUsed() const
-{
-	return prefs.update_manager.last_version_used;
-}
-
-QDate UpdateManagerSettings::nextCheck() const
-{
-	return QDate::fromString(QString(prefs.update_manager.next_check), "dd/MM/yyyy");
-}
-
-void UpdateManagerSettings::setDontCheckForUpdates(bool value)
-{
-	if (value == prefs.update_manager.dont_check_for_updates)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("DontCheckForUpdates", value);
-	prefs.update_manager.dont_check_for_updates = value;
-	prefs.update_manager.dont_check_exists = true;
-	emit dontCheckForUpdatesChanged(value);
-}
-
-void UpdateManagerSettings::setLastVersionUsed(const QString& value)
-{
-	if (value == prefs.update_manager.last_version_used)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("LastVersionUsed", value);
-	free((void *)prefs.update_manager.last_version_used);
-	prefs.update_manager.last_version_used = copy_qstring(value);
-	emit lastVersionUsedChanged(value);
-}
-
-void UpdateManagerSettings::setNextCheck(const QDate& date)
-{
-	if (date.toString() == prefs.update_manager.next_check)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("NextCheck", date);
-	free((void *)prefs.update_manager.next_check);
-	prefs.update_manager.next_check = copy_qstring(date.toString("dd/MM/yyyy"));
-	emit nextCheckChanged(date);
-}
 
 
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
@@ -88,7 +25,7 @@ QObject(parent),
 	language_settings(new qPrefLanguage(this)),
 	animation_settings(new qPrefAnimations(this)),
 	location_settings(new qPrefLocationService(this)),
-	update_manager_settings(new UpdateManagerSettings(this)),
+	update_manager_settings(new qPrefUpdateManager(this)),
 	dive_computer_settings(new qPrefDiveComputer(this))
 {
 }
