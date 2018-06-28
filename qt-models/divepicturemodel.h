@@ -7,6 +7,7 @@
 #include <QFuture>
 
 struct PictureEntry {
+	int diveId;
 	struct picture *picture;
 	QString filename;
 	QImage image;
@@ -25,6 +26,8 @@ public:
 	void removePictures(const QVector<QString> &fileUrls);
 	int rowDDStart, rowDDEnd;
 	void updateDivePictureOffset(const QString &filename, int offsetSeconds);
+signals:
+	void offsetChanged(int id);		// Picture offset changed.
 public slots:
 	void setZoomLevel(int level);
 	void updateThumbnail(QString filename, QImage thumbnail);

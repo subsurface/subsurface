@@ -93,6 +93,42 @@ QString getUserAgent();
 #define TITLE_OR_TEXT(_t, _m) _t, _m
 #endif
 
+// This helper function moves a range in a vector to a different position.
+// The parameters are given according to the usual STL-semantics:
+//	v: a container with STL-like random access iterator via std::begin(...)
+//	rangeBegin: index of first element
+//	rangeEnd: index one *past* last element
+//	destination: index to element before which the range will be moved
+// The function returns the new index of the moved range.
+// Owing to std::begin() magic, this function works with STL-like containers:
+//	QVector<int> v{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+//	moveInVector(v, 1, 4, 6);
+// as well as with C-style arrays:
+//	int array[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+//	moveInVector(array, 1, 4, 6);
+// Both calls will have the following effect:
+//	Before: 0 1 2 3 4 5 6 7 8 9
+//	After:  0 4 5 1 2 3 6 7 8 9
+// No sanitizing of the input arguments is performed.
+template <typename Vector>
+int moveInVector(Vector &v, int rangeBegin, int rangeEnd, int destination)
+{
+	auto it = std::begin(v);
+	if (destination > rangeEnd) {
+		// In C++11, std::rotate() returns an iterator to the element that was at
+		// the begining of the range before the rotation. We can't use that, since
+		// Ubuntu 14.04 ships with a buggy libstdc++, where std::rotate returns void.
+		// return std::rotate(it + rangeBegin, it + rangeEnd, it + destination) - it;
+		std::rotate(it + rangeBegin, it + rangeEnd, it + destination);
+		return rangeBegin + destination - rangeEnd;
+	} else if (destination < rangeBegin) {
+		std::rotate(it + destination, it + rangeBegin, it + rangeEnd);
+		return destination;
+	} else {
+		return rangeBegin;
+	}
+}
+
 #endif
 
 // 3) Functions visible to C and C++
