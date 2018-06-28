@@ -151,6 +151,11 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addActionShortcut(Qt::Key_Down, &ProfileWidget2::keyDownAction);
 	addActionShortcut(Qt::Key_Left, &ProfileWidget2::keyLeftAction);
 	addActionShortcut(Qt::Key_Right, &ProfileWidget2::keyRightAction);
+
+	connect(DivePictureModel::instance(), &DivePictureModel::dataChanged, this, &ProfileWidget2::updatePictures);
+	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
+	connect(DivePictureModel::instance(), &DivePictureModel::rowsRemoved, this, &ProfileWidget2::removePictures);
+	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
 #endif // SUBSURFACE_MOBILE
 
 #if !defined(QT_NO_DEBUG) && defined(SHOW_PLOT_INFO_TABLE)
@@ -1125,12 +1130,6 @@ void ProfileWidget2::setProfileState()
 		return;
 
 	disconnectTemporaryConnections();
-#ifndef SUBSURFACE_MOBILE
-	connect(DivePictureModel::instance(), &DivePictureModel::dataChanged, this, &ProfileWidget2::updatePictures);
-	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
-	connect(DivePictureModel::instance(), &DivePictureModel::rowsRemoved, this, &ProfileWidget2::removePictures);
-	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
-#endif
 	/* show the same stuff that the profile shows. */
 
 	emit enableShortcuts();
