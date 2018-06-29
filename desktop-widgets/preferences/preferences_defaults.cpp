@@ -2,7 +2,7 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
 #include "core/prefs-macros.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 #include <QFileDialog>
 
@@ -61,7 +61,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->velocitySlider->setValue(prefs.animation_speed);
 	ui->btnUseDefaultFile->setChecked(prefs.use_default_file);
 
-	if (prefs.cloud_verification_status == CS_VERIFIED) {
+	if (prefs.cloud_verification_status == qPref::CS_VERIFIED) {
 		ui->cloudDefaultFile->setEnabled(true);
 	} else {
 		if (ui->cloudDefaultFile->isChecked())
@@ -76,7 +76,7 @@ void PreferencesDefaults::refreshSettings()
 
 void PreferencesDefaults::syncSettings()
 {
-	auto general = SettingsObjectWrapper::instance()->general_settings;
+	auto general = qPrefGeneral::instance();
 	general->setDefaultFilename(ui->defaultfilename->text());
 	general->setDefaultCylinder(ui->default_cylinder->currentText());
 	general->setUseDefaultFile(ui->btnUseDefaultFile->isChecked());
@@ -87,11 +87,11 @@ void PreferencesDefaults::syncSettings()
 	else if (ui->cloudDefaultFile->isChecked())
 		general->setDefaultFileBehavior(CLOUD_DEFAULT_FILE);
 
-	auto display =  SettingsObjectWrapper::instance()->display_settings;
+	auto display =  qPrefDisplay::instance();
 	display->setDivelistFont(ui->font->currentFont().toString());
 	display->setFontSize(ui->fontsize->value());
 	display->setDisplayInvalidDives(ui->displayinvalid->isChecked());
 
-	auto animation = SettingsObjectWrapper::instance()->animation_settings;
+	auto animation = qPrefAnimations::instance();
 	animation->setAnimationSpeed(ui->velocitySlider->value());
 }

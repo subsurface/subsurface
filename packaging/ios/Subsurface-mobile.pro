@@ -77,9 +77,24 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/btdiscovery.cpp \
 	../../core/connectionlistmodel.cpp \
 	../../core/qt-ble.cpp \
+	../../core/settings/qPref.cpp \
+	../../core/settings/qPrefAnimations.cpp \
+	../../core/settings/qPrefCloudStorage.cpp \
+	../../core/settings/qPrefDiveComputer.cpp \
+	../../core/settings/qPrefDivePlanner.cpp \
+	../../core/settings/qPrefDisplay.cpp \
+	../../core/settings/qPrefFacebook.cpp \
+	../../core/settings/qPrefGeneral.cpp \
+	../../core/settings/qPrefGeocoding.cpp \
+	../../core/settings/qPrefLanguage.cpp \
+	../../core/settings/qPrefLocationService.cpp \
+	../../core/settings/qPrefPartialPressureGas.cpp \
+	../../core/settings/qPrefProxy.cpp \
+	../../core/settings/qPrefTechnicalDetails.cpp \
+	../../core/settings/qPrefUnits.cpp \
+	../../core/settings/qPrefUpdateManager.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
-	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
@@ -183,9 +198,25 @@ HEADERS += \
 	../../core/btdiscovery.h \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
+	../../core/settings/qPref.h \
+	../../core/settings/qPrefAnimations.h \
+	../../core/settings/qPrefCloudStorage.h \
+	../../core/settings/qPrefDiveComputer.h \
+	../../core/settings/qPrefDivePlanner.h \
+	../../core/settings/qPrefDisplay.h \
+	../../core/settings/qPrefFacebook.h \
+	../../core/settings/qPrefGeneral.h \
+	../../core/settings/qPrefGeocoding.h \
+	../../core/settings/qPrefLanguage.h \
+	../../core/settings/qPrefLocationService.h \
+	../../core/settings/qPrefPartialPressureGas.h \
+	../../core/settings/qPrefProxy.h \
+	../../core/settings/qPrefTechnicalDetails.h \
+	../../core/settings/qPrefUnits.h \
+	../../core/settings/qPrefUpdateManager.h \
+	../../core/settings/qPref_private.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
-	../../core/subsurface-qt/SettingsObjectWrapper.h \
 	../../mobile-widgets/qmlmanager.h \
 	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \

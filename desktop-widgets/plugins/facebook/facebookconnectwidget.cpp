@@ -27,7 +27,7 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 #include "ui_socialnetworksdialog.h"
 #include "ui_facebookconnectwidget.h"
@@ -88,7 +88,7 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
 
-	auto fb = SettingsObjectWrapper::instance()->facebook;
+	auto fb = qPrefFacebook::instance();
 	fb->setAccessToken(securityToken);
 	qCDebug(lcFacebook) << "Got securityToken" << securityToken;
 	requestUserId();
@@ -96,7 +96,7 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 
 void FacebookManager::logout()
 {
-	auto fb = SettingsObjectWrapper::instance()->facebook;
+	auto fb = qPrefFacebook::instance();
 	fb->setAccessToken(QString());
 	fb->setUserId(QString());
 	fb->setAlbumId(QString());
@@ -116,7 +116,7 @@ void FacebookManager::albumListReceived()
 	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
-	auto fb = SettingsObjectWrapper::instance()->facebook;
+	auto fb = qPrefFacebook::instance();
 
 	reply->deleteLater();
 	foreach(const QJsonValue &v, albumObj){
@@ -158,7 +158,7 @@ void FacebookManager::facebookAlbumCreated()
 
 	if (album.contains("id")) {
 		qCDebug(lcFacebook) << "Album" << fbInfo.albumName << "created successfully with id" << album.value("id").toString();
-		auto fb = SettingsObjectWrapper::instance()->facebook;
+		auto fb = qPrefFacebook::instance();
 		fb->setAlbumId(album.value("id").toString());
 		emit albumIdReceived(fb->albumId());
 		return;
@@ -168,7 +168,7 @@ void FacebookManager::facebookAlbumCreated()
 		// FIXME: we are lacking 'user_photos' facebook permission to create an album, 
 		// but we are able to upload the image to Facebook (album will be named 'Subsurface Photos')
 		qCDebug(lcFacebook) << "But we are still able to upload data. Album name will be 'Subsurface Photos'";
-		auto fb = SettingsObjectWrapper::instance()->facebook;
+		auto fb = qPrefFacebook::instance();
 		emit albumIdReceived(fb->albumId());
 	}
 }
@@ -189,7 +189,7 @@ void FacebookManager::userIdReceived()
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")) {
 		qCDebug(lcFacebook) << "User id requested successfully:" << obj.value("id").toString();
-		SettingsObjectWrapper::instance()->facebook->setUserId(obj.value("id").toString());
+		qPrefFacebook::instance()->setUserId(obj.value("id").toString());
 		emit sendMessage(tr("Facebook logged in successfully"));
 		emit justLoggedIn(true);
 	} else {

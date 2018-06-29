@@ -3,7 +3,7 @@
 #include "ui_preferences_georeference.h"
 #include "core/prefs-macros.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 #include "qt-models/divelocationmodel.h"
 
 #include <ctime>
@@ -31,7 +31,7 @@ void PreferencesGeoreference::refreshSettings()
 
 void PreferencesGeoreference::syncSettings()
 {
-	auto geocoding = SettingsObjectWrapper::instance()->geocoding;
+	auto geocoding = qPrefGeocoding::instance();
 	geocoding->setFirstTaxonomyCategory((taxonomy_category) ui->first_item->currentIndex());
 	geocoding->setSecondTaxonomyCategory((taxonomy_category) ui->second_item->currentIndex());
 	geocoding->setThirdTaxonomyCategory((taxonomy_category) ui->third_item->currentIndex());

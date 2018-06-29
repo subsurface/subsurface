@@ -2,7 +2,7 @@
 #include "preferences_language.h"
 #include "ui_preferences_language.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -82,7 +82,7 @@ void PreferencesLanguage::syncSettings()
 		currentLocale = m->data(languages.first(),Qt::UserRole).toString();
 
 
-	auto lang = SettingsObjectWrapper::instance()->language_settings;
+	auto lang = qPrefLanguage::instance();
 	lang->setLanguage(currentText);
 	lang->setLangLocale(currentLocale);
 	lang->setUseSystemLanguage(ui->languageSystemDefault->isChecked());

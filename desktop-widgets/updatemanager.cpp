@@ -8,13 +8,13 @@
 #include "core/version.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/cloudstorage.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 UpdateManager::UpdateManager(QObject *parent) :
 	QObject(parent),
 	isAutomaticCheck(false)
 {
-	auto update_settings = SettingsObjectWrapper::instance()->update_manager_settings;
+	auto update_settings = qPrefUpdateManager::instance();
 
 	if (update_settings->dontCheckForUpdates())
 		return;
@@ -108,7 +108,7 @@ void UpdateManager::requestReceived()
 		msgbox.exec();
 	}
 	if (isAutomaticCheck) {
-		auto update_settings = SettingsObjectWrapper::instance()->update_manager_settings;
+		auto update_settings = qPrefUpdateManager::instance();
 		if (!update_settings->dontCheckExists()) {
 
 			// we allow an opt out of future checks

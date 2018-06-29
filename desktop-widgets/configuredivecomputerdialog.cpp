@@ -4,9 +4,9 @@
 #include "core/qthelper.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/display.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 // For fill_computer_list, descriptorLookup
 #include "core/downloadfromdcthread.h"
+#include "core/settings/qPref.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
@@ -132,9 +132,9 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dc->dc_device().isEmpty())
-		ui.device->setEditText(dc->dc_device());
+	auto dc = qPrefDiveComputer::instance();
+	if (!dc->device().isEmpty())
+		ui.device->setEditText(dc->device());
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
@@ -911,7 +911,7 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.descriptor = descriptorLookup.value(selected_vendor + selected_product);
 	device_data.deviceid = device_data.diveid = 0;
 
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
+	auto dc = qPrefDiveComputer::instance();
 	dc->setDevice(device_data.devname);
 #ifdef BT_SUPPORT
 	if (ui.bluetoothMode && btDeviceSelectionDialog)

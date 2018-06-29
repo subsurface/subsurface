@@ -4,7 +4,7 @@
 #include <QLibraryInfo>
 #include <QTextCodec>
 #include "qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "settings/qPref.h"
 
 char *settings_suffix = NULL;
 static QTranslator *qtTranslator, *ssrfTranslator;
@@ -43,7 +43,7 @@ void init_qt_late()
 #endif
 	}
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
-	SettingsObjectWrapper::instance()->load();
+	qPref::instance()->load();
 
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	QLocale loc;

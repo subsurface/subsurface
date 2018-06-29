@@ -16,13 +16,13 @@
 #include "qt-models/models.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/divelist.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/divepicturewidget.h"
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
+#include "core/settings/qPref.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -43,6 +43,8 @@
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
 #include <QtWidgets>
+
+#define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
 
 // a couple of helpers we need
 extern bool haveFilesOnCommandLine();
@@ -331,17 +333,17 @@ void ProfileWidget2::setupItemOnScene()
 #ifndef SUBSURFACE_MOBILE
 
 	// Visibility Connections
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPheChanged, pheGasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPo2Changed, po2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPn2Changed, pn2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::showPheChanged, pheGasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::showPo2Changed, po2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::showPn2Changed, pn2GasItem, &PartialPressureGasItem::setVisible);
 
 	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSetpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::showCCRSetpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
@@ -815,7 +817,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	// so if we are calculation TTS / NDL then let's force that off.
 #ifndef SUBSURFACE_MOBILE
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
-		SettingsObjectWrapper::instance()->techDetails->setCalcndltts(false);
+		qPrefTechnicalDetails::instance()->setCalcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
 #endif

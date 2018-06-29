@@ -4,8 +4,8 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/gettextfromc.h"
+#include "core/settings/qPref.h"
 
 #include "qt-models/cylindermodel.h"
 #include "qt-models/models.h"
@@ -599,27 +599,27 @@ void PlannerSettingsWidget::printDecoPlan()
 
 void PlannerSettingsWidget::setAscrate75(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscrate75(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::instance()->setAscrate75(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setAscrate50(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscrate50(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::instance()->setAscrate50(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setAscratestops(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscratestops(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::instance()->setAscratestops(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setAscratelast6m(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setAscratelast6m(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::instance()->setAscratelast6m(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::setDescrate(int rate)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setDescrate(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::instance()->setDescrate(lrint(rate * UNIT_FACTOR));
 }
 
 void PlannerSettingsWidget::sacFactorChanged(const double factor)
@@ -634,25 +634,25 @@ void PlannerSettingsWidget::problemSolvingTimeChanged(const int minutes)
 
 void PlannerSettingsWidget::setBottomPo2(double po2)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setBottompo2((int) (po2 * 1000.0));
+	qPrefDivePlanner::instance()->setBottompo2((int) (po2 * 1000.0));
 }
 
 void PlannerSettingsWidget::setDecoPo2(double po2)
 {
 	pressure_t olddecopo2;
 	olddecopo2.mbar = prefs.decopo2;
-	SettingsObjectWrapper::instance()->planner_settings->setDecopo2((int) (po2 * 1000.0));
+	qPrefDivePlanner::instance()->setDecopo2((int) (po2 * 1000.0));
 	CylindersModel::instance()->updateDecoDepths(olddecopo2);
 }
 
 void PlannerSettingsWidget::setBestmixEND(int depth)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setBestmixend(units_to_depth(depth).mm);
+	qPrefDivePlanner::instance()->setBestmixend(units_to_depth(depth).mm);
 }
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)
 {
-	SettingsObjectWrapper::instance()->planner_settings->setDoo2breaks(dobreaks);
+	qPrefDivePlanner::instance()->setDoo2breaks(dobreaks);
 	plannerModel->emitDataChanged();
 }
 
