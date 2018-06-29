@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:icon="@drawable/subsurface_mobile_icon" >
         <activity
-            android:name="org.qtproject.qt5.android.bindings.QtActivity"
+            android:name="org.subsurfacedivelog.mobile.SubsurfaceMobileActivity"
             android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|locale|fontScale|keyboard|keyboardHidden|navigation"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
