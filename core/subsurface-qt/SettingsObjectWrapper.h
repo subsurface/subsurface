@@ -5,8 +5,7 @@
 #include <QObject>
 #include <QDate>
 
-#include "../pref.h"
-#include "../prefs-macros.h"
+#include "core/pref.h"
 
 /* Wrapper class for the Settings. This will allow
  * seamlessy integration of the settings with the QML
