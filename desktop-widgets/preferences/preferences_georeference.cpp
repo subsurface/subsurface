@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "preferences_georeference.h"
 #include "ui_preferences_georeference.h"
-#include "core/prefs-macros.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "qt-models/divelocationmodel.h"

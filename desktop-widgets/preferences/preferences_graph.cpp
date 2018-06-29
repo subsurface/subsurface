@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "preferences_graph.h"
 #include "ui_preferences_graph.h"
-#include "core/prefs-macros.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QMessageBox>
 

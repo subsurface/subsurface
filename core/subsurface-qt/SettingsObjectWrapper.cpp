@@ -7,6 +7,7 @@
 #include <QNetworkProxy>
 
 #include "core/qthelper.h"
+#include "core/prefs-macros.h"
 
 DiveComputerSettings::DiveComputerSettings(QObject *parent):
 	QObject(parent)
