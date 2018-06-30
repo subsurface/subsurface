@@ -27,6 +27,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public static boolean isIntentPending;
 	public static boolean isInitialized;
 	private static final String TAG = "subsurfacedivelog.mobile";
+	public static native void setDeviceString(String deviceString);
 
 	// we need to provide two endpoints:
 	// onNewIntent if we receive an Intent while running
@@ -58,6 +59,7 @@ public class SubsurfaceMobileActivity extends QtActivity
 	//		Log.i(TAG + " onNewIntent product name", device.getProductName());
 	//	}
 		Log.i(TAG + " onNewIntent toString", device.toString());
+		setDeviceString(device.toString());
 		super.onNewIntent(intent);
 		setIntent(intent);
 		// Intent will be processed, if all is initialized and Qt / QML can handle the event
