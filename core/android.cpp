@@ -15,6 +15,10 @@
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QtAndroid>
 
+#if defined(SUBSURFACE_MOBILE)
+#include "mobile-widgets/qmlmanager.h"
+#endif
+
 #define USB_SERVICE "usb"
 
 extern "C" {
@@ -150,6 +154,20 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 		return -1;
 	}
 	return fd;
+}
+
+JNIEXPORT void JNICALL
+Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setDeviceString(JNIEnv *env,
+	jobject obj,
+	jstring javaDeviceString)
+{
+	const char *deviceString = env->GetStringUTFChars(javaDeviceString, NULL);
+	Q_UNUSED (obj)
+#if defined(SUBSURFACE_MOBILE)
+	QMLManager::instance()->appendTextToLog(deviceString);
+#endif
+	env->ReleaseStringUTFChars(javaDeviceString, deviceString);
+	return;
 }
 
 /* NOP wrappers to comform with windows.c */
