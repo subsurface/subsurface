@@ -324,9 +324,9 @@ To compile the mobile version you will need:
 -Android SDK
 -Android NDK
 
-In the packaging/android folder, open the build.sh file and add the paths to the SDK,
-NDK and Qt for android at the top.
+In the folder containing the subsurface source dir run: bash subsurface/packaging/android/android-build-wrapper.sh
+This will download and install the required NDK, SDK and Qt required to build the app.
 
-After that, you can run: ./subsurface/packaging/android/build.sh
+After that, you can run: ./subsurface/packaging/android/build.sh everytime you want to build a new version.
 
-This will generate an apk file in ./subsurface-mobile-build-arm/bin
+This will generate an apk file in ./subsurface-mobile-build-arm/build/outputs/apk/
