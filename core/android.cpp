@@ -15,7 +15,6 @@
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QtAndroid>
 
-#define FTDI_VID 0x0403
 #define USB_SERVICE "usb"
 
 extern "C" {
