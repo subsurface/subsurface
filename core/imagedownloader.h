@@ -30,9 +30,9 @@ public:
 	static Thumbnailer *instance();
 
 	// Schedule a thumbnail for fetching or calculation.
-	// Returns a placehlder thumbnail. The actual thumbnail will be sent
+	// Returns a placeholder thumbnail. The actual thumbnail will be sent
 	// via a signal later.
-	QImage fetchThumbnail(PictureEntry &entry);
+	QImage fetchThumbnail(const QString &filename);
 
 	// Schedule multiple thumbnails for forced recalculation
 	void calculateThumbnails(const QVector<QString> &filenames);
