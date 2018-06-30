@@ -56,8 +56,14 @@ void DivePictureModel::updateDivePictures()
 	struct dive *dive;
 	for_each_dive (i, dive) {
 		if (dive->selected) {
+			int first = pictures.count();
 			FOR_EACH_PICTURE(dive)
-				pictures.push_back({picture, picture->filename, {}, picture->offset.seconds});
+				pictures.push_back({ dive->id, picture, picture->filename, {}, picture->offset.seconds });
+
+			// Sort pictures of this dive by offset.
+			// Thus, the list will be sorted by (diveId, offset).
+			std::sort(pictures.begin() + first, pictures.end(),
+				  [](const PictureEntry &a, const PictureEntry &b) { return a.offsetSeconds < b.offsetSeconds; });
 		}
 	}
 
@@ -166,11 +172,39 @@ void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail)
 	}
 }
 
-void DivePictureModel::updateDivePictureOffset(const QString &filename, int offsetSeconds)
+void DivePictureModel::updateDivePictureOffset(int diveId, const QString &filename, int offsetSeconds)
 {
-	int i = findPictureId(filename);
-	if (i >= 0) {
-		pictures[i].offsetSeconds = offsetSeconds;
-		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
+	// Find the pictures of the given dive.
+	auto from = std::find_if(pictures.begin(), pictures.end(), [diveId](const PictureEntry &e) { return e.diveId == diveId; });
+	auto to = std::find_if(from, pictures.end(), [diveId](const PictureEntry &e) { return e.diveId != diveId; });
+
+	// Find picture with the given filename
+	auto oldPos = std::find_if(from, to, [filename](const PictureEntry &e) { return e.filename == filename; });
+	if (oldPos == to)
+		return;
+
+	// Find new position
+	auto newPos = std::find_if(from, to, [offsetSeconds](const PictureEntry &e) { return e.offsetSeconds > offsetSeconds; });
+
+	// Update the offset here and in the backend
+	oldPos->offsetSeconds = offsetSeconds;
+	if (struct dive *dive = get_dive_by_uniq_id(diveId)) {
+		FOR_EACH_PICTURE(dive) {
+			if (picture->filename == filename) {
+				picture->offset.seconds = offsetSeconds;
+				mark_divelist_changed(true);
+				break;
+			}
+		}
+		copy_dive(current_dive, &displayed_dive);
 	}
+
+	// Henceforth we will work with indices instead of iterators
+	int oldIndex = oldPos - pictures.begin();
+	int newIndex = newPos - pictures.begin();
+	if (oldIndex == newIndex || oldIndex + 1 == newIndex)
+		return;
+	beginMoveRows(QModelIndex(), oldIndex, oldIndex, QModelIndex(), newIndex);
+	moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
+	endMoveRows();
 }
