@@ -64,10 +64,6 @@ void DivePictureModel::updateDivePictures()
 		Thumbnailer::instance()->clearWorkQueue();
 	}
 
-	// if the dive_table is empty, quit
-	if (dive_table.nr == 0)
-		return;
-
 	int i;
 	struct dive *dive;
 	for_each_dive (i, dive) {
