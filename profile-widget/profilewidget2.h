@@ -240,6 +240,7 @@ private:
 		bool operator< (const PictureEntry &e) const;
 	};
 	std::vector<PictureEntry> pictures;
+	void calculatePictureYPositions();
 
 	QList<DiveHandler *> handles;
 	void repositionDiveHandlers();

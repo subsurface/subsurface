@@ -2094,6 +2094,26 @@ bool ProfileWidget2::PictureEntry::operator< (const PictureEntry &e) const
 	return std::tie(offset.seconds, filename) < std::tie(e.offset.seconds, e.filename);
 }
 
+void ProfileWidget2::calculatePictureYPositions()
+{
+	double lastX = -1.0, lastY;
+	for (PictureEntry &e: pictures) {
+		if (!e.thumbnail)
+			continue;
+		// let's put the picture at the correct time, but at a fixed "depth" on the profile
+		// not sure this is ideal, but it seems to look right.
+		double x = e.thumbnail->x();
+		double y;
+		if (lastX >= 0.0 && fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
+			y = lastY + 3;
+		else
+			y = 10;
+		lastX = x;
+		lastY = y;
+		e.thumbnail->setY(y);
+	}
+}
+
 // This function resets the picture thumbnails of the current dive.
 void ProfileWidget2::plotPictures()
 {
@@ -2115,8 +2135,7 @@ void ProfileWidget2::plotPictures()
 	std::sort(pictures.begin(), pictures.end());
 
 	// Add the DivePictureItems to the scene, set their pixmaps and filenames
-	// and finaly calculate their positions.
-	double x, y, lastX = -1.0, lastY = -1.0;
+	// and finally calculate their positions.
 	int size = Thumbnailer::defaultThumbnailSize();
 	for (PictureEntry &e: pictures) {
 		scene()->addItem(e.thumbnail.get());
@@ -2124,19 +2143,13 @@ void ProfileWidget2::plotPictures()
 		QImage thumbnail = Thumbnailer::instance()->fetchThumbnail(e.filename).scaled(size, size, Qt::KeepAspectRatio);
 		e.thumbnail->setPixmap(QPixmap::fromImage(thumbnail));
 		e.thumbnail->setFileUrl(e.filename);
-		// let's put the picture at the correct time, but at a fixed "depth" on the profile
-		// not sure this is ideal, but it seems to look right.
-		x = timeAxis->posAtValue(e.offset.seconds);
-		if (lastX < 0.0)
-			y = 10;
-		else if (fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
-			y = lastY + 3;
-		else
-			y = 10;
-		lastX = x;
-		lastY = y;
-		e.thumbnail->setPos(x, y);
+
+		// Here, we only set the x-coordinate of the picture. The y-coordinate
+		// will be set later in calculatePictureYPositions().
+		double x = timeAxis->posAtValue(e.offset.seconds);
+		e.thumbnail->setX(x);
 	}
+	calculatePictureYPositions();
 }
 
 // Remove the pictures with the given filenames from the profile plot.
@@ -2155,6 +2168,7 @@ void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
 			// Check whether filename of entry is in list of provided filenames
 			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
 	pictures.erase(it, pictures.end());
+	calculatePictureYPositions();
 }
 
 #endif
