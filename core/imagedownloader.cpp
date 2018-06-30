@@ -269,12 +269,11 @@ void Thumbnailer::imageDownloadFailed(QString filename)
 	workingOn.remove(filename);
 }
 
-QImage Thumbnailer::fetchThumbnail(PictureEntry &entry)
+QImage Thumbnailer::fetchThumbnail(const QString &filename)
 {
 	QMutexLocker l(&lock);
 
 	// We are not currently fetching this thumbnail - add it to the list.
-	const QString &filename = entry.filename;
 	if (!workingOn.contains(filename)) {
 		workingOn.insert(filename,
 				 QtConcurrent::run(&pool, [this, filename]() { processItem(filename, true); }));

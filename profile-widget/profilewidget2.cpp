@@ -24,6 +24,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
+#include "core/imagedownloader.h"
 #endif
 
 #include <libdivecomputer/parser.h>
@@ -155,9 +156,9 @@ ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	addActionShortcut(Qt::Key_Left, &ProfileWidget2::keyLeftAction);
 	addActionShortcut(Qt::Key_Right, &ProfileWidget2::keyRightAction);
 
-	connect(DivePictureModel::instance(), &DivePictureModel::dataChanged, this, &ProfileWidget2::updatePictures);
+	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged, this, &ProfileWidget2::updateThumbnail, Qt::QueuedConnection);
 	connect(DivePictureModel::instance(), SIGNAL(rowsInserted(const QModelIndex &, int, int)), this, SLOT(plotPictures()));
-	connect(DivePictureModel::instance(), &DivePictureModel::rowsRemoved, this, &ProfileWidget2::removePictures);
+	connect(DivePictureModel::instance(), &DivePictureModel::picturesRemoved, this, &ProfileWidget2::removePictures);
 	connect(DivePictureModel::instance(), &DivePictureModel::modelReset, this, &ProfileWidget2::plotPictures);
 #endif // SUBSURFACE_MOBILE
 
@@ -2063,49 +2064,70 @@ void ProfileWidget2::clearPictures()
 	pictures.clear();
 }
 
-void ProfileWidget2::updatePictures(const QModelIndex &from, const QModelIndex &to)
+// This function is called asynchronously by the thumbnailer if a thumbnail
+// was fetched from disk or freshly calculated.
+void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail)
 {
-	DivePictureModel *m = DivePictureModel::instance();
-	for (int picNr = from.row(); picNr <= to.row(); ++picNr) {
-		int picItemNr = picNr - m->rowDDStart;
-		if (picItemNr < 0 || (size_t)picItemNr >= pictures.size())
-			return;
-		if (!pictures[picItemNr])
-			return;
+	// Find the picture with the given filename
+	auto it = std::find_if(pictures.begin(), pictures.end(), [&filename](const PictureEntry &e)
+			       { return e.filename == filename; });
 
-		pictures[picItemNr]->setPixmap(m->index(picNr, 0).data(Qt::UserRole).value<QPixmap>());
+	// If we didn't find a picture, it does either not belong to the current dive,
+	// or its timestamp is outside of the profile.
+	if (it != pictures.end()) {
+		// Replace the pixmap of the thumbnail with the newly calculated one.
+		int size = Thumbnailer::defaultThumbnailSize();
+		it->thumbnail->setPixmap(QPixmap::fromImage(thumbnail.scaled(size, size, Qt::KeepAspectRatio)));
 	}
 }
 
+ProfileWidget2::PictureEntry::PictureEntry (offset_t offsetIn, const QString &filenameIn) : offset(offsetIn),
+	filename(filenameIn),
+	thumbnail(new DivePictureItem)
+{
+}
+
+// Define a default sort order for picture-entries: sort lexicographically by timestamp and filename.
+bool ProfileWidget2::PictureEntry::operator< (const PictureEntry &e) const
+{
+	// Use std::tie() for lexicographical sorting.
+	return std::tie(offset.seconds, filename) < std::tie(e.offset.seconds, e.filename);
+}
+
+// This function resets the picture thumbnails of the current dive.
 void ProfileWidget2::plotPictures()
 {
-	DivePictureModel *m = DivePictureModel::instance();
-	pictures.resize(m->rowDDEnd - m->rowDDStart);
+	pictures.clear();
+	if (currentState == ADD || currentState == PLAN)
+		return;
 
+	// Fetch all pictures of the current dive, but consider only those that are within the dive time.
+	// For each picture, create a PictureEntry object in the pictures-vector.
+	// emplace_back() constructs an object at the end of the vector. The parameters are passed directly to the constructor.
+	FOR_EACH_PICTURE(current_dive) {
+		if (picture->offset.seconds > 0 && picture->offset.seconds <= current_dive->duration.seconds)
+			pictures.emplace_back(picture->offset, QString(picture->filename));
+	}
+	if (pictures.empty())
+		return;
+	// Sort pictures by timestamp (and filename if equal timestamps).
+	// This will allow for proper location of the pictures on the profile plot.
+	std::sort(pictures.begin(), pictures.end());
+
+	// Add the DivePictureItems to the scene, set their pixmaps and filenames
+	// and finaly calculate their positions.
 	double x, y, lastX = -1.0, lastY = -1.0;
-	for (int i = m->rowDDStart; i < m->rowDDEnd; i++) {
-		int picItemNr = i - m->rowDDStart;
-		int offsetSeconds = m->index(i, 1).data(Qt::UserRole).value<int>();
-		// it's a correct picture, but doesn't have a timestamp: only show on the widget near the
-		// information area. A null pointer in the pictures array indicates that this picture is not
-		// shown.
-		if (!offsetSeconds) {
-			pictures[picItemNr].reset();
-			continue;
-		}
-		DivePictureItem *item = pictures[picItemNr].get();
-		if (!item) {
-			item = new DivePictureItem;
-			pictures[picItemNr].reset(item);
-			scene()->addItem(item);
-		}
-		item->setVisible(prefs.show_pictures_in_profile);
-		item->setPixmap(m->index(i, 0).data(Qt::UserRole).value<QPixmap>());
-		item->setFileUrl(m->index(i, 1).data().toString());
+	int size = Thumbnailer::defaultThumbnailSize();
+	for (PictureEntry &e: pictures) {
+		scene()->addItem(e.thumbnail.get());
+		e.thumbnail->setVisible(prefs.show_pictures_in_profile);
+		QImage thumbnail = Thumbnailer::instance()->fetchThumbnail(e.filename).scaled(size, size, Qt::KeepAspectRatio);
+		e.thumbnail->setPixmap(QPixmap::fromImage(thumbnail));
+		e.thumbnail->setFileUrl(e.filename);
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
-		x = timeAxis->posAtValue(offsetSeconds);
-		if (i == 0)
+		x = timeAxis->posAtValue(e.offset.seconds);
+		if (lastX < 0.0)
 			y = 10;
 		else if (fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
 			y = lastY + 3;
@@ -2113,20 +2135,26 @@ void ProfileWidget2::plotPictures()
 			y = 10;
 		lastX = x;
 		lastY = y;
-		item->setPos(x, y);
+		e.thumbnail->setPos(x, y);
 	}
 }
 
-void ProfileWidget2::removePictures(const QModelIndex &, int first, int last)
+// Remove the pictures with the given filenames from the profile plot.
+// TODO: This does not check for the fact that the same image may be attributed
+// to different dives! Deleting the picture from one dive may therefore remove
+// it from the profile of a different dive.
+void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
 {
-	DivePictureModel *m = DivePictureModel::instance();
-	first = std::max(0, first - m->rowDDStart);
-	// Note that last points *to* the last item and not *past* the last item,
-	// therefore we add 1 to achieve conventional C++ semantics.
-	last = std::min((int)pictures.size(), last + 1 - m->rowDDStart);
-	if (first >= (int)pictures.size() || last <= first)
-		return;
-	pictures.erase(pictures.begin() + first, pictures.begin() + last);
+	// To remove the pictures, we use the std::remove_if() algorithm.
+	// std::remove_if() does not actually delete the elements, but moves
+	// them to the end of the given range. It returns an iterator to the
+	// end of the new range of non-deleted elements. A subsequent call to
+	// std::erase on the range of deleted elements then ultimately shrinks the vector.
+	// (c.f. erase-remove idiom: https://en.wikipedia.org/wiki/Erase%E2%80%93remove_idiom)
+	auto it = std::remove_if(pictures.begin(), pictures.end(), [&fileUrls](const PictureEntry &e)
+			// Check whether filename of entry is in list of provided filenames
+			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
+	pictures.erase(it, pictures.end());
 }
 
 #endif

@@ -20,6 +20,7 @@
 #include "profile-widget/diveprofileitem.h"
 #include "core/display.h"
 #include "core/color.h"
+#include "core/units.h"
 
 class RulerItem2;
 struct dive;
@@ -110,7 +111,7 @@ slots: // Necessary to call from QAction's signals.
 	void replot(dive *d = 0);
 #ifndef SUBSURFACE_MOBILE
 	void plotPictures();
-	void removePictures(const QModelIndex &, int first, int last);
+	void removePictures(const QVector<QString> &fileUrls);
 	void setPlanState();
 	void setAddState();
 	void changeGas();
@@ -126,7 +127,7 @@ slots: // Necessary to call from QAction's signals.
 	void deleteCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
-	void updatePictures(const QModelIndex &from, const QModelIndex &to);
+	void updateThumbnail(QString filename, QImage thumbnail);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -228,8 +229,17 @@ private:
 
 	//specifics for ADD and PLAN
 #ifndef SUBSURFACE_MOBILE
-	// Use std::vector<> and std::unique_ptr<>, because QVector<QScopedPointer<...>> is unsupported.
-	std::vector<std::unique_ptr<DivePictureItem>> pictures;
+	// The list of pictures in this plot. The pictures are sorted by offset in seconds.
+	// For the same offset, sort by filename.
+	// Pictures that are outside of the dive time are not shown.
+	struct PictureEntry {
+		offset_t offset;
+		QString filename;
+		std::unique_ptr<DivePictureItem> thumbnail;
+		PictureEntry (offset_t offsetIn, const QString &filenameIn);
+		bool operator< (const PictureEntry &e) const;
+	};
+	std::vector<PictureEntry> pictures;
 
 	QList<DiveHandler *> handles;
 	void repositionDiveHandlers();

@@ -14,10 +14,7 @@ DivePictureModel *DivePictureModel::instance()
 	return self;
 }
 
-DivePictureModel::DivePictureModel() : rowDDStart(0),
-				       rowDDEnd(0),
-				       zoomLevel(0.0),
-				       defaultSize(Thumbnailer::defaultThumbnailSize())
+DivePictureModel::DivePictureModel() : zoomLevel(0.0)
 {
 	connect(Thumbnailer::instance(), &Thumbnailer::thumbnailChanged,
 		this, &DivePictureModel::updateThumbnail, Qt::QueuedConnection);
@@ -44,7 +41,7 @@ void DivePictureModel::updateThumbnails()
 {
 	updateZoom();
 	for (PictureEntry &entry: pictures)
-		entry.image = Thumbnailer::instance()->fetchThumbnail(entry);
+		entry.image = Thumbnailer::instance()->fetchThumbnail(entry.filename);
 }
 
 void DivePictureModel::updateDivePictures()
@@ -52,7 +49,6 @@ void DivePictureModel::updateDivePictures()
 	beginResetModel();
 	if (!pictures.isEmpty()) {
 		pictures.clear();
-		rowDDStart = rowDDEnd = 0;
 		Thumbnailer::instance()->clearWorkQueue();
 	}
 
@@ -60,12 +56,8 @@ void DivePictureModel::updateDivePictures()
 	struct dive *dive;
 	for_each_dive (i, dive) {
 		if (dive->selected) {
-			if (dive->id == displayed_dive.id)
-				rowDDStart = pictures.count();
 			FOR_EACH_PICTURE(dive)
 				pictures.push_back({picture, picture->filename, {}, picture->offset.seconds});
-			if (dive->id == displayed_dive.id)
-				rowDDEnd = pictures.count();
 		}
 	}
 
@@ -92,9 +84,6 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			break;
 		case Qt::DecorationRole:
 			ret = entry.image.scaled(size, size, Qt::KeepAspectRatio);
-			break;
-		case Qt::UserRole:	// Used by profile widget to access bigger thumbnails
-			ret = entry.image.scaled(defaultSize, defaultSize, Qt::KeepAspectRatio);
 			break;
 		case Qt::DisplayRole:
 			ret = QFileInfo(entry.filename).fileName();
@@ -126,14 +115,6 @@ static bool removePictureFromSelectedDive(const char *fileUrl)
 	return false;
 }
 
-// Calculate how many items of a range are before the given index
-static int rangeBefore(int rangeFrom, int rangeTo, int index)
-{
-	if (rangeTo <= rangeFrom)
-		return 0;
-	return std::min(rangeTo, index) - std::min(rangeFrom, index);
-}
-
 void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
 {
 	bool removed = false;
@@ -159,13 +140,8 @@ void DivePictureModel::removePictures(const QVector<QString> &fileUrls)
 		beginRemoveRows(QModelIndex(), i, j - 1);
 		pictures.erase(pictures.begin() + i, pictures.begin() + j);
 		endRemoveRows();
-
-		// After removing pictures, we have to adjust rowDDStart and rowDDEnd.
-		// Calculate the part of the range that is before rowDDStart and rowDDEnd,
-		// respectively and subtract accordingly.
-		rowDDStart -= rangeBefore(i, j, rowDDStart);
-		rowDDEnd -= rangeBefore(i, j, rowDDEnd);
 	}
+	emit picturesRemoved(fileUrls);
 }
 
 int DivePictureModel::rowCount(const QModelIndex&) const

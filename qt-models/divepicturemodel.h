@@ -22,8 +22,9 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual void updateDivePictures();
 	void removePictures(const QVector<QString> &fileUrls);
-	int rowDDStart, rowDDEnd;
 	void updateDivePictureOffset(const QString &filename, int offsetSeconds);
+signals:
+	void picturesRemoved(const QVector<QString> &fileUrls);
 public slots:
 	void setZoomLevel(int level);
 	void updateThumbnail(QString filename, QImage thumbnail);
@@ -33,7 +34,6 @@ private:
 	int findPictureId(const QString &filename);	// Return -1 if not found
 	double zoomLevel;	// -1.0: minimum, 0.0: standard, 1.0: maximum
 	int size;
-	int defaultSize;
 	void updateThumbnails();
 	void updateZoom();
 };
