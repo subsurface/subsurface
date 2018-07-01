@@ -3562,7 +3562,7 @@ int split_dive(struct dive *dive)
 		// the surface start.
 		if (!surface_start)
 			continue;
-		if (!should_split(dc, dc->sample[surface_start].time.seconds, sample[i - 1].time.seconds))
+		if (!should_split(dc, dc->sample[surface_start].time.seconds, sample[-1].time.seconds))
 			continue;
 
 		return split_dive_at(dive, surface_start, i-1);
