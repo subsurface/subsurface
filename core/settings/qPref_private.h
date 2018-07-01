@@ -101,4 +101,36 @@ void qPref ## class::disk_ ## field(bool doSync) \
 { \
 	LOADSYNC_TXT(name, field); \
 }
+
+
+//******* Macros to generate get function
+#define GET_PREFERENCE_BOOL(class, field) \
+bool qPref ## class::field () const \
+{ \
+	return prefs.field; \
+}
+
+#define GET_PREFERENCE_DOUBLE(class, field) \
+double  qPref ## class::field () const \
+{ \
+	return prefs.field; \
+}
+
+#define GET_PREFERENCE_ENUM(class, type, field) \
+struct type  qPref ## class:: ## field () const \
+{ \
+	return prefs.field; \
+}
+
+#define GET_PREFERENCE_INT(class, field) \
+int qPref ## class::field () const \
+{ \
+	return prefs.field; \
+}
+
+#define GET_PREFERENCE_TXT(class, field) \
+const QString qPref ## class::field () const \
+{ \
+	return prefs.field; \
+}
 #endif
