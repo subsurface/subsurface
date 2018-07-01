@@ -95,7 +95,7 @@ struct preferences {
 	bool        display_invalid_dives;
 	const char *divelist_font;
 	double      font_size;
-	bool        showDeveloper;
+	bool        show_developer;
  	const char *theme;
 
 	// ********** Facebook **********
