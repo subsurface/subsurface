@@ -155,12 +155,14 @@ static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 	// Allocate memory.
 	ftdi_serial_t *device = (ftdi_serial_t *) malloc (sizeof (ftdi_serial_t));
 	if (device == NULL) {
+		INFO(0, "couldn't allocate memory");
 		SYSERROR (context, errno);
 		return DC_STATUS_NOMEMORY;
 	}
 	INFO(0, "setting up ftdi_ctx");
 	struct ftdi_context *ftdi_ctx = ftdi_new();
 	if (ftdi_ctx == NULL) {
+		INFO(0, "failed ftdi_new()");
 		free(device);
 		SYSERROR (context, errno);
 		return DC_STATUS_NOMEMORY;
@@ -189,6 +191,7 @@ static dc_status_t serial_ftdi_open (void **io, dc_context_t *context)
 		return DC_STATUS_IO;
 	}
 
+	INFO(0, "call serial_ftdi_open_device");
 	if (serial_ftdi_open_device(ftdi_ctx) < 0) {
 		free(device);
 		ERROR (context, "%s", ftdi_get_error_string(ftdi_ctx));
@@ -547,9 +550,12 @@ dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context)
 		serial_ftdi_close, /* close */
 	};
 
+	INFO(device->contxt, "%s", "in ftdi_open");
 	rc = serial_ftdi_open(&io, context);
-	if (rc != DC_STATUS_SUCCESS)
+	if (rc != DC_STATUS_SUCCESS) {
+		INFO(device->contxt, "%s", "serial_ftdi_open() failed");
 		return rc;
-
+	}
+	INFO(device->contxt, "%s", "calling dc_custom_open())");
 	return dc_custom_open(iostream, context, DC_TRANSPORT_SERIAL, &callbacks, io);
 }
