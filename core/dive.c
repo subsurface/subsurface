@@ -2701,7 +2701,7 @@ int match_one_dc(struct divecomputer *a, struct divecomputer *b)
 	 * If they have different dive ID's on the same
 	 * dive computer, that's a definite "same or not"
 	 */
-	return a->diveid == b->diveid ? 1 : -1;
+	return a->diveid == b->diveid && a->when == b->when ? 1 : -1;
 }
 
 /*
@@ -3456,6 +3456,7 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	 */
 	t = dc2->sample[0].time.seconds;
 	d2->when += t;
+	dc2->when += t;
 	for (i = 0; i < dc2->samples; i++)
 		dc2->sample[i].time.seconds -= t;
 
