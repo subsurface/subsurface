@@ -14,10 +14,15 @@
 #include <QtAndroidExtras/QtAndroidExtras>
 #include <QtAndroidExtras/QAndroidJniObject>
 #include <QtAndroid>
+#include <QDebug>
 
 #if defined(SUBSURFACE_MOBILE)
 #include "mobile-widgets/qmlmanager.h"
+#define LOG(x) QMLManager::instance()->appendTextToLog(x);
+#else
+#define LOG(x) qDebug() << x;
 #endif
+
 
 #define USB_SERVICE "usb"
 
@@ -163,9 +168,7 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setDeviceString(JNIEn
 {
 	const char *deviceString = env->GetStringUTFChars(javaDeviceString, NULL);
 	Q_UNUSED (obj)
-#if defined(SUBSURFACE_MOBILE)
-	QMLManager::instance()->appendTextToLog(deviceString);
-#endif
+	LOG(deviceString);
 	env->ReleaseStringUTFChars(javaDeviceString, deviceString);
 	return;
 }
