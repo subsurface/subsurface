@@ -112,6 +112,7 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 	jint num_devices = deviceMap.callMethod<jint>("size", "()I");
 	if (num_devices == 0) {
 		// No USB device is attached.
+		LOG("usbManager says no devices attached");
 		return -1;
 	}
 
@@ -124,11 +125,13 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 		usbDevice = deviceMap.callObjectMethod ("get", "(Ljava/lang/Object;)Ljava/lang/Object;", usbName.object());
 		vendorid = usbDevice.callMethod<jint>("getVendorId", "()I");
 		productid = usbDevice.callMethod<jint>("getProductId", "()I");
+		LOG(QString("Looking at device with VID/PID %1/%2").arg(vendorid).arg(productid));
 		if(vendorid == idVendor && productid == idProduct) // Found the requested device
 			break;
 	}
 	if (i == num_devices) {
 		// No device found.
+		LOG(QString("Didn't find device matching %1/%2").arg(idVendor).arg(idProduct))
 		errno = ENOENT;
 		return -1;
 	}
@@ -138,6 +141,7 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 		// You do not have permission to use the usbDevice.
 		// Please remove and reinsert the USB device.
 		// Could also give an dialogbox asking for permission.
+		LOG("usbManager tells us we don't have permission to access this device");
 		errno = EPERM;
 		return -1;
 	}
@@ -147,6 +151,7 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 	QAndroidJniObject usbDeviceConnection = usbManager.callObjectMethod("openDevice", "(Landroid/hardware/usb/UsbDevice;)Landroid/hardware/usb/UsbDeviceConnection;", usbDevice.object());
 	if (usbDeviceConnection.object() == NULL) {
 		// Some error occurred while opening the device. Exit.
+		LOG("usbManager said we had permission to access, but then opening the device failed");
 		errno = EINVAL;
 		return -1;
 	}
@@ -155,6 +160,7 @@ int get_usb_fd(uint16_t idVendor, uint16_t idProduct)
 	fd = usbDeviceConnection.callMethod<jint>("getFileDescriptor", "()I");
 	if (fd == -1) {
 		// The device is not opened. Some error.
+		LOG("usbManager said we successfully opened the device, but the fd was -1");
 		errno = ENODEV;
 		return -1;
 	}
