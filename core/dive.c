@@ -3385,6 +3385,8 @@ static void force_fixup_dive(struct dive *d)
 	int old_mintemp = d->mintemp.mkelvin;
 	int old_maxtemp = d->maxtemp.mkelvin;
 	duration_t old_duration = d->duration;
+	cylinder_t old_cylinders[MAX_CYLINDERS];
+	memcpy(old_cylinders, &d->cylinder, MAX_CYLINDERS * sizeof(cylinder_t));
 
 	d->maxdepth.mm = 0;
 	dc->maxdepth.mm = 0;
@@ -3393,6 +3395,10 @@ static void force_fixup_dive(struct dive *d)
 	d->duration.seconds = 0;
 	d->maxtemp.mkelvin = 0;
 	d->mintemp.mkelvin = 0;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		d->cylinder[i].start.mbar = 0;
+		d->cylinder[i].end.mbar = 0;
+	}
 
 	fixup_dive(d);
 
@@ -3410,6 +3416,12 @@ static void force_fixup_dive(struct dive *d)
 
 	if (!d->duration.seconds)
 		d->duration = old_duration;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (!d->cylinder[i].start.mbar)
+			d->cylinder[i].start = old_cylinders[i].start;
+		if (!d->cylinder[i].end.mbar)
+			d->cylinder[i].end = old_cylinders[i].end;
+	}
 
 }
 
