@@ -23,6 +23,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		else if (btName.mid(4,2) == "s ") product = "OSTC Sport";
 		else if (btName.mid(4,2) == "4-") product = "OSTC 4";
 		else if (btName.mid(4,2) == "2-") product = "OSTC 2N";
+		else if (btName.mid(4,2) == "+ ") product = "OSTC 2";
 		// all OSTCs are HW_FAMILY_OSTC_3, so when we do not know,
 		// just try this
 		else product = "OSTC 3"; // all OSTCs are HW_FAMILY_OSTC_3
