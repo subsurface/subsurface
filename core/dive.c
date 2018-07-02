@@ -3441,6 +3441,10 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	if ((nr = get_divenr(dive)) < 0)
 		return 0;
 
+	/* Splitting should leave at least 3 samples per dive */
+	if (a < 3 || b > dive->dc.samples - 4)
+		return 0;
+
 	/* We're not trying to be efficient here.. */
 	d1 = create_new_copy(dive);
 	d2 = create_new_copy(dive);
@@ -3581,6 +3585,22 @@ int split_dive(struct dive *dive)
 		return split_dive_at(dive, surface_start, i-1);
 	}
 	return 0;
+}
+
+void split_dive_at_time(struct dive *dive, duration_t time)
+{
+	int i = 0;
+	struct sample *sample = dive->dc.sample;
+
+	if (!dive)
+		return;
+	while(sample->time.seconds < time.seconds) {
+		++sample;
+		++i;
+		if (dive->dc.samples == i)
+			return;
+	}
+	split_dive_at(dive, i, i - 1);
 }
 
 /*

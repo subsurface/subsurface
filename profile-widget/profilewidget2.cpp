@@ -21,6 +21,7 @@
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/divepicturewidget.h"
+#include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
 #endif
@@ -1425,6 +1426,8 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	setpointAction->setData(event->globalPos());
 	QAction *action = m.addAction(tr("Add bookmark"), this, SLOT(addBookmark()));
 	action->setData(event->globalPos());
+	QAction *splitAction = m.addAction(tr("Split dive into two"), this, SLOT(splitDive()));
+	splitAction->setData(event->globalPos());
 	struct event *ev = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
@@ -1636,6 +1639,20 @@ void ProfileWidget2::addSetpointChange()
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	SetpointDialog::instance()->setpointData(current_dc, lrint(timeAxis->valueAt(scenePos)));
 	SetpointDialog::instance()->show();
+}
+
+void ProfileWidget2::splitDive()
+{
+	QAction *action = qobject_cast<QAction *>(sender());
+	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
+	duration_t time;
+	time.seconds = lrint(timeAxis->valueAt((scenePos)));
+	split_dive_at_time(&displayed_dive, time);
+	emit updateDiveInfo(false);
+	mark_divelist_changed(true);
+	replot();
+	MainWindow::instance()->refreshProfile();
+	MainWindow::instance()->refreshDisplay();
 }
 
 void ProfileWidget2::changeGas()
