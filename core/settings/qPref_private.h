@@ -102,7 +102,6 @@ void qPref ## class::disk_ ## field(bool doSync) \
 	LOADSYNC_TXT(name, field); \
 }
 
-
 //******* Macros to generate get function
 #define GET_PREFERENCE_BOOL(class, field) \
 bool qPref ## class::field () const \
@@ -132,5 +131,56 @@ int qPref ## class::field () const \
 const QString qPref ## class::field () const \
 { \
 	return prefs.field; \
+}
+
+//******* Macros to generate set function
+#define SET_PREFERENCE_BOOL(class, field) \
+void qPref ## class::set_ ## field (bool value) \
+{ \
+	if (value != prefs.field) { \
+		prefs.field = value; \
+		disk_ ## field(true); \
+		emit field ## _changed(value); \
+	} \
+}
+
+#define SET_PREFERENCE_DOUBLE(class, field) \
+void qPref ## class::set_ ## field (double value) \
+{ \
+	if (value != prefs.field) { \
+		prefs.field = value; \
+		disk_ ## field(true); \
+		emit field ## _changed(value); \
+	} \
+}
+
+#define SET_PREFERENCE_ENUM(class, type, field) \
+void qPref ## class::set_ ## field (type value) \
+{ \
+	if (value != prefs.field) { \
+		prefs.field = value; \
+		disk_ ## field(true); \
+		emit field ## _changed(value); \
+	} \
+}
+
+#define SET_PREFERENCE_INT(class, field) \
+void qPref ## class::set_ ## field (int value) \
+{ \
+	if (value != prefs.field) { \
+		prefs.field = value; \
+		disk_ ## field(true); \
+		emit field ## _changed(value); \
+	} \
+}
+
+#define SET_PREFERENCE_TXT(class, field) \
+void qPref ## class::set_ ## field (const QString& value) \
+{ \
+	if (value != prefs.field) { \
+		COPY_TXT(field, value); \
+		disk_ ## field(true); \
+		emit field ## _changed(value); \
+	} \
 }
 #endif
