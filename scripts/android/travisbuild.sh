@@ -3,7 +3,7 @@
 set -x
 set -e
 
-docker exec -t builder subsurface/packaging/android/android-build-wrapper.sh
+docker exec -e TRAVIS="$TRAVIS" -t builder subsurface/packaging/android/android-build-wrapper.sh
 
 # Extract the built apk from the builder container
 docker cp builder:/workspace/subsurface-mobile-build-arm/build/outputs/apk/ .
