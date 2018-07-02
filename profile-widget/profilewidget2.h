@@ -115,6 +115,7 @@ slots: // Necessary to call from QAction's signals.
 	void setAddState();
 	void changeGas();
 	void addSetpointChange();
+	void splitDive();
 	void addBookmark();
 	void addDivemodeSwitch();
 	void hideEvents();
