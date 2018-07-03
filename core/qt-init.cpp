@@ -55,7 +55,7 @@ void init_qt_late()
 #if defined(Q_OS_ANDROID)
 	translationLocation = QLatin1Literal("assets:/translations");
 #elif defined(Q_OS_IOS)
-	translationLocation = QLatin1Literal(":/translations/");
+	translationLocation = QLatin1Literal(":/");
 #else
 	translationLocation = QLibraryInfo::location(QLibraryInfo::TranslationsPath);
 #endif
