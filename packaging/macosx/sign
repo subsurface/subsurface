@@ -5,6 +5,9 @@
 echo -- signing staging/Subsurface.app
 cd staging
 
+# remove the spurious DBus framework that we don't need
+rm -rf Subsurface.app/Contents/Frameworks/QtDBus.framework
+
 echo -- signing Qt frameworks and shared libraries
 
 for i in \
