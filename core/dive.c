@@ -3385,6 +3385,8 @@ static void force_fixup_dive(struct dive *d)
 	int old_mintemp = d->mintemp.mkelvin;
 	int old_maxtemp = d->maxtemp.mkelvin;
 	duration_t old_duration = d->duration;
+	cylinder_t old_cylinders[MAX_CYLINDERS];
+	memcpy(old_cylinders, &d->cylinder, MAX_CYLINDERS * sizeof(cylinder_t));
 
 	d->maxdepth.mm = 0;
 	dc->maxdepth.mm = 0;
@@ -3393,6 +3395,10 @@ static void force_fixup_dive(struct dive *d)
 	d->duration.seconds = 0;
 	d->maxtemp.mkelvin = 0;
 	d->mintemp.mkelvin = 0;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		d->cylinder[i].start.mbar = 0;
+		d->cylinder[i].end.mbar = 0;
+	}
 
 	fixup_dive(d);
 
@@ -3410,6 +3416,12 @@ static void force_fixup_dive(struct dive *d)
 
 	if (!d->duration.seconds)
 		d->duration = old_duration;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (!d->cylinder[i].start.mbar)
+			d->cylinder[i].start = old_cylinders[i].start;
+		if (!d->cylinder[i].end.mbar)
+			d->cylinder[i].end = old_cylinders[i].end;
+	}
 
 }
 
@@ -3427,6 +3439,10 @@ static int split_dive_at(struct dive *dive, int a, int b)
 
 	/* if we can't find the dive in the dive list, don't bother */
 	if ((nr = get_divenr(dive)) < 0)
+		return 0;
+
+	/* Splitting should leave at least 3 samples per dive */
+	if (a < 3 || b > dive->dc.samples - 4)
 		return 0;
 
 	/* We're not trying to be efficient here.. */
@@ -3450,36 +3466,56 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	dc2->samples -= b;
 	memmove(dc2->sample, dc2->sample+b, dc2->samples * sizeof(struct sample));
 
+	/* Now the secondary dive computers */
+	t = dc2->sample[0].time.seconds;
+	while ((dc1 = dc1->next))	{
+		i = 0;
+		while (dc1->samples < i && dc1->sample[i].time.seconds <= t)
+			++i;
+		dc1->samples = i;
+	}
+	while ((dc2 = dc2->next)) {
+		i = 0;
+		while (dc2->samples < i && dc2->sample[i].time.seconds < t)
+			++i;
+		dc2->samples -= i;
+		memmove(dc2->sample, dc2->sample + i, dc2->samples * sizeof(struct sample));
+	}
+	dc1 = &d1->dc;
+	dc2 = &d2->dc;
 	/*
 	 * This is where we cut off events from d1,
 	 * and shift everything in d2
 	 */
-	t = dc2->sample[0].time.seconds;
 	d2->when += t;
-	dc2->when += t;
-	for (i = 0; i < dc2->samples; i++)
-		dc2->sample[i].time.seconds -= t;
+	while (dc1 && dc2) {
+		dc2->when += t;
+		for (i = 0; i < dc2->samples; i++)
+			dc2->sample[i].time.seconds -= t;
 
-	/* Remove the events past 't' from d1 */
-	evp = &dc1->events;
-	while ((event = *evp) != NULL && event->time.seconds < t)
-		evp = &event->next;
-	*evp = NULL;
-	while (event) {
-		struct event *next = event->next;
-		free(event);
-		event = next;
-	}
-
-	/* Remove the events before 't' from d2, and shift the rest */
-	evp = &dc2->events;
-	while ((event = *evp) != NULL) {
-		if (event->time.seconds < t) {
-			*evp = event->next;
+		/* Remove the events past 't' from d1 */
+		evp = &dc1->events;
+		while ((event = *evp) != NULL && event->time.seconds < t)
+			evp = &event->next;
+		*evp = NULL;
+		while (event) {
+			struct event *next = event->next;
 			free(event);
-		} else {
-			event->time.seconds -= t;
+			event = next;
 		}
+
+		/* Remove the events before 't' from d2, and shift the rest */
+		evp = &dc2->events;
+		while ((event = *evp) != NULL) {
+			if (event->time.seconds < t) {
+				*evp = event->next;
+				free(event);
+			} else {
+				event->time.seconds -= t;
+			}
+		}
+		dc1 = dc1->next;
+		dc2 = dc2->next;
 	}
 
 	force_fixup_dive(d1);
@@ -3524,9 +3560,10 @@ static bool should_split(struct divecomputer *dc, int t1, int t2)
 /*
  * Try to split a dive into multiple dives at a surface interval point.
  *
- * NOTE! We will not split dives with multiple dive computers, and
- * only split when there is at least one surface event that has
+ * NOTE! We will split when there is at least one surface event that has
  * non-surface events on both sides.
+ *
+ * The surface interval points are determined using the first dive computer.
  *
  * In other words, this is a (simplified) reversal of the dive merging.
  */
@@ -3536,9 +3573,10 @@ int split_dive(struct dive *dive)
 	int at_surface, surface_start;
 	struct divecomputer *dc;
 
-	if (!dive || (dc = &dive->dc)->next)
+	if (!dive)
 		return 0;
 
+	dc = &dive->dc;
 	surface_start = 0;
 	at_surface = 1;
 	for (i = 1; i < dc->samples; i++) {
@@ -3569,6 +3607,22 @@ int split_dive(struct dive *dive)
 		return split_dive_at(dive, surface_start, i-1);
 	}
 	return 0;
+}
+
+void split_dive_at_time(struct dive *dive, duration_t time)
+{
+	int i = 0;
+	struct sample *sample = dive->dc.sample;
+
+	if (!dive)
+		return;
+	while(sample->time.seconds < time.seconds) {
+		++sample;
+		++i;
+		if (dive->dc.samples == i)
+			return;
+	}
+	split_dive_at(dive, i, i - 1);
 }
 
 /*
