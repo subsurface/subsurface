@@ -1,3 +1,4 @@
+- Mobile/iOS: fix missing translations
 - Dive pictures: locate moved pictures based on filename and path
 - Profile: Context menu entry to manually split a dive
 - BLE support: fix recognition of Heinrich Weikamp OSTC 2 and OSTC Plus
