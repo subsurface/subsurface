@@ -127,11 +127,31 @@ other editors that implement this coding style, please add them here.
 ## Coding conventions
 
 * variable declarations
-  in C code we really like them to be at the beginning of a code block,
+  In C code we really like them to be at the beginning of a code block,
   not interspersed in the middle.
   in C++ we are a bit less strict about this - but still, try not to go
   crazy.
 
+* In C++ code, we generally use explicit types in variable declarations for clarity.
+  Use `auto` sparingly and only in cases where code readability improves.
+  Two classical examples are:
+  - Iterators, whose type names often are verbose:
+	```
+	auto = m_trackers.find(when);
+	```
+  	is not only distinctly shorter than
+	```
+	QMap<qint64, gpsTracker>::iterator it = m_trackers.find(when);
+	```
+  	it will also continue working if a different data structure is chosen.
+  - If the type is given in the same line anyway. Thus,
+	```
+	auto service = qobject_cast<QLowEnergyService*>(sender());
+	```
+  	is easier to read than and conveys the same information as
+	```
+	QLowEnergyService* service = qobject_cast<QLowEnergyService*>(sender());
+	```
 * text strings
   The default language of subsurface is US English so please use US English
   spelling and terminology.
