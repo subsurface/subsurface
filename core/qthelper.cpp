@@ -762,9 +762,9 @@ int parseLengthToMm(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("m"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("m"), Qt::CaseInsensitive)) {
 		mm = lrint(number * 1000);
-	} else if (text.contains(QObject::tr("ft"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("ft"), Qt::CaseInsensitive)) {
 		mm = feet_to_mm(number);
 	} else {
 		switch (prefs.units.length) {
@@ -790,9 +790,9 @@ int parseTemperatureToMkelvin(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("C"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("C"), Qt::CaseInsensitive)) {
 		mkelvin = C_to_mkelvin(number);
-	} else if (text.contains(QObject::tr("F"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("F"), Qt::CaseInsensitive)) {
 		mkelvin = F_to_mkelvin(number);
 	} else {
 		switch (prefs.units.temperature) {
@@ -817,9 +817,9 @@ int parseWeightToGrams(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("kg"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("kg"), Qt::CaseInsensitive)) {
 		grams = lrint(number * 1000);
-	} else if (text.contains(QObject::tr("lbs"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("lbs"), Qt::CaseInsensitive)) {
 		grams = lbs_to_grams(number);
 	} else {
 		switch (prefs.units.weight) {
@@ -844,9 +844,9 @@ int parsePressureToMbar(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("bar"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("bar"), Qt::CaseInsensitive)) {
 		mbar = lrint(number * 1000);
-	} else if (text.contains(QObject::tr("psi"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("psi"), Qt::CaseInsensitive)) {
 		mbar = psi_to_mbar(number);
 	} else {
 		switch (prefs.units.pressure) {
@@ -867,9 +867,9 @@ int parseGasMixO2(const QString &text)
 {
 	QString gasString = text;
 	int o2, number;
-	if (gasString.contains(QObject::tr("AIR"), Qt::CaseInsensitive)) {
+	if (gasString.contains(gettextFromC::tr("AIR"), Qt::CaseInsensitive)) {
 		o2 = O2_IN_AIR;
-	} else if (gasString.contains(QObject::tr("EAN"), Qt::CaseInsensitive)) {
+	} else if (gasString.contains(gettextFromC::tr("EAN"), Qt::CaseInsensitive)) {
 		gasString.remove(QRegExp("[^0-9]"));
 		number = gasString.toInt();
 		o2 = number * 10;
@@ -1007,7 +1007,7 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 	localTime.setTimeSpec(Qt::UTC);
 	QString ret ;
 
-	QString suffix = " " + QObject::tr("(%n dive(s))", "", nr);
+	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
 	if (getday) {
 		ret = localTime.date().toString(prefs.date_format) + suffix;
 	} else {
@@ -1279,7 +1279,7 @@ extern "C" char *picturedir_string()
 QString get_gas_string(struct gasmix gas)
 {
 	uint o2 = (get_o2(&gas) + 5) / 10, he = (get_he(&gas) + 5) / 10;
-	QString result = gasmix_is_air(&gas) ? QObject::tr("AIR") : he == 0 ? (o2 == 100 ? QObject::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
+	QString result = gasmix_is_air(&gas) ? gettextFromC::tr("AIR") : he == 0 ? (o2 == 100 ? gettextFromC::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
 	return result;
 }
 
@@ -1302,8 +1302,8 @@ weight_t string_to_weight(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_kg = QObject::tr("kg");
-	QString local_lbs = QObject::tr("lbs");
+	QString local_kg = gettextFromC::tr("kg");
+	QString local_lbs = gettextFromC::tr("lbs");
 	weight_t weight;
 
 	if (rest.startsWith("kg") || rest.startsWith(local_kg))
@@ -1326,8 +1326,8 @@ depth_t string_to_depth(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_ft = QObject::tr("ft");
-	QString local_m = QObject::tr("m");
+	QString local_ft = gettextFromC::tr("ft");
+	QString local_m = gettextFromC::tr("m");
 	depth_t depth;
 
 	if (value < 0)
@@ -1351,8 +1351,8 @@ pressure_t string_to_pressure(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_psi = QObject::tr("psi");
-	QString local_bar = QObject::tr("bar");
+	QString local_psi = gettextFromC::tr("psi");
+	QString local_bar = gettextFromC::tr("bar");
 	pressure_t pressure;
 
 	if (rest.startsWith("bar") || rest.startsWith(local_bar))
@@ -1374,8 +1374,8 @@ volume_t string_to_volume(const char *str, pressure_t workp)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_l = QObject::tr("l");
-	QString local_cuft = QObject::tr("cuft");
+	QString local_l = gettextFromC::tr("l");
+	QString local_cuft = gettextFromC::tr("cuft");
 	volume_t volume;
 
 	if (rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))

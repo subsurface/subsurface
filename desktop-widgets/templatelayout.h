@@ -107,8 +107,8 @@ if (property == "year") {
 } else if (property == "max_temp") {
 	return object.year->max_temp.mkelvin == 0 ? "0" : get_temperature_string(object.year->max_temp, true);
 } else if (property == "total_time") {
-	return get_dive_duration_string(object.year->total_time.seconds, QObject::tr("h"),
-									QObject::tr("min"), QObject::tr("sec"), " ");
+	return get_dive_duration_string(object.year->total_time.seconds, gettextFromC::tr("h"),
+									gettextFromC::tr("min"), gettextFromC::tr("sec"), " ");
 } else if (property == "avg_time") {
 	return get_minutes(object.year->total_time.seconds / object.year->selection_size);
 } else if (property == "shortest_time") {
