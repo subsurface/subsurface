@@ -635,7 +635,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 static bool saveToCloudOK()
 {
 	if (!dive_table.nr) {
-		report_error(qPrintable(QObject::tr("Don't save an empty log to the cloud")));
+		report_error(qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
 		return false;
 	}
 	return true;

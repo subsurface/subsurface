@@ -620,7 +620,7 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 	 * </DiveDateReader>
 	 */
 	QXmlStreamReader reader(xmlData);
-	const QString invalidXmlError = QObject::tr("Invalid response from server");
+	const QString invalidXmlError = gettextFromC::tr("Invalid response from server");
 	bool seenDiveDates = false;
 	DiveListResult result;
 	result.idCount = 0;
@@ -628,7 +628,7 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 	if (reader.readNextStartElement() && reader.name() != "DiveDateReader") {
 		result.errorCondition = invalidXmlError;
 		result.errorDetails =
-			QObject::tr("Expected XML tag 'DiveDateReader', got instead '%1")
+			gettextFromC::tr("Expected XML tag 'DiveDateReader', got instead '%1")
 				.arg(reader.name().toString());
 		goto out;
 	}
@@ -674,14 +674,14 @@ static DiveListResult parseDiveLogsDeDiveList(const QByteArray &xmlData)
 
 	if (!seenDiveDates) {
 		result.errorCondition = invalidXmlError;
-		result.errorDetails = QObject::tr("Expected XML tag 'DiveDates' not found");
+		result.errorDetails = gettextFromC::tr("Expected XML tag 'DiveDates' not found");
 	}
 
 out:
 	if (reader.hasError()) {
 		// if there was an XML error, overwrite the result or other error conditions
 		result.errorCondition = invalidXmlError;
-		result.errorDetails = QObject::tr("Malformed XML response. Line %1: %2")
+		result.errorDetails = gettextFromC::tr("Malformed XML response. Line %1: %2")
 						.arg(reader.lineNumber())
 						.arg(reader.errorString());
 	}

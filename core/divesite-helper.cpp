@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divesite.h"
 #include "pref.h"
+#include "gettextfromc.h"
 
 QString constructLocationTags(struct dive_site *ds, bool for_maintab)
 {
@@ -17,7 +18,7 @@ QString constructLocationTags(struct dive_site *ds, bool for_maintab)
 	}
 
 	if (!prefs_set && !for_maintab) {
-		locationTag = QString("<small><small>") + QObject::tr("No dive site layout categories set in preferences!") +
+		locationTag = QString("<small><small>") + gettextFromC::tr("No dive site layout categories set in preferences!") +
 			QString("</small></small>");
 		return locationTag;
 	}
@@ -25,7 +26,7 @@ QString constructLocationTags(struct dive_site *ds, bool for_maintab)
 		return locationTag;
 
 	if (for_maintab)
-		locationTag = QString("<small><small>(") + QObject::tr("Tags") + QString(": ");
+		locationTag = QString("<small><small>(") + gettextFromC::tr("Tags") + QString(": ");
 	else 
 		locationTag = QString("<small><small>");
 	QString connector;

@@ -31,13 +31,13 @@ public:
 	{
 		avgIco = new QLabel(owner);
 		avgIco->setPixmap(QIcon(":value-average-icon").pixmap(16, 16));
-		avgIco->setToolTip(QObject::tr("Average"));
+		avgIco->setToolTip(gettextFromC::tr("Average"));
 		minIco = new QLabel(owner);
 		minIco->setPixmap(QIcon(":value-minimum-icon").pixmap(16, 16));
-		minIco->setToolTip(QObject::tr("Minimum"));
+		minIco->setToolTip(gettextFromC::tr("Minimum"));
 		maxIco = new QLabel(owner);
 		maxIco->setPixmap(QIcon(":value-maximum-icon").pixmap(16, 16));
-		maxIco->setToolTip(QObject::tr("Maximum"));
+		maxIco->setToolTip(gettextFromC::tr("Maximum"));
 		avgValue = new QLabel(owner);
 		minValue = new QLabel(owner);
 		maxValue = new QLabel(owner);

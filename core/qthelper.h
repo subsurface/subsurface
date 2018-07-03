@@ -18,6 +18,7 @@ enum inertgas {N2, HE};
 #include <QString>
 #include <QTranslator>
 #include <QDir>
+#include "core/gettextfromc.h"
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
@@ -69,7 +70,7 @@ int parsePressureToMbar(const QString &text);
 int parseGasMixO2(const QString &text);
 int parseGasMixHE(const QString &text);
 QString render_seconds_to_string(int seconds);
-QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = QObject::tr("sec"), QString separator = ":", bool isFreeDive = false);
+QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = gettextFromC::tr("sec"), QString separator = ":", bool isFreeDive = false);
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
 QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
