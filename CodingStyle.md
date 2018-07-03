@@ -137,7 +137,7 @@ other editors that implement this coding style, please add them here.
   Two classical examples are:
   - Iterators, whose type names often are verbose:
 	```
-	auto = m_trackers.find(when);
+	auto it = m_trackers.find(when);
 	```
   	is not only distinctly shorter than
 	```
