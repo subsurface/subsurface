@@ -1221,7 +1221,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 	if (MATCH("gps.picture", gps_picture_location, cur_picture))
 		return;
 	if (MATCH("hash.picture", utf8_string, &hash)) {
-		register_hash(cur_picture->filename, hash);
+		/* Legacy -> ignore. */
 		free(hash);
 		return;
 	}

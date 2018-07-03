@@ -762,9 +762,9 @@ int parseLengthToMm(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("m"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("m"), Qt::CaseInsensitive)) {
 		mm = lrint(number * 1000);
-	} else if (text.contains(QObject::tr("ft"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("ft"), Qt::CaseInsensitive)) {
 		mm = feet_to_mm(number);
 	} else {
 		switch (prefs.units.length) {
@@ -790,9 +790,9 @@ int parseTemperatureToMkelvin(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("C"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("C"), Qt::CaseInsensitive)) {
 		mkelvin = C_to_mkelvin(number);
-	} else if (text.contains(QObject::tr("F"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("F"), Qt::CaseInsensitive)) {
 		mkelvin = F_to_mkelvin(number);
 	} else {
 		switch (prefs.units.temperature) {
@@ -817,9 +817,9 @@ int parseWeightToGrams(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("kg"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("kg"), Qt::CaseInsensitive)) {
 		grams = lrint(number * 1000);
-	} else if (text.contains(QObject::tr("lbs"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("lbs"), Qt::CaseInsensitive)) {
 		grams = lbs_to_grams(number);
 	} else {
 		switch (prefs.units.weight) {
@@ -844,9 +844,9 @@ int parsePressureToMbar(const QString &text)
 	if (numOnly.isEmpty())
 		return 0;
 	double number = numOnly.toDouble();
-	if (text.contains(QObject::tr("bar"), Qt::CaseInsensitive)) {
+	if (text.contains(gettextFromC::tr("bar"), Qt::CaseInsensitive)) {
 		mbar = lrint(number * 1000);
-	} else if (text.contains(QObject::tr("psi"), Qt::CaseInsensitive)) {
+	} else if (text.contains(gettextFromC::tr("psi"), Qt::CaseInsensitive)) {
 		mbar = psi_to_mbar(number);
 	} else {
 		switch (prefs.units.pressure) {
@@ -867,9 +867,9 @@ int parseGasMixO2(const QString &text)
 {
 	QString gasString = text;
 	int o2, number;
-	if (gasString.contains(QObject::tr("AIR"), Qt::CaseInsensitive)) {
+	if (gasString.contains(gettextFromC::tr("AIR"), Qt::CaseInsensitive)) {
 		o2 = O2_IN_AIR;
-	} else if (gasString.contains(QObject::tr("EAN"), Qt::CaseInsensitive)) {
+	} else if (gasString.contains(gettextFromC::tr("EAN"), Qt::CaseInsensitive)) {
 		gasString.remove(QRegExp("[^0-9]"));
 		number = gasString.toInt();
 		o2 = number * 10;
@@ -1007,7 +1007,7 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 	localTime.setTimeSpec(Qt::UTC);
 	QString ret ;
 
-	QString suffix = " " + QObject::tr("(%n dive(s))", "", nr);
+	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
 	if (getday) {
 		ret = localTime.date().toString(prefs.date_format) + suffix;
 	} else {
@@ -1042,27 +1042,10 @@ extern "C" void reverseGeoLookup(degrees_t latitude, degrees_t longitude, uint32
 	}
 }
 
-QHash<QString, QByteArray> hashOf;
-QMutex hashOfMutex;
-QHash<QByteArray, QString> localFilenameOf;
+static QMutex hashOfMutex;
+static QHash<QString, QString> localFilenameOf;
 
-static QByteArray getHash(const QString &filename)
-{
-	QMutexLocker locker(&hashOfMutex);
-	return hashOf[filename];
-}
-
-QString hashString(const char *filename)
-{
-	return getHash(QString(filename)).toHex();
-}
-
-extern "C" char * hashstring(const char *filename)
-{
-	return strdup(qPrintable(hashString(filename)));
-}
-
-const QString hashfile_name()
+static const QString hashfile_name()
 {
 	return QString(system_default_directory()).append("/hashes");
 }
@@ -1126,28 +1109,66 @@ static void convertThumbnails(const QHash <QString, QImage> &thumbnails)
 	}
 }
 
+// TODO: This is a temporary helper struct. Remove in due course with convertLocalFilename().
+struct HashToFile {
+	QByteArray hash;
+	QString filename;
+	bool operator< (const HashToFile &h) const {
+		return hash < h.hash;
+	}
+};
+
+// During a transition period, convert the hash->localFilename into a canonicalFilename->localFilename.
+// TODO: remove this code in due course
+static void convertLocalFilename(const QHash<QString, QByteArray> &hashOf, const QHash<QByteArray, QString> &hashToLocal)
+{
+	// Bail out early if there is nothing to do
+	if (hashToLocal.isEmpty())
+		return;
+
+	// Create a vector of hash/filename pairs and sort by hash.
+	// Elements can than be accessed with binary search.
+	QHash<QByteArray, QString> canonicalFilenameByHash;
+	QVector<HashToFile> h2f;
+	h2f.reserve(hashOf.size());
+	for (auto it = hashOf.cbegin(); it != hashOf.cend(); ++it)
+		h2f.append({ it.value(), it.key() });
+	std::sort(h2f.begin(), h2f.end());
+
+	// Make the canonical-to-local connection
+	for (auto it = hashToLocal.cbegin(); it != hashToLocal.cend(); ++it) {
+		QByteArray hash = it.key();
+		HashToFile dummy { hash, QString() };
+		for(auto it2 = std::lower_bound(h2f.begin(), h2f.end(), dummy);
+		    it2 != h2f.end() && it2->hash == hash; ++it2) {
+			// Note that learnPictureFilename cares about all the special cases,
+			// i.e. either filename being empty or both filenames being equal.
+			learnPictureFilename(it2->filename, it.value());
+		}
+		QString canonicalFilename = canonicalFilenameByHash.value(it.key());
+	}
+}
+
 void read_hashes()
 {
 	QFile hashfile(hashfile_name());
 	if (hashfile.open(QIODevice::ReadOnly)) {
 		QDataStream stream(&hashfile);
-		stream >> localFilenameOf;
-		QMutexLocker locker(&hashOfMutex);
-		stream >> hashOf;
-		locker.unlock();
+		QHash<QByteArray, QString> localFilenameByHash;
+		QHash<QString, QByteArray> hashOf;
+		stream >> localFilenameByHash;		// For backwards compatibility
+		stream >> hashOf;			// For backwards compatibility
 		QHash <QString, QImage> thumbnailCache;
 		stream >> thumbnailCache;		// For backwards compatibility
+		QMutexLocker locker(&hashOfMutex);
+		stream >> localFilenameOf;
+		locker.unlock();
 		hashfile.close();
 		convertThumbnails(thumbnailCache);
+		convertLocalFilename(hashOf, localFilenameByHash);
 	}
 	QMutexLocker locker(&hashOfMutex);
 	localFilenameOf.remove("");
-	QMutableHashIterator<QString, QByteArray> iter(hashOf);
-	while (iter.hasNext()) {
-		iter.next();
-		if (iter.value().isEmpty())
-			iter.remove();
-	}
 
 	// Make sure that the thumbnail directory exists
 	QDir().mkpath(thumbnailDir());
@@ -1160,78 +1181,32 @@ void write_hashes()
 
 	if (hashfile.open(QIODevice::WriteOnly)) {
 		QDataStream stream(&hashfile);
-		stream << localFilenameOf;
-		stream << hashOf;
+		stream << QHash<QByteArray, QString>();	// Empty hash to filename - for backwards compatibility
+		stream << QHash<QString, QByteArray>(); // Empty hashes - for backwards compatibility
 		stream << QHash<QString,QImage>();	// Empty thumbnailCache - for backwards compatibility
+		stream << localFilenameOf;
 		hashfile.commit();
 	} else {
 		qWarning() << "Cannot open hashfile for writing: " << hashfile.fileName();
 	}
 }
 
-void add_hash(const QString &filename, const QByteArray &hash)
+void learnPictureFilename(const QString &originalName, const QString &localName)
 {
-	if (hash.isEmpty())
+	if (originalName.isEmpty() || localName.isEmpty())
 		return;
 	QMutexLocker locker(&hashOfMutex);
-	hashOf[filename] =  hash;
-	localFilenameOf[hash] = filename;
-}
-
-// Add hash if not already known
-extern "C" void register_hash(const char *filename, const char *hash)
-{
-	if (empty_string(filename) || empty_string(hash))
-		return;
-	QString filenameString(filename);
-
-	QMutexLocker locker(&hashOfMutex);
-	if (!hashOf.contains(filenameString)) {
-		QByteArray hashBuf = QByteArray::fromHex(hash);
-		hashOf[filename] =  hashBuf;
-		localFilenameOf[hashBuf] = filenameString;
-	}
-}
-
-QByteArray hashFile(const QString &filename)
-{
-	QCryptographicHash hash(QCryptographicHash::Sha1);
-	QFile imagefile(filename);
-	if (imagefile.exists() && imagefile.open(QIODevice::ReadOnly)) {
-		hash.addData(&imagefile);
-		add_hash(filename, hash.result());
-		return hash.result();
-	} else {
-		return QByteArray();
-	}
-}
-
-void learnHash(const QString &originalName, const QString &localName, const QByteArray &hash)
-{
-	if (hash.isNull())
-		return;
-	add_hash(localName, hash);
-	QMutexLocker locker(&hashOfMutex);
-	hashOf[originalName] = hash;
+	// Only keep track of images where original and local names differ
+	if (originalName == localName)
+		localFilenameOf.remove(originalName);
+	else
+		localFilenameOf[originalName] = localName;
 }
 
 QString localFilePath(const QString &originalFilename)
 {
 	QMutexLocker locker(&hashOfMutex);
-
-	if (hashOf.contains(originalFilename) && localFilenameOf.contains(hashOf[originalFilename]))
-		return localFilenameOf[hashOf[originalFilename]];
-	else
-		return originalFilename;
-}
-
-// This works on a copy of the string, because it runs in asynchronous context
-void hashPicture(QString filename)
-{
-	QByteArray oldHash = getHash(filename);
-	QByteArray hash = hashFile(localFilePath(filename));
-	if (!hash.isNull() && hash != oldHash)
-		mark_divelist_changed(true);
+	return localFilenameOf.value(originalFilename, originalFilename);
 }
 
 QStringList imageExtensionFilters() {
@@ -1240,25 +1215,6 @@ QStringList imageExtensionFilters() {
 		filters.append(QString("*.").append(format));
 	}
 	return filters;
-}
-
-void learnImages(const QDir dir, int max_recursions)
-{
-	QStringList files;
-	QStringList filters = imageExtensionFilters();
-
-	if (max_recursions) {
-		foreach (QString dirname, dir.entryList(QStringList(), QDir::NoDotAndDotDot | QDir::Dirs)) {
-			learnImages(QDir(dir.filePath(dirname)), max_recursions - 1);
-		}
-	}
-
-
-	foreach (QString file, dir.entryList(filters, QDir::Files)) {
-		files.append(dir.absoluteFilePath(file));
-	}
-
-	QtConcurrent::blockingMap(files, hashFile);
 }
 
 extern "C" const char *local_file_path(struct picture *picture)
@@ -1279,7 +1235,7 @@ extern "C" char *picturedir_string()
 QString get_gas_string(struct gasmix gas)
 {
 	uint o2 = (get_o2(&gas) + 5) / 10, he = (get_he(&gas) + 5) / 10;
-	QString result = gasmix_is_air(&gas) ? QObject::tr("AIR") : he == 0 ? (o2 == 100 ? QObject::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
+	QString result = gasmix_is_air(&gas) ? gettextFromC::tr("AIR") : he == 0 ? (o2 == 100 ? gettextFromC::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
 	return result;
 }
 
@@ -1302,8 +1258,8 @@ weight_t string_to_weight(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_kg = QObject::tr("kg");
-	QString local_lbs = QObject::tr("lbs");
+	QString local_kg = gettextFromC::tr("kg");
+	QString local_lbs = gettextFromC::tr("lbs");
 	weight_t weight;
 
 	if (rest.startsWith("kg") || rest.startsWith(local_kg))
@@ -1326,8 +1282,8 @@ depth_t string_to_depth(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_ft = QObject::tr("ft");
-	QString local_m = QObject::tr("m");
+	QString local_ft = gettextFromC::tr("ft");
+	QString local_m = gettextFromC::tr("m");
 	depth_t depth;
 
 	if (value < 0)
@@ -1351,8 +1307,8 @@ pressure_t string_to_pressure(const char *str)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_psi = QObject::tr("psi");
-	QString local_bar = QObject::tr("bar");
+	QString local_psi = gettextFromC::tr("psi");
+	QString local_bar = gettextFromC::tr("bar");
 	pressure_t pressure;
 
 	if (rest.startsWith("bar") || rest.startsWith(local_bar))
@@ -1374,8 +1330,8 @@ volume_t string_to_volume(const char *str, pressure_t workp)
 	const char *end;
 	double value = strtod_flags(str, &end, 0);
 	QString rest = QString(end).trimmed();
-	QString local_l = QObject::tr("l");
-	QString local_cuft = QObject::tr("cuft");
+	QString local_l = gettextFromC::tr("l");
+	QString local_cuft = gettextFromC::tr("cuft");
 	volume_t volume;
 
 	if (rest.startsWith("l") || rest.startsWith("ℓ") || rest.startsWith(local_l))

@@ -45,6 +45,8 @@
 #endif
 #include <QtWidgets>
 
+#define PP_GRAPHS_ENABLED (prefs.pp_graphs.po2 || prefs.pp_graphs.pn2 || prefs.pp_graphs.phe)
+
 // a couple of helpers we need
 extern bool haveFilesOnCommandLine();
 

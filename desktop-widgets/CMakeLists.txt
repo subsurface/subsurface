@@ -34,6 +34,7 @@ set (SUBSURFACE_UI
 	diveshareexportdialog.ui
 	downloadfromdivecomputer.ui
 	filterwidget.ui
+	findmovedimagesdialog.ui
 	listfilter.ui
 	locationInformation.ui
 	mainwindow.ui
@@ -66,6 +67,7 @@ set(SUBSURFACE_INTERFACE
 	diveplanner.cpp
 	diveshareexportdialog.cpp
 	downloadfromdivecomputer.cpp
+	findmovedimagesdialog.cpp
 	kmessagewidget.cpp
 	mainwindow.cpp
 	mapwidget.cpp

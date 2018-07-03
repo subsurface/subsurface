@@ -27,7 +27,7 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	const char *desc = cyl->type.description;
 	if (!desc && idx > 0)
 		return QString(EMPTY_DIVE_STRING);
-	QString fmt = desc ? QString(desc) : QObject::tr("unknown");
+	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
 	fmt += ", " + get_volume_string(cyl->type.size, true);
 	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
 	fmt += ", " + get_pressure_string(cyl->start, false) + " - " + get_pressure_string(cyl->end, true);
@@ -129,7 +129,7 @@ QVariant DiveObjectHelper::dive_site_uuid() const
 
 QString DiveObjectHelper::duration() const
 {
-	return get_dive_duration_string(m_dive->duration.seconds, QObject::tr("h"), QObject::tr("min"));
+	return get_dive_duration_string(m_dive->duration.seconds, gettextFromC::tr("h"), gettextFromC::tr("min"));
 }
 
 bool DiveObjectHelper::noDive() const

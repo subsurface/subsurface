@@ -986,9 +986,8 @@ void DiveListView::loadImageFromURL(QUrl url)
 			return;
 		}
 
-		// Since we already downloaded the image we can cache it as well.
 		QCryptographicHash hash(QCryptographicHash::Sha1);
-		hash.addData(imageData);
+		hash.addData(url.toString().toUtf8());
 		QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
 		QDir dir(path);
 		if (!dir.exists())
@@ -999,7 +998,7 @@ void DiveListView::loadImageFromURL(QUrl url)
 			stream.writeRawData(imageData.data(), imageData.length());
 			imageFile.waitForBytesWritten(-1);
 			imageFile.close();
-			learnHash(url.toString(), imageFile.fileName(), hash.result());
+			learnPictureFilename(url.toString(), imageFile.fileName());
 			matchImagesToDives(QStringList(url.toString()));
 		}
 	}

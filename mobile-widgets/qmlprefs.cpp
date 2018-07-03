@@ -69,12 +69,12 @@ void QMLPrefs::setCloudUserName(const QString &cloudUserName)
 	emit cloudUserNameChanged();
 }
 
-QMLPrefs::cloud_status_qml QMLPrefs::credentialStatus() const
+cloud_status QMLPrefs::credentialStatus() const
 {
 	return m_credentialStatus;
 }
 
-void QMLPrefs::setCredentialStatus(const cloud_status_qml value)
+void QMLPrefs::setCredentialStatus(const cloud_status value)
 {
 	if (m_credentialStatus != value) {
 		setOldStatus(m_credentialStatus);
@@ -105,12 +105,12 @@ void QMLPrefs::setDistanceThreshold(int distance)
 	emit distanceThresholdChanged();
 }
 
-QMLPrefs::cloud_status_qml QMLPrefs::oldStatus() const
+cloud_status QMLPrefs::oldStatus() const
 {
 	return m_oldStatus;
 }
 
-void QMLPrefs::setOldStatus(const cloud_status_qml value)
+void QMLPrefs::setOldStatus(const cloud_status value)
 {
 	if (m_oldStatus != value) {
 		m_oldStatus = value;

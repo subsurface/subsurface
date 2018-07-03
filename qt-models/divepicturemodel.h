@@ -21,7 +21,6 @@ public:
 	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual void updateDivePictures();
-	void updateDivePicturesWhenDone(QList<QFuture<void>>);
 	void removePictures(const QVector<QString> &fileUrls);
 	int rowDDStart, rowDDEnd;
 	void updateDivePictureOffset(const QString &filename, int offsetSeconds);

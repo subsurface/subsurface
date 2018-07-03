@@ -42,10 +42,12 @@
 #include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/divelogexportdialog.h"
 #include "desktop-widgets/usersurvey.h"
+#include "desktop-widgets/findmovedimagesdialog.h"
 #include "core/divesitehelpers.h"
 #include "core/windowtitleupdate.h"
 #include "desktop-widgets/locationinformation.h"
 #include "preferences/preferencesdialog.h"
+#include "core/settings/qPref.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
@@ -108,7 +110,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	helpView(0),
 #endif
 	state(VIEWALL),
-	survey(0)
+	survey(0),
+	findMovedImagesDialog(0)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -632,7 +635,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 static bool saveToCloudOK()
 {
 	if (!dive_table.nr) {
-		report_error(qPrintable(QObject::tr("Don't save an empty log to the cloud")));
+		report_error(qPrintable(gettextFromC::tr("Don't save an empty log to the cloud")));
 		return false;
 	}
 	return true;
@@ -699,34 +702,6 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 	setTitle();
 	updateCloudOnlineStatus();
-}
-
-void learnImageDirs(QStringList dirnames)
-{
-	QList<QFuture<void> > futures;
-	foreach (QString dir, dirnames) {
-		futures << QtConcurrent::run(learnImages, QDir(dir), 10);
-	}
-	DivePictureModel::instance()->updateDivePicturesWhenDone(futures);
-}
-
-void MainWindow::on_actionHash_images_triggered()
-{
-	QFuture<void> future;
-	QFileDialog dialog(this, tr("Traverse image directories"), lastUsedDir());
-	dialog.setFileMode(QFileDialog::Directory);
-	dialog.setViewMode(QFileDialog::Detail);
-	dialog.setLabelText(QFileDialog::Accept, tr("Scan"));
-	dialog.setLabelText(QFileDialog::Reject, tr("Cancel"));
-	QStringList dirnames;
-	if (dialog.exec())
-		dirnames = dialog.selectedFiles();
-	if (dirnames.isEmpty())
-		return;
-	future = QtConcurrent::run(learnImageDirs,dirnames);
-	MainWindow::instance()->getNotificationWidget()->showNotification(tr("Scanning images...(this can take a while)"), KMessageWidget::Information);
-	MainWindow::instance()->getNotificationWidget()->setFuture(future);
-
 }
 
 ProfileWidget2 *MainWindow::graphics() const
@@ -1370,6 +1345,13 @@ void MainWindow::on_actionUserSurvey_triggered()
 	if(!survey)
 		survey = new UserSurvey(this);
 	survey->show();
+}
+
+void MainWindow::on_actionHash_images_triggered()
+{
+	if(!findMovedImagesDialog)
+		findMovedImagesDialog = new FindMovedImagesDialog(this);
+	findMovedImagesDialog->show();
 }
 
 QString MainWindow::filter_open()

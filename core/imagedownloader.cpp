@@ -44,22 +44,26 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 		emit failed(filename);
 	} else {
 		QByteArray imageData = reply->readAll();
-		QCryptographicHash hash(QCryptographicHash::Sha1);
-		hash.addData(imageData);
-		QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
-		QDir dir(path);
-		if (!dir.exists())
-			dir.mkpath(path);
-		QFile imageFile(path.append("/").append(hash.result().toHex()));
-		if (imageFile.open(QIODevice::WriteOnly)) {
-			qDebug() << "Write image to" << imageFile.fileName();
-			QDataStream stream(&imageFile);
-			stream.writeRawData(imageData.data(), imageData.length());
-			imageFile.waitForBytesWritten(-1);
-			imageFile.close();
-			learnHash(filename, imageFile.fileName(), hash.result());
+		if (imageData.isEmpty()) {
+			emit failed(filename);
+		} else {
+			QString path = QStandardPaths::standardLocations(QStandardPaths::CacheLocation).first();
+			QDir dir(path);
+			if (!dir.exists())
+				dir.mkpath(path);
+			QCryptographicHash hash(QCryptographicHash::Sha1);
+			hash.addData(filename.toUtf8());
+			QFile imageFile(path.append("/").append(hash.result().toHex()));
+			if (imageFile.open(QIODevice::WriteOnly)) {
+				qDebug() << "Write image to" << imageFile.fileName();
+				QDataStream stream(&imageFile);
+				stream.writeRawData(imageData.data(), imageData.length());
+				imageFile.waitForBytesWritten(-1);
+				imageFile.close();
+				learnPictureFilename(filename, imageFile.fileName());
+			}
+			emit loaded(filename);
 		}
-		emit loaded(filename);
 	}
 
 	reply->deleteLater();
@@ -78,10 +82,6 @@ static std::pair<QImage, bool> fetchImage(const QString &filename, const QString
 	QUrl url = QUrl::fromUserInput(filename);
 	if (url.isLocalFile()) {
 		thumb.load(url.toLocalFile());
-		// If we loaded successfully, make sure the hash is up to date.
-		// Note that hashPicture() takes the *original* filename.
-		if (!thumb.isNull())
-			hashPicture(originalFilename);
 	} else if (tryDownload) {
 		// This has to be done in UI main thread, because QNetworkManager refuses
 		// to treat requests from other threads. invokeMethod() is Qt's way of calling a
@@ -242,8 +242,7 @@ void Thumbnailer::processItem(QString filename, bool tryDownload)
 
 void Thumbnailer::imageDownloaded(QString filename)
 {
-	// Image was downloaded and the filename connected with a hash.
-	// Try thumbnailing again.
+	// Image was downloaded -> try thumbnailing again.
 	QMutexLocker l(&lock);
 	workingOn[filename] = QtConcurrent::run(&pool, [this, filename]() { processItem(filename, false); });
 }

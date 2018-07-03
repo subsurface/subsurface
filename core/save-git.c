@@ -610,14 +610,10 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	int offset = pic->offset.seconds;
 	struct membuffer buf = { 0 };
 	char sign = '+';
-	char *hash;
 	unsigned h;
 
 	show_utf8(&buf, "filename ", pic->filename, "\n");
 	show_gps(&buf, pic->latitude, pic->longitude);
-	hash = hashstring(pic->filename);
-	show_utf8(&buf, "hash ", hash, "\n");
-	free(hash);
 
 	/* Picture loading will load even negative offsets.. */
 	if (offset < 0) {

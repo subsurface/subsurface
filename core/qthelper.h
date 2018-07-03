@@ -18,6 +18,7 @@ enum inertgas {N2, HE};
 #include <QString>
 #include <QTranslator>
 #include <QDir>
+#include "core/gettextfromc.h"
 QString weight_string(int weight_in_grams);
 QString distance_string(int distanceInMeters);
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out = 0);
@@ -27,16 +28,9 @@ QString get_divepoint_gas_string(struct dive *d, const divedatapoint& dp);
 QString get_taglist_string(struct tag_entry *tag_list);
 void read_hashes();
 void write_hashes();
-void updateHash(struct picture *picture);
-QByteArray hashFile(const QString &filename);
-QString hashString(const char *filename);
 QString thumbnailFileName(const QString &filename);
-void learnImages(const QDir dir, int max_recursions);
-void add_hash(const QString &filename, const QByteArray &hash);
-void hashPicture(QString filename);
-extern "C" char *hashstring(const char *filename);
+void learnPictureFilename(const QString &originalName, const QString &localName);
 QString localFilePath(const QString &originalFilename);
-void learnHash(const QString &originalName, const QString &localName, const QByteArray &hash);
 weight_t string_to_weight(const char *str);
 depth_t string_to_depth(const char *str);
 pressure_t string_to_pressure(const char *str);
@@ -76,7 +70,7 @@ int parsePressureToMbar(const QString &text);
 int parseGasMixO2(const QString &text);
 int parseGasMixHE(const QString &text);
 QString render_seconds_to_string(int seconds);
-QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = QObject::tr("sec"), QString separator = ":", bool isFreeDive = false);
+QString get_dive_duration_string(timestamp_t when, QString hoursText, QString minutesText, QString secondsText = gettextFromC::tr("sec"), QString separator = ":", bool isFreeDive = false);
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
 QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
@@ -109,8 +103,6 @@ void updateWindowTitle();
 void subsurface_mkdir(const char *dir);
 char *get_file_name(const char *fileName);
 void copy_image_and_overwrite(const char *cfileName, const char *path, const char *cnewName);
-char *hashstring(const char *filename);
-void register_hash(const char *filename, const char *hash);
 char *move_away(const char *path);
 const char *local_file_path(struct picture *picture);
 char *cloud_url();

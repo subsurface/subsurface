@@ -13,7 +13,13 @@
 # Qt/5.9/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 # (this script tries to do this automatically)
 
-set -x # make debugging Travis easier
+# avoid timeouts on Travis when downloads take a long time
+SLOW_PROG=""
+if [ -n "${TRAVIS:-}" ]; then
+	source subsurface/scripts/travis-wait.sh
+	set -x # make debugging Travis easier
+	SLOW_PROG="travis_wait"
+fi
 
 exec 1> >(tee ./build.log) 2>&1
 
@@ -65,14 +71,14 @@ fi
 # first we need to get the Android SDK and NDK
 if [ ! -d $ANDROID_NDK ] ; then
 	if [ ! -f $NDK_BINARIES ] ; then
-		wget -q https://dl.google.com/android/repository/$NDK_BINARIES
+		$SLOW_PROG wget -q https://dl.google.com/android/repository/$NDK_BINARIES
 	fi
 	unzip -q $NDK_BINARIES
 fi
 
 if [ ! -d $ANDROID_SDK ] ; then
 	if [ ! -f $SDK_TOOLS ] ; then
-		wget -q https://dl.google.com/android/repository/$SDK_TOOLS
+		$SLOW_PROG wget -q https://dl.google.com/android/repository/$SDK_TOOLS
 	fi
 	mkdir $ANDROID_SDK
 	pushd $ANDROID_SDK
@@ -89,7 +95,7 @@ fi
 QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
 if [ ! -d Qt ] ; then
 	if [ ! -f ${QT_BINARIES} ] ; then
-		wget -q ${QT_DOWNLOAD_URL}
+		$SLOW_PROG wget -q ${QT_DOWNLOAD_URL}
 	fi
 	chmod +x ./${QT_BINARIES}
 	./${QT_BINARIES} --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations

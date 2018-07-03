@@ -11,7 +11,7 @@
 #include <QNetworkReply>
 #include <QMap>
 
-#define GPS_CURRENT_POS QObject::tr("Waiting to aquire GPS location")
+#define GPS_CURRENT_POS gettextFromC::tr("Waiting to aquire GPS location")
 
 struct gpsTracker {
 	degrees_t latitude;

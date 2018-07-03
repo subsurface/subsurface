@@ -224,6 +224,7 @@ private:
 	void configureToolbar();
 	void setupSocialNetworkMenu();
 	QDialog *survey;
+	QDialog *findMovedImagesDialog;
 	struct dive copyPasteDive;
 	struct dive_components what;
 	QList<QAction *> profileToolbarActions;
