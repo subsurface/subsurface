@@ -24,10 +24,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_theme(doSync);
 }
 
-const QString qPrefDisplay::divelist_font() const
-{
-	return prefs.divelist_font;
-}
+GET_PREFERENCE_TXT(Display, divelist_font);
 void qPrefDisplay::set_divelist_font(const QString& value)
 {
 	QString newValue = value;
@@ -42,15 +39,9 @@ void qPrefDisplay::set_divelist_font(const QString& value)
 		emit divelist_font_changed(value);
 	}
 }
-void qPrefDisplay::disk_divelist_font(bool doSync)
-{
-	LOADSYNC_TXT("/divelist_font", divelist_font);
-}
+DISK_LOADSYNC_TXT(Display, "/divelist_font", divelist_font);
 
-double qPrefDisplay::font_size() const
-{
-	return prefs.font_size;
-}
+GET_PREFERENCE_DOUBLE(Display, font_size);
 void qPrefDisplay::set_font_size(double value)
 {
 	if (value != prefs.font_size) {
@@ -62,58 +53,10 @@ void qPrefDisplay::set_font_size(double value)
 		emit font_size_changed(value);
 	}
 }
-void qPrefDisplay::disk_font_size(bool doSync)
-{
-	LOADSYNC_DOUBLE("/font_size", font_size);
-}
+DISK_LOADSYNC_DOUBLE(Display, "/font_size", font_size);
 
-bool qPrefDisplay::display_invalid_dives() const
-{
-	return prefs.display_invalid_dives;
-}
-void qPrefDisplay::set_display_invalid_dives(bool value)
-{
-	if (value != prefs.display_invalid_dives) {
-		prefs.display_invalid_dives = value;
-		disk_display_invalid_dives(true);
-		emit display_invalid_dives_changed(value);
-	}
-}
-void qPrefDisplay::disk_display_invalid_dives(bool doSync)
-{
-	LOADSYNC_BOOL("/displayinvalid", display_invalid_dives);
-}
+HANDLE_PREFERENCE_BOOL(Display, "/displayinvalid", display_invalid_dives);
 
-bool qPrefDisplay::show_developer() const
-{
-	return prefs.show_developer;
-}
-void qPrefDisplay::set_show_developer(bool value)
-{
-	if (value != prefs.show_developer) {
-		prefs.show_developer = value;
-		disk_show_developer(true);
-		emit disk_show_developer(value);
-	}
-}
-void qPrefDisplay::disk_show_developer(bool doSync)
-{
-	LOADSYNC_BOOL("/showDeveloper", show_developer);
-}
+HANDLE_PREFERENCE_BOOL(Display, "/show_developer", show_developer);
 
-const QString qPrefDisplay::theme() const
-{
-	return prefs.theme;
-}
-void qPrefDisplay::set_theme(const QString& value)
-{
-	if (value != prefs.theme) {
-		COPY_TXT(theme, value);
-		disk_theme(true);
-		emit theme_changed(value);
-	}
-}
-void qPrefDisplay::disk_theme(bool doSync)
-{
-	LOADSYNC_TXT("/theme", theme);
-}
+HANDLE_PREFERENCE_TXT(Display, "/theme", theme);
