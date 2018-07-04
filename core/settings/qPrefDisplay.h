@@ -19,8 +19,8 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void load() { loadSync(false); };
-	void sync() { loadSync(true); };
+	void load() { loadSync(false); }
+	void sync() { loadSync(true); }
 
 public:
 	const QString divelist_font() const;
@@ -53,5 +53,8 @@ private:
 	void disk_display_invalid_dives(bool doSync);
 	void disk_show_developer(bool doSync);
 	void disk_theme(bool doSync);
+
+	// font helper function
+	void setCorrectFont();
 };
 #endif

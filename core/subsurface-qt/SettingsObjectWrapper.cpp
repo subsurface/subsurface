@@ -2218,29 +2218,7 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("auto_recalculate_thumbnails", auto_recalculate_thumbnails);
 	s.endGroup();
 
-	s.beginGroup("Display");
-	// get the font from the settings or our defaults
-	// respect the system default font size if none is explicitly set
-	QFont defaultFont = s.value("divelist_font", prefs.divelist_font).value<QFont>();
-	if (IS_FP_SAME(system_divelist_default_font_size, -1.0)) {
-		prefs.font_size = qApp->font().pointSizeF();
-		system_divelist_default_font_size = prefs.font_size; // this way we don't save it on exit
-	}
-	prefs.font_size = s.value("font_size", prefs.font_size).toFloat();
-	// painful effort to ignore previous default fonts on Windows - ridiculous
-	QString fontName = defaultFont.toString();
-	if (fontName.contains(","))
-		fontName = fontName.left(fontName.indexOf(","));
-	if (subsurface_ignore_font(qPrintable(fontName))) {
-		defaultFont = QFont(prefs.divelist_font);
-	} else {
-		free((void *)prefs.divelist_font);
-		prefs.divelist_font = copy_qstring(fontName);
-	}
-	defaultFont.setPointSizeF(prefs.font_size);
-	qApp->setFont(defaultFont);
-	GET_BOOL("displayinvalid", display_invalid_dives);
-	s.endGroup();
+	qPrefDisplay::instance()->load();
 
 	s.beginGroup("Animations");
 	GET_INT("animation_speed", animation_speed);
