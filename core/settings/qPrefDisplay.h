@@ -19,6 +19,8 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
+	void load() { loadSync(false); };
+	void sync() { loadSync(true); };
 
 public:
 	const QString divelist_font() const;

@@ -445,22 +445,22 @@ void TestPreferences::testPreferences()
 	TEST(general->pscrRatio(), 1);
 	TEST(general->useDefaultFile(), false);
 
-	auto display = pref->display_settings;
-	display->setDivelistFont("comic");
-	display->setFontSize(10.0);
-	display->setDisplayInvalidDives(true);
+	auto display = qPrefDisplay::instance();
+	display->set_divelist_font("comic");
+	display->set_font_size(10.0);
+	display->set_display_invalid_dives(true);
 
-	TEST(display->divelistFont(),QStringLiteral("comic"));
-	TEST(display->fontSize(), 10.0);
-	TEST(display->displayInvalidDives(), true);
+	TEST(display->divelist_font(),QStringLiteral("comic"));
+	TEST(display->font_size(), 10.0);
+	TEST(display->display_invalid_dives(), true);
 
-	display->setDivelistFont("helvetica");
-	display->setFontSize(14.0);
-	display->setDisplayInvalidDives(false);
+	display->set_divelist_font("helvetica");
+	display->set_font_size(14.0);
+	display->set_display_invalid_dives(false);
 
-	TEST(display->divelistFont(),QStringLiteral("helvetica"));
-	TEST(display->fontSize(), 14.0);
-	TEST(display->displayInvalidDives(), false);
+	TEST(display->divelist_font(),QStringLiteral("helvetica"));
+	TEST(display->font_size(), 14.0);
+	TEST(display->display_invalid_dives(), false);
 
 	auto language = pref->language_settings;
 	language->setLangLocale         ("en_US");
