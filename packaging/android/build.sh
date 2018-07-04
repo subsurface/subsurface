@@ -153,7 +153,7 @@ QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
 $QMAKE -query
 
 # build google maps plugin
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . googlemaps
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
 # find qmake
 QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
 $QMAKE -query
@@ -172,7 +172,7 @@ if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/
     popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . sqlite
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
 if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
 	mkdir -p sqlite-build-"$ARCH"
 	pushd sqlite-build-"$ARCH"
@@ -182,7 +182,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libxml2
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxml2
 if [ ! -e libxml2/configure ] ; then
 	pushd libxml2
 	autoreconf --install
@@ -199,7 +199,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libxslt
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxslt
 if [ ! -e libxslt/configure ] ; then
 	pushd libxslt
 	autoreconf --install
@@ -214,7 +214,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libzip
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
 if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	mkdir -p libzip-build-"$ARCH"
 	pushd libzip-build-"$ARCH"
@@ -224,7 +224,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . openssl
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
 if [ ! -e openssl-build-"$ARCH" ] ; then
 	mv openssl openssl-build-"$ARCH"
 fi
@@ -248,7 +248,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libgit2
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
 if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 	# We don't want to find the HTTP_Parser package of the build host by mistake
 	perl -pi -e 's/FIND_PACKAGE\(HTTP_Parser\)/#FIND_PACKAGE(HTTP_Parser)/' libgit2/CMakeLists.txt
@@ -264,7 +264,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 		-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
 		-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
 		-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
-		-D_OPENSSL_VERSION=${OPENSSL_VERSION} \
+		-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
 		../libgit2/
 	make
 	make install
@@ -273,7 +273,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libusb
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libusb
 if ! grep -q libusb_set_android_open_callback libusb/libusb/libusb.h ; then
 	# Patch in our libusb callback
 	pushd libusb
@@ -296,7 +296,7 @@ if [ ! -e "$PKG_CONFIG_LIBDIR/libusb-1.0.pc" ] ; then
 	popd
 fi
 
-${SUBSURFACE_SOURCE}/scripts/get-dep-lib.sh singleAndroid . libftdi1
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libftdi1
 if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
 	mkdir -p libftdi1-build-"$ARCH"
 	pushd libftdi1-build-"$ARCH"

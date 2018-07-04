@@ -62,49 +62,49 @@ if [ "$MISSING" ] ; then
 fi
 
 # first we need to get the Android SDK and NDK
-if [ ! -d $ANDROID_NDK ] ; then
-	if [ ! -f $NDK_BINARIES ] ; then
-		$SLOW_PROG wget -q https://dl.google.com/android/repository/$NDK_BINARIES
+if [ ! -d "$ANDROID_NDK" ] ; then
+	if [ ! -f "$NDK_BINARIES" ] ; then
+		$SLOW_PROG wget -q https://dl.google.com/android/repository/"$NDK_BINARIES"
 	fi
-	unzip -q $NDK_BINARIES
+	unzip -q "$NDK_BINARIES"
 fi
 
-if [ ! -d $ANDROID_SDK/build-tools/${ANDROID_BUILDTOOLS_REVISION} ] ; then
-	if [ ! -d $ANDROID_SDK ] ; then
-		if [ ! -f $SDK_TOOLS ] ; then
-			$SLOW_PROG wget -q https://dl.google.com/android/repository/$SDK_TOOLS
+if [ ! -d "$ANDROID_SDK"/build-tools/"${ANDROID_BUILDTOOLS_REVISION}" ] ; then
+	if [ ! -d "$ANDROID_SDK" ] ; then
+		if [ ! -f "$SDK_TOOLS" ] ; then
+			$SLOW_PROG wget -q https://dl.google.com/android/repository/"$SDK_TOOLS"
 		fi
-		mkdir $ANDROID_SDK
-		pushd $ANDROID_SDK
-		unzip -q ../$SDK_TOOLS
+		mkdir "$ANDROID_SDK"
+		pushd "$ANDROID_SDK"
+		unzip -q ../"$SDK_TOOLS"
 		yes | tools/bin/sdkmanager --licenses > /dev/null 2>&1 || echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > licenses/android-sdk-license
 		cat licenses/android-sdk-license
 		echo ""
 	else
-		pushd $ANDROID_SDK
-		tools/bin/sdkmanager tools platform-tools 'platforms;'${ANDROID_PLATFORMS} 'build-tools;'${ANDROID_BUILDTOOLS_REVISION}
+		pushd "$ANDROID_SDK"
+		tools/bin/sdkmanager tools platform-tools 'platforms;'"${ANDROID_PLATFORMS}" 'build-tools;'"${ANDROID_BUILDTOOLS_REVISION}"
 	fi
 	popd
 fi
 
 # download the Qt installer including Android bits and unpack / install
 QT_DOWNLOAD_URL=https://download.qt.io/archive/qt/${QT_VERSION}/${LATEST_QT}/${QT_BINARIES}
-if [ ! -d Qt/${LATEST_QT}/android_armv7 ] ; then
+if [ ! -d Qt/"${LATEST_QT}"/android_armv7 ] ; then
 	if [ -d Qt ] ; then
 		# Over writing an exsisting installation stalls the installation script,
 		# rename the exsisting Qt folder and notify then user.
 		mv Qt Qt_OLD
 		echo "Qt installation found, backing it up to Qt_OLD."
 	fi
-	if [ ! -f ${QT_BINARIES} ] ; then
-		$SLOW_PROG wget -q ${QT_DOWNLOAD_URL}
+	if [ ! -f "${QT_BINARIES}" ] ; then
+		$SLOW_PROG wget -q "${QT_DOWNLOAD_URL}"
 	fi
-	chmod +x ./${QT_BINARIES}
-	./${QT_BINARIES} --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
+	chmod +x ./"${QT_BINARIES}"
+	./"${QT_BINARIES}" --platform minimal --script "$SUBSURFACE_SOURCE"/qt-installer-noninteractive.qs --no-force-installations
 fi
 
 # patch the cmake / Qt5.7.1 incompatibility mentioned above
-sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/${LATEST_QT}/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
+sed -i 's/set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/# set_property(TARGET Qt5::Core PROPERTY INTERFACE_COMPILE_FEATURES cxx_decltype)/' Qt/"${LATEST_QT}"/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 
 if [ ! -d subsurface/libdivecomputer/src ] ; then
 	pushd subsurface
