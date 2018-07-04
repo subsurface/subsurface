@@ -2351,6 +2351,8 @@ void SettingsObjectWrapper::load()
 
 void SettingsObjectWrapper::sync()
 {
+	qPrefDisplay::instance()->sync();
+
 	QSettings s;
 	s.beginGroup("Planner");
 	s.setValue("last_stop", prefs.last_stop);
