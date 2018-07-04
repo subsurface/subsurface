@@ -33,7 +33,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>複製日誌到剪貼簿</translation>
     </message>
 </context>
 <context>
@@ -382,22 +382,22 @@
         <translation>PIN</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="107"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="106"/>
         <source>Register</source>
         <translation>註冊</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="118"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="117"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="135"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="133"/>
         <source>Sign-in or Register</source>
         <translation>登入或註冊</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="144"/>
         <source>No cloud mode</source>
         <translation>無雲端模式</translation>
     </message>
@@ -405,7 +405,7 @@
 <context>
     <name>CloudStorageAuthenticate</name>
     <message>
-        <location filename="../core/cloudstorage.cpp" line="64"/>
+        <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
         <translation>雲端帳號需要認證, 請於設置頁面輸入密碼</translation>
     </message>
@@ -3699,9 +3699,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="187"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="271"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="178"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="196"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="259"/>
         <source>Download</source>
         <translation>下載</translation>
     </message>
@@ -3727,7 +3727,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="298"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="200"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="191"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
@@ -3742,57 +3742,57 @@ p, li { white-space: pre-wrap; }
         <translation>藍芽未被啟用</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="57"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="55"/>
         <source> Vendor name: </source>
         <translation>廠商名稱: </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="88"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="86"/>
         <source> Dive Computer:</source>
         <translation>潛水電腦:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="123"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="121"/>
         <source> Connection:</source>
         <translation>連線:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="189"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="180"/>
         <source>Retry</source>
         <translation>重試</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="200"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="191"/>
         <source>Quit</source>
         <translation>結束</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="214"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
         <source>Rescan</source>
         <translation>重新掃描</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="222"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="213"/>
         <source> Downloaded dives</source>
         <translation>下載潛水</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="223"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="214"/>
         <source>Info:</source>
         <translation>資訊:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="263"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="251"/>
         <source>Accept</source>
         <translation>同意</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="282"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="270"/>
         <source>Select All</source>
         <translation>選擇全部</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="278"/>
         <source>Unselect All</source>
         <translation>取消選取</translation>
     </message>
@@ -3929,6 +3929,65 @@ p, li { white-space: pre-wrap; }
     </message>
 </context>
 <context>
+    <name>FindMovedImagesDialog</name>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
+        <source>Find moved images</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
+        <source>Found images</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
+        <source>Match only images in selected dive(s)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
+        <source>Scanning:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="240"/>
+        <source>Select folder and scan</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
+        <source>Traverse image directories</source>
+        <translation>經過照片路徑</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
+        <source>Stop scanning</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="250"/>
+        <source>Scanning cancelled - results may be incomplete</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
+        <source>No matching images found</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
+        <source>Found &lt;b&gt;%1&lt;/b&gt; images at their current place.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
+        <source>Found &lt;b&gt;%1&lt;/b&gt; images at new locations:</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>FirmwareUpdateThread</name>
     <message>
         <location filename="../core/configuredivecomputerthreads.cpp" line="2233"/>
@@ -3998,7 +4057,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/gpslocation.cpp" line="135"/>
         <source>Unknown GPS location (no GPS source)</source>
-        <translation type="unfinished"/>
+        <translation>未知的GPS位置 (無GPS來源)</translation>
     </message>
 </context>
 <context>
@@ -4437,7 +4496,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="166"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="577"/>
         <source>Open</source>
         <translation>開啟</translation>
     </message>
@@ -4733,13 +4792,13 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="246"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="249"/>
         <source>&amp;Undo</source>
         <translation>復原</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="681"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="247"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
         <source>&amp;Redo</source>
         <translation>取消還原</translation>
     </message>
@@ -4779,57 +4838,41 @@ p, li { white-space: pre-wrap; }
         <translation>線上雲端儲存</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="373"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="409"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="376"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="412"/>
         <source>Connect to</source>
         <translation>連結至</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="403"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="406"/>
         <source>Disconnect from</source>
         <translation>從中斷</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="565"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="610"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1651"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="568"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="613"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1633"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>在開啟新檔前，請儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="571"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
         <source>Open file</source>
         <translation>開啟檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="575"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="720"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2047"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="578"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2029"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="716"/>
-        <source>Traverse image directories</source>
-        <translation>經過照片路徑</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="719"/>
-        <source>Scan</source>
-        <translation>掃描</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="727"/>
-        <source>Scanning images...(this can take a while)</source>
-        <translation>掃描影像...(需要稍待一段時間)</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="583"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="674"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="753"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1025"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1908"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="677"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="728"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="882"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1890"/>
         <source>Warning</source>
         <translation>提醒</translation>
     </message>
@@ -4839,12 +4882,12 @@ p, li { white-space: pre-wrap; }
         <translation>以 %1 min 時間區間嘗試合併潛水記錄</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="267"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="270"/>
         <source>Template backup created</source>
         <translation>儲存備份範本</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="268"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4866,213 +4909,214 @@ can overwrite them on startup.</source>
 且是自程式啟動覆蓋設定後, 無法直接編輯.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="674"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="677"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>前往線上版之前請先儲存或取消目前的日誌修改</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="687"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>有未儲存的變更. 想要上傳至雲端空間嗎?
+如果選擇否, 雲端只會在下一次點選&quot;開啟雲端空間&quot;, 或&quot;儲存至雲端空間&quot;選項時, 才會進行同步.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="697"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="700"/>
         <source>Failure taking cloud storage online</source>
         <translation>取得線上雲端儲存失敗</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="794"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="769"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>在關閉檔案前，請儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="907"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="882"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>在新增潛水前，請先儲存或取消此次潛水的編輯。</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="967"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="942"/>
         <source>Print runtime table</source>
         <translation>列印操作表格</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1025"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>嘗試針對非原計畫的潛水進行重新規畫. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1908"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1890"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>請在嘗試其他編輯時先完成當前編輯</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1149"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1124"/>
         <source>Yearly statistics</source>
         <translation>年統計</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1360"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
         <source>Dive log files</source>
         <translation>潛水日誌檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1398"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1441"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1680"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1662"/>
         <source>Subsurface files</source>
         <translation>Subsurface檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1399"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1442"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1400"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1444"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1382"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1401"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1427"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1428"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1403"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1447"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1429"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1404"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1448"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1430"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1405"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1449"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1431"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1406"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1432"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1407"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1451"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1433"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1452"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1390"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1434"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1453"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1391"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1435"/>
         <source>MkVI files</source>
         <translation>MkVI檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1454"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1392"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1436"/>
         <source>APD log viewer</source>
         <translation>APD日誌瀏覽器</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1455"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
         <source>OSTCtools</source>
         <translation>OSTC工具</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1456"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1394"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1438"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1443"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1457"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1439"/>
         <source>All files</source>
         <translation>全部檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1468"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>您是否要對檔案 %1 所做的修改儲存? </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1471"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1453"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>您是否要對資料檔案所做的修改進行儲存? </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1476"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="689"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1458"/>
         <source>Save changes?</source>
         <translation>儲存變更? </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1477"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1459"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>如果不進行儲存，所做變更將會遺失。</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1661"/>
         <source>Save file as</source>
         <translation>另存新檔</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1767"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1749"/>
         <source>[local cache for] %1</source>
         <translation>[本地端暫存] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1769"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1751"/>
         <source>[cloud storage for] %1</source>
         <translation>[雲端裝置] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1861"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1843"/>
         <source>Opening datafile from older version</source>
         <translation>從較舊的版本中開啟資料檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1862"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1844"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>自舊版的 Subsurface 開啟資料檔案. 建議請先在新版程式中, 閱讀相關變更, 特別是有關潛點管理的部分. 
 Subsurface 已嘗試預先填寫部分資料, 值得花些時間看看新的潛點管理系統, 並確認資料是否正確. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1873"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1855"/>
         <source>Open dive log file</source>
         <translation>打開潛水日誌檔案</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2047"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2029"/>
         <source>Contacting cloud service...</source>
         <translation>聯絡雲端服務...</translation>
     </message>
@@ -5098,17 +5142,17 @@ Subsurface 已嘗試預先填寫部分資料, 值得花些時間看看新的潛�
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="15"/>
         <source>Open in Google Maps</source>
-        <translation type="unfinished"/>
+        <translation>在Google地圖下開啟</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="16"/>
         <source>Copy coordinates to clipboard (decimal)</source>
-        <translation type="unfinished"/>
+        <translation>複製位置至剪貼簿 (十進制)</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="17"/>
         <source>Copy coordinates to clipboard (sexagesimal)</source>
-        <translation type="unfinished"/>
+        <translation>複製位置至剪貼簿 (六十進制)</translation>
     </message>
     <message>
         <location filename="../map-widget/qml/MapWidgetContextMenu.qml" line="18"/>
@@ -5407,7 +5451,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation>/</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_georeference.cpp" line="11"/>
+        <location filename="../desktop-widgets/preferences/preferences_georeference.cpp" line="10"/>
         <source>Georeference</source>
         <translation>座標參考</translation>
     </message>
@@ -5512,22 +5556,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>當查看pO₂時, 顯示O₂感測器數值</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>當查看pO₂時, 顯示CCR設定點</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>pSCR 代謝速率 O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>依 pSCR pO₂ 顯示等化的 OC pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -5542,7 +5586,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <source>Recalculate thumbnails if older than image</source>
-        <translation type="unfinished"/>
+        <translation>當縮圖太舊時重新產生</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -5581,7 +5625,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation>於資料中顯示平均深度</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="10"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="9"/>
         <source>Profile</source>
         <translation>資訊</translation>
     </message>
@@ -5799,12 +5843,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
         <source>Change ignored. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>忽略變更. 雲端空間帳號的 email 與密碼, 只能以字母, 數字, 和 &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos; 組成.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="75"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation type="unfinished"/>
+        <translation>忽略變更. 雲端空間帳號的 email 與新密碼, 只能以字母, 數字, 和 &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos; 組成.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="98"/>
@@ -6016,7 +6060,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>十進制</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_units.cpp" line="8"/>
+        <location filename="../desktop-widgets/preferences/preferences_units.cpp" line="7"/>
         <source>Units</source>
         <translation>單位</translation>
     </message>
@@ -6108,7 +6152,8 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/printoptions.cpp" line="132"/>
         <source>The template '%1' is read-only and cannot be edited.
 Please export this template to a different file.</source>
-        <translation type="unfinished"/>
+        <translation>範本 &apos;%1&apos; 是唯讀且無法被編輯.
+請匯出此範本至不同檔案.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="148"/>
@@ -6151,128 +6196,133 @@ Please export this template to a different file.</source>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 of %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="786"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="794"/>
         <source>Unknown dive computer</source>
         <translation>未知的潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="814"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="822"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>當超過處理時間，顯示關閉 NDL / TTS</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1416"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1418"/>
         <source>Add gas change</source>
         <translation>增加氣瓶交換</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1402"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
         <source>Make first dive computer</source>
         <translation>設定優先潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="782"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
         <source>Planned dive</source>
         <translation>計畫潛水</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="784"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="792"/>
         <source>Manually added dive</source>
         <translation>手動新增潛水</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
         <source>Delete this dive computer</source>
         <translation>刪除此潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
         <source> (cyl. %1)</source>
         <translation> (cyl. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1425"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
         <source>Add setpoint change</source>
         <translation>增加設置點變更</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1429"/>
         <source>Add bookmark</source>
         <translation>新增書籤</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1437"/>
-        <source>Change divemode</source>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1431"/>
+        <source>Split dive into two</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1461"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
+        <source>Change divemode</source>
+        <translation>變更潛水模式</translation>
+    </message>
+    <message>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
         <source>Edit the profile</source>
         <translation>編輯摘要</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1469"/>
         <source>Remove event</source>
         <translation>移除事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
         <source>Hide similar events</source>
         <translation>隱藏相似事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1477"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1481"/>
         <source>Edit name</source>
         <translation>潛水名稱</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1508"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1515"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1512"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1519"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>調整氣瓶壓力 %1 (目前添加為 %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1530"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1534"/>
         <source>Unhide all events</source>
         <translation>取消隱藏所有事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1565"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
         <source>Hide events</source>
         <translation>隱藏事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1565"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
         <source>Hide all %1 events?</source>
         <translation>隱藏所有 %1 事件?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1600"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1604"/>
         <source>Remove the selected event?</source>
         <translation>移除所選擇的事件？</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1601"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1738"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1756"/>
         <source>Edit name of bookmark</source>
         <translation>編輯書籤名稱</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1739"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
         <source>Custom name:</source>
         <translation>自訂名稱:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1744"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1762"/>
         <source>Name is too long!</source>
         <translation>名稱太長！</translation>
     </message>
@@ -6280,146 +6330,146 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="182"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="199"/>
         <source>Starting...</source>
         <translation>開始...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="236"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="253"/>
         <source>Open local dive data file</source>
         <translation>開啟本機端潛水資料檔</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="244"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="261"/>
         <source>Opening local data file failed</source>
         <translation>開啟本機端檔案失敗</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="276"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="293"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 潛水記錄載入自本機端潛水資料檔案</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="359"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="390"/>
         <source>working in no-cloud mode</source>
         <translation>於非雲端模式工作</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="363"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="394"/>
         <source>Error parsing local storage, giving up</source>
         <translation>本機端解析錯誤, 中斷</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="372"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="403"/>
         <source>no cloud credentials</source>
         <translation>無雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="373"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="458"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="404"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="489"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>請輸入合法的雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="414"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>雲端裝置 email 與密碼只接受使用字母, 數字, 與 &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, 和 &apos;+&apos;. </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="420"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="451"/>
         <source>Invalid format for email address</source>
         <translation>錯誤的email格式</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="471"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="502"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>嘗試使用新的憑證開啟雲端儲存</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="493"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>Testing cloud credentials</source>
         <translation>測試雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="508"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>雲端伺服器認證憑證無回應</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="516"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="547"/>
         <source>Incorrect cloud credentials</source>
         <translation>不正確的雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="522"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>無法連結雲端儲存 - 未認證的帳號</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="549"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
         <source>Cloud credentials are invalid</source>
         <translation>不合法的雲端憑證</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="563"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>無法開啟雲端儲存: 建立 https 連線錯誤</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="577"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>無法開啟雲端儲存: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="590"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="621"/>
         <source>Cannot connect to cloud storage</source>
         <translation>無法連結雲端儲存</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="614"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation>雲端認證成功, 載入日誌</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="624"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="655"/>
         <source>Cloud storage error: %1</source>
         <translation>雲端儲存錯誤: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="670"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="701"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>從本機端載入日誌 (本機模式)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="716"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="747"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>連結雲端伺服器失敗, 返回非雲端狀態</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="741"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>成功開啟雲端儲存. 列表無潛水記錄. </translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="918"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="919"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="950"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="918"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="919"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="920"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="950"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="951"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="918"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
         <source>sec</source>
         <translation>sec</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1328"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1359"/>
         <source>Unknown GPS location</source>
         <translation>未知的GPS位置</translation>
     </message>
@@ -6430,175 +6480,6 @@ Please export this template to a different file.</source>
         <location filename="../mobile-widgets/qmlprefs.cpp" line="186"/>
         <source>Starting...</source>
         <translation>開始...</translation>
-    </message>
-</context>
-<context>
-    <name>QObject</name>
-    <message>
-        <location filename="../core/gpslocation.h" line="14"/>
-        <source>Waiting to aquire GPS location</source>
-        <translation>等待擷取 GPS 位置</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1330"/>
-        <source>m</source>
-        <translation>m</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1329"/>
-        <source>ft</source>
-        <translation>ft</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="793"/>
-        <source>C</source>
-        <translation>C</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="795"/>
-        <source>F</source>
-        <translation>F</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1305"/>
-        <source>kg</source>
-        <translation>kg</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1306"/>
-        <source>lbs</source>
-        <translation>lbs</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1355"/>
-        <source>bar</source>
-        <translation>bar</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1354"/>
-        <source>psi</source>
-        <translation>psi</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1282"/>
-        <source>AIR</source>
-        <translation>空氣</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="872"/>
-        <source>EAN</source>
-        <translation>EAN</translation>
-    </message>
-    <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="1010"/>
-        <source>(%n dive(s))</source>
-        <translation><numerusform>(%n dive(s))</numerusform></translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="1282"/>
-        <source>OXYGEN</source>
-        <translation>OXYGEN</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="1377"/>
-        <source>l</source>
-        <translation>l</translation>
-    </message>
-    <message>
-        <location filename="../core/qthelper.cpp" line="1378"/>
-        <source>cuft</source>
-        <translation>cuft</translation>
-    </message>
-    <message>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="30"/>
-        <source>unknown</source>
-        <translation>未知</translation>
-    </message>
-    <message>
-        <location filename="../core/divelogexportlogic.cpp" line="56"/>
-        <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="132"/>
-        <location filename="../desktop-widgets/templatelayout.h" line="111"/>
-        <source>min</source>
-        <translation>min</translation>
-    </message>
-    <message>
-        <location filename="../core/divelogexportlogic.cpp" line="56"/>
-        <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="132"/>
-        <location filename="../desktop-widgets/templatelayout.h" line="110"/>
-        <source>h</source>
-        <translation>h</translation>
-    </message>
-    <message>
-        <location filename="../core/divelogexportlogic.cpp" line="56"/>
-        <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="79"/>
-        <location filename="../desktop-widgets/templatelayout.h" line="111"/>
-        <source>sec</source>
-        <translation>sec</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/diveplanner.cpp" line="65"/>
-        <source>Remove this point</source>
-        <translation>移除此點</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="34"/>
-        <source>Average</source>
-        <translation>平均</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="37"/>
-        <source>Minimum</source>
-        <translation>最低</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="40"/>
-        <source>Maximum</source>
-        <translation>最高</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="623"/>
-        <source>Invalid response from server</source>
-        <translation>主機回傳不正確的回應.</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="631"/>
-        <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
-        <translation>預期的 XML 標籤 &apos;DiveDateReader&apos;, 取代了 &apos;%1</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="677"/>
-        <source>Expected XML tag &apos;DiveDates&apos; not found</source>
-        <translation>無法找到預期的 XML 標籤 &apos;DiveDates&apos;</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="684"/>
-        <source>Malformed XML response. Line %1: %2</source>
-        <translation>異常的 XML 回應. 第 %1 行: %2</translation>
-    </message>
-    <message>
-        <location filename="../core/divesite-helper.cpp" line="20"/>
-        <source>No dive site layout categories set in preferences!</source>
-        <translation>設置頁面裡無潛點輸出類別設定</translation>
-    </message>
-    <message>
-        <location filename="../core/divesite-helper.cpp" line="28"/>
-        <source>Tags</source>
-        <translation>標籤</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="635"/>
-        <source>Don&apos;t save an empty log to the cloud</source>
-        <translation>無法上傳空白日誌至雲端</translation>
     </message>
 </context>
 <context>
@@ -7170,7 +7051,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="37"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation type="unfinished"/>
+        <translation>搭配Subsurface雲端使用Subsurface-mobile, 請輸入您的雲端憑證.&lt;br/&gt;&lt;br/&gt;若這是您第一次使用Subsurface雲端空間, 請輸入合法 email (全部小寫) 與選擇的密碼 (字母與數字).&lt;br/&gt;&lt;br/&gt;在Subsurface-mobile上使用裝置的本機端資料, 請選擇上方的無雲端按鈕. </translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
@@ -7423,7 +7304,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Recalculate selected thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>重新產生選擇的縮圖</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
@@ -7818,7 +7699,7 @@ mixed from Air and using:
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="125"/>
         <source>More Actions</source>
-        <translation type="unfinished"/>
+        <translation>變更動作</translation>
     </message>
 </context>
 <context>
@@ -8794,12 +8675,16 @@ Maximum</source>
         <location filename="../core/plannernotes.c" line="69"/>
         <location filename="../core/plannernotes.c" line="70"/>
         <location filename="../core/qthelper.cpp" line="655"/>
+        <location filename="../core/qthelper.cpp" line="847"/>
+        <location filename="../core/qthelper.cpp" line="1311"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="304"/>
         <location filename="../core/qthelper.cpp" line="658"/>
+        <location filename="../core/qthelper.cpp" line="849"/>
+        <location filename="../core/qthelper.cpp" line="1310"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8810,6 +8695,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
+        <location filename="../core/qthelper.cpp" line="1334"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
@@ -8817,6 +8703,8 @@ Maximum</source>
         <location filename="../core/dive.c" line="387"/>
         <location filename="../core/qthelper.cpp" line="571"/>
         <location filename="../core/qthelper.cpp" line="586"/>
+        <location filename="../core/qthelper.cpp" line="765"/>
+        <location filename="../core/qthelper.cpp" line="1286"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -8824,6 +8712,8 @@ Maximum</source>
         <location filename="../core/dive.c" line="392"/>
         <location filename="../core/qthelper.cpp" line="574"/>
         <location filename="../core/qthelper.cpp" line="588"/>
+        <location filename="../core/qthelper.cpp" line="767"/>
+        <location filename="../core/qthelper.cpp" line="1285"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -8851,6 +8741,8 @@ Maximum</source>
         <location filename="../core/dive.c" line="443"/>
         <location filename="../core/qthelper.cpp" line="597"/>
         <location filename="../core/qthelper.cpp" line="607"/>
+        <location filename="../core/qthelper.cpp" line="822"/>
+        <location filename="../core/qthelper.cpp" line="1262"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
@@ -8858,6 +8750,8 @@ Maximum</source>
         <location filename="../core/dive.c" line="447"/>
         <location filename="../core/qthelper.cpp" line="595"/>
         <location filename="../core/qthelper.cpp" line="605"/>
+        <location filename="../core/qthelper.cpp" line="820"/>
+        <location filename="../core/qthelper.cpp" line="1261"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -9095,6 +8989,7 @@ Maximum</source>
     <message>
         <location filename="../core/import-divinglog.c" line="314"/>
         <location filename="../core/libdivecomputer.c" line="244"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="30"/>
         <location filename="../core/uemis-downloader.c" line="194"/>
         <source>unknown</source>
         <translation>未知</translation>
@@ -9294,7 +9189,8 @@ Maximum</source>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>開啟裝置錯誤 %s %s (%s).
+在多數情況下, 為了追蹤此問題, 將日誌檔案傳送給開發者, 是有幫助的. 您可以在關於頁面點選按鈕來複製至剪貼簿. </translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9327,12 +9223,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1672"/>
+        <location filename="../core/load-git.c" line="1663"/>
         <source>Load dives from local cache</source>
         <translation>自本機端載入潛水</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1676"/>
+        <location filename="../core/load-git.c" line="1667"/>
         <source>Successfully opened dive data</source>
         <translation>成功開啟潛水資料</translation>
     </message>
@@ -9575,18 +9471,18 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>停留於 %.*f %s for %d:%02d min - 運行時間 %d:%02u on %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>停留在 %.*f %s for %d:%02d min - 運作時間 %d:%02u 於 %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9869,7 +9765,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>領先組織的 ICD
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -9978,18 +9875,46 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="616"/>
+        <location filename="../core/qthelper.cpp" line="793"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="619"/>
+        <location filename="../core/qthelper.cpp" line="795"/>
         <source>F</source>
         <translation>F</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="870"/>
+        <location filename="../core/qthelper.cpp" line="1238"/>
+        <source>AIR</source>
+        <translation>空氣</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="872"/>
+        <source>EAN</source>
+        <translation>EAN</translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="947"/>
         <source>more than %1 days</source>
         <translation>超過 %1 日</translation>
+    </message>
+    <message numerus="yes">
+        <location filename="../core/qthelper.cpp" line="1010"/>
+        <source>(%n dive(s))</source>
+        <translation type="unfinished"><numerusform></numerusform></translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="1238"/>
+        <source>OXYGEN</source>
+        <translation>OXYGEN</translation>
+    </message>
+    <message>
+        <location filename="../core/qthelper.cpp" line="1333"/>
+        <source>l</source>
+        <translation>l</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="472"/>
@@ -10089,6 +10014,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation>防寒衣</translation>
     </message>
     <message>
+        <location filename="../core/divesite-helper.cpp" line="21"/>
+        <source>No dive site layout categories set in preferences!</source>
+        <translation>設置頁面裡無潛點輸出類別設定</translation>
+    </message>
+    <message>
+        <location filename="../core/divesite-helper.cpp" line="29"/>
         <location filename="../core/save-html.c" line="511"/>
         <source>Tags</source>
         <translation>標籤</translation>
@@ -10577,11 +10508,31 @@ Uemis Zurich 已正確插入？</translation>
         <translation>時間:</translation>
     </message>
     <message>
+        <location filename="../core/divelogexportlogic.cpp" line="56"/>
+        <location filename="../core/divelogexportlogic.cpp" line="92"/>
         <location filename="../core/plannernotes.c" line="58"/>
         <location filename="../core/plannernotes.c" line="501"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="132"/>
         <location filename="../core/worldmap-save.c" line="46"/>
+        <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>min</source>
         <translation>min</translation>
+    </message>
+    <message>
+        <location filename="../core/divelogexportlogic.cpp" line="56"/>
+        <location filename="../core/divelogexportlogic.cpp" line="92"/>
+        <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="132"/>
+        <location filename="../desktop-widgets/templatelayout.h" line="110"/>
+        <source>h</source>
+        <translation>h</translation>
+    </message>
+    <message>
+        <location filename="../core/divelogexportlogic.cpp" line="56"/>
+        <location filename="../core/divelogexportlogic.cpp" line="92"/>
+        <location filename="../core/qthelper.h" line="73"/>
+        <location filename="../desktop-widgets/templatelayout.h" line="111"/>
+        <source>sec</source>
+        <translation>sec</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="49"/>
@@ -10724,29 +10675,79 @@ Uemis Zurich 已正確插入？</translation>
         <translation>城市</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="955"/>
+        <location filename="../core/save-git.c" line="951"/>
         <source>Start saving data</source>
         <translation>開始儲存資料</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="964"/>
+        <location filename="../core/save-git.c" line="960"/>
         <source>Start saving dives</source>
         <translation>開始儲存潛水記錄</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="997"/>
+        <location filename="../core/save-git.c" line="993"/>
         <source>Done creating local cache</source>
         <translation>分配本機端空間成功</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1245"/>
+        <location filename="../core/save-git.c" line="1241"/>
         <source>Preparing to save data</source>
         <translation>準備儲存資料</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1628"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1632"/>
         <source>modechange</source>
-        <translation type="unfinished"/>
+        <translation>模式變更</translation>
+    </message>
+    <message>
+        <location filename="../core/gpslocation.h" line="14"/>
+        <source>Waiting to aquire GPS location</source>
+        <translation>等待擷取 GPS 位置</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/diveplanner.cpp" line="65"/>
+        <source>Remove this point</source>
+        <translation>移除此點</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="638"/>
+        <source>Don&apos;t save an empty log to the cloud</source>
+        <translation>無法上傳空白日誌至雲端</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="34"/>
+        <source>Average</source>
+        <translation>平均</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="37"/>
+        <source>Minimum</source>
+        <translation>最低</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="40"/>
+        <source>Maximum</source>
+        <translation>最高</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="623"/>
+        <source>Invalid response from server</source>
+        <translation>主機回傳不正確的回應.</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="631"/>
+        <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
+        <translation>預期的 XML 標籤 &apos;DiveDateReader&apos;, 取代了 &apos;%1</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="677"/>
+        <source>Expected XML tag &apos;DiveDates&apos; not found</source>
+        <translation>無法找到預期的 XML 標籤 &apos;DiveDates&apos;</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="684"/>
+        <source>Malformed XML response. Line %1: %2</source>
+        <translation>異常的 XML 回應. 第 %1 行: %2</translation>
     </message>
 </context>
 <context>
@@ -10769,7 +10770,7 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Disable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>關閉雲端同步</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
