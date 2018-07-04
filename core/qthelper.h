@@ -42,6 +42,7 @@ QByteArray getCurrentAppState();
 void setCurrentAppState(const QByteArray &state);
 void init_proxy();
 QString getUUID();
+extern const QStringList videoExtensionsList;
 QStringList imageExtensionFilters();
 char *intdup(int index);
 char *copy_qstring(const QString &);

@@ -10,10 +10,11 @@ struct metadata {
 };
 
 enum mediatype_t {
-	MEDIATYPE_IO_ERROR,	// Couldn't read file
-	MEDIATYPE_UNKNOWN,	// Couldn't identify file
+	MEDIATYPE_UNKNOWN,		// Couldn't (yet) identify file
+	MEDIATYPE_IO_ERROR,		// Couldn't read file
 	MEDIATYPE_PICTURE,
 	MEDIATYPE_VIDEO,
+	MEDIATYPE_STILL_LOADING,	// Still processing in the background
 };
 
 #ifdef __cplusplus
