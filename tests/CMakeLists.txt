@@ -97,6 +97,7 @@ TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 TEST(TestGitStorage testgitstorage.cpp)
 TEST(TestPreferences testpreferences.cpp)
+TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
@@ -112,6 +113,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestGitStorage
 	TestPlan
 	TestDiveSiteDuplication
+	TestQPrefDisplay
 	TestPreferences
 	TestRenumber
 	TestPicture
