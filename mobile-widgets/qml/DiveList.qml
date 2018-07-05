@@ -23,7 +23,7 @@ Kirigami.ScrollablePage {
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
-			if (prefs.credentialStatus === QMLPrefs.CS_VERIFIED) {
+			if (prefs.credentialStatus === SsrfPrefs.CS_VERIFIED) {
 				console.log("User pulled down dive list - syncing with cloud storage")
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
@@ -339,8 +339,8 @@ Kirigami.ScrollablePage {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: credentialStatus === QMLPrefs.CS_NOCLOUD ||
-									(credentialStatus === QMLPrefs.CS_VERIFIED) ? 0 : 1
+		opacity: credentialStatus === SsrfPrefs.CS_NOCLOUD ||
+									(credentialStatus === SsrfPrefs.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
@@ -348,8 +348,8 @@ Kirigami.ScrollablePage {
 				page.actions.main = null
 				page.actions.right = null
 				page.title = qsTr("Cloud credentials")
-			} else if (prefs.credentialStatus === QMLPrefs.CS_VERIFIED ||
-						prefs.credentialStatus === QMLPrefs.CS_NOCLOUD) {
+			} else if (prefs.credentialStatus === SsrfPrefs.CS_VERIFIED ||
+						prefs.credentialStatus === SsrfPrefs.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.title = qsTr("Dive list")
@@ -427,7 +427,7 @@ Kirigami.ScrollablePage {
 
 	onBackRequested: {
 		if (startPage.visible && diveListView.count > 0 &&
-			prefs.credentialStatus !== QMLPrefs.CS_INCORRECT_USER_PASSWD) {
+			prefs.credentialStatus !== SsrfPrefs.CS_INCORRECT_USER_PASSWD) {
 			prefs.credentialStatus = oldStatus
 			event.accepted = true;
 		}

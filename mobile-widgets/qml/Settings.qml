@@ -42,7 +42,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: prefs.credentialStatus === QMLPrefs.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
+				text: prefs.credentialStatus === SsrfPrefs.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2

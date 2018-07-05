@@ -213,14 +213,6 @@ enum def_file_behavior {
 	CLOUD_DEFAULT_FILE
 };
 
-enum cloud_status {
-	CS_UNKNOWN,
-	CS_INCORRECT_USER_PASSWD,
-	CS_NEED_TO_VERIFY,
-	CS_VERIFIED,
-	CS_NOCLOUD
-};
-
 extern struct preferences prefs, default_prefs, git_prefs;
 
 extern const char *system_divelist_default_font;

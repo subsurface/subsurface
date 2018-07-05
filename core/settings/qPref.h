@@ -20,6 +20,14 @@ public:
 	void loadSync(bool doSync);
 
 public:
+	enum cloud_status {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
+	};
+
 
 private:
 };

@@ -27,6 +27,7 @@
 #include "qt-models/messagehandlermodel.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
+#include "core/settings/qPref.h"
 
 #include "mobile-widgets/qml/kirigami/src/kirigamiplugin.h"
 
@@ -55,6 +56,7 @@ void init_ui()
 void run_ui()
 {
 	LOG_STP("run_ui starting");
+	qmlRegisterType<qPref>("org.subsurfacedivelog.mobile", 1, 0, "SsrfPrefs");
 	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
 	qmlRegisterType<QMLPrefs>("org.subsurfacedivelog.mobile", 1, 0, "QMLPrefs");
 	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
