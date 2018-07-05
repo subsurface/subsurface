@@ -8,7 +8,7 @@
 
 class QMLPrefs : public QObject {
 	Q_OBJECT
-	Q_ENUMS(cloud_status)
+	Q_ENUM(cloud_status)
 	Q_PROPERTY(QString cloudPassword
 				MEMBER m_cloudPassword
 				WRITE setCloudPassword
@@ -51,6 +51,14 @@ class QMLPrefs : public QObject {
 				NOTIFY timeThresholdChanged)
 
 public:
+	enum cloud_status {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
+	};
+
 	QMLPrefs();
 	~QMLPrefs();
 
