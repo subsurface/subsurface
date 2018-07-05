@@ -19,4 +19,9 @@ desktop:
 	cd build; LIBRARY_PATH=../install_root/lib make 
 	cd build; LIBRARY_PATH=../install_root/lib make install
 
-all: desktop mobile
+check:
+	if test ! -d build; then (echo "error: please run build.sh before make"; exit -1;); fi
+	cd build; LIBRARY_PATH=../install_root/lib make check
+
+
+all: desktop mobile check
