@@ -11,17 +11,17 @@ default_target: all
 
 mobile:
 	if test ! -d build-mobile; then (echo "error: please run build.sh before make"; exit -1;); fi
-	cd build-mobile; LIBRARY_PATH=../install_root/lib make 
-	cd build-mobile; LIBRARY_PATH=../install_root/lib make install
+	cd build-mobile; make 
+	cd build-mobile; make install
 
 desktop:
 	if test ! -d build; then (echo "error: please run build.sh before make"; exit -1;); fi
-	cd build; LIBRARY_PATH=../install_root/lib make 
-	cd build; LIBRARY_PATH=../install_root/lib make install
+	cd build; make 
+	cd build; make install
 
 check:
 	if test ! -d build; then (echo "error: please run build.sh before make"; exit -1;); fi
-	cd build; LIBRARY_PATH=../install_root/lib make check
+	cd build; make check
 
 
 all: desktop mobile check
