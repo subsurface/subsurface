@@ -2,15 +2,18 @@
 #ifndef TESTQPREFDISPLAY_H
 #define TESTQPREFDISPLAY_H
 
-#include <QTest>
-#include <functional>
+#include <QtTest>
 
 class TestQPrefDisplay : public QObject
 {
 	Q_OBJECT
 private slots:
 	void initTestCase();
-	void test1();
+	void test_struct_get();
+	void test_set_struct();
+	void test_set_load_struct();
+	void test_struct_disk();
+	void test_multiple();
 };
 
 #endif // TESTQPREFDISPLAY_H
