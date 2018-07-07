@@ -18,7 +18,7 @@ VERSION=$(cd ${DIR}/subsurface; ./scripts/get-version linux)
 # first build and install Subsurface and then clean up the staging area
 # make sure we didn't lose the minimum OS version
 rm -rf ./Subsurface.app
-cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.10 -DCMAKE_OSX_SYSROOT=/Developer/SDKs/MacOSX10.10.sdk/ .
+cmake -DCMAKE_OSX_DEPLOYMENT_TARGET=10.11 -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk .
 LIBRARY_PATH=${DIR}/install-root/lib make -j8
 LIBRARY_PATH=${DIR}/install-root/lib make install
 
