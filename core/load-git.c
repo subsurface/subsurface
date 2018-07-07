@@ -953,6 +953,16 @@ static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
 	pic->longitude = parse_degrees(line, &line);
 }
 
+static void parse_picture_hash(char *line, struct membuffer *str, void *_pic)
+{
+	// we no longer use hashes to identify pictures, but we shouldn't
+	// remove this parser or otherwise users get an ugly red warning when
+	// opening old git repos
+	UNUSED(line);
+	UNUSED(_pic);
+	UNUSED(str);
+}
+
 /* These need to be sorted! */
 struct keyword_action dc_action[] = {
 #undef D
@@ -1026,7 +1036,7 @@ static void settings_parser(char *line, struct membuffer *str, void *_unused)
 static struct keyword_action picture_action[] = {
 #undef D
 #define D(x) { #x, parse_picture_ ## x }
-	D(filename), D(gps)
+	D(filename), D(gps), D(hash)
 };
 
 static void picture_parser(char *line, struct membuffer *str, void *_pic)
