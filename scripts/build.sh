@@ -218,6 +218,14 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	make -j4
 	make install
 	popd
+	if [ $PLATFORM = Darwin ] ; then
+		# in order for macdeployqt to do its job correctly, we need the full path in the dylib ID
+		cd $INSTALL_ROOT/lib
+		NAME=$(otool -L libssh2.dylib | grep -v : | head -1 | cut -f1 -d\  | tr -d '\t')
+		echo $NAME | if grep -v / > /dev/null 2>&1 ; then
+			install_name_tool -id "$INSTALL_ROOT/lib/$NAME" "$INSTALL_ROOT/lib/$NAME"
+		fi
+	fi
 fi
 
 if [[ "$LIBGIT" < "24" ]] ; then
