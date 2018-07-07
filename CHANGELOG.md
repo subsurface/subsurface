@@ -1,3 +1,4 @@
+- Cloud storage: fix potential issue with credentials on Linux [#1346]
 - Mobile/iOS: fix missing translations
 - Dive pictures: locate moved pictures based on filename and path
 - Profile: Context menu entry to manually split a dive
