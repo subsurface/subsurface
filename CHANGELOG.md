@@ -1,3 +1,4 @@
+- tests: add qml test harness
 - Cloud storage: fix potential issue with credentials on Linux [#1346]
 - Mobile/iOS: fix missing translations
 - Dive media: support addition of videos

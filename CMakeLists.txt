@@ -224,7 +224,7 @@ if(BTSUPPORT)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Bluetooth)
 endif()
 
-find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test LinguistTools Positioning Quick Location ${QT_EXTRA_COMPONENTS})
+find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test QuickTest LinguistTools Positioning Quick Location ${QT_EXTRA_COMPONENTS})
 set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::Svg  Qt5::Positioning Qt5::Quick Qt5::Location ${QT_EXTRA_LIBRARIES})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test Qt5::QuickTest)
 
