@@ -177,7 +177,12 @@ fi
 # set up the right file name extensions
 if [ $PLATFORM = Darwin ] ; then
 	SH_LIB_EXT=dylib
-	pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
+	if [ ! "$BUILD_DEPS" == "1" ] ; then
+		pkg-config --exists libgit2 && LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
+		if [[ "$LIBGIT" > "23" ]] ; then
+			LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
+		fi
+	fi
 else
 	SH_LIB_EXT=so
 
@@ -187,6 +192,7 @@ else
 	# this script has been run before)
 	if pkg-config --exists libgit2 ; then
 		LIBGIT=$(pkg-config --modversion libgit2 | cut -d. -f2)
+		LIBGIT2_FROM_PKGCONFIG="-DLIBGIT2_FROM_PKGCONFIG=ON"
 	fi
 	if [[ "$LIBGIT" < "24" ]] ; then
 		# maybe there's a system version that's new enough?
@@ -464,7 +470,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 		-DCMAKE_PREFIX_PATH=$CMAKE_PREFIX_PATH \
 		-DBTSUPPORT=${BTSUPPORT} \
 		-DCMAKE_INSTALL_PREFIX=${INSTALL_ROOT} \
-		-DLIBGIT2_FROM_PKGCONFIG=ON \
+		$LIBGIT2_FROM_PKGCONFIG \
 		-DFORCE_LIBSSH=OFF \
 		$PRINTING $EXTRA_OPTS
 
