@@ -712,8 +712,8 @@ int cylinderuse_from_text(const char *text);
 
 
 struct user_info {
-	const char *name;
-	const char *email;
+	char *name;
+	char *email;
 };
 
 extern void subsurface_user_info(struct user_info *);
