@@ -39,7 +39,7 @@ void subsurface_user_info(struct user_info *user)
 
 	if (pwd) {
 		if (!empty_string(pwd->pw_gecos))
-			user->name = pwd->pw_gecos;
+			user->name = strdup(pwd->pw_gecos);
 		if (!username)
 			username = pwd->pw_name;
 	}
@@ -48,8 +48,7 @@ void subsurface_user_info(struct user_info *user)
 		struct membuffer mb = {};
 		gethostname(hostname, sizeof(hostname));
 		put_format(&mb, "%s@%s", username, hostname);
-		user->email = mb_cstring(&mb);
-		free_buffer(&mb);
+		user->email = mb_cstring(&mb); // 'email' is heap allocated
 	}
 }
 
