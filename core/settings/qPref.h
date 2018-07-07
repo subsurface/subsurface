@@ -11,6 +11,8 @@
 class qPref : public QObject {
 	Q_OBJECT
 	Q_ENUMS(cloud_status);
+	Q_PROPERTY(QString canonical_version READ canonical_version);
+	Q_PROPERTY(QString mobile_version READ mobile_version);
 
 public:
 	qPref(QObject *parent = NULL);
@@ -28,6 +30,8 @@ public:
 		CS_NOCLOUD
 	};
 
+	const QString canonical_version() const;
+	const QString mobile_version() const;
 
 private:
 };
