@@ -1,6 +1,6 @@
 #!/bin/bash -e
-# Hash is 3A8CE62A483083EDEA5581A61E770EC1FA8BECE8 but it doesn't seem to
-# find the key by hash
+#
+# just a simple helper to make it easier for me to sign our binaries
 
 echo -- signing staging/Subsurface.app
 cd staging
@@ -8,41 +8,7 @@ cd staging
 # remove the spurious DBus framework that we don't need
 rm -rf Subsurface.app/Contents/Frameworks/QtDBus.framework
 
-echo -- signing Qt frameworks and shared libraries
+# remove anything codesign doesn't want us to sign
+find Subsurface.app/Contents/Frameworks/ \( -name Headers -o -name \*.prl -o -name \*_debug \) -print0 | xargs -0 rm -rf
 
-for i in \
-	./Subsurface.app//Contents/Frameworks/QtConcurrent.framework/Versions/5/QtConcurrent \
-	./Subsurface.app//Contents/Frameworks/QtCore.framework/Versions/5/QtCore \
-	./Subsurface.app//Contents/Frameworks/QtGui.framework/Versions/5/QtGui \
-	./Subsurface.app//Contents/Frameworks/QtMultimedia.framework/Versions/5/QtMultimedia \
-	./Subsurface.app//Contents/Frameworks/QtMultimediaWidgets.framework/Versions/5/QtMultimediaWidgets \
-	./Subsurface.app//Contents/Frameworks/QtNetwork.framework/Versions/5/QtNetwork \
-	./Subsurface.app//Contents/Frameworks/QtOpenGL.framework/Versions/5/QtOpenGL \
-	./Subsurface.app//Contents/Frameworks/QtPositioning.framework/Versions/5/QtPositioning \
-	./Subsurface.app//Contents/Frameworks/QtPrintSupport.framework/Versions/5/QtPrintSupport \
-	./Subsurface.app//Contents/Frameworks/QtQml.framework/Versions/5/QtQml \
-	./Subsurface.app//Contents/Frameworks/QtQuick.framework/Versions/5/QtQuick \
-	./Subsurface.app//Contents/Frameworks/QtScript.framework/Versions/5/QtScript \
-	./Subsurface.app//Contents/Frameworks/QtSensors.framework/Versions/5/QtSensors \
-	./Subsurface.app//Contents/Frameworks/QtSql.framework/Versions/5/QtSql \
-	./Subsurface.app//Contents/Frameworks/QtSvg.framework/Versions/5/QtSvg \
-	./Subsurface.app//Contents/Frameworks/QtWebKit.framework/Versions/5/QtWebKit \
-	./Subsurface.app//Contents/Frameworks/QtWebKitWidgets.framework/Versions/5/QtWebKitWidgets \
-	./Subsurface.app//Contents/Frameworks/QtWidgets.framework/Versions/5/QtWidgets \
-	./Subsurface.app//Contents/Frameworks/QtBluetooth.framework/Versions/5/QtBluetooth \
-	./Subsurface.app//Contents/Frameworks/QtWebChannel.framework/Versions/5/QtWebChannel \
-	./Subsurface.app//Contents/Frameworks/QtLocation.framework/Versions/5/QtLocation \
-	./Subsurface.app//Contents/Frameworks/QtQuickWidgets.framework/Versions/5/QtQuickWidgets \
-	./Subsurface.app//Contents/Frameworks/*.dylib
-do
-	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" $i
-done
-
-echo -- signing plugins
-for i in $(find ./Subsurface.app/Contents/PlugIns -name \*.dylib -o -name \*.so)
-do
-	codesign --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" $i
-done
-
-echo -- finally sign .app
-codesign -v --keychain /Users/hohndel/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" ./Subsurface.app
+codesign --keychain $HOME/Library/Keychains/login.keychain -s "Developer ID Application: Dirk Hohndel" --deep Subsurface.app
