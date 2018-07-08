@@ -98,7 +98,7 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &filename, const QS
 		else if (type == MEDIATYPE_VIDEO)
 			return { videoImage, MEDIATYPE_VIDEO };
 
-		// Try if Qt can parse this image
+		// Try if Qt can parse this image. If it does, use this as a thumbnail.
 		QImage thumb(filename);
 		if (!thumb.isNull())
 			return { thumb, MEDIATYPE_PICTURE };
@@ -130,14 +130,16 @@ Thumbnailer::Thumbnail Thumbnailer::getHashedImage(const QString &filename, bool
 {
 	QString localFilename = localFilePath(filename);
 
-	// If there is a translated filename, try that first
-	Thumbnail thumbnail { QImage(), MEDIATYPE_UNKNOWN };
+	// If there is a translated filename, try that first.
+	// Note that we set the default type to io-error, so that if we didn't try
+	// the local filename first, we will load the file from the canonical filename.
+	Thumbnail thumbnail { QImage(), MEDIATYPE_IO_ERROR };
 	if (localFilename != filename)
 		thumbnail = fetchImage(localFilename, filename, tryDownload);
 
-	// Note that the translated filename should never be a remote file and therefore checking for
-	// still-loading is currently not necessary. But in the future, we might support such a use case
-	// (e.g. images stored in the cloud).
+	// If fetching from the local filename failed (or we didn't even try),
+	// use the canonical filename. This might for example happen if we downloaded
+	// a file, but for some reason lost the cached file.
 	if (thumbnail.type == MEDIATYPE_IO_ERROR)
 		thumbnail = fetchImage(filename, filename, tryDownload);
 
