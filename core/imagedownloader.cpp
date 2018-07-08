@@ -69,15 +69,12 @@ void ImageDownloader::saveImage(QNetworkReply *reply)
 	reply->deleteLater();
 }
 
-static bool isVideoFile(const QString &filename)
+static bool hasVideoFileExtension(const QString &filename)
 {
-	// Currently, we're very crude. Simply check if the file exists and if it
-	// is an MP4-style format.
-	QFileInfo fi(filename);
-	if (!fi.exists() && !fi.isFile())
-		return false;
-	metadata md;
-	return get_metadata(qPrintable(filename), &md) == MEDIATYPE_VIDEO;
+	for (const QString &ext: videoExtensionsList)
+		if (filename.endsWith(ext, Qt::CaseInsensitive))
+			return true;
+	return false;
 }
 
 // Fetch a picture from the given filename and determine its type (picture of video).
@@ -90,11 +87,29 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &filename, const QS
 {
 	QUrl url = QUrl::fromUserInput(filename);
 	if (url.isLocalFile()) {
+		// We try to determine the type first by peeking into the file.
 		QString filename = url.toLocalFile();
-		if (isVideoFile(filename))
+		metadata md;
+		mediatype_t type = get_metadata(qPrintable(filename), &md);
+
+		// For io error or video, return early with the appropriate dummy-icon.
+		if (type == MEDIATYPE_IO_ERROR)
+			return { failImage, MEDIATYPE_IO_ERROR };
+		else if (type == MEDIATYPE_VIDEO)
 			return { videoImage, MEDIATYPE_VIDEO };
+
+		// Try if Qt can parse this image
 		QImage thumb(filename);
-		return { thumb, thumb.isNull() ? MEDIATYPE_IO_ERROR : MEDIATYPE_PICTURE };
+		if (!thumb.isNull())
+			return { thumb, MEDIATYPE_PICTURE };
+
+		// Neither our code, nor Qt could determine the type of this object from looking at the data.
+		// Try to check for a video-file extension.
+		if (hasVideoFileExtension(filename))
+			return { videoImage, MEDIATYPE_VIDEO };
+
+		// Give up: we simply couldn't determine what this thing is.
+		return { unknownImage, MEDIATYPE_UNKNOWN };
 	} else if (tryDownload) {
 		// This has to be done in UI main thread, because QNetworkManager refuses
 		// to treat requests from other threads. invokeMethod() is Qt's way of calling a
@@ -123,10 +138,10 @@ Thumbnailer::Thumbnail Thumbnailer::getHashedImage(const QString &filename, bool
 	// Note that the translated filename should never be a remote file and therefore checking for
 	// still-loading is currently not necessary. But in the future, we might support such a use case
 	// (e.g. images stored in the cloud).
-	if (thumbnail.img.isNull() && thumbnail.type != MEDIATYPE_STILL_LOADING)
+	if (thumbnail.type == MEDIATYPE_IO_ERROR)
 		thumbnail = fetchImage(filename, filename, tryDownload);
 
-	if (thumbnail.img.isNull() && thumbnail.type != MEDIATYPE_STILL_LOADING)
+	if (thumbnail.type == MEDIATYPE_IO_ERROR)
 		qInfo() << "Error loading image" << filename << "[local:" << localFilename << "]";
 	return thumbnail;
 }
@@ -143,7 +158,8 @@ static QImage renderIcon(const char *id, int size)
 
 Thumbnailer::Thumbnailer() : failImage(renderIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
 			     dummyImage(renderIcon(":camera-icon", maxThumbnailSize())),
-			     videoImage(renderIcon(":video-icon", maxThumbnailSize()))
+			     videoImage(renderIcon(":video-icon", maxThumbnailSize())),
+			     unknownImage(renderIcon(":unknown-icon", maxThumbnailSize()))
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
 	// calculating multiple thumbnails at once and this hopefully helps.
@@ -195,6 +211,8 @@ Thumbnailer::Thumbnail Thumbnailer::getThumbnailFromCache(const QString &picture
 	// TODO: Perhaps extract thumbnails
 	if (type == MEDIATYPE_VIDEO)
 		res = videoImage;
+	else if (type == MEDIATYPE_UNKNOWN)
+		res = unknownImage;
 
 	return { res, (mediatype_t)type };
 }
@@ -223,7 +241,7 @@ void Thumbnailer::recalculate(QString filename)
 	// If we couldn't load the image from disk -> leave old thumbnail.
 	// The case "load from web" is a bit inconsistent: it will call into processItem() later
 	// and therefore a "broken" image symbol may be shown.
-	if (thumbnail.type == MEDIATYPE_STILL_LOADING || thumbnail.img.isNull())
+	if (thumbnail.type == MEDIATYPE_STILL_LOADING || thumbnail.type == MEDIATYPE_IO_ERROR)
 		return;
 	addThumbnailToCache(thumbnail, filename);
 

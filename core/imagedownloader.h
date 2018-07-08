@@ -67,6 +67,7 @@ private:
 	QImage failImage;		// Shown when image-fetching fails
 	QImage dummyImage;		// Shown before thumbnail is fetched
 	QImage videoImage;		// Place holder for videos
+	QImage unknownImage;		// Place holder for files where we couldn't determine the type
 
 	QMap<QString,QFuture<void>> workingOn;
 };
