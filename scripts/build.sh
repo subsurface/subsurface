@@ -69,6 +69,8 @@ while [[ $# -gt 0 ]] ; do
 			;;
 		*)
 			echo "Unknown command line argument $arg"
+			echo "Usage: build.sh [-no-bt] [-build-deps] [-build-with-webkit] [-mobile] [-desktop] [-both] [-create-appdir] [-skip-googlemaps] [-release]"
+			exit 1
 			;;
 	esac
 	shift
