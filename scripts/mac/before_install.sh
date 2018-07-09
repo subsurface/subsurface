@@ -40,14 +40,12 @@ sudo ln -s /usr/local/include/hidapi /usr/local/include/libusb-1.0/hidapi
 
 pushd ${TRAVIS_BUILD_DIR}
 
-mkdir -p Qt/5.9.1
+mkdir -p Qt/5.11.1
 
 echo "Get custom Qt build and unpack it"
-curl --output ${TRAVIS_BUILD_DIR}/Qt-5.9.1-mac.tar.xz \
-                https://storage.googleapis.com/travis-cache/Qt-5.9.1-mac.tar.xz
-# wget -q http://subsurface-divelog.org/downloads/Qt-5.9.1-mac.tar.xz
-tar -xJ -C Qt/5.9.1 -f Qt-5.9.1-mac.tar.xz
+curl --output Qt-5.11.1-mac.tar.xz \
+                https://storage.googleapis.com/travis-cache/Qt-5.11.1-mac.tar.xz
+md5 Qt-5.11.1-mac.tar.xz
 
-sudo mkdir -p /Users/hohndel
-sudo ln -s ${TRAVIS_BUILD_DIR}//Qt/5.9.1 /Users/hohndel/Qt5.9.1
-ls -l /Users/hohndel
+tar -xJ -C Qt/5.11.1 -f Qt-5.11.1-mac.tar.xz
+
