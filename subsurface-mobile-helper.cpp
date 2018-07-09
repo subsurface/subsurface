@@ -55,18 +55,37 @@ void init_ui()
 
 void run_ui()
 {
+	int rc;
 	LOG_STP("run_ui starting");
-	qmlRegisterType<qPref>("org.subsurfacedivelog.mobile", 1, 0, "SsrfPrefs");
-	qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
-	qmlRegisterType<QMLPrefs>("org.subsurfacedivelog.mobile", 1, 0, "QMLPrefs");
-	qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
+	rc = qmlRegisterType<qPref>("org.subsurfacedivelog.mobile", 1, 0, "SsrfPrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register Prefs (class qPref), QML will not work!!";
+	rc = qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register QMLManager, QML will not work!!";
+	rc = qmlRegisterType<QMLPrefs>("org.subsurfacedivelog.mobile", 1, 0, "QMLPrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register QMLPrefs, QML will not work!!";
+	rc = qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register QMLProfile, QML will not work!!";
 
-	qmlRegisterType<DownloadThread>("org.subsurfacedivelog.mobile", 1, 0, "DCDownloadThread");
-	qmlRegisterType<DiveImportedModel>("org.subsurfacedivelog.mobile", 1, 0, "DCImportModel");
+	rc = qmlRegisterType<DownloadThread>("org.subsurfacedivelog.mobile", 1, 0, "DCDownloadThread");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register DCDownloadThread, QML will not work!!";
+	rc = qmlRegisterType<DiveImportedModel>("org.subsurfacedivelog.mobile", 1, 0, "DCImportModel");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register DCImportModel, QML will not work!!";
 
-	qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
-	qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
-	qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
+	rc = qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register MapWidgetHelper, QML will not work!!";
+	rc = qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register MapLocationModel, QML will not work!!";
+	rc = qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register MapLocation, QML will not work!!";
 
 	QQmlApplicationEngine engine;
 	LOG_STP("run_ui qml engine started");
