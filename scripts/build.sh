@@ -18,6 +18,7 @@ SRC=$(pwd)
 PLATFORM=$(uname)
 
 BTSUPPORT="ON"
+DEBUGRELEASE="Debug"
 
 # deal with all the command line arguments
 while [[ $# -gt 0 ]] ; do
@@ -61,6 +62,10 @@ while [[ $# -gt 0 ]] ; do
 		-skip-googlemaps)
 			# hack for Travix Mac build
 			SKIP_GOOGLEMAPS="1"
+			;;
+		-release)
+			# don't build Debug binaries
+			DEBUGRELEASE="Release"
 			;;
 		*)
 			echo "Unknown command line argument $arg"
@@ -220,7 +225,7 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libssh2
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
+	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DBUILD_EXAMPLES=OFF ..
 	make -j4
 	make install
 	popd
@@ -243,7 +248,7 @@ if [[ "$LIBGIT" < "24" ]] ; then
 	pushd libgit2
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=Release -DBUILD_CLAR=OFF ..
+	cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DBUILD_CLAR=OFF ..
 	make -j4
 	make install
 	popd
@@ -404,7 +409,7 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 	fi
 	mkdir -p build
 	cd build
-	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=Release \
+	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=$DEBUGRELEASE \
 		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
 		-DBUILD_TESTS=NO \
 		$SRC/grantlee
@@ -462,7 +467,7 @@ for (( i=0 ; i < ${#BUILDS[@]} ; i++ )) ; do
 	mkdir -p $SRC/subsurface/$BUILDDIR
 	cd $SRC/subsurface/$BUILDDIR
 	export CMAKE_PREFIX_PATH="$INSTALL_ROOT/lib/cmake;${CMAKE_PREFIX_PATH}"
-	cmake -DCMAKE_BUILD_TYPE=Debug .. \
+	cmake -DCMAKE_BUILD_TYPE=$DEBUGRELEASE .. \
 		-DSUBSURFACE_TARGET_EXECUTABLE=$SUBSURFACE_EXECUTABLE \
 		${LIBGIT_ARGS} \
 		-DLIBDIVECOMPUTER_INCLUDE_DIR=$INSTALL_ROOT/include \
