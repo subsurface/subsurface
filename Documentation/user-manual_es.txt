@@ -1980,48 +1980,25 @@ Cuando esto sucede, _Subsurface_ busca las fotos en el directorio original
 desde el que fueron cargadas, no las encuentra y, por tanto,
 no las puede mostrar. Ya que, después de mover fotos, un gran número puede
 necesitar borrarse y reimportarse desde la nueva localización, _Subsurface_
-tiene un mecanismo que facilita el proceso de actualizar la información del
-directorio para cada foto: actualizaciones automáticas utilizando huellas.
-
-Cuando se carga una foto en _Subsurface_, se calcula una huella para la imagen
-y se guarda con la otra información de referencia para la foto. Tras mover una
-colección de fotos (que ya ha sido cargada en _Subsurface_) a un directorio,
-disco u ordenador diferente, _Subsurface_ puede llevar a cabo los siguientes
-pasos:
-
-- Buscar en un directorio concreto (y todos sus subdireectorios recursivamente)
-al que se han llevado las fotos.
-
-- Calcular huellas para todas las fotos de este directorio, y
-
-- si hay coincidencia entre una de las huellas calculadas y la que se calculó
-al cargar la foto en _Subsurface_ (incluso si el nombre del archivo hubiera
-cambiado), actualizar automáticamente la información de directorio, de foma que
-_Subsurface_ pueda encontrar la foto en el nuevo directorio.
+puede localizar las fotos basandose en su nombre y su ruta de acceso.
 
 Esto se consigue seleccionando desde el Menú Principal: _Archivo -> Encontrar
-imágenes desplazadas_. Esto presenta una ventana en la cual es necesario
-especificar el NUEVO directorio de las fotos. Se selecciona el directorio
-apropiado y se clica el botón _Escanear_ en la parte inferior derecha del
-panel. El proceso puede requerir varios minutos para completarse, tras lo
-cual _Subsurface_ mostrará las fotos correctas cuando se abra un buceo.
+imágenes desplazadas_. Se presentará una ventana desde la cual puede
+controlarse la búsqueda de imágenes. La busqueda se inicia haciendo
+clic en _Seleccionar carpeta y escanear_. Ya que las fotos tomadas con
+diferentes cámaras pueden tener los mismos nombres, se tiene en cuenta el
+nombre de la carpeta. Asi pues, hay que selccionar el directorio raiz de la
+nueva colección de fotos. Para un mejor control es posible buscar solo por
+fotografías de la inmersión actualmente seleccionada, indicando la
+correspondiente opción.
 
-[[Image_fingerprint_upgrade]]
-****
-*Actualizar colecciones de fotos existentes sin huella*
-[icon="images/icons/important.png"]
-[IMPORTANT]
+Despues de que haya terminado la busqueda, se mostrarán los nombres originales
+y las nuevas ubicaciones de las fotografías. Las partes coincidentes de las
+rutas de acceso se enfatizarán. No se mostrarán las fotos que se encuentren en
+sus posiciones conocidas. Los cambios propuestos pueden aplicarse clicando en
+_Aplicar_ o rechazarse clicando en _Cancelar_.
 
-_Subsurface_ calcula automáticamente huellas para todas las imágenes a las
-que tiene acceso. Cuando manipules estas imágenes, asegúrate de que todas las
-imágenes asociadas al divelog queden accesibles.  _Subsurface_, automáticamente
-comprueba y actualiza (en caso necesario) las huellas asociadas a cada buceo
-si:
-- Las imágenes asociadas a ese buceo son visibles como miniaturas en el perfil.
-- Se edita cualquier cosa en el panel *Notas* y se guardan las modificaciones
-con _Guardar cambios_.
-
-****
+image::images/FindMovedImages1.jpg["FIGURE:Find moved images",align="center"]
 
 === Registrar tipos de inmersión especiales
 
