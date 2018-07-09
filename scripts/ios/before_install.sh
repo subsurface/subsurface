@@ -30,13 +30,15 @@ popd
 pushd ${TRAVIS_BUILD_DIR}/..
 
 echo "Get custom Qt build and unpack it"
-curl --output ./Qt5.10.1-iOS.tar.xz \
-                https://storage.googleapis.com/travis-cache/Qt5.10.1-iOS.tar.xz
-tar xJf Qt5.10.1-iOS.tar.xz
+curl --output ./Qt-5.11.1-ios.tar.xz \
+                https://storage.googleapis.com/travis-cache/Qt-5.11.1-ios.tar.xz
+md5 ./Qt-5.11.1-ios.tar.xz
 
-# our scripts assume that there are two convenience links - arguably this
-# should be fixed in the scripts, but...
-ln -s Qt5.10.1 Qt
+mkdir -p Qt/5.11.1
+
+tar -xJ -C Qt/5.11.1 -f Qt-5.11.1-ios.tar.xz
+
+# our scripts assume that there is a convenience link
 cd subsurface/packaging/ios
 ln -s ${TRAVIS_BUILD_DIR}/../Qt Qt
 
