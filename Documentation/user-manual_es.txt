@@ -20,7 +20,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves, Stefan Fuchs
 
-[BLUE]#_Versión 4.7, Octubre 2017_#
+[BLUE]#_Versión 4.7, Mayo 2018_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -1932,7 +1932,9 @@ pestaña _Fotos_ del _Panel de inmersión_. Se puede acceder con facilidad a las
 fotos hechas en rápida sucesión durante la inmersión, desde la pestaña _Fotos_.
 Esta pestaña es una herramienta para acceder individualmente a las fotos de un
 buceo, mientras que las "chinchetas" en el perfil de inmersión proporcionan una
-indicación de cuando se tomó la foto. Clicando una sola vez sobre una de la
+indicación de cuando se tomó la foto. El tamaño de las miniaturas de la
+pestaña _Fotos_ se puede modificar usando el control deslizante de la parte de
+abajo del panel. Clicando una sola vez sobre una de la
 miniaturas de la pestaña _Fotos_, seleccionamos una foto. Haciendo doble-clic
 sobre una miniatura, se muestra la imagen a tamaño completo superpuesta a la
 ventana de _Subsurface_. Podemos borrar una foto desde la pestaña _Fotos_
@@ -2054,7 +2056,7 @@ dos clases de información que necesitan proporcionarse:
   el momento adecuado del panel *Perfil de inmersión* y señalar la botella a la
   que se cambió. Tras hacer clic derecho, seguir el menú contextual a "Añadir
   cambio de gas" y seleccionar la botella apropiada entre las definidas en el
-  primer paso (ver imagen a continuación). Si el botón *Barra de botellas* de
+  primer paso (ver imagen a continuación). Si el botón *Barra de gases* de
   la barra de herramientas se ha activado, los cambios también se indicarán en
   la barra (ver imágen a continuación).
 
@@ -2152,14 +2154,58 @@ solo los pasos normales descritos con anterioridad:
   anterioridad e indicar los cambios de botella/gas como se explicó en la
   sección xref:S_MulticylinderDives[Inmersiones multi botella].
 
-Si se ha seleccionado pSCR en el _Modo de inmersión_, el techo de buceo para
-inmersiones pSCR se ajusta para la caída de oxígeno a través de la boquilla
-que, a menudo, requiere mayores períodos de descompresión. A continuación un
+En buceo con pSCR, a menudo, el gas respirado tiene una pO~2~ por debajo de
+la del gas de la botella. Esto se debe a que el gas se suministra a un ritmo
+lento mientras que el buceador consume oxigeno continuamente del circuito,
+resultando en la llamada "caida de pO~2~ en la boquilla"
+En los perfiles de pSCR, el techo de buceo para se ajusta para esta caída
+y, a menudo, requiere mayores períodos de descompresión. A continuación un
 perfil de inmersión de un buceo con pSCR usando EAN36 como gas de fondo y
 oxígeno para la descompresión. Fíjate que la inmersión duró unas dos horas.
 
 image::images/pSCR_profile.jpg["FIGURA: Perfil pSCR",align="center"]
 
+_Visualizar la caida de pO~2~_: La diferencia entre la presión parcial de
+oxígeno entre la botella y el circuito puede visualizarse en _Subsurface_
+abriendo el panel _Perfil_ en el menú _Archivo -> Preferencias_ y ajustando la
+información de la sección etiquetada _Opciones pSCR_. El _ratio metabólico de
+pSCR_ es tu ritmo de metabolización de oxígeno en litros/minuto (habitualmente
+entre 0.5 y 2.5). El _Ratio de disolución_ es el ratio que indica cuanto gas
+del circuito se reemplaza con gas nuevo, en relación al gas que se está
+respirando (los valores habituales se sitúan entre 1:3 y 1:10). Estos valores
+también se usan al planificar inmersiones con pSCR. Si el oxígeno del circuito
+no es recogido por un sensor, _Subsurface_ estima la pO~2~ del circuito usando
+la información indicada anteriormente. Esta pO~2~ se muestra como la línea
+verde que representa la presión parcial de oxigeno en el perfil de inmersión.
+Si la presión parcial de oxígeno se mide con un sensor conectado a un
+ordenador de buceo, serán estos los valores que se mostrarán en el perfil.
+Adicionalmente, el panel _Preferencias_ nos permite activar una casilla
+etiquetada _Mostrar pO~2~ equivalente a OC con pSCR_. Esto hará que se muestre
+la pO~2~ del gas que se inyecta desde la botella (línea naranja). La distancia
+vertical entre las líneas verde y naranja señala la caida de presión en la
+boquilla. Mucha parte del buceo en pSCR requiere la gestión de esta caída de
+presión.
+
+[icon="images/DiveModeChange.jpg"]
+[NOTE]
+_pSCR y bailout_: Los gases que se utilizan en pSCR tienen, a menudo,
+presiones parciales de oxígeno muy bajas cuando se usan a poca profundidad.
+Por esta razón, el buceador suele completar las etapas más superficiales
+utilizando OC.
+Para indicar tales cambios en la inmersión haz clic-derecho con el ratón sobre
+el perfil en el momento oportuno de la inmersión. Del menú contextual que se
+desplegará selecciona _Cambiar el modo de buceo_ y selecciona la opción
+apropiada (ver imagen de la derecha). Algunos ordenadores de buceo registran
+esstos cambios en el modo de buceo como parte del divelog. El icono apropiado
+se mostrará sobre el perfil de la inmersión (ver imagen a continuación).
+A continuación se muestra una inmersión con pSCR en la que se utiliza OC en
+las secciones más superficiales. Justo al comienzo se entra en OC, luego se
+cambia a pSCR a 18 m. Durante el ascenso se cambia a OC a 14 m. Fijaos que,
+para las secciones en OC la pO~2~ es idéntica  a la de OC mientrar que en las
+secciones con pSCR, la pO~2~ (línea verde) difiere de la de de OC (línea
+naranja).
+
+image::images/pSCR_profile_bailout.jpg["FIGURA: perfil pSCR con bailout",align="center"]
 
 [[S_CCR_dives]]
 ==== Inmersiones con rebreather de circuito cerrado (CCR)
@@ -2242,7 +2288,7 @@ adicional relativa al oxígeno, siempre que el botón pO~2~ de la barra de
 herramientas del panel _Perfil_ esté activado.
 
 La primera casilla permite mostrar información del setpoint. Esta es una línea
-roja superpuesta al gráfico verde de presión parcial de oxígeno y permite
+naranja superpuesta al gráfico verde de presión parcial de oxígeno y permite
 comparar la media de presiones parciales de oxígeno medidas, frente al valor
 del setpoint, como se muestra a continuación.
 
@@ -2270,6 +2316,48 @@ de la boquilla.  Estos eventos se muestran como triángulos amarillos y, si se
 pasa el ratón sobre el icono, se da una descripción del evento en la línea
 inferior del xref:S_InfoBox[Recuadro de información].
 
+_Bailout_: Los cambios a bailout durante un buceo con CCR pueden registrarse
+en _Subsurface_. Haz clic-derecho con el ratón sobre el perfil de inmersión en
+el momento adecuado de la misma, para generar un menú contextual. Selecciona
+_Cambiar el modo de buceo_ y elige la opción de bailout correspondiente
+(probablemente OC). Se mostrará un icono sobre el perfil de la inmersión (ver
+imágen a continuación). En la mayoria de equipos CCR es posible cambiar a
+pSCR, especialmente en casos en que la electrónica muere y el suministro de
+diluente es limitado. Esto también puede reflejarse en el divelog y
+_Subsurface_ calculará y mostrará los valores de la pO~2~. El caso durante el
+entrenamiento con CCR e más complejo si el instructor prefiere que se mantenga
+un pO~2~ bajo, como 0.7 durante el bailout. En este caso el equipo de CCR el
+setpoint y sobrescribe las condiciones de OC o pSCR. En estos casos es
+probabemente más preciso no registrar un evento de bailout en el divelog, ya
+que _Subsurface_ calculará valores de pO~2~ basandose en la asumción erronea
+de que no hay setpoint.
+A continuación se muestra un perfil de una inmersión con CCR y bailout a los
+57 minutos. En este perfil el gráfico verde de pO~2~ diverge del setpoint y
+refleja la pO~2~ del diluente (en este caso aire).
+La pO~2~ del circuito (mostrada como un gráfico de la media de cada sensor de
+oxígeno) es irrelevante ya que el gas que se respira viene directamente de la
+botella. En los casos en que el bailout se hace usando una botella de stage,
+indicar el bailout y el cambio de gas hará que _Subsurface_ calcule los
+valores apropiados de pO~2~. Algunos ordenadores de buceo registran los
+bailouts y los cambios de gas, en este caso se mostrarán automáticamente en el
+perfil.
+
+image::images/CCR_bailout.jpg["FIGURA: perfil de bailout con CCR",align="center"]
+
+_Techo de deco_: El techo calculado por _Subsurface_ no es muy preciso porque
+la presión de nitrógeno necesaria no suele poderse determinar a partir del
+registro importado del CCR. Sin embargo muchos ordenadores de los equipos CCR
+reportan el techo que calculan internamente y que reflejan valores más
+precisos. Mostrar estos valores se activa pulsando el botón apropiado de la
+izquierda del perfil:
+
+image::images/icons/cceiling.jpg["DC ceiling icon"]
+
+El color por defecto del techo generado por el ordenador de buceo es blanco.
+Puede cambiarse a rojo desde la correspondiente casilla del menú
+_Preferencias_. El perfil anterior muestra el perfil del ordenador de buceo en
+rojo.
+
 _Presiones de las botellas_: Algunos ordenadores de buceo CCR, como el MKVI de
 Poseidon, registran las presiones de las botellas de oxígeno y diluyente. Las
 presiones de estas dos botellas se muestran como líneas verdes sobre el perfil
@@ -2284,21 +2372,6 @@ image::images/CCR_dive_profile_f22.jpg["FIGURA: Perfil de inmersión con CCR",al
 _Información especifica del equipo_: _Subsurface_ recoge información que puede
 ser especifica de un tipo de equipo concreto. Se muestra en la xref:S_ExtraDataTab[pestaña Otros Datos].
 Puede incluir información de ajustes o metadatos sobre la inmersión.
-
-El techo calculado por _Subsurface_ no es muy preciso dado que no se puede
-determinar fiablemente la presión de nitrógeno en el circuito desde el divelog
-importado del equipo del CCR. Muchos ordenadores de buceo CCR, sin embargo,
-informan del techo calculado internamente por ellos mismos y este se mostrará
-en el perfil activando el botón correspondiente a la izquierda del perfil:
-
-image::images/icons/cceiling.jpg["Icono de techo"]
-
-El color por defecto del techo de deco generado por el ordenador es blanco. Sin
-embargo, puede ajustarse a rojo seleccionando la correspondiente casilla en
-_Archivo -> Preferencias -> Perfil_. A continuación se muestra un perfil
-mostrando el techo deco generado por el ordenador de buceo:
-
-image::images/CCR_dive_ceilingF22.jpg["FIGURA: Perfil de inmersión con CCR"]
 
 Se puede encontrar más información, específica para cada ordenador, sobre
 como descargar divelogs de CCR en el xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Apéndice B]
@@ -2453,7 +2526,7 @@ superficie (TTS), el techo calculado así como el techo calculado para varios
 compartimentos de tejidos de Bühlmann.
 
 El usuario tiene control sobre varios de los datos que se muestran en la Caja
-de Información, mostrados como cuatro de los botones en lka columna a la
+de Información, mostrados como cuatro de los botones en la columna a la
 izquierda del panel del perfil. Estos son:
 
 [icon="images/icons/MOD.jpg"]
@@ -2509,6 +2582,13 @@ tenga la misma suma de presiones parciales de gases narcóticos (oxígeno y
 nitrógeno) que la inmersión con trimix. Un buceador con trimix puede esperar
 el mismo efecto narcótico que en una inmersión con aire a una profundidad
 igual a la PNE.
+
+Si en algún momento se encuentra en el tejido principal una situación de
+contradifusión isobárica (definida como un momento en el tiempo en el que se
+elimina helio mientras se carga nitrógeno y el efecto total es cargar gas
+inerte) este se indica también en la caja de información. Date cuenta de que
+esta condición no depende solo del gas respirado, sino de la carga de los
+tejidos también.
 
 La figura *B* anterior muestra una Caja de Información con un conjunto de
 datos casi completo.
@@ -3663,15 +3743,29 @@ inmersiones con CCRs
     buceo. Se pueden añadir cambios a lo largo de la inmersión desde el menú
     contextual.
 
+*** _CCR: Mostrar los valores de O~2~ de los sensores al visualizar la pO~2~:_
+    Muestra los valores de pO~2~ asociados a cada sensor de oxígeno en un
+    sistema CCR. Visita la sección xref:S_CCR_dives[Inmersiones con rebreather de circuito cerrado].
+
 *** _CCR: Mostrar los setpoints al ver la pO~2~_: Con esta casilla activada,
     el gráfico de pO~2~ del Perfil mostrará una capa en rojo que indicará los
     valores del setpoint. Ver la sección en
     xref:S_CCR_dives[Inmersiones con Rebrather de circuito cerrado].
 
-*** _CCR: Mostrar los valores individuales de los sensores de O~2~ al ver la
-    pO~2~_: Muestra los valores de pO~2~ asociados con cada uno de los sensores de
-    oxígeno de un sistema CCR. Ver la sección de
-    xref:S_CCR_dives[Inmersiones con Rebrather de circuito cerrado].
+**  _Opciones pSCR_. Estas preferencias determinan como se planifican las
+    inmersiones con circuito semi-cerrado pasivo y como se calcula su techo.
+
+*** _Ratio metabólico:_ Este es el volumen de oxígeno consumido por un
+    buceador en un minuto. Ajusta este valor para planificar inmersiones y
+    decos con pSCR.
+
+*** _Ratio pSCR:_ Este es el ritmo al que se libera gas al entorno en relación
+    al gas recirculado al buceador. Un ratio común suele ser 1:10.
+
+*** _Mostrar equivalencia de pO~2~ entre pSCR y OC:_ La pO~2~ en el circuito
+    pSCR es menor, habitualmente que la pO~2~ del gas de la botella. Activar
+    esta casilla permite que el gráfico de pO~2~ del perfil de la inmersión
+    muestre también la pO~2~ del gas que entra en el circuito.
 
 * *Ajuste del techo*. Estos ajustes tienen que ver con la gestión del
   nitrógeno y el helio al determinar como el techo de descompresión (techo de
@@ -3702,29 +3796,11 @@ ordenadores. A menor valor de un factor de gradiente, tanto más conservativos
 son los cálculos con respecto a la carga de gases inertes y la profundidad de
 los techos. Factores de gradiente de 20/60 se consideran conservativos y de
 70/90 se consideran arriesgados.
-Además hay que decidir si se activa la casilla _GFbajo a la máxima
-profundidad_. Si se selecciona, el GF_bajo se usa para la profundidad máxima
-del buceo y se incrementa linealmente hasta el GF_alto al llegar a superficie.
-Si no se selecciona, el GF_bajo se usa entre la máxima profundidad y la
-primera parada de descompresión, a partir de la cual el factor de gradiente se
-incrementará linealmente hasta el valor del GF_alto en superficie. Para más
-información visita
+Para más información visita
 
 *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values by Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
 *** http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, by Kevin Watts]
-
-** _Opciones de _pSCR_. Estas preferencias determinan como se planificará las
-inmersiones con rebrather de circuito semicerrado pasivo (pSCR) y como se
-calculará el techo de descompresión:
-
-** _Ratio metabólico_: Para un rebreather semicerrado (pSCR)
-   este es el volumen de oxígeno usado por el buceador en un minuto. Fija este
-   valor para planificar buceos con pSCR y cálculos de descompresión.
-
-** _pSCR Ratio_: En equipos pSCR el ratio de vertido es la cantidad de gas
-   expulsada del circuito frente a la cantidad de gas recirculada en el circuito.
-   Se suele usar un ratio 1:10.
 
 * *Miscelanea*
 
@@ -3917,8 +3993,9 @@ image::images/PlannerWindow1.jpg["FIGURA: Ventana de inicio del planificador",al
 
 ==== Inmersiones recreativas
 
-El modo recreativo es lo que más se aproxima a planificar una inmersión
-basándonos en el límite de no descompresión (LND). Tiene en cuenta el tiempo
+El modo recreativo está dirigido a lo que la mayoría de buceadores
+denominarían "recreativo", "deportivo" o "no técnico", permaneciendo dentro
+del límite de no descompresión (LND). Tiene en cuenta el tiempo
 que un buceador puede estar a la profundidad actual sin incurrir en paradas
 de descompresión obligatorias, y usando el gas disponible menos una reserva.
 El planificador  tiene en cuenta automáticamente la carga nitrógeno acumulada
@@ -3936,6 +4013,14 @@ máxima en las inmersiones anteriores, permitiendo planificar una inmersión
 posterior más larga. Para que el planificador funcione es, pues, crucial haber
 descargado a _Subsurface_ todas las inmersiones anteriores antes de hacer la
 planificación.
+
+En segundo lugar, las tablas recreativas no están pensadas para añadir más
+seguridad a una inmersión. Los LND derivados de las tablas, a menudo, llevan a
+los buzos cerca de donde puede surgir una enfermedad descompresiva (DCS). El
+planificador de _Subsurface_ permite al buceador incluir más características
+de seguridad en un plan de buceo, evitando que los buceadores recreativos se
+acerquen al límite de tener una enfermedad descompresiva. Esto se hace
+ajustando los factores de gradiente como se explica a continuación.
 
 Para planificar un buceo, es necesario definir los ajustes apropiados.
 
@@ -3964,9 +4049,7 @@ planeada. Esto permite calcular la carga de nitrógeno de los buceos anteriores.
   difícil estimar cuanto gas se usaría al compartir, así que la mayoría de
   agencias establecen una cantidad fija p.e 40 o 50 bares. _Subsurface_ aún lo
   hace mejor, porque conoce el ascenso y tiene en cuenta el gas consumido en
-  el mismo. Además de esto, _Subsurface_ aún utiliza una reserva fija de
-  presión. La cantidad de gas de esta reserva puede ser configurada por el
-  usuario.
+  el mismo.
 
 - Definir la profundidad de la inmersión arrastrando los puntos blancos en el
   perfil o introduciendo la profundidad en la tabla que se encuentra en _Puntos
@@ -3979,7 +4062,26 @@ planeada. Esto permite calcular la carga de nitrógeno de los buceos anteriores.
   establecidas por defecto son aquellas consideradas seguras para el buceo
   recreativo.
 
-- El perfil del planificador indica el tiempo máximo de inmersión dentro de
+- Para añadir seguridad adicional al plan, especifica factores de gradiente
+  inferiores al 100% (GFalto y GFbajo debajo del encabezamiento del
+  planificador). Por contra, para aproximarse a los valores de las tablas de
+  buceo recreativas, ajusta los factores de gradiente a 100%. Reduciendo los
+  factores de gradiente por debajo de 100% acortará la duración de la inmersión.
+  Este es el precio de un mayor margen de seguridad. Razones para utilizar
+  factores de gradiente inferiores a 100% pueden ser: la edad del buceador, su
+  salud o condiciones ambientales unusuales como aguas frias o fuertes
+  corrientes. Valores conservativos realistas de los factores de gradiente son,
+  por ejemplo: GFbajo=40% y GFalto=80%. Esto te permite crear un plan a medida,
+  adecuado a ti y a las condiciones de la inmersión.
+
+A continuación se muestra una imagen de un plan de buceo para una inmersión
+recreativa a 30m con factores de gradiente del 100%. Al ser el límite de no
+descompresión de 22 minutos, queda una cantidad significativa de aire en la
+botella al final de la inmersión.
+
+image::images/Planner_OC_rec1.jpg["FIGURA: Plan de inmersión recreativa: Ajuste",align="center"]
+
+El perfil del planificador indica el tiempo máximo de inmersión dentro de
 los límites de no descompresión, utilizando el algoritmo Bülmann ZH-L16 y el
 gas y la profundidad especificados como se ha descrito anteriormente. El
 planificador de _Subsurface_ permite una visualización rápida de la duración
@@ -3993,11 +4095,11 @@ cuenta el gas utilizado durante la inmersión. Si la superficie sobre el perfil
 se vuelve roja, significa que se han sobrepasado los límites del buceo recreativo
 y se necesita reducir, bien la profundidad, bien la duración.
 
-A continuación se muestra una imagen de un plan para una inmersión recreativa
-a 30 metros. Aunque el límite de no descompresión es 23 minutos, la duración
-del buceo se ve limitada por la cantidad de aire en la botella.
+A continuación se muestra el mismo plan de antes, pero con una parada de
+seguridad y factores de gradiente reducidos para incrementar el margen de
+seguridad.
 
-image::images/Planner_OC_rec.jpg["FIGURE: A recreational dive plan: setup",align="center"]
+image::images/Planner_OC_rec2.jpg["FIGURE: A recreational dive plan: gradient factors setup",align="center"]
 
 ==== Inmersiones en circuito abierto no recreativas, incluyendo descompresión
 
@@ -4182,34 +4284,32 @@ Esta duración INCLUYE el tiempo de transición hasta llegar al nivel. Sin
 embargo, si se selecciona _Mostrar transiciones en deco_, las transiciones se
 muestran separadamente de las duraciones de las paradas en cada nivel.
 
-El planificador tiene una casilla seleccionable _Mostrar variaciones del
+*Variaciones del plan*: El planificador tiene una casilla seleccionable _Mostrar variaciones del
 plan_. Al seleccionar esta casilla, el planificador facilita información
 sobre una inmersión que es ligeramente más profunda o algo más larga que la
 planeada. La información se encuentra al principio de los _Detalles del plan
 de inmersión_, donde se indica la duración de la inmersión. Esta información
 puede utilizarse si es necesario modificar el ascenso sobre la marcha, en caso
 de producirse desviaciones inesperadas del plan durante el buceo.
-Activar esta opción crea mucha carga de cálculo en el ordenador lo que hará
-que el planificador se ralentice mucho, la información habitualmente se
-muestra como:
+Por ejemplo, si dice "Runtime: 123min Stop times + 2:49 /m + 1:30 /min" esto
+significa: si vas más profundo de lo planeado, deberias añadir a la
+descompresión por lo menos 3 minutos por cada metro de más (y al contrario,
+podrías restar 3 minutos por cada metro que hayas bajado de menos). Si excedes
+tu tiempo  de fondo, has de añadir un minuto y medio a las paradas por cada
+minuto que te hayas pasado del tiempo planeado, y de manera similar, puedes
+acortar las paradas un minuto y medio por cada minuto menos de tiempo de
+fondo. Estas variaciones de profundidad y tiempo se basan en el último
+segmento de inmersión introducido manualmente, no necesariamente el más
+profundo. Los minutos adicionales deben repartirse proporcionalmente a la
+longitud de la parada, por ejemplo, añade más minutos a las paradas más
+superficiales. Los tiempos proporcionados se refieren a la duración de la
+descompresión y no incluyen el tiempo de más en fondo. Esta forma de alterar
+los planes de buceo resulta imprecisa en desviaciones grandes del plan
+original. Asi pues, no puede confiarse en ella para desviaciones de más de
+unos pocos minutos o metros. Activar esta opción sobrecarga mucho los
+procesos, hasta tal punto que el planificador se ralentiza sobremanera.
 
-	Runtime: 53min + 0:52/min + 4:21/min
-
-Esto significa:
-
- * La duración calculada de la inmersión es de 53 minutos.
- * Por cada metro extra de profundidad durante la fase de fondo, la duración
-   del ascenso se incrementará en 52 segundos.
- * Por cada minuto extra de tiempo de fondo, la duración se incrementa en 4
-   minutos y 21 segundos. Así pues, si el tiempo de fondo es 2 minutos más
-   largo de lo planeado, la duración del ascenso será  2 * 4min 21sec = 8min
-   42 secs más largo y requerirá que cada parada de descompresión sea
-   8:42/53:00 = 16% más largo de lo planeado. Estos cálculos solo son
-   aplicables para pequeñas desviaciones del plam, no para grandes desviaciones.
-
-* Requisitos de gas mínimo *
-
-El planificador también estima la presión mínima de gas necesaria para un
+*Requisitos de gas mínimo*: El planificador también estima la presión mínima de gas necesaria para un
 ascenso seguro tras un evento que provoque abortar la inmersión. El cálculo
 asume que, en el peor caso, se produce una situación de pérdida de gas que
 sucede al final del tiempo de fondo y a profundidad máxima. Esta situación de
@@ -4227,12 +4327,12 @@ perfil independientemente.
 Hay dos casillas selectoras a la izquierda de la ventana _Detalles del plan de
 inmersión_:
 
- * *Factor del CAS*, Esta es una estimación del grado en que se incrementará
+ *_Factor del CAS_*, Esta es una estimación del grado en que se incrementará
  tu consumo si se produce un problema crítico debajo del agua, por ejemplo
  tener que compartir gas o quedar enredado. Un valor realista se situará entre
  2 y 5, reflejando el gas usado por dos buceadores compartiendo una sola
  botella  tras una situación de perdida de gas.
- * *Tiempo de resolución*. Esta es una estimación del tiempo que llevaría
+ *_Tiempo de resolución_*. Esta es una estimación del tiempo que llevaría
  solucionar el problema acaecido antes de iniciar el ascenso para terminar la
  inmersión. El valor por defecto es de 2 minutos.
 
@@ -4246,7 +4346,7 @@ completase el plan. El gas mínimo se presenta como:
 
 Esto significa:
 
- * Entre paréntesis, el *Factor del CAS* y el *Tiempo de resolución*
+ * Entre paréntesis, el _Factor del CAS_ y el _Tiempo de resolución_
    indicados.
  * Los litros de gas requeridos para un ascenso seguro (2130 litros en el
    ejemplo)
@@ -4257,15 +4357,41 @@ Esto significa:
    en el ejemplo anterior). Un valor positivo indica un plan seguro, Un valor
    negativo reflejaría insuficiente gas para efectuar un ascenso seguro.
 
+No se efectuan comprobaciones automáticas en base a este resultado.
+Esta opción solo da resultados válidos para inmersiones simples de perfil
+rectangular. Para inmersiones multinivel se necesitaría comprobar cada una de
+las patas del perfil independientemente.
+
+*Información de contradifusión isobárica*: Para cambios de gas durante el
+ascenso en inmersiones con trimix en cicuito abierto se proporciona
+información sobre contradifusión isobárica cerca de la parte de abajo de los
+_Detalles del Plan de Buceo_, basada en la regla de los quintos (durante un
+cambio de gas, el incremento de la presión parcial de nitrógeno no debería
+exceder de un quinto de la disminución de la presión parcial de helio). Por
+cada cambio de gas se imprimen dos líneas que indican los cambios en
+fracciones (%) de gas y los cambios equivalentes en presiones parciales. Si no
+se cumple la regla de los quintos, aparece la información pertinente y muestra
+un mensaje de aviso en el fondo de la tabla. Los cambios de gas tambien
+proporcionan información sobre contradifusión isobárica, visibles en la parte
+de abajo de la _Caja de información_ cuando el ratón pasa sobre el icono de
+cambio de gas. Esta información solo se muestra en cambios de gas en los que
+la contradifusión isobárica es pertinente. Si no se cumple la regla de los
+quintos, se muestra en rojo una marca de exclamación aparece sobre el icono de
+cambio de gas. Cuando corresponde la _Caja de información_ contiene
+información como: ICD ΔHe:-13% ΔN₂+3%>2.6%, lo que significa: para este cambio
+de gas, el helio se ha reducido un 13% mientras que el nitrógeno se ha
+incrementado un 3% que es más del 2.6% sugerido por la regla de los quintos.
+
 ****
 [icon="images/icons/warning2.png"]
 [WARNING]
 Las *Variaciones del plan* y el *gas mínimo* estimados son solo guías para un
 buceador haciendo tareas de planificación de inmersiones y se  supone que
-mejora la seguridad de un plan de buceo concreto. No son precisos ni deben
-tomarse como las únicas medidas de seguridad al planificar una inmersión.
-Interpreta estas estimaciones en el marco de tu entrenamiento formal para
-planificar inmersiones.
+mejora la seguridad de un plan de buceo concreto, pero no sustituyen la
+planificación formal de contingencias para una inmersión específica.
+No son precisos ni deben tomarse como las únicas medidas de seguridad al
+planificar una inmersión. Interpreta estas estimaciones en el marco de tu
+entrenamiento formal para planificar inmersiones.
 ****
 
 === Planificar inmersiones con pSCR
@@ -4275,11 +4401,14 @@ semi-cerrado, selecciona _pSCR_ en lugar de _Circuito abierto_ en la lista
 desplegable.
 Los parámetros para la inmersción con pSCR se pueden ajustar seleccionando
 _Archivo -> Preferencias -> Perfil_ desde el menú principal, donde el cálculo
-de consumo de gas tiene en cuenta el ratio de vertido (por defecto 1:10) así
-como el ratio de metabolismo. El cálculo también tiene en cuenta la pérdida
-de oxígeno por la boquilla del rebreather. Si la pO~2~ cae por debajo de lo que
-se considera un valor seguro, aparecerá un aviso en los _Detalles del plan de
-buceo_.  Una configuración típica con pSCR es muy similar a la de un buceo en
+de consumo de gas tiene en cuenta el ratio de vertido (por defecto 1:8) así
+como el ratio de metabolismo. Especifica el CAS en fondo y en deco. Aquí el
+CAS del planificador es el volumen de gas por minuto que se exala en el
+circuito en superficie, *no* la cantidad de gas que se expulsa al agua. El
+cálculo también tiene en cuenta la pérdida de oxígeno por la boquilla del
+rebreather. Si la pO~2~ cae por debajo de lo que se considera un valor seguro,
+aparecerá un aviso en los _Detalles del plan de buceo_.
+Una configuración típica con pSCR es muy similar a la de un buceo en
 circuito abierto; una o más botellas, posiblemente con diferentes gases de
 fondo y deco, incluyendo cambios de gas durante la inmersión, como en circuito
 abierto. Así pues, el ajuste de las tablas de _Gases disponibles_
@@ -4291,6 +4420,50 @@ notar la mayor duración del ascenso debido al menor contenido de oxígeno en el
 circuito por la caída de oxígeno en la boquilla del equipo pSCR.
 
 image::images/Planner_pSCR.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+
+==== Planificar ascensos de emergencia con pSCR
+
+[icon="images/pscr_b1.jpg"]
+[NOTE]
+Bucear en circuito abierto forma parte amenudo de las inmersiones con pSCR,
+porque a pequeñas profundidades la pO~2~ en el circuito es demasiado baja. El
+cambio de rebreather a circuito abierto y viceversa se indica usando eventos
+de "bailout". La imagen a la izquierda muestra un plan con pSCR (utilizando
+tres botellas) en el que las partes más superficiales se llevan a cabo usando
+EAN50 para poder tener una pO~2~ suficiente. La parte profunda se lleva a cabo
+usando con EAN31 (bot. 2 en la tabla de gases disponibles, también indicada en
+la tabla de profundidades). La tercera botella, también de EAN31, es una
+botella de emergencia, que, en principio, no se va a usar.
+En este caso, el plan es para una inmersión en cueva con un tiempo en fondo de
+20 minutos y el punto de retorno en la parte profunda de la inmersión es a los
+16 minutos. El gráfico naranja de pO~2~ indica la presión equivalente en
+circuito abierto durante el buceo y la pO~2~ verde  indica la pO~2~ estimada
+en el circuito; toda la inmersión se efectua en modo rebreather. Queremos
+planear para una situación de "peor escenario" con una emergencia en el punto
+de retorno (punto más lejano dentro de la cueva). En la tabla *Puntos del
+Planificador de Inmersiones*, cambia el *Modo de buceo* de los dos últimos
+segmentos a *OC* (indicado en la imagen de la izquierda etiquetada *A* a
+continuación). En este caso la botella de EAN31 (bot.2 en la tabla) se usará
+para el bailout (la botella de emergencia bot.3 no se ha usado todavía).
+Fíjate que el gráfico de pO~2~ indica ahora los valores adecuados, ya que el
+gas que respiramos ahora tiene la pO~2~ de una configuración de circuito
+abierto. Para pasar a la botella de emergencia (bot.3), indícalo seleccionando
+la botella en la tabla *Puntos del Planificador de inmersiones* como se indica
+en la imagen de la derecha (*B*). El icono del perfil mostrará ahora un evento
+de bailout superpuesto con un cambio de botella. Como en el gráfico de la
+izquierda, los valores apropiados de pO~2~ se muestran en el perfil. Los
+volumenes de gas necesarios se encuentran al final del panel *Detalles del
+Plan de Buceo*.
+
+image::images/pscr_b2.jpg["FIGURE: Planning a pSCR dive: setup",align="center"]
+
+En el caso de un plan de inmersión en aguas abiertas con pSCR, el "peor
+escenacio" es, probablemente, una emergencia al final de la parte más profunda
+de la inmersión. Crea un segmento de 1 minuto al final de la parte más
+profunda del plan. Luego manipula el segmento utilizando las columnas *Modo de
+buceo* y *Gas usado*, como en el ejemplo anterior de la cueva. Visita el
+ejemplo de emergencia para una inmersión con CCR, a continuación, que utiliza
+esta aproximación.
 
 === Planificar inmersiones con CCR
 
@@ -4321,6 +4494,37 @@ image::images/Planner_CCR.jpg["FIGURE: Planning a CCR dive: setup",align="center
 
 Fíjate que, en los _Detalles del plan de buceo_, no se calcula el consumo de
 gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.
+
+==== Planificar emergencias con CCR
+
+[icon="images/CCR_b1.jpg"]
+[NOTE]
+A menudo es necerario planificar casos de "peor escenario" para asegurarnos de
+que dispondremos de gas suficiente, en caso de emergencia, para alcanzar la
+superficie, teniendo en cuenta la descompresión. Esto se hace definiendo
+segmentos de 1 minuto al final de la parte de fondo de la inmersión, como se
+muestra en la imagen de la izquierda donde se planifica una inmersión a 40m
+durante 21 minutos.
+
+[icon="images/CCR_b2.jpg"]
+[NOTE]
+En los puntos de la tabla del plan, cambia el _Modo de buceo_ de este segmento
+de 1 minuto a _OC_. Esto significa emergencia. En este caso hay un bailout a
+la botella del diluyente (asumiendo que esta botella tenga gas suficiente). La
+pO~2~ apropiada y la presión de la botella se muestran en el perfil de la
+inmersión, como en la imagen de la izquierda. Fíjate que el setpoint cae a
+cero tras el cambio, ya que este valor no se aplica al gas de emergencia
+respirado.
+
+[icon="images/CCR_b3.jpg"]
+[NOTE]
+De cara a planificar para un cambio a una botella de emergencia externa,
+cambia el _Gas Usado_ en el segmento de 1 minuto a la botella apropiada, como
+en el ejemplo de la izquierda. Fijate que el cambio de botella y el evento de
+bailout se indican con iconos superpuestos.
+
+Los volumenes de gases necesarios para el bailout se pueden ver al final del
+panel *Detalles del Plan de buceo*.
 
 [[S_Replan]]
 === Modificar un plan de inmersión existente
@@ -4723,7 +4927,7 @@ Ahora conectemos el controlador y activemos la autenticación:
                RX bytes:1026 acl:0 sco:0 events:47 errors:0
                TX bytes:449 acl:0 sco:0 commands:46 errors:0
 
-Comprueba que el estado ahora incluye +'UP', 'RUNNING' y 'AUTH'+.
+Comprueba que el estado ahora incluye '+UP+', '+RUNNING+' y '+AUTH+'.
 
 If se están ejecutando múltiples controladores, lo más simple es desconectar
 los no utilizados, por ejemplo, para +hci1+:
@@ -5338,6 +5542,13 @@ Solo se pasa un subconjunto de los datos de una inmersión:
 |endPressure| (*string*) la presión final
 |firstGas| (*string*) primer gas utilizado
 |=====================
+
+Fíjate que algunas de las variables como "notes" necesitan extenderse con
+"|safe" para soportar etiquetas HTML:
+....
+	<p> {{ dive.notes|safe }} <p>
+....
+De otra forma etiquetas como "br" no se convertirán en saltos de línea.
 
 _Subsurface_ también pasa datos de la plantilla *template_options*. Estos datos
 deben usarse como valores _CSS_ para proporcionar una plantilla editable de
