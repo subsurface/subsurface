@@ -3933,28 +3933,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <source>Find moved images</source>
-        <translation type="unfinished"/>
+        <translation>Trova immagini spostate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <source>Found images</source>
-        <translation type="unfinished"/>
+        <translation>Immagini trovate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <source>Match only images in selected dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Associa solo le immagini nelle immersioni selezionate</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
         <source>Scanning:</source>
-        <translation type="unfinished"/>
+        <translation>Ricerca in corso:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="240"/>
         <source>Select folder and scan</source>
-        <translation type="unfinished"/>
+        <translation>Seleziona cartella e ricerca</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
@@ -3964,27 +3964,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
         <source>Stop scanning</source>
-        <translation type="unfinished"/>
+        <translation>Ferma la ricerca</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="250"/>
         <source>Scanning cancelled - results may be incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Ricerca annullata - i risultati potrebbero essere parziali</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
         <source>No matching images found</source>
-        <translation type="unfinished"/>
+        <translation>Non sono state trovate immagini corrispondenti</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; images at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>Sono state trovate &lt;b&gt;%1&lt;/b&gt; immagini al loro posto.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; images at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>Sono state trovate &lt;b&gt;%1&lt;/b&gt; immagini nelle nuove posizioni:</translation>
     </message>
 </context>
 <context>
@@ -6197,133 +6197,133 @@ Per favore esporta questo modello in un file diverso.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="799"/>
         <source> (#%1 of %2)</source>
         <translation>(nº%1 of %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="794"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Unknown dive computer</source>
         <translation>Computer sconosciuto</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="822"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>La visualizzazione NDL / TTS è stata disabilitata perchè i calcoli richiedono troppo tempo</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1418"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
         <source>Add gas change</source>
         <translation>Aggiungi un cambio gas</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
         <source>Make first dive computer</source>
         <translation>Rendi il computer principale</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
         <source>Planned dive</source>
         <translation>Immersione pianificata</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="792"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="793"/>
         <source>Manually added dive</source>
         <translation>Immersione inserita manualmente</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1407"/>
         <source>Delete this dive computer</source>
         <translation>Cancella questo computer</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1422"/>
         <source> (cyl. %1)</source>
         <translation> (bot. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1428"/>
         <source>Add setpoint change</source>
         <translation>Aggiungi cambio setpoint</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1429"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1430"/>
         <source>Add bookmark</source>
         <translation>Aggiungi un segnalibro</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1431"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Split dive into two</source>
-        <translation type="unfinished"/>
+        <translation>Dividi in due l&apos;immersione</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
         <source>Change divemode</source>
         <translation>Cambia la modalità di immersione</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1466"/>
         <source>Edit the profile</source>
         <translation>Modifica il profilo</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1469"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Remove event</source>
         <translation>Rimuovi evento</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
         <source>Hide similar events</source>
         <translation>Nascondi eventi simili</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1481"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1482"/>
         <source>Edit name</source>
         <translation>Modifica il nome</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1512"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1519"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1513"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Corregge la pressione della bombola %1 (attualmente interpolata come %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1534"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1535"/>
         <source>Unhide all events</source>
         <translation>Mostra tutti gli eventi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide events</source>
         <translation>Nascondi gli eventi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide all %1 events?</source>
         <translation>Nascondi tutti gli eventi %1?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1604"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
         <source>Remove the selected event?</source>
         <translation>Rimuovere l&apos;evento selezionato?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1606"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1756"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
         <source>Edit name of bookmark</source>
         <translation>Modifica il nome del bookmark</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1758"/>
         <source>Custom name:</source>
         <translation>Nome personalizzato:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1762"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1763"/>
         <source>Name is too long!</source>
         <translation>Il nome è troppo lungo</translation>
     </message>
@@ -8677,7 +8677,7 @@ Media</translation>
         <location filename="../core/plannernotes.c" line="70"/>
         <location filename="../core/qthelper.cpp" line="655"/>
         <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1311"/>
+        <location filename="../core/qthelper.cpp" line="1319"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -8685,7 +8685,7 @@ Media</translation>
         <location filename="../core/dive.c" line="304"/>
         <location filename="../core/qthelper.cpp" line="658"/>
         <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1310"/>
+        <location filename="../core/qthelper.cpp" line="1318"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8696,7 +8696,7 @@ Media</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
-        <location filename="../core/qthelper.cpp" line="1334"/>
+        <location filename="../core/qthelper.cpp" line="1342"/>
         <source>cuft</source>
         <translation>piedi cubi</translation>
     </message>
@@ -8705,7 +8705,7 @@ Media</translation>
         <location filename="../core/qthelper.cpp" line="571"/>
         <location filename="../core/qthelper.cpp" line="586"/>
         <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1286"/>
+        <location filename="../core/qthelper.cpp" line="1294"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -8714,7 +8714,7 @@ Media</translation>
         <location filename="../core/qthelper.cpp" line="574"/>
         <location filename="../core/qthelper.cpp" line="588"/>
         <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
+        <location filename="../core/qthelper.cpp" line="1293"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -8743,7 +8743,7 @@ Media</translation>
         <location filename="../core/qthelper.cpp" line="597"/>
         <location filename="../core/qthelper.cpp" line="607"/>
         <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1262"/>
+        <location filename="../core/qthelper.cpp" line="1270"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
@@ -8752,7 +8752,7 @@ Media</translation>
         <location filename="../core/qthelper.cpp" line="595"/>
         <location filename="../core/qthelper.cpp" line="605"/>
         <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1261"/>
+        <location filename="../core/qthelper.cpp" line="1269"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -9224,12 +9224,12 @@ Puoi crearne uno selezionando il corrispondente checkbox nella maschera di downl
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1663"/>
+        <location filename="../core/load-git.c" line="1673"/>
         <source>Load dives from local cache</source>
         <translation>Carica le immersioni dalla cache locale</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1667"/>
+        <location filename="../core/load-git.c" line="1677"/>
         <source>Successfully opened dive data</source>
         <translation>Dati di immersione letti correttamente</translation>
     </message>
@@ -9897,7 +9897,7 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>AIR</source>
         <translation>ARIA</translation>
     </message>
@@ -9914,15 +9914,15 @@ EADD: %d%s / %.1fg/ℓ
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="1010"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n immersione(i))</numerusform><numerusform>(%n immersione(i))</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>OXYGEN</source>
         <translation>OSSIGENO</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1333"/>
+        <location filename="../core/qthelper.cpp" line="1341"/>
         <source>l</source>
         <translation>l</translation>
     </message>
@@ -10539,7 +10539,7 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="73"/>
+        <location filename="../core/qthelper.h" line="74"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>sec</source>
         <translation>sec</translation>
@@ -10700,12 +10700,12 @@ Lo Uemis Zurich e&apos; collegato correttamente?</translation>
         <translation>Creazione della cache locale riuscita</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1241"/>
+        <location filename="../core/save-git.c" line="1244"/>
         <source>Preparing to save data</source>
         <translation>Preparazione al salvataggio dei dati</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1632"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
         <source>modechange</source>
         <translation>cambia modalità</translation>
     </message>

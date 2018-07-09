@@ -6196,133 +6196,133 @@ Please export this template to a different file.</source>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="799"/>
         <source> (#%1 of %2)</source>
         <translation> (№%1 от %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="794"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Unknown dive computer</source>
         <translation>Непознат гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="822"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Показването на NDL / TTS бе изключено поради прекалено дълго време за обработка на данните</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1418"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
         <source>Add gas change</source>
         <translation>Добави промяна на газа</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
         <source>Make first dive computer</source>
         <translation>Направи първи гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
         <source>Planned dive</source>
         <translation>Планирано гмуркане</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="792"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="793"/>
         <source>Manually added dive</source>
         <translation>Ръчно добавено гмуркане</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1407"/>
         <source>Delete this dive computer</source>
         <translation>Изтрий този гмуркачески компютър</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1422"/>
         <source> (cyl. %1)</source>
         <translation> (бут. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1428"/>
         <source>Add setpoint change</source>
         <translation>Добави set-point промяна</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1429"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1430"/>
         <source>Add bookmark</source>
         <translation>Добави бележка</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1431"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Split dive into two</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
         <source>Change divemode</source>
         <translation>Смени режим на гмуркане</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1466"/>
         <source>Edit the profile</source>
         <translation>Редакция на профил</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1469"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Remove event</source>
         <translation>Премахни събитие</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
         <source>Hide similar events</source>
         <translation>Премахни малки събития</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1481"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1482"/>
         <source>Edit name</source>
         <translation>Редактирай име</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1512"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1519"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1513"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Промени налягането на бутилка %1 (текущо интерполирана като %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1534"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1535"/>
         <source>Unhide all events</source>
         <translation>Покажи всички събития</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide events</source>
         <translation>Скрий събития</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide all %1 events?</source>
         <translation>Скрий всички %1 събития?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1604"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
         <source>Remove the selected event?</source>
         <translation>Премахни избраните събития?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1606"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1756"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
         <source>Edit name of bookmark</source>
         <translation>Редактирай име в показалец</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1758"/>
         <source>Custom name:</source>
         <translation>Потребителско име:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1762"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1763"/>
         <source>Name is too long!</source>
         <translation> Името е прекалено дълго!</translation>
     </message>
@@ -8675,7 +8675,7 @@ Maximum</source>
         <location filename="../core/plannernotes.c" line="70"/>
         <location filename="../core/qthelper.cpp" line="655"/>
         <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1311"/>
+        <location filename="../core/qthelper.cpp" line="1319"/>
         <source>bar</source>
         <translation>бара</translation>
     </message>
@@ -8683,7 +8683,7 @@ Maximum</source>
         <location filename="../core/dive.c" line="304"/>
         <location filename="../core/qthelper.cpp" line="658"/>
         <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1310"/>
+        <location filename="../core/qthelper.cpp" line="1318"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8694,7 +8694,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
-        <location filename="../core/qthelper.cpp" line="1334"/>
+        <location filename="../core/qthelper.cpp" line="1342"/>
         <source>cuft</source>
         <translation>кб.фута</translation>
     </message>
@@ -8703,7 +8703,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="571"/>
         <location filename="../core/qthelper.cpp" line="586"/>
         <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1286"/>
+        <location filename="../core/qthelper.cpp" line="1294"/>
         <source>m</source>
         <translation>м</translation>
     </message>
@@ -8712,7 +8712,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="574"/>
         <location filename="../core/qthelper.cpp" line="588"/>
         <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
+        <location filename="../core/qthelper.cpp" line="1293"/>
         <source>ft</source>
         <translation>фута</translation>
     </message>
@@ -8741,7 +8741,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="597"/>
         <location filename="../core/qthelper.cpp" line="607"/>
         <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1262"/>
+        <location filename="../core/qthelper.cpp" line="1270"/>
         <source>lbs</source>
         <translation>паунда</translation>
     </message>
@@ -8750,7 +8750,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="595"/>
         <location filename="../core/qthelper.cpp" line="605"/>
         <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1261"/>
+        <location filename="../core/qthelper.cpp" line="1269"/>
         <source>kg</source>
         <translation>кг</translation>
     </message>
@@ -9223,12 +9223,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1663"/>
+        <location filename="../core/load-git.c" line="1673"/>
         <source>Load dives from local cache</source>
         <translation>Зареди гмуркания от лакален кеш</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1667"/>
+        <location filename="../core/load-git.c" line="1677"/>
         <source>Successfully opened dive data</source>
         <translation>Данните за гмурканията бяха заредни успешно</translation>
     </message>
@@ -9894,7 +9894,7 @@ EADD: %d%s / %.1fгр./л.
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>AIR</source>
         <translation>Въздух</translation>
     </message>
@@ -9914,12 +9914,12 @@ EADD: %d%s / %.1fгр./л.
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>OXYGEN</source>
         <translation>КИСЛОРОД</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1333"/>
+        <location filename="../core/qthelper.cpp" line="1341"/>
         <source>l</source>
         <translation>л</translation>
     </message>
@@ -10536,7 +10536,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="73"/>
+        <location filename="../core/qthelper.h" line="74"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>sec</source>
         <translation>сек.</translation>
@@ -10697,12 +10697,12 @@ Uemis Zurich включен ли е правилно?</translation>
         <translation>Локален кеш създаден</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1241"/>
+        <location filename="../core/save-git.c" line="1244"/>
         <source>Preparing to save data</source>
         <translation>Подготовка за запис на данни</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1632"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
         <source>modechange</source>
         <translation>смяна на режим</translation>
     </message>

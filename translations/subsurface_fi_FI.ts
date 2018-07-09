@@ -33,7 +33,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopioi lokit leikepöydälle</translation>
     </message>
 </context>
 <context>
@@ -3932,28 +3932,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <source>Find moved images</source>
-        <translation type="unfinished"/>
+        <translation>Etsi siirretyt kuvat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <source>Found images</source>
-        <translation type="unfinished"/>
+        <translation>Löydettiin kuvat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <source>Match only images in selected dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Etsi vain valittujen sukellusten kuvia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
         <source>Scanning:</source>
-        <translation type="unfinished"/>
+        <translation>Etsitään:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="240"/>
         <source>Select folder and scan</source>
-        <translation type="unfinished"/>
+        <translation>Valitse hakemisto ja etsi</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
@@ -3963,27 +3963,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
         <source>Stop scanning</source>
-        <translation type="unfinished"/>
+        <translation>Lopeta etsintä</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="250"/>
         <source>Scanning cancelled - results may be incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Etsintä peruutettu - tulokset voivat olla vaillinaiset</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
         <source>No matching images found</source>
-        <translation type="unfinished"/>
+        <translation>Vastaavia kuvia ei löytynyt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; images at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>Löytyi &lt;b&gt;%1&lt;/b&gt; kuvaa nykyisestä paikasta.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; images at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>Löytyi &lt;b&gt;%1&lt;/b&gt; kuvaa uudesta paikasta:</translation>
     </message>
 </context>
 <context>
@@ -4056,7 +4056,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../core/gpslocation.cpp" line="135"/>
         <source>Unknown GPS location (no GPS source)</source>
-        <translation type="unfinished"/>
+        <translation>Tuntematon GPS-sijainti (ei GPS lähdettä)</translation>
     </message>
 </context>
 <context>
@@ -5555,22 +5555,22 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
         <source>Show O₂ sensor values when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Näytä O₂ sensorin arvot, kun näytetään pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="168"/>
         <source>Show CCR setpoints when viewing pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Näytä CCR setpointit näytettäessä pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="182"/>
         <source>pSCR metabolic rate O₂</source>
-        <translation type="unfinished"/>
+        <translation>pSCR aineenvaihdunnan nopeus O₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="222"/>
         <source>Show equivalent OC pO₂ with pSCR pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Näytä OC:ta vastaava pO₂ pSCR pO₂:n kanssa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
@@ -5585,7 +5585,7 @@ Mikäli laitteesi käyttää Bluetoothia, tee samat toimenpiteet kuin lokia lada
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <source>Recalculate thumbnails if older than image</source>
-        <translation type="unfinished"/>
+        <translation>Generoi uudet pikkukuvat, jos nykyiset ovat vanhempia kuin lähdekuva</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -6194,133 +6194,133 @@ Tallenna muokkauksesi eri nimelle.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="799"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 / %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="794"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Unknown dive computer</source>
         <translation>Tuntematon sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="822"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Suoranousu-/pintautumisaikaa ei näytetä, koska niiden laskemiseen kuluu liikaa aikaa</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1418"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
         <source>Add gas change</source>
         <translation>Lisää kaasun vaihto</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
         <source>Make first dive computer</source>
         <translation>Aseta ensimmäiseksi sukellustietokoneeksi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
         <source>Planned dive</source>
         <translation>Suunniteltu sukellus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="792"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="793"/>
         <source>Manually added dive</source>
         <translation>Käsin lisätty sukellus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1407"/>
         <source>Delete this dive computer</source>
         <translation>Poista tämä sukellustietokone</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1422"/>
         <source> (cyl. %1)</source>
         <translation> (säiliö %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1428"/>
         <source>Add setpoint change</source>
         <translation>Aseta setpoint-muutos</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1429"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1430"/>
         <source>Add bookmark</source>
         <translation>Lisää kirjanmerkki</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1431"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Split dive into two</source>
-        <translation type="unfinished"/>
+        <translation>Jaa sukellus kahtia</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
         <source>Change divemode</source>
-        <translation type="unfinished"/>
+        <translation>Muuta sukellustyyppi</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1466"/>
         <source>Edit the profile</source>
         <translation>Muokkaa profiilia</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1469"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Remove event</source>
         <translation>Poista tapahtuma</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
         <source>Hide similar events</source>
         <translation>Piilota samankaltaiset tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1481"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1482"/>
         <source>Edit name</source>
         <translation>Muokkaa nimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1512"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1519"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1513"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Muokkaa säiliön %1 painetta (arvioitu %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1534"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1535"/>
         <source>Unhide all events</source>
         <translation>Näytä kaikki tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide events</source>
         <translation>Piilota tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide all %1 events?</source>
         <translation>Piilota kaikki %1 tapahtumat</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1604"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
         <source>Remove the selected event?</source>
         <translation>Poistetaanko valitut tapahtumat?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1606"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1756"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
         <source>Edit name of bookmark</source>
         <translation>Muokkaa kirjanmerkin nimeä</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1758"/>
         <source>Custom name:</source>
         <translation>Valinnainen nimi:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1762"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1763"/>
         <source>Name is too long!</source>
         <translation>Nimi on liian pitkä!</translation>
     </message>
@@ -7047,7 +7047,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="37"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation type="unfinished"/>
+        <translation>Käyttääksesi Subsurface-mobiilia pilvitallennustilan kanssa, syötä käyttäjätunnuksesi ja salasanasi. &lt;br/&gt;&lt;br/&gt;Mikäli tämä on ensimmäinen kerta, kun käytät Subsurfacen pilvitallennusta, syötä sähköpostiosoitteesi (kaikki pieniä kirjaimia) ja haluamasi salasana (kirjaimia ja numeroita). &lt;br/&gt;&lt;br/&gt;Käyttääksesi Subsurface-mobiilia pelkästään paikallisella tallennuksella, valitse ei-pilveä -painike.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
@@ -7300,7 +7300,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Recalculate selected thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Generoi valitut pikkukuvat uudelleen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
@@ -7695,7 +7695,7 @@ sekoittaa ilmasta ja käyttäen:
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/ToolBarApplicationHeader.qml" line="125"/>
         <source>More Actions</source>
-        <translation type="unfinished"/>
+        <translation>Lisää tapahtumia</translation>
     </message>
 </context>
 <context>
@@ -8672,7 +8672,7 @@ Keski</translation>
         <location filename="../core/plannernotes.c" line="70"/>
         <location filename="../core/qthelper.cpp" line="655"/>
         <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1311"/>
+        <location filename="../core/qthelper.cpp" line="1319"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -8680,7 +8680,7 @@ Keski</translation>
         <location filename="../core/dive.c" line="304"/>
         <location filename="../core/qthelper.cpp" line="658"/>
         <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1310"/>
+        <location filename="../core/qthelper.cpp" line="1318"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8691,7 +8691,7 @@ Keski</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
-        <location filename="../core/qthelper.cpp" line="1334"/>
+        <location filename="../core/qthelper.cpp" line="1342"/>
         <source>cuft</source>
         <translation>ft³</translation>
     </message>
@@ -8700,7 +8700,7 @@ Keski</translation>
         <location filename="../core/qthelper.cpp" line="571"/>
         <location filename="../core/qthelper.cpp" line="586"/>
         <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1286"/>
+        <location filename="../core/qthelper.cpp" line="1294"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -8709,7 +8709,7 @@ Keski</translation>
         <location filename="../core/qthelper.cpp" line="574"/>
         <location filename="../core/qthelper.cpp" line="588"/>
         <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
+        <location filename="../core/qthelper.cpp" line="1293"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -8738,7 +8738,7 @@ Keski</translation>
         <location filename="../core/qthelper.cpp" line="597"/>
         <location filename="../core/qthelper.cpp" line="607"/>
         <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1262"/>
+        <location filename="../core/qthelper.cpp" line="1270"/>
         <source>lbs</source>
         <translation>pauna</translation>
     </message>
@@ -8747,7 +8747,7 @@ Keski</translation>
         <location filename="../core/qthelper.cpp" line="595"/>
         <location filename="../core/qthelper.cpp" line="605"/>
         <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1261"/>
+        <location filename="../core/qthelper.cpp" line="1269"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -9185,7 +9185,8 @@ Keski</translation>
         <location filename="../core/libdivecomputer.c" line="1389"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
-        <translation type="unfinished"/>
+        <translation>Virhe avattaessa laitetta %s %s (%s).
+Ongelman selvittämiseksi tarvitaan yleensä lokitiedostot. Voit kopioida ne leikepöydälleä Tietoja valikon kautta.</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="1391"/>
@@ -9218,12 +9219,12 @@ Voit luoda tämän tiedoston valitsemalla kyseisen valinnan sukellusten lataus -
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1663"/>
+        <location filename="../core/load-git.c" line="1673"/>
         <source>Load dives from local cache</source>
         <translation>Lataa sukellukset paikallisesta välimuistista</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1667"/>
+        <location filename="../core/load-git.c" line="1677"/>
         <source>Successfully opened dive data</source>
         <translation>Sukellusdatan avaus onnistui</translation>
     </message>
@@ -9467,18 +9468,18 @@ Voit luoda tämän tiedoston valitsemalla kyseisen valinnan sukellusten lataus -
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>Pysy syvyydessä %.*f %s %d:%02d min - aika %d:%02u seoksella %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation type="unfinished"/>
+        <translation>Pysy %.*f %s:n syvyydessä %d:%02d min - sukellusaika %d:%02u kaasulla %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
         <location filename="../core/plannernotes.c" line="332"/>
         <source>(SP = %.1fbar CCR)</source>
-        <translation type="unfinished"/>
+        <translation>(SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="402"/>
@@ -9767,7 +9768,8 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1510"/>
         <source>ICD in leading tissue
 </source>
-        <translation type="unfinished"/>
+        <translation>ICD johtavassa kudoksessa
+</translation>
     </message>
     <message>
         <location filename="../core/profile.c" line="1512"/>
@@ -9888,7 +9890,7 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>AIR</source>
         <translation>Ilma</translation>
     </message>
@@ -9905,15 +9907,15 @@ EADD: %d%s / %.1fg/ℓ
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="1010"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n sukelluksia)</numerusform><numerusform>(%n sukellusta)</numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>OXYGEN</source>
         <translation>HAPPI</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1333"/>
+        <location filename="../core/qthelper.cpp" line="1341"/>
         <source>l</source>
         <translation>l</translation>
     </message>
@@ -10529,7 +10531,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="73"/>
+        <location filename="../core/qthelper.h" line="74"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>sec</source>
         <translation>sek</translation>
@@ -10690,14 +10692,14 @@ Onko Uemis Zurich kytketty oikein?</translation>
         <translation>Paikallisen välitallennustilan luonti valmis</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1241"/>
+        <location filename="../core/save-git.c" line="1244"/>
         <source>Preparing to save data</source>
         <translation>Valmistellaan datan tallennus</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1632"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
         <source>modechange</source>
-        <translation type="unfinished"/>
+        <translation>vaihda moodia</translation>
     </message>
     <message>
         <location filename="../core/gpslocation.h" line="14"/>
@@ -10770,7 +10772,7 @@ Onko Uemis Zurich kytketty oikein?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>
         <source>Disable auto cloud sync</source>
-        <translation type="unfinished"/>
+        <translation>Poista automaattinen pilvisynkronointi käytöstä</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="275"/>

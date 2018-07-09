@@ -6184,133 +6184,133 @@ Vänligen exportera mallen till en ny fil.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="799"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 av %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="794"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Unknown dive computer</source>
         <translation>Okänd dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="822"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Visa NDL / TTS stängdes av pga att det tog för lång tid att beräkna</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1418"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
         <source>Add gas change</source>
         <translation>Lägg till gasbyte</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
         <source>Make first dive computer</source>
         <translation>Gör till första dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
         <source>Planned dive</source>
         <translation>Planera dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="792"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="793"/>
         <source>Manually added dive</source>
         <translation>Manuellt tillagt dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1407"/>
         <source>Delete this dive computer</source>
         <translation>Ta bort denna dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1422"/>
         <source> (cyl. %1)</source>
         <translation>(cyl. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1428"/>
         <source>Add setpoint change</source>
         <translation>Lägg till setpoint byte</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1429"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1430"/>
         <source>Add bookmark</source>
         <translation>Lägg till bokmärke</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1431"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Split dive into two</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
         <source>Change divemode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1466"/>
         <source>Edit the profile</source>
         <translation>Editera profilen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1469"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Remove event</source>
         <translation>Ta bort händelse</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
         <source>Hide similar events</source>
         <translation>Göm liknande händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1481"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1482"/>
         <source>Edit name</source>
         <translation>Ändra namn</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1512"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1519"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1513"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Förändra trycket i flaska %1 (nu beräknat till %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1534"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1535"/>
         <source>Unhide all events</source>
         <translation>Visa alla händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide events</source>
         <translation>Göm händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide all %1 events?</source>
         <translation>Göm alla %1händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1604"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
         <source>Remove the selected event?</source>
         <translation>Ta bort markerad händelse</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1606"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1756"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
         <source>Edit name of bookmark</source>
         <translation>Ändra namnet på bokmärket</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1758"/>
         <source>Custom name:</source>
         <translation>Valt namn:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1762"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1763"/>
         <source>Name is too long!</source>
         <translation>Namnet är för långt!</translation>
     </message>
@@ -8659,7 +8659,7 @@ Medel</translation>
         <location filename="../core/plannernotes.c" line="70"/>
         <location filename="../core/qthelper.cpp" line="655"/>
         <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1311"/>
+        <location filename="../core/qthelper.cpp" line="1319"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -8667,7 +8667,7 @@ Medel</translation>
         <location filename="../core/dive.c" line="304"/>
         <location filename="../core/qthelper.cpp" line="658"/>
         <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1310"/>
+        <location filename="../core/qthelper.cpp" line="1318"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8678,7 +8678,7 @@ Medel</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
-        <location filename="../core/qthelper.cpp" line="1334"/>
+        <location filename="../core/qthelper.cpp" line="1342"/>
         <source>cuft</source>
         <translation>ft³</translation>
     </message>
@@ -8687,7 +8687,7 @@ Medel</translation>
         <location filename="../core/qthelper.cpp" line="571"/>
         <location filename="../core/qthelper.cpp" line="586"/>
         <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1286"/>
+        <location filename="../core/qthelper.cpp" line="1294"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -8696,7 +8696,7 @@ Medel</translation>
         <location filename="../core/qthelper.cpp" line="574"/>
         <location filename="../core/qthelper.cpp" line="588"/>
         <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
+        <location filename="../core/qthelper.cpp" line="1293"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -8725,7 +8725,7 @@ Medel</translation>
         <location filename="../core/qthelper.cpp" line="597"/>
         <location filename="../core/qthelper.cpp" line="607"/>
         <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1262"/>
+        <location filename="../core/qthelper.cpp" line="1270"/>
         <source>lbs</source>
         <translation>pund</translation>
     </message>
@@ -8734,7 +8734,7 @@ Medel</translation>
         <location filename="../core/qthelper.cpp" line="595"/>
         <location filename="../core/qthelper.cpp" line="605"/>
         <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1261"/>
+        <location filename="../core/qthelper.cpp" line="1269"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -9205,12 +9205,12 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1663"/>
+        <location filename="../core/load-git.c" line="1673"/>
         <source>Load dives from local cache</source>
         <translation>Dyk ladade från lokal buffert</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1667"/>
+        <location filename="../core/load-git.c" line="1677"/>
         <source>Successfully opened dive data</source>
         <translation>Lyckades med att öppna dykdata</translation>
     </message>
@@ -9875,7 +9875,7 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>AIR</source>
         <translation>LUFT</translation>
     </message>
@@ -9895,12 +9895,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>OXYGEN</source>
         <translation>OXYGEN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1333"/>
+        <location filename="../core/qthelper.cpp" line="1341"/>
         <source>l</source>
         <translation>l</translation>
     </message>
@@ -10517,7 +10517,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="73"/>
+        <location filename="../core/qthelper.h" line="74"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>sec</source>
         <translation>sek</translation>
@@ -10678,12 +10678,12 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Färdig med att skapa en lokal buffert</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1241"/>
+        <location filename="../core/save-git.c" line="1244"/>
         <source>Preparing to save data</source>
         <translation>Förbereder att spara data</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1632"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
         <source>modechange</source>
         <translation type="unfinished"/>
     </message>

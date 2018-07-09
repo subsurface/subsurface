@@ -6196,133 +6196,133 @@ Please export this template to a different file.</source>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="799"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 of %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="794"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
         <source>Unknown dive computer</source>
         <translation>未知的潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="822"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>當超過處理時間，顯示關閉 NDL / TTS</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1418"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
         <source>Add gas change</source>
         <translation>增加氣瓶交換</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1404"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
         <source>Make first dive computer</source>
         <translation>設定優先潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="790"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
         <source>Planned dive</source>
         <translation>計畫潛水</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="792"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="793"/>
         <source>Manually added dive</source>
         <translation>手動新增潛水</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1406"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1407"/>
         <source>Delete this dive computer</source>
         <translation>刪除此潛水電腦</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1421"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1422"/>
         <source> (cyl. %1)</source>
         <translation> (cyl. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1428"/>
         <source>Add setpoint change</source>
         <translation>增加設置點變更</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1429"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1430"/>
         <source>Add bookmark</source>
         <translation>新增書籤</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1431"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Split dive into two</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1441"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
         <source>Change divemode</source>
         <translation>變更潛水模式</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1465"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1466"/>
         <source>Edit the profile</source>
         <translation>編輯摘要</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1469"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
         <source>Remove event</source>
         <translation>移除事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1474"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
         <source>Hide similar events</source>
         <translation>隱藏相似事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1481"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1482"/>
         <source>Edit name</source>
         <translation>潛水名稱</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1512"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1519"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1513"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>調整氣瓶壓力 %1 (目前添加為 %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1534"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1535"/>
         <source>Unhide all events</source>
         <translation>取消隱藏所有事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide events</source>
         <translation>隱藏事件</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1569"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
         <source>Hide all %1 events?</source>
         <translation>隱藏所有 %1 事件?</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1604"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
         <source>Remove the selected event?</source>
         <translation>移除所選擇的事件？</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1606"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1756"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
         <source>Edit name of bookmark</source>
         <translation>編輯書籤名稱</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1758"/>
         <source>Custom name:</source>
         <translation>自訂名稱:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1762"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1763"/>
         <source>Name is too long!</source>
         <translation>名稱太長！</translation>
     </message>
@@ -8676,7 +8676,7 @@ Maximum</source>
         <location filename="../core/plannernotes.c" line="70"/>
         <location filename="../core/qthelper.cpp" line="655"/>
         <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1311"/>
+        <location filename="../core/qthelper.cpp" line="1319"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
@@ -8684,7 +8684,7 @@ Maximum</source>
         <location filename="../core/dive.c" line="304"/>
         <location filename="../core/qthelper.cpp" line="658"/>
         <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1310"/>
+        <location filename="../core/qthelper.cpp" line="1318"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
@@ -8695,7 +8695,7 @@ Maximum</source>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
-        <location filename="../core/qthelper.cpp" line="1334"/>
+        <location filename="../core/qthelper.cpp" line="1342"/>
         <source>cuft</source>
         <translation>cuft</translation>
     </message>
@@ -8704,7 +8704,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="571"/>
         <location filename="../core/qthelper.cpp" line="586"/>
         <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1286"/>
+        <location filename="../core/qthelper.cpp" line="1294"/>
         <source>m</source>
         <translation>m</translation>
     </message>
@@ -8713,7 +8713,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="574"/>
         <location filename="../core/qthelper.cpp" line="588"/>
         <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1285"/>
+        <location filename="../core/qthelper.cpp" line="1293"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
@@ -8742,7 +8742,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="597"/>
         <location filename="../core/qthelper.cpp" line="607"/>
         <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1262"/>
+        <location filename="../core/qthelper.cpp" line="1270"/>
         <source>lbs</source>
         <translation>lbs</translation>
     </message>
@@ -8751,7 +8751,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="595"/>
         <location filename="../core/qthelper.cpp" line="605"/>
         <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1261"/>
+        <location filename="../core/qthelper.cpp" line="1269"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
@@ -9223,12 +9223,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1663"/>
+        <location filename="../core/load-git.c" line="1673"/>
         <source>Load dives from local cache</source>
         <translation>自本機端載入潛水</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1667"/>
+        <location filename="../core/load-git.c" line="1677"/>
         <source>Successfully opened dive data</source>
         <translation>成功開啟潛水資料</translation>
     </message>
@@ -9887,7 +9887,7 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>AIR</source>
         <translation>空氣</translation>
     </message>
@@ -9907,12 +9907,12 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1238"/>
+        <location filename="../core/qthelper.cpp" line="1246"/>
         <source>OXYGEN</source>
         <translation>OXYGEN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1333"/>
+        <location filename="../core/qthelper.cpp" line="1341"/>
         <source>l</source>
         <translation>l</translation>
     </message>
@@ -10529,7 +10529,7 @@ Uemis Zurich 已正確插入？</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="73"/>
+        <location filename="../core/qthelper.h" line="74"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>sec</source>
         <translation>sec</translation>
@@ -10690,12 +10690,12 @@ Uemis Zurich 已正確插入？</translation>
         <translation>分配本機端空間成功</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1241"/>
+        <location filename="../core/save-git.c" line="1244"/>
         <source>Preparing to save data</source>
         <translation>準備儲存資料</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1632"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
         <source>modechange</source>
         <translation>模式變更</translation>
     </message>
