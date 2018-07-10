@@ -97,6 +97,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	uemis.c
 	uemis-downloader.c
 	version.c
+	videoframeextractor.cpp
 	windowtitleupdate.cpp
 	worldmap-save.c
 

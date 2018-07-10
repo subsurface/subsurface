@@ -1474,6 +1474,21 @@ bool GeneralSettingsObjectWrapper::autoRecalculateThumbnails() const
 	return prefs.auto_recalculate_thumbnails;
 }
 
+bool GeneralSettingsObjectWrapper::extractVideoThumbnails() const
+{
+	return prefs.extract_video_thumbnails;
+}
+
+int GeneralSettingsObjectWrapper::extractVideoThumbnailsPosition() const
+{
+	return prefs.extract_video_thumbnails_position;
+}
+
+QString GeneralSettingsObjectWrapper::ffmpegExecutable() const
+{
+	return prefs.ffmpeg_executable;
+}
+
 void GeneralSettingsObjectWrapper::setDefaultFilename(const QString& value)
 {
 	if (value == prefs.default_filename)
@@ -1577,6 +1592,43 @@ void GeneralSettingsObjectWrapper::setAutoRecalculateThumbnails(bool value)
 	s.setValue("auto_recalculate_thumbnails", value);
 	prefs.auto_recalculate_thumbnails = value;
 	emit autoRecalculateThumbnailsChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setExtractVideoThumbnails(bool value)
+{
+	if (value == prefs.extract_video_thumbnails)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("extract_video_thumbnails", value);
+	prefs.extract_video_thumbnails = value;
+	emit extractVideoThumbnailsChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setExtractVideoThumbnailsPosition(int value)
+{
+	if (value == prefs.extract_video_thumbnails_position)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("extract_video_thumbnails_position", value);
+	prefs.extract_video_thumbnails_position = value;
+	emit extractVideoThumbnailsPositionChanged(value);
+}
+
+void GeneralSettingsObjectWrapper::setFfmpegExecutable(const QString &value)
+{
+	if (value == prefs.ffmpeg_executable)
+		return;
+
+	QSettings s;
+	s.beginGroup(group);
+	s.setValue("ffmpeg_executable", value);
+	free((void *)prefs.ffmpeg_executable);
+	prefs.ffmpeg_executable = copy_qstring(value);
+	emit ffmpegExecutableChanged(value);
 }
 
 LanguageSettingsObjectWrapper::LanguageSettingsObjectWrapper(QObject *parent) :

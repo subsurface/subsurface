@@ -20,6 +20,8 @@ public slots:
 	void on_chooseFile_clicked();
 	void on_btnUseDefaultFile_toggled(bool toggled);
 	void on_localDefaultFile_toggled(bool toggled);
+	void on_ffmpegFile_clicked();
+	void on_extractVideoThumbnails_toggled(bool toggled);
 
 private:
 	Ui::PreferencesDefaults *ui;
