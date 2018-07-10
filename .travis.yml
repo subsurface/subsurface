@@ -112,7 +112,13 @@ matrix:
 #              - 3pp
 
     - env: SUBSURFACE_PLATFORM="qt55"
-      # Currently hard coded to arm
+      os: linux
+      language: c++
+      filter_secrets: false
+      services:
+          - docker
+
+    - env: SUBSURFACE_PLATFORM="qt56"
       os: linux
       language: c++
       filter_secrets: false
