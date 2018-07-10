@@ -46,6 +46,9 @@ public:
 public slots:
 	void imageDownloaded(QString filename);
 	void imageDownloadFailed(QString filename);
+	void frameExtracted(QString filename, QImage thumbnail, duration_t duration, duration_t offset);
+	void frameExtractionFailed(QString filename, duration_t duration);
+	void frameExtractionInvalid(QString filename, duration_t duration);
 signals:
 	void thumbnailChanged(QString filename, QImage thumbnail, duration_t duration);
 private:
@@ -56,22 +59,26 @@ private:
 	};
 
 	Thumbnailer();
+	Thumbnail fetchVideoThumbnail(const QString &filename, const QString &originalFilename, duration_t duration);
+	Thumbnail extractVideoThumbnail(const QString &picture_filename, duration_t duration);
 	Thumbnail addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail);
-	Thumbnail addVideoThumbnailToCache(const QString &picture_filename, duration_t duration);
+	Thumbnail addVideoThumbnailToCache(const QString &picture_filename, duration_t duration, const QImage &thumbnail, duration_t position);
 	Thumbnail addUnknownThumbnailToCache(const QString &picture_filename);
 	void recalculate(QString filename);
 	void processItem(QString filename, bool tryDownload);
 	Thumbnail getThumbnailFromCache(const QString &picture_filename);
 	Thumbnail getPictureThumbnailFromStream(QDataStream &stream);
-	Thumbnail getVideoThumbnailFromStream(QDataStream &stream);
+	Thumbnail getVideoThumbnailFromStream(QDataStream &stream, const QString &filename);
 	Thumbnail fetchImage(const QString &filename, const QString &originalFilename, bool tryDownload);
 	Thumbnail getHashedImage(const QString &filename, bool tryDownload);
+	void markVideoThumbnail(QImage &img);
 
 	mutable QMutex lock;
 	QThreadPool pool;
 	QImage failImage;		// Shown when image-fetching fails
 	QImage dummyImage;		// Shown before thumbnail is fetched
 	QImage videoImage;		// Place holder for videos
+	QImage videoOverlayImage;	// Overlay for video thumbnails
 	QImage unknownImage;		// Place holder for files where we couldn't determine the type
 
 	QMap<QString,QFuture<void>> workingOn;

@@ -435,14 +435,17 @@ private:
 
 class GeneralSettingsObjectWrapper : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString default_filename         READ defaultFilename           WRITE setDefaultFilename           NOTIFY defaultFilenameChanged)
-	Q_PROPERTY(QString default_cylinder         READ defaultCylinder           WRITE setDefaultCylinder           NOTIFY defaultCylinderChanged)
-	Q_PROPERTY(short default_file_behavior      READ defaultFileBehavior       WRITE setDefaultFileBehavior       NOTIFY defaultFileBehaviorChanged)
-	Q_PROPERTY(bool use_default_file            READ useDefaultFile            WRITE setUseDefaultFile            NOTIFY useDefaultFileChanged)
-	Q_PROPERTY(int defaultsetpoint              READ defaultSetPoint           WRITE setDefaultSetPoint           NOTIFY defaultSetPointChanged)
-	Q_PROPERTY(int o2consumption                READ o2Consumption             WRITE setO2Consumption             NOTIFY o2ConsumptionChanged)
-	Q_PROPERTY(int pscr_ratio                   READ pscrRatio                 WRITE setPscrRatio                 NOTIFY pscrRatioChanged)
-	Q_PROPERTY(bool auto_recalculate_thumbnails READ autoRecalculateThumbnails WRITE setAutoRecalculateThumbnails NOTIFY autoRecalculateThumbnailsChanged)
+	Q_PROPERTY(QString default_filename              READ defaultFilename                WRITE setDefaultFilename                NOTIFY defaultFilenameChanged)
+	Q_PROPERTY(QString default_cylinder              READ defaultCylinder                WRITE setDefaultCylinder                NOTIFY defaultCylinderChanged)
+	Q_PROPERTY(short default_file_behavior           READ defaultFileBehavior            WRITE setDefaultFileBehavior            NOTIFY defaultFileBehaviorChanged)
+	Q_PROPERTY(bool use_default_file                 READ useDefaultFile                 WRITE setUseDefaultFile                 NOTIFY useDefaultFileChanged)
+	Q_PROPERTY(int defaultsetpoint                   READ defaultSetPoint                WRITE setDefaultSetPoint                NOTIFY defaultSetPointChanged)
+	Q_PROPERTY(int o2consumption                     READ o2Consumption                  WRITE setO2Consumption                  NOTIFY o2ConsumptionChanged)
+	Q_PROPERTY(int pscr_ratio                        READ pscrRatio                      WRITE setPscrRatio                      NOTIFY pscrRatioChanged)
+	Q_PROPERTY(bool auto_recalculate_thumbnails      READ autoRecalculateThumbnails      WRITE setAutoRecalculateThumbnails      NOTIFY autoRecalculateThumbnailsChanged)
+	Q_PROPERTY(bool extract_video_thumbnails         READ extractVideoThumbnails         WRITE setExtractVideoThumbnails         NOTIFY extractVideoThumbnailsChanged)
+	Q_PROPERTY(int extract_video_thumbnails_position READ extractVideoThumbnailsPosition WRITE setExtractVideoThumbnailsPosition NOTIFY extractVideoThumbnailsPositionChanged)
+	Q_PROPERTY(QString ffmpeg_executable             READ ffmpegExecutable               WRITE setFfmpegExecutable               NOTIFY ffmpegExecutableChanged)
 
 public:
 	GeneralSettingsObjectWrapper(QObject *parent);
@@ -454,6 +457,9 @@ public:
 	int o2Consumption() const;
 	int pscrRatio() const;
 	bool autoRecalculateThumbnails() const;
+	bool extractVideoThumbnails() const;
+	int extractVideoThumbnailsPosition() const;
+	QString ffmpegExecutable() const;
 
 public slots:
 	void setDefaultFilename           (const QString& value);
@@ -464,6 +470,9 @@ public slots:
 	void setO2Consumption             (int value);
 	void setPscrRatio                 (int value);
 	void setAutoRecalculateThumbnails (bool value);
+	void setExtractVideoThumbnails    (bool value);
+	void setExtractVideoThumbnailsPosition (int value);
+	void setFfmpegExecutable          (const QString &value);
 
 signals:
 	void defaultFilenameChanged(const QString& value);
@@ -474,6 +483,9 @@ signals:
 	void o2ConsumptionChanged(int value);
 	void pscrRatioChanged(int value);
 	void autoRecalculateThumbnailsChanged(int value);
+	void extractVideoThumbnailsChanged(bool value);
+	void extractVideoThumbnailsPositionChanged(int value);
+	void ffmpegExecutableChanged(const QString &value);
 private:
 	const QString group = QStringLiteral("GeneralSettings");
 };

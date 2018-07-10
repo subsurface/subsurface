@@ -103,6 +103,9 @@ struct preferences {
 
 	// ********** General **********
 	bool        auto_recalculate_thumbnails;
+	bool	    extract_video_thumbnails;
+	int	    extract_video_thumbnails_position; // position in stream: 0=first 100=last second
+	const char *ffmpeg_executable; // path of ffmpeg binary
 	int         defaultsetpoint; // default setpoint in mbar
 	const char *default_cylinder;
 	const char *default_filename;

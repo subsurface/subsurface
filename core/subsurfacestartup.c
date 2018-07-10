@@ -100,6 +100,8 @@ struct preferences default_prefs = {
 	.cloud_timeout = 5,
 #endif
 	.auto_recalculate_thumbnails = true,
+	.extract_video_thumbnails = true,
+	.extract_video_thumbnails_position = 20,		// The first fifth seems like a reasonable place
 };
 
 int run_survey;
@@ -287,6 +289,7 @@ void setup_system_prefs(void)
 	subsurface_OS_pref_setup();
 	default_prefs.divelist_font = strdup(system_divelist_default_font);
 	default_prefs.font_size = system_divelist_default_font_size;
+	default_prefs.ffmpeg_executable = strdup("ffmpeg");
 
 #if !defined(SUBSURFACE_MOBILE)
 	default_prefs.default_filename = copy_string(system_default_filename());
@@ -331,6 +334,7 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->facebook.access_token = copy_string(src->facebook.access_token);
 	dest->facebook.user_id = copy_string(src->facebook.user_id);
 	dest->facebook.album_id = copy_string(src->facebook.album_id);
+	dest->ffmpeg_executable = copy_string(src->ffmpeg_executable);
 }
 
 /*

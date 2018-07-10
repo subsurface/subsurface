@@ -43,6 +43,22 @@ void PreferencesDefaults::on_localDefaultFile_toggled(bool toggle)
 	ui->chooseFile->setEnabled(toggle);
 }
 
+void PreferencesDefaults::on_ffmpegFile_clicked()
+{
+	QFileInfo fi(system_default_filename());
+	QString ffmpegFileName = QFileDialog::getOpenFileName(this, tr("Select ffmpeg executable"));
+
+	if (!ffmpegFileName.isEmpty())
+		ui->ffmpegExecutable->setText(ffmpegFileName);
+}
+
+void PreferencesDefaults::on_extractVideoThumbnails_toggled(bool toggled)
+{
+	ui->videoThumbnailPosition->setEnabled(toggled);
+	ui->ffmpegExecutable->setEnabled(toggled);
+	ui->ffmpegFile->setEnabled(toggled);
+}
+
 void PreferencesDefaults::refreshSettings()
 {
 	ui->font->setCurrentFont(QString(prefs.divelist_font));
@@ -73,6 +89,14 @@ void PreferencesDefaults::refreshSettings()
 	ui->defaultfilename->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
 	ui->btnUseDefaultFile->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
 	ui->chooseFile->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
+
+	ui->videoThumbnailPosition->setEnabled(prefs.extract_video_thumbnails);
+	ui->ffmpegExecutable->setEnabled(prefs.extract_video_thumbnails);
+	ui->ffmpegFile->setEnabled(prefs.extract_video_thumbnails);
+
+	ui->extractVideoThumbnails->setChecked(prefs.extract_video_thumbnails);
+	ui->videoThumbnailPosition->setValue(prefs.extract_video_thumbnails_position);
+	ui->ffmpegExecutable->setText(prefs.ffmpeg_executable);
 }
 
 void PreferencesDefaults::syncSettings()
@@ -87,6 +111,9 @@ void PreferencesDefaults::syncSettings()
 		general->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
 	else if (ui->cloudDefaultFile->isChecked())
 		general->setDefaultFileBehavior(CLOUD_DEFAULT_FILE);
+	general->setExtractVideoThumbnails(ui->extractVideoThumbnails->isChecked());
+	general->setExtractVideoThumbnailsPosition(ui->videoThumbnailPosition->value());
+	general->setFfmpegExecutable(ui->ffmpegExecutable->text());
 
 	auto display =  qPrefDisplay::instance();
 	display->set_divelist_font(ui->font->currentFont().toString());

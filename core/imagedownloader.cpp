@@ -4,6 +4,7 @@
 #include "divelist.h"
 #include "qthelper.h"
 #include "imagedownloader.h"
+#include "videoframeextractor.h"
 #include "qt-models/divepicturemodel.h"
 #include "metadata.h"
 #include <unistd.h>
@@ -96,7 +97,7 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &filename, const QS
 		if (type == MEDIATYPE_IO_ERROR)
 			return { failImage, MEDIATYPE_IO_ERROR, 0 };
 		else if (type == MEDIATYPE_VIDEO)
-			return addVideoThumbnailToCache(originalFilename, md.duration);
+			return fetchVideoThumbnail(filename, originalFilename, md.duration);
 
 		// Try if Qt can parse this image. If it does, use this as a thumbnail.
 		QImage thumb(filename);
@@ -110,7 +111,7 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &filename, const QS
 		// Try to check for a video-file extension. Since we couldn't parse the video file,
 		// we pass 0 as the duration.
 		if (hasVideoFileExtension(filename))
-			return addVideoThumbnailToCache(originalFilename, {0} );
+			return fetchVideoThumbnail(filename, originalFilename, {0} );
 
 		// Give up: we simply couldn't determine what this thing is.
 		// But since we managed to read this file, mark this file in the cache as unknown.
@@ -163,9 +164,22 @@ static QImage renderIcon(const char *id, int size)
 	return res;
 }
 
+// As renderIcon, but render to a fixed width and scale height accordingly
+// and have a transparent background.
+static QImage renderIconWidth(const char *id, int size)
+{
+	QSvgRenderer svg{QString(id)};
+	QSize svgSize = svg.defaultSize();
+	QImage res(size, size * svgSize.height() / svgSize.width(), QImage::Format_ARGB32);
+	QPainter painter(&res);
+	svg.render(&painter);
+	return res;
+}
+
 Thumbnailer::Thumbnailer() : failImage(renderIcon(":filter-close", maxThumbnailSize())), // TODO: Don't misuse filter close icon
 			     dummyImage(renderIcon(":camera-icon", maxThumbnailSize())),
 			     videoImage(renderIcon(":video-icon", maxThumbnailSize())),
+			     videoOverlayImage(renderIconWidth(":video-overlay", maxThumbnailSize())),
 			     unknownImage(renderIcon(":unknown-icon", maxThumbnailSize()))
 {
 	// Currently, we only process one image at a time. Stefan Fuchs reported problems when
@@ -173,6 +187,9 @@ Thumbnailer::Thumbnailer() : failImage(renderIcon(":filter-close", maxThumbnailS
 	pool.setMaxThreadCount(1);
 	connect(ImageDownloader::instance(), &ImageDownloader::loaded, this, &Thumbnailer::imageDownloaded);
 	connect(ImageDownloader::instance(), &ImageDownloader::failed, this, &Thumbnailer::imageDownloadFailed);
+	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::extracted, this, &Thumbnailer::frameExtracted);
+	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::failed, this, &Thumbnailer::frameExtractionFailed);
+	connect(VideoFrameExtractor::instance(), &VideoFrameExtractor::failed, this, &Thumbnailer::frameExtractionInvalid);
 }
 
 Thumbnailer *Thumbnailer::instance()
@@ -188,7 +205,17 @@ Thumbnailer::Thumbnail Thumbnailer::getPictureThumbnailFromStream(QDataStream &s
 	return { res, MEDIATYPE_PICTURE, 0 };
 }
 
-Thumbnailer::Thumbnail Thumbnailer::getVideoThumbnailFromStream(QDataStream &stream)
+void Thumbnailer::markVideoThumbnail(QImage &img)
+{
+	QSize size = img.size();
+	QImage marker = videoOverlayImage.scaledToWidth(size.width());
+	marker = marker.copy(0, (marker.size().height() - size.height()) / 2, size.width(), size.height());
+	QPainter painter(&img);
+	painter.drawImage(0, 0, marker);
+}
+
+Q_DECLARE_METATYPE(duration_t)
+Thumbnailer::Thumbnail Thumbnailer::getVideoThumbnailFromStream(QDataStream &stream, const QString &filename)
 {
 	quint32 duration, numPics;
 	stream >> duration >> numPics;
@@ -200,16 +227,27 @@ Thumbnailer::Thumbnail Thumbnailer::getVideoThumbnailFromStream(QDataStream &str
 	if (stream.status() != QDataStream::Ok || duration > 36000 || numPics > 10000)
 		return { QImage(), MEDIATYPE_VIDEO, 0 };
 
+	// If the file didn't contain an image, but user turned on thumbnail extraction, schedule thumbnail
+	// for extraction. TODO: save failure to extract thumbnails to disk so that thumbnailing
+	// is not repeated ad-nauseum for broken images.
+	if (numPics == 0 && prefs.extract_video_thumbnails) {
+		QMetaObject::invokeMethod(VideoFrameExtractor::instance(), "extract", Qt::AutoConnection,
+					  Q_ARG(QString, filename), Q_ARG(QString, filename), Q_ARG(duration_t, duration_t{(int32_t)duration}));
+	}
+
 	// Currently, we support only one picture
 	QImage res;
 	if (numPics > 0) {
 		quint32 offset;
-		QImage res;
 		stream >> offset >> res;
 	}
 
-	// No picture -> show dummy-icon
-	return { res.isNull() ? videoImage : res, MEDIATYPE_VIDEO, (int32_t)duration };
+	if (res.isNull())
+		res = videoImage; // No picture -> show dummy-icon
+	else
+		markVideoThumbnail(res); // We got an image -> place our video marker on top of it
+
+	return { res, MEDIATYPE_VIDEO, (int32_t)duration };
 }
 
 // Fetch a thumbnail from cache.
@@ -248,13 +286,14 @@ Thumbnailer::Thumbnail Thumbnailer::getThumbnailFromCache(const QString &picture
 
 	switch (type) {
 	case MEDIATYPE_PICTURE:	return getPictureThumbnailFromStream(stream);
-	case MEDIATYPE_VIDEO:	return getVideoThumbnailFromStream(stream);
+	case MEDIATYPE_VIDEO:	return getVideoThumbnailFromStream(stream, picture_filename);
 	case MEDIATYPE_UNKNOWN:	return { unknownImage, MEDIATYPE_UNKNOWN, 0 };
 	default:		return { QImage(), MEDIATYPE_UNKNOWN, 0 };
 	}
 }
 
-Thumbnailer::Thumbnail Thumbnailer::addVideoThumbnailToCache(const QString &picture_filename, duration_t duration)
+Thumbnailer::Thumbnail Thumbnailer::addVideoThumbnailToCache(const QString &picture_filename, duration_t duration,
+							     const QImage &image, duration_t position)
 {
 	// The format of video thumbnails:
 	//	uint32	MEDIATYPE_VIDEO
@@ -270,10 +309,34 @@ Thumbnailer::Thumbnail Thumbnailer::addVideoThumbnailToCache(const QString &pict
 
 		stream << (quint32)MEDIATYPE_VIDEO;
 		stream << (quint32)duration.seconds;
-		stream << (quint32)0;			// Currently, we don't support extraction of images
+
+		if (image.isNull()) {
+			// No image provided
+			stream << (quint32)0;
+		} else {
+			// Currently, we support at most one image
+			stream << (quint32)1;
+			stream << (quint32)position.seconds;
+			stream << image;
+		}
+
 		file.commit();
 	}
 	return { videoImage, MEDIATYPE_VIDEO, duration };
+}
+
+Thumbnailer::Thumbnail Thumbnailer::fetchVideoThumbnail(const QString &filename, const QString &originalFilename, duration_t duration)
+{
+	if (prefs.extract_video_thumbnails) {
+		// Video-thumbnailing is enabled. Fetch thumbnail in background thread and in the meanwhile
+		// return a dummy image.
+		QMetaObject::invokeMethod(VideoFrameExtractor::instance(), "extract", Qt::AutoConnection,
+					  Q_ARG(QString, originalFilename), Q_ARG(QString, filename), Q_ARG(duration_t, duration));
+		return { videoImage, MEDIATYPE_VIDEO, duration };
+	} else {
+		// Video-thumbnailing is disabled. Write a thumbnail without picture.
+		return addVideoThumbnailToCache(originalFilename, duration, QImage(), {0});
+	}
 }
 
 Thumbnailer::Thumbnail Thumbnailer::addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail)
@@ -302,6 +365,44 @@ Thumbnailer::Thumbnail Thumbnailer::addUnknownThumbnailToCache(const QString &pi
 		stream << (quint32)MEDIATYPE_UNKNOWN;
 	}
 	return { unknownImage, MEDIATYPE_UNKNOWN, 0 };
+}
+
+void Thumbnailer::frameExtracted(QString filename, QImage thumbnail, duration_t duration, duration_t offset)
+{
+	if (thumbnail.isNull()) {
+		frameExtractionFailed(filename, duration);
+		return;
+	} else {
+		int size = maxThumbnailSize();
+		thumbnail = thumbnail.scaled(size, size, Qt::KeepAspectRatio);
+		markVideoThumbnail(thumbnail);
+		addVideoThumbnailToCache(filename, duration, thumbnail, offset);
+		QMutexLocker l(&lock);
+		workingOn.remove(filename);
+		emit thumbnailChanged(filename, thumbnail, duration);
+	}
+}
+
+// If frame extraction failed, don't show an error image, because we don't want
+// to penalize users that haven't installed ffmpe. Simply remove this item from
+// the work-queue.
+void Thumbnailer::frameExtractionFailed(QString filename, duration_t duration)
+{
+	// Frame extraction failed, but this was due to ffmpeg not starting
+	// add to the thumbnail cache as a video image with unknown thumbnail.
+	addVideoThumbnailToCache(filename, duration, QImage(), { 0 });
+	QMutexLocker l(&lock);
+	workingOn.remove(filename);
+}
+
+void Thumbnailer::frameExtractionInvalid(QString filename, duration_t)
+{
+	// Frame extraction failed because ffmpeg could not parse the file.
+	// For now, let's mark this as an unknown file. The user may want
+	// to recalculate thumbnails with an updated ffmpeg binary..?
+	addUnknownThumbnailToCache(filename);
+	QMutexLocker l(&lock);
+	workingOn.remove(filename);
 }
 
 void Thumbnailer::recalculate(QString filename)
@@ -380,6 +481,10 @@ void Thumbnailer::calculateThumbnails(const QVector<QString> &filenames)
 
 void Thumbnailer::clearWorkQueue()
 {
+	// We also want to clear the working-queue of the video-frame-extractor so that
+	// we don't get thumbnails that we don't care about.
+	VideoFrameExtractor::instance()->clearWorkQueue();
+
 	QMutexLocker l(&lock);
 	for (auto it = workingOn.begin(); it != workingOn.end(); ++it)
 		it->cancel();
