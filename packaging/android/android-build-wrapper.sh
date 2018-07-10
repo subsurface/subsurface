@@ -6,20 +6,12 @@
 # cmake fails reporting :No known features for CXX compiler "GNU". In that
 # case simly comment out the "set(property(TARGET Qt5::Core PROPERTY...)"
 # at line 101 of
-# Qt/5.7/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake 
+# Qt/5.7/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 # or at line 95 of
 # Qt/5.8/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 # or at line 105 of
 # Qt/5.9/android_armv7/lib/cmake/Qt5Core/Qt5CoreConfigExtras.cmake
 # (this script tries to do this automatically)
-
-# avoid timeouts on Travis when downloads take a long time
-SLOW_PROG=""
-if [ -n "${TRAVIS:-}" ]; then
-	source subsurface/scripts/travis-wait.sh
-	set -x # make debugging Travis easier
-	SLOW_PROG="travis_wait"
-fi
 
 exec 1> >(tee ./build.log) 2>&1
 
@@ -27,6 +19,18 @@ USE_X=$(case $- in *x*) echo "-x" ;; esac)
 
 # these are the current versions for Qt, Android SDK & NDK:
 source subsurface/packaging/android/variables.sh
+
+# avoid timeouts on Travis when downloads take a long time
+SLOW_PROG=""
+if [ -n "${TRAVIS:-}" ]; then
+	source subsurface/scripts/travis-wait.sh
+	set -x # make debugging Travis easier
+	SLOW_PROG="travis_wait"
+	# since we are running on Travis, let's just get our minimal Qt install
+	mkdir -p Qt/"${LATEST_QT}"
+	$SLOW_PROG wget -q https://storage.googleapis.com/travis-cache/Qt-"${LATEST_QT}"-android.tar.xz
+	tar -xJ -C Qt/"${LATEST_QT}" -f Qt-"${LATEST_QT}"-android.tar.xz
+fi
 
 PLATFORM=$(uname)
 
