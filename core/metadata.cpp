@@ -158,18 +158,26 @@ static bool parseMP4(QFile &f, metadata *metadata)
 			if (f.read(&data[0], atom_size) != static_cast<int>(atom_size))
 				break;
 			uint64_t timestamp = 0;
+			uint32_t timescale = 0;
+			uint64_t duration = 0;
 			// First byte is version. We know version 0 and 1
 			switch (data[0]) {
 			case 0:
 				timestamp = getBE<uint32_t>(&data[4]);
+				timescale = getBE<uint32_t>(&data[12]);
+				duration = getBE<uint32_t>(&data[16]);
 				break;
 			case 1:
 				timestamp = getBE<uint64_t>(&data[4]);
+				timescale = getBE<uint32_t>(&data[20]);
+				duration = getBE<uint64_t>(&data[24]);
 				break;
 			default:
 				// For unknown versions: ignore -> maybe we find a parseable "mdhd" atom later in this file
 				break;
 			}
+			if (timescale > 0)
+				metadata->duration.seconds = lrint((double)duration / timescale);
 			// Timestamp is given as seconds since midnight 1904/1/1. To be convertible to the UNIX epoch
 			// it must be larger than 2082844800.
 			if (timestamp >= 2082844800) {
@@ -194,6 +202,7 @@ static bool parseMP4(QFile &f, metadata *metadata)
 extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 {
 	data->timestamp = 0;
+	data->duration.seconds = 0;
 	data->latitude.udeg = 0;
 	data->longitude.udeg = 0;
 
