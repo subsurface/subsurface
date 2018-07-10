@@ -520,17 +520,17 @@
             <xsl:choose>
               <xsl:when test="depth != ''">
                 <xsl:attribute name="depth">
-                  <xsl:value-of select="concat(format-number(depth, '0.00'), ' m')"/>
+                  <xsl:value-of select="concat(format-number(translate(depth, ',', '.'), '0.00'), ' m')"/>
                 </xsl:attribute>
               </xsl:when>
               <xsl:when test="u:depth|u1:depth != ''">
                 <xsl:attribute name="depth">
-                  <xsl:value-of select="concat(format-number(u:depth|u1:depth, '0.00'), ' m')"/>
+                  <xsl:value-of select="concat(format-number(translate(u:depth|u1:depth, ',', '.'), '0.00'), ' m')"/>
                 </xsl:attribute>
               </xsl:when>
               <xsl:when test=". != 0">
                 <xsl:attribute name="depth">
-                  <xsl:value-of select="concat(format-number(., '0.00'), ' m')"/>
+                  <xsl:value-of select="concat(format-number(translate(., ',', '.'), '0.00'), ' m')"/>
                 </xsl:attribute>
               </xsl:when>
             </xsl:choose>
