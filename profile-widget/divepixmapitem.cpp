@@ -12,6 +12,9 @@
 #include <QGraphicsView>
 #include <QUrl>
 #include <QGraphicsSceneMouseEvent>
+#ifndef SUBSURFACE_MOBILE
+#include <QMediaPlayer>
+#endif
 
 DivePixmapItem::DivePixmapItem(QGraphicsItem *parent) : QGraphicsPixmapItem(parent)
 {
@@ -42,7 +45,8 @@ void CloseButtonItem::show()
 DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	canvas(new QGraphicsRectItem(this)),
 	shadow(new QGraphicsRectItem(this)),
-	button(new CloseButtonItem(this))
+	button(new CloseButtonItem(this)),
+	isVideo(false)
 {
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
@@ -75,11 +79,75 @@ void DivePictureItem::settingsChanged()
 void DivePictureItem::setPixmap(const QPixmap &pix)
 {
 	DivePixmapItem::setPixmap(pix);
+	updateSize(pix);
+}
+
+void DivePictureItem::updateSize(const QPixmap &pix)
+{
+	frameSize = pix.size();
 	QRectF r = boundingRect();
 	canvas->setRect(0 - 10, 0 -10, r.width() + 20, r.height() + 20);
 	shadow->setRect(canvas->rect());
-	button->setPos(boundingRect().width() - button->boundingRect().width() * 0.2,
-				   boundingRect().height() - button->boundingRect().height() * 0.2);
+	button->setPos(r.width() - button->boundingRect().width() * 0.2,
+			r.height() - button->boundingRect().height() * 0.2);
+}
+
+#ifndef SUBSURFACE_MOBILE
+VideoProjector::VideoProjector(DivePictureItem *parent) : QAbstractVideoSurface(parent),
+	divePictureItem(parent)
+{
+}
+
+bool VideoProjector::present(const QVideoFrame &frame_in)
+{
+	QVideoFrame frame(frame_in);	// Copy so that we can map
+	if (!frame.map(QAbstractVideoBuffer::ReadOnly))
+		return false;
+	QImage::Format format = QVideoFrame::imageFormatFromPixelFormat(frame.pixelFormat());
+	if (format == QImage::Format_Invalid)
+		return false;
+	QImage img(frame.bits(), frame.width(), frame.height(), format);
+	divePictureItem->showVideoFrame(img);
+	frame.unmap();			// TODO: Necessary? Should be done by destructor?
+
+	return true;
+}
+
+QList<QVideoFrame::PixelFormat> VideoProjector::supportedPixelFormats(QAbstractVideoBuffer::HandleType) const
+{
+	return {
+		QVideoFrame::Format_ARGB32,
+		QVideoFrame::Format_RGB32,
+		QVideoFrame::Format_RGB24,
+		QVideoFrame::Format_Jpeg
+	};
+}
+#endif
+
+void DivePictureItem::setVideo()
+{
+	isVideo = true;
+}
+
+void DivePictureItem::showVideoFrame(const QImage &img)
+{
+	QPixmap pix = QPixmap::fromImage(img.scaled(frameSize, Qt::KeepAspectRatio));
+	DivePixmapItem::setPixmap(pix);
+	if (pix.size() != frameSize)
+		// Ooops. Aspect ratio changed. Move the close button, so that the
+		// user can reach it without provoking the hoverLeaveEvent.
+		updateSize(pix);
+}
+
+void DivePictureItem::stopVideo()
+{
+#ifndef SUBSURFACE_MOBILE
+	if (video_projector) {
+		player->stop();
+		player.reset();
+		video_projector.reset();
+	}
+#endif
 }
 
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent*)
@@ -90,6 +158,17 @@ void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 	button->setOpacity(0);
 	button->show();
 	Animations::show(button);
+#ifndef SUBSURFACE_MOBILE
+	if (isVideo) {
+		if (!video_projector) {
+			video_projector.reset(new VideoProjector(this));
+			player.reset(new QMediaPlayer);
+			player->setVideoOutput(&*video_projector);
+		}
+		player->setMedia(QUrl::fromLocalFile(fileUrl));
+		player->play();
+	}
+#endif
 }
 
 void DivePictureItem::setFileUrl(const QString &s)
@@ -102,12 +181,18 @@ void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 	Animations::scaleTo(this, 0.2);
 	setZValue(0);
 	Animations::hide(button);
+	stopVideo();
 }
 
 void DivePictureItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-	if (event->button() == Qt::LeftButton)
+	if (event->button() == Qt::LeftButton) {
+		// On click, open file in the system viewer.
+		// If this is a video, stop playing so that the user doesn't have two videos
+		// playing at the same time.
+		stopVideo();
 		QDesktopServices::openUrl(QUrl::fromLocalFile(localFilePath(fileUrl)));
+	}
 }
 
 void DivePictureItem::removePicture()

@@ -248,7 +248,7 @@ void Thumbnailer::recalculate(QString filename)
 	addThumbnailToCache(thumbnail, filename);
 
 	QMutexLocker l(&lock);
-	emit thumbnailChanged(filename, thumbnail.img);
+	emit thumbnailChanged(filename, thumbnail.img, thumbnail.type);
 	workingOn.remove(filename);
 }
 
@@ -271,7 +271,7 @@ void Thumbnailer::processItem(QString filename, bool tryDownload)
 	}
 
 	QMutexLocker l(&lock);
-	emit thumbnailChanged(filename, thumbnail.img);
+	emit thumbnailChanged(filename, thumbnail.img, thumbnail.type);
 	workingOn.remove(filename);
 }
 
@@ -284,7 +284,7 @@ void Thumbnailer::imageDownloaded(QString filename)
 
 void Thumbnailer::imageDownloadFailed(QString filename)
 {
-	emit thumbnailChanged(filename, failImage);
+	emit thumbnailChanged(filename, failImage, MEDIATYPE_IO_ERROR);
 	QMutexLocker l(&lock);
 	workingOn.remove(filename);
 }
