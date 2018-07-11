@@ -7,7 +7,7 @@ DEFINES += SUBSURFACE_MOBILE BT_SUPPORT BLE_SUPPORT
 CONFIG += c++11
 
 SOURCES += ../../subsurface-mobile-main.cpp \
-	../../subsurface-mobile-helper.cpp \
+	../../subsurface-helper.cpp \
 	../../map-widget/qmlmapwidgethelper.cpp \
 	../../core/cloudstorage.cpp \
 	../../core/configuredivecomputerthreads.cpp \
