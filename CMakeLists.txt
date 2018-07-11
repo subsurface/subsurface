@@ -291,6 +291,7 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 		mobile-widgets/qml/kirigami/src/libkirigami/tabletmodewatcher.cpp
 		subsurface-mobile-main.cpp
 		subsurface-mobile-helper.cpp
+		subsurface-helper.cpp
 		profile-widget/qmlprofile.cpp
 		map-widget/qmlmapwidgethelper.cpp
 	)
@@ -315,6 +316,7 @@ elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
 		subsurface-desktop-helper.cpp
+		subsurface-helper.cpp
 	)
 	source_group("Subsurface App" FILES ${SUBSURFACE_APP})
         if(ANDROID)

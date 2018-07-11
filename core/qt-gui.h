@@ -6,6 +6,7 @@ void init_qt_late();
 void init_ui();
 
 void run_ui();
+void register_qml_types();
 void exit_ui();
 void set_non_bt_addresses();
 
