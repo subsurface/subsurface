@@ -23,10 +23,6 @@ MapWidget *MapWidget::m_instance = NULL;
 
 MapWidget::MapWidget(QWidget *parent) : QQuickWidget(parent)
 {
-	qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
-	qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
-	qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
-
 	m_rootItem = Q_NULLPTR;
 	m_mapHelper = Q_NULLPTR;
 	setResizeMode(QQuickWidget::SizeRootObjectToView);
