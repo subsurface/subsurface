@@ -241,11 +241,11 @@ uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees
 bool dive_site_is_empty(struct dive_site *ds)
 {
 	return !ds ||
-	       empty_string(ds->name) &&
+	       (empty_string(ds->name) &&
 	       empty_string(ds->description) &&
 	       empty_string(ds->notes) &&
 	       ds->latitude.udeg == 0 &&
-	       ds->longitude.udeg == 0;
+	       ds->longitude.udeg == 0);
 }
 
 void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy)
