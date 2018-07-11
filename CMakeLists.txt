@@ -315,7 +315,6 @@ if(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "MobileExecutable")
 elseif(${SUBSURFACE_TARGET_EXECUTABLE} MATCHES "DesktopExecutable")
 	set(SUBSURFACE_APP
 		subsurface-desktop-main.cpp
-		subsurface-desktop-helper.cpp
 		subsurface-helper.cpp
 	)
 	source_group("Subsurface App" FILES ${SUBSURFACE_APP})
