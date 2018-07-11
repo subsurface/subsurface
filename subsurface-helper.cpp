@@ -13,9 +13,9 @@
 #include "profile-widget/qmlprofile.h"
 #include "core/downloadfromdcthread.h"
 #include "qt-models/diveimportedmodel.h"
+#endif
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
-#endif
 
 void register_qml_types()
 {
@@ -43,6 +43,7 @@ void register_qml_types()
 	rc = qmlRegisterType<DiveImportedModel>("org.subsurfacedivelog.mobile", 1, 0, "DCImportModel");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register DCImportModel, QML will not work!!";
+#endif
 
 	rc = qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
 	if (rc < 0)
@@ -53,5 +54,4 @@ void register_qml_types()
 	rc = qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register MapLocation, QML will not work!!";
-#endif
 }

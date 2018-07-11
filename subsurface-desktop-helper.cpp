@@ -25,6 +25,7 @@ void init_ui()
 
 void run_ui()
 {
+	register_qml_types();
 	MainWindow::instance()->show();
 	qApp->exec();
 }
