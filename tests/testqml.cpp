@@ -8,7 +8,6 @@
 
 #include "core/settings/qPref.h"
 #include "core/qt-gui.h"
-#include "core/settings/qPrefDisplay.h"
 
 // this is the content of QUICK_TEST_MAIN amended with
 // registration of ssrf classes
