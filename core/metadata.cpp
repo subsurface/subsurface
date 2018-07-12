@@ -403,6 +403,89 @@ static bool parseAVI(QFile &f, metadata *metadata)
 	return found_riff;
 }
 
+static bool parseASF(QFile &f, metadata *metadata)
+{
+	f.seek(0);
+
+	// Parse the header of the header object:
+	//	id				(16 bytes)
+	//	size				 (8 bytes)
+	//	number of header objects	 (4 bytes)
+	//	reserved			 (2 bytes)
+	//	------------------------------------------
+	//	total				(30 bytes)
+	char header[30];
+	if (f.read(header, 30) != 30)
+		return false;
+
+	// Check if this is indeed an ASF header.
+	if (memcmp(&header[0], "\x30\x26\xb2\x75\x8e\x66\xcf\x11\xa6\xd9\x00\xaa\x00\x62\xce\x6c", 16) != 0)
+		return false;
+
+	uint64_t header_len = getLE<uint64_t>(&header[16]);
+	uint32_t num = getLE<uint32_t>(&header[24]);
+
+	// Sanity check
+	if (header_len <= 30 || num > 10000)
+		return false;
+	header_len -= 30;
+
+	// Read through all the header objects
+	for (uint32_t i = 0; i < num && header_len > 24; ++i) {
+		// Each objects starts with the same header:
+		//	id			(16 bytes)
+		//	size			 (8 bytes)
+		char data[24];
+		if (f.read(data, 24) != 24)
+			return false;
+
+		uint64_t object_len = getLE<uint64_t>(&data[16]);
+		// Sanity check
+		if (object_len < 24 || object_len > header_len)
+			return false;
+
+		header_len -= object_len;
+		object_len -= 24;
+		if (!memcmp(data, "\xa1\xdc\xab\x8c\x47\xa9\xcf\x11\x8e\xe4\x0\xc0\xc\x20\x53\x65", 16) != 0) {
+			// This is a file properties object. The interesting data are:
+			//	quadword (64 bit) at byte 24: creation date in 100-nanoseconds since Jan. 1, 1601.
+			//	quadword (64 bit) at byte 40: duration in 100-nanoseconds.
+			//	quadword (64 bit) at byte 56: offset in msec (to be subtracted from duration)
+			// But first a sanity check:
+			if (object_len < 80 || object_len > 4096)
+				break;
+
+			std::vector<char> v(object_len);
+			if (f.read(v.data(), object_len) != (int)object_len)
+				break;
+
+			uint64_t creation_date = getLE<uint64_t>(&v[24]);
+			// OK - first convert to seconds
+			creation_date /= 10000000;
+			// Check if this is during the UNIX epoch and convert into epoch
+			if (creation_date <= 11644473600)
+				metadata->timestamp = 0;		// Can't determine creation date, sorry!
+			else
+				metadata->timestamp = creation_date - 11644473600;
+
+			uint64_t duration = getLE<uint64_t>(&v[40]);
+			uint64_t offset = getLE<uint64_t>(&v[56]);
+			metadata->duration.seconds = lrint(duration / 10000000.0 - offset / 1000.0);
+
+			// We found everything that we wanted -> return success
+			return true;
+		} else {
+			// Skip over unknown object
+			if (!f.seek(f.pos() + object_len)) // TODO: switch to QFile::skip()
+				break;
+		}
+	}
+
+	// We didn't find a file properties object. According to the ASF specification, this is
+	// *not* a valid ASF-file. Return failure accordingly.
+	return false;
+}
+
 extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 {
 	data->timestamp = 0;
@@ -421,6 +504,8 @@ extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 	else if(parseMP4(f, data))
 		res = MEDIATYPE_VIDEO;
 	else if(parseAVI(f, data))
+		res = MEDIATYPE_VIDEO;
+	else if(parseASF(f, data))
 		res = MEDIATYPE_VIDEO;
 
 	// If we couldn't get a creation date from the file (for example AVI files don't
