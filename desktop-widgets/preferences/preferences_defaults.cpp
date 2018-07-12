@@ -93,6 +93,6 @@ void PreferencesDefaults::syncSettings()
 	display->set_font_size(ui->fontsize->value());
 	display->set_display_invalid_dives(ui->displayinvalid->isChecked());
 
-	auto animation = SettingsObjectWrapper::instance()->animation_settings;
-	animation->setAnimationSpeed(ui->velocitySlider->value());
+	auto animation = qPrefAnimations::instance();
+	animation->set_animation_speed(ui->velocitySlider->value());
 }

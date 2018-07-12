@@ -2054,27 +2054,6 @@ void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
 	emit dateFormatOverrideChanged(value);
 }
 
-AnimationsSettingsObjectWrapper::AnimationsSettingsObjectWrapper(QObject* parent):
-	QObject(parent)
-{
-}
-
-int AnimationsSettingsObjectWrapper::animationSpeed() const
-{
-	return prefs.animation_speed;
-}
-
-void AnimationsSettingsObjectWrapper::setAnimationSpeed(int value)
-{
-	if (value == prefs.animation_speed)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("animation_speed", value);
-	prefs.animation_speed = value;
-	emit animationSpeedChanged(value);
-}
 
 LocationServiceSettingsObjectWrapper::LocationServiceSettingsObjectWrapper(QObject* parent):
 	QObject(parent)
@@ -2127,7 +2106,7 @@ QObject(parent),
 	general_settings(new GeneralSettingsObjectWrapper(this)),
 	display_settings(new qPrefDisplay(this)),
 	language_settings(new LanguageSettingsObjectWrapper(this)),
-	animation_settings(new AnimationsSettingsObjectWrapper(this)),
+	animation_settings(new qPrefAnimations(this)),
 	location_settings(new LocationServiceSettingsObjectWrapper(this)),
 	update_manager_settings(new UpdateManagerSettings(this)),
 	dive_computer_settings(new DiveComputerSettings(this))
