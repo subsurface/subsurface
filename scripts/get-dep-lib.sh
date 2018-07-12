@@ -102,6 +102,7 @@ fi
 if [ "$PLATFORM" == "singleAndroid" ] ; then
 	CURRENT_LIBZIP="1.1.3"
 	CURRENT_OPENSSL="OpenSSL_1_0_2o"
+# If changing the openSSL version here, make sure to change it in versions.sh also.
 fi
 # no curl and old libs (never version breaks)
 # check whether to use curl or wget
