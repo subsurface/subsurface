@@ -33,6 +33,7 @@ QObject *qqWindowObject = NULL;
 void init_ui()
 {
 	init_qt_late();
+	register_qml_types();
 #ifndef SUBSURFACE_MOBILE
 	PluginManager::instance().loadPlugins();
 
@@ -97,7 +98,6 @@ void register_qml_types()
 
 void run_ui()
 {
-	register_qml_types();
 
 #ifdef SUBSURFACE_MOBILE
 	QQmlApplicationEngine engine;
