@@ -6,7 +6,7 @@
 #include <QQmlContext>
 
 #include "core/settings/qPref.h"
-
+#include "core/qt-gui.h"
 
 // this is the content of QUICK_TEST_MAIN amended with
 // registration of ssrf classes
@@ -33,12 +33,9 @@ int main(int argc, char **argv)
 	argc--;
 
 	// Register types
-	auto rc = qmlRegisterType<qPref>("org.subsurfacedivelog.mobile", 1, 0, "SsrfPrefs");
-	if (rc < 0) {
-		qDebug() << "ERROR: cannot register qPref";
-		return -1;
-	}
+	register_qml_types();
 
+	// Run all tst_*.qml files
 	return quick_test_main(argc, argv, "TestQML", tst_dir);
 #else
 	return 0;
