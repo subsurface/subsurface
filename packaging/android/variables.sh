@@ -9,4 +9,6 @@ ANDROID_BUILDTOOLS_REVISION=25.0.3
 ANDROID_PLATFORMS=android-27
 ANDROID_NDK=android-ndk-${NDK_VERSION}
 ANDROID_SDK=android-sdk-linux
-OPENSSL_VERSION=1.0.2l
+# OpenSSL also has an entry in get-dep-lib.sh line 103
+# that needs to be updated as well.
+OPENSSL_VERSION=1.0.2o
