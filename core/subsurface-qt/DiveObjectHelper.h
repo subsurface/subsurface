@@ -45,7 +45,7 @@ class DiveObjectHelper : public QObject {
 	Q_PROPERTY(int maxcns READ maxcns CONSTANT)
 	Q_PROPERTY(int otu READ otu CONSTANT)
 	Q_PROPERTY(QString sumWeight READ sumWeight CONSTANT)
-	Q_PROPERTY(QString getCylinder READ getCylinder CONSTANT)
+	Q_PROPERTY(QStringList getCylinder READ getCylinder CONSTANT)
 	Q_PROPERTY(QString startPressure READ startPressure CONSTANT)
 	Q_PROPERTY(QString endPressure READ endPressure CONSTANT)
 	Q_PROPERTY(QString firstGas READ firstGas CONSTANT)
@@ -89,7 +89,7 @@ public:
 	int maxcns() const;
 	int otu() const;
 	QString sumWeight() const;
-	QString getCylinder() const;
+	QStringList getCylinder() const;
 	QString startPressure() const;
 	QString endPressure() const;
 	QString firstGas() const;
