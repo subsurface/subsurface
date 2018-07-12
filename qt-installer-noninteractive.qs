@@ -32,7 +32,7 @@ Controller.prototype.ComponentSelectionPageCallback = function() {
     var widget = gui.currentPageWidget();
 
     widget.deselectAll();
-    widget.selectComponent('qt.qt5.5101.android_armv7');
+    widget.selectComponent('qt.qt5.5111.android_armv7');
 
     gui.clickButton(buttons.NextButton);
 }
