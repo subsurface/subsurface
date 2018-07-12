@@ -2081,10 +2081,17 @@ void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail)
 	}
 }
 
-ProfileWidget2::PictureEntry::PictureEntry (offset_t offsetIn, const QString &filenameIn) : offset(offsetIn),
+// Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
+ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene) : offset(offsetIn),
 	filename(filenameIn),
 	thumbnail(new DivePictureItem)
 {
+	int size = Thumbnailer::defaultThumbnailSize();
+	scene->addItem(thumbnail.get());
+	thumbnail->setVisible(prefs.show_pictures_in_profile);
+	QImage img = Thumbnailer::instance()->fetchThumbnail(filename).scaled(size, size, Qt::KeepAspectRatio);
+	thumbnail->setPixmap(QPixmap::fromImage(img));
+	thumbnail->setFileUrl(filename);
 }
 
 // Define a default sort order for picture-entries: sort lexicographically by timestamp and filename.
@@ -2092,6 +2099,40 @@ bool ProfileWidget2::PictureEntry::operator< (const PictureEntry &e) const
 {
 	// Use std::tie() for lexicographical sorting.
 	return std::tie(offset.seconds, filename) < std::tie(e.offset.seconds, e.filename);
+}
+
+// Calculate the y-coordinates of the thumbnails, which are supposed to be sorted by x-coordinate.
+// This will also change the order in which the thumbnails are painted, to avoid weird effects,
+// when items are added later to the scene. This is simply done by increasing the Z-value.
+void ProfileWidget2::calculatePictureYPositions()
+{
+	double lastX = -1.0, lastY;
+	double z = 0.0;
+	for (PictureEntry &e: pictures) {
+		if (!e.thumbnail)
+			continue;
+		// let's put the picture at the correct time, but at a fixed "depth" on the profile
+		// not sure this is ideal, but it seems to look right.
+		double x = e.thumbnail->x();
+		double y;
+		if (lastX >= 0.0 && fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
+			y = lastY + 3;
+		else
+			y = 10;
+		lastX = x;
+		lastY = y;
+		e.thumbnail->setY(y);
+		e.thumbnail->setZValue(z);
+		z += 1.0;
+	}
+}
+
+void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
+{
+	// Here, we only set the x-coordinate of the picture. The y-coordinate
+	// will be set later in calculatePictureYPositions().
+	double x = timeAxis->posAtValue(e.offset.seconds);
+	e.thumbnail->setX(x);
 }
 
 // This function resets the picture thumbnails of the current dive.
@@ -2104,9 +2145,10 @@ void ProfileWidget2::plotPictures()
 	// Fetch all pictures of the current dive, but consider only those that are within the dive time.
 	// For each picture, create a PictureEntry object in the pictures-vector.
 	// emplace_back() constructs an object at the end of the vector. The parameters are passed directly to the constructor.
+	// Note that FOR_EACH_PICTURE handles current_dive being null gracefully.
 	FOR_EACH_PICTURE(current_dive) {
 		if (picture->offset.seconds > 0 && picture->offset.seconds <= current_dive->duration.seconds)
-			pictures.emplace_back(picture->offset, QString(picture->filename));
+			pictures.emplace_back(picture->offset, QString(picture->filename), scene());
 	}
 	if (pictures.empty())
 		return;
@@ -2114,29 +2156,10 @@ void ProfileWidget2::plotPictures()
 	// This will allow for proper location of the pictures on the profile plot.
 	std::sort(pictures.begin(), pictures.end());
 
-	// Add the DivePictureItems to the scene, set their pixmaps and filenames
-	// and finaly calculate their positions.
-	double x, y, lastX = -1.0, lastY = -1.0;
-	int size = Thumbnailer::defaultThumbnailSize();
-	for (PictureEntry &e: pictures) {
-		scene()->addItem(e.thumbnail.get());
-		e.thumbnail->setVisible(prefs.show_pictures_in_profile);
-		QImage thumbnail = Thumbnailer::instance()->fetchThumbnail(e.filename).scaled(size, size, Qt::KeepAspectRatio);
-		e.thumbnail->setPixmap(QPixmap::fromImage(thumbnail));
-		e.thumbnail->setFileUrl(e.filename);
-		// let's put the picture at the correct time, but at a fixed "depth" on the profile
-		// not sure this is ideal, but it seems to look right.
-		x = timeAxis->posAtValue(e.offset.seconds);
-		if (lastX < 0.0)
-			y = 10;
-		else if (fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
-			y = lastY + 3;
-		else
-			y = 10;
-		lastX = x;
-		lastY = y;
-		e.thumbnail->setPos(x, y);
-	}
+	// Calculate thumbnail positions. First the x-coordinates and and then the y-coordinates.
+	for (PictureEntry &e: pictures)
+		updateThumbnailXPos(e);
+	calculatePictureYPositions();
 }
 
 // Remove the pictures with the given filenames from the profile plot.
@@ -2155,6 +2178,7 @@ void ProfileWidget2::removePictures(const QVector<QString> &fileUrls)
 			// Check whether filename of entry is in list of provided filenames
 			{ return std::find(fileUrls.begin(), fileUrls.end(), e.filename) != fileUrls.end(); });
 	pictures.erase(it, pictures.end());
+	calculatePictureYPositions();
 }
 
 #endif
@@ -2166,23 +2190,87 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
 		QString filename;
-		QPoint offset;
-		dataStream >> filename >> offset;
+		QPoint pos;
+		dataStream >> filename >> pos;
 
-		QPointF mappedPos = mapToScene(event->pos());
-
-		FOR_EACH_PICTURE(current_dive) {
-			if (QString(picture->filename) == filename) {
-				picture->offset.seconds = lrint(timeAxis->valueAt(mappedPos));
-				mark_divelist_changed(true);
 #ifndef SUBSURFACE_MOBILE
-				DivePictureModel::instance()->updateDivePictureOffset(filename, picture->offset.seconds);
-				plotPictures();
-#endif
-				break;
+		// Calculate time in dive where picture was dropped and whether the new position is during the dive.
+		QPointF mappedPos = mapToScene(event->pos());
+		offset_t offset { (int32_t)lrint(timeAxis->valueAt(mappedPos)) };
+		bool duringDive = current_dive && offset.seconds > 0 && offset.seconds < current_dive->duration.seconds;
+
+		// Flag which states whether the drag&dropped picture actually belongs to this dive.
+		// If this is not the case, the calculated offset makes no sense whatsoever and we must ignore the event.
+		bool belongsToDive = true;
+
+		// A picture was drag&dropped onto the profile: We have four cases to consider:
+		//	1a) The image was already shown on the profile and is moved to a different position on the profile.
+		//	    Calculate the new position and move the picture.
+		//	1b) The image was on the profile and is moved outside of the dive time.
+		//	    Remove the picture.
+		//	2a) The image was not on the profile, but belongs to the current dive.
+		//	    Add the picture to the profile if it is during the dive.
+		//	2b) The picture does not belong to the current dive.
+		//	    For now, do nothing. We may think about adding the picture to the dive.
+		auto oldPos = std::find_if(pictures.begin(), pictures.end(), [filename](const PictureEntry &e)
+					   { return e.filename == filename; });
+		if (oldPos != pictures.end()) {
+			// Cases 1a) and 1b): picture is on profile
+			if (duringDive) {
+				// Case 1a): move to new position
+				// First, find new position. Note that we also have to compare filenames,
+				// because it is quite easy to generate equal offsets.
+				auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
+							   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
+				// Set new offset
+				oldPos->offset.seconds = offset.seconds;
+				updateThumbnailXPos(*oldPos);
+
+				// Move image from old to new position
+				int oldIndex = oldPos - pictures.begin();
+				int newIndex = newPos - pictures.begin();
+				moveInVector(pictures, oldIndex, oldIndex + 1, newIndex);
+			} else {
+				// Case 1b): remove picture
+				pictures.erase(oldPos);
+			}
+
+			// In both cases the picture list changed, therefore we must recalculate the y-coordinatesA.
+			calculatePictureYPositions();
+		} else {
+			// Cases 2a) and 2b): picture not on profile. Check if it belongs to current dive.
+			// Note that FOR_EACH_PICTURE handles current_dive being null gracefully.
+			bool found = false;
+			FOR_EACH_PICTURE(current_dive) {
+				if (picture->filename == filename) {
+					found = true;
+					break;
+				}
+			}
+			if (found && duringDive) {
+				// Case 2a): add the picture at the appropriate position.
+				// The case move from outside-to-outside of the profile plot was handled by
+				// the "&& duringDive" condition in the if above.
+				// As for case 1a), we have to also consider filenames in the case of equal offsets.
+				auto newPos = std::find_if(pictures.begin(), pictures.end(), [offset, &filename](const PictureEntry &e)
+							   { return std::tie(e.offset.seconds, e.filename) > std::tie(offset.seconds, filename); });
+				// emplace() constructs the element at the given position in the vector.
+				// The parameters are passed directly to the contructor.
+				// The call returns an iterator to the new element (which might differ from
+				// the old iterator, since the buffer might have been reallocated).
+				newPos = pictures.emplace(newPos, offset, filename, scene());
+				updateThumbnailXPos(*newPos);
+				calculatePictureYPositions();
+			} else if (!found) {
+				// Case 2b): Unknown picture. Ignore.
+				belongsToDive = false;
 			}
 		}
-		copy_dive(current_dive, &displayed_dive);
+
+		// Only signal the drag&drop action if the picture actually belongs to the dive.
+		if (belongsToDive)
+			DivePictureModel::instance()->updateDivePictureOffset(displayed_dive.id, filename, offset.seconds);
+#endif
 
 		if (event->source() == this) {
 			event->setDropAction(Qt::MoveAction);

@@ -236,10 +236,12 @@ private:
 		offset_t offset;
 		QString filename;
 		std::unique_ptr<DivePictureItem> thumbnail;
-		PictureEntry (offset_t offsetIn, const QString &filenameIn);
+		PictureEntry (offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene);
 		bool operator< (const PictureEntry &e) const;
 	};
+	void updateThumbnailXPos(PictureEntry &e);
 	std::vector<PictureEntry> pictures;
+	void calculatePictureYPositions();
 
 	QList<DiveHandler *> handles;
 	void repositionDiveHandlers();

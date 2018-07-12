@@ -7,6 +7,7 @@
 #include <QFuture>
 
 struct PictureEntry {
+	int diveId;
 	struct picture *picture;
 	QString filename;
 	QImage image;
@@ -22,7 +23,7 @@ public:
 	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	virtual void updateDivePictures();
 	void removePictures(const QVector<QString> &fileUrls);
-	void updateDivePictureOffset(const QString &filename, int offsetSeconds);
+	void updateDivePictureOffset(int diveId, const QString &filename, int offsetSeconds);
 signals:
 	void picturesRemoved(const QVector<QString> &fileUrls);
 public slots:
