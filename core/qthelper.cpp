@@ -652,7 +652,7 @@ QString get_pressure_string(pressure_t pressure, bool showunit)
 {
 	if (prefs.units.pressure == units::BAR) {
 		double bar = pressure.mbar / 1000.0;
-		return QString("%L1%2").arg(bar, 0, 'f', 1).arg(showunit ? gettextFromC::tr("bar") : QString());
+		return QString("%L1%2").arg(bar, 0, 'f', 0).arg(showunit ? gettextFromC::tr("bar") : QString());
 	} else {
 		double psi = mbar_to_PSI(pressure.mbar);
 		return QString("%L1%2").arg(psi, 0, 'f', 0).arg(showunit ? gettextFromC::tr("psi") : QString());
