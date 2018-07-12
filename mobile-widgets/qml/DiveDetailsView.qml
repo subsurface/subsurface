@@ -306,7 +306,7 @@ Item {
 		//------------
 		Controls.Label {
 			id: txtCylinder
-			text: dive.getCylinder
+			text: dive.getCylinder.join(', ')
 			wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 			Layout.maximumWidth: detailsView.col1Width
 		}
