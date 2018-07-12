@@ -1,4 +1,5 @@
 - mobile: show developer menu is now saved on disk and remebered between start of Subsurface
+- mobile: show developer menu is now stored on disk and thus remembered
 - tests: add qml test harness
 - Cloud storage: fix potential issue with credentials on Linux [#1346]
 - Mobile/iOS: fix missing translations
