@@ -1,5 +1,6 @@
 #!/bin/bash
-
+# When changing Qt version remember to update the 
+# qt-installer-noninteractive file as well.
 QT_VERSION=5.11
 LATEST_QT=5.11.1
 NDK_VERSION=r14b
