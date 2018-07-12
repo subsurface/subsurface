@@ -148,6 +148,9 @@ void register_qml_types()
 	rc = qmlRegisterType<qPrefAnimations>("org.subsurfacedivelog.mobile", 1, 0, "SsrfAnimationsPrefs");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register SsrfAnimationsPrefs (class qPrefAnimations), QML will not work!!";
+	rc = qmlRegisterType<qPrefCloudStorage>("org.subsurfacedivelog.mobile", 1, 0, "SsrfCloudStoragePrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register SsrfCloudStoragePrefs (class qPrefCloudStorage), QML will not work!!";
 	rc = qmlRegisterType<qPrefDisplay>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDisplayPrefs");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register DisplayPrefs (class qPrefDisplay), QML will not work!!";
