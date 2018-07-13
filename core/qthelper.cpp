@@ -1215,11 +1215,22 @@ const QStringList videoExtensionsList = {
 	".avi", ".mp4", ".mov", ".mpeg", ".mpg", ".wmv"
 };
 
-QStringList imageExtensionFilters() {
+QStringList mediaExtensionFilters()
+{
+	return imageExtensionFilters() + videoExtensionFilters();
+}
+
+QStringList imageExtensionFilters()
+{
 	QStringList filters;
-	foreach (QString format, QImageReader::supportedImageFormats()) {
-		filters.append(QString("*.").append(format));
-	}
+	foreach (const QString &format, QImageReader::supportedImageFormats())
+		filters.append("*." + format);
+	return filters;
+}
+
+QStringList videoExtensionFilters()
+{
+	QStringList filters;
 	foreach (const QString &format, videoExtensionsList)
 		filters.append("*" + format);
 	return filters;
