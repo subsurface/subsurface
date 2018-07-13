@@ -924,9 +924,9 @@ void DiveListView::loadImages()
 {
 	QStringList filters = imageExtensionFilters();
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
-							      tr("Open image files"),
+							      tr("Open media files"),
 							      lastUsedImageDir(),
-							      tr("Image files (%1)").arg(filters.join(" ")));
+							      tr("Media files (%1)").arg(filters.join(" ")));
 
 	if (fileNames.isEmpty())
 		return;

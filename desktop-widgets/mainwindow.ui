@@ -625,7 +625,7 @@
      <normaloff>:photo-icon</normaloff>:photo-icon</iconset>
    </property>
    <property name="text">
-    <string>Toggle pictures</string>
+    <string>Toggle media</string>
    </property>
   </action>
   <action name="profTankbar">
@@ -686,7 +686,7 @@
   </action>
   <action name="actionHash_images">
    <property name="text">
-    <string>&amp;Find moved images</string>
+    <string>&amp;Find moved media files</string>
    </property>
   </action>
   <action name="actionCloudstorageopen">

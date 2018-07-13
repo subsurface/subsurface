@@ -170,7 +170,7 @@ void FindMovedImagesDialog::on_scanButton_clicked()
 
 	// TODO: is lastUsedImageDir really well-placed in DiveListView?
 	QString dirName = QFileDialog::getExistingDirectory(this,
-							    tr("Traverse image directories"),
+							    tr("Traverse media directories"),
 							    DiveListView::lastUsedImageDir(),
 							    QFileDialog::ShowDirsOnly);
 	if (dirName.isEmpty())
@@ -251,7 +251,7 @@ void FindMovedImagesDialog::searchDone()
 		stopScanning = 0;
 	}
 	if (matches.isEmpty()) {
-		text += "<i>" + tr("No matching images found") + "</i>";
+		text += "<i>" + tr("No matching media files found") + "</i>";
 	} else {
 		QString matchesText;
 		for (const Match &match: matches) {
@@ -263,9 +263,9 @@ void FindMovedImagesDialog::searchDone()
 		}
 		int numUnchanged = matches.size() - numChanged;
 		if (numUnchanged > 0)
-			text += tr("Found <b>%1</b> images at their current place.").arg(numUnchanged) + "<br/>";
+			text += tr("Found <b>%1</b> media files at their current place.").arg(numUnchanged) + "<br/>";
 		if (numChanged > 0) {
-			text += tr("Found <b>%1</b> images at new locations:").arg(numChanged) + "<br/>";
+			text += tr("Found <b>%1</b> media files at new locations:").arg(numChanged) + "<br/>";
 			text += matchesText;
 		}
 	}

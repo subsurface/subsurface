@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Enter URL for images</string>
+    <string>Enter URL for media files</string>
    </property>
   </widget>
  </widget>
