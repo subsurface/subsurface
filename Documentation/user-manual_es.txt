@@ -1135,8 +1135,12 @@ otros.
 
 Se ha desarrollado una pequeña herramienta independiente para importar los
 archivos .slg generados por SmartTrak al formato .xml de _Subsurface_. Puede
-compilarse junto con _Subsurface_ en sistemas Linux.  Se necesita instalar dos
-dependencias antes compilar: libglib2.0 y libmdb2.
+descargarse desde https://subsurface-divelog.org/downloads[el repositorio habitual de _Subsurface_],
+como instalador para Windows, o como AppImage para Linux.
+Actualmente la aplicación no está soportada en Mac.
+
+También puede compilarse en sistemas Linux.  Se necesita instalar dos
+dependencias antes de compilar: _glib2.0_ y _mdbtools_ (ver a continuación).
 
 Además, está disponible un servicio web para convertir divelogs desde
 SmartTrak a _Subsurface_ (ver a continuación).
@@ -1144,20 +1148,26 @@ SmartTrak a _Subsurface_ (ver a continuación).
 Si necesitas ayuda puedes contactar con el equipo de _Subsurface_ en
 mailto:subsurface@subsurface-divelog.org[nuestra lista de correo]
 
+===== Compilar _smtk2ssrf_
+
 Suponiendo que se hayan instalado las dependencias y que el directorio raíz
 del código de _Subsurface_ sea ~/src/subsurface, entonces:
 
-===== Compilar _smtk2ssrf_
-
-- Sitúate en el directorio raíz del código de _Subsurface_
-- Ejecuta " $ ccmake build " y ajusta la opción SMARTTRAK_IMPORT a *ON* (por
-  defecto en OFF).
-- Selecciona [c] y [g] para generar la configuración de cmake y guardarla.
-- Compila el código como prefieras, usando el script build.sh (recomendado) o
-  yendo al directorio "build" y ejecutando "make".
-- Si se ha compilado el código con éxito, habrá un ejecutable en el directorio
-  "build" llamado smtk2ssrf, cópialo o muévelo a un directorio que se
-  encuentre incluido en tu $PATH, p.e. ~/bin
+- Sitúate en el directorio raíz del código, fuera de _Subsurface_ (~/src en el
+  ejemplo)
+- Ejecuta " $ ./subsurface/scripts/smtk2ssrf-build.sh " y, si todo va bien,
+  obtendrás un binario ejecutable en la carpeta
+  ~/src/subsurface/smtk-import/build
+- Puedes ejecutarlo desde allí, copiarlo a una carpeta que esté en tu $PATH o
+  moverte allí y correr "$ sudo make install" que. por defecto lo instalará en
+  /usr/local/bin, el cual suele estar incluido en el $PATH
+- El script tiene algunas opciones de ejecución en línea de comandos útiles
+  mayormente para desarrollo, si crees que puedes necesitarlas, por favor, lee
+  el encabezamiento del script.
+- *AVISO*: Al compilar smtk2ssrf, se recompila una versión aligerada de
+  _Subsurface_. Esto carecerá de importancia excepto si utilizas habitualmente
+  el binario compilado previamente que se encuentra en ~/src/subsurface/build.
+  En ese caso tendrás que recompilar _Subsurface_.
 
 ===== Ejecutar
 
