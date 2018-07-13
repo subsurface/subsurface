@@ -245,7 +245,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
 							     gasname(&gasmix),
-							     divemode_text_ui[dp->divemode]);
+							     translate("gettextFromC", divemode_text_ui[dp->divemode]));
 					}
 					put_string(&buf, "<br>");
 					newdepth = dp->depth.mm;
@@ -312,7 +312,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						free(temp);
 					} else {
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
-							gasname(&newgasmix), lastdivemode == dp->divemode ? "" : divemode_text_ui[dp->divemode]);
+							gasname(&newgasmix), lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
 						if (isascent && (get_he(&lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
@@ -334,7 +334,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						free(temp);
 					} else {
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
-							   lastdivemode == dp->divemode ? "" : divemode_text_ui[dp->divemode]);
+							   lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
 						if (get_he(&lastprintgasmix) > 0) {  // For a trimix gas change, save ICD info if previous cylinder had helium
 							if (isobaric_counterdiffusion(&lastprintgasmix, &gasmix, &icdvalues))  // Do icd calculations
 								icdwarning = true;
