@@ -421,7 +421,6 @@ void DivePlannerWidget::printDecoPlan()
 PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f)
 {
 	ui.setupUi(this);
-	QStringList rebreather_modes;
 
 	plannerModel->getDiveplan().bottomsac = prefs.bottomsac;
 	plannerModel->getDiveplan().decosac = prefs.decosac;
@@ -448,7 +447,8 @@ PlannerSettingsWidget::PlannerSettingsWidget(QWidget *parent, Qt::WindowFlags f)
 	disableDecoElements((int) prefs.planner_deco_mode);
 
 	// should be the same order as in dive_comp_type!
-	for (int i=0; i < FREEDIVE; i++)
+	QStringList rebreather_modes = QStringList();
+	for (int i = 0; i < FREEDIVE; i++)
 		rebreather_modes.append(gettextFromC::tr(divemode_text_ui[i]));
 	ui.rebreathermode->insertItems(0, rebreather_modes);
 
