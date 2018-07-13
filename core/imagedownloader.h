@@ -52,13 +52,18 @@ private:
 	struct Thumbnail {
 		QImage img;
 		mediatype_t type;
+		duration_t duration;
 	};
 
 	Thumbnailer();
-	static void addThumbnailToCache(const Thumbnail &thumbnail, const QString &picture_filename);
+	static void addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail);
+	static void addVideoThumbnailToCache(const QString &picture_filename, duration_t duration);
+	static void addUnknownThumbnailToCache(const QString &picture_filename);
 	void recalculate(QString filename);
 	void processItem(QString filename, bool tryDownload);
 	Thumbnail getThumbnailFromCache(const QString &picture_filename);
+	Thumbnail getPictureThumbnailFromStream(QDataStream &stream);
+	Thumbnail getVideoThumbnailFromStream(QDataStream &stream);
 	Thumbnail fetchImage(const QString &filename, const QString &originalFilename, bool tryDownload);
 	Thumbnail getHashedImage(const QString &filename, bool tryDownload);
 
