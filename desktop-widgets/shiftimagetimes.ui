@@ -126,7 +126,7 @@
         </property>
         <property name="text">
          <string>Warning!
-Not all images have timestamps in the range between
+Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</string>
         </property>
        </widget>
@@ -134,7 +134,7 @@ Not all images have timestamps in the range between
       <item>
        <widget class="QCheckBox" name="matchAllImages">
         <property name="text">
-         <string>Load images even if the time does not match the dive time</string>
+         <string>Load media files even if the time does not match the dive time</string>
         </property>
        </widget>
       </item>

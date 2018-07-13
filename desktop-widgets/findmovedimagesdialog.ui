@@ -20,7 +20,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Find moved images</string>
+   <string>Find moved media files</string>
   </property>
   <property name="windowIcon">
    <iconset>
@@ -34,7 +34,7 @@
    <item>
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
-      <string>Found images</string>
+      <string>Found media files</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
@@ -68,7 +68,7 @@
            </sizepolicy>
           </property>
           <property name="text">
-           <string>Match only images in selected dive(s)</string>
+           <string>Match only media files in selected dive(s)</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

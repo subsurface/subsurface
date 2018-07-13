@@ -49,11 +49,11 @@ void TabDivePhotos::clear()
 void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 {
 	QMenu popup(this);
-	popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(addPhotosFromFile()));
-	popup.addAction(tr("Load image(s) from web"), this, SLOT(addPhotosFromURL()));
+	popup.addAction(tr("Load media from file(s)"), this, SLOT(addPhotosFromFile()));
+	popup.addAction(tr("Load media file(s) from web"), this, SLOT(addPhotosFromURL()));
 	popup.addSeparator();
-	popup.addAction(tr("Delete selected images"), this, SLOT(removeSelectedPhotos()));
-	popup.addAction(tr("Delete all images"), this, SLOT(removeAllPhotos()));
+	popup.addAction(tr("Delete selected media files"), this, SLOT(removeSelectedPhotos()));
+	popup.addAction(tr("Delete all media files"), this, SLOT(removeAllPhotos()));
 	popup.addAction(tr("Recalculate selected thumbnails"), this, SLOT(recalculateSelectedThumbnails()));
 	popup.exec(event->globalPos());
 	event->accept();
@@ -101,7 +101,7 @@ void TabDivePhotos::addPhotosFromURL()
 
 void TabDivePhotos::removeAllPhotos()
 {
-	if (QMessageBox::warning(this, tr("Deleting Images"), tr("Are you sure you want to delete all images?"), QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Cancel ) {
+	if (QMessageBox::warning(this, tr("Deleting media files"), tr("Are you sure you want to delete all media files?"), QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Cancel ) {
 		ui->photosView->selectAll();
 		removeSelectedPhotos();
 	}

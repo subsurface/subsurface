@@ -276,7 +276,7 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = tr("Tags");
 			break;
 		case PHOTOS:
-			retVal = tr("Photos before/during/after dive");
+			retVal = tr("Media before/during/after dive");
 			break;
 		case COUNTRY:
 			retVal = tr("Country");
@@ -518,7 +518,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Tags");
 			break;
 		case PHOTOS:
-			ret = tr("Photos");
+			ret = tr("Media");
 			break;
 		case COUNTRY:
 			ret = tr("Country");
@@ -575,7 +575,7 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			ret = tr("Tags");
 			break;
 		case PHOTOS:
-			ret = tr("Photos before/during/after dive");
+			ret = tr("Media before/during/after dive");
 			break;
 		case LOCATION:
 			ret = tr("Location");
