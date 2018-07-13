@@ -7,7 +7,13 @@ maintainers:
  - mturkia
  - janmulder
  - tcanabrava
+ - bstoeger
+ - sfuchs79
+ - janiversen
+ - jbygdell
 
 features:
  - dco_check
  - comments
+ - labels
+ - milestone
