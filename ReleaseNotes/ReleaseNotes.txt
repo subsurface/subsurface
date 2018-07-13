@@ -2,6 +2,18 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.8.1
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Mac: fix crashes when opening the user manual or connecting to Facebook [#1471]
+- BLE support: fix recognition of Heinrich Weikamp OSTC 2 and OSTC Plus
+- BT support: fix downloading / configuring some OSTC models [#1474]
+- Cloud storage: fix potential issue with credentials on Linux [#1346]
+- Profile: Context menu entry to manually split a dive
+- Dive media: support addition of videos
+- Dive media: locate moved files based on filename and path
+- Planner: fix bug in dive mode drop-down and planner notes
+- Mobile/iOS: fix missing translations
+
 New in _Subsurface_ 4.8
 ~~~~~~~~~~~~~~~~~~~~~~~
 
