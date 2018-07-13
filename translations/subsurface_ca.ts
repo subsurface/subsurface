@@ -407,7 +407,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation>Cal verificació del compte del núvol, introduïu el PIN a les preferències</translation>
+        <translation>Cal verificació del compte en el núvol, introduïu el PIN a les preferències</translation>
     </message>
 </context>
 <context>
@@ -4922,12 +4922,12 @@ directament, ja que l&apos;aplicació les pot sobreescriure quan s&apos;inicia.<
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Teniu canvis sense desar. Els voleu publicar a l&apos;emmagatzematge al núvol?
-Si responeu no, el núvol només se sincronitzarà en la següent crida a «Obre l&apos;emmagatzematge en el núvol» o «Desar a l&apos;emmagatzematge en el núvol».</translation>
+Si responeu no, el núvol només se sincronitzarà en la següent crida a «Obre l&apos;emmagatzematge en el núvol» o «Desa a l&apos;emmagatzematge en el núvol».</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="700"/>
         <source>Failure taking cloud storage online</source>
-        <translation>Ha fallat en prendre l&apos;emmagatzematge al núvol en línia</translation>
+        <translation>Ha fallat en posar l&apos;emmagatzematge al núvol en línia</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="769"/>
@@ -5847,18 +5847,18 @@ Vegeu http://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
         <source>Change ignored. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>El canvi s&apos;ha ignorat. El correu electrònic i la contrasenya de l&apos;emmagatzematge al núvol només poden consistir en lletres, números i «.», «-», «_» i «+».</translation>
+        <translation>El canvi s&apos;ha ignorat. El correu electrònic i la contrasenya de l&apos;emmagatzematge en el núvol només poden consistir en lletres, números i «.», «-», «_» i «+».</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="75"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>El canvi s&apos;ha ignorat. El correu electrònic i la contrasenya noves de l&apos;emmagatzematge al núvol només poden consistir en lletres, números i «.», «-», «_» i «+».</translation>
+        <translation>El canvi s&apos;ha ignorat. El correu electrònic i la contrasenya noves de l&apos;emmagatzematge en el núvol només poden consistir en lletres, números i «.», «-», «_» i «+».</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="98"/>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="112"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>El correu i la contrasenya de l&apos;emmagatzematge al núvol només pot contenir lletres, números i els caràcters «.», «-», «_» i «+».</translation>
+        <translation>El correu i la contrasenya de l&apos;emmagatzematge en el núvol només pot contenir lletres, números i els caràcters «.», «-», «_» i «+».</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="138"/>
@@ -6377,7 +6377,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>El correu i la contrasenya de l&apos;emmagatzematge al núvol només pot contenir lletres, números i els caràcters «.», «-», «_» i «+».</translation>
+        <translation>El correu i la contrasenya de l&apos;emmagatzematge en el núvol només pot contenir lletres, números i els caràcters «.», «-», «_» i «+».</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="451"/>
@@ -6407,7 +6407,7 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge al núvol -el compte al núvol no ha estat verificat-</translation>
+        <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge en el núvol -el compte al núvol no ha estat verificat-</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
@@ -6417,17 +6417,17 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge al núvol: un error en crear la connexió HTTPS</translation>
+        <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge en el núvol: un error en crear la connexió HTTPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Cannot open cloud storage: %1</source>
-        <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge al núvol: %1</translation>
+        <translation>No s&apos;ha pogut obrir l&apos;emmagatzematge en el núvol: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="621"/>
         <source>Cannot connect to cloud storage</source>
-        <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge al núvol</translation>
+        <translation>No s&apos;ha pogut connectar amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
@@ -6442,12 +6442,12 @@ Exporteu aquesta plantilla a un fitxer diferent.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="701"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
-        <translation>S&apos;estan carregant les immersions des de l&apos;emmagatzematge local (mode «sense el núvol»)</translation>
+        <translation>S&apos;estan carregant les immersions des de l&apos;emmagatzematge local («Mode sense el núvol»)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="747"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation>Ha fallat en connectar amb el servidor del núvol, no s&apos;ha rebut l&apos;estat</translation>
+        <translation>Ha fallat en connectar amb el servidor en el núvol, no s&apos;ha rebut l&apos;estat</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
@@ -7057,7 +7057,7 @@ Fitxers amb una data/hora inapropiada</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
         <source>Thank you for registering with Subsurface. We sent &lt;b&gt;%1&lt;/b&gt; a PIN code to complete the registration. If you do not receive an email from us within 15 minutes, please check the correct spelling of your email address and your spam box first.&lt;br/&gt;&lt;br/&gt;In case of any problems regarding cloud account setup, please contact us at our user forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Gràcies per registrar-vos amb el Subsurface. Hem enviat a &lt;b&gt;%1&lt;/b&gt; un codi PIN per a completar el registre. Si no rebeu un correu electrònic nostre en 15 minuts, si us plau, primer comproveu la correcta ortografia de la vostra adreça de correu electrònic i la vostra bústia de correu brossa.&lt;br/&gt;&lt;br/&gt;En cas de problemes relacionats amb la configuració del compte del núvol, poseu-vos en contacte amb nosaltres al nostre fòrum d&apos;usuari (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;q</translation>
+        <translation>Gràcies per registrar-vos amb el Subsurface. Hem enviat a &lt;b&gt;%1&lt;/b&gt; un codi PIN per a completar el registre. Si no rebeu un correu electrònic nostre en 15 minuts, si us plau, primer comproveu la correcta ortografia de la vostra adreça de correu electrònic i la vostra bústia de correu brossa.&lt;br/&gt;&lt;br/&gt;En cas de problemes relacionats amb la configuració del compte en el núvol, poseu-vos en contacte amb nosaltres al nostre fòrum d&apos;usuaris (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;q</translation>
     </message>
 </context>
 <context>
@@ -8883,7 +8883,7 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="152"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
-        <translation>El directori del cau local %s és corrupte -no s&apos;ha pogut sincronitzar amb l&apos;emmagatzematge al núvol del Subsurface-</translation>
+        <translation>El directori del cau local %s està corrupte -no s&apos;ha pogut sincronitzar amb l&apos;emmagatzematge en el núvol de Subsurface-</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="175"/>
@@ -8894,12 +8894,12 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="188"/>
         <source>Subsurface cloud storage corrupted</source>
-        <translation>Emmagatzematge al núvol del Subsurface és corrupte</translation>
+        <translation>L&apos;emmagatzematge en el núvol de Subsurface està corrupte</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="324"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
-        <translation>No s&apos;ha pogut actualitzar l&apos;emmagatzematge al núvol del Subsurface, proveu-ho més tard</translation>
+        <translation>No s&apos;ha pogut actualitzar l&apos;emmagatzematge en el núvol de Subsurface, proveu-ho més tard</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="384"/>
@@ -8924,7 +8924,7 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="460"/>
         <source>Problems with local cache of Subsurface cloud data</source>
-        <translation>Problemes amb el cau local de les dades al núvol del Subsurface</translation>
+        <translation>Problemes amb el cau local de les dades al núvol de Subsurface</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="461"/>
@@ -8934,7 +8934,7 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="508"/>
         <source>Update local storage to match cloud storage</source>
-        <translation>Actualitza l&apos;emmagatzematge local per fer-lo coincidir amb l&apos;emmagatzematge al núvol</translation>
+        <translation>Actualitza l&apos;emmagatzematge local per a fer-lo coincidir amb l&apos;emmagatzematge en el núvol</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="516"/>
@@ -8974,7 +8974,7 @@ Màxim</translation>
     <message>
         <location filename="../core/git-access.c" line="794"/>
         <source>Error connecting to Subsurface cloud storage</source>
-        <translation>Error en connectar amb l&apos;emmagatzematge al núvol del Subsurface</translation>
+        <translation>Error en connectar amb l&apos;emmagatzematge en el núvol de Subsurface</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="797"/>
@@ -10803,7 +10803,7 @@ Està connectat correctament el Uemis Zurich?</translation>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="280"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
-        <translation>Desactivar la sincronització automàtica amb el núvol fa que totes les dades només es puguin emmagatzemar localment. Això pot ser molt útil en situacions amb accés limitat o sense a la xarxa. Si us plau, seleccioneu «Sincronitza manualment amb el núvol» si teniu connectivitat a la xarxa i voleu sincronitzar les vostres dades amb l&apos;emmagatzematge en el núvol.</translation>
+        <translation>Desactivar la sincronització automàtica amb el núvol fa que totes les dades només es puguin emmagatzemar localment. Això pot ser molt útil en situacions amb accés limitat o sense la xarxa. Si us plau, seleccioneu «Sincronitza manualment amb el núvol» si teniu connectivitat a la xarxa i voleu sincronitzar les vostres dades amb l&apos;emmagatzematge en el núvol.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="291"/>

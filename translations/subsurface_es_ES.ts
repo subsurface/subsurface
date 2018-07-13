@@ -3934,28 +3934,28 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <source>Find moved images</source>
-        <translation type="unfinished"/>
+        <translation>Encontrar imágenes movidas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <source>Found images</source>
-        <translation type="unfinished"/>
+        <translation>Imágenes encontradas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <source>Match only images in selected dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Buscar imágenes solo en la(s) inmersión(es) seleccionada(s)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
         <source>Scanning:</source>
-        <translation type="unfinished"/>
+        <translation>Escaneando:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="240"/>
         <source>Select folder and scan</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionar carpeta y escanear</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
@@ -3965,27 +3965,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
         <source>Stop scanning</source>
-        <translation type="unfinished"/>
+        <translation>Detener escaneo</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="250"/>
         <source>Scanning cancelled - results may be incomplete</source>
-        <translation type="unfinished"/>
+        <translation>Escaneo cancelado - los resultados pueden ser incompletos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
         <source>No matching images found</source>
-        <translation type="unfinished"/>
+        <translation>No se han encontrado imágenes que coincidan</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; images at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>Encontradas &lt;b&gt;%1&lt;/b&gt; imágenes en su ubicación actual.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; images at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>Encontradas &lt;b&gt;%1&lt;/b&gt; imágenes en nuevas ubicaciones:</translation>
     </message>
 </context>
 <context>
@@ -6254,7 +6254,7 @@ Por favor, exporta esta plantilla a un archivo distinto.</translation>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
         <source>Split dive into two</source>
-        <translation type="unfinished"/>
+        <translation>Dividir la inmersión en dos</translation>
     </message>
     <message>
         <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
@@ -9912,7 +9912,7 @@ EADD: %d%s / %.1fg/ℓ
     <message numerus="yes">
         <location filename="../core/qthelper.cpp" line="1010"/>
         <source>(%n dive(s))</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>(%n inmersión(es))</numerusform><numerusform>(%n inmersión(es))</numerusform></translation>
     </message>
     <message>
         <location filename="../core/qthelper.cpp" line="1246"/>
