@@ -6,6 +6,7 @@
 #include <QEventLoop>
 #include <QTimer>
 #include <QDebug>
+#include <QThread>
 
 #include <libdivecomputer/version.h>
 #include <libdivecomputer/context.h>
@@ -395,6 +396,12 @@ static dc_status_t qt_serial_set_timeout(void *io, int timeout)
 	return DC_STATUS_SUCCESS;
 }
 
+static dc_status_t qt_custom_sleep(void *io, unsigned int timeout)
+{
+	QThread::msleep(timeout);
+	return DC_STATUS_SUCCESS;
+}
+
 #ifdef BLE_SUPPORT
 dc_status_t
 ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* devaddr, void *userdata)
@@ -415,7 +422,7 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 		qt_ble_write, /* write */
 		NULL, /* flush */
 		NULL, /* purge */
-		NULL, /* sleep */
+		qt_custom_sleep, /* sleep */
 		qt_ble_close, /* close */
 	};
 
@@ -448,7 +455,7 @@ rfcomm_stream_open(dc_iostream_t **iostream, dc_context_t *context, const char* 
 		qt_serial_write, /* write */
 		NULL, /* flush */
 		qt_serial_purge, /* purge */
-		NULL, /* sleep */
+		qt_custom_sleep, /* sleep */
 		qt_serial_close, /* close */
 	};
 
