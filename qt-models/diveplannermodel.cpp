@@ -141,6 +141,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	if (!hasMarkedSamples && !dc->last_manual_time.seconds)
 		addStop(0, d->dc.duration.seconds,cylinderid, last_sp.mbar, true, current_divemode);
 	recalc = oldRec;
+	DiveTypeSelectionModel::instance()->repopulate();
 	emitDataChanged();
 }
 
