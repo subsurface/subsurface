@@ -1429,7 +1429,7 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		break;
 	case 1:
 		selected_vendor = "Heinrichs Weikamp";
-		selected_product = "OSTC 3";
+		selected_product = "OSTC Plus";
 		fw_upgrade_possible = true;
 		break;
 	case 2:
