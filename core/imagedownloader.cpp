@@ -93,22 +93,31 @@ Thumbnailer::Thumbnail Thumbnailer::fetchImage(const QString &filename, const QS
 		mediatype_t type = get_metadata(qPrintable(filename), &md);
 
 		// For io error or video, return early with the appropriate dummy-icon.
-		if (type == MEDIATYPE_IO_ERROR)
+		if (type == MEDIATYPE_IO_ERROR) {
 			return { failImage, MEDIATYPE_IO_ERROR };
-		else if (type == MEDIATYPE_VIDEO)
+		} else if (type == MEDIATYPE_VIDEO) {
+			addVideoThumbnailToCache(originalFilename, md.duration);
 			return { videoImage, MEDIATYPE_VIDEO };
+		}
 
 		// Try if Qt can parse this image. If it does, use this as a thumbnail.
 		QImage thumb(filename);
-		if (!thumb.isNull())
+		if (!thumb.isNull()) {
+			addPictureThumbnailToCache(originalFilename, thumb);
 			return { thumb, MEDIATYPE_PICTURE };
+		}
 
 		// Neither our code, nor Qt could determine the type of this object from looking at the data.
-		// Try to check for a video-file extension.
-		if (hasVideoFileExtension(filename))
+		// Try to check for a video-file extension. Since we couldn't parse the video file,
+		// we pass 0 as the duration.
+		if (hasVideoFileExtension(filename)) {
+			addVideoThumbnailToCache(originalFilename, {0} );
 			return { videoImage, MEDIATYPE_VIDEO };
+		}
 
 		// Give up: we simply couldn't determine what this thing is.
+		// But since we managed to read this file, mark this file in the cache as unknown.
+		addUnknownThumbnailToCache(originalFilename);
 		return { unknownImage, MEDIATYPE_UNKNOWN };
 	} else if (tryDownload) {
 		// This has to be done in UI main thread, because QNetworkManager refuses
@@ -176,6 +185,37 @@ Thumbnailer *Thumbnailer::instance()
 	return &self;
 }
 
+Thumbnailer::Thumbnail Thumbnailer::getPictureThumbnailFromStream(QDataStream &stream)
+{
+	QImage res;
+	stream >> res;
+	return { res, MEDIATYPE_PICTURE, 0 };
+}
+
+Thumbnailer::Thumbnail Thumbnailer::getVideoThumbnailFromStream(QDataStream &stream)
+{
+	quint32 duration, numPics;
+	stream >> duration >> numPics;
+
+	// If reading did not succeed, schedule for recalculation - this thumbnail might
+	// have been written by an older version, which couldn't extract the duration.
+	if (stream.status() != QDataStream::Ok)
+		return { QImage(), MEDIATYPE_VIDEO, 0 };
+
+	// Currently, we support only one picture
+	QImage res;
+	if (numPics > 0) {
+		quint32 offset;
+		QImage res;
+		stream >> offset >> res;
+	}
+
+	// No picture -> show dummy-icon
+	return { res.isNull() ? videoImage : res, MEDIATYPE_VIDEO, {(int32_t)duration} };
+}
+
+// Fetch a thumbnail from cache.
+// If Thumbnail::QImage is null, the thumbnail is scheduled for recreation.
 Thumbnailer::Thumbnail Thumbnailer::getThumbnailFromCache(const QString &picture_filename)
 {
 	QString filename = thumbnailFileName(picture_filename);
@@ -194,46 +234,76 @@ Thumbnailer::Thumbnail Thumbnailer::getThumbnailFromCache(const QString &picture
 			if (pictureTime.isValid() && thumbnailTime.isValid() && thumbnailTime < pictureTime) {
 				// Both files exist, have valid timestamps and thumbnail was calculated before picture.
 				// Return an empty thumbnail to signal recalculation of the thumbnail
-				return { QImage(), MEDIATYPE_UNKNOWN };
+				return { QImage(), MEDIATYPE_UNKNOWN, 0 };
 			}
 		}
 	}
 
 	if (!file.open(QIODevice::ReadOnly))
-		return { QImage(), MEDIATYPE_UNKNOWN };
+		return { QImage(), MEDIATYPE_UNKNOWN, 0 };
 	QDataStream stream(&file);
 
 	// Each thumbnail file is composed of a media-type and an image file.
 	quint32 type;
 	QImage res;
 	stream >> type;
-	stream >> res;
 
-	// Thumbnails of videos currently not supported - replace by dummy
-	// TODO: Perhaps extract thumbnails
-	if (type == MEDIATYPE_VIDEO)
-		res = videoImage;
-	else if (type == MEDIATYPE_UNKNOWN)
-		res = unknownImage;
-
-	return { res, (mediatype_t)type };
+	switch (type) {
+	case MEDIATYPE_PICTURE:	return getPictureThumbnailFromStream(stream);
+	case MEDIATYPE_VIDEO:	return getVideoThumbnailFromStream(stream);
+	case MEDIATYPE_UNKNOWN:	return { unknownImage, MEDIATYPE_UNKNOWN, 0 };
+	default:		return { QImage(), MEDIATYPE_UNKNOWN, 0 };
+	}
 }
 
-void Thumbnailer::addThumbnailToCache(const Thumbnail &thumbnail, const QString &picture_filename)
+void Thumbnailer::addVideoThumbnailToCache(const QString &picture_filename, duration_t duration)
 {
-	if (thumbnail.img.isNull())
-		return;
-
+	// The format of video thumbnails:
+	//	uint32	MEDIATYPE_VIDEO
+	//	uint32	duration of video in seconds
+	//	uint32	number of pictures (0 = we didn't manage to extract a picture)
+	//	for each picture:
+	//		uint32	offset in msec from begining of video
+	//		QImage	frame
 	QString filename = thumbnailFileName(picture_filename);
 	QSaveFile file(filename);
 	if (!file.open(QIODevice::WriteOnly))
 		return;
 	QDataStream stream(&file);
 
-	stream << (quint32)thumbnail.type;
-	if (thumbnail.type == MEDIATYPE_PICTURE) // TODO: Perhaps also support caching of video thumbnails
-		stream << thumbnail.img;
+	stream << (quint32)MEDIATYPE_VIDEO;
+	stream << (quint32)duration.seconds;
+	stream << (quint32)0;			// Currently, we don't support extraction of images
 	file.commit();
+}
+
+void Thumbnailer::addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail)
+{
+	if (thumbnail.isNull())
+		return;
+
+	// The format of a picture-thumbnail is very simple:
+	// 	uint32	MEDIATYPE_PICTURE
+	// 	QImage	thumbnail
+	QString filename = thumbnailFileName(picture_filename);
+	QSaveFile file(filename);
+	if (!file.open(QIODevice::WriteOnly))
+		return;
+	QDataStream stream(&file);
+
+	stream << (quint32)MEDIATYPE_PICTURE;
+	stream << thumbnail;
+	file.commit();
+}
+
+void Thumbnailer::addUnknownThumbnailToCache(const QString &picture_filename)
+{
+	QString filename = thumbnailFileName(picture_filename);
+	QSaveFile file(filename);
+	if (!file.open(QIODevice::WriteOnly))
+		return;
+	QDataStream stream(&file);
+	stream << (quint32)MEDIATYPE_UNKNOWN;
 }
 
 void Thumbnailer::recalculate(QString filename)
@@ -245,7 +315,6 @@ void Thumbnailer::recalculate(QString filename)
 	// and therefore a "broken" image symbol may be shown.
 	if (thumbnail.type == MEDIATYPE_STILL_LOADING || thumbnail.type == MEDIATYPE_IO_ERROR)
 		return;
-	addThumbnailToCache(thumbnail, filename);
 
 	QMutexLocker l(&lock);
 	emit thumbnailChanged(filename, thumbnail.img);
@@ -266,7 +335,6 @@ void Thumbnailer::processItem(QString filename, bool tryDownload)
 		} else {
 			int size = maxThumbnailSize();
 			thumbnail.img = thumbnail.img.scaled(size, size, Qt::KeepAspectRatio);
-			addThumbnailToCache(thumbnail, filename);
 		}
 	}
 
