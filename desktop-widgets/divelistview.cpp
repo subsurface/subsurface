@@ -922,11 +922,17 @@ void DiveListView::shiftTimes()
 
 void DiveListView::loadImages()
 {
-	QStringList filters = imageExtensionFilters();
+	QStringList m_filters = mediaExtensionFilters();
+	QStringList i_filters = imageExtensionFilters();
+	QStringList v_filters = videoExtensionFilters();
 	QStringList fileNames = QFileDialog::getOpenFileNames(this,
 							      tr("Open media files"),
 							      lastUsedImageDir(),
-							      tr("Media files (%1)").arg(filters.join(" ")));
+							      QString("%1 (%2);;%3 (%4);;%5 (%6);;%7 (*.*)")
+							      .arg(tr("Media files"), m_filters.join(" ")
+							      , tr("Image files"), i_filters.join(" ")
+							      , tr("Video files"), v_filters.join(" ")
+							      , tr("All files")));
 
 	if (fileNames.isEmpty())
 		return;
