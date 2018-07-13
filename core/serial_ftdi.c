@@ -98,12 +98,14 @@ static dc_status_t serial_ftdi_get_transmitted (ftdi_serial_t *device)
 	return DC_STATUS_UNSUPPORTED;
 }
 
-static dc_status_t serial_ftdi_sleep (ftdi_serial_t *device, unsigned long timeout)
+static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 {
+	ftdi_serial_t *device = io;
+
 	if (device == NULL)
 		return DC_STATUS_INVALIDARGS;
 
-	INFO (device->context, "Sleep: value=%lu", timeout);
+	INFO (device->context, "Sleep: value=%u", timeout);
 
 	struct timespec ts;
 	ts.tv_sec  = (timeout / 1000);
@@ -541,7 +543,7 @@ dc_status_t ftdi_open(dc_iostream_t **iostream, dc_context_t *context)
 		serial_ftdi_write, /* write */
 		NULL, /* flush */
 		serial_ftdi_purge, /* purge */
-		NULL, /* sleep */
+		serial_ftdi_sleep, /* sleep */
 		serial_ftdi_close, /* close */
 	};
 
