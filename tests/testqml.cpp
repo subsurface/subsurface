@@ -4,6 +4,7 @@
 #include <QtTest>
 #include <QQmlEngine>
 #include <QQmlContext>
+#include <QApplication>
 
 #include "core/settings/qPref.h"
 #include "core/qt-gui.h"
@@ -18,8 +19,12 @@ int main(int argc, char **argv)
 	QTEST_ADD_GPU_BLACKLIST_SUPPORT
 	QTEST_SET_MAIN_SOURCE_PATH
 
-	// check that qPref exists
-	new qPref;
+	// check that qPref classes exists
+	qPref::instance();
+	qPrefDisplay::instance();
+
+	// prepare Qt application
+	new QApplication(argc, argv);
 
 	// check that we have a directory
 	if (argc < 2) {

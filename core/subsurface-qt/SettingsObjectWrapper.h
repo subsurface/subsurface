@@ -6,6 +6,7 @@
 #include <QDate>
 
 #include "core/pref.h"
+#include "core/settings/qPref.h"
 
 /* Wrapper class for the Settings. This will allow
  * seamlessy integration of the settings with the QML
@@ -594,28 +595,6 @@ private:
 	const QString group = QStringLiteral("GeneralSettings");
 };
 
-class DisplaySettingsObjectWrapper : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString divelist_font     READ divelistFont       WRITE setDivelistFont       NOTIFY divelistFontChanged)
-	Q_PROPERTY(double font_size          READ fontSize           WRITE setFontSize           NOTIFY fontSizeChanged)
-	Q_PROPERTY(bool display_invalid_dives  READ displayInvalidDives     WRITE setDisplayInvalidDives       NOTIFY displayInvalidDivesChanged)
-public:
-	DisplaySettingsObjectWrapper(QObject *parent);
-	QString divelistFont() const;
-	double fontSize() const;
-	bool displayInvalidDives() const;
-public slots:
-	void setDivelistFont(const QString& value);
-	void setFontSize(double value);
-	void setDisplayInvalidDives(bool value);
-signals:
-	void divelistFontChanged(const QString& value);
-	void fontSizeChanged(double value);
-	void displayInvalidDivesChanged(bool value);
-private:
-	const QString group = QStringLiteral("Display");
-};
-
 class LanguageSettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString language          READ language           WRITE setLanguage           NOTIFY languageChanged)
@@ -709,7 +688,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
 
 	Q_PROPERTY(GeneralSettingsObjectWrapper*         general   MEMBER general_settings CONSTANT)
-	Q_PROPERTY(DisplaySettingsObjectWrapper*         display   MEMBER display_settings CONSTANT)
+	Q_PROPERTY(qPrefDisplay*         display   MEMBER display_settings CONSTANT)
 	Q_PROPERTY(LanguageSettingsObjectWrapper*        language  MEMBER language_settings CONSTANT)
 	Q_PROPERTY(AnimationsSettingsObjectWrapper*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
@@ -728,7 +707,7 @@ public:
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
-	DisplaySettingsObjectWrapper *display_settings;
+	qPrefDisplay *display_settings;
 	LanguageSettingsObjectWrapper *language_settings;
 	AnimationsSettingsObjectWrapper *animation_settings;
 	LocationServiceSettingsObjectWrapper *location_settings;

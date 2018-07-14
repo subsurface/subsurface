@@ -15,6 +15,7 @@ static qPref *self = new qPref;
 
 void qPref::loadSync(bool doSync)
 {
+	qPrefDisplay::instance()->loadSync(doSync);
 }
 
 const QString qPref::canonical_version() const

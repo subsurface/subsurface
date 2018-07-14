@@ -88,10 +88,10 @@ void PreferencesDefaults::syncSettings()
 	else if (ui->cloudDefaultFile->isChecked())
 		general->setDefaultFileBehavior(CLOUD_DEFAULT_FILE);
 
-	auto display =  SettingsObjectWrapper::instance()->display_settings;
-	display->setDivelistFont(ui->font->currentFont().toString());
-	display->setFontSize(ui->fontsize->value());
-	display->setDisplayInvalidDives(ui->displayinvalid->isChecked());
+	auto display =  qPrefDisplay::instance();
+	display->set_divelist_font(ui->font->currentFont().toString());
+	display->set_font_size(ui->fontsize->value());
+	display->set_display_invalid_dives(ui->displayinvalid->isChecked());
 
 	auto animation = SettingsObjectWrapper::instance()->animation_settings;
 	animation->setAnimationSpeed(ui->velocitySlider->value());

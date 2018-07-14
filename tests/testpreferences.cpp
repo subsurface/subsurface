@@ -445,23 +445,6 @@ void TestPreferences::testPreferences()
 	TEST(general->pscrRatio(), 1);
 	TEST(general->useDefaultFile(), false);
 
-	auto display = pref->display_settings;
-	display->setDivelistFont("comic");
-	display->setFontSize(10.0);
-	display->setDisplayInvalidDives(true);
-
-	TEST(display->divelistFont(),QStringLiteral("comic"));
-	TEST(display->fontSize(), 10.0);
-	TEST(display->displayInvalidDives(), true);
-
-	display->setDivelistFont("helvetica");
-	display->setFontSize(14.0);
-	display->setDisplayInvalidDives(false);
-
-	TEST(display->divelistFont(),QStringLiteral("helvetica"));
-	TEST(display->fontSize(), 14.0);
-	TEST(display->displayInvalidDives(), false);
-
 	auto language = pref->language_settings;
 	language->setLangLocale         ("en_US");
 	language->setLanguage           ("en");
