@@ -96,14 +96,16 @@ QVariant DivePictureModel::data(const QModelIndex &index, int role) const
 			break;
 		case Qt::DisplayPropertyRole:
 			ret = QFileInfo(entry.filename).filePath();
+			break;
+		case Qt::UserRole:
+			ret = entry.diveId;
+			break;
 		}
 	} else if (index.column() == 1) {
 		switch (role) {
-		case Qt::UserRole:
-			ret = QVariant::fromValue(entry.offsetSeconds);
-			break;
 		case Qt::DisplayRole:
 			ret = entry.filename;
+			break;
 		}
 	}
 	return ret;

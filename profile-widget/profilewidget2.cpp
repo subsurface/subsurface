@@ -2190,8 +2190,17 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 		QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 
 		QString filename;
-		QPoint pos;
-		dataStream >> filename >> pos;
+		int diveId;
+		dataStream >> filename >> diveId;
+
+		// If the id of the drag & dropped picture belongs to a different dive, then
+		// the offset we determine makes no sense what so ever. Simply ignore such an event.
+		// In the future, we might think about duplicating the picture or moving the picture
+		// from one dive to the other.
+		if (!current_dive || displayed_dive.id != diveId) {
+			event->ignore();
+			return;
+		}
 
 #ifndef SUBSURFACE_MOBILE
 		// Calculate time in dive where picture was dropped and whether the new position is during the dive.
@@ -2199,19 +2208,15 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 		offset_t offset { (int32_t)lrint(timeAxis->valueAt(mappedPos)) };
 		bool duringDive = current_dive && offset.seconds > 0 && offset.seconds < current_dive->duration.seconds;
 
-		// Flag which states whether the drag&dropped picture actually belongs to this dive.
-		// If this is not the case, the calculated offset makes no sense whatsoever and we must ignore the event.
-		bool belongsToDive = true;
-
 		// A picture was drag&dropped onto the profile: We have four cases to consider:
 		//	1a) The image was already shown on the profile and is moved to a different position on the profile.
 		//	    Calculate the new position and move the picture.
 		//	1b) The image was on the profile and is moved outside of the dive time.
 		//	    Remove the picture.
-		//	2a) The image was not on the profile, but belongs to the current dive.
-		//	    Add the picture to the profile if it is during the dive.
-		//	2b) The picture does not belong to the current dive.
-		//	    For now, do nothing. We may think about adding the picture to the dive.
+		//	2a) The image was not on the profile and is moved into the dive time.
+		//	    Add the picture to the profile.
+		//	2b) The image was not on the profile and is moved outside of the dive time.
+		//	    Do nothing.
 		auto oldPos = std::find_if(pictures.begin(), pictures.end(), [filename](const PictureEntry &e)
 					   { return e.filename == filename; });
 		if (oldPos != pictures.end()) {
@@ -2238,16 +2243,9 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 			// In both cases the picture list changed, therefore we must recalculate the y-coordinatesA.
 			calculatePictureYPositions();
 		} else {
-			// Cases 2a) and 2b): picture not on profile. Check if it belongs to current dive.
-			// Note that FOR_EACH_PICTURE handles current_dive being null gracefully.
-			bool found = false;
-			FOR_EACH_PICTURE(current_dive) {
-				if (picture->filename == filename) {
-					found = true;
-					break;
-				}
-			}
-			if (found && duringDive) {
+			// Cases 2a) and 2b): picture not on profile. We only have to take action for
+			// the first case: picture is moved into dive-time.
+			if (duringDive) {
 				// Case 2a): add the picture at the appropriate position.
 				// The case move from outside-to-outside of the profile plot was handled by
 				// the "&& duringDive" condition in the if above.
@@ -2261,15 +2259,11 @@ void ProfileWidget2::dropEvent(QDropEvent *event)
 				newPos = pictures.emplace(newPos, offset, filename, scene());
 				updateThumbnailXPos(*newPos);
 				calculatePictureYPositions();
-			} else if (!found) {
-				// Case 2b): Unknown picture. Ignore.
-				belongsToDive = false;
 			}
 		}
 
 		// Only signal the drag&drop action if the picture actually belongs to the dive.
-		if (belongsToDive)
-			DivePictureModel::instance()->updateDivePictureOffset(displayed_dive.id, filename, offset.seconds);
+		DivePictureModel::instance()->updateDivePictureOffset(displayed_dive.id, filename, offset.seconds);
 #endif
 
 		if (event->source() == this) {
