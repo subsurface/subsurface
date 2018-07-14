@@ -482,11 +482,6 @@ void TestPreferences::testPreferences()
 	TEST(language->dateFormatOverride(),true);
 	TEST(language->useSystemLanguage(), true);
 
-	pref->animation_settings->setAnimationSpeed(20);
-	TEST(pref->animation_settings->animationSpeed(), 20);
-	pref->animation_settings->setAnimationSpeed(30);
-	TEST(pref->animation_settings->animationSpeed(), 30);
-
 	auto location = pref->location_settings;
 	location->setTimeThreshold(10);
 	location->setDistanceThreshold(20);

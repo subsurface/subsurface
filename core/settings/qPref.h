@@ -6,6 +6,7 @@
 #include <QSettings>
 #include "core/pref.h"
 
+#include "qPrefAnimations.h"
 #include "qPrefDisplay.h"
 
 class qPref : public QObject {
@@ -34,8 +35,6 @@ public:
 
 	const QString canonical_version() const;
 	const QString mobile_version() const;
-
-private:
 };
 
 #endif
