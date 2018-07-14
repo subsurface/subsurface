@@ -326,63 +326,6 @@ private:
 	const QString group = QStringLiteral("Network");
 };
 
-class CloudStorageSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString password          READ password           WRITE setPassword           NOTIFY passwordChanged)
-	Q_PROPERTY(QString newpassword       READ newPassword        WRITE setNewPassword        NOTIFY newPasswordChanged)
-	Q_PROPERTY(QString email             READ email              WRITE setEmail              NOTIFY emailChanged)
-	Q_PROPERTY(QString email_encoded     READ emailEncoded       WRITE setEmailEncoded       NOTIFY emailEncodedChanged)
-	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
-	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
-	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
-	Q_PROPERTY(bool save_userid_local    READ saveUserIdLocal    WRITE setSaveUserIdLocal    NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(bool git_local_only       READ gitLocalOnly       WRITE setGitLocalOnly       NOTIFY gitLocalOnlyChanged)
-	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
-	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
-public:
-	CloudStorageSettings(QObject *parent);
-	QString password() const;
-	QString newPassword() const;
-	QString email() const;
-	QString emailEncoded() const;
-	QString userId() const;
-	QString baseUrl() const;
-	QString gitUrl() const;
-	bool savePasswordLocal() const;
-	short verificationStatus() const;
-	bool gitLocalOnly() const;
-	bool saveUserIdLocal() const;
-
-public slots:
-	void setPassword(const QString& value);
-	void setNewPassword(const QString& value);
-	void setEmail(const QString& value);
-	void setEmailEncoded(const QString& value);
-	void setUserId(const QString& value);
-	void setBaseUrl(const QString& value);
-	void setGitUrl(const QString& value);
-	void setSavePasswordLocal(bool value);
-	void setVerificationStatus(short value);
-	void setGitLocalOnly(bool value);
-	void setSaveUserIdLocal(bool value);
-
-signals:
-	void passwordChanged(const QString& value);
-	void newPasswordChanged(const QString& value);
-	void emailChanged(const QString& value);
-	void emailEncodedChanged(const QString& value);
-	void userIdChanged(const QString& value);
-	void baseUrlChanged(const QString& value);
-	void gitUrlChanged(const QString& value);
-	void savePasswordLocalChanged(bool value);
-	void verificationStatusChanged(short value);
-	void gitLocalOnlyChanged(bool value);
-	void saveUserIdLocalChanged(bool value);
-
-private:
-	const QString group = QStringLiteral("CloudStorage");
-};
-
 class DivePlannerSettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool last_stop           READ lastStop             WRITE setLastStop             NOTIFY lastStopChanged)
@@ -666,7 +609,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(FacebookSettings*           facebook         MEMBER facebook CONSTANT)
 	Q_PROPERTY(GeocodingPreferences*       geocoding        MEMBER geocoding CONSTANT)
 	Q_PROPERTY(ProxySettings*              proxy            MEMBER proxy CONSTANT)
-	Q_PROPERTY(CloudStorageSettings*       cloud_storage    MEMBER cloud_storage CONSTANT)
+	Q_PROPERTY(qPrefCloudStorage*       cloud_storage    MEMBER cloud_storage CONSTANT)
 	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
 	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
 
@@ -686,7 +629,7 @@ public:
 	FacebookSettings *facebook;
 	GeocodingPreferences *geocoding;
 	ProxySettings *proxy;
-	CloudStorageSettings *cloud_storage;
+	qPrefCloudStorage *cloud_storage;
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
