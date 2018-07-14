@@ -1,4 +1,4 @@
-
+- tests: add qml test harness
 - Dive media: sort thumbnails by timestamp
 - Dive media: don't recalculate all pictures on drag & drop
 - Profile: immediately update thumbnail positions on deletion

@@ -76,6 +76,18 @@ enable_testing()
 add_definitions(-g)
 add_definitions(-DSUBSURFACE_TEST_DATA="${SUBSURFACE_TEST_DATA}")
 
+# Build QML test runner
+# add_executable demands relative path, therefore ../ 
+add_executable(TestQML testqml.cpp ../subsurface-helper.cpp )
+target_link_libraries(
+	TestQML
+	subsurface_corelib
+	RESOURCE_LIBRARY
+	${QT_TEST_LIBRARIES}
+	${SUBSURFACE_LINK_LIBRARIES}
+)
+
+# SSRF test cases (TBD, convert to standard qTest setup)
 TEST(TestUnitConversion testunitconversion.cpp)
 TEST(TestProfile testprofile.cpp)
 TEST(TestGpsCoords testgpscoords.cpp)
@@ -88,6 +100,7 @@ TEST(TestPreferences testpreferences.cpp)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
+add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> ${SUBSURFACE_SOURCE}/tests)
 
 
 add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
@@ -104,6 +117,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestPicture
 	TestMerge
 	TestTagList
+	TestQML
 )
 
 # useful for debugging CMake issues
