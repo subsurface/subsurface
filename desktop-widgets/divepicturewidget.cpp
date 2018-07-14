@@ -32,7 +32,9 @@ void DivePictureWidget::mouseDoubleClickEvent(QMouseEvent *event)
 void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 {
 	if (event->button() == Qt::LeftButton && event->modifiers() == Qt::NoModifier) {
-		QString filename = model()->data(indexAt(event->pos()), Qt::DisplayPropertyRole).toString();
+		QModelIndex index = indexAt(event->pos());
+		QString filename = model()->data(index, Qt::DisplayPropertyRole).toString();
+		int diveId = model()->data(index, Qt::UserRole).toInt();
 
 		if (!filename.isEmpty()) {
 			int dim = lrint(defaultIconMetrics().sz_pic * 0.2);
@@ -42,7 +44,7 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 			
 			QByteArray itemData;
 			QDataStream dataStream(&itemData, QIODevice::WriteOnly);
-			dataStream << filename << event->pos();
+			dataStream << filename << diveId;
 
 			QMimeData *mimeData = new QMimeData;
 			mimeData->setData("application/x-subsurfaceimagedrop", itemData);
@@ -53,11 +55,8 @@ void DivePictureWidget::mousePressEvent(QMouseEvent *event)
 
 			drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 		}
-
-		QListView::mousePressEvent(event);
-	} else {
-		QListView::mousePressEvent(event);
 	}
+	QListView::mousePressEvent(event);
 }
 
 void DivePictureWidget::wheelEvent(QWheelEvent *event)
