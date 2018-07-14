@@ -48,8 +48,8 @@ void PreferencesNetwork::syncSettings()
 	auto cloud = SettingsObjectWrapper::instance()->cloud_storage;
 	auto proxy = SettingsObjectWrapper::instance()->proxy;
 
-	cloud->setUserId(ui->default_uid->text().toUpper());
-	cloud->setSaveUserIdLocal(ui->save_uid_local->checkState());
+	cloud->set_userid(ui->default_uid->text().toUpper());
+	cloud->set_save_userid_local(ui->save_uid_local->checkState());
 
 	proxy->setType(ui->proxyType->itemData(ui->proxyType->currentIndex()).toInt());
 	proxy->setHost(ui->proxyHost->text());
@@ -82,7 +82,7 @@ void PreferencesNetwork::syncSettings()
 			connect(cloudAuth, &CloudStorageAuthenticate::passwordChangeSuccessful, this, &PreferencesNetwork::passwordUpdateSuccessful);
 			cloudAuth->backend(email, password, "", newpassword);
 			ui->cloud_storage_new_passwd->setText("");
-			cloud->setNewPassword(newpassword);
+			cloud->set_cloud_storage_newpassword(newpassword);
 		}
 	} else if (prefs.cloud_verification_status == qPref::CS_UNKNOWN ||
 		   prefs.cloud_verification_status == qPref::CS_INCORRECT_USER_PASSWD ||
@@ -90,14 +90,14 @@ void PreferencesNetwork::syncSettings()
 		   password != prefs.cloud_storage_password) {
 
 		// different credentials - reset verification status
-		int oldVerificationStatus = cloud->verificationStatus();
-		cloud->setVerificationStatus(qPref::CS_UNKNOWN);
+		int oldVerificationStatus = cloud->cloud_verification_status();
+		cloud->set_cloud_verification_status(qPref::CS_UNKNOWN);
 		if (!email.isEmpty() && !password.isEmpty()) {
 			// connect to backend server to check / create credentials
 			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
 			if (!reg.match(email).hasMatch() || (!password.isEmpty() && !reg.match(password).hasMatch())) {
 				report_error(qPrintable(tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.")));
-				cloud->setVerificationStatus(oldVerificationStatus);
+				cloud->set_cloud_verification_status(oldVerificationStatus);
 				return;
 			}
 			CloudStorageAuthenticate *cloudAuth = new CloudStorageAuthenticate(this);
@@ -118,11 +118,11 @@ void PreferencesNetwork::syncSettings()
 			cloudAuth->backend(email, password, pin);
 		}
 	}
-	cloud->setEmail(email);
-	cloud->setSavePasswordLocal(ui->save_password_local->isChecked());
-	cloud->setPassword(password);
-	cloud->setVerificationStatus(prefs.cloud_verification_status);
-	cloud->setBaseUrl(prefs.cloud_base_url);
+	cloud->set_cloud_storage_email(email);
+	cloud->set_save_password_local(ui->save_password_local->isChecked());
+	cloud->set_cloud_storage_password(password);
+	cloud->set_cloud_verification_status(prefs.cloud_verification_status);
+	cloud->set_cloud_base_url(prefs.cloud_base_url);
 }
 
 void PreferencesNetwork::updateCloudAuthenticationState()

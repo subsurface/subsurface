@@ -26,51 +26,51 @@ void TestPreferences::testPreferences()
 
 	auto cloud = pref->cloud_storage;
 
-	cloud->setBaseUrl("test_one");
-	TEST(cloud->baseUrl(), QStringLiteral("test_one"));
-	cloud->setBaseUrl("test_two");
-	TEST(cloud->baseUrl(), QStringLiteral("test_two"));
+	cloud->set_cloud_base_url("test_one");
+	TEST(cloud->cloud_base_url(), QStringLiteral("test_one"));
+	cloud->set_cloud_base_url("test_two");
+	TEST(cloud->cloud_base_url(), QStringLiteral("test_two"));
 
-	cloud->setEmail("tomaz@subsurface.com");
-	TEST(cloud->email(), QStringLiteral("tomaz@subsurface.com"));
-	cloud->setEmail("tomaz@gmail.com");
-	TEST(cloud->email(), QStringLiteral("tomaz@gmail.com"));
+	cloud->set_cloud_storage_email("tomaz@subsurface.com");
+	TEST(cloud->cloud_storage_email(), QStringLiteral("tomaz@subsurface.com"));
+	cloud->set_cloud_storage_email("tomaz@gmail.com");
+	TEST(cloud->cloud_storage_email(), QStringLiteral("tomaz@gmail.com"));
 
-	cloud->setGitLocalOnly(true);
-	TEST(cloud->gitLocalOnly(), true);
-	cloud->setGitLocalOnly(false);
-	TEST(cloud->gitLocalOnly(), false);
+	cloud->set_git_local_only(true);
+	TEST(cloud->git_local_only(), true);
+	cloud->set_git_local_only(false);
+	TEST(cloud->git_local_only(), false);
 
 	// Why there's new password and password on the prefs?
-	cloud->setNewPassword("ABCD");
-	TEST(cloud->newPassword(), QStringLiteral("ABCD"));
-	cloud->setNewPassword("ABCDE");
-	TEST(cloud->newPassword(), QStringLiteral("ABCDE"));
+	cloud->set_cloud_storage_newpassword("ABCD");
+	TEST(cloud->cloud_storage_newpassword(), QStringLiteral("ABCD"));
+	cloud->set_cloud_storage_newpassword("ABCDE");
+	TEST(cloud->cloud_storage_newpassword(), QStringLiteral("ABCDE"));
 
-	cloud->setPassword("ABCDE");
-	TEST(cloud->password(), QStringLiteral("ABCDE"));
-	cloud->setPassword("ABCABC");
-	TEST(cloud->password(), QStringLiteral("ABCABC"));
+	cloud->set_cloud_storage_password("ABCDE");
+	TEST(cloud->cloud_storage_password(), QStringLiteral("ABCDE"));
+	cloud->set_cloud_storage_password("ABCABC");
+	TEST(cloud->cloud_storage_password(), QStringLiteral("ABCABC"));
 
-	cloud->setSavePasswordLocal(true);
-	TEST(cloud->savePasswordLocal(), true);
-	cloud->setSavePasswordLocal(false);
-	TEST(cloud->savePasswordLocal(), false);
+	cloud->set_save_password_local(true);
+	TEST(cloud->save_password_local(), true);
+	cloud->set_save_password_local(false);
+	TEST(cloud->save_password_local(), false);
 
-	cloud->setSaveUserIdLocal(1);
-	TEST(cloud->saveUserIdLocal(), true);
-	cloud->setSaveUserIdLocal(0);
-	TEST(cloud->saveUserIdLocal(), false);
+	cloud->set_save_userid_local(1);
+	TEST(cloud->save_userid_local(), true);
+	cloud->set_save_userid_local(0);
+	TEST(cloud->save_userid_local(), false);
 
-	cloud->setUserId("Tomaz");
-	TEST(cloud->userId(), QStringLiteral("Tomaz"));
-	cloud->setUserId("Zamot");
-	TEST(cloud->userId(), QStringLiteral("Zamot"));
+	cloud->set_userid("Tomaz");
+	TEST(cloud->userid(), QStringLiteral("Tomaz"));
+	cloud->set_userid("Zamot");
+	TEST(cloud->userid(), QStringLiteral("Zamot"));
 
-	cloud->setVerificationStatus(0);
-	TEST(cloud->verificationStatus(), (short)0);
-	cloud->setVerificationStatus(1);
-	TEST(cloud->verificationStatus(), (short)1);
+	cloud->set_cloud_verification_status(0);
+	TEST(cloud->cloud_verification_status(), (short)0);
+	cloud->set_cloud_verification_status(1);
+	TEST(cloud->cloud_verification_status(), (short)1);
 
 	auto tecDetails = pref->techDetails;
 	tecDetails->setModpO2(0.2);

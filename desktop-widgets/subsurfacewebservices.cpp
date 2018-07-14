@@ -2,6 +2,7 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "core/qthelper.h"
 #include "core/webservice.h"
+#include "core/settings/qPref.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/usersurvey.h"
 #include "core/divelist.h"
@@ -9,7 +10,6 @@
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "core/display.h"
 #include "core/membuffer.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <errno.h>
 #include "core/cloudstorage.h"
 #include "core/subsurface-string.h"
@@ -436,7 +436,7 @@ void SubsurfaceWebServices::buttonClicked(QAbstractButton *button)
 		QSettings s;
 		QString qDialogUid = ui.userID->text().toUpper();
 		bool qSaveUid = ui.saveUidLocal->checkState();
-		SettingsObjectWrapper::instance()->cloud_storage->setSaveUserIdLocal(qSaveUid);
+		qPrefCloudStorage::instance()->set_save_userid_local(qSaveUid);
 
 		//WARN: Dirk, this seems to be wrong, I coundn't really understand the code.
 		if (qSaveUid) {
