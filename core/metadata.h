@@ -5,6 +5,7 @@
 
 struct metadata {
 	timestamp_t	timestamp;
+	duration_t	duration;
 	degrees_t	latitude;
 	degrees_t	longitude;
 };
