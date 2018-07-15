@@ -87,7 +87,7 @@ void qPref ## usegroup::disk_ ## field(bool doSync) \
 #define DISK_LOADSYNC_INT(usegroup, name, field) \
 void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
-	LOADSYNC_DOUBLE(name, field); \
+	LOADSYNC_INT(name, field); \
 }
 
 #define DISK_LOADSYNC_INT_DEF(usegroup, name, field, defval) \
