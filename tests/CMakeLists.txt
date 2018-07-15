@@ -97,11 +97,12 @@ TEST(TestDiveSiteDuplication testdivesiteduplication.cpp)
 TEST(TestRenumber testrenumber.cpp)
 TEST(TestGitStorage testgitstorage.cpp)
 TEST(TestPreferences testpreferences.cpp)
-TEST(TestQPrefDisplay testqPrefDisplay.cpp)
-TEST(TestQPrefAnimations testqPrefAnimations.cpp)
 TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
+
+TEST(TestQPrefAnimations testqPrefAnimations.cpp)
+TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> ${SUBSURFACE_SOURCE}/tests)
 
 
@@ -114,12 +115,14 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestGitStorage
 	TestPlan
 	TestDiveSiteDuplication
-	TestQPrefDisplay
 	TestPreferences
 	TestRenumber
 	TestPicture
 	TestMerge
 	TestTagList
+
+	TestQPrefAnimations
+	TestQPrefDisplay
 	TestQML
 )
 
