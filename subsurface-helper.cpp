@@ -31,10 +31,12 @@
 #ifndef SUBSURFACE_TEST_DATA
 QObject *qqWindowObject = NULL;
 
+static void register_meta_types();
 void init_ui()
 {
 	init_qt_late();
 	register_qml_types();
+	register_meta_types();
 #ifndef SUBSURFACE_MOBILE
 	PluginManager::instance().loadPlugins();
 
@@ -136,6 +138,12 @@ void run_ui()
 	MainWindow::instance()->show();
 #endif // SUBSURFACE_MOBILE
 	qApp->exec();
+}
+
+Q_DECLARE_METATYPE(duration_t)
+static void register_meta_types()
+{
+	qRegisterMetaType<duration_t>();
 }
 #endif // not SUBSURFACE_TEST_DATA
 

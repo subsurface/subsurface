@@ -87,6 +87,10 @@ static struct _ItemPos {
 	_Axis heartBeatWithTankBar;
 } itemPos;
 
+// Constant describing at which z-level the thumbnails are located.
+// We might add more constants here for easier customability.
+static const double thumbnailBaseZValue = 100.0;
+
 ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	currentState(INVALID),
 	dataModel(new DivePlotDataModel(this)),
@@ -973,6 +977,21 @@ void ProfileWidget2::fixBackgroundPos()
 	background->setPixmap(p);
 	background->setX(mapToScene(x, 0).x());
 	background->setY(mapToScene(y, 20).y());
+}
+
+void ProfileWidget2::scale(qreal sx, qreal sy)
+{
+	QGraphicsView::scale(sx, sy);
+
+#ifndef SUBSURFACE_MOBILE
+	// Since the zoom level changed, adjust the duration bars accordingly.
+	// We want to grow/shrink the length, but not the height and pen.
+	for (PictureEntry &p: pictures)
+		updateDurationLine(p);
+
+	// Since we created new duration lines, we have to update the order in which the thumbnails is painted.
+	updateThumbnailPaintOrder();
+#endif
 }
 
 #ifndef SUBSURFACE_MOBILE
@@ -2064,9 +2083,37 @@ void ProfileWidget2::clearPictures()
 	pictures.clear();
 }
 
+static const double unscaledDurationLineWidth = 2.5;
+static const double unscaledDurationLinePenWidth = 0.5;
+
+// Reset the duration line after an image was moved or we found a new duration
+void ProfileWidget2::updateDurationLine(PictureEntry &e)
+{
+	if (e.duration.seconds > 0) {
+		// We know the duration of this video, reset the line symbolizing its extent accordingly
+		double begin = timeAxis->posAtValue(e.offset.seconds);
+		double end = timeAxis->posAtValue(e.offset.seconds + e.duration.seconds);
+		double y = e.thumbnail->y();
+
+		// Undo scaling for pen-width and line-width. For this purpose, we use the scaling of the y-axis.
+		double scale = transform().m22();
+		double durationLineWidth = unscaledDurationLineWidth / scale;
+		double durationLinePenWidth = unscaledDurationLinePenWidth / scale;
+		e.durationLine.reset(new QGraphicsRectItem(begin, y - durationLineWidth - durationLinePenWidth, end - begin, durationLineWidth));
+		e.durationLine->setPen(QPen(getColor(GF_LINE, isGrayscale), durationLinePenWidth));
+		e.durationLine->setBrush(getColor(::BACKGROUND, isGrayscale));
+		e.durationLine->setVisible(prefs.show_pictures_in_profile);
+		scene()->addItem(e.durationLine.get());
+	} else {
+		// This is either a picture or a video with unknown duration.
+		// In case there was a line (how could that be?) remove it.
+		e.durationLine.reset();
+	}
+}
+
 // This function is called asynchronously by the thumbnailer if a thumbnail
 // was fetched from disk or freshly calculated.
-void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail)
+void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail, duration_t duration)
 {
 	// Find the picture with the given filename
 	auto it = std::find_if(pictures.begin(), pictures.end(), [&filename](const PictureEntry &e)
@@ -2078,11 +2125,20 @@ void ProfileWidget2::updateThumbnail(QString filename, QImage thumbnail)
 		// Replace the pixmap of the thumbnail with the newly calculated one.
 		int size = Thumbnailer::defaultThumbnailSize();
 		it->thumbnail->setPixmap(QPixmap::fromImage(thumbnail.scaled(size, size, Qt::KeepAspectRatio)));
+
+		// If the duration changed, update the line
+		if (duration.seconds != it->duration.seconds) {
+			it->duration = duration;
+			updateDurationLine(*it);
+			// If we created / removed a duration line, we have to update the thumbnail paint order.
+			updateThumbnailPaintOrder();
+		}
 	}
 }
 
 // Create a PictureEntry object and add its thumbnail to the scene if profile pictures are shown.
 ProfileWidget2::PictureEntry::PictureEntry(offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene) : offset(offsetIn),
+	duration(duration_t {0}),
 	filename(filenameIn),
 	thumbnail(new DivePictureItem)
 {
@@ -2101,23 +2157,37 @@ bool ProfileWidget2::PictureEntry::operator< (const PictureEntry &e) const
 	return std::tie(offset.seconds, filename) < std::tie(e.offset.seconds, e.filename);
 }
 
+// This function updates the paint order of the thumbnails and duration-lines, such that later
+// thumbnails are painted on top of previous thumbnails and duration-lines on top of the thumbnail
+// they belong to.
+void ProfileWidget2::updateThumbnailPaintOrder()
+{
+	if (!pictures.size())
+		return;
+	// To get the correct sort order, we place in thumbnails at equal z-distances
+	// between thumbnailBaseZValue and (thumbnailBaseZValue + 1.0).
+	// Duration-lines are placed between the thumbnails.
+	double z = thumbnailBaseZValue;
+	double step = 1.0 / (double)pictures.size();
+	for (PictureEntry &e: pictures) {
+		e.thumbnail->setBaseZValue(z);
+		if (e.durationLine)
+			e.durationLine->setZValue(z + step / 2.0);
+		z += step;
+	}
+}
+
 // Calculate the y-coordinates of the thumbnails, which are supposed to be sorted by x-coordinate.
 // This will also change the order in which the thumbnails are painted, to avoid weird effects,
 // when items are added later to the scene. This is done using the QGraphicsItem::packBefore() function.
 // We can't use the z-value, because that will be modified on hoverEnter and hoverExit events.
 void ProfileWidget2::calculatePictureYPositions()
 {
-	// Quit early if there are no items. The last loop in this function assumes that the vector is not empty.
-	if (pictures.empty())
-		return;
-
 	double lastX = -1.0, lastY = 0.0;
-	for (auto it = pictures.begin(); it != pictures.end(); ++it) {
-		if (!it->thumbnail)
-			continue;
+	for (PictureEntry &e: pictures) {
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
-		double x = it->thumbnail->x();
+		double x = e.thumbnail->x();
 		double y;
 		if (lastX >= 0.0 && fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
 			y = lastY + 3;
@@ -2125,18 +2195,10 @@ void ProfileWidget2::calculatePictureYPositions()
 			y = 10;
 		lastX = x;
 		lastY = y;
-		it->thumbnail->setY(y);
-
-		// hoverEnter and hoverExit events modify the z-value. Objects with different z-values
-		// are not considered in stackBefore() calls. Therefore, just to be sure, reset the
-		// z-values of all picture entries.
-		it->thumbnail->setZValue(0.0);
+		e.thumbnail->setY(y);
+		updateDurationLine(e); // If we changed the y-position, we also have to change the duration-line.
 	}
-
-	// Plot the items in the correct order. Experience showed that this works only
-	// if we rearrange the items starting from the back. Therefore, use rbegin() and rend().
-	for (auto it = pictures.rbegin(); std::next(it) != pictures.rend(); ++it)
-		std::next(it)->thumbnail->stackBefore(it->thumbnail.get());
+	updateThumbnailPaintOrder();
 }
 
 void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)

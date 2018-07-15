@@ -47,7 +47,7 @@ public slots:
 	void imageDownloaded(QString filename);
 	void imageDownloadFailed(QString filename);
 signals:
-	void thumbnailChanged(QString filename, QImage thumbnail);
+	void thumbnailChanged(QString filename, QImage thumbnail, duration_t duration);
 private:
 	struct Thumbnail {
 		QImage img;
@@ -56,9 +56,9 @@ private:
 	};
 
 	Thumbnailer();
-	static void addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail);
-	static void addVideoThumbnailToCache(const QString &picture_filename, duration_t duration);
-	static void addUnknownThumbnailToCache(const QString &picture_filename);
+	Thumbnail addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail);
+	Thumbnail addVideoThumbnailToCache(const QString &picture_filename, duration_t duration);
+	Thumbnail addUnknownThumbnailToCache(const QString &picture_filename);
 	void recalculate(QString filename);
 	void processItem(QString filename, bool tryDownload);
 	Thumbnail getThumbnailFromCache(const QString &picture_filename);
