@@ -206,4 +206,61 @@ void TestQPrefCloudStorage::test_multiple()
 	QCOMPARE(tst->cloud_timeout(), tst_direct->cloud_timeout());
 }
 
+#define TEST(METHOD, VALUE) \
+QCOMPARE(METHOD, VALUE); \
+cloud->sync(); \
+cloud->load(); \
+QCOMPARE(METHOD, VALUE);
+
+void TestQPrefCloudStorage::test_oldPreferences()
+{
+	auto cloud = qPrefCloudStorage::instance();
+
+	cloud->set_cloud_base_url("test_one");
+	TEST(cloud->cloud_base_url(), QStringLiteral("test_one"));
+	cloud->set_cloud_base_url("test_two");
+	TEST(cloud->cloud_base_url(), QStringLiteral("test_two"));
+
+	cloud->set_cloud_storage_email("tomaz@subsurface.com");
+	TEST(cloud->cloud_storage_email(), QStringLiteral("tomaz@subsurface.com"));
+	cloud->set_cloud_storage_email("tomaz@gmail.com");
+	TEST(cloud->cloud_storage_email(), QStringLiteral("tomaz@gmail.com"));
+
+	cloud->set_git_local_only(true);
+	TEST(cloud->git_local_only(), true);
+	cloud->set_git_local_only(false);
+	TEST(cloud->git_local_only(), false);
+
+	// Why there's new password and password on the prefs?
+	cloud->set_cloud_storage_newpassword("ABCD");
+	TEST(cloud->cloud_storage_newpassword(), QStringLiteral("ABCD"));
+	cloud->set_cloud_storage_newpassword("ABCDE");
+	TEST(cloud->cloud_storage_newpassword(), QStringLiteral("ABCDE"));
+
+	cloud->set_cloud_storage_password("ABCDE");
+	TEST(cloud->cloud_storage_password(), QStringLiteral("ABCDE"));
+	cloud->set_cloud_storage_password("ABCABC");
+	TEST(cloud->cloud_storage_password(), QStringLiteral("ABCABC"));
+
+	cloud->set_save_password_local(true);
+	TEST(cloud->save_password_local(), true);
+	cloud->set_save_password_local(false);
+	TEST(cloud->save_password_local(), false);
+
+	cloud->set_save_userid_local(1);
+	TEST(cloud->save_userid_local(), true);
+	cloud->set_save_userid_local(0);
+	TEST(cloud->save_userid_local(), false);
+
+	cloud->set_userid("Tomaz");
+	TEST(cloud->userid(), QStringLiteral("Tomaz"));
+	cloud->set_userid("Zamot");
+	TEST(cloud->userid(), QStringLiteral("Zamot"));
+
+	cloud->set_cloud_verification_status(0);
+	TEST(cloud->cloud_verification_status(), 0);
+	cloud->set_cloud_verification_status(1);
+	TEST(cloud->cloud_verification_status(), 1);
+}
+
 QTEST_MAIN(TestQPrefCloudStorage)
