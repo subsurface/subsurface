@@ -8,6 +8,7 @@
 #include "qPrefAnimations.h"
 #include "qPrefCloudStorage.h"
 #include "qPrefDisplay.h"
+#include "qPrefDiveComputer.h"
 
 class qPref : public QObject {
 	Q_OBJECT

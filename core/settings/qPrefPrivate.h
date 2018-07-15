@@ -17,6 +17,7 @@ public:
 	friend class qPrefAnimations;
 	friend class qPrefCloudStorage;
 	friend class qPrefDisplay;
+	friend class qPrefDiveComputer;
 
 private:
     static qPrefPrivate *instance();
