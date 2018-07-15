@@ -74,6 +74,7 @@ public:
 
 	ProfileWidget2(QWidget *parent = 0);
 	void resetZoom();
+	void scale(qreal sx, qreal sy);
 	void plotDive(struct dive *d = 0, bool force = false, bool clearPictures = false);
 	void setupItem(AbstractProfilePolygonItem *item, DiveCartesianAxis *vAxis, int vData, int hData, int zValue);
 	void setPrintMode(bool mode, bool grayscale = false);
@@ -127,7 +128,7 @@ slots: // Necessary to call from QAction's signals.
 	void deleteCurrentDC();
 	void pointInserted(const QModelIndex &parent, int start, int end);
 	void pointsRemoved(const QModelIndex &, int start, int end);
-	void updateThumbnail(QString filename, QImage thumbnail);
+	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 
 	/* this is called for every move on the handlers. maybe we can speed up this a bit? */
 	void recreatePlannedDive();
@@ -234,14 +235,19 @@ private:
 	// Pictures that are outside of the dive time are not shown.
 	struct PictureEntry {
 		offset_t offset;
+		duration_t duration;
 		QString filename;
 		std::unique_ptr<DivePictureItem> thumbnail;
+		// For videos with known duration, we represent the duration of the video by a line
+		std::unique_ptr<QGraphicsRectItem> durationLine;
 		PictureEntry (offset_t offsetIn, const QString &filenameIn, QGraphicsScene *scene);
 		bool operator< (const PictureEntry &e) const;
 	};
 	void updateThumbnailXPos(PictureEntry &e);
 	std::vector<PictureEntry> pictures;
 	void calculatePictureYPositions();
+	void updateDurationLine(PictureEntry &e);
+	void updateThumbnailPaintOrder();
 
 	QList<DiveHandler *> handles;
 	void repositionDiveHandlers();

@@ -165,7 +165,7 @@ int DivePictureModel::findPictureId(const QString &filename)
 	return -1;
 }
 
-void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail)
+void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, duration_t)
 {
 	int i = findPictureId(filename);
 	if (i >= 0) {

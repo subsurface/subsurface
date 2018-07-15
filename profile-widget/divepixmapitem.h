@@ -32,6 +32,7 @@ class DivePictureItem : public DivePixmapItem {
 public:
 	DivePictureItem(QGraphicsItem *parent = 0);
 	void setPixmap(const QPixmap& pix);
+	void setBaseZValue(double z);
 public slots:
 	void settingsChanged();
 	void removePicture();
@@ -45,6 +46,7 @@ private:
 	QGraphicsRectItem *canvas;
 	QGraphicsRectItem *shadow;
 	CloseButtonItem *button;
+	double baseZValue;
 };
 
 #endif // DIVEPIXMAPITEM_H
