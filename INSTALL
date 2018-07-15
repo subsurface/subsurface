@@ -171,7 +171,7 @@ Package names for Ubuntu 18.04
 
 sudo apt install \
 	autoconf automake cmake g++ git libcrypto++-dev libcurl4-gnutls-dev \
-	libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev
+	libgit2-dev libqt5qml5 libqt5quick5 libqt5svg5-dev \
 	libqt5webkit5-dev libsqlite3-dev libssh2-1-dev libssl-dev libssl-dev \
 	libtool libusb-1.0-0-dev libxml2-dev libxslt1-dev libzip-dev make \
 	pkg-config qml-module-qtlocation qml-module-qtpositioning \
