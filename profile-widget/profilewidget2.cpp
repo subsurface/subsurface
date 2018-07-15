@@ -2103,17 +2103,21 @@ bool ProfileWidget2::PictureEntry::operator< (const PictureEntry &e) const
 
 // Calculate the y-coordinates of the thumbnails, which are supposed to be sorted by x-coordinate.
 // This will also change the order in which the thumbnails are painted, to avoid weird effects,
-// when items are added later to the scene. This is simply done by increasing the Z-value.
+// when items are added later to the scene. This is done using the QGraphicsItem::packBefore() function.
+// We can't use the z-value, because that will be modified on hoverEnter and hoverExit events.
 void ProfileWidget2::calculatePictureYPositions()
 {
-	double lastX = -1.0, lastY;
-	double z = 0.0;
-	for (PictureEntry &e: pictures) {
-		if (!e.thumbnail)
+	// Quit early if there are no items. The last loop in this function assumes that the vector is not empty.
+	if (pictures.empty())
+		return;
+
+	double lastX = -1.0, lastY = 0.0;
+	for (auto it = pictures.begin(); it != pictures.end(); ++it) {
+		if (!it->thumbnail)
 			continue;
 		// let's put the picture at the correct time, but at a fixed "depth" on the profile
 		// not sure this is ideal, but it seems to look right.
-		double x = e.thumbnail->x();
+		double x = it->thumbnail->x();
 		double y;
 		if (lastX >= 0.0 && fabs(x - lastX) < 3 && lastY <= (10 + 14 * 3))
 			y = lastY + 3;
@@ -2121,10 +2125,18 @@ void ProfileWidget2::calculatePictureYPositions()
 			y = 10;
 		lastX = x;
 		lastY = y;
-		e.thumbnail->setY(y);
-		e.thumbnail->setZValue(z);
-		z += 1.0;
+		it->thumbnail->setY(y);
+
+		// hoverEnter and hoverExit events modify the z-value. Objects with different z-values
+		// are not considered in stackBefore() calls. Therefore, just to be sure, reset the
+		// z-values of all picture entries.
+		it->thumbnail->setZValue(0.0);
 	}
+
+	// Plot the items in the correct order. Experience showed that this works only
+	// if we rearrange the items starting from the back. Therefore, use rbegin() and rend().
+	for (auto it = pictures.rbegin(); std::next(it) != pictures.rend(); ++it)
+		std::next(it)->thumbnail->stackBefore(it->thumbnail.get());
 }
 
 void ProfileWidget2::updateThumbnailXPos(PictureEntry &e)
