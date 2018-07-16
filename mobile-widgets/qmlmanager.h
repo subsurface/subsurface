@@ -156,7 +156,7 @@ public slots:
 			   QString duration, QString depth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
 			   QString diveMaster, QString weight, QString notes, QString startpressure,
-			   QString endpressure, QString gasmix, QString cylinder, int rating, int visibility);
+			   QString endpressure, QString gasmix, QStringList usedCylinder, int rating, int visibility);
 	void changesNeedSaving();
 	void openNoCloudRepo();
 	void saveChangesLocal();
