@@ -33,16 +33,20 @@ Kirigami.Page {
 	property alias suitText: detailsEdit.suitText
 	property alias suitModel: detailsEdit.suitModel
 	property alias weight: detailsEdit.weightText
-	property alias startpressure: detailsEdit.startpressureText
-	property alias endpressure: detailsEdit.endpressureText
-	property alias cylinderIndex: detailsEdit.cylinderIndex
-	property alias cylinderText: detailsEdit.cylinderText
-	property alias cylinderModel: detailsEdit.cylinderModel
-	property alias gasmix: detailsEdit.gasmixText
+	property alias startpressure0: detailsEdit.startpressureText0
+	property alias endpressure0: detailsEdit.endpressureText0
+	property alias cylinderIndex0: detailsEdit.cylinderIndex0
+	property alias cylinderIndex1: detailsEdit.cylinderIndex1
+	property alias cylinderIndex2: detailsEdit.cylinderIndex2
+	property alias cylinderIndex3: detailsEdit.cylinderIndex3
+	property alias cylinderIndex4: detailsEdit.cylinderIndex4
+	property alias gasmix0: detailsEdit.gasmixText0
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
 	property alias rating: detailsEdit.rating
 	property alias visibility: detailsEdit.visibility
+	property alias usedCyl: detailsEdit.usedCyl
+	property alias cylinderModel: detailsEdit.cylinderModel
 
 	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
@@ -258,10 +262,15 @@ Kirigami.Page {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
 		}
-		startpressure = currentItem.modelData.dive.startPressure
-		endpressure = currentItem.modelData.dive.endPressure
-		gasmix = currentItem.modelData.dive.firstGas
-		cylinderIndex = currentItem.modelData.dive.cylinderList.indexOf(currentItem.modelData.dive.getCylinder)
+		startpressure0 = currentItem.modelData.dive.startPressure
+		endpressure0 = currentItem.modelData.dive.endPressure
+		gasmix0 = currentItem.modelData.dive.firstGas
+		usedCyl = currentItem.modelData.dive.getCylinder
+		cylinderIndex0 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[0])
+		cylinderIndex1 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[1])
+		cylinderIndex2 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[2])
+		cylinderIndex3 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[3])
+		cylinderIndex4 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[4])
 		rating = currentItem.modelData.dive.rating
 		visibility = currentItem.modelData.dive.visibility
 
