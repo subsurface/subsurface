@@ -417,9 +417,12 @@ QString DiveObjectHelper::endPressure() const
 	return endPressure;
 }
 
-QString DiveObjectHelper::firstGas() const
+QStringList DiveObjectHelper::firstGas() const
 {
-	QString gas;
-	gas = get_gas_string(m_dive->cylinder[0].gasmix);
+	QStringList gas;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(m_dive, i))
+			gas << get_gas_string(m_dive->cylinder[i].gasmix);
+	}
 	return gas;
 }
