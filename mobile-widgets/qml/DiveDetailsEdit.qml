@@ -22,23 +22,27 @@ Item {
 	property alias buddyText: buddyBox.editText
 	property alias divemasterIndex: divemasterBox.currentIndex
 	property alias divemasterText: divemasterBox.editText
-	property alias cylinderIndex: cylinderBox.currentIndex
-	property alias cylinderText: cylinderBox.editText
+	property alias cylinderIndex0: cylinderBox0.currentIndex
+	property alias cylinderIndex1: cylinderBox1.currentIndex
+	property alias cylinderIndex2: cylinderBox2.currentIndex
+	property alias cylinderIndex3: cylinderBox3.currentIndex
+	property alias cylinderIndex4: cylinderBox4.currentIndex
 	property alias notesText: txtNotes.text
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
 	property alias weightText: txtWeight.text
-	property alias startpressureText: txtStartPressure.text
-	property alias endpressureText: txtEndPressure.text
-	property alias gasmixText: txtGasMix.text
+	property alias startpressureText0: txtStartPressure0.text
+	property alias endpressureText0: txtEndPressure0.text
+	property alias gasmixText0: txtGasMix0.text
 	property alias gpsCheckbox: checkboxGPS.checked
 	property alias suitModel: suitBox.model
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
-	property alias cylinderModel: cylinderBox.model
+	property alias cylinderModel: cylinderBox0.model
 	property alias locationModel: locationBox.model
 	property int rating
 	property int visibility
+	property var usedCyl: []
 
 	function clearDetailsEdit() {
 		detailsEdit.dive_id = 0
@@ -54,7 +58,11 @@ Item {
 		suitBox.currentIndex = -1
 		buddyBox.currentIndex = -1
 		divemasterBox.currentIndex = -1
-		cylinderBox.currentIndex = -1
+		cylinderBox0.currentIndex = -1
+		cylinderBox1.currentIndex = -1
+		cylinderBox2.currentIndex = -1
+		cylinderBox3.currentIndex = -1
+		cylinderBox4.currentIndex = -1
 		detailsEdit.notesText = ""
 		detailsEdit.rating = 0
 		detailsEdit.visibility = 0
@@ -311,14 +319,15 @@ Item {
 					focus = false
 				}
 			}
-
+// all cylinder info should be able to become dynamic instead of this blob of code.
+// first cylinder
 			Controls.Label {
 				Layout.alignment: Qt.AlignRight
-				text: qsTr("Cylinder:")
+				text: qsTr("Cylinder1:")
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.ComboBox {
-				id: cylinderBox
+				id: cylinderBox0
 				flat: true
 				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
 					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
@@ -332,7 +341,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.TextField {
-				id: txtGasMix
+				id: txtGasMix0
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
@@ -346,7 +355,7 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.TextField {
-				id: txtStartPressure
+				id: txtStartPressure0
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -359,7 +368,258 @@ Item {
 				font.pointSize: subsurfaceTheme.smallPointSize
 			}
 			Controls.TextField {
-				id: txtEndPressure
+				id: txtEndPressure0
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+//second cylinder
+			Controls.Label {
+				visible: usedCyl[1] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Cylinder2:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.ComboBox {
+				visible: usedCyl[1] != null ? true : false
+				id: cylinderBox1
+				flat: true
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+				inputMethodHints: Qt.ImhNoPredictiveText
+				Layout.fillWidth: true
+			}
+
+			Controls.Label {
+				visible: usedCyl[1] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Gas mix:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[1] != null ? true : false
+				id: txtGasMix1
+				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[1] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Start Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[1] != null ? true : false
+				id: txtStartPressure1
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[1] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("End Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[1] != null ? true : false
+				id: txtEndPressure1
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+// third cylinder
+			Controls.Label {
+				visible: usedCyl[2] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Cylinder3:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.ComboBox {
+				visible: usedCyl[2] != null ? true : false
+				id: cylinderBox2
+				currentIndex: find(usedCyl[2])
+				flat: true
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+				inputMethodHints: Qt.ImhNoPredictiveText
+				Layout.fillWidth: true
+			}
+
+			Controls.Label {
+				visible: usedCyl[2] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Gas mix:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[2] != null ? true : false
+				id: txtGasMix2
+				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[2] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Start Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[2] != null ? true : false
+				id: txtStartPressure2
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[2] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("End Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[2] != null ? true : false
+				id: txtEndPressure2
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+// fourth cylinder
+			Controls.Label {
+				visible: usedCyl[3] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Cylinder4:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.ComboBox {
+				visible: usedCyl[3] != null ? true : false
+				id: cylinderBox3
+				currentIndex: find(usedCyl[3])
+				flat: true
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+				inputMethodHints: Qt.ImhNoPredictiveText
+				Layout.fillWidth: true
+			}
+
+			Controls.Label {
+				visible: usedCyl[3] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Gas mix:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[3] != null ? true : false
+				id: txtGasMix3
+				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[3] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Start Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[3] != null ? true : false
+				id: txtStartPressure3
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[3] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("End Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[3] != null ? true : false
+				id: txtEndPressure3
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+// fifth cylinder
+			Controls.Label {
+				visible: usedCyl[4] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Cylinder5:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.ComboBox {
+				visible: usedCyl[4] != null ? true : false
+				id: cylinderBox4
+				currentIndex: find(usedCyl[4])
+				flat: true
+				model: diveDetailsListView.currentItem && diveDetailsListView.currentItem.modelData !== null ?
+					diveDetailsListView.currentItem.modelData.dive.cylinderList : null
+				inputMethodHints: Qt.ImhNoPredictiveText
+				Layout.fillWidth: true
+			}
+
+			Controls.Label {
+				visible: usedCyl[4] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Gas mix:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[4] != null ? true : false
+				id: txtGasMix4
+				Layout.fillWidth: true
+				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[4] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Start Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[4] != null ? true : false
+				id: txtStartPressure4
+				Layout.fillWidth: true
+				onEditingFinished: {
+					focus = false
+				}
+			}
+
+			Controls.Label {
+				visible: usedCyl[4] != null ? true : false
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("End Pressure:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.TextField {
+				visible: usedCyl[4] != null ? true : false
+				id: txtEndPressure4
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
