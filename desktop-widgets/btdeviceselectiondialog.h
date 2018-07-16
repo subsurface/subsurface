@@ -37,7 +37,7 @@ signals:
 	void error(QBluetoothDeviceDiscoveryAgent::Error error);
 
 public:
-	WinBluetoothDeviceDiscoveryAgent(QObject *parent);
+	WinBluetoothDeviceDiscoveryAgent(QObject *parent = nullptr);
 	~WinBluetoothDeviceDiscoveryAgent();
 	bool isActive() const;
 	QString errorToString() const;
@@ -94,8 +94,8 @@ private:
 #if defined(Q_OS_WIN)
 	WinBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
 #else
-	QBluetoothLocalDevice *localDevice;
-	QBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
+	QScopedPointer<QBluetoothLocalDevice> localDevice;
+	QScopedPointer<QBluetoothDeviceDiscoveryAgent> remoteDeviceDiscoveryAgent;
 #endif
 	QScopedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
 
