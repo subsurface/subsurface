@@ -16,8 +16,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(const QString &address, dc_desc
 	ui(new Ui::BtDeviceSelectionDialog),
 	previousDevice(address),
 	dcDescriptor(dc),
-	maxPriority(0),
-	remoteDeviceDiscoveryAgent(0)
+	maxPriority(0)
 {
 	ui->setupUi(this);
 
@@ -60,7 +59,7 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(const QString &address, dc_desc
 	if (previousDevice.startsWith("LE:"))
 		previousDevice = previousDevice.mid(3);
 	// Initialize the local Bluetooth device
-	localDevice = new QBluetoothLocalDevice();
+	localDevice.reset(new QBluetoothLocalDevice);
 
 	// Populate the list with local bluetooth devices
 	QList<QBluetoothHostInfo> localAvailableDevices = localDevice->allDevices();
@@ -99,13 +98,6 @@ BtDeviceSelectionDialog::BtDeviceSelectionDialog(const QString &address, dc_desc
 BtDeviceSelectionDialog::~BtDeviceSelectionDialog()
 {
 	delete ui;
-
-	stopScan();
-	if (remoteDeviceDiscoveryAgent)
-		delete remoteDeviceDiscoveryAgent;
-
-	// Clean the local device
-	delete localDevice;
 }
 
 void BtDeviceSelectionDialog::on_changeDeviceState_clicked()
@@ -151,7 +143,7 @@ void BtDeviceSelectionDialog::showEvent(QShowEvent *event)
 
 void BtDeviceSelectionDialog::on_clear_clicked()
 {
-	if (remoteDeviceDiscoveryAgent->isActive())
+	if (remoteDeviceDiscoveryAgent && remoteDeviceDiscoveryAgent->isActive())
 		stopScan();
 
 	ui->dialogStatus->setText(tr("Remote devices list was cleared."));
@@ -161,7 +153,7 @@ void BtDeviceSelectionDialog::on_clear_clicked()
 
 void BtDeviceSelectionDialog::on_scan_clicked()
 {
-	if (remoteDeviceDiscoveryAgent->isActive())
+	if (remoteDeviceDiscoveryAgent && remoteDeviceDiscoveryAgent->isActive())
 		stopScan();
 	else
 		startScan();
@@ -371,12 +363,8 @@ void BtDeviceSelectionDialog::localDeviceChanged(int index)
 {
 	QBluetoothAddress localDeviceSelectedAddress = ui->localSelectedDevice->itemData(index, Qt::UserRole).value<QBluetoothAddress>();
 
-	// Delete the old localDevice
-	if (localDevice)
-		delete localDevice;
-
 	// Create a new local device using the selected address
-	localDevice = new QBluetoothLocalDevice(localDeviceSelectedAddress);
+	localDevice.reset(new QBluetoothLocalDevice(localDeviceSelectedAddress));
 
 	ui->dialogStatus->setText(tr("The local device was changed."));
 
@@ -528,7 +516,7 @@ QString BtDeviceSelectionDialog::getSelectedDeviceAddress()
 QString BtDeviceSelectionDialog::getSelectedDeviceName()
 {
 	if (selectedRemoteDeviceInfo)
-		return selectedRemoteDeviceInfo.data()->name();
+		return selectedRemoteDeviceInfo->name();
 
 	return QString();
 }
@@ -572,7 +560,7 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 	ui->deviceAddress->setText(localDevice->address().toString());
 	ui->deviceName->setText(localDevice->name());
 
-	connect(localDevice, SIGNAL(hostModeStateChanged(QBluetoothLocalDevice::HostMode)),
+	connect(localDevice.data(), SIGNAL(hostModeStateChanged(QBluetoothLocalDevice::HostMode)),
 		this, SLOT(hostModeStateChanged(QBluetoothLocalDevice::HostMode)));
 
 	// Initialize the state of the local device
@@ -582,17 +570,18 @@ void BtDeviceSelectionDialog::updateLocalDeviceInformation()
 	ui->discoveredDevicesList->setContextMenuPolicy(Qt::CustomContextMenu);
 	connect(ui->discoveredDevicesList, SIGNAL(customContextMenuRequested(QPoint)),
 		this, SLOT(displayPairingMenu(QPoint)));
-	connect(localDevice, SIGNAL(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)),
+	connect(localDevice.data(), SIGNAL(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)),
 		this, SLOT(pairingFinished(QBluetoothAddress, QBluetoothLocalDevice::Pairing)));
 
-	connect(localDevice, SIGNAL(error(QBluetoothLocalDevice::Error)),
+	connect(localDevice.data(), SIGNAL(error(QBluetoothLocalDevice::Error)),
 		this, SLOT(error(QBluetoothLocalDevice::Error)));
 }
 
+// Note: for Windows this must be called only one in the desctructor, to avoid multiple connections of the signals.
 void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 {
 	// Intialize the discovery agent
-	remoteDeviceDiscoveryAgent = new QBluetoothDeviceDiscoveryAgent(localDevice->address());
+	remoteDeviceDiscoveryAgent.reset(new QBluetoothDeviceDiscoveryAgent(localDevice->address()));
 
 	// Test if the discovery agent was successfully created
 	if (remoteDeviceDiscoveryAgent->error() == QBluetoothDeviceDiscoveryAgent::InvalidBluetoothAdapterError) {
@@ -602,11 +591,12 @@ void BtDeviceSelectionDialog::initializeDeviceDiscoveryAgent()
 		setScanStatusInvalid();
 		return;
 	}
-	connect(remoteDeviceDiscoveryAgent, SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
+	// Note: &*ptr works for QScopedPointer (Linux/Mac) and raw pointers (Windows)
+	connect(remoteDeviceDiscoveryAgent.data(), SIGNAL(deviceDiscovered(QBluetoothDeviceInfo)),
 		this, SLOT(addRemoteDevice(QBluetoothDeviceInfo)));
-	connect(remoteDeviceDiscoveryAgent, SIGNAL(finished()),
+	connect(&*remoteDeviceDiscoveryAgent, SIGNAL(finished()),
 		this, SLOT(remoteDeviceScanFinished()));
-	connect(remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
+	connect(&*remoteDeviceDiscoveryAgent, SIGNAL(error(QBluetoothDeviceDiscoveryAgent::Error)),
 		this, SLOT(deviceDiscoveryError(QBluetoothDeviceDiscoveryAgent::Error)));
 	// On Windows scans block the UI, therefore we might not want to force the user to scan.
 	if (isPoweredOn())

@@ -45,8 +45,8 @@ private:
 	QString previousDevice;
 	dc_descriptor_t *dcDescriptor;
 	int maxPriority;
-	QBluetoothLocalDevice *localDevice;
-	QBluetoothDeviceDiscoveryAgent *remoteDeviceDiscoveryAgent;
+	QScopedPointer<QBluetoothLocalDevice> localDevice;
+	QScopedPointer<QBluetoothDeviceDiscoveryAgent> remoteDeviceDiscoveryAgent;
 	QScopedPointer<QBluetoothDeviceInfo> selectedRemoteDeviceInfo;
 
 	void updateLocalDeviceInformation();
