@@ -1004,7 +1004,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QString startpressure, QString endpressure, QString gasmix, QString cylinder, int rating, int visibility)
+			       QString startpressure, QString endpressure, QString gasmix, QStringList usedCylinder, int rating, int visibility)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 
@@ -1069,26 +1069,31 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		}
 	}
 	// info for first cylinder
-	if (myDive->getCylinder() != cylinder) {
+	if (myDive->getCylinder() != usedCylinder) {
 		diveChanged = true;
 		unsigned long i;
-		int size = 0, wp = 0;
-		for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
-			if (tank_info[i].name == cylinder ) {
-				if (tank_info[i].ml > 0){
-					size = tank_info[i].ml;
-					wp = tank_info[i].bar * 1000;
-				} else {
-					size = (int) (cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi)));
-					wp = psi_to_mbar(tank_info[i].psi);
-				}
-				break;
-			}
+		int size = 0, wp = 0, j = 0, k = 0;
+		for (j = 0; k < usedCylinder.length() ; j++) {
+			if (!is_cylinder_used(d, j))
+				continue;
 
+			for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
+				if (tank_info[i].name == usedCylinder[k] ) {
+					if (tank_info[i].ml > 0){
+						size = tank_info[i].ml;
+						wp = tank_info[i].bar * 1000;
+					} else {
+						size = (int) (cuft_to_l(tank_info[i].cuft) * 1000 / bar_to_atm(psi_to_bar(tank_info[i].psi)));
+						wp = psi_to_mbar(tank_info[i].psi);
+					}
+					break;
+				}
+			}
+			d->cylinder[j].type.description = copy_qstring(usedCylinder[k]);
+			d->cylinder[j].type.size.mliter = size;
+			d->cylinder[j].type.workingpressure.mbar = wp;
+			k++;
 		}
-		d->cylinder[0].type.description = copy_qstring(cylinder);
-		d->cylinder[0].type.size.mliter = size;
-		d->cylinder[0].type.workingpressure.mbar = wp;
 	}
 	if (myDive->suit() != suit) {
 		diveChanged = true;

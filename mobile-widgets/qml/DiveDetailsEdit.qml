@@ -70,14 +70,30 @@ Item {
 
 	function saveData() {
 		diveDetailsPage.state = "view" // run the transition
+		// join cylinder info from separate string into a list.
+		if (usedCyl[0] != null) {
+			usedCyl[0] = cylinderBox0.currentText
+		}
+		if (usedCyl[1] != null) {
+			usedCyl[1] = cylinderBox1.currentText
+		}
+		if (usedCyl[2] != null) {
+			usedCyl[2] = cylinderBox2.currentText
+		}
+		if (usedCyl[3] != null) {
+			usedCyl[3] = cylinderBox3.currentText
+		}
+		if (usedCyl[4] != null) {
+			usedCyl[4] = cylinderBox4.currentText
+		}
+
 		// apply the changes to the dive_table
 		manager.commitChanges(dive_id, detailsEdit.dateText, locationBox.editText, detailsEdit.gpsText, detailsEdit.durationText,
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
 				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText, buddyBox.editText,
 				      divemasterBox.currentText != "" ? divemasterBox.currentText : divemasterBox.editText,
 				      detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, detailsEdit.gasmixText,
-				      cylinderBox.currentText != "" ? cylinderBox.currentText : cylinderBox.editText,
+				      detailsEdit.endpressureText, detailsEdit.gasmixText, usedCyl ,
 				      detailsEdit.rating,
 				      detailsEdit.visibility)
 		// trigger the profile to be redrawn
@@ -97,7 +113,6 @@ Item {
 		diveDetailsListView.currentItem.modelData.suit = suitBox.currentText
 		diveDetailsListView.currentItem.modelData.buddy = buddyBox.currentText
 		diveDetailsListView.currentItem.modelData.divemaster = divemasterBox.currentText
-		diveDetailsListView.currentItem.modelData.cylinder = cylinderBox.currentText
 		diveDetailsListView.currentItem.modelData.notes = detailsEdit.notesText
 		diveDetailsListView.currentItem.modelData.rating = detailsEdit.rating
 		diveDetailsListView.currentItem.modelData.visibility = detailsEdit.visibility
