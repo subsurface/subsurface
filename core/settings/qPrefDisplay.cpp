@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qPref.h"
-#include "qPref_private.h"
+#include "qPrefPrivate.h"
 #include "core/subsurface-string.h"
 
 #include <QApplication>
 #include <QFont>
+
+static const QString group = QStringLiteral("Display");
 
 qPrefDisplay::qPrefDisplay(QObject *parent) : QObject(parent)
 {

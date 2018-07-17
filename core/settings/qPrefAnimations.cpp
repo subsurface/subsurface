@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qPref.h"
-#include "qPref_private.h"
-#include "qPrefAnimations.h"
+#include "qPrefPrivate.h"
+
+static const QString group = QStringLiteral("Animations");
 
 qPrefAnimations::qPrefAnimations(QObject *parent) : QObject(parent)
 {

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "qPref_private.h"
+#include "qPrefPrivate.h"
 #include "qPref.h"
 #include "ssrf-version.h"
 
