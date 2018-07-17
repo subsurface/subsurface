@@ -292,24 +292,23 @@ QList<int> getDivesInTrip(dive_trip_t *trip)
 // it doesn't change during the life time of a Subsurface session
 // oh, and it has no meaning whatsoever - that's why we have the
 // silly initial number and increment by 3 :-)
-int dive_getUniqID(struct dive *d)
+void dive_setUniqID(struct dive *d)
 {
 	static QSet<int> ids;
 	static int maxId = 83529;
 
-	int id = d->id;
-	if (id) {
-		if (!ids.contains(id)) {
+	if (d->id) {
+		if (!ids.contains(d->id)) {
 			qDebug() << "WTF - only I am allowed to create IDs";
-			ids.insert(id);
+			ids.insert(d->id);
 		}
-		return id;
+		return;
 	}
-	maxId += 3;
-	id = maxId;
-	Q_ASSERT(!ids.contains(id));
-	ids.insert(id);
-	return id;
+	do {
+		maxId += 3;
+	} while (ids.contains(maxId));
+	ids.insert(maxId);
+	d->id = maxId;
 }
 
 
