@@ -83,7 +83,6 @@ int main(int argc, char **argv)
 	else
 		default_prefs.units = IMPERIAL_units;
 	copy_prefs(&default_prefs, &prefs);
-	fill_profile_color();
 	fill_computer_list();
 
 	parse_xml_init();

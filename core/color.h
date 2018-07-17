@@ -6,8 +6,6 @@
    from http://chir.ag/projects/name-that-color */
 
 #include <QColor>
-#include <QMap>
-#include <QVector>
 
 // Greens
 #define CAMARONE1 QColor::fromRgbF(0.0, 0.4, 0.0, 1)
@@ -140,17 +138,8 @@ typedef enum {
 	AMB_PRESSURE_LINE
 } color_index_t;
 
-extern QMap<color_index_t, QVector<QColor> > profile_color;
-void fill_profile_color();
 QColor getColor(const color_index_t i, bool isGrayscale = false);
 QColor getSacColor(int sac, int diveSac);
 QColor getPressureColor(double density);
-struct text_render_options {
-	double size;
-	color_index_t color;
-	double hpos, vpos;
-};
-
-typedef text_render_options text_render_options_t;
 
 #endif // COLOR_H
