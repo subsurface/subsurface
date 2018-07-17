@@ -3,7 +3,6 @@
 #define QPREF_H
 
 #include <QObject>
-#include <QSettings>
 #include "core/pref.h"
 
 #include "qPrefAnimations.h"
