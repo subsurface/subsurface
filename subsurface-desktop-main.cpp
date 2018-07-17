@@ -84,7 +84,6 @@ int main(int argc, char **argv)
 	qsrand(time(NULL));
 	setup_system_prefs();
 	copy_prefs(&default_prefs, &prefs);
-	fill_profile_color();
 	fill_computer_list();
 	parse_xml_init();
 	taglist_init_global();
