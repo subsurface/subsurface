@@ -2,7 +2,7 @@
 #ifndef TESTQPREFANIMATIONS_H
 #define TESTQPREFANIMATIONS_H
 
-#include <QtTest>
+#include <QObject>
 
 class TestQPrefAnimations : public QObject
 {

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefAnimations.h"
 
-#include "core/settings/qPrefAnimations.h"
+#include "core/settings/qPref.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
 
 #include <QDate>
+#include <QTest>
 
 void TestQPrefAnimations::initTestCase()
 {
