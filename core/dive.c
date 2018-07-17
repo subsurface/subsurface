@@ -454,6 +454,15 @@ double get_weight_units(unsigned int grams, int *frac, const char **units)
 	return value;
 }
 
+// we need this to be uniq. oh, and it has no meaning whatsoever
+// - that's why we have the silly initial number and increment by 3 :-)
+int dive_getUniqID()
+{
+	static int maxId = 83529;
+	maxId += 3;
+	return maxId;
+}
+
 struct dive *alloc_dive(void)
 {
 	struct dive *dive;
@@ -462,7 +471,7 @@ struct dive *alloc_dive(void)
 	if (!dive)
 		exit(1);
 	memset(dive, 0, sizeof(*dive));
-	dive->id = dive_getUniqID(dive);
+	dive->id = dive_getUniqID();
 	return dive;
 }
 
@@ -1784,7 +1793,7 @@ struct dive *fixup_dive(struct dive *dive)
 	/* we should always have a uniq ID as that gets assigned during alloc_dive(),
 	 * but we want to make sure... */
 	if (!dive->id)
-		dive->id = dive_getUniqID(dive);
+		dive->id = dive_getUniqID();
 
 	return dive;
 }
