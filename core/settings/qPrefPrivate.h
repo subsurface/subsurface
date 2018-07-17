@@ -9,6 +9,19 @@
 #include <QObject>
 #include "core/qthelper.h"
 
+// implementation class of the interface classes
+class qPrefPrivate : public QObject {
+    Q_OBJECT
+
+public:
+    static qPrefPrivate *instance();
+
+	QSettings setting;
+
+private:
+    qPrefPrivate(QObject *parent = NULL);
+};
+
 //****** Macros to be used in the set functions ******
 #define COPY_TXT(name, string) \
 { \
@@ -20,49 +33,49 @@
 #define LOADSYNC_BOOL(name, field) \
 { \
 	if (doSync)	\
-		setting.setValue(group + name, prefs.field); \
+		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
-		prefs.field = setting.value(group + name, default_prefs.field).toBool(); \
+		prefs.field = qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toBool(); \
 }
 
 #define LOADSYNC_DOUBLE(name, field) \
 { \
 	if (doSync)	\
-		setting.setValue(group + name, prefs.field); \
+		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
-		prefs.field = setting.value(group + name, default_prefs.field).toDouble(); \
+		prefs.field = qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toDouble(); \
 }
 
 #define LOADSYNC_ENUM(name, type, field) \
 { \
 	if (doSync)	\
-		setting.setValue(group + name, prefs.field); \
+		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
-		prefs.field = (enum type)setting.value(group + name, default_prefs.field).toInt(); \
+		prefs.field = (enum type)qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toInt(); \
 }
 
 #define LOADSYNC_INT(name, field) \
 { \
 	if (doSync) \
-		setting.setValue(group + name, prefs.field); \
+		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
-		prefs.field = setting.value(group + name, default_prefs.field).toInt(); \
+		prefs.field = qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toInt(); \
 }
 
 #define LOADSYNC_INT_DEF(name, field, defval) \
 { \
 	if (doSync)	\
-		setting.setValue(group + name, prefs.field); \
+		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
-		prefs.field = setting.value(group + name, defval).toInt(); \
+		prefs.field = qPrefPrivate::instance()->setting.value(group + name, defval).toInt(); \
 }
 
 #define LOADSYNC_TXT(name, field) \
 { \
 	if (doSync)	\
-		setting.setValue(group + name, prefs.field); \
+		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
-		prefs.field = copy_qstring(setting.value(group + name, default_prefs.field).toString()); \
+		prefs.field = copy_qstring(qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toString()); \
 }
 
 //******* Macros to generate disk function

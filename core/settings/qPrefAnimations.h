@@ -3,7 +3,6 @@
 #define QPREFANIMATIONS_H
 
 #include <QObject>
-#include <QSettings>
 
 class qPrefAnimations : public QObject {
 	Q_OBJECT
@@ -28,9 +27,6 @@ signals:
 	void animation_speed_changed(int value);
 
 private:
-	const QString group = QStringLiteral("Animations");
-	QSettings setting;
-
 	// functions to load/sync variable with disk
 	void disk_animation_speed(bool doSync);
 };

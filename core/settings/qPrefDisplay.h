@@ -3,7 +3,6 @@
 #define QPREFDISPLAY_H
 
 #include <QObject>
-#include <QSettings>
 
 class qPrefDisplay : public QObject {
 	Q_OBJECT
@@ -44,9 +43,6 @@ signals:
 	void theme_changed(const QString& value);
 
 private:
-	const QString group = QStringLiteral("Display");
-	QSettings setting;
-
 	// functions to load/sync variable with disk
 	void disk_divelist_font(bool doSync);
 	void disk_font_size(bool doSync);
