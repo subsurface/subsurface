@@ -35,9 +35,9 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	return fmt;
 }
 
-static QString getPressures(struct dive *dive, enum returnPressureSelector ret)
+static QString getPressures(struct dive *dive, int i, enum returnPressureSelector ret)
 {
-	cylinder_t *cyl = &dive->cylinder[0];
+	cylinder_t *cyl = &dive->cylinder[i];
 	QString fmt;
 	if (ret == START_PRESSURE) {
 		if (cyl->start.mbar)
@@ -405,15 +405,23 @@ QStringList DiveObjectHelper::getCylinder() const
 	return getCylinder;
 }
 
-QString DiveObjectHelper::startPressure() const
+QStringList DiveObjectHelper::startPressure() const
 {
-	QString startPressure = getPressures(m_dive, START_PRESSURE);
+	QStringList startPressure;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(m_dive, i))
+			startPressure << getPressures(m_dive, i, START_PRESSURE);
+	}
 	return startPressure;
 }
 
-QString DiveObjectHelper::endPressure() const
+QStringList DiveObjectHelper::endPressure() const
 {
-	QString endPressure = getPressures(m_dive, END_PRESSURE);
+	QStringList endPressure;
+	for (int i = 0; i < MAX_CYLINDERS; i++) {
+		if (is_cylinder_used(m_dive, i))
+			endPressure << getPressures(m_dive, i, END_PRESSURE);
+	}
 	return endPressure;
 }
 
