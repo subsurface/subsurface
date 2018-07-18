@@ -3,6 +3,7 @@
 #define QPREFPRIVATE_H
 
 // Header used by all qPref<class> implementations to avoid duplicating code
+#include "qPref.h"
 #include <QSettings>
 #include <QVariant>
 #include <QObject>
@@ -13,6 +14,11 @@ class qPrefPrivate : public QObject {
     Q_OBJECT
 
 public:
+	friend class qPrefAnimations;
+	friend class qPrefCloudStorage;
+	friend class qPrefDisplay;
+
+private:
     static qPrefPrivate *instance();
 
 	QSettings setting;
@@ -20,7 +26,6 @@ public:
 	// Helper functions
 	static void copy_txt(const char **name, const QString& string);
 
-private:
     qPrefPrivate(QObject *parent = NULL);
 };
 
