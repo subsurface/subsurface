@@ -45,6 +45,7 @@ public:
 
 private:
 	QMap<struct dive*, dive_trip*> divesToUndo;
+	QList<struct dive_trip*> tripList;
 };
 
 #endif // UNDOCOMMANDS_H

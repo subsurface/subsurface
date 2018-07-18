@@ -771,6 +771,19 @@ void insert_trip(dive_trip_t **dive_trip_p)
 #endif
 }
 
+/* create a copy of a dive trip, but don't add any dives. */
+dive_trip_t *clone_empty_trip(dive_trip_t *trip)
+{
+	dive_trip_t *copy = malloc(sizeof(struct dive_trip));
+	*copy = *trip;
+	copy->location = copy_string(trip->location);
+	copy->notes = copy_string(trip->notes);
+	copy->nrdives = 0;
+	copy->next = NULL;
+	copy->dives = NULL;
+	return copy;
+}
+
 static void delete_trip(dive_trip_t *trip)
 {
 	dive_trip_t **p, *tmp;

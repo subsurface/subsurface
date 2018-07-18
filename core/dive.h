@@ -506,6 +506,7 @@ extern void delete_single_dive(int idx);
 extern void add_single_dive(int idx, struct dive *dive);
 
 extern void insert_trip(dive_trip_t **trip);
+extern struct dive_trip *clone_empty_trip(struct dive_trip *trip);
 
 
 extern const struct units SI_units, IMPERIAL_units;
