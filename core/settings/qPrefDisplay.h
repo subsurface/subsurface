@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef QPREFDISPLAY_H
 #define QPREFDISPLAY_H
+#include "core/pref.h"
 
 #include <QObject>
 
@@ -22,11 +23,11 @@ public:
 	void sync() { loadSync(true); }
 
 public:
-	const QString divelist_font() const;
-	double font_size() const;
-	bool display_invalid_dives() const;
-	bool show_developer() const;
-	const QString theme() const;
+	static inline const QString divelist_font() {return QString(prefs.divelist_font); };
+	static inline double font_size() {return prefs.font_size; };
+	static inline bool display_invalid_dives() {return prefs.display_invalid_dives; };
+	static inline bool show_developer() {return prefs.show_developer; };
+	static inline const QString theme() {return QString(prefs.theme); };
 
 public slots:
 	void set_divelist_font(const QString& value);
