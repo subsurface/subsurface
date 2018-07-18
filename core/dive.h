@@ -139,12 +139,7 @@ extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
 extern int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int used);
 
-static inline bool gasmix_is_air(const struct gasmix *gasmix)
-{
-	int o2 = gasmix->o2.permille;
-	int he = gasmix->he.permille;
-	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
-}
+extern bool gasmix_is_air(const struct gasmix *gasmix);
 
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
@@ -336,16 +331,8 @@ struct dive {
 	unsigned char git_id[20];
 };
 
-static inline void invalidate_dive_cache(struct dive *dive)
-{
-	memset(dive->git_id, 0, 20);
-}
-
-static inline bool dive_cache_is_valid(const struct dive *dive)
-{
-	static const unsigned char null_id[20] = { 0, };
-	return !!memcmp(dive->git_id, null_id, 20);
-}
+extern void invalidate_dive_cache(struct dive *dive);
+extern bool dive_cache_is_valid(const struct dive *dive);
 
 extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void cylinder_renumber(struct dive *dive, int mapping[]);
@@ -402,92 +389,15 @@ extern int get_depth_at_time(struct divecomputer *dc, unsigned int time);
 extern fraction_t best_o2(depth_t depth, struct dive *dive);
 extern fraction_t best_he(depth_t depth, struct dive *dive);
 
-static inline int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null)
-{
-	int mbar = dive->surface_pressure.mbar;
-	if (!mbar && non_null)
-		mbar = SURFACE_PRESSURE;
-	return mbar;
-}
-
-/* Pa = N/m^2 - so we determine the weight (in N) of the mass of 10m
- * of water (and use standard salt water at 1.03kg per liter if we don't know salinity)
- * and add that to the surface pressure (or to 1013 if that's unknown) */
-static inline int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity)
-{
-	double specific_weight;
-	int mbar = surface_pressure.mbar;
-
-	if (!mbar)
-		mbar = SURFACE_PRESSURE;
-	if (!salinity)
-		salinity = SEAWATER_SALINITY;
-	if (salinity < 500)
-		salinity += FRESHWATER_SALINITY;
-	specific_weight = salinity / 10000.0 * 0.981;
-	mbar += lrint(depth / 10.0 * specific_weight);
-	return mbar;
-}
-
-static inline int depth_to_mbar(int depth, struct dive *dive)
-{
-	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
-}
-
-static inline double depth_to_bar(int depth, struct dive *dive)
-{
-	return depth_to_mbar(depth, dive) / 1000.0;
-}
-
-static inline double depth_to_atm(int depth, struct dive *dive)
-{
-	return mbar_to_atm(depth_to_mbar(depth, dive));
-}
-
-/* for the inverse calculation we use just the relative pressure
- * (that's the one that some dive computers like the Uemis Zurich
- * provide - for the other models that do this libdivecomputer has to
- * take care of this, but the Uemis we support natively */
-static inline int rel_mbar_to_depth(int mbar, struct dive *dive)
-{
-	int cm;
-	double specific_weight = 1.03 * 0.981;
-	if (dive->dc.salinity)
-		specific_weight = dive->dc.salinity / 10000.0 * 0.981;
-	/* whole mbar gives us cm precision */
-	cm = (int)lrint(mbar / specific_weight);
-	return cm * 10;
-}
-
-static inline int mbar_to_depth(int mbar, struct dive *dive)
-{
-	pressure_t surface_pressure;
-	if (dive->surface_pressure.mbar)
-		surface_pressure = dive->surface_pressure;
-	else
-		surface_pressure.mbar = SURFACE_PRESSURE;
-	return rel_mbar_to_depth(mbar - surface_pressure.mbar, dive);
-}
-
-/* MOD rounded to multiples of roundto mm */
-static inline depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct dive *dive, int roundto) {
-	depth_t rounded_depth;
-
-	double depth = (double) mbar_to_depth(po2_limit.mbar * 1000 / get_o2(mix), dive);
-	rounded_depth.mm = (int)lrint(depth / roundto) * roundto;
-	return rounded_depth;
-}
-
-/* Maximum narcotic depth rounded to multiples of roundto mm */
-static inline depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive, int roundto) {
-	depth_t rounded_depth;
-	pressure_t ppo2n2;
-	ppo2n2.mbar = depth_to_mbar(end.mm, dive);
-
-	int maxambient = (int)lrint(ppo2n2.mbar / (1 - get_he(mix) / 1000.0));
-	rounded_depth.mm = (int)lrint(((double)mbar_to_depth(maxambient, dive)) / roundto) * roundto;
-	return rounded_depth;
-}
+extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
+extern int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity);
+extern int depth_to_mbar(int depth, struct dive *dive);
+extern double depth_to_bar(int depth, struct dive *dive);
+extern double depth_to_atm(int depth, struct dive *dive);
+extern int rel_mbar_to_depth(int mbar, struct dive *dive);
+extern int mbar_to_depth(int mbar, struct dive *dive);
+extern depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct dive *dive, int roundto);
+extern depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive, int roundto);
 
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
@@ -530,76 +440,13 @@ extern unsigned int dc_number;
 #define current_dc (get_dive_dc(current_dive, dc_number))
 #define displayed_dc (get_dive_dc(&displayed_dive, dc_number))
 
-static inline struct dive *get_dive(int nr)
-{
-	if (nr >= dive_table.nr || nr < 0)
-		return NULL;
-	return dive_table.dives[nr];
-}
-
-static inline struct dive *get_dive_from_table(int nr, struct dive_table *dt)
-{
-	if (nr >= dt->nr || nr < 0)
-		return NULL;
-	return dt->dives[nr];
-}
-
-static inline struct dive_site *get_dive_site_for_dive(struct dive *dive)
-{
-	if (dive)
-		return get_dive_site_by_uuid(dive->dive_site_uuid);
-	return NULL;
-}
-
-static inline const char *get_dive_country(struct dive *dive)
-{
-	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
-	if (ds) {
-		int idx = taxonomy_index_for_category(&ds->taxonomy, TC_COUNTRY);
-		if (idx >= 0)
-			return ds->taxonomy.category[idx].value;
-	}
-	return NULL;
-}
-
-static inline char *get_dive_location(struct dive *dive)
-{
-	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
-	if (ds && ds->name)
-		return ds->name;
-	return NULL;
-}
-
-static inline unsigned int number_of_computers(struct dive *dive)
-{
-	unsigned int total_number = 0;
-	struct divecomputer *dc = &dive->dc;
-
-	if (!dive)
-		return 1;
-
-	do {
-		total_number++;
-		dc = dc->next;
-	} while (dc);
-	return total_number;
-}
-
-static inline struct divecomputer *get_dive_dc(struct dive *dive, int nr)
-{
-	struct divecomputer *dc;
-	if (!dive)
-		return NULL;
-	dc = &dive->dc;
-
-	while (nr-- > 0) {
-		dc = dc->next;
-		if (!dc)
-			return &dive->dc;
-	}
-	return dc;
-}
-
+extern struct dive *get_dive(int nr);
+extern struct dive *get_dive_from_table(int nr, struct dive_table *dt);
+extern struct dive_site *get_dive_site_for_dive(struct dive *dive);
+extern const char *get_dive_country(struct dive *dive);
+extern char *get_dive_location(struct dive *dive);
+extern unsigned int number_of_computers(struct dive *dive);
+extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);
 
 extern void make_first_dc(void);
@@ -622,57 +469,14 @@ extern void delete_current_divecomputer(void);
 #define for_each_gps_location(_i, _x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
-static inline struct dive *get_dive_by_uniq_id(int id)
-{
-	int i;
-	struct dive *dive = NULL;
-
-	for_each_dive (i, dive) {
-		if (dive->id == id)
-			break;
-	}
-#ifdef DEBUG
-	if (dive == NULL) {
-		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
-		exit(1);
-	}
-#endif
-	return dive;
-}
-
-static inline int get_idx_by_uniq_id(int id)
-{
-	int i;
-	struct dive *dive = NULL;
-
-	for_each_dive (i, dive) {
-		if (dive->id == id)
-			break;
-	}
-#ifdef DEBUG
-	if (dive == NULL) {
-		fprintf(stderr, "Invalid id %x passed to get_dive_by_diveid, try to fix the code\n", id);
-		exit(1);
-	}
-#endif
-	return i;
-}
-
-static inline bool dive_site_has_gps_location(struct dive_site *ds)
-{
-	return ds && (ds->latitude.udeg || ds->longitude.udeg);
-}
-
-static inline int dive_has_gps_location(struct dive *dive)
-{
-	if (!dive)
-		return false;
-	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
-}
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern struct dive *get_dive_by_uniq_id(int id);
+extern int get_idx_by_uniq_id(int id);
+extern bool dive_site_has_gps_location(struct dive_site *ds);
+extern int dive_has_gps_location(struct dive *dive);
 
 extern int report_error(const char *fmt, ...);
 extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
@@ -914,22 +718,7 @@ extern void printdecotable(struct decostop *table);
 
 extern struct event *get_next_event(struct event *event, const char *name);
 
-static inline struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
-{
-	struct event *ev = *evp;
-
-	if (!gasmix) {
-		int cyl = explicit_first_cylinder(dive, dc);
-		gasmix = &dive->cylinder[cyl].gasmix;
-		ev = dc ? get_next_event(dc->events, "gaschange") : NULL;
-	}
-	while (ev && ev->time.seconds < time) {
-		gasmix = get_gasmix_from_event(dive, ev);
-		ev = get_next_event(ev->next, "gaschange");
-	}
-	*evp = ev;
-	return gasmix;
-}
+extern struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix);
 
 /* these structs holds the information that
  * describes the cylinders / weight systems.
