@@ -12,6 +12,8 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	set(PLATFORM_SRC macos.c)
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	set(PLATFORM_SRC windows.c)
+elseif(CMAKE_SYSTEM_NAME STREQUAL "OpenBSD")
+	set(PLATFORM_SRC openbsd.c)
 endif()
 
 if(FTDISUPPORT)
