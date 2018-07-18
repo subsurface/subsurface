@@ -26,7 +26,6 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_theme(doSync);
 }
 
-GET_PREFERENCE_TXT(Display, divelist_font);
 void qPrefDisplay::set_divelist_font(const QString& value)
 {
 	QString newValue = value;
@@ -50,7 +49,6 @@ void qPrefDisplay::disk_divelist_font(bool doSync)
 		setCorrectFont();
 }
 
-GET_PREFERENCE_DOUBLE(Display, font_size);
 void qPrefDisplay::set_font_size(double value)
 {
 	if (value != prefs.font_size) {
