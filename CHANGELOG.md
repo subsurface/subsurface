@@ -1,3 +1,4 @@
+- Dive media: implement "open folder of selected media files" [#1514]
 - Dive media: Change term "photos" and "images" everywhere in the UI to "media files"
 - mobile: show developer menu is now saved on disk and remebered between start of Subsurface
 - tests: add qml test harness
