@@ -33,6 +33,7 @@ void UndoDeleteDive::undo()
 		record_dive(diveList.at(i));
 	}
 	mark_divelist_changed(true);
+	tripList.clear();
 	MainWindow::instance()->refreshDisplay();
 }
 
@@ -56,9 +57,10 @@ void UndoDeleteDive::redo()
 			undo_trip->dives = NULL;
 			// update all the dives who were in this trip to point to the copy of the
 			// trip that we are about to delete implicitly when deleting its last dive below
-			Q_FOREACH(struct dive *inner_dive, newList)
+			Q_FOREACH(struct dive *inner_dive, newList) {
 				if (inner_dive->divetrip == d->divetrip)
 					inner_dive->divetrip = undo_trip;
+			}
 			d->divetrip = undo_trip;
 			tripList.append(undo_trip);
 		}
