@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 /* openbsd.c */
 /* implements OpenBSD specific functions */
+#include "ssrf.h"
 #include "dive.h"
+#include "subsurface-string.h"
 #include "display.h"
 #include "membuffer.h"
 #include <string.h>
