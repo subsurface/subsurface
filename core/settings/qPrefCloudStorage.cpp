@@ -35,8 +35,8 @@ void qPrefCloudStorage::set_cloud_base_url(const QString& value)
 	if (value != prefs.cloud_base_url) {
 		// only free and set if not default
 		if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
-			COPY_TXT(cloud_base_url, value);
-			COPY_TXT(cloud_git_url, QString(prefs.cloud_base_url) + "/git");
+			qPrefPrivate::copy_txt(&prefs.cloud_base_url, value);
+			qPrefPrivate::copy_txt(&prefs.cloud_git_url, QString(prefs.cloud_base_url) + "/git");
 		}
 
 		disk_cloud_base_url(true);
@@ -55,7 +55,7 @@ void qPrefCloudStorage::set_cloud_git_url(const QString& value)
 	if (value != prefs.cloud_git_url) {
 		// only free and set if not default
 		if (prefs.cloud_git_url != default_prefs.cloud_git_url) {
-			COPY_TXT(cloud_git_url, value);
+			qPrefPrivate::copy_txt(&prefs.cloud_git_url, value);
 		}
 		disk_cloud_git_url(true);
 		emit cloud_git_url_changed(value);
@@ -73,7 +73,7 @@ void qPrefCloudStorage::set_cloud_storage_newpassword(const QString& value)
 	if (value == prefs.cloud_storage_newpassword)
 		return;
 
-	COPY_TXT(cloud_storage_newpassword, value);
+	qPrefPrivate::copy_txt(&prefs.cloud_storage_newpassword, value);
 
 	// NOT saved on disk, because it is only temporary
 	emit cloud_storage_newpassword_changed(value);
@@ -83,7 +83,7 @@ GET_PREFERENCE_TXT(CloudStorage, cloud_storage_password);
 void qPrefCloudStorage::set_cloud_storage_password(const QString& value)
 {
 	if (value != prefs.cloud_storage_password) {
-		COPY_TXT(cloud_storage_password,value);
+		qPrefPrivate::copy_txt(&prefs.cloud_storage_password, value);
 		disk_cloud_storage_password(true);
 		emit cloud_storage_password_changed(value);
 	}

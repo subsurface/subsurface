@@ -9,3 +9,10 @@ qPrefPrivate *qPrefPrivate::instance()
 	static qPrefPrivate *self = new qPrefPrivate;
 	return self;
 }
+
+void qPrefPrivate::copy_txt(const char **name, const QString& string)
+{
+	free((void *)*name);
+	*name = copy_qstring(string);
+}
+

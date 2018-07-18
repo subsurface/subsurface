@@ -35,7 +35,7 @@ void qPrefDisplay::set_divelist_font(const QString& value)
 
 	if (newValue != prefs.divelist_font &&
 		!subsurface_ignore_font(qPrintable(newValue))) {
-		COPY_TXT(divelist_font, value);
+		qPrefPrivate::copy_txt(&prefs.divelist_font, value);
 		disk_divelist_font(true);
 
 		qApp->setFont(QFont(newValue));

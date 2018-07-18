@@ -3,7 +3,6 @@
 #define QPREFPRIVATE_H
 
 // Header used by all qPref<class> implementations to avoid duplicating code
-
 #include <QSettings>
 #include <QVariant>
 #include <QObject>
@@ -18,16 +17,12 @@ public:
 
 	QSettings setting;
 
+	// Helper functions
+	static void copy_txt(const char **name, const QString& string);
+
 private:
     qPrefPrivate(QObject *parent = NULL);
 };
-
-//****** Macros to be used in the set functions ******
-#define COPY_TXT(name, string) \
-{ \
-	free((void *)prefs.name); \
-	prefs.name = copy_qstring(string); \
-}
 
 //****** Macros to be used in the disk functions, which are special ******
 #define LOADSYNC_BOOL(name, field) \
@@ -191,7 +186,7 @@ void qPref ## usegroup::set_ ## field (int value) \
 void qPref ## usegroup::set_ ## field (const QString& value) \
 { \
 	if (value != prefs.field) { \
-		COPY_TXT(field, value); \
+		qPrefPrivate::instance()->copy_txt(&prefs.field, value); \
 		disk_ ## field(true); \
 		emit field ## _changed(value); \
 	} \
