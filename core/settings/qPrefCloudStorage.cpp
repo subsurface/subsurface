@@ -31,6 +31,7 @@ void qPrefCloudStorage::loadSync(bool doSync)
 
 void qPrefCloudStorage::set_cloud_base_url(const QString& value)
 {
+	QString valueGit = value + "/git";
 	if (value != prefs.cloud_base_url) {
 		// only free and set if not default
 		if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
@@ -39,14 +40,12 @@ void qPrefCloudStorage::set_cloud_base_url(const QString& value)
 		}
 
 		disk_cloud_base_url(true);
+		disk_cloud_git_url(true);
 		emit cloud_base_url_changed(value);
+		emit cloud_git_url_changed(valueGit);
 	}
 }
-void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
-{
-	LOADSYNC_TXT("/cloud_base_url", cloud_base_url);
-	LOADSYNC_TXT("/cloud_git_url", cloud_git_url);
-}
+DISK_LOADSYNC_TXT(CloudStorage, "/cloud_base_url", cloud_base_url)
 
 void qPrefCloudStorage::set_cloud_git_url(const QString& value)
 {
@@ -86,8 +85,12 @@ void qPrefCloudStorage::set_cloud_storage_password(const QString& value)
 }
 void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
 {
-	if (!doSync || prefs.save_password_local)
-		LOADSYNC_TXT("/password", cloud_storage_password);
+	if (doSync) {
+		if (prefs.save_password_local) 
+			qPrefPrivate::instance()->setting.setValue(group + "/password", prefs.cloud_storage_password);
+	} else {
+		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::instance()->setting.value(group + "/password", default_prefs.cloud_storage_password).toString());
+	}
 }
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "/pin", cloud_storage_pin);
@@ -107,5 +110,8 @@ void qPrefCloudStorage::disk_userid(bool doSync)
 {
 	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
 	const QString group = QStringLiteral("");
-	LOADSYNC_TXT("subsurface_webservice_uid", userid);
+	if (doSync)
+		qPrefPrivate::instance()->setting.setValue(group + "subsurface_webservice_uid", prefs.userid);
+	else
+		prefs.userid = copy_qstring(qPrefPrivate::instance()->setting.value(group + "subsurface_webservice_uid", default_prefs.userid).toString());
 }

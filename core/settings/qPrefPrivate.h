@@ -29,8 +29,11 @@ private:
     qPrefPrivate(QObject *parent = NULL);
 };
 
-//****** Macros to be used in the disk functions, which are special ******
-#define LOADSYNC_BOOL(name, field) \
+
+
+//******* Macros to generate disk function
+#define DISK_LOADSYNC_BOOL(usegroup, name, field) \
+void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
 	if (doSync)	\
 		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
@@ -38,7 +41,8 @@ private:
 		prefs.field = qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toBool(); \
 }
 
-#define LOADSYNC_DOUBLE(name, field) \
+#define DISK_LOADSYNC_DOUBLE(usegroup, name, field) \
+void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
 	if (doSync)	\
 		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
@@ -46,7 +50,8 @@ private:
 		prefs.field = qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toDouble(); \
 }
 
-#define LOADSYNC_ENUM(name, type, field) \
+#define DISK_LOADSYNC_ENUM(usegroup, name, type, field) \
+void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
 	if (doSync)	\
 		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
@@ -54,7 +59,8 @@ private:
 		prefs.field = (enum type)qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toInt(); \
 }
 
-#define LOADSYNC_INT(name, field) \
+#define DISK_LOADSYNC_INT(usegroup, name, field) \
+void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
 	if (doSync) \
 		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
@@ -62,7 +68,8 @@ private:
 		prefs.field = qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toInt(); \
 }
 
-#define LOADSYNC_INT_DEF(name, field, defval) \
+#define DISK_LOADSYNC_INT_DEF(usegroup, name, field, defval) \
+void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
 	if (doSync)	\
 		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
@@ -70,49 +77,13 @@ private:
 		prefs.field = qPrefPrivate::instance()->setting.value(group + name, defval).toInt(); \
 }
 
-#define LOADSYNC_TXT(name, field) \
+#define DISK_LOADSYNC_TXT(usegroup, name, field) \
+void qPref ## usegroup::disk_ ## field(bool doSync) \
 { \
 	if (doSync)	\
 		qPrefPrivate::instance()->setting.setValue(group + name, prefs.field); \
 	else \
 		prefs.field = copy_qstring(qPrefPrivate::instance()->setting.value(group + name, default_prefs.field).toString()); \
-}
-
-//******* Macros to generate disk function
-#define DISK_LOADSYNC_BOOL(usegroup, name, field) \
-void qPref ## usegroup::disk_ ## field(bool doSync) \
-{ \
-	LOADSYNC_BOOL(name, field); \
-}
-
-#define DISK_LOADSYNC_DOUBLE(usegroup, name, field) \
-void qPref ## usegroup::disk_ ## field(bool doSync) \
-{ \
-	LOADSYNC_DOUBLE(name, field); \
-}
-
-#define DISK_LOADSYNC_ENUM(usegroup, name, type, field) \
-void qPref ## usegroup::disk_ ## field(bool doSync) \
-{ \
-	LOADSYNC_ENUM(name, type, field); \
-}
-
-#define DISK_LOADSYNC_INT(usegroup, name, field) \
-void qPref ## usegroup::disk_ ## field(bool doSync) \
-{ \
-	LOADSYNC_INT(name, field); \
-}
-
-#define DISK_LOADSYNC_INT_DEF(usegroup, name, field, defval) \
-void qPref ## usegroup::disk_ ## field(bool doSync) \
-{ \
-	LOADSYNC_INT_DEF(name, field, defval); \
-}
-
-#define DISK_LOADSYNC_TXT(usegroup, name, field) \
-void qPref ## usegroup::disk_ ## field(bool doSync) \
-{ \
-	LOADSYNC_TXT(name, field); \
 }
 
 //******* Macros to generate set function

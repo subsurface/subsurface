@@ -44,7 +44,7 @@ void qPrefDisplay::set_divelist_font(const QString& value)
 void qPrefDisplay::disk_divelist_font(bool doSync)
 {
 	if (doSync)
-		LOADSYNC_TXT("/divelist_font", divelist_font)
+		qPrefPrivate::instance()->setting.setValue(group + "/divelist_font", prefs.divelist_font);
 	else
 		setCorrectFont();
 }
@@ -64,7 +64,7 @@ void qPrefDisplay::set_font_size(double value)
 void qPrefDisplay::disk_font_size(bool doSync)
 {
 	if (doSync)
-		LOADSYNC_DOUBLE("/font_size", font_size)
+		qPrefPrivate::instance()->setting.setValue(group + "/font_size", prefs.font_size);
 	else
 		setCorrectFont();
 }
@@ -78,7 +78,6 @@ HANDLE_PREFERENCE_TXT(Display, "/theme", theme);
 
 void qPrefDisplay::setCorrectFont()
 {
-	bool doSync = false;
 	QSettings s;
 	QVariant v;
 
@@ -103,5 +102,6 @@ void qPrefDisplay::setCorrectFont()
 	}
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
-	LOADSYNC_BOOL("/displayinvalid", display_invalid_dives);
+
+	prefs.display_invalid_dives = qPrefPrivate::instance()->setting.value(group + "/displayinvalid", default_prefs.display_invalid_dives).toBool();
 }
