@@ -10,6 +10,7 @@
 #include <QMenu>
 #include <QUrl>
 #include <QMessageBox>
+#include <QFileInfo>
 
 //TODO: Remove those in the future.
 #include "../mainwindow.h"
@@ -54,6 +55,7 @@ void TabDivePhotos::contextMenuEvent(QContextMenuEvent *event)
 	popup.addSeparator();
 	popup.addAction(tr("Delete selected media files"), this, SLOT(removeSelectedPhotos()));
 	popup.addAction(tr("Delete all media files"), this, SLOT(removeAllPhotos()));
+	popup.addAction(tr("Open folder of selected media files"), this, SLOT(openFolderOfSelectedFiles()));
 	popup.addAction(tr("Recalculate selected thumbnails"), this, SLOT(recalculateSelectedThumbnails()));
 	popup.exec(event->globalPos());
 	event->accept();
@@ -81,6 +83,22 @@ QVector<QString> TabDivePhotos::getSelectedFilenames() const
 void TabDivePhotos::removeSelectedPhotos()
 {
 	DivePictureModel::instance()->removePictures(getSelectedFilenames());
+}
+
+void TabDivePhotos::openFolderOfSelectedFiles()
+{
+	QVector<QString> directories;
+	for (const QString &filename: getSelectedFilenames()) {
+		QFileInfo info(filename);
+		if (!info.exists())
+			continue;
+		QString path = info.absolutePath();
+		if (path.isEmpty() || directories.contains(path))
+			continue;
+		directories.append(path);
+	}
+	for (const QString &dir: directories)
+		QDesktopServices::openUrl(QUrl::fromLocalFile(dir));
 }
 
 void TabDivePhotos::recalculateSelectedThumbnails()

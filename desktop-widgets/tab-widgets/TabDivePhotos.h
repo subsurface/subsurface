@@ -27,6 +27,7 @@ private slots:
 	void removeAllPhotos();
 	void removeSelectedPhotos();
 	void recalculateSelectedThumbnails();
+	void openFolderOfSelectedFiles();
 	void changeZoomLevel(int delta);
 
 private:
