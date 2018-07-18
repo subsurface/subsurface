@@ -435,17 +435,17 @@ void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only
 	char *sep = &sep_;
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->index = 0;
+		trip->saved = 0;
 
 	for_each_dive (i, dive) {
 		trip = dive->divetrip;
 
 		/*Continue if the dive have no trips or we have seen this trip before*/
-		if (!trip || trip->index)
+		if (!trip || trip->saved)
 			continue;
 
 		/* We haven't seen this trip before - save it and all dives */
-		trip->index = 1;
+		trip->saved = 1;
 		write_trip(b, trip, &dive_no, selected_only, photos_dir, list_only, sep);
 	}
 
