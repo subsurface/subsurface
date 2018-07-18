@@ -21,13 +21,10 @@ extern int init_decompression(struct deco_state *ds, struct dive *dive);
 extern void process_dives(bool imported, bool prefer_imported);
 extern char *get_dive_gas_string(struct dive *dive);
 
-extern dive_trip_t *find_trip_by_idx(int idx);
-
 struct dive **grow_dive_table(struct dive_table *table);
 extern void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(struct dive *dive);
 extern int get_divesite_idx(struct dive_site *ds);
-extern dive_trip_t *find_matching_trip(timestamp_t when);
 extern void remove_dive_from_trip(struct dive *dive, short was_autogen);
 extern dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive);
 extern void autogroup_dives(void);
