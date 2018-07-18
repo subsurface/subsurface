@@ -294,7 +294,8 @@ typedef struct dive_trip
 	char *notes;
 	struct dive *dives;
 	int nrdives;
-	int index;
+	/* Used by the io-routines to mark trips that have already been written. */
+	bool saved;
 	unsigned expanded : 1, selected : 1, autogen : 1, fixup : 1;
 	struct dive_trip *next;
 } dive_trip_t;

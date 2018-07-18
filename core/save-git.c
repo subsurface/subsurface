@@ -954,7 +954,7 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 	save_divesites(repo, root);
 
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->index = 0;
+		trip->saved = 0;
 
 	/* save the dives */
 	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
@@ -979,9 +979,9 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 		if (trip) {
 			/* Did we already save this trip? */
-			if (trip->index)
+			if (trip->saved)
 				continue;
-			trip->index = 1;
+			trip->saved = 1;
 
 			/* Pass that new subdirectory in for save-trip */
 			save_one_trip(repo, tree, trip, &tm, cached_ok);

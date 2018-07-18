@@ -625,7 +625,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 	}
 	put_format(b, "</divesites>\n<dives>\n");
 	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->index = 0;
+		trip->saved = 0;
 
 	/* save the dives */
 	for_each_dive(i, dive) {
@@ -645,11 +645,11 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 			}
 
 			/* Have we already seen this trip (and thus saved this dive?) */
-			if (trip->index)
+			if (trip->saved)
 				continue;
 
 			/* We haven't seen this trip before - save it and all dives */
-			trip->index = 1;
+			trip->saved = 1;
 			save_trip(b, trip);
 		}
 	}
