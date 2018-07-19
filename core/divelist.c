@@ -987,24 +987,28 @@ struct dive **grow_dive_table(struct dive_table *table)
 	return dives;
 }
 
+/* get the index where we want to insert the dive so that everything stays
+ * ordered reverse-chronologically */
+int dive_get_insertion_index(struct dive *dive)
+{
+	for (int i = 0; i < dive_table.nr; i++) {
+		if (dive->when <= dive_table.dives[i]->when)
+			return i;
+	}
+	return dive_table.nr;
+}
+
+/* add a dive at the given index. if the index is negative, the dive will
+ * be added according to reverse chronological order */
 void add_single_dive(int idx, struct dive *dive)
 {
 	int i;
+	if (idx < 0)
+		idx = dive_get_insertion_index(dive);
 	grow_dive_table(&dive_table);
 	dive_table.nr++;
 	if (dive->selected)
 		amount_selected++;
-
-	if (idx < 0) {
-		// convert an idx of -1 so we do insert-in-chronological-order
-		idx = dive_table.nr - 1;
-		for (int i = 0; i < dive_table.nr - 1; i++) {
-			if (dive->when <= dive_table.dives[i]->when) {
-				idx = i;
-				break;
-			}
-		}
-	}
 
 	for (i = idx; i < dive_table.nr; i++) {
 		struct dive *tmp = dive_table.dives[i];
@@ -1451,6 +1455,24 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 		try_to_renumber(preexisting);
 
 	mark_divelist_changed(true);
+}
+
+/* return the number a dive gets when inserted at the given index.
+ * this function is supposed to be called *before* a dive was added.
+ * this returns:
+ * 	- 1 for an empty log
+ * 	- last_nr+1 for addition at end of log (if last dive had a number)
+ * 	- 0 for all other cases
+ */
+int get_dive_nr_at_idx(int idx)
+{
+	if (dive_table.nr == 0)
+		return 1;
+	if (idx >= dive_table.nr) {
+		struct dive *last_dive = get_dive(dive_table.nr - 1);
+		return last_dive->number ? last_dive->number + 1 : 0;
+	}
+	return 0;
 }
 
 void set_dive_nr_for_current_dive()

@@ -26,6 +26,7 @@
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
 #include "desktop-widgets/locationinformation.h"
+#include "desktop-widgets/undocommands.h"
 
 #include "TabDiveExtraInfo.h"
 #include "TabDiveInformation.h"
@@ -788,23 +789,30 @@ void MainTab::acceptChanges()
 	hideMessage();
 	ui.equipmentTab->setEnabled(true);
 	if (editMode == ADD) {
-		// We need to add the dive we just created to the dive list and select it.
-		// Easy, right?
-		struct dive *added_dive = clone_dive(&displayed_dive);
-		record_dive(added_dive);
-		addedId = added_dive->id;
 		// make sure that the dive site is handled as well
-		updateDiveSite(ui.location->currDiveSiteUuid(), added_dive);
+		updateDiveSite(ui.location->currDiveSiteUuid(), &displayed_dive);
 
-		// unselect everything as far as the UI is concerned and select the new
-		// dive - we'll have to undo/redo this later after we resort the dive_table
-		// but we need the dive selected for the middle part of this function - this
-		// way we can reuse the code used for editing dives
-		MainWindow::instance()->dive_list()->unselectDives();
-		selected_dive = get_divenr(added_dive);
-		amount_selected = 1;
-		// finally, make sure we get the tags
-		saveTags();
+		UndoAddDive *undoCommand = new UndoAddDive(&displayed_dive);
+		MainWindow::instance()->undoStack->push(undoCommand);
+
+		editMode = NONE;
+		MainWindow::instance()->exitEditState();
+		cylindersModel->changed = false;
+		weightModel->changed = false;
+		MainWindow::instance()->setEnabledToolbar(true);
+		acceptingEdit = false;
+		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
+		emit addDiveFinished();
+		MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT, true);
+		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
+		int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
+		MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
+		MainWindow::instance()->dive_list()->setFocus();
+		resetPallete();
+		saveTags(QVector<dive *>{ &displayed_dive });
+		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
+		Command::addDive(&displayed_dive, autogroup, true);
+		return;
 	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */
 		if (displayedTrip.notes && !same_string(displayedTrip.notes, currentTrip->notes)) {
@@ -957,7 +965,7 @@ void MainTab::acceptChanges()
 		current_dive->divetrip->when = current_dive->when;
 		find_new_trip_start_time(current_dive->divetrip);
 	}
-	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
+	if (editMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
 		// sure we get the max. depth right
 		current_dive->maxdepth.mm = current_dc->maxdepth.mm = 0;
@@ -969,7 +977,7 @@ void MainTab::acceptChanges()
 	}
 	int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
-	if (editMode == ADD || editMode == MANUALLY_ADDED_DIVE) {
+	if (editMode == MANUALLY_ADDED_DIVE) {
 		// since a newly added dive could be in the middle of the dive_table we need
 		// to resort the dive list and make sure the newly added dive gets selected again
 		sort_table(&dive_table);
@@ -980,7 +988,6 @@ void MainTab::acceptChanges()
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics()->replot();
-		emit addDiveFinished();
 	} else {
 		editMode = NONE;
 		if (do_replot)
