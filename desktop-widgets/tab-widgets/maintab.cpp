@@ -714,10 +714,9 @@ void MainTab::refreshDisplayedDiveSite()
 
 // when this is called we already have updated the current_dive and know that it exists
 // there is no point in calling this function if there is no current dive
-uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
+uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 {
-	struct dive *cd = get_dive(divenr);
-	if (!cd)
+	if (!d)
 		return 0;
 
 	if (ui.location->text().isEmpty())
@@ -726,7 +725,7 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 	if (pickedUuid == 0)
 		return 0;
 
-	const uint32_t origUuid = cd->dive_site_uuid;
+	const uint32_t origUuid = d->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
 	struct dive_site *newDs = NULL;
 	bool createdNewDive = false;
@@ -767,7 +766,7 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 		}
 	}
 
-	cd->dive_site_uuid = pickedUuid;
+	d->dive_site_uuid = pickedUuid;
 	qDebug() << "Setting the dive site id on the dive:" << pickedUuid;
 	return pickedUuid;
 }
@@ -795,7 +794,7 @@ void MainTab::acceptChanges()
 		record_dive(added_dive);
 		addedId = added_dive->id;
 		// make sure that the dive site is handled as well
-		updateDiveSite(ui.location->currDiveSiteUuid(), get_idx_by_uniq_id(added_dive->id));
+		updateDiveSite(ui.location->currDiveSiteUuid(), added_dive);
 
 		// unselect everything as far as the UI is concerned and select the new
 		// dive - we'll have to undo/redo this later after we resort the dive_table
@@ -840,9 +839,8 @@ void MainTab::acceptChanges()
 			MODIFY_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
 		if (displayed_dc->divemode != current_dc->divemode) {
 			MODIFY_SELECTED_DIVES(
-				if (get_dive_dc(mydive, dc_number)->divemode == current_dc->divemode || copyPaste) {
+				if (get_dive_dc(mydive, dc_number)->divemode == current_dc->divemode || copyPaste)
 					get_dive_dc(mydive, dc_number)->divemode = displayed_dc->divemode;
-				}
 			);
 			MODIFY_SELECTED_DIVES(update_setpoint_events(mydive, get_dive_dc(mydive, dc_number)));
 			do_replot = true;
@@ -926,9 +924,8 @@ void MainTab::acceptChanges()
 		uint32_t oldUuid = cd->dive_site_uuid;
 		uint32_t newUuid = 0;
 		MODIFY_SELECTED_DIVES(
-			if (mydive->dive_site_uuid == current_dive->dive_site_uuid) {
-				newUuid = updateDiveSite(newUuid == 0 ? ui.location->currDiveSiteUuid() : newUuid,  get_idx_by_uniq_id(mydive->id));
-			}
+			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
+				newUuid = updateDiveSite(newUuid == 0 ? ui.location->currDiveSiteUuid() : newUuid, mydive);
 		);
 		if (!is_dive_site_used(oldUuid, false)) {
 			if (verbose) {
