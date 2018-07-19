@@ -42,6 +42,7 @@ extern void find_new_trip_start_time(dive_trip_t *trip);
 extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
 extern bool is_trip_before_after(const struct dive *dive, bool before);
+extern int get_dive_nr_at_idx(int idx);
 extern void set_dive_nr_for_current_dive();
 extern timestamp_t get_surface_interval(timestamp_t when);
 extern void delete_dive_from_table(struct dive_table *table, int idx);

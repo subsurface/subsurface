@@ -148,6 +148,29 @@ struct TripDeleter {
 typedef std::unique_ptr<dive, DiveDeleter> OwningDivePtr;
 typedef std::unique_ptr<dive_trip, TripDeleter> OwningTripPtr;
 
+// This helper structure describes a dive that we want to add.
+// Potentially it also adds a trip (if deletion of the dive resulted in deletion of the trip)
+struct DiveToAdd {
+	OwningDivePtr	 dive;		// Dive to add
+	OwningTripPtr	 tripToAdd;	// Not-null if we also have to add a dive
+	dive_trip	*trip;		// Trip the dive belongs to, may be null
+	int		 idx;		// Position in divelist
+};
+
+class UndoAddDive : public QUndoCommand {
+public:
+	UndoAddDive(dive *dive);	// Warning: old dive will be erased (moved in C++-speak)!
+private:
+	void undo() override;
+	void redo() override;
+
+	// For redo
+	DiveToAdd	diveToAdd;
+
+	// For undo
+	dive		*diveToRemove;
+};
+
 class UndoDeleteDive : public QUndoCommand {
 	Q_DECLARE_TR_FUNCTIONS(Command)
 public:
@@ -159,12 +182,6 @@ private:
 	// For redo
 	QVector<struct dive*> divesToDelete;
 
-	// For undo
-	struct DiveToAdd {
-		OwningDivePtr	 dive;	// Dive to add
-		dive_trip	*trip;	// Trip, may be null
-		int		 idx;	// Position in divelist
-	};
 	std::vector<OwningTripPtr> tripsToAdd;
 	std::vector<DiveToAdd> divesToAdd;
 };
