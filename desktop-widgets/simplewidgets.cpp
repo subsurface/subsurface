@@ -160,15 +160,15 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		MainWindow::instance()->dive_list()->rememberSelection();
-		// we remember a map from dive uuid to a pair of old number / new number
-		QMap<int, QPair<int, int>> renumberedDives;
+		// we remember a list from dive uuid to a new number
+		QVector<QPair<int, int>> renumberedDives;
 		int i;
 		int newNr = ui.spinBox->value();
 		struct dive *dive = NULL;
 		for_each_dive (i, dive) {
 			if (!selectedOnly || dive->selected) {
 				invalidate_dive_cache(dive);
-				renumberedDives.insert(dive->id, QPair<int, int>(dive->number, newNr++));
+				renumberedDives.append(QPair<int, int>(dive->id, newNr++));
 			}
 		}
 		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives);
@@ -241,7 +241,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 			// DANGER, DANGER - this could get our dive_table unsorted...
 			int i;
 			struct dive *dive;
-			QList<int> affectedDives;
+			QVector<int> affectedDives;
 			for_each_dive (i, dive) {
 				if (!dive->selected)
 					continue;
@@ -249,8 +249,6 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 				affectedDives.append(dive->id);
 			}
 			MainWindow::instance()->undoStack->push(new UndoShiftTime(affectedDives, amount));
-			sort_table(&dive_table);
-			mark_divelist_changed(true);
 			MainWindow::instance()->dive_list()->rememberSelection();
 			MainWindow::instance()->refreshDisplay();
 			MainWindow::instance()->dive_list()->restoreSelection();
