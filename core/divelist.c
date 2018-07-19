@@ -16,10 +16,14 @@
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
  * void insert_trip(dive_trip_t **dive_trip_p)
+ * void unregister_trip(dive_trip_t *trip)
+ * void free_trip(dive_trip_t *trip)
+ * void remove_dive_from_trip(struct dive *dive)
  * void remove_dive_from_trip(struct dive *dive, bool was_autogen)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
  * void autogroup_dives(void)
+ * struct dive *unregister_dive(int idx)
  * void delete_single_dive(int idx)
  * void add_single_dive(int idx, struct dive *dive)
  * void merge_two_dives(struct dive *a, struct dive *b)
@@ -732,20 +736,17 @@ void insert_trip(dive_trip_t **dive_trip_p)
 #endif
 }
 
-/* create a copy of a dive trip, but don't add any dives. */
-dive_trip_t *clone_empty_trip(dive_trip_t *trip)
+/* free resources associated with a trip structure */
+void free_trip(dive_trip_t *trip)
 {
-	dive_trip_t *copy = malloc(sizeof(struct dive_trip));
-	*copy = *trip;
-	copy->location = copy_string(trip->location);
-	copy->notes = copy_string(trip->notes);
-	copy->nrdives = 0;
-	copy->next = NULL;
-	copy->dives = NULL;
-	return copy;
+	free(trip->location);
+	free(trip->notes);
+	free(trip);
 }
 
-static void delete_trip(dive_trip_t *trip)
+/* remove trip from the trip-list, but don't free its memory.
+ * caller takes ownership of the trip. */
+void unregister_trip(dive_trip_t *trip)
 {
 	dive_trip_t **p, *tmp;
 
@@ -760,11 +761,12 @@ static void delete_trip(dive_trip_t *trip)
 		}
 		p = &tmp->next;
 	}
+}
 
-	/* .. and free it */
-	free(trip->location);
-	free(trip->notes);
-	free(trip);
+static void delete_trip(dive_trip_t *trip)
+{
+	unregister_trip(trip);
+	free_trip(trip);
 }
 
 void find_new_trip_start_time(dive_trip_t *trip)
@@ -817,13 +819,17 @@ struct dive *last_selected_dive()
 	return ret;
 }
 
-void remove_dive_from_trip(struct dive *dive, short was_autogen)
+/* remove a dive from the trip it's associated to, but don't delete the
+ * trip if this was the last dive in the trip. the caller is responsible
+ * for removing the trip, if the trip->nrdives went to 0.
+ */
+struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen)
 {
 	struct dive *next, **pprev;
 	dive_trip_t *trip = dive->divetrip;
 
 	if (!trip)
-		return;
+		return NULL;
 
 	/* Remove the dive from the trip's list of dives */
 	next = dive->next;
@@ -838,10 +844,17 @@ void remove_dive_from_trip(struct dive *dive, short was_autogen)
 	else
 		dive->tripflag = NO_TRIP;
 	assert(trip->nrdives > 0);
-	if (!--trip->nrdives)
-		delete_trip(trip);
-	else if (trip->when == dive->when)
+	--trip->nrdives;
+	if (trip->nrdives > 0 && trip->when == dive->when)
 		find_new_trip_start_time(trip);
+	return trip;
+}
+
+void remove_dive_from_trip(struct dive *dive, short was_autogen)
+{
+	struct dive_trip *trip = unregister_dive_from_trip(dive, was_autogen);
+	if (trip && trip->nrdives == 0)
+		delete_trip(trip);
 }
 
 void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
@@ -918,29 +931,44 @@ void autogroup_dives(void)
 #endif
 }
 
+static void unregister_dive_from_table(struct dive_table *table, int idx)
+{
+	int i;
+	for (i = idx; i < table->nr - 1; i++)
+		table->dives[i] = table->dives[i + 1];
+	table->dives[--table->nr] = NULL;
+}
+
 /* Remove a dive from a dive table. This assumes that the
  * dive was already removed from any trip and deselected.
  * It simply shrinks the table and frees the trip */
 void delete_dive_from_table(struct dive_table *table, int idx)
 {
-	int i;
 	free_dive(table->dives[idx]);
-	for (i = idx; i < table->nr - 1; i++)
-		table->dives[i] = table->dives[i + 1];
-	table->dives[--table->nr] = NULL;
+	unregister_dive_from_table(table, idx);
+}
+
+/* this removes a dive from the dive table and trip-list but doesn't
+ * free the resources associated with the dive. It returns a pointer
+ * to the unregistered dive. */
+struct dive *unregister_dive(int idx)
+{
+	struct dive *dive = get_dive(idx);
+	if (!dive)
+		return NULL; /* this should never happen */
+	remove_dive_from_trip(dive, false);
+	if (dive->selected)
+		deselect_dive(idx);
+	unregister_dive_from_table(&dive_table, idx);
+	return dive;
 }
 
 /* this implements the mechanics of removing the dive from the table,
  * but doesn't deal with updating dive trips, etc */
 void delete_single_dive(int idx)
 {
-	struct dive *dive = get_dive(idx);
-	if (!dive)
-		return; /* this should never happen */
-	remove_dive_from_trip(dive, false);
-	if (dive->selected)
-		deselect_dive(idx);
-	delete_dive_from_table(&dive_table, idx);
+	struct dive *dive = unregister_dive(idx);
+	free_dive(dive);
 }
 
 struct dive **grow_dive_table(struct dive_table *table)

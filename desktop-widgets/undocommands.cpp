@@ -3,170 +3,156 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/divelist.h"
 #include "core/subsurface-string.h"
+#include "core/gettextfromc.h"
 
-UndoDeleteDive::UndoDeleteDive(QList<dive *> deletedDives) : diveList(deletedDives)
+UndoDeleteDive::UndoDeleteDive(const QVector<struct dive*> &divesToDeleteIn) : divesToDelete(divesToDeleteIn)
 {
-	setText("delete dive");
-	if (diveList.count() > 1)
-		setText(QString("delete %1 dives").arg(QString::number(diveList.count())));
+	setText(tr("delete %n dive(s)", "", divesToDelete.size()));
 }
 
 void UndoDeleteDive::undo()
 {
 	// first bring back the trip(s)
-	Q_FOREACH(struct dive_trip *trip, tripList)
-		insert_trip(&trip);
+	for (auto &trip: tripsToAdd) {
+		dive_trip *t = trip.release();	// Give up ownership
+		insert_trip(&t);		// Return ownership to backend
+	}
+	tripsToAdd.clear();
 
-	// now walk the list of deleted dives
-	for (int i = 0; i < diveList.count(); i++) {
-		struct dive *d = diveList.at(i);
-		// we adjusted the divetrip to point to the "new" divetrip
-		if (d->divetrip) {
-			struct dive_trip *trip = d->divetrip;
-			tripflag_t tripflag = d->tripflag; // this gets overwritten in add_dive_to_trip()
-			d->divetrip = NULL;
-			d->next = NULL;
-			d->pprev = NULL;
-			add_dive_to_trip(d, trip);
-			d->tripflag = tripflag;
-		}
-		record_dive(diveList.at(i));
+	for (DiveToAdd &d: divesToAdd) {
+		if (d.trip)
+			add_dive_to_trip(d.dive.get(), d.trip);
+		divesToDelete.append(d.dive.get());		// Delete dive on redo
+		add_single_dive(d.idx, d.dive.release());	// Return ownership to backend
 	}
 	mark_divelist_changed(true);
-	tripList.clear();
+	divesToAdd.clear();
+
+	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
 }
 
 void UndoDeleteDive::redo()
 {
-	QList<struct dive*> newList;
-	for (int i = 0; i < diveList.count(); i++) {
-		// make a copy of the dive before deleting it
-		struct dive* d = alloc_dive();
-		copy_dive(diveList.at(i), d);
-		newList.append(d);
-		// check for trip - if this is the last dive in the trip
-		// the trip will get deleted, so we need to remember it as well
-		if (d->divetrip && d->divetrip->nrdives == 1) {
-			dive_trip *undo_trip = clone_empty_trip(d->divetrip);
-			// update all the dives who were in this trip to point to the copy of the
-			// trip that we are about to delete implicitly when deleting its last dive below
-			Q_FOREACH(struct dive *inner_dive, newList) {
-				if (inner_dive->divetrip == d->divetrip)
-					inner_dive->divetrip = undo_trip;
-			}
-			d->divetrip = undo_trip;
-			tripList.append(undo_trip);
+	for (dive *d: divesToDelete) {
+		int idx = get_divenr(d);
+		if (idx < 0) {
+			qWarning() << "Deletion of unknown dive!";
+			continue;
 		}
-		//delete the dive
-		int nr;
-		if ((nr = get_divenr(diveList.at(i))) >= 0)
-			delete_single_dive(nr);
+		// remove dive from trip - if this is the last dive in the trip
+		// remove the whole trip.
+		dive_trip *trip = unregister_dive_from_trip(d, false);
+		if (trip && trip->nrdives == 0) {
+			unregister_trip(trip);			// Remove trip from backend
+			tripsToAdd.emplace_back(trip);		// Take ownership of trip
+		}
+
+		unregister_dive(idx);			// Remove dive from backend
+		divesToAdd.push_back({ OwningDivePtr(d), trip, idx });
+							// Take ownership for dive
 	}
+	divesToDelete.clear();
 	mark_divelist_changed(true);
+
+	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
-	diveList.clear();
-	diveList = newList;
 }
 
 
-UndoShiftTime::UndoShiftTime(QList<int> changedDives, int amount)
+UndoShiftTime::UndoShiftTime(QVector<int> changedDives, int amount)
 	: diveList(changedDives), timeChanged(amount)
 {
-	setText("shift time");
+	setText(tr("delete %n dive(s)", "", changedDives.size()));
 }
 
 void UndoShiftTime::undo()
 {
 	for (int i = 0; i < diveList.count(); i++) {
-		struct dive* d = get_dive_by_uniq_id(diveList.at(i));
+		dive *d = get_dive_by_uniq_id(diveList.at(i));
 		d->when -= timeChanged;
 	}
+	// Changing times may have unsorted the dive table
+	sort_table(&dive_table);
 	mark_divelist_changed(true);
+
+	// Negate the time-shift so that the next call does the reverse
+	timeChanged = -timeChanged;
+
+	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
 }
 
 void UndoShiftTime::redo()
 {
-	for (int i = 0; i < diveList.count(); i++) {
-		struct dive* d = get_dive_by_uniq_id(diveList.at(i));
-		d->when += timeChanged;
-	}
-	mark_divelist_changed(true);
-	MainWindow::instance()->refreshDisplay();
+	// Same as undo(), since after undo() we reversed the timeOffset
+	undo();
 }
 
 
-UndoRenumberDives::UndoRenumberDives(QMap<int, QPair<int, int> > originalNumbers)
+UndoRenumberDives::UndoRenumberDives(const QVector<QPair<int, int>> &divesToRenumberIn) : divesToRenumber(divesToRenumberIn)
 {
-	oldNumbers = originalNumbers;
-	if (oldNumbers.count() > 1)
-		setText(QString("renumber %1 dives").arg(QString::number(oldNumbers.count())));
-	else
-		setText("renumber dive");
+	setText(tr("renumber %n dive(s)", "", divesToRenumber.count()));
 }
 
 void UndoRenumberDives::undo()
 {
-	foreach (int key, oldNumbers.keys()) {
-		struct dive* d = get_dive_by_uniq_id(key);
-		d->number = oldNumbers.value(key).first;
+	for (auto &pair: divesToRenumber) {
+		dive *d = get_dive_by_uniq_id(pair.first);
+		if (!d)
+			continue;
+		std::swap(d->number, pair.second);
 	}
 	mark_divelist_changed(true);
+
+	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
 }
 
 void UndoRenumberDives::redo()
 {
-	foreach (int key, oldNumbers.keys()) {
-		struct dive* d = get_dive_by_uniq_id(key);
-		d->number = oldNumbers.value(key).second;
-	}
-	mark_divelist_changed(true);
-	MainWindow::instance()->refreshDisplay();
+	// Redo and undo do the same thing!
+	undo();
 }
 
-
-UndoRemoveDivesFromTrip::UndoRemoveDivesFromTrip(QMap<dive *, dive_trip *> removedDives)
+UndoRemoveDivesFromTrip::UndoRemoveDivesFromTrip(const QVector<dive *> &divesToRemoveIn) : divesToRemove(divesToRemoveIn)
 {
-	divesToUndo = removedDives;
-	setText("remove dive(s) from trip");
+	setText(tr("remove %n dive(s) from trip", "", divesToRemove.size()));
 }
 
 void UndoRemoveDivesFromTrip::undo()
 {
 	// first bring back the trip(s)
-	Q_FOREACH(struct dive_trip *trip, tripList)
-		insert_trip(&trip);
-	tripList.clear();
-
-	QMapIterator<dive*, dive_trip*> i(divesToUndo);
-	while (i.hasNext()) {
-		i.next();
-		add_dive_to_trip(i.key(), i.value());
+	for (auto &trip: tripsToAdd) {
+		dive_trip *t = trip.release();	// Give up ownership
+		insert_trip(&t);		// Return ownership to backend
 	}
-	mark_divelist_changed(true);
+	tripsToAdd.clear();
+
+	for (auto &pair: divesToAdd)
+		add_dive_to_trip(pair.first, pair.second);
+	divesToAdd.clear();
+
+	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
 }
 
 void UndoRemoveDivesFromTrip::redo()
 {
-	QMapIterator<dive*, dive_trip*> i(divesToUndo);
-	while (i.hasNext()) {
-		i.next();
-		// If the trip will be deleted, remember it so that we can restore it later.
-		dive_trip *trip = i.value();
-		if (trip->nrdives == 1) {
-			dive_trip *cloned_trip = clone_empty_trip(trip);
-			tripList.append(cloned_trip);
-			// Rewrite the dive list, such that the dives will be added to the resurrected trip.
-			for (dive_trip *&old_trip: divesToUndo) {
-				if (old_trip == trip)
-					old_trip = cloned_trip;
-			}
+	for (dive *d: divesToRemove) {
+		// remove dive from trip - if this is the last dive in the trip
+		// remove the whole trip.
+		dive_trip *trip = unregister_dive_from_trip(d, false);
+		if (!trip)
+			continue;				// This was not part of a trip
+		if (trip->nrdives == 0) {
+			unregister_trip(trip);			// Remove trip from backend
+			tripsToAdd.emplace_back(trip);		// Take ownership of trip
 		}
-		remove_dive_from_trip(i.key(), false);
+		divesToAdd.emplace_back(d, trip);
 	}
 	mark_divelist_changed(true);
+
+	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
 }

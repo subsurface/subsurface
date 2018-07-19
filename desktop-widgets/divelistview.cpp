@@ -679,10 +679,10 @@ void DiveListView::removeFromTrip()
 	//TODO: move this to C-code.
 	int i;
 	struct dive *d;
-	QMap<struct dive*, dive_trip*> divesToRemove;
+	QVector<struct dive *> divesToRemove;
 	for_each_dive (i, d) {
 		if (d->selected && d->divetrip)
-			divesToRemove.insert(d, d->divetrip);
+			divesToRemove.append(d);
 	}
 	if (divesToRemove.isEmpty())
 		return;
@@ -797,7 +797,7 @@ void DiveListView::deleteDive()
 
 	int i;
 	int lastDiveNr = -1;
-	QList<struct dive*> deletedDives; //a list of all deleted dives to be stored in the undo command
+	QVector<struct dive*> deletedDives; //a list of all deleted dives to be stored in the undo command
 	for_each_dive (i, d) {
 		if (!d->selected)
 			continue;
