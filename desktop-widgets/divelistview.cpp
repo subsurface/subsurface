@@ -633,12 +633,16 @@ void DiveListView::splitDives()
 	int i;
 	struct dive *dive;
 
+	// Let's collect the dives to be split first, so that we don't catch newly inserted dives!
+	QVector<struct dive *> dives;
 	for_each_dive (i, dive) {
 		if (dive->selected)
-			split_dive(dive);
+			dives.append(dive);
 	}
-	MainWindow::instance()->refreshProfile();
-	MainWindow::instance()->refreshDisplay();
+	for (struct dive *d: dives) {
+		UndoSplitDives *undoCommand = new UndoSplitDives(d, duration_t{-1});
+		MainWindow::instance()->undoStack->push(undoCommand);
+	}
 }
 
 void DiveListView::renumberDives()

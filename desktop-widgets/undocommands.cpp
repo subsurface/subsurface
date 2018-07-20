@@ -180,6 +180,7 @@ void UndoRemoveDivesFromTrip::undo()
 	for (auto &pair: divesToAdd)
 		add_dive_to_trip(pair.first, pair.second);
 	divesToAdd.clear();
+	mark_divelist_changed(true);
 
 	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
@@ -203,4 +204,59 @@ void UndoRemoveDivesFromTrip::redo()
 
 	// Finally, do the UI stuff:
 	MainWindow::instance()->refreshDisplay();
+}
+
+UndoSplitDives::UndoSplitDives(dive *d, duration_t time)
+{
+	setText(gettextFromC::tr("split dive"));
+
+	// Split the dive
+	dive *new1, *new2;
+	int idx = time.seconds < 0 ?
+		split_dive_dont_insert(d, &new1, &new2) :
+		split_dive_at_time_dont_insert(d, time, &new1, &new2);
+
+	// If this didn't work, reset pointers so that redo() and undo() do nothing
+	if (idx < 0) {
+		diveToSplit = nullptr;
+		divesToUnsplit[0] = divesToUnsplit[1];
+		return;
+	}
+
+	diveToSplit = d;
+	splitDives[0].dive.reset(new1);
+	splitDives[0].trip = d->divetrip;
+	splitDives[0].idx = idx;
+	splitDives[1].dive.reset(new2);
+	splitDives[1].trip = d->divetrip;
+	splitDives[1].idx = idx + 1;
+}
+
+void UndoSplitDives::redo()
+{
+	if (!diveToSplit)
+		return;
+	divesToUnsplit[0] = addDive(splitDives[0]);
+	divesToUnsplit[1] = addDive(splitDives[1]);
+	unsplitDive = removeDive(diveToSplit);
+	mark_divelist_changed(true);
+
+	// Finally, do the UI stuff:
+	MainWindow::instance()->refreshDisplay();
+	MainWindow::instance()->refreshProfile();
+}
+
+void UndoSplitDives::undo()
+{
+	if (!unsplitDive.dive)
+		return;
+	// Note: reverse order with respect to redo()
+	diveToSplit = addDive(unsplitDive);
+	splitDives[1] = removeDive(divesToUnsplit[1]);
+	splitDives[0] = removeDive(divesToUnsplit[0]);
+	mark_divelist_changed(true);
+
+	// Finally, do the UI stuff:
+	MainWindow::instance()->refreshDisplay();
+	MainWindow::instance()->refreshProfile();
 }
