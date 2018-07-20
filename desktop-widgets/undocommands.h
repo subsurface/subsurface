@@ -227,4 +227,23 @@ private:
 	std::vector<OwningTripPtr> tripsToAdd;
 };
 
+class UndoSplitDives : public QUndoCommand {
+public:
+	// If time is < 0, split at first surface interval
+	UndoSplitDives(dive *d, duration_t time);
+private:
+	void undo() override;
+	void redo() override;
+
+	// For redo
+	// For each dive to split, we remove one from and put two dives into the backend
+	dive		*diveToSplit;
+	DiveToAdd	 splitDives[2];
+
+	// For undo
+	// For each dive to unsplit, we remove two dives from and add one into the backend
+	DiveToAdd	 unsplitDive;
+	dive		*divesToUnsplit[2];
+};
+
 #endif // UNDOCOMMANDS_H

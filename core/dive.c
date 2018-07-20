@@ -3388,7 +3388,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 }
 
 // copy_dive(), but retaining the new ID for the copied dive
-static struct dive *create_new_copy(struct dive *from)
+static struct dive *create_new_copy(const struct dive *from)
 {
 	struct dive *to = alloc_dive();
 	int id;
@@ -3450,9 +3450,11 @@ static void force_fixup_dive(struct dive *d)
 
 /*
  * Split a dive that has a surface interval from samples 'a' to 'b'
- * into two dives.
+ * into two dives, but don't add them to the log yet.
+ * Returns the nr of the old dive or <0 on failure.
+ * On success, the newly allocated dives are returned in out1 and out2.
  */
-static int split_dive_at(struct dive *dive, int a, int b)
+static int split_dive_at(const struct dive *dive, int a, int b, struct dive **out1, struct dive **out2)
 {
 	int i, nr;
 	uint32_t t;
@@ -3462,15 +3464,16 @@ static int split_dive_at(struct dive *dive, int a, int b)
 
 	/* if we can't find the dive in the dive list, don't bother */
 	if ((nr = get_divenr(dive)) < 0)
-		return 0;
+		return -1;
 
 	/* Splitting should leave at least 3 samples per dive */
 	if (a < 3 || b > dive->dc.samples - 4)
-		return 0;
+		return -1;
 
 	/* We're not trying to be efficient here.. */
 	d1 = create_new_copy(dive);
 	d2 = create_new_copy(dive);
+	d1->divetrip = d2->divetrip = 0;
 
 	/* now unselect the first first segment so we don't keep all
 	 * dives selected by mistake. But do keep the second one selected
@@ -3544,15 +3547,6 @@ static int split_dive_at(struct dive *dive, int a, int b)
 	force_fixup_dive(d1);
 	force_fixup_dive(d2);
 
-	if (dive->divetrip) {
-		d1->divetrip = d2->divetrip = 0;
-		add_dive_to_trip(d1, dive->divetrip);
-		add_dive_to_trip(d2, dive->divetrip);
-	}
-
-	delete_single_dive(nr);
-	add_single_dive(nr, d1);
-
 	/*
 	 * Was the dive numbered? If it was the last dive, then we'll
 	 * increment the dive number for the tail part that we split off.
@@ -3564,16 +3558,28 @@ static int split_dive_at(struct dive *dive, int a, int b)
 		else
 			d2->number = 0;
 	}
-	add_single_dive(nr + 1, d2);
 
 	mark_divelist_changed(true);
 
-	return 1;
+	*out1 = d1;
+	*out2 = d2;
+	return nr;
+}
+
+static void finish_split(int nr, struct dive *old, struct dive *d1, struct dive *d2)
+{
+	if (old->divetrip) {
+		add_dive_to_trip(d1, old->divetrip);
+		add_dive_to_trip(d2, old->divetrip);
+	}
+	delete_single_dive(nr);
+	add_single_dive(nr, d1);
+	add_single_dive(nr + 1, d2);
 }
 
 /* in freedive mode we split for as little as 10 seconds on the surface,
  * otherwise we use a minute */
-static bool should_split(struct divecomputer *dc, int t1, int t2)
+static bool should_split(const struct divecomputer *dc, int t1, int t2)
 {
 	int threshold = dc->divemode == FREEDIVE ? 10 : 60;
 
@@ -3590,14 +3596,14 @@ static bool should_split(struct divecomputer *dc, int t1, int t2)
  *
  * In other words, this is a (simplified) reversal of the dive merging.
  */
-int split_dive(struct dive *dive)
+int split_dive_dont_insert(const struct dive *dive, struct dive **new1, struct dive **new2)
 {
 	int i;
 	int at_surface, surface_start;
-	struct divecomputer *dc;
+	const struct divecomputer *dc;
 
 	if (!dive)
-		return 0;
+		return -1;
 
 	dc = &dive->dc;
 	surface_start = 0;
@@ -3627,25 +3633,43 @@ int split_dive(struct dive *dive)
 		if (!should_split(dc, dc->sample[surface_start].time.seconds, sample[-1].time.seconds))
 			continue;
 
-		return split_dive_at(dive, surface_start, i-1);
+		return split_dive_at(dive, surface_start, i-1, new1, new2);
 	}
-	return 0;
+	return -1;
 }
 
-void split_dive_at_time(struct dive *dive, duration_t time)
+void split_dive(struct dive *dive)
+{
+	int nr;
+	struct dive *new1, *new2;
+
+	if ((nr = split_dive_dont_insert(dive, &new1, &new2)) >= 0)
+		finish_split(nr, dive, new1, new2);
+}
+
+int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2)
 {
 	int i = 0;
 	struct sample *sample = dive->dc.sample;
 
 	if (!dive)
-		return;
+		return -1;
 	while(sample->time.seconds < time.seconds) {
 		++sample;
 		++i;
 		if (dive->dc.samples == i)
-			return;
+			return -1;
 	}
-	split_dive_at(dive, i, i - 1);
+	return split_dive_at(dive, i, i - 1, new1, new2);
+}
+
+void split_dive_at_time(struct dive *dive, duration_t time)
+{
+	int nr;
+	struct dive *new1, *new2;
+
+	if ((nr = split_dive_at_time_dont_insert(dive, time, &new1, &new2)) >= 0)
+		finish_split(nr, dive, new1, new2);
 }
 
 /*

@@ -23,6 +23,7 @@
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/divepicturewidget.h"
+#include "desktop-widgets/undocommands.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
@@ -1675,16 +1676,19 @@ void ProfileWidget2::addSetpointChange()
 
 void ProfileWidget2::splitDive()
 {
+#ifndef SUBSURFACE_MOBILE
+	// Make sure that this is an actual dive and we're not in add mode
+	dive *d = get_dive_by_uniq_id(displayed_dive.id);
+	if (!d)
+		return;
 	QAction *action = qobject_cast<QAction *>(sender());
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	duration_t time;
-	time.seconds = lrint(timeAxis->valueAt((scenePos)));
-	split_dive_at_time(&displayed_dive, time);
+	time.seconds = lrint(timeAxis->valueAt(scenePos));
+	UndoSplitDives *undoCommand = new UndoSplitDives(d, time);
+	MainWindow::instance()->undoStack->push(undoCommand);
 	emit updateDiveInfo(false);
-	mark_divelist_changed(true);
-	replot();
-	MainWindow::instance()->refreshProfile();
-	MainWindow::instance()->refreshDisplay();
+#endif
 }
 
 void ProfileWidget2::changeGas()
