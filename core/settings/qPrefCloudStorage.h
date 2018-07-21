@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef QPREFCLOUDSTORAGE_H
 #define QPREFCLOUDSTORAGE_H
+#include "core/pref.h"
 
 #include <QObject>
 
@@ -30,19 +31,19 @@ public:
 	void sync() { loadSync(true); }
 
 public:
-	const QString cloud_base_url() const;
-	const QString cloud_git_url() const;
-	const QString cloud_storage_email() const;
-	const QString cloud_storage_email_encoded() const;
-	const QString cloud_storage_newpassword() const;
-	const QString cloud_storage_password() const;
-	const QString cloud_storage_pin() const;
-	int   cloud_timeout() const;
-	int   cloud_verification_status() const;
-	bool  git_local_only() const;
-	bool  save_password_local() const;
-	bool  save_userid_local() const;
-	const QString userid() const;
+	static inline const QString cloud_base_url() { return prefs.cloud_base_url; }
+	static inline const QString cloud_git_url() { return prefs.cloud_git_url; }
+	static inline const QString cloud_storage_email() { return prefs.cloud_storage_email; }
+	static inline const QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
+	static inline const QString cloud_storage_newpassword() { return prefs.cloud_storage_newpassword; }
+	static inline const QString cloud_storage_password() { return prefs.cloud_storage_password; }
+	static inline const QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
+	static inline int cloud_timeout() { return prefs.cloud_timeout; }
+	static inline int cloud_verification_status() { return prefs.cloud_verification_status; }
+	static inline bool git_local_only() { return prefs.git_local_only; }
+	static inline bool save_password_local() { return prefs.save_password_local; }
+	static inline bool save_userid_local() { return prefs.save_userid_local; }
+	static inline const QString userid() { return prefs.userid; }
 
 public slots:
 	void set_cloud_base_url(const QString& value);

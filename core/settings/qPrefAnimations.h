@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef QPREFANIMATIONS_H
 #define QPREFANIMATIONS_H
+#include "core/pref.h"
 
 #include <QObject>
 
@@ -18,7 +19,7 @@ public:
 	void sync() { loadSync(true); }
 
 public:
-	int animation_speed() const;
+	static inline int animation_speed() { return prefs.animation_speed; };
 
 public slots:
 	void set_animation_speed(int value);
