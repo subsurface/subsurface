@@ -29,7 +29,6 @@ void qPrefCloudStorage::loadSync(bool doSync)
 	disk_userid(doSync);
 }
 
-GET_PREFERENCE_TXT(CloudStorage, cloud_base_url);
 void qPrefCloudStorage::set_cloud_base_url(const QString& value)
 {
 	if (value != prefs.cloud_base_url) {
@@ -49,7 +48,6 @@ void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 	LOADSYNC_TXT("/cloud_git_url", cloud_git_url);
 }
 
-GET_PREFERENCE_TXT(CloudStorage, cloud_git_url);
 void qPrefCloudStorage::set_cloud_git_url(const QString& value)
 {
 	if (value != prefs.cloud_git_url) {
@@ -67,7 +65,6 @@ HANDLE_PREFERENCE_TXT(CloudStorage, "/email", cloud_storage_email);
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "/email_encoded", cloud_storage_email_encoded);
 
-GET_PREFERENCE_TXT(CloudStorage, cloud_storage_newpassword);
 void qPrefCloudStorage::set_cloud_storage_newpassword(const QString& value)
 {
 	if (value == prefs.cloud_storage_newpassword)
@@ -79,7 +76,6 @@ void qPrefCloudStorage::set_cloud_storage_newpassword(const QString& value)
 	emit cloud_storage_newpassword_changed(value);
 }
 
-GET_PREFERENCE_TXT(CloudStorage, cloud_storage_password);
 void qPrefCloudStorage::set_cloud_storage_password(const QString& value)
 {
 	if (value != prefs.cloud_storage_password) {
@@ -106,7 +102,6 @@ HANDLE_PREFERENCE_BOOL(CloudStorage, "/save_password_local", save_password_local
 
 HANDLE_PREFERENCE_BOOL(CloudStorage, "/save_userid_local", save_userid_local);
 
-GET_PREFERENCE_TXT(CloudStorage, userid);
 SET_PREFERENCE_TXT(CloudStorage, userid);
 void qPrefCloudStorage::disk_userid(bool doSync)
 {

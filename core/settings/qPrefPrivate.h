@@ -115,37 +115,6 @@ void qPref ## usegroup::disk_ ## field(bool doSync) \
 	LOADSYNC_TXT(name, field); \
 }
 
-//******* Macros to generate get function
-#define GET_PREFERENCE_BOOL(usegroup, field) \
-bool qPref ## usegroup::field () const \
-{ \
-	return prefs.field; \
-}
-
-#define GET_PREFERENCE_DOUBLE(usegroup, field) \
-double  qPref ## usegroup::field () const \
-{ \
-	return prefs.field; \
-}
-
-#define GET_PREFERENCE_ENUM(usegroup, type, field) \
-struct type  qPref ## usegroup:: ## field () const \
-{ \
-	return prefs.field; \
-}
-
-#define GET_PREFERENCE_INT(usegroup, field) \
-int qPref ## usegroup::field () const \
-{ \
-	return prefs.field; \
-}
-
-#define GET_PREFERENCE_TXT(usegroup, field) \
-const QString qPref ## usegroup::field () const \
-{ \
-	return prefs.field; \
-}
-
 //******* Macros to generate set function
 #define SET_PREFERENCE_BOOL(usegroup, field) \
 void qPref ## usegroup::set_ ## field (bool value) \
@@ -199,27 +168,22 @@ void qPref ## usegroup::set_ ## field (const QString& value) \
 
 //******* Macros to generate set/set/loadsync combined
 #define HANDLE_PREFERENCE_BOOL(usegroup, name, field) \
-GET_PREFERENCE_BOOL(usegroup, field); \
 SET_PREFERENCE_BOOL(usegroup, field); \
 DISK_LOADSYNC_BOOL(usegroup, name, field);
 
 #define HANDLE_PREFERENCE_DOUBLE(usegroup, name, field) \
-GET_PREFERENCE_DOUBLE(usegroup, field); \
 SET_PREFERENCE_DOUBLE(usegroup, field); \
 DISK_LOADSYNC_DOUBLE(usegroup, name, field);
 
 #define HANDLE_PREFERENCE_ENUM(usegroup, type, name, field) \
-GET_PREFERENCE_ENUM(usegroup, type, field); \
 SET_PREFERENCE_ENUM(usegroup, type, field); \
 DISK_LOADSYNC_ENUM(usegroup, name, type, field);
 
 #define HANDLE_PREFERENCE_INT(usegroup, name, field) \
-GET_PREFERENCE_INT(usegroup, field); \
 SET_PREFERENCE_INT(usegroup, field); \
 DISK_LOADSYNC_INT(usegroup, name, field);
 
 #define HANDLE_PREFERENCE_TXT(usegroup, name, field) \
-GET_PREFERENCE_TXT(usegroup, field); \
 SET_PREFERENCE_TXT(usegroup, field); \
 DISK_LOADSYNC_TXT(usegroup, name, field);
 
