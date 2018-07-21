@@ -14,6 +14,7 @@
 #include <QMessageBox>
 #include <QShortcut>
 #include <QTimer>
+#include <QUndoStack>
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	downloading(false),
@@ -507,6 +508,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 		// first new dive) and select it again after processing all the dives
 		int uniqId = downloadTable.dives[downloadTable.nr - 1]->id;
 		process_imported_dives(&downloadTable, preferDownloaded(), true);
+		MainWindow::instance()->undoStack->clear();
 		// after process_imported_dives does any merging or resorting needed, we need
 		// to recreate the model for the dive list so we can select the newest dive
 		MainWindow::instance()->recreateDiveList();

@@ -7,6 +7,7 @@
 #include <QDrag>
 #include <QMimeData>
 #include <QRegExp>
+#include <QUndoStack>
 #include "core/qthelper.h"
 #include "core/import-csv.h"
 
@@ -1008,6 +1009,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	}
 
 	process_imported_dives(&table, false, false);
+	MainWindow::instance()->undoStack->clear();
 	MainWindow::instance()->refreshDisplay();
 }
 
