@@ -671,21 +671,12 @@ void MainTab::reload()
 }
 
 // tricky little macro to edit all the selected dives
-// loop over all dives, for each selected dive do WHAT, but do it
-// last for the current dive; this is required in case the invocation
-// wants to compare things to the original value in current_dive like it should
-#define MODIFY_SELECTED_DIVES(WHAT)                            \
+// loop ove all DIVES and do WHAT.
+#define MODIFY_DIVES(DIVES, WHAT)                            \
 	do {                                                 \
-		struct dive *mydive = NULL;                  \
-		int _i;                                      \
-		for_each_dive (_i, mydive) {                 \
-			if (!mydive->selected || mydive == cd) \
-				continue;                    \
-							     \
+		for (dive *mydive: DIVES) {                  \
 			WHAT;                                \
-		}                                            \
-		mydive = cd;                                 \
-		WHAT;                                        \
+		}					     \
 		mark_divelist_changed(true);                 \
 	} while (0)
 
@@ -772,6 +763,21 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 	return pickedUuid;
 }
 
+
+// Get the list of selected dives, but put the current dive at the last position of the vector
+static QVector<dive *> getSelectedDivesCurrentLast()
+{
+	QVector<dive *> res;
+	struct dive *d;
+	int i;
+	for_each_dive (i, d) {
+		if (d->selected && d != current_dive)
+			res.append(d);
+	}
+	res.append(current_dive);
+	return res;
+}
+
 void MainTab::acceptChanges()
 {
 	int i, addedId = -1;
@@ -791,6 +797,7 @@ void MainTab::acceptChanges()
 	if (editMode == ADD) {
 		// make sure that the dive site is handled as well
 		updateDiveSite(ui.location->currDiveSiteUuid(), &displayed_dive);
+		copyTagsToDisplayedDive();
 
 		UndoAddDive *undoCommand = new UndoAddDive(&displayed_dive);
 		MainWindow::instance()->undoStack->push(undoCommand);
@@ -809,7 +816,6 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 		MainWindow::instance()->dive_list()->setFocus();
 		resetPallete();
-		saveTags();
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
 		return;
 	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
@@ -825,6 +831,10 @@ void MainTab::acceptChanges()
 		currentTrip = NULL;
 		ui.dateEdit->setEnabled(true);
 	} else {
+		// Get list of selected dives, but put the current dive last;
+		// this is required in case the invocation wants to compare things
+		// to the original value in current_dive like it should
+		QVector<dive *> selectedDives = getSelectedDivesCurrentLast();
 		if (editMode == MANUALLY_ADDED_DIVE) {
 			// preserve any changes to the profile
 			free(current_dive->dc.sample);
@@ -835,41 +845,41 @@ void MainTab::acceptChanges()
 		// now check if something has changed and if yes, edit the selected dives that
 		// were identical with the master dive shown (and mark the divelist as changed)
 		if (!same_string(displayed_dive.suit, cd->suit))
-			MODIFY_SELECTED_DIVES(EDIT_TEXT(suit));
+			MODIFY_DIVES(selectedDives, EDIT_TEXT(suit));
 		if (!same_string(displayed_dive.notes, cd->notes))
-			MODIFY_SELECTED_DIVES(EDIT_TEXT(notes));
+			MODIFY_DIVES(selectedDives, EDIT_TEXT(notes));
 		if (displayed_dive.rating != cd->rating)
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(rating));
+			MODIFY_DIVES(selectedDives, EDIT_VALUE(rating));
 		if (displayed_dive.visibility != cd->visibility)
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(visibility));
+			MODIFY_DIVES(selectedDives, EDIT_VALUE(visibility));
 		if (displayed_dive.airtemp.mkelvin != cd->airtemp.mkelvin)
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(airtemp.mkelvin));
+			MODIFY_DIVES(selectedDives, EDIT_VALUE(airtemp.mkelvin));
 		if (displayed_dc->divemode != current_dc->divemode) {
-			MODIFY_SELECTED_DIVES(
+			MODIFY_DIVES(selectedDives,
 				if (get_dive_dc(mydive, dc_number)->divemode == current_dc->divemode || copyPaste)
 					get_dive_dc(mydive, dc_number)->divemode = displayed_dc->divemode;
 			);
-			MODIFY_SELECTED_DIVES(update_setpoint_events(mydive, get_dive_dc(mydive, dc_number)));
+			MODIFY_DIVES(selectedDives, update_setpoint_events(mydive, get_dive_dc(mydive, dc_number)));
 			do_replot = true;
 		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(watertemp.mkelvin));
+			MODIFY_DIVES(selectedDives, EDIT_VALUE(watertemp.mkelvin));
 		if (displayed_dive.when != cd->when) {
 			time_t offset = cd->when - displayed_dive.when;
-			MODIFY_SELECTED_DIVES(mydive->when -= offset;);
+			MODIFY_DIVES(selectedDives, mydive->when -= offset;);
 		}
 
 		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
-			MODIFY_SELECTED_DIVES(EDIT_VALUE(dive_site_uuid));
+			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site_uuid));
 
 		// three text fields are somewhat special and are represented as tags
 		// in the UI - they need somewhat smarter handling
-		saveTaggedStrings();
-		saveTags();
+		saveTaggedStrings(selectedDives);
+		saveTags(selectedDives);
 
 		if (editMode != ADD && cylindersModel->changed) {
 			mark_divelist_changed(true);
-			MODIFY_SELECTED_DIVES(
+			MODIFY_DIVES(selectedDives,
 				for (int i = 0; i < MAX_CYLINDERS; i++) {
 					if (mydive != cd) {
 						if (same_string(mydive->cylinder[i].type.description, cd->cylinder[i].type.description) || copyPaste) {
@@ -913,7 +923,7 @@ void MainTab::acceptChanges()
 
 		if (weightModel->changed) {
 			mark_divelist_changed(true);
-			MODIFY_SELECTED_DIVES(
+			MODIFY_DIVES(selectedDives,
 				for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 					if (mydive != cd && (copyPaste || same_string(mydive->weightsystem[i].description, cd->weightsystem[i].description))) {
 						mydive->weightsystem[i] = displayed_dive.weightsystem[i];
@@ -930,7 +940,7 @@ void MainTab::acceptChanges()
 		// update the dive site for the selected dives that had the same dive site as the current dive
 		uint32_t oldUuid = cd->dive_site_uuid;
 		uint32_t newUuid = 0;
-		MODIFY_SELECTED_DIVES(
+		MODIFY_DIVES(selectedDives,
 			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
 				newUuid = updateDiveSite(newUuid == 0 ? ui.location->currDiveSiteUuid() : newUuid, mydive);
 		);
@@ -1237,25 +1247,31 @@ void MainTab::on_timeEdit_timeChanged(const QTime &time)
 	emit dateTimeChanged();
 }
 
+void MainTab::copyTagsToDisplayedDive()
+{
+	taglist_free(displayed_dive.tag_list);
+	displayed_dive.tag_list = NULL;
+	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
+		taglist_add_tag(&displayed_dive.tag_list, qPrintable(tag));
+	taglist_cleanup(&displayed_dive.tag_list);
+}
+
 // changing the tags on multiple dives is semantically strange - what's the right thing to do?
 // here's what I think... add the tags that were added to the displayed dive and remove the tags
 // that were removed from it
-void MainTab::saveTags()
+void MainTab::saveTags(const QVector<dive *> &selectedDives)
 {
 	struct dive *cd = current_dive;
 	struct tag_entry *added_list = NULL;
 	struct tag_entry *removed_list = NULL;
 	struct tag_entry *tl;
 
-	taglist_free(displayed_dive.tag_list);
-	displayed_dive.tag_list = NULL;
-	Q_FOREACH (const QString& tag, ui.tagWidget->getBlockStringList())
-		taglist_add_tag(&displayed_dive.tag_list, qPrintable(tag));
-	taglist_cleanup(&displayed_dive.tag_list);
+	copyTagsToDisplayedDive();
 
 	// figure out which tags were added and which tags were removed
-	added_list = taglist_added(cd->tag_list, displayed_dive.tag_list);
-	removed_list = taglist_added(displayed_dive.tag_list, cd->tag_list);
+	added_list = taglist_added(cd ? cd->tag_list : NULL, displayed_dive.tag_list);
+	removed_list = taglist_added(displayed_dive.tag_list, cd ? cd->tag_list : NULL);
+
 	// dump_taglist("added tags:", added_list);
 	// dump_taglist("removed tags:", removed_list);
 
@@ -1263,7 +1279,7 @@ void MainTab::saveTags()
 	if (added_list == NULL && removed_list == NULL)
 		return;
 
-	MODIFY_SELECTED_DIVES(
+	MODIFY_DIVES(selectedDives,
 		// create a new tag list and all the existing tags that were not
 		// removed and then all the added tags
 		struct tag_entry *new_tag_list;
@@ -1289,13 +1305,13 @@ void MainTab::saveTags()
 // buddy and divemaster are represented in the UI just like the tags, but the internal
 // representation is just a string (with commas as delimiters). So we need to do the same
 // thing we did for tags, just differently
-void MainTab::saveTaggedStrings()
+void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
 {
 	QStringList addedList, removedList;
 	struct dive *cd = current_dive;
 
 	diffTaggedStrings(cd->buddy, displayed_dive.buddy, addedList, removedList);
-	MODIFY_SELECTED_DIVES(
+	MODIFY_DIVES(selectedDives,
 		QStringList oldList = QString(mydive->buddy).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
 		QString newString;
 		QString comma;
@@ -1317,7 +1333,7 @@ void MainTab::saveTaggedStrings()
 	addedList.clear();
 	removedList.clear();
 	diffTaggedStrings(cd->divemaster, displayed_dive.divemaster, addedList, removedList);
-	MODIFY_SELECTED_DIVES(
+	MODIFY_DIVES(selectedDives,
 		QStringList oldList = QString(mydive->divemaster).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
 		QString newString;
 		QString comma;
@@ -1460,7 +1476,7 @@ void MainTab::on_visibility_valueChanged(int value)
 	}
 }
 
-#undef MODIFY_SELECTED_DIVES
+#undef MODIFY_DIVES
 #undef EDIT_TEXT
 #undef EDIT_VALUE
 
