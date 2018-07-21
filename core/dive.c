@@ -2459,7 +2459,7 @@ static void pick_trip(struct dive *res, const struct dive *pick)
 /*
  * Pick a trip for a dive
  */
-static void merge_trip(struct dive *res, struct dive *a, struct dive *b)
+static struct dive *get_preferred_trip(struct dive *a, struct dive *b)
 {
 	dive_trip_t *atrip, *btrip;
 
@@ -2469,39 +2469,34 @@ static void merge_trip(struct dive *res, struct dive *a, struct dive *b)
 	 * ones.
 	 */
 	if (a->tripflag > b->tripflag)
-		goto pick_a;
+		return a;
 
 	if (a->tripflag < b->tripflag)
-		goto pick_b;
+		return b;
 
 	/* Otherwise, look at the trip data and pick the "better" one */
 	atrip = a->divetrip;
 	btrip = b->divetrip;
 	if (!atrip)
-		goto pick_b;
+		return b;
 	if (!btrip)
-		goto pick_a;
+		return a;
 	if (!atrip->location)
-		goto pick_b;
+		return b;
 	if (!btrip->location)
-		goto pick_a;
+		return a;
 	if (!atrip->notes)
-		goto pick_b;
+		return b;
 	if (!btrip->notes)
-		goto pick_a;
+		return a;
 
 	/*
 	 * Ok, so both have location and notes.
 	 * Pick the earlier one.
 	 */
 	if (a->when < b->when)
-		goto pick_a;
-	goto pick_b;
-
-pick_a:
-	b = a;
-pick_b:
-	pick_trip(res, b);
+		return a;
+	return b;
 }
 
 #if CURRENTLY_NOT_USED
@@ -2844,7 +2839,7 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
 struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded)
 {
 	if (likely_same_dive(a, b))
-		return merge_dives(a, b, 0, prefer_downloaded);
+		return merge_dives(a, b, 0, prefer_downloaded, NULL);
 	return NULL;
 }
 
@@ -3335,10 +3330,15 @@ int count_dives_with_suit(const char *suit)
  * be the old dive and dive b is supposed to be the newly imported
  * dive. If the flag "prefer_downloaded" is set, data of the latter
  * will take priority over the former.
+ *
+ * The trip the new dive should be associated with (if any) is returned
+ * in the "trip" output paramater. If "trip" is NULL, then the dive will
+ * instead be added to this trip.
  */
-struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
+struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip)
 {
 	struct dive *res = alloc_dive();
+	struct dive *preferred_trip;
 
 	if (offset) {
 		/*
@@ -3358,7 +3358,11 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	}
 	res->when = prefer_downloaded ? b->when : a->when;
 	res->selected = a->selected || b->selected;
-	merge_trip(res, a, b);
+	preferred_trip = get_preferred_trip(a, b);
+	if (trip)
+		*trip = preferred_trip->divetrip;
+	else
+		pick_trip(res, preferred_trip);
 	MERGE_TXT(res, a, b, notes, "\n--\n");
 	MERGE_TXT(res, a, b, buddy, ", ");
 	MERGE_TXT(res, a, b, divemaster, ", ");

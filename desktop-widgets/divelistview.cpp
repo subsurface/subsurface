@@ -611,21 +611,32 @@ static bool can_merge(const struct dive *a, const struct dive *b, enum asked_use
 void DiveListView::mergeDives()
 {
 	int i;
-	struct dive *dive, *maindive = NULL;
+	struct dive *d;
 	enum asked_user have_asked = NOTYET;
 
-	for_each_dive (i, dive) {
-		if (dive->selected) {
-			if (!can_merge(maindive, dive, &have_asked)) {
-				maindive = dive;
-			} else {
-				maindive = merge_two_dives(maindive, dive);
-				i--; // otherwise we skip a dive in the freshly changed list
-			}
+	// Collect a vector of batches of dives to merge (i.e. a vector of vector of dives)
+	QVector<QVector<dive *>> merge_batches;
+	QVector<dive *> current_batch;
+	for_each_dive (i, d) {
+		if (!d->selected)
+			continue;
+		if (current_batch.empty()) {
+			current_batch.append(d);
+		} else if (can_merge(current_batch.back(), d, &have_asked)) {
+			current_batch.append(d);
+		} else {
+			if (current_batch.count() > 1)
+				merge_batches.append(current_batch);
+			current_batch.clear();
 		}
 	}
-	MainWindow::instance()->refreshProfile();
-	MainWindow::instance()->refreshDisplay();
+	if (current_batch.count() > 1)
+		merge_batches.append(current_batch);
+
+	for (const QVector<dive *> &batch: merge_batches) {
+		UndoMergeDives *undoCommand = new UndoMergeDives(batch);
+		MainWindow::instance()->undoStack->push(undoCommand);
+	}
 }
 
 void DiveListView::splitDives()
