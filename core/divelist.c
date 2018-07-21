@@ -26,7 +26,7 @@
  * struct dive *unregister_dive(int idx)
  * void delete_single_dive(int idx)
  * void add_single_dive(int idx, struct dive *dive)
- * void merge_two_dives(struct dive *a, struct dive *b)
+ * struct dive *merge_two_dives(struct dive *a, struct dive *b)
  * void select_dive(int idx)
  * void deselect_dive(int idx)
  * void mark_divelist_changed(int changed)
@@ -1060,7 +1060,7 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	if (i < 0 || j < 0)
 		// something is wrong with those dives. Bail
 		return NULL;
-	res = merge_dives(a, b, b->when - a->when, false);
+	res = merge_dives(a, b, b->when - a->when, false, NULL);
 	if (!res)
 		return NULL;
 

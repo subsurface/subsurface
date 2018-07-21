@@ -809,9 +809,8 @@ void MainTab::acceptChanges()
 		MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 		MainWindow::instance()->dive_list()->setFocus();
 		resetPallete();
-		saveTags(QVector<dive *>{ &displayed_dive });
+		saveTags();
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
-		Command::addDive(&displayed_dive, autogroup, true);
 		return;
 	} else if (MainWindow::instance() && MainWindow::instance()->dive_list()->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */

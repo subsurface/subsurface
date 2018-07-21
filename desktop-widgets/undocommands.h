@@ -180,7 +180,7 @@ private:
 	void redo() override;
 
 	// For redo
-	QVector<struct dive*> divesToDelete;
+	std::vector<struct dive*> divesToDelete;
 
 	std::vector<OwningTripPtr> tripsToAdd;
 	std::vector<DiveToAdd> divesToAdd;
@@ -244,6 +244,27 @@ private:
 	// For each dive to unsplit, we remove two dives from and add one into the backend
 	DiveToAdd	 unsplitDive;
 	dive		*divesToUnsplit[2];
+};
+
+class UndoMergeDives : public QUndoCommand {
+public:
+	UndoMergeDives(const QVector<dive *> &dives);
+private:
+	void undo() override;
+	void redo() override;
+
+	// For redo
+	// Add one and remove a batch of dives
+	DiveToAdd		 mergedDive;
+	std::vector<dive *>	 divesToMerge;
+
+	// For undo
+	// Remove one and add a batch of dives
+	dive			*diveToUnmerge;
+	std::vector<DiveToAdd>	 unmergedDives;
+
+	// For undo and redo
+	QVector<QPair<int, int>> divesToRenumber;
 };
 
 #endif // UNDOCOMMANDS_H
