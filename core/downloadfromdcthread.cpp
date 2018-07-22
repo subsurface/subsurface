@@ -56,10 +56,10 @@ void DownloadThread::run()
 		qDebug() << "Finishing download thread:" << downloadTable.nr << "dives downloaded";
 	}
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dcs->setVendor(internalData->vendor);
-	dcs->setProduct(internalData->product);
-	dcs->setDevice(internalData->devname);
-	dcs->setDeviceName(m_data->devBluetoothName());
+	dcs->set_vendor(internalData->vendor);
+	dcs->set_product(internalData->product);
+	dcs->set_device(internalData->devname);
+	dcs->set_device_name(m_data->devBluetoothName());
 }
 
 static void fill_supported_mobile_list()
@@ -247,12 +247,12 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (dcs->dc_vendor() == vendor &&
-	    dcs->dc_product() == product) {
+	if (dcs->vendor() == vendor &&
+	    dcs->product() == product) {
 		// we are trying to show the last dive computer selected
 		for (int i = 0; i < connectionListModel.rowCount(); i++) {
 			QString address = connectionListModel.address(i);
-			if (address.contains(dcs->dc_device()))
+			if (address.contains(dcs->device()))
 				return i;
 		}
 	}
@@ -410,10 +410,10 @@ device_data_t* DCDeviceData::internalData()
 int DCDeviceData::getDetectedVendorIndex()
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dcs->dc_vendor().isEmpty()) {
+	if (!dcs->vendor().isEmpty()) {
 		// use the last one
 		for (int i = 0; i < vendorList.length(); i++) {
-			if (vendorList[i] == dcs->dc_vendor())
+			if (vendorList[i] == dcs->vendor())
 				return i;
 		}
 	}
@@ -431,11 +431,11 @@ int DCDeviceData::getDetectedVendorIndex()
 int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dcs->dc_vendor().isEmpty()) {
-		if (dcs->dc_vendor() == currentVendorText) {
+	if (!dcs->vendor().isEmpty()) {
+		if (dcs->vendor() == currentVendorText) {
 			// we are trying to show the last dive computer selected
 			for (int i = 0; i < productList[currentVendorText].length(); i++) {
-				if (productList[currentVendorText][i] == dcs->dc_product())
+				if (productList[currentVendorText][i] == dcs->product())
 					return i;
 			}
 		}

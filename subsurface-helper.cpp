@@ -162,6 +162,9 @@ void register_qml_types()
 	rc = qmlRegisterType<qPrefDisplay>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDisplayPrefs");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register DisplayPrefs (class qPrefDisplay), QML will not work!!";
+	rc = qmlRegisterType<qPrefDiveComputer>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDiveComputerPrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register DiveComputerPrefs (class qPrefDiveComputer), QML will not work!!";
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE
