@@ -47,7 +47,6 @@ public:
 	QString displayTags() const;
 	int countPhotos(dive *dive) const;
 	int weight() const;
-	QString icon_names[4];
 };
 
 struct TripItem : public TreeItem {
