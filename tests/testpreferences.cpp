@@ -468,25 +468,25 @@ void TestPreferences::testPreferences()
 	TEST(update->nextCheck(), date);
 
 	auto dc = pref->dive_computer_settings;
-	dc->setDevice("TomazComputer");
-	TEST(dc->dc_device(), QStringLiteral("TomazComputer"));
-	dc->setDevice("Deepwater");
-	TEST(dc->dc_device(), QStringLiteral("Deepwater"));
+	dc->set_device("TomazComputer");
+	TEST(dc->device(), QStringLiteral("TomazComputer"));
+	dc->set_device("Deepwater");
+	TEST(dc->device(), QStringLiteral("Deepwater"));
 
-	dc->setDownloadMode(0);
-	TEST(dc->downloadMode(), 0);
-	dc->setDownloadMode(1);
-	TEST(dc->downloadMode(), 1);
+	dc->set_download_mode(0);
+	TEST(dc->download_mode(), 0);
+	dc->set_download_mode(1);
+	TEST(dc->download_mode(), 1);
 
-	dc->setProduct("Thingy1");
-	TEST(dc->dc_product(), QStringLiteral("Thingy1"));
-	dc->setProduct("Thingy2");
-	TEST(dc->dc_product(), QStringLiteral("Thingy2"));
+	dc->set_product("Thingy1");
+	TEST(dc->product(), QStringLiteral("Thingy1"));
+	dc->set_product("Thingy2");
+	TEST(dc->product(), QStringLiteral("Thingy2"));
 
-	dc->setVendor("Sharewater");
-	TEST(dc->dc_vendor(), QStringLiteral("Sharewater"));
-	dc->setVendor("OSTS");
-	TEST(dc->dc_vendor(), QStringLiteral("OSTS"));
+	dc->set_vendor("Sharewater");
+	TEST(dc->vendor(), QStringLiteral("Sharewater"));
+	dc->set_vendor("OSTS");
+	TEST(dc->vendor(), QStringLiteral("OSTS"));
 }
 
 QTEST_MAIN(TestPreferences)

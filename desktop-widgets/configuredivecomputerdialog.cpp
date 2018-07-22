@@ -133,8 +133,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dc->dc_device().isEmpty())
-		ui.device->setEditText(dc->dc_device());
+	if (!dc->device().isEmpty())
+		ui.device->setEditText(dc->device());
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
@@ -912,10 +912,10 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.deviceid = device_data.diveid = 0;
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->setDevice(device_data.devname);
+	dc->set_device(device_data.devname);
 #ifdef BT_SUPPORT
 	if (ui.bluetoothMode && btDeviceSelectionDialog)
-		dc->setDeviceName(btDeviceSelectionDialog->getSelectedDeviceName());
+		dc->set_device_name(btDeviceSelectionDialog->getSelectedDeviceName());
 #endif
 }
 

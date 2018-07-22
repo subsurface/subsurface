@@ -18,6 +18,7 @@ void qPref::loadSync(bool doSync)
 	qPrefAnimations::instance()->loadSync(doSync);
 	qPrefCloudStorage::instance()->loadSync(doSync);
 	qPrefDisplay::instance()->loadSync(doSync);
+	qPrefDiveComputer::instance()->loadSync(doSync);
 }
 
 const QString qPref::canonical_version() const
