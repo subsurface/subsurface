@@ -120,5 +120,36 @@ void TestQPrefDiveComputer::test_multiple()
 	QCOMPARE(tst->download_mode(), tst_direct->download_mode());
 }
 
+#define TEST(METHOD, VALUE) \
+QCOMPARE(METHOD, VALUE); \
+dc->sync(); \
+dc->load(); \
+QCOMPARE(METHOD, VALUE);
+
+void TestQPrefDiveComputer::test_oldPreferences()
+{
+	auto dc = qPrefDiveComputer::instance();
+
+	dc->set_device("TomazComputer");
+	TEST(dc->device(), QStringLiteral("TomazComputer"));
+	dc->set_device("Deepwater");
+	TEST(dc->device(), QStringLiteral("Deepwater"));
+
+	dc->set_download_mode(0);
+	TEST(dc->download_mode(), 0);
+	dc->set_download_mode(1);
+	TEST(dc->download_mode(), 1);
+
+	dc->set_product("Thingy1");
+	TEST(dc->product(), QStringLiteral("Thingy1"));
+	dc->set_product("Thingy2");
+	TEST(dc->product(), QStringLiteral("Thingy2"));
+
+	dc->set_vendor("Sharewater");
+	TEST(dc->vendor(), QStringLiteral("Sharewater"));
+	dc->set_vendor("OSTS");
+	TEST(dc->vendor(), QStringLiteral("OSTS"));
+}
+
 QTEST_MAIN(TestQPrefDiveComputer)
 

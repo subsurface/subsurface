@@ -466,27 +466,6 @@ void TestPreferences::testPreferences()
 	TEST(update->dontCheckForUpdates(), false);
 	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-2"));
 	TEST(update->nextCheck(), date);
-
-	auto dc = pref->dive_computer_settings;
-	dc->set_device("TomazComputer");
-	TEST(dc->device(), QStringLiteral("TomazComputer"));
-	dc->set_device("Deepwater");
-	TEST(dc->device(), QStringLiteral("Deepwater"));
-
-	dc->set_download_mode(0);
-	TEST(dc->download_mode(), 0);
-	dc->set_download_mode(1);
-	TEST(dc->download_mode(), 1);
-
-	dc->set_product("Thingy1");
-	TEST(dc->product(), QStringLiteral("Thingy1"));
-	dc->set_product("Thingy2");
-	TEST(dc->product(), QStringLiteral("Thingy2"));
-
-	dc->set_vendor("Sharewater");
-	TEST(dc->vendor(), QStringLiteral("Sharewater"));
-	dc->set_vendor("OSTS");
-	TEST(dc->vendor(), QStringLiteral("OSTS"));
 }
 
 QTEST_MAIN(TestPreferences)
