@@ -864,10 +864,6 @@ void MainTab::acceptChanges()
 		}
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(watertemp.mkelvin));
-		if (displayed_dive.when != cd->when) {
-			time_t offset = cd->when - displayed_dive.when;
-			MODIFY_DIVES(selectedDives, mydive->when -= offset;);
-		}
 
 		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site_uuid));
@@ -969,6 +965,12 @@ void MainTab::acceptChanges()
 				invalidate_dive_cache(d);
 			}
 		}
+
+		if (displayed_dive.when != cd->when) {
+			timestamp_t offset = cd->when - displayed_dive.when;
+			if (offset)
+				MainWindow::instance()->undoStack->push(new UndoShiftTime(selectedDives, (int)offset));
+		}
 	}
 	if (editMode != TRIP && current_dive->divetrip) {
 		current_dive->divetrip->when = current_dive->when;
@@ -987,9 +989,6 @@ void MainTab::acceptChanges()
 	int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if (editMode == MANUALLY_ADDED_DIVE) {
-		// since a newly added dive could be in the middle of the dive_table we need
-		// to resort the dive list and make sure the newly added dive gets selected again
-		sort_table(&dive_table);
 		MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT, true);
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
 		MainWindow::instance()->dive_list()->unselectDives();
@@ -1002,7 +1001,6 @@ void MainTab::acceptChanges()
 		if (do_replot)
 			MainWindow::instance()->graphics()->replot();
 		MainWindow::instance()->dive_list()->rememberSelection();
-		sort_table(&dive_table);
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->dive_list()->restoreSelection();
 	}

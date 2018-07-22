@@ -189,13 +189,13 @@ private:
 class UndoShiftTime : public QUndoCommand {
 	Q_DECLARE_TR_FUNCTIONS(Command)
 public:
-	UndoShiftTime(QVector<int> changedDives, int amount);
+	UndoShiftTime(const QVector<dive *> &changedDives, int amount);
 private:
 	void undo() override;
 	void redo() override;
 
 	// For redo and undo
-	QVector<int> diveList;
+	QVector<dive *> diveList;
 	int timeChanged;
 };
 

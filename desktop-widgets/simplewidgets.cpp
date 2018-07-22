@@ -240,18 +240,13 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 		if (amount != 0) {
 			// DANGER, DANGER - this could get our dive_table unsorted...
 			int i;
-			struct dive *dive;
-			QVector<int> affectedDives;
-			for_each_dive (i, dive) {
-				if (!dive->selected)
-					continue;
-
-				affectedDives.append(dive->id);
+			struct dive *d;
+			QVector<dive *> affectedDives;
+			for_each_dive (i, d) {
+				if (d->selected)
+					affectedDives.append(d);
 			}
 			MainWindow::instance()->undoStack->push(new UndoShiftTime(affectedDives, amount));
-			MainWindow::instance()->dive_list()->rememberSelection();
-			MainWindow::instance()->refreshDisplay();
-			MainWindow::instance()->dive_list()->restoreSelection();
 		}
 	}
 }
