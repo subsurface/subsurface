@@ -15,6 +15,7 @@ static qPref *self = new qPref;
 
 void qPref::loadSync(bool doSync)
 {
+	qPrefAnimations::instance()->loadSync(doSync);
 	qPrefCloudStorage::instance()->loadSync(doSync);
 	qPrefDisplay::instance()->loadSync(doSync);
 }

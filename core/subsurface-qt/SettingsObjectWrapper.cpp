@@ -2020,9 +2020,7 @@ void SettingsObjectWrapper::load()
 
 	qPrefDisplay::instance()->load();
 
-	s.beginGroup("Animations");
-	GET_INT("animation_speed", animation_speed);
-	s.endGroup();
+	qPrefAnimations::instance()->load();
 
 	s.beginGroup("Network");
 	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
