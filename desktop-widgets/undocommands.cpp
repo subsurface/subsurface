@@ -147,7 +147,7 @@ void UndoDeleteDive::redo()
 }
 
 
-UndoShiftTime::UndoShiftTime(QVector<int> changedDives, int amount)
+UndoShiftTime::UndoShiftTime(const QVector<dive *> &changedDives, int amount)
 	: diveList(changedDives), timeChanged(amount)
 {
 	setText(tr("delete %n dive(s)", "", changedDives.size()));
@@ -155,10 +155,9 @@ UndoShiftTime::UndoShiftTime(QVector<int> changedDives, int amount)
 
 void UndoShiftTime::undo()
 {
-	for (int i = 0; i < diveList.count(); i++) {
-		dive *d = get_dive_by_uniq_id(diveList.at(i));
+	for (dive *d: diveList)
 		d->when -= timeChanged;
-	}
+
 	// Changing times may have unsorted the dive table
 	sort_table(&dive_table);
 	mark_divelist_changed(true);
