@@ -82,6 +82,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
 	../../core/settings/qPrefDisplay.cpp \
 	../../core/settings/qPrefDiveComputer.cpp \
+	../../core/settings/qPrefFacebook.cpp \
 	../../core/settings/qPrefPrivate.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
@@ -194,6 +195,7 @@ HEADERS += \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDisplay.h \
 	../../core/settings/qPrefDiveComputer.h \
+	../../core/settings/qPrefFacebook.h \
 	../../core/settings/qPrefPrivate.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \

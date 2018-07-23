@@ -9,6 +9,7 @@
 #include "qPrefCloudStorage.h"
 #include "qPrefDisplay.h"
 #include "qPrefDiveComputer.h"
+#include "qPrefFacebook.h"
 
 class qPref : public QObject {
 	Q_OBJECT
