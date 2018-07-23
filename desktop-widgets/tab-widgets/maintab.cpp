@@ -26,7 +26,7 @@
 #include "core/subsurface-string.h"
 #include "core/gettextfromc.h"
 #include "desktop-widgets/locationinformation.h"
-#include "desktop-widgets/undocommands.h"
+#include "desktop-widgets/command.h"
 
 #include "TabDiveExtraInfo.h"
 #include "TabDiveInformation.h"
@@ -799,8 +799,7 @@ void MainTab::acceptChanges()
 		updateDiveSite(ui.location->currDiveSiteUuid(), &displayed_dive);
 		copyTagsToDisplayedDive();
 
-		UndoAddDive *undoCommand = new UndoAddDive(&displayed_dive);
-		MainWindow::instance()->undoStack->push(undoCommand);
+		Command::addDive(&displayed_dive);
 
 		editMode = NONE;
 		MainWindow::instance()->exitEditState();
@@ -969,7 +968,7 @@ void MainTab::acceptChanges()
 		if (displayed_dive.when != cd->when) {
 			timestamp_t offset = cd->when - displayed_dive.when;
 			if (offset)
-				MainWindow::instance()->undoStack->push(new UndoShiftTime(selectedDives, (int)offset));
+				Command::shiftTime(selectedDives, (int)offset);
 		}
 	}
 	if (editMode != TRIP && current_dive->divetrip) {

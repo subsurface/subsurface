@@ -37,6 +37,7 @@
 #include "core/settings/qPrefTechnicalDetails.h"
 
 #include "desktop-widgets/about.h"
+#include "desktop-widgets/command.h"
 #include "desktop-widgets/divecomputermanagementdialog.h"
 #include "desktop-widgets/divelistview.h"
 #include "desktop-widgets/divelogexportdialog.h"
@@ -48,7 +49,6 @@
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
-#include "desktop-widgets/undocommands.h"
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/usersurvey.h"
 
@@ -258,9 +258,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	memset(&what, 0, sizeof(what));
 
 	updateManager = new UpdateManager(this);
-	undoStack = new QUndoStack(this);
-	QAction *undoAction = undoStack->createUndoAction(this, tr("&Undo"));
-	QAction *redoAction = undoStack->createRedoAction(this, tr("&Redo"));
+	QAction *undoAction = Command::undoAction(this);
+	QAction *redoAction = Command::redoAction(this);
 	undoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
 	redoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
 	QList<QAction*>undoRedoActions;
@@ -620,7 +619,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	process_loaded_dives();
 	if (autogroup)
 		autogroup_dives();
-	undoStack->clear();
+	Command::clear();
 	hideProgressBar();
 	refreshDisplay();
 }
@@ -1075,9 +1074,9 @@ void MainWindow::on_actionAutoGroup_triggered()
 {
 	set_autogroup(ui.actionAutoGroup->isChecked());
 	if (autogroup)
-		undoStack->push(new UndoAutogroupDives);
+		Command::autogroupDives();
 	else
-		undoStack->push(new UndoRemoveAutogenTrips);
+		Command::removeAutogenTrips();
 	refreshDisplay();
 	mark_divelist_changed(true);
 }
@@ -1745,7 +1744,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 	process_imported_dives(&table, false, false);
 	if (autogroup)
 		autogroup_dives();
-	undoStack->clear();
+	Command::clear();
 	refreshDisplay();
 }
 
@@ -1770,7 +1769,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	process_loaded_dives();
 	if (autogroup)
 		autogroup_dives();
-	undoStack->clear();
+	Command::clear();
 
 	refreshDisplay();
 

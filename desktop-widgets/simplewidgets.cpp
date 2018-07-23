@@ -18,7 +18,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "core/display.h"
 #include "profile-widget/profilewidget2.h"
-#include "desktop-widgets/undocommands.h"
+#include "desktop-widgets/command.h"
 #include "core/metadata.h"
 
 class MinMaxAvgWidgetPrivate {
@@ -171,8 +171,7 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 				renumberedDives.append(QPair<int, int>(dive->id, newNr++));
 			}
 		}
-		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives);
-		MainWindow::instance()->undoStack->push(undoCommand);
+		Command::renumberDives(renumberedDives);
 
 		mark_divelist_changed(true);
 		MainWindow::instance()->dive_list()->restoreSelection();
@@ -246,7 +245,7 @@ void ShiftTimesDialog::buttonClicked(QAbstractButton *button)
 				if (d->selected)
 					affectedDives.append(d);
 			}
-			MainWindow::instance()->undoStack->push(new UndoShiftTime(affectedDives, amount));
+			Command::shiftTime(affectedDives, amount);
 		}
 	}
 }

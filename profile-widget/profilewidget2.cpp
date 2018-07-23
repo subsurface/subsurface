@@ -23,7 +23,7 @@
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"
 #include "desktop-widgets/divepicturewidget.h"
-#include "desktop-widgets/undocommands.h"
+#include "desktop-widgets/command.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/qthelper.h"
 #include "core/gettextfromc.h"
@@ -1685,8 +1685,7 @@ void ProfileWidget2::splitDive()
 	QPointF scenePos = mapToScene(mapFromGlobal(action->data().toPoint()));
 	duration_t time;
 	time.seconds = lrint(timeAxis->valueAt(scenePos));
-	UndoSplitDives *undoCommand = new UndoSplitDives(d, time);
-	MainWindow::instance()->undoStack->push(undoCommand);
+	Command::splitDives(d, time);
 	emit updateDiveInfo(false);
 #endif
 }

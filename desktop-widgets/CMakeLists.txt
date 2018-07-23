@@ -85,7 +85,9 @@ set(SUBSURFACE_INTERFACE
 	divepicturewidget.cpp
 	usersurvey.cpp
 	configuredivecomputerdialog.cpp
-	undocommands.cpp
+	command.cpp
+	command_base.cpp
+	command_divelist.cpp
 	locationinformation.cpp
 	qtwaitingspinner.cpp
 	tab-widgets/TabDiveStatistics.cpp

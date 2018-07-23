@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/downloadfromdivecomputer.h"
+#include "desktop-widgets/command.h"
 #include "core/display.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDiveComputer.h"
@@ -508,7 +509,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 		// first new dive) and select it again after processing all the dives
 		int uniqId = downloadTable.dives[downloadTable.nr - 1]->id;
 		process_imported_dives(&downloadTable, preferDownloaded(), true);
-		MainWindow::instance()->undoStack->clear();
+		autogroup_dives();
+		Command::clear();
 		// after process_imported_dives does any merging or resorting needed, we need
 		// to recreate the model for the dive list so we can select the newest dive
 		MainWindow::instance()->recreateDiveList();
