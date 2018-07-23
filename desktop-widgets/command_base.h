@@ -1,15 +1,16 @@
 // SPDX-License-Identifier: GPL-2.0
-#ifndef UNDOCOMMANDS_H
-#define UNDOCOMMANDS_H
+// Note: this header file is used by the undo-machinery and should not be included elsewhere.
+
+#ifndef COMMAND_BASE_H
+#define COMMAND_BASE_H
 
 #include "core/dive.h"
 
 #include <QUndoCommand>
-#include <QCoreApplication> // For Q_DECLARE_TR_FUNCTIONS
-#include <QVector>
+#include <QCoreApplication>	// For Q_DECLARE_TR_FUNCTIONS
 #include <memory>
 
-// The classes declared in this file represent units-of-work, which can be exectuted / undone
+// The classes derived from Command::Base represent units-of-work, which can be exectuted / undone
 // repeatedly. The command objects are collected in a linear list implemented in the QUndoStack class.
 // They contain the information that is necessary to either perform or undo the unit-of-work.
 // The usage is:
@@ -136,6 +137,9 @@
 //	v.clear(v);				// Reset the vector to zero length. If the elements weren't release()d,
 //						// the pointed-to dives are freed with free_dive()
 
+// We put everything in a namespace, so that we can shorten names without polluting the global namespace
+namespace Command {
+
 // Classes used to automatically call free_dive()/free_trip for owning pointers that go out of scope.
 struct DiveDeleter {
 	void operator()(dive *d) { free_dive(d); }
@@ -148,157 +152,22 @@ struct TripDeleter {
 typedef std::unique_ptr<dive, DiveDeleter> OwningDivePtr;
 typedef std::unique_ptr<dive_trip, TripDeleter> OwningTripPtr;
 
-// This helper structure describes a dive that we want to add.
-// Potentially it also adds a trip (if deletion of the dive resulted in deletion of the trip)
-struct DiveToAdd {
-	OwningDivePtr	 dive;		// Dive to add
-	OwningTripPtr	 tripToAdd;	// Not-null if we also have to add a dive
-	dive_trip	*trip;		// Trip the dive belongs to, may be null
-	int		 idx;		// Position in divelist
-};
-
-// This helper structure describes a dive that should be moved to / removed from
-// a trip. If the "trip" member is null, the dive is removed from its trip (if
-// it is in a trip, that is)
-struct DiveToTrip
-{
-	struct dive	*dive;
-	dive_trip	*trip;
-};
-
-// This helper structure describes a number of dives to add to /remove from /
-// move between trips.
-// It has ownership of the trips (if any) that have to be added before hand.
-struct DivesToTrip
-{
-	std::vector<DiveToTrip> divesToMove;		// If dive_trip is null, remove from trip
-	std::vector<OwningTripPtr> tripsToAdd;
-};
-
-class UndoAddDive : public QUndoCommand {
-public:
-	UndoAddDive(dive *dive);
-private:
-	void undo() override;
-	void redo() override;
-
-	// For redo
-	DiveToAdd	diveToAdd;
-
-	// For undo
-	dive		*diveToRemove;
-};
-
-class UndoDeleteDive : public QUndoCommand {
+// This is the base class of all commands.
+// It defines the Qt-translation functions
+class Base : public QUndoCommand {
 	Q_DECLARE_TR_FUNCTIONS(Command)
 public:
-	UndoDeleteDive(const QVector<dive *> &divesToDelete);
-private:
-	void undo() override;
-	void redo() override;
-
-	// For redo
-	std::vector<struct dive*> divesToDelete;
-
-	std::vector<OwningTripPtr> tripsToAdd;
-	std::vector<DiveToAdd> divesToAdd;
+	// Check whether work is to be done.
+	// TODO: replace by setObsolete (>Qt5.9)
+	virtual bool workToBeDone() = 0;
 };
 
-class UndoShiftTime : public QUndoCommand {
-	Q_DECLARE_TR_FUNCTIONS(Command)
-public:
-	UndoShiftTime(const QVector<dive *> &changedDives, int amount);
-private:
-	void undo() override;
-	void redo() override;
+// Put a command on the undoStack, but test whether there is something to be done
+// beforehand by calling the workToBeDone() function. If nothing is to be done,
+// the command will be deleted.
+void execute(Base *cmd);
 
-	// For redo and undo
-	QVector<dive *> diveList;
-	int timeChanged;
-};
+} // namespace Command
 
-class UndoRenumberDives : public QUndoCommand {
-	Q_DECLARE_TR_FUNCTIONS(Command)
-public:
-	UndoRenumberDives(const QVector<QPair<int, int>> &divesToRenumber);
-private:
-	void undo() override;
-	void redo() override;
+#endif // COMMAND_BASE_H
 
-	// For redo and undo: pairs of dive-id / new number
-	QVector<QPair<int, int>> divesToRenumber;
-};
-
-// The classes UndoRemoveDivesFromTrip, UndoRemoveAutogenTrips, UndoCreateTrip,
-// UndoAutogroupDives and UndoMergeTrips all do the same thing, just the intialization
-// differs. Therefore, define a base class with the proper data-structures, redo()
-// and undo() functions and derive to specialize the initialization.
-class UndoTripBase : public QUndoCommand {
-	Q_DECLARE_TR_FUNCTIONS(Command)
-protected:
-	void undo() override;
-	void redo() override;
-
-	// For redo and undo
-	DivesToTrip divesToMove;
-};
-struct UndoRemoveDivesFromTrip : public UndoTripBase {
-	UndoRemoveDivesFromTrip(const QVector<dive *> &divesToRemove);
-};
-struct UndoRemoveAutogenTrips : public UndoTripBase {
-	UndoRemoveAutogenTrips();
-};
-struct UndoAddDivesToTrip : public UndoTripBase {
-	UndoAddDivesToTrip(const QVector<dive *> &divesToAdd, dive_trip *trip);
-};
-struct UndoCreateTrip : public UndoTripBase {
-	UndoCreateTrip(const QVector<dive *> &divesToAdd);
-};
-struct UndoAutogroupDives : public UndoTripBase {
-	UndoAutogroupDives();
-};
-struct UndoMergeTrips : public UndoTripBase {
-	UndoMergeTrips(dive_trip *trip1, dive_trip *trip2);
-};
-
-class UndoSplitDives : public QUndoCommand {
-public:
-	// If time is < 0, split at first surface interval
-	UndoSplitDives(dive *d, duration_t time);
-private:
-	void undo() override;
-	void redo() override;
-
-	// For redo
-	// For each dive to split, we remove one from and put two dives into the backend
-	dive		*diveToSplit;
-	DiveToAdd	 splitDives[2];
-
-	// For undo
-	// For each dive to unsplit, we remove two dives from and add one into the backend
-	DiveToAdd	 unsplitDive;
-	dive		*divesToUnsplit[2];
-};
-
-class UndoMergeDives : public QUndoCommand {
-public:
-	UndoMergeDives(const QVector<dive *> &dives);
-private:
-	void undo() override;
-	void redo() override;
-
-	// For redo
-	// Add one and remove a batch of dives
-	DiveToAdd		 mergedDive;
-	std::vector<dive *>	 divesToMerge;
-
-	// For undo
-	// Remove one and add a batch of dives
-	dive			*diveToUnmerge;
-	std::vector<DiveToAdd>	 unmergedDives;
-
-	// For undo and redo
-	QVector<QPair<int, int>> divesToRenumber;
-};
-
-#endif // UNDOCOMMANDS_H

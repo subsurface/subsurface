@@ -34,7 +34,6 @@ class DivePlannerWidget;
 class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
-class QUndoStack;
 class LocationInformationWidget;
 
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
@@ -82,7 +81,6 @@ public:
 	void setApplicationState(const QByteArray& state);
 	void setStateProperties(const QByteArray& state, const PropertyList& tl, const PropertyList& tr, const PropertyList& bl,const PropertyList& br);
 	bool inPlanner();
-	QUndoStack *undoStack;
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
 	void setCheckedActionFilterTags(bool checked);

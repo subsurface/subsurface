@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/command.h"
 #include "core/color.h"
 #include "ui_divelogimportdialog.h"
 #include <QShortcut>
@@ -1010,7 +1011,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 
 	process_imported_dives(&table, false, false);
 	autogroup_dives();
-	MainWindow::instance()->undoStack->clear();
+	Command::clear();
 	MainWindow::instance()->refreshDisplay();
 }
 

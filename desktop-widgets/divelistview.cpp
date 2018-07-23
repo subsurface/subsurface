@@ -20,7 +20,7 @@
 #include <QMessageBox>
 #include <QHeaderView>
 #include "core/qthelper.h"
-#include "desktop-widgets/undocommands.h"
+#include "desktop-widgets/command.h"
 #include "desktop-widgets/divelistview.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
@@ -633,10 +633,8 @@ void DiveListView::mergeDives()
 	if (current_batch.count() > 1)
 		merge_batches.append(current_batch);
 
-	for (const QVector<dive *> &batch: merge_batches) {
-		UndoMergeDives *undoCommand = new UndoMergeDives(batch);
-		MainWindow::instance()->undoStack->push(undoCommand);
-	}
+	for (const QVector<dive *> &batch: merge_batches)
+		Command::mergeDives(batch);
 }
 
 void DiveListView::splitDives()
@@ -650,10 +648,8 @@ void DiveListView::splitDives()
 		if (dive->selected)
 			dives.append(dive);
 	}
-	for (struct dive *d: dives) {
-		UndoSplitDives *undoCommand = new UndoSplitDives(d, duration_t{-1});
-		MainWindow::instance()->undoStack->push(undoCommand);
-	}
+	for (struct dive *d: dives)
+		Command::splitDives(d, duration_t{-1});
 }
 
 void DiveListView::renumberDives()
@@ -671,8 +667,7 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	dive_trip_t *trip_b = (dive_trip_t *)b.data(DiveTripModel::TRIP_ROLE).value<void *>();
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
-	UndoMergeTrips *undoCommand = new UndoMergeTrips(trip_a, trip_b);
-	MainWindow::instance()->undoStack->push(undoCommand);
+	Command::mergeTrips(trip_a, trip_b);
 	rememberSelection();
 	reload(currentLayout, false);
 	restoreSelection();
@@ -700,11 +695,7 @@ void DiveListView::removeFromTrip()
 		if (d->selected && d->divetrip)
 			divesToRemove.append(d);
 	}
-	if (divesToRemove.isEmpty())
-		return;
-
-	UndoRemoveDivesFromTrip *undoCommand = new UndoRemoveDivesFromTrip(divesToRemove);
-	MainWindow::instance()->undoStack->push(undoCommand);
+	Command::removeDivesFromTrip(divesToRemove);
 
 	rememberSelection();
 	reload(currentLayout, false);
@@ -725,8 +716,7 @@ void DiveListView::newTripAbove()
 		if (d->selected)
 			dives.append(d);
 	}
-	UndoCreateTrip *undoCommand = new UndoCreateTrip(dives);
-	MainWindow::instance()->undoStack->push(undoCommand);
+	Command::createTrip(dives);
 
 	reload(currentLayout, false);
 	mark_divelist_changed(true);
@@ -774,8 +764,7 @@ void DiveListView::addToTrip(int delta)
 				dives.append(d);
 		}
 	}
-	UndoAddDivesToTrip *undoEntry = new UndoAddDivesToTrip(dives, trip);
-	MainWindow::instance()->undoStack->push(undoEntry);
+	Command::addDivesToTrip(dives, trip);
 
 	reload(currentLayout, false);
 	restoreSelection();
@@ -814,7 +803,7 @@ void DiveListView::deleteDive()
 
 	int i;
 	int lastDiveNr = -1;
-	QVector<struct dive*> deletedDives; //a list of all deleted dives to be stored in the undo command
+	QVector<struct dive*> deletedDives;
 	for_each_dive (i, d) {
 		if (!d->selected)
 			continue;
@@ -822,8 +811,7 @@ void DiveListView::deleteDive()
 		lastDiveNr = i;
 	}
 	// the actual dive deletion is happening in the redo command that is implicitly triggered
-	UndoDeleteDive *undoEntry = new UndoDeleteDive(deletedDives);
-	MainWindow::instance()->undoStack->push(undoEntry);
+	Command::deleteDive(deletedDives);
 	if (amount_selected == 0) {
 		MainWindow::instance()->cleanUpEmpty();
 	}
