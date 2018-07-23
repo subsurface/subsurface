@@ -57,4 +57,30 @@ void TestQPrefFacebook::test_multiple()
 	QCOMPARE(tst->access_token(), tst_direct->access_token());
 }
 
+#define TEST(METHOD, VALUE) \
+QCOMPARE(METHOD, VALUE); \
+fb->sync(); \
+fb->load(); \
+QCOMPARE(METHOD, VALUE);
+
+void TestQPrefFacebook::test_oldPreferences()
+{
+	auto fb = qPrefFacebook::instance();
+	fb->set_access_token("rand-access-token");
+	fb->set_user_id("tomaz-user-id");
+	fb->set_album_id("album-id");
+
+	TEST(fb->access_token(),QStringLiteral("rand-access-token"));
+	TEST(fb->user_id(),     QStringLiteral("tomaz-user-id"));
+	TEST(fb->album_id(),    QStringLiteral("album-id"));
+
+	fb->set_access_token("rand-access-token-2");
+	fb->set_user_id("tomaz-user-id-2");
+	fb->set_album_id("album-id-2");
+
+	TEST(fb->access_token(),QStringLiteral("rand-access-token-2"));
+	TEST(fb->user_id(),     QStringLiteral("tomaz-user-id-2"));
+	TEST(fb->album_id(),    QStringLiteral("album-id-2"));
+}
+
 QTEST_MAIN(TestQPrefFacebook)
