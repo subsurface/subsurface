@@ -165,6 +165,9 @@ void register_qml_types()
 	rc = qmlRegisterType<qPrefDiveComputer>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDiveComputerPrefs");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register DiveComputerPrefs (class qPrefDiveComputer), QML will not work!!";
+	rc = qmlRegisterType<qPrefFacebook>("org.subsurfacedivelog.mobile", 1, 0, "SsrfFacebookPrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register FacebookPrefs (class qPrefFacebook), QML will not work!!";
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE
