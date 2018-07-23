@@ -4,7 +4,7 @@ import QtTest 1.2
 import org.subsurfacedivelog.mobile 1.0
 
 TestCase {
-	name: "qPref"
+	name: "qPrefDisplay"
 
 	SsrfDisplayPrefs {
 		id: display
