@@ -105,6 +105,7 @@ TEST(TestQPrefAnimations testqPrefAnimations.cpp)
 TEST(TestQPrefCloudStorage testqPrefCloudStorage.cpp)
 TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 TEST(TestQPrefDiveComputer testqPrefDiveComputer.cpp)
+TEST(TestQPrefFacebook testqPrefFacebook.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> ${SUBSURFACE_SOURCE}/tests)
 
 
@@ -127,6 +128,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefCloudStorage
 	TestQPrefDisplay
 	TestQPrefDiveComputer
+	TestQPrefFacebook
 	TestQML
 )
 
