@@ -19,15 +19,15 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	void inline load() { loadSync(false); }
+	void inline sync() { loadSync(true); }
 
 public:
-	static inline const QString divelist_font() {return QString(prefs.divelist_font); };
+	static inline QString divelist_font() {return prefs.divelist_font; };
 	static inline double font_size() {return prefs.font_size; };
 	static inline bool display_invalid_dives() {return prefs.display_invalid_dives; };
 	static inline bool show_developer() {return prefs.show_developer; };
-	static inline const QString theme() {return QString(prefs.theme); };
+	static inline QString theme() {return prefs.theme; };
 
 public slots:
 	void set_divelist_font(const QString& value);
