@@ -23,11 +23,11 @@ public:
 	void inline sync() {loadSync(true); }
 
 public:
-	static inline const QString& device() {return prefs.dive_computer.device; };
-	static inline const QString& device_name() {return prefs.dive_computer.device_name; };
+	static inline QString device() {return prefs.dive_computer.device; };
+	static inline QString device_name() {return prefs.dive_computer.device_name; };
 	static inline int download_mode() {return prefs.dive_computer.download_mode; };
-	static inline const QString& product() {return prefs.dive_computer.product; };
-	static inline const QString& vendor() {return prefs.dive_computer.vendor; };
+	static inline QString product() {return prefs.dive_computer.product; };
+	static inline QString vendor() {return prefs.dive_computer.vendor; };
 
 public slots:
 	void set_device(const QString& device);
