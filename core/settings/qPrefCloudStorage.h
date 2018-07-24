@@ -27,23 +27,23 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	void inline load() { loadSync(false); }
+	void inline sync() { loadSync(true); }
 
 public:
-	static inline const QString cloud_base_url() { return prefs.cloud_base_url; }
-	static inline const QString cloud_git_url() { return prefs.cloud_git_url; }
-	static inline const QString cloud_storage_email() { return prefs.cloud_storage_email; }
-	static inline const QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
-	static inline const QString cloud_storage_newpassword() { return prefs.cloud_storage_newpassword; }
-	static inline const QString cloud_storage_password() { return prefs.cloud_storage_password; }
-	static inline const QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
+	static inline QString cloud_base_url() { return prefs.cloud_base_url; }
+	static inline QString cloud_git_url() { return prefs.cloud_git_url; }
+	static inline QString cloud_storage_email() { return prefs.cloud_storage_email; }
+	static inline QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
+	static inline QString cloud_storage_newpassword() { return prefs.cloud_storage_newpassword; }
+	static inline QString cloud_storage_password() { return prefs.cloud_storage_password; }
+	static inline QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
 	static inline int cloud_timeout() { return prefs.cloud_timeout; }
 	static inline int cloud_verification_status() { return prefs.cloud_verification_status; }
 	static inline bool git_local_only() { return prefs.git_local_only; }
 	static inline bool save_password_local() { return prefs.save_password_local; }
 	static inline bool save_userid_local() { return prefs.save_userid_local; }
-	static inline const QString userid() { return prefs.userid; }
+	static inline QString userid() { return prefs.userid; }
 
 public slots:
 	void set_cloud_base_url(const QString& value);
