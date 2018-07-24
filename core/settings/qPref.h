@@ -22,8 +22,8 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	void inline load() { loadSync(false); }
+	void inline sync() { loadSync(true); }
 
 public:
 	enum cloud_status {
