@@ -108,10 +108,16 @@ HANDLE_PREFERENCE_BOOL(CloudStorage, "/save_userid_local", save_userid_local);
 SET_PREFERENCE_TXT(CloudStorage, userid);
 void qPrefCloudStorage::disk_userid(bool doSync)
 {
-	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
-	const QString group = QStringLiteral("");
-	if (doSync)
+	if (doSync) {
+		// always save in new position (part of cloud storage group)
 		qPrefPrivate::instance()->setting.setValue(group + "subsurface_webservice_uid", prefs.userid);
-	else
-		prefs.userid = copy_qstring(qPrefPrivate::instance()->setting.value(group + "subsurface_webservice_uid", default_prefs.userid).toString());
+	} else {
+		//WARNING: UserId was  stored outside of any group.
+		// try to read from new location, if it fails read from old location
+		prefs.userid = copy_qstring(qPrefPrivate::instance()->setting.value(group + "subsurface_webservice_uid", "NoUserIdHere").toString());
+		if (QString(prefs.userid) == "NoUserIdHere") {
+			const QString group = QStringLiteral("");
+			prefs.userid = copy_qstring(qPrefPrivate::instance()->setting.value(group + "subsurface_webservice_uid", default_prefs.userid).toString());
+		}
+	}
 }
