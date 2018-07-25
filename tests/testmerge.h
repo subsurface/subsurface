@@ -4,7 +4,7 @@
 
 #include <QtTest>
 
-class TestMerge : public QObject{
+class TestMerge : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();

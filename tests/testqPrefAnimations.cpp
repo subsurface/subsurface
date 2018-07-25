@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefAnimations.h"
 
-#include "core/settings/qPref.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPref.h"
 
 #include <QDate>
 #include <QTest>
@@ -39,7 +39,7 @@ void TestQPrefAnimations::test_set_struct()
 
 void TestQPrefAnimations::test_set_load_struct()
 {
-	// test set func -> load -> struct pref 
+	// test set func -> load -> struct pref
 
 	auto tst = qPrefAnimations::instance();
 

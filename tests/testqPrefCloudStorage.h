@@ -4,8 +4,7 @@
 
 #include <QObject>
 
-class TestQPrefCloudStorage : public QObject
-{
+class TestQPrefCloudStorage : public QObject {
 	Q_OBJECT
 
 private slots:

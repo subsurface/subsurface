@@ -4,8 +4,7 @@
 
 #include <QObject>
 
-class TestQPrefDiveComputer : public QObject
-{
+class TestQPrefDiveComputer : public QObject {
 	Q_OBJECT
 
 private slots:

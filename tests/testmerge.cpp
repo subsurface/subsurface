@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testmerge.h"
 #include "core/dive.h"
-#include "core/file.h"
 #include "core/divelist.h"
+#include "core/file.h"
 #include <QTextStream>
 
 void TestMerge::initTestCase()
@@ -34,7 +34,7 @@ void TestMerge::testMergeEmpty()
 	QTextStream outS(&out);
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
-	while(readin.size() && written.size()){
+	while (readin.size() && written.size()) {
 		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 	}
 }
@@ -57,7 +57,7 @@ void TestMerge::testMergeBackwards()
 	QTextStream outS(&out);
 	QStringList readin = orgS.readAll().split("\n");
 	QStringList written = outS.readAll().split("\n");
-	while(readin.size() && written.size()){
+	while (readin.size() && written.size()) {
 		QCOMPARE(written.takeFirst().trimmed(), readin.takeFirst().trimmed());
 	}
 }

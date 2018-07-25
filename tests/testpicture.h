@@ -4,7 +4,7 @@
 
 #include <QtTest>
 
-class TestPicture : public QObject{
+class TestPicture : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();

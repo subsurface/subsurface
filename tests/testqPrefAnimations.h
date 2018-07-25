@@ -4,8 +4,7 @@
 
 #include <QObject>
 
-class TestQPrefAnimations : public QObject
-{
+class TestQPrefAnimations : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();

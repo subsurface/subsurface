@@ -5,7 +5,7 @@
 
 #include <QtTest>
 
-class TestProfile : public QObject{
+class TestProfile : public QObject {
 	Q_OBJECT
 private slots:
 	void testRedCeiling();
