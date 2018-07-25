@@ -7,7 +7,8 @@ static const QString group = QStringLiteral("CloudStorage");
 qPrefCloudStorage::qPrefCloudStorage(QObject *parent) : QObject(parent)
 {
 }
-qPrefCloudStorage*qPrefCloudStorage::instance()
+
+qPrefCloudStorage *qPrefCloudStorage::instance()
 {
 	static qPrefCloudStorage *self = new qPrefCloudStorage;
 	return self;
@@ -29,7 +30,7 @@ void qPrefCloudStorage::loadSync(bool doSync)
 	disk_userid(doSync);
 }
 
-void qPrefCloudStorage::set_cloud_base_url(const QString& value)
+void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 {
 	QString valueGit = value + "/git";
 	if (value != prefs.cloud_base_url) {
@@ -45,9 +46,10 @@ void qPrefCloudStorage::set_cloud_base_url(const QString& value)
 		emit cloud_git_url_changed(valueGit);
 	}
 }
-DISK_LOADSYNC_TXT(CloudStorage, "/cloud_base_url", cloud_base_url)
 
-void qPrefCloudStorage::set_cloud_git_url(const QString& value)
+DISK_LOADSYNC_TXT(CloudStorage, "/cloud_base_url", cloud_base_url);
+
+void qPrefCloudStorage::set_cloud_git_url(const QString &value)
 {
 	if (value != prefs.cloud_git_url) {
 		// only free and set if not default
@@ -58,13 +60,14 @@ void qPrefCloudStorage::set_cloud_git_url(const QString& value)
 		emit cloud_git_url_changed(value);
 	}
 }
-DISK_LOADSYNC_TXT(CloudStorage, "/cloud_git_url", cloud_git_url)
+
+DISK_LOADSYNC_TXT(CloudStorage, "/cloud_git_url", cloud_git_url);
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "/email", cloud_storage_email);
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "/email_encoded", cloud_storage_email_encoded);
 
-void qPrefCloudStorage::set_cloud_storage_newpassword(const QString& value)
+void qPrefCloudStorage::set_cloud_storage_newpassword(const QString &value)
 {
 	if (value == prefs.cloud_storage_newpassword)
 		return;
@@ -75,7 +78,7 @@ void qPrefCloudStorage::set_cloud_storage_newpassword(const QString& value)
 	emit cloud_storage_newpassword_changed(value);
 }
 
-void qPrefCloudStorage::set_cloud_storage_password(const QString& value)
+void qPrefCloudStorage::set_cloud_storage_password(const QString &value)
 {
 	if (value != prefs.cloud_storage_password) {
 		qPrefPrivate::copy_txt(&prefs.cloud_storage_password, value);
@@ -86,7 +89,7 @@ void qPrefCloudStorage::set_cloud_storage_password(const QString& value)
 void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
 {
 	if (doSync) {
-		if (prefs.save_password_local) 
+		if (prefs.save_password_local)
 			qPrefPrivate::instance()->setting.setValue(group + "/password", prefs.cloud_storage_password);
 	} else {
 		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::instance()->setting.value(group + "/password", default_prefs.cloud_storage_password).toString());

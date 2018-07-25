@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "qPrefPrivate.h"
 #include "qPref.h"
+#include "qPrefPrivate.h"
 #include "ssrf-version.h"
 
-qPref::qPref(QObject *parent) : 
-	QObject(parent)
+qPref::qPref(QObject *parent) : QObject(parent)
 {
 }
 qPref *qPref::instance()
 {
-static qPref *self = new qPref;
+	static qPref *self = new qPref;
 	return self;
 }
 

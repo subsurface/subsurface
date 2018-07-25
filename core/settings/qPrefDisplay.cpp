@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
+#include "core/subsurface-string.h"
 #include "qPref.h"
 #include "qPrefPrivate.h"
-#include "core/subsurface-string.h"
 
 #include <QApplication>
 #include <QFont>
@@ -26,14 +26,14 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_theme(doSync);
 }
 
-void qPrefDisplay::set_divelist_font(const QString& value)
+void qPrefDisplay::set_divelist_font(const QString &value)
 {
 	QString newValue = value;
 	if (value.contains(","))
 		newValue = value.left(value.indexOf(","));
 
 	if (newValue != prefs.divelist_font &&
-		!subsurface_ignore_font(qPrintable(newValue))) {
+	    !subsurface_ignore_font(qPrintable(newValue))) {
 		qPrefPrivate::copy_txt(&prefs.divelist_font, value);
 		disk_divelist_font(true);
 

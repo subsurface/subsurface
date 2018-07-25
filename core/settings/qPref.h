@@ -2,8 +2,8 @@
 #ifndef QPREF_H
 #define QPREF_H
 
-#include <QObject>
 #include "core/pref.h"
+#include <QObject>
 
 #include "qPrefAnimations.h"
 #include "qPrefCloudStorage.h"

@@ -23,25 +23,25 @@ public:
 	void inline sync() { loadSync(true); }
 
 public:
-	static inline QString divelist_font() {return prefs.divelist_font; };
-	static inline double font_size() {return prefs.font_size; };
-	static inline bool display_invalid_dives() {return prefs.display_invalid_dives; };
-	static inline bool show_developer() {return prefs.show_developer; };
-	static inline QString theme() {return prefs.theme; };
+	static inline QString divelist_font() { return prefs.divelist_font; };
+	static inline double font_size() { return prefs.font_size; };
+	static inline bool display_invalid_dives() { return prefs.display_invalid_dives; };
+	static inline bool show_developer() { return prefs.show_developer; };
+	static inline QString theme() { return prefs.theme; };
 
 public slots:
-	void set_divelist_font(const QString& value);
+	void set_divelist_font(const QString &value);
 	void set_font_size(double value);
 	void set_display_invalid_dives(bool value);
 	void set_show_developer(bool value);
-	void set_theme(const QString& value);
+	void set_theme(const QString &value);
 
 signals:
-	void divelist_font_changed(const QString& value);
+	void divelist_font_changed(const QString &value);
 	void font_size_changed(double value);
 	void display_invalid_dives_changed(bool value);
 	void show_developer_changed(bool value);
-	void theme_changed(const QString& value);
+	void theme_changed(const QString &value);
 
 private:
 	// functions to load/sync variable with disk
