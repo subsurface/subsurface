@@ -1,3 +1,5 @@
+- Dive media: paint duration of videos on thumbnails in the dive-photo tab
+- Dive media: extract video thumbnails using ffmpeg
 - Dive media: implement "open folder of selected media files" [#1514]
 - Dive media: show play-time of videos on the profile plot
 - Dive media: draw thumbnails on top of deco-ceilings
