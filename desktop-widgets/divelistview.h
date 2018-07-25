@@ -71,12 +71,14 @@ private:
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
 	bool selectionSaved;
-	DiveTripModel *tripModel;
+	// Remember the initial column widths, to avoid writing unchanged widths to the settings
+	QVector<int> initialColumnWidths;
 
 	/* if dive_trip_t is null, there's no problem. */
 	QMultiHash<dive_trip_t *, int> selectedDives;
 	void merge_trip(const QModelIndex &a, const int offset);
 	void setupUi();
+	void calculateInitialColumnWidth(const DiveTripModel &tripModel, int col);
 	void backupExpandedRows();
 	void restoreExpandedRows();
 	int lastVisibleColumn();
