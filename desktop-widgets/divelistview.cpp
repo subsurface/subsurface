@@ -36,8 +36,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	model->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	DiveTripModel *tripModel = new DiveTripModel(this);
-	model->setSourceModel(tripModel);
+	model->setSourceModel(DiveTripModel::instance());
 	setModel(model);
 
 	setSortingEnabled(false);
@@ -50,7 +49,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	installEventFilter(this);
 
 	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++)
-		calculateInitialColumnWidth(tripModel, i);
+		calculateInitialColumnWidth(i);
 	setColumnWidths();
 }
 
@@ -72,13 +71,13 @@ DiveListView::~DiveListView()
 	settings.endGroup();
 }
 
-void DiveListView::calculateInitialColumnWidth(const DiveTripModel &tripModel, int col)
+void DiveListView::calculateInitialColumnWidth(int col)
 {
 	const QFontMetrics metrics(defaultModelFont());
 	int em = metrics.width('m');
 	int zw = metrics.width('0');
 
-	QString header_txt = tripModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+	QString header_txt = DiveTripModel::instance()->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
 	int width = metrics.width(header_txt);
 	int sw = 0;
 	switch (col) {
@@ -422,18 +421,13 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 	header()->setSectionsClickable(true);
 	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
 
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
-	QAbstractItemModel *oldModel = m->sourceModel();
-	DiveTripModel *tripModel = new DiveTripModel(this);
-	tripModel->setLayout(layout);
-
-	m->setSourceModel(tripModel);
-	if (oldModel)
-		delete oldModel;
+	DiveTripModel *tripModel = DiveTripModel::instance();
+	tripModel->setLayout(layout);	// Note: setLayout() resets the whole model
 
 	if (!forceSort)
 		return;
 
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	sortByColumn(sortColumn, currentOrder);
 	if (amount_selected && current_dive != NULL) {
 		selectDive(selected_dive, true);

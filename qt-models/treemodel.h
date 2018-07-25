@@ -4,6 +4,7 @@
 
 #include <QAbstractItemModel>
 #include <QCoreApplication>
+#include <memory>
 
 struct TreeItem {
 	Q_DECLARE_TR_FUNCTIONS(TreeItemDT)
@@ -25,16 +26,16 @@ class TreeModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
 	TreeModel(QObject *parent = 0);
-	~TreeModel();
 	QVariant data(const QModelIndex &index, int role) const;
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	int columnCount(const QModelIndex &parent = QModelIndex()) const;
 	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
 	QModelIndex parent(const QModelIndex &child) const;
+	void clear();
 
 protected:
 	int columns;
-	TreeItem *rootItem;
+	std::unique_ptr<TreeItem> rootItem;
 };
 
 #endif

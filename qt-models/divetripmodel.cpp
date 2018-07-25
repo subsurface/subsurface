@@ -437,6 +437,12 @@ int DiveItem::weight() const
 	return tw.grams;
 }
 
+DiveTripModel *DiveTripModel::instance()
+{
+	static DiveTripModel self;
+	return &self;
+}
+
 DiveTripModel::DiveTripModel(QObject *parent) :
 	TreeModel(parent),
 	currentLayout(TREE)
@@ -586,9 +592,11 @@ void DiveTripModel::setupModelData()
 
 	beginResetModel();
 
+	clear();
 	if (autogroup)
 		autogroup_dives();
 	dive_table.preexisting = dive_table.nr;
+	QMap<dive_trip_t *, TripItem *> trips;
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
 		update_cylinder_related_info(dive);
@@ -598,7 +606,7 @@ void DiveTripModel::setupModelData()
 		diveItem->diveId = dive->id;
 
 		if (!trip || currentLayout == LIST) {
-			diveItem->parent = rootItem;
+			diveItem->parent = rootItem.get();
 			rootItem->children.push_back(diveItem);
 			continue;
 		}
@@ -608,7 +616,7 @@ void DiveTripModel::setupModelData()
 		if (!trips.keys().contains(trip)) {
 			TripItem *tripItem = new TripItem();
 			tripItem->trip = trip;
-			tripItem->parent = rootItem;
+			tripItem->parent = rootItem.get();
 			tripItem->children.push_back(diveItem);
 			trips[trip] = tripItem;
 			rootItem->children.push_back(tripItem);

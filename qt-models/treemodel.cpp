@@ -32,12 +32,12 @@ QVariant TreeItem::data(int, int) const
 TreeModel::TreeModel(QObject *parent) : QAbstractItemModel(parent)
 {
 	columns = 0; // I'm not sure about this one - I can't see where it gets initialized
-	rootItem = new TreeItem();
+	rootItem.reset(new TreeItem);
 }
 
-TreeModel::~TreeModel()
+void TreeModel::clear()
 {
-	delete rootItem;
+	rootItem.reset(new TreeItem);
 }
 
 QVariant TreeModel::data(const QModelIndex &index, int role) const
@@ -64,7 +64,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 	if (!hasIndex(row, column, parent))
 		return QModelIndex();
 
-	TreeItem *parentItem = (!parent.isValid()) ? rootItem : static_cast<TreeItem *>(parent.internalPointer());
+	TreeItem *parentItem = (!parent.isValid()) ? rootItem.get() : static_cast<TreeItem *>(parent.internalPointer());
 
 	TreeItem *childItem = parentItem->children[row];
 
@@ -79,7 +79,7 @@ QModelIndex TreeModel::parent(const QModelIndex &index) const
 	TreeItem *childItem = static_cast<TreeItem *>(index.internalPointer());
 	TreeItem *parentItem = childItem->parent;
 
-	if (parentItem == rootItem || !parentItem)
+	if (parentItem == rootItem.get() || !parentItem)
 		return QModelIndex();
 
 	return createIndex(parentItem->row(), 0, parentItem);
@@ -90,7 +90,7 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 	TreeItem *parentItem;
 
 	if (!parent.isValid())
-		parentItem = rootItem;
+		parentItem = rootItem.get();
 	else
 		parentItem = static_cast<TreeItem *>(parent.internalPointer());
 

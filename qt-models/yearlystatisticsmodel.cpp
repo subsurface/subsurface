@@ -187,7 +187,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 			month++;
 		}
 		rootItem->children.append(item);
-		item->parent = rootItem;
+		item->parent = rootItem.get();
 	}
 
 
@@ -199,7 +199,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 			iChild->parent = item;
 		}
 		rootItem->children.append(item);
-		item->parent = rootItem;
+		item->parent = rootItem.get();
 	}
 
 	/* Show the statistic sorted by dive type */
@@ -213,6 +213,6 @@ void YearlyStatisticsModel::update_yearly_stats()
 			iChild->parent = item;
 		}
 		rootItem->children.append(item);
-		item->parent = rootItem;
+		item->parent = rootItem.get();
 	}
 }
