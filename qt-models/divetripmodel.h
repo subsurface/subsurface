@@ -99,13 +99,10 @@ public:
 	DiveTripModel(QObject *parent = 0);
 	Layout layout() const;
 	void setLayout(Layout layout);
-	int columnWidth(int column);
-	void setColumnWidth(int column, int width);
 
 private:
 	void setupModelData();
 	QMap<dive_trip_t *, TripItem *> trips;
-	QVector<int> columnWidthMap;
 	Layout currentLayout;
 };
 
