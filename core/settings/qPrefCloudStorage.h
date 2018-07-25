@@ -46,34 +46,34 @@ public:
 	static inline QString userid() { return prefs.userid; }
 
 public slots:
-	void set_cloud_base_url(const QString& value);
-	void set_cloud_git_url(const QString& value);
-	void set_cloud_storage_email(const QString& value);
-	void set_cloud_storage_email_encoded(const QString& value);
-	void set_cloud_storage_newpassword(const QString& value);
-	void set_cloud_storage_password(const QString& value);
-	void set_cloud_storage_pin(const QString& value);
+	void set_cloud_base_url(const QString &value);
+	void set_cloud_git_url(const QString &value);
+	void set_cloud_storage_email(const QString &value);
+	void set_cloud_storage_email_encoded(const QString &value);
+	void set_cloud_storage_newpassword(const QString &value);
+	void set_cloud_storage_password(const QString &value);
+	void set_cloud_storage_pin(const QString &value);
 	void set_cloud_timeout(int value);
 	void set_cloud_verification_status(int value);
 	void set_git_local_only(bool value);
 	void set_save_password_local(bool value);
 	void set_save_userid_local(bool value);
-	void set_userid(const QString& value);
+	void set_userid(const QString &value);
 
 signals:
-	void cloud_base_url_changed(const QString& value);
-	void cloud_git_url_changed(const QString& value);
-	void cloud_storage_email_changed(const QString& value);
-	void cloud_storage_email_encoded_changed(const QString& value);
-	void cloud_storage_newpassword_changed(const QString& value);
-	void cloud_storage_password_changed(const QString& value);
-	void cloud_storage_pin_changed(const QString& value);
+	void cloud_base_url_changed(const QString &value);
+	void cloud_git_url_changed(const QString &value);
+	void cloud_storage_email_changed(const QString &value);
+	void cloud_storage_email_encoded_changed(const QString &value);
+	void cloud_storage_newpassword_changed(const QString &value);
+	void cloud_storage_password_changed(const QString &value);
+	void cloud_storage_pin_changed(const QString &value);
 	void cloud_timeout_changed(int value);
 	void cloud_verification_status_changed(int value);
 	void git_local_only_changed(bool value);
 	void save_password_local_changed(bool value);
 	void save_userid_local_changed(bool value);
-	void userid_changed(const QString& value);
+	void userid_changed(const QString &value);
 
 private:
 	// functions to load/sync variable with disk
