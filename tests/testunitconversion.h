@@ -4,7 +4,7 @@
 
 #include <QtTest>
 
-class TestUnitConversion : public QObject{
+class TestUnitConversion : public QObject {
 	Q_OBJECT
 private slots:
 	void testUnitConversions();

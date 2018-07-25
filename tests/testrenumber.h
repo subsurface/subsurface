@@ -4,8 +4,7 @@
 
 #include <QtTest>
 
-class TestRenumber : public QObject
-{
+class TestRenumber : public QObject {
 	Q_OBJECT
 private slots:
 	void setup();

@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
+#include <QApplication>
+#include <QQmlContext>
 #include <QQmlEngine>
 #include <QtQuickTest>
 #include <QtTest>
-#include <QQmlEngine>
-#include <QQmlContext>
-#include <QApplication>
 
-#include "core/settings/qPref.h"
 #include "core/qt-gui.h"
+#include "core/settings/qPref.h"
 
 // this is the content of QUICK_TEST_MAIN amended with
 // registration of ssrf classes
@@ -34,7 +33,7 @@ int main(int argc, char **argv)
 	// save tst_dir and pass rest to Qt
 	const char *tst_dir = argv[1];
 	for (int i = 1; i < argc; i++)
-		argv[i] = argv[i+1];
+		argv[i] = argv[i + 1];
 	argc--;
 
 	// Register types

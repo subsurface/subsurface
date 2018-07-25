@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefDiveComputer.h"
 
-#include "core/settings/qPref.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPref.h"
 
 #include <QTest>
 
@@ -54,7 +54,7 @@ void TestQPrefDiveComputer::test_set_struct()
 
 void TestQPrefDiveComputer::test_set_load_struct()
 {
-	// test set func -> load -> struct pref 
+	// test set func -> load -> struct pref
 
 	auto tst = qPrefDiveComputer::instance();
 
@@ -120,11 +120,11 @@ void TestQPrefDiveComputer::test_multiple()
 	QCOMPARE(tst->download_mode(), tst_direct->download_mode());
 }
 
-#define TEST(METHOD, VALUE) \
-QCOMPARE(METHOD, VALUE); \
-dc->sync(); \
-dc->load(); \
-QCOMPARE(METHOD, VALUE);
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	dc->sync();              \
+	dc->load();              \
+	QCOMPARE(METHOD, VALUE);
 
 void TestQPrefDiveComputer::test_oldPreferences()
 {
@@ -152,4 +152,3 @@ void TestQPrefDiveComputer::test_oldPreferences()
 }
 
 QTEST_MAIN(TestQPrefDiveComputer)
-

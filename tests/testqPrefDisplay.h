@@ -4,8 +4,7 @@
 
 #include <QObject>
 
-class TestQPrefDisplay : public QObject
-{
+class TestQPrefDisplay : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();

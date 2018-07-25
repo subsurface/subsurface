@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefCloudStorage.h"
 
-#include "core/settings/qPref.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPref.h"
 
 #include <QTest>
 
@@ -48,7 +48,6 @@ void TestQPrefCloudStorage::test_struct_get()
 	QCOMPARE(tst->save_password_local(), prefs.save_password_local);
 	QCOMPARE(tst->save_userid_local(), prefs.save_userid_local);
 	QCOMPARE(tst->userid(), QString(prefs.userid));
-
 }
 
 void TestQPrefCloudStorage::test_set_struct()
@@ -88,7 +87,7 @@ void TestQPrefCloudStorage::test_set_struct()
 
 void TestQPrefCloudStorage::test_set_load_struct()
 {
-	// test set func -> load -> struct pref 
+	// test set func -> load -> struct pref
 
 	auto tst = qPrefCloudStorage::instance();
 
@@ -206,11 +205,11 @@ void TestQPrefCloudStorage::test_multiple()
 	QCOMPARE(tst->cloud_timeout(), tst_direct->cloud_timeout());
 }
 
-#define TEST(METHOD, VALUE) \
-QCOMPARE(METHOD, VALUE); \
-cloud->sync(); \
-cloud->load(); \
-QCOMPARE(METHOD, VALUE);
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	cloud->sync();           \
+	cloud->load();           \
+	QCOMPARE(METHOD, VALUE);
 
 void TestQPrefCloudStorage::test_oldPreferences()
 {

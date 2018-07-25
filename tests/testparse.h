@@ -5,7 +5,7 @@
 #include <QtTest>
 #include <sqlite3.h>
 
-class TestParse : public QObject{
+class TestParse : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();
