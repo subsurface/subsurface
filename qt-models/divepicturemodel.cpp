@@ -7,6 +7,7 @@
 #include "core/qthelper.h"
 
 #include <QFileInfo>
+#include <QPainter>
 
 DivePictureModel *DivePictureModel::instance()
 {
@@ -165,10 +166,39 @@ int DivePictureModel::findPictureId(const QString &filename)
 	return -1;
 }
 
-void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, duration_t)
+static void addDurationToThumbnail(QImage &img, duration_t duration)
+{
+	int seconds = duration.seconds;
+	if (seconds < 0)
+		return;
+	QString s = seconds >= 3600 ?
+		QStringLiteral("%1:%2:%3").arg(seconds / 3600, 2, 10, QChar('0'))
+					  .arg((seconds % 3600) / 60, 2, 10, QChar('0'))
+					  .arg(seconds % 60, 2, 10, QChar('0')) :
+		QStringLiteral("%1:%2").arg(seconds / 60, 2, 10, QChar('0'))
+				       .arg(seconds % 60, 2, 10, QChar('0'));
+
+	QFont font(system_divelist_default_font, 30);
+	QFontMetrics metrics(font);
+	QSize size = metrics.size(Qt::TextSingleLine, s);
+	QSize imgSize = img.size();
+	int x = imgSize.width() - size.width();
+	int y = imgSize.height() - size.height() + metrics.descent();
+	QPainter painter(&img);
+	painter.setBrush(Qt::white);
+	painter.setPen(Qt::NoPen);
+	painter.drawRect(x, y, size.width(), size.height() - metrics.descent());
+	painter.setFont(font);
+	painter.setPen(Qt::black);
+	painter.drawText(x, imgSize.height(), s);
+}
+
+void DivePictureModel::updateThumbnail(QString filename, QImage thumbnail, duration_t duration)
 {
 	int i = findPictureId(filename);
 	if (i >= 0) {
+		if (duration.seconds > 0)
+			addDurationToThumbnail(thumbnail, duration);	// If we know the duration paint it on top of the thumbnail
 		pictures[i].image = thumbnail;
 		emit dataChanged(createIndex(i, 0), createIndex(i, 1));
 	}
