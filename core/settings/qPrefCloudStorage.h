@@ -8,7 +8,7 @@
 class qPrefCloudStorage : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString cloud_base_url READ cloud_base_url WRITE set_cloud_base_url NOTIFY cloud_base_url_changed);
-	Q_PROPERTY(QString cloud_git_url READ cloud_git_url WRITE set_cloud_git_url NOTIFY cloud_git_url_changed);
+	Q_PROPERTY(QString cloud_git_url READ cloud_git_url);
 	Q_PROPERTY(QString cloud_storage_email READ cloud_storage_email WRITE set_cloud_storage_email NOTIFY cloud_storage_email_changed);
 	Q_PROPERTY(QString cloud_storage_email_encoded READ cloud_storage_email_encoded WRITE set_cloud_storage_email_encoded NOTIFY cloud_storage_email_encoded_changed);
 	Q_PROPERTY(QString cloud_storage_newpassword READ cloud_storage_newpassword WRITE set_cloud_storage_newpassword NOTIFY cloud_storage_newpassword_changed);
@@ -47,7 +47,6 @@ public:
 
 public slots:
 	void set_cloud_base_url(const QString &value);
-	void set_cloud_git_url(const QString &value);
 	void set_cloud_storage_email(const QString &value);
 	void set_cloud_storage_email_encoded(const QString &value);
 	void set_cloud_storage_newpassword(const QString &value);
@@ -62,7 +61,6 @@ public slots:
 
 signals:
 	void cloud_base_url_changed(const QString &value);
-	void cloud_git_url_changed(const QString &value);
 	void cloud_storage_email_changed(const QString &value);
 	void cloud_storage_email_encoded_changed(const QString &value);
 	void cloud_storage_newpassword_changed(const QString &value);
@@ -78,7 +76,6 @@ signals:
 private:
 	// functions to load/sync variable with disk
 	void disk_cloud_base_url(bool doSync);
-	void disk_cloud_git_url(bool doSync);
 	void disk_cloud_storage_email(bool doSync);
 	void disk_cloud_storage_email_encoded(bool doSync);
 	void disk_cloud_storage_newpassword(bool doSync);
