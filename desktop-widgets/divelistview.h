@@ -77,7 +77,7 @@ private:
 	/* if dive_trip_t is null, there's no problem. */
 	QMultiHash<dive_trip_t *, int> selectedDives;
 	void merge_trip(const QModelIndex &a, const int offset);
-	void setupUi();
+	void setColumnWidths();
 	void calculateInitialColumnWidth(const DiveTripModel &tripModel, int col);
 	void backupExpandedRows();
 	void restoreExpandedRows();
