@@ -20,8 +20,7 @@ TestCase {
 		compare(tst.cloud_base_url, "my url")
 
 		var x2 = tst.cloud_git_url
-		tst.cloud_git_url= "my url"
-		compare(tst.cloud_git_url, "my url")
+		compare(tst.cloud_git_url, "my url/git")
 
 		var x3 = tst.cloud_storage_email
 		tst.cloud_storage_email = "my email"

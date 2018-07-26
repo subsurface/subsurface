@@ -57,7 +57,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	auto tst = qPrefCloudStorage::instance();
 
 	tst->set_cloud_base_url("t2 base");
-	tst->set_cloud_git_url("t2 git");
 	tst->set_cloud_storage_email("t2 email");
 	tst->set_cloud_storage_email_encoded("t2 email2");
 	tst->set_cloud_storage_newpassword("t2 pass1");
@@ -71,7 +70,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	tst->set_userid("t2 user");
 
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t2 base"));
-	QCOMPARE(QString(prefs.cloud_git_url), QString("t2 git"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t2 email"));
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t2 email2"));
 	QCOMPARE(QString(prefs.cloud_storage_newpassword), QString("t2 pass1"));
@@ -83,6 +81,9 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE(prefs.save_password_local, false);
 	QCOMPARE(prefs.save_userid_local, false);
 	QCOMPARE(QString(prefs.userid), QString("t2 user"));
+
+	// remark is set with set_base_url
+	QCOMPARE(QString(prefs.cloud_git_url), QString("t2 base/git"));
 }
 
 void TestQPrefCloudStorage::test_set_load_struct()
@@ -92,7 +93,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	auto tst = qPrefCloudStorage::instance();
 
 	tst->set_cloud_base_url("t3 base");
-	tst->set_cloud_git_url("t3 git");
 	tst->set_cloud_storage_email("t3 email");
 	tst->set_cloud_storage_email_encoded("t3 email2");
 	tst->set_cloud_storage_newpassword("t3 pass1");
@@ -121,7 +121,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 
 	tst->load();
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t3 base"));
-	QCOMPARE(QString(prefs.cloud_git_url), QString("t3 git"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t3 email"));
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t3 email2"));
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t3 pass2"));
@@ -132,6 +131,9 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
 	QCOMPARE(QString(prefs.userid), QString("t3 user"));
+
+	// remark is set with set_base_url
+	QCOMPARE(QString(prefs.cloud_git_url), QString("t3 base/git"));
 
 	// warning new password is not saved on disk
 	QCOMPARE(QString(prefs.cloud_storage_newpassword), QString("my new password"));
@@ -144,7 +146,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	auto tst = qPrefCloudStorage::instance();
 
 	prefs.cloud_base_url = copy_qstring("t4 base");
-	prefs.cloud_git_url = copy_qstring("t4 git");
 	prefs.cloud_storage_email = copy_qstring("t4 email");
 	prefs.cloud_storage_email_encoded = copy_qstring("t4 email2");
 	prefs.cloud_storage_newpassword = copy_qstring("t4 pass1");
@@ -176,7 +177,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	tst->load();
 
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t4 base"));
-	QCOMPARE(QString(prefs.cloud_git_url), QString("t4 git"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t4 email"));
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t4 email2"));
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t4 pass2"));
@@ -187,6 +187,9 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
 	QCOMPARE(QString(prefs.userid), QString("t4 user"));
+
+	// remark is set with set_base_url
+	QCOMPARE(QString(prefs.cloud_git_url), QString("t4 base/git"));
 
 	// warning new password not stored on disk
 	QCOMPARE(QString(prefs.cloud_storage_newpassword), QString("my new password"));
