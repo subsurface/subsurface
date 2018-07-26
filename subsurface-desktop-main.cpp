@@ -2,28 +2,28 @@
 /* main.c */
 #include <locale.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
+#include "core/color.h"
+#include "core/downloadfromdcthread.h" // for fill_computer_list
 #include "core/qt-gui.h"
+#include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
+#include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/mainwindow.h"
+#include "desktop-widgets/preferences/preferencesdialog.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
 #include "profile-widget/profilewidget2.h"
-#include "desktop-widgets/preferences/preferencesdialog.h"
-#include "desktop-widgets/diveplanner.h"
-#include "core/color.h"
-#include "core/qthelper.h"
-#include "core/downloadfromdcthread.h" // for fill_computer_list
 
-#include <QStringList>
 #include <QApplication>
 #include <QLoggingCategory>
-#include <QOpenGLContext>
 #include <QOffscreenSurface>
+#include <QOpenGLContext>
 #include <QOpenGLFunctions>
 #include <QQuickWindow>
+#include <QStringList>
 #include <git2.h>
 
 static bool filesOnCommandLine = false;
@@ -127,7 +127,7 @@ bool haveFilesOnCommandLine()
 	return filesOnCommandLine;
 }
 
-#define VALIDATE_GL_PREFIX  "validateGL(): "
+#define VALIDATE_GL_PREFIX "validateGL(): "
 
 void validateGL()
 {
@@ -138,8 +138,10 @@ void validateGL()
 	 */
 	if (!quickBackend.isEmpty()) {
 		if (verbose) {
-			qDebug() << QStringLiteral(VALIDATE_GL_PREFIX "'QT_QUICK_BACKEND' is set to '%1'. "
-				"Skipping validation.").arg(quickBackend);
+			qDebug() << QStringLiteral(VALIDATE_GL_PREFIX
+						   "'QT_QUICK_BACKEND' is set to '%1'. "
+						   "Skipping validation.")
+					    .arg(quickBackend);
 		}
 		return;
 	}
@@ -171,12 +173,13 @@ void validateGL()
 	if (verChar) {
 		// detect GLES, show a warning and return early as we don't handle it's versioning
 		if (strstr(verChar, " ES ") != NULL) {
-			 qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: Detected OpenGL ES!\n"
-			 "Attempting to run with the available profile!\n"
-			 "If this fails try manually setting the environment variable\n"
-			 "'QT_QUICK_BACKEND' with the value of 'software'\n"
-			 "before running Subsurface!\n");
-			 return;
+			qWarning() << QStringLiteral(VALIDATE_GL_PREFIX
+						     "WARNING: Detected OpenGL ES!\n"
+						     "Attempting to run with the available profile!\n"
+						     "If this fails try manually setting the environment variable\n"
+						     "'QT_QUICK_BACKEND' with the value of 'software'\n"
+						     "before running Subsurface!\n");
+			return;
 		}
 		int min, maj;
 		if (sscanf(verChar, "%d.%d", &maj, &min) == 2) {
@@ -205,10 +208,12 @@ exit:
 	surface.destroy();
 	if (glError) {
 #if QT_VERSION < QT_VERSION_CHECK(5, 8, 0)
-		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "ERROR: %1.\n"
-			"Cannot automatically fallback to a software renderer!\n"
-			"Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
-			"before running Subsurface!\n").arg(glError);
+		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX
+					     "ERROR: %1.\n"
+					     "Cannot automatically fallback to a software renderer!\n"
+					     "Set the environment variable 'QT_QUICK_BACKEND' with the value of 'software'\n"
+					     "before running Subsurface!\n")
+				      .arg(glError);
 		exit(0);
 #else
 		qWarning() << QStringLiteral(VALIDATE_GL_PREFIX "WARNING: %1. Using a software renderer!").arg(glError);
@@ -218,7 +223,7 @@ exit:
 }
 
 // install this message handler primarily so that the Windows build can log to files
-void messageHandler(QtMsgType type, const QMessageLogContext&, const QString &msg)
+void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
 	QByteArray localMsg = msg.toUtf8();
 	switch (type) {
