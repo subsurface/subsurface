@@ -17,7 +17,6 @@ qPrefCloudStorage *qPrefCloudStorage::instance()
 void qPrefCloudStorage::loadSync(bool doSync)
 {
 	disk_cloud_base_url(doSync);
-	disk_cloud_git_url(doSync);
 	disk_cloud_storage_email(doSync);
 	disk_cloud_storage_email_encoded(doSync);
 	disk_cloud_storage_password(doSync);
@@ -41,27 +40,18 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 		}
 
 		disk_cloud_base_url(true);
-		disk_cloud_git_url(true);
 		emit cloud_base_url_changed(value);
-		emit cloud_git_url_changed(valueGit);
 	}
 }
-
-DISK_LOADSYNC_TXT(CloudStorage, "/cloud_base_url", cloud_base_url);
-
-void qPrefCloudStorage::set_cloud_git_url(const QString &value)
+void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 {
-	if (value != prefs.cloud_git_url) {
-		// only free and set if not default
-		if (prefs.cloud_git_url != default_prefs.cloud_git_url) {
-			qPrefPrivate::copy_txt(&prefs.cloud_git_url, value);
-		}
-		disk_cloud_git_url(true);
-		emit cloud_git_url_changed(value);
+	if (doSync) {
+		qPrefPrivate::instance()->setting.setValue(group + "/cloud_base_url", prefs.cloud_base_url);
+	} else {
+		prefs.cloud_base_url = copy_qstring(qPrefPrivate::instance()->setting.value(group + "/cloud_base_url", default_prefs.cloud_base_url).toString());
+		qPrefPrivate::copy_txt(&prefs.cloud_git_url, QString(prefs.cloud_base_url) + "/git");
 	}
 }
-
-DISK_LOADSYNC_TXT(CloudStorage, "/cloud_git_url", cloud_git_url);
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "/email", cloud_storage_email);
 
