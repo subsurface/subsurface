@@ -36,6 +36,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	DiveTripModel *tripModel = new DiveTripModel(this);
+	model->setSourceModel(tripModel);
 	setModel(model);
 	connect(model, SIGNAL(layoutChanged()), this, SLOT(fixMessyQtModelBehaviour()));
 
@@ -48,11 +50,9 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 	installEventFilter(this);
 
-	// TODO: We use a dummy DiveTripModel to calculated column widths.
-	// Change this to a global object.
-	DiveTripModel tripModel;
 	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++)
 		calculateInitialColumnWidth(tripModel, i);
+	setColumnWidths();
 }
 
 DiveListView::~DiveListView()
@@ -112,12 +112,10 @@ void DiveListView::calculateInitialColumnWidth(const DiveTripModel &tripModel, i
 	initialColumnWidths[col] = std::max(initialColumnWidths[col], width);
 }
 
-void DiveListView::setupUi()
+void DiveListView::setColumnWidths()
 {
 	QSettings settings;
-	static bool firstRun = true;
-	if (firstRun)
-		backupExpandedRows();
+	backupExpandedRows();
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
@@ -132,11 +130,7 @@ void DiveListView::setupUi()
 			setColumnWidth(i, initialColumnWidths[i]);
 	}
 	settings.endGroup();
-	if (firstRun)
-		restoreExpandedRows();
-	else
-		collapseAll();
-	firstRun = false;
+	restoreExpandedRows();
 	setColumnWidth(lastVisibleColumn(), 10);
 }
 
@@ -399,13 +393,6 @@ void DiveListView::headerClicked(int i)
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
-	// we want to run setupUi() once we actually are displaying something
-	// in the widget
-	static bool first = true;
-	if (first && dive_table.nr > 0) {
-		setupUi();
-		first = false;
-	}
 	if (layout == DiveTripModel::CURRENT)
 		layout = currentLayout;
 	else
