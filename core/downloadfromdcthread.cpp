@@ -7,7 +7,7 @@
 
 QStringList vendorList;
 QHash<QString, QStringList> productList;
-static QHash<QString, QStringList> mobileProductList;	// BT, BLE or FTDI supported DCs for mobile
+static QHash<QString, QStringList> mobileProductList; // BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
 ConnectionListModel connectionListModel;
 
@@ -30,7 +30,7 @@ void DownloadThread::run()
 {
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
-	internalData->download_table = 	&downloadTable;
+	internalData->download_table = &downloadTable;
 #if defined(Q_OS_ANDROID)
 	// on Android we either use BT or we download via FTDI cable
 	if (!internalData->bluetooth_mode)
@@ -201,7 +201,7 @@ void show_computer_list()
 			dc_descriptor_t *descriptor = descriptorLookup[vendor + product];
 			unsigned int transport = dc_descriptor_get_transports(descriptor) & transportMask;
 			QString transportString = getTransportString(transport);
-			msg += product + " (" + transportString +"), ";
+			msg += product + " (" + transportString + "), ";
 		}
 		msg.chop(2);
 		qDebug() << msg;
@@ -265,7 +265,7 @@ int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &produ
 	return -1;
 }
 
-DCDeviceData * DownloadThread::data()
+DCDeviceData *DownloadThread::data()
 {
 	return m_data;
 }
@@ -320,17 +320,17 @@ int DCDeviceData::diveId() const
 	return data.diveid;
 }
 
-void DCDeviceData::setVendor(const QString& vendor)
+void DCDeviceData::setVendor(const QString &vendor)
 {
 	data.vendor = copy_qstring(vendor);
 }
 
-void DCDeviceData::setProduct(const QString& product)
+void DCDeviceData::setProduct(const QString &product)
 {
 	data.product = copy_qstring(product);
 }
 
-void DCDeviceData::setDevName(const QString& devName)
+void DCDeviceData::setDevName(const QString &devName)
 {
 	// This is a workaround for bug #1002. A string of the form "devicename (deviceaddress)"
 	// or "deviceaddress (devicename)" may have found its way into the preferences.
@@ -351,7 +351,7 @@ void DCDeviceData::setDevName(const QString& devName)
 	data.devname = copy_qstring(devName);
 }
 
-void DCDeviceData::setDevBluetoothName(const QString& name)
+void DCDeviceData::setDevBluetoothName(const QString &name)
 {
 	m_devBluetoothName = name;
 }
@@ -402,7 +402,7 @@ bool DCDeviceData::saveLog() const
 }
 
 
-device_data_t* DCDeviceData::internalData()
+device_data_t *DCDeviceData::internalData()
 {
 	return &data;
 }
