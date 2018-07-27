@@ -19,6 +19,7 @@ public:
 	friend class qPrefDisplay;
 	friend class qPrefDiveComputer;
 	friend class qPrefFacebook;
+	friend class qPrefProxy;
 
 private:
 	static qPrefPrivate *instance();

@@ -10,6 +10,7 @@
 #include "qPrefDisplay.h"
 #include "qPrefDiveComputer.h"
 #include "qPrefFacebook.h"
+#include "qPrefProxy.h"
 
 class qPref : public QObject {
 	Q_OBJECT
