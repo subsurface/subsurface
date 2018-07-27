@@ -45,18 +45,18 @@ void PreferencesNetwork::refreshSettings()
 
 void PreferencesNetwork::syncSettings()
 {
-	auto cloud = SettingsObjectWrapper::instance()->cloud_storage;
-	auto proxy = SettingsObjectWrapper::instance()->proxy;
+	auto cloud = qPrefCloudStorage::instance();
+	auto proxy = qPrefProxy::instance();
 
 	cloud->set_userid(ui->default_uid->text().toUpper());
 	cloud->set_save_userid_local(ui->save_uid_local->checkState());
 
-	proxy->setType(ui->proxyType->itemData(ui->proxyType->currentIndex()).toInt());
-	proxy->setHost(ui->proxyHost->text());
-	proxy->setPort(ui->proxyPort->value());
-	proxy->setAuth(ui->proxyAuthRequired->isChecked());
-	proxy->setUser(ui->proxyUsername->text());
-	proxy->setPass(ui->proxyPassword->text());
+	proxy->set_proxy_type(ui->proxyType->itemData(ui->proxyType->currentIndex()).toInt());
+	proxy->set_proxy_host(ui->proxyHost->text());
+	proxy->set_proxy_port(ui->proxyPort->value());
+	proxy->set_proxy_auth(ui->proxyAuthRequired->isChecked());
+	proxy->set_proxy_user(ui->proxyUsername->text());
+	proxy->set_proxy_pass(ui->proxyPassword->text());
 
 	QString email = ui->cloud_storage_email->text();
 	QString password = ui->cloud_storage_password->text();
