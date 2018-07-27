@@ -161,6 +161,7 @@ void register_qml_types()
 	REGISTER_TYPE(qPrefDisplay, "SsrfDisplayPrefs");
 	REGISTER_TYPE(qPrefDiveComputer, "SsrfDiveComputerPrefs");
 	REGISTER_TYPE(qPrefFacebook, "SsrfFacebookPrefs");
+	REGISTER_TYPE(qPrefProxy, "SsrfProxyPrefs");
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE

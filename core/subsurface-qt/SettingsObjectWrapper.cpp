@@ -4,7 +4,6 @@
 #include <QApplication>
 #include <QFont>
 #include <QDate>
-#include <QNetworkProxy>
 
 #include "core/qthelper.h"
 #include "core/prefs-macros.h"
@@ -715,111 +714,6 @@ void GeocodingPreferences::setThirdTaxonomyCategory(taxonomy_category value)
 	prefs.geocoding.category[2] = value;
 	emit thirdTaxonomyCategoryChanged(value);
 }
-
-ProxySettings::ProxySettings(QObject *parent) :
-	QObject(parent)
-{
-}
-
-int ProxySettings::type() const
-{
-	return prefs.proxy_type;
-}
-
-QString ProxySettings::host() const
-{
-	return prefs.proxy_host;
-}
-
-int ProxySettings::port() const
-{
-	return prefs.proxy_port;
-}
-
-bool ProxySettings::auth() const
-{
-	return prefs.proxy_auth;
-}
-
-QString ProxySettings::user() const
-{
-	return prefs.proxy_user;
-}
-
-QString ProxySettings::pass() const
-{
-	return prefs.proxy_pass;
-}
-
-void ProxySettings::setType(int value)
-{
-	if (value == prefs.proxy_type)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_type", value);
-	prefs.proxy_type = value;
-	emit typeChanged(value);
-}
-
-void ProxySettings::setHost(const QString& value)
-{
-	if (value == prefs.proxy_host)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_host", value);
-	free((void *)prefs.proxy_host);
-	prefs.proxy_host = copy_qstring(value);
-	emit hostChanged(value);
-}
-
-void ProxySettings::setPort(int value)
-{
-	if (value == prefs.proxy_port)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_port", value);
-	prefs.proxy_port = value;
-	emit portChanged(value);
-}
-
-void ProxySettings::setAuth(bool value)
-{
-	if (value == prefs.proxy_auth)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_auth", value);
-	prefs.proxy_auth = value;
-	emit authChanged(value);
-}
-
-void ProxySettings::setUser(const QString& value)
-{
-	if (value == prefs.proxy_user)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_user", value);
-	free((void *)prefs.proxy_user);
-	prefs.proxy_user = copy_qstring(value);
-	emit userChanged(value);
-}
-
-void ProxySettings::setPass(const QString& value)
-{
-	if (value == prefs.proxy_pass)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("proxy_pass", value);
-	free((void *)prefs.proxy_pass);
-	prefs.proxy_pass = copy_qstring(value);
-	emit passChanged(value);
-}
-
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
 	QObject(parent)
@@ -1765,7 +1659,7 @@ QObject(parent),
 	pp_gas(new PartialPressureGasSettings(this)),
 	facebook(new qPrefFacebook(this)),
 	geocoding(new GeocodingPreferences(this)),
-	proxy(new ProxySettings(this)),
+	proxy(new qPrefProxy(this)),
 	cloud_storage(new qPrefCloudStorage(this)),
 	planner_settings(new DivePlannerSettings(this)),
 	unit_settings(new UnitsSettings(this)),
@@ -1863,20 +1757,10 @@ void SettingsObjectWrapper::load()
 	GET_BOOL("auto_recalculate_thumbnails", auto_recalculate_thumbnails);
 	s.endGroup();
 
-	qPrefDisplay::instance()->load();
-
 	qPrefAnimations::instance()->load();
-
-	s.beginGroup("Network");
-	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
-	GET_TXT("proxy_host", proxy_host);
-	GET_INT("proxy_port", proxy_port);
-	GET_BOOL("proxy_auth", proxy_auth);
-	GET_TXT("proxy_user", proxy_user);
-	GET_TXT("proxy_pass", proxy_pass);
-	s.endGroup();
-
 	qPrefCloudStorage::instance()->load();
+	qPrefDisplay::instance()->load();
+	qPrefProxy::instance()->load();
 
 	// GeoManagement
 	s.beginGroup("geocoding");

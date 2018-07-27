@@ -18,6 +18,8 @@ void qPref::loadSync(bool doSync)
 	qPrefCloudStorage::instance()->loadSync(doSync);
 	qPrefDisplay::instance()->loadSync(doSync);
 	qPrefDiveComputer::instance()->loadSync(doSync);
+	// qPrefFaceook does not use disk.
+	qPrefProxy::instance()->loadSync(doSync);
 }
 
 const QString qPref::canonical_version() const
