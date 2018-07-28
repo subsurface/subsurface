@@ -77,6 +77,7 @@ void TestQPrefAnimations::test_multiple()
 	auto tst = qPrefAnimations::instance();
 
 	QCOMPARE(tst->animation_speed(), tst_direct->animation_speed());
+	QCOMPARE(tst_direct->animation_speed(), 25);
 }
 
 QTEST_MAIN(TestQPrefAnimations)

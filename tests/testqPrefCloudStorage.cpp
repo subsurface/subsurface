@@ -20,7 +20,6 @@ void TestQPrefCloudStorage::test_struct_get()
 
 	auto tst = qPrefCloudStorage::instance();
 
-	prefs.animation_speed = 17;
 	prefs.cloud_base_url = copy_qstring("new url");
 	prefs.cloud_git_url = copy_qstring("new again url");
 	prefs.cloud_storage_email = copy_qstring("myEmail");
@@ -199,13 +198,15 @@ void TestQPrefCloudStorage::test_multiple()
 {
 	// test multiple instances have the same information
 
-	prefs.animation_speed = 37;
+	prefs.userid = copy_qstring("my user");
 	auto tst_direct = new qPrefCloudStorage;
 
 	prefs.cloud_timeout = 25;
 	auto tst = qPrefCloudStorage::instance();
 
 	QCOMPARE(tst->cloud_timeout(), tst_direct->cloud_timeout());
+	QCOMPARE(tst->userid(), tst_direct->userid());
+	QCOMPARE(tst_direct->cloud_timeout(), 25);
 }
 
 #define TEST(METHOD, VALUE)      \

@@ -48,13 +48,16 @@ void TestQPrefFacebook::test_multiple()
 {
 	// test multiple instances have the same information
 
-	prefs.facebook.access_token = copy_qstring("test 1");
 	auto tst_direct = new qPrefFacebook;
+	prefs.facebook.access_token = copy_qstring("test 1");
 
-	prefs.facebook.access_token = copy_qstring("test 2");
 	auto tst = qPrefFacebook::instance();
+	prefs.facebook.album_id = copy_qstring("test 2");
 
 	QCOMPARE(tst->access_token(), tst_direct->access_token());
+	QCOMPARE(tst->access_token(), QString("test 1"));
+	QCOMPARE(tst->album_id(), tst_direct->album_id());
+	QCOMPARE(tst->album_id(), QString("test 2"));
 }
 
 #define TEST(METHOD, VALUE) \
