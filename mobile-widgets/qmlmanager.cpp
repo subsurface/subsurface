@@ -1612,6 +1612,14 @@ QStringList QMLManager::cylinderInit() const
 				cylinders << d->cylinder[j].type.description;
 		}
 	}
+
+	for (unsigned long ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
+		QString cyl = tank_info[ti].name;
+		if (cyl == "")
+			continue;
+		cylinders << cyl;
+	}
+
 	cylinders.removeDuplicates();
 	cylinders.sort();
 	return cylinders;
