@@ -16,6 +16,7 @@
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
  * void insert_trip(dive_trip_t **dive_trip_p)
+ * void insert_trip_dont_merge(dive_trip_t *dive_trip_p)
  * void unregister_trip(dive_trip_t *trip)
  * void free_trip(dive_trip_t *trip)
  * void remove_dive_from_trip(struct dive *dive)
@@ -737,6 +738,22 @@ void insert_trip(dive_trip_t **dive_trip_p)
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
+}
+
+/* same as insert_trip, but don't merge trips with the same date.
+ * this is cruical for the merge undo-command, because there we
+ * add a new trip with the same date and then remove the old one. */
+void insert_trip_dont_merge(dive_trip_t *dive_trip)
+{
+	dive_trip_t **p = &dive_trip_list;
+	dive_trip_t *trip;
+
+	/* Walk the dive trip list looking for the right location.. */
+	while ((trip = *p) != NULL && trip->when < dive_trip->when)
+		p = &trip->next;
+
+	dive_trip->next = trip;
+	*p = dive_trip;
 }
 
 /* free resources associated with a trip structure */

@@ -422,6 +422,7 @@ extern int dive_get_insertion_index(struct dive *dive);
 extern void add_single_dive(int idx, struct dive *dive);
 
 extern void insert_trip(dive_trip_t **trip);
+extern void insert_trip_dont_merge(dive_trip_t *trip);
 extern void unregister_trip(dive_trip_t *trip);
 extern void free_trip(dive_trip_t *trip);
 
