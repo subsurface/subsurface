@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
-/* linux.c */
-/* implements Linux specific functions */
+/* unix.c */
+/* implements UNIX specific functions */
 #include "ssrf.h"
 #include "dive.h"
 #include "subsurface-string.h"
@@ -16,8 +16,8 @@
 #include <pwd.h>
 
 // the DE should provide us with a default font and font size...
-const char linux_system_divelist_default_font[] = "Sans";
-const char *system_divelist_default_font = linux_system_divelist_default_font;
+const char unix_system_divelist_default_font[] = "Sans";
+const char *system_divelist_default_font = unix_system_divelist_default_font;
 double system_divelist_default_font_size = -1.0;
 
 void subsurface_OS_pref_setup(void)
@@ -111,6 +111,13 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 	size_t len;
 	if (dc_type != DC_TYPE_UEMIS) {
 		const char *dirname = "/dev";
+#ifdef __OpenBSD__
+		const char *patterns[] = {
+			"ttyU*",
+			"ttyC*",
+			NULL
+		};
+#else
 		const char *patterns[] = {
 			"ttyUSB*",
 			"ttyS*",
@@ -118,6 +125,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 			"rfcomm*",
 			NULL
 		};
+#endif
 
 		dp = opendir(dirname);
 		if (dp == NULL) {
@@ -143,6 +151,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		}
 		closedir(dp);
 	}
+#ifdef __linux__
 	if (dc_type != DC_TYPE_SERIAL) {
 		int num_uemis = 0;
 		file = fopen("/proc/mounts", "r");
@@ -177,6 +186,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		if (num_uemis == 1 && entries == 1) /* if we found only one and it's a mounted Uemis, pick it */
 			index = 0;
 	}
+#endif
 	return index;
 }
 
