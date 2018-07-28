@@ -59,6 +59,12 @@ typedef struct {
 	int download_mode;
 } dive_computer_prefs_t;
 
+enum unit_system_values {
+	METRIC,
+	IMPERIAL,
+	PERSONALIZE
+};
+
 // ********** PREFERENCES **********
 // This struct is kept global for all of ssrf
 // most of the fields are loaded from git as
@@ -195,18 +201,12 @@ struct preferences {
 	bool                        zoomed_plot;
 
 	// ********** Units **********
-	bool            coordinates_traditional;
-	short           unit_system;
-	struct units    units;
+	bool                    coordinates_traditional;
+	enum unit_system_values unit_system;
+	struct units            units;
 
 	// ********** UpdateManager **********
 	update_manager_prefs_t update_manager;
-};
-
-enum unit_system_values {
-	METRIC,
-	IMPERIAL,
-	PERSONALIZE
 };
 
 enum def_file_behavior {
