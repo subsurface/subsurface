@@ -147,55 +147,32 @@ static void register_meta_types()
 }
 #endif // not SUBSURFACE_TEST_DATA
 
+#define REGISTER_TYPE(useClass, useQML) \
+	rc = qmlRegisterType<useClass>("org.subsurfacedivelog.mobile", 1, 0, useQML); \
+	if (rc < 0) \
+		qWarning() << "ERROR: Cannot register " << useQML << ", QML will not work!!";
+
 void register_qml_types()
 {
 	int rc;
-	rc = qmlRegisterType<qPref>("org.subsurfacedivelog.mobile", 1, 0, "SsrfPrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register SsrfPrefs (class qPref), QML will not work!!";
-	rc = qmlRegisterType<qPrefAnimations>("org.subsurfacedivelog.mobile", 1, 0, "SsrfAnimationsPrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register SsrfAnimationsPrefs (class qPrefAnimations), QML will not work!!";
-	rc = qmlRegisterType<qPrefCloudStorage>("org.subsurfacedivelog.mobile", 1, 0, "SsrfCloudStoragePrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register SsrfCloudStoragePrefs (class qPrefCloudStorage), QML will not work!!";
-	rc = qmlRegisterType<qPrefDisplay>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDisplayPrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register DisplayPrefs (class qPrefDisplay), QML will not work!!";
-	rc = qmlRegisterType<qPrefDiveComputer>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDiveComputerPrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register DiveComputerPrefs (class qPrefDiveComputer), QML will not work!!";
-	rc = qmlRegisterType<qPrefFacebook>("org.subsurfacedivelog.mobile", 1, 0, "SsrfFacebookPrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register FacebookPrefs (class qPrefFacebook), QML will not work!!";
+	REGISTER_TYPE(qPref, "SsrfPrefs");
+	REGISTER_TYPE(qPrefAnimations, "SsrfAnimationsPrefs");
+	REGISTER_TYPE(qPrefCloudStorage, "SsrfCloudStoragePrefs");
+	REGISTER_TYPE(qPrefDisplay, "SsrfDisplayPrefs");
+	REGISTER_TYPE(qPrefDiveComputer, "SsrfDiveComputerPrefs");
+	REGISTER_TYPE(qPrefFacebook, "SsrfFacebookPrefs");
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE
-	rc = qmlRegisterType<QMLManager>("org.subsurfacedivelog.mobile", 1, 0, "QMLManager");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register QMLManager, QML will not work!!";
-	rc = qmlRegisterType<QMLPrefs>("org.subsurfacedivelog.mobile", 1, 0, "QMLPrefs");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register QMLPrefs, QML will not work!!";
-	rc = qmlRegisterType<QMLProfile>("org.subsurfacedivelog.mobile", 1, 0, "QMLProfile");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register QMLProfile, QML will not work!!";
-	rc = qmlRegisterType<DownloadThread>("org.subsurfacedivelog.mobile", 1, 0, "DCDownloadThread");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register DCDownloadThread, QML will not work!!";
-	rc = qmlRegisterType<DiveImportedModel>("org.subsurfacedivelog.mobile", 1, 0, "DCImportModel");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register DCImportModel, QML will not work!!";
+	REGISTER_TYPE(QMLManager, "QMLManager");
+	REGISTER_TYPE(QMLPrefs, "QMLPrefs");
+	REGISTER_TYPE(QMLProfile, "QMLProfile");
+	REGISTER_TYPE(DownloadThread, "DCDownloadThread");
+	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
 #endif // not SUBSURFACE_MOBILE
 
-	rc = qmlRegisterType<MapWidgetHelper>("org.subsurfacedivelog.mobile", 1, 0, "MapWidgetHelper");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register MapWidgetHelper, QML will not work!!";
-	rc = qmlRegisterType<MapLocationModel>("org.subsurfacedivelog.mobile", 1, 0, "MapLocationModel");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register MapLocationModel, QML will not work!!";
-	rc = qmlRegisterType<MapLocation>("org.subsurfacedivelog.mobile", 1, 0, "MapLocation");
-	if (rc < 0)
-		qDebug() << "ERROR: Cannot register MapLocation, QML will not work!!";
+	REGISTER_TYPE(MapWidgetHelper, "MapWidgetHelper");
+	REGISTER_TYPE(MapLocationModel, "MapLocationModel");
+	REGISTER_TYPE(MapLocation, "MapLocation");
 #endif // not SUBSURFACE_TEST_DATA
 }
