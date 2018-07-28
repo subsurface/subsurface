@@ -96,13 +96,17 @@ Kirigami.ApplicationWindow {
 		detailsWindow.suitModel = manager.suitList
 		detailsWindow.suitIndex = -1
 		detailsWindow.suitText = ""
-		detailsWindow.cylinderModel = manager.cylinderInit
-		detailsWindow.cylinderIndex = -1
-		detailsWindow.cylinderText = ""
+		detailsWindow.cylinderModel0 = manager.cylinderInit
+		detailsWindow.cylinderModel1 = manager.cylinderInit
+		detailsWindow.cylinderModel2 = manager.cylinderInit
+		detailsWindow.cylinderModel3 = manager.cylinderInit
+		detailsWindow.cylinderModel4 = manager.cylinderInit
+		detailsWindow.cylinderIndex0 = -1
+		detailsWindow.usedCyl = ["",]
 		detailsWindow.weight = ""
-		detailsWindow.gasmix = ""
-		detailsWindow.startpressure = ""
-		detailsWindow.endpressure = ""
+		detailsWindow.usedGas = []
+		detailsWindow.startpressure = []
+		detailsWindow.endpressure = []
 		detailsWindow.gpsCheckbox = false
 		stackView.push(detailsWindow)
 	}

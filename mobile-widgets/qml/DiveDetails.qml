@@ -46,7 +46,11 @@ Kirigami.Page {
 	property alias rating: detailsEdit.rating
 	property alias visibility: detailsEdit.visibility
 	property alias usedCyl: detailsEdit.usedCyl
-	property alias cylinderModel: detailsEdit.cylinderModel
+	property alias cylinderModel0: detailsEdit.cylinderModel0
+	property alias cylinderModel1: detailsEdit.cylinderModel1
+	property alias cylinderModel2: detailsEdit.cylinderModel2
+	property alias cylinderModel3: detailsEdit.cylinderModel3
+	property alias cylinderModel4: detailsEdit.cylinderModel4
 
 	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
