@@ -34,10 +34,8 @@ static DiveToAdd removeDive(struct dive *d)
 // Returns pointer to added dive (which is owned by the backend!)
 static dive *addDive(DiveToAdd &d)
 {
-	if (d.tripToAdd) {
-		dive_trip *t = d.tripToAdd.release();	// Give up ownership of trip
-		insert_trip(&t);			// Return ownership to backend
-	}
+	if (d.tripToAdd)
+		insert_trip_dont_merge(d.tripToAdd.release()); // Return ownership to backend
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
 	dive *res = d.dive.release();			// Give up ownership of dive
@@ -124,10 +122,8 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 static void moveDivesBetweenTrips(DivesToTrip &dives)
 {
 	// first bring back the trip(s)
-	for (OwningTripPtr &trip: dives.tripsToAdd) {
-		dive_trip *t = trip.release();	// Give up ownership
-		insert_trip(&t);		// Return ownership to backend
-	}
+	for (OwningTripPtr &trip: dives.tripsToAdd)
+		insert_trip_dont_merge(trip.release()); // Return ownership to backend
 	dives.tripsToAdd.clear();
 
 	for (DiveToTrip &dive: dives.divesToMove) {
