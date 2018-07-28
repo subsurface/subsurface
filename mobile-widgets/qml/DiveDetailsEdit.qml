@@ -38,7 +38,11 @@ Item {
 	property alias suitModel: suitBox.model
 	property alias divemasterModel: divemasterBox.model
 	property alias buddyModel: buddyBox.model
-	property alias cylinderModel: cylinderBox0.model
+	property alias cylinderModel0: cylinderBox0.model
+	property alias cylinderModel1: cylinderBox1.model
+	property alias cylinderModel2: cylinderBox2.model
+	property alias cylinderModel3: cylinderBox3.model
+	property alias cylinderModel4: cylinderBox4.model
 	property alias locationModel: locationBox.model
 	property int rating
 	property int visibility
