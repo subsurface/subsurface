@@ -109,26 +109,16 @@ void TestQPrefDisplay::test_struct_disk()
 void TestQPrefDisplay::test_multiple()
 {
 	// test multiple instances have the same information
-
-	prefs.display_invalid_dives = false;
+	auto display_direct = qPrefDisplay::instance();
 	prefs.divelist_font = copy_qstring("comic");
-	prefs.font_size = 11.0;
-	prefs.show_developer = true;
-	prefs.theme = copy_qstring("myTheme");
-	auto display_direct = new qPrefDisplay;
 
-	prefs.display_invalid_dives = true;
-	prefs.divelist_font = copy_qstring("multipleCharsInString");
-	prefs.font_size = 15.0;
-	prefs.show_developer = false;
-	prefs.theme = copy_qstring("myTheme8");
 	auto display = qPrefDisplay::instance();
+	prefs.font_size = 15.0;
 
-	QCOMPARE(display->display_invalid_dives(), display_direct->display_invalid_dives());
 	QCOMPARE(display->divelist_font(), display_direct->divelist_font());
+	QCOMPARE(display->divelist_font(), QString("comic"));
 	QCOMPARE(display->font_size(), display_direct->font_size());
-	QCOMPARE(display->show_developer(), display_direct->show_developer());
-	QCOMPARE(display->theme(), display_direct->theme());
+	QCOMPARE(display->font_size(), 15.0);
 }
 
 QTEST_MAIN(TestQPrefDisplay)
