@@ -33,7 +33,7 @@ Item {
 	property alias weightText: txtWeight.text
 	property alias startpressureText0: txtStartPressure0.text
 	property alias endpressureText0: txtEndPressure0.text
-	property alias gasmixText0: txtGasMix0.text
+	property var usedGas: []
 	property alias gpsCheckbox: checkboxGPS.checked
 	property alias suitModel: suitBox.model
 	property alias divemasterModel: divemasterBox.model
@@ -357,6 +357,7 @@ Item {
 			}
 			Controls.TextField {
 				id: txtGasMix0
+				text: usedGas[0] != null ? usedGas[0] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
@@ -415,6 +416,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtGasMix1
+				text: usedGas[1] != null ? usedGas[1] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
@@ -478,6 +480,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtGasMix2
+				text: usedGas[2] != null ? usedGas[2] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
@@ -541,6 +544,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtGasMix3
+				text: usedGas[3] != null ? usedGas[3] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
@@ -604,6 +608,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtGasMix4
+				text: usedGas[4] != null ? usedGas[4] : null
 				Layout.fillWidth: true
 				validator: RegExpValidator { regExp: /(EAN100|EAN\d\d|AIR|100|\d{1,2}|\d{1,2}\/\d{1,2})/i }
 				onEditingFinished: {
