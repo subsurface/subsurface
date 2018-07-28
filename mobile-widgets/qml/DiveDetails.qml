@@ -40,7 +40,7 @@ Kirigami.Page {
 	property alias cylinderIndex2: detailsEdit.cylinderIndex2
 	property alias cylinderIndex3: detailsEdit.cylinderIndex3
 	property alias cylinderIndex4: detailsEdit.cylinderIndex4
-	property alias gasmix0: detailsEdit.gasmixText0
+	property alias usedGas: detailsEdit.usedGas
 	property alias gpsCheckbox: detailsEdit.gpsCheckbox
 	property int updateCurrentIdx: manager.updateSelectedDive
 	property alias rating: detailsEdit.rating
@@ -264,7 +264,7 @@ Kirigami.Page {
 		}
 		startpressure0 = currentItem.modelData.dive.startPressure
 		endpressure0 = currentItem.modelData.dive.endPressure
-		gasmix0 = currentItem.modelData.dive.firstGas
+		usedGas = currentItem.modelData.dive.firstGas
 		usedCyl = currentItem.modelData.dive.getCylinder
 		cylinderIndex0 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[0])
 		cylinderIndex1 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[1])
