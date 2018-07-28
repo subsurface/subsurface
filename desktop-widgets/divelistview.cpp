@@ -26,7 +26,8 @@
 #include "core/metrics.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
-	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false)
+	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false),
+	initialColumnWidths(DiveTripModel::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
@@ -35,6 +36,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	model->setSortRole(DiveTripModel::SORT_ROLE);
 	model->setFilterKeyColumn(-1); // filter all columns
 	model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+	DiveTripModel *tripModel = new DiveTripModel(this);
+	model->setSourceModel(tripModel);
 	setModel(model);
 	connect(model, SIGNAL(layoutChanged()), this, SLOT(fixMessyQtModelBehaviour()));
 
@@ -43,63 +46,13 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setSelectionMode(ExtendedSelection);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 
-	const QFontMetrics metrics(defaultModelFont());
-	int em = metrics.width('m');
-	int zw = metrics.width('0');
-
-	// Fixes for the layout needed for mac
-#ifdef Q_OS_MAC
-	int ht = metrics.height();
-	header()->setMinimumHeight(ht + 4);
-#endif
-
-	// TODO FIXME we need this to get the header names
-	// can we find a smarter way?
-	tripModel = new DiveTripModel(this);
-
-	// set the default width as a minimum between the hard-coded defaults,
-	// the header text width and the (assumed) content width, calculated
-	// based on type
-	for (int col = DiveTripModel::NR; col < DiveTripModel::COLUMNS; ++col) {
-		QString header_txt = tripModel->headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
-		int width = metrics.width(header_txt);
-		int sw = 0;
-		switch (col) {
-		case DiveTripModel::NR:
-		case DiveTripModel::DURATION:
-			sw = 8*zw;
-			break;
-		case DiveTripModel::DATE:
-			sw = 14*em;
-			break;
-		case DiveTripModel::RATING:
-			sw = static_cast<StarWidgetsDelegate*>(itemDelegateForColumn(col))->starSize().width();
-			break;
-		case DiveTripModel::SUIT:
-		case DiveTripModel::SAC:
-			sw = 7*em;
-			break;
-		case DiveTripModel::PHOTOS:
-			sw = 5*em;
-			break;
-		case DiveTripModel::LOCATION:
-			sw = 50*em;
-			break;
-		default:
-			sw = 5*em;
-		}
-		if (sw > width)
-			width = sw;
-		width += zw; // small padding
-		if (width > tripModel->columnWidth(col))
-			tripModel->setColumnWidth(col, width);
-	}
-	delete tripModel;
-
-
 	header()->setStretchLastSection(true);
 
 	installEventFilter(this);
+
+	for (int i = DiveTripModel::NR; i < DiveTripModel::COLUMNS; i++)
+		calculateInitialColumnWidth(tripModel, i);
+	setColumnWidths();
 }
 
 DiveListView::~DiveListView()
@@ -111,7 +64,7 @@ DiveListView::~DiveListView()
 		if (isColumnHidden(i))
 			continue;
 		// we used to hardcode them all to 100 - so that might still be in the settings
-		if (columnWidth(i) == 100 || columnWidth(i) == tripModel->columnWidth(i))
+		if (columnWidth(i) == 100 || columnWidth(i) == initialColumnWidths[i])
 			settings.remove(QString("colwidth%1").arg(i));
 		else
 			settings.setValue(QString("colwidth%1").arg(i), columnWidth(i));
@@ -120,12 +73,49 @@ DiveListView::~DiveListView()
 	settings.endGroup();
 }
 
-void DiveListView::setupUi()
+void DiveListView::calculateInitialColumnWidth(const DiveTripModel &tripModel, int col)
+{
+	const QFontMetrics metrics(defaultModelFont());
+	int em = metrics.width('m');
+	int zw = metrics.width('0');
+
+	QString header_txt = tripModel.headerData(col, Qt::Horizontal, Qt::DisplayRole).toString();
+	int width = metrics.width(header_txt);
+	int sw = 0;
+	switch (col) {
+	case DiveTripModel::NR:
+	case DiveTripModel::DURATION:
+		sw = 8*zw;
+		break;
+	case DiveTripModel::DATE:
+		sw = 14*em;
+		break;
+	case DiveTripModel::RATING:
+		sw = static_cast<StarWidgetsDelegate*>(itemDelegateForColumn(col))->starSize().width();
+		break;
+	case DiveTripModel::SUIT:
+	case DiveTripModel::SAC:
+		sw = 7*em;
+		break;
+	case DiveTripModel::PHOTOS:
+		sw = 5*em;
+		break;
+	case DiveTripModel::LOCATION:
+		sw = 50*em;
+		break;
+	default:
+		sw = 5*em;
+	}
+	if (sw > width)
+		width = sw;
+	width += zw; // small padding
+	initialColumnWidths[col] = std::max(initialColumnWidths[col], width);
+}
+
+void DiveListView::setColumnWidths()
 {
 	QSettings settings;
-	static bool firstRun = true;
-	if (firstRun)
-		backupExpandedRows();
+	backupExpandedRows();
 	settings.beginGroup("ListWidget");
 	/* if no width are set, use the calculated width for each column;
 	 * for that to work we need to temporarily expand all rows */
@@ -137,14 +127,10 @@ void DiveListView::setupUi()
 		if (width.isValid())
 			setColumnWidth(i, width.toInt());
 		else
-			setColumnWidth(i, tripModel->columnWidth(i));
+			setColumnWidth(i, initialColumnWidths[i]);
 	}
 	settings.endGroup();
-	if (firstRun)
-		restoreExpandedRows();
-	else
-		collapseAll();
-	firstRun = false;
+	restoreExpandedRows();
 	setColumnWidth(lastVisibleColumn(), 10);
 }
 
@@ -407,13 +393,6 @@ void DiveListView::headerClicked(int i)
 
 void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 {
-	// we want to run setupUi() once we actually are displaying something
-	// in the widget
-	static bool first = true;
-	if (first && dive_table.nr > 0) {
-		setupUi();
-		first = false;
-	}
 	if (layout == DiveTripModel::CURRENT)
 		layout = currentLayout;
 	else
@@ -424,7 +403,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	QAbstractItemModel *oldModel = m->sourceModel();
-	tripModel = new DiveTripModel(this);
+	DiveTripModel *tripModel = new DiveTripModel(this);
 	tripModel->setLayout(layout);
 
 	m->setSourceModel(tripModel);

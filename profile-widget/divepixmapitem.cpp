@@ -42,7 +42,8 @@ void CloseButtonItem::show()
 DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	canvas(new QGraphicsRectItem(this)),
 	shadow(new QGraphicsRectItem(this)),
-	button(new CloseButtonItem(this))
+	button(new CloseButtonItem(this)),
+	baseZValue(0.0)
 {
 	setFlag(ItemIgnoresTransformations);
 	setAcceptHoverEvents(true);
@@ -67,6 +68,14 @@ DivePictureItem::DivePictureItem(QGraphicsItem *parent): DivePixmapItem(parent),
 	button->hide();
 }
 
+// The base z-value is used for correct paint-order of the thumbnails. On hoverEnter the z-value is raised
+// so that the thumbnail is drawn on top of all other thumbnails and on hoverExit it is restored to the base value.
+void DivePictureItem::setBaseZValue(double z)
+{
+	baseZValue = z;
+	setZValue(z);
+}
+
 void DivePictureItem::settingsChanged()
 {
 	setVisible(prefs.show_pictures_in_profile);
@@ -85,7 +94,7 @@ void DivePictureItem::setPixmap(const QPixmap &pix)
 void DivePictureItem::hoverEnterEvent(QGraphicsSceneHoverEvent*)
 {
 	Animations::scaleTo(this, 1.0);
-	setZValue(5);
+	setZValue(baseZValue + 5.0);
 
 	button->setOpacity(0);
 	button->show();
@@ -100,7 +109,7 @@ void DivePictureItem::setFileUrl(const QString &s)
 void DivePictureItem::hoverLeaveEvent(QGraphicsSceneHoverEvent*)
 {
 	Animations::scaleTo(this, 0.2);
-	setZValue(0);
+	setZValue(baseZValue);
 	Animations::hide(button);
 }
 

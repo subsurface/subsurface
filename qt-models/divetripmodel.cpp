@@ -82,11 +82,16 @@ QVariant TripItem::data(int column, int role) const
 	return ret;
 }
 
+static const QString icon_names[4] = {
+	QStringLiteral(":zero"),
+	QStringLiteral(":photo-in-icon"),
+	QStringLiteral(":photo-out-icon"),
+	QStringLiteral(":photo-in-out-icon")
+};
 
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
-	QString icon_names[4] = {":zero",":photo-in-icon", ":photo-out-icon", ":photo-in-out-icon" };
 	struct dive *dive = get_dive_by_uniq_id(diveId);
 	if (!dive)
 		return QVariant();
@@ -437,18 +442,6 @@ DiveTripModel::DiveTripModel(QObject *parent) :
 	currentLayout(TREE)
 {
 	columns = COLUMNS;
-	// setup the default width of columns (px)
-	columnWidthMap = QVector<int>(COLUMNS);
-	// pre-fill with 50px; the rest are explicit
-	for(int i = 0; i < COLUMNS; i++)
-		columnWidthMap[i] = 50;
-	columnWidthMap[NR] = 70;
-	columnWidthMap[DATE] = 140;
-	columnWidthMap[RATING] = 90;
-	columnWidthMap[SUIT] = 70;
-	columnWidthMap[SAC] = 70;
-	columnWidthMap[PHOTOS] = 5;
-	columnWidthMap[LOCATION] = 500;
 }
 
 Qt::ItemFlags DiveTripModel::flags(const QModelIndex &index) const
@@ -652,22 +645,4 @@ bool DiveTripModel::setData(const QModelIndex &index, const QVariant &value, int
 	if (!diveItem)
 		return false;
 	return diveItem->setData(index, value, role);
-}
-
-int DiveTripModel::columnWidth(int column)
-{
-	if (column > COLUMNS - 1 || column < 0) {
-		qWarning() << "DiveTripModel::columnWidth(): not a valid column index -" << column;
-		return 50;
-	}
-	return columnWidthMap[column];
-}
-
-void DiveTripModel::setColumnWidth(int column, int width)
-{
-	if (column > COLUMNS - 1 || column < 0) {
-		qWarning() << "DiveTripModel::setColumnWidth(): not a valid column index -" << column;
-		return;
-	}
-	columnWidthMap[column] = width;
 }

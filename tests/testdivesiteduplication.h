@@ -4,8 +4,7 @@
 
 #include <QTest>
 
-class TestDiveSiteDuplication : public QObject
-{
+class TestDiveSiteDuplication : public QObject {
 	Q_OBJECT
 private slots:
 	void testReadV2();

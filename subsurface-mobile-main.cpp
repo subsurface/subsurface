@@ -2,20 +2,20 @@
 /* main.c */
 #include <locale.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
-#include "core/qt-gui.h"
-#include "core/subsurfacestartup.h"
 #include "core/color.h"
-#include "core/qthelper.h"
 #include "core/downloadfromdcthread.h"
+#include "core/qt-gui.h"
+#include "core/qthelper.h"
+#include "core/subsurfacestartup.h"
 
-#include <QStringList>
 #include <QApplication>
-#include <QLoggingCategory>
 #include <QLocale>
+#include <QLoggingCategory>
+#include <QStringList>
 #include <git2.h>
 
 // Implementation of STP logging
@@ -38,11 +38,11 @@ void log_stp(const char *ident, QString *buf)
 		stpDuration.start();
 	}
 	if (ident)
-		stpText += QString("STP ") \
-					.append(QString::number(stpDuration.elapsed())) \
-					.append(" ms, ") \
-					.append(ident) \
-					.append("\n");
+		stpText += QString("STP ")
+				   .append(QString::number(stpDuration.elapsed()))
+				   .append(" ms, ")
+				   .append(ident)
+				   .append("\n");
 	if (buf) {
 		*buf += "---------- startup timer ----------\n";
 		*buf += stpText;
@@ -115,7 +115,8 @@ int main(int argc, char **argv)
 	return 0;
 }
 
-void set_non_bt_addresses() {
+void set_non_bt_addresses()
+{
 #if defined(Q_OS_ANDROID)
 	connectionListModel.addAddress("FTDI");
 #elif defined(Q_OS_LINUX) // since this is in the else, it does NOT include Android

@@ -5,8 +5,7 @@
 #include <QTest>
 #include <functional>
 
-class TestPreferences : public QObject
-{
+class TestPreferences : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();

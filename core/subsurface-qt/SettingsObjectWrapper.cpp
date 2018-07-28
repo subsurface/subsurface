@@ -9,95 +9,6 @@
 #include "core/qthelper.h"
 #include "core/prefs-macros.h"
 
-DiveComputerSettings::DiveComputerSettings(QObject *parent):
-	QObject(parent)
-{
-}
-
-QString DiveComputerSettings::dc_vendor() const
-{
-	return prefs.dive_computer.vendor;
-}
-
-QString DiveComputerSettings::dc_product() const
-{
-	return prefs.dive_computer.product;
-}
-
-QString DiveComputerSettings::dc_device() const
-{
-	return prefs.dive_computer.device;
-}
-
-QString DiveComputerSettings::dc_device_name() const
-{
-	return prefs.dive_computer.device_name;
-}
-
-int DiveComputerSettings::downloadMode() const
-{
-	return prefs.dive_computer.download_mode;
-}
-
-void DiveComputerSettings::setVendor(const QString& vendor)
-{
-	if (vendor == prefs.dive_computer.vendor)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_vendor", vendor);
-	free((void *)prefs.dive_computer.vendor);
-	prefs.dive_computer.vendor = copy_qstring(vendor);
-}
-
-void DiveComputerSettings::setProduct(const QString& product)
-{
-	if (product == prefs.dive_computer.product)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_product", product);
-	free((void *)prefs.dive_computer.product);
-	prefs.dive_computer.product = copy_qstring(product);
-}
-
-void DiveComputerSettings::setDevice(const QString& device)
-{
-	if (device == prefs.dive_computer.device)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_device", device);
-	free((void *)prefs.dive_computer.device);
-	prefs.dive_computer.device = copy_qstring(device);
-}
-
-void DiveComputerSettings::setDeviceName(const QString& device_name)
-{
-	if (device_name == prefs.dive_computer.device_name)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_device_name", device_name);
-	free((void *)prefs.dive_computer.device_name);
-	prefs.dive_computer.device_name = copy_qstring(device_name);
-}
-
-void DiveComputerSettings::setDownloadMode(int mode)
-{
-	if (mode == prefs.dive_computer.download_mode)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("dive_computer_download_mode", mode);
-	prefs.dive_computer.download_mode = mode;
-}
-
 UpdateManagerSettings::UpdateManagerSettings(QObject *parent) : QObject(parent)
 {
 
@@ -751,72 +662,6 @@ void TechnicalDetailsSettings::setShowIcd(bool value)
 	emit showIcdChanged(value);
 }
 
-FacebookSettings::FacebookSettings(QObject *parent) :
-	QObject(parent),
-	group(QStringLiteral("WebApps")),
-	subgroup(QStringLiteral("Facebook"))
-{
-}
-
-QString FacebookSettings::accessToken() const
-{
-	return QString(prefs.facebook.access_token);
-}
-
-QString FacebookSettings::userId() const
-{
-	return QString(prefs.facebook.user_id);
-}
-
-QString FacebookSettings::albumId() const
-{
-	return QString(prefs.facebook.album_id);
-}
-
-void FacebookSettings::setAccessToken (const QString& value)
-{
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup(group);
-	s.beginGroup(subgroup);
-	s.setValue("ConnectToken", value);
-#endif
-	free((void *)prefs.facebook.access_token);
-	prefs.facebook.access_token = copy_qstring(value);
-	emit accessTokenChanged(value);
-}
-
-void FacebookSettings::setUserId(const QString& value)
-{
-	if (value == prefs.facebook.user_id)
-		return;
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup(group);
-	s.beginGroup(subgroup);
-	s.setValue("UserId", value);
-#endif
-	free((void *)prefs.facebook.user_id);
-	prefs.facebook.user_id = copy_qstring(value);
-	emit userIdChanged(value);
-}
-
-void FacebookSettings::setAlbumId(const QString& value)
-{
-	if (value == prefs.facebook.album_id)
-		return;
-#if SAVE_FB_CREDENTIALS
-	QSettings s;
-	s.beginGroup(group);
-	s.beginGroup(subgroup);
-	s.setValue("AlbumId", value);
-#endif
-	free((void *)prefs.facebook.album_id);
-	prefs.facebook.album_id = copy_qstring(value);
-	emit albumIdChanged(value);
-}
-
-
 GeocodingPreferences::GeocodingPreferences(QObject *parent) :
 	QObject(parent)
 {
@@ -975,185 +820,6 @@ void ProxySettings::setPass(const QString& value)
 	emit passChanged(value);
 }
 
-CloudStorageSettings::CloudStorageSettings(QObject *parent) :
-	QObject(parent)
-{
-
-}
-
-bool CloudStorageSettings::gitLocalOnly() const
-{
-	return prefs.git_local_only;
-}
-
-QString CloudStorageSettings::password() const
-{
-	return QString(prefs.cloud_storage_password);
-}
-
-QString CloudStorageSettings::newPassword() const
-{
-	return QString(prefs.cloud_storage_newpassword);
-}
-
-QString CloudStorageSettings::email() const
-{
-	return QString(prefs.cloud_storage_email);
-}
-
-QString CloudStorageSettings::emailEncoded() const
-{
-	return QString(prefs.cloud_storage_email_encoded);
-}
-
-bool CloudStorageSettings::savePasswordLocal() const
-{
-	return prefs.save_password_local;
-}
-
-short CloudStorageSettings::verificationStatus() const
-{
-	return prefs.cloud_verification_status;
-}
-
-QString CloudStorageSettings::userId() const
-{
-	return QString(prefs.userid);
-}
-
-QString CloudStorageSettings::baseUrl() const
-{
-	return QString(prefs.cloud_base_url);
-}
-
-QString CloudStorageSettings::gitUrl() const
-{
-	return QString(prefs.cloud_git_url);
-}
-
-void CloudStorageSettings::setPassword(const QString& value)
-{
-	if (value == prefs.cloud_storage_password)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("password", value);
-	free((void *)prefs.cloud_storage_password);
-	prefs.cloud_storage_password = copy_qstring(value);
-	emit passwordChanged(value);
-}
-
-void CloudStorageSettings::setNewPassword(const QString& value)
-{
-	if (value == prefs.cloud_storage_newpassword)
-		return;
-	/*TODO: This looks like wrong, but 'new password' is not saved on disk, why it's on prefs? */
-	free((void *)prefs.cloud_storage_newpassword);
-	prefs.cloud_storage_newpassword = copy_qstring(value);
-	emit newPasswordChanged(value);
-}
-
-void CloudStorageSettings::setEmail(const QString& value)
-{
-	if (value == prefs.cloud_storage_email)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("email", value);
-	free((void *)prefs.cloud_storage_email);
-	prefs.cloud_storage_email = copy_qstring(value);
-	emit emailChanged(value);
-}
-
-void CloudStorageSettings::setUserId(const QString& value)
-{
-	if (value == prefs.userid)
-		return;
-	//WARNING: UserId is stored outside of any group, but it belongs to Cloud Storage.
-	QSettings s;
-	s.setValue("subsurface_webservice_uid", value);
-	free((void *)prefs.userid);
-	prefs.userid = copy_qstring(value);
-	emit userIdChanged(value);
-}
-
-void CloudStorageSettings::setEmailEncoded(const QString& value)
-{
-	if (value == prefs.cloud_storage_email_encoded)
-		return;
-	/*TODO: This looks like wrong, but 'email encoded' is not saved on disk, why it's on prefs? */
-	free((void *)prefs.cloud_storage_email_encoded);
-	prefs.cloud_storage_email_encoded = copy_qstring(value);
-	emit emailEncodedChanged(value);
-}
-
-void CloudStorageSettings::setSavePasswordLocal(bool value)
-{
-	if (value == prefs.save_password_local)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("save_password_local", value);
-	prefs.save_password_local = value;
-	emit savePasswordLocalChanged(value);
-}
-
-void CloudStorageSettings::setVerificationStatus(short value)
-{
-	if (value == prefs.cloud_verification_status)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cloud_verification_status", value);
-	prefs.cloud_verification_status = value;
-	emit verificationStatusChanged(value);
-}
-
-void CloudStorageSettings::setSaveUserIdLocal(bool value)
-{
-	//TODO: this is not saved on disk?
-	if (value == prefs.save_userid_local)
-		return;
-	prefs.save_userid_local = value;
-	emit saveUserIdLocalChanged(value);
-}
-
-bool CloudStorageSettings::saveUserIdLocal() const
-{
-	return prefs.save_userid_local;
-}
-
-void CloudStorageSettings::setBaseUrl(const QString& value)
-{
-	if (value == prefs.cloud_base_url)
-		return;
-
-	// dont free data segment.
-	if (prefs.cloud_base_url != default_prefs.cloud_base_url) {
-		free((void *)prefs.cloud_base_url);
-		free((void *)prefs.cloud_git_url);
-	}
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("cloud_base_url", value);
-	prefs.cloud_base_url = copy_qstring(value);
-	prefs.cloud_git_url = copy_qstring(QString(prefs.cloud_base_url) + "/git");
-}
-
-void CloudStorageSettings::setGitUrl(const QString&)
-{
-}
-
-void CloudStorageSettings::setGitLocalOnly(bool value)
-{
-	if (value == prefs.git_local_only)
-		return;
-	QSettings s;
-	s.beginGroup("CloudStorage");
-	s.setValue("git_local_only", value);
-	prefs.git_local_only = value;
-	emit gitLocalOnlyChanged(value);
-}
 
 DivePlannerSettings::DivePlannerSettings(QObject *parent) :
 	QObject(parent)
@@ -2097,10 +1763,10 @@ SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
 	techDetails(new TechnicalDetailsSettings(this)),
 	pp_gas(new PartialPressureGasSettings(this)),
-	facebook(new FacebookSettings(this)),
+	facebook(new qPrefFacebook(this)),
 	geocoding(new GeocodingPreferences(this)),
 	proxy(new ProxySettings(this)),
-	cloud_storage(new CloudStorageSettings(this)),
+	cloud_storage(new qPrefCloudStorage(this)),
 	planner_settings(new DivePlannerSettings(this)),
 	unit_settings(new UnitsSettings(this)),
 	general_settings(new GeneralSettingsObjectWrapper(this)),
@@ -2109,7 +1775,7 @@ QObject(parent),
 	animation_settings(new qPrefAnimations(this)),
 	location_settings(new LocationServiceSettingsObjectWrapper(this)),
 	update_manager_settings(new UpdateManagerSettings(this)),
-	dive_computer_settings(new DiveComputerSettings(this))
+	dive_computer_settings(new qPrefDiveComputer(this))
 {
 }
 
@@ -2199,9 +1865,7 @@ void SettingsObjectWrapper::load()
 
 	qPrefDisplay::instance()->load();
 
-	s.beginGroup("Animations");
-	GET_INT("animation_speed", animation_speed);
-	s.endGroup();
+	qPrefAnimations::instance()->load();
 
 	s.beginGroup("Network");
 	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
@@ -2212,28 +1876,7 @@ void SettingsObjectWrapper::load()
 	GET_TXT("proxy_pass", proxy_pass);
 	s.endGroup();
 
-	s.beginGroup("CloudStorage");
-	GET_TXT("email", cloud_storage_email);
-#ifndef SUBSURFACE_MOBILE
-	GET_BOOL("save_password_local", save_password_local);
-#else
-	// always save the password in Subsurface-mobile
-	prefs.save_password_local = true;
-#endif
-	if (prefs.save_password_local) { // GET_TEXT macro is not a single statement
-		GET_TXT("password", cloud_storage_password);
-	}
-	GET_INT("cloud_verification_status", cloud_verification_status);
-	GET_BOOL("git_local_only", git_local_only);
-
-	// creating the git url here is simply a convenience when C code wants
-	// to compare against that git URL - it's always derived from the base URL
-	GET_TXT("cloud_base_url", cloud_base_url);
-	prefs.cloud_git_url = copy_qstring(QString(prefs.cloud_base_url) + "/git");
-	s.endGroup();
-
-	// Subsurface webservice id is stored outside of the groups
-	GET_TXT("subsurface_webservice_uid", userid);
+	qPrefCloudStorage::instance()->load();
 
 	// GeoManagement
 	s.beginGroup("geocoding");
@@ -2279,13 +1922,7 @@ void SettingsObjectWrapper::load()
 	prefs.planner_deco_mode = deco_mode(s.value("deco_mode", default_prefs.planner_deco_mode).toInt());
 	s.endGroup();
 
-	s.beginGroup("DiveComputer");
-	GET_TXT("dive_computer_vendor",dive_computer.vendor);
-	GET_TXT("dive_computer_product", dive_computer.product);
-	GET_TXT("dive_computer_device", dive_computer.device);
-	GET_TXT("dive_computer_device_name", dive_computer.device_name);
-	GET_INT("dive_computer_download_mode", dive_computer.download_mode);
-	s.endGroup();
+	qPrefDiveComputer::instance()->load();
 
 	s.beginGroup("UpdateManager");
 	prefs.update_manager.dont_check_exists = s.contains("DontCheckForUpdates");

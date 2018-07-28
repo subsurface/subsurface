@@ -7,7 +7,7 @@
 
 QStringList vendorList;
 QHash<QString, QStringList> productList;
-static QHash<QString, QStringList> mobileProductList;	// BT, BLE or FTDI supported DCs for mobile
+static QHash<QString, QStringList> mobileProductList; // BT, BLE or FTDI supported DCs for mobile
 QMap<QString, dc_descriptor_t *> descriptorLookup;
 ConnectionListModel connectionListModel;
 
@@ -30,7 +30,7 @@ void DownloadThread::run()
 {
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
-	internalData->download_table = 	&downloadTable;
+	internalData->download_table = &downloadTable;
 #if defined(Q_OS_ANDROID)
 	// on Android we either use BT or we download via FTDI cable
 	if (!internalData->bluetooth_mode)
@@ -56,10 +56,10 @@ void DownloadThread::run()
 		qDebug() << "Finishing download thread:" << downloadTable.nr << "dives downloaded";
 	}
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dcs->setVendor(internalData->vendor);
-	dcs->setProduct(internalData->product);
-	dcs->setDevice(internalData->devname);
-	dcs->setDeviceName(m_data->devBluetoothName());
+	dcs->set_vendor(internalData->vendor);
+	dcs->set_product(internalData->product);
+	dcs->set_device(internalData->devname);
+	dcs->set_device_name(m_data->devBluetoothName());
 }
 
 static void fill_supported_mobile_list()
@@ -201,7 +201,7 @@ void show_computer_list()
 			dc_descriptor_t *descriptor = descriptorLookup[vendor + product];
 			unsigned int transport = dc_descriptor_get_transports(descriptor) & transportMask;
 			QString transportString = getTransportString(transport);
-			msg += product + " (" + transportString +"), ";
+			msg += product + " (" + transportString + "), ";
 		}
 		msg.chop(2);
 		qDebug() << msg;
@@ -247,12 +247,12 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (dcs->dc_vendor() == vendor &&
-	    dcs->dc_product() == product) {
+	if (dcs->vendor() == vendor &&
+	    dcs->product() == product) {
 		// we are trying to show the last dive computer selected
 		for (int i = 0; i < connectionListModel.rowCount(); i++) {
 			QString address = connectionListModel.address(i);
-			if (address.contains(dcs->dc_device()))
+			if (address.contains(dcs->device()))
 				return i;
 		}
 	}
@@ -265,7 +265,7 @@ int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &produ
 	return -1;
 }
 
-DCDeviceData * DownloadThread::data()
+DCDeviceData *DownloadThread::data()
 {
 	return m_data;
 }
@@ -320,17 +320,17 @@ int DCDeviceData::diveId() const
 	return data.diveid;
 }
 
-void DCDeviceData::setVendor(const QString& vendor)
+void DCDeviceData::setVendor(const QString &vendor)
 {
 	data.vendor = copy_qstring(vendor);
 }
 
-void DCDeviceData::setProduct(const QString& product)
+void DCDeviceData::setProduct(const QString &product)
 {
 	data.product = copy_qstring(product);
 }
 
-void DCDeviceData::setDevName(const QString& devName)
+void DCDeviceData::setDevName(const QString &devName)
 {
 	// This is a workaround for bug #1002. A string of the form "devicename (deviceaddress)"
 	// or "deviceaddress (devicename)" may have found its way into the preferences.
@@ -351,7 +351,7 @@ void DCDeviceData::setDevName(const QString& devName)
 	data.devname = copy_qstring(devName);
 }
 
-void DCDeviceData::setDevBluetoothName(const QString& name)
+void DCDeviceData::setDevBluetoothName(const QString &name)
 {
 	m_devBluetoothName = name;
 }
@@ -402,7 +402,7 @@ bool DCDeviceData::saveLog() const
 }
 
 
-device_data_t* DCDeviceData::internalData()
+device_data_t *DCDeviceData::internalData()
 {
 	return &data;
 }
@@ -410,10 +410,10 @@ device_data_t* DCDeviceData::internalData()
 int DCDeviceData::getDetectedVendorIndex()
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dcs->dc_vendor().isEmpty()) {
+	if (!dcs->vendor().isEmpty()) {
 		// use the last one
 		for (int i = 0; i < vendorList.length(); i++) {
-			if (vendorList[i] == dcs->dc_vendor())
+			if (vendorList[i] == dcs->vendor())
 				return i;
 		}
 	}
@@ -431,11 +431,11 @@ int DCDeviceData::getDetectedVendorIndex()
 int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 {
 	auto dcs = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dcs->dc_vendor().isEmpty()) {
-		if (dcs->dc_vendor() == currentVendorText) {
+	if (!dcs->vendor().isEmpty()) {
+		if (dcs->vendor() == currentVendorText) {
 			// we are trying to show the last dive computer selected
 			for (int i = 0; i < productList[currentVendorText].length(); i++) {
-				if (productList[currentVendorText][i] == dcs->dc_product())
+				if (productList[currentVendorText][i] == dcs->product())
 					return i;
 			}
 		}

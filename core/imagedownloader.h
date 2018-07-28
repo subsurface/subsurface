@@ -47,18 +47,23 @@ public slots:
 	void imageDownloaded(QString filename);
 	void imageDownloadFailed(QString filename);
 signals:
-	void thumbnailChanged(QString filename, QImage thumbnail);
+	void thumbnailChanged(QString filename, QImage thumbnail, duration_t duration);
 private:
 	struct Thumbnail {
 		QImage img;
 		mediatype_t type;
+		duration_t duration;
 	};
 
 	Thumbnailer();
-	static void addThumbnailToCache(const Thumbnail &thumbnail, const QString &picture_filename);
+	Thumbnail addPictureThumbnailToCache(const QString &picture_filename, const QImage &thumbnail);
+	Thumbnail addVideoThumbnailToCache(const QString &picture_filename, duration_t duration);
+	Thumbnail addUnknownThumbnailToCache(const QString &picture_filename);
 	void recalculate(QString filename);
 	void processItem(QString filename, bool tryDownload);
 	Thumbnail getThumbnailFromCache(const QString &picture_filename);
+	Thumbnail getPictureThumbnailFromStream(QDataStream &stream);
+	Thumbnail getVideoThumbnailFromStream(QDataStream &stream);
 	Thumbnail fetchImage(const QString &filename, const QString &originalFilename, bool tryDownload);
 	Thumbnail getHashedImage(const QString &filename, bool tryDownload);
 

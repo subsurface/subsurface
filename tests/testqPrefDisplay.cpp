@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefDisplay.h"
 
-#include "core/settings/qPrefDisplay.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPref.h"
 
 #include <QDate>
+#include <QTest>
 
 void TestQPrefDisplay::initTestCase()
 {
@@ -24,7 +25,7 @@ void TestQPrefDisplay::test_struct_get()
 	prefs.divelist_font = copy_qstring("comic");
 	prefs.font_size = 12.0;
 	prefs.show_developer = false;
- 	prefs.theme = copy_qstring("myTheme");
+	prefs.theme = copy_qstring("myTheme");
 
 	QCOMPARE(display->display_invalid_dives(), prefs.display_invalid_dives);
 	QCOMPARE(display->divelist_font(), QString(prefs.divelist_font));
@@ -40,13 +41,13 @@ void TestQPrefDisplay::test_set_struct()
 	auto display = qPrefDisplay::instance();
 
 	display->set_display_invalid_dives(true);
-	display->set_divelist_font("comic");
+	display->set_divelist_font("doNotCareAtAll");
 	display->set_font_size(12.0);
 	display->set_show_developer(false);
- 	display->set_theme("myTheme");
+	display->set_theme("myTheme");
 
 	QCOMPARE(prefs.display_invalid_dives, true);
-	QCOMPARE(prefs.divelist_font, "comic");
+	QCOMPARE(prefs.divelist_font, "doNotCareAtAll");
 	QCOMPARE(prefs.font_size, 12.0);
 	QCOMPARE(prefs.show_developer, false);
 	QCOMPARE(prefs.theme, "myTheme");
@@ -54,25 +55,25 @@ void TestQPrefDisplay::test_set_struct()
 
 void TestQPrefDisplay::test_set_load_struct()
 {
-	// test set func -> load -> struct pref 
+	// test set func -> load -> struct pref
 
 	auto display = qPrefDisplay::instance();
 
 	display->set_display_invalid_dives(false);
-	display->set_divelist_font("helvitica");
+	display->set_divelist_font("doNotCareString");
 	display->set_font_size(15.0);
 	display->set_show_developer(true);
- 	display->set_theme("myTheme2");
+	display->set_theme("myTheme2");
 
 	prefs.display_invalid_dives = true;
-	prefs.divelist_font = copy_qstring("comic");
+	prefs.divelist_font = copy_qstring("doNotCareAtAll");
 	prefs.font_size = 12.0;
 	prefs.show_developer = false;
- 	prefs.theme = copy_qstring("myTheme");
+	prefs.theme = copy_qstring("myTheme");
 
 	display->load();
 	QCOMPARE(prefs.display_invalid_dives, false);
-	QCOMPARE(prefs.divelist_font, "helvitica");
+	QCOMPARE(prefs.divelist_font, "doNotCareString");
 	QCOMPARE(prefs.font_size, 15.0);
 	QCOMPARE(prefs.show_developer, true);
 	QCOMPARE(prefs.theme, "myTheme2");
@@ -85,21 +86,21 @@ void TestQPrefDisplay::test_struct_disk()
 	auto display = qPrefDisplay::instance();
 
 	prefs.display_invalid_dives = true;
-	prefs.divelist_font = copy_qstring("helvitica");
+	prefs.divelist_font = copy_qstring("doNotCareAtAll");
 	prefs.font_size = 17.0;
 	prefs.show_developer = false;
- 	prefs.theme = copy_qstring("myTheme3");
+	prefs.theme = copy_qstring("myTheme3");
 
 	display->sync();
 	prefs.display_invalid_dives = false;
-	prefs.divelist_font = copy_qstring("comic");
+	prefs.divelist_font = copy_qstring("noString");
 	prefs.font_size = 11.0;
 	prefs.show_developer = true;
- 	prefs.theme = copy_qstring("myTheme");
+	prefs.theme = copy_qstring("myTheme");
 
 	display->load();
 	QCOMPARE(prefs.display_invalid_dives, true);
-	QCOMPARE(prefs.divelist_font, "helvitica");
+	QCOMPARE(prefs.divelist_font, "doNotCareAtAll");
 	QCOMPARE(prefs.font_size, 17.0);
 	QCOMPARE(prefs.show_developer, false);
 	QCOMPARE(prefs.theme, "myTheme3");
@@ -113,14 +114,14 @@ void TestQPrefDisplay::test_multiple()
 	prefs.divelist_font = copy_qstring("comic");
 	prefs.font_size = 11.0;
 	prefs.show_developer = true;
- 	prefs.theme = copy_qstring("myTheme");
+	prefs.theme = copy_qstring("myTheme");
 	auto display_direct = new qPrefDisplay;
 
 	prefs.display_invalid_dives = true;
-	prefs.divelist_font = copy_qstring("helvetica");
+	prefs.divelist_font = copy_qstring("multipleCharsInString");
 	prefs.font_size = 15.0;
 	prefs.show_developer = false;
- 	prefs.theme = copy_qstring("myTheme8");
+	prefs.theme = copy_qstring("myTheme8");
 	auto display = qPrefDisplay::instance();
 
 	QCOMPARE(display->display_invalid_dives(), display_direct->display_invalid_dives());

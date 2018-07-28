@@ -1,19 +1,19 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/downloadfromdivecomputer.h"
-#include "core/qthelper.h"
-#include "desktop-widgets/mainwindow.h"
-#include "desktop-widgets/divelistview.h"
 #include "core/display.h"
+#include "core/qthelper.h"
+#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/subsurface-string.h"
 #include "core/uemis.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
-#include "qt-models/models.h"
+#include "desktop-widgets/divelistview.h"
+#include "desktop-widgets/mainwindow.h"
 #include "qt-models/diveimportedmodel.h"
+#include "qt-models/models.h"
 
-#include <QTimer>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QShortcut>
+#include <QTimer>
 
 DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f),
 	downloading(false),
@@ -72,11 +72,11 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dc->dc_vendor().isEmpty()) {
-		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->dc_vendor()));
-		productModel.setStringList(productList[dc->dc_vendor()]);
-		if (!dc->dc_product().isEmpty())
-			ui.product->setCurrentIndex(ui.product->findText(dc->dc_product()));
+	if (!dc->vendor().isEmpty()) {
+		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->vendor()));
+		productModel.setStringList(productList[dc->vendor()]);
+		if (!dc->product().isEmpty())
+			ui.product->setCurrentIndex(ui.product->findText(dc->product()));
 	}
 
 	updateState(INITIAL);
@@ -84,16 +84,16 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
 
-	QString deviceText = dc->dc_device();
+	QString deviceText = dc->device();
 #if defined(BT_SUPPORT)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
-	ui.bluetoothMode->setChecked(dc->downloadMode() == DC_TRANSPORT_BLUETOOTH);
+	ui.bluetoothMode->setChecked(dc->download_mode() == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
 	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
 	if (ui.bluetoothMode->isChecked())
-		deviceText = BtDeviceSelectionDialog::formatDeviceText(dc->dc_device(), dc->dc_device_name());
+		deviceText = BtDeviceSelectionDialog::formatDeviceText(dc->device(), dc->device_name());
 #else
 	ui.bluetoothMode->hide();
 	ui.chooseBluetoothDevice->hide();
@@ -122,8 +122,8 @@ void DownloadFromDCWidget::updateProgressBar()
 		if (IS_FP_SAME(progress_bar_fraction, 0.0)) {
 			ui.progressBar->setFormat(tr("Connecting to dive computer"));
 #if defined(Q_OS_MAC)
-		// on mac the progress bar doesn't show its text
-		ui.progressText->setText(tr("Connecting to dive computer"));
+			// on mac the progress bar doesn't show its text
+			ui.progressText->setText(tr("Connecting to dive computer"));
 #endif
 		} else {
 			ui.progressBar->setFormat("%p%");
@@ -241,7 +241,7 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 	fill_device_list(dcType);
 }
 
-void DownloadFromDCWidget::on_product_currentIndexChanged(const QString&)
+void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
 {
 	updateDeviceEnabled();
 }
@@ -289,8 +289,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 		} else {
 			auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-			data->setDevName(dc->dc_device());
-			data->setDevBluetoothName(dc->dc_device_name());
+			data->setDevName(dc->device());
+			data->setDevBluetoothName(dc->device_name());
 		}
 	} else
 		// this breaks an "else if" across lines... not happy...
@@ -314,12 +314,12 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data->setSaveDump(ui.dumpToFile->isChecked());
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->setVendor(data->vendor());
-	dc->setProduct(data->product());
-	dc->setDevice(data->devName());
+	dc->set_vendor(data->vendor());
+	dc->set_product(data->product());
+	dc->set_device(data->devName());
 
 #if defined(BT_SUPPORT)
-	dc->setDownloadMode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
+	dc->set_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
 
 	// before we start, remember where the dive_table ended
@@ -334,7 +334,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	//
 	// We shouldn't do this for memory dumps.
 	if ((product == "OSTC 3" || product == "OSTC 3+" || product == "OSTC cR" ||
-	     product == "OSTC Sport" || product == "OSTC 4") && !data->saveDump()) {
+	     product == "OSTC Sport" || product == "OSTC 4") &&
+	    !data->saveDump()) {
 		ostcFirmwareCheck = new OstcFirmwareCheck(product);
 	}
 }
@@ -359,7 +360,7 @@ void DownloadFromDCWidget::pickLogFile()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.log");
 	QString logFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer download logfile"),
-					       filename, tr("Log files") + " (*.log)");
+						       filename, tr("Log files") + " (*.log)");
 	if (!logFile.isEmpty()) {
 		free(logfile_name);
 		logfile_name = copy_qstring(logFile);
@@ -385,7 +386,7 @@ void DownloadFromDCWidget::pickDumpFile()
 	QFileInfo fi(filename);
 	filename = fi.absolutePath().append(QDir::separator()).append("subsurface.bin");
 	QString dumpFile = QFileDialog::getSaveFileName(this, tr("Choose file for dive computer binary dump file"),
-						filename, tr("Dump files") + " (*.bin)");
+							filename, tr("Dump files") + " (*.bin)");
 	if (!dumpFile.isEmpty()) {
 		free(dumpfile_name);
 		dumpfile_name = copy_qstring(dumpFile);
@@ -437,7 +438,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 
 	// record all the dives in the 'real' dive_table
 	for (int i = 0; i < downloadTable.nr; i++) {
-		if (diveImportedModel->data(diveImportedModel->index(i, 0),Qt::CheckStateRole) == Qt::Checked)
+		if (diveImportedModel->data(diveImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
 			record_dive(downloadTable.dives[i]);
 		else
 			clear_dive(downloadTable.dives[i]);
@@ -546,7 +547,7 @@ void DownloadFromDCWidget::bluetoothSelectionDialogIsFinished(int result)
 	if (result == QDialog::Accepted) {
 		/* Make the selected Bluetooth device default */
 		ui.device->setEditText(btDeviceSelectionDialog->getSelectedDeviceText());
-	} else if (result == QDialog::Rejected){
+	} else if (result == QDialog::Rejected) {
 		/* Disable Bluetooth download mode */
 		ui.bluetoothMode->setChecked(false);
 	}
@@ -577,4 +578,3 @@ void DownloadFromDCWidget::fill_device_list(int dc_type)
 	if (deviceIndex >= 0)
 		ui.device->setCurrentIndex(deviceIndex);
 }
-

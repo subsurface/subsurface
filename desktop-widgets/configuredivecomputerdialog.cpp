@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/configuredivecomputerdialog.h"
 
-#include "core/qthelper.h"
-#include "desktop-widgets/mainwindow.h"
 #include "core/display.h"
+#include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "desktop-widgets/mainwindow.h"
 // For fill_computer_list, descriptorLookup
 #include "core/downloadfromdcthread.h"
 
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QSettings>
 #include <QNetworkReply>
 #include <QProgressDialog>
+#include <QSettings>
 
 GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
 {
@@ -21,7 +21,7 @@ GasSpinBoxItemDelegate::~GasSpinBoxItemDelegate()
 {
 }
 
-QWidget *GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+QWidget *GasSpinBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	// Create the spinbox and give it it's settings
 	QSpinBox *sb = new QSpinBox(parent);
@@ -65,7 +65,7 @@ GasTypeComboBoxItemDelegate::~GasTypeComboBoxItemDelegate()
 {
 }
 
-QWidget *GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem&, const QModelIndex&) const
+QWidget *GasTypeComboBoxItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &) const
 {
 	// Create the combobox and populate it
 	QComboBox *cb = new QComboBox(parent);
@@ -133,8 +133,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dc->dc_device().isEmpty())
-		ui.device->setEditText(dc->dc_device());
+	if (!dc->device().isEmpty())
+		ui.device->setEditText(dc->device());
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
@@ -287,7 +287,7 @@ void OstcFirmwareCheck::checkLatest(QWidget *_parent, device_data_t *data)
 		Y = (firmwareOnDevice & 0x07C0) >> 6;
 		Z = (firmwareOnDevice & 0x003E) >> 1;
 		beta = firmwareOnDevice & 0x0001;
-		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta?" beta":"");
+		firmwareOnDeviceString = QString("%1.%2.%3%4").arg(X).arg(Y).arg(Z).arg(beta ? " beta" : "");
 		latestFirmwareAvailableNumber = (fwParts[0].toInt() << 11) + (fwParts[1].toInt() << 6) + (fwParts[2].toInt() << 1);
 	} else { // OSTC 3, Sport, Cr
 		firmwareOnDeviceString = QString("%1.%2").arg(firmwareOnDevice / 256).arg(firmwareOnDevice % 256);
@@ -358,7 +358,7 @@ ConfigureDiveComputerDialog::~ConfigureDiveComputerDialog()
 	delete config;
 }
 
-void ConfigureDiveComputerDialog::closeEvent(QCloseEvent*)
+void ConfigureDiveComputerDialog::closeEvent(QCloseEvent *)
 {
 	dc_close();
 
@@ -900,7 +900,8 @@ void ConfigureDiveComputerDialog::getDeviceData()
 {
 #ifdef BT_SUPPORT
 	QString device = ui.bluetoothMode && btDeviceSelectionDialog ?
-		btDeviceSelectionDialog->getSelectedDeviceAddress() : ui.device->currentText();
+				 btDeviceSelectionDialog->getSelectedDeviceAddress() :
+				 ui.device->currentText();
 #else
 	QString device = ui.device->currentText();
 #endif
@@ -912,10 +913,10 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.deviceid = device_data.diveid = 0;
 
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->setDevice(device_data.devname);
+	dc->set_device(device_data.devname);
 #ifdef BT_SUPPORT
 	if (ui.bluetoothMode && btDeviceSelectionDialog)
-		dc->setDeviceName(btDeviceSelectionDialog->getSelectedDeviceName());
+		dc->set_device_name(btDeviceSelectionDialog->getSelectedDeviceName());
 #endif
 }
 

@@ -4,8 +4,7 @@
 
 #include <QTest>
 
-class TestGitStorage : public QObject
-{
+class TestGitStorage : public QObject {
 	Q_OBJECT
 private slots:
 	void initTestCase();

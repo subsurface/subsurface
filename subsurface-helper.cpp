@@ -31,10 +31,12 @@
 #ifndef SUBSURFACE_TEST_DATA
 QObject *qqWindowObject = NULL;
 
+static void register_meta_types();
 void init_ui()
 {
 	init_qt_late();
 	register_qml_types();
+	register_meta_types();
 #ifndef SUBSURFACE_MOBILE
 	PluginManager::instance().loadPlugins();
 
@@ -72,7 +74,7 @@ void run_ui()
 	// To work around this we need to manually copy the components at install time
 	// to Contents/Frameworks/qml and make sure that we add the correct import path
 	QStringList importPathList = engine.importPathList();
-	Q_FOREACH(QString importPath, importPathList) {
+	Q_FOREACH (QString importPath, importPathList) {
 		if (importPath.contains("MacOS"))
 			engine.addImportPath(importPath.replace("MacOS", "Frameworks"));
 	}
@@ -137,6 +139,12 @@ void run_ui()
 #endif // SUBSURFACE_MOBILE
 	qApp->exec();
 }
+
+Q_DECLARE_METATYPE(duration_t)
+static void register_meta_types()
+{
+	qRegisterMetaType<duration_t>();
+}
 #endif // not SUBSURFACE_TEST_DATA
 
 void register_qml_types()
@@ -148,9 +156,18 @@ void register_qml_types()
 	rc = qmlRegisterType<qPrefAnimations>("org.subsurfacedivelog.mobile", 1, 0, "SsrfAnimationsPrefs");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register SsrfAnimationsPrefs (class qPrefAnimations), QML will not work!!";
+	rc = qmlRegisterType<qPrefCloudStorage>("org.subsurfacedivelog.mobile", 1, 0, "SsrfCloudStoragePrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register SsrfCloudStoragePrefs (class qPrefCloudStorage), QML will not work!!";
 	rc = qmlRegisterType<qPrefDisplay>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDisplayPrefs");
 	if (rc < 0)
 		qDebug() << "ERROR: Cannot register DisplayPrefs (class qPrefDisplay), QML will not work!!";
+	rc = qmlRegisterType<qPrefDiveComputer>("org.subsurfacedivelog.mobile", 1, 0, "SsrfDiveComputerPrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register DiveComputerPrefs (class qPrefDiveComputer), QML will not work!!";
+	rc = qmlRegisterType<qPrefFacebook>("org.subsurfacedivelog.mobile", 1, 0, "SsrfFacebookPrefs");
+	if (rc < 0)
+		qDebug() << "ERROR: Cannot register FacebookPrefs (class qPrefFacebook), QML will not work!!";
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE

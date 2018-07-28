@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #ifndef QPREFANIMATIONS_H
 #define QPREFANIMATIONS_H
+#include "core/pref.h"
 
 #include <QObject>
-#include <QSettings>
 
 class qPrefAnimations : public QObject {
 	Q_OBJECT
@@ -15,11 +15,11 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	void inline load() { loadSync(false); }
+	void inline sync() { loadSync(true); }
 
 public:
-	int animation_speed() const;
+	static inline int animation_speed() { return prefs.animation_speed; };
 
 public slots:
 	void set_animation_speed(int value);
@@ -28,9 +28,6 @@ signals:
 	void animation_speed_changed(int value);
 
 private:
-	const QString group = QStringLiteral("Animations");
-	QSettings setting;
-
 	// functions to load/sync variable with disk
 	void disk_animation_speed(bool doSync);
 };

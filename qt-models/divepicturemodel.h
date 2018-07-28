@@ -2,6 +2,8 @@
 #ifndef DIVEPICTUREMODEL_H
 #define DIVEPICTUREMODEL_H
 
+#include "core/units.h"
+
 #include <QAbstractTableModel>
 #include <QImage>
 #include <QFuture>
@@ -28,7 +30,7 @@ signals:
 	void picturesRemoved(const QVector<QString> &fileUrls);
 public slots:
 	void setZoomLevel(int level);
-	void updateThumbnail(QString filename, QImage thumbnail);
+	void updateThumbnail(QString filename, QImage thumbnail, duration_t duration);
 private:
 	DivePictureModel();
 	QVector<PictureEntry> pictures;

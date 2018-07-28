@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "divecomputer.h"
 #include "dive.h"
-#include "subsurface-string.h"
 #include "subsurface-qt/SettingsObjectWrapper.h"
+#include "subsurface-string.h"
 
 DiveComputerList dcList;
 
@@ -38,13 +38,13 @@ bool DiveComputerNode::changesValues(const DiveComputerNode &b) const
 
 const DiveComputerNode *DiveComputerList::getExact(const QString &m, uint32_t d)
 {
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode { m, d , {}, {}, {} } );
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, d, {}, {}, {}});
 	return it != dcs.end() && it->model == m && it->deviceId == d ? &*it : NULL;
 }
 
 const DiveComputerNode *DiveComputerList::get(const QString &m)
 {
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode { m, 0 , {}, {}, {} } );
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, 0, {}, {}, {}});
 	return it != dcs.end() && it->model == m ? &*it : NULL;
 }
 
@@ -62,7 +62,7 @@ void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QStrin
 {
 	if (m.isEmpty() || d == 0)
 		return;
-	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode { m, d , {}, {}, {} } );
+	auto it = std::lower_bound(dcs.begin(), dcs.end(), DiveComputerNode{m, d, {}, {}, {}});
 	if (it != dcs.end() && it->model == m && it->deviceId == d) {
 		// debugging: show changes
 		if (verbose)
@@ -75,7 +75,7 @@ void DiveComputerList::addDC(QString m, uint32_t d, QString n, QString s, QStrin
 		if (!f.isEmpty())
 			it->firmware = f;
 	} else {
-		dcs.insert(it, DiveComputerNode { m, d, s, f, n });
+		dcs.insert(it, DiveComputerNode{m, d, s, f, n});
 	}
 }
 
@@ -89,13 +89,12 @@ static bool compareDCById(const DiveComputerNode &a, const DiveComputerNode &b)
 	return a.deviceId < b.deviceId;
 }
 
-extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t,
-							   const char *, const char *, const char *),
-				  bool select_only)
+extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *, uint32_t, const char *, const char *, const char *),
+				 bool select_only)
 {
 	QVector<DiveComputerNode> values = dcList.dcs;
 	std::sort(values.begin(), values.end(), compareDCById);
-	for (const DiveComputerNode &node: values) {
+	for (const DiveComputerNode &node : values) {
 		bool found = false;
 		if (select_only) {
 			int j;
@@ -104,7 +103,7 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 				struct divecomputer *dc;
 				if (!d->selected)
 					continue;
-				for_each_dc(d, dc) {
+				for_each_dc (d, dc) {
 					if (dc->deviceid == node.deviceId) {
 						found = true;
 						break;
@@ -117,7 +116,7 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 			found = true;
 		}
 		if (found)
-			callback(f, qPrintable(node.model), node.deviceId, qPrintable(node.nickName),
+	callback(f, qPrintable(node.model), node.deviceId, qPrintable(node.nickName),
 				 qPrintable(node.serialNumber), qPrintable(node.firmware));
 	}
 }
@@ -125,13 +124,13 @@ extern "C" void call_for_each_dc (void *f, void (*callback)(void *, const char *
 extern "C" int is_default_dive_computer(const char *vendor, const char *product)
 {
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	return dc->dc_vendor() == vendor && dc->dc_product() == product;
+	return dc->vendor() == vendor && dc->product() == product;
 }
 
 extern "C" int is_default_dive_computer_device(const char *name)
 {
 	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	return dc->dc_device() == name;
+	return dc->device() == name;
 }
 
 extern "C" void set_dc_nickname(struct dive *dive)

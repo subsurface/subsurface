@@ -1,30 +1,30 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testparse.h"
 #include "core/dive.h"
-#include "core/subsurface-string.h"
-#include "core/parse.h"
-#include "core/file.h"
 #include "core/divelist.h"
-#include <QTextStream>
+#include "core/file.h"
+#include "core/parse.h"
 #include "core/qthelper.h"
+#include "core/subsurface-string.h"
+#include <QTextStream>
 
 /* We have to use a macro since QCOMPARE
  * can only be called from a test method
  * invoked by the QTest framework
  */
-#define FILE_COMPARE(actual, expected)				\
-	QFile org(expected);					\
-	org.open(QFile::ReadOnly);				\
-	QFile out(actual);					\
-	out.open(QFile::ReadOnly);				\
-	QTextStream orgS(&org);					\
-	QTextStream outS(&out);					\
-	QStringList readin = orgS.readAll().split("\n");	\
-	QStringList written = outS.readAll().split("\n");	\
-	while(readin.size() && written.size()){			\
-		QCOMPARE(written.takeFirst().trimmed(),		\
-			readin.takeFirst().trimmed());		\
-	}							\
+#define FILE_COMPARE(actual, expected)                    \
+	QFile org(expected);                              \
+	org.open(QFile::ReadOnly);                        \
+	QFile out(actual);                                \
+	out.open(QFile::ReadOnly);                        \
+	QTextStream orgS(&org);                           \
+	QTextStream outS(&out);                           \
+	QStringList readin = orgS.readAll().split("\n");  \
+	QStringList written = outS.readAll().split("\n"); \
+	while (readin.size() && written.size()) {         \
+		QCOMPARE(written.takeFirst().trimmed(),   \
+			 readin.takeFirst().trimmed());   \
+	}
 
 void TestParse::initTestCase()
 {
@@ -116,7 +116,7 @@ int TestParse::parseDivingLog()
 	ds->name = copy_string("Suomi -  - Hälvälä");
 
 	int ret = sqlite3_open(SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql", &_sqlite3_handle);
-	if ( ret == 0 )
+	if (ret == 0)
 		ret = parse_divinglog_buffer(_sqlite3_handle, 0, 0, 0, &dive_table);
 	else
 		fprintf(stderr, "Can't open sqlite3 db: " SUBSURFACE_TEST_DATA "/dives/TestDivingLog4.1.1.sql");
@@ -152,7 +152,7 @@ void TestParse::testParse()
 
 	QCOMPARE(save_dives("./testout.ssrf"), 0);
 	FILE_COMPARE("./testout.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
+		     SUBSURFACE_TEST_DATA "/dives/test40-42.xml");
 }
 
 void TestParse::testParseDM4()
@@ -162,7 +162,7 @@ void TestParse::testParseDM4()
 
 	QCOMPARE(save_dives("./testdm4out.ssrf"), 0);
 	FILE_COMPARE("./testdm4out.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveDM4.xml");
 }
 
 void TestParse::testParseDM5()
@@ -172,7 +172,7 @@ void TestParse::testParseDM5()
 
 	QCOMPARE(save_dives("./testdm5out.ssrf"), 0);
 	FILE_COMPARE("./testdm5out.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.xml");
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveDM5.xml");
 }
 
 void TestParse::testParseHUDC()
@@ -215,7 +215,8 @@ void TestParse::testParseHUDC()
 	params[pnr++] = NULL;
 
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.csv",
-				params, pnr - 1, "csv"), 0);
+				params, pnr - 1, "csv"),
+		 0);
 
 	QCOMPARE(dive_table.nr, 1);
 
@@ -231,7 +232,7 @@ void TestParse::testParseHUDC()
 
 	QCOMPARE(save_dives("./testhudcout.ssrf"), 0);
 	FILE_COMPARE("./testhudcout.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.xml");
 }
 
 void TestParse::testParseNewFormat()
@@ -256,7 +257,11 @@ void TestParse::testParseNewFormat()
 	for (int i = 0; i < files.size(); ++i) {
 
 		QCOMPARE(parse_seabear_log(QString::fromLatin1(SUBSURFACE_TEST_DATA
-			"/dives/").append(files.at(i)).toLatin1().data()), 0);
+							       "/dives/")
+						   .append(files.at(i))
+						   .toLatin1()
+						   .data()),
+			 0);
 		QCOMPARE(dive_table.nr, i + 1);
 	}
 
@@ -265,7 +270,7 @@ void TestParse::testParseNewFormat()
 
 	// Currently the CSV parse fails
 	FILE_COMPARE("./testsbnewout.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearNewFormat.xml");
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearNewFormat.xml");
 }
 
 void TestParse::testParseDLD()
@@ -286,7 +291,7 @@ void TestParse::testParseDLD()
 	 */
 	QCOMPARE(save_dives("./testdldout.ssrf"), 0);
 	FILE_COMPARE("./testdldout.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml")
+		     SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.xml")
 }
 
 void TestParse::testParseMerge()
@@ -298,7 +303,7 @@ void TestParse::testParseMerge()
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml"), 0);
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
 	FILE_COMPARE("./testmerge.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
+		     SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
 }
 
 int TestParse::parseCSVmanual(int units, std::string file)
@@ -377,7 +382,7 @@ void TestParse::exportCSVDiveDetails()
 	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt");
 
 	FILE_COMPARE("testcsvexportmanual2.csv",
-		"testcsvexportmanual.csv");
+		     "testcsvexportmanual.csv");
 
 	clear_dive_file_data();
 }
@@ -426,7 +431,7 @@ void TestParse::exportCSVDiveProfile()
 	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt");
 
 	FILE_COMPARE("testcsvexportprofile2.csv",
-		"testcsvexportprofile.csv");
+		     "testcsvexportprofile.csv");
 
 	clear_dive_file_data();
 }
@@ -443,7 +448,7 @@ void TestParse::exportUDDF()
 	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt");
 
 	FILE_COMPARE("testuddfexport.uddf",
-		"testuddfexport2.uddf");
+		     "testuddfexport2.uddf");
 
 	clear_dive_file_data();
 }
@@ -504,12 +509,13 @@ void TestParse::parseDL7()
 
 	clear_dive_file_data();
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
-				params, pnr - 1 , "DL7"), 0);
+				params, pnr - 1, "DL7"),
+		 0);
 	QCOMPARE(dive_table.nr, 3);
 
 	QCOMPARE(save_dives("./testdl7out.ssrf"), 0);
 	FILE_COMPARE("./testdl7out.ssrf",
-		SUBSURFACE_TEST_DATA "/dives/DL7.xml");
+		     SUBSURFACE_TEST_DATA "/dives/DL7.xml");
 	clear_dive_file_data();
 }
 

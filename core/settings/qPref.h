@@ -2,12 +2,14 @@
 #ifndef QPREF_H
 #define QPREF_H
 
-#include <QObject>
-#include <QSettings>
 #include "core/pref.h"
+#include <QObject>
 
 #include "qPrefAnimations.h"
+#include "qPrefCloudStorage.h"
 #include "qPrefDisplay.h"
+#include "qPrefDiveComputer.h"
+#include "qPrefFacebook.h"
 
 class qPref : public QObject {
 	Q_OBJECT
@@ -21,8 +23,8 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	void inline load() { loadSync(false); }
+	void inline sync() { loadSync(true); }
 
 public:
 	enum cloud_status {

@@ -6,15 +6,12 @@
  * dive_trip_t *dive_trip_list;
  * unsigned int amount_selected;
  * void dump_selection(void)
- * dive_trip_t *find_trip_by_idx(int idx)
- * int trip_has_selected_dives(dive_trip_t *trip)
  * void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
  * int total_weight(struct dive *dive)
  * int get_divenr(struct dive *dive)
  * int init_decompression(struct dive *dive)
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
- * dive_trip_t *find_matching_trip(timestamp_t when)
  * void insert_trip(dive_trip_t **dive_trip_p)
  * void remove_dive_from_trip(struct dive *dive)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
@@ -79,21 +76,6 @@ void set_autogroup(bool value)
 	/* if we keep the UI paradigm, this needs to toggle
 	 * the checkbox on the autogroup menu item */
 	autogroup = value;
-}
-
-dive_trip_t *find_trip_by_idx(int idx)
-{
-	dive_trip_t *trip = dive_trip_list;
-
-	if (idx >= 0)
-		return NULL;
-	idx = -idx;
-	while (trip) {
-		if (trip->index == idx)
-			return trip;
-		trip = trip->next;
-	}
-	return NULL;
 }
 
 /*
@@ -711,32 +693,6 @@ void dump_trip_list(void)
 }
 #endif
 
-/* this finds the last trip that at or before the time given */
-dive_trip_t *find_matching_trip(timestamp_t when)
-{
-	dive_trip_t *trip = dive_trip_list;
-
-	if (!trip || trip->when > when) {
-#ifdef DEBUG_TRIP
-		printf("no matching trip\n");
-#endif
-		return NULL;
-	}
-	while (trip->next && trip->next->when <= when)
-		trip = trip->next;
-#ifdef DEBUG_TRIP
-	{
-		struct tm tm;
-		utc_mkdate(trip->when, &tm);
-		printf("found trip %p @ %04d-%02d-%02d %02d:%02d:%02d\n",
-		       trip,
-		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday,
-		       tm.tm_hour, tm.tm_min, tm.tm_sec);
-	}
-#endif
-	return trip;
-}
-
 /* insert the trip into the dive_trip_list - but ensure you don't have
  * two trips for the same date; but if you have, make sure you don't
  * keep the one with less information */
@@ -769,6 +725,19 @@ void insert_trip(dive_trip_t **dive_trip_p)
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
+}
+
+/* create a copy of a dive trip, but don't add any dives. */
+dive_trip_t *clone_empty_trip(dive_trip_t *trip)
+{
+	dive_trip_t *copy = malloc(sizeof(struct dive_trip));
+	*copy = *trip;
+	copy->location = copy_string(trip->location);
+	copy->notes = copy_string(trip->notes);
+	copy->nrdives = 0;
+	copy->next = NULL;
+	copy->dives = NULL;
+	return copy;
 }
 
 static void delete_trip(dive_trip_t *trip)

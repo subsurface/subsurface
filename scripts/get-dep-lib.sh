@@ -182,7 +182,7 @@ for package in "${PACKAGES[@]}" ; do
 			curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
 			;;
 		sqlite)
-			curl_download_library sqlite http://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+			curl_download_library sqlite https://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
 			;;
 		*)
 			echo "unknown package \"$package\""

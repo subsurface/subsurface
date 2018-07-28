@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "qPref.h"
-#include "qPref_private.h"
 #include "core/subsurface-string.h"
+#include "qPref.h"
+#include "qPrefPrivate.h"
 
 #include <QApplication>
 #include <QFont>
+
+static const QString group = QStringLiteral("Display");
 
 qPrefDisplay::qPrefDisplay(QObject *parent) : QObject(parent)
 {
@@ -24,16 +26,15 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_theme(doSync);
 }
 
-GET_PREFERENCE_TXT(Display, divelist_font);
-void qPrefDisplay::set_divelist_font(const QString& value)
+void qPrefDisplay::set_divelist_font(const QString &value)
 {
 	QString newValue = value;
 	if (value.contains(","))
 		newValue = value.left(value.indexOf(","));
 
 	if (newValue != prefs.divelist_font &&
-		!subsurface_ignore_font(qPrintable(newValue))) {
-		COPY_TXT(divelist_font, value);
+	    !subsurface_ignore_font(qPrintable(newValue))) {
+		qPrefPrivate::copy_txt(&prefs.divelist_font, value);
 		disk_divelist_font(true);
 
 		qApp->setFont(QFont(newValue));
@@ -43,12 +44,11 @@ void qPrefDisplay::set_divelist_font(const QString& value)
 void qPrefDisplay::disk_divelist_font(bool doSync)
 {
 	if (doSync)
-		LOADSYNC_TXT("/divelist_font", divelist_font)
+		qPrefPrivate::instance()->setting.setValue(group + "/divelist_font", prefs.divelist_font);
 	else
 		setCorrectFont();
 }
 
-GET_PREFERENCE_DOUBLE(Display, font_size);
 void qPrefDisplay::set_font_size(double value)
 {
 	if (value != prefs.font_size) {
@@ -64,7 +64,7 @@ void qPrefDisplay::set_font_size(double value)
 void qPrefDisplay::disk_font_size(bool doSync)
 {
 	if (doSync)
-		LOADSYNC_DOUBLE("/font_size", font_size)
+		qPrefPrivate::instance()->setting.setValue(group + "/font_size", prefs.font_size);
 	else
 		setCorrectFont();
 }
@@ -78,7 +78,6 @@ HANDLE_PREFERENCE_TXT(Display, "/theme", theme);
 
 void qPrefDisplay::setCorrectFont()
 {
-	bool doSync = false;
 	QSettings s;
 	QVariant v;
 
@@ -103,5 +102,6 @@ void qPrefDisplay::setCorrectFont()
 	}
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
-	LOADSYNC_BOOL("/displayinvalid", display_invalid_dives);
+
+	prefs.display_invalid_dives = qPrefPrivate::instance()->setting.value(group + "/displayinvalid", default_prefs.display_invalid_dives).toBool();
 }

@@ -13,39 +13,6 @@
  * and QWidget frontends. This class will be huge, since
  * I need tons of properties, one for each option. */
 
-class DiveComputerSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString vendor READ dc_vendor WRITE setVendor NOTIFY vendorChanged)
-	Q_PROPERTY(QString product READ dc_product WRITE setProduct NOTIFY productChanged)
-	Q_PROPERTY(QString device READ dc_device WRITE setDevice NOTIFY deviceChanged)
-	Q_PROPERTY(QString device_name READ dc_device_name WRITE setDeviceName NOTIFY deviceNameChanged)
-	Q_PROPERTY(int download_mode READ downloadMode WRITE setDownloadMode NOTIFY downloadModeChanged)
-public:
-	DiveComputerSettings(QObject *parent);
-	QString dc_vendor() const;
-	QString dc_product() const;
-	QString dc_device() const;
-	QString dc_device_name() const;
-	int downloadMode() const;
-
-public slots:
-	void setVendor(const QString& vendor);
-	void setProduct(const QString& product);
-	void setDevice(const QString& device);
-	void setDeviceName(const QString& device_name);
-	void setDownloadMode(int mode);
-
-signals:
-	void vendorChanged(const QString& vendor);
-	void productChanged(const QString& product);
-	void deviceChanged(const QString& device);
-	void deviceNameChanged(const QString& device_name);
-	void downloadModeChanged(int mode);
-private:
-	const QString group = QStringLiteral("DiveComputer");
-
-};
-
 class UpdateManagerSettings : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(bool dont_check_for_updates READ dontCheckForUpdates WRITE setDontCheckForUpdates NOTIFY dontCheckForUpdatesChanged)
@@ -237,33 +204,6 @@ private:
 	const QString group = QStringLiteral("TecDetails");
 };
 
-/* Control the state of the Facebook preferences */
-class FacebookSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString  accessToken READ accessToken WRITE setAccessToken NOTIFY accessTokenChanged)
-	Q_PROPERTY(QString  userId      READ userId      WRITE setUserId      NOTIFY userIdChanged)
-	Q_PROPERTY(QString  albumId     READ albumId     WRITE setAlbumId     NOTIFY albumIdChanged)
-
-public:
-	FacebookSettings(QObject *parent);
-	QString accessToken() const;
-	QString userId() const;
-	QString albumId() const;
-
-public slots:
-	void setAccessToken (const QString& value);
-	void setUserId(const QString& value);
-	void setAlbumId(const QString& value);
-
-signals:
-	void accessTokenChanged(const QString& value);
-	void userIdChanged(const QString& value);
-	void albumIdChanged(const QString& value);
-private:
-	QString group;
-	QString subgroup;
-};
-
 /* Control the state of the Geocoding preferences */
 class GeocodingPreferences : public QObject {
 	Q_OBJECT
@@ -324,63 +264,6 @@ signals:
 	void passChanged(const QString& value);
 private:
 	const QString group = QStringLiteral("Network");
-};
-
-class CloudStorageSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString password          READ password           WRITE setPassword           NOTIFY passwordChanged)
-	Q_PROPERTY(QString newpassword       READ newPassword        WRITE setNewPassword        NOTIFY newPasswordChanged)
-	Q_PROPERTY(QString email             READ email              WRITE setEmail              NOTIFY emailChanged)
-	Q_PROPERTY(QString email_encoded     READ emailEncoded       WRITE setEmailEncoded       NOTIFY emailEncodedChanged)
-	Q_PROPERTY(QString userid            READ userId             WRITE setUserId             NOTIFY userIdChanged)
-	Q_PROPERTY(QString base_url          READ baseUrl            WRITE setBaseUrl            NOTIFY baseUrlChanged)
-	Q_PROPERTY(QString git_url           READ gitUrl             WRITE setGitUrl             NOTIFY gitUrlChanged)
-	Q_PROPERTY(bool save_userid_local    READ saveUserIdLocal    WRITE setSaveUserIdLocal    NOTIFY saveUserIdLocalChanged)
-	Q_PROPERTY(bool git_local_only       READ gitLocalOnly       WRITE setGitLocalOnly       NOTIFY gitLocalOnlyChanged)
-	Q_PROPERTY(bool save_password_local  READ savePasswordLocal  WRITE setSavePasswordLocal  NOTIFY savePasswordLocalChanged)
-	Q_PROPERTY(short verification_status READ verificationStatus WRITE setVerificationStatus NOTIFY verificationStatusChanged)
-public:
-	CloudStorageSettings(QObject *parent);
-	QString password() const;
-	QString newPassword() const;
-	QString email() const;
-	QString emailEncoded() const;
-	QString userId() const;
-	QString baseUrl() const;
-	QString gitUrl() const;
-	bool savePasswordLocal() const;
-	short verificationStatus() const;
-	bool gitLocalOnly() const;
-	bool saveUserIdLocal() const;
-
-public slots:
-	void setPassword(const QString& value);
-	void setNewPassword(const QString& value);
-	void setEmail(const QString& value);
-	void setEmailEncoded(const QString& value);
-	void setUserId(const QString& value);
-	void setBaseUrl(const QString& value);
-	void setGitUrl(const QString& value);
-	void setSavePasswordLocal(bool value);
-	void setVerificationStatus(short value);
-	void setGitLocalOnly(bool value);
-	void setSaveUserIdLocal(bool value);
-
-signals:
-	void passwordChanged(const QString& value);
-	void newPasswordChanged(const QString& value);
-	void emailChanged(const QString& value);
-	void emailEncodedChanged(const QString& value);
-	void userIdChanged(const QString& value);
-	void baseUrlChanged(const QString& value);
-	void gitUrlChanged(const QString& value);
-	void savePasswordLocalChanged(bool value);
-	void verificationStatusChanged(short value);
-	void gitLocalOnlyChanged(bool value);
-	void saveUserIdLocalChanged(bool value);
-
-private:
-	const QString group = QStringLiteral("CloudStorage");
 };
 
 class DivePlannerSettings : public QObject {
@@ -663,10 +546,10 @@ class SettingsObjectWrapper : public QObject {
 
 	Q_PROPERTY(TechnicalDetailsSettings*   techical_details MEMBER techDetails CONSTANT)
 	Q_PROPERTY(PartialPressureGasSettings* pp_gas           MEMBER pp_gas CONSTANT)
-	Q_PROPERTY(FacebookSettings*           facebook         MEMBER facebook CONSTANT)
+	Q_PROPERTY(qPrefFacebook*           facebook         MEMBER facebook CONSTANT)
 	Q_PROPERTY(GeocodingPreferences*       geocoding        MEMBER geocoding CONSTANT)
 	Q_PROPERTY(ProxySettings*              proxy            MEMBER proxy CONSTANT)
-	Q_PROPERTY(CloudStorageSettings*       cloud_storage    MEMBER cloud_storage CONSTANT)
+	Q_PROPERTY(qPrefCloudStorage*       cloud_storage    MEMBER cloud_storage CONSTANT)
 	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
 	Q_PROPERTY(UnitsSettings*              units            MEMBER unit_settings CONSTANT)
 
@@ -677,16 +560,16 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
 
 	Q_PROPERTY(UpdateManagerSettings* update MEMBER update_manager_settings CONSTANT)
-	Q_PROPERTY(DiveComputerSettings* dive_computer MEMBER dive_computer_settings CONSTANT)
+	Q_PROPERTY(qPrefDiveComputer* dive_computer MEMBER dive_computer_settings CONSTANT)
 public:
 	static SettingsObjectWrapper *instance();
 
 	TechnicalDetailsSettings *techDetails;
 	PartialPressureGasSettings *pp_gas;
-	FacebookSettings *facebook;
+	qPrefFacebook *facebook;
 	GeocodingPreferences *geocoding;
 	ProxySettings *proxy;
-	CloudStorageSettings *cloud_storage;
+	qPrefCloudStorage *cloud_storage;
 	DivePlannerSettings *planner_settings;
 	UnitsSettings *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
@@ -695,7 +578,7 @@ public:
 	qPrefAnimations *animation_settings;
 	LocationServiceSettingsObjectWrapper *location_settings;
 	UpdateManagerSettings *update_manager_settings;
-	DiveComputerSettings *dive_computer_settings;
+	qPrefDiveComputer *dive_computer_settings;
 
 	void sync();
 	void load();

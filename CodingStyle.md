@@ -20,18 +20,16 @@ other editors that implement this coding style, please add them here.
   continuation lines that are aligned with tabs and then spaces
 
 * all keywords followed by a '(' have a space in between
-
-```
+  ```
 	if (condition)
 
 	for (i = 0; i < 5; i++)
-```
+  ```
 
 * function calls do NOT have a space between their name and argument
-
-```
+  ```
 	i = some_function(argument);
-```
+  ```
 
 * usually there is no space on the inside of parenthesis (see examples
   above)
@@ -41,17 +39,15 @@ other editors that implement this coding style, please add them here.
 
 * all other opening curly braces follow at the end of the line, with a
   space separating them:
-
-```
+  ```
 	if (condition) {
 		dosomething();
 		dosomethingelse();
 	}
-```
+  ```
 
 * both sides of an if / else clause either use or do not use curly braces:
-
-```
+  ```
 	if (condition)
 		i = 4;
 	else
@@ -63,55 +59,48 @@ other editors that implement this coding style, please add them here.
 		i = 4;
 		j = 6;
 	}
-```
+  ```
 
 * use space to make visual separation easier
-
-```
+  ```
 	a = b + 3 + e / 4;
-```
+  ```
 
 * continuation lines have the operator / comma at the end
-
-```
+  ```
 	if (very_long_condition_1 ||
 	    condition_2)
 
 	b = a + (c + d +
 		 f + z);
-```
+  ```
 
 * in a C++ constructor initialization list, the colon is on the same line and
   continuation lines are aligned as the rule above:
-
-```
+  ```
 	ClassName::ClassName() : x(1),
 		y(2),
 		z(3)
 	{
 	}
-```
+  ```
 
 * unfortunate inconsistency
- * C code usually uses underscores to structure names
-
-```
+  - C code usually uses underscores to structure names
+  ```
 	variable_in_C
-```
-
- * C++ code usually uses camelCase
-
-```
+  ```
+  - In contrast, C++ code usually uses camelCase
+  ```
 	variableInCPlusPlus
-```
+  ```
 
   where the two meet, use your best judgment and go for best consistency
   (i.e., where does the variable "originate")
 
 * switch statements with blocks are a little bit special (to avoid indenting
   too far)
-
-```
+  ```
 	switch (foo) {
 	case FIRST:
 		whatever();
@@ -122,7 +111,7 @@ other editors that implement this coding style, please add them here.
 			do_something(i);
 	}
 	}
-```
+  ```
 
 ## Coding conventions
 
@@ -130,7 +119,22 @@ other editors that implement this coding style, please add them here.
   In C code we really like them to be at the beginning of a code block,
   not interspersed in the middle.
   in C++ we are a bit less strict about this - but still, try not to go
-  crazy.
+  crazy. Notably, in C++ the lifetime of a variable often coincides with the
+  lifetime of a resource (e.g. file) and therefore the variable is defined
+  at the place where the resource is needed.
+
+* The `*`, `&` and `&&` declarators are grouped with the name, not the type
+ (classical C-style) as in `char *string` instead of `char* string`. This
+  reflects the precedence rules of the language: `int &i` means that the name
+  `i` stands for a reference [to an object with type `int`], not that
+  `i` stands for an object of the type [reference to `int`].
+  Although this may seem like hairsplitting (both interpretations
+  have the same effect) it is crucial in the
+  definition of multiple variables, such
+  as
+	```
+	struct dive *next, **pprev;
+	```
 
 * In C++ code, we generally use explicit types in variable declarations for clarity.
   Use `auto` sparingly and only in cases where code readability improves.
@@ -150,71 +154,70 @@ other editors that implement this coding style, please add them here.
 	```
   	is easier to read than and conveys the same information as
 	```
-	QLowEnergyService* service = qobject_cast<QLowEnergyService*>(sender());
+	QLowEnergyService *service = qobject_cast<QLowEnergyService*>(sender());
 	```
 * text strings
   The default language of subsurface is US English so please use US English
   spelling and terminology.
   User-visible strings should be passed to the tr() function to enable
   translation into other languages.
-
- * like this
-```
+  - like this
+    ```
 	QString msgTitle = tr("Submit user survey.");
-```
- * rather than
-```
+    ```
+  - rather than
+    ```
 	QString msgTitle = "Submit user survey.";
-```
+    ```
 
   This works by default in classes (indirectly) derived from QObject. Each
   string to be translated is associated with a context, which corresponds
   to the class name. Classes that are not derived from QObject can generate
-  the tr() functions by using the Q_DECLARE_FUNCTIONS macro:
-```
+  the tr() functions by using the `Q_DECLARE_FUNCTIONS` macro:
+  ```
 	#include <QCoreApplication>
 
 	class myClass {
 		Q_DECLARE_TR_FUNCTIONS(gettextfromC)
 		...
 	};
-```
+  ```
 
   As an alternative, which also works outside of class context, the tr()
   function of a different class can be called. This avoids creating multiple
   translations for the same string:
-```
+  ```
 	gettextFromC::tr("%1km")
-```
+  ```
 
   The gettextFromC class in the above example was created as a catch-all
   context for translations accessed in C code. But it can also be used
   from C++ helper functions. To use it from C, include the "core/gettext.h"
   header and invoke the translate() macro:
-```
+  ```
 	#include "core/gettext.h"
 
 	report_error(translate("gettextFromC", "Remote storage and local data diverged"));
-```
+  ```
   It is crucial to pass "gettextFromC" as a first macro argument so that Qt
   is able to associate the string with the correct context.
   The translate macro returns a cached C-style string, which is generated at runtime
   when the particular translation string is encountered for the first time.
   It remains valid during the whole application's life time.
 
-  Outside of function context, the QT_TRANSLATE_NOOP macro can be used as in
-```
-struct ws_info_t ws_info[100] = {
+  Outside of function context, the `QT_TRANSLATE_NOOP` macro can be used as in
+  ```
+  struct ws_info_t ws_info[100] = {
 	{ QT_TRANSLATE_NOOP("gettextFromC", "integrated"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "belt"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "ankle"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "backplate"), 0 },
 	{ QT_TRANSLATE_NOOP("gettextFromC", "clip-on"), 0 },
-};
-```
+  };
+  ```
   Note that here, the texts will be scheduled for translation with the "gettextFromC"
   context, but the array is only initialized with the original text. The actual
-  translation has to be performed later in code. For C-code, the QT_TRANSLATE_NOOP
+  translation has to be performed later in code. For C-code, the `QT_TRANSLATE_NOOP`
   macro is defined in the "core/gettext.h" header.
 
 * UI text style
@@ -236,18 +239,15 @@ struct ws_info_t ws_info[100] = {
 
 
 * string manipulation
-
  * user interface
     In UI part of the code use of QString methods is preferred, see this pretty
     good guide in [QString documentation][1]
-
  * core components
     In the core part of the code, C-string should be used.
     C-string manipulation is not always straightforward specifically when
     it comes to memory allocation, a set of helper functions has been developed
     to help with this. Documentation and usage examples can be found in
     [core/membuffer.h][2]
-
 
 ## Sample Settings
 
