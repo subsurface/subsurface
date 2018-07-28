@@ -45,7 +45,6 @@ slots:
 	void removeFromTrip();
 	void deleteDive();
 	void markDiveInvalid();
-	void testSlot();
 	void fixMessyQtModelBehaviour();
 	void mergeTripAbove();
 	void mergeTripBelow();

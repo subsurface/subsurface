@@ -790,21 +790,6 @@ void DiveListView::deleteDive()
 	fixMessyQtModelBehaviour();
 }
 
-void DiveListView::testSlot()
-{
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
-	if (d) {
-		qDebug("testSlot called on dive #%d", d->number);
-	} else {
-		QModelIndex child = contextMenuIndex.child(0, 0);
-		d = (struct dive *)child.data(DiveTripModel::DIVE_ROLE).value<void *>();
-		if (d)
-			qDebug("testSlot called on trip including dive #%d", d->number);
-		else
-			qDebug("testSlot called on trip with no dive");
-	}
-}
-
 void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 {
 	QAction *collapseAction = NULL;
