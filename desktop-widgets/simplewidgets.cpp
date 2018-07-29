@@ -174,7 +174,6 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 		UndoRenumberDives *undoCommand = new UndoRenumberDives(renumberedDives);
 		MainWindow::instance()->undoStack->push(undoCommand);
 
-		MainWindow::instance()->dive_list()->fixMessyQtModelBehaviour();
 		mark_divelist_changed(true);
 		MainWindow::instance()->dive_list()->restoreSelection();
 	}

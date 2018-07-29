@@ -584,10 +584,7 @@ void DiveTripModel::setupModelData()
 {
 	int i = dive_table.nr;
 
-	if (rowCount()) {
-		beginRemoveRows(QModelIndex(), 0, rowCount() - 1);
-		endRemoveRows();
-	}
+	beginResetModel();
 
 	if (autogroup)
 		autogroup_dives();
@@ -621,10 +618,7 @@ void DiveTripModel::setupModelData()
 		tripItem->children.push_back(diveItem);
 	}
 
-	if (rowCount()) {
-		beginInsertRows(QModelIndex(), 0, rowCount() - 1);
-		endInsertRows();
-	}
+	endResetModel();
 }
 
 DiveTripModel::Layout DiveTripModel::layout() const
