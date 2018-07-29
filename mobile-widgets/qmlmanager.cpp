@@ -1003,7 +1003,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility)
+			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility, QString state)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 
@@ -1050,7 +1050,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	if (myDive->startPressure() != startpressure || myDive->endPressure() != endpressure) {
 		diveChanged = true;
 		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
-			if (!is_cylinder_used(d, i))
+			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
 
 			d->cylinder[i].start.mbar = parsePressureToMbar(startpressure[j]);
@@ -1064,7 +1064,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	// gasmix for first cylinder
 	if (myDive->firstGas() != gasmix) {
 		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
-			if (!is_cylinder_used(d, i))
+			if (state != "add" && !is_cylinder_used(d, i))
 				continue;
 
 			int o2 = parseGasMixO2(gasmix[j]);
@@ -1085,8 +1085,8 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		diveChanged = true;
 		unsigned long i;
 		int size = 0, wp = 0, j = 0, k = 0;
-		for (j = 0; k < usedCylinder.length() ; j++) {
-			if (!is_cylinder_used(d, j))
+		for (j = 0; k < usedCylinder.length() && j < MAX_CYLINDERS; j++) {
+			if (state != "add" && !is_cylinder_used(d, j))
 				continue;
 
 			for (i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
