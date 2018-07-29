@@ -73,6 +73,7 @@ Item {
 	}
 
 	function saveData() {
+		var state =  diveDetailsPage.state
 		diveDetailsPage.state = "view" // run the transition
 		// join cylinder info from separate string into a list.
 		if (usedCyl[0] != null) {
@@ -114,7 +115,7 @@ Item {
 				      detailsEdit.weightText, detailsEdit.notesText, startpressure,
 				      endpressure, usedGas, usedCyl ,
 				      detailsEdit.rating,
-				      detailsEdit.visibility)
+				      detailsEdit.visibility, state)
 		// trigger the profile to be redrawn
 		QMLProfile.diveId = dive_id
 
