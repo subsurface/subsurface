@@ -216,7 +216,11 @@ DCDeviceData::DCDeviceData()
 	data.download_table = nullptr;
 	data.diveid = 0;
 	data.deviceid = 0;
+#if defined(BT_SUPPORT)
 	data.bluetooth_mode = true;
+#else
+	data.bluetooth_mode = false;
+#endif
 	data.force_download = false;
 	data.create_new_trip = false;
 	data.libdc_dump = false;
