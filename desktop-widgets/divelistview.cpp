@@ -39,7 +39,6 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	DiveTripModel *tripModel = new DiveTripModel(this);
 	model->setSourceModel(tripModel);
 	setModel(model);
-	connect(model, SIGNAL(layoutChanged()), this, SLOT(fixMessyQtModelBehaviour()));
 
 	setSortingEnabled(false);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -160,12 +159,34 @@ void DiveListView::restoreExpandedRows()
 		setExpanded(model()->index(i, 0), true);
 	setAnimated(true);
 }
-void DiveListView::fixMessyQtModelBehaviour()
+
+// If the model is reset, check which items are trip-items and expand the first column
+void DiveListView::reset()
 {
+	// First, let the QTreeView do its thing.
+	QTreeView::reset();
+
 	QAbstractItemModel *m = model();
-	for (int i = 0; i < model()->rowCount(); i++)
+	for (int i = 0; i < m->rowCount(); ++i) {
 		if (m->rowCount(m->index(i, 0)) != 0)
 			setFirstColumnSpanned(i, QModelIndex(), true);
+	}
+}
+
+// If rows are added, check which of these rows is a trip and expand the first column
+void DiveListView::rowsInserted(const QModelIndex &parent, int start, int end)
+{
+	// First, let the QTreeView do its thing.
+	QTreeView::rowsInserted(parent, start, end);
+
+	// Now check for each inserted row whether this is a trip and expand the first column
+	if (parent.isValid()) // Trips don't have a parent
+		return;
+	QAbstractItemModel *m = model();
+	for (int i = start; i <= end; ++i) {
+		if (m->rowCount(m->index(i, 0)) != 0)
+			setFirstColumnSpanned(i, QModelIndex(), true);
+	}
 }
 
 // this only remembers dives that were selected, not trips
@@ -435,9 +456,6 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 			setAnimated(true);
 		}
 	}
-	if (currentLayout == DiveTripModel::TREE) {
-		fixMessyQtModelBehaviour();
-	}
 }
 
 void DiveListView::reloadHeaderActions()
@@ -627,7 +645,6 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	combine_trips(trip_a, trip_b);
 	rememberSelection();
 	reload(currentLayout, false);
-	fixMessyQtModelBehaviour();
 	restoreSelection();
 	mark_divelist_changed(true);
 	//TODO: emit a signal to signalize that the divelist changed?
@@ -658,7 +675,6 @@ void DiveListView::removeFromTrip()
 
 	rememberSelection();
 	reload(currentLayout, false);
-	fixMessyQtModelBehaviour();
 	restoreSelection();
 	mark_divelist_changed(true);
 }
@@ -679,7 +695,6 @@ void DiveListView::newTripAbove()
 	}
 	trip->expanded = 1;
 	reload(currentLayout, false);
-	fixMessyQtModelBehaviour();
 	mark_divelist_changed(true);
 	restoreSelection();
 }
@@ -730,7 +745,6 @@ void DiveListView::addToTrip(int delta)
 
 	reload(currentLayout, false);
 	restoreSelection();
-	fixMessyQtModelBehaviour();
 }
 
 void DiveListView::markDiveInvalid()
@@ -756,7 +770,6 @@ void DiveListView::markDiveInvalid()
 		// select top dive that isn't marked invalid
 		rememberSelection();
 	}
-	fixMessyQtModelBehaviour();
 }
 
 void DiveListView::deleteDive()
@@ -787,7 +800,6 @@ void DiveListView::deleteDive()
 		selectDive(lastDiveNr);
 		rememberSelection();
 	}
-	fixMessyQtModelBehaviour();
 }
 
 void DiveListView::contextMenuEvent(QContextMenuEvent *event)

@@ -430,7 +430,6 @@ void MultiFilterSortModel::myInvalidate()
 	divesDisplayed = 0;
 
 	invalidateFilter();
-	MainWindow::instance()->dive_list()->fixMessyQtModelBehaviour();
 
 	// first make sure the trips are no longer shown as selected
 	// (but without updating the selection state of the dives... this just cleans
