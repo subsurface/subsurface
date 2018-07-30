@@ -260,14 +260,11 @@ MainWindow::MainWindow() : QMainWindow(),
 	memset(&what, 0, sizeof(what));
 
 	updateManager = new UpdateManager(this);
-	QAction *undoAction = Command::undoAction(this);
-	QAction *redoAction = Command::redoAction(this);
+	undoAction = Command::undoAction(this);
+	redoAction = Command::redoAction(this);
 	undoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_Z));
 	redoAction->setShortcut(QKeySequence(Qt::CTRL + Qt::SHIFT + Qt::Key_Z));
-	QList<QAction*>undoRedoActions;
-	undoRedoActions.append(undoAction);
-	undoRedoActions.append(redoAction);
-	ui.menu_Edit->addActions(undoRedoActions);
+	ui.menu_Edit->addActions({ undoAction, redoAction });
 
 	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
 	connect(geoLookup, SIGNAL(started()),information(), SLOT(disableGeoLookupEdition()));
@@ -1184,6 +1181,8 @@ void MainWindow::on_actionViewAll_triggered()
 
 void MainWindow::enterEditState()
 {
+	undoAction->setEnabled(false);
+	redoAction->setEnabled(false);
 	stateBeforeEdit = state;
 	if (state == VIEWALL || state == INFO_MAXIMIZED)
 		return;
@@ -1207,6 +1206,8 @@ void MainWindow::enterEditState()
 
 void MainWindow::exitEditState()
 {
+	undoAction->setEnabled(true);
+	redoAction->setEnabled(true);
 	if (stateBeforeEdit == state)
 		return;
 	enterState(stateBeforeEdit);
