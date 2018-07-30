@@ -85,14 +85,14 @@ private:
 
 class RenumberDives : public Base {
 public:
-	RenumberDives(const QVector<QPair<int, int>> &divesToRenumber);
+	RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
 private:
 	void undo() override;
 	void redo() override;
 	bool workToBeDone() override;
 
 	// For redo and undo: pairs of dive-id / new number
-	QVector<QPair<int, int>> divesToRenumber;
+	QVector<QPair<dive *, int>> divesToRenumber;
 };
 
 // The classes RemoveDivesFromTrip, RemoveAutogenTrips, CreateTrip, AutogroupDives
@@ -166,7 +166,7 @@ private:
 	std::vector<DiveToAdd>	 unmergedDives;
 
 	// For undo and redo
-	QVector<QPair<int, int>> divesToRenumber;
+	QVector<QPair<dive *, int>> divesToRenumber;
 };
 
 } // namespace Command

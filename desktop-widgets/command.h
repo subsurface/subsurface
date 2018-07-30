@@ -18,7 +18,7 @@ QAction *redoAction(QObject *parent);	// Create an redo action.
 void addDive(dive *d, bool autogroup);
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);
-void renumberDives(const QVector<QPair<int, int>> &divesToRenumber);
+void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
 void removeDivesFromTrip(const QVector<dive *> &divesToRemove);
 void removeAutogenTrips();
 void addDivesToTrip(const QVector<dive *> &divesToAddIn, dive_trip *trip);

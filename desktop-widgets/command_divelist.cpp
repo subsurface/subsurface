@@ -151,10 +151,10 @@ static std::vector<dive *> addDives(std::vector<DiveToAdd> &divesToAdd)
 // This helper function renumbers dives according to an array of id/number pairs.
 // The old numbers are stored in the array, thus calling this function twice has no effect.
 // TODO: switch from uniq-id to indexes once all divelist-actions are controlled by undo-able commands
-static void renumberDives(QVector<QPair<int, int>> &divesToRenumber)
+static void renumberDives(QVector<QPair<dive *, int>> &divesToRenumber)
 {
 	for (auto &pair: divesToRenumber) {
-		dive *d = get_dive_by_uniq_id(pair.first);
+		dive *d = pair.first;
 		if (!d)
 			continue;
 		std::swap(d->number, pair.second);
@@ -165,7 +165,7 @@ static void renumberDives(QVector<QPair<int, int>> &divesToRenumber)
 	std::vector<std::pair<dive_trip *, dive *>> dives;
 	dives.reserve(divesToRenumber.size());
 	for (const auto &pair: divesToRenumber) {
-		dive *d = get_dive_by_uniq_id(pair.first);
+		dive *d = pair.first;
 		dives.push_back({ d->divetrip, d });
 	}
 
@@ -413,7 +413,7 @@ void ShiftTime::undo()
 }
 
 
-RenumberDives::RenumberDives(const QVector<QPair<int, int>> &divesToRenumberIn) : divesToRenumber(divesToRenumberIn)
+RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberIn) : divesToRenumber(divesToRenumberIn)
 {
 	setText(tr("renumber %n dive(s)", "", divesToRenumber.count()));
 }
@@ -641,7 +641,7 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 			// Stop renumbering if stuff isn't in order (see also core/divelist.c)
 			if (newnr <= previousnr)
 				break;
-			divesToRenumber.append(QPair<int,int>(dive_table.dives[i]->id, newnr));
+			divesToRenumber.append(QPair<dive *,int>(dive_table.dives[i], newnr));
 			previousnr = newnr;
 		}
 	}

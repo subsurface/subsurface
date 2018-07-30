@@ -21,7 +21,7 @@ void shiftTime(const QVector<dive *> &changedDives, int amount)
 	execute(new ShiftTime(changedDives, amount));
 }
 
-void renumberDives(const QVector<QPair<int, int>> &divesToRenumber)
+void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber)
 {
 	execute(new RenumberDives(divesToRenumber));
 }
