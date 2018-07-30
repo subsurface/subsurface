@@ -668,11 +668,6 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
 	Command::mergeTrips(trip_a, trip_b);
-	rememberSelection();
-	reload(currentLayout, false);
-	restoreSelection();
-	mark_divelist_changed(true);
-	//TODO: emit a signal to signalize that the divelist changed?
 }
 
 void DiveListView::mergeTripAbove()
@@ -696,11 +691,6 @@ void DiveListView::removeFromTrip()
 			divesToRemove.append(d);
 	}
 	Command::removeDivesFromTrip(divesToRemove);
-
-	rememberSelection();
-	reload(currentLayout, false);
-	restoreSelection();
-	mark_divelist_changed(true);
 }
 
 void DiveListView::newTripAbove()
@@ -717,10 +707,6 @@ void DiveListView::newTripAbove()
 			dives.append(d);
 	}
 	Command::createTrip(dives);
-
-	reload(currentLayout, false);
-	mark_divelist_changed(true);
-	restoreSelection();
 }
 
 void DiveListView::addToTripBelow()
@@ -765,9 +751,6 @@ void DiveListView::addToTrip(int delta)
 		}
 	}
 	Command::addDivesToTrip(dives, trip);
-
-	reload(currentLayout, false);
-	restoreSelection();
 }
 
 void DiveListView::markDiveInvalid()
@@ -782,9 +765,6 @@ void DiveListView::markDiveInvalid()
 		//TODO: this should be done in the future
 		// now mark the dive invalid... how do we do THAT?
 		// d->invalid = true;
-	}
-	if (amount_selected == 0) {
-		MainWindow::instance()->cleanUpEmpty();
 	}
 	mark_divelist_changed(true);
 	MainWindow::instance()->refreshDisplay();
@@ -802,26 +782,12 @@ void DiveListView::deleteDive()
 		return;
 
 	int i;
-	int lastDiveNr = -1;
 	QVector<struct dive*> deletedDives;
 	for_each_dive (i, d) {
-		if (!d->selected)
-			continue;
-		deletedDives.append(d);
-		lastDiveNr = i;
+		if (d->selected)
+			deletedDives.append(d);
 	}
-	// the actual dive deletion is happening in the redo command that is implicitly triggered
 	Command::deleteDive(deletedDives);
-	if (amount_selected == 0) {
-		MainWindow::instance()->cleanUpEmpty();
-	}
-	mark_divelist_changed(true);
-	MainWindow::instance()->refreshDisplay();
-	if (lastDiveNr != -1) {
-		clearSelection();
-		selectDive(lastDiveNr);
-		rememberSelection();
-	}
 }
 
 void DiveListView::contextMenuEvent(QContextMenuEvent *event)

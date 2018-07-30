@@ -47,10 +47,12 @@ private:
 	bool workToBeDone() override;
 
 	// For redo
-	DiveToAdd	diveToAdd;
+	// Note: we use a vector even though we add only a single dive, so
+	// that we can reuse the multi-dive functions of the other commands.
+	std::vector<DiveToAdd>	divesToAdd;
 
 	// For undo
-	dive		*diveToRemove;
+	std::vector<dive *>	divesToRemove;
 };
 
 class DeleteDive : public Base {
