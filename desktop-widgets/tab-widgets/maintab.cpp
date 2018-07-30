@@ -809,7 +809,6 @@ void MainTab::acceptChanges()
 		acceptingEdit = false;
 		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		emit addDiveFinished();
-		MainWindow::instance()->dive_list()->reload(DiveTripModel::CURRENT, true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 		int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
 		MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);

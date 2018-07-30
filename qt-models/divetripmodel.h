@@ -108,7 +108,12 @@ public:
 	int rowCount(const QModelIndex &parent) const;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const;
 	QModelIndex parent(const QModelIndex &index) const;
-
+private slots:
+	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
+	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
+	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
+	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 private:
 	// The model has up to two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
@@ -121,10 +126,23 @@ private:
 	// one element, which is the corresponding dive.
 	struct Item {
 		dive_trip		*trip;
-		QVector<dive *>		 dives;
-		Item(dive_trip *t, dive *d);	// Initialize a trip with one dive
-		Item(dive *d);			// Initialize a top-level dive
+		std::vector<dive *>	 dives;			// std::vector<> instead of QVector for insert() with three iterators
+		Item(dive_trip *t, const QVector<dive *> &dives);
+		Item(dive_trip *t, dive *d);			// Initialize a trip with one dive
+		Item(dive *d);					// Initialize a top-level dive
+		bool isDive(const dive *) const;		// Helper function: is this the give dive?
+		dive *getDive() const;				// Helper function: returns top-level-dive or null
+		timestamp_t when() const;			// Helper function: start time of dive *or* trip
 	};
+
+	// Access trips and dives
+	int findTripIdx(const dive_trip *trip) const;
+	int findDiveIdx(const dive *d) const;			// Find _top_level_ dive
+	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
+	int findInsertionIndex(timestamp_t when) const;		// Where to insert item with timestamp "when"
+
+	// Addition and deletion of dives
+	void addDivesToTrip(int idx, const QVector<dive *> &dives);
 
 	dive *diveOrNull(const QModelIndex &index) const;	// Returns a dive if this index represents a dive, null otherwise
 	QPair<dive_trip *, dive *> tripOrDive(const QModelIndex &index) const;

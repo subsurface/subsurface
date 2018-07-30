@@ -172,9 +172,6 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 			}
 		}
 		Command::renumberDives(renumberedDives);
-
-		mark_divelist_changed(true);
-		MainWindow::instance()->dive_list()->restoreSelection();
 	}
 }
 

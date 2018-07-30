@@ -5,6 +5,7 @@
 #include "core/divelist.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include <QIcon>
 #include <QDebug>
 
@@ -431,6 +432,12 @@ DiveTripModel::DiveTripModel(QObject *parent) :
 	QAbstractItemModel(parent),
 	currentLayout(TREE)
 {
+	// Stay informed of changes to the divelist
+	connect(&diveListNotifier, &DiveListNotifier::divesAdded, this, &DiveTripModel::divesAdded);
+	connect(&diveListNotifier, &DiveListNotifier::divesDeleted, this, &DiveTripModel::divesDeleted);
+	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveTripModel::divesChanged);
+	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModel::divesMovedBetweenTrips);
+	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModel::divesTimeChanged);
 }
 
 int DiveTripModel::columnCount(const QModelIndex&) const
@@ -627,6 +634,11 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 	return ret;
 }
 
+DiveTripModel::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : trip(t),
+	dives(divesIn.toStdVector())
+{
+}
+
 DiveTripModel::Item::Item(dive_trip *t, dive *d) : trip(t),
 	dives({ d })
 {
@@ -635,6 +647,108 @@ DiveTripModel::Item::Item(dive_trip *t, dive *d) : trip(t),
 DiveTripModel::Item::Item(dive *d) : trip(nullptr),
 	dives({ d })
 {
+}
+
+bool DiveTripModel::Item::isDive(const dive *d) const
+{
+	return !trip && dives.size() == 1 && dives[0] == d;
+}
+
+dive *DiveTripModel::Item::getDive() const
+{
+	return !trip && dives.size() == 1 ? dives[0] : nullptr;
+}
+
+timestamp_t DiveTripModel::Item::when() const
+{
+	return trip ? trip->when : dives[0]->when;
+}
+
+// Find a range of matching elements in a vector.
+// Input parameters:
+//	v: vector to be searched
+//	first: first element to search
+//	cond: a function that is fed elements and returns an integer:
+//		- >0: matches
+//		-  0: doesn't match
+//		- <0: stop searching, no more elements will be found
+//	      cond is called exactly once per element and from the beginning of the range.
+// Returns a pair [first, last) with usual C++ semantics: last-first is the size of the found range.
+// If no items were found, first and last are set to the size of the vector.
+template <typename Vector, typename Predicate>
+std::pair<int, int> findRangeIf(const Vector &v, int first, Predicate cond)
+{
+	int size = (int)v.size();
+	for (int i = first; i < size; ++i) {
+		int res = cond(v[i]);
+		if (res > 0) {
+			for (int j = i + 1; j < size; ++j) {
+				if (cond(v[j]) <= 0)
+					return { i, j };
+			}
+			return { i, size };
+		} else if (res < 0) {
+			break;
+		}
+	}
+	return { size, size };
+}
+
+// Ideally, Qt's model/view functions are processed in batches of contiguous
+// items. Therefore, this template is used to process actions on ranges of
+// contiguous elements of a vector.
+// Input paremeters:
+//	- items: vector to process, wich must allow random access via [] and the size() function
+//	- cond: a predicate that is tested for each element. contiguous ranges of elements which
+//		test for true are collected. cond is fed an element and should return:
+//		- >0: matches
+//		-  0: doesn't match
+//		- <0: stop searching, no more elements will be found
+//	- action: action that is called with the vector, first and last element of the range.
+template<typename Vector, typename Predicate, typename Action>
+void processRanges(Vector &items, Predicate cond, Action action)
+{
+	// Note: the "i++" is correct: We know that the last element tested
+	// negatively -> we can skip it. Thus we avoid checking any element
+	// twice.
+	for(int i = 0;; i++) {
+		std::pair<int,int> range = findRangeIf(items, i, cond);
+		if (range.first >= (int)items.size())
+			break;
+		int delta = action(items, range.first, range.second);
+		i = range.second + delta;
+	}
+}
+
+// processRangesZip() is a refined version of processRanges(), which operates on two vectors.
+// The vectors are supposed to be sorted equivalently. That is, the first matching
+// item will of the first vector will match to the first item of the second vector.
+// It is supposed that all elements of the second vector will match to an element of
+// the first vector.
+// Input parameters:
+//	- items1: vector to process, wich must allow random access via [] and the size() function
+//	- items2: second vector to process. every item in items2 must match to an item in items1
+//		  in ascending order.
+//	- cond1: a predicate that is tested for each element of items1 with the next unmatched element
+//		 of items2. returns a boolean
+//	- action: action that is called with the vectors, first and last element of the first range
+//		  and first element of the last range.
+template<typename Vector1, typename Vector2, typename Predicate, typename Action>
+void processRangesZip(Vector1 &items1, Vector2 &items2, Predicate cond, Action action)
+{
+	int actItem = 0;
+	processRanges(items1,
+		      [&](typename Vector1::const_reference &e) mutable -> int { // Condition. Marked mutable so that it can change actItem
+			if (actItem >= items2.size())
+				return -1; // No more items -> bail
+			if (!cond(e, items2[actItem]))
+				return 0;
+			++actItem;
+			return 1;
+		      },
+		      [&](Vector1 &v1, int from, int to) { // Action
+		      	return action(v1, items2, from, to, actItem);
+		      });
 }
 
 void DiveTripModel::setupModelData()
@@ -726,4 +840,273 @@ bool DiveTripModel::setData(const QModelIndex &index, const QVariant &value, int
 {
 	dive *d = diveOrNull(index);
 	return d ? DiveItem(d).setData(index, value, role) : false;
+}
+
+int DiveTripModel::findTripIdx(const dive_trip *trip) const
+{
+	for (int i = 0; i < (int)items.size(); ++i)
+		if (items[i].trip == trip)
+			return i;
+	return -1;
+}
+
+int DiveTripModel::findDiveIdx(const dive *d) const
+{
+	for (int i = 0; i < (int)items.size(); ++i)
+		if (items[i].isDive(d))
+			return i;
+	return -1;
+}
+
+int DiveTripModel::findDiveInTrip(int tripIdx, const dive *d) const
+{
+	const Item &item = items[tripIdx];
+	for (int i = 0; i < (int)item.dives.size(); ++i)
+		if (item.dives[i] == d)
+			return i;
+	return -1;
+}
+
+int DiveTripModel::findInsertionIndex(timestamp_t when) const
+{
+	for (int i = 0; i < (int)items.size(); ++i) {
+		if (when > items[i].when())
+			return i;
+	}
+	return items.size();
+}
+
+// Add items from vector "v2" to vector "v1" in batches of contiguous objects.
+// The items are inserted at places according to a sort order determined by "comp".
+// "v1" and "v2" are supposed to be ordered accordingly.
+// TODO: We might use binary search with std::lower_bound(), but not sure if it's worth it.
+// Input parameters:
+//	- v1: destination vector
+//	- v2: source vector
+//	- comp: compare-function, which is fed elements from v2 and v1. returns true for "insert here".
+//	- adder: performs the insertion. Perameters: v1, v2, insertion index, from, to range in v2.
+template <typename Vector1, typename Vector2, typename Comparator, typename Inserter>
+void addInBatches(Vector1 &v1, const Vector2 &v2, Comparator comp, Inserter insert)
+{
+	int idx = 0; // Index where dives will be inserted
+	int i, j; // Begin and end of range to insert
+	for (i = 0; i < (int)v2.size(); i = j) {
+		for (; idx < (int)v1.size() && !comp(v2[i], v1[idx]); ++idx)
+			; // Pass
+
+		// We found the index of the first item to add.
+		// Now search how many items we should insert there.
+		if (idx == (int)v1.size()) {
+			// We were at end -> insert the remaining items
+			j = v2.size();
+		} else {
+			for (j = i + 1; j < (int)v2.size() && comp(v2[i], v1[idx]); ++j)
+				; // Pass
+		}
+
+		// Now add the batch
+		insert(v1, v2, idx, i, j);
+
+		// Skip over inserted dives for searching the new insertion position plus one.
+		// If we added at the end, the loop will end anyway.
+		idx += j - i + 1;
+	}
+}
+
+void DiveTripModel::addDivesToTrip(int trip, const QVector<dive *> &dives)
+{
+		// Construct the parent index, ie. the index of the trip.
+		QModelIndex parent = createIndex(trip, 0, noParent);
+
+		// Either this is outside of a trip or we're in list mode.
+		// Thus, add dives at the top-level in batches
+		addInBatches(items[trip].dives, dives,
+			     [](dive *d, dive *d2) { return d->when >= d2->when; }, // comp
+			     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
+				beginInsertRows(parent, idx, idx + to - from - 1);
+				items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
+				endInsertRows();
+			     });
+}
+
+void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &divesIn)
+{
+	// The dives come from the backend sorted by start-time. But our model is sorted
+	// reverse-chronologically. Therefore, invert the list.
+	// TODO: Change sorting of the model to reflect core!
+	QVector<dive *> dives = divesIn;
+	std::reverse(dives.begin(), dives.end());
+
+	if (!trip || currentLayout == LIST) {
+		// Either this is outside of a trip or we're in list mode.
+		// Thus, add dives at the top-level in batches
+		addInBatches(items, dives,
+			     [](dive *d, const Item &entry) { return d->when >= entry.when(); }, // comp
+			     [&](std::vector<Item> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
+				beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
+				items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
+				endInsertRows();
+			     });
+	} else if (addTrip) {
+		// We're supposed to add the whole trip. Just insert the trip.
+		int idx = findInsertionIndex(trip->when); // Find the place where we have to insert the thing
+		beginInsertRows(QModelIndex(), idx, idx);
+		items.insert(items.begin() + idx, { trip, dives });
+		endInsertRows();
+	} else {
+		// Ok, we have to add dives to an existing trip
+		// Find the trip...
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			// We don't know the trip - this shouldn't happen. We seem to have
+			// missed some signals!
+			qWarning() << "DiveTripModel::divesAdded(): unknown trip";
+			return;
+		}
+
+		// ...and add dives.
+		addDivesToTrip(idx, dives);
+
+		// We have to signal that the trip changed, so that the number of dives in th header is updated
+		QModelIndex tripIndex = createIndex(idx, 0, noParent);
+		dataChanged(tripIndex, tripIndex);
+	}
+}
+
+void DiveTripModel::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &divesIn)
+{
+	// TODO: dives comes sorted by ascending time, but the model is sorted by descending time.
+	// Instead of being smart, simple reverse the input array.
+	QVector<dive *> dives = divesIn;
+	std::reverse(dives.begin(), dives.end());
+
+	if (!trip || currentLayout == LIST) {
+		// Either this is outside of a trip or we're in list mode.
+		// Thus, delete top-level dives. We do this range-wise.
+		processRangesZip(items, dives,
+				 [](const Item &e, dive *d) { return e.getDive() == d; }, // Condition
+				 [&](std::vector<Item> &items, const QVector<dive *> &, int from, int to, int) -> int { // Action
+					beginRemoveRows(QModelIndex(), from, to - 1);
+					items.erase(items.begin() + from, items.begin() + to);
+					endRemoveRows();
+					return from - to; // Delta: negate the number of items deleted
+					 });
+	} else {
+		// Find the trip
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			// We don't know the trip - this shouldn't happen. We seem to have
+			// missed some signals!
+			qWarning() << "DiveTripModel::divesDeleted(): unknown trip";
+			return;
+		}
+
+		if (deleteTrip) {
+			// We're supposed to delete the whole trip. Nice, we don't have to
+			// care about individual dives. Just remove the row.
+			beginRemoveRows(QModelIndex(), idx, idx);
+			items.erase(items.begin() + idx);
+			endRemoveRows();
+		} else {
+			// Construct the parent index, ie. the index of the trip.
+			QModelIndex parent = createIndex(idx, 0, noParent);
+
+			// Delete a number of dives in a trip. We do this range-wise.
+			processRangesZip(items[idx].dives, dives,
+					 [](dive *d1, dive *d2) { return d1 == d2; }, // Condition
+					 [&](std::vector<dive *> &diveList, const QVector<dive *> &, int from, int to, int) -> int { // Action
+						beginRemoveRows(parent, from, to - 1);
+						diveList.erase(diveList.begin() + from, diveList.begin() + to);
+						endRemoveRows();
+						return from - to; // Delta: negate the number of items deleted
+					 });
+
+			// We have to signal that the trip changed, so that the number of dives in th header is updated
+			QModelIndex tripIndex = createIndex(idx, 0, noParent);
+			dataChanged(tripIndex, tripIndex);
+		}
+	}
+}
+
+void DiveTripModel::divesChanged(dive_trip *trip, const QVector<dive *> &divesIn)
+{
+	// TODO: dives comes sorted by ascending time, but the model is sorted by descending time.
+	// Instead of being smart, simple reverse the input array.
+	QVector<dive *> dives = divesIn;
+	std::reverse(dives.begin(), dives.end());
+
+	if (!trip || currentLayout == LIST) {
+		// Either this is outside of a trip or we're in list mode.
+		// Thus, these are top-level dives. We do this range-wise.
+
+		// Since we know that the dive list is sorted, we will only ever search for the first element
+		// in dives as this must be the first that we encounter. Once we find a range, increase the
+		// index accordingly.
+		processRangesZip(items, dives,
+				 [](const Item &e, dive *d) { return e.getDive() == d; }, // Condition
+				 [&](const std::vector<Item> &, const QVector<dive *> &, int from, int to, int) -> int { // Action
+					// TODO: We might be smarter about which columns changed!
+					dataChanged(createIndex(from, 0, noParent), createIndex(to - 1, COLUMNS - 1, noParent));
+					return 0; // No items added or deleted
+				 });
+	} else {
+		// Find the trip.
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			// We don't know the trip - this shouldn't happen. We seem to have
+			// missed some signals!
+			qWarning() << "DiveTripModel::divesChanged(): unknown trip";
+			return;
+		}
+
+		// Change the dives in the trip. We do this range-wise.
+		processRangesZip(items[idx].dives, dives,
+				 [](dive *d1, dive *d2) { return d1 == d2; }, // Condition
+				 [&](const std::vector<dive *> &, const QVector<dive *> &, int from, int to, int) -> int { // Action
+					// TODO: We might be smarter about which columns changed!
+					dataChanged(createIndex(from, 0, idx), createIndex(to - 1, COLUMNS - 1, idx));
+					return 0; // No items added or deleted
+				 });
+	}
+}
+
+void DiveTripModel::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives)
+{
+	// Move dives between trips. This is an "interesting" problem, as we might
+	// move from trip to trip, from trip to top-level or from top-level to trip.
+	// Moreover, we might have to add a trip first or delete an old trip.
+	// For simplicity, we will simply used the already existing divesAdded() / divesDeleted()
+	// functions. This *is* cheating. But let's just try this and see how graceful
+	// this is handled by Qt and if it gives some ugly UI behavior!
+
+	// But first let's just rule out the trivial cases: same-to-same trip move
+	// and list view (in which case we don't care).
+	if (from == to || currentLayout == LIST)
+		return;
+
+	// Cheating!
+	divesAdded(to, createTo, dives);
+	divesDeleted(from, deleteFrom, dives);
+}
+
+void DiveTripModel::divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives)
+{
+	// As in the case of divesMovedBetweenTrips(), this is a tricky, but solvable, problem.
+	// We have to consider the direction (delta < 0 or delta >0) and that dives at their destination
+	// position have different contiguous batches than at their original position. For now,
+	// cheat and simply do a remove/add pair. Note that for this to work it is crucial the the
+	// order of the dives don't change. This is indeed the case, as all starting-times where
+	// moved by the same delta.
+
+	// Unfortunately, deleting of the dives clears current_dive, so we have to remember it.
+	// TODO: remove this hack!
+	dive *current = current_dive;
+
+	// Cheating!
+	divesDeleted(trip, false, dives);
+	divesAdded(trip, false, dives);
+
+	// Now, restore current_dive
+	// TODO: remove this hack!
+	selected_dive = get_divenr(current);
 }

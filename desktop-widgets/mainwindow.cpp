@@ -36,6 +36,8 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 
+#include "core/subsurface-qt/DiveListNotifier.h"
+
 #include "desktop-widgets/about.h"
 #include "desktop-widgets/command.h"
 #include "desktop-widgets/divecomputermanagementdialog.h"
@@ -492,8 +494,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 	dive_list()->setFocus();
 	WSInfoModel::instance()->updateInfo();
 	ui.actionAutoGroup->setChecked(autogroup);
-	if (amount_selected == 0)
-		cleanUpEmpty();
 }
 
 void MainWindow::recreateDiveList()

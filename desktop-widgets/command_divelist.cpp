@@ -4,8 +4,40 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/divelist.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 namespace Command {
+
+// Generally, signals are sent in batches per trip. To avoid writing the same loop
+// again and again, this template takes a vector of trip / dive pairs, sorts it
+// by trip and then calls a function-object with trip and a QVector of dives in that trip.
+// Input parameters:
+//	- dives: a vector of trip,dive pairs, which will be sorted and processed in batches by trip.
+//	- action: a function object, taking a trip-pointer and a QVector of dives, which will be called for each batch.
+template<typename Function>
+void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function action)
+{
+	// Use std::tie for lexicographical sorting of trip, then start-time
+	std::sort(dives.begin(), dives.end(),
+		  [](const std::pair<dive_trip *, dive *> &e1, const std::pair<dive_trip *, dive *> &e2)
+		  { return std::tie(e1.first, e1.second->when) < std::tie(e2.first, e2.second->when); });
+
+	// Then, process the dives in batches by trip
+	size_t i, j; // Begin and end of batch
+	for (i = 0; i < dives.size(); i = j) {
+		dive_trip *trip = dives[i].first;
+		for (j = i + 1; j < dives.size() && dives[j].first == trip; ++j)
+			; // pass
+		// Copy dives into a QVector. Some sort of "range_view" would be ideal, but Qt doesn't work this way.
+		QVector<dive *> divesInTrip(j - i);
+		for (size_t k = i; k < j; ++k)
+			divesInTrip[k - i] = dives[k].second;
+
+		// Finally, emit the signal
+		action(trip, divesInTrip);
+	}
+}
+
 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // It is crucial that dives are added in reverse order of deletion, so the the indices are correctly
@@ -26,6 +58,7 @@ static DiveToAdd removeDive(struct dive *d)
 	}
 
 	res.dive.reset(unregister_dive(res.idx));	// Remove dive from backend
+
 	return res;
 }
 
@@ -38,8 +71,9 @@ static dive *addDive(DiveToAdd &d)
 		insert_trip_dont_merge(d.tripToAdd.release()); // Return ownership to backend
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
-	dive *res = d.dive.release();			// Give up ownership of dive
-	add_single_dive(d.idx, res);			// Return ownership to backend
+	dive *res = d.dive.release();		// Give up ownership of dive
+	add_single_dive(d.idx, res);		// Return ownership to backend
+
 	return res;
 }
 
@@ -55,6 +89,22 @@ static std::vector<DiveToAdd> removeDives(std::vector<dive *> &divesToDelete)
 		res.push_back(removeDive(d));
 	divesToDelete.clear();
 
+	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
+	// Therefore, collect all dives in a array and sort by trip.
+	std::vector<std::pair<dive_trip *, dive *>> dives;
+	dives.reserve(res.size());
+	for (const DiveToAdd &entry: res)
+		dives.push_back({ entry.trip, entry.dive.get() });
+
+	// Send signals.
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		// Now, let's check if this trip is supposed to be deleted, by checking if it was marked
+		// as "add it". We could be smarter here, but let's just check the whole array for brevity.
+		bool deleteTrip = trip &&
+				  std::find_if(res.begin(), res.end(), [trip](const DiveToAdd &entry)
+					       { return entry.tripToAdd.get() == trip; }) != res.end();
+		emit diveListNotifier.divesDeleted(trip, deleteTrip, divesInTrip);
+	});
 	return res;
 }
 
@@ -67,10 +117,34 @@ static std::vector<dive *> addDives(std::vector<DiveToAdd> &divesToAdd)
 	std::vector<dive *> res;
 	res.reserve(divesToAdd.size());
 
+	// At the end of the function, to send the proper dives-added signals,
+	// we the the list of added trips. Create this list now.
+	std::vector<dive_trip *> addedTrips;
+	for (const DiveToAdd &entry: divesToAdd) {
+		if (entry.tripToAdd)
+			addedTrips.push_back(entry.tripToAdd.get());
+	}
+
+	// Now, add the dives
 	for (auto it = divesToAdd.rbegin(); it != divesToAdd.rend(); ++it)
 		res.push_back(addDive(*it));
 	divesToAdd.clear();
 
+	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
+	// Therefore, collect all dives in a array and sort by trip.
+	std::vector<std::pair<dive_trip *, dive *>> dives;
+	dives.reserve(res.size());
+	for (dive *d: res)
+		dives.push_back({ d->divetrip, d });
+
+	// Send signals.
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		// Now, let's check if this trip is supposed to be created, by checking if it was marked
+		// as "add it". We could be smarter here, but let's just check the whole array for brevity.
+		bool createTrip = trip && std::find(addedTrips.begin(), addedTrips.end(), trip) != addedTrips.end();
+		// Finally, emit the signal
+		emit diveListNotifier.divesAdded(trip, createTrip, divesInTrip);
+	});
 	return res;
 }
 
@@ -85,6 +159,20 @@ static void renumberDives(QVector<QPair<int, int>> &divesToRenumber)
 			continue;
 		std::swap(d->number, pair.second);
 	}
+
+	// Emit changed signals per trip.
+	// First, collect all dives and sort by trip
+	std::vector<std::pair<dive_trip *, dive *>> dives;
+	dives.reserve(divesToRenumber.size());
+	for (const auto &pair: divesToRenumber) {
+		dive *d = get_dive_by_uniq_id(pair.first);
+		dives.push_back({ d->divetrip, d });
+	}
+
+	// Send signals.
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesChanged(trip, divesInTrip);
+	});
 }
 
 // This helper function moves a dive to a trip. The old trip is recorded in the
@@ -121,9 +209,17 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 // a no-op.
 static void moveDivesBetweenTrips(DivesToTrip &dives)
 {
-	// first bring back the trip(s)
-	for (OwningTripPtr &trip: dives.tripsToAdd)
-		insert_trip_dont_merge(trip.release()); // Return ownership to backend
+	// We collect an array of created trips so that we can instruct
+	// the model to create a new entry
+	std::vector<dive_trip *> createdTrips;
+	createdTrips.reserve(dives.tripsToAdd.size());
+
+	// First, bring back the trip(s)
+	for (OwningTripPtr &trip: dives.tripsToAdd) {
+		dive_trip *t = trip.release();	// Give up ownership
+		createdTrips.push_back(t);
+		insert_trip_dont_merge(t);	// Return ownership to backend
+	}
 	dives.tripsToAdd.clear();
 
 	for (DiveToTrip &dive: dives.divesToMove) {
@@ -131,6 +227,60 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 		// register trips that we'll have to readd
 		if (tripToAdd)
 			dives.tripsToAdd.push_back(std::move(tripToAdd));
+	}
+
+	// We send one signal per from-trip/to-trip pair.
+	// First, collect all dives in a struct and sort by from-trip/to-trip.
+	struct DiveMoved {
+		dive_trip *from;
+		dive_trip *to;
+		dive *d;
+	};
+	std::vector<DiveMoved> divesMoved;
+	divesMoved.reserve(dives.divesToMove.size());
+	for (const DiveToTrip &entry: dives.divesToMove)
+		divesMoved.push_back({ entry.trip, entry.dive->divetrip, entry.dive });
+
+	// Sort lexicographically by from-trip, to-trip and by start-time.
+	// Use std::tie() for lexicographical sorting.
+	std::sort(divesMoved.begin(), divesMoved.end(), [] ( const DiveMoved &d1, const DiveMoved &d2)
+		  { return std::tie(d1.from, d1.to, d1.d->when) < std::tie(d2.from, d2.to, d2.d->when); });
+
+	// Now, process the dives in batches by trip
+	// TODO: this is a bit different from the cases above, so we don't use the processByTrip template,
+	// but repeat the loop here. We might think about generalizing the template, if more of such
+	// "special cases" appear.
+	size_t i, j; // Begin and end of batch
+	for (i = 0; i < divesMoved.size(); i = j) {
+		dive_trip *from = divesMoved[i].from;
+		dive_trip *to = divesMoved[i].to;
+		for (j = i + 1; j < divesMoved.size() && divesMoved[j].from == from && divesMoved[j].to == to; ++j)
+			; // pass
+		// Copy dives into a QVector. Some sort of "range_view" would be ideal, but Qt doesn't work this way.
+		QVector<dive *> divesInTrip(j - i);
+		for (size_t k = i; k < j; ++k)
+			divesInTrip[k - i] = divesMoved[k].d;
+
+		// Check if the from-trip was deleted: If yes, it was recorded in the tripsToAdd structure
+		bool deleteFrom = from &&
+				  std::find_if(dives.tripsToAdd.begin(), dives.tripsToAdd.end(),
+					       [from](const OwningTripPtr &trip) { return trip.get() == from; }) != dives.tripsToAdd.end();
+		// Check if the to-trip has to be created. For this purpose, we saved an array of trips to be created.
+		bool createTo = false;
+		if (to) {
+			// Check if the element is there...
+			auto it = std::find(createdTrips.begin(), createdTrips.end(), to);
+
+			// ...if it is - remove it as we don't want the model to create the trip twice!
+			if (it != createdTrips.end()) {
+				createTo = true;
+				// erase/remove would be more performant, but this is irrelevant in the big scheme of things.
+				createdTrips.erase(it);
+			}
+		}
+
+		// Finally, emit the signal
+		emit diveListNotifier.divesMovedBetweenTrips(from, to, deleteFrom, createTo, divesInTrip);
 	}
 
 	// Reverse the tripsToAdd and the divesToAdd, so that on undo/redo the operations
@@ -144,11 +294,11 @@ AddDive::AddDive(dive *d)
 	setText(tr("add dive"));
 	d->maxdepth.mm = 0;
 	fixup_dive(d);
-	diveToAdd.trip = d->divetrip;
-	d->divetrip = nullptr;
-	diveToAdd.idx = dive_get_insertion_index(d);
-	d->number = get_dive_nr_at_idx(diveToAdd.idx);
-	diveToAdd.dive.reset(clone_dive(d));
+	d->divetrip = nullptr;	// TODO: consider autogroup == true
+	int idx = dive_get_insertion_index(d);
+	d->number = get_dive_nr_at_idx(idx);
+
+	divesToAdd.push_back({ OwningDivePtr(clone_dive(d)), nullptr, d->divetrip, idx });
 }
 
 bool AddDive::workToBeDone()
@@ -158,22 +308,27 @@ bool AddDive::workToBeDone()
 
 void AddDive::redo()
 {
-	diveToRemove = addDive(diveToAdd);
+	int idx = divesToAdd[0].idx;
+	divesToRemove = addDives(divesToAdd);
 	mark_divelist_changed(true);
 
 	// Finally, do the UI stuff:
 	MainWindow::instance()->dive_list()->unselectDives();
-	MainWindow::instance()->dive_list()->selectDive(diveToAdd.idx, true);
-	MainWindow::instance()->refreshDisplay();
+	MainWindow::instance()->dive_list()->selectDive(idx, true);
+
+	// Exit from edit mode, but don't recalculate dive list
+	// TODO: Remove edit mode
+	MainWindow::instance()->refreshDisplay(false);
 }
 
 void AddDive::undo()
 {
 	// Simply remove the dive that was previously added
-	diveToAdd = removeDive(diveToRemove);
+	divesToAdd = removeDives(divesToRemove);
 
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
+	// Exit from edit mode, but don't recalculate dive list
+	// TODO: Remove edit mode
+	MainWindow::instance()->refreshDisplay(false);
 }
 
 DeleteDive::DeleteDive(const QVector<struct dive*> &divesToDeleteIn) : divesToDelete(divesToDeleteIn.toStdVector())
@@ -189,20 +344,13 @@ bool DeleteDive::workToBeDone()
 void DeleteDive::undo()
 {
 	divesToDelete = addDives(divesToAdd);
-
 	mark_divelist_changed(true);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
 }
 
 void DeleteDive::redo()
 {
 	divesToAdd = removeDives(divesToDelete);
 	mark_divelist_changed(true);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
 }
 
 
@@ -212,20 +360,30 @@ ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
 	setText(tr("shift time of %n dives", "", changedDives.count()));
 }
 
-void ShiftTime::undo()
+void ShiftTime::redo()
 {
 	for (dive *d: diveList)
 		d->when -= timeChanged;
 
 	// Changing times may have unsorted the dive table
 	sort_table(&dive_table);
-	mark_divelist_changed(true);
+
+	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
+	// Therefore, collect all dives in a array and sort by trip.
+	std::vector<std::pair<dive_trip *, dive *>> dives;
+	dives.reserve(diveList.size());
+	for (dive *d: diveList)
+		dives.push_back({ d->divetrip, d });
+
+	// Send signals.
+	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
+	});
 
 	// Negate the time-shift so that the next call does the reverse
 	timeChanged = -timeChanged;
 
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
+	mark_divelist_changed(true);
 }
 
 bool ShiftTime::workToBeDone()
@@ -233,10 +391,10 @@ bool ShiftTime::workToBeDone()
 	return !diveList.isEmpty();
 }
 
-void ShiftTime::redo()
+void ShiftTime::undo()
 {
-	// Same as undo(), since after undo() we reversed the timeOffset
-	undo();
+	// Same as redo(), since after redo() we reversed the timeOffset
+	redo();
 }
 
 
@@ -249,9 +407,6 @@ void RenumberDives::undo()
 {
 	renumberDives(divesToRenumber);
 	mark_divelist_changed(true);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
 }
 
 bool RenumberDives::workToBeDone()
@@ -275,9 +430,6 @@ void TripBase::redo()
 	moveDivesBetweenTrips(divesToMove);
 
 	mark_divelist_changed(true);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
 }
 
 void TripBase::undo()
@@ -393,10 +545,6 @@ void SplitDives::redo()
 	divesToUnsplit[1] = addDive(splitDives[1]);
 	unsplitDive = removeDive(diveToSplit);
 	mark_divelist_changed(true);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
-	MainWindow::instance()->refreshProfile();
 }
 
 void SplitDives::undo()
@@ -408,10 +556,6 @@ void SplitDives::undo()
 	splitDives[1] = removeDive(divesToUnsplit[1]);
 	splitDives[0] = removeDive(divesToUnsplit[0]);
 	mark_divelist_changed(true);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
-	MainWindow::instance()->refreshProfile();
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)
@@ -503,10 +647,6 @@ void MergeDives::redo()
 	renumberDives(divesToRenumber);
 	diveToUnmerge = addDive(mergedDive);
 	unmergedDives = removeDives(divesToMerge);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
-	MainWindow::instance()->refreshProfile();
 }
 
 void MergeDives::undo()
@@ -514,10 +654,6 @@ void MergeDives::undo()
 	divesToMerge = addDives(unmergedDives);
 	mergedDive = removeDive(diveToUnmerge);
 	renumberDives(divesToRenumber);
-
-	// Finally, do the UI stuff:
-	MainWindow::instance()->refreshDisplay();
-	MainWindow::instance()->refreshProfile();
 }
 
 } // namespace Command
