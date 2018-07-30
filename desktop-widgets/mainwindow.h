@@ -17,7 +17,6 @@
 #include "ui_mainwindow.h"
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
-#include "core/windowtitleupdate.h"
 #include "core/gpslocation.h"
 
 #define NUM_RECENT_FILES 4
@@ -253,7 +252,6 @@ private:
 	QHash<QByteArray, WidgetForQuadrant> applicationState;
 	QHash<QByteArray, PropertiesForQuadrant> stateProperties;
 
-	WindowTitleUpdate *wtu;
 	GpsLocation *locationProvider;
 	QMenu *connections;
 	QAction *share_on_fb;
