@@ -161,14 +161,14 @@ void RenumberDialog::buttonClicked(QAbstractButton *button)
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
 		MainWindow::instance()->dive_list()->rememberSelection();
 		// we remember a list from dive uuid to a new number
-		QVector<QPair<int, int>> renumberedDives;
+		QVector<QPair<dive *, int>> renumberedDives;
 		int i;
 		int newNr = ui.spinBox->value();
-		struct dive *dive = NULL;
-		for_each_dive (i, dive) {
-			if (!selectedOnly || dive->selected) {
-				invalidate_dive_cache(dive);
-				renumberedDives.append(QPair<int, int>(dive->id, newNr++));
+		struct dive *d;
+		for_each_dive (i, d) {
+			if (!selectedOnly || d->selected) {
+				invalidate_dive_cache(d);
+				renumberedDives.append({ d, newNr++ });
 			}
 		}
 		Command::renumberDives(renumberedDives);
