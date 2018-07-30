@@ -342,7 +342,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		scrollTo(idx);
 	}
 	// now that everything is up to date, update the widgets
-	Q_EMIT currentDiveChanged(selected_dive);
+	emit currentDiveChanged();
 	dontEmitDiveChangedSignal = false;
 	return;
 }
@@ -544,7 +544,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
 	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 	if (!dontEmitDiveChangedSignal)
-		Q_EMIT currentDiveChanged(selected_dive);
+		emit currentDiveChanged();
 }
 
 enum asked_user {NOTYET, MERGE, DONTMERGE};

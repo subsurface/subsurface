@@ -57,7 +57,7 @@ void StarWidget::mouseReleaseEvent(QMouseEvent *event)
 	else
 		current = starClicked;
 
-	Q_EMIT valueChanged(current);
+	emit valueChanged(current);
 	update();
 }
 
@@ -88,7 +88,7 @@ void StarWidget::setCurrentStars(int value)
 {
 	current = value;
 	update();
-	Q_EMIT valueChanged(current);
+	emit valueChanged(current);
 }
 
 StarWidget::StarWidget(QWidget *parent, Qt::WindowFlags f) : QWidget(parent, f),

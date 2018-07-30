@@ -59,7 +59,7 @@ slots:
 	void loadWebImages();
 
 signals:
-	void currentDiveChanged(int divenr);
+	void currentDiveChanged();
 
 private:
 	bool mouseClickSelection;

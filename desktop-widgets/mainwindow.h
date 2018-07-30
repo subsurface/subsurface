@@ -138,7 +138,7 @@ slots:
 	void on_action_Check_for_Updates_triggered();
 
 	void on_actionDiveSiteEdit_triggered();
-	void current_dive_changed(int divenr);
+	void current_dive_changed();
 	void initialUiSetup();
 
 	void on_actionImportDiveLog_triggered();
