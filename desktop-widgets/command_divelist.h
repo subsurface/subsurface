@@ -40,7 +40,7 @@ struct DivesToTrip
 
 class AddDive : public Base {
 public:
-	AddDive(dive *dive);
+	AddDive(dive *dive, bool autogroup);
 private:
 	void undo() override;
 	void redo() override;
