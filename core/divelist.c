@@ -24,6 +24,7 @@
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
  * dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
+ * dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
  * void autogroup_dives(void)
  * void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
@@ -923,6 +924,37 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 	dive->tripflag = IN_TRIP;
 	add_dive_to_trip(dive, dive_trip);
 	return dive_trip;
+}
+
+/*
+ * Find a trip a new dive should be autogrouped with. If no such trips
+ * exist, allocate a new trip. The bool "*allocated" is set to true
+ * if a new trip was allocated.
+ */
+dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
+{
+	struct dive *d;
+	dive_trip_t *trip;
+	int i;
+
+	/* Find dive that is within TRIP_THRESHOLD of current dive */
+	for_each_dive(i, d) {
+		/* Check if we're past the range of possible dives */
+		if (d->when >= new_dive->when + TRIP_THRESHOLD)
+			break;
+
+		if (d->when + TRIP_THRESHOLD >= new_dive->when && d->divetrip) {
+			/* Found a dive with trip in the range */
+			*allocated = false;
+			return d->divetrip;
+		}
+	}
+
+	/* Didn't find a trip -> allocate a new one */
+	trip = create_trip_from_dive(new_dive);
+	trip->autogen = true;
+	*allocated = true;
+	return trip;
 }
 
 /*

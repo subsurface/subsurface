@@ -289,16 +289,31 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	std::reverse(dives.divesToMove.begin(), dives.divesToMove.end());
 }
 
-AddDive::AddDive(dive *d)
+AddDive::AddDive(dive *d, bool autogroup)
 {
 	setText(tr("add dive"));
 	d->maxdepth.mm = 0;
 	fixup_dive(d);
-	d->divetrip = nullptr;	// TODO: consider autogroup == true
-	int idx = dive_get_insertion_index(d);
-	d->number = get_dive_nr_at_idx(idx);
+	d->divetrip = nullptr;
 
-	divesToAdd.push_back({ OwningDivePtr(clone_dive(d)), nullptr, d->divetrip, idx });
+	// Get an owning pointer to a copy of the dive
+	// Note: this destroys the old dive!
+	OwningDivePtr divePtr(clone_dive(d));
+
+	// If we alloc a new-trip for autogrouping, get an owning pointer to it.
+	OwningTripPtr allocTrip;
+	dive_trip *trip = nullptr;
+	if (autogroup) {
+		bool alloc;
+		trip = get_trip_for_new_dive(divePtr.get(), &alloc);
+		if (alloc)
+			allocTrip.reset(trip);
+	}
+
+	int idx = dive_get_insertion_index(divePtr.get());
+	divePtr->number = get_dive_nr_at_idx(idx);
+
+	divesToAdd.push_back({ std::move(divePtr), std::move(allocTrip), trip, idx });
 }
 
 bool AddDive::workToBeDone()

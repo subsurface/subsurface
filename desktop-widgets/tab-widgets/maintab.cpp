@@ -799,7 +799,7 @@ void MainTab::acceptChanges()
 		updateDiveSite(ui.location->currDiveSiteUuid(), &displayed_dive);
 		copyTagsToDisplayedDive();
 
-		Command::addDive(&displayed_dive);
+		Command::addDive(&displayed_dive, autogroup);
 
 		editMode = NONE;
 		MainWindow::instance()->exitEditState();

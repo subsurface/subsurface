@@ -15,7 +15,7 @@ QAction *undoAction(QObject *parent);	// Create an undo action.
 QAction *redoAction(QObject *parent);	// Create an redo action.
 
 // Dive-list related commands
-void addDive(dive *d);
+void addDive(dive *d, bool autogroup);
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<int, int>> &divesToRenumber);

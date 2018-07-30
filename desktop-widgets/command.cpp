@@ -6,9 +6,9 @@
 namespace Command {
 
 // Dive-list related commands
-void addDive(dive *d)
+void addDive(dive *d, bool autogroup)
 {
-	execute(new AddDive(d));
+	execute(new AddDive(d, autogroup));
 }
 
 void deleteDive(const QVector<struct dive*> &divesToDelete)
