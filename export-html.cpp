@@ -13,7 +13,6 @@
 #include "git2.h"
 #include "core/subsurfacestartup.h"
 #include "core/divelogexportlogic.h"
-#include "core/windowtitleupdate.h"
 #include "core/statistics.h"
 
 int main(int argc, char **argv)
@@ -42,7 +41,6 @@ int main(int argc, char **argv)
 		qDebug() << "need --source and --output";
 		exit(1);
 	}
-	WindowTitleUpdate *wtu = new WindowTitleUpdate();
 	int ret = parse_file(qPrintable(source));
 	if (ret) {
 		fprintf(stderr, "parse_file returned %d\n", ret);

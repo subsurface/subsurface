@@ -218,8 +218,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(information(), SIGNAL(diveSiteChanged(struct dive_site *)), mapWidget, SLOT(centerOnDiveSite(struct dive_site *)));
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
-	wtu = new WindowTitleUpdate();
-	connect(WindowTitleUpdate::instance(), SIGNAL(updateTitle()), this, SLOT(setAutomaticTitle()));
+	connect(&windowTitleUpdate, &WindowTitleUpdate::updateTitle, this, &MainWindow::setAutomaticTitle);
 #ifdef NO_PRINTING
 	plannerDetails->printPlan()->hide();
 	ui.menuFile->removeAction(ui.actionPrint);
