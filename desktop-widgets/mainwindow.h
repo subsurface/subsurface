@@ -185,6 +185,8 @@ private:
 	Ui::MainWindow ui;
 	QAction *actionNextDive;
 	QAction *actionPreviousDive;
+	QAction *undoAction;
+	QAction *redoAction;
 #ifndef NO_USERMANUAL
 	UserManual *helpView;
 #endif
