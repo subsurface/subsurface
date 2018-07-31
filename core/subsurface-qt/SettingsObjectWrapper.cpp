@@ -1138,191 +1138,6 @@ void DivePlannerSettings::setDecoMode(deco_mode value)
 	emit decoModeChanged(value);
 }
 
-UnitsSettings::UnitsSettings(QObject *parent) :
-	QObject(parent)
-{
-
-}
-
-int UnitsSettings::length() const
-{
-	return prefs.units.length;
-}
-
-int UnitsSettings::pressure() const
-{
-	return prefs.units.pressure;
-}
-
-int UnitsSettings::volume() const
-{
-	return prefs.units.volume;
-}
-
-int UnitsSettings::temperature() const
-{
-	return prefs.units.temperature;
-}
-
-int UnitsSettings::weight() const
-{
-	return prefs.units.weight;
-}
-
-int UnitsSettings::verticalSpeedTime() const
-{
-	return prefs.units.vertical_speed_time;
-}
-
-int UnitsSettings::durationUnits() const
-{
-	return prefs.units.duration_units;
-}
-
-bool UnitsSettings::showUnitsTable() const
-{
-	return prefs.units.show_units_table;
-}
-
-QString UnitsSettings::unitSystem() const
-{
-	return prefs.unit_system == METRIC ? QStringLiteral("metric")
-			: prefs.unit_system == IMPERIAL ? QStringLiteral("imperial")
-			: QStringLiteral("personalized");
-}
-
-bool UnitsSettings::coordinatesTraditional() const
-{
-	return prefs.coordinates_traditional;
-}
-
-void UnitsSettings::setLength(int value)
-{
-	if (value == prefs.units.length)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("length", value);
-	prefs.units.length = (units::LENGTH) value;
-	emit lengthChanged(value);
-}
-
-void UnitsSettings::setPressure(int value)
-{
-	if (value == prefs.units.pressure)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("pressure", value);
-	prefs.units.pressure = (units::PRESSURE) value;
-	emit pressureChanged(value);
-}
-
-void UnitsSettings::setVolume(int value)
-{
-	if (value == prefs.units.volume)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("volume", value);
-	prefs.units.volume = (units::VOLUME) value;
-	emit volumeChanged(value);
-}
-
-void UnitsSettings::setTemperature(int value)
-{
-	if (value == prefs.units.temperature)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("temperature", value);
-	prefs.units.temperature = (units::TEMPERATURE) value;
-	emit temperatureChanged(value);
-}
-
-void UnitsSettings::setWeight(int value)
-{
-	if (value == prefs.units.weight)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("weight", value);
-	prefs.units.weight = (units::WEIGHT) value;
-	emit weightChanged(value);
-}
-
-void UnitsSettings::setVerticalSpeedTime(int value)
-{
-	if (value == prefs.units.vertical_speed_time)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("vertical_speed_time", value);
-	prefs.units.vertical_speed_time = (units::TIME) value;
-	emit verticalSpeedTimeChanged(value);
-}
-
-void UnitsSettings::setDurationUnits(int value)
-{
-	if (value == prefs.units.duration_units)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("duration_units", value);
-	prefs.units.duration_units = (units::DURATION) value;
-	emit durationUnitChanged(value);
-}
-
-void UnitsSettings::setShowUnitsTable(bool value)
-{
-	if (value == prefs.units.show_units_table)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("show_units_table", value);
-	prefs.units.show_units_table = value;
-	emit showUnitsTableChanged(value);
-}
-
-void UnitsSettings::setCoordinatesTraditional(bool value)
-{
-	if (value == prefs.coordinates_traditional)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("coordinates", value);
-	prefs.coordinates_traditional = value;
-	emit coordinatesTraditionalChanged(value);
-}
-
-void UnitsSettings::setUnitSystem(const QString& value)
-{
-	short int v = value == QStringLiteral("metric") ? METRIC
-		      : value == QStringLiteral("imperial")? IMPERIAL
-		      : PERSONALIZE;
-
-	if (v == prefs.unit_system)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("unit_system", value);
-
-	if (value == QStringLiteral("metric")) {
-		prefs.unit_system = METRIC;
-		prefs.units = SI_units;
-	} else if (value == QStringLiteral("imperial")) {
-		prefs.unit_system = IMPERIAL;
-		prefs.units = IMPERIAL_units;
-	} else {
-		prefs.unit_system = PERSONALIZE;
-	}
-
-	emit unitSystemChanged(value);
-	// TODO: emit the other values here?
-}
-
 GeneralSettingsObjectWrapper::GeneralSettingsObjectWrapper(QObject *parent) :
 	QObject(parent)
 {
@@ -1714,7 +1529,7 @@ QObject(parent),
 	proxy(new qPrefProxy(this)),
 	cloud_storage(new qPrefCloudStorage(this)),
 	planner_settings(new DivePlannerSettings(this)),
-	unit_settings(new UnitsSettings(this)),
+	unit_settings(new qPrefUnits(this)),
 	general_settings(new GeneralSettingsObjectWrapper(this)),
 	display_settings(new qPrefDisplay(this)),
 	language_settings(new LanguageSettingsObjectWrapper(this)),
@@ -1731,26 +1546,9 @@ void SettingsObjectWrapper::load()
 	QVariant v;
 
 	uiLanguage(NULL);
-	s.beginGroup("Units");
-	if (s.value("unit_system").toString() == "metric") {
-		prefs.unit_system = METRIC;
-		prefs.units = SI_units;
-	} else if (s.value("unit_system").toString() == "imperial") {
-		prefs.unit_system = IMPERIAL;
-		prefs.units = IMPERIAL_units;
-	} else {
-		prefs.unit_system = PERSONALIZE;
-		GET_UNIT("length", length, units::FEET, units::METERS);
-		GET_UNIT("pressure", pressure, units::PSI, units::BAR);
-		GET_UNIT("volume", volume, units::CUFT, units::LITER);
-		GET_UNIT("temperature", temperature, units::FAHRENHEIT, units::CELSIUS);
-		GET_UNIT("weight", weight, units::LBS, units::KG);
-	}
-	GET_UNIT("vertical_speed_time", vertical_speed_time, units::MINUTES, units::SECONDS);
-	GET_UNIT3("duration_units", duration_units, units::MIXED, units::ALWAYS_HOURS, units::DURATION);
-	GET_UNIT_BOOL("show_units_table", show_units_table);
-	GET_BOOL("coordinates", coordinates_traditional);
-	s.endGroup();
+
+	qPrefUnits::instance()->load();
+
 	s.beginGroup("TecDetails");
 	GET_BOOL("po2graph", pp_graphs.po2);
 	GET_BOOL("pn2graph", pp_graphs.pn2);
