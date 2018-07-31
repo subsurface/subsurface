@@ -11,6 +11,7 @@
 #include "qPrefDiveComputer.h"
 #include "qPrefFacebook.h"
 #include "qPrefProxy.h"
+#include "qPrefUnit.h"
 
 class qPref : public QObject {
 	Q_OBJECT
