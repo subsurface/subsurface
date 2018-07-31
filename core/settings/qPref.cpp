@@ -20,6 +20,7 @@ void qPref::loadSync(bool doSync)
 	qPrefDiveComputer::instance()->loadSync(doSync);
 	// qPrefFaceook does not use disk.
 	qPrefProxy::instance()->loadSync(doSync);
+	qPrefUnits::instance()->loadSync(doSync);
 }
 
 const QString qPref::canonical_version() const

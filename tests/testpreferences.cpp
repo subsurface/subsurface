@@ -278,42 +278,42 @@ void TestPreferences::testPreferences()
 
 	TEST(planner->decoMode(), RECREATIONAL);
 
-	auto units = pref->unit_settings;
-	units->setLength(0);
-	units->setPressure(0);
-	units->setVolume(0);
-	units->setTemperature(0);
-	units->setWeight(0);
-	units->setVerticalSpeedTime(0);
-	units->setUnitSystem(QStringLiteral("metric"));
-	units->setCoordinatesTraditional(false);
+	auto units = qPrefUnits::instance();
+	units->set_length(units::METERS);
+	units->set_pressure(units::BAR);
+	units->set_volume(units::LITER);
+	units->set_temperature(units::CELSIUS);
+	units->set_weight(units::KG);
+	units->set_vertical_speed_time(units::SECONDS);
+	units->set_unit_system(QStringLiteral("metric"));
+	units->set_coordinates_traditional(false);
 
-	TEST(units->length(), 0);
-	TEST(units->pressure(), 0);
-	TEST(units->volume(), 0);
-	TEST(units->temperature(), 0);
-	TEST(units->weight(), 0);
-	TEST(units->verticalSpeedTime(), 0);
-	TEST(units->unitSystem(), QStringLiteral("metric"));
-	TEST(units->coordinatesTraditional(), false);
+	TEST(units->length(), units::METERS);
+	TEST(units->pressure(), units::BAR);
+	TEST(units->volume(), units::LITER);
+	TEST(units->temperature(), units::CELSIUS);
+	TEST(units->weight(), units::KG);
+	TEST(units->vertical_speed_time(), units::SECONDS);
+	TEST(units->unit_system(), QStringLiteral("metric"));
+	TEST(units->coordinates_traditional(), false);
 
-	units->setLength(1);
-	units->setPressure(1);
-	units->setVolume(1);
-	units->setTemperature(1);
-	units->setWeight(1);
-	units->setVerticalSpeedTime(1);
-	units->setUnitSystem(QStringLiteral("fake-metric-system"));
-	units->setCoordinatesTraditional(true);
+	units->set_length(units::FEET);
+	units->set_pressure(units::PSI);
+	units->set_volume(units::CUFT);
+	units->set_temperature(units::FAHRENHEIT);
+	units->set_weight(units::LBS);
+	units->set_vertical_speed_time(units::MINUTES);
+	units->set_unit_system(QStringLiteral("fake-metric-system"));
+	units->set_coordinates_traditional(true);
 
-	TEST(units->length(), 1);
-	TEST(units->pressure(), 1);
-	TEST(units->volume(), 1);
-	TEST(units->temperature(), 1);
-	TEST(units->weight(), 1);
-	TEST(units->verticalSpeedTime(), 1);
-	TEST(units->unitSystem(), QStringLiteral("personalized"));
-	TEST(units->coordinatesTraditional(), true);
+	TEST(units->length(), units::FEET);
+	TEST(units->pressure(), units::PSI);
+	TEST(units->volume(), units::CUFT);
+	TEST(units->temperature(), units::FAHRENHEIT);
+	TEST(units->weight(), units::LBS);
+	TEST(units->vertical_speed_time(), units::MINUTES);
+	TEST(units->unit_system(), QStringLiteral("personalized"));
+	TEST(units->coordinates_traditional(), true);
 
 	auto general = pref->general_settings;
 	general->setDefaultFilename("filename");

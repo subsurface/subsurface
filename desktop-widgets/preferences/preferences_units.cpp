@@ -51,14 +51,14 @@ void PreferencesUnits::syncSettings()
 	QString unitSystem[] = {"metric", "imperial", "personal"};
 	short unitValue = ui->metric->isChecked() ? METRIC : (ui->imperial->isChecked() ? IMPERIAL : PERSONALIZE);
 
-	units->setUnitSystem(unitSystem[unitValue]);
-	units->setTemperature(ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
-	units->setLength(ui->feet->isChecked() ? units::FEET : units::METERS);
-	units->setPressure(ui->psi->isChecked() ? units::PSI : units::BAR);
-	units->setVolume(ui->cuft->isChecked() ? units::CUFT : units::LITER);
-	units->setWeight(ui->lbs->isChecked() ? units::LBS : units::KG);
-	units->setVerticalSpeedTime(ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
-	units->setCoordinatesTraditional(ui->gpsTraditional->isChecked());
-	units->setDurationUnits(ui->duration_mixed->isChecked() ? units::MIXED : (ui->duration_no_hours->isChecked() ? units::MINUTES_ONLY : units::ALWAYS_HOURS));
-	units->setShowUnitsTable(ui->show_units_table->isChecked());
+	units->set_unit_system(unitSystem[unitValue]);
+	units->set_temperature(ui->fahrenheit->isChecked() ? units::FAHRENHEIT : units::CELSIUS);
+	units->set_length(ui->feet->isChecked() ? units::FEET : units::METERS);
+	units->set_pressure(ui->psi->isChecked() ? units::PSI : units::BAR);
+	units->set_volume(ui->cuft->isChecked() ? units::CUFT : units::LITER);
+	units->set_weight(ui->lbs->isChecked() ? units::LBS : units::KG);
+	units->set_vertical_speed_time(ui->vertical_speed_minutes->isChecked() ? units::MINUTES : units::SECONDS);
+	units->set_coordinates_traditional(ui->gpsTraditional->isChecked());
+	units->set_duration_units(ui->duration_mixed->isChecked() ? units::MIXED : (ui->duration_no_hours->isChecked() ? units::MINUTES_ONLY : units::ALWAYS_HOURS));
+	units->set_show_units_table(ui->show_units_table->isChecked());
 }
