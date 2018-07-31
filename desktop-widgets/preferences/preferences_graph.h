@@ -12,9 +12,9 @@ class PreferencesGraph : public AbstractPreferencesWidget {
 	Q_OBJECT
 public:
 	PreferencesGraph();
-	virtual ~PreferencesGraph();
-	virtual void refreshSettings();
-	virtual void syncSettings();
+	~PreferencesGraph();
+	void refreshSettings() override;
+	void syncSettings() override;
 
 private slots:
 	void on_gflow_valueChanged(int gf);

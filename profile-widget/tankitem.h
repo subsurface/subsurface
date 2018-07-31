@@ -22,7 +22,7 @@ public:
 signals:
 
 public slots:
-	virtual void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 
 private:
 	void createBar(qreal x, qreal w, struct gasmix *gas);

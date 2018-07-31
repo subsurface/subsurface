@@ -20,8 +20,8 @@ class CleanerTableModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
 	explicit CleanerTableModel(QObject *parent = 0);
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 protected:
 	void setHeaderDataStrings(const QStringList &headers);

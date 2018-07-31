@@ -12,7 +12,7 @@ class DiveEventItem : public DivePixmapItem {
 	Q_OBJECT
 public:
 	DiveEventItem(QGraphicsItem *parent = 0);
-	virtual ~DiveEventItem();
+	~DiveEventItem();
 	void setEvent(struct event *ev, struct gasmix *lastgasmix);
 	struct event *getEvent();
 	void eventVisibilityChanged(const QString &eventName, bool visible);

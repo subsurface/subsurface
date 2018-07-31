@@ -30,7 +30,7 @@ public:
 	};
 
 	explicit ToolTipItem(QGraphicsItem *parent = 0);
-	virtual ~ToolTipItem();
+	~ToolTipItem();
 
 	void collapse();
 	void expand();

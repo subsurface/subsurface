@@ -12,9 +12,9 @@ class PreferencesUnits : public AbstractPreferencesWidget {
 	Q_OBJECT
 public:
 	PreferencesUnits();
-	virtual ~PreferencesUnits();
-	virtual void refreshSettings();
-	virtual void syncSettings();
+	~PreferencesUnits();
+	void refreshSettings() override;
+	void syncSettings() override;
 private:
 	Ui::PreferencesUnits *ui;
 };

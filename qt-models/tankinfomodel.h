@@ -18,10 +18,10 @@ public:
 	};
 	TankInfoModel();
 
-	/*reimp*/ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex());
-	/*reimp*/ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	bool insertRows(int row, int count, const QModelIndex &parent = QModelIndex()) override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	const QString &biggerString() const;
 	void clear();
 public
