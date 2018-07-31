@@ -107,6 +107,7 @@ TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 TEST(TestQPrefDiveComputer testqPrefDiveComputer.cpp)
 TEST(TestQPrefFacebook testqPrefFacebook.cpp)
 TEST(TestQPrefProxy testqPrefProxy.cpp)
+TEST(TestQPrefUnits testqPrefUnits.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> ${SUBSURFACE_SOURCE}/tests)
 
 
@@ -131,6 +132,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefDiveComputer
 	TestQPrefFacebook
 	TestQPrefProxy
+	TestQPrefUnits
 	TestQML
 )
 

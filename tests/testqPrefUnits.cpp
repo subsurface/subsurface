@@ -1,0 +1,189 @@
+// SPDX-License-Identifier: GPL-2.0
+#include "testqPrefUnits.h"
+
+#include "core/pref.h"
+#include "core/qthelper.h"
+#include "core/settings/qPref.h"
+
+#include <QTest>
+
+void TestQPrefUnits::initTestCase()
+{
+	QCoreApplication::setOrganizationName("Subsurface");
+	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
+	QCoreApplication::setApplicationName("SubsurfaceTestQPrefUnits");
+}
+
+void TestQPrefUnits::test_struct_get()
+{
+	// Test struct pref -> get func.
+
+	auto tst = qPrefUnits::instance();
+
+	prefs.coordinates_traditional = true;
+	prefs.units.duration_units = units::MIXED;
+	prefs.units.length = units::METERS;
+	prefs.units.pressure = units::BAR;
+	prefs.units.show_units_table = true;
+	prefs.units.temperature = units::CELSIUS;
+	prefs.units.vertical_speed_time = units::SECONDS;
+	prefs.units.volume = units::LITER;
+	prefs.units.weight = units::KG;
+
+	QCOMPARE(tst->coordinates_traditional(), true);
+	QCOMPARE(tst->duration_units(), units::MIXED);
+	QCOMPARE(tst->length(), units::METERS);
+	QCOMPARE(tst->pressure(), units::BAR);
+	QCOMPARE(tst->show_units_table(), true);
+	QCOMPARE(tst->temperature(), units::CELSIUS);
+	QCOMPARE(tst->vertical_speed_time(), units::SECONDS);
+	QCOMPARE(tst->volume(), units::LITER);
+	QCOMPARE(tst->weight(), units::KG);
+}
+
+void TestQPrefUnits::test_set_struct()
+{
+	// Test set func -> struct pref
+
+	auto tst = qPrefUnits::instance();
+
+	tst->set_coordinates_traditional(false);
+	tst->set_duration_units(units::MINUTES_ONLY);
+	tst->set_length(units::FEET);
+	tst->set_pressure(units::PSI);
+	tst->set_show_units_table(false);
+	tst->set_temperature(units::FAHRENHEIT);
+	tst->set_vertical_speed_time(units::MINUTES);
+	tst->set_volume(units::CUFT);
+	tst->set_weight(units::LBS);
+
+	QCOMPARE(prefs.coordinates_traditional, false);
+	QCOMPARE(prefs.units.duration_units, units::MINUTES_ONLY);
+	QCOMPARE(prefs.units.length, units::FEET);
+	QCOMPARE(prefs.units.pressure, units::PSI);
+	QCOMPARE(prefs.units.show_units_table, false);
+	QCOMPARE(prefs.units.temperature, units::FAHRENHEIT);
+	QCOMPARE(prefs.units.vertical_speed_time, units::MINUTES);
+	QCOMPARE(prefs.units.volume, units::CUFT);
+	QCOMPARE(prefs.units.weight, units::LBS);
+}
+
+void TestQPrefUnits::test_set_load_struct()
+{
+	// test set func -> load -> struct pref
+
+	auto tst = qPrefUnits::instance();
+
+	tst->set_coordinates_traditional(false);
+	tst->set_duration_units(units::MINUTES_ONLY);
+	tst->set_length(units::FEET);
+	tst->set_pressure(units::PSI);
+	tst->set_show_units_table(false);
+	tst->set_temperature(units::FAHRENHEIT);
+	tst->set_vertical_speed_time(units::MINUTES);
+	tst->set_volume(units::CUFT);
+	tst->set_weight(units::LBS);
+
+	tst->sync();
+	prefs.coordinates_traditional = true;
+	prefs.units.duration_units = units::MIXED;
+	prefs.units.length = units::METERS;
+	prefs.units.pressure = units::BAR;
+	prefs.units.show_units_table = true;
+	prefs.units.temperature = units::CELSIUS;
+	prefs.units.vertical_speed_time = units::SECONDS;
+	prefs.units.volume = units::LITER;
+	prefs.units.weight = units::KG;
+
+	tst->load();
+	QCOMPARE(prefs.coordinates_traditional, false);
+	QCOMPARE(prefs.units.duration_units, units::MINUTES_ONLY);
+	QCOMPARE(prefs.units.length, units::FEET);
+	QCOMPARE(prefs.units.pressure, units::PSI);
+	QCOMPARE(prefs.units.show_units_table, false);
+	QCOMPARE(prefs.units.temperature, units::FAHRENHEIT);
+	QCOMPARE(prefs.units.vertical_speed_time, units::MINUTES);
+	QCOMPARE(prefs.units.volume, units::CUFT);
+	QCOMPARE(prefs.units.weight, units::LBS);
+}
+
+void TestQPrefUnits::test_struct_disk()
+{
+	// test struct prefs -> disk
+
+	auto tst = qPrefUnits::instance();
+
+	prefs.coordinates_traditional = true;
+	prefs.units.duration_units = units::MIXED;
+	prefs.units.length = units::METERS;
+	prefs.units.pressure = units::BAR;
+	prefs.units.show_units_table = true;
+	prefs.units.temperature = units::CELSIUS;
+	prefs.units.vertical_speed_time = units::SECONDS;
+	prefs.units.volume = units::LITER;
+	prefs.units.weight = units::KG;
+
+	tst->sync();
+	prefs.coordinates_traditional = false;
+	prefs.units.duration_units = units::MINUTES_ONLY;
+	prefs.units.length = units::FEET;
+	prefs.units.pressure = units::PSI;
+	prefs.units.show_units_table = false;
+	prefs.units.temperature = units::FAHRENHEIT;
+	prefs.units.vertical_speed_time = units::MINUTES;
+	prefs.units.volume = units::CUFT;
+	prefs.units.weight = units::LBS;
+
+	tst->load();
+	QCOMPARE(prefs.coordinates_traditional, true);
+	QCOMPARE(prefs.units.duration_units, units::MIXED);
+	QCOMPARE(prefs.units.length, units::METERS);
+	QCOMPARE(prefs.units.pressure, units::BAR);
+	QCOMPARE(prefs.units.show_units_table, true);
+	QCOMPARE(prefs.units.temperature, units::CELSIUS);
+	QCOMPARE(prefs.units.vertical_speed_time, units::SECONDS);
+	QCOMPARE(prefs.units.volume, units::LITER);
+	QCOMPARE(prefs.units.weight, units::KG);
+}
+
+void TestQPrefUnits::test_multiple()
+{
+	// test multiple instances have the same information
+
+	prefs.units.length = units::METERS;
+	auto tst_direct = new qPrefUnits;
+
+	prefs.units.pressure = units::BAR;
+	auto tst = qPrefUnits::instance();
+
+	QCOMPARE(tst->length(), tst_direct->length());
+	QCOMPARE(tst->length(), units::METERS);
+	QCOMPARE(tst->pressure(), tst_direct->pressure());
+	QCOMPARE(tst->pressure(), units::BAR);
+}
+
+void TestQPrefUnits::test_unit_system()
+{
+	// test struct prefs <->  set/get unit_system
+
+	auto tst = qPrefUnits::instance();
+
+	tst->set_unit_system("metric");
+	QCOMPARE(prefs.unit_system, METRIC);
+	QCOMPARE(tst->unit_system(), QString("metric"));
+	tst->set_unit_system("imperial");
+	QCOMPARE(prefs.unit_system, IMPERIAL);
+	QCOMPARE(tst->unit_system(), QString("imperial"));
+	tst->set_unit_system("personalized");
+	QCOMPARE(prefs.unit_system, PERSONALIZE);
+	QCOMPARE(tst->unit_system(), QString("personalized"));
+
+	prefs.unit_system = METRIC;
+	QCOMPARE(tst->unit_system(), QString("metric"));
+	prefs.unit_system = IMPERIAL;
+	QCOMPARE(tst->unit_system(), QString("imperial"));
+	prefs.unit_system = PERSONALIZE;
+	QCOMPARE(tst->unit_system(), QString("personalized"));
+}
+
+QTEST_MAIN(TestQPrefUnits)
