@@ -12,9 +12,9 @@ class DivePictureWidget : public QListView {
 public:
 	DivePictureWidget(QWidget *parent);
 protected:
-	void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void wheelEvent(QWheelEvent *event) override;
 
 signals:
 	void photoDoubleClicked(const QString filePath);

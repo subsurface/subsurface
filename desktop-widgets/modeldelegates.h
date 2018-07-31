@@ -19,8 +19,8 @@ class StarWidgetsDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit StarWidgetsDelegate(QWidget *parent = 0);
-	virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 	const QSize& starSize() const;
 
 private:
@@ -32,10 +32,10 @@ class ComboBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit ComboBoxDelegate(QAbstractItemModel *model, QObject *parent = 0, bool allowEdit = true);
-	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
-	virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual bool eventFilter(QObject *object, QEvent *event);
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
+	void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	bool eventFilter(QObject *object, QEvent *event) override;
 public
 slots:
 	void testActivation(const QString &currString = QString());
@@ -54,8 +54,8 @@ class TankInfoDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit TankInfoDelegate(QObject *parent = 0);
-	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 public
 slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
@@ -66,17 +66,17 @@ class TankUseDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	explicit TankUseDelegate(QObject *parent = 0);
-	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
-	virtual void setEditorData(QWidget * editor, const QModelIndex & index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	void setEditorData(QWidget * editor, const QModelIndex & index) const override;
 };
 
 class WSInfoDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit WSInfoDelegate(QObject *parent = 0);
-	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
-	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 public
 slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
@@ -86,7 +86,7 @@ class AirTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit AirTypesDelegate(QObject *parent = 0);
-	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 public
 slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
@@ -96,7 +96,7 @@ class DiveTypesDelegate : public ComboBoxDelegate {
 	Q_OBJECT
 public:
 	explicit DiveTypesDelegate(QObject *parent = 0);
-	virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
 public
 slots:
 	void revertModelData(QWidget *widget, QAbstractItemDelegate::EndEditHint hint);
@@ -106,7 +106,7 @@ class SpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	SpinBoxDelegate(int min, int max, int step, QObject *parent = 0);
-	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 private:
 	int min;
 	int max;
@@ -117,7 +117,7 @@ class DoubleSpinBoxDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	DoubleSpinBoxDelegate(double min, double max, double step, QObject *parent = 0);
-	virtual QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 private:
 	double min;
 	double max;
@@ -128,8 +128,8 @@ class LocationFilterDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 public:
 	LocationFilterDelegate(QObject *parent = 0);
-	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
-	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const Q_DECL_OVERRIDE;
+	void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+	QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
 #endif // MODELDELEGATES_H

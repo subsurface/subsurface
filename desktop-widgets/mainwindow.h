@@ -59,7 +59,7 @@ public:
 	};
 
 	MainWindow();
-	virtual ~MainWindow();
+	~MainWindow();
 	static MainWindow *instance();
 	MainTab *information();
 	void loadRecentFiles();

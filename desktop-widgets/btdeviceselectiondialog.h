@@ -39,8 +39,8 @@ public:
 	bool isActive() const;
 	QString errorToString() const;
 	QBluetoothDeviceDiscoveryAgent::Error error() const;
-	virtual void run();
-	virtual void stop();
+	void run() override;
+	void stop();
 
 private:
 	bool running;

@@ -13,8 +13,8 @@ public:
 		VALUE
 	};
 	explicit ExtraDataModel(QObject *parent = 0);
-	/*reimp*/ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 
 	void clear();
 	void updateDive();

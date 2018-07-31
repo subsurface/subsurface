@@ -13,9 +13,9 @@ class PreferencesLanguage : public AbstractPreferencesWidget {
 	Q_OBJECT
 public:
 	PreferencesLanguage();
-	virtual ~PreferencesLanguage();
-	virtual void refreshSettings();
-	virtual void syncSettings();
+	~PreferencesLanguage();
+	void refreshSettings() override;
+	void syncSettings() override;
 private:
 	Ui::PreferencesLanguage *ui;
 	QMap<QString, QString> dateFormatShortMap;

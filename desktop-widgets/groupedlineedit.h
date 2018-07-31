@@ -39,7 +39,7 @@ class GroupedLineEdit : public QPlainTextEdit {
 
 public:
 	explicit GroupedLineEdit(QWidget *parent = 0);
-	virtual ~GroupedLineEdit();
+	~GroupedLineEdit();
 
 	QString text() const;
 
@@ -55,15 +55,15 @@ public:
 
 	void addColor(QColor color);
 
-	virtual QSize sizeHint() const;
-	virtual QSize minimumSizeHint() const;
+	QSize sizeHint() const override;
+	QSize minimumSizeHint() const override;
 
 signals:
 	void editingFinished();
 
 protected:
-	virtual void paintEvent(QPaintEvent *e);
-	virtual void keyPressEvent(QKeyEvent *e);
+	void paintEvent(QPaintEvent *e) override;
+	void keyPressEvent(QKeyEvent *e) override;
 
 private:
 	struct Private;

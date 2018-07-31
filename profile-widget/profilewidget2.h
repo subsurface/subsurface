@@ -84,7 +84,7 @@ public:
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
 #ifndef SUBSURFACE_MOBILE
-	virtual bool eventFilter(QObject *, QEvent *) override;
+	bool eventFilter(QObject *, QEvent *) override;
 	void clearHandlers();
 #endif
 	void recalcCeiling();
@@ -146,18 +146,18 @@ slots: // Necessary to call from QAction's signals.
 #endif
 
 protected:
-	void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
+	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
-	void wheelEvent(QWheelEvent *event) Q_DECL_OVERRIDE;
-	void mouseMoveEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void contextMenuEvent(QContextMenuEvent *event) Q_DECL_OVERRIDE;
-	void mouseDoubleClickEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void mousePressEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
-	void mouseReleaseEvent(QMouseEvent *event) Q_DECL_OVERRIDE;
+	void wheelEvent(QWheelEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void contextMenuEvent(QContextMenuEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 #endif
-	void dropEvent(QDropEvent *event) Q_DECL_OVERRIDE;
-	void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
-	void dragMoveEvent(QDragMoveEvent *event) Q_DECL_OVERRIDE;
+	void dropEvent(QDropEvent *event) override;
+	void dragEnterEvent(QDragEnterEvent *event) override;
+	void dragMoveEvent(QDragMoveEvent *event) override;
 
 
 private: /*methods*/

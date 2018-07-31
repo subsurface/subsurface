@@ -20,10 +20,10 @@ class DivePictureModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
 	static DivePictureModel *instance();
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual void updateDivePictures();
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	void updateDivePictures();
 	void removePictures(const QVector<QString> &fileUrls);
 	void updateDivePictureOffset(int diveId, const QString &filename, int offsetSeconds);
 signals:

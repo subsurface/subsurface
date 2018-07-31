@@ -29,7 +29,7 @@ public:
 		RightToLeft
 	};
 	DiveCartesianAxis(ProfileWidget2 *widget);
-	virtual ~DiveCartesianAxis();
+	~DiveCartesianAxis();
 	void setPrintMode(bool mode);
 	void setMinimum(double minimum);
 	void setMaximum(double maximum);

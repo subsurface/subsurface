@@ -72,10 +72,10 @@ public:
 		COLUMNS
 	};
 	explicit DivePlotDataModel(QObject *parent = 0);
-	virtual int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	virtual QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	virtual int rowCount(const QModelIndex &parent = QModelIndex()) const;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 	void clear();
 	void setDive(struct dive *d, const plot_info &pInfo);
 	const plot_info &data() const;

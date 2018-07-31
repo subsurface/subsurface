@@ -19,7 +19,7 @@ class PrintDialog : public QDialog {
 
 public:
 	explicit PrintDialog(QWidget *parent = 0, Qt::WindowFlags f = 0);
-	virtual ~PrintDialog();
+	~PrintDialog();
 
 private:
 	PrintOptions *optionsWidget;

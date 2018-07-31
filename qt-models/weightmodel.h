@@ -17,10 +17,10 @@ public:
 	};
 
 	explicit WeightModel(QObject *parent = 0);
-	/*reimp*/ QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
-	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ Qt::ItemFlags flags(const QModelIndex &index) const;
-	/*reimp*/ bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
 	void passInData(const QModelIndex &index, const QVariant &value);
 	void add();

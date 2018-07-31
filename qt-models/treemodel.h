@@ -25,12 +25,12 @@ class TreeModel : public QAbstractItemModel {
 	Q_OBJECT
 public:
 	TreeModel(QObject *parent = 0);
-	virtual ~TreeModel();
-	virtual QVariant data(const QModelIndex &index, int role) const;
-	/*reimp*/ int rowCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ int columnCount(const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
-	/*reimp*/ QModelIndex parent(const QModelIndex &child) const;
+	~TreeModel();
+	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	int columnCount(const QModelIndex &parent = QModelIndex()) const override;
+	QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const override;
+	QModelIndex parent(const QModelIndex &child) const override;
 
 protected:
 	int columns;
