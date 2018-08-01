@@ -25,6 +25,7 @@
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
  * void remove_autogen_trips()
+ * void sort_table(struct dive_table *table)
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -1385,7 +1386,6 @@ int get_dive_id_closest_to(timestamp_t when)
 		return dive_table.dives[i]->id;
 }
 
-
 void clear_dive_file_data()
 {
 	while (dive_table.nr)
@@ -1398,4 +1398,21 @@ void clear_dive_file_data()
 
 	reset_min_datafile_version();
 	saved_git_id = "";
+}
+
+static int sortfn(const void *_a, const void *_b)
+{
+	const struct dive *a = (const struct dive *)*(void **)_a;
+	const struct dive *b = (const struct dive *)*(void **)_b;
+
+	if (a->when < b->when)
+		return -1;
+	if (a->when > b->when)
+		return 1;
+	return 0;
+}
+
+void sort_table(struct dive_table *table)
+{
+	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
 }
