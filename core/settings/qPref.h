@@ -9,6 +9,7 @@
 #include "qPrefCloudStorage.h"
 #include "qPrefDisplay.h"
 #include "qPrefDiveComputer.h"
+#include "qPrefDivePlanner.h"
 #include "qPrefFacebook.h"
 #include "qPrefProxy.h"
 #include "qPrefUnit.h"
