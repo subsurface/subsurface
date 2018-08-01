@@ -107,6 +107,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefCloudStorage.cpp
 	settings/qPrefDisplay.cpp
 	settings/qPrefDiveComputer.cpp
+	settings/qPrefDivePlanner.cpp
 	settings/qPrefFacebook.cpp
 	settings/qPrefPrivate.cpp
 	settings/qPrefProxy.cpp

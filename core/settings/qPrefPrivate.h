@@ -18,6 +18,7 @@ public:
 	friend class qPrefCloudStorage;
 	friend class qPrefDisplay;
 	friend class qPrefDiveComputer;
+	friend class qPrefDivePlanner;
 	friend class qPrefFacebook;
 	friend class qPrefProxy;
 	friend class qPrefUnits;
