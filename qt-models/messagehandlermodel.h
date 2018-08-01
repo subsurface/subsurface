@@ -10,9 +10,9 @@ class MessageHandlerModel : public QAbstractListModel {
 public:
 	static MessageHandlerModel *self();
 	enum MsgTypes {Message = Qt::UserRole + 1, Severity};
-	int rowCount(const QModelIndex& parent = QModelIndex()) const override;
-	QVariant data(const QModelIndex& idx, int role) const override;
-	QHash<int, QByteArray> roleNames() const override;
+	int rowCount(const QModelIndex& parent = QModelIndex()) const;
+	QVariant data(const QModelIndex& idx, int role) const;
+	QHash<int, QByteArray> roleNames() const;
 	void addLog(QtMsgType type, const QString& message);
 	const QString logAsString();
 

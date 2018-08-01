@@ -20,7 +20,7 @@ class CloseButtonItem : public DivePixmapItem {
 public:
 	CloseButtonItem(QGraphicsItem *parent = 0);
 protected:
-	void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+	void mousePressEvent(QGraphicsSceneMouseEvent *event);
 public slots:
 	void hide();
 	void show();

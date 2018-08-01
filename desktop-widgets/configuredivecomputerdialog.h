@@ -26,9 +26,9 @@ public:
 	GasSpinBoxItemDelegate(QObject *parent = 0, column_type type = PERCENT);
 	~GasSpinBoxItemDelegate();
 
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void setEditorData(QWidget *editor, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
 private:
 	column_type type;
@@ -46,9 +46,9 @@ public:
 	GasTypeComboBoxItemDelegate(QObject *parent = 0, computer_type type = OSTC3);
 	~GasTypeComboBoxItemDelegate();
 
-	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
-	void setEditorData(QWidget *editor, const QModelIndex &index) const override;
-	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const override;
+	QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+	void setEditorData(QWidget *editor, const QModelIndex &index) const;
+	void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 
 private:
 	computer_type type;

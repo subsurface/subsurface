@@ -92,7 +92,7 @@ class MultiFilterSortModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
 	static MultiFilterSortModel *instance();
-	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 	void addFilterModel(FilterModelBase *model);
 	void removeFilterModel(FilterModelBase *model);
 	int divesDisplayed;

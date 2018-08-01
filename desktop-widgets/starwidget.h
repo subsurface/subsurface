@@ -14,7 +14,7 @@ public:
 	explicit StarWidget(QWidget *parent = 0, Qt::WindowFlags f = 0);
 	int currentStars() const;
 
-	QSize sizeHint() const override;
+	QSize sizeHint() const;
 
 	static const QImage& starActive();
 	static const QImage& starInactive();
@@ -28,11 +28,11 @@ slots:
 	void setReadOnly(bool readOnly);
 
 protected:
-	void mouseReleaseEvent(QMouseEvent *) override;
-	void paintEvent(QPaintEvent *) override;
-	void focusInEvent(QFocusEvent *) override;
-	void focusOutEvent(QFocusEvent *) override;
-	void keyPressEvent(QKeyEvent *) override;
+	void mouseReleaseEvent(QMouseEvent *);
+	void paintEvent(QPaintEvent *);
+	void focusInEvent(QFocusEvent *);
+	void focusOutEvent(QFocusEvent *);
+	void keyPressEvent(QKeyEvent *);
 
 private:
 	int current;

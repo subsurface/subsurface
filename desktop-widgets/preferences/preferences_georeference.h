@@ -13,8 +13,8 @@ class PreferencesGeoreference : public AbstractPreferencesWidget {
 public:
 	PreferencesGeoreference();
 	~PreferencesGeoreference();
-	void refreshSettings() override;
-	void syncSettings() override;
+	void refreshSettings();
+	void syncSettings();
 private:
 	Ui::PreferencesGeoreference *ui;
 };

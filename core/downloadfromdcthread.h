@@ -63,7 +63,7 @@ class DownloadThread : public QThread {
 
 public:
 	DownloadThread();
-	void run() override;
+	void run();
 
 	DCDeviceData *data();
 	QString error;
