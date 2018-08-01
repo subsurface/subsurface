@@ -15,6 +15,7 @@ private slots:
 	void test_struct_disk();
 	void test_multiple();
 	void test_unit_system();
+	void test_oldPreferences();
 };
 
 #endif // TESTQPREFUNITS_H
