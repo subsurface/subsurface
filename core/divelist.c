@@ -1065,9 +1065,9 @@ struct dive *unregister_dive(int idx)
 	if (!dive)
 		return NULL; /* this should never happen */
 	remove_dive_from_trip(dive, false);
-	if (dive->selected)
-		deselect_dive(idx);
 	unregister_dive_from_table(&dive_table, idx);
+	if (dive->selected)
+		amount_selected--;
 	return dive;
 }
 
@@ -1075,7 +1075,12 @@ struct dive *unregister_dive(int idx)
  * but doesn't deal with updating dive trips, etc */
 void delete_single_dive(int idx)
 {
-	struct dive *dive = unregister_dive(idx);
+	struct dive *dive = get_dive(idx);
+	if (!dive)
+		return; /* this should never happen */
+	if (dive->selected)
+		deselect_dive(idx);
+	dive = unregister_dive(idx);
 	free_dive(dive);
 }
 

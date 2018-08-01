@@ -297,16 +297,18 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		}
 		break;
-	}
-
-	if (role == DiveTripModel::STAR_ROLE) {
+	case DiveTripModel::STAR_ROLE:
 		retVal = d->rating;
-	}
-	if (role == DiveTripModel::DIVE_ROLE) {
+		break;
+	case DiveTripModel::DIVE_ROLE:
 		retVal = QVariant::fromValue<void *>(d);
-	}
-	if (role == DiveTripModel::DIVE_IDX) {
+		break;
+	case DiveTripModel::DIVE_IDX:
 		retVal = get_divenr(d);
+		break;
+	case DiveTripModel::SELECTED_ROLE:
+		retVal = d->selected;
+		break;
 	}
 	return retVal;
 }

@@ -181,10 +181,19 @@ void DiveListView::rowsInserted(const QModelIndex &parent, int start, int end)
 	// First, let the QTreeView do its thing.
 	QTreeView::rowsInserted(parent, start, end);
 
+	QAbstractItemModel *m = model();
+	QItemSelectionModel *s = selectionModel();
+
+	// Check whether any of the items is selected
+	for (int i = start; i <= end; ++i) {
+		QModelIndex index = m->index(i, 0, parent);
+		if (m->data(index, DiveTripModel::SELECTED_ROLE).toBool())
+			s->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+	}
+
 	// Now check for each inserted row whether this is a trip and expand the first column
 	if (parent.isValid()) // Trips don't have a parent
 		return;
-	QAbstractItemModel *m = model();
 	for (int i = start; i <= end; ++i) {
 		if (m->rowCount(m->index(i, 0)) != 0)
 			setFirstColumnSpanned(i, QModelIndex(), true);
