@@ -446,7 +446,7 @@ static bool parseASF(QFile &f, metadata *metadata)
 
 		header_len -= object_len;
 		object_len -= 24;
-		if (!memcmp(data, "\xa1\xdc\xab\x8c\x47\xa9\xcf\x11\x8e\xe4\x0\xc0\xc\x20\x53\x65", 16) != 0) {
+		if (!memcmp(data, "\xa1\xdc\xab\x8c\x47\xa9\xcf\x11\x8e\xe4\x0\xc0\xc\x20\x53\x65", 16)) {
 			// This is a file properties object. The interesting data are:
 			//	quadword (64 bit) at byte 24: creation date in 100-nanoseconds since Jan. 1, 1601.
 			//	quadword (64 bit) at byte 40: duration in 100-nanoseconds.
