@@ -323,6 +323,8 @@ bool AddDive::workToBeDone()
 
 void AddDive::redo()
 {
+	auto marker = diveListNotifier.enterCommand();
+
 	int idx = divesToAdd[0].idx;
 	divesToRemove = addDives(divesToAdd);
 	mark_divelist_changed(true);
@@ -338,6 +340,8 @@ void AddDive::redo()
 
 void AddDive::undo()
 {
+	auto marker = diveListNotifier.enterCommand();
+
 	// Simply remove the dive that was previously added
 	divesToAdd = removeDives(divesToRemove);
 
@@ -358,12 +362,14 @@ bool DeleteDive::workToBeDone()
 
 void DeleteDive::undo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	divesToDelete = addDives(divesToAdd);
 	mark_divelist_changed(true);
 }
 
 void DeleteDive::redo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	divesToAdd = removeDives(divesToDelete);
 	mark_divelist_changed(true);
 }
@@ -377,6 +383,7 @@ ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
 
 void ShiftTime::redo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	for (dive *d: diveList)
 		d->when -= timeChanged;
 
@@ -420,6 +427,7 @@ RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberI
 
 void RenumberDives::undo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	renumberDives(divesToRenumber);
 	mark_divelist_changed(true);
 }
@@ -442,6 +450,7 @@ bool TripBase::workToBeDone()
 
 void TripBase::redo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	moveDivesBetweenTrips(divesToMove);
 
 	mark_divelist_changed(true);
@@ -554,8 +563,7 @@ bool SplitDives::workToBeDone()
 
 void SplitDives::redo()
 {
-	if (!diveToSplit)
-		return;
+	auto marker = diveListNotifier.enterCommand();
 	divesToUnsplit[0] = addDive(splitDives[0]);
 	divesToUnsplit[1] = addDive(splitDives[1]);
 	unsplitDive = removeDive(diveToSplit);
@@ -564,9 +572,8 @@ void SplitDives::redo()
 
 void SplitDives::undo()
 {
-	if (!unsplitDive.dive)
-		return;
 	// Note: reverse order with respect to redo()
+	auto marker = diveListNotifier.enterCommand();
 	diveToSplit = addDive(unsplitDive);
 	splitDives[1] = removeDive(divesToUnsplit[1]);
 	splitDives[0] = removeDive(divesToUnsplit[0]);
@@ -659,6 +666,7 @@ bool MergeDives::workToBeDone()
 
 void MergeDives::redo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	renumberDives(divesToRenumber);
 	diveToUnmerge = addDive(mergedDive);
 	unmergedDives = removeDives(divesToMerge);
@@ -666,6 +674,7 @@ void MergeDives::redo()
 
 void MergeDives::undo()
 {
+	auto marker = diveListNotifier.enterCommand();
 	divesToMerge = addDives(unmergedDives);
 	mergedDive = removeDive(diveToUnmerge);
 	renumberDives(divesToRenumber);
