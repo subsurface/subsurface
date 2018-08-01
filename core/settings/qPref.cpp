@@ -18,6 +18,7 @@ void qPref::loadSync(bool doSync)
 	qPrefCloudStorage::instance()->loadSync(doSync);
 	qPrefDisplay::instance()->loadSync(doSync);
 	qPrefDiveComputer::instance()->loadSync(doSync);
+	qPrefDivePlanner::instance()->loadSync(doSync);
 	// qPrefFaceook does not use disk.
 	qPrefProxy::instance()->loadSync(doSync);
 	qPrefUnits::instance()->loadSync(doSync);

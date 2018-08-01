@@ -229,120 +229,6 @@ private:
 	const QString group = QStringLiteral("geocoding");
 };
 
-class DivePlannerSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(bool last_stop           READ lastStop             WRITE setLastStop             NOTIFY lastStopChanged)
-	Q_PROPERTY(bool verbatim_plan       READ verbatimPlan         WRITE setVerbatimPlan         NOTIFY verbatimPlanChanged)
-	Q_PROPERTY(bool display_runtime     READ displayRuntime       WRITE setDisplayRuntime       NOTIFY displayRuntimeChanged)
-	Q_PROPERTY(bool display_duration    READ displayDuration      WRITE setDisplayDuration      NOTIFY displayDurationChanged)
-	Q_PROPERTY(bool display_transitions READ displayTransitions   WRITE setDisplayTransitions   NOTIFY displayTransitionsChanged)
-	Q_PROPERTY(bool display_variations  READ displayVariations    WRITE setDisplayVariations    NOTIFY displayVariationsChanged)
-	Q_PROPERTY(bool doo2breaks          READ doo2breaks           WRITE setDoo2breaks           NOTIFY doo2breaksChanged)
-	Q_PROPERTY(bool drop_stone_mode     READ dropStoneMode        WRITE setDropStoneMode        NOTIFY dropStoneModeChanged)
-	Q_PROPERTY(bool safetystop          READ safetyStop           WRITE setSafetyStop           NOTIFY safetyStopChanged)
-	Q_PROPERTY(bool switch_at_req_stop  READ switchAtRequiredStop WRITE setSwitchAtRequiredStop NOTIFY switchAtRequiredStopChanged)
-	Q_PROPERTY(int ascrate75            READ ascrate75            WRITE setAscrate75            NOTIFY ascrate75Changed)
-	Q_PROPERTY(int ascrate50            READ ascrate50            WRITE setAscrate50            NOTIFY ascrate50Changed)
-	Q_PROPERTY(int ascratestops         READ ascratestops         WRITE setAscratestops         NOTIFY ascratestopsChanged)
-	Q_PROPERTY(int ascratelast6m        READ ascratelast6m        WRITE setAscratelast6m        NOTIFY ascratelast6mChanged)
-	Q_PROPERTY(int descrate             READ descrate             WRITE setDescrate             NOTIFY descrateChanged)
-	Q_PROPERTY(int sacfactor            READ sacfactor            WRITE setSacFactor            NOTIFY sacFactorChanged)
-	Q_PROPERTY(int problemsolvingtime   READ problemsolvingtime   WRITE setProblemSolvingTime   NOTIFY problemSolvingTimeChanged)
-	Q_PROPERTY(int bottompo2            READ bottompo2            WRITE setBottompo2            NOTIFY bottompo2Changed)
-	Q_PROPERTY(int decopo2              READ decopo2              WRITE setDecopo2              NOTIFY decopo2Changed)
-	Q_PROPERTY(int bestmixend           READ bestmixend           WRITE setBestmixend           NOTIFY bestmixendChanged)
-	Q_PROPERTY(int reserve_gas          READ reserveGas           WRITE setReserveGas           NOTIFY reserveGasChanged)
-	Q_PROPERTY(int min_switch_duration  READ minSwitchDuration    WRITE setMinSwitchDuration    NOTIFY minSwitchDurationChanged)
-	Q_PROPERTY(int bottomsac            READ bottomSac            WRITE setBottomSac            NOTIFY bottomSacChanged)
-	Q_PROPERTY(int decosac              READ decoSac              WRITE setDecoSac              NOTIFY decoSacChanged)
-	Q_PROPERTY(deco_mode decoMode       READ decoMode             WRITE setDecoMode             NOTIFY decoModeChanged)
-
-public:
-	DivePlannerSettings(QObject *parent = 0);
-	bool lastStop() const;
-	bool verbatimPlan() const;
-	bool displayRuntime() const;
-	bool displayDuration() const;
-	bool displayTransitions() const;
-	bool displayVariations() const;
-	bool doo2breaks() const;
-	bool dropStoneMode() const;
-	bool safetyStop() const;
-	bool switchAtRequiredStop() const;
-	int ascrate75() const;
-	int ascrate50() const;
-	int ascratestops() const;
-	int ascratelast6m() const;
-	int descrate() const;
-	int sacfactor() const;
-	int problemsolvingtime() const;
-	int bottompo2() const;
-	int decopo2() const;
-	int bestmixend() const;
-	int reserveGas() const;
-	int minSwitchDuration() const;
-	int bottomSac() const;
-	int decoSac() const;
-	deco_mode decoMode() const;
-
-public slots:
-	void setLastStop(bool value);
-	void setVerbatimPlan(bool value);
-	void setDisplayRuntime(bool value);
-	void setDisplayDuration(bool value);
-	void setDisplayTransitions(bool value);
-	void setDisplayVariations(bool value);
-	void setDoo2breaks(bool value);
-	void setDropStoneMode(bool value);
-	void setSafetyStop(bool value);
-	void setSwitchAtRequiredStop(bool value);
-	void setAscrate75(int value);
-	void setAscrate50(int value);
-	void setAscratestops(int value);
-	void setAscratelast6m(int value);
-	void setDescrate(int value);
-	void setSacFactor(int value);
-	void setProblemSolvingTime(int value);
-	void setBottompo2(int value);
-	void setDecopo2(int value);
-	void setBestmixend(int value);
-	void setReserveGas(int value);
-	void setMinSwitchDuration(int value);
-	void setBottomSac(int value);
-	void setDecoSac(int value);
-	void setDecoMode(deco_mode value);
-
-signals:
-	void lastStopChanged(bool value);
-	void verbatimPlanChanged(bool value);
-	void displayRuntimeChanged(bool value);
-	void displayDurationChanged(bool value);
-	void displayTransitionsChanged(bool value);
-	void displayVariationsChanged(bool value);
-	void doo2breaksChanged(bool value);
-	void dropStoneModeChanged(bool value);
-	void safetyStopChanged(bool value);
-	void switchAtRequiredStopChanged(bool value);
-	void ascrate75Changed(int value);
-	void ascrate50Changed(int value);
-	void ascratestopsChanged(int value);
-	void ascratelast6mChanged(int value);
-	void descrateChanged(int value);
-	void sacFactorChanged(int value);
-	void problemSolvingTimeChanged(int value);
-	void bottompo2Changed(int value);
-	void decopo2Changed(int value);
-	void bestmixendChanged(int value);
-	void reserveGasChanged(int value);
-	void minSwitchDurationChanged(int value);
-	void bottomSacChanged(int value);
-	void decoSacChanged(int value);
-	void decoModeChanged(deco_mode value);
-
-private:
-	const QString group = QStringLiteral("Planner");
-};
-
 class GeneralSettingsObjectWrapper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString default_filename              READ defaultFilename                WRITE setDefaultFilename                NOTIFY defaultFilenameChanged)
@@ -472,9 +358,8 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(GeocodingPreferences*       geocoding        MEMBER geocoding CONSTANT)
 	Q_PROPERTY(qPrefProxy*              proxy            MEMBER proxy CONSTANT)
 	Q_PROPERTY(qPrefCloudStorage*       cloud_storage    MEMBER cloud_storage CONSTANT)
-	Q_PROPERTY(DivePlannerSettings*        planner          MEMBER planner_settings CONSTANT)
+	Q_PROPERTY(qPrefDivePlanner*        planner          MEMBER planner_settings CONSTANT)
 	Q_PROPERTY(qPrefUnits*              units            MEMBER unit_settings CONSTANT)
-
 	Q_PROPERTY(GeneralSettingsObjectWrapper*         general   MEMBER general_settings CONSTANT)
 	Q_PROPERTY(qPrefDisplay*         display   MEMBER display_settings CONSTANT)
 	Q_PROPERTY(LanguageSettingsObjectWrapper*        language  MEMBER language_settings CONSTANT)
@@ -492,7 +377,7 @@ public:
 	GeocodingPreferences *geocoding;
 	qPrefProxy *proxy;
 	qPrefCloudStorage *cloud_storage;
-	DivePlannerSettings *planner_settings;
+	qPrefDivePlanner *planner_settings;
 	qPrefUnits *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
 	qPrefDisplay *display_settings;
