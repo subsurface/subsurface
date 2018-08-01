@@ -24,6 +24,7 @@
 #include "desktop-widgets/divelistview.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(0),
 	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false),
@@ -267,19 +268,17 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 // works as expected
 void DiveListView::clearTripSelection()
 {
-	// we want to make sure no trips are selected
-	disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+	// This marks the selection change as being internal - ie. we don't process it further.
+	// TODO: This should probably be sold differently.
+	auto marker = diveListNotifier.enterCommand();
 
+	// we want to make sure no trips are selected
 	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
 		dive_trip_t *trip = static_cast<dive_trip_t *>(index.data(DiveTripModel::TRIP_ROLE).value<void *>());
 		if (!trip)
 			continue;
 		selectionModel()->select(index, QItemSelectionModel::Deselect);
 	}
-
-	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 }
 
 void DiveListView::unselectDives()
@@ -374,7 +373,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		scrollTo(idx);
 	}
 	// now that everything is up to date, update the widgets
-	emit currentDiveChanged();
+	emit diveListNotifier.selectionChanged();
 	dontEmitDiveChangedSignal = false;
 	return;
 }
@@ -545,11 +544,20 @@ void DiveListView::currentChanged(const QModelIndex &current, const QModelIndex&
 
 void DiveListView::selectionChanged(const QItemSelection &selected, const QItemSelection &deselected)
 {
-	QItemSelection newSelected = selected.size() ? selected : selectionModel()->selection();
-	QItemSelection newDeselected = deselected;
+	if (diveListNotifier.inCommand()) {
+		// This is a programmatical change of the selection.
+		// Call the QTreeView base function to reflect the selection in the display,
+		// but don't process it any further.
+		QTreeView::selectionChanged(selected, deselected);
+		return;
+	}
 
-	disconnect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-	disconnect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
+	// This is a manual selection change. This means that the core does not yet know
+	// of the new selection. Update the core-structures accordingly and select/deselect
+	// all dives of a trip if a trip is selected/deselected.
+	const QItemSelection &newDeselected = deselected;
+
+	QItemSelection newSelected = selected.size() ? selected : selectionModel()->selection();
 
 	Q_FOREACH (const QModelIndex &index, newDeselected.indexes()) {
 		if (index.column() != 0)
@@ -581,11 +589,11 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			select_dive(get_divenr(dive));
 		}
 	}
-	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
-	connect(selectionModel(), SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(selectionChanged(QItemSelection, QItemSelection)));
-	connect(selectionModel(), SIGNAL(currentChanged(QModelIndex, QModelIndex)), this, SLOT(currentChanged(QModelIndex, QModelIndex)));
 	if (!dontEmitDiveChangedSignal)
-		emit currentDiveChanged();
+		emit diveListNotifier.selectionChanged();
+
+	// Display the new, processed, selection
+	QTreeView::selectionChanged(selectionModel()->selection(), newDeselected);
 }
 
 enum asked_user {NOTYET, MERGE, DONTMERGE};

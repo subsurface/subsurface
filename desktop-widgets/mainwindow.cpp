@@ -209,7 +209,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	if (!QIcon::hasThemeIcon("window-close")) {
 		QIcon::setThemeName("subsurface");
 	}
-	connect(dive_list(), &DiveListView::currentDiveChanged, this, &MainWindow::current_dive_changed);
+	connect(&diveListNotifier, &DiveListNotifier::selectionChanged, this, &MainWindow::selectionChanged);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(update()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveListView, SLOT(reloadHeaderActions()));
@@ -528,7 +528,7 @@ void MainWindow::configureToolbar() {
 	}
 }
 
-void MainWindow::current_dive_changed()
+void MainWindow::selectionChanged()
 {
 	graphics()->plotDive(nullptr, false, true);
 	information()->updateDiveInfo();

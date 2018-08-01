@@ -58,10 +58,6 @@ slots:
 	void shiftTimes();
 	void loadImages();
 	void loadWebImages();
-
-signals:
-	void currentDiveChanged();
-
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;

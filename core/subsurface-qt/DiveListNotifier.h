@@ -30,10 +30,69 @@ signals:
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
+
+	// This signal is sent if the selection of dives and/or the current dive changed
+	void selectionChanged();
+public:
+	// Desktop uses the QTreeView class to present the list of dives. The layout
+	// of this class gives us a very fundamental problem, as we can not easily
+	// distinguish between user-initiated changes of the selection and changes
+	// that are due to actions of the Command-classes. To solve this problem,
+	// the frontend can use this function to query whether a dive list-modifying
+	// command is currently executed. If this function returns true, the
+	// frontend is supposed to not modify the selection.
+	bool inCommand() const;
+
+	// The following class and function are used by divelist-modifying commands
+	// to signalize that are in-flight. If the returned object goes out of scope,
+	// the command-in-flight status is reset to its previous value. Thus, the
+	// function can be called recursively.
+	class InCommandMarker {
+		DiveListNotifier &notifier;
+		bool oldValue;
+		InCommandMarker(DiveListNotifier &);
+		friend DiveListNotifier;
+	public:
+		~InCommandMarker();
+	};
+
+	// Usage:
+	// void doWork()
+	// {
+	// 	auto marker = diveListNotifier.enterCommand();
+	// 	... do work ...
+	// }
+	InCommandMarker enterCommand();
+private:
+	friend InCommandMarker;
+	bool commandExecuting;
 };
 
-// The DiveListNotifier class has no state and no constructor.
+// The DiveListNotifier class has only trivial state.
 // We can simply define it as a global object.
 extern DiveListNotifier diveListNotifier;
+
+// InCommandMarker is so trivial that the functions can be inlined.
+// TODO: perhaps move this into own header-file.
+inline DiveListNotifier::InCommandMarker::InCommandMarker(DiveListNotifier &notifierIn) : notifier(notifierIn),
+	oldValue(notifier.commandExecuting)
+{
+	notifier.commandExecuting = true;
+}
+
+inline DiveListNotifier::InCommandMarker::~InCommandMarker()
+{
+	notifier.commandExecuting = oldValue;
+}
+
+inline bool DiveListNotifier::inCommand() const
+{
+	return commandExecuting;
+}
+
+inline DiveListNotifier::InCommandMarker DiveListNotifier::enterCommand()
+{
+	return InCommandMarker(*this);
+}
 
 #endif
