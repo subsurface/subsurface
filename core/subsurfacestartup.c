@@ -112,23 +112,6 @@ struct units *get_units()
 }
 
 /* random helper functions, used here or elsewhere */
-static int sortfn(const void *_a, const void *_b)
-{
-	const struct dive *a = (const struct dive *)*(void **)_a;
-	const struct dive *b = (const struct dive *)*(void **)_b;
-
-	if (a->when < b->when)
-		return -1;
-	if (a->when > b->when)
-		return 1;
-	return 0;
-}
-
-void sort_table(struct dive_table *table)
-{
-	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
-}
-
 const char *monthname(int mon)
 {
 	static const char month_array[12][7] = {
