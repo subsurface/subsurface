@@ -278,43 +278,6 @@ void TestPreferences::testPreferences()
 
 	TEST(planner->decoMode(), RECREATIONAL);
 
-	auto units = qPrefUnits::instance();
-	units->set_length(units::METERS);
-	units->set_pressure(units::BAR);
-	units->set_volume(units::LITER);
-	units->set_temperature(units::CELSIUS);
-	units->set_weight(units::KG);
-	units->set_vertical_speed_time(units::SECONDS);
-	units->set_unit_system(QStringLiteral("metric"));
-	units->set_coordinates_traditional(false);
-
-	TEST(units->length(), units::METERS);
-	TEST(units->pressure(), units::BAR);
-	TEST(units->volume(), units::LITER);
-	TEST(units->temperature(), units::CELSIUS);
-	TEST(units->weight(), units::KG);
-	TEST(units->vertical_speed_time(), units::SECONDS);
-	TEST(units->unit_system(), QStringLiteral("metric"));
-	TEST(units->coordinates_traditional(), false);
-
-	units->set_length(units::FEET);
-	units->set_pressure(units::PSI);
-	units->set_volume(units::CUFT);
-	units->set_temperature(units::FAHRENHEIT);
-	units->set_weight(units::LBS);
-	units->set_vertical_speed_time(units::MINUTES);
-	units->set_unit_system(QStringLiteral("fake-metric-system"));
-	units->set_coordinates_traditional(true);
-
-	TEST(units->length(), units::FEET);
-	TEST(units->pressure(), units::PSI);
-	TEST(units->volume(), units::CUFT);
-	TEST(units->temperature(), units::FAHRENHEIT);
-	TEST(units->weight(), units::LBS);
-	TEST(units->vertical_speed_time(), units::MINUTES);
-	TEST(units->unit_system(), QStringLiteral("personalized"));
-	TEST(units->coordinates_traditional(), true);
-
 	auto general = pref->general_settings;
 	general->setDefaultFilename("filename");
 	general->setDefaultCylinder("cylinder_2");

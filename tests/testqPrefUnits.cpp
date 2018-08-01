@@ -53,7 +53,7 @@ void TestQPrefUnits::test_set_struct()
 	tst->set_pressure(units::PSI);
 	tst->set_show_units_table(false);
 	tst->set_temperature(units::FAHRENHEIT);
-	tst->set_vertical_speed_time(units::MINUTES);
+	tst->set_vertical_speed_time(units::SECONDS);
 	tst->set_volume(units::CUFT);
 	tst->set_weight(units::LBS);
 
@@ -63,7 +63,7 @@ void TestQPrefUnits::test_set_struct()
 	QCOMPARE(prefs.units.pressure, units::PSI);
 	QCOMPARE(prefs.units.show_units_table, false);
 	QCOMPARE(prefs.units.temperature, units::FAHRENHEIT);
-	QCOMPARE(prefs.units.vertical_speed_time, units::MINUTES);
+	QCOMPARE(prefs.units.vertical_speed_time, units::SECONDS);
 	QCOMPARE(prefs.units.volume, units::CUFT);
 	QCOMPARE(prefs.units.weight, units::LBS);
 }
@@ -184,6 +184,53 @@ void TestQPrefUnits::test_unit_system()
 	QCOMPARE(tst->unit_system(), QString("imperial"));
 	prefs.unit_system = PERSONALIZE;
 	QCOMPARE(tst->unit_system(), QString("personalized"));
+}
+
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	units->sync();           \
+	units->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefUnits::test_oldPreferences()
+{
+	auto units = qPrefUnits::instance();
+
+	units->set_length(units::METERS);
+	units->set_pressure(units::BAR);
+	units->set_volume(units::LITER);
+	units->set_temperature(units::CELSIUS);
+	units->set_weight(units::KG);
+	units->set_unit_system(QStringLiteral("metric"));
+	units->set_coordinates_traditional(false);
+	units->set_vertical_speed_time(units::SECONDS);
+
+	TEST(units->length(), units::METERS);
+	TEST(units->pressure(), units::BAR);
+	TEST(units->volume(), units::LITER);
+	TEST(units->temperature(), units::CELSIUS);
+	TEST(units->weight(), units::KG);
+	TEST(units->vertical_speed_time(), units::SECONDS);
+	TEST(units->unit_system(), QStringLiteral("metric"));
+	TEST(units->coordinates_traditional(), false);
+
+	units->set_length(units::FEET);
+	units->set_pressure(units::PSI);
+	units->set_volume(units::CUFT);
+	units->set_temperature(units::FAHRENHEIT);
+	units->set_weight(units::LBS);
+	units->set_vertical_speed_time(units::MINUTES);
+	units->set_unit_system(QStringLiteral("fake-metric-system"));
+	units->set_coordinates_traditional(true);
+
+	TEST(units->length(), units::FEET);
+	TEST(units->pressure(), units::PSI);
+	TEST(units->volume(), units::CUFT);
+	TEST(units->temperature(), units::FAHRENHEIT);
+	TEST(units->weight(), units::LBS);
+	TEST(units->vertical_speed_time(), units::MINUTES);
+	TEST(units->unit_system(), QStringLiteral("personalized"));
+	TEST(units->coordinates_traditional(), true);
 }
 
 QTEST_MAIN(TestQPrefUnits)
