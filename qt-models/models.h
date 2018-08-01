@@ -27,7 +27,7 @@ class GasSelectionModel : public QStringListModel {
 public:
 	static GasSelectionModel *instance();
 	Qt::ItemFlags flags(const QModelIndex &index) const;
-	QVariant data(const QModelIndex &index, int role) const override;
+	QVariant data(const QModelIndex &index, int role) const;
 public
 slots:
 	void repopulate();
@@ -38,7 +38,7 @@ class DiveTypeSelectionModel : public QStringListModel {
 public:
 	static DiveTypeSelectionModel *instance();
 	Qt::ItemFlags flags(const QModelIndex &index) const;
-	QVariant data(const QModelIndex &index, int role) const override;
+	QVariant data(const QModelIndex &index, int role) const;
 public
 slots:
 	void repopulate();
@@ -49,8 +49,8 @@ class LanguageModel : public QAbstractListModel {
 	Q_OBJECT
 public:
 	static LanguageModel *instance();
-	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const;
+	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 
 private:
 	LanguageModel(QObject *parent = 0);

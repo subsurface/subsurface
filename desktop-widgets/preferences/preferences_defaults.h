@@ -14,8 +14,8 @@ class PreferencesDefaults : public AbstractPreferencesWidget {
 public:
 	PreferencesDefaults();
 	~PreferencesDefaults();
-	void refreshSettings() override;
-	void syncSettings() override;
+	void refreshSettings();
+	void syncSettings();
 public slots:
 	void on_chooseFile_clicked();
 	void on_btnUseDefaultFile_toggled(bool toggled);

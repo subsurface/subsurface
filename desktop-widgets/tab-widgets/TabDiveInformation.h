@@ -13,8 +13,8 @@ class TabDiveInformation : public TabBase {
 public:
 	TabDiveInformation(QWidget *parent = 0);
 	~TabDiveInformation();
-	void updateData() override;
-	void clear() override;
+	void updateData();
+	void clear();
 
 private:
 	Ui::TabDiveInformation *ui;

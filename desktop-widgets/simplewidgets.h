@@ -172,8 +172,8 @@ protected:
 	FilterBase(FilterModelBase *model, QWidget *parent = 0);
 	FilterModelBase *model;
 	Ui::FilterWidget ui;
-	void showEvent(QShowEvent *) override;
-	void hideEvent(QHideEvent *) override;
+	void showEvent(QShowEvent *);
+	void hideEvent(QHideEvent *);
 	friend class MultiFilter;
 };
 
@@ -201,7 +201,7 @@ class TextHyperlinkEventFilter : public QObject {
 public:
 	explicit TextHyperlinkEventFilter(QTextEdit *txtEdit);
 
-	bool eventFilter(QObject *target, QEvent *evt) override;
+	bool eventFilter(QObject *target, QEvent *evt);
 
 private:
 	void handleUrlClick(const QString &urlStr);

@@ -11,7 +11,7 @@ class LocationInformationWidget : public QGroupBox {
 Q_OBJECT
 public:
 	LocationInformationWidget(QWidget *parent = 0);
-	bool eventFilter(QObject*, QEvent*) override;
+	bool eventFilter(QObject*, QEvent*);
 
 protected:
 	void showEvent(QShowEvent *);
@@ -56,8 +56,8 @@ class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
 	Q_OBJECT
 public:
 	DiveLocationFilterProxyModel(QObject *parent = 0);
-	bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
-	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
+	bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
+	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const;
 };
 
 class DiveLocationModel : public QAbstractTableModel {
@@ -79,7 +79,7 @@ class DiveLocationListView : public QListView {
 public:
 	DiveLocationListView(QWidget *parent = 0);
 protected:
-	void currentChanged(const QModelIndex& current, const QModelIndex& previous) override;
+	void currentChanged(const QModelIndex& current, const QModelIndex& previous);
 signals:
 	void currentIndexChanged(const QModelIndex& current);
 };

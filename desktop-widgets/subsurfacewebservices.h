@@ -105,9 +105,9 @@ public:
 private
 slots:
 	// need to declare them as no ops or Qt4 is unhappy
-	void startDownload() override { }
-	void startUpload() override { }
-	void buttonClicked(QAbstractButton *button) override { Q_UNUSED(button) }
+	void startDownload() { }
+	void startUpload() { }
+	void buttonClicked(QAbstractButton *button) { Q_UNUSED(button) }
 };
 
 #endif // SUBSURFACEWEBSERVICES_H

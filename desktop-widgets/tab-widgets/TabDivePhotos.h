@@ -15,11 +15,11 @@ class TabDivePhotos : public TabBase {
 public:
 	TabDivePhotos(QWidget *parent = 0);
 	~TabDivePhotos();
-	void updateData() override;
-	void clear() override;
+	void updateData();
+	void clear();
 
 protected:
-	void contextMenuEvent(QContextMenuEvent *ev) override;
+	void contextMenuEvent(QContextMenuEvent *ev);
 
 private slots:
 	void addPhotosFromFile();

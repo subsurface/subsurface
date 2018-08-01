@@ -13,8 +13,8 @@ class PreferencesGraph : public AbstractPreferencesWidget {
 public:
 	PreferencesGraph();
 	~PreferencesGraph();
-	void refreshSettings() override;
-	void syncSettings() override;
+	void refreshSettings();
+	void syncSettings();
 
 private slots:
 	void on_gflow_valueChanged(int gf);
