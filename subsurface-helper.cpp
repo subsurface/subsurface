@@ -160,6 +160,7 @@ void register_qml_types()
 	REGISTER_TYPE(qPrefCloudStorage, "SsrfCloudStoragePrefs");
 	REGISTER_TYPE(qPrefDisplay, "SsrfDisplayPrefs");
 	REGISTER_TYPE(qPrefDiveComputer, "SsrfDiveComputerPrefs");
+	REGISTER_TYPE(qPrefDivePlanner, "SsrfDivePlannerPrefs");
 	REGISTER_TYPE(qPrefFacebook, "SsrfFacebookPrefs");
 	REGISTER_TYPE(qPrefProxy, "SsrfProxyPrefs");
 	REGISTER_TYPE(qPrefUnits, "SsrfUnitPrefs");
