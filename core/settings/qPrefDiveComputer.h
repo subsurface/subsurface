@@ -19,15 +19,15 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void inline load() { loadSync(false); }
-	void inline sync() { loadSync(true); }
+	void load() { loadSync(false); }
+	void sync() { loadSync(true); }
 
 public:
-	static inline QString device() { return prefs.dive_computer.device; };
-	static inline QString device_name() { return prefs.dive_computer.device_name; };
-	static inline int download_mode() { return prefs.dive_computer.download_mode; };
-	static inline QString product() { return prefs.dive_computer.product; };
-	static inline QString vendor() { return prefs.dive_computer.vendor; };
+	static QString device() { return prefs.dive_computer.device; }
+	static QString device_name() { return prefs.dive_computer.device_name; }
+	static int download_mode() { return prefs.dive_computer.download_mode; }
+	static QString product() { return prefs.dive_computer.product; }
+	static QString vendor() { return prefs.dive_computer.vendor; }
 
 public slots:
 	void set_device(const QString &device);

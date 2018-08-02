@@ -18,13 +18,13 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void inline load() {loadSync(false); }
-	void inline sync() {loadSync(true); }
+	void load() {loadSync(false); }
+	void sync() {loadSync(true); }
 
 public:
-	static inline QString access_token() { return prefs.facebook.access_token; }
-	static inline QString album_id() { return prefs.facebook.album_id; }
-	static inline QString user_id() { return prefs.facebook.user_id; }
+	static QString access_token() { return prefs.facebook.access_token; }
+	static QString album_id() { return prefs.facebook.album_id; }
+	static QString user_id() { return prefs.facebook.user_id; }
 
 public slots:
 	void set_access_token(const QString& value);
