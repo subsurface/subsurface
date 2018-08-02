@@ -90,6 +90,17 @@ private:
 #define DISK_LOADSYNC_INT_DEF(usegroup, name, field, defval) \
 	DISK_LOADSYNC_INT_DEF_EXT(usegroup, name, field, defval, )
 
+#define DISK_LOADSYNC_STRUCT_EXT(usegroup, name, field, var, usestruct)                                                                                   \
+	void qPref##usegroup::disk_##field(bool doSync)                                                                                                  \
+	{                                                                                                                                                \
+		if (doSync)                                                                                                                              \
+			qPrefPrivate::instance()->setting.setValue(group + name, prefs.usestruct field . var);                                                 \
+		else                                                                                                                                     \
+			prefs.usestruct field . var = qPrefPrivate::instance()->setting.value(group + name, default_prefs.usestruct field . var).toInt(); \
+	}
+#define DISK_LOADSYNC_STRUCT(usegroup, name, field, var) \
+	DISK_LOADSYNC_STRUCT_EXT(usegroup, name, field, var, )
+
 #define DISK_LOADSYNC_TXT_EXT(usegroup, name, field, usestruct)                                                                                                \
 	void qPref##usegroup::disk_##field(bool doSync)                                                                                                        \
 	{                                                                                                                                                      \
@@ -150,6 +161,18 @@ private:
 #define SET_PREFERENCE_INT(usegroup, field) \
 	SET_PREFERENCE_INT_EXT(usegroup, field, )
 
+#define SET_PREFERENCE_STRUCT_EXT(usegroup, type, field, var, usestruct) \
+	void qPref##usegroup::set_##field(type value)             \
+	{                                                         \
+		if (value. var != prefs.usestruct field . var) {             \
+			prefs.usestruct field . var = value . var;            \
+			disk_##field(true);                       \
+			emit field##_changed(value);              \
+		}                                                 \
+	}
+#define SET_PREFERENCE_STRUCT(usegroup, type, field, var) \
+	SET_PREFERENCE_STRUCT_EXT(usegroup, type, field, var, )
+
 #define SET_PREFERENCE_TXT_EXT(usegroup, field, usestruct)                                 \
 	void qPref##usegroup::set_##field(const QString &value)                            \
 	{                                                                                  \
@@ -192,6 +215,12 @@ private:
 	DISK_LOADSYNC_INT_DEF_EXT(usegroup, name, field, defval, usestruct);
 #define HANDLE_PREFERENCE_INT_DEF(usegroup, name, field, defval) \
 	HANDLE_PREFERENCE_INT_DEF_EXT(usegroup, name, field, defval, )
+
+#define HANDLE_PREFERENCE_STRUCT_EXT(usegroup, type, name, field, var, usestruct) \
+	SET_PREFERENCE_STRUCT_EXT(usegroup, type, field, var, usestruct) \
+	DISK_LOADSYNC_STRUCT_EXT(usegroup, name, field, var, usestruct)
+#define HANDLE_PREFERENCE_STRUCT(usegroup, type, name, field, var) \
+	HANDLE_PREFERENCE_STRUCT_EXT(usegroup, type, name, field, var, )
 
 #define HANDLE_PREFERENCE_TXT_EXT(usegroup, name, field, usestruct) \
 	SET_PREFERENCE_TXT_EXT(usegroup, field, usestruct);         \
