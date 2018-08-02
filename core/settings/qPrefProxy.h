@@ -21,16 +21,16 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void inline load() { loadSync(false); }
-	void inline sync() { loadSync(true); }
+	void load() { loadSync(false); }
+	void sync() { loadSync(true); }
 
 public:
-	static inline bool proxy_auth() { return prefs.proxy_auth; }
-	static inline QString proxy_host() { return prefs.proxy_host; }
-	static inline QString proxy_pass() { return prefs.proxy_pass; }
-	static inline int proxy_port() { return prefs.proxy_port; }
-	static inline int proxy_type() { return prefs.proxy_type; }
-	static inline QString proxy_user() { return prefs.proxy_user; }
+	static bool proxy_auth() { return prefs.proxy_auth; }
+	static QString proxy_host() { return prefs.proxy_host; }
+	static QString proxy_pass() { return prefs.proxy_pass; }
+	static int proxy_port() { return prefs.proxy_port; }
+	static int proxy_type() { return prefs.proxy_type; }
+	static QString proxy_user() { return prefs.proxy_user; }
 
 public slots:
 	void set_proxy_auth(bool value);

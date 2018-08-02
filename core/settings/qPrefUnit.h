@@ -25,20 +25,20 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void inline load() { loadSync(false); }
-	void inline sync() { loadSync(true); }
+	void load() { loadSync(false); }
+	void sync() { loadSync(true); }
 
 public:
-	static inline bool coordinates_traditional() { return prefs.coordinates_traditional; }
-	static inline units::DURATION duration_units() { return prefs.units.duration_units; }
-	static inline units::LENGTH length() { return prefs.units.length; }
-	static inline units::PRESSURE pressure() { return prefs.units.pressure; }
-	static inline bool show_units_table() { return prefs.units.show_units_table; }
-	static inline units::TEMPERATURE temperature() { return prefs.units.temperature; }
+	static bool coordinates_traditional() { return prefs.coordinates_traditional; }
+	static units::DURATION duration_units() { return prefs.units.duration_units; }
+	static units::LENGTH length() { return prefs.units.length; }
+	static units::PRESSURE pressure() { return prefs.units.pressure; }
+	static bool show_units_table() { return prefs.units.show_units_table; }
+	static units::TEMPERATURE temperature() { return prefs.units.temperature; }
 	static QString unit_system();
-	static inline units::TIME vertical_speed_time() { return prefs.units.vertical_speed_time; }
-	static inline units::VOLUME volume() { return prefs.units.volume; }
-	static inline units::WEIGHT weight() { return prefs.units.weight; }
+	static units::TIME vertical_speed_time() { return prefs.units.vertical_speed_time; }
+	static units::VOLUME volume() { return prefs.units.volume; }
+	static units::WEIGHT weight() { return prefs.units.weight; }
 
 public slots:
 	void set_coordinates_traditional(bool value);

@@ -15,11 +15,11 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void inline load() { loadSync(false); }
-	void inline sync() { loadSync(true); }
+	void load() { loadSync(false); }
+	void sync() { loadSync(true); }
 
 public:
-	static inline int animation_speed() { return prefs.animation_speed; };
+	static int animation_speed() { return prefs.animation_speed; }
 
 public slots:
 	void set_animation_speed(int value);

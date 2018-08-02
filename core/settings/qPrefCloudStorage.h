@@ -27,23 +27,23 @@ public:
 
 	// Load/Sync local settings (disk) and struct preference
 	void loadSync(bool doSync);
-	void inline load() { loadSync(false); }
-	void inline sync() { loadSync(true); }
+	void load() { loadSync(false); }
+	void sync() { loadSync(true); }
 
 public:
-	static inline QString cloud_base_url() { return prefs.cloud_base_url; }
-	static inline QString cloud_git_url() { return prefs.cloud_git_url; }
-	static inline QString cloud_storage_email() { return prefs.cloud_storage_email; }
-	static inline QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
-	static inline QString cloud_storage_newpassword() { return prefs.cloud_storage_newpassword; }
-	static inline QString cloud_storage_password() { return prefs.cloud_storage_password; }
-	static inline QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
-	static inline int cloud_timeout() { return prefs.cloud_timeout; }
-	static inline int cloud_verification_status() { return prefs.cloud_verification_status; }
-	static inline bool git_local_only() { return prefs.git_local_only; }
-	static inline bool save_password_local() { return prefs.save_password_local; }
-	static inline bool save_userid_local() { return prefs.save_userid_local; }
-	static inline QString userid() { return prefs.userid; }
+	static QString cloud_base_url() { return prefs.cloud_base_url; }
+	static QString cloud_git_url() { return prefs.cloud_git_url; }
+	static QString cloud_storage_email() { return prefs.cloud_storage_email; }
+	static QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
+	static QString cloud_storage_newpassword() { return prefs.cloud_storage_newpassword; }
+	static QString cloud_storage_password() { return prefs.cloud_storage_password; }
+	static QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
+	static int cloud_timeout() { return prefs.cloud_timeout; }
+	static int cloud_verification_status() { return prefs.cloud_verification_status; }
+	static bool git_local_only() { return prefs.git_local_only; }
+	static bool save_password_local() { return prefs.save_password_local; }
+	static bool save_userid_local() { return prefs.save_userid_local; }
+	static QString userid() { return prefs.userid; }
 
 public slots:
 	void set_cloud_base_url(const QString &value);
