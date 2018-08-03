@@ -13,6 +13,7 @@
 #include "qPrefFacebook.h"
 #include "qPrefProxy.h"
 #include "qPrefUnit.h"
+#include "qPrefUpdateManager.h"
 
 class qPref : public QObject {
 	Q_OBJECT

@@ -22,6 +22,7 @@ public:
 	friend class qPrefFacebook;
 	friend class qPrefProxy;
 	friend class qPrefUnits;
+	friend class qPrefUpdateManager;
 
 private:
 	static qPrefPrivate *instance();
