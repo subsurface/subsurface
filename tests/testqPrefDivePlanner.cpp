@@ -326,4 +326,119 @@ void TestQPrefDivePlanner::test_multiple()
 	QCOMPARE(tst_direct->safetystop(), true);
 }
 
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	planner->sync();           \
+	planner->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefDivePlanner::test_oldPreferences()
+{
+	auto planner = qPrefDivePlanner::instance();
+	depth_t x;
+
+	planner->set_last_stop(true);
+	planner->set_verbatim_plan(true);
+	planner->set_display_runtime(true);
+	planner->set_display_duration(true);
+	planner->set_display_transitions(true);
+	planner->set_doo2breaks(true);
+	planner->set_drop_stone_mode(true);
+	planner->set_safetystop(true);
+	planner->set_switch_at_req_stop(true);
+
+	planner->set_ascrate75(1);
+	planner->set_ascrate50(2);
+	planner->set_ascratestops(3);
+	planner->set_ascratelast6m(4);
+	planner->set_descrate(5);
+	planner->set_bottompo2(6);
+	planner->set_decopo2(7);
+	x.mm = 8;
+	planner->set_bestmixend(x);
+	planner->set_reserve_gas(9);
+	planner->set_min_switch_duration(10);
+	planner->set_bottomsac(11);
+	planner->set_decosac(12);
+
+	planner->set_planner_deco_mode(BUEHLMANN);
+
+	TEST(planner->last_stop(), true);
+	TEST(planner->verbatim_plan(), true);
+	TEST(planner->display_runtime(), true);
+	TEST(planner->display_duration(), true);
+	TEST(planner->display_transitions(), true);
+	TEST(planner->doo2breaks(), true);
+	TEST(planner->drop_stone_mode(), true);
+	TEST(planner->safetystop(), true);
+	TEST(planner->switch_at_req_stop(), true);
+
+	TEST(planner->ascrate75(), 1);
+	TEST(planner->ascrate50(), 2);
+	TEST(planner->ascratestops(), 3);
+	TEST(planner->ascratelast6m(), 4);
+	TEST(planner->descrate(), 5);
+	TEST(planner->bottompo2(), 6);
+	TEST(planner->decopo2(), 7);
+	TEST(planner->bestmixend().mm, 8);
+	TEST(planner->reserve_gas(), 9);
+	TEST(planner->min_switch_duration(), 10);
+	TEST(planner->bottomsac(), 11);
+	TEST(planner->decosac(), 12);
+
+	TEST(planner->planner_deco_mode(), BUEHLMANN);
+
+	planner->set_last_stop(false);
+	planner->set_verbatim_plan(false);
+	planner->set_display_runtime(false);
+	planner->set_display_duration(false);
+	planner->set_display_transitions(false);
+	planner->set_doo2breaks(false);
+	planner->set_drop_stone_mode(false);
+	planner->set_safetystop(false);
+	planner->set_switch_at_req_stop(false);
+
+	planner->set_ascrate75(11);
+	planner->set_ascrate50(12);
+	planner->set_ascratestops(13);
+	planner->set_ascratelast6m(14);
+	planner->set_descrate(15);
+	planner->set_bottompo2(16);
+	planner->set_decopo2(17);
+	x.mm = 18;
+	planner->set_bestmixend(x);
+	planner->set_reserve_gas(19);
+	planner->set_min_switch_duration(110);
+	planner->set_bottomsac(111);
+	planner->set_decosac(112);
+
+	planner->set_planner_deco_mode(RECREATIONAL);
+
+	TEST(planner->last_stop(), false);
+	TEST(planner->verbatim_plan(), false);
+	TEST(planner->display_runtime(), false);
+	TEST(planner->display_duration(), false);
+	TEST(planner->display_transitions(), false);
+	TEST(planner->doo2breaks(), false);
+	TEST(planner->drop_stone_mode(), false);
+	TEST(planner->safetystop(), false);
+	TEST(planner->switch_at_req_stop(), false);
+
+	TEST(planner->ascrate75(), 11);
+	TEST(planner->ascrate50(), 12);
+	TEST(planner->ascratestops(), 13);
+	TEST(planner->ascratelast6m(), 14);
+	TEST(planner->descrate(), 15);
+	TEST(planner->bottompo2(), 16);
+	TEST(planner->decopo2(), 17);
+	TEST(planner->bestmixend().mm, 18);
+	TEST(planner->reserve_gas(), 19);
+	TEST(planner->min_switch_duration(), 110);
+	TEST(planner->bottomsac(), 111);
+	TEST(planner->decosac(), 112);
+
+	TEST(planner->planner_deco_mode(), RECREATIONAL);
+
+}
+
 QTEST_MAIN(TestQPrefDivePlanner)
