@@ -164,6 +164,7 @@ void register_qml_types()
 	REGISTER_TYPE(qPrefFacebook, "SsrfFacebookPrefs");
 	REGISTER_TYPE(qPrefProxy, "SsrfProxyPrefs");
 	REGISTER_TYPE(qPrefUnits, "SsrfUnitPrefs");
+	REGISTER_TYPE(qPrefUpdateManager, "SsrfUpdateManagerPrefs");
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE
