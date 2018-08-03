@@ -87,6 +87,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefPrivate.cpp \
 	../../core/settings/qPrefProxy.cpp \
 	../../core/settings/qPrefUnit.cpp \
+	../../core/settings/qPrefUpdateManager.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
 	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
@@ -203,6 +204,7 @@ HEADERS += \
 	../../core/settings/qPrefPrivate.h \
 	../../core/settings/qPrefProxy.h \
 	../../core/settings/qPrefUnit.h \
+	../../core/settings/qPrefUpdateManager.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
 	../../core/subsurface-qt/SettingsObjectWrapper.h \
