@@ -504,7 +504,7 @@ void MainWindow::recreateDiveList()
 }
 
 void MainWindow::configureToolbar() {
-	if (selected_dive > 0) {
+	if (current_dive) {
 		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
 		ui.profCalcCeiling->setDisabled(freeDiveMode);
 		ui.profCalcCeiling->setDisabled(freeDiveMode);
@@ -870,7 +870,7 @@ void MainWindow::refreshProfile()
 {
 	showProfile();
 	configureToolbar();
-	graphics()->replot(get_dive(selected_dive));
+	graphics()->replot(current_dive);
 	DivePictureModel::instance()->updateDivePictures();
 }
 
@@ -889,8 +889,8 @@ void MainWindow::planCreated()
 	if (displayed_dive.id == 0) {
 		// we might have added a new dive (so displayed_dive was cleared out by clone_dive()
 		dive_list()->unselectDives();
-		select_dive(dive_table.nr - 1);
-		dive_list()->selectDive(selected_dive);
+		select_dive(get_dive(dive_table.nr - 1));
+		dive_list()->selectDive(get_divenr(current_dive)); // TODO: don't convert dive->idx and back
 		set_dive_nr_for_current_dive();
 	}
 	// make sure our UI is in a consistent state

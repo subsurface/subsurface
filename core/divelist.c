@@ -32,14 +32,18 @@
  * void delete_single_dive(int idx)
  * void add_single_dive(int idx, struct dive *dive)
  * struct dive *merge_two_dives(struct dive *a, struct dive *b)
- * void select_dive(int idx)
- * void deselect_dive(int idx)
+ * void select_dive(struct dive *dive)
+ * void deselect_dive(struct dive *dive)
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
  * void remove_autogen_trips()
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
+<<<<<<< HEAD
  * void delete_dive_from_table(struct dive_table *table, int idx)
+=======
+ * int find_next_visible_dive(timestamp_t when);
+>>>>>>> Undo: select dives after add, remove, merge, split dive commands
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -1058,7 +1062,8 @@ void delete_dive_from_table(struct dive_table *table, int idx)
 
 /* this removes a dive from the dive table and trip-list but doesn't
  * free the resources associated with the dive. It returns a pointer
- * to the unregistered dive. */
+ * to the unregistered dive. The returned dive has the selection-
+ * and hidden-flags cleared. */
 struct dive *unregister_dive(int idx)
 {
 	struct dive *dive = get_dive(idx);
@@ -1068,6 +1073,7 @@ struct dive *unregister_dive(int idx)
 	unregister_dive_from_table(&dive_table, idx);
 	if (dive->selected)
 		amount_selected--;
+	dive->selected = false;
 	return dive;
 }
 
@@ -1079,7 +1085,7 @@ void delete_single_dive(int idx)
 	if (!dive)
 		return; /* this should never happen */
 	if (dive->selected)
-		deselect_dive(idx);
+		deselect_dive(dive);
 	dive = unregister_dive(idx);
 	free_dive(dive);
 }
@@ -1104,6 +1110,7 @@ struct dive **grow_dive_table(struct dive_table *table)
  * ordered reverse-chronologically */
 int dive_get_insertion_index(struct dive *dive)
 {
+	/* we might want to use binary search here */
 	for (int i = 0; i < dive_table.nr; i++) {
 		if (dive->when <= dive_table.dives[i]->when)
 			return i;
@@ -1235,42 +1242,42 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 	return res;
 }
 
-void select_dive(int idx)
+void select_dive(struct dive *dive)
 {
-	struct dive *dive = get_dive(idx);
-	if (dive) {
-		/* never select an invalid dive that isn't displayed */
-		if (!dive->selected) {
-			dive->selected = 1;
-			amount_selected++;
-		}
-		selected_dive = idx;
+	if (dive && !dive->selected) {
+		dive->selected = 1;
+		amount_selected++;
+		current_dive = dive;
 	}
 }
 
-void deselect_dive(int idx)
+void deselect_dive(struct dive *dive)
 {
-	struct dive *dive = get_dive(idx);
+	int idx;
 	if (dive && dive->selected) {
 		dive->selected = 0;
 		if (amount_selected)
 			amount_selected--;
-		if (selected_dive == idx && amount_selected > 0) {
+		if (current_dive == dive && amount_selected > 0) {
 			/* pick a different dive as selected */
+			int selected_dive = idx = get_divenr(dive);
 			while (--selected_dive >= 0) {
 				dive = get_dive(selected_dive);
-				if (dive && dive->selected)
+				if (dive && dive->selected) {
+					current_dive = dive;
 					return;
+				}
 			}
 			selected_dive = idx;
 			while (++selected_dive < dive_table.nr) {
 				dive = get_dive(selected_dive);
-				if (dive && dive->selected)
+				if (dive && dive->selected) {
+					current_dive = dive;
 					return;
+				}
 			}
 		}
-		if (amount_selected == 0)
-			selected_dive = -1;
+		current_dive = NULL;
 	}
 }
 
@@ -1280,7 +1287,7 @@ void deselect_dives_in_trip(struct dive_trip *trip)
 	if (!trip)
 		return;
 	for (dive = trip->dives; dive; dive = dive->next)
-		deselect_dive(get_divenr(dive));
+		deselect_dive(dive);
 }
 
 void select_dives_in_trip(struct dive_trip *trip)
@@ -1290,7 +1297,7 @@ void select_dives_in_trip(struct dive_trip *trip)
 		return;
 	for (dive = trip->dives; dive; dive = dive->next)
 		if (!dive->hidden_by_filter)
-			select_dive(get_divenr(dive));
+			select_dive(dive);
 }
 
 void filter_dive(struct dive *d, bool shown)
@@ -1299,7 +1306,7 @@ void filter_dive(struct dive *d, bool shown)
 		return;
 	d->hidden_by_filter = !shown;
 	if (!shown && d->selected)
-		deselect_dive(get_divenr(d));
+		deselect_dive(d);
 }
 
 
@@ -1610,6 +1617,7 @@ int get_dive_nr_at_idx(int idx)
 
 void set_dive_nr_for_current_dive()
 {
+	int selected_dive = get_divenr(current_dive);
 	if (dive_table.nr == 1)
 		current_dive->number = 1;
 	else if (selected_dive == dive_table.nr - 1 && get_dive(dive_table.nr - 2)->number)
@@ -1718,4 +1726,32 @@ timestamp_t get_surface_interval(timestamp_t when)
 	if (prev_end > when)
 		return 0;
 	return when - prev_end;
+}
+
+/* Find visible dive close to given date. First search towards older,
+ * then newer dives. */
+struct dive *find_next_visible_dive(timestamp_t when)
+{
+	int i, j;
+
+	if (!dive_table.nr)
+		return NULL;
+
+	/* we might want to use binary search here */
+	for (i = 0; i < dive_table.nr; i++) {
+		if (when <= get_dive(i)->when)
+			break;
+	}
+
+	for (j = i - 1; j > 0; j--) {
+		if (!get_dive(j)->hidden_by_filter)
+			return get_dive(j);
+	}
+
+	for (j = i; j < dive_table.nr; j++) {
+		if (!get_dive(j)->hidden_by_filter)
+			return get_dive(j);
+	}
+
+	return NULL;
 }

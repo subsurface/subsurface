@@ -440,6 +440,8 @@ DiveTripModel::DiveTripModel(QObject *parent) :
 	connect(&diveListNotifier, &DiveListNotifier::divesChanged, this, &DiveTripModel::divesChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesMovedBetweenTrips, this, &DiveTripModel::divesMovedBetweenTrips);
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModel::divesTimeChanged);
+	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModel::divesSelected);
+	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModel::divesDeselected);
 }
 
 int DiveTripModel::columnCount(const QModelIndex&) const
@@ -978,7 +980,7 @@ void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive
 void DiveTripModel::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &divesIn)
 {
 	// TODO: dives comes sorted by ascending time, but the model is sorted by descending time.
-	// Instead of being smart, simple reverse the input array.
+	// Instead of being smart, simply reverse the input array.
 	QVector<dive *> dives = divesIn;
 	std::reverse(dives.begin(), dives.end());
 
@@ -1033,7 +1035,7 @@ void DiveTripModel::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector
 void DiveTripModel::divesChanged(dive_trip *trip, const QVector<dive *> &divesIn)
 {
 	// TODO: dives comes sorted by ascending time, but the model is sorted by descending time.
-	// Instead of being smart, simple reverse the input array.
+	// Instead of being smart, simply reverse the input array.
 	QVector<dive *> dives = divesIn;
 	std::reverse(dives.begin(), dives.end());
 
@@ -1100,15 +1102,67 @@ void DiveTripModel::divesTimeChanged(dive_trip *trip, timestamp_t delta, const Q
 	// order of the dives don't change. This is indeed the case, as all starting-times where
 	// moved by the same delta.
 
-	// Unfortunately, deleting of the dives clears current_dive, so we have to remember it.
-	// TODO: remove this hack!
-	dive *current = current_dive;
-
 	// Cheating!
 	divesDeleted(trip, false, dives);
 	divesAdded(trip, false, dives);
+}
 
-	// Now, restore current_dive
-	// TODO: remove this hack!
-	selected_dive = get_divenr(current);
+void DiveTripModel::divesSelected(dive_trip *trip, const QVector<dive *> &dives)
+{
+	changeDiveSelection(trip, dives, true);
+}
+
+void DiveTripModel::divesDeselected(dive_trip *trip, const QVector<dive *> &dives)
+{
+	changeDiveSelection(trip, dives, false);
+}
+
+void DiveTripModel::changeDiveSelection(dive_trip *trip, const QVector<dive *> &divesIn, bool select)
+{
+	// TODO: dives comes sorted by ascending time, but the model is sorted by descending time.
+	// Instead of being smart, simply reverse the input array.
+	QVector<dive *> dives = divesIn;
+	std::reverse(dives.begin(), dives.end());
+
+	// We got a number of dives that have been selected. Turn this into QModelIndexes and
+	// emit a signal, so that views can change the selection.
+	QVector<QModelIndex> indexes;
+	indexes.reserve(dives.count());
+
+	if (!trip || currentLayout == LIST) {
+		// Either this is outside of a trip or we're in list mode.
+		// Since both lists are sorted, we can do this linearly. Perhaps a binary search
+		// would be better?
+		int j = 0; // Index in items array
+		for (int i = 0; i < dives.size(); ++i) {
+			while (j < (int)items.size() && !items[j].isDive(dives[i]))
+				++j;
+			if (j >= (int)items.size())
+				break;
+			indexes.append(createIndex(j, 0, noParent));
+		}
+	} else {
+		// Find the trip.
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			// We don't know the trip - this shouldn't happen. We seem to have
+			// missed some signals!
+			qWarning() << "DiveTripModel::divesSelected(): unknown trip";
+			return;
+		}
+		// Locate the indices inside the trip.
+		// Since both lists are sorted, we can do this linearly. Perhaps a binary search
+		// would be better?
+		int j = 0; // Index in items array
+		const Item &entry = items[idx];
+		for (int i = 0; i < dives.size(); ++i) {
+			while (j < (int)entry.dives.size() && entry.dives[j] != dives[i])
+				++j;
+			if (j >= (int)entry.dives.size())
+				break;
+			indexes.append(createIndex(j, 0, idx));
+		}
+	}
+
+	emit selectionChanged(indexes, select);
 }

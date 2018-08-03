@@ -1058,11 +1058,11 @@ void MainTab::rejectChanges()
 		MainWindow::instance()->dive_list()->restoreSelection();
 
 	// now make sure that the correct dive is displayed
-	if (selected_dive >= 0)
+	if (current_dive)
 		copy_dive(current_dive, &displayed_dive);
 	else
 		clear_dive(&displayed_dive);
-	updateDiveInfo(selected_dive < 0);
+	updateDiveInfo(!current_dive);
 
 	for (auto widget : extraWidgets) {
 		widget->updateData();

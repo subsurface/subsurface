@@ -4,6 +4,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/divelistview.h"
 #include "core/divelist.h"
+#include "core/display.h" // for amount_selected
 #include "core/subsurface-qt/DiveListNotifier.h"
 
 namespace Command {
@@ -42,8 +43,20 @@ void processByTrip(std::vector<std::pair<dive_trip *, dive *>> &dives, Function 
 // This helper function removes a dive, takes ownership of the dive and adds it to a DiveToAdd structure.
 // It is crucial that dives are added in reverse order of deletion, so the the indices are correctly
 // set and that the trips are added before they are used!
-static DiveToAdd removeDive(struct dive *d)
+DiveToAdd DiveListBase::removeDive(struct dive *d)
 {
+	// If the dive to be removed is selected, we will inform the frontend
+	// later via a signal that the dive changed.
+	if (d->selected)
+		selectionChanged = true;
+
+	// If the dive was the current dive, reset the current dive. The calling
+	// command is responsible of finding a new dive.
+	if (d == current_dive) {
+		selectionChanged = true; // Should have been set above, as current dive is always selected.
+		current_dive = nullptr;
+	}
+
 	DiveToAdd res;
 	res.idx = get_divenr(d);
 	if (res.idx < 0)
@@ -65,7 +78,7 @@ static DiveToAdd removeDive(struct dive *d)
 // This helper function adds a dive and returns ownership to the backend. It may also add a dive trip.
 // It is crucial that dives are added in reverse order of deletion (see comment above)!
 // Returns pointer to added dive (which is owned by the backend!)
-static dive *addDive(DiveToAdd &d)
+dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.tripToAdd)
 		insert_trip_dont_merge(d.tripToAdd.release()); // Return ownership to backend
@@ -74,13 +87,18 @@ static dive *addDive(DiveToAdd &d)
 	dive *res = d.dive.release();		// Give up ownership of dive
 	add_single_dive(d.idx, res);		// Return ownership to backend
 
+	// If the dive to be removed is selected, we will inform the frontend
+	// later via a signal that the dive changed.
+	if (res->selected)
+		selectionChanged = true;
+
 	return res;
 }
 
 // This helper function calls removeDive() on a list of dives to be removed and
 // returns a vector of corresponding DiveToAdd objects, which can later be readded.
 // The passed in vector is cleared.
-static std::vector<DiveToAdd> removeDives(std::vector<dive *> &divesToDelete)
+std::vector<DiveToAdd> DiveListBase::removeDives(std::vector<dive *> &divesToDelete)
 {
 	std::vector<DiveToAdd> res;
 	res.reserve(divesToDelete.size());
@@ -90,7 +108,7 @@ static std::vector<DiveToAdd> removeDives(std::vector<dive *> &divesToDelete)
 	divesToDelete.clear();
 
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
-	// Therefore, collect all dives in a array and sort by trip.
+	// Therefore, collect all dives in an array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
 	dives.reserve(res.size());
 	for (const DiveToAdd &entry: res)
@@ -112,7 +130,7 @@ static std::vector<DiveToAdd> removeDives(std::vector<dive *> &divesToDelete)
 // of dives to be (re)added and returns a vector of the added dives. It does this in reverse
 // order, so that trips are created appropriately and indexing is correct.
 // The passed in vector is cleared.
-static std::vector<dive *> addDives(std::vector<DiveToAdd> &divesToAdd)
+std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 {
 	std::vector<dive *> res;
 	res.reserve(divesToAdd.size());
@@ -289,6 +307,154 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	std::reverse(dives.divesToMove.begin(), dives.divesToMove.end());
 }
 
+// When we initialize the command we don't have to roll-back any selection change
+DiveListBase::DiveListBase() : firstExecution(true)
+{
+}
+
+// Turn current selection into a vector.
+// TODO: This could be made much more efficient if we kept a sorted list of selected dives!
+static std::vector<dive *> getDiveSelection()
+{
+	std::vector<dive *> res;
+	res.reserve(amount_selected);
+
+	int i;
+	dive *d;
+	for_each_dive(i, d) {
+		if (d->selected)
+			res.push_back(d);
+	}
+	return res;
+}
+
+void DiveListBase::initWork()
+{
+	selectionChanged = false;
+}
+
+void DiveListBase::finishWork()
+{
+	if (selectionChanged) // If the selection changed -> tell the frontend
+		emit diveListNotifier.selectionChanged();
+}
+
+// Set the current dive either from a list of selected dives,
+// or a newly selected dive. In both cases, try to select the
+// dive that is newer that is newer than the given date.
+// This mimics the old behavior when the current dive changed.
+static void setClosestCurrentDive(timestamp_t when, const std::vector<dive *> &selection)
+{
+	// Start from back until we get the first dive that is before
+	// the supposed-to-be selected dive. (Note: this mimics the
+	// old behavior when the current dive changed).
+	for (auto it = selection.rbegin(); it < selection.rend(); ++it) {
+		if ((*it)->when > when && !(*it)->hidden_by_filter) {
+			current_dive = *it;
+			return;
+		}
+	}
+
+	// We didn't find a more recent selected dive -> try to
+	// find *any* visible selected dive.
+	for (dive *d: selection) {
+		if (!d->hidden_by_filter) {
+			current_dive = d;
+			return;
+		}
+	}
+
+	// No selected dive is visible! Take the closest dive. Note, this might
+	// return null, but that just means unsetting the current dive (as no
+	// dive is visible anyway).
+	current_dive = find_next_visible_dive(when);
+}
+
+// Rese the selection to the dives of the "selection" vector and send the appropriate signals.
+// Set the current dive to "currentDive". "currentDive" must be an element of "selection" (or
+// null if "seletion" is empty).
+void DiveListBase::restoreSelection(const std::vector<dive *> &selection, dive *currentDive)
+{
+	// To do so, generate vectors of dives to be selected and deselected.
+	// We send signals batched by trip, so keep track of trip/dive pairs.
+	std::vector<std::pair<dive_trip *, dive *>> divesToSelect;
+	std::vector<std::pair<dive_trip *, dive *>> divesToDeselect;
+
+	// TODO: We might want to keep track of selected dives in a more efficient way!
+	int i;
+	dive *d;
+	amount_selected = 0; // We recalculate amount_selected
+	for_each_dive(i, d) {
+		// We only modify dives that are currently visible.
+		if (d->hidden_by_filter) {
+			d->selected = false; // Note, not necessary, just to be sure
+					     // that we get amount_selected right
+			continue;
+		}
+
+		// Search the dive in the list of selected dives.
+		// TODO: By sorting the list in the same way as the backend, this could be made more efficient.
+		bool newState = std::find(selection.begin(), selection.end(), d) != selection.end();
+
+		// TODO: Instead of using select_dive() and deselect_dive(), we set selected directly.
+		// The reason is that deselect() automatically sets a new current dive, which we
+		// don't want, as we set it later anyway.
+		// There is other parts of the C++ code that touches the innards directly, but
+		// ultimately this should be pushed down to C.
+		if (newState && !d->selected) {
+			d->selected = true;
+			++amount_selected;
+			divesToSelect.push_back({ d->divetrip, d });
+		} else if (!newState && d->selected) {
+			d->selected = false;
+			divesToDeselect.push_back({ d->divetrip, d });
+		}
+	}
+
+	// Send the select and deselect signals
+	processByTrip(divesToSelect, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesSelected(trip, divesInTrip);
+	});
+	processByTrip(divesToDeselect, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		emit diveListNotifier.divesDeselected(trip, divesInTrip);
+	});
+
+	bool currentDiveChanged = false;
+	if (current_dive != currentDive) {
+		currentDiveChanged = true;
+
+		// We cannot simply change the currentd dive to the given dive.
+		// It might be hidden by a filter and thus not be selected.
+		if (currentDive->selected)
+			// Current dive is visible and selected. Excellent.
+			current_dive = currentDive;
+		else
+			// Current not visible -> find a different dive.
+			setClosestCurrentDive(currentDive->when, selection);
+		emit diveListNotifier.currentDiveChanged();
+	}
+
+	// If anything changed (selection or current dive), send a final signal.
+	if (!divesToSelect.empty() || !divesToDeselect.empty() || currentDiveChanged)
+		selectionChanged = true;
+}
+
+void DiveListBase::undo()
+{
+	auto marker = diveListNotifier.enterCommand();
+	initWork();
+	undoit();
+	finishWork();
+}
+
+void DiveListBase::redo()
+{
+	auto marker = diveListNotifier.enterCommand();
+	initWork();
+	redoit();
+	finishWork();
+}
+
 AddDive::AddDive(dive *d, bool autogroup)
 {
 	setText(tr("add dive"));
@@ -321,29 +487,30 @@ bool AddDive::workToBeDone()
 	return true;
 }
 
-void AddDive::redo()
+void AddDive::redoit()
 {
-	auto marker = diveListNotifier.enterCommand();
+	// Remember selection so that we can undo it
+	selection = getDiveSelection();
+	currentDive = current_dive;
 
-	int idx = divesToAdd[0].idx;
 	divesToRemove = addDives(divesToAdd);
 	mark_divelist_changed(true);
 
-	// Finally, do the UI stuff:
-	MainWindow::instance()->dive_list()->unselectDives();
-	MainWindow::instance()->dive_list()->selectDive(idx, true);
+	// Select the newly added dive
+	restoreSelection(divesToRemove, divesToRemove[0]);
 
 	// Exit from edit mode, but don't recalculate dive list
 	// TODO: Remove edit mode
 	MainWindow::instance()->refreshDisplay(false);
 }
 
-void AddDive::undo()
+void AddDive::undoit()
 {
-	auto marker = diveListNotifier.enterCommand();
-
-	// Simply remove the dive that was previously added
+	// Simply remove the dive that was previously added...
 	divesToAdd = removeDives(divesToRemove);
+
+	// ...and restore the selection
+	restoreSelection(selection, currentDive);
 
 	// Exit from edit mode, but don't recalculate dive list
 	// TODO: Remove edit mode
@@ -360,18 +527,31 @@ bool DeleteDive::workToBeDone()
 	return !divesToDelete.empty();
 }
 
-void DeleteDive::undo()
+void DeleteDive::undoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	divesToDelete = addDives(divesToAdd);
 	mark_divelist_changed(true);
+
+	// Select all re-added dives and make the first one current
+	dive *currentDive = !divesToDelete.empty() ? divesToDelete[0] : nullptr;
+	restoreSelection(divesToDelete, currentDive);
 }
 
-void DeleteDive::redo()
+void DeleteDive::redoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	divesToAdd = removeDives(divesToDelete);
 	mark_divelist_changed(true);
+
+	// Deselect all dives and select dive that was close to the first deleted dive
+	dive *newCurrent = nullptr;
+	if (!divesToAdd.empty()) {
+		timestamp_t when = divesToAdd[0].dive->when;
+		newCurrent = find_next_visible_dive(when);
+	}
+	if (newCurrent)
+		restoreSelection(std::vector<dive *>{ newCurrent }, newCurrent);
+	else
+		restoreSelection(std::vector<dive *>(), nullptr);
 }
 
 
@@ -381,9 +561,8 @@ ShiftTime::ShiftTime(const QVector<dive *> &changedDives, int amount)
 	setText(tr("shift time of %n dives", "", changedDives.count()));
 }
 
-void ShiftTime::redo()
+void ShiftTime::redoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	for (dive *d: diveList)
 		d->when -= timeChanged;
 
@@ -413,10 +592,10 @@ bool ShiftTime::workToBeDone()
 	return !diveList.isEmpty();
 }
 
-void ShiftTime::undo()
+void ShiftTime::undoit()
 {
-	// Same as redo(), since after redo() we reversed the timeOffset
-	redo();
+	// Same as redoit(), since after redoit() we reversed the timeOffset
+	redoit();
 }
 
 
@@ -425,9 +604,8 @@ RenumberDives::RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumberI
 	setText(tr("renumber %n dive(s)", "", divesToRenumber.count()));
 }
 
-void RenumberDives::undo()
+void RenumberDives::undoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	renumberDives(divesToRenumber);
 	mark_divelist_changed(true);
 }
@@ -437,10 +615,10 @@ bool RenumberDives::workToBeDone()
 	return !divesToRenumber.isEmpty();
 }
 
-void RenumberDives::redo()
+void RenumberDives::redoit()
 {
 	// Redo and undo do the same thing!
-	undo();
+	undoit();
 }
 
 bool TripBase::workToBeDone()
@@ -448,18 +626,17 @@ bool TripBase::workToBeDone()
 	return !divesToMove.divesToMove.empty();
 }
 
-void TripBase::redo()
+void TripBase::redoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	moveDivesBetweenTrips(divesToMove);
 
 	mark_divelist_changed(true);
 }
 
-void TripBase::undo()
+void TripBase::undoit()
 {
 	// Redo and undo do the same thing!
-	redo();
+	redoit();
 }
 
 RemoveDivesFromTrip::RemoveDivesFromTrip(const QVector<dive *> &divesToRemove)
@@ -540,7 +717,7 @@ SplitDives::SplitDives(dive *d, duration_t time)
 		split_dive_dont_insert(d, &new1, &new2) :
 		split_dive_at_time_dont_insert(d, time, &new1, &new2);
 
-	// If this didn't work, reset pointers so that redo() and undo() do nothing
+	// If this didn't work, reset pointers as a mark that nothing is to be done.
 	if (idx < 0) {
 		diveToSplit = nullptr;
 		divesToUnsplit[0] = divesToUnsplit[1];
@@ -561,23 +738,27 @@ bool SplitDives::workToBeDone()
 	return !!diveToSplit;
 }
 
-void SplitDives::redo()
+void SplitDives::redoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	divesToUnsplit[0] = addDive(splitDives[0]);
 	divesToUnsplit[1] = addDive(splitDives[1]);
 	unsplitDive = removeDive(diveToSplit);
 	mark_divelist_changed(true);
+
+	// Select split dives and make first dive current
+	restoreSelection(std::vector<dive *>{ divesToUnsplit[0], divesToUnsplit[1] }, divesToUnsplit[0]);
 }
 
-void SplitDives::undo()
+void SplitDives::undoit()
 {
-	// Note: reverse order with respect to redo()
-	auto marker = diveListNotifier.enterCommand();
+	// Note: reverse order with respect to redoit()
 	diveToSplit = addDive(unsplitDive);
 	splitDives[1] = removeDive(divesToUnsplit[1]);
 	splitDives[0] = removeDive(divesToUnsplit[0]);
 	mark_divelist_changed(true);
+
+	// Select unsplit dive and make it current
+	restoreSelection(std::vector<dive *>{ diveToSplit }, diveToSplit);
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)
@@ -664,20 +845,24 @@ bool MergeDives::workToBeDone()
 	return !!mergedDive.dive;
 }
 
-void MergeDives::redo()
+void MergeDives::redoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	renumberDives(divesToRenumber);
 	diveToUnmerge = addDive(mergedDive);
 	unmergedDives = removeDives(divesToMerge);
+
+	// Select merged dive and make it current
+	restoreSelection(std::vector<dive *>{ diveToUnmerge }, diveToUnmerge);
 }
 
-void MergeDives::undo()
+void MergeDives::undoit()
 {
-	auto marker = diveListNotifier.enterCommand();
 	divesToMerge = addDives(unmergedDives);
 	mergedDive = removeDive(diveToUnmerge);
 	renumberDives(divesToRenumber);
+
+	// Select unmerged dives and make first one current
+	restoreSelection(divesToMerge, divesToMerge[0]);
 }
 
 } // namespace Command

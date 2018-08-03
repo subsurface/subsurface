@@ -44,6 +44,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	setSelectionMode(ExtendedSelection);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
+	connect(DiveTripModel::instance(), &DiveTripModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
 
 	header()->setStretchLastSection(true);
 
@@ -176,23 +177,37 @@ void DiveListView::reset()
 	}
 }
 
+// If items were selected, inform the selection model
+void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes, bool select)
+{
+	MultiFilterSortModel *m = MultiFilterSortModel::instance();
+	QItemSelectionModel *s = selectionModel();
+	auto flags = select ?
+		QItemSelectionModel::Rows | QItemSelectionModel::Select :
+		QItemSelectionModel::Rows | QItemSelectionModel::Deselect;
+	for (const QModelIndex &index: indexes) {
+		// We have to transform the indices into local indices, since
+		// there might be sorting or filtering in effect.
+		QModelIndex localIndex = m->mapFromSource(index);
+
+		// It might be possible that the item is not shown (filter is
+		// in effect). Then we get an invalid index and should ignore
+		// this selection.
+		if (!localIndex.isValid())
+			continue;
+
+		s->select(localIndex, flags);
+	}
+}
+
 // If rows are added, check which of these rows is a trip and expand the first column
 void DiveListView::rowsInserted(const QModelIndex &parent, int start, int end)
 {
 	// First, let the QTreeView do its thing.
 	QTreeView::rowsInserted(parent, start, end);
 
+	// Check for each inserted row whether this is a trip and expand the first column
 	QAbstractItemModel *m = model();
-	QItemSelectionModel *s = selectionModel();
-
-	// Check whether any of the items is selected
-	for (int i = start; i <= end; ++i) {
-		QModelIndex index = m->index(i, 0, parent);
-		if (m->data(index, DiveTripModel::SELECTED_ROLE).toBool())
-			s->select(index, QItemSelectionModel::Select | QItemSelectionModel::Rows);
-	}
-
-	// Now check for each inserted row whether this is a trip and expand the first column
 	if (parent.isValid()) // Trips don't have a parent
 		return;
 	for (int i = start; i <= end; ++i) {
@@ -284,7 +299,7 @@ void DiveListView::clearTripSelection()
 void DiveListView::unselectDives()
 {
 	// make sure we don't try to redraw the dives during the selection change
-	selected_dive = -1;
+	current_dive = nullptr;
 	amount_selected = 0;
 	// clear the Qt selection
 	selectionModel()->clearSelection();
@@ -353,7 +368,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	while (!sortedSelection.isEmpty())
 		selectDive(sortedSelection.takeLast());
 
-	while (selected_dive == -1) {
+	while (!current_dive) {
 		// that can happen if we restored a selection after edit
 		// and the only selected dive is no longer visible because of a filter
 		newSelection--;
@@ -365,7 +380,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 			selectDive(newSelection);
 	}
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
-	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, selected_dive, 2, Qt::MatchRecursive);
+	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, get_divenr(current_dive), 2, Qt::MatchRecursive);
 	if (!idxList.isEmpty()) {
 		QModelIndex idx = idxList.first();
 		if (idx.parent().isValid())
@@ -441,7 +456,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	sortByColumn(sortColumn, currentOrder);
 	if (amount_selected && current_dive != NULL) {
-		selectDive(selected_dive, true);
+		selectDive(get_divenr(current_dive), true);
 	} else {
 		QModelIndex firstDiveOrTrip = m->index(0, 0);
 		if (firstDiveOrTrip.isValid()) {
@@ -567,7 +582,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		if (!dive) // it's a trip!
 			deselect_dives_in_trip((dive_trip_t *)model->data(index, DiveTripModel::TRIP_ROLE).value<void *>());
 		else
-			deselect_dive(get_divenr(dive));
+			deselect_dive(dive);
 	}
 	Q_FOREACH (const QModelIndex &index, newSelected.indexes()) {
 		if (index.column() != 0)
@@ -586,7 +601,7 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 					expand(index);
 			}
 		} else {
-			select_dive(get_divenr(dive));
+			select_dive(dive);
 		}
 	}
 	if (!dontEmitDiveChangedSignal)
@@ -889,7 +904,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	QAction *actionTaken = popup.exec(event->globalPos());
 	if (actionTaken == collapseAction && collapseAction) {
 		this->setAnimated(false);
-		selectDive(selected_dive, true);
+		selectDive(get_divenr(current_dive), true);
 		scrollTo(selectedIndexes().first());
 		this->setAnimated(true);
 	}
