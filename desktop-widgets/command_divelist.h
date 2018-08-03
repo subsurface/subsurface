@@ -38,12 +38,54 @@ struct DivesToTrip
 	std::vector<OwningTripPtr> tripsToAdd;
 };
 
-class AddDive : public Base {
+// All divelist commands derive from a common base class, which has a flag
+// for when then selection changed. In such a case, in the redo() and undo()
+// methods a signal will be sent. The base-class implements redo() and undo(),
+// which resets the flag and sends a signal. Derived classes implement the
+// virtual methods redoit() and undoit() [Yes, the names could be more expressive].
+// Moreover, the class implements helper methods, which set the selectionChanged
+// flag accordingly.
+class DiveListBase : public Base {
+protected:
+	DiveListBase();
+
+	// These are helper functions to add / remove dive from the C-core structures,
+	// which set the selectionChanged flag if the added / removed dive was selected.
+	DiveToAdd removeDive(struct dive *d);
+	dive *addDive(DiveToAdd &d);
+	std::vector<DiveToAdd> removeDives(std::vector<dive *> &divesToDelete);
+	std::vector<dive *> addDives(std::vector<DiveToAdd> &divesToAdd);
+
+	// Set the selection to a given state. Set the selectionChanged flag if anything changed.
+	void restoreSelection(const std::vector<dive *> &selection, dive *currentDive);
+
+	// On first execution, the selections before and after execution will
+	// be remembered. On all further executions, the selection will be reset to
+	// the remembered values.
+	// Note: Therefore, commands should manipulate the selection and send the
+	// corresponding signals only on first execution!
+	bool firstExecution;
+
+	// Commands set this flag if the selection changed on first execution.
+	// Only then, a new the divelist will be scanned again after the command.
+	// If this flag is set on first execution, a selectionChanged signal will
+	// be sent.
+	bool selectionChanged;
+private:
+	void initWork(); // reset selectionChanged flag
+	void finishWork(); // emit signal if selection changed
+	void undo() override;
+	void redo() override;
+	virtual void redoit() = 0;
+	virtual void undoit() = 0;
+};
+
+class AddDive : public DiveListBase {
 public:
 	AddDive(dive *dive, bool autogroup);
 private:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo
@@ -53,14 +95,16 @@ private:
 
 	// For undo
 	std::vector<dive *>	divesToRemove;
+	std::vector<dive *>	selection;
+	dive *			currentDive;
 };
 
-class DeleteDive : public Base {
+class DeleteDive : public DiveListBase {
 public:
 	DeleteDive(const QVector<dive *> &divesToDelete);
 private:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo
@@ -70,12 +114,12 @@ private:
 	std::vector<DiveToAdd> divesToAdd;
 };
 
-class ShiftTime : public Base {
+class ShiftTime : public DiveListBase {
 public:
 	ShiftTime(const QVector<dive *> &changedDives, int amount);
 private:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo and undo
@@ -83,12 +127,12 @@ private:
 	int timeChanged;
 };
 
-class RenumberDives : public Base {
+class RenumberDives : public DiveListBase {
 public:
 	RenumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);
 private:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo and undo: pairs of dive-id / new number
@@ -99,10 +143,10 @@ private:
 // and MergeTrips all do the same thing, just the intialization differs.
 // Therefore, define a base class with the proper data-structures, redo()
 // and undo() functions and derive to specialize the initialization.
-class TripBase : public Base {
+class TripBase : public DiveListBase {
 protected:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo and undo
@@ -127,13 +171,13 @@ struct MergeTrips : public TripBase {
 	MergeTrips(dive_trip *trip1, dive_trip *trip2);
 };
 
-class SplitDives : public Base {
+class SplitDives : public DiveListBase {
 public:
 	// If time is < 0, split at first surface interval
 	SplitDives(dive *d, duration_t time);
 private:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo
@@ -147,12 +191,12 @@ private:
 	dive		*divesToUnsplit[2];
 };
 
-class MergeDives : public Base {
+class MergeDives : public DiveListBase {
 public:
 	MergeDives(const QVector<dive *> &dives);
 private:
-	void undo() override;
-	void redo() override;
+	void undoit() override;
+	void redoit() override;
 	bool workToBeDone() override;
 
 	// For redo

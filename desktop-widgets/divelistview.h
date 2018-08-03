@@ -58,6 +58,7 @@ slots:
 	void shiftTimes();
 	void loadImages();
 	void loadWebImages();
+	void diveSelectionChanged(const QVector<QModelIndex> &indexes, bool select);
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;

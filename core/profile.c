@@ -27,7 +27,7 @@
 #define MAX_PROFILE_DECO 7200
 
 
-int selected_dive = -1; /* careful: 0 is a valid value */
+struct dive *current_dive = NULL;
 unsigned int dc_number = 0;
 
 static struct plot_data *last_pi_entry_new = NULL;

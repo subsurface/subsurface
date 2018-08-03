@@ -36,8 +36,8 @@ extern dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated
 extern void autogroup_dives(void);
 extern struct dive *merge_two_dives(struct dive *a, struct dive *b);
 extern bool consecutive_selected();
-extern void select_dive(int idx);
-extern void deselect_dive(int idx);
+extern void select_dive(struct dive *dive);
+extern void deselect_dive(struct dive *dive);
 extern void select_dives_in_trip(struct dive_trip *trip);
 extern void deselect_dives_in_trip(struct dive_trip *trip);
 extern void filter_dive(struct dive *d, bool shown);
@@ -51,6 +51,7 @@ extern int get_dive_nr_at_idx(int idx);
 extern void set_dive_nr_for_current_dive();
 extern timestamp_t get_surface_interval(timestamp_t when);
 extern void delete_dive_from_table(struct dive_table *table, int idx);
+extern struct dive *find_next_visible_dive(timestamp_t when);
 
 int get_min_datafile_version();
 void reset_min_datafile_version();

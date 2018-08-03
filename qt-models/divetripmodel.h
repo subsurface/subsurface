@@ -109,12 +109,23 @@ public:
 	int rowCount(const QModelIndex &parent) const;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const;
 	QModelIndex parent(const QModelIndex &index) const;
+signals:
+	// The propagation of selection changes is complex.
+	// The control flow of dive-selection goes:
+	// Commands/DiveListNotifier ---(dive */dive_trip *)---> DiveTripModel ---(QModelIndex)---> DiveListView
+	// i.e. The command objects send changes in terms of pointer-to-dives, which the DiveTripModel transforms
+	// into QModelIndexes according to the current view (tree/list). Finally, the DiveListView transforms these
+	// indexes into local indexes according to current sorting/filtering and instructs the QSelectionModel to
+	// perform the appropriate actions.
+	void selectionChanged(const QVector<QModelIndex> &indexes, bool select);
 private slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
 	void divesChanged(dive_trip *trip, const QVector<dive *> &dives);
 	void divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives);
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
+	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
+	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 private:
 	// The model has up to two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
@@ -141,6 +152,9 @@ private:
 	int findDiveIdx(const dive *d) const;			// Find _top_level_ dive
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(timestamp_t when) const;		// Where to insert item with timestamp "when"
+
+	// Select or deselect dives
+	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select);
 
 	// Addition and deletion of dives
 	void addDivesToTrip(int idx, const QVector<dive *> &dives);

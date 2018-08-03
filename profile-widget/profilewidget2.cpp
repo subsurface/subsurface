@@ -559,7 +559,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 #endif
 	if (currentState != ADD && currentState != PLAN) {
 		if (!d) {
-			if (selected_dive == -1)
+			if (!current_dive)
 				return;
 			d = current_dive; // display the current dive
 		}
@@ -1413,7 +1413,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	}
 	QMenu m;
 	bool isDCName = false;
-	if (selected_dive == -1)
+	if (!current_dive)
 		return;
 	// figure out if we are ontop of the dive computer name in the profile
 	QGraphicsItem *sceneItem = itemAt(mapFromGlobal(event->globalPos()));
