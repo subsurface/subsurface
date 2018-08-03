@@ -263,25 +263,25 @@ void TestPreferences::testPreferences()
 	TEST(location->timeThreshold(), 30);
 	TEST(location->distanceThreshold(), 40);
 
-	auto update = pref->update_manager_settings;
+	auto update = qPrefUpdateManager::instance();
 	QDate date = QDate::currentDate();
 
-	update->setDontCheckForUpdates(true);
-	update->setLastVersionUsed("tomaz-1");
-	update->setNextCheck(date);
+	update->set_dont_check_for_updates(true);
+	update->set_last_version_used("tomaz-1");
+	update->set_next_check(date);
 
-	TEST(update->dontCheckForUpdates(), true);
-	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-1"));
-	TEST(update->nextCheck(), date);
+	TEST(update->dont_check_for_updates(), true);
+	TEST(update->last_version_used(), QStringLiteral("tomaz-1"));
+	TEST(update->next_check(), date);
 
 	date = date.addDays(3);
-	update->setDontCheckForUpdates(false);
-	update->setLastVersionUsed("tomaz-2");
-	update->setNextCheck(date);
+	update->set_dont_check_for_updates(false);
+	update->set_last_version_used("tomaz-2");
+	update->set_next_check(date);
 
-	TEST(update->dontCheckForUpdates(), false);
-	TEST(update->lastVersionUsed(), QStringLiteral("tomaz-2"));
-	TEST(update->nextCheck(), date);
+	TEST(update->dont_check_for_updates(), false);
+	TEST(update->last_version_used(), QStringLiteral("tomaz-2"));
+	TEST(update->next_check(), date);
 }
 
 QTEST_MAIN(TestPreferences)

@@ -13,31 +13,6 @@
  * and QWidget frontends. This class will be huge, since
  * I need tons of properties, one for each option. */
 
-class UpdateManagerSettings : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(bool dont_check_for_updates READ dontCheckForUpdates WRITE setDontCheckForUpdates NOTIFY dontCheckForUpdatesChanged)
-	Q_PROPERTY(QString last_version_used READ lastVersionUsed WRITE setLastVersionUsed NOTIFY lastVersionUsedChanged)
-	Q_PROPERTY(QDate next_check READ nextCheck WRITE nextCheckChanged)
-public:
-	UpdateManagerSettings(QObject *parent);
-	bool dontCheckForUpdates() const;
-	bool dontCheckExists() const;
-	QString lastVersionUsed() const;
-	QDate nextCheck() const;
-
-public slots:
-	void setDontCheckForUpdates(bool value);
-	void setLastVersionUsed(const QString& value);
-	void setNextCheck(const QDate& date);
-
-signals:
-	void dontCheckForUpdatesChanged(bool value);
-	void lastVersionUsedChanged(const QString& value);
-	void nextCheckChanged(const QDate& date);
-private:
-	const QString group = QStringLiteral("UpdateManager");
-};
-
 /* Control the state of the Partial Pressure Graphs preferences */
 class PartialPressureGasSettings : public QObject {
 	Q_OBJECT
@@ -366,7 +341,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(qPrefAnimations*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(LocationServiceSettingsObjectWrapper* Location  MEMBER location_settings CONSTANT)
 
-	Q_PROPERTY(UpdateManagerSettings* update MEMBER update_manager_settings CONSTANT)
+	Q_PROPERTY(qPrefUpdateManager* update MEMBER update_manager_settings CONSTANT)
 	Q_PROPERTY(qPrefDiveComputer* dive_computer MEMBER dive_computer_settings CONSTANT)
 public:
 	static SettingsObjectWrapper *instance();
@@ -384,7 +359,7 @@ public:
 	LanguageSettingsObjectWrapper *language_settings;
 	qPrefAnimations *animation_settings;
 	LocationServiceSettingsObjectWrapper *location_settings;
-	UpdateManagerSettings *update_manager_settings;
+	qPrefUpdateManager *update_manager_settings;
 	qPrefDiveComputer *dive_computer_settings;
 
 	void sync();

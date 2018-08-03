@@ -14,17 +14,17 @@ UpdateManager::UpdateManager(QObject *parent) :
 	QObject(parent),
 	isAutomaticCheck(false)
 {
-	auto update_settings = SettingsObjectWrapper::instance()->update_manager_settings;
+	auto update_settings = qPrefUpdateManager::instance();
 
-	if (update_settings->dontCheckForUpdates())
+	if (update_settings->dont_check_for_updates())
 		return;
 
-	if (update_settings->lastVersionUsed() == subsurface_git_version() &&
-	    update_settings->nextCheck() > QDate::currentDate())
+	if (update_settings->last_version_used() == subsurface_git_version() &&
+	    update_settings->next_check() > QDate::currentDate())
 		return;
 
-	update_settings->setLastVersionUsed(subsurface_git_version());
-	update_settings->setNextCheck(QDate::currentDate().addDays(14));
+	update_settings->set_last_version_used(subsurface_git_version());
+	update_settings->set_next_check(QDate::currentDate().addDays(14));
 
 	checkForUpdates(true);
 }
@@ -108,8 +108,8 @@ void UpdateManager::requestReceived()
 		msgbox.exec();
 	}
 	if (isAutomaticCheck) {
-		auto update_settings = SettingsObjectWrapper::instance()->update_manager_settings;
-		if (!update_settings->dontCheckExists()) {
+		auto update_settings = qPrefUpdateManager::instance();
+		if (!update_settings->dont_check_exists()) {
 
 			// we allow an opt out of future checks
 			QMessageBox response(MainWindow::instance());
@@ -121,7 +121,7 @@ void UpdateManager::requestReceived()
 			response.setWindowTitle(tr("Automatic check for updates"));
 			response.setIcon(QMessageBox::Question);
 			response.setWindowModality(Qt::WindowModal);
-			update_settings->setDontCheckForUpdates(response.exec() != QMessageBox::Accepted);
+			update_settings->set_dont_check_for_updates(response.exec() != QMessageBox::Accepted);
 		}
 	}
 }
