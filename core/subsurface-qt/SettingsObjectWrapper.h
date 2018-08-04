@@ -67,7 +67,6 @@ class TechnicalDetailsSettings : public QObject {
 	Q_PROPERTY(bool calcceiling3m    READ calcceiling3m   WRITE setCalcceiling3m   NOTIFY calcceiling3mChanged)
 	Q_PROPERTY(bool calcalltissues   READ calcalltissues  WRITE setCalcalltissues  NOTIFY calcalltissuesChanged)
 	Q_PROPERTY(bool calcndltts       READ calcndltts      WRITE setCalcndltts      NOTIFY calcndlttsChanged)
-	Q_PROPERTY(bool buehlmann        READ buehlmann       WRITE setBuehlmann       NOTIFY buehlmannChanged)
 	Q_PROPERTY(int gflow            READ gflow           WRITE setGflow           NOTIFY gflowChanged)
 	Q_PROPERTY(int gfhigh           READ gfhigh          WRITE setGfhigh          NOTIFY gfhighChanged)
 	Q_PROPERTY(short vpmb_conservatism READ vpmbConservatism WRITE setVpmbConservatism NOTIFY vpmbConservatismChanged)
@@ -98,7 +97,6 @@ public:
 	bool calcceiling3m() const;
 	bool calcalltissues() const;
 	bool calcndltts() const;
-	bool buehlmann() const;
 	int gflow() const;
 	int gfhigh() const;
 	short vpmbConservatism() const;
@@ -127,7 +125,6 @@ public slots:
 	void setCalcceiling3m(bool value);
 	void setCalcalltissues(bool value);
 	void setCalcndltts(bool value);
-	void setBuehlmann(bool value);
 	void setGflow(int value);
 	void setGfhigh(int value);
 	void setVpmbConservatism(short);
@@ -156,7 +153,6 @@ signals:
 	void calcceiling3mChanged(bool value);
 	void calcalltissuesChanged(bool value);
 	void calcndlttsChanged(bool value);
-	void buehlmannChanged(bool value);
 	void gflowChanged(int value);
 	void gfhighChanged(int value);
 	void vpmbConservatismChanged(short value);
