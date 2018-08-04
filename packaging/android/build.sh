@@ -218,7 +218,12 @@ fi
 if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 	mkdir -p libzip-build-"$ARCH"
 	pushd libzip-build-"$ARCH"
-	../libzip/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
+	cmake \
+		-DCMAKE_C_COMPILER="$CC" \
+		-DCMAKE_LINKER="$CC" \
+		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+		-DBUILD_SHARED_LIBS=OFF \
+		../libzip/
 	make
 	make install
 	popd
