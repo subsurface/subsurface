@@ -67,7 +67,7 @@ void PreferencesGraph::syncSettings()
 	auto tech = SettingsObjectWrapper::instance()->techDetails;
 	tech->setModpO2(ui->maxpo2->value());
 	tech->setRedceiling(ui->red_ceiling->isChecked());
-	tech->setBuehlmann(ui->buehlmann->isChecked());
+	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
 	tech->setGflow(ui->gflow->value());
 	tech->setGfhigh(ui->gfhigh->value());
 	tech->setVpmbConservatism(ui->vpmb_conservatism->value());
