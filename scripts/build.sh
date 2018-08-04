@@ -274,7 +274,9 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	pushd libzip
 	mkdir -p build
 	cd build
-	../configure CFLAGS="$OLDER_MAC" --prefix=$INSTALL_ROOT
+	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=$DEBUGRELEASE \
+		-DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT \
+		..
 	make -j4
 	make install
 	popd

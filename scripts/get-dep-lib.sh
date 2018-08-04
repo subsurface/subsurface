@@ -2,7 +2,7 @@
 #
 
 # set version of 3rd party libraries
-CURRENT_LIBZIP="1.2.0"
+CURRENT_LIBZIP="rel-1-5-1"
 CURRENT_LIBGIT2="v0.26.0"
 CURRENT_HIDAPI="hidapi-0.7.0"
 CURRENT_LIBCURL="curl-7_54_1"
@@ -176,7 +176,7 @@ for package in "${PACKAGES[@]}" ; do
 			git_checkout_library openssl $CURRENT_OPENSSL https://github.com/openssl/openssl.git
 			;;
 		libzip)
-			curl_download_library libzip https://subsurface-divelog.org/downloads/ libzip-${CURRENT_LIBZIP}.tar.xz
+			git_checkout_library libzip $CURRENT_LIBZIP https://github.com/nih-at/libzip.git
 			;;
 		libftdi1)
 			curl_download_library libftdi1 https://www.intra2net.com/en/developer/libftdi/download/ libftdi1-${CURRENT_LIBFTDI}.tar.bz2
