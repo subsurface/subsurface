@@ -111,6 +111,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefFacebook.cpp
 	settings/qPrefPrivate.cpp
 	settings/qPrefProxy.cpp
+	settings/qPrefTechnicalDetails.cpp
 	settings/qPrefUnit.cpp
 	settings/qPrefUpdateManager.cpp
 

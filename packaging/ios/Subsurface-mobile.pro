@@ -86,6 +86,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefFacebook.cpp \
 	../../core/settings/qPrefPrivate.cpp \
 	../../core/settings/qPrefProxy.cpp \
+	../../core/settings/qPrefTechnicalDetails.cpp \
 	../../core/settings/qPrefUnit.cpp \
 	../../core/settings/qPrefUpdateManager.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
@@ -203,6 +204,7 @@ HEADERS += \
 	../../core/settings/qPrefFacebook.h \
 	../../core/settings/qPrefPrivate.h \
 	../../core/settings/qPrefProxy.h \
+	../../core/settings/qPrefTechnicalDetails.h \
 	../../core/settings/qPrefUnit.h \
 	../../core/settings/qPrefUpdateManager.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \

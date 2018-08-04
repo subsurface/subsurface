@@ -12,6 +12,7 @@
 #include "qPrefDivePlanner.h"
 #include "qPrefFacebook.h"
 #include "qPrefProxy.h"
+#include "qPrefTechnicalDetails.h"
 #include "qPrefUnit.h"
 #include "qPrefUpdateManager.h"
 

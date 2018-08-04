@@ -21,6 +21,7 @@ public:
 	friend class qPrefDivePlanner;
 	friend class qPrefFacebook;
 	friend class qPrefProxy;
+	friend class qPrefTechnicalDetails;
 	friend class qPrefUnits;
 	friend class qPrefUpdateManager;
 
