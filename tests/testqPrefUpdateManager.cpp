@@ -120,4 +120,33 @@ void TestQPrefUpdateManager::test_multiple()
 	QCOMPARE(tst_direct->dont_check_exists(), false);
 }
 
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	update->sync();           \
+	update->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefUpdateManager::test_oldPreferences()
+{
+	auto update = qPrefUpdateManager::instance();
+	QDate date = QDate::currentDate();
+
+	update->set_dont_check_for_updates(true);
+	update->set_last_version_used("tomaz-1");
+	update->set_next_check(date);
+
+	TEST(update->dont_check_for_updates(), true);
+	TEST(update->last_version_used(), QStringLiteral("tomaz-1"));
+	TEST(update->next_check(), date);
+
+	date = date.addDays(3);
+	update->set_dont_check_for_updates(false);
+	update->set_last_version_used("tomaz-2");
+	update->set_next_check(date);
+
+	TEST(update->dont_check_for_updates(), false);
+	TEST(update->last_version_used(), QStringLiteral("tomaz-2"));
+	TEST(update->next_check(), date);
+}
+
 QTEST_MAIN(TestQPrefUpdateManager)
