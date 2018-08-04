@@ -152,7 +152,11 @@ for ARCH in $ARCHS; do
 	if [ ! -e $PKG_CONFIG_LIBDIR/libzip.pc ] ; then
 		mkdir -p build-ios/libzip-build-$ARCH_NAME
 		pushd build-ios/libzip-build-$ARCH_NAME
-		${SSRF_CLONE}/libzip/configure --host=${BUILDCHAIN} --prefix=${PREFIX} --enable-static --disable-shared
+		cmake -DBUILD_SHARED_LIBS="OFF" \
+			-DCMAKE_TOOLCHAIN_FILE="$TOOLCHAIN_FILE" \
+			-DCMAKE_INSTALL_PREFIX=${PREFIX} \
+			-DCMAKE_PREFIX_PATH=${PREFIX} \
+			${SSRF_CLONE}/libzip
 		make
 		make install
 		popd
