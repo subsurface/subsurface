@@ -198,11 +198,6 @@ bool TechnicalDetailsSettings::calcndltts() const
 	return prefs.calcndltts;
 }
 
-bool TechnicalDetailsSettings::buehlmann() const
-{
-	return prefs.planner_deco_mode == BUEHLMANN;
-}
-
 int TechnicalDetailsSettings::gflow() const
 {
 	return prefs.gflow;
@@ -406,17 +401,6 @@ void TechnicalDetailsSettings::setCalcndltts(bool value)
 	s.setValue("calcndltts", value);
 	prefs.calcndltts = value;
 	emit calcndlttsChanged(value);
-}
-
-void TechnicalDetailsSettings::setBuehlmann(bool value)
-{
-	if (value == (prefs.planner_deco_mode == BUEHLMANN))
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("buehlmann", value);
-	prefs.planner_deco_mode = value ? BUEHLMANN : VPMB;
-	emit buehlmannChanged(value);
 }
 
 void TechnicalDetailsSettings::setGflow(int value)

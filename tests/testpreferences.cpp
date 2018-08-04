@@ -61,8 +61,6 @@ void TestPreferences::testPreferences()
 	TEST(tecDetails->calcalltissues(), true);
 	tecDetails->setCalcndltts(true);
 	TEST(tecDetails->calcndltts(), true);
-	tecDetails->setBuehlmann(true);
-	TEST(tecDetails->buehlmann(), true);
 	tecDetails->setHRgraph(true);
 	TEST(tecDetails->hrgraph(), true);
 	tecDetails->setTankBar(true);
@@ -102,8 +100,6 @@ void TestPreferences::testPreferences()
 	TEST(tecDetails->calcalltissues(), false);
 	tecDetails->setCalcndltts(false);
 	TEST(tecDetails->calcndltts(), false);
-	tecDetails->setBuehlmann(false);
-	TEST(tecDetails->buehlmann(), false);
 	tecDetails->setHRgraph(false);
 	TEST(tecDetails->hrgraph(), false);
 	tecDetails->setTankBar(false);
