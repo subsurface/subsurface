@@ -338,9 +338,10 @@ if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -e "$PKG_CONFIG_LIBDIR/libdivec
 fi
 
 if [ ! -e qt-android-cmake ] ; then
-	git clone https://github.com/LaurentGomila/qt-android-cmake.git
+	git clone https://github.com/dirkhh/qt-android-cmake.git
 else
 	pushd qt-android-cmake
+	git checkout QMLfix
 	git pull
 	popd
 fi
