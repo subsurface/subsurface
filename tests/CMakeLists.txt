@@ -108,6 +108,7 @@ TEST(TestQPrefDiveComputer testqPrefDiveComputer.cpp)
 TEST(TestQPrefDivePlanner testqPrefDivePlanner.cpp)
 TEST(TestQPrefFacebook testqPrefFacebook.cpp)
 TEST(TestQPrefProxy testqPrefProxy.cpp)
+TEST(TestQPrefTechnicalDetails testqPrefTechnicalDetails.cpp)
 TEST(TestQPrefUnits testqPrefUnits.cpp)
 TEST(TestQPrefUpdateManager testqPrefUpdateManager.cpp)
 add_test(NAME TestQML COMMAND $<TARGET_FILE:TestQML> ${SUBSURFACE_SOURCE}/tests)
@@ -135,6 +136,7 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestQPrefDivePlanner
 	TestQPrefFacebook
 	TestQPrefProxy
+	TestQPrefTechnicalDetails
 	TestQPrefUnits
 	TestQPrefUpdateManager
 	TestQML
