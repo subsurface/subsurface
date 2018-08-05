@@ -347,11 +347,11 @@ void ProfileWidget2::setupItemOnScene()
 
 	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSetpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showSCROCpO2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &TechnicalDetailsSettings::showCCRSensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_setpoint_changed, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_scr_ocpo2_changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
+	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
@@ -825,7 +825,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	// so if we are calculation TTS / NDL then let's force that off.
 #ifndef SUBSURFACE_MOBILE
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
-		SettingsObjectWrapper::instance()->techDetails->setCalcndltts(false);
+		SettingsObjectWrapper::instance()->techDetails->set_calcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
 #endif
