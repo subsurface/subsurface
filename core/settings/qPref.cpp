@@ -21,6 +21,7 @@ void qPref::loadSync(bool doSync)
 	qPrefDivePlanner::instance()->loadSync(doSync);
 	// qPrefFaceook does not use disk.
 	qPrefProxy::instance()->loadSync(doSync);
+	qPrefTechnicalDetails::instance()->loadSync(doSync);
 	qPrefUnits::instance()->loadSync(doSync);
 	qPrefUpdateManager::instance()->loadSync(doSync);
 }

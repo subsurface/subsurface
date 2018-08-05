@@ -64,20 +64,20 @@ void PreferencesGraph::syncSettings()
 	pp_gas->setPo2ThresholdMin(ui->po2ThresholdMin->value());
 	pp_gas->setPn2Threshold(ui->pn2Threshold->value());
 
-	auto tech = SettingsObjectWrapper::instance()->techDetails;
-	tech->setModpO2(ui->maxpo2->value());
-	tech->setRedceiling(ui->red_ceiling->isChecked());
+	auto tech = qPrefTechnicalDetails::instance();
+	tech->set_modpO2(ui->maxpo2->value());
+	tech->set_redceiling(ui->red_ceiling->isChecked());
 	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
-	tech->setGflow(ui->gflow->value());
-	tech->setGfhigh(ui->gfhigh->value());
-	tech->setVpmbConservatism(ui->vpmb_conservatism->value());
-	tech->setShowCCRSetpoint(ui->show_ccr_setpoint->isChecked());
-	tech->setShowCCRSensors(ui->show_ccr_sensors->isChecked());
-	tech->setShowSCROCpO2(ui->show_scr_ocpo2->isChecked());
-	tech->setDisplayUnusedTanks(ui->display_unused_tanks->isChecked());
-	tech->setShowAverageDepth(ui->show_average_depth->isChecked());
-	tech->setShowIcd(ui->show_icd->isChecked());
-	tech->setDecoMode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
+	tech->set_gflow(ui->gflow->value());
+	tech->set_gfhigh(ui->gfhigh->value());
+	tech->set_vpmb_conservatism(ui->vpmb_conservatism->value());
+	tech->set_show_ccr_setpoint(ui->show_ccr_setpoint->isChecked());
+	tech->set_show_ccr_sensors(ui->show_ccr_sensors->isChecked());
+	tech->set_show_scr_ocpo2(ui->show_scr_ocpo2->isChecked());
+	tech->set_display_unused_tanks(ui->display_unused_tanks->isChecked());
+	tech->set_show_average_depth(ui->show_average_depth->isChecked());
+	tech->set_show_icd(ui->show_icd->isChecked());
+	tech->set_display_deco_mode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""
