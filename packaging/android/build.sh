@@ -216,6 +216,13 @@ fi
 
 "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
 if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
+	# libzip expects a predefined macro that isn't there for our compiler
+	pushd libzip
+	git reset --hard
+	sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
+	# also, don't deal with manuals and bzip2
+	sed -i 's/ADD_SUBDIRECTORY(man)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
+	popd
 	mkdir -p libzip-build-"$ARCH"
 	pushd libzip-build-"$ARCH"
 	cmake \

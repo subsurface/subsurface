@@ -100,7 +100,6 @@ fi
 
 # FIX FOR ANDROID,
 if [ "$PLATFORM" == "singleAndroid" ] ; then
-	CURRENT_LIBZIP="rel-1-1-3"
 	CURRENT_OPENSSL="OpenSSL_1_0_2o"
 # If changing the openSSL version here, make sure to change it in versions.sh also.
 fi
