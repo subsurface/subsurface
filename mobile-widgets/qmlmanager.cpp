@@ -1003,7 +1003,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QString startpressure, QString endpressure, QString gasmix, QStringList usedCylinder, int rating, int visibility)
+			       QString startpressure, QString endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 
@@ -1056,15 +1056,21 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	}
 	// gasmix for first cylinder
 	if (myDive->firstGas() != gasmix) {
-		int o2 = parseGasMixO2(gasmix);
-		int he = parseGasMixHE(gasmix);
-		// the QML code SHOULD only accept valid gas mixes, but just to make sure
-		if (o2 >= 0 && o2 <= 1000 &&
-		    he >= 0 && he <= 1000 &&
-		    o2 + he <= 1000) {
-			diveChanged = true;
-			d->cylinder[0].gasmix.o2.permille = o2;
-			d->cylinder[0].gasmix.he.permille = he;
+		for ( int i = 0, j = 0 ; j < gasmix.length() ; i++ ) {
+			if (!is_cylinder_used(d, i))
+				continue;
+
+			int o2 = parseGasMixO2(gasmix[j]);
+			int he = parseGasMixHE(gasmix[j]);
+			// the QML code SHOULD only accept valid gas mixes, but just to make sure
+			if (o2 >= 0 && o2 <= 1000 &&
+				he >= 0 && he <= 1000 &&
+				o2 + he <= 1000) {
+				diveChanged = true;
+				d->cylinder[i].gasmix.o2.permille = o2;
+				d->cylinder[i].gasmix.he.permille = he;
+			}
+			j++;
 		}
 	}
 	// info for first cylinder
