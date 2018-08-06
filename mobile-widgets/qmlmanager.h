@@ -155,8 +155,8 @@ public slots:
 	void commitChanges(QString diveId, QString date, QString location, QString gps,
 			   QString duration, QString depth, QString airtemp,
 			   QString watertemp, QString suit, QString buddy,
-			   QString diveMaster, QString weight, QString notes, QString startpressure,
-			   QString endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility);
+			   QString diveMaster, QString weight, QString notes, QStringList startpressure,
+			   QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility);
 	void changesNeedSaving();
 	void openNoCloudRepo();
 	void saveChangesLocal();
