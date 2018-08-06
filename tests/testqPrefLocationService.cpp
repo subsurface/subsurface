@@ -91,4 +91,27 @@ void TestQPrefLocationService::test_multiple()
 	QCOMPARE(tst_direct->time_threshold(), 62);
 }
 
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	location->sync();           \
+	location->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefLocationService::test_oldPreferences()
+{
+	auto location = qPrefLocationService::instance();
+
+	location->set_time_threshold(10);
+	location->set_distance_threshold(20);
+
+	TEST(location->time_threshold(), 10);
+	TEST(location->distance_threshold(), 20);
+
+	location->set_time_threshold(30);
+	location->set_distance_threshold(40);
+
+	TEST(location->time_threshold(), 30);
+	TEST(location->distance_threshold(), 40);
+}
+
 QTEST_MAIN(TestQPrefLocationService)
