@@ -25,6 +25,7 @@ Kirigami.ApplicationWindow {
 	property alias notificationText: manager.notificationText
 	property alias syncToCloud: manager.syncToCloud
 	property alias locationServiceEnabled: manager.locationServiceEnabled
+	property alias pluggedInDeviceName: manager.pluggedInDeviceName
 	property alias showPin: prefs.showPin
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -608,6 +609,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	ThemeTest {
 		id: themetest
 		visible: false
+	}
+
+	onPluggedInDeviceNameChanged: {
+		console.log("Show download page for device " + pluggedInDeviceName);
 	}
 
 	Component.onCompleted: {
