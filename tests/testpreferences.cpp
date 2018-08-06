@@ -146,19 +146,6 @@ void TestPreferences::testPreferences()
 	TEST(language->timeFormatOverride(), true);
 	TEST(language->dateFormatOverride(), true);
 	TEST(language->useSystemLanguage(), true);
-
-	auto location = qPrefLocationService::instance();
-	location->set_time_threshold(10);
-	location->set_distance_threshold(20);
-
-	TEST(location->time_threshold(), 10);
-	TEST(location->distance_threshold(), 20);
-
-	location->set_time_threshold(30);
-	location->set_distance_threshold(40);
-
-	TEST(location->timeThreshold(), 30);
-	TEST(location->distanceThreshold(), 40);
 }
 
 QTEST_MAIN(TestPreferences)
