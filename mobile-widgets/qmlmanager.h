@@ -49,6 +49,7 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool DC_createNewTrip READ DC_createNewTrip WRITE DC_setCreateNewTrip)
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
+	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
 public:
 	QMLManager();
 	~QMLManager();
@@ -86,7 +87,7 @@ public:
 	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
 	Q_INVOKABLE int getDetectedVendorIndex();
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
-public:
+
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
@@ -226,6 +227,7 @@ private:
 	QString m_progressMessage;
 	bool m_btEnabled;
 	void updateAllGlobalLists();
+	QString m_pluggedInDeviceName;
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
@@ -252,6 +254,7 @@ signals:
 	void divemasterListChanged();
 	void locationListChanged();
 	void waitingForPositionChanged();
+	void pluggedInDeviceNameChanged();
 };
 
 #endif
