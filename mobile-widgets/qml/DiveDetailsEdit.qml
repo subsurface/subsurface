@@ -31,9 +31,9 @@ Item {
 	property alias durationText: txtDuration.text
 	property alias depthText: txtDepth.text
 	property alias weightText: txtWeight.text
-	property alias startpressureText0: txtStartPressure0.text
-	property alias endpressureText0: txtEndPressure0.text
 	property var usedGas: []
+	property var endpressure: []
+	property var startpressure: []
 	property alias gpsCheckbox: checkboxGPS.checked
 	property alias suitModel: suitBox.model
 	property alias divemasterModel: divemasterBox.model
@@ -74,22 +74,32 @@ Item {
 		if (usedCyl[0] != null) {
 			usedCyl[0] = cylinderBox0.currentText
 			usedGas[0] = txtGasMix0.text
+			startpressure[0] = txtStartPressure0.text
+			endpressure[0] = txtEndPressure0.text
 		}
 		if (usedCyl[1] != null) {
 			usedCyl[1] = cylinderBox1.currentText
 			usedGas[1] = txtGasMix0.text
+			startpressure[1] = txtStartPressure1.text
+			endpressure[1] = txtEndPressure1.text
 		}
 		if (usedCyl[2] != null) {
 			usedCyl[2] = cylinderBox2.currentText
 			usedGas[2] = txtGasMix0.text
+			startpressure[2] = txtStartPressure2.text
+			endpressure[2] = txtEndPressure2.text
 		}
 		if (usedCyl[3] != null) {
 			usedCyl[3] = cylinderBox3.currentText
 			usedGas[3] = txtGasMix0.text
+			startpressure[3] = txtStartPressure3.text
+			endpressure[3] = txtEndPressure3.text
 		}
 		if (usedCyl[4] != null) {
 			usedCyl[4] = cylinderBox4.currentText
 			usedGas[4] = txtGasMix0.text
+			startpressure[4] = txtStartPressure4.text
+			endpressure[4] = txtEndPressure4.text
 		}
 
 		// apply the changes to the dive_table
@@ -97,8 +107,8 @@ Item {
 				      detailsEdit.depthText, detailsEdit.airtempText, detailsEdit.watertempText,
 				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText, buddyBox.editText,
 				      divemasterBox.currentText != "" ? divemasterBox.currentText : divemasterBox.editText,
-				      detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, usedGas, usedCyl ,
+				      detailsEdit.weightText, detailsEdit.notesText, startpressure,
+				      endpressure, usedGas, usedCyl ,
 				      detailsEdit.rating,
 				      detailsEdit.visibility)
 		// trigger the profile to be redrawn
@@ -377,6 +387,7 @@ Item {
 			}
 			Controls.TextField {
 				id: txtStartPressure0
+				text: startpressure[0] != null ? startpressure[0] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -390,6 +401,7 @@ Item {
 			}
 			Controls.TextField {
 				id: txtEndPressure0
+				text: endpressure[0] != null ? endpressure[0] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -438,6 +450,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtStartPressure1
+				text: startpressure[1] != null ? startpressure[1] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -453,6 +466,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[1] != null ? true : false
 				id: txtEndPressure1
+				text: endpressure[1] != null ? endpressure[1] : null 
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -502,6 +516,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtStartPressure2
+				text: startpressure[2] != null ? startpressure[2] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -517,6 +532,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[2] != null ? true : false
 				id: txtEndPressure2
+				text: endpressure[2] != null ? endpressure[2] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -566,6 +582,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtStartPressure3
+				text: startpressure[3] != null ? startpressure[3] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -581,6 +598,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[3] != null ? true : false
 				id: txtEndPressure3
+				text: endpressure[3] != null ? endpressure[3] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -630,6 +648,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtStartPressure4
+				text: startpressure[4] != null ? startpressure[4] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false
@@ -645,6 +664,7 @@ Item {
 			Controls.TextField {
 				visible: usedCyl[4] != null ? true : false
 				id: txtEndPressure4
+				text: endpressure[4] != null ? endpressure[4] : null
 				Layout.fillWidth: true
 				onEditingFinished: {
 					focus = false

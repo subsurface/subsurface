@@ -1004,7 +1004,7 @@ bool QMLManager::checkDepth(DiveObjectHelper *myDive, dive *d, QString depth)
 // update the dive and return the notes field, stripped of the HTML junk
 void QMLManager::commitChanges(QString diveId, QString date, QString location, QString gps, QString duration, QString depth,
 			       QString airtemp, QString watertemp, QString suit, QString buddy, QString diveMaster, QString weight, QString notes,
-			       QString startpressure, QString endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility)
+			       QStringList startpressure, QStringList endpressure, QStringList gasmix, QStringList usedCylinder, int rating, int visibility)
 {
 	struct dive *d = get_dive_by_uniq_id(diveId.toInt());
 
@@ -1050,10 +1050,17 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	// start and end pressures for first cylinder only
 	if (myDive->startPressure() != startpressure || myDive->endPressure() != endpressure) {
 		diveChanged = true;
-		d->cylinder[0].start.mbar = parsePressureToMbar(startpressure);
-		d->cylinder[0].end.mbar = parsePressureToMbar(endpressure);
-		if (d->cylinder[0].end.mbar > d->cylinder[0].start.mbar)
-			d->cylinder[0].end.mbar = d->cylinder[0].start.mbar;
+		for ( int i = 0, j = 0 ; j < startpressure.length() && j < endpressure.length() ; i++ ) {
+			if (!is_cylinder_used(d, i))
+				continue;
+
+			d->cylinder[i].start.mbar = parsePressureToMbar(startpressure[j]);
+			d->cylinder[i].end.mbar = parsePressureToMbar(endpressure[j]);
+			if (d->cylinder[i].end.mbar > d->cylinder[i].start.mbar)
+				d->cylinder[i].end.mbar = d->cylinder[i].start.mbar;
+
+			j++;
+		}
 	}
 	// gasmix for first cylinder
 	if (myDive->firstGas() != gasmix) {

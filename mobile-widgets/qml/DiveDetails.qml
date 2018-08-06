@@ -33,8 +33,8 @@ Kirigami.Page {
 	property alias suitText: detailsEdit.suitText
 	property alias suitModel: detailsEdit.suitModel
 	property alias weight: detailsEdit.weightText
-	property alias startpressure0: detailsEdit.startpressureText0
-	property alias endpressure0: detailsEdit.endpressureText0
+	property alias startpressure: detailsEdit.startpressure
+	property alias endpressure: detailsEdit.endpressure
 	property alias cylinderIndex0: detailsEdit.cylinderIndex0
 	property alias cylinderIndex1: detailsEdit.cylinderIndex1
 	property alias cylinderIndex2: detailsEdit.cylinderIndex2
@@ -262,8 +262,8 @@ Kirigami.Page {
 			// careful when translating, this text is "magic" in DiveDetailsEdit.qml
 			weight = "cannot edit multiple weight systems"
 		}
-		startpressure0 = currentItem.modelData.dive.startPressure
-		endpressure0 = currentItem.modelData.dive.endPressure
+		startpressure = currentItem.modelData.dive.startPressure
+		endpressure = currentItem.modelData.dive.endPressure
 		usedGas = currentItem.modelData.dive.firstGas
 		usedCyl = currentItem.modelData.dive.getCylinder
 		cylinderIndex0 = currentItem.modelData.dive.cylinderList.indexOf(usedCyl[0])
