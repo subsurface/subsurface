@@ -73,18 +73,23 @@ Item {
 		// join cylinder info from separate string into a list.
 		if (usedCyl[0] != null) {
 			usedCyl[0] = cylinderBox0.currentText
+			usedGas[0] = txtGasMix0.text
 		}
 		if (usedCyl[1] != null) {
 			usedCyl[1] = cylinderBox1.currentText
+			usedGas[1] = txtGasMix0.text
 		}
 		if (usedCyl[2] != null) {
 			usedCyl[2] = cylinderBox2.currentText
+			usedGas[2] = txtGasMix0.text
 		}
 		if (usedCyl[3] != null) {
 			usedCyl[3] = cylinderBox3.currentText
+			usedGas[3] = txtGasMix0.text
 		}
 		if (usedCyl[4] != null) {
 			usedCyl[4] = cylinderBox4.currentText
+			usedGas[4] = txtGasMix0.text
 		}
 
 		// apply the changes to the dive_table
@@ -93,7 +98,7 @@ Item {
 				      suitBox.currentText != "" ? suitBox.currentText : suitBox.editText, buddyBox.editText,
 				      divemasterBox.currentText != "" ? divemasterBox.currentText : divemasterBox.editText,
 				      detailsEdit.weightText, detailsEdit.notesText, detailsEdit.startpressureText,
-				      detailsEdit.endpressureText, detailsEdit.gasmixText, usedCyl ,
+				      detailsEdit.endpressureText, usedGas, usedCyl ,
 				      detailsEdit.rating,
 				      detailsEdit.visibility)
 		// trigger the profile to be redrawn
