@@ -166,176 +166,176 @@ $QMAKE -query
 
 if [ "$QUICK" = "" ] ; then
 
-# don't adjust indentation to make this a more reasonable commit
-# build google maps plugin
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
-# find qmake
-QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
-$QMAKE -query
-QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
-GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
-if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
-    mkdir -p googlemaps-build-"$ARCH"
-    pushd googlemaps-build-"$ARCH"
-    $QMAKE ../googlemaps/googlemaps.pro
-    # on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
-    # since things compile fine with c++11, let's just hack that away
-    # similarly, don't use -Wdata-time
-    sed -i.bak -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
-    make -j4
-    $QMAKE -install qinstall -exe $GOOGLEMAPS_BIN "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN
-    popd
-fi
+	# don't adjust indentation to make this a more reasonable commit
+	# build google maps plugin
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
+	# find qmake
+	QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
+	$QMAKE -query
+	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
+	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
+	if [ ! -e "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] || [ googlemaps/.git/HEAD -nt "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN ] ; then
+	    mkdir -p googlemaps-build-"$ARCH"
+	    pushd googlemaps-build-"$ARCH"
+	    $QMAKE ../googlemaps/googlemaps.pro
+	    # on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
+	    # since things compile fine with c++11, let's just hack that away
+	    # similarly, don't use -Wdata-time
+	    sed -i.bak -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' Makefile
+	    make -j4
+	    $QMAKE -install qinstall -exe $GOOGLEMAPS_BIN "$QT_PLUGINS_PATH"/geoservices/$GOOGLEMAPS_BIN
+	    popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
-if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
-	mkdir -p sqlite-build-"$ARCH"
-	pushd sqlite-build-"$ARCH"
-	../sqlite/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
-	make
-	make install
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . sqlite
+	if [ ! -e "$PKG_CONFIG_LIBDIR/sqlite3.pc" ] ; then
+		mkdir -p sqlite-build-"$ARCH"
+		pushd sqlite-build-"$ARCH"
+		../sqlite/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared
+		make
+		make install
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxml2
-if [ ! -e libxml2/configure ] ; then
-	pushd libxml2
-	autoreconf --install
-	popd
-fi
-if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
-	mkdir -p libxml2-build-"$ARCH"
-	pushd libxml2-build-"$ARCH"
-	../libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared
-	perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
-	perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
-	make
-	make install
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxml2
+	if [ ! -e libxml2/configure ] ; then
+		pushd libxml2
+		autoreconf --install
+		popd
+	fi
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libxml-2.0.pc" ] ; then
+		mkdir -p libxml2-build-"$ARCH"
+		pushd libxml2-build-"$ARCH"
+		../libxml2/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --without-python --without-iconv --enable-static --disable-shared
+		perl -pi -e 's/runtest\$\(EXEEXT\)//' Makefile
+		perl -pi -e 's/testrecurse\$\(EXEEXT\)//' Makefile
+		make
+		make install
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxslt
-if [ ! -e libxslt/configure ] ; then
-	pushd libxslt
-	autoreconf --install
-	popd
-fi
-if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
-	mkdir -p libxslt-build-"$ARCH"
-	pushd libxslt-build-"$ARCH"
-	../libxslt/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --with-libxml-prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared
-	make
-	make install
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libxslt
+	if [ ! -e libxslt/configure ] ; then
+		pushd libxslt
+		autoreconf --install
+		popd
+	fi
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libxslt.pc" ] ; then
+		mkdir -p libxslt-build-"$ARCH"
+		pushd libxslt-build-"$ARCH"
+		../libxslt/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --with-libxml-prefix="$PREFIX" --without-python --without-crypto --enable-static --disable-shared
+		make
+		make install
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
-if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
-	# libzip expects a predefined macro that isn't there for our compiler
-	pushd libzip
-	git reset --hard
-	sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
-	# also, don't deal with manuals and bzip2
-	sed -i 's/ADD_SUBDIRECTORY(man)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
-	popd
-	mkdir -p libzip-build-"$ARCH"
-	pushd libzip-build-"$ARCH"
-	cmake \
-		-DCMAKE_C_COMPILER="$CC" \
-		-DCMAKE_LINKER="$CC" \
-		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
-		-DBUILD_SHARED_LIBS=OFF \
-		../libzip/
-	make
-	make install
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
+		# libzip expects a predefined macro that isn't there for our compiler
+		pushd libzip
+		git reset --hard
+		sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
+		# also, don't deal with manuals and bzip2
+		sed -i 's/ADD_SUBDIRECTORY(man)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
+		popd
+		mkdir -p libzip-build-"$ARCH"
+		pushd libzip-build-"$ARCH"
+		cmake \
+			-DCMAKE_C_COMPILER="$CC" \
+			-DCMAKE_LINKER="$CC" \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DBUILD_SHARED_LIBS=OFF \
+			../libzip/
+		make
+		make install
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
-if [ ! -e openssl-build-"$ARCH" ] ; then
-	mv openssl openssl-build-"$ARCH"
-fi
-if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
-	pushd openssl-build-"$ARCH"
-	perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
-	# Use env to make all these temporary, so they don't pollute later builds.
-	env SYSTEM=android \
-		CROSS_COMPILE=${BUILDCHAIN}- \
-		MACHINE=$OPENSSL_MACHINE \
-		HOSTCC=gcc \
-		CC=gcc \
-		ANDROID_DEV="$PREFIX" \
-		bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
-#	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
-	make depend
-	make
-	# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
-	perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
-	make install_sw
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
+	if [ ! -e openssl-build-"$ARCH" ] ; then
+		mv openssl openssl-build-"$ARCH"
+	fi
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
+		pushd openssl-build-"$ARCH"
+		perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
+		# Use env to make all these temporary, so they don't pollute later builds.
+		env SYSTEM=android \
+			CROSS_COMPILE=${BUILDCHAIN}- \
+			MACHINE=$OPENSSL_MACHINE \
+			HOSTCC=gcc \
+			CC=gcc \
+			ANDROID_DEV="$PREFIX" \
+			bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
+	#	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
+		make depend
+		make
+		# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
+		perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
+		make install_sw
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
-if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
-	# We don't want to find the HTTP_Parser package of the build host by mistake
-	perl -pi -e 's/FIND_PACKAGE\(HTTP_Parser\)/#FIND_PACKAGE(HTTP_Parser)/' libgit2/CMakeLists.txt
-	mkdir -p libgit2-build-"$ARCH"
-	pushd libgit2-build-"$ARCH"
-	cmake \
-		-DCMAKE_C_COMPILER="$CC" \
-		-DCMAKE_LINKER="$CC" \
-		-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
-		-DCMAKE_INSTALL_PREFIX="$PREFIX" \
-		-DCURL=OFF \
-		-DUSE_SSH=OFF \
-		-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
-		-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
-		-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
-		-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
-		../libgit2/
-	make
-	make install
-	# Patch away pkg-config dependency to zlib, its there, i promise
-	perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "$PKG_CONFIG_LIBDIR"/libgit2.pc
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libgit2
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libgit2.pc" ] ; then
+		# We don't want to find the HTTP_Parser package of the build host by mistake
+		perl -pi -e 's/FIND_PACKAGE\(HTTP_Parser\)/#FIND_PACKAGE(HTTP_Parser)/' libgit2/CMakeLists.txt
+		mkdir -p libgit2-build-"$ARCH"
+		pushd libgit2-build-"$ARCH"
+		cmake \
+			-DCMAKE_C_COMPILER="$CC" \
+			-DCMAKE_LINKER="$CC" \
+			-DBUILD_CLAR=OFF -DBUILD_SHARED_LIBS=OFF \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCURL=OFF \
+			-DUSE_SSH=OFF \
+			-DOPENSSL_SSL_LIBRARY="$PREFIX"/lib/libssl.so \
+			-DOPENSSL_CRYPTO_LIBRARY="$PREFIX"/lib/libcrypto.so \
+			-DOPENSSL_INCLUDE_DIR="$PREFIX"/include/openssl \
+			-D_OPENSSL_VERSION="${OPENSSL_VERSION}" \
+			../libgit2/
+		make
+		make install
+		# Patch away pkg-config dependency to zlib, its there, i promise
+		perl -pi -e 's/^(Requires.private:.*)zlib(.*)$/$1 $2/' "$PKG_CONFIG_LIBDIR"/libgit2.pc
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libusb
-if ! grep -q libusb_set_android_open_callback libusb/libusb/libusb.h ; then
-	# Patch in our libusb callback
-	pushd libusb
-	patch -p1 < "$SUBSURFACE_SOURCE"/packaging/android/patches/libusb-android.patch
-	popd
-fi
-if [ ! -e libusb/configure ] ; then
-	pushd libusb
-	mkdir m4
-	autoreconf -i
-	popd
-fi
-if [ ! -e "$PKG_CONFIG_LIBDIR/libusb-1.0.pc" ] ; then
-	mkdir -p libusb-build-"$ARCH"
-	pushd libusb-build-"$ARCH"
-	../libusb/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --disable-udev --enable-system-log
-	# --enable-debug-log
-	make
-	make install
-	popd
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libusb
+	if ! grep -q libusb_set_android_open_callback libusb/libusb/libusb.h ; then
+		# Patch in our libusb callback
+		pushd libusb
+		patch -p1 < "$SUBSURFACE_SOURCE"/packaging/android/patches/libusb-android.patch
+		popd
+	fi
+	if [ ! -e libusb/configure ] ; then
+		pushd libusb
+		mkdir m4
+		autoreconf -i
+		popd
+	fi
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libusb-1.0.pc" ] ; then
+		mkdir -p libusb-build-"$ARCH"
+		pushd libusb-build-"$ARCH"
+		../libusb/configure --host=${BUILDCHAIN} --prefix="$PREFIX" --enable-static --disable-shared --disable-udev --enable-system-log
+		# --enable-debug-log
+		make
+		make install
+		popd
+	fi
 
-"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libftdi1
-if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
-	mkdir -p libftdi1-build-"$ARCH"
-	pushd libftdi1-build-"$ARCH"
-	cmake ../libftdi1 -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
-	make
-	make install
-	popd
-fi
-# Blast away the shared version to force static linking
-if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
-	rm "$PREFIX"/lib/libftdi1.so*
-fi
+	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libftdi1
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libftdi1.pc" ] && [ "$PLATFORM" != "Darwin" ] ; then
+		mkdir -p libftdi1-build-"$ARCH"
+		pushd libftdi1-build-"$ARCH"
+		cmake ../libftdi1 -DCMAKE_C_COMPILER="$CC" -DCMAKE_INSTALL_PREFIX="$PREFIX" -DCMAKE_PREFIX_PATH="$PREFIX" -DSTATICLIBS=ON -DPYTHON_BINDINGS=OFF -DDOCUMENTATION=OFF -DFTDIPP=OFF -DBUILD_TESTS=OFF -DEXAMPLES=OFF -DFTDI_EEPROM=OFF
+		make
+		make install
+		popd
+	fi
+	# Blast away the shared version to force static linking
+	if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
+		rm "$PREFIX"/lib/libftdi1.so*
+	fi
 
 fi # QUICK
 
