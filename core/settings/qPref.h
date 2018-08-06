@@ -11,6 +11,7 @@
 #include "qPrefDiveComputer.h"
 #include "qPrefDivePlanner.h"
 #include "qPrefFacebook.h"
+#include "qPrefLanguage.h"
 #include "qPrefLocationService.h"
 #include "qPrefProxy.h"
 #include "qPrefTechnicalDetails.h"

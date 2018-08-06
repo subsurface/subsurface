@@ -20,6 +20,7 @@ public:
 	friend class qPrefDiveComputer;
 	friend class qPrefDivePlanner;
 	friend class qPrefFacebook;
+	friend class qPrefLanguage;
 	friend class qPrefLocationService;
 	friend class qPrefProxy;
 	friend class qPrefTechnicalDetails;
