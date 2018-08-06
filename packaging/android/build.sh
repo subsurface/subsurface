@@ -41,6 +41,8 @@ ARCH=arm
 # Read build variables
 source subsurface/packaging/android/variables.sh 
 
+QUICK=""
+
 while [ "$#" -gt 0 ] ; do
 	case "$1" in
 		Release|release)
@@ -64,6 +66,14 @@ while [ "$#" -gt 0 ] ; do
 		arm|x86)
 			ARCH=$1
 			shift
+			;;
+		-quick)
+			QUICK="1"
+			shift
+			;;
+		--)
+			shift
+			break
 			;;
 		*)
 			echo "Unknown argument $1"
@@ -152,6 +162,11 @@ fi
 QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
 $QMAKE -query
 
+# if we are just doing a quick rebuild, don't bother with any of the dependencies
+
+if [ "$QUICK" = "" ] ; then
+
+# don't adjust indentation to make this a more reasonable commit
 # build google maps plugin
 "${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
 # find qmake
@@ -322,6 +337,8 @@ if [ -e "$PREFIX/lib/libftdi1.so" ] ; then
 	rm "$PREFIX"/lib/libftdi1.so*
 fi
 
+fi # QUICK
+
 pushd "$SUBSURFACE_SOURCE"
 git submodule update --recursive
 popd
@@ -357,7 +374,9 @@ else
 	SUBSURFACE_MOBILE=ON
 fi
 
-if [ "$SUBSURFACE_MOBILE" = "ON" ] ; then
+# if we are building Subsurface-mobile and this isn't just a quick
+# rebuild, pull kirigami, icons, etc
+if [ "$SUBSURFACE_MOBILE" = "ON" ] && [ "$QUICK" = "" ] ; then
 	pushd "$SUBSURFACE_SOURCE"
 	bash ./scripts/mobilecomponents.sh
 	popd
