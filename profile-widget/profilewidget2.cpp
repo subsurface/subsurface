@@ -89,7 +89,9 @@ static struct _ItemPos {
 
 // Constant describing at which z-level the thumbnails are located.
 // We might add more constants here for easier customability.
+#ifndef SUBSURFACE_MOBILE
 static const double thumbnailBaseZValue = 100.0;
+#endif
 
 ProfileWidget2::ProfileWidget2(QWidget *parent) : QGraphicsView(parent),
 	currentState(INVALID),
