@@ -84,6 +84,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefDiveComputer.cpp \
 	../../core/settings/qPrefDivePlanner.cpp \
 	../../core/settings/qPrefFacebook.cpp \
+	../../core/settings/qPrefLanguage.cpp \
 	../../core/settings/qPrefLocationService.cpp \
 	../../core/settings/qPrefPrivate.cpp \
 	../../core/settings/qPrefProxy.cpp \
@@ -203,6 +204,7 @@ HEADERS += \
 	../../core/settings/qPrefDiveComputer.h \
 	../../core/settings/qPrefDivePlanner.h \
 	../../core/settings/qPrefFacebook.h \
+	../../core/settings/qPrefLanguage.h \
 	../../core/settings/qPrefLocationService.h \
 	../../core/settings/qPrefPrivate.h \
 	../../core/settings/qPrefProxy.h \
