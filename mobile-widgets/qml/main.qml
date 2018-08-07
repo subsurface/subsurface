@@ -612,7 +612,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	}
 
 	onPluggedInDeviceNameChanged: {
-		console.log("Show download page for device " + pluggedInDeviceName);
+		if (detailsWindow.state === 'edit' || detailsWindow.state === 'add') {
+			/* we're in the middle of editing / adding a dive */
+			console.log("Download page requested by Android Intent, but adding/editing dive; no action taken")
+		} else {
+			console.log("Show download page for device " + pluggedInDeviceName)
+			diveList.showDownloadPage()
+		}
 	}
 
 	Component.onCompleted: {
