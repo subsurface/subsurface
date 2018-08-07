@@ -405,14 +405,18 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	function showDownloadPage() {
+		downloadFromDc.dcImportModel.clearTable()
+		stackView.push(downloadFromDc)
+	}
+
 	property QtObject downloadFromDCAction: Kirigami.Action {
 		icon {
 			name: ":/icons/downloadDC"
 			color: subsurfaceTheme.primaryColor
 		}
 		onTriggered: {
-			downloadFromDc.dcImportModel.clearTable()
-			stackView.push(downloadFromDc)
+			showDownloadPage()
 		}
 	}
 
