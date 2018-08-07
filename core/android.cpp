@@ -175,6 +175,9 @@ Java_org_subsurfacedivelog_mobile_SubsurfaceMobileActivity_setDeviceString(JNIEn
 	const char *deviceString = env->GetStringUTFChars(javaDeviceString, NULL);
 	Q_UNUSED (obj)
 	LOG(deviceString);
+#if defined(SUBSURFACE_MOBILE)
+	QMLManager::instance()->showDownloadPage(deviceString);
+#endif
 	env->ReleaseStringUTFChars(javaDeviceString, deviceString);
 	return;
 }

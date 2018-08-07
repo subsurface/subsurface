@@ -1776,3 +1776,10 @@ int QMLManager::getDetectedProductIndex(const QString &currentVendorText)
 {
 	return m_device_data->getDetectedProductIndex(currentVendorText);
 }
+
+void QMLManager::showDownloadPage(QString deviceString)
+{
+	// inform the QML UI that it should show the download page
+	m_pluggedInDeviceName = strdup(qPrintable(deviceString));
+	emit pluggedInDeviceNameChanged();
+}

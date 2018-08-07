@@ -192,7 +192,7 @@ public slots:
 	void quit();
 	void hasLocationSourceChanged();
 	void btRescan();
-
+	void showDownloadPage(QString deviceString);
 
 private:
 	BuddyCompletionModel buddyModel;
