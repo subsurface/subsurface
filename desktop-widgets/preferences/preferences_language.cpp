@@ -82,15 +82,15 @@ void PreferencesLanguage::syncSettings()
 		currentLocale = m->data(languages.first(),Qt::UserRole).toString();
 
 
-	auto lang = SettingsObjectWrapper::instance()->language_settings;
-	lang->setLanguage(currentText);
-	lang->setLangLocale(currentLocale);
-	lang->setUseSystemLanguage(ui->languageSystemDefault->isChecked());
-	lang->setTimeFormatOverride(!ui->timeFormatSystemDefault->isChecked());
-	lang->setDateFormatOverride(!ui->dateFormatSystemDefault->isChecked());
-	lang->setTimeFormat(ui->timeFormatEntry->currentText());
-	lang->setDateFormat(ui->dateFormatEntry->currentText());
-	lang->setDateFormatShort(ui->shortDateFormatEntry->text());
+	auto lang = qPrefLanguage::instance();
+	lang->set_language(currentText);
+	lang->set_lang_locale(currentLocale);
+	lang->set_use_system_language(ui->languageSystemDefault->isChecked());
+	lang->set_time_format_override(!ui->timeFormatSystemDefault->isChecked());
+	lang->set_date_format_override(!ui->dateFormatSystemDefault->isChecked());
+	lang->set_time_format(ui->timeFormatEntry->currentText());
+	lang->set_date_format(ui->dateFormatEntry->currentText());
+	lang->set_date_format_short(ui->shortDateFormatEntry->text());
 	uiLanguage(NULL);
 
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");

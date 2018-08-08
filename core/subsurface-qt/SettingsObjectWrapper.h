@@ -138,51 +138,6 @@ private:
 	const QString group = QStringLiteral("GeneralSettings");
 };
 
-class LanguageSettingsObjectWrapper : public QObject {
-	Q_OBJECT
-	Q_PROPERTY(QString language          READ language           WRITE setLanguage           NOTIFY languageChanged)
-	Q_PROPERTY(QString time_format       READ timeFormat         WRITE setTimeFormat         NOTIFY timeFormatChanged)
-	Q_PROPERTY(QString date_format       READ dateFormat         WRITE setDateFormat         NOTIFY dateFormatChanged)
-	Q_PROPERTY(QString date_format_short READ dateFormatShort    WRITE setDateFormatShort    NOTIFY dateFormatShortChanged)
-	Q_PROPERTY(QString lang_locale       READ langLocale         WRITE setLangLocale         NOTIFY langLocaleChanged)
-	Q_PROPERTY(bool time_format_override READ timeFormatOverride WRITE setTimeFormatOverride NOTIFY timeFormatOverrideChanged)
-	Q_PROPERTY(bool date_format_override READ dateFormatOverride WRITE setDateFormatOverride NOTIFY dateFormatOverrideChanged)
-	Q_PROPERTY(bool use_system_language  READ useSystemLanguage  WRITE setUseSystemLanguage  NOTIFY useSystemLanguageChanged)
-
-public:
-	LanguageSettingsObjectWrapper(QObject *parent);
-	QString language() const;
-	QString langLocale() const;
-	QString timeFormat() const;
-	QString dateFormat() const;
-	QString dateFormatShort() const;
-	bool timeFormatOverride() const;
-	bool dateFormatOverride() const;
-	bool useSystemLanguage() const;
-
-public slots:
-	void  setLangLocale         (const QString& value);
-	void  setLanguage           (const QString& value);
-	void  setTimeFormat         (const QString& value);
-	void  setDateFormat         (const QString& value);
-	void  setDateFormatShort    (const QString& value);
-	void  setTimeFormatOverride (bool value);
-	void  setDateFormatOverride (bool value);
-	void  setUseSystemLanguage  (bool value);
-signals:
-	void languageChanged(const QString& value);
-	void langLocaleChanged(const QString& value);
-	void timeFormatChanged(const QString& value);
-	void dateFormatChanged(const QString& value);
-	void dateFormatShortChanged(const QString& value);
-	void timeFormatOverrideChanged(bool value);
-	void dateFormatOverrideChanged(bool value);
-	void useSystemLanguageChanged(bool value);
-
-private:
-	const QString group = QStringLiteral("Language");
-};
-
 class SettingsObjectWrapper : public QObject {
 	Q_OBJECT
 
@@ -196,7 +151,7 @@ class SettingsObjectWrapper : public QObject {
 	Q_PROPERTY(qPrefUnits*              units            MEMBER unit_settings CONSTANT)
 	Q_PROPERTY(GeneralSettingsObjectWrapper*         general   MEMBER general_settings CONSTANT)
 	Q_PROPERTY(qPrefDisplay*         display   MEMBER display_settings CONSTANT)
-	Q_PROPERTY(LanguageSettingsObjectWrapper*        language  MEMBER language_settings CONSTANT)
+	Q_PROPERTY(qPrefLanguage*        language  MEMBER language_settings CONSTANT)
 	Q_PROPERTY(qPrefAnimations*      animation MEMBER animation_settings CONSTANT)
 	Q_PROPERTY(qPrefLocationService* Location  MEMBER location_settings CONSTANT)
 
@@ -215,7 +170,7 @@ public:
 	qPrefUnits *unit_settings;
 	GeneralSettingsObjectWrapper *general_settings;
 	qPrefDisplay *display_settings;
-	LanguageSettingsObjectWrapper *language_settings;
+	qPrefLanguage *language_settings;
 	qPrefAnimations *animation_settings;
 	qPrefLocationService *location_settings;
 	qPrefUpdateManager *update_manager_settings;
