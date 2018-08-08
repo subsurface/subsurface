@@ -617,7 +617,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 			console.log("Download page requested by Android Intent, but adding/editing dive; no action taken")
 		} else {
 			console.log("Show download page for device " + pluggedInDeviceName)
-			diveList.showDownloadPage()
+			/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
+			var vendorProductConnection = pluggedInDeviceName.split(';')
+			if (vendorProductConnection.length === 3)
+				diveList.showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
+			else
+				diveList.showDownloadPage()
+			console.log("done showing download page")
 		}
 	}
 
