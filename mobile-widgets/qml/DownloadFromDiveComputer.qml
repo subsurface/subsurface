@@ -84,6 +84,12 @@ Kirigami.Page {
 					comboProduct.model = manager.getProductListFromVendor(currentText)
 					if (currentIndex == manager.getDetectedVendorIndex())
 						comboProduct.currentIndex = manager.getDetectedProductIndex(currentText)
+					if (currentText === "Atomic Aquatics") {
+						comboConnection.model = [ qsTr("USB device") ]
+						comboConnection.currentIndex = 0
+					} else {
+						comboConnection.model = connectionListModel
+					}
 				}
 			}
 			Controls.Label { text: qsTr(" Dive Computer:") }
