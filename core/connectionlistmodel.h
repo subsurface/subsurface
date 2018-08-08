@@ -16,6 +16,7 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	void addAddress(const QString address);
 	void removeAllAddresses();
+	int indexOf(QString address);
 private:
 	QStringList m_addresses;
 };

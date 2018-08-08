@@ -50,3 +50,8 @@ void ConnectionListModel::removeAllAddresses()
 	m_addresses.clear();
 	endRemoveRows();
 }
+
+int ConnectionListModel::indexOf(QString address)
+{
+	return m_addresses.indexOf(address);
+}
