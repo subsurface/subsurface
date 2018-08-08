@@ -405,9 +405,15 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	function showDownloadPage() {
+	function showDownloadPage(vendor, product, connection) {
 		downloadFromDc.dcImportModel.clearTable()
 		stackView.push(downloadFromDc)
+		if (vendor !== undefined && product !== undefined && connection !== undefined) {
+			/* set up the correct values on the download page */
+			downloadFromDc.vendor = vendor
+			downloadFromDc.product = product
+			downloadFromDc.connection = connection
+		}
 	}
 
 	property QtObject downloadFromDCAction: Kirigami.Action {
