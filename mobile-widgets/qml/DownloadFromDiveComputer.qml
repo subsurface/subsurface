@@ -189,7 +189,8 @@ Kirigami.Page {
 					text = qsTr("Retry")
 					// strip any BT Name from the address
 					var devName = manager.DC_devName
-					manager.DC_devName = devName.replace(/^(.*) /, "")
+					if (devName != qsTr("USB device"))
+						manager.DC_devName = devName.replace(/^(.*) /, "")
 					manager.appendTextToLog("DCDownloadThread started for " + manager.DC_vendor + " " + manager.DC_product + " on "+ manager.DC_devName)
 					progressBar.visible = true
 					downloadThread.start()
