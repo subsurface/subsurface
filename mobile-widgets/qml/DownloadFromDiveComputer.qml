@@ -164,7 +164,7 @@ Kirigami.Page {
 						manager.DC_bluetoothMode = true
 					else
 						manager.DC_bluetoothMode = false
-					manager.DC_devName = comboConnection.currentText
+					manager.DC_devName = currentText
 				}
 			}
 		}
