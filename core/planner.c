@@ -410,7 +410,7 @@ void add_to_end_of_diveplan(struct diveplan *diveplan, struct divedatapoint *dp)
 		lastdp = &(*lastdp)->next;
 	}
 	*lastdp = dp;
-	if (ldp && dp->time != 0)
+	if (ldp)
 		dp->time += lasttime;
 }
 
