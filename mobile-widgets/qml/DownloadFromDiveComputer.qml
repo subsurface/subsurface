@@ -20,6 +20,9 @@ Kirigami.Page {
 	property bool divesDownloaded: false
 	property bool btEnabled: manager.btEnabled
 	property string btMessage: manager.btEnabled ? "" : qsTr("Bluetooth is not enabled")
+	property alias vendor: comboVendor.currentIndex
+	property alias product: comboProduct.currentIndex
+	property alias connection: comboConnection.currentIndex
 
 	DCDownloadThread {
 		id: downloadThread
