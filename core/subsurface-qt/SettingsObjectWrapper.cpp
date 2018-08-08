@@ -390,148 +390,6 @@ void GeneralSettingsObjectWrapper::setFfmpegExecutable(const QString &value)
 	emit ffmpegExecutableChanged(value);
 }
 
-LanguageSettingsObjectWrapper::LanguageSettingsObjectWrapper(QObject *parent) :
-	QObject(parent)
-{
-}
-
-QString LanguageSettingsObjectWrapper::language() const
-{
-	return prefs.locale.language;
-}
-
-QString LanguageSettingsObjectWrapper::timeFormat() const
-{
-	return prefs.time_format;
-}
-
-QString LanguageSettingsObjectWrapper::dateFormat() const
-{
-	return prefs.date_format;
-}
-
-QString LanguageSettingsObjectWrapper::dateFormatShort() const
-{
-	return prefs.date_format_short;
-}
-
-bool LanguageSettingsObjectWrapper::timeFormatOverride() const
-{
-	return prefs.time_format_override;
-}
-
-bool LanguageSettingsObjectWrapper::dateFormatOverride() const
-{
-	return prefs.date_format_override;
-}
-
-bool LanguageSettingsObjectWrapper::useSystemLanguage() const
-{
-	return prefs.locale.use_system_language;
-}
-
-QString LanguageSettingsObjectWrapper::langLocale() const
-{
-	return prefs.locale.lang_locale;
-}
-
-void LanguageSettingsObjectWrapper::setUseSystemLanguage(bool value)
-{
-	if (value == prefs.locale.use_system_language)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("UseSystemLanguage", value);
-	prefs.locale.use_system_language = value;
-	emit useSystemLanguageChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setLangLocale(const QString &value)
-{
-	if (value == prefs.locale.lang_locale)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("UiLangLocale", value);
-	free((void *)prefs.locale.lang_locale);
-	prefs.locale.lang_locale = copy_qstring(value);
-	emit langLocaleChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setLanguage(const QString& value)
-{
-	if (value == prefs.locale.language)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("UiLanguage", value);
-	free((void *)prefs.locale.language);
-	prefs.locale.language = copy_qstring(value);
-	emit languageChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setTimeFormat(const QString& value)
-{
-	if (value == prefs.time_format)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("time_format", value);
-	free((void *)prefs.time_format);
-	prefs.time_format = copy_qstring(value);
-	emit timeFormatChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setDateFormat(const QString& value)
-{
-	if (value == prefs.date_format)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("date_format", value);
-	free((void *)prefs.date_format);
-	prefs.date_format = copy_qstring(value);
-	emit dateFormatChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setDateFormatShort(const QString& value)
-{
-	if (value == prefs.date_format_short)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("date_format_short", value);
-	free((void *)prefs.date_format_short);
-	prefs.date_format_short = copy_qstring(value);
-	emit dateFormatShortChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setTimeFormatOverride(bool value)
-{
-	if (value == prefs.time_format_override)
-		return;
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("time_format_override", value);
-	prefs.time_format_override = value;
-	emit timeFormatOverrideChanged(value);
-}
-
-void  LanguageSettingsObjectWrapper::setDateFormatOverride(bool value)
-{
-	if (value == prefs.date_format_override)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("date_format_override", value);
-	prefs.date_format_override = value;
-	emit dateFormatOverrideChanged(value);
-}
-
-
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
 	techDetails(new qPrefTechnicalDetails(this)),
@@ -544,7 +402,7 @@ QObject(parent),
 	unit_settings(new qPrefUnits(this)),
 	general_settings(new GeneralSettingsObjectWrapper(this)),
 	display_settings(new qPrefDisplay(this)),
-	language_settings(new LanguageSettingsObjectWrapper(this)),
+	language_settings(new qPrefLanguage(this)),
 	animation_settings(new qPrefAnimations(this)),
 	location_settings(new qPrefLocationService(this)),
 	update_manager_settings(new qPrefUpdateManager(this)),
@@ -601,16 +459,7 @@ void SettingsObjectWrapper::load()
 	qPrefDiveComputer::instance()->load();
 	qPrefUpdateManager::instance()->load();
 
-	s.beginGroup("Language");
-	GET_BOOL("UseSystemLanguage", locale.use_system_language);
-	GET_TXT("UiLanguage", locale.language);
-	GET_TXT("UiLangLocale", locale.lang_locale);
-	GET_TXT("time_format", time_format);
-	GET_TXT("date_format", date_format);
-	GET_TXT("date_format_short", date_format_short);
-	GET_BOOL("time_format_override", time_format_override);
-	GET_BOOL("date_format_override", date_format_override);
-	s.endGroup();
+	qPrefLanguage::instance()->load();
 }
 
 void SettingsObjectWrapper::sync()
