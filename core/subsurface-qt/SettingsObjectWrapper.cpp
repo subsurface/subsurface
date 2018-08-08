@@ -1157,35 +1157,6 @@ void SettingsObjectWrapper::load()
 void SettingsObjectWrapper::sync()
 {
 	qPrefDisplay::instance()->sync();
-
-	QSettings s;
-	s.beginGroup("Planner");
-	s.setValue("last_stop", prefs.last_stop);
-	s.setValue("verbatim_plan", prefs.verbatim_plan);
-	s.setValue("display_duration", prefs.display_duration);
-	s.setValue("display_runtime", prefs.display_runtime);
-	s.setValue("display_transitions", prefs.display_transitions);
-	s.setValue("display_variations", prefs.display_variations);
-	s.setValue("safetystop", prefs.safetystop);
-	s.setValue("reserve_gas", prefs.reserve_gas);
-	s.setValue("ascrate75", prefs.ascrate75);
-	s.setValue("ascrate50", prefs.ascrate50);
-	s.setValue("ascratestops", prefs.ascratestops);
-	s.setValue("ascratelast6m", prefs.ascratelast6m);
-	s.setValue("descrate", prefs.descrate);
-	s.setValue("sacfactor", prefs.sacfactor);
-	s.setValue("problemsolvingtime", prefs.problemsolvingtime);
-	s.setValue("bottompo2", prefs.bottompo2);
-	s.setValue("decopo2", prefs.decopo2);
-	s.setValue("bestmixend", prefs.bestmixend.mm);
-	s.setValue("doo2breaks", prefs.doo2breaks);
-	s.setValue("drop_stone_mode", prefs.drop_stone_mode);
-	s.setValue("switch_at_req_stop", prefs.switch_at_req_stop);
-	s.setValue("min_switch_duration", prefs.min_switch_duration);
-	s.setValue("bottomsac", prefs.bottomsac);
-	s.setValue("decosac", prefs.decosac);
-	s.setValue("deco_mode", int(prefs.planner_deco_mode));
-	s.endGroup();
 }
 
 SettingsObjectWrapper* SettingsObjectWrapper::instance()
