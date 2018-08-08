@@ -151,4 +151,51 @@ void TestQPrefLanguage::test_multiple()
 	QCOMPARE(tst_direct->time_format_override(), true);
 }
 
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	language->sync();           \
+	language->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefLanguage::test_oldPreferences()
+{
+	auto language = qPrefLanguage::instance();
+	language->set_lang_locale("en_US");
+	language->set_language("en");
+	language->set_time_format("hh:mm");
+	language->set_date_format("dd/mm/yy");
+	language->set_date_format_short("dd/mm");
+	language->set_time_format_override(false);
+	language->set_date_format_override(false);
+	language->set_use_system_language(false);
+
+	TEST(language->lang_locale(), QStringLiteral("en_US"));
+	TEST(language->language(), QStringLiteral("en"));
+	TEST(language->time_format(), QStringLiteral("hh:mm"));
+	TEST(language->date_format(), QStringLiteral("dd/mm/yy"));
+	TEST(language->date_format_short(), QStringLiteral("dd/mm"));
+	TEST(language->time_format_override(), false);
+	TEST(language->date_format_override(), false);
+	TEST(language->use_system_language(), false);
+
+	language->set_lang_locale("en_EN");
+	language->set_language("br");
+	language->set_time_format("mm:hh");
+	language->set_date_format("yy/mm/dd");
+	language->set_date_format_short("dd/yy");
+	language->set_time_format_override(true);
+	language->set_date_format_override(true);
+	language->set_use_system_language(true);
+
+	TEST(language->lang_locale(), QStringLiteral("en_EN"));
+	TEST(language->language(), QStringLiteral("br"));
+	TEST(language->time_format(), QStringLiteral("mm:hh"));
+	TEST(language->date_format(), QStringLiteral("yy/mm/dd"));
+	TEST(language->date_format_short(), QStringLiteral("dd/yy"));
+	TEST(language->time_format_override(), true);
+	TEST(language->date_format_override(), true);
+	TEST(language->use_system_language(), true);
+
+}
+
 QTEST_MAIN(TestQPrefLanguage)
