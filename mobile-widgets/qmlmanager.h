@@ -144,6 +144,7 @@ public:
 #endif
 
 public slots:
+	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
 	void savePreferences();
 	void saveCloudCredentials();
