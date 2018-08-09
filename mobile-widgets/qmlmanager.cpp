@@ -1833,7 +1833,8 @@ void QMLManager::showDownloadPage(QString deviceString)
 	} else if (deviceString.contains("mVendorId=1027") &&
 		   (deviceString.contains("mProductId=24577") ||
 		    deviceString.contains("mProductId=24592") ||
-		    deviceString.contains("mProductId=24593"))) {
+		    deviceString.contains("mProductId=24593") ||
+		    deviceString.contains("mProductId=24597"))) {
 		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("mVendorId=1027") &&
 		   deviceString.contains("mProductId=62560")) {
