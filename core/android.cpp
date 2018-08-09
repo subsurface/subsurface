@@ -239,3 +239,15 @@ bool subsurface_user_is_root()
 	return false;
 }
 }
+
+/* called from QML manager */
+void checkPendingIntents()
+{
+	QAndroidJniObject activity = QtAndroid::androidActivity();
+	if(activity.isValid()) {
+		activity.callMethod<void>("checkPendingIntents");
+		qDebug() << "checkPendingIntents ";
+		return;
+	}
+	qDebug() << "checkPendingIntents: Activity not valid";
+}
