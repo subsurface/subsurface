@@ -410,9 +410,12 @@ Kirigami.ScrollablePage {
 		stackView.push(downloadFromDc)
 		if (vendor !== undefined && product !== undefined && connection !== undefined) {
 			/* set up the correct values on the download page */
-			downloadFromDc.vendor = vendor
-			downloadFromDc.product = product
-			downloadFromDc.connection = connection
+			if (vendor !== -1)
+				downloadFromDc.vendor = vendor
+			if (product !== -1)
+				downloadFromDc.product = product
+			if (connection !== -1)
+				downloadFromDc.connection = connection
 		}
 	}
 
