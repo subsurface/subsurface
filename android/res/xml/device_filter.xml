@@ -5,12 +5,16 @@
     <usb-device vendor-id="1027" product-id="24577"/>
     <usb-device vendor-id="1027" product-id="24592"/>
     <usb-device vendor-id="1027" product-id="24593"/>
+    <!-- May be Aqualung custom PID? -->
+    <usb-device vendor-id="1027" product-id="24597"/>
     <!-- Oceanic Custom PID -->
     <usb-device vendor-id="1027" product-id="62560"/>
     <!-- Suunto Custom PID -->
     <usb-device vendor-id="1027" product-id="63104"/>
     <!-- Cressi (Leonardo) Custom PID -->
     <usb-device vendor-id="1027" product-id="34768"/>
+
+    <!-- USB devices -->
     <!-- EON Steel -->
     <usb-device vendor-id="5267" product-id="48"/>
     <!-- EON Steel core -->
@@ -19,4 +23,6 @@
     <usb-device vendor-id="11884" product-id="12801"/>
     <!-- Scubapro Aladin Square -->
     <usb-device vendor-id="49745" product-id="8198"/>
+    <!-- Atomics Aquatics Cobalt -->
+    <usb-device vendor-id="1137" product-id="2184"/>
 </resources>
