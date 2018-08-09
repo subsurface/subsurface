@@ -636,6 +636,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		diveList.opacity = 1
 		rootItem.opacity = 1
 		pageStack.defaultColumnWidth = Kirigami.Units.gridUnit * 28
+		manager.appInitialized()
 	}
 	/* TODO: Verify where opacity went to.
 	Behavior on opacity {

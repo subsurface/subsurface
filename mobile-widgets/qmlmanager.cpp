@@ -1856,3 +1856,15 @@ void QMLManager::showDownloadPage(QString deviceString)
 	m_pluggedInDeviceName = strdup(qPrintable(name));
 	emit pluggedInDeviceNameChanged();
 }
+
+#if defined(Q_OS_ANDROID)
+// implemented in core/android.cpp
+void checkPendingIntents();
+#endif
+
+void QMLManager::appInitialized()
+{
+#if defined(Q_OS_ANDROID)
+	checkPendingIntents();
+#endif
+}
