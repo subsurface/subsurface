@@ -4,6 +4,9 @@
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include <QDebug>
 #include <QRegularExpression>
+#if defined(Q_OS_ANDROID)
+#include "core/subsurface-string.h"
+#endif
 
 QStringList vendorList;
 QHash<QString, QStringList> productList;
@@ -32,8 +35,8 @@ void DownloadThread::run()
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
 	internalData->download_table = &downloadTable;
 #if defined(Q_OS_ANDROID)
-	// on Android we either use BT or we download via FTDI cable
-	if (!internalData->bluetooth_mode)
+	// on Android we either use BT, a USB device, or we download via FTDI cable
+	if (!internalData->bluetooth_mode && (same_string(internalData->devname, "FTDI") || same_string(internalData->devname, "")))
 		internalData->devname = "ftdi";
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
