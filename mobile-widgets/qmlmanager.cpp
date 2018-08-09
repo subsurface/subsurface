@@ -1779,7 +1779,79 @@ int QMLManager::getDetectedProductIndex(const QString &currentVendorText)
 
 void QMLManager::showDownloadPage(QString deviceString)
 {
+	// we pass the indices for the three combo boxes for vendor, product, and connection
+	// to the QML UI
+	// for each of these values '-1' means that no entry should be pre-selected
+	QString name("-1;-1;-1");
+
+	// try to guess the dive computer (or at least vendor) from the string that
+	// we get from the Intent
+	// the first couple we do text based because we know exactly what to look for,
+	// the rest is based on the vendor and product IDs
+	if (deviceString.contains("HeinrichsWeikamp OSTC 3")) {
+		name = QString("%1;%2;%3")
+				.arg(vendorList.indexOf("Heinrichs Weikamp"))
+				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
+				.arg(connectionListModel.indexOf("FTDI"));
+
+	} else if (deviceString.contains("mManufacturerName=ATOMIC AQUATICS") &&
+		   deviceString.contains("mProductName=COBALT")) {
+		if (deviceString.contains("mVersion=2"))
+			name = QString("%1;%2;%3")
+					.arg(vendorList.indexOf("Atomic Aquatics"))
+					.arg(productList["Atomic Aquatics"].indexOf("Cobalt 2"))
+					.arg(connectionListModel.indexOf("USB device"));
+		else
+			name = QString("%1;%2;%3")
+					.arg(vendorList.indexOf("Atomic Aquatics"))
+					.arg(productList["Atomic Aquatics"].indexOf("Cobalt"))
+					.arg(connectionListModel.indexOf("USB device"));
+	} else if (deviceString.contains("mVendorId=5267") &&
+		   deviceString.contains("mProductId=48")) {
+		name = QString("%1;%2;%3")
+				.arg(connectionListModel.indexOf("Suunto"))
+				.arg(productList["Suunto"].indexOf("EON Steel"))
+				.arg(connectionListModel.indexOf("USB device"));
+	} else if (deviceString.contains("mVendorId=5267") &&
+		   deviceString.contains("mProductId=51")) {
+		name = QString("%1;%2;%3")
+				.arg(connectionListModel.indexOf("Suunto"))
+				.arg(productList["Suunto"].indexOf("EON Core"))
+				.arg(connectionListModel.indexOf("USB device"));
+	} else if (deviceString.contains("mVendorId=11884") &&
+		   deviceString.contains("mProductId=12801")) {
+		name = QString("%1;%2;%3")
+				.arg(connectionListModel.indexOf("Scubapro"))
+				.arg(productList["Suunto"].indexOf("G2"))
+				.arg(connectionListModel.indexOf("USB device"));
+	} else if (deviceString.contains("mVendorId=49745") &&
+		   deviceString.contains("mProductId=8198")) {
+		name = QString("%1;%2;%3")
+				.arg(connectionListModel.indexOf("Scubapro"))
+				.arg(productList["Suunto"].indexOf("Aladin Square"))
+				.arg(connectionListModel.indexOf("USB device"));
+	} else if (deviceString.contains("mVendorId=1027") &&
+		   (deviceString.contains("mProductId=24577") ||
+		    deviceString.contains("mProductId=24592") ||
+		    deviceString.contains("mProductId=24593"))) {
+		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("FTDI"));
+	} else if (deviceString.contains("mVendorId=1027") &&
+		   deviceString.contains("mProductId=62560")) {
+		name = QString("%1;-1;%2")
+				.arg(vendorList.indexOf("Oceanic"))
+				.arg(connectionListModel.indexOf("FTDI"));
+	} else if (deviceString.contains("mVendorId=1027") &&
+		   deviceString.contains("mProductId=63104")) {
+		name = QString("%1;-1;%2")
+				.arg(vendorList.indexOf("Suunto"))
+				.arg(connectionListModel.indexOf("FTDI"));
+	} else if (deviceString.contains("mVendorId=1027") &&
+		   deviceString.contains("mProductId=34768")) {
+		name = QString("%1;-1;%2")
+				.arg(vendorList.indexOf("Cressi"))
+				.arg(connectionListModel.indexOf("FTDI"));
+	}
 	// inform the QML UI that it should show the download page
-	m_pluggedInDeviceName = strdup(qPrintable(deviceString));
+	m_pluggedInDeviceName = strdup(qPrintable(name));
 	emit pluggedInDeviceNameChanged();
 }
