@@ -546,18 +546,22 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	// This is called whenever the user navigates using the breadcrumbs in the header
 
 		// disable the left swipe to go back when on the map page
-		stackView.interactive = pageStack.currentItem.objectName !== mapPage.objectName
+		if (pageStack.currentItem === null) {
+			console.log("there's no current page")
+		} else {
+			stackView.interactive = pageStack.currentItem.objectName !== mapPage.objectName
 
-		// is there a better way to reload the map markers instead of doing that
-		// every time the map page is shown - e.g. link to the dive list model somehow?
-		if (pageStack.currentItem.objectName === mapPage.objectName)
-			mapPage.reloadMap()
+			// is there a better way to reload the map markers instead of doing that
+			// every time the map page is shown - e.g. link to the dive list model somehow?
+			if (pageStack.currentItem.objectName === mapPage.objectName)
+				mapPage.reloadMap()
 
-		// In case we land on any page, not being the DiveDetails (which can be
-		// in multiple states, such as add, edit or view), just end the edit/add mode
-		if (pageStack.currentItem.objectName !== "DiveDetails" &&
-				(detailsWindow.state === 'edit' || detailsWindow.state === 'add')) {
+			// In case we land on any page, not being the DiveDetails (which can be
+			// in multiple states, such as add, edit or view), just end the edit/add mode
+			if (pageStack.currentItem.objectName !== "DiveDetails" &&
+					(detailsWindow.state === 'edit' || detailsWindow.state === 'add')) {
 				detailsWindow.endEditMode()
+			}
 		}
 	}
 
