@@ -87,6 +87,7 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefGeocoding.cpp \
 	../../core/settings/qPrefLanguage.cpp \
 	../../core/settings/qPrefLocationService.cpp \
+	../../core/settings/qPrefPartialPressureGas.cpp \
 	../../core/settings/qPrefPrivate.cpp \
 	../../core/settings/qPrefProxy.cpp \
 	../../core/settings/qPrefTechnicalDetails.cpp \
@@ -208,6 +209,7 @@ HEADERS += \
 	../../core/settings/qPrefGeocoding.h \
 	../../core/settings/qPrefLanguage.h \
 	../../core/settings/qPrefLocationService.h \
+	../../core/settings/qPrefPartialPressureGas.h \
 	../../core/settings/qPrefPrivate.h \
 	../../core/settings/qPrefProxy.h \
 	../../core/settings/qPrefTechnicalDetails.h \
