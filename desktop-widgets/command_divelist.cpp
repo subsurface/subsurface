@@ -717,14 +717,18 @@ SplitDives::SplitDives(dive *d, duration_t time)
 		split_dive_dont_insert(d, &new1, &new2) :
 		split_dive_at_time_dont_insert(d, time, &new1, &new2);
 
-	// If this didn't work, reset pointers as a mark that nothing is to be done.
-	if (idx < 0) {
-		diveToSplit = nullptr;
-		divesToUnsplit[0] = divesToUnsplit[1];
+	// If this didn't work, simply return. Empty arrays indicate that nothing is to be done.
+	if (idx < 0)
 		return;
-	}
 
-	diveToSplit = d;
+	// Currently, the core code selects the dive -> this is not what we want, as
+	// we manually manage the selection post-command.
+	// TODO: Reset selection in core.
+	new1->selected = false;
+	new2->selected = false;
+
+	diveToSplit.push_back(d);
+	splitDives.resize(2);
 	splitDives[0].dive.reset(new1);
 	splitDives[0].trip = d->divetrip;
 	splitDives[0].idx = idx;
@@ -735,38 +739,33 @@ SplitDives::SplitDives(dive *d, duration_t time)
 
 bool SplitDives::workToBeDone()
 {
-	return !!diveToSplit;
+	return !diveToSplit.empty();
 }
 
 void SplitDives::redoit()
 {
-	divesToUnsplit[0] = addDive(splitDives[0]);
-	divesToUnsplit[1] = addDive(splitDives[1]);
-	unsplitDive = removeDive(diveToSplit);
+	divesToUnsplit = addDives(splitDives);
+	unsplitDive = removeDives(diveToSplit);
 	mark_divelist_changed(true);
 
 	// Select split dives and make first dive current
-	restoreSelection(std::vector<dive *>{ divesToUnsplit[0], divesToUnsplit[1] }, divesToUnsplit[0]);
+	restoreSelection(divesToUnsplit, divesToUnsplit[0]);
 }
 
 void SplitDives::undoit()
 {
 	// Note: reverse order with respect to redoit()
-	diveToSplit = addDive(unsplitDive);
-	splitDives[1] = removeDive(divesToUnsplit[1]);
-	splitDives[0] = removeDive(divesToUnsplit[0]);
+	diveToSplit = addDives(unsplitDive);
+	splitDives = removeDives(divesToUnsplit);
 	mark_divelist_changed(true);
 
 	// Select unsplit dive and make it current
-	restoreSelection(std::vector<dive *>{ diveToSplit }, diveToSplit);
+	restoreSelection(diveToSplit, diveToSplit[0] );
 }
 
 MergeDives::MergeDives(const QVector <dive *> &dives)
 {
 	setText(tr("merge dive"));
-
-	// We start in redo mode
-	diveToUnmerge = nullptr;
 
 	// Just a safety check - if there's not two or more dives - do nothing
 	// The caller should have made sure that this doesn't happen.
@@ -777,6 +776,11 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 
 	dive_trip *preferred_trip;
 	OwningDivePtr d(merge_dives(dives[0], dives[1], dives[1]->when - dives[0]->when, false, &preferred_trip));
+
+	// Currently, the core code selects the dive -> this is not what we want, as
+	// we manually manage the selection post-command.
+	// TODO: Remove selection code from core.
+	d->selected = false;
 
 	// Set the preferred dive trip, so that for subsequent merges the better trip can be selected
 	d->divetrip = preferred_trip;
@@ -834,31 +838,32 @@ MergeDives::MergeDives(const QVector <dive *> &dives)
 		}
 	}
 
-	mergedDive.dive = std::move(d);
-	mergedDive.idx = get_divenr(dives[0]);
-	mergedDive.trip = preferred_trip;
+	mergedDive.resize(1);
+	mergedDive[0].dive = std::move(d);
+	mergedDive[0].idx = get_divenr(dives[0]);
+	mergedDive[0].trip = preferred_trip;
 	divesToMerge = dives.toStdVector();
 }
 
 bool MergeDives::workToBeDone()
 {
-	return !!mergedDive.dive;
+	return !mergedDive.empty();
 }
 
 void MergeDives::redoit()
 {
 	renumberDives(divesToRenumber);
-	diveToUnmerge = addDive(mergedDive);
+	diveToUnmerge = addDives(mergedDive);
 	unmergedDives = removeDives(divesToMerge);
 
 	// Select merged dive and make it current
-	restoreSelection(std::vector<dive *>{ diveToUnmerge }, diveToUnmerge);
+	restoreSelection(diveToUnmerge, diveToUnmerge[0]);
 }
 
 void MergeDives::undoit()
 {
 	divesToMerge = addDives(unmergedDives);
-	mergedDive = removeDive(diveToUnmerge);
+	mergedDive = removeDives(diveToUnmerge);
 	renumberDives(divesToRenumber);
 
 	// Select unmerged dives and make first one current
