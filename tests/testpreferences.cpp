@@ -57,23 +57,6 @@ void TestPreferences::testPreferences()
 	TEST(pp->po2ThresholdMin(), 4.0);
 	TEST(pp->po2ThresholdMax(), 5.0);
 
-	auto geo = qPrefGeocoding::instance();
-	geo->set_first_taxonomy_category(TC_NONE);
-	geo->set_second_taxonomy_category(TC_OCEAN);
-	geo->set_third_taxonomy_category(TC_COUNTRY);
-
-	TEST(geo->first_taxonomy_category(), TC_NONE);
-	TEST(geo->second_taxonomy_category(), TC_OCEAN);
-	TEST(geo->third_taxonomy_category(), TC_COUNTRY);
-
-	geo->set_first_taxonomy_category(TC_OCEAN);
-	geo->set_second_taxonomy_category(TC_COUNTRY);
-	geo->set_third_taxonomy_category(TC_NONE);
-
-	TEST(geo->first_taxonomy_category(), TC_OCEAN);
-	TEST(geo->second_taxonomy_category(), TC_COUNTRY);
-	TEST(geo->third_taxonomy_category(), TC_NONE);
-
 	auto general = pref->general_settings;
 	general->setDefaultFilename("filename");
 	general->setDefaultCylinder("cylinder_2");
