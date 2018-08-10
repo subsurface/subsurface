@@ -30,8 +30,8 @@ void PreferencesGeoreference::refreshSettings()
 
 void PreferencesGeoreference::syncSettings()
 {
-	auto geocoding = SettingsObjectWrapper::instance()->geocoding;
-	geocoding->setFirstTaxonomyCategory((taxonomy_category) ui->first_item->currentIndex());
-	geocoding->setSecondTaxonomyCategory((taxonomy_category) ui->second_item->currentIndex());
-	geocoding->setThirdTaxonomyCategory((taxonomy_category) ui->third_item->currentIndex());
+	auto geocoding = qPrefGeocoding::instance();
+	geocoding->set_first_taxonomy_category((taxonomy_category) ui->first_item->currentIndex());
+	geocoding->set_second_taxonomy_category((taxonomy_category) ui->second_item->currentIndex());
+	geocoding->set_third_taxonomy_category((taxonomy_category) ui->third_item->currentIndex());
 }
