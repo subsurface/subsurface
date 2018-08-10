@@ -23,6 +23,7 @@ public:
 	friend class qPrefGeocoding;
 	friend class qPrefLanguage;
 	friend class qPrefLocationService;
+	friend class qPrefPartialPressureGas;
 	friend class qPrefProxy;
 	friend class qPrefTechnicalDetails;
 	friend class qPrefUnits;
