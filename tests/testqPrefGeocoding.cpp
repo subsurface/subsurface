@@ -101,4 +101,30 @@ void TestQPrefGeocoding::test_multiple()
 	QCOMPARE(tst->second_taxonomy_category(), TC_OCEAN);
 }
 
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	geo->sync();           \
+	geo->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefGeocoding::test_oldPreferences()
+{
+	auto geo = qPrefGeocoding::instance();
+	geo->set_first_taxonomy_category(TC_NONE);
+	geo->set_second_taxonomy_category(TC_OCEAN);
+	geo->set_third_taxonomy_category(TC_COUNTRY);
+
+	TEST(geo->first_taxonomy_category(), TC_NONE);
+	TEST(geo->second_taxonomy_category(), TC_OCEAN);
+	TEST(geo->third_taxonomy_category(), TC_COUNTRY);
+
+	geo->set_first_taxonomy_category(TC_OCEAN);
+	geo->set_second_taxonomy_category(TC_COUNTRY);
+	geo->set_third_taxonomy_category(TC_NONE);
+
+	TEST(geo->first_taxonomy_category(), TC_OCEAN);
+	TEST(geo->second_taxonomy_category(), TC_COUNTRY);
+	TEST(geo->third_taxonomy_category(), TC_NONE);
+}
+
 QTEST_MAIN(TestQPrefGeocoding)
