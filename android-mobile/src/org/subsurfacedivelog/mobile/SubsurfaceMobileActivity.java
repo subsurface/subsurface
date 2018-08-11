@@ -64,9 +64,8 @@ public class SubsurfaceMobileActivity extends QtActivity
 		}
 	} // onNewIntent
 
-	public void checkPendingIntents(String workingDir) {
+	public void checkPendingIntents() {
 		isInitialized = true;
-		Log.i(TAG + " checkPendingIntents", workingDir);
 		if (isIntentPending) {
 			isIntentPending = false;
 			Log.i(TAG + " checkPendingIntents", "checkPendingIntents: true");
