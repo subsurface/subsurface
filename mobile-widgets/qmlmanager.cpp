@@ -1819,7 +1819,11 @@ void QMLManager::showDownloadPage(QString deviceString)
 				.arg(vendorList.indexOf("Heinrichs Weikamp"))
 				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
 				.arg(connectionListModel.indexOf("FTDI"));
-
+	} else if (deviceString.contains("HeinrichsWeikamp OSTC 2N")) {
+			name = QString("%1;%2;%3")
+					.arg(vendorList.indexOf("Heinrichs Weikamp"))
+					.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 2N"))
+					.arg(connectionListModel.indexOf("FTDI"));
 	} else if (deviceString.contains("mManufacturerName=ATOMIC AQUATICS") &&
 		   deviceString.contains("mProductName=COBALT")) {
 		if (deviceString.contains("mVersion=2")) {
