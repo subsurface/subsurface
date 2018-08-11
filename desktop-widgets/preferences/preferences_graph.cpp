@@ -58,11 +58,11 @@ void PreferencesGraph::syncSettings()
 	general->setPscrRatio(lrint(1000.0 / ui->pscrfactor->value()));
 	general->setAutoRecalculateThumbnails(ui->auto_recalculate_thumbnails->isChecked());
 
-	auto pp_gas = SettingsObjectWrapper::instance()->pp_gas;
-	pp_gas->setPheThreshold(ui->pheThreshold->value());
-	pp_gas->setPo2ThresholdMax(ui->po2ThresholdMax->value());
-	pp_gas->setPo2ThresholdMin(ui->po2ThresholdMin->value());
-	pp_gas->setPn2Threshold(ui->pn2Threshold->value());
+	auto pp_gas = qPrefPartialPressureGas::instance();
+	pp_gas->set_phe_threshold(ui->pheThreshold->value());
+	pp_gas->set_po2_threshold_max(ui->po2ThresholdMax->value());
+	pp_gas->set_po2_threshold_min(ui->po2ThresholdMin->value());
+	pp_gas->set_pn2_threshold(ui->pn2Threshold->value());
 
 	auto tech = qPrefTechnicalDetails::instance();
 	tech->set_modpO2(ui->maxpo2->value());

@@ -24,38 +24,38 @@ void TestPreferences::testPreferences()
 	auto pref = SettingsObjectWrapper::instance();
 	pref->load();
 
-	auto pp = pref->pp_gas;
-	pp->setShowPn2(false);
-	pp->setShowPhe(false);
-	pp->setShowPo2(false);
-	pp->setPo2ThresholdMin(1.0);
-	pp->setPo2ThresholdMax(2.0);
-	pp->setPn2Threshold(3.0);
-	pp->setPheThreshold(4.0);
+	auto pp = qPrefPartialPressureGas::instance();
+	pp->set_pn2(false);
+	pp->set_phe(false);
+	pp->set_po2(false);
+	pp->set_po2_threshold_min(1.0);
+	pp->set_po2_threshold_max(2.0);
+	pp->set_pn2_threshold(3.0);
+	pp->set_phe_threshold(4.0);
 
-	TEST(pp->showPn2(), false);
-	TEST(pp->showPhe(), false);
-	TEST(pp->showPo2(), false);
-	TEST(pp->pn2Threshold(), 3.0);
-	TEST(pp->pheThreshold(), 4.0);
-	TEST(pp->po2ThresholdMin(), 1.0);
-	TEST(pp->po2ThresholdMax(), 2.0);
+	TEST(pp->pn2(), false);
+	TEST(pp->phe(), false);
+	TEST(pp->po2(), false);
+	TEST(pp->pn2_threshold(), 3.0);
+	TEST(pp->phe_threshold(), 4.0);
+	TEST(pp->po2_threshold_min(), 1.0);
+	TEST(pp->po2_threshold_max(), 2.0);
 
-	pp->setShowPn2(true);
-	pp->setShowPhe(true);
-	pp->setShowPo2(true);
-	pp->setPo2ThresholdMin(4.0);
-	pp->setPo2ThresholdMax(5.0);
-	pp->setPn2Threshold(6.0);
-	pp->setPheThreshold(7.0);
+	pp->set_pn2(true);
+	pp->set_phe(true);
+	pp->set_po2(true);
+	pp->set_po2_threshold_min(4.0);
+	pp->set_po2_threshold_max(5.0);
+	pp->set_pn2_threshold(6.0);
+	pp->set_phe_threshold(7.0);
 
-	TEST(pp->showPn2(), true);
-	TEST(pp->showPhe(), true);
-	TEST(pp->showPo2(), true);
-	TEST(pp->pn2Threshold(), 6.0);
-	TEST(pp->pheThreshold(), 7.0);
-	TEST(pp->po2ThresholdMin(), 4.0);
-	TEST(pp->po2ThresholdMax(), 5.0);
+	TEST(pp->pn2(), true);
+	TEST(pp->phe(), true);
+	TEST(pp->po2(), true);
+	TEST(pp->pn2_threshold(), 6.0);
+	TEST(pp->phe_threshold(), 7.0);
+	TEST(pp->po2_threshold_min(), 4.0);
+	TEST(pp->po2_threshold_max(), 5.0);
 
 	auto general = pref->general_settings;
 	general->setDefaultFilename("filename");

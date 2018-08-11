@@ -23,6 +23,7 @@ void qPref::loadSync(bool doSync)
 	qPrefGeocoding::instance()->loadSync(doSync);
 	qPrefLanguage::instance()->loadSync(doSync);
 	qPrefLocationService::instance()->loadSync(doSync);
+	qPrefPartialPressureGas::instance()->loadSync(doSync);
 	qPrefProxy::instance()->loadSync(doSync);
 	qPrefTechnicalDetails::instance()->loadSync(doSync);
 	qPrefUnits::instance()->loadSync(doSync);
