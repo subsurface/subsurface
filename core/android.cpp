@@ -244,7 +244,7 @@ bool subsurface_user_is_root()
 void checkPendingIntents()
 {
 	QAndroidJniObject activity = QtAndroid::androidActivity();
-	if(activity.isValid()) {
+	if (activity.isValid()) {
 		activity.callMethod<void>("checkPendingIntents");
 		qDebug() << "checkPendingIntents ";
 		return;
