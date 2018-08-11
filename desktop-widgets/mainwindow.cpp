@@ -303,9 +303,10 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profTissues,        &QAction::triggered, this, &MainWindow::unsetProfHR);
 	connect(ui.profHR,             &QAction::triggered, this, &MainWindow::unsetProfTissues);
 
-	connect(ui.profPhe, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPhe);
-	connect(ui.profPn2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPn2);
-	connect(ui.profPO2, &QAction::triggered, sWrapper->pp_gas, &PartialPressureGasSettings::setShowPo2);
+	auto pp_gas = qPrefPartialPressureGas::instance();
+	connect(ui.profPhe, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_phe);
+	connect(ui.profPn2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_pn2);
+	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
 
 	connect(sWrapper->techDetails, &qPrefTechnicalDetails::calcalltissues_changed        , graphics(), &ProfileWidget2::actionRequestedReplot);
 	connect(sWrapper->techDetails, &qPrefTechnicalDetails::calcceiling_changed           , graphics(), &ProfileWidget2::actionRequestedReplot);
@@ -322,9 +323,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(sWrapper->techDetails, &qPrefTechnicalDetails::tankbar_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
 	connect(sWrapper->techDetails, &qPrefTechnicalDetails::percentagegraph_changed       , graphics(), &ProfileWidget2::actionRequestedReplot);
 
-	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPheChanged, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPn2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->pp_gas, &PartialPressureGasSettings::showPo2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &qPrefPartialPressureGas::phe_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &qPrefPartialPressureGas::pn2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(sWrapper->pp_gas, &qPrefPartialPressureGas::po2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
 
 	// now let's set up some connections
 	connect(graphics(), &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
@@ -343,9 +344,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	ui.profIncrement3m->setChecked(sWrapper->techDetails->calcceiling3m());
 	ui.profMod->setChecked(sWrapper->techDetails->mod());
 	ui.profNdl_tts->setChecked(sWrapper->techDetails->calcndltts());
-	ui.profPhe->setChecked(sWrapper->pp_gas->showPhe());
-	ui.profPn2->setChecked(sWrapper->pp_gas->showPn2());
-	ui.profPO2->setChecked(sWrapper->pp_gas->showPo2());
+	ui.profPhe->setChecked(pp_gas->phe());
+	ui.profPn2->setChecked(pp_gas->pn2());
+	ui.profPO2->setChecked(pp_gas->po2());
 	ui.profHR->setChecked(sWrapper->techDetails->hrgraph());
 	ui.profRuler->setChecked(sWrapper->techDetails->rulergraph());
 	ui.profSAC->setChecked(sWrapper->techDetails->show_sac());

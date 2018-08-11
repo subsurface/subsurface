@@ -341,9 +341,9 @@ void ProfileWidget2::setupItemOnScene()
 #ifndef SUBSURFACE_MOBILE
 
 	// Visibility Connections
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPheChanged, pheGasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPo2Changed, po2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->pp_gas, &PartialPressureGasSettings::showPn2Changed, pn2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::phe_changed, pheGasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2_changed, po2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pn2_changed, pn2GasItem, &PartialPressureGasItem::setVisible);
 
 	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.

@@ -165,6 +165,7 @@ void register_qml_types()
 	REGISTER_TYPE(qPrefGeocoding, "SsrfGeocodingPrefs");
 	REGISTER_TYPE(qPrefLanguage, "SsrfLanguagePrefs");
 	REGISTER_TYPE(qPrefLocationService, "SsrfLocationServicePrefs");
+	REGISTER_TYPE(qPrefPartialPressureGas, "SsrfPartialPressureGasPrefs");
 	REGISTER_TYPE(qPrefProxy, "SsrfProxyPrefs");
 	REGISTER_TYPE(qPrefTechnicalDetails, "SsrfTechnicalDetailsPrefs");
 	REGISTER_TYPE(qPrefUnits, "SsrfUnitPrefs");

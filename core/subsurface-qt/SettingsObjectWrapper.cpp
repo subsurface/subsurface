@@ -8,131 +8,6 @@
 #include "core/qthelper.h"
 #include "core/prefs-macros.h"
 
-PartialPressureGasSettings::PartialPressureGasSettings(QObject* parent):
-	QObject(parent)
-{
-
-}
-
-bool PartialPressureGasSettings::showPo2() const
-{
-	return prefs.pp_graphs.po2;
-}
-
-bool PartialPressureGasSettings::showPn2() const
-{
-	return prefs.pp_graphs.pn2;
-}
-
-bool PartialPressureGasSettings::showPhe() const
-{
-	return prefs.pp_graphs.phe;
-}
-
-double PartialPressureGasSettings::po2ThresholdMin() const
-{
-	return prefs.pp_graphs.po2_threshold_min;
-}
-
-double PartialPressureGasSettings::po2ThresholdMax() const
-{
-	return prefs.pp_graphs.po2_threshold_max;
-}
-
-
-double PartialPressureGasSettings::pn2Threshold() const
-{
-	return prefs.pp_graphs.pn2_threshold;
-}
-
-double PartialPressureGasSettings::pheThreshold() const
-{
-	return prefs.pp_graphs.phe_threshold;
-}
-
-void PartialPressureGasSettings::setShowPo2(bool value)
-{
-	if (value == prefs.pp_graphs.po2)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("po2graph", value);
-	prefs.pp_graphs.po2 = value;
-	emit showPo2Changed(value);
-}
-
-void PartialPressureGasSettings::setShowPn2(bool value)
-{
-	if (value == prefs.pp_graphs.pn2)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("pn2graph", value);
-	prefs.pp_graphs.pn2 = value;
-	emit showPn2Changed(value);
-}
-
-void PartialPressureGasSettings::setShowPhe(bool value)
-{
-	if (value == prefs.pp_graphs.phe)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("phegraph", value);
-	prefs.pp_graphs.phe = value;
-	emit showPheChanged(value);
-}
-
-void PartialPressureGasSettings::setPo2ThresholdMin(double value)
-{
-	if (value == prefs.pp_graphs.po2_threshold_min)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("po2thresholdmin", value);
-	prefs.pp_graphs.po2_threshold_min = value;
-	emit po2ThresholdMinChanged(value);
-}
-
-void PartialPressureGasSettings::setPo2ThresholdMax(double value)
-{
-	if (value == prefs.pp_graphs.po2_threshold_max)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("po2thresholdmax", value);
-	prefs.pp_graphs.po2_threshold_max = value;
-	emit po2ThresholdMaxChanged(value);
-}
-
-void PartialPressureGasSettings::setPn2Threshold(double value)
-{
-	if (value == prefs.pp_graphs.pn2_threshold)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("pn2threshold", value);
-	prefs.pp_graphs.pn2_threshold = value;
-	emit pn2ThresholdChanged(value);
-}
-
-void PartialPressureGasSettings::setPheThreshold(double value)
-{
-	if (value == prefs.pp_graphs.phe_threshold)
-		return;
-
-	QSettings s;
-	s.beginGroup(group);
-	s.setValue("phethreshold", value);
-	prefs.pp_graphs.phe_threshold = value;
-	emit pheThresholdChanged(value);
-}
 
 GeneralSettingsObjectWrapper::GeneralSettingsObjectWrapper(QObject *parent) :
 	QObject(parent)
@@ -339,7 +214,7 @@ void GeneralSettingsObjectWrapper::setFfmpegExecutable(const QString &value)
 SettingsObjectWrapper::SettingsObjectWrapper(QObject* parent):
 QObject(parent),
 	techDetails(new qPrefTechnicalDetails(this)),
-	pp_gas(new PartialPressureGasSettings(this)),
+	pp_gas(new qPrefPartialPressureGas(this)),
 	facebook(new qPrefFacebook(this)),
 	geocoding(new qPrefGeocoding(this)),
 	proxy(new qPrefProxy(this)),
@@ -364,7 +239,39 @@ void SettingsObjectWrapper::load()
 	uiLanguage(NULL);
 
 	qPrefUnits::instance()->load();
-	qPrefTechnicalDetails::instance()->load();
+	qPrefPartialPressureGas::instance()->load();
+
+	s.beginGroup("TecDetails");
+	GET_BOOL("mod", mod);
+	GET_DOUBLE("modpO2", modpO2);
+	GET_BOOL("ead", ead);
+	GET_BOOL("redceiling", redceiling);
+	GET_BOOL("dcceiling", dcceiling);
+	GET_BOOL("calcceiling", calcceiling);
+	GET_BOOL("calcceiling3m", calcceiling3m);
+	GET_BOOL("calcndltts", calcndltts);
+	GET_BOOL("calcalltissues", calcalltissues);
+	GET_BOOL("hrgraph", hrgraph);
+	GET_BOOL("tankbar", tankbar);
+	GET_BOOL("RulerBar", rulergraph);
+	GET_BOOL("percentagegraph", percentagegraph);
+	GET_INT("gflow", gflow);
+	GET_INT("gfhigh", gfhigh);
+	GET_INT("vpmb_conservatism", vpmb_conservatism);
+	GET_BOOL("gf_low_at_maxdepth", gf_low_at_maxdepth);
+	GET_BOOL("show_ccr_setpoint",show_ccr_setpoint);
+	GET_BOOL("show_ccr_sensors",show_ccr_sensors);
+	GET_BOOL("show_scr_ocpo2",show_scr_ocpo2);
+	GET_BOOL("zoomed_plot", zoomed_plot);
+	set_gf(prefs.gflow, prefs.gfhigh);
+	set_vpmb_conservatism(prefs.vpmb_conservatism);
+	GET_BOOL("show_sac", show_sac);
+	GET_BOOL("display_unused_tanks", display_unused_tanks);
+	GET_BOOL("show_average_depth", show_average_depth);
+	GET_BOOL("show_icd", show_icd);
+	GET_BOOL("show_pictures_in_profile", show_pictures_in_profile);
+	prefs.display_deco_mode =  (deco_mode) s.value("display_deco_mode").toInt();
+	s.endGroup();
 
 	s.beginGroup("GeneralSettings");
 	GET_TXT("default_filename", default_filename);
