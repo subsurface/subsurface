@@ -141,4 +141,47 @@ void TestQPrefPartialPressureGas::test_multiple()
 	QCOMPARE(tst_direct->pn2_threshold(), 2.3);
 }
 
+#define TEST(METHOD, VALUE)      \
+	QCOMPARE(METHOD, VALUE); \
+	pp->sync();           \
+	pp->load();           \
+	QCOMPARE(METHOD, VALUE);
+
+void TestQPrefPartialPressureGas::test_oldPreferences()
+{
+	auto pp = qPrefPartialPressureGas::instance();
+	pp->set_pn2(false);
+	pp->set_phe(false);
+	pp->set_po2(false);
+	pp->set_po2_threshold_min(1.0);
+	pp->set_po2_threshold_max(2.0);
+	pp->set_pn2_threshold(3.0);
+	pp->set_phe_threshold(4.0);
+
+	TEST(pp->pn2(), false);
+	TEST(pp->phe(), false);
+	TEST(pp->po2(), false);
+	TEST(pp->pn2_threshold(), 3.0);
+	TEST(pp->phe_threshold(), 4.0);
+	TEST(pp->po2_threshold_min(), 1.0);
+	TEST(pp->po2_threshold_max(), 2.0);
+
+	pp->set_pn2(true);
+	pp->set_phe(true);
+	pp->set_po2(true);
+	pp->set_po2_threshold_min(4.0);
+	pp->set_po2_threshold_max(5.0);
+	pp->set_pn2_threshold(6.0);
+	pp->set_phe_threshold(7.0);
+
+	TEST(pp->pn2(), true);
+	TEST(pp->phe(), true);
+	TEST(pp->po2(), true);
+	TEST(pp->pn2_threshold(), 6.0);
+	TEST(pp->phe_threshold(), 7.0);
+	TEST(pp->po2_threshold_min(), 4.0);
+	TEST(pp->po2_threshold_max(), 5.0);
+
+}
+
 QTEST_MAIN(TestQPrefPartialPressureGas)

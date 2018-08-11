@@ -24,39 +24,6 @@ void TestPreferences::testPreferences()
 	auto pref = SettingsObjectWrapper::instance();
 	pref->load();
 
-	auto pp = qPrefPartialPressureGas::instance();
-	pp->set_pn2(false);
-	pp->set_phe(false);
-	pp->set_po2(false);
-	pp->set_po2_threshold_min(1.0);
-	pp->set_po2_threshold_max(2.0);
-	pp->set_pn2_threshold(3.0);
-	pp->set_phe_threshold(4.0);
-
-	TEST(pp->pn2(), false);
-	TEST(pp->phe(), false);
-	TEST(pp->po2(), false);
-	TEST(pp->pn2_threshold(), 3.0);
-	TEST(pp->phe_threshold(), 4.0);
-	TEST(pp->po2_threshold_min(), 1.0);
-	TEST(pp->po2_threshold_max(), 2.0);
-
-	pp->set_pn2(true);
-	pp->set_phe(true);
-	pp->set_po2(true);
-	pp->set_po2_threshold_min(4.0);
-	pp->set_po2_threshold_max(5.0);
-	pp->set_pn2_threshold(6.0);
-	pp->set_phe_threshold(7.0);
-
-	TEST(pp->pn2(), true);
-	TEST(pp->phe(), true);
-	TEST(pp->po2(), true);
-	TEST(pp->pn2_threshold(), 6.0);
-	TEST(pp->phe_threshold(), 7.0);
-	TEST(pp->po2_threshold_min(), 4.0);
-	TEST(pp->po2_threshold_max(), 5.0);
-
 	auto general = pref->general_settings;
 	general->setDefaultFilename("filename");
 	general->setDefaultCylinder("cylinder_2");
