@@ -53,6 +53,10 @@ public class SubsurfaceMobileActivity extends QtActivity
 	public void onNewIntent(Intent intent) {
 		Log.i(TAG + " onNewIntent", intent.getAction());
 		UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+		if (device == null) {
+			Log.i(TAG + " onNewIntent", "null device");
+			return;
+		}
 		Log.i(TAG + " onNewIntent toString", device.toString());
 		super.onNewIntent(intent);
 		setIntent(intent);
@@ -78,8 +82,16 @@ public class SubsurfaceMobileActivity extends QtActivity
 
 	private void processIntent() {
 		Intent intent = getIntent();
+		if (intent == null) {
+			Log.i(TAG + " processIntent", "intent is null");
+			return;
+		}
 		Log.i(TAG + " processIntent", intent.getAction());
 		UsbDevice device = (UsbDevice) intent.getParcelableExtra(UsbManager.EXTRA_DEVICE);
+		if (device == null) {
+			Log.i(TAG + " processIntent", "null device");
+			return;
+		}
 		Log.i(TAG + " processIntent device name", device.getDeviceName());
 		setDeviceString(device.toString());
 	} // processIntent

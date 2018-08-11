@@ -1796,16 +1796,17 @@ void QMLManager::showDownloadPage(QString deviceString)
 
 	} else if (deviceString.contains("mManufacturerName=ATOMIC AQUATICS") &&
 		   deviceString.contains("mProductName=COBALT")) {
-		if (deviceString.contains("mVersion=2"))
+		if (deviceString.contains("mVersion=2")) {
 			name = QString("%1;%2;%3")
 					.arg(vendorList.indexOf("Atomic Aquatics"))
 					.arg(productList["Atomic Aquatics"].indexOf("Cobalt 2"))
 					.arg(connectionListModel.indexOf("USB device"));
-		else
+		} else {
 			name = QString("%1;%2;%3")
 					.arg(vendorList.indexOf("Atomic Aquatics"))
 					.arg(productList["Atomic Aquatics"].indexOf("Cobalt"))
 					.arg(connectionListModel.indexOf("USB device"));
+		}
 	} else if (deviceString.contains("mVendorId=5267") &&
 		   deviceString.contains("mProductId=48")) {
 		name = QString("%1;%2;%3")
