@@ -127,11 +127,11 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 {
 	INFO(0, "serial_ftdi_open_device called");
 	int accepted_pids[] = {
-		24577, 24592, 24593, // 0x6001, 0x6010, 0x6011x - Suunto (Smart Interface), Heinrichs Weikamp
-		24597, // 0x6015 - possibly Aqualung
-		62560, // 0xF460, Oceanic
-		63104, // 0xF680, Suunto
-		34768, // 0x87D0, Cressi (Leonardo)
+		0x6001, 0x6010, 0x6011, // Suunto (Smart Interface), Heinrichs Weikamp
+		0x6015, // possibly Aqualung
+		0xF460, // Oceanic
+		0xF680, // Suunto
+		0x87D0, // Cressi (Leonardo)
 	};
 	int num_accepted_pids = 6;
 	int i, pid, ret;

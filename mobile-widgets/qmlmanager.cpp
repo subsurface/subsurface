@@ -1837,47 +1837,47 @@ void QMLManager::showDownloadPage(QString deviceString)
 					.arg(productList["Atomic Aquatics"].indexOf("Cobalt"))
 					.arg(connectionListModel.indexOf("USB device"));
 		}
-	} else if (deviceString.contains("mVendorId=5267") &&
+	} else if (deviceString.contains("mVendorId=5267") && // 0x1493 / 0x0030
 		   deviceString.contains("mProductId=48")) {
 		name = QString("%1;%2;%3")
 				.arg(connectionListModel.indexOf("Suunto"))
 				.arg(productList["Suunto"].indexOf("EON Steel"))
 				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=5267") &&
+	} else if (deviceString.contains("mVendorId=5267") && // 0x1493 / 0x0033
 		   deviceString.contains("mProductId=51")) {
 		name = QString("%1;%2;%3")
 				.arg(connectionListModel.indexOf("Suunto"))
 				.arg(productList["Suunto"].indexOf("EON Core"))
 				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=11884") &&
+	} else if (deviceString.contains("mVendorId=11884") && // 0x2e6c / 0x3201
 		   deviceString.contains("mProductId=12801")) {
 		name = QString("%1;%2;%3")
 				.arg(connectionListModel.indexOf("Scubapro"))
 				.arg(productList["Suunto"].indexOf("G2"))
 				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=49745") &&
+	} else if (deviceString.contains("mVendorId=49745") && // 0xc251 / 0x2006
 		   deviceString.contains("mProductId=8198")) {
 		name = QString("%1;%2;%3")
 				.arg(connectionListModel.indexOf("Scubapro"))
 				.arg(productList["Suunto"].indexOf("Aladin Square"))
 				.arg(connectionListModel.indexOf("USB device"));
-	} else if (deviceString.contains("mVendorId=1027") &&
+	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x6001,0x6010,0x6011,0x6015
 		   (deviceString.contains("mProductId=24577") ||
 		    deviceString.contains("mProductId=24592") ||
 		    deviceString.contains("mProductId=24593") ||
 		    deviceString.contains("mProductId=24597"))) {
 		name = QString("-1;-1;%1").arg(connectionListModel.indexOf("FTDI"));
-	} else if (deviceString.contains("mVendorId=1027") &&
+	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf460
 		   deviceString.contains("mProductId=62560")) {
 		name = QString("%1;-1;%2")
 				.arg(vendorList.indexOf("Oceanic"))
 				.arg(connectionListModel.indexOf("FTDI"));
-	} else if (deviceString.contains("mVendorId=1027") &&
+	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0xf680
 		   deviceString.contains("mProductId=63104")) {
 		name = QString("%1;-1;%2")
 				.arg(vendorList.indexOf("Suunto"))
 				.arg(connectionListModel.indexOf("FTDI"));
-	} else if (deviceString.contains("mVendorId=1027") &&
+	} else if (deviceString.contains("mVendorId=1027") && // 0x0403 / 0x87d0
 		   deviceString.contains("mProductId=34768")) {
 		name = QString("%1;-1;%2")
 				.arg(vendorList.indexOf("Cressi"))

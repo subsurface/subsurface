@@ -2,27 +2,27 @@
 <resources>
     <!-- FTDI Chips -->
     <!-- (Smart Interface), Heinrichs Weikamp -->
-    <usb-device vendor-id="1027" product-id="24577"/>
-    <usb-device vendor-id="1027" product-id="24592"/>
-    <usb-device vendor-id="1027" product-id="24593"/>
+    <usb-device vendor-id="0x0403" product-id="0x6001"/>
+    <usb-device vendor-id="0x0403" product-id="0x6010"/>
+    <usb-device vendor-id="0x0403" product-id="0x6011"/>
     <!-- May be Aqualung custom PID? -->
-    <usb-device vendor-id="1027" product-id="24597"/>
+    <usb-device vendor-id="0x0403" product-id="0x6015"/>
     <!-- Oceanic Custom PID -->
-    <usb-device vendor-id="1027" product-id="62560"/>
+    <usb-device vendor-id="0x0403" product-id="0xf460"/>
     <!-- Suunto Custom PID -->
-    <usb-device vendor-id="1027" product-id="63104"/>
+    <usb-device vendor-id="0x0403" product-id="0xf680"/>
     <!-- Cressi (Leonardo) Custom PID -->
-    <usb-device vendor-id="1027" product-id="34768"/>
+    <usb-device vendor-id="0x0403" product-id="0x87d0"/>
 
     <!-- USB devices -->
     <!-- EON Steel -->
-    <usb-device vendor-id="5267" product-id="48"/>
+    <usb-device vendor-id="0x1493" product-id="0x30"/>
     <!-- EON Steel core -->
-    <usb-device vendor-id="5267" product-id="51"/>
+    <usb-device vendor-id="0x1493" product-id="0x33"/>
     <!-- Scubapro G2 -->
-    <usb-device vendor-id="11884" product-id="12801"/>
+    <usb-device vendor-id="0x2e6c" product-id="0x3201"/>
     <!-- Scubapro Aladin Square -->
-    <usb-device vendor-id="49745" product-id="8198"/>
+    <usb-device vendor-id="0xc251" product-id="0x2006"/>
     <!-- Atomics Aquatics Cobalt -->
-    <usb-device vendor-id="1137" product-id="2184"/>
+    <usb-device vendor-id="0x0471" product-id="0x0888"/>
 </resources>
