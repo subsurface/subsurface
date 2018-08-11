@@ -33,6 +33,10 @@ while [[ $# -gt 0 ]] ; do
 			# call this script with -build-deps
 			BUILD_DEPS="1"
 			;;
+		-build-with-ftdi)
+			# build against the FTDI user space library
+			BUILD_WITH_FTDI="1"
+			;;
 		-build-with-webkit)
 			# unless you build Qt from source (or at least webkit from source, you won't have webkit installed
 			# -build-with-webkit tells the script that in fact we can assume that webkit is present (it usually
@@ -211,6 +215,17 @@ if [[ $PLATFORM = Darwin && "$BUILD_DEPS" == "1" ]] ; then
 	# when building distributable binaries on a Mac, we cannot rely on anything from Homebrew,
 	# because that always requires the latest OS (how stupid is that - and they consider it a
 	# feature). So we painfully need to build the dependencies ourselves.
+	cd $SRC
+	if [ "$BUILD_WITH_FTDI" = "1" ]; then
+		./subsurface/scripts/get-dep-lib.sh single . libftdi
+		pushd libftdi
+		mkdir -p build
+		cd build
+		cmake $OLDER_MAC_CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_ROOT -DCMAKE_BUILD_TYPE=$DEBUGRELEASE -DFTDI_EEPROM=OFF -BUILD_TESTS=OFF -DEXAMPLES=OFF ..
+		make -j4
+		make install
+	fi
+
 	cd $SRC
 	./subsurface/scripts/get-dep-lib.sh single . libcurl
 	pushd libcurl
@@ -391,6 +406,10 @@ if [ "$BUILD_WITH_WEBKIT" = "1" ]; then
 	EXTRA_OPTS="-DNO_USERMANUAL=OFF -DFBSUPPORT=ON"
 else
 	EXTRA_OPTS="-DNO_USERMANUAL=ON -DFBSUPPORT=OFF"
+fi
+
+if [ "$BUILD_WITH_FTDI" = "1" ]; then
+	EXTRA_OPTS="$EXTRA_OPTS -DFTDISUPPORT=ON"
 fi
 
 if [ "$BUILDGRANTLEE" = "1" ] ; then
