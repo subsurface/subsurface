@@ -1,4 +1,6 @@
-- Mobile: Enable multiple cylinder editing for dives that uses more than one cylinder.
+- Android: switch to Download page when dive computer is plugged in and try to
+  populate vendor / device / connection based on the information we get
+- Mobile: enable multiple cylinder editing for dives that uses more than one cylinder 
 - Mac: fix problem downloading from divelogs.de
 - Dive media: paint duration of videos on thumbnails in the dive-photo tab
 - Dive media: extract video thumbnails using ffmpeg
