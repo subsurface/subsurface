@@ -1788,7 +1788,7 @@ void QMLManager::showDownloadPage(QString deviceString)
 	// we get from the Intent
 	// the first couple we do text based because we know exactly what to look for,
 	// the rest is based on the vendor and product IDs
-	if (deviceString.contains("HeinrichsWeikamp OSTC 3")) {
+	if (deviceString.contains("HeinrichsWeikamp OSTC3")) {
 		name = QString("%1;%2;%3")
 				.arg(vendorList.indexOf("Heinrichs Weikamp"))
 				.arg(productList["Heinrichs Weikamp"].indexOf("OSTC 3"))
