@@ -109,6 +109,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	settings/qPrefDiveComputer.cpp
 	settings/qPrefDivePlanner.cpp
 	settings/qPrefFacebook.cpp
+	settings/qPrefGeneral.cpp
 	settings/qPrefGeocoding.cpp
 	settings/qPrefLanguage.cpp
 	settings/qPrefLocationService.cpp
