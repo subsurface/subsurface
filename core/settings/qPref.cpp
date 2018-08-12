@@ -20,6 +20,7 @@ void qPref::loadSync(bool doSync)
 	qPrefDiveComputer::instance()->loadSync(doSync);
 	qPrefDivePlanner::instance()->loadSync(doSync);
 	// qPrefFaceook does not use disk.
+	qPrefGeneral::instance()->loadSync(doSync);
 	qPrefGeocoding::instance()->loadSync(doSync);
 	qPrefLanguage::instance()->loadSync(doSync);
 	qPrefLocationService::instance()->loadSync(doSync);
