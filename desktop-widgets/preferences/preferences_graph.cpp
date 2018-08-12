@@ -52,11 +52,11 @@ void PreferencesGraph::refreshSettings()
 
 void PreferencesGraph::syncSettings()
 {
-	auto general = SettingsObjectWrapper::instance()->general_settings;
-	general->setDefaultSetPoint(lrint(ui->defaultSetpoint->value() * 1000.0));
-	general->setO2Consumption(lrint(ui->psro2rate->value() *1000.0));
-	general->setPscrRatio(lrint(1000.0 / ui->pscrfactor->value()));
-	general->setAutoRecalculateThumbnails(ui->auto_recalculate_thumbnails->isChecked());
+	auto general = qPrefGeneral::instance();
+	general->set_defaultsetpoint(lrint(ui->defaultSetpoint->value() * 1000.0));
+	general->set_o2consumption(lrint(ui->psro2rate->value() *1000.0));
+	general->set_pscr_ratio(lrint(1000.0 / ui->pscrfactor->value()));
+	general->set_auto_recalculate_thumbnails(ui->auto_recalculate_thumbnails->isChecked());
 
 	auto pp_gas = qPrefPartialPressureGas::instance();
 	pp_gas->set_phe_threshold(ui->pheThreshold->value());

@@ -1210,9 +1210,9 @@ void QMLManager::openNoCloudRepo()
 	if (git == dummy_git_repository) {
 		git_create_local_repo(filename);
 		set_filename(filename);
-		auto s = SettingsObjectWrapper::instance()->general_settings;
-		s->setDefaultFilename(filename);
-		s->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
+		auto s = qPrefGeneral::instance();
+		s->set_default_filename(filename);
+		s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	}
 
 	openLocalThenRemote(filename);
@@ -1226,9 +1226,9 @@ void QMLManager::saveChangesLocal()
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				git_create_local_repo(filename);
 				set_filename(filename);
-				auto s = SettingsObjectWrapper::instance()->general_settings;
-				s->setDefaultFilename(filename);
-				s->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
+				auto s = qPrefGeneral::instance();
+				s->set_default_filename(filename);
+				s->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 			}
 		} else if (!m_loadFromCloud) {
 			// this seems silly, but you need a common ancestor in the repository in

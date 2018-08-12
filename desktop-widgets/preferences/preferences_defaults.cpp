@@ -101,19 +101,19 @@ void PreferencesDefaults::refreshSettings()
 
 void PreferencesDefaults::syncSettings()
 {
-	auto general = SettingsObjectWrapper::instance()->general_settings;
-	general->setDefaultFilename(ui->defaultfilename->text());
-	general->setDefaultCylinder(ui->default_cylinder->currentText());
-	general->setUseDefaultFile(ui->btnUseDefaultFile->isChecked());
+	auto general = qPrefGeneral::instance();
+	general->set_default_filename(ui->defaultfilename->text());
+	general->set_default_cylinder(ui->default_cylinder->currentText());
+	general->set_use_default_file(ui->btnUseDefaultFile->isChecked());
 	if (ui->noDefaultFile->isChecked())
-		general->setDefaultFileBehavior(NO_DEFAULT_FILE);
+		general->set_default_file_behavior(NO_DEFAULT_FILE);
 	else if (ui->localDefaultFile->isChecked())
-		general->setDefaultFileBehavior(LOCAL_DEFAULT_FILE);
+		general->set_default_file_behavior(LOCAL_DEFAULT_FILE);
 	else if (ui->cloudDefaultFile->isChecked())
-		general->setDefaultFileBehavior(CLOUD_DEFAULT_FILE);
-	general->setExtractVideoThumbnails(ui->extractVideoThumbnails->isChecked());
-	general->setExtractVideoThumbnailsPosition(ui->videoThumbnailPosition->value());
-	general->setFfmpegExecutable(ui->ffmpegExecutable->text());
+		general->set_default_file_behavior(CLOUD_DEFAULT_FILE);
+	general->set_extract_video_thumbnails(ui->extractVideoThumbnails->isChecked());
+	general->set_extract_video_thumbnails_position(ui->videoThumbnailPosition->value());
+	general->set_ffmpeg_executable(ui->ffmpegExecutable->text());
 
 	auto display =  qPrefDisplay::instance();
 	display->set_divelist_font(ui->font->currentFont().toString());
