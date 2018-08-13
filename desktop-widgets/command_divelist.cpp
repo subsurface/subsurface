@@ -133,7 +133,7 @@ std::vector<DiveToAdd> DiveListBase::removeDives(std::vector<dive *> &divesToDel
 std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 {
 	std::vector<dive *> res;
-	res.reserve(divesToAdd.size());
+	res.resize(divesToAdd.size());
 
 	// At the end of the function, to send the proper dives-added signals,
 	// we the the list of added trips. Create this list now.
@@ -144,8 +144,11 @@ std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 	}
 
 	// Now, add the dives
-	for (auto it = divesToAdd.rbegin(); it != divesToAdd.rend(); ++it)
-		res.push_back(addDive(*it));
+	// Note: the idiomatic STL-way would be std::transform, but let's use a loop since
+	// that is closer to classical C-style.
+	auto it2 = res.rbegin();
+	for (auto it = divesToAdd.rbegin(); it != divesToAdd.rend(); ++it, ++it2)
+		*it2 = addDive(*it);
 	divesToAdd.clear();
 
 	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
