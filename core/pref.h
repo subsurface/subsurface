@@ -44,6 +44,13 @@ enum deco_mode {
 	VPMB
 };
 
+enum def_file_behavior {
+	UNDEFINED_DEFAULT_FILE,
+	LOCAL_DEFAULT_FILE,
+	NO_DEFAULT_FILE,
+	CLOUD_DEFAULT_FILE
+};
+
 typedef struct {
 	bool dont_check_for_updates;
 	bool dont_check_exists;
@@ -115,7 +122,7 @@ struct preferences {
 	int         defaultsetpoint; // default setpoint in mbar
 	const char *default_cylinder;
 	const char *default_filename;
-	short       default_file_behavior;
+	enum def_file_behavior default_file_behavior;
 	int         o2consumption; // ml per min
 	int         pscr_ratio; // dump ratio times 1000
 	bool        use_default_file;
@@ -207,13 +214,6 @@ struct preferences {
 
 	// ********** UpdateManager **********
 	update_manager_prefs_t update_manager;
-};
-
-enum def_file_behavior {
-	UNDEFINED_DEFAULT_FILE,
-	LOCAL_DEFAULT_FILE,
-	NO_DEFAULT_FILE,
-	CLOUD_DEFAULT_FILE
 };
 
 extern struct preferences prefs, default_prefs, git_prefs;
