@@ -772,7 +772,7 @@ function showtrips()
 {
 	var divelist = document.getElementById('diveslist');
 	divelist.innerHTML = "";
-	for (var i = 0; i < trips.length; i++) {
+	for (var i = trips.length - 1; i >= 0; i--) {
 		divelist.innerHTML += '<ul id="trip_' + i + '" class="trips" onclick="toggle_trip_expansion(' + i + ')">' +
 				      trips[i].name + ' ( ' + trips[i].dives.length + ' dives)' + '</ul>' + '<div id="trip_dive_list_' + i + '"></div>';
 	};
