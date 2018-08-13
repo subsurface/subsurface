@@ -197,6 +197,13 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes, boo
 			continue;
 
 		s->select(localIndex, flags);
+
+		// If an item of a not-yet expanded trip is selected, expand the trip.
+		if (select && localIndex.parent().isValid() && !isExpanded(localIndex.parent())) {
+			setAnimated(false);
+			expand(localIndex.parent());
+			setAnimated(true);
+		}
 	}
 }
 
