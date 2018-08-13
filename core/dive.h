@@ -573,7 +573,7 @@ extern int split_dive_dont_insert(const struct dive *dive, struct dive **new1, s
 extern void split_dive(struct dive *);
 extern int split_dive_at_time_dont_insert(const struct dive *dive, duration_t time, struct dive **new1, struct dive **new2);
 extern void split_dive_at_time(struct dive *dive, duration_t time);
-extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip);
+extern struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern struct event *clone_event(const struct event *src_ev);
 extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
