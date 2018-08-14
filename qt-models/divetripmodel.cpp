@@ -442,6 +442,7 @@ DiveTripModel::DiveTripModel(QObject *parent) :
 	connect(&diveListNotifier, &DiveListNotifier::divesTimeChanged, this, &DiveTripModel::divesTimeChanged);
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModel::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModel::divesDeselected);
+	connect(&diveListNotifier, &DiveListNotifier::currentDiveChanged, this, &DiveTripModel::currentDiveChanged);
 }
 
 int DiveTripModel::columnCount(const QModelIndex&) const
@@ -1165,4 +1166,42 @@ void DiveTripModel::changeDiveSelection(dive_trip *trip, const QVector<dive *> &
 	}
 
 	emit selectionChanged(indexes, select);
+}
+
+void DiveTripModel::currentDiveChanged()
+{
+	// The current dive has changed. Transform the current dive into an index and pass it on to the view.
+	if (!current_dive) {
+		emit newCurrentDive(QModelIndex()); // No current dive -> tell view to clear current index with an invalid index
+		return;
+	}
+
+	dive_trip *trip = current_dive->divetrip;
+	if (!trip || currentLayout == LIST) {
+		// Either this is outside of a trip or we're in list mode.
+		int idx = findDiveIdx(current_dive);
+		if (idx < 0) {
+			// We don't know this dive. Something is wrong. Warn and bail.
+			qWarning() << "DiveTripModel::currentDiveChanged(): unknown top-level dive";
+			emit newCurrentDive(QModelIndex());
+			return;
+		}
+		emit newCurrentDive(createIndex(idx, 0, noParent));
+	} else {
+		int idx = findTripIdx(trip);
+		if (idx < 0) {
+			// We don't know the trip - this shouldn't happen. Warn and bail.
+			qWarning() << "DiveTripModel::currentDiveChanged(): unknown trip";
+			emit newCurrentDive(QModelIndex());
+			return;
+		}
+		int diveIdx = findDiveInTrip(idx, current_dive);
+		if (diveIdx < 0) {
+			// We don't know this dive. Something is wrong. Warn and bail.
+			qWarning() << "DiveTripModel::currentDiveChanged(): unknown top-level dive";
+			emit newCurrentDive(QModelIndex());
+			return;
+		}
+		emit newCurrentDive(createIndex(diveIdx, 0, idx));
+	}
 }
