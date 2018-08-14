@@ -48,7 +48,8 @@ void subsurface_user_info(struct user_info *user)
 		struct membuffer mb = {};
 		gethostname(hostname, sizeof(hostname));
 		put_format(&mb, "%s@%s", username, hostname);
-		user->email = mb_cstring(&mb); // 'email' is heap allocated
+		mb_cstring(&mb);
+		user->email = detach_buffer(&mb);
 	}
 }
 
