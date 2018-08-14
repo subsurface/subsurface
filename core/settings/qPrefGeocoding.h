@@ -27,9 +27,9 @@ public:
 	taxonomy_category third_taxonomy_category() { return prefs.geocoding.category[2]; }
 
 public slots:
-	void set_first_taxonomy_category(taxonomy_category value);
-	void set_second_taxonomy_category(taxonomy_category value);
-	void set_third_taxonomy_category(taxonomy_category value);
+	static void set_first_taxonomy_category(taxonomy_category value);
+	static void set_second_taxonomy_category(taxonomy_category value);
+	static void set_third_taxonomy_category(taxonomy_category value);
 
 signals:
 	void first_taxonomy_category_changed(taxonomy_category value);
@@ -37,9 +37,9 @@ signals:
 	void third_taxonomy_category_changed(taxonomy_category value);
 
 private:
-	void disk_first_taxonomy_category(bool doSync);
-	void disk_second_taxonomy_category(bool doSync);
-	void disk_third_taxonomy_category(bool doSync);
+	static void disk_first_taxonomy_category(bool doSync);
+	static void disk_second_taxonomy_category(bool doSync);
+	static void disk_third_taxonomy_category(bool doSync);
 };
 
 #endif

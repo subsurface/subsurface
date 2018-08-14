@@ -18,9 +18,9 @@ public:
 	static qPrefDisplay *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	static QString divelist_font() { return prefs.divelist_font; }
@@ -30,11 +30,11 @@ public:
 	static QString theme() { return prefs.theme; }
 
 public slots:
-	void set_divelist_font(const QString &value);
-	void set_font_size(double value);
-	void set_display_invalid_dives(bool value);
-	void set_show_developer(bool value);
-	void set_theme(const QString &value);
+	static void set_divelist_font(const QString &value);
+	static void set_font_size(double value);
+	static void set_display_invalid_dives(bool value);
+	static void set_show_developer(bool value);
+	static void set_theme(const QString &value);
 
 signals:
 	void divelist_font_changed(const QString &value);
@@ -45,13 +45,13 @@ signals:
 
 private:
 	// functions to load/sync variable with disk
-	void disk_divelist_font(bool doSync);
-	void disk_font_size(bool doSync);
-	void disk_display_invalid_dives(bool doSync);
-	void disk_show_developer(bool doSync);
-	void disk_theme(bool doSync);
+	static void disk_divelist_font(bool doSync);
+	static void disk_font_size(bool doSync);
+	static void disk_display_invalid_dives(bool doSync);
+	static void disk_show_developer(bool doSync);
+	static void disk_theme(bool doSync);
 
 	// font helper function
-	void setCorrectFont();
+	static void setCorrectFont();
 };
 #endif

@@ -20,9 +20,9 @@ public:
 	static qPrefProxy *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	static bool proxy_auth() { return prefs.proxy_auth; }
@@ -33,12 +33,12 @@ public:
 	static QString proxy_user() { return prefs.proxy_user; }
 
 public slots:
-	void set_proxy_auth(bool value);
-	void set_proxy_host(const QString &value);
-	void set_proxy_pass(const QString &value);
-	void set_proxy_port(int value);
-	void set_proxy_type(int value);
-	void set_proxy_user(const QString &value);
+	static void set_proxy_auth(bool value);
+	static void set_proxy_host(const QString &value);
+	static void set_proxy_pass(const QString &value);
+	static void set_proxy_port(int value);
+	static void set_proxy_type(int value);
+	static void set_proxy_user(const QString &value);
 
 signals:
 	void proxy_auth_changed(bool value);
@@ -49,12 +49,12 @@ signals:
 	void proxy_user_changed(const QString &value);
 
 private:
-	void disk_proxy_auth(bool doSync);
-	void disk_proxy_host(bool doSync);
-	void disk_proxy_pass(bool doSync);
-	void disk_proxy_port(bool doSync);
-	void disk_proxy_type(bool doSync);
-	void disk_proxy_user(bool doSync);
+	static void disk_proxy_auth(bool doSync);
+	static void disk_proxy_host(bool doSync);
+	static void disk_proxy_pass(bool doSync);
+	static void disk_proxy_port(bool doSync);
+	static void disk_proxy_type(bool doSync);
+	static void disk_proxy_user(bool doSync);
 };
 
 #endif

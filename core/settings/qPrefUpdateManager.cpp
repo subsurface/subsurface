@@ -30,7 +30,7 @@ void qPrefUpdateManager::set_dont_check_exists(bool value)
 {
 	if (value != prefs.update_manager.dont_check_exists) {
 		prefs.update_manager.dont_check_exists = value;
-		emit dont_check_exists_changed(value);
+		emit instance()->dont_check_exists_changed(value);
 	}
 	// DO NOT STORE ON DISK
 }
@@ -45,7 +45,7 @@ void qPrefUpdateManager::set_next_check(const QDate& value)
 	if (valueString != prefs.update_manager.next_check) {
 		qPrefPrivate::copy_txt(&prefs.update_manager.next_check, valueString);
 		disk_next_check(true);
-		emit next_check_changed(value);
+		emit instance()->next_check_changed(value);
 	}
 }
 DISK_LOADSYNC_TXT_EXT(UpdateManager, "/NextCheck", next_check, update_manager.);

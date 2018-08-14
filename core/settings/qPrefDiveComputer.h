@@ -18,9 +18,9 @@ public:
 	static qPrefDiveComputer *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	static QString device() { return prefs.dive_computer.device; }
@@ -30,11 +30,11 @@ public:
 	static QString vendor() { return prefs.dive_computer.vendor; }
 
 public slots:
-	void set_device(const QString &device);
-	void set_device_name(const QString &device_name);
-	void set_download_mode(int mode);
-	void set_product(const QString &product);
-	void set_vendor(const QString &vendor);
+	static void set_device(const QString &device);
+	static void set_device_name(const QString &device_name);
+	static void set_download_mode(int mode);
+	static void set_product(const QString &product);
+	static void set_vendor(const QString &vendor);
 
 signals:
 	void device_changed(const QString &device);
@@ -45,11 +45,11 @@ signals:
 
 private:
 	// functions to load/sync variable with disk
-	void disk_device(bool doSync);
-	void disk_device_name(bool doSync);
-	void disk_download_mode(bool doSync);
-	void disk_product(bool doSync);
-	void disk_vendor(bool doSync);
+	static void disk_device(bool doSync);
+	static void disk_device_name(bool doSync);
+	static void disk_download_mode(bool doSync);
+	static void disk_product(bool doSync);
+	static void disk_vendor(bool doSync);
 };
 
 #endif

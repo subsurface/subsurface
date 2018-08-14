@@ -24,9 +24,9 @@ public:
 	static qPrefUnits *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	static bool coordinates_traditional() { return prefs.coordinates_traditional; }
@@ -41,16 +41,16 @@ public:
 	static units::WEIGHT weight() { return prefs.units.weight; }
 
 public slots:
-	void set_coordinates_traditional(bool value);
-	void set_duration_units(units::DURATION value);
-	void set_length(units::LENGTH value);
-	void set_pressure(units::PRESSURE value);
-	void set_show_units_table(bool value);
-	void set_temperature(units::TEMPERATURE value);
-	void set_unit_system(const QString& value);
-	void set_vertical_speed_time(units::TIME value);
-	void set_volume(units::VOLUME value);
-	void set_weight(units::WEIGHT value);
+	static void set_coordinates_traditional(bool value);
+	static void set_duration_units(units::DURATION value);
+	static void set_length(units::LENGTH value);
+	static void set_pressure(units::PRESSURE value);
+	static void set_show_units_table(bool value);
+	static void set_temperature(units::TEMPERATURE value);
+	static void set_unit_system(const QString& value);
+	static void set_vertical_speed_time(units::TIME value);
+	static void set_volume(units::VOLUME value);
+	static void set_weight(units::WEIGHT value);
 
 signals:
 	void coordinates_traditional_changed(bool value);
@@ -65,16 +65,16 @@ signals:
 	void weight_changed(int value);
 
 private:
-	void disk_coordinates_traditional(bool doSync);
-	void disk_duration_units(bool doSync);
-	void disk_length(bool doSync);
-	void disk_pressure(bool doSync);
-	void disk_show_units_table(bool doSync);
-	void disk_temperature(bool doSync);
-	void disk_unit_system(bool doSync);
-	void disk_vertical_speed_time(bool doSync);
-	void disk_volume(bool doSync);
-	void disk_weight(bool doSync);
+	static void disk_coordinates_traditional(bool doSync);
+	static void disk_duration_units(bool doSync);
+	static void disk_length(bool doSync);
+	static void disk_pressure(bool doSync);
+	static void disk_show_units_table(bool doSync);
+	static void disk_temperature(bool doSync);
+	static void disk_unit_system(bool doSync);
+	static void disk_vertical_speed_time(bool doSync);
+	static void disk_volume(bool doSync);
+	static void disk_weight(bool doSync);
 };
 
 #endif

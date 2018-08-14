@@ -20,27 +20,27 @@ public:
 	static qPrefPartialPressureGas *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
-	bool phe() { return prefs.pp_graphs.phe; }
-	double phe_threshold() { return prefs.pp_graphs.phe_threshold; }
-	bool pn2() { return prefs.pp_graphs.pn2; }
-	double pn2_threshold() { return prefs.pp_graphs.pn2_threshold; }
-	bool po2() { return prefs.pp_graphs.po2; }
-	double po2_threshold_max() { return prefs.pp_graphs.po2_threshold_max; }
-	double po2_threshold_min() { return prefs.pp_graphs.po2_threshold_min; }
+	static bool phe() { return prefs.pp_graphs.phe; }
+	static double phe_threshold() { return prefs.pp_graphs.phe_threshold; }
+	static bool pn2() { return prefs.pp_graphs.pn2; }
+	static double pn2_threshold() { return prefs.pp_graphs.pn2_threshold; }
+	static bool po2() { return prefs.pp_graphs.po2; }
+	static double po2_threshold_max() { return prefs.pp_graphs.po2_threshold_max; }
+	static double po2_threshold_min() { return prefs.pp_graphs.po2_threshold_min; }
 
 public slots:
-	void set_phe(bool value);
-	void set_phe_threshold(double value);
-	void set_pn2(bool value);
-	void set_pn2_threshold(double value);
-	void set_po2(bool value);
-	void set_po2_threshold_min(double value);
-	void set_po2_threshold_max(double value);
+	static void set_phe(bool value);
+	static void set_phe_threshold(double value);
+	static void set_pn2(bool value);
+	static void set_pn2_threshold(double value);
+	static void set_po2(bool value);
+	static void set_po2_threshold_min(double value);
+	static void set_po2_threshold_max(double value);
 
 signals:
 	void phe_changed(bool value);
@@ -52,13 +52,13 @@ signals:
 	void po2_threshold_min_changed(double value);
 
 private:
-	void disk_phe(bool doSync);
-	void disk_phe_threshold(bool doSync);
-	void disk_pn2(bool doSync);
-	void disk_pn2_threshold(bool doSync);
-	void disk_po2(bool doSync);
-	void disk_po2_threshold_min(bool doSync);
-	void disk_po2_threshold_max(bool doSync);
+	static void disk_phe(bool doSync);
+	static void disk_phe_threshold(bool doSync);
+	static void disk_pn2(bool doSync);
+	static void disk_pn2_threshold(bool doSync);
+	static void disk_po2(bool doSync);
+	static void disk_po2_threshold_min(bool doSync);
+	static void disk_po2_threshold_max(bool doSync);
 };
 
 #endif
