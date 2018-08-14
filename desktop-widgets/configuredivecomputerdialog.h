@@ -60,7 +60,7 @@ class ConfigureDiveComputerDialog : public QDialog {
 	Q_OBJECT
 
 public:
-	explicit ConfigureDiveComputerDialog(QWidget *parent = 0);
+	explicit ConfigureDiveComputerDialog(QWidget *parent = 0, QString vendor = QString(), QString product = QString());
 	~ConfigureDiveComputerDialog();
 
 protected:

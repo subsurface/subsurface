@@ -14,21 +14,41 @@
 #include <QProgressDialog>
 #include <QSettings>
 
+static int getTypeFromVendorProduct(QString vendor, QString product)
+{
+	if (vendor == "Heinrichs Weikamp") {
+		if (product == "OSTC Mk2" ||
+		    product == "OSTC 2N" ||
+		    product == "OSTC 2C") {
+			return 0;
+		}
+		if (product == "OSTC 2" ||
+		    product == "OSTC 3" ||
+		    product == "OSTC Sport" ||
+		    product == "OSTC Plus" ||
+		    product == "OSTC cR") {
+			return 1;
+		}
+		if (product == "OSTC 4") {
+			return 2;
+		}
+		return -1;
+	}
+	if (vendor == "Suunto" &&
+	    (product == "Vyper" ||
+	     product == "Stinger" ||
+	     product == "Mosquito" ||
+	     product == "D3" ||
+	     product == "Vytec" ||
+	     product == "Cobra" ||
+	     product == "Gekko" ||
+	     product == "Zoop"))
+		return 3;
+	return -1;
+}
 bool diveComputerConfigurable(QString vendor, QString product)
 {
-	if ((vendor == "Heinrichs Weikamp" &&
-	     product != "OSTC") ||
-	    (vendor == "Suunto" &&
-	     (product == "Vyper" ||
-	      product == "Stinger" ||
-	      product == "Mosquito" ||
-	      product == "D3" ||
-	      product = "Vytec" ||
-	      product == "Cobra" ||
-	      product == "Gekko" ||
-	      product == "Zoop")
-		return true;
-	return false;
+	return getTypeFromVendorProduct(vendor, product) >= 0;
 }
 
 GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
@@ -116,7 +136,7 @@ void GasTypeComboBoxItemDelegate::setModelData(QWidget *editor, QAbstractItemMod
 		QStyledItemDelegate::setModelData(editor, model, index);
 }
 
-ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDialog(parent),
+ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent, QString vendor, QString product) : QDialog(parent),
 	config(0),
 #ifdef BT_SUPPORT
 	deviceDetails(0),
@@ -154,8 +174,9 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 	if (!dc->device().isEmpty())
 		ui.device->setEditText(dc->device());
 
-	ui.DiveComputerList->setCurrentRow(0);
-	on_DiveComputerList_currentRowChanged(0);
+	int selected = getTypeFromVendorProduct(vendor, product);
+	ui.DiveComputerList->setCurrentRow(selected);
+	on_DiveComputerList_currentRowChanged(selected);
 
 	ui.ostc3GasTable->setItemDelegateForColumn(1, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));
 	ui.ostc3GasTable->setItemDelegateForColumn(2, new GasSpinBoxItemDelegate(this, GasSpinBoxItemDelegate::PERCENT));

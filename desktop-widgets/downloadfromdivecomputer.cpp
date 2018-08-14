@@ -345,7 +345,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 
 void DownloadFromDCWidget::on_configureDiveComputerButton_clicked()
 {
-	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(this);
+	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(this, ui.vendor->currentText(), ui.product->currentText());
 	dcConfig->show();
 }
 
