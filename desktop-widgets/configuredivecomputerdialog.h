@@ -13,6 +13,8 @@
 #include "desktop-widgets/btdeviceselectiondialog.h"
 #endif
 
+extern bool diveComputerConfigurable(QString vendor, QString product);
+
 class GasSpinBoxItemDelegate : public QStyledItemDelegate {
 	Q_OBJECT
 

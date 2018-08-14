@@ -14,9 +14,27 @@
 #include <QProgressDialog>
 #include <QSettings>
 
+bool diveComputerConfigurable(QString vendor, QString product)
+{
+	if ((vendor == "Heinrichs Weikamp" &&
+	     product != "OSTC") ||
+	    (vendor == "Suunto" &&
+	     (product == "Vyper" ||
+	      product == "Stinger" ||
+	      product == "Mosquito" ||
+	      product == "D3" ||
+	      product = "Vytec" ||
+	      product == "Cobra" ||
+	      product == "Gekko" ||
+	      product == "Zoop")
+		return true;
+	return false;
+}
+
 GasSpinBoxItemDelegate::GasSpinBoxItemDelegate(QObject *parent, column_type type) : QStyledItemDelegate(parent), type(type)
 {
 }
+
 GasSpinBoxItemDelegate::~GasSpinBoxItemDelegate()
 {
 }
