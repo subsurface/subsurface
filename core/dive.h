@@ -444,7 +444,7 @@ extern struct dive *get_dive(int nr);
 extern struct dive *get_dive_from_table(int nr, struct dive_table *dt);
 extern struct dive_site *get_dive_site_for_dive(struct dive *dive);
 extern const char *get_dive_country(struct dive *dive);
-extern char *get_dive_location(struct dive *dive);
+extern const char *get_dive_location(const struct dive *dive);
 extern unsigned int number_of_computers(struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);

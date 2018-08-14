@@ -7,10 +7,12 @@
 #include <stdint.h>
 #include <vector>
 
+struct dive;
+
 class FilterModelBase : public QStringListModel {
 	Q_OBJECT
 public:
-	virtual bool doFilter(struct dive *d) const = 0;
+	virtual bool doFilter(const dive *d) const = 0;
 	void clearFilter();
 	void selectAll();
 	void invertSelection();
@@ -34,7 +36,7 @@ class TagFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static TagFilterModel *instance();
-	bool doFilter(struct dive *d) const;
+	bool doFilter(const dive *d) const;
 public
 slots:
 	void repopulate();
@@ -48,7 +50,7 @@ class BuddyFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static BuddyFilterModel *instance();
-	bool doFilter(struct dive *d) const;
+	bool doFilter(const dive *d) const;
 public
 slots:
 	void repopulate();
@@ -62,7 +64,7 @@ class LocationFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static LocationFilterModel *instance();
-	bool doFilter(struct dive *d) const;
+	bool doFilter(const dive *d) const;
 public
 slots:
 	void repopulate();
@@ -78,7 +80,7 @@ class SuitsFilterModel : public FilterModelBase {
 	Q_OBJECT
 public:
 	static SuitsFilterModel *instance();
-	bool doFilter(struct dive *d) const;
+	bool doFilter(const dive *d) const;
 public
 slots:
 	void repopulate();
