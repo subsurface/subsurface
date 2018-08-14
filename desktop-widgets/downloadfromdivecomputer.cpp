@@ -75,8 +75,10 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	if (!dc->vendor().isEmpty()) {
 		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->vendor()));
 		productModel.setStringList(productList[dc->vendor()]);
-		if (!dc->product().isEmpty())
+		if (!dc->product().isEmpty()) {
 			ui.product->setCurrentIndex(ui.product->findText(dc->product()));
+			updateDeviceEnabled();
+		}
 	}
 
 	updateState(INITIAL);
@@ -479,6 +481,15 @@ void DownloadFromDCWidget::updateDeviceEnabled()
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
 	if (dc_descriptor_get_transports(descriptor) & DC_TRANSPORT_SERIAL) {
+#if defined(SERIAL_FTDI)
+		if (guessIfFTDI(descriptor)) {
+			// this should be an FTDI device that we'll connect to by using
+			// the magic device name "ftdi"
+			ui.device->setEditText("ftdi");
+			ui.device->setEnabled(false);
+			return;
+		}
+#endif
 		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
 		ui.device->setEnabled(true);
 	} else {
