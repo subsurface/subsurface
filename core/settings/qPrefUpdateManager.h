@@ -18,21 +18,21 @@ public:
 	static qPrefUpdateManager *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
-	bool dont_check_for_updates() { return prefs.update_manager.dont_check_for_updates; }
-	bool dont_check_exists() { return prefs.update_manager.dont_check_exists; }
-	const QString last_version_used() { return prefs.update_manager.last_version_used; }
-	const QDate next_check() { return QDate::fromString(QString(prefs.update_manager.next_check), "dd/MM/yyyy"); }
+	static bool dont_check_for_updates() { return prefs.update_manager.dont_check_for_updates; }
+	static bool dont_check_exists() { return prefs.update_manager.dont_check_exists; }
+	static const QString last_version_used() { return prefs.update_manager.last_version_used; }
+	static const QDate next_check() { return QDate::fromString(QString(prefs.update_manager.next_check), "dd/MM/yyyy"); }
 
 public slots:
-	void set_dont_check_for_updates(bool value);
-	void set_dont_check_exists(bool value);
-	void set_last_version_used(const QString& value);
-	void set_next_check(const QDate& value);
+	static void set_dont_check_for_updates(bool value);
+	static void set_dont_check_exists(bool value);
+	static void set_last_version_used(const QString& value);
+	static void set_next_check(const QDate& value);
 
 signals:
 	void dont_check_for_updates_changed(bool value);
@@ -41,9 +41,9 @@ signals:
 	void next_check_changed(const QDate& value);
 
 private:
-	void disk_dont_check_for_updates(bool doSync);
-	void disk_last_version_used(bool doSync);
-	void disk_next_check(bool doSync);
+	static void disk_dont_check_for_updates(bool doSync);
+	static void disk_last_version_used(bool doSync);
+	static void disk_next_check(bool doSync);
 };
 
 #endif

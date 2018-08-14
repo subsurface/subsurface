@@ -21,29 +21,29 @@ public:
 	static qPrefLanguage *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
-	const QString date_format() { return prefs.date_format; }
-	bool date_format_override() { return prefs.date_format_override; }
-	const QString date_format_short() { return prefs.date_format_short; }
-	const QString language() { return prefs.locale.language; }
-	const QString lang_locale() { return prefs.locale.lang_locale; }
-	const QString time_format() { return prefs.time_format; }
-	bool time_format_override() { return prefs.time_format_override; }
-	bool use_system_language() { return prefs.locale.use_system_language; }
+	static const QString date_format() { return prefs.date_format; }
+	static bool date_format_override() { return prefs.date_format_override; }
+	static const QString date_format_short() { return prefs.date_format_short; }
+	static const QString language() { return prefs.locale.language; }
+	static const QString lang_locale() { return prefs.locale.lang_locale; }
+	static const QString time_format() { return prefs.time_format; }
+	static bool time_format_override() { return prefs.time_format_override; }
+	static bool use_system_language() { return prefs.locale.use_system_language; }
 
 public slots:
-	void set_date_format(const QString& value);
-	void set_date_format_override(bool value);
-	void set_date_format_short(const QString& value);
-	void set_language(const QString& value);
-	void set_lang_locale(const QString& value);
-	void set_time_format(const QString& value);
-	void set_time_format_override(bool value);
-	void set_use_system_language(bool value);
+	static void set_date_format(const QString& value);
+	static void set_date_format_override(bool value);
+	static void set_date_format_short(const QString& value);
+	static void set_language(const QString& value);
+	static void set_lang_locale(const QString& value);
+	static void set_time_format(const QString& value);
+	static void set_time_format_override(bool value);
+	static void set_use_system_language(bool value);
 
 signals:
 	void date_format_changed(const QString& value);
@@ -56,14 +56,14 @@ signals:
 	void use_system_language_changed(bool value);
 
 private:
-	void disk_date_format(bool doSync);
-	void disk_date_format_override(bool doSync);
-	void disk_date_format_short(bool doSync);
-	void disk_language(bool doSync);
-	void disk_lang_locale(bool doSync);
-	void disk_time_format(bool doSync);
-	void disk_time_format_override(bool doSync);
-	void disk_use_system_language(bool doSync);
+	static void disk_date_format(bool doSync);
+	static void disk_date_format_override(bool doSync);
+	static void disk_date_format_short(bool doSync);
+	static void disk_language(bool doSync);
+	static void disk_lang_locale(bool doSync);
+	static void disk_time_format(bool doSync);
+	static void disk_time_format_override(bool doSync);
+	static void disk_use_system_language(bool doSync);
 };
 
 #endif

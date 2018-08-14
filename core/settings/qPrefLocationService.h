@@ -16,17 +16,17 @@ public:
 	static qPrefLocationService *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
-	int distance_threshold() { return prefs.distance_threshold; }
-	int time_threshold() { return prefs.time_threshold; }
+	static int distance_threshold() { return prefs.distance_threshold; }
+	static int time_threshold() { return prefs.time_threshold; }
 
 public slots:
-	void set_distance_threshold(int value);
-	void set_time_threshold(int value);
+	static void set_distance_threshold(int value);
+	static void set_time_threshold(int value);
 
 signals:
 	void distance_threshold_changed(int value);
@@ -34,8 +34,8 @@ signals:
 
 
 private:
-	void disk_distance_threshold(bool doSync);
-	void disk_time_threshold(bool doSync);
+	static void disk_distance_threshold(bool doSync);
+	static void disk_time_threshold(bool doSync);
 };
 
 #endif

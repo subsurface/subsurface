@@ -41,10 +41,11 @@ public:
 	static qPrefTechnicalDetails *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
+public:
 	static bool calcalltissues() { return prefs.calcalltissues; }
 	static bool calcceiling() { return prefs.calcceiling; }
 	static bool calcceiling3m() { return prefs.calcceiling3m; }
@@ -74,33 +75,33 @@ public:
 	static bool zoomed_plot() { return prefs.zoomed_plot; }
 
 public slots:
-	void set_calcalltissues(bool value);
-	void set_calcceiling(bool value);
-	void set_calcceiling3m(bool value);
-	void set_calcndltts(bool value);
-	void set_dcceiling(bool value);
-	void set_display_deco_mode(deco_mode value);
-	void set_display_unused_tanks(bool value);
-	void set_ead(bool value);
-	void set_gfhigh(int value);
-	void set_gflow(int value);
-	void set_gf_low_at_maxdepth(bool value);
-	void set_hrgraph(bool value);
-	void set_mod(bool value);
-	void set_modpO2(double value);
-	void set_percentagegraph(bool value);
-	void set_redceiling(bool value);
-	void set_rulergraph(bool value);
-	void set_show_average_depth(bool value);
-	void set_show_ccr_sensors(bool value);
-	void set_show_ccr_setpoint(bool value);
-	void set_show_icd(bool value);
-	void set_show_pictures_in_profile(bool value);
-	void set_show_sac(bool value);
-	void set_show_scr_ocpo2(bool value);
-	void set_tankbar(bool value);
-	void set_vpmb_conservatism(int value);
-	void set_zoomed_plot(bool value);
+	static void set_calcalltissues(bool value);
+	static void set_calcceiling(bool value);
+	static void set_calcceiling3m(bool value);
+	static void set_calcndltts(bool value);
+	static void set_dcceiling(bool value);
+	static void set_display_deco_mode(deco_mode value);
+	static void set_display_unused_tanks(bool value);
+	static void set_ead(bool value);
+	static void set_gfhigh(int value);
+	static void set_gflow(int value);
+	static void set_gf_low_at_maxdepth(bool value);
+	static void set_hrgraph(bool value);
+	static void set_mod(bool value);
+	static void set_modpO2(double value);
+	static void set_percentagegraph(bool value);
+	static void set_redceiling(bool value);
+	static void set_rulergraph(bool value);
+	static void set_show_average_depth(bool value);
+	static void set_show_ccr_sensors(bool value);
+	static void set_show_ccr_setpoint(bool value);
+	static void set_show_icd(bool value);
+	static void set_show_pictures_in_profile(bool value);
+	static void set_show_sac(bool value);
+	static void set_show_scr_ocpo2(bool value);
+	static void set_tankbar(bool value);
+	static void set_vpmb_conservatism(int value);
+	static void set_zoomed_plot(bool value);
 
 signals:
 	void calcalltissues_changed(bool value);
@@ -132,33 +133,33 @@ signals:
 	void zoomed_plot_changed(bool value);
 
 private:
-	void disk_calcalltissues(bool doSync);
-	void disk_calcceiling(bool doSync);
-	void disk_calcceiling3m(bool doSync);
-	void disk_calcndltts(bool doSync);
-	void disk_dcceiling(bool doSync);
-	void disk_display_deco_mode(bool doSync);
-	void disk_display_unused_tanks(bool doSync);
-	void disk_ead(bool doSync);
-	void disk_gfhigh(bool doSync);
-	void disk_gflow(bool doSync);
-	void disk_gf_low_at_maxdepth(bool doSync);
-	void disk_hrgraph(bool doSync);
-	void disk_mod(bool doSync);
-	void disk_modpO2(bool doSync);
-	void disk_percentagegraph(bool doSync);
-	void disk_redceiling(bool doSync);
-	void disk_rulergraph(bool doSync);
-	void disk_show_average_depth(bool doSync);
-	void disk_show_ccr_sensors(bool doSync);
-	void disk_show_ccr_setpoint(bool doSync);
-	void disk_show_icd(bool doSync);
-	void disk_show_pictures_in_profile(bool doSync);
-	void disk_show_sac(bool doSync);
-	void disk_show_scr_ocpo2(bool doSync);
-	void disk_tankbar(bool doSync);
-	void disk_vpmb_conservatism(bool doSync);
-	void disk_zoomed_plot(bool doSync);
+	static void disk_calcalltissues(bool doSync);
+	static void disk_calcceiling(bool doSync);
+	static void disk_calcceiling3m(bool doSync);
+	static void disk_calcndltts(bool doSync);
+	static void disk_dcceiling(bool doSync);
+	static void disk_display_deco_mode(bool doSync);
+	static void disk_display_unused_tanks(bool doSync);
+	static void disk_ead(bool doSync);
+	static void disk_gfhigh(bool doSync);
+	static void disk_gflow(bool doSync);
+	static void disk_gf_low_at_maxdepth(bool doSync);
+	static void disk_hrgraph(bool doSync);
+	static void disk_mod(bool doSync);
+	static void disk_modpO2(bool doSync);
+	static void disk_percentagegraph(bool doSync);
+	static void disk_redceiling(bool doSync);
+	static void disk_rulergraph(bool doSync);
+	static void disk_show_average_depth(bool doSync);
+	static void disk_show_ccr_sensors(bool doSync);
+	static void disk_show_ccr_setpoint(bool doSync);
+	static void disk_show_icd(bool doSync);
+	static void disk_show_pictures_in_profile(bool doSync);
+	static void disk_show_sac(bool doSync);
+	static void disk_show_scr_ocpo2(bool doSync);
+	static void disk_tankbar(bool doSync);
+	static void disk_vpmb_conservatism(bool doSync);
+	static void disk_zoomed_plot(bool doSync);
 };
 
 #endif

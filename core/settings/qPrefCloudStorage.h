@@ -26,9 +26,9 @@ public:
 	static qPrefCloudStorage *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	static QString cloud_base_url() { return prefs.cloud_base_url; }
@@ -46,18 +46,18 @@ public:
 	static QString userid() { return prefs.userid; }
 
 public slots:
-	void set_cloud_base_url(const QString &value);
-	void set_cloud_storage_email(const QString &value);
-	void set_cloud_storage_email_encoded(const QString &value);
-	void set_cloud_storage_newpassword(const QString &value);
-	void set_cloud_storage_password(const QString &value);
-	void set_cloud_storage_pin(const QString &value);
-	void set_cloud_timeout(int value);
-	void set_cloud_verification_status(int value);
-	void set_git_local_only(bool value);
-	void set_save_password_local(bool value);
-	void set_save_userid_local(bool value);
-	void set_userid(const QString &value);
+	static void set_cloud_base_url(const QString &value);
+	static void set_cloud_storage_email(const QString &value);
+	static void set_cloud_storage_email_encoded(const QString &value);
+	static void set_cloud_storage_newpassword(const QString &value);
+	static void set_cloud_storage_password(const QString &value);
+	static void set_cloud_storage_pin(const QString &value);
+	static void set_cloud_timeout(int value);
+	static void set_cloud_verification_status(int value);
+	static void set_git_local_only(bool value);
+	static void set_save_password_local(bool value);
+	static void set_save_userid_local(bool value);
+	static void set_userid(const QString &value);
 
 signals:
 	void cloud_base_url_changed(const QString &value);
@@ -75,18 +75,18 @@ signals:
 
 private:
 	// functions to load/sync variable with disk
-	void disk_cloud_base_url(bool doSync);
-	void disk_cloud_storage_email(bool doSync);
-	void disk_cloud_storage_email_encoded(bool doSync);
-	void disk_cloud_storage_newpassword(bool doSync);
-	void disk_cloud_storage_password(bool doSync);
-	void disk_cloud_storage_pin(bool doSync);
-	void disk_cloud_timeout(bool doSync);
-	void disk_cloud_verification_status(bool doSync);
-	void disk_git_local_only(bool doSync);
-	void disk_save_password_local(bool doSync);
-	void disk_save_userid_local(bool doSync);
-	void disk_userid(bool doSync);
+	static void disk_cloud_base_url(bool doSync);
+	static void disk_cloud_storage_email(bool doSync);
+	static void disk_cloud_storage_email_encoded(bool doSync);
+	static void disk_cloud_storage_newpassword(bool doSync);
+	static void disk_cloud_storage_password(bool doSync);
+	static void disk_cloud_storage_pin(bool doSync);
+	static void disk_cloud_timeout(bool doSync);
+	static void disk_cloud_verification_status(bool doSync);
+	static void disk_git_local_only(bool doSync);
+	static void disk_save_password_local(bool doSync);
+	static void disk_save_userid_local(bool doSync);
+	static void disk_userid(bool doSync);
 };
 
 #endif

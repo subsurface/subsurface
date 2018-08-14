@@ -24,35 +24,35 @@ public:
 	static qPrefGeneral *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { return loadSync(false); }
-	void sync() { return loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { return loadSync(false); }
+	static void sync() { return loadSync(true); }
 
 public:
-	bool auto_recalculate_thumbnails() { return prefs.auto_recalculate_thumbnails; }
-	QString default_cylinder() { return prefs.default_cylinder; }
-	QString default_filename() { return prefs.default_filename; }
-	enum def_file_behavior default_file_behavior() { return prefs.default_file_behavior; }
-	int defaultsetpoint() { return prefs.defaultsetpoint; }
-	bool extract_video_thumbnails() { return prefs.extract_video_thumbnails; }
-	int extract_video_thumbnails_position() { return prefs.extract_video_thumbnails_position; }
-	QString ffmpeg_executable() { return prefs.ffmpeg_executable; }
-	int o2consumption() { return prefs.o2consumption; }
-	int pscr_ratio() { return prefs.pscr_ratio; }
-	bool use_default_file() { return prefs.use_default_file; }
+	static bool auto_recalculate_thumbnails() { return prefs.auto_recalculate_thumbnails; }
+	static QString default_cylinder() { return prefs.default_cylinder; }
+	static QString default_filename() { return prefs.default_filename; }
+	static enum def_file_behavior default_file_behavior() { return prefs.default_file_behavior; }
+	static int defaultsetpoint() { return prefs.defaultsetpoint; }
+	static bool extract_video_thumbnails() { return prefs.extract_video_thumbnails; }
+	static int extract_video_thumbnails_position() { return prefs.extract_video_thumbnails_position; }
+	static QString ffmpeg_executable() { return prefs.ffmpeg_executable; }
+	static int o2consumption() { return prefs.o2consumption; }
+	static int pscr_ratio() { return prefs.pscr_ratio; }
+	static bool use_default_file() { return prefs.use_default_file; }
 
 public slots:
-	void set_auto_recalculate_thumbnails(bool value);
-	void set_default_cylinder(const QString& value);
-	void set_default_filename(const QString& value);
-	void set_default_file_behavior(enum def_file_behavior value);
-	void set_defaultsetpoint(int value);
-	void set_extract_video_thumbnails(bool value);
-	void set_extract_video_thumbnails_position(int value);
-	void set_ffmpeg_executable(const QString& value);
-	void set_o2consumption(int value);
-	void set_pscr_ratio(int value);
-	void set_use_default_file(bool value);
+	static void set_auto_recalculate_thumbnails(bool value);
+	static void set_default_cylinder(const QString& value);
+	static void set_default_filename(const QString& value);
+	static void set_default_file_behavior(enum def_file_behavior value);
+	static void set_defaultsetpoint(int value);
+	static void set_extract_video_thumbnails(bool value);
+	static void set_extract_video_thumbnails_position(int value);
+	static void set_ffmpeg_executable(const QString& value);
+	static void set_o2consumption(int value);
+	static void set_pscr_ratio(int value);
+	static void set_use_default_file(bool value);
 
 signals:
 	void auto_recalculate_thumbnails_changed(bool value);
@@ -68,17 +68,17 @@ signals:
 	void use_default_file_changed(bool value);
 
 private:
-	void disk_auto_recalculate_thumbnails(bool doSync);
-	void disk_default_cylinder(bool doSync);
-	void disk_default_filename(bool doSync);
-	void disk_default_file_behavior(bool doSync);
-	void disk_defaultsetpoint(bool doSync);
-	void disk_extract_video_thumbnails(bool doSync);
-	void disk_extract_video_thumbnails_position(bool doSync);
-	void disk_ffmpeg_executable(bool doSync);
-	void disk_o2consumption(bool doSync);
-	void disk_pscr_ratio(bool doSync);
-	void disk_use_default_file(bool doSync);
+	static void disk_auto_recalculate_thumbnails(bool doSync);
+	static void disk_default_cylinder(bool doSync);
+	static void disk_default_filename(bool doSync);
+	static void disk_default_file_behavior(bool doSync);
+	static void disk_defaultsetpoint(bool doSync);
+	static void disk_extract_video_thumbnails(bool doSync);
+	static void disk_extract_video_thumbnails_position(bool doSync);
+	static void disk_ffmpeg_executable(bool doSync);
+	static void disk_o2consumption(bool doSync);
+	static void disk_pscr_ratio(bool doSync);
+	static void disk_use_default_file(bool doSync);
 };
 
 #endif

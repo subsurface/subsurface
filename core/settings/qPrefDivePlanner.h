@@ -38,9 +38,9 @@ public:
 	static qPrefDivePlanner *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	static int ascratelast6m() { return prefs.ascratelast6m; }
@@ -70,31 +70,31 @@ public:
 	static bool verbatim_plan() { return prefs.verbatim_plan; }
 
 public slots:
-	void set_ascratelast6m(int value);
-	void set_ascratestops(int value);
-	void set_ascrate50(int value);
-	void set_ascrate75(int value);
-	void set_bestmixend(depth_t value);
-	void set_bottompo2(int value);
-	void set_bottomsac(int value);
-	void set_decopo2(int value);
-	void set_decosac(int value);
-	void set_descrate(int value);
-	void set_display_duration(bool value);
-	void set_display_runtime(bool value);
-	void set_display_transitions(bool value);
-	void set_display_variations(bool value);
-	void set_doo2breaks(bool value);
-	void set_drop_stone_mode(bool value);
-	void set_last_stop(bool value);
-	void set_min_switch_duration(int value);
-	void set_planner_deco_mode(deco_mode value);
-	void set_problemsolvingtime(int value);
-	void set_reserve_gas(int value);
-	void set_sacfactor(int value);
-	void set_safetystop(bool value);
-	void set_switch_at_req_stop(bool value);
-	void set_verbatim_plan(bool value);
+	static void set_ascratelast6m(int value);
+	static void set_ascratestops(int value);
+	static void set_ascrate50(int value);
+	static void set_ascrate75(int value);
+	static void set_bestmixend(depth_t value);
+	static void set_bottompo2(int value);
+	static void set_bottomsac(int value);
+	static void set_decopo2(int value);
+	static void set_decosac(int value);
+	static void set_descrate(int value);
+	static void set_display_duration(bool value);
+	static void set_display_runtime(bool value);
+	static void set_display_transitions(bool value);
+	static void set_display_variations(bool value);
+	static void set_doo2breaks(bool value);
+	static void set_drop_stone_mode(bool value);
+	static void set_last_stop(bool value);
+	static void set_min_switch_duration(int value);
+	static void set_planner_deco_mode(deco_mode value);
+	static void set_problemsolvingtime(int value);
+	static void set_reserve_gas(int value);
+	static void set_sacfactor(int value);
+	static void set_safetystop(bool value);
+	static void set_switch_at_req_stop(bool value);
+	static void set_verbatim_plan(bool value);
 
 signals:
 	void ascratelast6m_changed(int value);
@@ -124,32 +124,32 @@ signals:
 	void verbatim_plan_changed(bool value);
 
 private:
-	void disk_ascratelast6m(bool doSync);
-	void disk_ascratestops(bool doSync);
-	void disk_ascrate50(bool doSync);
-	void disk_ascrate75(bool doSync);
-	void disk_bestmixend(bool doSync);
-	void disk_bottompo2(bool doSync);
-	void disk_bottomsac(bool doSync);
-	void disk_decopo2(bool doSync);
-	void disk_decosac(bool doSync);
-	void disk_descrate(bool doSync);
-	void disk_display_deco_mode(bool doSync);
-	void disk_display_duration(bool doSync);
-	void disk_display_runtime(bool doSync);
-	void disk_display_transitions(bool doSync);
-	void disk_display_variations(bool doSync);
-	void disk_doo2breaks(bool doSync);
-	void disk_drop_stone_mode(bool doSync);
-	void disk_last_stop(bool doSync);
-	void disk_min_switch_duration(bool doSync);
-	void disk_planner_deco_mode(bool doSync);
-	void disk_problemsolvingtime(bool doSync);
-	void disk_reserve_gas(bool doSync);
-	void disk_sacfactor(bool doSync);
-	void disk_safetystop(bool doSync);
-	void disk_switch_at_req_stop(bool doSync);
-	void disk_verbatim_plan(bool doSync);
+	static void disk_ascratelast6m(bool doSync);
+	static void disk_ascratestops(bool doSync);
+	static void disk_ascrate50(bool doSync);
+	static void disk_ascrate75(bool doSync);
+	static void disk_bestmixend(bool doSync);
+	static void disk_bottompo2(bool doSync);
+	static void disk_bottomsac(bool doSync);
+	static void disk_decopo2(bool doSync);
+	static void disk_decosac(bool doSync);
+	static void disk_descrate(bool doSync);
+	static void disk_display_deco_mode(bool doSync);
+	static void disk_display_duration(bool doSync);
+	static void disk_display_runtime(bool doSync);
+	static void disk_display_transitions(bool doSync);
+	static void disk_display_variations(bool doSync);
+	static void disk_doo2breaks(bool doSync);
+	static void disk_drop_stone_mode(bool doSync);
+	static void disk_last_stop(bool doSync);
+	static void disk_min_switch_duration(bool doSync);
+	static void disk_planner_deco_mode(bool doSync);
+	static void disk_problemsolvingtime(bool doSync);
+	static void disk_reserve_gas(bool doSync);
+	static void disk_sacfactor(bool doSync);
+	static void disk_safetystop(bool doSync);
+	static void disk_switch_at_req_stop(bool doSync);
+	static void disk_verbatim_plan(bool doSync);
 };
 
 #endif

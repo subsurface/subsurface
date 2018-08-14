@@ -17,9 +17,9 @@ public:
 	static qPrefFacebook *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() {loadSync(false); }
-	void sync() {loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() {loadSync(false); }
+	static void sync() {loadSync(true); }
 
 public:
 	static QString access_token() { return prefs.facebook.access_token; }
@@ -27,9 +27,9 @@ public:
 	static QString user_id() { return prefs.facebook.user_id; }
 
 public slots:
-	void set_access_token(const QString& value);
-	void set_album_id(const QString& value);
-	void set_user_id(const QString& value);
+	static void set_access_token(const QString& value);
+	static void set_album_id(const QString& value);
+	static void set_user_id(const QString& value);
 
 signals:
 	void access_token_changed(const QString& value);
@@ -37,9 +37,9 @@ signals:
 	void user_id_changed(const QString& value);
 
 private:
-	void disk_access_token(bool doSync);
-	void disk_album_id(bool doSync);
-	void disk_user_id(bool doSync);
+	static void disk_access_token(bool doSync);
+	static void disk_album_id(bool doSync);
+	static void disk_user_id(bool doSync);
 };
 
 #endif
