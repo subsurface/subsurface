@@ -51,7 +51,7 @@ void qPrefGeneral::set_default_file_behavior(enum def_file_behavior value)
 		prefs.default_file_behavior = value;
 	}
 	disk_default_file_behavior(true);
-	emit default_file_behavior_changed(value);
+	emit qPrefGeneral::instance()->default_file_behavior_changed(value);
 	}
 }
 void qPrefGeneral::disk_default_file_behavior(bool doSync)
