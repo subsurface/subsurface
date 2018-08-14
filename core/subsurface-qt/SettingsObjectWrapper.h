@@ -51,8 +51,6 @@ public:
 	qPrefUpdateManager *update_manager_settings;
 	qPrefDiveComputer *dive_computer_settings;
 
-	void sync();
-	void load();
 private:
 	SettingsObjectWrapper(QObject *parent = NULL);
 };
