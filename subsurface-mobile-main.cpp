@@ -11,6 +11,7 @@
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
+#include "core/settings/qPref.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -111,6 +112,10 @@ int main(int argc, char **argv)
 	taglist_free(g_tag_list);
 	parse_xml_exit();
 	subsurface_console_exit();
+
+	// Sync struct preferences to disk
+	qPref::sync();
+
 	free_prefs();
 	return 0;
 }

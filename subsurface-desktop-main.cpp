@@ -11,6 +11,7 @@
 #include "core/qt-gui.h"
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
+#include "core/settings/qPref.h"
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/preferences/preferencesdialog.h"
@@ -118,6 +119,10 @@ int main(int argc, char **argv)
 	free((void *)default_directory);
 	free((void *)default_filename);
 	subsurface_console_exit();
+
+	// Sync struct preferences to disk
+	qPref::sync();
+
 	free_prefs();
 	return 0;
 }
