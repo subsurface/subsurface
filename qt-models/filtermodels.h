@@ -111,7 +111,6 @@ signals:
 private:
 	MultiFilterSortModel(QObject *parent = 0);
 	QList<FilterModelBase *> models;
-	bool justCleared;
 	struct dive_site *curr_dive_site;
 };
 
