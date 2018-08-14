@@ -2,6 +2,7 @@
 #include "core/libdivecomputer.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/subsurface-string.h"
 #include <QDebug>
 #include <QRegularExpression>
 #if defined(Q_OS_ANDROID)
@@ -62,6 +63,27 @@ void DownloadThread::run()
 	dcs->set_product(internalData->product);
 	dcs->set_device(internalData->devname);
 	dcs->set_device_name(m_data->devBluetoothName());
+}
+
+static const QVector<dc_family_t> ftdiFamilies = {
+	DC_FAMILY_SUUNTO_SOLUTION, DC_FAMILY_SUUNTO_EON, DC_FAMILY_SUUNTO_VYPER, DC_FAMILY_SUUNTO_VYPER2, DC_FAMILY_SUUNTO_D9,
+	DC_FAMILY_OCEANIC_VTPRO, DC_FAMILY_OCEANIC_VEO250, DC_FAMILY_OCEANIC_ATOM2,
+	DC_FAMILY_HW_OSTC, DC_FAMILY_HW_OSTC3, // but careful, the OSTC 4 is DC_FAMILY_HW_OSTC3 but has no serial connector
+	DC_FAMILY_CRESSI_EDY, DC_FAMILY_CRESSI_LEONARDO,
+	DC_FAMILY_DIVERITE_NITEKQ,
+	DC_FAMILY_DIVESYSTEM_IDIVE,
+	DC_FAMILY_TECDIVING_DIVECOMPUTEREU};
+
+bool guessIfFTDI(dc_descriptor_t *descriptor)
+{
+	if (!descriptor)
+		return false;
+	dc_family_t family = dc_descriptor_get_type(descriptor);
+	if (family == DC_FAMILY_HW_OSTC3 && same_string(dc_descriptor_get_product(descriptor), "OSTC 4"))
+		return false;
+	if (ftdiFamilies.contains(family))
+		return true;
+	return false;
 }
 
 static void fill_supported_mobile_list()

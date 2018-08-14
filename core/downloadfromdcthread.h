@@ -11,6 +11,9 @@
 #if BT_SUPPORT
 #include "core/btdiscovery.h"
 #endif
+
+bool guessIfFTDI(dc_descriptor_t *descriptor);
+
 /* Helper object for access of Device Data in QML */
 class DCDeviceData {
 public:
