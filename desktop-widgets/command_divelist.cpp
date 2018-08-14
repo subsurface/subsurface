@@ -423,7 +423,12 @@ void DiveListBase::restoreSelection(const std::vector<dive *> &selection, dive *
 	});
 
 	bool currentDiveChanged = false;
-	if (current_dive != currentDive) {
+	// If currentDive is null, we have no current dive. In such a case always
+	// signal the frontend.
+	if (!currentDive) {
+		currentDiveChanged = true;
+		emit diveListNotifier.currentDiveChanged();
+	} else if (current_dive != currentDive) {
 		currentDiveChanged = true;
 
 		// We cannot simply change the currentd dive to the given dive.

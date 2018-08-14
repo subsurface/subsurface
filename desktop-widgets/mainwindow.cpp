@@ -530,10 +530,16 @@ void MainWindow::configureToolbar() {
 
 void MainWindow::selectionChanged()
 {
-	graphics()->plotDive(nullptr, false, true);
-	information()->updateDiveInfo();
-	configureToolbar();
-	MapWidget::instance()->reload();
+	if (!current_dive) {
+		information()->clearTabs();
+		information()->updateDiveInfo(true);
+		graphics()->setEmptyState();
+	} else {
+		graphics()->plotDive(nullptr, false, true);
+		information()->updateDiveInfo();
+		configureToolbar();
+		MapWidget::instance()->reload();
+	}
 }
 
 void MainWindow::on_actionNew_triggered()

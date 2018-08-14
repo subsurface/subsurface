@@ -118,6 +118,7 @@ signals:
 	// indexes into local indexes according to current sorting/filtering and instructs the QSelectionModel to
 	// perform the appropriate actions.
 	void selectionChanged(const QVector<QModelIndex> &indexes, bool select);
+	void newCurrentDive(QModelIndex index);
 private slots:
 	void divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives);
 	void divesDeleted(dive_trip *trip, bool deleteTrip, const QVector<dive *> &dives);
@@ -126,6 +127,7 @@ private slots:
 	void divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives);
 	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
 	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
+	void currentDiveChanged();
 private:
 	// The model has up to two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"

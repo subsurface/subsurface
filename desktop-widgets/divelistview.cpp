@@ -45,6 +45,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setSelectionMode(ExtendedSelection);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
 	connect(DiveTripModel::instance(), &DiveTripModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
+	connect(DiveTripModel::instance(), &DiveTripModel::newCurrentDive, this, &DiveListView::currentDiveChanged);
 
 	header()->setStretchLastSection(true);
 
@@ -205,6 +206,21 @@ void DiveListView::diveSelectionChanged(const QVector<QModelIndex> &indexes, boo
 			setAnimated(true);
 		}
 	}
+}
+
+void DiveListView::currentDiveChanged(QModelIndex index)
+{
+	// Transform the index into a local index, since
+	// there might be sorting or filtering in effect.
+	MultiFilterSortModel *m = MultiFilterSortModel::instance();
+	QModelIndex localIndex = m->mapFromSource(index);
+
+	// Then, set the currently activated row.
+	// Note, we have to use the QItemSelectionModel::Current mode to avoid
+	// changing our selection (in contrast to Qt's documentation, which
+	// instructs to use QItemSelectionModel::NoUpdate, which results in
+	// funny side-effects).
+	selectionModel()->setCurrentIndex(localIndex, QItemSelectionModel::Current);
 }
 
 // If rows are added, check which of these rows is a trip and expand the first column
