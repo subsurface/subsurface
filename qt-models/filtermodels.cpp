@@ -367,34 +367,10 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyMo
 {
 }
 
-bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool MultiFilterSortModel::showDive(const struct dive *d) const
 {
-	bool shouldShow = true;
-	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
-
 	if (curr_dive_site) {
-		struct dive_site *ds = NULL;
-		if (!d) { // It's a trip, only show the ones that have dives to be shown.
-			bool showTrip = false;
-			for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
-				QModelIndex child = sourceModel()->index(i, 0, index0);
-				d = (struct dive *)sourceModel()->data(child, DiveTripModel::DIVE_ROLE).value<void *>();
-				ds = get_dive_site_by_uuid(d->dive_site_uuid);
-				if (!ds)
-					continue;
-				if (same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid) {
-					if (ds->uuid != curr_dive_site->uuid) {
-						qWarning() << "Warning, two different dive sites with same name have a different id"
-							   << ds->uuid << "and" << curr_dive_site->uuid;
-					}
-					showTrip = true; // do not shortcircuit the loop or the counts will be wrong
-				}
-			}
-			return showTrip;
-		}
-		ds = get_dive_site_by_uuid(d->dive_site_uuid);
+		dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
 		if (!ds)
 			return false;
 		return same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid;
@@ -403,21 +379,56 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 	if (justCleared || models.isEmpty())
 		return true;
 
-	if (!d) { // It's a trip, only show the ones that have dives to be shown.
+	for (const FilterModelBase *model: models) {
+		if (!model->doFilter(d))
+			return false;
+	}
+
+	return true;
+}
+
+bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
+	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
+	struct dive *d = (struct dive *)diveVariant.value<void *>();
+
+	if (d) {
+		// Current row is a dive
+		bool show = showDive(d);
+		filter_dive(d, show);
+		return show;
+	}
+
+	// From here on, the current row is a trip
+	if (curr_dive_site) {
 		bool showTrip = false;
 		for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
-			if (filterAcceptsRow(i, index0))
+			QModelIndex child = sourceModel()->index(i, 0, index0);
+			d = (struct dive *)sourceModel()->data(child, DiveTripModel::DIVE_ROLE).value<void *>();
+			dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+			if (!ds)
+				continue;
+			if (same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid) {
+				if (ds->uuid != curr_dive_site->uuid) {
+					qWarning() << "Warning, two different dive sites with same name have a different id"
+						   << ds->uuid << "and" << curr_dive_site->uuid;
+				}
 				showTrip = true; // do not shortcircuit the loop or the counts will be wrong
+			}
 		}
 		return showTrip;
 	}
-	Q_FOREACH (FilterModelBase *model, models) {
-		if (!model->doFilter(d))
-			shouldShow = false;
-	}
 
-	filter_dive(d, shouldShow);
-	return shouldShow;
+	if (justCleared || models.isEmpty())
+		return true;
+
+	bool showTrip = false;
+	for (int i = 0; i < sourceModel()->rowCount(index0); i++) {
+		if (filterAcceptsRow(i, index0))
+			showTrip = true; // do not shortcircuit the loop or the counts will be wrong
+	}
+	return showTrip;
 }
 
 void MultiFilterSortModel::myInvalidate()

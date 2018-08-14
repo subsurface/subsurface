@@ -97,6 +97,7 @@ public:
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 	void addFilterModel(FilterModelBase *model);
 	void removeFilterModel(FilterModelBase *model);
+	bool showDive(const struct dive *d) const;
 	int divesDisplayed;
 public
 slots:
