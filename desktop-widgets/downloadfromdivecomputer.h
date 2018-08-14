@@ -38,6 +38,7 @@ public:
 public
 slots:
 	void on_downloadCancelRetryButton_clicked();
+	void on_configureDiveComputerButton_clicked();
 	void on_ok_clicked();
 	void on_cancel_clicked();
 	void on_search_clicked();
