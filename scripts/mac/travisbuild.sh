@@ -15,7 +15,7 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 cd ${TRAVIS_BUILD_DIR}/..
 DIR=$(pwd)
 
-bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
+bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -build-with-ftdi -release
 
 cd ${TRAVIS_BUILD_DIR}/build
 

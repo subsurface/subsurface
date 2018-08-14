@@ -23,7 +23,7 @@ git describe
 # takes longer than updating / installing from Homebrew
 brew update
 echo "Updated Homebrew, now get our dependencies brewed"
-brew install xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2
+brew install xz hidapi libusb libxml2 libxslt libzip openssl pkg-config libgit2 libssh2 libftdi
 
 # libdivecomputer uses the wrong include path for libusb and hidapi
 # the pkgconfig file for libusb/hidapi already gives the include path as
