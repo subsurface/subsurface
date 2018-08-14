@@ -1,3 +1,5 @@
+- Dive computer configuration: remove from main menu and trigger from download dialog instead,
+  but only for dive computers that are actually supported for configuration
 - Android: switch to Download page when dive computer is plugged in and try to
   populate vendor / device / connection based on the information we get
 - Mobile: enable multiple cylinder editing for dives that uses more than one cylinder 

@@ -1923,12 +1923,6 @@ void MainWindow::on_actionExport_triggered()
 	diveLogExport.exec();
 }
 
-void MainWindow::on_actionConfigure_Dive_Computer_triggered()
-{
-	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(this);
-	dcConfig->show();
-}
-
 void MainWindow::setEnabledToolbar(bool arg1)
 {
 	Q_FOREACH (QAction *b, profileToolbarActions)

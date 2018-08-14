@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "desktop-widgets/downloadfromdivecomputer.h"
+#include "desktop-widgets/configuredivecomputerdialog.h"
 #include "core/display.h"
 #include "core/qthelper.h"
 #include "core/subsurface-qt/SettingsObjectWrapper.h"
@@ -235,14 +236,16 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 	int dcType = DC_TYPE_SERIAL;
 	productModel.setStringList(productList[vendor]);
 	ui.product->setCurrentIndex(0);
+	ui.configureDiveComputerButton->setEnabled(diveComputerConfigurable(vendor, productList[vendor][0]));
 
 	if (vendor == QString("Uemis"))
 		dcType = DC_TYPE_UEMIS;
 	fill_device_list(dcType);
 }
 
-void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
+void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &product)
 {
+	ui.configureDiveComputerButton->setEnabled(diveComputerConfigurable(ui.vendor->currentText(), product));
 	updateDeviceEnabled();
 }
 
@@ -338,6 +341,12 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	    !data->saveDump()) {
 		ostcFirmwareCheck = new OstcFirmwareCheck(product);
 	}
+}
+
+void DownloadFromDCWidget::on_configureDiveComputerButton_clicked()
+{
+	ConfigureDiveComputerDialog *dcConfig = new ConfigureDiveComputerDialog(this, ui.vendor->currentText(), ui.product->currentText());
+	dcConfig->show();
 }
 
 bool DownloadFromDCWidget::preferDownloaded()

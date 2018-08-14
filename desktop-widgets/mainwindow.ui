@@ -74,7 +74,6 @@
     <addaction name="actionPreferences"/>
     <addaction name="separator"/>
     <addaction name="actionHash_images"/>
-    <addaction name="actionConfigure_Dive_Computer"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuLog">
