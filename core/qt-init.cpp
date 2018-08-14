@@ -49,7 +49,7 @@ void init_qt_late()
 	QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
 #endif
 	// find plugins installed in the application directory (without this SVGs don't work on Windows)
-	SettingsObjectWrapper::instance()->load();
+	qPref::load();
 
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	QLocale loc;

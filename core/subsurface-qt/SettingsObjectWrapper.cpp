@@ -29,37 +29,6 @@ QObject(parent),
 {
 }
 
-void SettingsObjectWrapper::load()
-{
-	QSettings s;
-	QVariant v;
-
-	uiLanguage(NULL);
-
-	qPrefUnits::instance()->load();
-	qPrefPartialPressureGas::instance()->load();
-	qPrefGeneral::instance()->load();
-	qPrefAnimations::instance()->load();
-	qPrefCloudStorage::instance()->load();
-	qPrefDisplay::instance()->load();
-	qPrefProxy::instance()->load();
-	qPrefGeocoding::instance()->load();
-
-	// GPS service time and distance thresholds
-	qPrefLocationService::instance()->load();
-
-	qPrefDivePlanner::instance()->load();
-	qPrefDiveComputer::instance()->load();
-	qPrefUpdateManager::instance()->load();
-
-	qPrefLanguage::instance()->load();
-}
-
-void SettingsObjectWrapper::sync()
-{
-	qPrefDisplay::instance()->sync();
-}
-
 SettingsObjectWrapper* SettingsObjectWrapper::instance()
 {
 	static SettingsObjectWrapper settings;
