@@ -132,7 +132,7 @@ int SuitsFilterModel::countDives(const char *s) const
 	return count_dives_with_suit(s);
 }
 
-bool SuitsFilterModel::doFilter(dive *d, QModelIndex&, QAbstractItemModel*) const
+bool SuitsFilterModel::doFilter(dive *d) const
 {
 	// rowCount() == 0 should never happen, because we have the "no suits" row
 	// let's handle it gracefully anyway.
@@ -196,7 +196,7 @@ void TagFilterModel::repopulate()
 	updateList(list);
 }
 
-bool TagFilterModel::doFilter(dive *d, QModelIndex&, QAbstractItemModel*) const
+bool TagFilterModel::doFilter(dive *d) const
 {
 	// If there's nothing checked, this should show everything
 	// rowCount() == 0 should never happen, because we have the "no tags" row
@@ -234,7 +234,7 @@ int BuddyFilterModel::countDives(const char *s) const
 	return count_dives_with_person(s);
 }
 
-bool BuddyFilterModel::doFilter(dive *d, QModelIndex&, QAbstractItemModel*) const
+bool BuddyFilterModel::doFilter(dive *d) const
 {
 	// If there's nothing checked, this should show everything
 	// rowCount() == 0 should never happen, because we have the "no tags" row
@@ -289,7 +289,7 @@ int LocationFilterModel::countDives(const char *s) const
 	return count_dives_with_location(s);
 }
 
-bool LocationFilterModel::doFilter(struct dive *d, QModelIndex&, QAbstractItemModel*) const
+bool LocationFilterModel::doFilter(struct dive *d) const
 {
 	// rowCount() == 0 should never happen, because we have the "no location" row
 	// let's handle it gracefully anyway.
@@ -412,7 +412,7 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		return showTrip;
 	}
 	Q_FOREACH (FilterModelBase *model, models) {
-		if (!model->doFilter(d, index0, sourceModel()))
+		if (!model->doFilter(d))
 			shouldShow = false;
 	}
 
