@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qPrefLocationService.h"
-#include "qPref.h"
 #include "qPrefPrivate.h"
 
 static const QString group = QStringLiteral("LocationService");

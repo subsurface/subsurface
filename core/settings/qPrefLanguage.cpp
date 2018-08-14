@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
-#include "qPref.h"
+#include "qPrefLanguage.h"
 #include "qPrefPrivate.h"
 
 static const QString group = QStringLiteral("Language");
