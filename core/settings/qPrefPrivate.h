@@ -127,7 +127,7 @@ private:
 		if (value != prefs.usestruct field) {       \
 			prefs.usestruct field = value;      \
 			disk_##field(true);                 \
-			emit field##_changed(value);        \
+			emit qPref##usegroup::instance()->field##_changed(value);        \
 		}                                           \
 	}
 #define SET_PREFERENCE_BOOL(usegroup, field) \
@@ -139,7 +139,7 @@ private:
 		if (value != prefs.usestruct field) {         \
 			prefs.usestruct field = value;        \
 			disk_##field(true);                   \
-			emit field##_changed(value);          \
+			emit qPref##usegroup::instance()->field##_changed(value);        \
 		}                                             \
 	}
 #define SET_PREFERENCE_DOUBLE(usegroup, field) \
@@ -151,7 +151,7 @@ private:
 		if (value != prefs.usestruct field) {             \
 			prefs.usestruct field = value;            \
 			disk_##field(true);                       \
-			emit field##_changed(value);              \
+			emit qPref##usegroup::instance()->field##_changed(value);        \
 		}                                                 \
 	}
 #define SET_PREFERENCE_ENUM(usegroup, type, field) \
@@ -163,7 +163,7 @@ private:
 		if (value != prefs.usestruct field) {      \
 			prefs.usestruct field = value;     \
 			disk_##field(true);                \
-			emit field##_changed(value);       \
+			emit qPref##usegroup::instance()->field##_changed(value);        \
 		}                                          \
 	}
 #define SET_PREFERENCE_INT(usegroup, field) \
@@ -175,7 +175,7 @@ private:
 		if (value. var != prefs.usestruct field . var) {             \
 			prefs.usestruct field . var = value . var;            \
 			disk_##field(true);                       \
-			emit field##_changed(value);              \
+			emit qPref##usegroup::instance()->field##_changed(value);        \
 		}                                                 \
 	}
 #define SET_PREFERENCE_STRUCT(usegroup, type, field, var) \
@@ -187,7 +187,7 @@ private:
 		if (value != prefs.usestruct field) {                                      \
 			qPrefPrivate::instance()->copy_txt(&prefs.usestruct field, value); \
 			disk_##field(true);                                                \
-			emit field##_changed(value);                                       \
+			emit qPref##usegroup::instance()->field##_changed(value);        \
 		}                                                                          \
 	}
 #define SET_PREFERENCE_TXT(usegroup, field) \
