@@ -96,7 +96,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/settings/qPrefUpdateManager.cpp \
 	../../core/subsurface-qt/CylinderObjectHelper.cpp \
 	../../core/subsurface-qt/DiveObjectHelper.cpp \
-	../../core/subsurface-qt/SettingsObjectWrapper.cpp \
 	../../mobile-widgets/qmlmanager.cpp \
 	../../mobile-widgets/qmlprefs.cpp \
 	../../qt-models/divelistmodel.cpp \
@@ -219,7 +218,6 @@ HEADERS += \
 	../../core/settings/qPrefUpdateManager.h \
 	../../core/subsurface-qt/CylinderObjectHelper.h \
 	../../core/subsurface-qt/DiveObjectHelper.h \
-	../../core/subsurface-qt/SettingsObjectWrapper.h \
 	../../mobile-widgets/qmlmanager.h \
 	../../mobile-widgets/qmlprefs.h \
 	../../map-widget/qmlmapwidgethelper.h \
