@@ -4,7 +4,7 @@
 #include "desktop-widgets/mainwindow.h"
 #include "core/planner.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefDivePlanner.h"
 #include "core/gettextfromc.h"
 
 #include "qt-models/cylindermodel.h"
