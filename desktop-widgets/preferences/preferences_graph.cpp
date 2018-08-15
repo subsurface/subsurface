@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "preferences_graph.h"
 #include "ui_preferences_graph.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefPartialPressureGas.h"
 #include <QMessageBox>
 
 #include "qt-models/models.h"
@@ -52,32 +54,29 @@ void PreferencesGraph::refreshSettings()
 
 void PreferencesGraph::syncSettings()
 {
-	auto general = qPrefGeneral::instance();
-	general->set_defaultsetpoint(lrint(ui->defaultSetpoint->value() * 1000.0));
-	general->set_o2consumption(lrint(ui->psro2rate->value() *1000.0));
-	general->set_pscr_ratio(lrint(1000.0 / ui->pscrfactor->value()));
-	general->set_auto_recalculate_thumbnails(ui->auto_recalculate_thumbnails->isChecked());
+	qPrefGeneral::set_defaultsetpoint(lrint(ui->defaultSetpoint->value() * 1000.0));
+	qPrefGeneral::set_o2consumption(lrint(ui->psro2rate->value() *1000.0));
+	qPrefGeneral::set_pscr_ratio(lrint(1000.0 / ui->pscrfactor->value()));
+	qPrefGeneral::set_auto_recalculate_thumbnails(ui->auto_recalculate_thumbnails->isChecked());
 
-	auto pp_gas = qPrefPartialPressureGas::instance();
-	pp_gas->set_phe_threshold(ui->pheThreshold->value());
-	pp_gas->set_po2_threshold_max(ui->po2ThresholdMax->value());
-	pp_gas->set_po2_threshold_min(ui->po2ThresholdMin->value());
-	pp_gas->set_pn2_threshold(ui->pn2Threshold->value());
+	qPrefPartialPressureGas::set_phe_threshold(ui->pheThreshold->value());
+	qPrefPartialPressureGas::set_po2_threshold_max(ui->po2ThresholdMax->value());
+	qPrefPartialPressureGas::set_po2_threshold_min(ui->po2ThresholdMin->value());
+	qPrefPartialPressureGas::set_pn2_threshold(ui->pn2Threshold->value());
 
-	auto tech = qPrefTechnicalDetails::instance();
-	tech->set_modpO2(ui->maxpo2->value());
-	tech->set_redceiling(ui->red_ceiling->isChecked());
+	qPrefTechnicalDetails::set_modpO2(ui->maxpo2->value());
+	qPrefTechnicalDetails::set_redceiling(ui->red_ceiling->isChecked());
 	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
-	tech->set_gflow(ui->gflow->value());
-	tech->set_gfhigh(ui->gfhigh->value());
-	tech->set_vpmb_conservatism(ui->vpmb_conservatism->value());
-	tech->set_show_ccr_setpoint(ui->show_ccr_setpoint->isChecked());
-	tech->set_show_ccr_sensors(ui->show_ccr_sensors->isChecked());
-	tech->set_show_scr_ocpo2(ui->show_scr_ocpo2->isChecked());
-	tech->set_display_unused_tanks(ui->display_unused_tanks->isChecked());
-	tech->set_show_average_depth(ui->show_average_depth->isChecked());
-	tech->set_show_icd(ui->show_icd->isChecked());
-	tech->set_display_deco_mode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
+	qPrefTechnicalDetails::set_gflow(ui->gflow->value());
+	qPrefTechnicalDetails::set_gfhigh(ui->gfhigh->value());
+	qPrefTechnicalDetails::set_vpmb_conservatism(ui->vpmb_conservatism->value());
+	qPrefTechnicalDetails::set_show_ccr_setpoint(ui->show_ccr_setpoint->isChecked());
+	qPrefTechnicalDetails::set_show_ccr_sensors(ui->show_ccr_sensors->isChecked());
+	qPrefTechnicalDetails::set_show_scr_ocpo2(ui->show_scr_ocpo2->isChecked());
+	qPrefTechnicalDetails::set_display_unused_tanks(ui->display_unused_tanks->isChecked());
+	qPrefTechnicalDetails::set_show_average_depth(ui->show_average_depth->isChecked());
+	qPrefTechnicalDetails::set_show_icd(ui->show_icd->isChecked());
+	qPrefTechnicalDetails::set_display_deco_mode(ui->vpmb->isChecked() ? VPMB : BUEHLMANN);
 }
 
 #define DANGER_GF (gf > 100) ? "* { color: red; }" : ""

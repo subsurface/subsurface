@@ -2,7 +2,7 @@
 #include "preferences_language.h"
 #include "ui_preferences_language.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefLanguage.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -81,16 +81,14 @@ void PreferencesLanguage::syncSettings()
 	if (languages.count())
 		currentLocale = m->data(languages.first(),Qt::UserRole).toString();
 
-
-	auto lang = qPrefLanguage::instance();
-	lang->set_language(currentText);
-	lang->set_lang_locale(currentLocale);
-	lang->set_use_system_language(ui->languageSystemDefault->isChecked());
-	lang->set_time_format_override(!ui->timeFormatSystemDefault->isChecked());
-	lang->set_date_format_override(!ui->dateFormatSystemDefault->isChecked());
-	lang->set_time_format(ui->timeFormatEntry->currentText());
-	lang->set_date_format(ui->dateFormatEntry->currentText());
-	lang->set_date_format_short(ui->shortDateFormatEntry->text());
+	qPrefLanguage::set_language(currentText);
+	qPrefLanguage::set_lang_locale(currentLocale);
+	qPrefLanguage::set_use_system_language(ui->languageSystemDefault->isChecked());
+	qPrefLanguage::set_time_format_override(!ui->timeFormatSystemDefault->isChecked());
+	qPrefLanguage::set_date_format_override(!ui->dateFormatSystemDefault->isChecked());
+	qPrefLanguage::set_time_format(ui->timeFormatEntry->currentText());
+	qPrefLanguage::set_date_format(ui->dateFormatEntry->currentText());
+	qPrefLanguage::set_date_format_short(ui->shortDateFormatEntry->text());
 	uiLanguage(NULL);
 
 	QString qDateTimeWeb = tr("These will be used as is. This might not be what you intended.\nSee http://doc.qt.io/qt-5/qdatetime.html#toString");

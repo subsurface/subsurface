@@ -4,7 +4,6 @@
 #include "subsurfacewebservices.h"
 #include "core/cloudstorage.h"
 #include "core/dive.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/settings/qPref.h"
 #include <QNetworkProxy>
 
