@@ -6,7 +6,7 @@
 #include "qt-models/models.h"
 #include "core/device.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefDivePlanner.h"
 #include "core/gettextfromc.h"
 #include <QApplication>
 #include <QTextDocument>
@@ -427,26 +427,26 @@ void DivePlannerPointsModel::emitDataChanged()
 void DivePlannerPointsModel::setBottomSac(double sac)
 {
 	diveplan.bottomsac = units_to_sac(sac);
-	qPrefDivePlanner::instance()->set_bottomsac(diveplan.bottomsac);
+	qPrefDivePlanner::set_bottomsac(diveplan.bottomsac);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDecoSac(double sac)
 {
 	diveplan.decosac = units_to_sac(sac);
-	qPrefDivePlanner::instance()->set_decosac(diveplan.decosac);
+	qPrefDivePlanner::set_decosac(diveplan.decosac);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSacFactor(double factor)
 {
-	qPrefDivePlanner::instance()->set_sacfactor((int) round(factor * 100));
+	qPrefDivePlanner::set_sacfactor((int) round(factor * 100));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setProblemSolvingTime(int minutes)
 {
-	qPrefDivePlanner::instance()->set_problemsolvingtime(minutes);
+	qPrefDivePlanner::set_problemsolvingtime(minutes);
 	emitDataChanged();
 }
 
@@ -504,96 +504,95 @@ int DivePlannerPointsModel::getSurfacePressure()
 
 void DivePlannerPointsModel::setLastStop6m(bool value)
 {
-	qPrefDivePlanner::instance()->set_last_stop(value);
+	qPrefDivePlanner::set_last_stop(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscrate75(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascrate75(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::set_ascrate75(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscrate50(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascrate50(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::set_ascrate50(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscratestops(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascratestops(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::set_ascratestops(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setAscratelast6m(int rate)
 {
-	qPrefDivePlanner::instance()->set_ascratelast6m(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::set_ascratelast6m(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDescrate(int rate)
 {
-	qPrefDivePlanner::instance()->set_descrate(lrint(rate * UNIT_FACTOR));
+	qPrefDivePlanner::set_descrate(lrint(rate * UNIT_FACTOR));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setVerbatim(bool value)
 {
-	qPrefDivePlanner::instance()->set_verbatim_plan(value);
+	qPrefDivePlanner::set_verbatim_plan(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayRuntime(bool value)
 {
-	qPrefDivePlanner::instance()->set_display_runtime(value);
+	qPrefDivePlanner::set_display_runtime(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayDuration(bool value)
 {
-	qPrefDivePlanner::instance()->set_display_duration(value);
+	qPrefDivePlanner::set_display_duration(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayTransitions(bool value)
 {
-	qPrefDivePlanner::instance()->set_display_transitions(value);
+	qPrefDivePlanner::set_display_transitions(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDisplayVariations(bool value)
 {
-	qPrefDivePlanner::instance()->set_display_variations(value);
+	qPrefDivePlanner::set_display_variations(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDecoMode(int mode)
 {
-	qPrefDivePlanner::instance()->set_planner_deco_mode(deco_mode(mode));
+	qPrefDivePlanner::set_planner_deco_mode(deco_mode(mode));
 	emit recreationChanged(mode == int(prefs.planner_deco_mode));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setSafetyStop(bool value)
 {
-	qPrefDivePlanner::instance()->set_safetystop(value);
+	qPrefDivePlanner::set_safetystop(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setReserveGas(int reserve)
 {
-	auto planner = qPrefDivePlanner::instance();
 	if (prefs.units.pressure == units::BAR)
-		planner->set_reserve_gas(reserve * 1000);
+		qPrefDivePlanner::set_reserve_gas(reserve * 1000);
 	else
-		planner->set_reserve_gas(psi_to_mbar(reserve));
+		qPrefDivePlanner::set_reserve_gas(psi_to_mbar(reserve));
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setDropStoneMode(bool value)
 {
-	qPrefDivePlanner::instance()->set_drop_stone_mode(value);
+	qPrefDivePlanner::set_drop_stone_mode(value);
 	if (prefs.drop_stone_mode) {
 	/* Remove the first entry if we enable drop_stone_mode */
 		if (rowCount() >= 2) {
@@ -615,13 +614,13 @@ void DivePlannerPointsModel::setDropStoneMode(bool value)
 
 void DivePlannerPointsModel::setSwitchAtReqStop(bool value)
 {
-	qPrefDivePlanner::instance()->set_switch_at_req_stop(value);
+	qPrefDivePlanner::set_switch_at_req_stop(value);
 	emitDataChanged();
 }
 
 void DivePlannerPointsModel::setMinSwitchDuration(int duration)
 {
-	qPrefDivePlanner::instance()->set_min_switch_duration(duration * 60);
+	qPrefDivePlanner::set_min_switch_duration(duration * 60);
 	emitDataChanged();
 }
 
