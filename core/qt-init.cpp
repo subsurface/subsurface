@@ -5,7 +5,7 @@
 #include <QLibraryInfo>
 #include <QTextCodec>
 #include "qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 char *settings_suffix = NULL;
 static QTranslator *qtTranslator, *ssrfTranslator;
