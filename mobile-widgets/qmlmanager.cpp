@@ -33,7 +33,7 @@
 #include "core/downloadfromdcthread.h"
 #include "core/subsurface-string.h"
 #include "core/pref.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 
 #include "core/ssrf.h"
 
@@ -253,10 +253,10 @@ void QMLManager::openLocalThenRemote(QString url)
 	clear_dive_file_data();
 	setNotificationText(tr("Open local dive data file"));
 	QByteArray fileNamePrt = QFile::encodeName(url);
-	bool glo = prefs.git_local_only;
+	bool glo = qPrefCloudStorage::git_local_only();
 	prefs.git_local_only = true;
 	int error = parse_file(fileNamePrt.data());
-	prefs.git_local_only = glo;
+	qPrefCloudStorage::set_git_local_only(glo);
 	if (error) {
 		appendTextToLog(QStringLiteral("loading dives from cache failed %1").arg(error));
 		setNotificationText(tr("Opening local data file failed"));
@@ -277,16 +277,16 @@ void QMLManager::openLocalThenRemote(QString url)
 		if (QMLPrefs::instance()->credentialStatus() == qPref::CS_UNKNOWN)
 			QMLPrefs::instance()->setCredentialStatus(qPref::CS_VERIFIED);
 		prefs.unit_system = git_prefs.unit_system;
-		if (git_prefs.unit_system == IMPERIAL)
+		if (qPrefUnits::unit_system() == IMPERIAL)
 			git_prefs.units = IMPERIAL_units;
 		else if (git_prefs.unit_system == METRIC)
 			git_prefs.units = SI_units;
 		prefs.units = git_prefs.units;
-		prefs.tankbar = git_prefs.tankbar;
-		prefs.dcceiling = git_prefs.dcceiling;
-		prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
-		prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
-		prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
+		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
+		qPrefTechnicalDetails::set_dcceiling(git_prefs.dcceiling);
+		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
+		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
+		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
 		process_dives(false, false);
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();
@@ -299,11 +299,11 @@ void QMLManager::openLocalThenRemote(QString url)
 	}
 	if (QMLPrefs::instance()->oldStatus() == qPref::CS_NOCLOUD) {
 		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
-		prefs.git_local_only = false;
+		qPrefCloudStorage::set_git_local_only(false);
 		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
 	}
 	set_filename(fileNamePrt.data());
-	if (prefs.git_local_only) {
+	if (qPrefCloudStorage::git_local_only()) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but user asked not to connect to network"));
 		alreadySaving = false;
 	} else {
@@ -371,9 +371,9 @@ void QMLManager::copyAppLogToClipboard()
 void QMLManager::finishSetup()
 {
 	// Initialize cloud credentials.
-	QMLPrefs::instance()->setCloudUserName(prefs.cloud_storage_email);
-	QMLPrefs::instance()->setCloudPassword(prefs.cloud_storage_password);
-	setSyncToCloud(!prefs.git_local_only);
+	QMLPrefs::instance()->setCloudUserName(qPrefCloudStorage::cloud_storage_email());
+	QMLPrefs::instance()->setCloudPassword(qPrefCloudStorage::cloud_storage_password());
+	setSyncToCloud(!qPrefCloudStorage::git_local_only());
 	QMLPrefs::instance()->setCredentialStatus((qPref::cloud_status) prefs.cloud_verification_status);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
@@ -404,8 +404,8 @@ void QMLManager::finishSetup()
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
-	QMLPrefs::instance()->setDistanceThreshold(prefs.distance_threshold);
-	QMLPrefs::instance()->setTimeThreshold(prefs.time_threshold / 60);
+	QMLPrefs::instance()->setDistanceThreshold(qPrefLocationService::distance_threshold());
+	QMLPrefs::instance()->setTimeThreshold(qPrefLocationService::time_threshold() / 60);
 }
 
 QMLManager::~QMLManager()
@@ -424,9 +424,8 @@ QMLManager *QMLManager::instance()
 
 void QMLManager::savePreferences()
 {
-    auto location = SettingsObjectWrapper::instance()->location_settings;
-    location->set_time_threshold(QMLPrefs::instance()->timeThreshold() * 60);
-    location->set_distance_threshold(QMLPrefs::instance()->distanceThreshold());
+    qPrefLocationService::set_time_threshold(QMLPrefs::instance()->timeThreshold() * 60);
+    qPrefLocationService::set_distance_threshold(QMLPrefs::instance()->distanceThreshold());
 }
 
 #define CLOUDURL QString(prefs.cloud_base_url)
