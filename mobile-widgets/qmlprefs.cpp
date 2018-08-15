@@ -3,7 +3,7 @@
 #include "qmlmanager.h"
 
 #include "core/membuffer.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPref.h"
 #include "core/gpslocation.h"
 
 
