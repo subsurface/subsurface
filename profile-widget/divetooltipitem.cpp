@@ -6,7 +6,6 @@
 #include "core/metrics.h"
 #include "core/settings/qPrefDisplay.h"
 #include <QPropertyAnimation>
-#include <QSettings>
 #include <QGraphicsView>
 #include <QStyleOptionGraphicsItem>
 #include "core/qthelper.h"
@@ -207,17 +206,12 @@ void ToolTipItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *optio
 
 void ToolTipItem::persistPos()
 {
-	QSettings s;
-	s.beginGroup("ProfileMap");
-	s.setValue("tooltip_position", pos());
-	s.endGroup();
+	qPrefDisplay::set_tooltip_position(pos());
 }
 
 void ToolTipItem::readPos()
 {
-	QSettings s;
-	s.beginGroup("ProfileMap");
-	QPointF value = s.value("tooltip_position").toPoint();
+	QPointF value = qPrefDisplay::tooltip_position();
 	if (!scene()->sceneRect().contains(value)) {
 		value = QPointF(0, 0);
 	}
