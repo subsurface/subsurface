@@ -15,6 +15,7 @@ private slots:
 	void test_struct_disk();
 	void test_multiple();
 	void test_oldPreferences();
+	void test_next_check();
 };
 
 #endif // TESTQPREFUPDATEMANAGER_H

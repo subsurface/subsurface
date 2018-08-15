@@ -41,12 +41,17 @@ HANDLE_PREFERENCE_TXT_EXT(UpdateManager, "/LastVersionUsed", last_version_used, 
 
 void qPrefUpdateManager::set_next_check(const QDate& value)
 {
-	QString valueString = value.toString("dd/MM/yyyy");
-	if (valueString != prefs.update_manager.next_check) {
-		qPrefPrivate::copy_txt(&prefs.update_manager.next_check, valueString);
+	long time_value = value.toJulianDay();
+	if (time_value != prefs.update_manager.next_check) {
+		prefs.update_manager.next_check = time_value;
 		disk_next_check(true);
 		emit instance()->next_check_changed(value);
 	}
 }
-DISK_LOADSYNC_TXT_EXT(UpdateManager, "/NextCheck", next_check, update_manager.);
-
+void qPrefUpdateManager::disk_next_check(bool doSync)
+{
+	if (doSync)
+		qPrefPrivate::instance()->setting.setValue(group + "/NextCheck", prefs.update_manager.next_check);
+	else
+		prefs.update_manager.next_check = qPrefPrivate::instance()->setting.value(group + "/NextCheck", 0).toInt();
+}
