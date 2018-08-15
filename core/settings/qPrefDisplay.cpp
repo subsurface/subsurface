@@ -44,7 +44,7 @@ void qPrefDisplay::set_divelist_font(const QString &value)
 void qPrefDisplay::disk_divelist_font(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::instance()->setting.setValue(group + "/divelist_font", prefs.divelist_font);
+		qPrefPrivate::propSetValue(group + "/divelist_font", prefs.divelist_font);
 	else
 		setCorrectFont();
 }
@@ -64,7 +64,7 @@ void qPrefDisplay::set_font_size(double value)
 void qPrefDisplay::disk_font_size(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::instance()->setting.setValue(group + "/font_size", prefs.font_size);
+		qPrefPrivate::propSetValue(group + "/font_size", prefs.font_size);
 	else
 		setCorrectFont();
 }
@@ -78,18 +78,15 @@ HANDLE_PREFERENCE_TXT(Display, "/theme", theme);
 
 void qPrefDisplay::setCorrectFont()
 {
-	QSettings s;
-	QVariant v;
-
 	// get the font from the settings or our defaults
 	// respect the system default font size if none is explicitly set
-	QFont defaultFont = s.value(group + "/divelist_font", prefs.divelist_font).value<QFont>();
+	QFont defaultFont = qPrefPrivate::propValue(group + "/divelist_font", prefs.divelist_font).value<QFont>();
 	if (IS_FP_SAME(system_divelist_default_font_size, -1.0)) {
 		prefs.font_size = qApp->font().pointSizeF();
 		system_divelist_default_font_size = prefs.font_size; // this way we don't save it on exit
 	}
 
-	prefs.font_size = s.value(group + "/font_size", prefs.font_size).toFloat();
+	prefs.font_size = qPrefPrivate::propValue(group + "/font_size", prefs.font_size).toFloat();
 	// painful effort to ignore previous default fonts on Windows - ridiculous
 	QString fontName = defaultFont.toString();
 	if (fontName.contains(","))
@@ -103,5 +100,5 @@ void qPrefDisplay::setCorrectFont()
 	defaultFont.setPointSizeF(prefs.font_size);
 	qApp->setFont(defaultFont);
 
-	prefs.display_invalid_dives = qPrefPrivate::instance()->setting.value(group + "/displayinvalid", default_prefs.display_invalid_dives).toBool();
+	prefs.display_invalid_dives = qPrefPrivate::propValue(group + "/displayinvalid", default_prefs.display_invalid_dives).toBool();
 }
