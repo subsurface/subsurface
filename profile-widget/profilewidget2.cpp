@@ -36,7 +36,6 @@
 #include <QInputDialog>
 #include <QDebug>
 #include <QWheelEvent>
-#include <QSettings>
 #include <QMenu>
 #include <QElapsedTimer>
 
