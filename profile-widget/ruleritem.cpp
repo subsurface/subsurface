@@ -5,7 +5,7 @@
 #endif
 #include "profile-widget/profilewidget2.h"
 #include "core/display.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 
 #include <qgraphicssceneevent.h>
 
@@ -83,7 +83,7 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
 #ifndef SUBSURFACE_MOBILE
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::rulergraph_changed, this, &RulerItem2::settingsChanged);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::rulergraph_changed, this, &RulerItem2::settingsChanged);
 #endif
 }
 

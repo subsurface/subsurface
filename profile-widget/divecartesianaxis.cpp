@@ -3,7 +3,6 @@
 #include "profile-widget/divetextitem.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/preferences/preferencesdialog.h"
 #endif
