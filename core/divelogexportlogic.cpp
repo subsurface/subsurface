@@ -148,8 +148,10 @@ void exportHtmlInitLogic(const QString &filename, struct htmlExportSetting &hes)
 	export_HTML(qPrintable(json_dive_data), qPrintable(photosDirectory), hes.selectedOnly, hes.listOnly);
 
 	QString searchPath = getSubsurfaceDataPath("theme");
-	if (searchPath.isEmpty())
+	if (searchPath.isEmpty()) {
+		report_error(qPrintable(gettextFromC::tr("Cannot find a folder called 'theme' in the standard locations")));
 		return;
+	}
 
 	searchPath += QDir::separator();
 
