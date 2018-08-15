@@ -55,7 +55,7 @@ typedef struct {
 	bool dont_check_for_updates;
 	bool dont_check_exists;
 	const char *last_version_used;
-	const char *next_check;
+	int next_check;
 } update_manager_prefs_t;
 
 typedef struct {

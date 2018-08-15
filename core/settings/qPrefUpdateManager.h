@@ -26,7 +26,7 @@ public:
 	static bool dont_check_for_updates() { return prefs.update_manager.dont_check_for_updates; }
 	static bool dont_check_exists() { return prefs.update_manager.dont_check_exists; }
 	static const QString last_version_used() { return prefs.update_manager.last_version_used; }
-	static const QDate next_check() { return QDate::fromString(QString(prefs.update_manager.next_check), "dd/MM/yyyy"); }
+	static const QDate next_check() { return QDate::fromJulianDay(prefs.update_manager.next_check); }
 
 public slots:
 	static void set_dont_check_for_updates(bool value);
