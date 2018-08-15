@@ -27,7 +27,7 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefFacebook.h"
 
 #include "ui_socialnetworksdialog.h"
 #include "ui_facebookconnectwidget.h"
@@ -88,18 +88,16 @@ void FacebookManager::tryLogin(const QUrl& loginResponse)
 	int to = result.indexOf("&expires_in");
 	QString securityToken = result.mid(from, to-from);
 
-	auto fb = qPrefFacebook::instance();
-	fb->set_access_token(securityToken);
+	qPrefFacebook::set_access_token(securityToken);
 	qCDebug(lcFacebook) << "Got securityToken" << securityToken;
 	requestUserId();
 }
 
 void FacebookManager::logout()
 {
-	auto fb = qPrefFacebook::instance();
-	fb->set_access_token(QString());
-	fb->set_user_id(QString());
-	fb->set_album_id(QString());
+	qPrefFacebook::set_access_token(QString());
+	qPrefFacebook::set_user_id(QString());
+	qPrefFacebook::set_album_id(QString());
 	emit justLoggedOut(true);
 }
 
@@ -116,15 +114,14 @@ void FacebookManager::albumListReceived()
 	QNetworkReply *reply = qobject_cast<QNetworkReply*>(sender());
 	QJsonDocument albumsDoc = QJsonDocument::fromJson(reply->readAll());
 	QJsonArray albumObj = albumsDoc.object().value("data").toArray();
-	auto fb = qPrefFacebook::instance();
 
 	reply->deleteLater();
 	foreach(const QJsonValue &v, albumObj){
 		QJsonObject obj = v.toObject();
 		if (obj.value("name").toString() == fbInfo.albumName) {
-			fb->set_album_id(obj.value("id").toString());
+			qPrefFacebook::set_album_id(obj.value("id").toString());
 			qCDebug(lcFacebook) << "Album" << fbInfo.albumName << "already exists, using id" << obj.value("id").toString();
-			emit albumIdReceived(fb->album_id());
+			emit albumIdReceived(qPrefFacebook::album_id());
 			return;
 		}
 	}
@@ -158,9 +155,8 @@ void FacebookManager::facebookAlbumCreated()
 
 	if (album.contains("id")) {
 		qCDebug(lcFacebook) << "Album" << fbInfo.albumName << "created successfully with id" << album.value("id").toString();
-		auto fb = qPrefFacebook::instance();
-		fb->set_album_id(album.value("id").toString());
-		emit albumIdReceived(fb->album_id());
+		qPrefFacebook::set_album_id(album.value("id").toString());
+		emit albumIdReceived(qPrefFacebook::album_id());
 		return;
 	} else {
 		qCDebug(lcFacebook) << "It was not possible to create the album with name" << fbInfo.albumName;
@@ -168,8 +164,7 @@ void FacebookManager::facebookAlbumCreated()
 		// FIXME: we are lacking 'user_photos' facebook permission to create an album, 
 		// but we are able to upload the image to Facebook (album will be named 'Subsurface Photos')
 		qCDebug(lcFacebook) << "But we are still able to upload data. Album name will be 'Subsurface Photos'";
-		auto fb = qPrefFacebook::instance();
-		emit albumIdReceived(fb->album_id());
+		emit albumIdReceived(qPrefFacebook::album_id());
 	}
 }
 
@@ -189,7 +184,7 @@ void FacebookManager::userIdReceived()
 	QJsonObject obj = jsonDoc.object();
 	if (obj.keys().contains("id")) {
 		qCDebug(lcFacebook) << "User id requested successfully:" << obj.value("id").toString();
-		qPrefFacebook::instance()->set_user_id(obj.value("id").toString());
+		qPrefFacebook::set_user_id(obj.value("id").toString());
 		emit sendMessage(tr("Facebook logged in successfully"));
 		emit justLoggedIn(true);
 	} else {
