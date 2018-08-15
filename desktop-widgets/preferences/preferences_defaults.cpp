@@ -2,7 +2,6 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
 #include "core/dive.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #include "core/settings/qPref.h"
 
 #include <QFileDialog>
@@ -61,24 +60,24 @@ void PreferencesDefaults::on_extractVideoThumbnails_toggled(bool toggled)
 
 void PreferencesDefaults::refreshSettings()
 {
-	ui->font->setCurrentFont(QString(prefs.divelist_font));
-	ui->fontsize->setValue(prefs.font_size);
-	ui->defaultfilename->setText(prefs.default_filename);
-	ui->noDefaultFile->setChecked(prefs.default_file_behavior == NO_DEFAULT_FILE);
-	ui->cloudDefaultFile->setChecked(prefs.default_file_behavior == CLOUD_DEFAULT_FILE);
-	ui->localDefaultFile->setChecked(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
+	ui->font->setCurrentFont(qPrefDisplay::divelist_font());
+	ui->fontsize->setValue(qPrefDisplay::font_size());
+	ui->defaultfilename->setText(qPrefGeneral::default_filename());
+	ui->noDefaultFile->setChecked(qPrefGeneral::default_file_behavior() == NO_DEFAULT_FILE);
+	ui->cloudDefaultFile->setChecked(qPrefGeneral::default_file_behavior() == CLOUD_DEFAULT_FILE);
+	ui->localDefaultFile->setChecked(qPrefGeneral::default_file_behavior() == LOCAL_DEFAULT_FILE);
 
 	ui->default_cylinder->clear();
 	for (int i = 0; tank_info[i].name != NULL && i < MAX_TANK_INFO; i++) {
 		ui->default_cylinder->addItem(tank_info[i].name);
-		if (prefs.default_cylinder && strcmp(tank_info[i].name, prefs.default_cylinder) == 0)
+		if (qPrefGeneral::default_cylinder() == tank_info[i].name)
 			ui->default_cylinder->setCurrentIndex(i);
 	}
-	ui->displayinvalid->setChecked(prefs.display_invalid_dives);
-	ui->velocitySlider->setValue(prefs.animation_speed);
-	ui->btnUseDefaultFile->setChecked(prefs.use_default_file);
+	ui->displayinvalid->setChecked(qPrefDisplay::display_invalid_dives());
+	ui->velocitySlider->setValue(qPrefAnimations::animation_speed());
+	ui->btnUseDefaultFile->setChecked(qPrefGeneral::use_default_file());
 
-	if (prefs.cloud_verification_status == qPref::CS_VERIFIED) {
+	if (qPrefCloudStorage::cloud_verification_status() == qPref::CS_VERIFIED) {
 		ui->cloudDefaultFile->setEnabled(true);
 	} else {
 		if (ui->cloudDefaultFile->isChecked())
@@ -86,17 +85,17 @@ void PreferencesDefaults::refreshSettings()
 		ui->cloudDefaultFile->setEnabled(false);
 	}
 
-	ui->defaultfilename->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
-	ui->btnUseDefaultFile->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
-	ui->chooseFile->setEnabled(prefs.default_file_behavior == LOCAL_DEFAULT_FILE);
+	ui->defaultfilename->setEnabled(qPrefGeneral::default_file_behavior() == LOCAL_DEFAULT_FILE);
+	ui->btnUseDefaultFile->setEnabled(qPrefGeneral::default_file_behavior() == LOCAL_DEFAULT_FILE);
+	ui->chooseFile->setEnabled(qPrefGeneral::default_file_behavior() == LOCAL_DEFAULT_FILE);
 
-	ui->videoThumbnailPosition->setEnabled(prefs.extract_video_thumbnails);
-	ui->ffmpegExecutable->setEnabled(prefs.extract_video_thumbnails);
-	ui->ffmpegFile->setEnabled(prefs.extract_video_thumbnails);
+	ui->videoThumbnailPosition->setEnabled(qPrefGeneral::extract_video_thumbnails());
+	ui->ffmpegExecutable->setEnabled(qPrefGeneral::extract_video_thumbnails());
+	ui->ffmpegFile->setEnabled(qPrefGeneral::extract_video_thumbnails());
 
-	ui->extractVideoThumbnails->setChecked(prefs.extract_video_thumbnails);
-	ui->videoThumbnailPosition->setValue(prefs.extract_video_thumbnails_position);
-	ui->ffmpegExecutable->setText(prefs.ffmpeg_executable);
+	ui->extractVideoThumbnails->setChecked(qPrefGeneral::extract_video_thumbnails());
+	ui->videoThumbnailPosition->setValue(qPrefGeneral::extract_video_thumbnails_position());
+	ui->ffmpegExecutable->setText(qPrefGeneral::ffmpeg_executable());
 }
 
 void PreferencesDefaults::syncSettings()
@@ -115,11 +114,8 @@ void PreferencesDefaults::syncSettings()
 	general->set_extract_video_thumbnails_position(ui->videoThumbnailPosition->value());
 	general->set_ffmpeg_executable(ui->ffmpegExecutable->text());
 
-	auto display =  qPrefDisplay::instance();
-	display->set_divelist_font(ui->font->currentFont().toString());
-	display->set_font_size(ui->fontsize->value());
-	display->set_display_invalid_dives(ui->displayinvalid->isChecked());
-
-	auto animation = qPrefAnimations::instance();
-	animation->set_animation_speed(ui->velocitySlider->value());
+	qPrefDisplay::set_divelist_font(ui->font->currentFont().toString());
+	qPrefDisplay::set_font_size(ui->fontsize->value());
+	qPrefDisplay::set_display_invalid_dives(ui->displayinvalid->isChecked());
+	qPrefAnimations::set_animation_speed(ui->velocitySlider->value());
 }
