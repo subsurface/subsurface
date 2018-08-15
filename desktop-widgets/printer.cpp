@@ -3,6 +3,7 @@
 #include "templatelayout.h"
 #include "core/statistics.h"
 #include "core/qthelper.h"
+#include "core/settings/qPrefAnimations.h"
 
 #include <algorithm>
 #include <QPainter>
@@ -135,7 +136,7 @@ void Printer::render(int Pages = 0)
 	// keep original preferences
 	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
 	int profileFrameStyle = profile->frameStyle();
-	int animationOriginal = prefs.animation_speed;
+	int animationOriginal = qPrefAnimations::animation_speed();
 	double fontScale = profile->getFontPrintScale();
 	double printFontScale = 1.0;
 
@@ -143,7 +144,7 @@ void Printer::render(int Pages = 0)
 	profile->setFrameStyle(QFrame::NoFrame);
 	profile->setPrintMode(true, !printOptions->color_selected);
 	profile->setToolTipVisibile(false);
-	prefs.animation_speed = 0;
+	qPrefAnimations::set_animation_speed(0);
 
 	// render the Qwebview
 	QPainter painter;
@@ -201,7 +202,7 @@ void Printer::render(int Pages = 0)
 #else
 	profile->resize(originalSize);
 #endif
-	prefs.animation_speed = animationOriginal;
+	qPrefAnimations::set_animation_speed(animationOriginal);
 
 	//replot the dive after returning the settings
 	profile->plotDive(0, true, true);

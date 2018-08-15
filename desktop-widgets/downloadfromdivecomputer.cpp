@@ -2,7 +2,7 @@
 #include "desktop-widgets/downloadfromdivecomputer.h"
 #include "core/display.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefDiveComputer.h"
 #include "core/subsurface-string.h"
 #include "core/uemis.h"
 #include "desktop-widgets/divelistview.h"
@@ -71,12 +71,11 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	MainWindow *w = MainWindow::instance();
 	connect(&thread, SIGNAL(finished()), w, SLOT(refreshDisplay()));
 
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dc->vendor().isEmpty()) {
-		ui.vendor->setCurrentIndex(ui.vendor->findText(dc->vendor()));
-		productModel.setStringList(productList[dc->vendor()]);
-		if (!dc->product().isEmpty())
-			ui.product->setCurrentIndex(ui.product->findText(dc->product()));
+	if (!qPrefDiveComputer::vendor().isEmpty()) {
+		ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor()));
+		productModel.setStringList(productList[qPrefDiveComputer::vendor()]);
+		if (!qPrefDiveComputer::product().isEmpty())
+			ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product()));
 	}
 
 	updateState(INITIAL);
@@ -84,16 +83,16 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	ui.downloadCancelRetryButton->setEnabled(true);
 	ui.downloadCancelRetryButton->setText(tr("Download"));
 
-	QString deviceText = dc->device();
+	QString deviceText = qPrefDiveComputer::device();
 #if defined(BT_SUPPORT)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
-	ui.bluetoothMode->setChecked(dc->download_mode() == DC_TRANSPORT_BLUETOOTH);
+	ui.bluetoothMode->setChecked(qPrefDiveComputer::download_mode() == DC_TRANSPORT_BLUETOOTH);
 	btDeviceSelectionDialog = 0;
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
 	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
 	ui.chooseBluetoothDevice->setEnabled(ui.bluetoothMode->isChecked());
 	if (ui.bluetoothMode->isChecked())
-		deviceText = BtDeviceSelectionDialog::formatDeviceText(dc->device(), dc->device_name());
+		deviceText = BtDeviceSelectionDialog::formatDeviceText(qPrefDiveComputer::device(), qPrefDiveComputer::device_name());
 #else
 	ui.bluetoothMode->hide();
 	ui.chooseBluetoothDevice->hide();
@@ -288,9 +287,8 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 		} else {
-			auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-			data->setDevName(dc->device());
-			data->setDevBluetoothName(dc->device_name());
+			data->setDevName(qPrefDiveComputer::device());
+			data->setDevBluetoothName(qPrefDiveComputer::device_name());
 		}
 	} else
 		// this breaks an "else if" across lines... not happy...
@@ -313,13 +311,12 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	data->setSaveLog(ui.logToFile->isChecked());
 	data->setSaveDump(ui.dumpToFile->isChecked());
 
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->set_vendor(data->vendor());
-	dc->set_product(data->product());
-	dc->set_device(data->devName());
+	qPrefDiveComputer::set_vendor(data->vendor());
+	qPrefDiveComputer::set_product(data->product());
+	qPrefDiveComputer::set_device(data->devName());
 
 #if defined(BT_SUPPORT)
-	dc->set_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
+	qPrefDiveComputer::set_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
 
 	// before we start, remember where the dive_table ended

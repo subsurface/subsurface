@@ -3,7 +3,7 @@
 
 #include "core/display.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefDiveComputer.h"
 #include "desktop-widgets/mainwindow.h"
 // For fill_computer_list, descriptorLookup
 #include "core/downloadfromdcthread.h"
@@ -132,9 +132,8 @@ ConfigureDiveComputerDialog::ConfigureDiveComputerDialog(QWidget *parent) : QDia
 
 	memset(&device_data, 0, sizeof(device_data));
 	fill_computer_list();
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	if (!dc->device().isEmpty())
-		ui.device->setEditText(dc->device());
+	if (!qPrefDiveComputer::device().isEmpty())
+		ui.device->setEditText(qPrefDiveComputer::device());
 
 	ui.DiveComputerList->setCurrentRow(0);
 	on_DiveComputerList_currentRowChanged(0);
@@ -912,11 +911,10 @@ void ConfigureDiveComputerDialog::getDeviceData()
 	device_data.descriptor = descriptorLookup.value(selected_vendor + selected_product);
 	device_data.deviceid = device_data.diveid = 0;
 
-	auto dc = SettingsObjectWrapper::instance()->dive_computer_settings;
-	dc->set_device(device_data.devname);
+	qPrefDiveComputer::set_device(device_data.devname);
 #ifdef BT_SUPPORT
 	if (ui.bluetoothMode && btDeviceSelectionDialog)
-		dc->set_device_name(btDeviceSelectionDialog->getSelectedDeviceName());
+		qPrefDiveComputer::set_device_name(btDeviceSelectionDialog->getSelectedDeviceName());
 #endif
 }
 

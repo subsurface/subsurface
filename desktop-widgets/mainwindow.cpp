@@ -61,7 +61,6 @@
 #include "core/color.h"
 #include "core/isocialnetworkintegration.h"
 #include "core/pluginmanager.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 
 #if defined(FBSUPPORT)
 #include "plugins/facebook/facebook_integration.h"
@@ -284,21 +283,21 @@ MainWindow::MainWindow() : QMainWindow(),
 	set_error_cb(&showErrorFromC);
 
 	// Toolbar Connections related to the Profile Update
-	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
-	connect(ui.profCalcAllTissues, &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_calcalltissues);
-	connect(ui.profCalcCeiling,    &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_calcceiling);
-	connect(ui.profDcCeiling,      &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_dcceiling);
-	connect(ui.profEad,            &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_ead);
-	connect(ui.profIncrement3m,    &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_calcceiling3m);
-	connect(ui.profMod,            &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_mod);
-	connect(ui.profNdl_tts,        &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_calcndltts);
-	connect(ui.profHR,             &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_hrgraph);
-	connect(ui.profRuler,          &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_rulergraph);
-	connect(ui.profSAC,            &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_show_sac);
-	connect(ui.profScaled,         &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_zoomed_plot);
-	connect(ui.profTogglePicture,  &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_show_pictures_in_profile);
-	connect(ui.profTankbar,        &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_tankbar);
-	connect(ui.profTissues,        &QAction::triggered, sWrapper->techDetails, &qPrefTechnicalDetails::set_percentagegraph);
+	auto tec = qPrefTechnicalDetails::instance();
+	connect(ui.profCalcAllTissues, &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcalltissues);
+	connect(ui.profCalcCeiling,    &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcceiling);
+	connect(ui.profDcCeiling,      &QAction::triggered, tec, &qPrefTechnicalDetails::set_dcceiling);
+	connect(ui.profEad,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_ead);
+	connect(ui.profIncrement3m,    &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcceiling3m);
+	connect(ui.profMod,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_mod);
+	connect(ui.profNdl_tts,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_calcndltts);
+	connect(ui.profHR,             &QAction::triggered, tec, &qPrefTechnicalDetails::set_hrgraph);
+	connect(ui.profRuler,          &QAction::triggered, tec, &qPrefTechnicalDetails::set_rulergraph);
+	connect(ui.profSAC,            &QAction::triggered, tec, &qPrefTechnicalDetails::set_show_sac);
+	connect(ui.profScaled,         &QAction::triggered, tec, &qPrefTechnicalDetails::set_zoomed_plot);
+	connect(ui.profTogglePicture,  &QAction::triggered, tec, &qPrefTechnicalDetails::set_show_pictures_in_profile);
+	connect(ui.profTankbar,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_tankbar);
+	connect(ui.profTissues,        &QAction::triggered, tec, &qPrefTechnicalDetails::set_percentagegraph);
 
 	connect(ui.profTissues,        &QAction::triggered, this, &MainWindow::unsetProfHR);
 	connect(ui.profHR,             &QAction::triggered, this, &MainWindow::unsetProfTissues);
@@ -308,24 +307,24 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profPn2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_pn2);
 	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
 
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::calcalltissues_changed        , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::calcceiling_changed           , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::dcceiling_changed             , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::ead_changed                   , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::calcceiling3m_changed         , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::mod_changed                   , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::calcndltts_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::hrgraph_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::rulergraph_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::show_sac_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::zoomed_plot_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::show_pictures_in_profile_changed , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::tankbar_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->techDetails, &qPrefTechnicalDetails::percentagegraph_changed       , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcalltissues_changed        , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcceiling_changed           , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::dcceiling_changed             , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::ead_changed                   , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcceiling3m_changed         , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::mod_changed                   , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcndltts_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::hrgraph_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::rulergraph_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::show_sac_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::zoomed_plot_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::show_pictures_in_profile_changed , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::tankbar_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::percentagegraph_changed       , graphics(), &ProfileWidget2::actionRequestedReplot);
 
-	connect(sWrapper->pp_gas, &qPrefPartialPressureGas::phe_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->pp_gas, &qPrefPartialPressureGas::pn2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(sWrapper->pp_gas, &qPrefPartialPressureGas::po2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(pp_gas, &qPrefPartialPressureGas::phe_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(pp_gas, &qPrefPartialPressureGas::pn2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(pp_gas, &qPrefPartialPressureGas::po2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
 
 	// now let's set up some connections
 	connect(graphics(), &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
@@ -337,23 +336,23 @@ MainWindow::MainWindow() : QMainWindow(),
 
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), graphics(), SLOT(settingsChanged()));
 
-	ui.profCalcAllTissues->setChecked(sWrapper->techDetails->calcalltissues());
-	ui.profCalcCeiling->setChecked(sWrapper->techDetails->calcceiling());
-	ui.profDcCeiling->setChecked(sWrapper->techDetails->dcceiling());
-	ui.profEad->setChecked(sWrapper->techDetails->ead());
-	ui.profIncrement3m->setChecked(sWrapper->techDetails->calcceiling3m());
-	ui.profMod->setChecked(sWrapper->techDetails->mod());
-	ui.profNdl_tts->setChecked(sWrapper->techDetails->calcndltts());
+	ui.profCalcAllTissues->setChecked(qPrefTechnicalDetails::calcalltissues());
+	ui.profCalcCeiling->setChecked(qPrefTechnicalDetails::calcceiling());
+	ui.profDcCeiling->setChecked(qPrefTechnicalDetails::dcceiling());
+	ui.profEad->setChecked(qPrefTechnicalDetails::ead());
+	ui.profIncrement3m->setChecked(qPrefTechnicalDetails::calcceiling3m());
+	ui.profMod->setChecked(qPrefTechnicalDetails::mod());
+	ui.profNdl_tts->setChecked(qPrefTechnicalDetails::calcndltts());
 	ui.profPhe->setChecked(pp_gas->phe());
 	ui.profPn2->setChecked(pp_gas->pn2());
 	ui.profPO2->setChecked(pp_gas->po2());
-	ui.profHR->setChecked(sWrapper->techDetails->hrgraph());
-	ui.profRuler->setChecked(sWrapper->techDetails->rulergraph());
-	ui.profSAC->setChecked(sWrapper->techDetails->show_sac());
-	ui.profTogglePicture->setChecked(sWrapper->techDetails->show_pictures_in_profile());
-	ui.profTankbar->setChecked(sWrapper->techDetails->tankbar());
-	ui.profTissues->setChecked(sWrapper->techDetails->percentagegraph());
-	ui.profScaled->setChecked(sWrapper->techDetails->zoomed_plot());
+	ui.profHR->setChecked(qPrefTechnicalDetails::hrgraph());
+	ui.profRuler->setChecked(qPrefTechnicalDetails::rulergraph());
+	ui.profSAC->setChecked(qPrefTechnicalDetails::show_sac());
+	ui.profTogglePicture->setChecked(qPrefTechnicalDetails::show_pictures_in_profile());
+	ui.profTankbar->setChecked(qPrefTechnicalDetails::tankbar());
+	ui.profTissues->setChecked(qPrefTechnicalDetails::percentagegraph());
+	ui.profScaled->setChecked(qPrefTechnicalDetails::zoomed_plot());
 
 // full screen support is buggy on Windows and Ubuntu.
 // require the FULLSCREEN_SUPPORT macro to enable it!
@@ -1911,7 +1910,7 @@ void MainWindow::editCurrentDive()
 
 void MainWindow::turnOffNdlTts()
 {
-	SettingsObjectWrapper::instance()->techDetails->set_calcndltts(false);
+	qPrefTechnicalDetails::set_calcndltts(false);
 }
 
 #undef TOOLBOX_PREF_PROFILE
@@ -2047,16 +2046,12 @@ void MainWindow::hideProgressBar()
 
 void MainWindow::unsetProfHR()
 {
-	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
-
 	ui.profHR->setChecked(false);
-	sWrapper->techDetails->set_hrgraph(false);
+	qPrefTechnicalDetails::set_hrgraph(false);
 }
 
 void MainWindow::unsetProfTissues()
 {
-	SettingsObjectWrapper *sWrapper = SettingsObjectWrapper::instance();
-
 	ui.profTissues->setChecked(false);
-	sWrapper->techDetails->set_percentagegraph(false);
+	qPrefTechnicalDetails::set_percentagegraph(false);
 }

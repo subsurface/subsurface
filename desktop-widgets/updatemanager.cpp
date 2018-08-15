@@ -8,23 +8,21 @@
 #include "core/version.h"
 #include "desktop-widgets/mainwindow.h"
 #include "core/cloudstorage.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefUpdateManager.h"
 
 UpdateManager::UpdateManager(QObject *parent) :
 	QObject(parent),
 	isAutomaticCheck(false)
 {
-	auto update_settings = qPrefUpdateManager::instance();
-
-	if (update_settings->dont_check_for_updates())
+	if (qPrefUpdateManager::dont_check_for_updates())
 		return;
 
-	if (update_settings->last_version_used() == subsurface_git_version() &&
-	    update_settings->next_check() > QDate::currentDate())
+	if (qPrefUpdateManager::last_version_used() == subsurface_git_version() &&
+	    qPrefUpdateManager::next_check() > QDate::currentDate())
 		return;
 
-	update_settings->set_last_version_used(subsurface_git_version());
-	update_settings->set_next_check(QDate::currentDate().addDays(14));
+	qPrefUpdateManager::set_last_version_used(subsurface_git_version());
+	qPrefUpdateManager::set_next_check(QDate::currentDate().addDays(14));
 
 	checkForUpdates(true);
 }
