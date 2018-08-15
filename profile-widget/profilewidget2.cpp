@@ -4,6 +4,9 @@
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/profile.h"
+#include "core/settings/qPrefAnimations.h"
+#include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefPartialPressureGas.h"
 #include "profile-widget/diveeventitem.h"
 #include "profile-widget/divetextitem.h"
 #include "profile-widget/divetooltipitem.h"
@@ -16,7 +19,6 @@
 #include "qt-models/models.h"
 #include "qt-models/divepicturemodel.h"
 #include "core/divelist.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
 #ifndef SUBSURFACE_MOBILE
 #include "desktop-widgets/diveplanner.h"
 #include "desktop-widgets/simplewidgets.h"
@@ -345,13 +347,12 @@ void ProfileWidget2::setupItemOnScene()
 	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2_changed, po2GasItem, &PartialPressureGasItem::setVisible);
 	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pn2_changed, pn2GasItem, &PartialPressureGasItem::setVisible);
 
-	//WARNING: The old code was broken, I'm not sure what should trigger the visibility of those graphs, since the old code didn't triggered them
 	// because it was using a wrong settings.
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_setpoint_changed, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_scr_ocpo2_changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_setpoint_changed, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_scr_ocpo2_changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);
@@ -595,8 +596,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	// special handling for the first time we display things
 	int animSpeedBackup = 0;
 	if (firstCall && haveFilesOnCommandLine()) {
-		animSpeedBackup = prefs.animation_speed;
-		prefs.animation_speed = 0;
+		animSpeedBackup = qPrefAnimations::animation_speed();
+		qPrefAnimations::set_animation_speed(0);
 		firstCall = false;
 	}
 
@@ -806,7 +807,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 #endif
 	diveComputerText->setText(dcText);
 	if (haveFilesOnCommandLine() && animSpeedBackup != 0) {
-		prefs.animation_speed = animSpeedBackup;
+		qPrefAnimations::set_animation_speed(animSpeedBackup);
 	}
 
 #ifndef SUBSURFACE_MOBILE
@@ -825,7 +826,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	// so if we are calculation TTS / NDL then let's force that off.
 #ifndef SUBSURFACE_MOBILE
 	if (measureDuration.elapsed() > 1000 && prefs.calcndltts) {
-		SettingsObjectWrapper::instance()->techDetails->set_calcndltts(false);
+		qPrefTechnicalDetails::set_calcndltts(false);
 		report_error(qPrintable(tr("Show NDL / TTS was disabled because of excessive processing time")));
 	}
 #endif

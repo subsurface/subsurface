@@ -10,7 +10,7 @@
 #endif
 #include "qt-models/diveplannermodel.h"
 #include "core/qthelper.h"
-#include "core/subsurface-qt/SettingsObjectWrapper.h"
+#include "core/settings/qPrefTechnicalDetails.h"
 #include "libdivecomputer/parser.h"
 #include "profile-widget/profilewidget2.h"
 
@@ -112,8 +112,8 @@ void AbstractProfilePolygonItem::modelDataChanged(const QModelIndex&, const QMod
 
 DiveProfileItem::DiveProfileItem() : show_reported_ceiling(0), reported_ceiling_in_red(0)
 {
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::dcceiling_changed, this, &DiveProfileItem::settingsToggled);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::redceiling_changed, this, &DiveProfileItem::settingsToggled);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::dcceiling_changed, this, &DiveProfileItem::settingsToggled);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::redceiling_changed, this, &DiveProfileItem::settingsToggled);
 }
 
 void DiveProfileItem::settingsToggled(bool)
@@ -267,7 +267,7 @@ DiveHeartrateItem::DiveHeartrateItem()
 	pen.setCosmetic(true);
 	pen.setWidth(1);
 	setPen(pen);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::hrgraph_changed, this, &DiveHeartrateItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::hrgraph_changed, this, &DiveHeartrateItem::setVisible);
 }
 
 void DiveHeartrateItem::modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight)
@@ -348,7 +348,7 @@ void DiveHeartrateItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 
 DivePercentageItem::DivePercentageItem(int i)
 {
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::percentagegraph_changed, this, &DivePercentageItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraph_changed, this, &DivePercentageItem::setVisible);
 	tissueIndex = i;
 	settingsChanged();
 }
@@ -465,7 +465,7 @@ void DiveAmbPressureItem::paint(QPainter *painter, const QStyleOptionGraphicsIte
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::percentagegraph_changed, this, &DiveAmbPressureItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraph_changed, this, &DiveAmbPressureItem::setVisible);
 }
 
 DiveGFLineItem::DiveGFLineItem()
@@ -510,7 +510,7 @@ void DiveGFLineItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*, Q
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::percentagegraph_changed, this, &DiveAmbPressureItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::percentagegraph_changed, this, &DiveAmbPressureItem::setVisible);
 }
 
 DiveTemperatureItem::DiveTemperatureItem()
@@ -635,7 +635,7 @@ void DiveMeanDepthItem::paint(QPainter *painter, const QStyleOptionGraphicsItem*
 	painter->setPen(pen());
 	painter->drawPolyline(polygon());
 	painter->restore();
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::show_average_depth_changed, this, &DiveAmbPressureItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_average_depth_changed, this, &DiveAmbPressureItem::setVisible);
 }
 
 void DiveMeanDepthItem::createTextItem() {
@@ -821,7 +821,7 @@ DiveCalculatedCeiling::DiveCalculatedCeiling(ProfileWidget2 *widget) :
 	profileWidget(widget),
 	is3mIncrement(false)
 {
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::calcceiling_changed, this, &DiveCalculatedCeiling::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcceiling_changed, this, &DiveCalculatedCeiling::setVisible);
 	setVisible(prefs.calcceiling);
 	settingsChanged();
 }
@@ -862,8 +862,8 @@ void DiveCalculatedCeiling::paint(QPainter *painter, const QStyleOptionGraphicsI
 DiveCalculatedTissue::DiveCalculatedTissue(ProfileWidget2 *widget) : DiveCalculatedCeiling(widget)
 {
 	settingsChanged();
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::calcalltissues_changed, this, &DiveCalculatedTissue::setVisible);
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::calcceiling_changed, this, &DiveCalculatedTissue::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcalltissues_changed, this, &DiveCalculatedTissue::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::calcceiling_changed, this, &DiveCalculatedTissue::setVisible);
 }
 
 void DiveCalculatedTissue::setVisible(bool)
@@ -878,7 +878,7 @@ void DiveCalculatedTissue::settingsChanged()
 
 DiveReportedCeiling::DiveReportedCeiling()
 {
-	connect(SettingsObjectWrapper::instance()->techDetails, &qPrefTechnicalDetails::dcceiling_changed, this, &DiveReportedCeiling::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::dcceiling_changed, this, &DiveReportedCeiling::setVisible);
 	setVisible(prefs.dcceiling);
 	settingsChanged();
 }
