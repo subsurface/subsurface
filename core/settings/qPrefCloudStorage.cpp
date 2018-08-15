@@ -46,9 +46,9 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 {
 	if (doSync) {
-		qPrefPrivate::instance()->setting.setValue(group + "/cloud_base_url", prefs.cloud_base_url);
+		qPrefPrivate::propSetValue(group + "/cloud_base_url", prefs.cloud_base_url);
 	} else {
-		prefs.cloud_base_url = copy_qstring(qPrefPrivate::instance()->setting.value(group + "/cloud_base_url", default_prefs.cloud_base_url).toString());
+		prefs.cloud_base_url = copy_qstring(qPrefPrivate::propValue(group + "/cloud_base_url", default_prefs.cloud_base_url).toString());
 		qPrefPrivate::copy_txt(&prefs.cloud_git_url, QString(prefs.cloud_base_url) + "/git");
 	}
 }
@@ -80,9 +80,9 @@ void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
 {
 	if (doSync) {
 		if (prefs.save_password_local)
-			qPrefPrivate::instance()->setting.setValue(group + "/password", prefs.cloud_storage_password);
+			qPrefPrivate::propSetValue(group + "/password", prefs.cloud_storage_password);
 	} else {
-		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::instance()->setting.value(group + "/password", default_prefs.cloud_storage_password).toString());
+		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::propValue(group + "/password", default_prefs.cloud_storage_password).toString());
 	}
 }
 
@@ -103,14 +103,14 @@ void qPrefCloudStorage::disk_userid(bool doSync)
 {
 	if (doSync) {
 		// always save in new position (part of cloud storage group)
-		qPrefPrivate::instance()->setting.setValue(group + "subsurface_webservice_uid", prefs.userid);
+		qPrefPrivate::propSetValue(group + "subsurface_webservice_uid", prefs.userid);
 	} else {
 		//WARNING: UserId was  stored outside of any group.
 		// try to read from new location, if it fails read from old location
-		prefs.userid = copy_qstring(qPrefPrivate::instance()->setting.value(group + "subsurface_webservice_uid", "NoUserIdHere").toString());
+		prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "subsurface_webservice_uid", "NoUserIdHere").toString());
 		if (QString(prefs.userid) == "NoUserIdHere") {
 			const QString group = QStringLiteral("");
-			prefs.userid = copy_qstring(qPrefPrivate::instance()->setting.value(group + "subsurface_webservice_uid", default_prefs.userid).toString());
+			prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "subsurface_webservice_uid", default_prefs.userid).toString());
 		}
 	}
 }
