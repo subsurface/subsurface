@@ -270,17 +270,16 @@ enum divemode_t get_current_divemode(struct divecomputer *dc, int time, struct e
 	return *divemode;
 }
 
-/* this returns a pointer to static variable - so use it right away after calling */
-struct gasmix *get_gasmix_from_event(struct dive *dive, struct event *ev)
+struct gasmix get_gasmix_from_event(struct dive *dive, struct event *ev)
 {
-	static struct gasmix dummy;
+	struct gasmix dummy = { 0 };
 	if (ev && event_is_gaschange(ev)) {
 		int index = ev->gas.index;
 		if (index >= 0 && index < MAX_CYLINDERS)
-			return &dive->cylinder[index].gasmix;
-		return &ev->gas.mix;
+			return dive->cylinder[index].gasmix;
+		return ev->gas.mix;
 	}
-	return &dummy;
+	return dummy;
 }
 
 int get_pressure_units(int mb, const char **units)
@@ -1073,7 +1072,7 @@ void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 		// So we make sure, this comes from a Predator or Petrel and we only remove
 		// pO2 values we would have computed anyway.
 		struct event *ev = get_next_event(dc->events, "gaschange");
-		struct gasmix *gasmix = get_gasmix_from_event(dive, ev);
+		struct gasmix gasmix = get_gasmix_from_event(dive, ev);
 		struct event *next = get_next_event(ev, "gaschange");
 
 		for (int i = 0; i < dc->samples; i++) {
@@ -1083,7 +1082,7 @@ void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
-			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, dc->divemode);
+			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), &gasmix ,0, dc->divemode);
 			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				dc->sample[i].setpoint.mbar = 0;
 		}
@@ -4288,19 +4287,24 @@ int dive_has_gps_location(struct dive *dive)
 	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
 }
 
-struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
+struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
 {
 	struct event *ev = *evp;
+	struct gasmix res;
 
-	if (!gasmix) {
+	if (!ev) {
+		/* on first invocation, get initial gas mix and first event (if any) */
 		int cyl = explicit_first_cylinder(dive, dc);
-		gasmix = &dive->cylinder[cyl].gasmix;
+		res = dive->cylinder[cyl].gasmix;
 		ev = dc ? get_next_event(dc->events, "gaschange") : NULL;
+	} else {
+		res = *gasmix;
 	}
+
 	while (ev && ev->time.seconds < time) {
-		gasmix = get_gasmix_from_event(dive, ev);
+		res = get_gasmix_from_event(dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	*evp = ev;
-	return gasmix;
+	return res;
 }

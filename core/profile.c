@@ -319,7 +319,7 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
 int get_cylinder_index(struct dive *dive, struct event *ev)
 {
 	int best;
-	struct gasmix *mix;
+	struct gasmix mix;
 
 	if (ev->gas.index >= 0)
 		return ev->gas.index;
@@ -333,7 +333,7 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 	fprintf(stderr, "Still looking up cylinder based on gas mix in get_cylinder_index()!\n");
 
 	mix = get_gasmix_from_event(dive, ev);
-	best = find_best_gasmix_match(mix, dive->cylinder, 0);
+	best = find_best_gasmix_match(&mix, dive->cylinder, 0);
 	return best < 0 ? 0 : best;
 }
 
@@ -775,16 +775,16 @@ static unsigned int matching_gases(struct dive *dive, struct gasmix *gasmix)
 
 static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	struct gasmix *gasmix = NULL;
+	struct gasmix gasmix = { 0 };
 	struct event *ev = NULL;
 	unsigned int gases = 0;
 
 	for (int i = 0; i < pi->nr; i++) {
 		struct plot_data *entry = pi->entry + i;
-		struct gasmix *newmix = get_gasmix(dive, dc, entry->sec, &ev, gasmix);
-		if (newmix != gasmix) {
+		struct gasmix newmix = get_gasmix(dive, dc, entry->sec, &ev, &gasmix);
+		if (!same_gasmix(&newmix, &gasmix)) {
 			gasmix = newmix;
-			gases = matching_gases(dive, newmix);
+			gases = matching_gases(dive, &newmix);
 		}
 
 		fill_sac(dive, pi, i, gases);
@@ -1016,7 +1016,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling = 0, final_tts = 0 , time_clear_ceiling = 0;
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
-		struct gasmix *gasmix = NULL;
+		struct gasmix gasmix = { 0 };
 		struct event *ev = NULL, *evd = NULL;
 		enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
@@ -1026,7 +1026,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 			int time_stepsize = 20;
 
 			current_divemode = get_current_divemode(dc, entry->sec, &evd, &current_divemode);
-			gasmix = get_gasmix(dive, dc, t1, &ev, gasmix);
+			gasmix = get_gasmix(dive, dc, t1, &ev, &gasmix);
 			entry->ambpressure = depth_to_bar(entry->depth, dive);
 			entry->gfline = get_gf(ds, entry->ambpressure, dive) * (100.0 - AMB_PERCENTAGE) + AMB_PERCENTAGE;
 			if (t0 > t1) {
@@ -1040,7 +1040,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 			for (j = t0 + time_stepsize; j <= t1; j += time_stepsize) {
 				int depth = interpolate(entry[-1].depth, entry[0].depth, j - t0, t1 - t0);
 				add_segment(ds, depth_to_bar(depth, dive),
-					    gasmix, time_stepsize, entry->o2pressure.mbar, current_divemode, entry->sac);
+					    &gasmix, time_stepsize, entry->o2pressure.mbar, current_divemode, entry->sac);
 				entry->icd_warning = ds->icd_warning;
 				if ((t1 - j < time_stepsize) && (j < t1))
 					time_stepsize = t1 - j;
@@ -1115,7 +1115,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 				/* We are going to mess up deco state, so store it for later restore */
 				struct deco_state *cache_data = NULL;
 				cache_deco_state(ds, &cache_data);
-				calculate_ndl_tts(ds, dive, entry, gasmix, surface_pressure, current_divemode);
+				calculate_ndl_tts(ds, dive, entry, &gasmix, surface_pressure, current_divemode);
 				if (decoMode() == VPMB && !in_planner() && i == pi->nr - 1)
 					final_tts = entry->tts_calc;
 				/* Restore "real" deco state for next real time step */
@@ -1205,7 +1205,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 {
 	int i;
 	double amb_pressure;
-	struct gasmix *gasmix = NULL;
+	struct gasmix gasmix = { 0 };
 	struct event *evg = NULL, *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
@@ -1213,21 +1213,23 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 		int fn2, fhe;
 		struct plot_data *entry = pi->entry + i;
 
-		gasmix = get_gasmix(dive, dc, entry->sec, &evg, gasmix);
+		gasmix = get_gasmix(dive, dc, entry->sec, &evg, &gasmix);
 		amb_pressure = depth_to_bar(entry->depth, dive);
 		current_divemode = get_current_divemode(dc, entry->sec, &evd, &current_divemode);
-		fill_pressures(&entry->pressures, amb_pressure, gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
+		fill_pressures(&entry->pressures, amb_pressure, &gasmix, (current_divemode == OC) ? 0.0 : entry->o2pressure.mbar / 1000.0, current_divemode);
 		fn2 = (int)(1000.0 * entry->pressures.n2 / amb_pressure);
 		fhe = (int)(1000.0 * entry->pressures.he / amb_pressure);
-		if (dc->divemode == PSCR) // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
-			entry->scr_OC_pO2.mbar = (int) depth_to_mbar(entry->depth, dive) * get_o2(get_gasmix(dive, dc, entry->sec, &evg, gasmix)) / 1000;
+		if (dc->divemode == PSCR) { // OC pO2 is calulated for PSCR with or without external PO2 monitoring.
+			struct gasmix gasmix2 = get_gasmix(dive, dc, entry->sec, &evg, &gasmix);
+			entry->scr_OC_pO2.mbar = (int) depth_to_mbar(entry->depth, dive) * get_o2(&gasmix2) / 1000;
+		}
 
 		/* Calculate MOD, EAD, END and EADD based on partial pressures calculated before
 		 * so there is no difference in calculating between OC and CC
 		 * END takes O₂ + N₂ (air) into account ("Narcotic" for trimix dives)
 		 * EAD just uses N₂ ("Air" for nitrox dives) */
 		pressure_t modpO2 = { .mbar = (int)(prefs.modpO2 * 1000) };
-		entry->mod = (double)gas_mod(gasmix, modpO2, dive, 1).mm;
+		entry->mod = (double)gas_mod(&gasmix, modpO2, dive, 1).mm;
 		entry->end = (entry->depth + 10000) * (1000 - fhe) / 1000.0 - 10000;
 		entry->ead = (entry->depth + 10000) * fn2 / (double)N2_IN_AIR - 10000;
 		entry->eadd = (entry->depth + 10000) *
@@ -1235,7 +1237,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 				       entry->pressures.n2 / amb_pressure * N2_DENSITY +
 				       entry->pressures.he / amb_pressure * HE_DENSITY) /
 				      (O2_IN_AIR * O2_DENSITY + N2_IN_AIR * N2_DENSITY) * 1000 - 10000;
-		entry->density = gas_density(gasmix, depth_to_mbar(entry->depth, dive));
+		entry->density = gas_density(&gasmix, depth_to_mbar(entry->depth, dive));
 		if (entry->mod < 0)
 			entry->mod = 0;
 		if (entry->ead < 0)

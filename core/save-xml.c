@@ -307,10 +307,10 @@ static void save_one_event(struct membuffer *b, struct dive *dive, struct event 
 		show_index(b, ev->value, "value='", "'");
 	show_utf8(b, ev->name, " name='", "'", 1);
 	if (event_is_gaschange(ev)) {
-		struct gasmix *mix = get_gasmix_from_event(dive, ev);
+		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		if (ev->gas.index >= 0)
 			show_integer(b, ev->gas.index, "cylinder='", "'");
-		put_gasmix(b, mix);
+		put_gasmix(b, &mix);
 	}
 	put_format(b, " />\n");
 }

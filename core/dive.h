@@ -585,7 +585,7 @@ extern void update_event_name(struct dive *d, struct event* event, const char *n
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(struct dive *dive, struct event *ev);
-extern struct gasmix *get_gasmix_from_event(struct dive *, struct event *ev);
+extern struct gasmix get_gasmix_from_event(struct dive *, struct event *ev);
 extern int nr_cylinders(struct dive *dive);
 extern int nr_weightsystems(struct dive *dive);
 
@@ -718,7 +718,11 @@ extern void printdecotable(struct decostop *table);
 
 extern struct event *get_next_event(struct event *event, const char *name);
 
-extern struct gasmix *get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix);
+/* Get gasmix at increasing timestamps.
+ * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
+ * On subsequent calls, pass the same "evp" and the "gasmix" from previous calls.
+ */
+extern struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix);
 
 /* these structs holds the information that
  * describes the cylinders / weight systems.
