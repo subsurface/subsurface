@@ -551,7 +551,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	bool o2warning_exist = false;
 	enum divemode_t current_divemode;
 	double amb;
-	struct event *evd = NULL;
+	const struct event *evd = NULL;
 	current_divemode = UNDEF_COMP_TYPE;
 
 	if (dive->dc.divemode != CCR) {

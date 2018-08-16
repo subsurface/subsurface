@@ -130,7 +130,7 @@ int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc)
 	return o2sensor < 0 ? 256 : o2sensor;
 }
 
-int event_is_gaschange(struct event *ev)
+int event_is_gaschange(const struct event *ev)
 {
 	return ev->type == SAMPLE_EVENT_GASCHANGE ||
 		ev->type == SAMPLE_EVENT_GASCHANGE2;
@@ -184,7 +184,7 @@ struct event *add_event(struct divecomputer *dc, unsigned int time, int type, in
 	return ev;
 }
 
-static int same_event(struct event *a, struct event *b)
+static int same_event(const struct event *a, const struct event *b)
 {
 	if (a->time.seconds != b->time.seconds)
 		return 0;
@@ -255,9 +255,9 @@ void add_extra_data(struct divecomputer *dc, const char *key, const char *value)
  * saving the dive mode for each event. When the events occur AFTER 'time' seconds, the last stored divemode
  * is returned. This function is self-tracking, relying on setting the event pointer 'evp' so that, in each iteration
  * that calls this function, the search does not have to begin at the first event of the dive */
-enum divemode_t get_current_divemode(struct divecomputer *dc, int time, struct event **evp, enum divemode_t *divemode)
+enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode)
 {
-	struct event *ev = *evp;
+	const struct event *ev = *evp;
 	if (*divemode == UNDEF_COMP_TYPE) {
 		*divemode = dc->divemode;
 		ev = dc ? get_next_event(dc->events, "modechange") : NULL;
@@ -270,7 +270,7 @@ enum divemode_t get_current_divemode(struct divecomputer *dc, int time, struct e
 	return *divemode;
 }
 
-struct gasmix get_gasmix_from_event(struct dive *dive, struct event *ev)
+struct gasmix get_gasmix_from_event(const struct dive *dive, const struct event *ev)
 {
 	struct gasmix dummy = { 0 };
 	if (ev && event_is_gaschange(ev)) {
@@ -901,7 +901,7 @@ static unsigned int get_cylinder_used(struct dive *dive)
 static unsigned int get_cylinder_known(struct dive *dive, struct divecomputer *dc)
 {
 	unsigned int mask = 0;
-	struct event *ev;
+	const struct event *ev;
 
 	/* We know about using the O2 cylinder in a CCR dive */
 	if (dc->divemode == CCR) {
@@ -973,7 +973,7 @@ void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *me
 	}
 	if (!dc->samples)
 		fake_dc(dc);
-	struct event *ev = get_next_event(dc->events, "gaschange");
+	const struct event *ev = get_next_event(dc->events, "gaschange");
 	for (i = 0; i < dc->samples; i++) {
 		struct sample *sample = dc->sample + i;
 		uint32_t time = sample->time.seconds;
@@ -1039,10 +1039,10 @@ static int same_rounded_pressure(pressure_t a, pressure_t b)
  * tell us what the first gas is with a gas change event in the first sample.
  * Sneakily we'll use a return value of 0 (or FALSE) when there is no explicit
  * first cylinder - in which case cylinder 0 is indeed the first cylinder */
-int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
+int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc)
 {
 	if (dc) {
-		struct event *ev = get_next_event(dc->events, "gaschange");
+		const struct event *ev = get_next_event(dc->events, "gaschange");
 		if (ev && ((dc->sample && ev->time.seconds == dc->sample[0].time.seconds) || ev->time.seconds <= 1))
 			return get_cylinder_index(dive, ev);
 		else if (dc->divemode == CCR)
@@ -1054,7 +1054,7 @@ int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc)
 /* this gets called when the dive mode has changed (so OC vs. CC)
  * there are two places we might have setpoints... events or in the samples
  */
-void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
+void update_setpoint_events(const struct dive *dive, struct divecomputer *dc)
 {
 	struct event *ev;
 	int new_setpoint = 0;
@@ -1071,9 +1071,9 @@ void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 		// by mistake when it's actually CCR is _bad_
 		// So we make sure, this comes from a Predator or Petrel and we only remove
 		// pO2 values we would have computed anyway.
-		struct event *ev = get_next_event(dc->events, "gaschange");
+		const struct event *ev = get_next_event(dc->events, "gaschange");
 		struct gasmix gasmix = get_gasmix_from_event(dive, ev);
-		struct event *next = get_next_event(ev, "gaschange");
+		const struct event *next = get_next_event(ev, "gaschange");
 
 		for (int i = 0; i < dc->samples; i++) {
 			struct gas_pressures pressures;
@@ -1091,7 +1091,7 @@ void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 	// an "SP change" event at t=0 is currently our marker for OC vs CCR
 	// this will need to change to a saner setup, but for now we can just
 	// check if such an event is there and adjust it, or add that event
-	ev = get_next_event(dc->events, "SP change");
+	ev = get_next_event_mutable(dc->events, "SP change");
 	if (ev && ev->time.seconds == 0) {
 		ev->value = new_setpoint;
 	} else {
@@ -1241,7 +1241,7 @@ bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix newgasmix,
 }
 
 /* some events should never be thrown away */
-static bool is_potentially_redundant(struct event *event)
+static bool is_potentially_redundant(const struct event *event)
 {
 	if (!strcmp(event->name, "gaschange"))
 		return false;
@@ -1608,7 +1608,7 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 	simplify_dc_pressures(dc);
 }
 
-int find_best_gasmix_match(struct gasmix mix, cylinder_t array[], unsigned int used)
+int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned int used)
 {
 	int i;
 	int best = -1, score = INT_MAX;
@@ -1968,7 +1968,7 @@ static char *merge_text(const char *a, const char *b, const char *sep)
 	if (a->field != b->field) \
 		return a->field < b->field ? -1 : 1
 
-static int sort_event(struct event *a, struct event *b)
+static int sort_event(const struct event *a, const struct event *b)
 {
 	SORT(a, b, time.seconds);
 	SORT(a, b, type);
@@ -1977,7 +1977,7 @@ static int sort_event(struct event *a, struct event *b)
 	return strcmp(a->name, b->name);
 }
 
-static int same_gas(struct event *a, struct event *b)
+static int same_gas(const struct event *a, const struct event *b)
 {
 	if (a->type == b->type && a->flags == b->flags && a->value == b->value && !strcmp(a->name, b->name) &&
 			same_gasmix(a->gas.mix, b->gas.mix)) {
@@ -2068,7 +2068,7 @@ static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weig
  * A negative number returned indicates that a match could not be found.
  * Call parameters: dive = the dive being processed
  *                  cylinder_use_type = an enum, one of {oxygen, diluent, bailout} */
-extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type)
+extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type)
 {
 	int cylinder_index;
 	for (cylinder_index = 0; cylinder_index < MAX_CYLINDERS; cylinder_index++) {
@@ -2137,7 +2137,7 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 /* Force an initial gaschange event to the (old) gas #0 */
 static void add_initial_gaschange(struct dive *dive, struct divecomputer *dc)
 {
-	struct event *ev = get_next_event(dc->events, "gaschange");
+	const struct event *ev = get_next_event(dc->events, "gaschange");
 
 	if (ev && ev->time.seconds < 30)
 		return;
@@ -2874,7 +2874,7 @@ static int same_sample(struct sample *a, struct sample *b)
 static int same_dc(struct divecomputer *a, struct divecomputer *b)
 {
 	int i;
-	struct event *eva, *evb;
+	const struct event *eva, *evb;
 
 	i = match_one_dc(a, b);
 	if (i)
@@ -4287,9 +4287,9 @@ int dive_has_gps_location(const struct dive *dive)
 	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
 }
 
-struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix gasmix)
+struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix)
 {
-	struct event *ev = *evp;
+	const struct event *ev = *evp;
 	struct gasmix res;
 
 	if (!ev) {
@@ -4310,9 +4310,9 @@ struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, s
 }
 
 /* get the gas at a certain time during the dive */
-struct gasmix get_gasmix_at_time(struct dive *d, struct divecomputer *dc, duration_t time)
+struct gasmix get_gasmix_at_time(const struct dive *d, const struct divecomputer *dc, duration_t time)
 {
-	struct event *ev = NULL;
+	const struct event *ev = NULL;
 	struct gasmix gasmix = { 0 };
 	return get_gasmix(d, dc, time.seconds, &ev, gasmix);
 }

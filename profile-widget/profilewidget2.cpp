@@ -1452,7 +1452,7 @@ void ProfileWidget2::contextMenuEvent(QContextMenuEvent *event)
 	action->setData(event->globalPos());
 	QAction *splitAction = m.addAction(tr("Split dive into two"), this, SLOT(splitDive()));
 	splitAction->setData(event->globalPos());
-	struct event *ev = NULL;
+	const struct event *ev = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
 	QPointF scenePos = mapToScene(mapFromGlobal(event->globalPos()));
 	QString gas = action->text();
@@ -1695,7 +1695,7 @@ void ProfileWidget2::changeGas()
 
 	// if there is a gas change at this time stamp, remove it before adding the new one
 	struct event *gasChangeEvent = current_dc->events;
-	while ((gasChangeEvent = get_next_event(gasChangeEvent, "gaschange")) != NULL) {
+	while ((gasChangeEvent = get_next_event_mutable(gasChangeEvent, "gaschange")) != NULL) {
 		if (gasChangeEvent->time.seconds == seconds) {
 			remove_event(gasChangeEvent);
 			gasChangeEvent = current_dc->events;

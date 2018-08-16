@@ -136,7 +136,7 @@ int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **
 		return 0;
 	psample = sample = dc->sample;
 
-	struct event *evdm = NULL;
+	const struct event *evdm = NULL;
 	enum divemode_t divemode = UNDEF_COMP_TYPE;
 
 	for (i = 0; i < dc->samples; i++, sample++) {
@@ -716,7 +716,7 @@ bool plan(struct deco_state *ds, struct diveplan *diveplan, struct dive *dive, i
 
 	current_cylinder = get_cylinderid_at_time(dive, &dive->dc, sample->time);
 	// FIXME: This needs a function to find the divemode at the end of the dive like in
-	struct event *ev = NULL;
+	const struct event *ev = NULL;
 	divemode = UNDEF_COMP_TYPE;
 	divemode = get_current_divemode(&dive->dc, bottom_time, &ev, &divemode);
 	gas = dive->cylinder[current_cylinder].gasmix;

@@ -350,7 +350,7 @@ void populate_pressure_information(struct dive *dive, struct divecomputer *dc, s
 	cylinder_t *cylinder = dive->cylinder + sensor;
 	pr_track_t *track = NULL;
 	pr_track_t *current = NULL;
-	struct event *ev, *b_ev;
+	const struct event *ev, *b_ev;
 	int missing_pr = 0, dense = 1;
 	enum divemode_t dmode = dc->divemode;
 	const double gasfactor[5] = {1.0, 0.0, prefs.pscr_ratio/1000.0, 1.0, 1.0 };

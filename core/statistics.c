@@ -236,10 +236,10 @@ void process_selected_dives(void)
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
 
-bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx)
+bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx)
 {
 	bool first_gas_explicit = false;
-	struct event *event = get_next_event(dc->events, "gaschange");
+	const struct event *event = get_next_event(dc->events, "gaschange");
 	while (event) {
 		if (dc->sample && (event->time.seconds == 0 ||
 				   (dc->samples && dc->sample[0].time.seconds == event->time.seconds)))

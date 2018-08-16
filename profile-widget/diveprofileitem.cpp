@@ -411,7 +411,7 @@ void DivePercentageItem::paint(QPainter *painter, const QStyleOptionGraphicsItem
 		if (i < poly.count()) {
 			double value = dataModel->index(i, vDataColumn).data().toDouble();
 			struct gasmix gasmix = { 0 };
-			struct event *ev = NULL;
+			const struct event *ev = NULL;
 			int sec = dataModel->index(i, DivePlotDataModel::TIME).data().toInt();
 			gasmix = get_gasmix(&displayed_dive, displayed_dc, sec, &ev, gasmix);
 			int inert = 1000 - get_o2(gasmix);
