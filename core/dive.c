@@ -4308,3 +4308,11 @@ struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, s
 	*evp = ev;
 	return res;
 }
+
+/* get the gas at a certain time during the dive */
+struct gasmix get_gasmix_at_time(struct dive *d, struct divecomputer *dc, duration_t time)
+{
+	struct event *ev = NULL;
+	struct gasmix gasmix = { 0 };
+	return get_gasmix(d, dc, time.seconds, &ev, &gasmix);
+}
