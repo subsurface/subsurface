@@ -100,7 +100,7 @@ static QVariant gas_volume_tooltip(cylinder_t *cyl, pressure_t p)
 	if (!vol)
 		return QVariant();
 
-	Z = gas_compressibility_factor(&cyl->gasmix, p.mbar / 1000.0);
+	Z = gas_compressibility_factor(cyl->gasmix, p.mbar / 1000.0);
 	return gas_volume_string(vol, "(Z=") + QString("%1)").arg(Z, 0, 'f', 3);
 }
 
@@ -212,14 +212,14 @@ QVariant CylindersModel::data(const QModelIndex &index, int role) const
 			} else {
 				pressure_t modpO2;
 				modpO2.mbar = prefs.bottompo2;
-				ret = get_depth_string(gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
+				ret = get_depth_string(gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(1,1)), true);
 			}
 			break;
 		case MND:
 			if (cyl->bestmix_he)
 				ret = QString("*");
 			else
-				ret = get_depth_string(gas_mnd(&cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
+				ret = get_depth_string(gas_mnd(cyl->gasmix, prefs.bestmixend, &displayed_dive, M_OR_FT(1,1)), true);
 			break;
 		case USE:
 			ret = gettextFromC::tr(cylinderuse_text[cyl->cylinder_use]);
@@ -353,15 +353,15 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (CHANGED()) {
 			cyl->gasmix.o2 = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(&cyl->gasmix) + get_he(&cyl->gasmix) > 1000)
-				cyl->gasmix.he.permille = 1000 - get_o2(&cyl->gasmix);
+			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
+				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
 			pressure_t modpO2;
 			if (displayed_dive.dc.divemode == PSCR)
-				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(&cyl->gasmix)) * SURFACE_PRESSURE *
+				modpO2.mbar = prefs.decopo2 + (1000 - get_o2(cyl->gasmix)) * SURFACE_PRESSURE *
 						prefs.o2consumption / prefs.decosac / prefs.pscr_ratio;
 			else
 				modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
 			cyl->bestmix_o2 = false;
 			changed = true;
 		}
@@ -370,8 +370,8 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 		if (CHANGED()) {
 			cyl->gasmix.he = string_to_fraction(qPrintable(vString));
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(&cyl->gasmix) + get_he(&cyl->gasmix) > 1000)
-				cyl->gasmix.o2.permille = 1000 - get_he(&cyl->gasmix);
+			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
+				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
 			cyl->bestmix_he = false;
 			changed = true;
 		}
@@ -395,7 +395,7 @@ bool CylindersModel::setData(const QModelIndex &index, const QVariant &value, in
 			}
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
 			changed = true;
 		}
 		break;
@@ -588,8 +588,8 @@ void CylindersModel::updateDecoDepths(pressure_t olddecopo2)
 		cylinder_t *cyl = &displayed_dive.cylinder[i];
 		/* If the gas's deco MOD matches the old pO2, it will have been automatically calculated and should be updated.
 		 * If they don't match, we should leave the user entered depth as it is */
-		if (cyl->depth.mm == gas_mod(&cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
-			cyl->depth = gas_mod(&cyl->gasmix, decopo2, &displayed_dive, M_OR_FT(3, 10));
+		if (cyl->depth.mm == gas_mod(cyl->gasmix, olddecopo2, &displayed_dive, M_OR_FT(3, 10)).mm) {
+			cyl->depth = gas_mod(cyl->gasmix, decopo2, &displayed_dive, M_OR_FT(3, 10));
 		}
 	}
 	emit dataChanged(createIndex(0, 0), createIndex(MAX_CYLINDERS - 1, COLUMNS - 1));
@@ -609,18 +609,18 @@ bool CylindersModel::updateBestMixes()
 		if (cyl->bestmix_o2) {
 			cyl->gasmix.o2 = best_o2(displayed_dive.maxdepth, &displayed_dive);
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(&cyl->gasmix) + get_he(&cyl->gasmix) > 1000)
-				cyl->gasmix.he.permille = 1000 - get_o2(&cyl->gasmix);
+			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
+				cyl->gasmix.he.permille = 1000 - get_o2(cyl->gasmix);
 			pressure_t modpO2;
 			modpO2.mbar = prefs.decopo2;
-			cyl->depth = gas_mod(&cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
+			cyl->depth = gas_mod(cyl->gasmix, modpO2, &displayed_dive, M_OR_FT(3, 10));
 			gasUpdated = true;
 		}
 		if (cyl->bestmix_he) {
 			cyl->gasmix.he = best_he(displayed_dive.maxdepth, &displayed_dive);
 			// fO2 + fHe must not be greater than 1
-			if (get_o2(&cyl->gasmix) + get_he(&cyl->gasmix) > 1000)
-				cyl->gasmix.o2.permille = 1000 - get_he(&cyl->gasmix);
+			if (get_o2(cyl->gasmix) + get_he(cyl->gasmix) > 1000)
+				cyl->gasmix.o2.permille = 1000 - get_he(cyl->gasmix);
 			gasUpdated = true;
 		}
 	}

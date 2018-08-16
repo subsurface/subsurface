@@ -94,8 +94,8 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		cylinder_t *cyl = dive->cylinder + i;
-		int o2 = get_o2(&cyl->gasmix);
-		int he = get_he(&cyl->gasmix);
+		int o2 = get_o2(cyl->gasmix);
+		int he = get_he(cyl->gasmix);
 
 		if (!is_cylinder_used(dive, i))
 			continue;
@@ -135,7 +135,7 @@ int total_weight(struct dive *dive)
 static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
 	struct gasmix gas = get_gasmix_at_time(dive, dc, time);
-	return get_o2(&gas);
+	return get_o2(gas);
 }
 
 /* calculate OTU for a dive - this only takes the first divecomputer into account */
@@ -420,8 +420,8 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
-			gasmix = get_gasmix(dive, dc, j, &ev, &gasmix);
-			add_segment(ds, depth_to_bar(depth, dive), &gasmix, 1, sample->setpoint.mbar,
+			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
+			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar,
 				get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac);
 		}
 	}
@@ -576,7 +576,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 #endif
 				return surface_time;
 			}
-			add_segment(ds, surface_pressure, &air, surface_time, 0, dive->dc.divemode, prefs.decosac);
+			add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 			printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 			dump_tissues(ds);
@@ -614,7 +614,7 @@ int init_decompression(struct deco_state *ds, struct dive *dive)
 #endif
 			return surface_time;
 		}
-		add_segment(ds, surface_pressure, &air, surface_time, 0, dive->dc.divemode, prefs.decosac);
+		add_segment(ds, surface_pressure, air, surface_time, 0, dive->dc.divemode, prefs.decosac);
 #if DECO_CALC_DEBUG & 2
 		printf("Tissues after surface intervall of %d:%02u:\n", FRACTION(surface_time, 60));
 		dump_tissues(ds);

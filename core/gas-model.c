@@ -26,7 +26,7 @@
  * NOTE! Helium coefficients are a linear mix operation between the
  * 323K and one for 273K isotherms, to make everything be at 300K.
  */
-double gas_compressibility_factor(struct gasmix *gas, double bar)
+double gas_compressibility_factor(struct gasmix gas, double bar)
 {
 	static const double o2_coefficients[3] = {
 		-7.18092073703e-04,
@@ -69,15 +69,15 @@ double gas_compressibility_factor(struct gasmix *gas, double bar)
 /* Compute the new pressure when compressing (expanding) volome v1 at pressure p1 bar to volume v2
  * taking into account the compressebility (to first order) */
 
-double isothermal_pressure(struct gasmix *gas, double p1, int volume1, int volume2)
+double isothermal_pressure(struct gasmix gas, double p1, int volume1, int volume2)
 {
 	double p_ideal = p1 * volume1 / volume2 / gas_compressibility_factor(gas, p1);
 
 	return p_ideal * gas_compressibility_factor(gas, p_ideal);
 }
 
-inline double gas_density(struct gasmix *gas, int pressure) {
-	int density =  gas->he.permille * HE_DENSITY + gas->o2.permille * O2_DENSITY + (1000 - gas->he.permille - gas->o2.permille) * N2_DENSITY;
+inline double gas_density(struct gasmix gas, int pressure) {
+	int density =  gas.he.permille * HE_DENSITY + gas.o2.permille * O2_DENSITY + (1000 - gas.he.permille - gas.o2.permille) * N2_DENSITY;
 
 	return density * (double) pressure / gas_compressibility_factor(gas, pressure / 1000.0) / SURFACE_PRESSURE / 1000000.0;
 }

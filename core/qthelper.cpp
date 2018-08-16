@@ -400,7 +400,7 @@ void selectedDivesGasUsed(QVector<QPair<QString, int> > &gasUsedOrdered)
 		get_gas_used(d, diveGases);
 		for (j = 0; j < MAX_CYLINDERS; j++)
 			if (diveGases[j].mliter) {
-				QString gasName = gasname(&d->cylinder[j].gasmix);
+				QString gasName = gasname(d->cylinder[j].gasmix);
 				gasUsed[gasName] += diveGases[j].mliter;
 			}
 	}
@@ -1228,8 +1228,8 @@ extern "C" char *picturedir_string()
 
 QString get_gas_string(struct gasmix gas)
 {
-	uint o2 = (get_o2(&gas) + 5) / 10, he = (get_he(&gas) + 5) / 10;
-	QString result = gasmix_is_air(&gas) ? gettextFromC::tr("AIR") : he == 0 ? (o2 == 100 ? gettextFromC::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
+	uint o2 = (get_o2(gas) + 5) / 10, he = (get_he(gas) + 5) / 10;
+	QString result = gasmix_is_air(gas) ? gettextFromC::tr("AIR") : he == 0 ? (o2 == 100 ? gettextFromC::tr("OXYGEN") : QString("EAN%1").arg(o2, 2, 10, QChar('0'))) : QString("%1/%2").arg(o2).arg(he);
 	return result;
 }
 

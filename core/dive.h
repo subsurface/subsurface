@@ -71,7 +71,7 @@ struct icd_data { // This structure provides communication between function isob
 	int dHe;      // The change in fraction (permille) of helium during the change
 };
 
-extern bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmix, struct icd_data *results);
+extern bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix newgasmix, struct icd_data *results);
 
 /*
  * Events are currently based straight on what libdivecomputer gives us.
@@ -114,32 +114,32 @@ extern int units_to_sac(double volume);
 
 /* Volume in mliter of a cylinder at pressure 'p' */
 extern int gas_volume(cylinder_t *cyl, pressure_t p);
-extern double gas_compressibility_factor(struct gasmix *gas, double bar);
-extern double isothermal_pressure(struct gasmix *gas, double p1, int volume1, int volume2);
-extern double gas_density(struct gasmix *gas, int pressure);
-extern int same_gasmix(struct gasmix *a, struct gasmix *b);
+extern double gas_compressibility_factor(struct gasmix gas, double bar);
+extern double isothermal_pressure(struct gasmix gas, double p1, int volume1, int volume2);
+extern double gas_density(struct gasmix gas, int pressure);
+extern int same_gasmix(struct gasmix a, struct gasmix b);
 
-static inline int get_o2(const struct gasmix *mix)
+static inline int get_o2(struct gasmix mix)
 {
-	return mix->o2.permille ?: O2_IN_AIR;
+	return mix.o2.permille ?: O2_IN_AIR;
 }
 
-static inline int get_he(const struct gasmix *mix)
+static inline int get_he(struct gasmix mix)
 {
-	return mix->he.permille;
+	return mix.he.permille;
 }
 
 struct gas_pressures {
 	double o2, n2, he;
 };
 
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum divemode_t dctype);
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t dctype);
 
 extern void sanitize_gasmix(struct gasmix *mix);
-extern int gasmix_distance(const struct gasmix *a, const struct gasmix *b);
-extern int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int used);
+extern int gasmix_distance(struct gasmix a, struct gasmix b);
+extern int find_best_gasmix_match(struct gasmix mix, cylinder_t array[], unsigned int used);
 
-extern bool gasmix_is_air(const struct gasmix *gasmix);
+extern bool gasmix_is_air(struct gasmix gasmix);
 
 /* Linear interpolation between 'a' and 'b', when we are 'part'way into the 'whole' distance from a to b */
 static inline int interpolate(int a, int b, int part, int whole)
@@ -152,8 +152,8 @@ static inline int interpolate(int a, int b, int part, int whole)
 	return (a+b)/2;
 }
 
-void get_gas_string(const struct gasmix *gasmix, char *text, int len);
-const char *gasname(const struct gasmix *gasmix);
+void get_gas_string(struct gasmix gasmix, char *text, int len);
+const char *gasname(struct gasmix gasmix);
 
 #define MAX_SENSORS 2
 struct sample                         // BASE TYPE BYTES  UNITS    RANGE               DESCRIPTION
@@ -396,8 +396,8 @@ extern double depth_to_bar(int depth, struct dive *dive);
 extern double depth_to_atm(int depth, struct dive *dive);
 extern int rel_mbar_to_depth(int mbar, struct dive *dive);
 extern int mbar_to_depth(int mbar, struct dive *dive);
-extern depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct dive *dive, int roundto);
-extern depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive, int roundto);
+extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, struct dive *dive, int roundto);
+extern depth_t gas_mnd(struct gasmix mix, depth_t end, struct dive *dive, int roundto);
 
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
@@ -663,7 +663,7 @@ struct deco_state {
 	bool icd_warning;
 };
 
-extern void add_segment(struct deco_state *ds, double pressure, const struct gasmix *gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
+extern void add_segment(struct deco_state *ds, double pressure, struct gasmix gasmix, int period_in_seconds, int setpoint, enum divemode_t divemode, int sac);
 extern void clear_deco(struct deco_state *ds, double surface_pressure);
 extern void dump_tissues(struct deco_state *ds);
 extern void set_gf(short gflow, short gfhigh);
@@ -722,7 +722,7 @@ extern struct event *get_next_event(struct event *event, const char *name);
  * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
  * On subsequent calls, pass the same "evp" and the "gasmix" from previous calls.
  */
-extern struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix);
+extern struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix gasmix);
 
 /* Get gasmix at a given time */
 extern struct gasmix get_gasmix_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);

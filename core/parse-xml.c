@@ -652,7 +652,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	if (idx < 0 || idx >= MAX_CYLINDERS)
 		return;
 	/* The gas switch event format is insane for historical reasons */
-	struct gasmix *mix = &dive->cylinder[idx].gasmix;
+	struct gasmix mix = dive->cylinder[idx].gasmix;
 	int o2 = get_o2(mix);
 	int he = get_he(mix);
 	struct event *ev;
@@ -665,7 +665,7 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	ev = add_event(dc, seconds, he ? SAMPLE_EVENT_GASCHANGE2 : SAMPLE_EVENT_GASCHANGE, 0, value, "gaschange");
 	if (ev) {
 		ev->gas.index = idx;
-		ev->gas.mix = *mix;
+		ev->gas.mix = mix;
 	}
 }
 

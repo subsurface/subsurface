@@ -506,16 +506,16 @@ static void merge_cylinder_type(cylinder_type_t *src, cylinder_type_t *dst)
 	}
 }
 
-static void merge_cylinder_mix(struct gasmix *src, struct gasmix *dst)
+static void merge_cylinder_mix(struct gasmix src, struct gasmix *dst)
 {
 	if (!dst->o2.permille)
-		*dst = *src;
+		*dst = src;
 }
 
 static void merge_cylinder_info(cylinder_t *src, cylinder_t *dst)
 {
 	merge_cylinder_type(&src->type, &dst->type);
-	merge_cylinder_mix(&src->gasmix, &dst->gasmix);
+	merge_cylinder_mix(src->gasmix, &dst->gasmix);
 	MERGE_MAX(dst, dst, src, start.mbar);
 	MERGE_MIN(dst, dst, src, end.mbar);
 	if (!dst->cylinder_use)
