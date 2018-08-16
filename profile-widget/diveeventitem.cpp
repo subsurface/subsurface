@@ -51,7 +51,7 @@ struct event *DiveEventItem::getEvent()
 	return internalEvent;
 }
 
-void DiveEventItem::setEvent(struct event *ev, struct gasmix *lastgasmix)
+void DiveEventItem::setEvent(struct event *ev, struct gasmix lastgasmix)
 {
 	if (!ev)
 		return;
@@ -63,7 +63,7 @@ void DiveEventItem::setEvent(struct event *ev, struct gasmix *lastgasmix)
 	recalculatePos(true);
 }
 
-void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
+void DiveEventItem::setupPixmap(struct gasmix lastgasmix)
 {
 	const IconMetrics& metrics = defaultIconMetrics();
 #ifndef SUBSURFACE_MOBILE
@@ -94,13 +94,13 @@ void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
 	} else if (event_is_gaschange(internalEvent)) {
 		struct gasmix mix = get_gasmix_from_event(&displayed_dive, internalEvent);
 		struct icd_data icd_data;
-		bool icd = isobaric_counterdiffusion(lastgasmix, &mix, &icd_data);
+		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (mix.he.permille) {
 			if (icd)
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-ICD-icon"));
 			else
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-trimix-icon"));
-		} else if (gasmix_is_air(&mix)) {
+		} else if (gasmix_is_air(mix)) {
 			if (icd)
 				setPixmap(EVENT_PIXMAP_BIGGER(":gaschange-air-ICD-icon"));
 			else
@@ -165,7 +165,7 @@ void DiveEventItem::setupPixmap(struct gasmix *lastgasmix)
 #undef EVENT_PIXMAP_BIGGER
 }
 
-void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
+void DiveEventItem::setupToolTipString(struct gasmix lastgasmix)
 {
 	// we display the event on screen - so translate
 	QString name = gettextFromC::tr(internalEvent->name);
@@ -177,12 +177,12 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 		struct gasmix mix = get_gasmix_from_event(&displayed_dive, internalEvent);
 		struct membuffer mb = {};
 		name += ": ";
-		name += gasname(&mix);
+		name += gasname(mix);
 
 		/* Do we have an explicit cylinder index?  Show it. */
 		if (internalEvent->gas.index >= 0)
 			name += tr(" (cyl. %1)").arg(internalEvent->gas.index + 1);
-		bool icd = isobaric_counterdiffusion(lastgasmix, &mix, &icd_data);
+		bool icd = isobaric_counterdiffusion(lastgasmix, mix, &icd_data);
 		if (icd_data.dHe < 0) {
 			put_format(&mb, "\n%s %s:%+.3g%% %s:%+.3g%%%s%+.3g%%",
 				qPrintable(tr("ICD")),
@@ -192,7 +192,7 @@ void DiveEventItem::setupToolTipString(struct gasmix *lastgasmix)
 			name += QString::fromUtf8(mb.buffer, mb.len);
 			free_buffer(&mb);
 		}
-		*lastgasmix = mix;
+		lastgasmix = mix;
 	} else if (same_string(internalEvent->name, "modechange")) {
 		name += QString(": %1").arg(gettextFromC::tr(divemode_text_ui[internalEvent->value]));
 	} else if (value) {

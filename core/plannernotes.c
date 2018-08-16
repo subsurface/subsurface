@@ -42,7 +42,7 @@ static int diveplan_duration(struct diveplan *diveplan)
  *             5) Pointers to gas mixes in the gas change: gas-from and gas-to.
  * Returns:    The size of the output buffer that has been used after the new results have been added.
  */
-static void add_icd_entry(struct membuffer *b, struct icd_data *icdvalues, bool printheader, int time_seconds, int ambientpressure_mbar, struct gasmix *gas_from, struct gasmix *gas_to)
+static void add_icd_entry(struct membuffer *b, struct icd_data *icdvalues, bool printheader, int time_seconds, int ambientpressure_mbar, struct gasmix gas_from, struct gasmix gas_to)
 {
 	if (printheader) { // Create a table description and a table header if no icd data have been written yet.
 		put_format(b, "<div>%s:", translate("gettextFromC","Isobaric counterdiffusion information"));
@@ -179,8 +179,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			nextdp = nextdp->next;
 		if (nextdp)
 			newgasmix = dive->cylinder[nextdp->cylinderid].gasmix;
-		gaschange_after = (nextdp && (gasmix_distance(&gasmix, &newgasmix)));
-		gaschange_before =  (gasmix_distance(&lastprintgasmix, &gasmix));
+		gaschange_after = (nextdp && (gasmix_distance(gasmix, newgasmix)));
+		gaschange_before =  (gasmix_distance(lastprintgasmix, gasmix));
 		rebreatherchange_after = (nextdp && (dp->setpoint != nextdp->setpoint || dp->divemode != nextdp->divemode));
 		rebreatherchange_before = lastprintsetpoint != dp->setpoint || lastdivemode != dp->divemode;
 		/* do we want to skip this leg as it is devoid of anything useful? */
@@ -215,7 +215,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     decimals, depthvalue, depth_unit,
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
-							     gasname(&gasmix),
+							     gasname(gasmix),
 							     (double) dp->setpoint / 1000.0);
 					} else {
 						put_format_loc(&buf, translate("gettextFromC", "%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s"),
@@ -223,7 +223,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     decimals, depthvalue, depth_unit,
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
-							     gasname(&gasmix));
+							     gasname(gasmix));
 					}
 
 					put_string(&buf, "<br>");
@@ -237,14 +237,14 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 							     decimals, depthvalue, depth_unit,
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
-							     gasname(&gasmix),
+							     gasname(gasmix),
 							     (double) dp->setpoint / 1000.0);
 					} else {
 						put_format_loc(&buf, translate("gettextFromC", "Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s"),
 							     decimals, depthvalue, depth_unit,
 							     FRACTION(dp->time - lasttime, 60),
 							     FRACTION(dp->time, 60),
-							     gasname(&gasmix),
+							     gasname(gasmix),
 							     translate("gettextFromC", divemode_text_ui[dp->divemode]));
 					}
 					put_string(&buf, "<br>");
@@ -308,16 +308,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					if (dp->setpoint) {
 						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar CCR)"), dp->setpoint / 1000.0);
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
-							gasname(&newgasmix), temp);
+							gasname(newgasmix), temp);
 						free(temp);
 					} else {
 						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>",
-							gasname(&newgasmix), lastdivemode == UNDEF_COMP_TYPE || lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
-						if (isascent && (get_he(&lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
-							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) // Do icd calulations
+							gasname(newgasmix), lastdivemode == UNDEF_COMP_TYPE || lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
+						if (isascent && (get_he(lastprintgasmix) > 0)) { // For a trimix gas change on ascent, save ICD info if previous cylinder had helium
+							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calulations
 								icdwarning = true;
 							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
-								add_icd_entry(&icdbuf, &icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &newgasmix); // .. then print calculations to buffer.
+								add_icd_entry(&icdbuf, &icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), lastprintgasmix, newgasmix); // .. then print calculations to buffer.
 								icdtableheader = false;
 							}
 						}
@@ -330,16 +330,16 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					// If a new gas has been used for this segment, now is the time to show it
 					if (dp->setpoint) {
 						asprintf_loc(&temp, translate("gettextFromC", "(SP = %.1fbar CCR)"), (double) dp->setpoint / 1000.0);
-						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix), temp);
+						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(gasmix), temp);
 						free(temp);
 					} else {
-						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(&gasmix),
+						put_format(&buf, "<td style='padding-left: 10px; color: red; float: left;'><b>%s %s</b></td>", gasname(gasmix),
 							   lastdivemode == UNDEF_COMP_TYPE || lastdivemode == dp->divemode ? "" : translate("gettextFromC", divemode_text_ui[dp->divemode]));
-						if (get_he(&lastprintgasmix) > 0) {  // For a trimix gas change, save ICD info if previous cylinder had helium
-							if (isobaric_counterdiffusion(&lastprintgasmix, &gasmix, &icdvalues))  // Do icd calculations
+						if (get_he(lastprintgasmix) > 0) {  // For a trimix gas change, save ICD info if previous cylinder had helium
+							if (isobaric_counterdiffusion(lastprintgasmix, gasmix, &icdvalues))  // Do icd calculations
 								icdwarning = true;
 							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
-								add_icd_entry(&icdbuf, &icdvalues, icdtableheader, lasttime, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &gasmix); // .. then print data to buffer.
+								add_icd_entry(&icdbuf, &icdvalues, icdtableheader, lasttime, depth_to_mbar(dp->depth.mm, dive), lastprintgasmix, gasmix); // .. then print data to buffer.
 								icdtableheader = false;
 							}
 						}
@@ -362,14 +362,14 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			if (plan_verbatim) {
 				if (lastsetpoint >= 0) {
 					if (nextdp && nextdp->setpoint) {
-						put_format_loc(&buf, translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(&newgasmix), (double) nextdp->setpoint / 1000.0);
+						put_format_loc(&buf, translate("gettextFromC", "Switch gas to %s (SP = %.1fbar)"), gasname(newgasmix), (double) nextdp->setpoint / 1000.0);
 					} else {
-						put_format(&buf, translate("gettextFromC", "Switch gas to %s"), gasname(&newgasmix));
-						if ((isascent) && (get_he(&lastprintgasmix) > 0)) {          // For a trimix gas change on ascent:
-							if (isobaric_counterdiffusion(&lastprintgasmix, &newgasmix, &icdvalues)) // Do icd calculations
+						put_format(&buf, translate("gettextFromC", "Switch gas to %s"), gasname(newgasmix));
+						if ((isascent) && (get_he(lastprintgasmix) > 0)) {          // For a trimix gas change on ascent:
+							if (isobaric_counterdiffusion(lastprintgasmix, newgasmix, &icdvalues)) // Do icd calculations
 								icdwarning = true;
 							if (icdvalues.dN2 > 0) { // If the gas change involved helium as well as an increase in nitrogen..
-								add_icd_entry(&icdbuf, &icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), &lastprintgasmix, &newgasmix); // ... then print data to buffer.
+								add_icd_entry(&icdbuf, &icdvalues, icdtableheader, dp->time, depth_to_mbar(dp->depth.mm, dive), lastprintgasmix, newgasmix); // ... then print data to buffer.
 								icdtableheader = false;
 							}
 						}
@@ -451,8 +451,8 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		volume = get_volume_units(cyl->gas_used.mliter, NULL, &unit);
 		deco_volume = get_volume_units(cyl->deco_gas_used.mliter, NULL, &unit);
 		if (cyl->type.size.mliter) {
-			int remaining_gas = lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0));
-			double deco_pressure_mbar = isothermal_pressure(&cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter,
+			int remaining_gas = lrint((double)cyl->end.mbar * cyl->type.size.mliter / 1000.0 / gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0));
+			double deco_pressure_mbar = isothermal_pressure(cyl->gasmix, 1.0, remaining_gas + cyl->deco_gas_used.mliter,
 				cyl->type.size.mliter) * 1000 - cyl->end.mbar;
 			deco_pressure = get_pressure_units(lrint(deco_pressure_mbar), &pressure_unit);
 			pressure = get_pressure_units(cyl->start.mbar - cyl->end.mbar, &pressure_unit);
@@ -464,7 +464,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 					translate("gettextFromC", "Warning:"),
 					translate("gettextFromC", "this is more gas than available in the specified cylinder!"));
 			else
-				if (cyl->end.mbar / 1000.0 * cyl->type.size.mliter / gas_compressibility_factor(&cyl->gasmix, cyl->end.mbar / 1000.0)
+				if (cyl->end.mbar / 1000.0 * cyl->type.size.mliter / gas_compressibility_factor(cyl->gasmix, cyl->end.mbar / 1000.0)
 				    < cyl->deco_gas_used.mliter)
 					snprintf(warning, sizeof(warning), "<br>&nbsp;&mdash; <span style='color: red;'>%s </span> %s",
 						translate("gettextFromC", "Warning:"),
@@ -481,7 +481,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 						* depth_to_bar(lastbottomdp->depth.mm, dive)
 						+ prefs.sacfactor / 100.0 * cyl->deco_gas_used.mliter);
 					/* Calculate minimum gas pressure for cyclinder. */
-					lastbottomdp->minimum_gas.mbar = lrint(isothermal_pressure(&cyl->gasmix, 1.0,
+					lastbottomdp->minimum_gas.mbar = lrint(isothermal_pressure(cyl->gasmix, 1.0,
 						mingasv.mliter, cyl->type.size.mliter) * 1000);
 					/* Translate all results into correct units */
 					mingas_volume = get_volume_units(mingasv.mliter, NULL, &unit);
@@ -513,18 +513,18 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 			/* Print the gas consumption for every cylinder here to temp buffer. */
 			if (lrint(volume) > 0) {
 				asprintf_loc(&temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s/%.0f%s in planned ascent)"),
-					     volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
+					     volume, unit, pressure, pressure_unit, gasname(cyl->gasmix), deco_volume, unit, deco_pressure, pressure_unit);
 			} else {
 				asprintf_loc(&temp, translate("gettextFromC", "%.0f%s/%.0f%s of <span style='color: red;'><b>%s</b></span>"),
-					     volume, unit, pressure, pressure_unit, gasname(&cyl->gasmix));
+					     volume, unit, pressure, pressure_unit, gasname(cyl->gasmix));
 			}
 		} else {
 			if (lrint(volume) > 0) {
 				asprintf_loc(&temp, translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span> (%.0f%s during planned ascent)"),
-					     volume, unit, gasname(&cyl->gasmix), deco_volume, unit);
+					     volume, unit, gasname(cyl->gasmix), deco_volume, unit);
 			} else {
 				asprintf_loc(&temp, translate("gettextFromC", "%.0f%s of <span style='color: red;'><b>%s</b></span>"),
-					     volume, unit, gasname(&cyl->gasmix));
+					     volume, unit, gasname(cyl->gasmix));
 			}
 		}
 		/* Gas consumption: Now finally print all strings to output */
@@ -558,11 +558,11 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 		while (dp) {
 			if (dp->time != 0) {
 				struct gas_pressures pressures;
-				struct gasmix *gasmix = &dive->cylinder[dp->cylinderid].gasmix;
+				struct gasmix gasmix = dive->cylinder[dp->cylinderid].gasmix;
 
 				current_divemode = get_current_divemode(&dive->dc, dp->time, &evd, &current_divemode);
 				amb = depth_to_atm(dp->depth.mm, dive);
-				fill_pressures(&pressures, amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix->o2.permille / 1000.0, current_divemode);
+				fill_pressures(&pressures, amb, gasmix, (current_divemode == OC) ? 0.0 : amb * gasmix.o2.permille / 1000.0, current_divemode);
 
 				if (pressures.o2 > (dp->entered ? prefs.bottompo2 : prefs.decopo2) / 1000.0) {
 					const char *depth_unit;

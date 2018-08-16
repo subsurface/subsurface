@@ -126,10 +126,10 @@ static void save_extra_data(struct membuffer *b, struct extra_data *ed)
 	}
 }
 
-static void put_gasmix(struct membuffer *b, struct gasmix *mix)
+static void put_gasmix(struct membuffer *b, struct gasmix mix)
 {
-	int o2 = mix->o2.permille;
-	int he = mix->he.permille;
+	int o2 = mix.o2.permille;
+	int he = mix.he.permille;
 
 	if (o2) {
 		put_format(b, " o2=%u.%u%%", FRACTION(o2, 10));
@@ -154,7 +154,7 @@ static void save_cylinder_info(struct membuffer *b, struct dive *dive)
 		put_pressure(b, cylinder->type.workingpressure, " workpressure=", "bar");
 		show_utf8(b, " description=", description, "");
 		strip_mb(b);
-		put_gasmix(b, &cylinder->gasmix);
+		put_gasmix(b, cylinder->gasmix);
 		put_pressure(b, cylinder->start, " start=", "bar");
 		put_pressure(b, cylinder->end, " end=", "bar");
 		if (cylinder->cylinder_use != OC_GAS)
@@ -385,7 +385,7 @@ static void save_one_event(struct membuffer *b, struct dive *dive, struct event 
 		struct gasmix mix = get_gasmix_from_event(dive, ev);
 		if (ev->gas.index >= 0)
 			show_integer(b, ev->gas.index, "cylinder=", "");
-		put_gasmix(b, &mix);
+		put_gasmix(b, mix);
 	}
 	put_string(b, "\n");
 }

@@ -57,15 +57,15 @@ void TankItem::setData(DivePlotDataModel *model, struct plot_info *plotInfo, str
 	modelDataChanged();
 }
 
-void TankItem::createBar(qreal x, qreal w, struct gasmix *gas)
+void TankItem::createBar(qreal x, qreal w, struct gasmix gas)
 {
 	// pick the right gradient, size, position and text
 	QGraphicsRectItem *rect = new QGraphicsRectItem(x, 0, w, height, this);
 	if (gasmix_is_air(gas))
 		rect->setBrush(air);
-	else if (gas->he.permille)
+	else if (gas.he.permille)
 		rect->setBrush(trimix);
-	else if (gas->o2.permille == 1000)
+	else if (gas.o2.permille == 1000)
 		rect->setBrush(oxygen);
 	else
 		rect->setBrush(nitrox);
@@ -112,14 +112,14 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 	while (ev && (int)ev->time.seconds < last_entry->sec) {
 		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
-		createBar(left, width, &gasmix);
+		createBar(left, width, gasmix);
 		startTime = ev->time.seconds;
 		gasmix = get_gasmix_from_event(&displayed_dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	width = hAxis->posAtValue(last_entry->sec) - hAxis->posAtValue(startTime);
 	left = hAxis->posAtValue(startTime);
-	createBar(left, width, &gasmix);
+	createBar(left, width, gasmix);
 }
 
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)

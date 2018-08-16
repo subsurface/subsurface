@@ -137,7 +137,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			cur_sample->pressure[0].mbar = pressure * 100;
 			cur_sample->rbt.seconds = rbt;
 			if (oldcyl != tank) {
-				struct gasmix *mix = &cur_dive->cylinder[tank].gasmix;
+				struct gasmix mix = cur_dive->cylinder[tank].gasmix;
 				int o2 = get_o2(mix);
 				int he = get_he(mix);
 

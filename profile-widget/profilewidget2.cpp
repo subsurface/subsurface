@@ -781,7 +781,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 		item->setHorizontalAxis(timeAxis);
 		item->setVerticalAxis(profileYAxis);
 		item->setModel(dataModel);
-		item->setEvent(event, &lastgasmix);
+		item->setEvent(event, lastgasmix);
 		item->setZValue(2);
 		scene()->addItem(item);
 		eventItems.push_back(item);
@@ -1710,7 +1710,7 @@ void ProfileWidget2::changeGas()
 		tank = rx.cap(1).toInt() - 1; // we display the tank 1 based
 	} else {
 		qDebug() << "failed to parse tank number";
-		tank = get_gasidx(&displayed_dive, &gasmix);
+		tank = get_gasidx(&displayed_dive, gasmix);
 	}
 	// add this both to the displayed dive and the current dive
 	add_gas_switch_event(current_dive, current_dc, seconds, tank);

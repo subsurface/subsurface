@@ -207,7 +207,7 @@ QString DiveObjectHelper::gas() const
 		gas = m_dive->cylinder[i].type.description;
 		if (!gas.isEmpty())
 			gas += QChar(' ');
-		gas += gasname(&m_dive->cylinder[i].gasmix);
+		gas += gasname(m_dive->cylinder[i].gasmix);
 		// if has a description and if such gas is not already present
 		if (!gas.isEmpty() && gases.indexOf(gas) == -1) {
 			if (!gases.isEmpty())

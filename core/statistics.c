@@ -309,14 +309,14 @@ static void get_gas_parts(struct gasmix mix, volume_t vol, int o2_in_topup, volu
 {
 	volume_t air = {};
 
-	if (gasmix_is_air(&mix)) {
+	if (gasmix_is_air(mix)) {
 		o2->mliter = 0;
 		he->mliter = 0;
 		return;
 	}
 
-	air.mliter = lrint(((double)vol.mliter * (1000 - get_he(&mix) - get_o2(&mix))) / (1000 - o2_in_topup));
-	he->mliter = lrint(((double)vol.mliter * get_he(&mix)) / 1000.0);
+	air.mliter = lrint(((double)vol.mliter * (1000 - get_he(mix) - get_o2(mix))) / (1000 - o2_in_topup));
+	he->mliter = lrint(((double)vol.mliter * get_he(mix)) / 1000.0);
 	o2->mliter += vol.mliter - he->mliter - air.mliter;
 }
 

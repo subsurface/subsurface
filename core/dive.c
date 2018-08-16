@@ -1021,7 +1021,7 @@ static void update_min_max_temperatures(struct dive *dive, temperature_t tempera
 int gas_volume(cylinder_t *cyl, pressure_t p)
 {
 	double bar = p.mbar / 1000.0;
-	double z_factor = gas_compressibility_factor(&cyl->gasmix, bar);
+	double z_factor = gas_compressibility_factor(cyl->gasmix, bar);
 	return lrint(cyl->type.size.mliter * bar_to_atm(bar) / z_factor);
 }
 
@@ -1082,7 +1082,7 @@ void update_setpoint_events(struct dive *dive, struct divecomputer *dc)
 				gasmix = get_gasmix_from_event(dive, ev);
 				next = get_next_event(ev, "gaschange");
 			}
-			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), &gasmix ,0, dc->divemode);
+			fill_pressures(&pressures, calculate_depth_to_mbar(dc->sample[i].depth.mm, dc->surface_pressure, 0), gasmix ,0, dc->divemode);
 			if (abs(dc->sample[i].setpoint.mbar - (int)(1000 * pressures.o2)) <= 50)
 				dc->sample[i].setpoint.mbar = 0;
 		}
@@ -1112,7 +1112,7 @@ void sanitize_gasmix(struct gasmix *mix)
 		if (!o2)
 			return;
 		/* 20.8% to 21% O2 is just air */
-		if (gasmix_is_air(mix)) {
+		if (gasmix_is_air(*mix)) {
 			mix->o2.permille = 0;
 			return;
 		}
@@ -1231,7 +1231,7 @@ static void sanitize_cylinder_info(struct dive *dive)
  * Output:     i) The icd_data stucture is filled with the delta_N2 and delta_He numbers (as permille).
  *            ii) Function returns a boolean indicating an exceeding of the rule-of-fifths. False = no icd problem.
  */
-bool isobaric_counterdiffusion(struct gasmix *oldgasmix, struct gasmix *newgasmix, struct icd_data *results)
+bool isobaric_counterdiffusion(struct gasmix oldgasmix, struct gasmix newgasmix, struct icd_data *results)
 {
 	if (!prefs.show_icd)
 		return false;
@@ -1608,7 +1608,7 @@ static void fixup_dive_pressures(struct dive *dive, struct divecomputer *dc)
 	simplify_dc_pressures(dc);
 }
 
-int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int used)
+int find_best_gasmix_match(struct gasmix mix, cylinder_t array[], unsigned int used)
 {
 	int i;
 	int best = -1, score = INT_MAX;
@@ -1622,7 +1622,7 @@ int find_best_gasmix_match(struct gasmix *mix, cylinder_t array[], unsigned int 
 		match = array + i;
 		if (cylinder_nodata(match))
 			continue;
-		distance = gasmix_distance(mix, &match->gasmix);
+		distance = gasmix_distance(mix, match->gasmix);
 		if (distance >= score)
 			continue;
 		best = i;
@@ -1640,14 +1640,14 @@ static bool validate_gaschange(struct dive *dive, struct event *event)
 	int o2, he, value;
 
 	/* We'll get rid of the per-event gasmix, but for now sanitize it */
-	if (gasmix_is_air(&event->gas.mix))
+	if (gasmix_is_air(event->gas.mix))
 		event->gas.mix.o2.permille = 0;
 
 	/* Do we already have a cylinder index for this gasmix? */
 	if (event->gas.index >= 0)
 		return true;
 
-	index = find_best_gasmix_match(&event->gas.mix, dive->cylinder, 0);
+	index = find_best_gasmix_match(event->gas.mix, dive->cylinder, 0);
 	if (index < 0)
 		return false;
 
@@ -1656,8 +1656,8 @@ static bool validate_gaschange(struct dive *dive, struct event *event)
 	event->gas.mix = dive->cylinder[index].gasmix;
 
 	/* Convert to odd libdivecomputer format */
-	o2 = get_o2(&event->gas.mix);
-	he = get_he(&event->gas.mix);
+	o2 = get_o2(event->gas.mix);
+	he = get_he(event->gas.mix);
 
 	o2 = (o2 + 5) / 10;
 	he = (he + 5) / 10;
@@ -1980,7 +1980,7 @@ static int sort_event(struct event *a, struct event *b)
 static int same_gas(struct event *a, struct event *b)
 {
 	if (a->type == b->type && a->flags == b->flags && a->value == b->value && !strcmp(a->name, b->name) &&
-			same_gasmix(&a->gas.mix, &b->gas.mix)) {
+			same_gasmix(a->gas.mix, b->gas.mix)) {
 		return true;
 	}
 	return false;
@@ -2078,7 +2078,7 @@ extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_
 	return -1; // negative number means cylinder_use_type not found in list of cylinders
 }
 
-int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
+int gasmix_distance(struct gasmix a, struct gasmix b)
 {
 	int a_o2 = get_o2(a), b_o2 = get_o2(b);
 	int a_he = get_he(a), b_he = get_he(b);
@@ -2099,7 +2099,7 @@ int gasmix_distance(const struct gasmix *a, const struct gasmix *b)
  *			divemode = the dive mode pertaining to this point in the dive profile.
  * This function called by: calculate_gas_information_new() in profile.c; add_segment() in deco.c.
  */
-extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, const struct gasmix *mix, double po2, enum divemode_t divemode)
+extern void fill_pressures(struct gas_pressures *pressures, const double amb_pressure, struct gasmix mix, double po2, enum divemode_t divemode)
 {
 	if ((divemode != OC) && po2) {	// This is a rebreather dive where pressures->o2 is defined
 		if (po2 >= amb_pressure) {
@@ -2204,20 +2204,20 @@ void cylinder_renumber(struct dive *dive, int mapping[])
 		dc_cylinder_renumber(dive, dc, mapping);
 }
 
-int same_gasmix(struct gasmix *a, struct gasmix *b)
+int same_gasmix(struct gasmix a, struct gasmix b)
 {
 	if (gasmix_is_air(a) && gasmix_is_air(b))
 		return 1;
-	return a->o2.permille == b->o2.permille && a->he.permille == b->he.permille;
+	return a.o2.permille == b.o2.permille && a.he.permille == b.he.permille;
 }
 
 int same_gasmix_cylinder(cylinder_t *cyl, int cylid, struct dive *dive, bool check_unused)
 {
-	struct gasmix *mygas = &cyl->gasmix;
+	struct gasmix mygas = cyl->gasmix;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		if (i == cylid || cylinder_none(&dive->cylinder[i]))
 			continue;
-		struct gasmix *gas2 = &dive->cylinder[i].gasmix;
+		struct gasmix gas2 = dive->cylinder[i].gasmix;
 		if (gasmix_distance(mygas, gas2) == 0 && (is_cylinder_used(dive, i) || check_unused))
 			return i;
 	}
@@ -2253,7 +2253,7 @@ static int match_cylinder(cylinder_t *cyl, struct dive *dive, unsigned int avail
 		if (!(available & (1u << i)))
 			continue;
 		target = dive->cylinder + i;
-		if (!same_gasmix(&cyl->gasmix, &target->gasmix))
+		if (!same_gasmix(cyl->gasmix, target->gasmix))
 			continue;
 		if (cyl->cylinder_use != target->cylinder_use)
 			continue;
@@ -4062,10 +4062,10 @@ fraction_t best_he(depth_t depth, struct dive *dive)
 	return fhe;
 }
 
-bool gasmix_is_air(const struct gasmix *gasmix)
+bool gasmix_is_air(struct gasmix gasmix)
 {
-	int o2 = gasmix->o2.permille;
-	int he = gasmix->he.permille;
+	int o2 = gasmix.o2.permille;
+	int he = gasmix.he.permille;
 	return (he == 0) && (o2 == 0 || ((o2 >= O2_IN_AIR - 1) && (o2 <= O2_IN_AIR + 1)));
 }
 
@@ -4148,7 +4148,7 @@ int mbar_to_depth(int mbar, struct dive *dive)
 }
 
 /* MOD rounded to multiples of roundto mm */
-depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct dive *dive, int roundto)
+depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, struct dive *dive, int roundto)
 {
 	depth_t rounded_depth;
 
@@ -4158,7 +4158,7 @@ depth_t gas_mod(struct gasmix *mix, pressure_t po2_limit, struct dive *dive, int
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
-depth_t gas_mnd(struct gasmix *mix, depth_t end, struct dive *dive, int roundto)
+depth_t gas_mnd(struct gasmix mix, depth_t end, struct dive *dive, int roundto)
 {
 	depth_t rounded_depth;
 	pressure_t ppo2n2;
@@ -4287,7 +4287,7 @@ int dive_has_gps_location(struct dive *dive)
 	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
 }
 
-struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix)
+struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix gasmix)
 {
 	struct event *ev = *evp;
 	struct gasmix res;
@@ -4298,7 +4298,7 @@ struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, s
 		res = dive->cylinder[cyl].gasmix;
 		ev = dc ? get_next_event(dc->events, "gaschange") : NULL;
 	} else {
-		res = *gasmix;
+		res = gasmix;
 	}
 
 	while (ev && ev->time.seconds < time) {
@@ -4314,5 +4314,5 @@ struct gasmix get_gasmix_at_time(struct dive *d, struct divecomputer *dc, durati
 {
 	struct event *ev = NULL;
 	struct gasmix gasmix = { 0 };
-	return get_gasmix(d, dc, time.seconds, &ev, &gasmix);
+	return get_gasmix(d, dc, time.seconds, &ev, gasmix);
 }

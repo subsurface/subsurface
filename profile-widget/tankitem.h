@@ -25,7 +25,7 @@ public slots:
 	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
 
 private:
-	void createBar(qreal x, qreal w, struct gasmix *gas);
+	void createBar(qreal x, qreal w, struct gasmix gas);
 	DivePlotDataModel *dataModel;
 	DiveCartesianAxis *hAxis;
 	struct dive diveCylinderStore;

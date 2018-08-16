@@ -81,7 +81,7 @@ bool cylinder_none(void *_data)
 	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
 }
 
-void get_gas_string(const struct gasmix *gasmix, char *text, int len)
+void get_gas_string(struct gasmix gasmix, char *text, int len)
 {
 	if (gasmix_is_air(gasmix))
 		snprintf(text, len, "%s", translate("gettextFromC", "air"));
@@ -94,7 +94,7 @@ void get_gas_string(const struct gasmix *gasmix, char *text, int len)
 }
 
 /* Returns a static char buffer - only good for immediate use by printf etc */
-const char *gasname(const struct gasmix *gasmix)
+const char *gasname(struct gasmix gasmix)
 {
 	static char gas[64];
 	get_gas_string(gasmix, gas, sizeof(gas));
@@ -216,7 +216,7 @@ void reset_cylinders(struct dive *dive, bool track_gas)
 		if (cylinder_none(cyl))
 			continue;
 		if (cyl->depth.mm == 0) /* if the gas doesn't give a mod, calculate based on prefs */
-			cyl->depth = gas_mod(&cyl->gasmix, decopo2, dive, M_OR_FT(3,10));
+			cyl->depth = gas_mod(cyl->gasmix, decopo2, dive, M_OR_FT(3,10));
 		if (track_gas)
 			cyl->start.mbar = cyl->end.mbar = cyl->type.workingpressure.mbar;
 		cyl->gas_used.mliter = 0;
