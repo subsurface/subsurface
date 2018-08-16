@@ -3858,7 +3858,7 @@ static bool new_picture_for_dive(struct dive *d, const char *filename)
 // only add pictures that have timestamps between 30 minutes before the dive and
 // 30 minutes after the dive ends
 #define D30MIN (30 * 60)
-bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timestamp)
+bool dive_check_picture_time(const struct dive *d, int shift_time, timestamp_t timestamp)
 {
 	offset_t offset;
 	if (timestamp) {
@@ -4025,7 +4025,7 @@ void delete_current_divecomputer(void)
 
 /* helper function to make it easier to work with our structures
  * we don't interpolate here, just use the value from the last sample up to that time */
-int get_depth_at_time(struct divecomputer *dc, unsigned int time)
+int get_depth_at_time(const struct divecomputer *dc, unsigned int time)
 {
 	int depth = 0;
 	if (dc && dc->sample)
@@ -4038,7 +4038,7 @@ int get_depth_at_time(struct divecomputer *dc, unsigned int time)
 }
 
 //Calculate O2 in best mix
-fraction_t best_o2(depth_t depth, struct dive *dive)
+fraction_t best_o2(depth_t depth, const struct dive *dive)
 {
 	fraction_t fo2;
 
@@ -4050,7 +4050,7 @@ fraction_t best_o2(depth_t depth, struct dive *dive)
 }
 
 //Calculate He in best mix. O2 is considered narcopic
-fraction_t best_he(depth_t depth, struct dive *dive)
+fraction_t best_he(depth_t depth, const struct dive *dive)
 {
 	fraction_t fhe;
 	int pnarcotic, ambient;
@@ -4107,17 +4107,17 @@ int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity
 	return mbar;
 }
 
-int depth_to_mbar(int depth, struct dive *dive)
+int depth_to_mbar(int depth, const struct dive *dive)
 {
 	return calculate_depth_to_mbar(depth, dive->surface_pressure, dive->salinity);
 }
 
-double depth_to_bar(int depth, struct dive *dive)
+double depth_to_bar(int depth, const struct dive *dive)
 {
 	return depth_to_mbar(depth, dive) / 1000.0;
 }
 
-double depth_to_atm(int depth, struct dive *dive)
+double depth_to_atm(int depth, const struct dive *dive)
 {
 	return mbar_to_atm(depth_to_mbar(depth, dive));
 }
@@ -4126,7 +4126,7 @@ double depth_to_atm(int depth, struct dive *dive)
  * (that's the one that some dive computers like the Uemis Zurich
  * provide - for the other models that do this libdivecomputer has to
  * take care of this, but the Uemis we support natively */
-int rel_mbar_to_depth(int mbar, struct dive *dive)
+int rel_mbar_to_depth(int mbar, const struct dive *dive)
 {
 	int cm;
 	double specific_weight = 1.03 * 0.981;
@@ -4137,7 +4137,7 @@ int rel_mbar_to_depth(int mbar, struct dive *dive)
 	return cm * 10;
 }
 
-int mbar_to_depth(int mbar, struct dive *dive)
+int mbar_to_depth(int mbar, const struct dive *dive)
 {
 	pressure_t surface_pressure;
 	if (dive->surface_pressure.mbar)
@@ -4148,7 +4148,7 @@ int mbar_to_depth(int mbar, struct dive *dive)
 }
 
 /* MOD rounded to multiples of roundto mm */
-depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, struct dive *dive, int roundto)
+depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto)
 {
 	depth_t rounded_depth;
 
@@ -4158,7 +4158,7 @@ depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, struct dive *dive, int 
 }
 
 /* Maximum narcotic depth rounded to multiples of roundto mm */
-depth_t gas_mnd(struct gasmix mix, depth_t end, struct dive *dive, int roundto)
+depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto)
 {
 	depth_t rounded_depth;
 	pressure_t ppo2n2;
@@ -4183,14 +4183,14 @@ struct dive *get_dive_from_table(int nr, struct dive_table *dt)
 	return dt->dives[nr];
 }
 
-struct dive_site *get_dive_site_for_dive(struct dive *dive)
+struct dive_site *get_dive_site_for_dive(const struct dive *dive)
 {
 	if (dive)
 		return get_dive_site_by_uuid(dive->dive_site_uuid);
 	return NULL;
 }
 
-const char *get_dive_country(struct dive *dive)
+const char *get_dive_country(const struct dive *dive)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 	if (ds) {
@@ -4201,7 +4201,7 @@ const char *get_dive_country(struct dive *dive)
 	return NULL;
 }
 
-char *get_dive_location(struct dive *dive)
+const char *get_dive_location(const struct dive *dive)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 	if (ds && ds->name)
@@ -4209,10 +4209,10 @@ char *get_dive_location(struct dive *dive)
 	return NULL;
 }
 
-unsigned int number_of_computers(struct dive *dive)
+unsigned int number_of_computers(const struct dive *dive)
 {
 	unsigned int total_number = 0;
-	struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dc;
 
 	if (!dive)
 		return 1;
@@ -4275,12 +4275,12 @@ int get_idx_by_uniq_id(int id)
 	return i;
 }
 
-bool dive_site_has_gps_location(struct dive_site *ds)
+bool dive_site_has_gps_location(const struct dive_site *ds)
 {
 	return ds && (ds->latitude.udeg || ds->longitude.udeg);
 }
 
-int dive_has_gps_location(struct dive *dive)
+int dive_has_gps_location(const struct dive *dive)
 {
 	if (!dive)
 		return false;
