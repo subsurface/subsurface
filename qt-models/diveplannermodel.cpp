@@ -81,7 +81,7 @@ void DivePlannerPointsModel::loadFromDive(dive *d)
 	o2pressure_t last_sp;
 	bool oldRec = recalc;
 	struct divecomputer *dc = &(d->dc);
-	struct event *evd = NULL;
+	const struct event *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 	recalc = false;
 	CylindersModel::instance()->updateDive();

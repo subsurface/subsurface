@@ -581,7 +581,7 @@ void restore_deco_state(struct deco_state *data, struct deco_state *target, bool
 
 }
 
-int deco_allowed_depth(double tissues_tolerance, double surface_pressure, struct dive *dive, bool smooth)
+int deco_allowed_depth(double tissues_tolerance, double surface_pressure, const struct dive *dive, bool smooth)
 {
 	int depth;
 	double pressure_delta;

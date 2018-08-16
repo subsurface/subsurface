@@ -108,7 +108,7 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 	int startTime = 0;
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
-	struct event *ev = get_next_event(dc->events, "gaschange");
+	const struct event *ev = get_next_event(dc->events, "gaschange");
 	while (ev && (int)ev->time.seconds < last_entry->sec) {
 		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);

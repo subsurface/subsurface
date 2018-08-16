@@ -316,7 +316,7 @@ struct plot_info *analyze_plot_info(struct plot_info *pi)
  * Some dive computers give cylinder indexes, some
  * give just the gas mix.
  */
-int get_cylinder_index(struct dive *dive, struct event *ev)
+int get_cylinder_index(const struct dive *dive, const struct event *ev)
 {
 	int best;
 	struct gasmix mix;
@@ -337,7 +337,7 @@ int get_cylinder_index(struct dive *dive, struct event *ev)
 	return best < 0 ? 0 : best;
 }
 
-struct event *get_next_event(struct event *event, const char *name)
+struct event *get_next_event_mutable(struct event *event, const char *name)
 {
 	if (!name || !*name)
 		return NULL;
@@ -347,6 +347,11 @@ struct event *get_next_event(struct event *event, const char *name)
 		event = event->next;
 	}
 	return event;
+}
+
+const struct event *get_next_event(const struct event *event, const char *name)
+{
+	return get_next_event_mutable((struct event *)event, name);
 }
 
 static int count_events(struct divecomputer *dc)
@@ -372,13 +377,13 @@ static int set_setpoint(struct plot_info *pi, int i, int setpoint, int end)
 	return i;
 }
 
-static void check_setpoint_events(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void check_setpoint_events(const struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	UNUSED(dive);
 	int i = 0;
 	pressure_t setpoint;
 	setpoint.mbar = 0;
-	struct event *ev = get_next_event(dc->events, "SP change");
+	const struct event *ev = get_next_event(dc->events, "SP change");
 
 	if (!ev)
 		return;
@@ -776,7 +781,7 @@ static unsigned int matching_gases(struct dive *dive, struct gasmix gasmix)
 static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
 	struct gasmix gasmix = { 0 };
-	struct event *ev = NULL;
+	const struct event *ev = NULL;
 	unsigned int gases = 0;
 
 	for (int i = 0; i < pi->nr; i++) {
@@ -791,7 +796,7 @@ static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plo
 	}
 }
 
-static void populate_secondary_sensor_data(struct divecomputer *dc, struct plot_info *pi)
+static void populate_secondary_sensor_data(const struct divecomputer *dc, struct plot_info *pi)
 {
 	UNUSED(dc);
 	UNUSED(pi);
@@ -818,14 +823,14 @@ static void add_plot_pressure(struct plot_info *pi, int time, int cyl, pressure_
 	SENSOR_PRESSURE(entry, cyl) = p.mbar;
 }
 
-static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
+static void setup_gas_sensor_pressure(const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi)
 {
 	int prev, i;
-	struct event *ev;
+	const struct event *ev;
 	int seen[MAX_CYLINDERS] = { 0, };
 	unsigned int first[MAX_CYLINDERS] = { 0, };
 	unsigned int last[MAX_CYLINDERS] = { 0, };
-	struct divecomputer *secondary;
+	const struct divecomputer *secondary;
 
 	prev = explicit_first_cylinder(dive, dc);
 	seen[prev] = 1;
@@ -854,7 +859,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 	// Fill in "seen[]" array - mark cylinders we're not interested
 	// in as negative.
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
+		const cylinder_t *cyl = dive->cylinder + i;
 		int start = cyl->start.mbar;
 		int end = cyl->end.mbar;
 
@@ -885,7 +890,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		if (seen[i] >= 0) {
-			cylinder_t *cyl = dive->cylinder + i;
+			const cylinder_t *cyl = dive->cylinder + i;
 
 			add_plot_pressure(pi, first[i], i, cyl->start);
 			add_plot_pressure(pi, last[i], i, cyl->end);
@@ -907,7 +912,7 @@ static void setup_gas_sensor_pressure(struct dive *dive, struct divecomputer *dc
 
 #ifndef SUBSURFACE_MOBILE
 /* calculate DECO STOP / TTS / NDL */
-static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct plot_data *entry, struct gasmix gasmix, double surface_pressure,enum divemode_t divemode)
+static void calculate_ndl_tts(struct deco_state *ds, const struct dive *dive, struct plot_data *entry, struct gasmix gasmix, double surface_pressure,enum divemode_t divemode)
 {
 	/* FIXME: This should be configurable */
 	/* ascent speed up to first deco stop */
@@ -990,7 +995,7 @@ static void calculate_ndl_tts(struct deco_state *ds, struct dive *dive, struct p
 
 /* Let's try to do some deco calculations.
  */
-void calculate_deco_information(struct deco_state *ds, struct deco_state *planner_ds, struct dive *dive, struct divecomputer *dc, struct plot_info *pi, bool print_mode)
+void calculate_deco_information(struct deco_state *ds, const struct deco_state *planner_ds, const struct dive *dive, const struct divecomputer *dc, struct plot_info *pi, bool print_mode)
 {
 	int i, count_iteration = 0;
 	double surface_pressure = (dc->surface_pressure.mbar ? dc->surface_pressure.mbar : get_surface_pressure_in_mbar(dive, true)) / 1000.0;
@@ -1017,7 +1022,7 @@ void calculate_deco_information(struct deco_state *ds, struct deco_state *planne
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
 		struct gasmix gasmix = { 0 };
-		struct event *ev = NULL, *evd = NULL;
+		const struct event *ev = NULL, *evd = NULL;
 		enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 		for (i = 1; i < pi->nr; i++) {
@@ -1206,7 +1211,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 	int i;
 	double amb_pressure;
 	struct gasmix gasmix = { 0 };
-	struct event *evg = NULL, *evd = NULL;
+	const struct event *evg = NULL, *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
 	for (i = 1; i < pi->nr; i++) {

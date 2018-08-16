@@ -100,7 +100,7 @@ struct event {
 	char name[];
 };
 
-extern int event_is_gaschange(struct event *ev);
+extern int event_is_gaschange(const struct event *ev);
 
 extern int get_pressure_units(int mb, const char **units);
 extern double get_depth_units(int mm, int *frac, const char **units);
@@ -137,7 +137,7 @@ extern void fill_pressures(struct gas_pressures *pressures, const double amb_pre
 
 extern void sanitize_gasmix(struct gasmix *mix);
 extern int gasmix_distance(struct gasmix a, struct gasmix b);
-extern int find_best_gasmix_match(struct gasmix mix, cylinder_t array[], unsigned int used);
+extern int find_best_gasmix_match(struct gasmix mix, const cylinder_t array[], unsigned int used);
 
 extern bool gasmix_is_air(struct gasmix gasmix);
 
@@ -334,7 +334,7 @@ struct dive {
 extern void invalidate_dive_cache(struct dive *dive);
 extern bool dive_cache_is_valid(const struct dive *dive);
 
-extern int get_cylinder_idx_by_use(struct dive *dive, enum cylinderuse cylinder_use_type);
+extern int get_cylinder_idx_by_use(const struct dive *dive, enum cylinderuse cylinder_use_type);
 extern void cylinder_renumber(struct dive *dive, int mapping[]);
 extern int same_gasmix_cylinder(cylinder_t *cyl, int cylid, struct dive *dive, bool check_unused);
 
@@ -352,9 +352,9 @@ struct dive_components {
 	unsigned int weights : 1;
 };
 
-extern enum divemode_t get_current_divemode(struct divecomputer *dc, int time, struct event **evp, enum divemode_t *divemode);
-extern struct event *get_next_divemodechange(struct event **evd, bool update_pointer);
-extern enum divemode_t get_divemode_at_time(struct divecomputer *dc, int dtime, struct event **ev_dmc);
+extern enum divemode_t get_current_divemode(const struct divecomputer *dc, int time, const struct event **evp, enum divemode_t *divemode);
+extern struct event *get_next_divemodechange(const struct event **evd, bool update_pointer);
+extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int dtime, const struct event **ev_dmc);
 
 /* picture list and methods related to dive picture handling */
 struct picture {
@@ -382,8 +382,8 @@ extern bool picture_check_valid(const char *filename, int shift_time);
 extern void dive_set_geodata_from_picture(struct dive *d, struct picture *pic);
 extern void picture_free(struct picture *picture);
 
-extern bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx);
-extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
+extern bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc, int idx);
+extern int explicit_first_cylinder(const struct dive *dive, const struct divecomputer *dc);
 extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 
 extern fraction_t best_o2(depth_t depth, const struct dive *dive);
@@ -581,11 +581,11 @@ extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
-extern void update_event_name(struct dive *d, struct event* event, const char *name);
+extern void update_event_name(struct dive *d, struct event *event, const char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
 extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
-extern int get_cylinder_index(struct dive *dive, struct event *ev);
-extern struct gasmix get_gasmix_from_event(struct dive *, struct event *ev);
+extern int get_cylinder_index(const struct dive *dive, const struct event *ev);
+extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event *ev);
 extern int nr_cylinders(struct dive *dive);
 extern int nr_weightsystems(struct dive *dive);
 
@@ -716,16 +716,18 @@ extern void vpmb_start_gradient(struct deco_state *ds);
 extern void clear_vpmb_state(struct deco_state *ds);
 extern void printdecotable(struct decostop *table);
 
-extern struct event *get_next_event(struct event *event, const char *name);
+/* Since C doesn't have parameter-based overloading, two versions of get_next_event. */
+extern const struct event *get_next_event(const struct event *event, const char *name);
+extern struct event *get_next_event_mutable(struct event *event, const char *name);
 
 /* Get gasmixes at increasing timestamps.
  * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
  * On subsequent calls, pass the same "evp" and the "gasmix" from previous calls.
  */
-extern struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix gasmix);
+extern struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix);
 
 /* Get gasmix at a given time */
-extern struct gasmix get_gasmix_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
+extern struct gasmix get_gasmix_at_time(const struct dive *dive, const struct divecomputer *dc, duration_t time);
 
 /* these structs holds the information that
  * describes the cylinders / weight systems.
@@ -762,7 +764,7 @@ extern void set_informational_units(const char *units);
 extern void set_git_prefs(const char *prefs);
 
 extern char *get_dive_date_c_string(timestamp_t when);
-extern void update_setpoint_events(struct dive *dive, struct divecomputer *dc);
+extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 
 #ifdef __cplusplus
 }
