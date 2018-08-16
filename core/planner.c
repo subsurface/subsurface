@@ -81,22 +81,6 @@ bool diveplan_empty(struct diveplan *diveplan)
 	return true;
 }
 
-/* get the gas at a certain time during the dive */
-void get_gas_at_time(struct dive *dive, struct divecomputer *dc, duration_t time, struct gasmix *gas)
-{
-	// we always start with the first gas, so that's our gas
-	// unless an event tells us otherwise
-	struct event *event = dc->events;
-	*gas = dive->cylinder[0].gasmix;
-	while (event && event->time.seconds <= time.seconds) {
-		if (!strcmp(event->name, "gaschange")) {
-			int cylinder_idx = get_cylinder_index(dive, event);
-			*gas = dive->cylinder[cylinder_idx].gasmix;
-		}
-		event = event->next;
-	}
-}
-
 /* get the cylinder index at a certain time during the dive */
 int get_cylinderid_at_time(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
@@ -164,7 +148,7 @@ int tissue_at_end(struct deco_state *ds, struct dive *dive, struct deco_state **
 			setpoint = sample[0].setpoint;
 
 		t1 = sample->time;
-		get_gas_at_time(dive, dc, t0, &gas);
+		gas = get_gasmix_at_time(dive, dc, t0);
 		if (i > 0)
 			lastdepth = psample->depth;
 

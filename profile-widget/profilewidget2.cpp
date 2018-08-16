@@ -758,8 +758,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	qDeleteAll(eventItems);
 	eventItems.clear();
 	struct event *event = currentdc->events;
-	struct event *ev;
-	struct gasmix lastgasmix = get_gasmix(&displayed_dive, current_dc, 1, &ev, NULL);
+	struct gasmix lastgasmix = get_gasmix_at_time(&displayed_dive, current_dc, duration_t{1});
 
 	while (event) {
 #ifndef SUBSURFACE_MOBILE

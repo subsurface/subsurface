@@ -718,11 +718,14 @@ extern void printdecotable(struct decostop *table);
 
 extern struct event *get_next_event(struct event *event, const char *name);
 
-/* Get gasmix at increasing timestamps.
+/* Get gasmixes at increasing timestamps.
  * In "evp", pass a pointer to a "struct event *" which is NULL-initialized on first invocation.
  * On subsequent calls, pass the same "evp" and the "gasmix" from previous calls.
  */
 extern struct gasmix get_gasmix(struct dive *dive, struct divecomputer *dc, int time, struct event **evp, struct gasmix *gasmix);
+
+/* Get gasmix at a given time */
+extern struct gasmix get_gasmix_at_time(struct dive *dive, struct divecomputer *dc, duration_t time);
 
 /* these structs holds the information that
  * describes the cylinders / weight systems.

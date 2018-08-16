@@ -134,8 +134,7 @@ int total_weight(struct dive *dive)
 
 static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time)
 {
-	struct gasmix gas;
-	get_gas_at_time(dive, dc, time, &gas);
+	struct gasmix gas = get_gasmix_at_time(dive, dc, time);
 	return get_o2(&gas);
 }
 
