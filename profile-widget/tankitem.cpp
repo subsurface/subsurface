@@ -104,7 +104,7 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 
 	// start with the first gasmix and at the start of the dive
 	int cyl = explicit_first_cylinder(&displayed_dive, dc);
-	struct gasmix *gasmix = &displayed_dive.cylinder[cyl].gasmix;
+	struct gasmix gasmix = displayed_dive.cylinder[cyl].gasmix;
 	int startTime = 0;
 
 	// work through all the gas changes and add the rectangle for each gas while it was used
@@ -112,14 +112,14 @@ void TankItem::modelDataChanged(const QModelIndex&, const QModelIndex&)
 	while (ev && (int)ev->time.seconds < last_entry->sec) {
 		width = hAxis->posAtValue(ev->time.seconds) - hAxis->posAtValue(startTime);
 		left = hAxis->posAtValue(startTime);
-		createBar(left, width, gasmix);
+		createBar(left, width, &gasmix);
 		startTime = ev->time.seconds;
 		gasmix = get_gasmix_from_event(&displayed_dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}
 	width = hAxis->posAtValue(last_entry->sec) - hAxis->posAtValue(startTime);
 	left = hAxis->posAtValue(startTime);
-	createBar(left, width, gasmix);
+	createBar(left, width, &gasmix);
 }
 
 void TankItem::setHorizontalAxis(DiveCartesianAxis *horizontal)

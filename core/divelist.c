@@ -404,7 +404,7 @@ static int calculate_sac(struct dive *dive)
 static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 {
 	struct divecomputer *dc = &dive->dc;
-	struct gasmix *gasmix = NULL;
+	struct gasmix gasmix = { 0 };
 	int i;
 	struct event *ev = NULL, *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
@@ -421,8 +421,8 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 
 		for (j = t0; j < t1; j++) {
 			int depth = interpolate(psample->depth.mm, sample->depth.mm, j - t0, t1 - t0);
-			gasmix = get_gasmix(dive, dc, j, &ev, gasmix);
-			add_segment(ds, depth_to_bar(depth, dive), gasmix, 1, sample->setpoint.mbar,
+			gasmix = get_gasmix(dive, dc, j, &ev, &gasmix);
+			add_segment(ds, depth_to_bar(depth, dive), &gasmix, 1, sample->setpoint.mbar,
 				get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac);
 		}
 	}
