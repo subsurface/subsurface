@@ -373,7 +373,7 @@ struct picture {
 	for (struct picture *picture = (_divestruct).picture_list; picture; picture = picture->next)
 
 extern struct picture *alloc_picture();
-extern bool dive_check_picture_time(struct dive *d, int shift_time, timestamp_t timestamp);
+extern bool dive_check_picture_time(const struct dive *d, int shift_time, timestamp_t timestamp);
 extern void dive_create_picture(struct dive *d, const char *filename, int shift_time, bool match_all);
 extern void dive_add_picture(struct dive *d, struct picture *newpic);
 extern bool dive_remove_picture(struct dive *d, const char *filename);
@@ -384,20 +384,20 @@ extern void picture_free(struct picture *picture);
 
 extern bool has_gaschange_event(struct dive *dive, struct divecomputer *dc, int idx);
 extern int explicit_first_cylinder(struct dive *dive, struct divecomputer *dc);
-extern int get_depth_at_time(struct divecomputer *dc, unsigned int time);
+extern int get_depth_at_time(const struct divecomputer *dc, unsigned int time);
 
-extern fraction_t best_o2(depth_t depth, struct dive *dive);
-extern fraction_t best_he(depth_t depth, struct dive *dive);
+extern fraction_t best_o2(depth_t depth, const struct dive *dive);
+extern fraction_t best_he(depth_t depth, const struct dive *dive);
 
 extern int get_surface_pressure_in_mbar(const struct dive *dive, bool non_null);
 extern int calculate_depth_to_mbar(int depth, pressure_t surface_pressure, int salinity);
-extern int depth_to_mbar(int depth, struct dive *dive);
-extern double depth_to_bar(int depth, struct dive *dive);
-extern double depth_to_atm(int depth, struct dive *dive);
-extern int rel_mbar_to_depth(int mbar, struct dive *dive);
-extern int mbar_to_depth(int mbar, struct dive *dive);
-extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, struct dive *dive, int roundto);
-extern depth_t gas_mnd(struct gasmix mix, depth_t end, struct dive *dive, int roundto);
+extern int depth_to_mbar(int depth, const struct dive *dive);
+extern double depth_to_bar(int depth, const struct dive *dive);
+extern double depth_to_atm(int depth, const struct dive *dive);
+extern int rel_mbar_to_depth(int mbar, const struct dive *dive);
+extern int mbar_to_depth(int mbar, const struct dive *dive);
+extern depth_t gas_mod(struct gasmix mix, pressure_t po2_limit, const struct dive *dive, int roundto);
+extern depth_t gas_mnd(struct gasmix mix, depth_t end, const struct dive *dive, int roundto);
 
 #define SURFACE_THRESHOLD 750 /* somewhat arbitrary: only below 75cm is it really diving */
 
@@ -442,10 +442,10 @@ extern unsigned int dc_number;
 
 extern struct dive *get_dive(int nr);
 extern struct dive *get_dive_from_table(int nr, struct dive_table *dt);
-extern struct dive_site *get_dive_site_for_dive(struct dive *dive);
-extern const char *get_dive_country(struct dive *dive);
-extern char *get_dive_location(struct dive *dive);
-extern unsigned int number_of_computers(struct dive *dive);
+extern struct dive_site *get_dive_site_for_dive(const struct dive *dive);
+extern const char *get_dive_country(const struct dive *dive);
+extern const char *get_dive_location(const struct dive *dive);
+extern unsigned int number_of_computers(const struct dive *dive);
 extern struct divecomputer *get_dive_dc(struct dive *dive, int nr);
 extern timestamp_t dive_endtime(const struct dive *dive);
 
@@ -475,8 +475,8 @@ extern "C" {
 
 extern struct dive *get_dive_by_uniq_id(int id);
 extern int get_idx_by_uniq_id(int id);
-extern bool dive_site_has_gps_location(struct dive_site *ds);
-extern int dive_has_gps_location(struct dive *dive);
+extern bool dive_site_has_gps_location(const struct dive_site *ds);
+extern int dive_has_gps_location(const struct dive *dive);
 
 extern int report_error(const char *fmt, ...);
 extern void set_error_cb(void(*cb)(char *));	// Callback takes ownership of passed string
