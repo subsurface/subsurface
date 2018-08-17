@@ -1,3 +1,4 @@
+- Desktop/Map-Widget: add support for filtering of map locations [#1581]
 - Android: switch to Download page when dive computer is plugged in and try to
   populate vendor / device / connection based on the information we get
 - Mobile: enable multiple cylinder editing for dives that uses more than one cylinder 
