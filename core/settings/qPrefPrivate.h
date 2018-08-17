@@ -217,4 +217,87 @@ private:
 #define HANDLE_PREFERENCE_TXT(usegroup, name, field) \
 	HANDLE_PREFERENCE_TXT_EXT(usegroup, name, field, )
 
+#define HANDLE_PROP_QPOINTF(useclass, name, field) \
+	void qPref##useclass::set_##field(const QPointF& value) \
+	{ \
+		if (value != st_##field) { \
+			st_##field = value; \
+			qPrefPrivate::propSetValue(name, st_##field); \
+			emit qPref##useclass::instance()->field##_changed(value); \
+		} \
+	} \
+	void qPref##useclass::load_##field() \
+	{ \
+		st_##field = qPrefPrivate::propValue(name, st_##field##_default).toPointF(); \
+	}
+
+#define HANDLE_PROP_QSTRING(useclass, name, field) \
+	void qPref##useclass::set_##field(const QString& value) \
+	{ \
+		if (value != st_##field) { \
+			st_##field = value; \
+			qPrefPrivate::propSetValue(name, st_##field); \
+			emit qPref##useclass::instance()->field##_changed(value); \
+		} \
+	} \
+	void qPref##useclass::load_##field() \
+	{ \
+		st_##field = qPrefPrivate::propValue(name, st_##field##_default).toString(); \
+	}
+
+#define HANDLE_PROP_BOOL(useclass, name, field) \
+	void qPref##useclass::set_##field(bool value) \
+	{ \
+		if (value != st_##field) { \
+			st_##field = value; \
+			qPrefPrivate::propSetValue(name, st_##field); \
+			emit qPref##useclass::instance()->field##_changed(value); \
+		} \
+	} \
+	void qPref##useclass::load_##field() \
+	{ \
+		st_##field = qPrefPrivate::propValue(name, st_##field##_default).toBool(); \
+	}
+
+#define HANDLE_PROP_DOUBLE(useclass, name, field) \
+	void qPref##useclass::set_##field(double value) \
+	{ \
+		if (value != st_##field) { \
+			st_##field = value; \
+			qPrefPrivate::propSetValue(name, st_##field); \
+			emit qPref##useclass::instance()->field##_changed(value); \
+		} \
+	} \
+	void qPref##useclass::load_##field() \
+	{ \
+		st_##field = qPrefPrivate::propValue(name, st_##field##_default).toDouble(); \
+	}
+
+#define HANDLE_PROP_INT(useclass, name, field) \
+	void qPref##useclass::set_##field(int value) \
+	{ \
+		if (value != st_##field) { \
+			st_##field = value; \
+			qPrefPrivate::propSetValue(name, st_##field); \
+			emit qPref##useclass::instance()->field##_changed(value); \
+		} \
+	} \
+	void qPref##useclass::load_##field() \
+	{ \
+		st_##field = qPrefPrivate::propValue(name, st_##field##_default).toInt(); \
+	}
+
+#define HANDLE_PROP_QBYTEARRAY(useclass, name, field) \
+	void qPref##useclass::set_##field(const QByteArray& value) \
+	{ \
+		if (value != st_##field) { \
+			st_##field = value; \
+			qPrefPrivate::propSetValue(name, st_##field); \
+			emit qPref##useclass::instance()->field##_changed(value); \
+		} \
+	} \
+	void qPref##useclass::load_##field() \
+	{ \
+		st_##field = qPrefPrivate::propValue(name, st_##field##_default).toByteArray(); \
+	}
 #endif
