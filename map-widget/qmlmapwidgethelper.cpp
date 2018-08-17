@@ -116,12 +116,13 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 
 void MapWidgetHelper::reloadMapLocations()
 {
-	struct dive_site *ds;
 	int idx;
+	struct dive *dive;
 	QMap<QString, MapLocation *> locationNameMap;
 	m_mapLocationModel->clear();
 	MapLocation *location;
 	QVector<MapLocation *> locationList;
+	QVector<uint32_t> locationUuids;
 	qreal latitude, longitude;
 
 	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
@@ -132,8 +133,11 @@ void MapWidgetHelper::reloadMapLocations()
 		locationList.append(location);
 		locationNameMap[QString(displayed_dive_site.name)] = location;
 	}
-	for_each_dive_site(idx, ds) {
-		if (!dive_site_has_gps_location(ds) || ds->uuid == displayed_dive_site.uuid)
+	for_each_dive(idx, dive) {
+		if (dive->hidden_by_filter)
+			continue;
+		struct dive_site *ds = get_dive_site_for_dive(dive);
+		if (!dive_site_has_gps_location(ds) || ds->uuid == displayed_dive_site.uuid || locationUuids.contains(ds->uuid))
 			continue;
 		latitude = ds->latitude.udeg * 0.000001;
 		longitude = ds->longitude.udeg * 0.000001;
@@ -149,6 +153,7 @@ void MapWidgetHelper::reloadMapLocations()
 		}
 		location = new MapLocation(ds->uuid, dsCoord, name);
 		locationList.append(location);
+		locationUuids.append(ds->uuid);
 		locationNameMap[name] = location;
 	}
 	m_mapLocationModel->addList(locationList);
