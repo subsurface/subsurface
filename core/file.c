@@ -351,6 +351,7 @@ int parse_file(const char *filename)
 
 	/* OSTCtools */
 	if (fmt && (!strcasecmp(fmt + 1, "DIVE"))) {
+		free(mem.buffer);
 		ostctools_import(filename, &dive_table);
 		return 0;
 	}
