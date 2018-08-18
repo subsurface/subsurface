@@ -127,13 +127,13 @@ int TestParse::parseDivingLog()
 int TestParse::parseV2NoQuestion()
 {
 	// parsing of a V2 file should work
-	return parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+	return parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 }
 
 int TestParse::parseV3()
 {
 	// parsing of a V3 files should succeed
-	return parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml");
+	return parse_file(SUBSURFACE_TEST_DATA "/dives/test42.xml", &dive_table);
 }
 
 void TestParse::testParse()
@@ -279,7 +279,7 @@ void TestParse::testParseDLD()
 	QString filename = SUBSURFACE_TEST_DATA "/dives/TestDiveDivelogsDE.DLD";
 
 	QVERIFY(readfile(filename.toLatin1().data(), &mem) > 0);
-	QVERIFY(try_to_open_zip(filename.toLatin1().data()) > 0);
+	QVERIFY(try_to_open_zip(filename.toLatin1().data(), &dive_table) > 0);
 
 	fprintf(stderr, "number of dives from DLD: %d \n", dive_table.nr);
 
@@ -299,8 +299,8 @@ void TestParse::testParseMerge()
 	/*
 	 * check that we correctly merge mixed cylinder dives
 	 */
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml"), 0);
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/ostc.xml", &dive_table), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/vyper.xml", &dive_table), 0);
 	QCOMPARE(save_dives("./testmerge.ssrf"), 0);
 	FILE_COMPARE("./testmerge.ssrf",
 		     SUBSURFACE_TEST_DATA "/dives/mergedVyperOstc.xml");
@@ -371,7 +371,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 
 void TestParse::exportCSVDiveDetails()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 
 	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt");
 	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt");
@@ -420,7 +420,7 @@ int TestParse::parseCSVprofile(int units, std::string file)
 
 void TestParse::exportCSVDiveProfile()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 
 	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt");
 	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt");
@@ -438,13 +438,13 @@ void TestParse::exportCSVDiveProfile()
 
 void TestParse::exportUDDF()
 {
-	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml");
+	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 
 	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt");
 
 	clear_dive_file_data();
 
-	parse_file("testuddfexport.uddf");
+	parse_file("testuddfexport.uddf", &dive_table);
 	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt");
 
 	FILE_COMPARE("testuddfexport.uddf",

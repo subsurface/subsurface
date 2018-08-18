@@ -620,7 +620,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 
 	showProgressBar();
 	QByteArray fileNamePtr = QFile::encodeName(filename);
-	if (!parse_file(fileNamePtr.data()))
+	if (!parse_file(fileNamePtr.data(), &dive_table))
 		setCurrentFile(fileNamePtr.data());
 	process_dives(false, false);
 	hideProgressBar();
@@ -1776,7 +1776,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data());
+		parse_file(fileNamePtr.data(), &dive_table);
 	}
 	process_dives(true, false);
 	refreshDisplay();
@@ -1823,7 +1823,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	showProgressBar();
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		if (!parse_file(fileNamePtr.data())) {
+		if (!parse_file(fileNamePtr.data(), &dive_table)) {
 			setCurrentFile(fileNamePtr.data());
 			addRecentFile(fileNamePtr, false);
 		}

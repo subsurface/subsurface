@@ -1654,7 +1654,7 @@ static timestamp_t parse_dlf_timestamp(unsigned char *buffer)
 	return offset + 946684800;
 }
 
-int parse_dlf_buffer(unsigned char *buffer, size_t size)
+int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table)
 {
 	unsigned char *ptr = buffer;
 	unsigned char event;
@@ -1663,7 +1663,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size)
 	int i;
 	char serial[6];
 
-	target_table = &dive_table;
+	target_table = table;
 
 	// Check for the correct file magic
 	if (ptr[0] != 'D' || ptr[1] != 'i' || ptr[2] != 'v' || ptr[3] != 'E')

@@ -986,7 +986,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 			break;
 		}
 		/* parse file and import dives */
-		parse_file(QFile::encodeName(zipFile.fileName()));
+		parse_file(QFile::encodeName(zipFile.fileName()), &dive_table);
 		process_dives(true, false);
 		MainWindow::instance()->refreshDisplay();
 

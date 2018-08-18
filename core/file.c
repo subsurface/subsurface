@@ -75,7 +75,7 @@ out:
 }
 
 
-static void zip_read(struct zip_file *file, const char *filename)
+static void zip_read(struct zip_file *file, const char *filename, struct dive_table *table)
 {
 	int size = 1024, n, read = 0;
 	char *mem = malloc(size);
@@ -86,11 +86,11 @@ static void zip_read(struct zip_file *file, const char *filename)
 		mem = realloc(mem, size);
 	}
 	mem[read] = 0;
-	(void) parse_xml_buffer(filename, mem, read, &dive_table, NULL);
+	(void) parse_xml_buffer(filename, mem, read, table, NULL);
 	free(mem);
 }
 
-int try_to_open_zip(const char *filename)
+int try_to_open_zip(const char *filename, struct dive_table *table)
 {
 	int success = 0;
 	/* Grr. libzip needs to re-open the file, it can't take a buffer */
@@ -105,7 +105,7 @@ int try_to_open_zip(const char *filename)
 			/* skip parsing the divelogs.de pictures */
 			if (strstr(zip_get_name(zip, index, 0), "pictures/"))
 				continue;
-			zip_read(file, filename);
+			zip_read(file, filename, table);
 			zip_fclose(file);
 			success++;
 		}
@@ -126,7 +126,7 @@ static int db_test_func(void *param, int columns, char **data, char **column)
 }
 
 
-static int try_to_open_db(const char *filename, struct memblock *mem)
+static int try_to_open_db(const char *filename, struct memblock *mem, struct dive_table *table)
 {
 	sqlite3 *handle;
 	char dm4_test[] = "select count(*) from sqlite_master where type='table' and name='Dive' and sql like '%ProfileBlob%'";
@@ -146,7 +146,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	/* Testing if DB schema resembles Suunto DM5 database format */
 	retval = sqlite3_exec(handle, dm5_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_dm5_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		retval = parse_dm5_buffer(handle, filename, mem->buffer, mem->size, table);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -154,7 +154,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	/* Testing if DB schema resembles Suunto DM4 database format */
 	retval = sqlite3_exec(handle, dm4_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		retval = parse_dm4_buffer(handle, filename, mem->buffer, mem->size, table);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -162,7 +162,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	/* Testing if DB schema resembles Shearwater database format */
 	retval = sqlite3_exec(handle, shearwater_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		retval = parse_shearwater_buffer(handle, filename, mem->buffer, mem->size, table);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -170,7 +170,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	/* Testing if DB schema resembles Atomic Cobalt database format */
 	retval = sqlite3_exec(handle, cobalt_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		retval = parse_cobalt_buffer(handle, filename, mem->buffer, mem->size, table);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -178,7 +178,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
 	/* Testing if DB schema resembles Divinglog database format */
 	retval = sqlite3_exec(handle, divinglog_test, &db_test_func, 0, NULL);
 	if (!retval) {
-		retval = parse_divinglog_buffer(handle, filename, mem->buffer, mem->size, &dive_table);
+		retval = parse_divinglog_buffer(handle, filename, mem->buffer, mem->size, table);
 		sqlite3_close(handle);
 		return retval;
 	}
@@ -204,7 +204,7 @@ static int try_to_open_db(const char *filename, struct memblock *mem)
  *
  * Followed by the data values (all comma-separated, all one long line).
  */
-static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem)
+static int open_by_filename(const char *filename, const char *fmt, struct memblock *mem, struct dive_table *table)
 {
 	// hack to be able to provide a comment for the translated string
 	static char *csv_warning = QT_TRANSLATE_NOOP3("gettextFromC",
@@ -213,7 +213,7 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 
 	/* Suunto Dive Manager files: SDE, ZIP; divelogs.de files: DLD */
 	if (!strcasecmp(fmt, "SDE") || !strcasecmp(fmt, "ZIP") || !strcasecmp(fmt, "DLD"))
-		return try_to_open_zip(filename);
+		return try_to_open_zip(filename, table);
 
 	/* CSV files */
 	if (!strcasecmp(fmt, "CSV"))
@@ -234,17 +234,17 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 	return 0;
 }
 
-static int parse_file_buffer(const char *filename, struct memblock *mem)
+static int parse_file_buffer(const char *filename, struct memblock *mem, struct dive_table *table)
 {
 	int ret;
 	char *fmt = strrchr(filename, '.');
-	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem)) != 0)
+	if (fmt && (ret = open_by_filename(filename, fmt + 1, mem, table)) != 0)
 		return ret;
 
 	if (!mem->size || !mem->buffer)
 		return report_error("Out of memory parsing file %s\n", filename);
 
-	return parse_xml_buffer(filename, mem->buffer, mem->size, &dive_table, NULL);
+	return parse_xml_buffer(filename, mem->buffer, mem->size, table, NULL);
 }
 
 int check_git_sha(const char *filename, struct git_repository **git_p, const char **branch_p)
@@ -281,7 +281,7 @@ int check_git_sha(const char *filename, struct git_repository **git_p, const cha
 	return 1;
 }
 
-int parse_file(const char *filename)
+int parse_file(const char *filename, struct dive_table *table)
 {
 	struct git_repository *git;
 	const char *branch = NULL;
@@ -327,7 +327,7 @@ int parse_file(const char *filename)
 
 	fmt = strrchr(filename, '.');
 	if (fmt && (!strcasecmp(fmt + 1, "DB") || !strcasecmp(fmt + 1, "BAK") || !strcasecmp(fmt + 1, "SQL"))) {
-		if (!try_to_open_db(filename, &mem)) {
+		if (!try_to_open_db(filename, &mem, table)) {
 			free(mem.buffer);
 			return 0;
 		}
@@ -335,14 +335,14 @@ int parse_file(const char *filename)
 
 	/* Divesoft Freedom */
 	if (fmt && (!strcasecmp(fmt + 1, "DLF"))) {
-		ret = parse_dlf_buffer(mem.buffer, mem.size);
+		ret = parse_dlf_buffer(mem.buffer, mem.size, table);
 		free(mem.buffer);
 		return ret;
 	}
 
 	/* DataTrak/Wlog */
 	if (fmt && !strcasecmp(fmt + 1, "LOG")) {
-		ret = datatrak_import(&mem, &dive_table);
+		ret = datatrak_import(&mem, table);
 		free(mem.buffer);
 		return ret;
 	}
@@ -350,11 +350,11 @@ int parse_file(const char *filename)
 	/* OSTCtools */
 	if (fmt && (!strcasecmp(fmt + 1, "DIVE"))) {
 		free(mem.buffer);
-		ostctools_import(filename, &dive_table);
+		ostctools_import(filename, table);
 		return 0;
 	}
 
-	ret = parse_file_buffer(filename, &mem);
+	ret = parse_file_buffer(filename, &mem, table);
 	free(mem.buffer);
 	return ret;
 }

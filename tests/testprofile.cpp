@@ -4,7 +4,7 @@
 
 void TestProfile::testRedCeiling()
 {
-	parse_file("../dives/deep.xml");
+	parse_file("../dives/deep.xml", &dive_table);
 }
 
 QTEST_GUILESS_MAIN(TestProfile)
