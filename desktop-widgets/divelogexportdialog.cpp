@@ -12,6 +12,7 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "core/worldmap-save.h"
 #include "core/save-html.h"
+#include "core/settings/qPrefDisplay.h"
 #include "desktop-widgets/mainwindow.h"
 #include "profile-widget/profilewidget2.h"
 #include "core/dive.h"  // Allows access to helper functions in TeX export.
@@ -121,15 +122,10 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 {
 	QString filename;
 	QString stylesheet;
-	QSettings settings;
 	QString lastDir = QDir::homePath();
 
-	settings.beginGroup("FileDialog");
-	if (settings.contains("LastDir")) {
-		if (QDir(settings.value("LastDir").toString()).exists())
-			lastDir = settings.value("LastDir").toString();
-	}
-	settings.endGroup();
+	if (QDir(qPrefDisplay::lastDir()).exists())
+		lastDir = qPrefDisplay::lastDir();
 
 	switch (ui->tabWidget->currentIndex()) {
 	case 0:
@@ -184,9 +180,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 	if (!filename.isNull() && !filename.isEmpty()) {
 		// remember the last export path
 		QFileInfo fileInfo(filename);
-		settings.beginGroup("FileDialog");
-		settings.setValue("LastDir", fileInfo.dir().path());
-		settings.endGroup();
+		qPrefDisplay::set_lastDir(fileInfo.dir().path());
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty()) {
 			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
