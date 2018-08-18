@@ -16,7 +16,7 @@ extern void ostctools_import(const char *file, struct dive_table *table);
 extern "C" {
 #endif
 extern int readfile(const char *filename, struct memblock *mem);
-extern int try_to_open_zip(const char *filename);
+extern int try_to_open_zip(const char *filename, struct dive_table *table);
 #ifdef __cplusplus
 }
 #endif

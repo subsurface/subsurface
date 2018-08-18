@@ -7,14 +7,14 @@
 
 void TestRenumber::setup()
 {
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &dive_table), 0);
 	process_dives(false, false);
 	dive_table.preexisting = dive_table.nr;
 }
 
 void TestRenumber::testMerge()
 {
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47b.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47b.xml", &dive_table), 0);
 	process_dives(true, false);
 	QCOMPARE(dive_table.nr, 1);
 	QCOMPARE(unsaved_changes(), 1);
@@ -24,7 +24,7 @@ void TestRenumber::testMerge()
 
 void TestRenumber::testMergeAndAppend()
 {
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47c.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47c.xml", &dive_table), 0);
 	process_dives(true, false);
 	QCOMPARE(dive_table.nr, 2);
 	QCOMPARE(unsaved_changes(), 1);

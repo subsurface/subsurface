@@ -23,7 +23,7 @@ void TestPicture::addPicture()
 	struct picture *pic1, *pic2;
 	verbose = 1;
 
-	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml"), 0);
+	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test44.xml", &dive_table), 0);
 	dive = get_dive(0);
 	QVERIFY(dive != NULL);
 	pic1 = dive->picture_list;
