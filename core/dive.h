@@ -749,9 +749,8 @@ struct ws_info_t {
 extern struct ws_info_t ws_info[MAX_WS_INFO];
 
 extern bool cylinder_nodata(const cylinder_t *cyl);
-extern bool cylinder_none(void *_data);
-extern bool weightsystem_none(void *_data);
-extern bool no_weightsystems(weightsystem_t *ws);
+extern bool cylinder_none(const cylinder_t *cyl);
+extern bool weightsystem_none(const weightsystem_t *ws);
 extern void remove_cylinder(struct dive *dive, int idx);
 extern void remove_weightsystem(struct dive *dive, int idx);
 extern void reset_cylinders(struct dive *dive, bool track_gas);
