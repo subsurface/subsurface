@@ -549,13 +549,10 @@ void MainWindow::on_actionNew_triggered()
 
 static QString lastUsedDir()
 {
-	QSettings settings;
 	QString lastDir = QDir::homePath();
 
-	settings.beginGroup("FileDialog");
-	if (settings.contains("LastDir"))
-		if (QDir(settings.value("LastDir").toString()).exists())
-			lastDir = settings.value("LastDir").toString();
+	if (QDir(qPrefDisplay::lastDir()).exists())
+		lastDir = qPrefDisplay::lastDir();
 	return lastDir;
 }
 
@@ -773,9 +770,7 @@ void MainWindow::on_actionClose_triggered()
 
 void MainWindow::updateLastUsedDir(const QString &dir)
 {
-	QSettings s;
-	s.beginGroup("FileDialog");
-	s.setValue("LastDir", dir);
+	qPrefDisplay::set_lastDir(dir);
 }
 
 void MainWindow::on_actionPrint_triggered()
