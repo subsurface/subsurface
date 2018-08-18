@@ -69,15 +69,14 @@ bool cylinder_nodata(const cylinder_t *cyl)
 	       !cyl->deco_gas_used.mliter;
 }
 
-static bool cylinder_nosamples(cylinder_t *cyl)
+static bool cylinder_nosamples(const cylinder_t *cyl)
 {
 	return !cyl->sample_start.mbar &&
 	       !cyl->sample_end.mbar;
 }
 
-bool cylinder_none(void *_data)
+bool cylinder_none(const cylinder_t *cyl)
 {
-	cylinder_t *cyl = _data;
 	return cylinder_nodata(cyl) && cylinder_nosamples(cyl);
 }
 
@@ -101,18 +100,9 @@ const char *gasname(const struct gasmix *gasmix)
 	return gas;
 }
 
-bool weightsystem_none(void *_data)
+bool weightsystem_none(const weightsystem_t *ws)
 {
-	weightsystem_t *ws = _data;
 	return !ws->weight.grams && !ws->description;
-}
-
-bool no_weightsystems(weightsystem_t *ws)
-{
-	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
-		if (!weightsystem_none(ws + i))
-			return false;
-	return true;
 }
 
 /*
