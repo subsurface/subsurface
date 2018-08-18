@@ -4,9 +4,9 @@
 #include "qt-models/filtermodels.h"
 #include "core/dive.h"
 #include "core/divelist.h"
+#include "core/settings/qPrefDisplay.h"
 #include <QFileDialog>
 #include <QFileInfo>
-#include <QSettings>
 #include <QDebug>
 
 QStringList inputFiles;
@@ -37,21 +37,16 @@ Smrtk2ssrfcWindow::~Smrtk2ssrfcWindow()
 
 static QString lastUsedDir()
 {
-	QSettings settings;
 	QString lastDir = QDir::homePath();
 
-	settings.beginGroup("FileDialog");
-	if (settings.contains("LastDir"))
-		if (QDir(settings.value("LastDir").toString()).exists())
-			lastDir = settings.value("LastDir").toString();
+	if (QDir(qPrefDisplay::lastDir()).exists())
+		lastDir = qPrefDisplay::lastDir();
 	return lastDir;
 }
 
 void Smrtk2ssrfcWindow::updateLastUsedDir(const QString &dir)
 {
-	QSettings s;
-	s.beginGroup("FileDialog");
-	s.setValue("LastDir", dir);
+	qPrefDisplay::set_lastDir(dir);
 }
 
 void Smrtk2ssrfcWindow::on_inputFilesButton_clicked()
