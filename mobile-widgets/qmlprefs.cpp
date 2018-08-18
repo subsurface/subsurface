@@ -143,16 +143,12 @@ void QMLPrefs::setTimeThreshold(int time)
 
 const QString QMLPrefs::theme() const
 {
-	QSettings s;
-	s.beginGroup("Theme");
-	return s.value("currentTheme", "Blue").toString();
+	return qPrefDisplay::theme();
 }
 
 void QMLPrefs::setTheme(QString theme)
 {
-	QSettings s;
-	s.beginGroup("Theme");
-	s.setValue("currentTheme", theme);
+	qPrefDisplay::set_theme(theme);
 	emit themeChanged();
 }
 
@@ -175,14 +171,11 @@ void QMLPrefs::cancelCredentialsPinSetup()
 	 * Notice that this function is also used to switch to a different
 	 * cloud account, so the name is not perfect.
 	 */
-	QSettings s;
 	
 	setCredentialStatus(qPref::CS_UNKNOWN);
-	s.beginGroup("CloudStorage");
-	s.setValue("email", m_cloudUserName);
-	s.setValue("password", m_cloudPassword);
-	s.setValue("cloud_verification_status", m_credentialStatus);
-	s.sync();
+	qPrefCloudStorage::set_cloud_storage_email(m_cloudUserName);
+	qPrefCloudStorage::set_cloud_storage_password(m_cloudPassword);
+	qPrefCloudStorage::set_cloud_verification_status(m_credentialStatus);
 	QMLManager::instance()->setStartPageText(tr("Starting..."));
 	
 	setShowPin(false);

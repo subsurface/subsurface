@@ -2,7 +2,6 @@
 #include "qmlmanager.h"
 #include "qmlprefs.h"
 #include <QUrl>
-#include <QSettings>
 #include <QDebug>
 #include <QNetworkAccessManager>
 #include <QAuthenticator>
@@ -433,7 +432,6 @@ void QMLManager::savePreferences()
 
 void QMLManager::saveCloudCredentials()
 {
-	QSettings s;
 	bool cloudCredentialsChanged = false;
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
@@ -452,11 +450,9 @@ void QMLManager::saveCloudCredentials()
 			return;
 		}
 	}
-	s.beginGroup("CloudStorage");
-	s.setValue("email", QMLPrefs::instance()->cloudUserName());
-	s.setValue("password", QMLPrefs::instance()->cloudPassword());
-	s.setValue("cloud_verification_status", QMLPrefs::instance()->credentialStatus());
-	s.sync();
+	qPrefCloudStorage::set_cloud_storage_email(QMLPrefs::instance()->cloudUserName());
+	qPrefCloudStorage::set_cloud_storage_password(QMLPrefs::instance()->cloudPassword());
+	qPrefCloudStorage::set_cloud_verification_status(QMLPrefs::instance()->credentialStatus());
 	if (!same_string(prefs.cloud_storage_email,
 		qPrintable(QMLPrefs::instance()->cloudUserName()))) {
 		free((void *)prefs.cloud_storage_email);
@@ -637,9 +633,7 @@ void QMLManager::retrieveUserid()
 		// overwrite the existing userid
 		free((void *)prefs.userid);
 		prefs.userid = copy_qstring(userid);
-		QSettings s;
-		s.setValue("subsurface_webservice_uid", prefs.userid);
-		s.sync();
+		qPrefCloudStorage::set_userid(prefs.userid);
 	}
 	QMLPrefs::instance()->setCredentialStatus(qPref::CS_VERIFIED);
 	setStartPageText(tr("Cloud credentials valid, loading dives..."));
@@ -1465,16 +1459,12 @@ void QMLManager::setVerboseEnabled(bool verboseMode)
 
 void QMLManager::syncLoadFromCloud()
 {
-	QSettings s;
-	QString cloudMarker = QLatin1Literal("loadFromCloud") + QString(prefs.cloud_storage_email);
-	m_loadFromCloud = s.contains(cloudMarker) && s.value(cloudMarker).toBool();
+	m_loadFromCloud = qPrefCloudStorage::loadFromCloud(prefs.cloud_storage_email);
 }
 
 void QMLManager::setLoadFromCloud(bool done)
 {
-	QSettings s;
-	QString cloudMarker = QLatin1Literal("loadFromCloud") + QString(prefs.cloud_storage_email);
-	s.setValue(cloudMarker, done);
+	qPrefCloudStorage::set_loadFromCloud(prefs.cloud_storage_email, done);
 	m_loadFromCloud = done;
 	emit loadFromCloudChanged();
 }
@@ -1536,9 +1526,7 @@ void QMLManager::setSyncToCloud(bool status)
 {
 	m_syncToCloud = status;
 	prefs.git_local_only = !status;
-	QSettings s;
-	s.beginGroup("CloudStorage");
-	s.setValue("git_local_only", prefs.git_local_only);
+	qPrefCloudStorage::set_git_local_only(prefs.git_local_only);
 	emit syncToCloudChanged();
 }
 
