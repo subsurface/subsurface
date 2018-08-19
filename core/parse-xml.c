@@ -468,6 +468,24 @@ static void event_divemode(char *buffer, int *value)
 	}
 }
 
+typedef void (*matchfn_t)(char *buffer, void *);
+static int match(const char *pattern, int plen,
+		 const char *name,
+		 matchfn_t fn, char *buf, void *data)
+{
+	switch (name[plen]) {
+	case '\0':
+	case '.':
+		break;
+	default:
+		return 0;
+	}
+	if (memcmp(pattern, name, plen))
+		return 0;
+	fn(buf, data);
+	return 1;
+}
+
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest);			\

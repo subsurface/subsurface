@@ -114,23 +114,6 @@ void nonmatch(const char *type, const char *name, char *buffer)
 		       type, name, buffer);
 }
 
-int match(const char *pattern, int plen,
-		 const char *name,
-		 matchfn_t fn, char *buf, void *data)
-{
-	switch (name[plen]) {
-	case '\0':
-	case '.':
-		break;
-	default:
-		return 0;
-	}
-	if (memcmp(pattern, name, plen))
-		return 0;
-	fn(buf, data);
-	return 1;
-}
-
 void event_start(void)
 {
 	memset(&cur_event, 0, sizeof(cur_event));
