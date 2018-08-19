@@ -31,5 +31,9 @@ TestCase {
 		var x4_date = Date.fromLocaleString(Qt.locale(), "01-01-2001", "dd-MM-yyyy")
 		tst.next_check = x4_date
 		compare(tst.next_check,  x4_date)
+
+		var x5 = tst.uuidString
+		tst.uuidString = "jan again"
+		compare(tst.uuidString, "jan again")
 	}
 }

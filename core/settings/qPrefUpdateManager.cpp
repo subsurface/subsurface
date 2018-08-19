@@ -5,6 +5,9 @@
 
 static const QString group = QStringLiteral("UpdateManager");
 
+QString qPrefUpdateManager::st_uuidString;
+static const QString st_uuidString_default = "";
+
 qPrefUpdateManager::qPrefUpdateManager(QObject *parent) : QObject(parent)
 {
 }
@@ -21,6 +24,9 @@ void qPrefUpdateManager::loadSync(bool doSync)
 	disk_dont_check_for_updates(doSync);
 	disk_last_version_used(doSync);
 	disk_next_check(doSync);
+	if (!doSync) {
+		load_uuidString();
+	}
 }
 
 
@@ -51,7 +57,9 @@ void qPrefUpdateManager::set_next_check(const QDate& value)
 void qPrefUpdateManager::disk_next_check(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::instance()->setting.setValue(group + "/NextCheck", prefs.update_manager.next_check);
+		qPrefPrivate::propSetValue(group + "/NextCheck", prefs.update_manager.next_check);
 	else
-		prefs.update_manager.next_check = qPrefPrivate::instance()->setting.value(group + "/NextCheck", 0).toInt();
+		prefs.update_manager.next_check = qPrefPrivate::propValue(group + "/NextCheck", 0).toInt();
 }
+
+HANDLE_PROP_QSTRING(UpdateManager, "UodateManager/UUID", uuidString);

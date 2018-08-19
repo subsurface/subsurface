@@ -12,6 +12,7 @@ class qPrefUpdateManager : public QObject {
 	Q_PROPERTY(bool dont_check_exists READ dont_check_exists WRITE set_dont_check_exists NOTIFY dont_check_exists_changed);
 	Q_PROPERTY(const QString last_version_used READ last_version_used WRITE set_last_version_used NOTIFY last_version_used_changed);
 	Q_PROPERTY(const QDate next_check READ next_check WRITE set_next_check NOTIFY next_check_changed);
+	Q_PROPERTY(const QString uuidString READ uuidString WRITE set_uuidString NOTIFY uuidString_changed);
 
 public:
 	qPrefUpdateManager(QObject *parent = NULL);
@@ -27,23 +28,32 @@ public:
 	static bool dont_check_exists() { return prefs.update_manager.dont_check_exists; }
 	static const QString last_version_used() { return prefs.update_manager.last_version_used; }
 	static const QDate next_check() { return QDate::fromJulianDay(prefs.update_manager.next_check); }
+	static const QString uuidString() { return st_uuidString; }
 
 public slots:
 	static void set_dont_check_for_updates(bool value);
 	static void set_dont_check_exists(bool value);
 	static void set_last_version_used(const QString& value);
 	static void set_next_check(const QDate& value);
+	static void set_uuidString(const QString& value);
 
 signals:
 	void dont_check_for_updates_changed(bool value);
 	void dont_check_exists_changed(bool value);
 	void last_version_used_changed(const QString& value);
 	void next_check_changed(const QDate& value);
+	void uuidString_changed(const QString& value);
 
 private:
 	static void disk_dont_check_for_updates(bool doSync);
 	static void disk_last_version_used(bool doSync);
 	static void disk_next_check(bool doSync);
+
+	// load only for class variables
+	static void load_uuidString();
+
+	// class variables not present in structure preferences
+	static QString st_uuidString;
 };
 
 #endif
