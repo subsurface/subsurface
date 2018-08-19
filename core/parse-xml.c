@@ -468,19 +468,21 @@ static void event_divemode(char *buffer, int *value)
 	}
 }
 
+/* Compare a pattern with a name, whereby the name may end in '\0' or '.'. */
+static int match_name(const char *pattern, const char *name)
+{
+	while (*pattern == *name && *pattern) {
+		pattern++;
+		name++;
+	}
+	return *pattern == '\0' && (*name == '\0' || *name == '.');
+}
+
 typedef void (*matchfn_t)(char *buffer, void *);
-static int match(const char *pattern, int plen,
-		 const char *name,
+static int match(const char *pattern, const char *name,
 		 matchfn_t fn, char *buf, void *data)
 {
-	switch (name[plen]) {
-	case '\0':
-	case '.':
-		break;
-	default:
-		return 0;
-	}
-	if (memcmp(pattern, name, plen))
+	if (!match_name(pattern, name))
 		return 0;
 	fn(buf, data);
 	return 1;
@@ -489,7 +491,7 @@ static int match(const char *pattern, int plen,
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest);			\
-	match(pattern, strlen(pattern), name, (matchfn_t) (fn), buf, dest); })
+	match(pattern, name, (matchfn_t) (fn), buf, dest); })
 
 static void get_index(char *buffer, int *i)
 {
