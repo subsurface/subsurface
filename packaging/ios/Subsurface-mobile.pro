@@ -182,7 +182,6 @@ HEADERS += \
 	../../core/membuffer.h \
 	../../core/metrics.h \
 	../../core/pluginmanager.h \
-	../../core/prefs-macros.h \
 	../../core/qt-gui.h \
 	../../core/sha1.h \
 	../../core/strndup.h \

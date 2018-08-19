@@ -5,13 +5,14 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/file.h"
-#include "core/prefs-macros.h"
+#include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
+#include "core/settings/qPrefProxy.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QDir>
 #include <QTextStream>
 #include <QNetworkProxy>
-#include <QSettings>
 #include <QTextCodec>
 #include <QDebug>
 
@@ -28,23 +29,13 @@ void TestGitStorage::initTestCase()
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");
-	QSettings s;
-	QVariant v;
-	s.beginGroup("Network");
-	GET_INT_DEF("proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
-	GET_TXT("proxy_host", proxy_host);
-	GET_INT("proxy_port", proxy_port);
-	GET_BOOL("proxy_auth", proxy_auth);
-	GET_TXT("proxy_user", proxy_user);
-	GET_TXT("proxy_pass", proxy_pass);
-	s.endGroup();
-	s.beginGroup("CloudStorage");
-	GET_TXT("cloud_base_url", cloud_base_url);
+	qPrefProxy::load();
+	qPrefCloudStorage::load();
+
 	QString gitUrl(prefs.cloud_base_url);
 	if (gitUrl.right(1) != "/")
 		gitUrl += "/";
 	prefs.cloud_git_url = copy_qstring(gitUrl + "git");
-	s.endGroup();
 	prefs.cloud_storage_email_encoded = strdup("ssrftest@hohndel.org");
 	prefs.cloud_storage_password = strdup("geheim");
 	QNetworkProxy proxy;
