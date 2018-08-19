@@ -41,11 +41,13 @@ void TestQPrefUpdateManager::test_set_struct()
 	tst->set_dont_check_exists(false);
 	tst->set_last_version_used("last_version2");
 	tst->set_next_check(QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	tst->set_uuidString("uuid");
 
 	QCOMPARE(prefs.update_manager.dont_check_for_updates, false);
 	QCOMPARE(prefs.update_manager.dont_check_exists, false);
 	QCOMPARE(QString(prefs.update_manager.last_version_used), QString("last_version2"));
 	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	QCOMPARE(tst->uuidString(), QString("uuid"));
 }
 
 void TestQPrefUpdateManager::test_set_load_struct()
@@ -63,6 +65,7 @@ void TestQPrefUpdateManager::test_set_load_struct()
 	tst->set_dont_check_exists(false);
 	tst->set_last_version_used("last_version2");
 	tst->set_next_check(QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	tst->set_uuidString("uuid2");
 
 	prefs.update_manager.dont_check_for_updates = true;
 	prefs.update_manager.dont_check_exists = true;
@@ -73,6 +76,7 @@ void TestQPrefUpdateManager::test_set_load_struct()
 	QCOMPARE(prefs.update_manager.dont_check_for_updates, false);
 	QCOMPARE(QString(prefs.update_manager.last_version_used), QString("last_version2"));
 	QCOMPARE(QDate::fromJulianDay(prefs.update_manager.next_check), QDate::fromString("11/09/1957", "dd/MM/yyyy")); 
+	QCOMPARE(tst->uuidString(), QString("uuid2"));
 
 	// dont_check_exists is NOT stored on disk
 	QCOMPARE(prefs.update_manager.dont_check_exists, true);
