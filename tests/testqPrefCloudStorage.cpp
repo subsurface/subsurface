@@ -266,4 +266,18 @@ void TestQPrefCloudStorage::test_oldPreferences()
 	TEST(cloud->cloud_verification_status(), 1);
 }
 
+void TestQPrefCloudStorage::test_loadFromCloud_var()
+{
+	auto cloud = qPrefCloudStorage::instance();
+
+	cloud->set_loadFromCloud("mail1", true);
+	cloud->set_loadFromCloud("mail2", false);
+	cloud->set_loadFromCloud("mail3", true);
+
+	QCOMPARE(cloud->loadFromCloud("mail1"), true);
+	QCOMPARE(cloud->loadFromCloud("mail2"), false);
+	QCOMPARE(cloud->loadFromCloud("mail3"), true);
+	QCOMPARE(cloud->loadFromCloud("mail_unknown"), false);
+}
+
 QTEST_MAIN(TestQPrefCloudStorage)

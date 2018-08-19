@@ -45,6 +45,8 @@ public:
 	static bool save_userid_local() { return prefs.save_userid_local; }
 	static QString userid() { return prefs.userid; }
 
+	static bool loadFromCloud(const QString& email);
+
 public slots:
 	static void set_cloud_base_url(const QString &value);
 	static void set_cloud_storage_email(const QString &value);
@@ -58,6 +60,8 @@ public slots:
 	static void set_save_password_local(bool value);
 	static void set_save_userid_local(bool value);
 	static void set_userid(const QString &value);
+
+	static void set_loadFromCloud(const QString& email, bool done);
 
 signals:
 	void cloud_base_url_changed(const QString &value);
