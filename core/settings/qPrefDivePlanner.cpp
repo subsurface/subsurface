@@ -3,8 +3,6 @@
 #include "qPrefDivePlanner.h"
 #include "qPrefPrivate.h"
 
-#include <QSettings>
-
 static const QString group = QStringLiteral("Planner");
 
 qPrefDivePlanner::qPrefDivePlanner(QObject *parent) : QObject(parent)
