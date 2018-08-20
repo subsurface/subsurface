@@ -27,6 +27,7 @@ Kirigami.ApplicationWindow {
 	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
 	property alias showPin: prefs.showPin
+	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	onNotificationTextChanged: {
 		if (notificationText != "") {
 			// there's a risk that we have a >5 second gap in update events;
@@ -101,7 +102,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.cylinderModel2 = manager.cylinderInit
 		detailsWindow.cylinderModel3 = manager.cylinderInit
 		detailsWindow.cylinderModel4 = manager.cylinderInit
-		detailsWindow.cylinderIndex0 = -1
+		detailsWindow.cylinderIndex0 = general.default_cylinder == "" ? -1 : detailsWindow.cylinderModel0.indexOf(general.default_cylinder)
 		detailsWindow.usedCyl = ["",]
 		detailsWindow.weight = ""
 		detailsWindow.usedGas = []
@@ -371,6 +372,8 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				text: qsTr("Settings")
 				onTriggered: {
 					globalDrawer.close()
+					settingsWindow.defaultCylinderModel = manager.cylinderInit
+					general.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(general.default_cylinder)
 					stackView.push(settingsWindow)
 					detailsWindow.endEditMode()
 				}
@@ -617,6 +620,10 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	ThemeTest {
 		id: themetest
 		visible: false
+	}
+
+	SsrfGeneralPrefs {
+		id: general
 	}
 
 	onPluggedInDeviceNameChanged: {

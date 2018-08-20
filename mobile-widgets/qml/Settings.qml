@@ -10,6 +10,9 @@ import org.subsurfacedivelog.mobile 1.0
 Kirigami.ScrollablePage {
 	objectName: "Settings"
 	id: settingsPage
+	property alias defaultCylinderModel: defaultCylinderBox.model
+	property alias defaultCylinderIndex: defaultCylinderBox.currentIndex
+
 	title: qsTr("Settings")
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
@@ -300,6 +303,41 @@ Kirigami.ScrollablePage {
 			}
 
 		}
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
+		}
+		GridLayout {
+			id: defaultCylinder
+			columns: 2
+			width: parent.width - Kirigami.Units.gridUnit
+
+			Kirigami.Heading {
+				text: qsTr("Default Cylinder")
+				color: subsurfaceTheme.textColor
+				level: 4
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 2
+			}
+			Controls.Label {
+				Layout.alignment: Qt.AlignRight
+				text: qsTr("Cylinder:")
+				font.pointSize: subsurfaceTheme.smallPointSize
+			}
+			Controls.ComboBox {
+				id: defaultCylinderBox
+				flat: true
+				inputMethodHints: Qt.ImhNoPredictiveText
+				Layout.fillWidth: true
+				onActivated: {
+					general.set_default_cylinder(defaultCylinderBox.currentText)
+				}
+			}
+		}
+
 		Rectangle {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
