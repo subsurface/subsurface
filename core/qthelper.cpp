@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qthelper.h"
+#include "core/settings/qPrefLanguage.h"
+#include "core/settings/qPrefUpdateManager.h"
 #include "subsurface-string.h"
 #include "subsurface-string.h"
 #include "gettextfromc.h"
@@ -15,12 +17,10 @@
 #include "exif.h"
 #include "file.h"
 #include "imagedownloader.h"
-#include "prefs-macros.h"
 #include <QFile>
 #include <QRegExp>
 #include <QDir>
 #include <QDebug>
-#include <QSettings>
 #include <QStandardPaths>
 #include <QJsonDocument>
 #include <QNetworkReply>
@@ -445,16 +445,20 @@ QString uiLanguage(QLocale *callerLoc)
 	QString shortDateFormat;
 	QString dateFormat;
 	QString timeFormat;
-	QSettings s;
-	QVariant v;
-	s.beginGroup("Language");
-	GET_BOOL("UseSystemLanguage", locale.use_system_language);
 
-	if (!prefs.locale.use_system_language) {
-		loc = QLocale(s.value("UiLangLocale", QLocale().uiLanguages().first()).toString());
+	// Language settings are already loaded, see qPref::load()
+	// so no need to reload them
+
+	// remark this method used "useSystemLanguage", which is not set
+	// instead use_system_language is loaded from disk
+
+	// set loc as system language or selected language
+	if (!qPrefLanguage::use_system_language()) {
+		loc = QLocale(qPrefLanguage::lang_locale());
 	} else {
 		loc = QLocale(QLocale().uiLanguages().first());
 	}
+
 	QStringList languages = loc.uiLanguages();
 	QString uiLang;
 	if (languages[0].contains('-'))
@@ -465,13 +469,8 @@ QString uiLanguage(QLocale *callerLoc)
 		uiLang = languages[2];
 	else
 		uiLang = languages[0];
+
 	prefs.locale.lang_locale = copy_qstring(uiLang);
-	GET_BOOL("time_format_override", time_format_override);
-	GET_BOOL("date_format_override", date_format_override);
-	GET_TXT("time_format", time_format);
-	GET_TXT("date_format", date_format);
-	GET_TXT("date_format_short", date_format_short);
-	s.endGroup();
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
@@ -1455,19 +1454,12 @@ void init_proxy()
 
 QString getUUID()
 {
-	// This is a correct usage of QSettings,
-	// it's not a setting per se - the user cannot change it
-	// and thus, don't need to be on the prefs structure
-	// and this is the *only* point of access from it,
 	QString uuidString;
-	QSettings settings;
-	settings.beginGroup("UpdateManager");
-	if (settings.contains("UUID")) {
-		uuidString = settings.value("UUID").toString();
-	} else {
+	uuidString = qPrefUpdateManager::uuidString();
+	if (uuidString != "") {
 		QUuid uuid = QUuid::createUuid();
 		uuidString = uuid.toString();
-		settings.setValue("UUID", uuidString);
+		qPrefUpdateManager::set_uuidString(uuidString);
 	}
 	uuidString.replace("{", "").replace("}", "");
 	return uuidString;
