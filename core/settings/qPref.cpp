@@ -16,7 +16,6 @@ void qPref::loadSync(bool doSync)
 	if (!doSync)
 		uiLanguage(NULL);
 
-	qPrefAnimations::instance()->loadSync(doSync);
 	qPrefCloudStorage::instance()->loadSync(doSync);
 	qPrefDisplay::instance()->loadSync(doSync);
 	qPrefDiveComputer::instance()->loadSync(doSync);

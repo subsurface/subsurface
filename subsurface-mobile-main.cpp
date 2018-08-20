@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 		set_filename(NULL);
 
 	// some hard coded settings
-	qPrefAnimations::set_animation_speed(0); // we render the profile to pixmap, no animations
+	qPrefDisplay::set_animation_speed(0); // we render the profile to pixmap, no animations
 
 	// always show the divecomputer reported ceiling in red
 	prefs.redceiling = 1;

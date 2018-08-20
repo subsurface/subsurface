@@ -4,7 +4,7 @@
 #include "core/profile.h"
 #include "core/membuffer.h"
 #include "core/metrics.h"
-#include "core/settings/qPrefAnimations.h"
+#include "core/settings/qPrefDisplay.h"
 #include <QPropertyAnimation>
 #include <QSettings>
 #include <QGraphicsView>
@@ -62,7 +62,7 @@ void ToolTipItem::collapse()
 {
 	int dim = defaultIconMetrics().sz_small;
 
-	if (qPrefAnimations::animation_speed()) {
+	if (qPrefDisplay::animation_speed()) {
 		QPropertyAnimation *animation = new QPropertyAnimation(this, "rect");
 		animation->setDuration(100);
 		animation->setStartValue(nextRectangle);
@@ -120,7 +120,7 @@ void ToolTipItem::expand()
 	nextRectangle.setHeight(height);
 
 	if (nextRectangle != rect()) {
-		if (qPrefAnimations::animation_speed()) {
+		if (qPrefDisplay::animation_speed()) {
 			QPropertyAnimation *animation = new QPropertyAnimation(this, "rect", this);
 			animation->setDuration(prefs.animation_speed);
 			animation->setStartValue(rect());

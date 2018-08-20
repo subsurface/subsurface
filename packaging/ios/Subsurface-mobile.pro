@@ -78,7 +78,6 @@ SOURCES += ../../subsurface-mobile-main.cpp \
 	../../core/connectionlistmodel.cpp \
 	../../core/qt-ble.cpp \
 	../../core/settings/qPref.cpp \
-	../../core/settings/qPrefAnimations.cpp \
 	../../core/settings/qPrefCloudStorage.cpp \
 	../../core/settings/qPrefDisplay.cpp \
 	../../core/settings/qPrefDiveComputer.cpp \
@@ -200,7 +199,6 @@ HEADERS += \
 	../../core/connectionlistmodel.h \
 	../../core/qt-ble.h \
 	../../core/settings/qPref.h \
-	../../core/settings/qPrefAnimations.h \
 	../../core/settings/qPrefCloudStorage.h \
 	../../core/settings/qPrefDisplay.h \
 	../../core/settings/qPrefDiveComputer.h \

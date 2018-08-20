@@ -156,7 +156,6 @@ void register_qml_types()
 {
 	int rc;
 	REGISTER_TYPE(qPref, "SsrfPrefs");
-	REGISTER_TYPE(qPrefAnimations, "SsrfAnimationsPrefs");
 	REGISTER_TYPE(qPrefCloudStorage, "SsrfCloudStoragePrefs");
 	REGISTER_TYPE(qPrefDisplay, "SsrfDisplayPrefs");
 	REGISTER_TYPE(qPrefDiveComputer, "SsrfDiveComputerPrefs");

@@ -4,7 +4,7 @@
 #include "core/subsurface-string.h"
 #include "core/qthelper.h"
 #include "core/profile.h"
-#include "core/settings/qPrefAnimations.h"
+#include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "profile-widget/diveeventitem.h"
@@ -596,8 +596,8 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 	// special handling for the first time we display things
 	int animSpeedBackup = 0;
 	if (firstCall && haveFilesOnCommandLine()) {
-		animSpeedBackup = qPrefAnimations::animation_speed();
-		qPrefAnimations::set_animation_speed(0);
+		animSpeedBackup = qPrefDisplay::animation_speed();
+		qPrefDisplay::set_animation_speed(0);
 		firstCall = false;
 	}
 
@@ -806,7 +806,7 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 #endif
 	diveComputerText->setText(dcText);
 	if (haveFilesOnCommandLine() && animSpeedBackup != 0) {
-		qPrefAnimations::set_animation_speed(animSpeedBackup);
+		qPrefDisplay::set_animation_speed(animSpeedBackup);
 	}
 
 #ifndef SUBSURFACE_MOBILE

@@ -8,6 +8,39 @@
 
 static const QString group = QStringLiteral("Display");
 
+QPointF qPrefDisplay::st_tooltip_position;
+static const QPointF st_tooltip_position_default = QPointF(0,0);
+
+QString qPrefDisplay::st_lastDir;
+static const QString st_lastDir_default = "";
+
+QString qPrefDisplay::st_theme;
+static const QString st_theme_default = "Blue";
+
+QString qPrefDisplay::st_UserSurvey;
+static const QString st_UserSurvey_default = "";
+
+QByteArray qPrefDisplay::st_mainSplitter;
+static const QByteArray st_mainSplitter_default = "";
+
+QByteArray qPrefDisplay::st_topSplitter;
+static const QByteArray st_topSplitter_default = "";
+
+QByteArray qPrefDisplay::st_bottomSplitter;
+static const QByteArray st_bottomSplitter_default = "";
+
+bool qPrefDisplay::st_maximized;
+static bool st_maximized_default = false; 
+
+QByteArray qPrefDisplay::st_geometry;
+static const QByteArray st_geometry_default = 0;
+
+QByteArray qPrefDisplay::st_windowState;
+static const QByteArray st_windowState_default = 0;
+
+int qPrefDisplay::st_lastState;
+static int st_lastState_default = false; 
+
 qPrefDisplay::qPrefDisplay(QObject *parent) : QObject(parent)
 {
 }
@@ -19,11 +52,16 @@ qPrefDisplay *qPrefDisplay::instance()
 
 void qPrefDisplay::loadSync(bool doSync)
 {
+	disk_animation_speed(doSync);
 	disk_divelist_font(doSync);
 	disk_font_size(doSync);
 	disk_display_invalid_dives(doSync);
 	disk_show_developer(doSync);
-	disk_theme(doSync);
+	if (!doSync) {
+		load_tooltip_position();
+		load_theme();
+		load_UserSurvey();
+	}
 }
 
 void qPrefDisplay::set_divelist_font(const QString &value)
@@ -69,12 +107,12 @@ void qPrefDisplay::disk_font_size(bool doSync)
 		setCorrectFont();
 }
 
+//JAN static const QString group = QStringLiteral("Animations");
+HANDLE_PREFERENCE_INT(Display, "/animation_speed", animation_speed);
+
 HANDLE_PREFERENCE_BOOL(Display, "/displayinvalid", display_invalid_dives);
 
 HANDLE_PREFERENCE_BOOL(Display, "/show_developer", show_developer);
-
-HANDLE_PREFERENCE_TXT(Display, "/theme", theme);
-
 
 void qPrefDisplay::setCorrectFont()
 {
@@ -102,3 +140,25 @@ void qPrefDisplay::setCorrectFont()
 
 	prefs.display_invalid_dives = qPrefPrivate::propValue(group + "/displayinvalid", default_prefs.display_invalid_dives).toBool();
 }
+
+HANDLE_PROP_QSTRING(Display, "FileDialog/LastDir", lastDir);
+
+HANDLE_PROP_QSTRING(Display, "Theme/currentTheme", theme);
+
+HANDLE_PROP_QPOINTF(Display, "ProfileMap/tooltip_position", tooltip_position);
+
+HANDLE_PROP_QSTRING(Display, "UserSurvey/SurveyDone", UserSurvey);
+
+HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/mainSplitter", mainSplitter);
+
+HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/topSplitter", topSplitter);
+
+HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/bottomSplitter", bottomSplitter);
+
+HANDLE_PROP_BOOL(Display, "MainWindow/maximized", maximized);
+
+HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/geometry", geometry);
+
+HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/windowState", windowState);
+
+HANDLE_PROP_INT(Display, "MainWindow/lastState", lastState);

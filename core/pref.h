@@ -109,7 +109,6 @@ struct preferences {
 	const char *divelist_font;
 	double      font_size;
 	bool        show_developer;
- 	const char *theme;
 
 	// ********** Facebook **********
 	facebook_prefs_t facebook;
