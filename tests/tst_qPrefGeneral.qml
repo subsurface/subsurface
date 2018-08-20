@@ -58,5 +58,13 @@ TestCase {
 		var x11 = tst.use_default_file
 		tst.use_default_file = true
 		compare(tst.use_default_file, true)
+
+		var x12 = tst.diveshareExport_uid
+		tst.diveshareExport_uid = "myUid"
+		compare(tst.diveshareExport_uid, "myUid")
+
+		var x13 = tst.diveshareExport_private
+		tst.diveshareExport_private = true
+		compare(tst.diveshareExport_private, true)
 	}
 }

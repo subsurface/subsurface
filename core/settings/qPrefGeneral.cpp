@@ -5,6 +5,12 @@
 
 static const QString group = QStringLiteral("GeneralSettings");
 
+QString qPrefGeneral::st_diveshareExport_uid;
+static const QString st_diveshareExport_uid_default = "";
+
+bool qPrefGeneral::st_diveshareExport_private;
+static const bool st_diveshareExport_private_default = false;
+
 qPrefGeneral::qPrefGeneral(QObject *parent) : QObject(parent)
 {
 }
@@ -29,6 +35,10 @@ void qPrefGeneral::loadSync(bool doSync)
 	disk_o2consumption(doSync);
 	disk_pscr_ratio(doSync);
 	disk_use_default_file(doSync);
+	if (!doSync) {
+		load_diveshareExport_uid();
+		load_diveshareExport_private();
+	}
 }
 
 HANDLE_PREFERENCE_BOOL(General, "/auto_recalculate_thumbnails", auto_recalculate_thumbnails);
@@ -80,3 +90,7 @@ HANDLE_PREFERENCE_INT(General, "/o2consumption", o2consumption);
 HANDLE_PREFERENCE_INT(General, "/pscr_ratio", pscr_ratio);
 
 HANDLE_PREFERENCE_BOOL(General, "/use_default_file", use_default_file);
+
+HANDLE_PROP_QSTRING(General, "diveshareExport/uid", diveshareExport_uid);
+
+HANDLE_PROP_BOOL(General, "diveshareExport/private", diveshareExport_private);

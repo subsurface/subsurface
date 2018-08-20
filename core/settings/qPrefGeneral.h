@@ -18,6 +18,8 @@ class qPrefGeneral : public QObject {
 	Q_PROPERTY(int o2consumption READ o2consumption WRITE set_o2consumption NOTIFY o2consumption_changed);
 	Q_PROPERTY(int pscr_ratio READ pscr_ratio WRITE set_pscr_ratio NOTIFY pscr_ratio_changed);
 	Q_PROPERTY(bool use_default_file READ use_default_file WRITE set_use_default_file NOTIFY use_default_file_changed);
+	Q_PROPERTY(QString diveshareExport_uid READ diveshareExport_uid WRITE set_diveshareExport_uid NOTIFY diveshareExport_uid_changed);
+	Q_PROPERTY(bool diveshareExport_private READ diveshareExport_private WRITE set_diveshareExport_private NOTIFY diveshareExport_private_changed);
 
 public:
 	qPrefGeneral(QObject *parent = NULL);
@@ -40,6 +42,8 @@ public:
 	static int o2consumption() { return prefs.o2consumption; }
 	static int pscr_ratio() { return prefs.pscr_ratio; }
 	static bool use_default_file() { return prefs.use_default_file; }
+	static QString diveshareExport_uid() { return st_diveshareExport_uid; }
+	static bool diveshareExport_private() { return st_diveshareExport_private; }
 
 public slots:
 	static void set_auto_recalculate_thumbnails(bool value);
@@ -53,6 +57,8 @@ public slots:
 	static void set_o2consumption(int value);
 	static void set_pscr_ratio(int value);
 	static void set_use_default_file(bool value);
+	static void set_diveshareExport_uid(const QString& value);
+	static void set_diveshareExport_private(bool value);
 
 signals:
 	void auto_recalculate_thumbnails_changed(bool value);
@@ -66,6 +72,8 @@ signals:
 	void o2consumption_changed(int value);
 	void pscr_ratio_changed(int value);
 	void use_default_file_changed(bool value);
+	void diveshareExport_uid_changed(const QString& value);
+	void diveshareExport_private_changed(bool value);
 
 private:
 	static void disk_auto_recalculate_thumbnails(bool doSync);
@@ -79,6 +87,14 @@ private:
 	static void disk_o2consumption(bool doSync);
 	static void disk_pscr_ratio(bool doSync);
 	static void disk_use_default_file(bool doSync);
+
+	// class variables are load only
+	static void load_diveshareExport_uid();
+	static void load_diveshareExport_private();
+
+	// class variables
+	static QString st_diveshareExport_uid;
+	static bool st_diveshareExport_private;
 };
 
 #endif

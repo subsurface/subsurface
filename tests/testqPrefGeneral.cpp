@@ -62,6 +62,8 @@ void TestQPrefGeneral::test_set_struct()
 	tst->set_o2consumption(27);
 	tst->set_pscr_ratio(28);
 	tst->set_use_default_file(false);
+	tst->set_diveshareExport_uid("uid1");
+	tst->set_diveshareExport_private(false);
 
 	QCOMPARE(prefs.auto_recalculate_thumbnails, false);
 	QCOMPARE(QString(prefs.default_cylinder), QString("new base21"));
@@ -74,6 +76,8 @@ void TestQPrefGeneral::test_set_struct()
 	QCOMPARE(prefs.o2consumption, 27);
 	QCOMPARE(prefs.pscr_ratio, 28);
 	QCOMPARE(prefs.use_default_file, false);
+	QCOMPARE(tst->diveshareExport_uid(), QString("uid1"));
+	QCOMPARE(tst->diveshareExport_private(), false);
 }
 
 void TestQPrefGeneral::test_set_load_struct()
@@ -93,6 +97,8 @@ void TestQPrefGeneral::test_set_load_struct()
 	tst->set_o2consumption(37);
 	tst->set_pscr_ratio(38);
 	tst->set_use_default_file(true);
+	tst->set_diveshareExport_uid("uid2");
+	tst->set_diveshareExport_private(true);
 
 	prefs.auto_recalculate_thumbnails = false;
 	prefs.default_cylinder = copy_qstring("error");
@@ -118,6 +124,8 @@ void TestQPrefGeneral::test_set_load_struct()
 	QCOMPARE(prefs.o2consumption, 37);
 	QCOMPARE(prefs.pscr_ratio, 38);
 	QCOMPARE(prefs.use_default_file, true);
+	QCOMPARE(tst->diveshareExport_uid(), QString("uid2"));
+	QCOMPARE(tst->diveshareExport_private(), true);
 }
 
 void TestQPrefGeneral::test_struct_disk()
