@@ -32,12 +32,6 @@ void PreferencesDialog::emitSettingsChanged()
 
 PreferencesDialog::PreferencesDialog()
 {
-	//FIXME: This looks wrong.
-	//QSettings s;
-	//s.beginGroup("GeneralSettings");
-	//s.setValue("default_directory", system_default_directory());
-	//s.endGroup();
-
 	setWindowIcon(QIcon(":subsurface-icon"));
 	pagesList = new QListWidget();
 	pagesStack = new QStackedWidget();

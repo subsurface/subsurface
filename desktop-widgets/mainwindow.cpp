@@ -1182,12 +1182,10 @@ void MainWindow::on_actionViewAll_triggered()
 		listGlobeSizes.append(lrint(appW * 0.3));
 	}
 
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	if (settings.value("mainSplitter").isValid()) {
-		ui.mainSplitter->restoreState(settings.value("mainSplitter").toByteArray());
-		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
-		ui.bottomSplitter->restoreState(settings.value("bottomSplitter").toByteArray());
+	if (qPrefDisplay::mainSplitter() != "") {
+		ui.mainSplitter->restoreState(qPrefDisplay::mainSplitter());
+		ui.topSplitter->restoreState(qPrefDisplay::topSplitter());
+		ui.bottomSplitter->restoreState(qPrefDisplay::bottomSplitter());
 		if (ui.mainSplitter->sizes().first() == 0 || ui.mainSplitter->sizes().last() == 0)
 			ui.mainSplitter->setSizes(mainSizes);
 		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
@@ -1220,10 +1218,8 @@ void MainWindow::enterEditState()
 	int appW = qApp->desktop()->size().width();
 	QList<int> infoProfileSizes { (int)lrint(appW * 0.3), (int)lrint(appW * 0.7) };
 
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	if (settings.value("mainSplitter").isValid()) {
-		ui.topSplitter->restoreState(settings.value("topSplitter").toByteArray());
+	if (qPrefDisplay::mainSplitter() != "") {
+		ui.topSplitter->restoreState(qPrefDisplay::topSplitter());
 		if (ui.topSplitter->sizes().first() == 0 || ui.topSplitter->sizes().last() == 0)
 			ui.topSplitter->setSizes(infoProfileSizes);
 	} else {
@@ -1273,11 +1269,9 @@ void MainWindow::beginChangeState(CurrentState s)
 
 void MainWindow::saveSplitterSizes()
 {
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	settings.setValue("mainSplitter", ui.mainSplitter->saveState());
-	settings.setValue("topSplitter", ui.topSplitter->saveState());
-	settings.setValue("bottomSplitter", ui.bottomSplitter->saveState());
+	qPrefDisplay::set_mainSplitter(ui.mainSplitter->saveState());
+	qPrefDisplay::set_topSplitter(ui.topSplitter->saveState());
+	qPrefDisplay::set_bottomSplitter(ui.bottomSplitter->saveState());
 }
 
 void MainWindow::on_actionPreviousDC_triggered()
@@ -1464,17 +1458,14 @@ bool MainWindow::askSaveChanges()
 
 void MainWindow::initialUiSetup()
 {
-	QSettings settings;
-	settings.beginGroup("MainWindow");
-	if (settings.value("maximized", isMaximized()).value<bool>()) {
+	if (qPrefDisplay::maximized()) {
 		showMaximized();
 	} else {
-		restoreGeometry(settings.value("geometry").toByteArray());
-		restoreState(settings.value("windowState", 0).toByteArray());
+		restoreGeometry(qPrefDisplay::geometry());
+		restoreState(qPrefDisplay::windowState());
 	}
 
-	enterState((CurrentState)settings.value("lastState", 0).toInt());
-	settings.endGroup();
+	enterState((CurrentState)qPrefDisplay::lastState());
 	show();
 }
 
@@ -1506,7 +1497,7 @@ void MainWindow::checkSurvey()
 	// wait a week for production versions, but not at all for non-tagged builds
 	int waitTime = 7;
 	QDate firstUse42 = s.value("FirstUse42").toDate();
-	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && !s.contains("SurveyDone"))) {
+	if (run_survey || (firstUse42.daysTo(QDate().currentDate()) > waitTime && qPrefDisplay::UserSurvey() == "")) {
 		if (!survey)
 			survey = new UserSurvey(this);
 		survey->show();
@@ -1516,16 +1507,12 @@ void MainWindow::checkSurvey()
 
 void MainWindow::writeSettings()
 {
-	QSettings settings;
-
-	settings.beginGroup("MainWindow");
-	settings.setValue("geometry", saveGeometry());
-	settings.setValue("windowState", saveState());
-	settings.setValue("maximized", isMaximized());
-	settings.setValue("lastState", (int)state);
+	qPrefDisplay::set_geometry(saveGeometry());
+	qPrefDisplay::set_windowState(saveState());
+	qPrefDisplay::set_maximized(isMaximized());
+	qPrefDisplay::set_lastState((int)state);
 	if (state == VIEWALL)
 		saveSplitterSizes();
-	settings.endGroup();
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
