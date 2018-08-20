@@ -74,7 +74,7 @@ void PreferencesDefaults::refreshSettings()
 			ui->default_cylinder->setCurrentIndex(i);
 	}
 	ui->displayinvalid->setChecked(qPrefDisplay::display_invalid_dives());
-	ui->velocitySlider->setValue(qPrefAnimations::animation_speed());
+	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
 	ui->btnUseDefaultFile->setChecked(qPrefGeneral::use_default_file());
 
 	if (qPrefCloudStorage::cloud_verification_status() == qPref::CS_VERIFIED) {
@@ -117,5 +117,5 @@ void PreferencesDefaults::syncSettings()
 	qPrefDisplay::set_divelist_font(ui->font->currentFont().toString());
 	qPrefDisplay::set_font_size(ui->fontsize->value());
 	qPrefDisplay::set_display_invalid_dives(ui->displayinvalid->isChecked());
-	qPrefAnimations::set_animation_speed(ui->velocitySlider->value());
+	qPrefDisplay::set_animation_speed(ui->velocitySlider->value());
 }

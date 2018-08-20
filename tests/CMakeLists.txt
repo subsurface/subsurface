@@ -100,7 +100,6 @@ TEST(TestPicture testpicture.cpp)
 TEST(TestMerge testmerge.cpp)
 TEST(TestTagList testtaglist.cpp)
 
-TEST(TestQPrefAnimations testqPrefAnimations.cpp)
 TEST(TestQPrefCloudStorage testqPrefCloudStorage.cpp)
 TEST(TestQPrefDisplay testqPrefDisplay.cpp)
 TEST(TestQPrefDiveComputer testqPrefDiveComputer.cpp)
@@ -132,7 +131,6 @@ add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 	TestMerge
 	TestTagList
 
-	TestQPrefAnimations
 	TestQPrefCloudStorage
 	TestQPrefDisplay
 	TestQPrefDiveComputer
