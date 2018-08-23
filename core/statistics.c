@@ -257,9 +257,9 @@ bool has_gaschange_event(const struct dive *dive, const struct divecomputer *dc,
 	return !first_gas_explicit && idx == 0;
 }
 
-bool is_cylinder_used(struct dive *dive, int idx)
+bool is_cylinder_used(const struct dive *dive, int idx)
 {
-	struct divecomputer *dc;
+	const struct divecomputer *dc;
 	if (cylinder_none(&dive->cylinder[idx]))
 		return false;
 
@@ -276,9 +276,9 @@ bool is_cylinder_used(struct dive *dive, int idx)
 	return false;
 }
 
-bool is_cylinder_prot(struct dive *dive, int idx)
+bool is_cylinder_prot(const struct dive *dive, int idx)
 {
-	struct divecomputer *dc;
+	const struct divecomputer *dc;
 	if (cylinder_none(&dive->cylinder[idx]))
 		return false;
 

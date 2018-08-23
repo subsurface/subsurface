@@ -41,8 +41,6 @@ static const struct models_table_t g_models[] = {
 	{0xEE,	0x44,	"Uwatec Unknown model",		DC_FAMILY_UWATEC_ALADIN},
 };
 
-extern struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc);
-
 #define JUMP(_ptr, _n) if ((long) (_ptr += _n) > maxbuf) goto bail
 #define CHECK(_ptr, _n) if ((long) _ptr + _n > maxbuf) goto bail
 #define read_bytes(_n) \

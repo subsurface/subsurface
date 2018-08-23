@@ -7,8 +7,9 @@
  * unsigned int amount_selected;
  * void dump_selection(void)
  * void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
- * int total_weight(struct dive *dive)
- * int get_divenr(struct dive *dive)
+ * int total_weight(const struct dive *dive)
+ * int get_divenr(const struct dive *dive)
+ * int get_divesite_idx(const struct dive_site *ds)
  * int init_decompression(struct dive *dive)
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
@@ -26,6 +27,7 @@
  * int unsaved_changes()
  * void remove_autogen_trips()
  * void sort_table(struct dive_table *table)
+ * bool is_trip_before_after(const struct dive *dive, bool before)
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -122,7 +124,7 @@ void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 	*o2max_p = maxo2;
 }
 
-int total_weight(struct dive *dive)
+int total_weight(const struct dive *dive)
 {
 	int i, total_grams = 0;
 
@@ -132,18 +134,18 @@ int total_weight(struct dive *dive)
 	return total_grams;
 }
 
-static int active_o2(struct dive *dive, struct divecomputer *dc, duration_t time)
+static int active_o2(const struct dive *dive, const struct divecomputer *dc, duration_t time)
 {
 	struct gasmix gas = get_gasmix_at_time(dive, dc, time);
 	return get_o2(gas);
 }
 
 /* calculate OTU for a dive - this only takes the first divecomputer into account */
-static int calculate_otu(struct dive *dive)
+static int calculate_otu(const struct dive *dive)
 {
 	int i;
 	double otu = 0.0;
-	struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dc;
 
 	for (i = 1; i < dc->samples; i++) {
 		int t;
@@ -179,11 +181,11 @@ int const cns_table[][3] = {
 };
 
 /* Calculate the CNS for a single dive */
-double calculate_cns_dive(struct dive *dive)
+static double calculate_cns_dive(const struct dive *dive)
 {
 	int n;
 	size_t j;
-	struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dc;
 	double cns = 0.0;
 
 	/* Caclulate the CNS for each sample in this dive and sum them */
@@ -345,14 +347,14 @@ static int calculate_cns(struct dive *dive)
 /*
  * Return air usage (in liters).
  */
-static double calculate_airuse(struct dive *dive)
+static double calculate_airuse(const struct dive *dive)
 {
 	int airuse = 0;
 	int i;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
 		pressure_t start, end;
-		cylinder_t *cyl = dive->cylinder + i;
+		const cylinder_t *cyl = dive->cylinder + i;
 
 		start = cyl->start.mbar ? cyl->start : cyl->sample_start;
 		end = cyl->end.mbar ? cyl->end : cyl->sample_end;
@@ -373,9 +375,9 @@ static double calculate_airuse(struct dive *dive)
 }
 
 /* this only uses the first divecomputer to calculate the SAC rate */
-static int calculate_sac(struct dive *dive)
+static int calculate_sac(const struct dive *dive)
 {
-	struct divecomputer *dc = &dive->dc;
+	const struct divecomputer *dc = &dive->dc;
 	double airuse, pressure, sac;
 	int duration, meandepth;
 
@@ -427,10 +429,10 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	}
 }
 
-int get_divenr(struct dive *dive)
+int get_divenr(const struct dive *dive)
 {
 	int i;
-	struct dive *d;
+	const struct dive *d;
 	// tempting as it may be, don't die when called with dive=NULL
 	if (dive)
 		for_each_dive(i, d) {
@@ -440,10 +442,10 @@ int get_divenr(struct dive *dive)
 	return -1;
 }
 
-int get_divesite_idx(struct dive_site *ds)
+int get_divesite_idx(const struct dive_site *ds)
 {
 	int i;
-	struct dive_site *d;
+	const struct dive_site *d;
 	// tempting as it may be, don't die when called with dive=NULL
 	if (ds)
 		for_each_dive_site(i, d) {
@@ -775,7 +777,7 @@ void find_new_trip_start_time(dive_trip_t *trip)
 }
 
 /* check if we have a trip right before / after this dive */
-bool is_trip_before_after(struct dive *dive, bool before)
+bool is_trip_before_after(const struct dive *dive, bool before)
 {
 	int idx = get_idx_by_uniq_id(dive->id);
 	if (before) {
