@@ -23,8 +23,8 @@ extern char *get_dive_gas_string(struct dive *dive);
 
 struct dive **grow_dive_table(struct dive_table *table);
 extern void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
-extern int get_divenr(struct dive *dive);
-extern int get_divesite_idx(struct dive_site *ds);
+extern int get_divenr(const struct dive *dive);
+extern int get_divesite_idx(const struct dive_site *ds);
 extern void remove_dive_from_trip(struct dive *dive, short was_autogen);
 extern dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive);
 extern void autogroup_dives(void);
@@ -39,7 +39,7 @@ extern void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b);
 extern void find_new_trip_start_time(dive_trip_t *trip);
 extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
-extern bool is_trip_before_after(struct dive *dive, bool before);
+extern bool is_trip_before_after(const struct dive *dive, bool before);
 extern void set_dive_nr_for_current_dive();
 
 int get_min_datafile_version();

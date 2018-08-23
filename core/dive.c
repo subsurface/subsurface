@@ -99,13 +99,13 @@ void add_sample_pressure(struct sample *sample, int sensor, int mbar)
  * This function returns a negative number for "no legacy mode",
  * or a non-negative number that indicates the o2 sensor index.
  */
-int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc)
+int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc)
 {
 	int i, o2sensor;
 
 	o2sensor = (dc->divemode == CCR) ? get_cylinder_idx_by_use(dive, OXYGEN) : -1;
 	for (i = 0; i < dc->samples; i++) {
-		struct sample *s = dc->sample + i;
+		const struct sample *s = dc->sample + i;
 		int seen_pressure = 0, idx;
 
 		for (idx = 0; idx < MAX_SENSORS; idx++) {
@@ -480,7 +480,7 @@ static void free_pic(struct picture *picture);
 
 /* this is very different from the copy_divecomputer later in this file;
  * this function actually makes full copies of the content */
-static void copy_dc(struct divecomputer *sdc, struct divecomputer *ddc)
+static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
 {
 	*ddc = *sdc;
 	ddc->model = copy_string(sdc->model);
@@ -556,7 +556,7 @@ void clear_dive(struct dive *d)
 /* make a true copy that is independent of the source dive;
  * all data structures are duplicated, so the copy can be modified without
  * any impact on the source */
-void copy_dive(struct dive *s, struct dive *d)
+void copy_dive(const struct dive *s, struct dive *d)
 {
 	clear_dive(d);
 	/* simply copy things over, but then make actual copies of the
@@ -597,7 +597,7 @@ struct dive *clone_dive(struct dive *s)
 		d->_component = copy_string(s->_component)
 
 // copy elements, depending on bits in what that are set
-void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what, bool clear)
+void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear)
 {
 	if (clear)
 		clear_dive(d);
@@ -641,9 +641,10 @@ struct event *clone_event(const struct event *src_ev)
 }
 
 /* copies all events in this dive computer */
-void copy_events(struct divecomputer *s, struct divecomputer *d)
+void copy_events(const struct divecomputer *s, struct divecomputer *d)
 {
-	struct event *ev, **pev;
+	const struct event *ev;
+	struct event **pev;
 	if (!s || !d)
 		return;
 	ev = s->events;
@@ -657,24 +658,24 @@ void copy_events(struct divecomputer *s, struct divecomputer *d)
 	*pev = NULL;
 }
 
-int nr_cylinders(struct dive *dive)
+int nr_cylinders(const struct dive *dive)
 {
 	int nr;
 
 	for (nr = MAX_CYLINDERS; nr; --nr) {
-		cylinder_t *cylinder = dive->cylinder + nr - 1;
+		const cylinder_t *cylinder = dive->cylinder + nr - 1;
 		if (!cylinder_nodata(cylinder))
 			break;
 	}
 	return nr;
 }
 
-int nr_weightsystems(struct dive *dive)
+int nr_weightsystems(const struct dive *dive)
 {
 	int nr;
 
 	for (nr = MAX_WEIGHTSYSTEMS; nr; --nr) {
-		weightsystem_t *ws = dive->weightsystem + nr - 1;
+		const weightsystem_t *ws = dive->weightsystem + nr - 1;
 		if (!weightsystem_none(ws))
 			break;
 	}
@@ -682,7 +683,7 @@ int nr_weightsystems(struct dive *dive)
 }
 
 /* copy the equipment data part of the cylinders */
-void copy_cylinders(struct dive *s, struct dive *d, bool used_only)
+void copy_cylinders(const struct dive *s, struct dive *d, bool used_only)
 {
 	int i,j;
 	cylinder_t t[MAX_CYLINDERS];
@@ -728,7 +729,7 @@ int cylinderuse_from_text(const char *text)
 	return -1;
 }
 
-void copy_samples(struct divecomputer *s, struct divecomputer *d)
+void copy_samples(const struct divecomputer *s, struct divecomputer *d)
 {
 	/* instead of carefully copying them one by one and calling add_sample
 	 * over and over again, let's just copy the whole blob */
@@ -875,13 +876,13 @@ void fixup_dc_duration(struct divecomputer *dc)
 
 /* Which cylinders had gas used? */
 #define SOME_GAS 5000
-static unsigned int get_cylinder_used(struct dive *dive)
+static unsigned int get_cylinder_used(const struct dive *dive)
 {
 	int i;
 	unsigned int mask = 0;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
+		const cylinder_t *cyl = dive->cylinder + i;
 		int start_mbar, end_mbar;
 
 		if (cylinder_nodata(cyl))
@@ -898,7 +899,7 @@ static unsigned int get_cylinder_used(struct dive *dive)
 }
 
 /* Which cylinders do we know usage about? */
-static unsigned int get_cylinder_known(struct dive *dive, struct divecomputer *dc)
+static unsigned int get_cylinder_known(const struct dive *dive, const struct divecomputer *dc)
 {
 	unsigned int mask = 0;
 	const struct event *ev;
@@ -925,7 +926,7 @@ static unsigned int get_cylinder_known(struct dive *dive, struct divecomputer *d
 	return mask;
 }
 
-void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
+void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration)
 {
 	int i;
 	int depthtime[MAX_CYLINDERS] = { 0, };
@@ -1018,7 +1019,7 @@ static void update_min_max_temperatures(struct dive *dive, temperature_t tempera
 	}
 }
 
-int gas_volume(cylinder_t *cyl, pressure_t p)
+int gas_volume(const cylinder_t *cyl, pressure_t p)
 {
 	double bar = p.mbar / 1000.0;
 	double z_factor = gas_compressibility_factor(cyl->gasmix, bar);
@@ -1330,7 +1331,7 @@ static void fixup_duration(struct dive *dive)
  * What do the dive computers say the water temperature is?
  * (not in the samples, but as dc property for dcs that support that)
  */
-unsigned int dc_watertemp(struct divecomputer *dc)
+unsigned int dc_watertemp(const struct divecomputer *dc)
 {
 	int sum = 0, nr = 0;
 
@@ -1354,7 +1355,7 @@ static void fixup_watertemp(struct dive *dive)
 /*
  * What do the dive computers say the air temperature is?
  */
-unsigned int dc_airtemp(struct divecomputer *dc)
+unsigned int dc_airtemp(const struct divecomputer *dc)
 {
 	int sum = 0, nr = 0;
 
@@ -1803,7 +1804,7 @@ struct dive *fixup_dive(struct dive *dive)
 #define MERGE_TXT(res, a, b, n, sep) res->n = merge_text(a->n, b->n, sep)
 #define MERGE_NONZERO(res, a, b, n) res->n = a->n ? a->n : b->n
 
-struct sample *add_sample(struct sample *sample, int time, struct divecomputer *dc)
+struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc)
 {
 	struct sample *p = prepare_sample(dc);
 
@@ -2055,7 +2056,7 @@ static void merge_events(struct divecomputer *res, struct divecomputer *src1, st
 	}
 }
 
-static void merge_weightsystem_info(weightsystem_t *res, weightsystem_t *a, weightsystem_t *b)
+static void merge_weightsystem_info(weightsystem_t *res, const weightsystem_t *a, const weightsystem_t *b)
 {
 	if (!a->weight.grams)
 		a = b;
@@ -2229,7 +2230,7 @@ static int pdiff(pressure_t a, pressure_t b)
 	return a.mbar && b.mbar && a.mbar != b.mbar;
 }
 
-static int different_manual_pressures(cylinder_t *a, cylinder_t *b)
+static int different_manual_pressures(const cylinder_t *a, const cylinder_t *b)
 {
 	return pdiff(a->start, b->start) || pdiff(a->end, b->end);
 }
@@ -2243,12 +2244,12 @@ static int different_manual_pressures(cylinder_t *a, cylinder_t *b)
  * same cylinder use (ie OC/Diluent/Oxygen), and if pressures
  * have been added manually they need to match.
  */
-static int match_cylinder(cylinder_t *cyl, struct dive *dive, unsigned int available)
+static int match_cylinder(const cylinder_t *cyl, const struct dive *dive, unsigned int available)
 {
 	int i;
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *target;
+		const cylinder_t *target;
 
 		if (!(available & (1u << i)))
 			continue;
@@ -2424,7 +2425,7 @@ static void merge_temperatures(struct dive *res, struct dive *a, struct dive *b)
  * The 'next' dive is not involved in the dive merging, but is the dive
  * that will be the next dive after the merged dive.
  */
-static void pick_trip(struct dive *res, struct dive *pick)
+static void pick_trip(struct dive *res, const struct dive *pick)
 {
 	tripflag_t tripflag = pick->tripflag;
 	dive_trip_t *trip = pick->divetrip;
@@ -2689,7 +2690,7 @@ static int similar(unsigned long a, unsigned long b, unsigned long expected)
  * positive for "same dive" and negative for "definitely
  * not the same dive"
  */
-int match_one_dc(struct divecomputer *a, struct divecomputer *b)
+int match_one_dc(const struct divecomputer *a, const struct divecomputer *b)
 {
 	/* Not same model? Don't know if matching.. */
 	if (!a->model || !b->model)
@@ -2721,10 +2722,10 @@ int match_one_dc(struct divecomputer *a, struct divecomputer *b)
  *   0 for "don't know"
  *   1 for "is definitely the same dive"
  */
-static int match_dc_dive(struct divecomputer *a, struct divecomputer *b)
+static int match_dc_dive(const struct divecomputer *a, const struct divecomputer *b)
 {
 	do {
-		struct divecomputer *tmp = b;
+		const struct divecomputer *tmp = b;
 		do {
 			int match = match_one_dc(a, tmp);
 			if (match)
@@ -2736,7 +2737,7 @@ static int match_dc_dive(struct divecomputer *a, struct divecomputer *b)
 	return 0;
 }
 
-static bool new_without_trip(struct dive *a)
+static bool new_without_trip(const struct dive *a)
 {
 	return a->downloaded && !a->divetrip;
 }
@@ -2770,7 +2771,7 @@ static bool new_without_trip(struct dive *a)
  * dives together manually. But this tries to handle the sane
  * cases.
  */
-static int likely_same_dive(struct dive *a, struct dive *b)
+static int likely_same_dive(const struct dive *a, const struct dive *b)
 {
 	int match, fuzz = 20 * 60;
 
@@ -2898,7 +2899,7 @@ static int same_dc(struct divecomputer *a, struct divecomputer *b)
 	return eva == evb;
 }
 
-static int might_be_same_device(struct divecomputer *a, struct divecomputer *b)
+static int might_be_same_device(const struct divecomputer *a, const struct divecomputer *b)
 {
 	/* No dive computer model? That matches anything */
 	if (!a->model || !b->model)
@@ -2957,7 +2958,7 @@ static struct divecomputer *find_matching_computer(struct divecomputer *match, s
 }
 
 
-static void copy_dive_computer(struct divecomputer *res, struct divecomputer *a)
+static void copy_dive_computer(struct divecomputer *res, const struct divecomputer *a)
 {
 	*res = *a;
 	res->model = copy_string(a->model);

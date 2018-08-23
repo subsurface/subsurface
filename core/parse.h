@@ -59,8 +59,6 @@ extern int diveid;
 
 int trimspace(char *buffer);
 void clear_table(struct dive_table *table);
-void record_dive_to_table(struct dive *dive, struct dive_table *table);
-void record_dive(struct dive *dive);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
 typedef void (*matchfn_t)(char *buffer, void *);

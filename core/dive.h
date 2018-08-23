@@ -113,7 +113,7 @@ extern depth_t units_to_depth(double depth);
 extern int units_to_sac(double volume);
 
 /* Volume in mliter of a cylinder at pressure 'p' */
-extern int gas_volume(cylinder_t *cyl, pressure_t p);
+extern int gas_volume(const cylinder_t *cyl, pressure_t p);
 extern double gas_compressibility_factor(struct gasmix gas, double bar);
 extern double isothermal_pressure(struct gasmix gas, double p1, int volume1, int volume2);
 extern double gas_density(struct gasmix gas, int pressure);
@@ -487,7 +487,7 @@ extern bool time_during_dive_with_offset(struct dive *dive, timestamp_t when, ti
 struct dive *find_dive_n_near(timestamp_t when, int n, timestamp_t offset);
 
 /* Check if two dive computer entries are the exact same dive (-1=no/0=maybe/1=yes) */
-extern int match_one_dc(struct divecomputer *a, struct divecomputer *b);
+extern int match_one_dc(const struct divecomputer *a, const struct divecomputer *b);
 
 extern void parse_xml_init(void);
 extern int parse_xml_buffer(const char *url, const char *buf, int size, struct dive_table *table, const char **params);
@@ -547,8 +547,8 @@ extern struct dive *alloc_dive(void);
 extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
 extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);
-extern void copy_dive(struct dive *s, struct dive *d);
-extern void selective_copy_dive(struct dive *s, struct dive *d, struct dive_components what, bool clear);
+extern void copy_dive(const struct dive *s, struct dive *d);
+extern void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_components what, bool clear);
 extern struct dive *clone_dive(struct dive *s);
 
 extern void clear_table(struct dive_table *table);
@@ -557,37 +557,38 @@ extern void alloc_samples(struct divecomputer *dc, int num);
 extern void free_samples(struct divecomputer *dc);
 extern struct sample *prepare_sample(struct divecomputer *dc);
 extern void finish_sample(struct divecomputer *dc);
+extern struct sample *add_sample(const struct sample *sample, int time, struct divecomputer *dc);
 extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
-extern int legacy_format_o2pressures(struct dive *dive, struct divecomputer *dc);
+extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID();
-extern unsigned int dc_airtemp(struct divecomputer *dc);
-extern unsigned int dc_watertemp(struct divecomputer *dc);
+extern unsigned int dc_airtemp(const struct divecomputer *dc);
+extern unsigned int dc_watertemp(const struct divecomputer *dc);
 extern int split_dive(struct dive *);
 extern void split_dive_at_time(struct dive *dive, duration_t time);
 extern struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded);
 extern struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded);
 extern struct event *clone_event(const struct event *src_ev);
-extern void copy_events(struct divecomputer *s, struct divecomputer *d);
+extern void copy_events(const struct divecomputer *s, struct divecomputer *d);
 extern void free_events(struct event *ev);
-extern void copy_cylinders(struct dive *s, struct dive *d, bool used_only);
-extern void copy_samples(struct divecomputer *s, struct divecomputer *d);
-extern bool is_cylinder_used(struct dive *dive, int idx);
-extern bool is_cylinder_prot(struct dive *dive, int idx);
+extern void copy_cylinders(const struct dive *s, struct dive *d, bool used_only);
+extern void copy_samples(const struct divecomputer *s, struct divecomputer *d);
+extern bool is_cylinder_used(const struct dive *dive, int idx);
+extern bool is_cylinder_prot(const struct dive *dive, int idx);
 extern void fill_default_cylinder(cylinder_t *cyl);
 extern void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int time, int idx);
 extern struct event *add_event(struct divecomputer *dc, unsigned int time, int type, int flags, int value, const char *name);
 extern void remove_event(struct event *event);
 extern void update_event_name(struct dive *d, struct event *event, const char *name);
 extern void add_extra_data(struct divecomputer *dc, const char *key, const char *value);
-extern void per_cylinder_mean_depth(struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
+extern void per_cylinder_mean_depth(const struct dive *dive, struct divecomputer *dc, int *mean, int *duration);
 extern int get_cylinder_index(const struct dive *dive, const struct event *ev);
 extern struct gasmix get_gasmix_from_event(const struct dive *, const struct event *ev);
-extern int nr_cylinders(struct dive *dive);
-extern int nr_weightsystems(struct dive *dive);
+extern int nr_cylinders(const struct dive *dive);
+extern int nr_weightsystems(const struct dive *dive);
 
 /* UI related protopypes */
 
@@ -606,7 +607,7 @@ extern void clear_events(void);
 
 extern void set_dc_nickname(struct dive *dive);
 extern void set_autogroup(bool value);
-extern int total_weight(struct dive *);
+extern int total_weight(const struct dive *);
 
 #ifdef __cplusplus
 }
