@@ -17,7 +17,7 @@
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="38"/>
         <source>View your dive logs while on the go.</source>
-        <translation type="unfinished"/>
+        <translation>Nézd meg a merülési naplóidat útközben.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="49"/>
@@ -25,12 +25,15 @@
 
 © Subsurface developer team
 2011-2018</source>
-        <translation type="unfinished"/>
+        <translation>Verzió: 1%
+
+© Subsurface fejlesztő csapata
+2011-2018</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/About.qml" line="62"/>
         <source>Copy logs to clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Naplók másolása a vágólapra</translation>
     </message>
 </context>
 <context>
@@ -38,7 +41,7 @@
     <message>
         <location filename="../mobile-widgets/qml/kirigami/src/controls/templates/private/BackButton.qml" line="51"/>
         <source>Navigate Back</source>
-        <translation type="unfinished"/>
+        <translation>Vissza</translation>
     </message>
 </context>
 <context>
@@ -46,7 +49,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="14"/>
         <source>Remote Bluetooth device selection</source>
-        <translation type="unfinished"/>
+        <translation>Távoli bluetooth eszköz kiválasztása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="172"/>
@@ -69,12 +72,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="193"/>
         <source>Bluetooth mode</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth mód</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="201"/>
         <source>Auto</source>
-        <translation type="unfinished"/>
+        <translation>Autómata</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="206"/>
@@ -90,19 +93,19 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="229"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="40"/>
         <source>Scan</source>
-        <translation type="unfinished"/>
+        <translation>Keresés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="242"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="41"/>
         <source>Clear</source>
-        <translation type="unfinished"/>
+        <translation>Tiszta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="66"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="33"/>
         <source>Local Bluetooth device details</source>
-        <translation type="unfinished"/>
+        <translation>Helyi bluetooth eszköz részletei</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="75"/>
@@ -113,30 +116,30 @@
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="89"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="35"/>
         <source>Address:</source>
-        <translation type="unfinished"/>
+        <translation>Cím:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="118"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="37"/>
         <source>Bluetooth powered on</source>
-        <translation type="unfinished"/>
+        <translation>Bluetooth bekapcsolva</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="140"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="38"/>
         <source>Turn on/off</source>
-        <translation type="unfinished"/>
+        <translation>Be/Kikapcsolás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.ui" line="150"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="34"/>
         <source>Select device:</source>
-        <translation type="unfinished"/>
+        <translation>Eszköz választás:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="36"/>
         <source>Name:</source>
-        <translation type="unfinished"/>
+        <translation>Név:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="61"/>
@@ -146,74 +149,74 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="139"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Megpróbálom bekapcsolni a helyi bluetooth eszközt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="142"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation type="unfinished"/>
+        <translation>Megpróbálom kikapcsolni a helyi bluetooth eszközt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="174"/>
         <source>Remote devices list was cleared.</source>
-        <translation type="unfinished"/>
+        <translation>Távoli eszköz lista törölve lett.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="189"/>
         <source>Scanning for remote devices...</source>
-        <translation type="unfinished"/>
+        <translation>Távoli eszközök keresése...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="198"/>
         <source>Scanning finished successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Keresés sikeresen befejeződött</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="214"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
-        <translation type="unfinished"/>
+        <translation>A helyi bluetooth eszköz %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
         <source>turned on</source>
-        <translation type="unfinished"/>
+        <translation>bekapcsolva</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
         <source>turned off</source>
-        <translation type="unfinished"/>
+        <translation>kikapcsolva</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="371"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
         <source>UNPAIRED</source>
-        <translation type="unfinished"/>
+        <translation>NEM PÁROSÍTOTT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="235"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="389"/>
         <source>PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>PÁROSÍTOTT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="238"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="381"/>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
         <source>AUTHORIZED_PAIRED</source>
-        <translation type="unfinished"/>
+        <translation>ENGEDÉLYEZETT_PÁROSÍTOTT</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
         <source>%1 (%2)   [State: %3]</source>
-        <translation type="unfinished"/>
+        <translation>%1 (%2)   [Állapot: %3]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="276"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Az 1% eszköz készen áll a kapcsolatra. Nyomd meg a mentés gombot.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="289"/>
@@ -229,52 +232,53 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="318"/>
         <source>The local device was changed.</source>
-        <translation type="unfinished"/>
+        <translation>A helyi eszköz megváltozott.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="338"/>
         <source>Pair</source>
-        <translation type="unfinished"/>
+        <translation>Párosítás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
         <source>Remove pairing</source>
-        <translation type="unfinished"/>
+        <translation>Párosítás megszüntetése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
         <source>Trying to pair device %1</source>
-        <translation type="unfinished"/>
+        <translation>1% eszköz párosítása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
         <source>Trying to unpair device %1</source>
-        <translation type="unfinished"/>
+        <translation>1% eszköz párosításának megszüntetése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="372"/>
         <source>Device %1 was unpaired.</source>
-        <translation type="unfinished"/>
+        <translation>Az 1% eszköz párosítása megszüntetve.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
         <source>Device %1 was paired.</source>
-        <translation type="unfinished"/>
+        <translation>Az 1% eszköz párosítva.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="384"/>
         <source>Device %1 was paired and is authorized.</source>
-        <translation type="unfinished"/>
+        <translation>Az 1% eszköz párosítva és engedélyezve.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
-        <translation type="unfinished"/>
+        <translation>Az 1% eszköz készen áll a kapcsolatra.
+Nyomd meg a mentés gombot.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="422"/>
         <source>Local device error: %1.</source>
-        <translation type="unfinished"/>
+        <translation>Helyi eszköz hiba: %1.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="423"/>
@@ -284,7 +288,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="425"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Ismeretlen hiba</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="434"/>
@@ -299,7 +303,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="443"/>
         <source>An unknown error has occurred.</source>
-        <translation type="unfinished"/>
+        <translation>Egy ismeretlen híba létett fel.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="448"/>
@@ -309,12 +313,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
         <source>Not available</source>
-        <translation type="unfinished"/>
+        <translation>Nem elérhető</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="509"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
-        <translation type="unfinished"/>
+        <translation>A helyi bluetooth adapter nem elérhető.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="559"/>
@@ -327,12 +331,12 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="550"/>
         <source>Person: </source>
-        <translation type="unfinished"/>
+        <translation>Személy:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="551"/>
         <source>Searches for buddies and divemasters</source>
-        <translation type="unfinished"/>
+        <translation>Merülőtárs és merülés vezető keresése</translation>
     </message>
 </context>
 <context>
@@ -340,7 +344,7 @@
     <message>
         <location filename="../qt-models/filtermodels.cpp" line="279"/>
         <source>No buddies</source>
-        <translation type="unfinished"/>
+        <translation>Nincs merülőtárs</translation>
     </message>
 </context>
 <context>
@@ -348,12 +352,12 @@
     <message numerus="yes">
         <location filename="../core/checkcloudconnection.cpp" line="58"/>
         <source>Waiting for cloud connection (%n second(s) passed)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Várakozás a felhő kapcsolatra (%n eltelt másodperc(ek))</numerusform><numerusform>Várakozás a felhő kapcsolatra (%n eltelt másodperc(ek))</numerusform></translation>
     </message>
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation type="unfinished"/>
+        <translation>Felhő kapcsolódás sikertelen</translation>
     </message>
 </context>
 <context>
@@ -361,42 +365,42 @@
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="49"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Felhő hitelesítő adatok</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="55"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="71"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Jelszó</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="89"/>
         <source>PIN</source>
-        <translation type="unfinished"/>
+        <translation>PIN</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="106"/>
         <source>Register</source>
-        <translation type="unfinished"/>
+        <translation>Regisztrálás</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="117"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="133"/>
         <source>Sign-in or Register</source>
-        <translation type="unfinished"/>
+        <translation>Bejentkezés vagy Regisztrálás</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/CloudCredentials.qml" line="144"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Nem felhő mód</translation>
     </message>
 </context>
 <context>
@@ -404,7 +408,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation type="unfinished"/>
+        <translation>Felhő hozzáférés hitelesítés szükséges add meg a PIN-t a beállításokban</translation>
     </message>
 </context>
 <context>
@@ -412,7 +416,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Merülés #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
@@ -437,37 +441,37 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Súly</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Palack méret</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="47"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Kezdő nyomás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Végső nyomás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Átl. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
@@ -482,27 +486,27 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="48"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
@@ -517,37 +521,37 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Idő minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Mélység minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Hőmérséklet minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>CNS minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="49"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>NDL minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="50"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>TTS minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="50"/>
@@ -557,7 +561,7 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="50"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Nyomás minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="51"/>
@@ -582,12 +586,12 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="52"/>
         <source>Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="52"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
 </context>
 <context>
@@ -595,32 +599,32 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="221"/>
         <source>Could not save the backup file %1. Error Message: %2</source>
-        <translation type="unfinished"/>
+        <translation>Nem menthető a biztonsági fájl %1. Hiba üzenet: %2</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="237"/>
         <source>Could not open backup file: %1</source>
-        <translation type="unfinished"/>
+        <translation>Nem nyitható meg a biztonsági mentés: %1</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="585"/>
         <source>Dive computer details read successfully</source>
-        <translation type="unfinished"/>
+        <translation>Búvárkomputer részletei sikeresen kiolvasva</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="594"/>
         <source>Setting successfully written to device</source>
-        <translation type="unfinished"/>
+        <translation>Beállítások sikeresen az eszközre írva</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="603"/>
         <source>Device firmware successfully updated</source>
-        <translation type="unfinished"/>
+        <translation>Eszköz firmware-e sikeresen frissítve</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="612"/>
         <source>Device settings successfully reset</source>
-        <translation type="unfinished"/>
+        <translation>Az eszköz beállításai sikeresen alaphelyzetbe állítva</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="628"/>
@@ -630,7 +634,7 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="647"/>
         <source>Could not a establish connection to the dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>A kapcsolat nem létrehozható a búvárkomputerrel</translation>
     </message>
 </context>
 <context>
@@ -638,7 +642,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="14"/>
         <source>Configure dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Búvárkomputer beállítása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="22"/>
@@ -648,12 +652,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="47"/>
         <source>Connect via Bluetooth</source>
-        <translation type="unfinished"/>
+        <translation>Kapcsolódás bluetooth-val</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="54"/>
         <source>Connect</source>
-        <translation type="unfinished"/>
+        <translation>Kapcsolódás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
@@ -668,32 +672,32 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="90"/>
         <source>Read settings from backup file or from device before writing to the device</source>
-        <translation type="unfinished"/>
+        <translation>Beállítások kiolvasása a biztonsági mentésből vagy az eszközről mielőtt felülírná az eszközt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="93"/>
         <source>Save changes to device</source>
-        <translation type="unfinished"/>
+        <translation>Változások mentése az eszközre</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="116"/>
         <source>Read settings from backup file or from device before writing to a backup file</source>
-        <translation type="unfinished"/>
+        <translation>Beállítások kiolvasása a biztonsági mentésből vagy az eszközről mielőtt felülírná a biztonsági mentést</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="119"/>
         <source>Backup</source>
-        <translation type="unfinished"/>
+        <translation>Biztonsági mentés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="129"/>
         <source>Restore backup</source>
-        <translation type="unfinished"/>
+        <translation>Biztonsági mentés visszaállítása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="139"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Firmware frissítése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="163"/>
@@ -703,22 +707,22 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="170"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="177"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="241"/>
         <source>Suunto Vyper family</source>
-        <translation type="unfinished"/>
+        <translation>Suunto Vyper család</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="232"/>
         <source>OSTC 4</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="262"/>
@@ -726,7 +730,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2492"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3567"/>
         <source>Basic settings</source>
-        <translation type="unfinished"/>
+        <translation>Alap beállítások</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1201"/>
@@ -738,13 +742,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1206"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2504"/>
         <source>Medium</source>
-        <translation type="unfinished"/>
+        <translation>Közepes</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1211"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2509"/>
         <source>High</source>
-        <translation type="unfinished"/>
+        <translation>Magas</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="603"/>
@@ -770,7 +774,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2991"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3069"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1230"/>
@@ -814,7 +818,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2565"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3662"/>
         <source>Serial No.</source>
-        <translation type="unfinished"/>
+        <translation>Sorozatszám</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="305"/>
@@ -822,7 +826,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2588"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3685"/>
         <source>Firmware version</source>
-        <translation type="unfinished"/>
+        <translation>Firmware verzió</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1301"/>
@@ -872,53 +876,53 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1366"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2664"/>
         <source>Salinity (0-5%)</source>
-        <translation type="unfinished"/>
+        <translation>Sótartalom (0-5%)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1379"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2677"/>
         <source>Reset device to default settings</source>
-        <translation type="unfinished"/>
+        <translation>Az eszköz alaphelyzetbe állítása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1393"/>
         <source>230LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>230LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1398"/>
         <source>330LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>330LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1403"/>
         <source>390LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>390LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1408"/>
         <source>440LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>440LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1413"/>
         <source>660LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>660LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1418"/>
         <source>820LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>820LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1423"/>
         <source>1090LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1090LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1428"/>
         <source>1370LSB/Gauss</source>
-        <translation type="unfinished"/>
+        <translation>1370LSB/Gauss</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1462"/>
@@ -930,7 +934,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2710"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3805"/>
         <source>Computer model</source>
-        <translation type="unfinished"/>
+        <translation>Komputer model</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="315"/>
@@ -938,19 +942,19 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2717"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3719"/>
         <source>Custom text</source>
-        <translation type="unfinished"/>
+        <translation>Egyéni szöveg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1497"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2735"/>
         <source>OC</source>
-        <translation type="unfinished"/>
+        <translation>NyR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1502"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2740"/>
         <source>CC</source>
-        <translation type="unfinished"/>
+        <translation>NyR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="661"/>
@@ -970,30 +974,30 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1520"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2758"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Merülési mód</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1531"/>
         <source>2s</source>
-        <translation type="unfinished"/>
+        <translation>2mp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1536"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3775"/>
         <source>10s</source>
-        <translation type="unfinished"/>
+        <translation>10mp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="359"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1544"/>
         <source>Sampling rate</source>
-        <translation type="unfinished"/>
+        <translation>Mintavétel aránya</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1555"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2769"/>
         <source>Standard</source>
-        <translation type="unfinished"/>
+        <translation>Alapértelmezett</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1560"/>
@@ -1018,46 +1022,46 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1578"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2792"/>
         <source>Sync dive computer time with PC</source>
-        <translation type="unfinished"/>
+        <translation>Búvárkomputer idő szinkronizálása a PC-vel</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1585"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2799"/>
         <source>Dive mode color</source>
-        <translation type="unfinished"/>
+        <translation>Merülési mód szín</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="345"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1595"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2809"/>
         <source>Show safety stop</source>
-        <translation type="unfinished"/>
+        <translation>Biztonsági megálló mutatása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="470"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1602"/>
         <source>End Depth</source>
-        <translation type="unfinished"/>
+        <translation>Végső mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="278"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1628"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2835"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Hossz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="463"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1635"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2842"/>
         <source>Start Depth</source>
-        <translation type="unfinished"/>
+        <translation>Induló mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="477"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1642"/>
         <source>Reset Depth</source>
-        <translation type="unfinished"/>
+        <translation>Mélység visszaállítása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="573"/>
@@ -1069,13 +1073,13 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1725"/>
         <source>Left button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Bal gomb érzékenység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1732"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3167"/>
         <source>Always show pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Mindig mutassa a pO₂-t</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="579"/>
@@ -1088,13 +1092,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1746"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2911"/>
         <source>Future TTS</source>
-        <translation type="unfinished"/>
+        <translation>Jövőbeni TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1753"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2918"/>
         <source>Pressure sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Nyomásérzékelő eltérés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="815"/>
@@ -1114,14 +1118,14 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="586"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1806"/>
         <source>Desaturation</source>
-        <translation type="unfinished"/>
+        <translation>Deszaturáció</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="645"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1858"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2984"/>
         <source>Decotype</source>
-        <translation type="unfinished"/>
+        <translation>Dekompresszio típusa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="656"/>
@@ -1161,76 +1165,76 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="782"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1983"/>
         <source>Saturation</source>
-        <translation type="unfinished"/>
+        <translation>Telítettség</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1993"/>
         <source>Flip screen</source>
-        <translation type="unfinished"/>
+        <translation>Képernyő fordítás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2000"/>
         <source>Right button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Jobb gomb érzékenység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2007"/>
         <source>MOD warning</source>
-        <translation type="unfinished"/>
+        <translation>MOD figyelmeztetés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="838"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2014"/>
         <source>Graphical speed indicator</source>
-        <translation type="unfinished"/>
+        <translation>Grafikus sebesség mutató</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2021"/>
         <source>Dynamic ascent rate</source>
-        <translation type="unfinished"/>
+        <translation>Dinamikus emelkedési arány</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="877"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2028"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3092"/>
         <source>Bottom gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Fenék gáz fogyasztás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="884"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2035"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3099"/>
         <source>Deco gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Deco gáz fogyasztás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2106"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3194"/>
         <source>Temperature sensor offset</source>
-        <translation type="unfinished"/>
+        <translation>Hőmérséklet érzékelő eltérés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2113"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3201"/>
         <source>°C</source>
-        <translation type="unfinished"/>
+        <translation>°C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="892"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2133"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3221"/>
         <source>Gas settings</source>
-        <translation type="unfinished"/>
+        <translation>Gáz beállítás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="214"/>
         <source>OSTC Mk2/2N/2C</source>
-        <translation type="unfinished"/>
+        <translation>OSTC Mk2/2N/2C</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="223"/>
         <source>OSTC 2/3/Sport/Plus/cR</source>
-        <translation type="unfinished"/>
+        <translation>OSTC 2/3/Sport/Plus/cR</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="506"/>
@@ -1244,7 +1248,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2852"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2971"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="845"/>
@@ -1255,7 +1259,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3122"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3138"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="935"/>
@@ -1285,7 +1289,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3274"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3359"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Típus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="950"/>
@@ -1298,105 +1302,105 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3364"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3439"/>
         <source>Change depth</source>
-        <translation type="unfinished"/>
+        <translation>Mélység változtatása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="955"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2196"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3284"/>
         <source>Gas 1</source>
-        <translation type="unfinished"/>
+        <translation>Gáz 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="960"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2201"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3289"/>
         <source>Gas 2</source>
-        <translation type="unfinished"/>
+        <translation>Gáz 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="965"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2206"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3294"/>
         <source>Gas 3</source>
-        <translation type="unfinished"/>
+        <translation>Gáz 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="970"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2211"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3299"/>
         <source>Gas 4</source>
-        <translation type="unfinished"/>
+        <translation>Gáz 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="975"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2216"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3304"/>
         <source>Gas 5</source>
-        <translation type="unfinished"/>
+        <translation>Gáz 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1040"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2281"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3369"/>
         <source>Dil 1</source>
-        <translation type="unfinished"/>
+        <translation>Dil 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1045"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2286"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3374"/>
         <source>Dil 2</source>
-        <translation type="unfinished"/>
+        <translation>Dil 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1050"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2291"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3379"/>
         <source>Dil 3</source>
-        <translation type="unfinished"/>
+        <translation>Dil 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1055"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2296"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3384"/>
         <source>Dil 4</source>
-        <translation type="unfinished"/>
+        <translation>Dil 4</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1060"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2301"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3389"/>
         <source>Dil 5</source>
-        <translation type="unfinished"/>
+        <translation>Dil 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1095"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2346"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3434"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Alapérték</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1105"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2356"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3444"/>
         <source>SP 1</source>
-        <translation type="unfinished"/>
+        <translation>SP 1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1110"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2361"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3449"/>
         <source>SP 2</source>
-        <translation type="unfinished"/>
+        <translation>SP 2</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1115"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2366"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3454"/>
         <source>SP 3</source>
-        <translation type="unfinished"/>
+        <translation>SP 3</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1136"/>
@@ -1406,13 +1410,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3509"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3525"/>
         <source>cbar</source>
-        <translation type="unfinished"/>
+        <translation>cbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1884"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3007"/>
         <source>mbar</source>
-        <translation type="unfinished"/>
+        <translation>mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2371"/>
@@ -1424,7 +1428,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2376"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3464"/>
         <source>SP 5</source>
-        <translation type="unfinished"/>
+        <translation>SP 5</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2384"/>
@@ -1435,13 +1439,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2408"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3473"/>
         <source>Fixed setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Rögzített alapérték</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2413"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3478"/>
         <source>Sensor</source>
-        <translation type="unfinished"/>
+        <translation>Érzékelő</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3486"/>
@@ -1453,24 +1457,24 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2466"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3541"/>
         <source>pO₂ max</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ max</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="1175"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2473"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3548"/>
         <source>pO₂ min</source>
-        <translation type="unfinished"/>
+        <translation>pO₂ min</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3589"/>
         <source>Safety level</source>
-        <translation type="unfinished"/>
+        <translation>Biztonsági szint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3615"/>
         <source>Altitude range</source>
-        <translation type="unfinished"/>
+        <translation>Magassági tartomány</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3622"/>
@@ -1481,55 +1485,55 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="338"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3642"/>
         <source>Number of dives</source>
-        <translation type="unfinished"/>
+        <translation>Merülések száma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3702"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3749"/>
         <source>P0 (none)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P0 (nincs)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3754"/>
         <source>P1 (medium)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P1 (közepes)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3759"/>
         <source>P2 (high)</source>
         <extracomment>Suunto safety level</extracomment>
-        <translation type="unfinished"/>
+        <translation>P2 (magas)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3767"/>
         <source>Sample rate</source>
-        <translation type="unfinished"/>
+        <translation>Mintavétel aránya</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3780"/>
         <source>20s</source>
-        <translation type="unfinished"/>
+        <translation>20mp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3785"/>
         <source>30s</source>
-        <translation type="unfinished"/>
+        <translation>30mp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3790"/>
         <source>60s</source>
-        <translation type="unfinished"/>
+        <translation>60mp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3798"/>
         <source>Total dive time</source>
-        <translation type="unfinished"/>
+        <translation>Teljes merülési idő</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="694"/>
@@ -1538,22 +1542,22 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3822"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3914"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3836"/>
         <source>24h</source>
-        <translation type="unfinished"/>
+        <translation>24ó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3841"/>
         <source>12h</source>
-        <translation type="unfinished"/>
+        <translation>12ó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3849"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Idő formátum</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3864"/>
@@ -1563,7 +1567,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metrikus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
@@ -1571,22 +1575,22 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2819"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3880"/>
         <source>s</source>
-        <translation type="unfinished"/>
+        <translation>mp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3887"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Fény</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3904"/>
         <source>Depth alarm</source>
-        <translation type="unfinished"/>
+        <translation>Mélység risztás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3924"/>
         <source>Time alarm</source>
-        <translation type="unfinished"/>
+        <translation>Idő riasztás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="399"/>
@@ -1606,12 +1610,12 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="424"/>
         <source>Salinity</source>
-        <translation type="unfinished"/>
+        <translation>Sótartalom</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="434"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="666"/>
@@ -1621,27 +1625,27 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="676"/>
         <source>L16-GF OC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF OC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="681"/>
         <source>L16-GF CC</source>
-        <translation type="unfinished"/>
+        <translation>L16-GF CC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="686"/>
         <source>PSCR-GF</source>
-        <translation type="unfinished"/>
+        <translation>PSCR-GF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2881"/>
         <source>Travel gas consumption</source>
-        <translation type="unfinished"/>
+        <translation>Utazó gáz fogyasztás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="2904"/>
         <source>Button sensitivity</source>
-        <translation type="unfinished"/>
+        <translation>Gomb érzékenység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3034"/>
@@ -1656,7 +1660,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3181"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="896"/>
@@ -1666,90 +1670,90 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1367"/>
         <source>Backup dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Búvárkomputer beállításainak biztonsági mentése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1368"/>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1389"/>
         <source>Backup files</source>
-        <translation type="unfinished"/>
+        <translation>Fájlok biztonsági mentése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1372"/>
         <source>XML backup error</source>
-        <translation type="unfinished"/>
+        <translation>XML biztonsági mentés hiba</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
         <source>An error occurred while saving the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Egy hiba lépett fel a fájl biztonági mentésése közben. %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1376"/>
         <source>Backup succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Biztonsági mentés sikeres</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1377"/>
         <source>Your settings have been saved to: %1</source>
-        <translation type="unfinished"/>
+        <translation>A beállításaid mentve lettek: %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1388"/>
         <source>Restore dive computer settings</source>
-        <translation type="unfinished"/>
+        <translation>Helyreállítani a buvárkomputer beállításat</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1394"/>
         <source>XML restore error</source>
-        <translation type="unfinished"/>
+        <translation>XML helyreállítási hiba</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1395"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Egy hiba lépett fel a biztonági mentésése helyreállítása közben. %1</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1399"/>
         <source>Restore succeeded</source>
-        <translation type="unfinished"/>
+        <translation>Helyreállítás sikeres</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1400"/>
         <source>Your settings have been restored successfully.</source>
-        <translation type="unfinished"/>
+        <translation>A beállításaid helyreállítása sikeres.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1410"/>
         <source>Select firmware file</source>
-        <translation type="unfinished"/>
+        <translation>Firmware fájl kiválasztása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1411"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Összes fájl</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1472"/>
         <source>Log files</source>
-        <translation type="unfinished"/>
+        <translation>Napló fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1497"/>
         <source>Connecting to device...</source>
-        <translation type="unfinished"/>
+        <translation>Csatlakozás az eszközhöz ...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1523"/>
         <source>Connected to device</source>
-        <translation type="unfinished"/>
+        <translation>Csatlakoztatva az eszközhöz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1543"/>
         <source>Disconnected from device</source>
-        <translation type="unfinished"/>
+        <translation>Leválasztva az eszközről</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1471"/>
@@ -1770,38 +1774,38 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Típus</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Méret</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>Work press.</source>
-        <translation type="unfinished"/>
+        <translation>Munka nyomás</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <location filename="../qt-models/cylindermodel.cpp" line="24"/>
         <source>Start press.</source>
-        <translation type="unfinished"/>
+        <translation>Kezdő nyomás</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>End press.</source>
-        <translation type="unfinished"/>
+        <translation>Végső nyomás</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>O₂%</source>
-        <translation type="unfinished"/>
+        <translation>O₂%</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="16"/>
         <source>He%</source>
-        <translation type="unfinished"/>
+        <translation>He%</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
@@ -1821,7 +1825,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="17"/>
         <source>Use</source>
-        <translation type="unfinished"/>
+        <translation>Használ</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="52"/>
@@ -1831,7 +1835,7 @@
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="56"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../qt-models/cylindermodel.cpp" line="247"/>
@@ -1874,32 +1878,32 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="73"/>
         <source>Dive site</source>
-        <translation type="unfinished"/>
+        <translation>Merülő hely</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="80"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="87"/>
         <source>Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="94"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="101"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="108"/>
         <source>Weights</source>
-        <translation type="unfinished"/>
+        <translation>Súlyok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="115"/>
@@ -1919,7 +1923,7 @@
     <message>
         <location filename="../desktop-widgets/divecomponentselection.ui" line="136"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
 </context>
 <context>
@@ -1927,18 +1931,18 @@
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.ui" line="17"/>
         <source>Edit dive computer nicknames</source>
-        <translation type="unfinished"/>
+        <translation>Búvárkomputer becenév szerkesztése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="42"/>
         <source>Remove the selected dive computer?</source>
-        <translation type="unfinished"/>
+        <translation>Elávolítja a kiválasztott buvárkomutert?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divecomputermanagementdialog.cpp" line="43"/>
         <source>Are you sure that you want to 
  remove the selected dive computer?</source>
-        <translation type="unfinished"/>
+        <translation>Biztosan el akarod távolítani a kiválaszott buvárkomputert?</translation>
     </message>
 </context>
 <context>
@@ -1951,17 +1955,17 @@
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="9"/>
         <source>Device ID</source>
-        <translation type="unfinished"/>
+        <translation>Eszköz azonosító</translation>
     </message>
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="9"/>
         <source>Nickname</source>
-        <translation type="unfinished"/>
+        <translation>Becenév</translation>
     </message>
     <message>
         <location filename="../qt-models/divecomputermodel.cpp" line="36"/>
         <source>Clicking here will remove this dive computer.</source>
-        <translation type="unfinished"/>
+        <translation>Ide kattintva eltávolíthatja a buvárkomputert</translation>
     </message>
 </context>
 <context>
@@ -1969,7 +1973,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="47"/>
         <source>Dive details</source>
-        <translation type="unfinished"/>
+        <translation>Merülés részletei</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="142"/>
@@ -1979,12 +1983,12 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="159"/>
         <source>Cancel edit</source>
-        <translation type="unfinished"/>
+        <translation>Szerkesztés visszavonása</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="169"/>
         <source>Show on map</source>
-        <translation type="unfinished"/>
+        <translation>Mutasd a térképen</translation>
     </message>
 </context>
 <context>
@@ -1992,7 +1996,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="116"/>
         <source>Dive %1</source>
-        <translation type="unfinished"/>
+        <translation>Merülés %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="120"/>
@@ -2002,18 +2006,18 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="132"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Elhelyezkedés:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="155"/>
         <source>Coordinates:</source>
-        <translation type="unfinished"/>
+        <translation>Koordináták:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="168"/>
         <source>Use current
 GPS location:</source>
-        <translation type="unfinished"/>
+        <translation>Használd az aktuális GPS elhelyezkedést:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="189"/>
@@ -2023,72 +2027,72 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="202"/>
         <source>Duration:</source>
-        <translation type="unfinished"/>
+        <translation>Időtartam:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="216"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="242"/>
         <source>Suit:</source>
-        <translation type="unfinished"/>
+        <translation>Ruha:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="263"/>
         <source>Buddy:</source>
-        <translation type="unfinished"/>
+        <translation>Merülőtárs:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="283"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Merülés vezető:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="303"/>
         <source>Weight:</source>
-        <translation type="unfinished"/>
+        <translation>Súly:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="317"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Palack:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="331"/>
         <source>Gas mix:</source>
-        <translation type="unfinished"/>
+        <translation>Gázkeverék:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="345"/>
         <source>Start Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Induló nyomás:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="358"/>
         <source>End Pressure:</source>
-        <translation type="unfinished"/>
+        <translation>Végső nyomás:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="371"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="384"/>
         <source>Visibility:</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="398"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek:</translation>
     </message>
 </context>
 <context>
@@ -2096,27 +2100,27 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="228"/>
         <source>No profile to show</source>
-        <translation type="unfinished"/>
+        <translation>Nincs profil megmutatni</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="234"/>
         <source>Suit:</source>
-        <translation type="unfinished"/>
+        <translation>Ruha:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="240"/>
         <source>Air Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="284"/>
         <source>Cylinder:</source>
-        <translation type="unfinished"/>
+        <translation>Palack:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="246"/>
         <source>Water Temp:</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="63"/>
@@ -2126,37 +2130,37 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="112"/>
         <source>Rating:</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="155"/>
         <source>Visibility:</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="337"/>
         <source>Divemaster:</source>
-        <translation type="unfinished"/>
+        <translation>Merülés vezető:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="291"/>
         <source>Weight:</source>
-        <translation type="unfinished"/>
+        <translation>Súly:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="344"/>
         <source>Buddy:</source>
-        <translation type="unfinished"/>
+        <translation>Merülőtárs:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="298"/>
         <source>SAC:</source>
-        <translation type="unfinished"/>
+        <translation>SAC:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsView.qml" line="380"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
 </context>
 <context>
@@ -2174,17 +2178,17 @@ GPS location:</source>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="189"/>
         <source>ΔHe</source>
-        <translation type="unfinished"/>
+        <translation>ΔHe</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="190"/>
         <source>ΔN₂</source>
-        <translation type="unfinished"/>
+        <translation>ΔN₂</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="211"/>
         <source>Manual switch to OC</source>
-        <translation type="unfinished"/>
+        <translation>Kézi váltás OC-re</translation>
     </message>
     <message>
         <location filename="../profile-widget/diveeventitem.cpp" line="213"/>
@@ -2204,7 +2208,7 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="39"/>
         <source>Date/time</source>
-        <translation type="unfinished"/>
+        <translation>Dátum/idő</translation>
     </message>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="41"/>
@@ -2219,12 +2223,12 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="78"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../qt-models/diveimportedmodel.cpp" line="78"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
 </context>
 <context>
@@ -2239,7 +2243,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="350"/>
         <source>Cloud credentials</source>
-        <translation type="unfinished"/>
+        <translation>Felhő hitelesítő adatok</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="357"/>
@@ -2249,7 +2253,7 @@ GPS location:</source>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="382"/>
         <source>No dives in dive list</source>
-        <translation type="unfinished"/>
+        <translation>Nincs merülés a listában</translation>
     </message>
 </context>
 <context>
@@ -2267,12 +2271,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="861"/>
         <source>Collapse others</source>
-        <translation type="unfinished"/>
+        <translation>Továbbiak összecsukása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="865"/>
         <source>Remove dive(s) from trip</source>
-        <translation type="unfinished"/>
+        <translation>Merülés(ek) eltávolítása az túrából</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="866"/>
@@ -2282,12 +2286,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="880"/>
         <source>Add dive(s) to trip immediately above</source>
-        <translation type="unfinished"/>
+        <translation>Merülés(ek) hozzáadása a túrához azonnal fölé</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="882"/>
         <source>Add dive(s) to trip immediately below</source>
-        <translation type="unfinished"/>
+        <translation>Merülés(ek) hozzáadása a túrához azonnal alá</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="886"/>
@@ -2302,7 +2306,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="891"/>
         <source>Delete dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Merülés(ek) törlése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="893"/>
@@ -2312,12 +2316,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="897"/>
         <source>Merge selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Egysiteni a kiválasztott merüléseket</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="899"/>
         <source>Renumber dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Újraszámozni a merülés(t/eket)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
@@ -2327,22 +2331,22 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="901"/>
         <source>Split selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Felosztani a kiválasztott merüléseket</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="902"/>
         <source>Load image(s) from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Kép(ek) betöltése fájlból</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="903"/>
         <source>Load image from web</source>
-        <translation type="unfinished"/>
+        <translation>Kép betöltése webről</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
         <source>Image files (%1)</source>
-        <translation type="unfinished"/>
+        <translation>Kép fájlok (%1)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="985"/>
@@ -2352,7 +2356,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="927"/>
         <source>Open image files</source>
-        <translation type="unfinished"/>
+        <translation>Képfájl megnyitása</translation>
     </message>
 </context>
 <context>
@@ -2360,12 +2364,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="389"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
-        <translation type="unfinished"/>
+        <translation>Új merülőhely létrehozása, az aktuális merülésre vonatkozó információinak másolásával</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="390"/>
         <source>Create a new dive site with this name</source>
-        <translation type="unfinished"/>
+        <translation>Új merülőhely létrehozása ezzel a névvel</translation>
     </message>
 </context>
 <context>
@@ -2373,57 +2377,57 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="14"/>
         <source>Export dive log files</source>
-        <translation type="unfinished"/>
+        <translation>Merülésnaplófájlok exportálása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="44"/>
         <source>General export</source>
-        <translation type="unfinished"/>
+        <translation>Általános exportálás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="103"/>
         <source>Export format</source>
-        <translation type="unfinished"/>
+        <translation>Exportálás formátuma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="115"/>
         <source>Subsurface &amp;XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface &amp;XML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="134"/>
         <source>UDDF</source>
-        <translation type="unfinished"/>
+        <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="147"/>
         <source>di&amp;velogs.de</source>
-        <translation type="unfinished"/>
+        <translation>di&amp;velogs.de</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="157"/>
         <source>DiveShare</source>
-        <translation type="unfinished"/>
+        <translation>DiveShare</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="167"/>
         <source>CSV dive profile</source>
-        <translation type="unfinished"/>
+        <translation>CSV merülés profil</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="177"/>
         <source>CSV dive details</source>
-        <translation type="unfinished"/>
+        <translation>CSV merülés részletek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="187"/>
         <source>Worldmap</source>
-        <translation type="unfinished"/>
+        <translation>Világtérkép</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
         <source>TeX</source>
-        <translation type="unfinished"/>
+        <translation>TeX</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="207"/>
@@ -2433,28 +2437,28 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="253"/>
         <source>Selection</source>
-        <translation type="unfinished"/>
+        <translation>Kiválasztás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="262"/>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
         <source>Selected dives</source>
-        <translation type="unfinished"/>
+        <translation>Kiválasztott merülések</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="272"/>
         <source>All dives</source>
-        <translation type="unfinished"/>
+        <translation>Összes merülés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="285"/>
         <source>CSV units</source>
-        <translation type="unfinished"/>
+        <translation>CSV egységek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="298"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metrikus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="303"/>
@@ -2464,22 +2468,22 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="316"/>
         <source>HTML</source>
-        <translation type="unfinished"/>
+        <translation>HTML</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="334"/>
         <source>General settings</source>
-        <translation type="unfinished"/>
+        <translation>Általános beállítások</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="340"/>
         <source>Subsurface numbers</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface számok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="369"/>
         <source>Export yearly statistics</source>
-        <translation type="unfinished"/>
+        <translation>Éves statisztika exportálása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
@@ -2489,32 +2493,32 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="395"/>
         <source>Export list only</source>
-        <translation type="unfinished"/>
+        <translation>Csak a lista exportálása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="402"/>
         <source>Export photos</source>
-        <translation type="unfinished"/>
+        <translation>Fotók exportálása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
         <source>Style options</source>
-        <translation type="unfinished"/>
+        <translation>Stílus beállítása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="433"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Betűtípus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="443"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Betű mérete</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="454"/>
         <source>8</source>
-        <translation type="unfinished"/>
+        <translation>8</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
@@ -2524,43 +2528,43 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="464"/>
         <source>12</source>
-        <translation type="unfinished"/>
+        <translation>12</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="469"/>
         <source>14</source>
-        <translation type="unfinished"/>
+        <translation>14</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
         <source>16</source>
-        <translation type="unfinished"/>
+        <translation>16</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="479"/>
         <source>18</source>
-        <translation type="unfinished"/>
+        <translation>18</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="484"/>
         <source>20</source>
-        <translation type="unfinished"/>
+        <translation>20</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="492"/>
         <source>Theme</source>
-        <translation type="unfinished"/>
+        <translation>Téma</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="503"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="102"/>
         <source>Light</source>
-        <translation type="unfinished"/>
+        <translation>Fény</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
         <source>Sand</source>
-        <translation type="unfinished"/>
+        <translation>Homok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="79"/>
@@ -2595,7 +2599,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="91"/>
         <source>Subsurface native XML format.</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface nativ XML formátum</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="93"/>
@@ -2615,29 +2619,29 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="139"/>
         <source>UDDF files</source>
-        <translation type="unfinished"/>
+        <translation>UDDF fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
         <source>CSV files</source>
-        <translation type="unfinished"/>
+        <translation>CSV fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="154"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="178"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>HTML fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="159"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="171"/>
         <source>TeX files</source>
-        <translation type="unfinished"/>
+        <translation>TeX fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="142"/>
@@ -2648,12 +2652,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="153"/>
         <source>Export world map</source>
-        <translation type="unfinished"/>
+        <translation>Világtérkép exportálása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="158"/>
         <source>Export Subsurface XML</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface XML exportálása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="167"/>
@@ -2663,7 +2667,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="171"/>
         <source>Export to TeX file</source>
-        <translation type="unfinished"/>
+        <translation>Exportálás TeX fájlba</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="177"/>
@@ -2673,13 +2677,13 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="193"/>
         <source>Please wait, exporting...</source>
-        <translation type="unfinished"/>
+        <translation>Kérlek várj, exportálás ...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="228"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="410"/>
         <source>Can&apos;t open file %s</source>
-        <translation type="unfinished"/>
+        <translation>A %s fájlt nem lehet megnyitni</translation>
     </message>
 </context>
 <context>
@@ -2692,37 +2696,37 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="89"/>
         <source>dd.mm.yyyy</source>
-        <translation type="unfinished"/>
+        <translation>nn.hh.éééé</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="94"/>
         <source>mm/dd/yyyy</source>
-        <translation type="unfinished"/>
+        <translation>hh/nn/éééé</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="99"/>
         <source>yyyy-mm-dd</source>
-        <translation type="unfinished"/>
+        <translation>éééé-hh-nn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="108"/>
         <source>Seconds</source>
-        <translation type="unfinished"/>
+        <translation>Másodpercek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="113"/>
         <source>Minutes</source>
-        <translation type="unfinished"/>
+        <translation>Percek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="118"/>
         <source>Minutes:seconds</source>
-        <translation type="unfinished"/>
+        <translation>Percek:másodpercek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="127"/>
         <source>Metric</source>
-        <translation type="unfinished"/>
+        <translation>Metrikus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="132"/>
@@ -2750,25 +2754,25 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="751"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="870"/>
         <source>Sample time</source>
-        <translation type="unfinished"/>
+        <translation>Idő minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="635"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="753"/>
         <source>Sample depth</source>
-        <translation type="unfinished"/>
+        <translation>Mélység minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="637"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="755"/>
         <source>Sample temperature</source>
-        <translation type="unfinished"/>
+        <translation>Hőmérséklet minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="639"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="757"/>
         <source>Sample pO₂</source>
-        <translation type="unfinished"/>
+        <translation>Minta pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="641"/>
@@ -2792,19 +2796,19 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="647"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="765"/>
         <source>Sample CNS</source>
-        <translation type="unfinished"/>
+        <translation>Minta CNS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="649"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="767"/>
         <source>Sample NDL</source>
-        <translation type="unfinished"/>
+        <translation>Minta NDL</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="651"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="769"/>
         <source>Sample TTS</source>
-        <translation type="unfinished"/>
+        <translation>Minta TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="653"/>
@@ -2816,7 +2820,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="655"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="773"/>
         <source>Sample pressure</source>
-        <translation type="unfinished"/>
+        <translation>Nyomás minta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="657"/>
@@ -2829,7 +2833,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="749"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="874"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Merülés #</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="662"/>
@@ -2855,43 +2859,43 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="665"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="886"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="666"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="888"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Átl. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="667"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="920"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="668"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="922"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="669"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="910"/>
         <source>Cyl. size</source>
-        <translation type="unfinished"/>
+        <translation>Palack méret</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="670"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="912"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Kezdő nyomás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="671"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="914"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Végső nyomás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="672"/>
@@ -2915,7 +2919,7 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="675"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="884"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="676"/>
@@ -2933,39 +2937,39 @@ GPS location:</source>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="678"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="894"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="679"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="779"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="926"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="680"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="777"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="924"/>
         <source>Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="681"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="896"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="682"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="898"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Súly</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="683"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="900"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
 </context>
 <context>
@@ -2981,7 +2985,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="74"/>
         <source>Planned dive time</source>
-        <translation type="unfinished"/>
+        <translation>Tervezett merülési idő</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="117"/>
@@ -2996,42 +3000,42 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="166"/>
         <source>mbar</source>
-        <translation type="unfinished"/>
+        <translation>mbar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="144"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="131"/>
         <source>Water type</source>
-        <translation type="unfinished"/>
+        <translation>Víz típusa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="180"/>
         <source>Fresh water</source>
-        <translation type="unfinished"/>
+        <translation>Édesvíz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="185"/>
         <source>Sea water</source>
-        <translation type="unfinished"/>
+        <translation>Sósvíz</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="190"/>
         <source>EN13319</source>
-        <translation type="unfinished"/>
+        <translation>EN13319</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="195"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Egyéni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.ui" line="221"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -3039,17 +3043,17 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="169"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>ismeretlen</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="270"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>pal.</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="376"/>
         <source>Final depth</source>
-        <translation type="unfinished"/>
+        <translation>Végső mélység</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="378"/>
@@ -3074,17 +3078,17 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="386"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Merülési mód</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1038"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1044"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplannermodel.cpp" line="1047"/>
@@ -3107,12 +3111,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="119"/>
         <source>Available gases</source>
-        <translation type="unfinished"/>
+        <translation>Elérhető gázok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="120"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Palack hozzáadása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="151"/>
@@ -3122,12 +3126,12 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="161"/>
         <source>Save new</source>
-        <translation type="unfinished"/>
+        <translation>Új mentése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="266"/>
         <source>kg/ℓ</source>
-        <translation type="unfinished"/>
+        <translation>kg/ℓ</translation>
     </message>
 </context>
 <context>
@@ -3145,17 +3149,17 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="118"/>
         <source>Pressure</source>
-        <translation type="unfinished"/>
+        <translation>Nyomás</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="120"/>
         <source>Temperature</source>
-        <translation type="unfinished"/>
+        <translation>Hőmérséklet</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="122"/>
         <source>Color</source>
-        <translation type="unfinished"/>
+        <translation>Szín</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="124"/>
@@ -3180,52 +3184,52 @@ GPS location:</source>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="132"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="134"/>
         <source>pN₂</source>
-        <translation type="unfinished"/>
+        <translation>pN₂</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="136"/>
         <source>pHe</source>
-        <translation type="unfinished"/>
+        <translation>pHe</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="138"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="140"/>
         <source>Setpoint</source>
-        <translation type="unfinished"/>
+        <translation>Alapérték</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="142"/>
         <source>Sensor 1</source>
-        <translation type="unfinished"/>
+        <translation>Érzékelő 1</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="144"/>
         <source>Sensor 2</source>
-        <translation type="unfinished"/>
+        <translation>Érzékelő 2</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="146"/>
         <source>Sensor 3</source>
-        <translation type="unfinished"/>
+        <translation>Érzékelő 3</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="148"/>
         <source>Ambient pressure</source>
-        <translation type="unfinished"/>
+        <translation>Környezeti nyomás</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="150"/>
         <source>Heart rate</source>
-        <translation type="unfinished"/>
+        <translation>Pulzus</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="152"/>
@@ -3243,7 +3247,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Párbezéd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="61"/>
@@ -3253,7 +3257,7 @@ GPS location:</source>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="75"/>
         <source>⌫</source>
-        <translation type="unfinished"/>
+        <translation>⌫</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveshareexportdialog.ui" line="82"/>
@@ -3308,7 +3312,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="485"/>
         <location filename="../qt-models/divetripmodel.cpp" line="540"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="488"/>
@@ -3324,18 +3328,18 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="497"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Súly</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="500"/>
         <location filename="../qt-models/divetripmodel.cpp" line="555"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="494"/>
         <source>Temp.</source>
-        <translation type="unfinished"/>
+        <translation>Hőm.</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="503"/>
@@ -3347,40 +3351,40 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <location filename="../qt-models/divetripmodel.cpp" line="561"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Gáz</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="509"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="512"/>
         <location filename="../qt-models/divetripmodel.cpp" line="569"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OTU</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="515"/>
         <location filename="../qt-models/divetripmodel.cpp" line="572"/>
         <source>Max CNS</source>
-        <translation type="unfinished"/>
+        <translation>Max CNS</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="518"/>
         <location filename="../qt-models/divetripmodel.cpp" line="575"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="521"/>
         <source>Photos</source>
-        <translation type="unfinished"/>
+        <translation>Fotók</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="524"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Ország</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="527"/>
@@ -3396,7 +3400,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="543"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="543"/>
@@ -3591,7 +3595,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="362"/>
         <source>Log files</source>
-        <translation type="unfinished"/>
+        <translation>Napló fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="387"/>
@@ -3637,7 +3641,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="115"/>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="132"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="73"/>
@@ -3700,12 +3704,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="243"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Összes kiválasztása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="250"/>
         <source>Unselect all</source>
-        <translation type="unfinished"/>
+        <translation>Összes kiválaszás törlése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="291"/>
@@ -3716,7 +3720,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="298"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="191"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="16"/>
@@ -3771,7 +3775,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="251"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Elfogad</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="270"/>
@@ -4000,7 +4004,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/models.cpp" line="52"/>
         <source>cyl.</source>
-        <translation type="unfinished"/>
+        <translation>pal.</translation>
     </message>
 </context>
 <context>
@@ -4129,7 +4133,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="43"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="53"/>
@@ -4144,7 +4148,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="76"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="97"/>
@@ -4154,12 +4158,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="138"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="152"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Ország</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationInformation.ui" line="162"/>
@@ -4231,7 +4235,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="535"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="574"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="14"/>
@@ -4252,13 +4256,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="107"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="308"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="117"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="309"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
@@ -4274,7 +4278,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="225"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="260"/>
@@ -4289,27 +4293,27 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="316"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="329"/>
         <source>Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="336"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="395"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="405"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Merülési mód</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="499"/>
@@ -4344,7 +4348,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="60"/>
         <source>Photos</source>
-        <translation type="unfinished"/>
+        <translation>Fotók</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="84"/>
@@ -4364,12 +4368,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="105"/>
         <source>Add cylinder</source>
-        <translation type="unfinished"/>
+        <translation>Palack hozzáadása</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="108"/>
         <source>Weights</source>
-        <translation type="unfinished"/>
+        <translation>Súlyok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="109"/>
@@ -4850,7 +4854,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/mainwindow.cpp" line="578"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="2029"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>Mégse</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="583"/>
@@ -4943,7 +4947,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1662"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
@@ -4985,7 +4989,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1431"/>
         <source>UDDF</source>
-        <translation type="unfinished"/>
+        <translation>UDDF</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
@@ -5037,7 +5041,7 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1439"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Összes fájl</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
@@ -5175,7 +5179,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="304"/>
         <source>Update firmware</source>
-        <translation type="unfinished"/>
+        <translation>Firmware frissítése</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="306"/>
@@ -5267,7 +5271,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="553"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="556"/>
@@ -5279,7 +5283,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <location filename="../desktop-widgets/diveplanner.cpp" line="565"/>
         <location filename="../desktop-widgets/diveplanner.cpp" line="566"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/diveplanner.cpp" line="575"/>
@@ -5307,12 +5311,12 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="29"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Betűtípus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="39"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Betű mérete</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="52"/>
@@ -5352,7 +5356,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="121"/>
         <source>...</source>
-        <translation type="unfinished"/>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="130"/>
@@ -5402,7 +5406,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface fájlok</translation>
     </message>
 </context>
 <context>
@@ -5464,7 +5468,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="298"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="245"/>
@@ -5569,13 +5573,13 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="192"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="275"/>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="328"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="321"/>
@@ -5654,7 +5658,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="132"/>
         <source>Time format</source>
-        <translation type="unfinished"/>
+        <translation>Idő formátum</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_language.ui" line="151"/>
@@ -5737,7 +5741,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="108"/>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="172"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Jelszó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="134"/>
@@ -5897,7 +5901,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="96"/>
         <source>Pressure</source>
-        <translation type="unfinished"/>
+        <translation>Nyomás</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="103"/>
@@ -5927,7 +5931,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="150"/>
         <source>Temperature</source>
-        <translation type="unfinished"/>
+        <translation>Hőmérséklet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="157"/>
@@ -5942,7 +5946,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="177"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Súly</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="184"/>
@@ -5967,12 +5971,12 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="220"/>
         <source>Minutes</source>
-        <translation type="unfinished"/>
+        <translation>Percek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="227"/>
         <source>Seconds</source>
-        <translation type="unfinished"/>
+        <translation>Másodpercek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="237"/>
@@ -6133,7 +6137,7 @@ Please export this template to a different file.</source>
         <location filename="../desktop-widgets/printoptions.cpp" line="149"/>
         <location filename="../desktop-widgets/printoptions.cpp" line="180"/>
         <source>HTML files</source>
-        <translation type="unfinished"/>
+        <translation>HTML fájlok</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.cpp" line="159"/>
@@ -6423,14 +6427,14 @@ Please export this template to a different file.</source>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="950"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="950"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="951"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
@@ -6565,7 +6569,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="21"/>
         <source>No cloud mode</source>
-        <translation type="unfinished"/>
+        <translation>Nem felhő mód</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="31"/>
@@ -6575,7 +6579,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="39"/>
         <source>Email</source>
-        <translation type="unfinished"/>
+        <translation>Email</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
@@ -6595,7 +6599,7 @@ Please export this template to a different file.</source>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="85"/>
         <source>Theme</source>
-        <translation type="unfinished"/>
+        <translation>Téma</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="93"/>
@@ -6849,12 +6853,12 @@ Files with inappropriate date/time</source>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="60"/>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="71"/>
         <source>All files</source>
-        <translation type="unfinished"/>
+        <translation>Összes fájl</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="71"/>
         <source>Subsurface files</source>
-        <translation type="unfinished"/>
+        <translation>Subsurface fájlok</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="70"/>
@@ -6872,7 +6876,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="376"/>
         <source>Medium</source>
-        <translation type="unfinished"/>
+        <translation>Közepes</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="396"/>
@@ -6890,13 +6894,13 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="400"/>
         <source>h</source>
         <comment>abbreviation for hours</comment>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="401"/>
         <source>min</source>
         <comment>abbreviation for minutes</comment>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="404"/>
@@ -6928,7 +6932,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Párbezéd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="26"/>
@@ -6938,7 +6942,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="31"/>
         <source>Medium</source>
-        <translation type="unfinished"/>
+        <translation>Közepes</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="36"/>
@@ -6993,7 +6997,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="113"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="126"/>
@@ -7154,7 +7158,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="135"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="154"/>
@@ -7164,17 +7168,17 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="173"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OTU</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="192"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="211"/>
         <source>Avg. depth</source>
-        <translation type="unfinished"/>
+        <translation>Átl. mélység</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="230"/>
@@ -7184,12 +7188,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="249"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="268"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="287"/>
@@ -7199,7 +7203,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.ui" line="306"/>
         <source>Water type</source>
-        <translation type="unfinished"/>
+        <translation>Víz típusa</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="71"/>
@@ -7210,13 +7214,13 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="77"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="84"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="77"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="84"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveInformation.cpp" line="77"/>
@@ -7234,7 +7238,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="14"/>
         <source>Photos</source>
-        <translation type="unfinished"/>
+        <translation>Fotók</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.ui" line="29"/>
@@ -7244,7 +7248,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="52"/>
         <source>Load image(s) from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Kép(ek) betöltése fájlból</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="53"/>
@@ -7297,7 +7301,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="97"/>
         <source>Temperature</source>
-        <translation type="unfinished"/>
+        <translation>Hőmérséklet</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="109"/>
@@ -7312,7 +7316,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="85"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.ui" line="159"/>
@@ -7387,7 +7391,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="93"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="95"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="84"/>
@@ -7395,7 +7399,7 @@ Files with inappropriate date/time</source>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="93"/>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="95"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="84"/>
@@ -7491,7 +7495,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="104"/>
         <source>Font</source>
-        <translation type="unfinished"/>
+        <translation>Betűtípus</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="112"/>
@@ -7521,7 +7525,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="144"/>
         <source>Font size</source>
-        <translation type="unfinished"/>
+        <translation>Betű mérete</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="165"/>
@@ -7546,7 +7550,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="188"/>
         <source>Custom</source>
-        <translation type="unfinished"/>
+        <translation>Egyéni</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/templateedit.ui" line="200"/>
@@ -7688,7 +7692,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="241"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="244"/>
@@ -7698,7 +7702,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="244"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="244"/>
@@ -7728,17 +7732,17 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="276"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="375"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="375"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="253"/>
@@ -7760,12 +7764,12 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="256"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="262"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Gáz</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="267"/>
@@ -7781,7 +7785,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="270"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OTU</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="279"/>
@@ -7791,7 +7795,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="282"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Ország</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="285"/>
@@ -7804,7 +7808,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"/>
+        <translation>Párbezéd</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
@@ -7878,7 +7882,7 @@ If you don&apos;t want Subsurface to continue checking, please click Decline.</s
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
         <source>Accept</source>
-        <translation type="unfinished"/>
+        <translation>Elfogad</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="121"/>
@@ -8100,7 +8104,7 @@ Language: %1</source>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="92"/>
         <source>Password</source>
-        <translation type="unfinished"/>
+        <translation>Jelszó</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/webservices.ui" line="106"/>
@@ -8123,12 +8127,12 @@ Language: %1</source>
     <message>
         <location filename="../qt-models/weightmodel.cpp" line="14"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Típus</translation>
     </message>
     <message>
         <location filename="../qt-models/weightmodel.cpp" line="14"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Súly</translation>
     </message>
     <message>
         <location filename="../qt-models/weightmodel.cpp" line="78"/>
@@ -8166,12 +8170,12 @@ Language: %1</source>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
@@ -8300,7 +8304,7 @@ Maximum</source>
         <location filename="../core/cochran.c" line="400"/>
         <location filename="../core/libdivecomputer.c" line="277"/>
         <source>pO₂</source>
-        <translation type="unfinished"/>
+        <translation>pO₂</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="361"/>
@@ -8633,7 +8637,7 @@ Maximum</source>
     <message>
         <location filename="../core/dive.c" line="341"/>
         <source>ℓ</source>
-        <translation type="unfinished"/>
+        <translation>ℓ</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="346"/>
@@ -8648,7 +8652,7 @@ Maximum</source>
         <location filename="../core/qthelper.cpp" line="765"/>
         <location filename="../core/qthelper.cpp" line="1294"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="392"/>
@@ -8934,7 +8938,7 @@ Maximum</source>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="30"/>
         <location filename="../core/uemis-downloader.c" line="194"/>
         <source>unknown</source>
-        <translation type="unfinished"/>
+        <translation>ismeretlen</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="257"/>
@@ -9313,7 +9317,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="397"/>
         <source>OTU</source>
-        <translation type="unfinished"/>
+        <translation>OTU</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="405"/>
@@ -9333,7 +9337,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     <message>
         <location filename="../core/plannernotes.c" line="499"/>
         <source>SAC</source>
-        <translation type="unfinished"/>
+        <translation>SAC</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="518"/>
@@ -9827,7 +9831,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/save-html.c" line="556"/>
         <location filename="../core/worldmap-save.c" line="113"/>
         <source>Can&apos;t open file %s</source>
-        <translation type="unfinished"/>
+        <translation>A %s fájlt nem lehet megnyitni</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="491"/>
@@ -9852,12 +9856,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="495"/>
         <source>Air temp.</source>
-        <translation type="unfinished"/>
+        <translation>Levegő hőm.</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="496"/>
         <source>Water temp.</source>
-        <translation type="unfinished"/>
+        <translation>Víz hőm.</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="497"/>
@@ -9892,12 +9896,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="505"/>
         <source>Rating</source>
-        <translation type="unfinished"/>
+        <translation>Értékelés</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="506"/>
         <source>Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Láthatóság</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="507"/>
@@ -9917,7 +9921,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="510"/>
         <source>Suit</source>
-        <translation type="unfinished"/>
+        <translation>Ruha</translation>
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="21"/>
@@ -9928,14 +9932,14 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/divesite-helper.cpp" line="29"/>
         <location filename="../core/save-html.c" line="511"/>
         <source>Tags</source>
-        <translation type="unfinished"/>
+        <translation>Címkék</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="512"/>
         <location filename="../smtk-import/smartrak.c" line="296"/>
         <location filename="../smtk-import/smartrak.c" line="369"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="513"/>
@@ -9985,7 +9989,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="524"/>
         <source>Max. depth</source>
-        <translation type="unfinished"/>
+        <translation>Max. mélység</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="525"/>
@@ -10025,7 +10029,7 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="534"/>
         <source>Dive #</source>
-        <translation type="unfinished"/>
+        <translation>Merülés #</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="535"/>
@@ -10046,12 +10050,12 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/save-html.c" line="538"/>
         <location filename="../core/save-html.c" line="545"/>
         <source>Type</source>
-        <translation type="unfinished"/>
+        <translation>Típus</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="539"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Méret</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="540"/>
@@ -10061,22 +10065,22 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="541"/>
         <source>Start pressure</source>
-        <translation type="unfinished"/>
+        <translation>Kezdő nyomás</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="542"/>
         <source>End pressure</source>
-        <translation type="unfinished"/>
+        <translation>Végső nyomás</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="543"/>
         <source>Gas</source>
-        <translation type="unfinished"/>
+        <translation>Gáz</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="544"/>
         <source>Weight</source>
-        <translation type="unfinished"/>
+        <translation>Súly</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="546"/>
@@ -10406,7 +10410,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/worldmap-save.c" line="45"/>
         <source>Duration:</source>
-        <translation type="unfinished"/>
+        <translation>Időtartam:</translation>
     </message>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
@@ -10417,7 +10421,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../core/worldmap-save.c" line="46"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
@@ -10425,7 +10429,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <location filename="../core/subsurface-qt/DiveObjectHelper.cpp" line="132"/>
         <location filename="../desktop-widgets/templatelayout.h" line="110"/>
         <source>h</source>
-        <translation type="unfinished"/>
+        <translation>ó</translation>
     </message>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
@@ -10453,12 +10457,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/worldmap-save.c" line="57"/>
         <source>Location:</source>
-        <translation type="unfinished"/>
+        <translation>Elhelyezkedés:</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="61"/>
         <source>Notes:</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek:</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="292"/>
@@ -10498,7 +10502,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../smtk-import/smartrak.c" line="294"/>
         <source>Length</source>
-        <translation type="unfinished"/>
+        <translation>Hossz</translation>
     </message>
     <message>
         <location filename="../smtk-import/smartrak.c" line="294"/>
@@ -10553,7 +10557,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/taxonomy.c" line="10"/>
         <source>Country</source>
-        <translation type="unfinished"/>
+        <translation>Ország</translation>
     </message>
     <message>
         <location filename="../core/taxonomy.c" line="11"/>
@@ -10711,7 +10715,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="291"/>
         <source>GPS</source>
-        <translation type="unfinished"/>
+        <translation>GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="399"/>
@@ -10899,7 +10903,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="323"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="406"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="293"/>
@@ -10920,7 +10924,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="370"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="800"/>
         <source>min</source>
-        <translation type="unfinished"/>
+        <translation>perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="389"/>
@@ -10955,12 +10959,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="515"/>
         <source>Dive mode</source>
-        <translation type="unfinished"/>
+        <translation>Merülési mód</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="525"/>
@@ -10971,12 +10975,12 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="546"/>
         <location filename="../desktop-widgets/plannerSettings.ui" line="608"/>
         <source>ℓ/min</source>
-        <translation type="unfinished"/>
+        <translation>ℓ/perc</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="640"/>
         <source>m</source>
-        <translation type="unfinished"/>
+        <translation>m</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="741"/>
@@ -11041,7 +11045,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="677"/>
         <source>Notes</source>
-        <translation type="unfinished"/>
+        <translation>Jegyzetek</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="715"/>
