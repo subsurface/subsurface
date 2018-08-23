@@ -8,7 +8,6 @@ option(COMMANDLINE "Build command line version" OFF)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-set(CMAKE_BUILD_TYPE "Release")
 
 set(SSRF_PATH ../)
 set(CMAKE_MODULE_PATH ${SSRF_PATH}cmake/Modules)
