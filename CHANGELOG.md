@@ -1,3 +1,4 @@
+- Desktop/Export: fix bug related to quoted text when exporting to HTML [#1576]
 - Desktop/Map-Widget: add support for filtering of map locations [#1581]
 - Android: switch to Download page when dive computer is plugged in and try to
   populate vendor / device / connection based on the information we get
