@@ -30,7 +30,9 @@ void save_photos(struct membuffer *b, const char *photos_dir, struct dive *dive)
 		put_string(b, separator);
 		separator = ", ";
 		char *fname = get_file_name(local_file_path(pic));
-		put_format(b, "{\"filename\":\"%s\"}", fname);
+		put_string(b, "{\"filename\":\"");
+		put_quoted(b, fname, 1, 0);
+		put_string(b, "\"}");
 		copy_image_and_overwrite(local_file_path(pic), photos_dir, fname);
 		free(fname);
 		pic = pic->next;
@@ -79,7 +81,9 @@ void put_HTML_bookmarks(struct membuffer *b, struct dive *dive)
 	do {
 		put_string(b, separator);
 		separator = ", ";
-		put_format(b, "{\"name\":\"%s\",", ev->name);
+		put_string(b, "{\"name\":\"");
+		put_quoted(b, ev->name, 1, 0);
+		put_string(b, "\",");
 		put_format(b, "\"value\":\"%d\",", ev->value);
 		put_format(b, "\"type\":\"%d\",", ev->type);
 		put_format(b, "\"time\":\"%d\"}", ev->time.seconds);
@@ -413,7 +417,7 @@ void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selec
 			found_sel_dive = 1;
 			put_format(b, "%c {", *sep);
 			(*sep) = ',';
-			put_format(b, "\"name\":\"%s\",", trip->location);
+			write_attribute(b, "name", trip->location, ", ");
 			put_format(b, "\"dives\":[");
 		}
 		put_string(b, separator);
