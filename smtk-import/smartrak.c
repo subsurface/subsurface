@@ -550,92 +550,41 @@ static int smtk_clean_cylinders(struct dive *d)
 }
 
 /*
- * Parses a relation table and fills a list with the relations for a dive idx.
- * Returns the number of relations found for a given dive idx.
- * Table relation format:
- * | Diveidx | Idx |
+ * List related functions
  */
-static int smtk_index_list(MdbHandle *mdb, char *table_name, char *dive_idx, int idx_list[])
+struct types_list {
+	int idx;
+	char *text;
+	struct types_list *next;
+};
+
+/* Head insert types_list items in a list */
+static void smtk_head_insert(struct types_list **head, int index, char *txt)
 {
-	int n = 0, i = 0;
-	MdbTableDef *table;
-	MdbColumn *cols[MDB_MAX_COLS];
-	char *bounders[MDB_MAX_COLS];
+	struct types_list *item = (struct types_list *) malloc(sizeof(struct types_list));
 
-	table = smtk_open_table(mdb, table_name, cols, bounders);
+	item->next = *head;
+	item->idx = index;
+	item->text = txt;
+	*head = item;
+	item = NULL;
+	free(item);
+}
 
-	/* Sanity check */
-	if (!table)
-		return 0;
-
-	/* Parse the table searching for dive_idx */
-	while (mdb_fetch_row(table)) {
-		if (!strcmp(dive_idx, cols[0]->bind_ptr)) {
-			idx_list[n] = atoi(cols[1]->bind_ptr);
-			n++;
-		}
+/* Clean types_list lists */
+static void smtk_list_free(struct types_list *head)
+{
+	struct types_list *p = head;
+	while (p) {
+		struct types_list *nxt = p->next;
+		free(p->text);
+		free(p);
+		p = nxt;
 	}
-
-	/* Clean up and exit */
-	smtk_free(bounders, table->num_cols);
-	mdb_free_tabledef(table);
-	return n;
 }
 
 /*
- * Returns string with buddies names as registered in smartrak (may be a nickname).
- * "Buddy" table is a buddies relation with lots and lots and lots of data (even buddy mother's
- * maiden name ;-) ) most of them useless for a dive log. Let's just consider the nickname as main
- * field and the full name if this exists and its construction is different from the nickname.
- * Buddy table format:
- * | Idx | Text (nickname) | Name | Firstname | Middlename | Title | Picture | Phone | ...
- */
-static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx)
-{
-	char *str = NULL, *fullname = NULL, *bounder[MDB_MAX_COLS] = { NULL }, *buddies[256] = { NULL };
-	MdbTableDef *table;
-	MdbColumn *col[MDB_MAX_COLS];
-	int i, n, rel[256] = { 0 };
-
-	n = smtk_index_list(mdb, "BuddyRelation", dive_idx, rel);
-	if (!n)
-		return str;
-	table = smtk_open_table(mdb, "Buddy", col, bounder);
-	if (!table)
-		return str;
-	/*
-	 * Buddies in a single dive aren't (usually) a big number, so probably
-	 * it's not a good idea to use a complex data structure and algorithm.
-	 */
-	while (mdb_fetch_row(table)) {
-		if (!empty_string(col[3]->bind_ptr))
-			fullname = smtk_concat_str(fullname, " ", "%s", col[3]->bind_ptr);
-		if (!empty_string(col[4]->bind_ptr))
-			fullname = smtk_concat_str(fullname, " ", "%s", col[4]->bind_ptr);
-		if (!empty_string(col[2]->bind_ptr))
-			fullname = smtk_concat_str(fullname, " ", "%s", col[2]->bind_ptr);
-		if (fullname && !same_string(col[1]->bind_ptr, fullname))
-			buddies[atoi(col[0]->bind_ptr)] = smtk_concat_str(buddies[atoi(col[0]->bind_ptr)], "", "%s (%s)", col[1]->bind_ptr, fullname);
-		else
-			buddies[atoi(col[0]->bind_ptr)] = smtk_concat_str(buddies[atoi(col[0]->bind_ptr)], "", "%s", col[1]->bind_ptr);
-		free(fullname);
-		fullname = NULL;
-	}
-	for (i = 0; i < n; i++)
-		str = smtk_concat_str(str, ", ", "%s", buddies[rel[i]]);
-
-	/* Clean up and exit */
-	smtk_free(buddies, 256);
-	smtk_free(bounder, MDB_MAX_COLS);
-	mdb_free_tabledef(table);
-	return str;
-}
-
-/* Parses the dive_type mdb tables and import the data into dive's
- * taglist structure or notes.  If there are tags that affects dive's dive_mode
- * (SCR, CCR or so), set the dive mode too.
- * The "tag" parameter is used to mark if we want this table to be imported
- * into tags or into notes.
+ * Build a list from a given table_name (Type, Gear, etc)
  * Managed tables formats: Just consider Idx and Text
  * Type:
  * | Idx | Text | Default (bool)
@@ -645,41 +594,170 @@ static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx)
  * | Idx | Text | Vendor | Type | Typenum | Notes | Default (bool) | TrakId
  * Fish:
  * | Idx | Text | Name | Latin name | Typelength | Maxlength | Picture | Default (bool)| TrakId
+ * TODO: Although all divelogs I've seen use *only* the Text field, a concerned diver could
+ * be using some other like Vendor (in Gear) or Latin name (in Fish). I'll take a look at this
+ * in the future, may be something like Buddy table...
  */
-static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_idx, char *table_name, char *rel_table_name, bool tag)
+static void smtk_build_list(MdbHandle *mdb,  char *table_name, struct types_list **head)
 {
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS], *tmp = NULL, *types[64] = { NULL };
-	int i = 0, n = 0, rels[256] = { 0 };
+	char *bound_values[MDB_MAX_COLS];
+	struct types_list *p = NULL;
 
-	n = smtk_index_list(mdb, rel_table_name, dive_idx, rels);
-	if (!n)
-		return;
 	table = smtk_open_table(mdb, table_name, col, bound_values);
 	if (!table)
 		return;
-	while (mdb_fetch_row(table))
-		types[atoi(col[0]->bind_ptr)] = copy_string(col[1]->bind_ptr);
 
-	for (i = 0; i < n; i++) {
-		if (tag)
-			taglist_add_tag(&dive->tag_list, types[rels[i]]);
+	/* Read the table items into an structured list */
+	while (mdb_fetch_row(table))
+		smtk_head_insert(&p, atoi(col[0]->bind_ptr), copy_string(col[1]->bind_ptr));
+	*head = p;
+
+	/* clean up and exit */
+	p = NULL;
+	free(p);
+	smtk_free(bound_values, table->num_cols);
+	mdb_free_tabledef(table);
+}
+
+/*
+ * Parses a relation table and returns a list with the relations for a dive idx.
+ * Use types_list items with text set to NULL.
+ * Returns a pointer to the list head.
+ * Table relation format:
+ * | Diveidx | Idx |
+ */
+static struct types_list *smtk_index_list(MdbHandle *mdb, char *table_name, char *dive_idx)
+{
+	MdbTableDef *table;
+	MdbColumn *cols[MDB_MAX_COLS];
+	char *bounders[MDB_MAX_COLS];
+	struct types_list *item, *head = NULL;
+
+	table = smtk_open_table(mdb, table_name, cols, bounders);
+
+	/* Sanity check */
+	if (!table)
+		return NULL;
+
+	/* Parse the table searching for dive_idx */
+	while (mdb_fetch_row(table)) {
+		if (!strcmp(dive_idx, cols[0]->bind_ptr))
+			smtk_head_insert(&head, atoi(cols[1]->bind_ptr), NULL);
+	}
+
+	/* Clean up and exit */
+	smtk_free(bounders, table->num_cols);
+	mdb_free_tabledef(table);
+	return head;
+}
+
+/*
+ * "Buddy" is a bit special table that needs some extra work, so we can't just use smtk_build_list.
+ * "Buddy" table is a buddies relation with lots and lots and lots of data (even buddy mother's
+ * maiden name ;-) ) most of them useless for a dive log. Let's just consider the nickname as main
+ * field and the full name if this exists and its construction is different from the nickname.
+ * Buddy table format:
+ * | Idx | Text (nickname) | Name | Firstname | Middlename | Title | Picture | Phone | ...
+ */
+static void smtk_build_buddies(MdbHandle *mdb, struct types_list **buddies_head) {
+	MdbTableDef *table;
+	MdbColumn *col[MDB_MAX_COLS];
+	char *bound_values[MDB_MAX_COLS], *fullname = NULL, *str = NULL;
+	struct types_list *p = NULL;
+
+	table = smtk_open_table(mdb, "Buddy", col, bound_values);
+	if (!table)
+		return;
+
+	while (mdb_fetch_row(table)) {
+		if (!empty_string(col[3]->bind_ptr))
+			fullname = smtk_concat_str(fullname, " ", "%s", col[3]->bind_ptr);
+		if (!empty_string(col[4]->bind_ptr))
+			fullname = smtk_concat_str(fullname, " ", "%s", col[4]->bind_ptr);
+		if (!empty_string(col[2]->bind_ptr))
+			fullname = smtk_concat_str(fullname, " ", "%s", col[2]->bind_ptr);
+		if (fullname && !same_string(col[1]->bind_ptr, fullname))
+			smtk_head_insert(&p, atoi(col[0]->bind_ptr), smtk_concat_str(str, "", "%s (%s)", col[1]->bind_ptr, fullname));
 		else
-			tmp = smtk_concat_str(tmp, ", ", "%s", types[rels[i]]);
-		if (strstr(types[rels[i]], "SCR"))
-			dive->dc.divemode = PSCR;
-		else if (strstr(types[rels[i]], "CCR"))
-			dive->dc.divemode = CCR;
+			smtk_head_insert(&p, atoi(col[0]->bind_ptr), smtk_concat_str(str, "", "%s", col[1]->bind_ptr));
+		free(fullname);
+		fullname = NULL;
+	}
+	*buddies_head = p;
+
+	p = NULL;
+	free(p);
+	free(str);
+	smtk_free(bound_values, table->num_cols);
+	mdb_free_tabledef(table);
+}
+
+/*
+ * Returns string with buddies names as registered in smartrak (may be a nickname).
+ */
+static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, struct types_list *buddies_head)
+{
+	char *str = NULL;
+	struct types_list *rel, *rel_head, *bud;
+
+	rel_head = smtk_index_list(mdb, "BuddyRelation", dive_idx);
+	if (!rel_head)
+		return str;
+
+	for (rel = rel_head; rel; ) {
+		for (bud = buddies_head; bud; ) {
+			if (bud->idx == rel->idx) {
+				str = smtk_concat_str(str, ", ", "%s", bud->text);
+				break;
+			}
+			bud = bud->next;
+		}
+		rel = rel->next;
+	}
+
+	/* Clean up and exit */
+	smtk_list_free(rel_head);
+	return str;
+}
+
+/* Parses the dive_type mdb tables and import the data into dive's
+ * taglist structure or notes.  If there are tags that affects dive's dive_mode
+ * (SCR, CCR or so), set the dive mode too.
+ * The "tag" parameter is used to mark if we want this table to be imported
+ * into tags or into notes.
+ */
+static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_idx, char *table_name, char *rel_table_name, struct types_list *list, bool tag)
+{
+	char *tmp = NULL;
+	struct types_list *diverel_head, *d_runner, *t_runner;
+
+	diverel_head = smtk_index_list(mdb, rel_table_name, dive_idx);
+	if (!diverel_head)
+		return;
+
+	/* Get the text associated with the relations */
+	for (d_runner = diverel_head; d_runner; ) {
+		for (t_runner = list; t_runner; ) {
+			if (t_runner->idx == d_runner->idx) {
+				if (tag)
+					taglist_add_tag(&dive->tag_list, t_runner->text);
+				else
+					tmp = smtk_concat_str(tmp, ", ", "%s", t_runner->text);
+				if (strstr(t_runner->text, "SCR"))
+					dive->dc.divemode = PSCR;
+				else if (strstr(t_runner->text, "CCR"))
+					dive->dc.divemode = CCR;
+				break;
+			}
+			t_runner = t_runner->next;
+		}
+		d_runner = d_runner->next;
 	}
 	if (tmp)
 		dive->notes = smtk_concat_str(dive->notes, "\n", "Smartrak %s: %s", table_name, tmp);
 	free(tmp);
-
-	/* clean up and exit */
-	smtk_free(types, 64);
-	smtk_free(bound_values, table->num_cols);
-	mdb_free_tabledef(table);
 }
 
 /*
