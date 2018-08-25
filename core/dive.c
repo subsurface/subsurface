@@ -4204,7 +4204,7 @@ const char *get_dive_country(const struct dive *dive)
 
 const char *get_dive_location(const struct dive *dive)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	const struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 	if (ds && ds->name)
 		return ds->name;
 	return NULL;
