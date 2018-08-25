@@ -1075,6 +1075,16 @@ void DiveTripModel::divesChanged(dive_trip *trip, const QVector<dive *> &divesIn
 	}
 }
 
+QVector<dive *> filterSelectedDives(const QVector<dive *> &dives)
+{
+	QVector<dive *> res;
+	res.reserve(dives.size());
+	for (dive *d: dives)
+		if (d->selected)
+			res.append(d);
+	return res;
+}
+
 void DiveTripModel::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool deleteFrom, bool createTo, const QVector<dive *> &dives)
 {
 	// Move dives between trips. This is an "interesting" problem, as we might
@@ -1090,8 +1100,12 @@ void DiveTripModel::divesMovedBetweenTrips(dive_trip *from, dive_trip *to, bool 
 		return;
 
 	// Cheating!
+	// Unfortunately, removing the dives means that their selection is lost.
+	// Thus, remember the selection and re-add it later.
+	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesAdded(to, createTo, dives);
 	divesDeleted(from, deleteFrom, dives);
+	divesSelected(to, selectedDives);
 }
 
 void DiveTripModel::divesTimeChanged(dive_trip *trip, timestamp_t delta, const QVector<dive *> &dives)
@@ -1104,8 +1118,12 @@ void DiveTripModel::divesTimeChanged(dive_trip *trip, timestamp_t delta, const Q
 	// moved by the same delta.
 
 	// Cheating!
+	// Unfortunately, removing the dives means that their selection is lost.
+	// Thus, remember the selection and re-add it later.
+	QVector<dive *> selectedDives = filterSelectedDives(dives);
 	divesDeleted(trip, false, dives);
 	divesAdded(trip, false, dives);
+	divesSelected(trip, selectedDives);
 }
 
 void DiveTripModel::divesSelected(dive_trip *trip, const QVector<dive *> &dives)
