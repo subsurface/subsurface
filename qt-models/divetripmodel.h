@@ -138,6 +138,14 @@ private:
 	// quite inconvenient to access.
 	// 2) If "trip" is null, this is a dive and dives is supposed to contain exactly
 	// one element, which is the corresponding dive.
+	//
+	// Top-level items are ordered by timestamp. For dives, the core function
+	// dive_less_than is used, which guarantees a stable ordering even in the
+	// case of equal timestamps. For dives and trips, place dives before trips
+	// in the case of an equal timestamp. For trips with equal timestamps, the
+	// order is currently undefined. This is currently not a problem, because
+	// the core doesn't have a list of sorted trips. But nevertheless something
+	// to keep in mind.
 	struct Item {
 		dive_trip		*trip;
 		std::vector<dive *>	 dives;			// std::vector<> instead of QVector for insert() with three iterators
@@ -148,6 +156,8 @@ private:
 		dive *getDive() const;				// Helper function: returns top-level-dive or null
 		timestamp_t when() const;			// Helper function: start time of dive *or* trip
 	};
+	// Comparison function between dive and arbitrary entry
+	static bool dive_before_entry(const dive *d, const Item &entry);
 
 	// Access trips and dives
 	int findTripIdx(const dive_trip *trip) const;
