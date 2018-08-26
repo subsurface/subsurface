@@ -501,13 +501,30 @@ void DiveListView::toggleColumnVisibilityByIndex()
 	QAction *action = qobject_cast<QAction *>(sender());
 	if (!action)
 		return;
+	const int idx = action->property("index").toInt();
+
+	// Count the number of visible columns.
+	int totalVisible = 0, lastVisibleIdx = -1;
+	for (int i = 0; i < model()->columnCount(); i++) {
+		if (isColumnHidden(i))
+			continue;
+		totalVisible++;
+		lastVisibleIdx = i;
+	}
+	// If there is only one visible column and we are performing an action on it,
+	// don't hide the column and revert the action back to checked == true.
+	// This keeps one column visible at all times.
+	if (totalVisible == 1 && idx == lastVisibleIdx) {
+		action->setChecked(true);
+		return;
+	}
 
 	QSettings s;
 	s.beginGroup("DiveListColumnState");
 	s.setValue(action->property("settingName").toString(), action->isChecked());
 	s.endGroup();
 	s.sync();
-	setColumnHidden(action->property("index").toInt(), !action->isChecked());
+	setColumnHidden(idx, !action->isChecked());
 	setColumnWidth(lastVisibleColumn(), 10);
 }
 
