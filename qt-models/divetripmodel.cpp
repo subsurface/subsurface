@@ -926,12 +926,25 @@ void DiveTripModel::addDivesToTrip(int trip, const QVector<dive *> &dives)
 		// Either this is outside of a trip or we're in list mode.
 		// Thus, add dives at the top-level in batches
 		addInBatches(items[trip].dives, dives,
-			     [](dive *d, dive *d2) { return d->when >= d2->when; }, // comp
+			     [](dive *d, dive *d2) { return !dive_less_than(d, d2); }, // comp
 			     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 				beginInsertRows(parent, idx, idx + to - from - 1);
 				items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
 				endInsertRows();
 			     });
+}
+
+// This function is used to compare a dive to an arbitrary entry (dive or trip).
+// For comparing two dives, use the core function dive_less_than_entry, which
+// effectively sorts by timestamp.
+// If comparing to a trip, the policy for equal-times is to place the dives
+// before the trip in the case of equal timestamps.
+bool DiveTripModel::dive_before_entry(const dive *d, const Item &entry)
+{
+	// Dives at the same time come before trips, therefore use the "<=" operator.
+	if (entry.trip)
+		return d->when <= entry.trip->when;
+	return !dive_less_than(d, entry.getDive());
 }
 
 void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &divesIn)
@@ -946,7 +959,7 @@ void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive
 		// Either this is outside of a trip or we're in list mode.
 		// Thus, add dives at the top-level in batches
 		addInBatches(items, dives,
-			     [](dive *d, const Item &entry) { return d->when >= entry.when(); }, // comp
+			     &dive_before_entry, // comp
 			     [&](std::vector<Item> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
 				beginInsertRows(QModelIndex(), idx, idx + to - from - 1);
 				items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);

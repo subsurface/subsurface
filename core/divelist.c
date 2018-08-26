@@ -37,6 +37,7 @@
  * void mark_divelist_changed(int changed)
  * int unsaved_changes()
  * void remove_autogen_trips()
+ * bool dive_less_than(const struct dive *a, const struct dive *b)
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
 <<<<<<< HEAD
@@ -1682,16 +1683,42 @@ void clear_dive_file_data()
 	saved_git_id = "";
 }
 
-static int sortfn(const void *_a, const void *_b)
+/* This function defines the sort ordering of dives. The core
+ * and the UI models should use the same sort function, which
+ * should be stable. This is not crucial at the moment, as the
+ * indices in core and UI are independent, but ultimately we
+ * probably want to unify the models.
+ * After editing a key used in this sort-function, the order of
+ * the dives must be re-astablished.
+ * Currently, this does a lexicographic sort on the (start-time, id)
+ * tuple. "id" is a stable, strictly increasing unique number, that
+ * is handed out when a dive is added to the system.
+ * We might also consider sorting by end-time and other criteria,
+ * but see the caveat above (editing means rearrangement of the dives).
+ */
+static int comp_dives(const struct dive *a, const struct dive *b)
 {
-	const struct dive *a = (const struct dive *)*(void **)_a;
-	const struct dive *b = (const struct dive *)*(void **)_b;
-
 	if (a->when < b->when)
 		return -1;
 	if (a->when > b->when)
 		return 1;
-	return 0;
+	if (a->id < b->id)
+		return -1;
+	if (a->id > b->id)
+		return 1;
+	return 0; /* this should not happen for a != b */
+}
+
+bool dive_less_than(const struct dive *a, const struct dive *b)
+{
+	return comp_dives(a, b) < 0;
+}
+
+static int sortfn(const void *_a, const void *_b)
+{
+	const struct dive *a = (const struct dive *)*(const void **)_a;
+	const struct dive *b = (const struct dive *)*(const void **)_b;
+	return comp_dives(a, b);
 }
 
 void sort_table(struct dive_table *table)
