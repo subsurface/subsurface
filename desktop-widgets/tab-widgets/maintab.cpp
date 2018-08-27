@@ -211,7 +211,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 
 	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
 					ui.location, &DiveLocationLineEdit::fixPopupPosition);
-	connect(this, SIGNAL(diveSiteAdded(const QString &)), LocationFilterModel::instance(), SLOT(addName(const QString &)));
 
 	// enable URL clickability in notes:
 	new TextHyperlinkEventFilter(ui.notes);//destroyed when ui.notes is destroyed
@@ -739,7 +738,7 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, int divenr)
 		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
 		pickedUuid = create_dive_site(qPrintable(name), displayed_dive.when);
 		createdNewDive = true;
-		emit diveSiteAdded(name);
+		LocationFilterModel::instance()->addName(name);
 	}
 
 	newDs = get_dive_site_by_uuid(pickedUuid);
