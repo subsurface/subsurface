@@ -60,7 +60,6 @@ signals:
 	void addDiveFinished();
 	void dateTimeChanged();
 	void diveSiteChanged(struct dive_site * ds);
-	void diveSiteAdded(const QString &);
 public
 slots:
 	void addCylinder_clicked();
