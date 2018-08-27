@@ -6,6 +6,7 @@
 #include "core/divelist.h"
 #include "core/display.h" // for amount_selected
 #include "core/subsurface-qt/DiveListNotifier.h"
+#include "qt-models/filtermodels.h"
 
 namespace Command {
 
@@ -85,6 +86,11 @@ dive *DiveListBase::addDive(DiveToAdd &d)
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
 	dive *res = d.dive.release();		// Give up ownership of dive
+
+	// Set the filter flag according to current filter settings
+	bool show = MultiFilterSortModel::instance()->showDive(res);
+	res->hidden_by_filter = !show;
+
 	add_single_dive(d.idx, res);		// Return ownership to backend
 
 	// If the dive to be removed is selected, we will inform the frontend
