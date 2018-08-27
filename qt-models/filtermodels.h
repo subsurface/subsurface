@@ -14,6 +14,7 @@ class FilterModelBase : public QStringListModel {
 protected:
 	struct Item {
 		bool checked;
+		int count;
 	};
 	std::vector<Item> items;
 public:
