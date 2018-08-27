@@ -144,7 +144,8 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		}
 
 		while ((ep = readdir(dp)) != NULL) {
-			if (fnmatch("UEMISSDA", ep->d_name, 0) == 0) {
+			if (fnmatch("UEMISSDA", ep->d_name, 0) == 0 ||
+			    fnmatch("GARMIN", ep->d_name, 0) == 0) {
 				char filename[1024];
 				int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
 				if (n >= (int)sizeof(filename)) {

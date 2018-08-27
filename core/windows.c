@@ -173,7 +173,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		int i;
 		int count_drives = 0;
 		const int bufdef = 512;
-		const char *dlabels[] = {"UEMISSDA", NULL};
+		const char *dlabels[] = {"UEMISSDA", "GARMIN", NULL};
 		char bufname[bufdef], bufval[bufdef], *p;
 		DWORD bufname_len;
 
