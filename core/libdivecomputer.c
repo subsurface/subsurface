@@ -1342,6 +1342,12 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 			return rc;
 	}
 
+	if (transports & DC_TRANSPORT_USBSTORAGE) {
+		rc = dc_usb_storage_open(&data->iostream, context, data->devname);
+		if (rc == DC_STATUS_SUCCESS)
+			return rc;
+	}
+
 	return DC_STATUS_UNSUPPORTED;
 }
 

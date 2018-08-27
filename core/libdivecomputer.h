@@ -15,6 +15,7 @@
 // Even if we have an old libdivecomputer, Uemis uses this
 #ifndef DC_TRANSPORT_USBSTORAGE
 #define DC_TRANSPORT_USBSTORAGE (1 << 6)
+#define dc_usb_storage_open(stream, context, devname) (DC_STATUS_UNSUPPORTED)
 #endif
 
 #include "dive.h"
