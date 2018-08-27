@@ -68,7 +68,7 @@ private:
 
 	int previousLast;
 
-	void fill_device_list(int dc_type);
+	void fill_device_list(unsigned int transport);
 	QTimer *timer;
 	bool dumpWarningShown;
 	OstcFirmwareCheck *ostcFirmwareCheck;

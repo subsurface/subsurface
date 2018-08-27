@@ -102,7 +102,7 @@ private:
 	device_data_t device_data;
 	void getDeviceData();
 
-	void fill_device_list(int dc_type);
+	void fill_device_list(unsigned int transport);
 
 	DeviceDetails *deviceDetails;
 	void populateDeviceDetails();

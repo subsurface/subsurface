@@ -143,7 +143,7 @@ void DownloadFromDCWidget::updateState(states state)
 		return;
 
 	if (state == INITIAL) {
-		fill_device_list(DC_TYPE_OTHER);
+		fill_device_list(~0);
 		ui.progressBar->hide();
 		markChildrenAsEnabled();
 		timer->stop();
@@ -231,13 +231,14 @@ void DownloadFromDCWidget::updateState(states state)
 
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 {
-	int dcType = DC_TYPE_SERIAL;
+	unsigned int transport;
+	dc_descriptor_t *descriptor;
 	productModel.setStringList(productList[vendor]);
 	ui.product->setCurrentIndex(0);
 
-	if (vendor == QString("Uemis"))
-		dcType = DC_TYPE_UEMIS;
-	fill_device_list(dcType);
+	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+	transport = dc_descriptor_get_transports(descriptor);
+	fill_device_list(transport);
 }
 
 void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
@@ -475,7 +476,7 @@ void DownloadFromDCWidget::updateDeviceEnabled()
 	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
-	if (dc_descriptor_get_transports(descriptor) & DC_TRANSPORT_SERIAL) {
+	if (dc_descriptor_get_transports(descriptor) & (DC_TRANSPORT_SERIAL | DC_TRANSPORT_USBSTORAGE)) {
 		// if the dc_transport_t is DC_TRANSPORT_SERIAL, then enable the device node box.
 		ui.device->setEnabled(true);
 	} else {
@@ -567,11 +568,11 @@ static void fillDeviceList(const char *name, void *data)
 	comboBox->addItem(name);
 }
 
-void DownloadFromDCWidget::fill_device_list(int dc_type)
+void DownloadFromDCWidget::fill_device_list(unsigned int transport)
 {
 	int deviceIndex;
 	ui.device->clear();
-	deviceIndex = enumerate_devices(fillDeviceList, ui.device, dc_type);
+	deviceIndex = enumerate_devices(fillDeviceList, ui.device, transport);
 	if (deviceIndex >= 0)
 		ui.device->setCurrentIndex(deviceIndex);
 }

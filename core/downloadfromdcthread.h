@@ -78,6 +78,7 @@ struct mydescriptor {
 	const char *product;
 	dc_family_t type;
 	unsigned int model;
+	unsigned int transports;
 };
 
 /* This fills the vendor list QStringList and related members.

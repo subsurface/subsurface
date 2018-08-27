@@ -12,6 +12,11 @@
 #include <libdivecomputer/device.h>
 #include <libdivecomputer/parser.h>
 
+// Even if we have an old libdivecomputer, Uemis uses this
+#ifndef DC_TRANSPORT_USBSTORAGE
+#define DC_TRANSPORT_USBSTORAGE (1 << 6)
+#endif
+
 #include "dive.h"
 
 #ifdef __cplusplus

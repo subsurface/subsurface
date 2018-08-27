@@ -68,7 +68,7 @@ const char *system_default_filename(void)
 	return path;
 }
 
-int enumerate_devices(device_callback_t, void *, int)
+int enumerate_devices(device_callback_t, void *, unsigned int)
 {
 	// we can't read from devices on iOS
 	return -1;

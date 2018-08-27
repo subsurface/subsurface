@@ -100,7 +100,7 @@ const char *system_default_filename(void)
 	return path;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
+int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
 {
 	int index = -1, entries = 0;
 	DIR *dp = NULL;
@@ -110,7 +110,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 	char *line = NULL;
 	char *fname;
 	size_t len;
-	if (dc_type != DC_TYPE_UEMIS) {
+	if (transport & DC_TRANSPORT_SERIAL) {
 		const char *dirname = "/dev";
 #ifdef __OpenBSD__
 		const char *patterns[] = {
@@ -153,7 +153,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		closedir(dp);
 	}
 #ifdef __linux__
-	if (dc_type != DC_TYPE_SERIAL) {
+	if (transport & DC_TRANSPORT_USBSTORAGE) {
 		int num_uemis = 0;
 		file = fopen("/proc/mounts", "r");
 		if (file == NULL)
