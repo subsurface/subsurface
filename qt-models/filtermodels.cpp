@@ -69,6 +69,16 @@ void FilterModelBase::updateList(const QStringList &newList)
 		items.back().checked = true;
 		anyChecked = true;
 	}
+
+	// Finally, calculate and cache the counts. Ignore the last item, since
+	// this is the "Show Empty Tags" entry.
+	for (int i = 0; i < (int)newList.size() - 1; i++)
+		items[i].count = countDives(qPrintable(newList[i]));
+
+	// Calculate count of "Empty Tags".
+	if (!items.empty())
+		items.back().count = countDives("");
+
 	setStringList(newList);
 }
 
@@ -99,9 +109,8 @@ QVariant FilterModelBase::data(const QModelIndex &index, int role) const
 	if (role == Qt::CheckStateRole) {
 		return items[index.row()].checked ? Qt::Checked : Qt::Unchecked;
 	} else if (role == Qt::DisplayRole) {
-		QString value = stringList()[index.row()];
-		int count = countDives((index.row() == rowCount() - 1) ? "" : qPrintable(value));
-		return value + QString(" (%1)").arg(count);
+		int row = index.row();
+		return QStringLiteral("%1 (%2)").arg(stringList()[row], QString::number(items[row].count));
 	}
 	return QVariant();
 }
