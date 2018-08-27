@@ -81,7 +81,7 @@ const char *system_default_filename(void)
 	return path;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
+int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
 {
 	/* FIXME: we need to enumerate in some other way on android */
 	/* qtserialport maybee? */

@@ -97,13 +97,13 @@ const char *system_default_filename(void)
 	return path;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
+int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
 {
 	int index = -1, entries = 0;
 	DIR *dp = NULL;
 	struct dirent *ep = NULL;
 	size_t i;
-	if (dc_type != DC_TYPE_UEMIS) {
+	if (transport & DC_TRANSPORT_SERIAL) {
 		const char *dirname = "/dev";
 		const char *patterns[] = {
 			"tty.*",
@@ -135,7 +135,7 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		}
 		closedir(dp);
 	}
-	if (dc_type != DC_TYPE_SERIAL) {
+	if (transport & DC_TRANSPORT_USBSTORAGE) {
 		const char *dirname = "/Volumes";
 		int num_uemis = 0;
 		dp = opendir(dirname);
@@ -144,7 +144,8 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 		}
 
 		while ((ep = readdir(dp)) != NULL) {
-			if (fnmatch("UEMISSDA", ep->d_name, 0) == 0) {
+			if (fnmatch("UEMISSDA", ep->d_name, 0) == 0 ||
+			    fnmatch("GARMIN", ep->d_name, 0) == 0) {
 				char filename[1024];
 				int n = snprintf(filename, sizeof(filename), "%s/%s", dirname, ep->d_name);
 				if (n >= (int)sizeof(filename)) {

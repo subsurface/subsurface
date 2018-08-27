@@ -2,6 +2,8 @@
 #ifndef DISPLAY_H
 #define DISPLAY_H
 
+#include "libdivecomputer.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,11 +46,7 @@ extern int is_default_dive_computer(const char *, const char *);
 
 typedef void (*device_callback_t)(const char *name, void *userdata);
 
-#define DC_TYPE_SERIAL 1
-#define DC_TYPE_UEMIS 2
-#define DC_TYPE_OTHER 3
-
-int enumerate_devices(device_callback_t callback, void *userdata, int dc_type);
+int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport);
 
 extern const char *default_dive_computer_vendor;
 extern const char *default_dive_computer_product;

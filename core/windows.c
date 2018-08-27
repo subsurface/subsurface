@@ -117,11 +117,11 @@ const char *system_default_filename(void)
 	return path;
 }
 
-int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
+int enumerate_devices(device_callback_t callback, void *userdata, unsigned int transport)
 {
 	int index = -1;
 	DWORD i;
-	if (dc_type != DC_TYPE_UEMIS) {
+	if (transport & DC_TRANSPORT_SERIAL) {
 		// Open the registry key.
 		HKEY hKey;
 		LONG rc = RegOpenKeyEx(HKEY_LOCAL_MACHINE, "HARDWARE\\DEVICEMAP\\SERIALCOMM", 0, KEY_QUERY_VALUE, &hKey);
@@ -169,11 +169,11 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 
 		RegCloseKey(hKey);
 	}
-	if (dc_type != DC_TYPE_SERIAL) {
+	if (transport & DC_TRANSPORT_USBSTORAGE) {
 		int i;
 		int count_drives = 0;
 		const int bufdef = 512;
-		const char *dlabels[] = {"UEMISSDA", NULL};
+		const char *dlabels[] = {"UEMISSDA", "GARMIN", NULL};
 		char bufname[bufdef], bufval[bufdef], *p;
 		DWORD bufname_len;
 
