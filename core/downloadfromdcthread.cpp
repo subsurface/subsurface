@@ -158,6 +158,7 @@ void fill_computer_list()
 	mydescriptor->product = "Zurich";
 	mydescriptor->type = DC_FAMILY_NULL;
 	mydescriptor->model = 0;
+	mydescriptor->transports = DC_TRANSPORT_USBSTORAGE;
 
 	if (!vendorList.contains("Uemis"))
 		vendorList.append("Uemis");
@@ -171,14 +172,15 @@ void fill_computer_list()
 	qSort(vendorList);
 }
 
-#define NUMTRANSPORTS 6
+#define NUMTRANSPORTS 7
 static QString transportStringTable[NUMTRANSPORTS] = {
 	QStringLiteral("SERIAL"),
 	QStringLiteral("USB"),
 	QStringLiteral("USBHID"),
 	QStringLiteral("IRDA"),
 	QStringLiteral("BT"),
-	QStringLiteral("BLE")
+	QStringLiteral("BLE"),
+	QStringLiteral("USBSTORAGE"),
 };
 
 static QString getTransportString(unsigned int transport)

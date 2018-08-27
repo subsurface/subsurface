@@ -398,11 +398,11 @@ static void fillDeviceList(const char *name, void *data)
 	comboBox->addItem(name);
 }
 
-void ConfigureDiveComputerDialog::fill_device_list(int dc_type)
+void ConfigureDiveComputerDialog::fill_device_list(unsigned int transport)
 {
 	int deviceIndex;
 	ui.device->clear();
-	deviceIndex = enumerate_devices(fillDeviceList, ui.device, dc_type);
+	deviceIndex = enumerate_devices(fillDeviceList, ui.device, transport);
 	if (deviceIndex >= 0)
 		ui.device->setCurrentIndex(deviceIndex);
 }
@@ -1445,12 +1445,12 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		return;
 	}
 
-	int dcType = DC_TYPE_SERIAL;
+	unsigned int transport = DC_TRANSPORT_SERIAL;
 
 
 	if (selected_vendor == QString("Uemis"))
-		dcType = DC_TYPE_UEMIS;
-	fill_device_list(dcType);
+		transport = DC_TRANSPORT_USBSTORAGE;
+	fill_device_list(transport);
 }
 
 void ConfigureDiveComputerDialog::checkLogFile(int state)
