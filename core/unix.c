@@ -161,6 +161,8 @@ int enumerate_devices(device_callback_t callback, void *userdata, int dc_type)
 
 		while ((getline(&line, &len, file)) != -1) {
 			char *ptr = strstr(line, "UEMISSDA");
+			if (!ptr)
+				ptr = strstr(line, "GARMIN");
 			if (ptr) {
 				char *end = ptr, *start = ptr;
 				while (start > line && *start != ' ')
