@@ -1,3 +1,4 @@
+- Desktop: fix a bug where it is possible for the user to hide all divelist columns [#1600]
 - Desktop: fix issue with dive list row height in case of larger fonts [#1600]
 - Mobile: add default cylinder functionality for new dives [#1535]
 - Desktop/Export: fix bug related to quoted text when exporting to HTML [#1576]
