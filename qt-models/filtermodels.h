@@ -11,12 +11,16 @@ struct dive;
 
 class FilterModelBase : public QStringListModel {
 	Q_OBJECT
+protected:
+	struct Item {
+		bool checked;
+	};
+	std::vector<Item> items;
 public:
 	virtual bool doFilter(const dive *d) const = 0;
 	void clearFilter();
 	void selectAll();
 	void invertSelection();
-	std::vector<char> checkState;
 	bool anyChecked;
 	bool negate;
 public
