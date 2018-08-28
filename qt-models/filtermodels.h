@@ -36,7 +36,7 @@ slots:
 	void changeName(const QString &oldName, const QString &newName);
 protected:
 	explicit FilterModelBase(QObject *parent = 0);
-	void updateList(const QStringList &new_list);
+	void updateList(QStringList &new_list);
 	virtual int countDives(const char *) const = 0;
 private:
 	Qt::ItemFlags flags(const QModelIndex &index) const;
