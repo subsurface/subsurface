@@ -4,14 +4,17 @@
 #include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPref.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefTechnicalDetails::initTestCase()
 {
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefTechnicalDetails");
+	qPref::instance()->registerQML(NULL);
 }
 
 void TestQPrefTechnicalDetails::test_struct_get()
@@ -444,5 +447,143 @@ void TestQPrefTechnicalDetails::test_oldPreferences()
 	tecDetails->set_show_pictures_in_profile(false);
 	TEST(tecDetails->show_pictures_in_profile(), false);
 }
+
+void TestQPrefTechnicalDetails::test_signals()
+{
+	QSignalSpy spy1(qPrefTechnicalDetails::instance(), SIGNAL(calcalltissuesChanged(bool)));
+	QSignalSpy spy2(qPrefTechnicalDetails::instance(), SIGNAL(calcceilingChanged(bool)));
+	QSignalSpy spy3(qPrefTechnicalDetails::instance(), SIGNAL(calcceiling3mChanged(bool)));
+	QSignalSpy spy4(qPrefTechnicalDetails::instance(), SIGNAL(calcndlttsChanged(bool)));
+	QSignalSpy spy5(qPrefTechnicalDetails::instance(), SIGNAL(dcceilingChanged(bool)));
+	QSignalSpy spy6(qPrefTechnicalDetails::instance(), SIGNAL(display_deco_modeChanged(deco_mode)));
+	QSignalSpy spy7(qPrefTechnicalDetails::instance(), SIGNAL(display_unused_tanksChanged(bool)));
+	QSignalSpy spy8(qPrefTechnicalDetails::instance(), SIGNAL(eadChanged(bool)));
+	QSignalSpy spy9(qPrefTechnicalDetails::instance(), SIGNAL(gfhighChanged(int)));
+	QSignalSpy spy10(qPrefTechnicalDetails::instance(), SIGNAL(gflowChanged(int)));
+	QSignalSpy spy11(qPrefTechnicalDetails::instance(), SIGNAL(gf_low_at_maxdepthChanged(bool)));
+	QSignalSpy spy12(qPrefTechnicalDetails::instance(), SIGNAL(hrgraphChanged(bool)));
+	QSignalSpy spy13(qPrefTechnicalDetails::instance(), SIGNAL(modChanged(bool)));
+	QSignalSpy spy14(qPrefTechnicalDetails::instance(), SIGNAL(modpO2Changed(double)));
+	QSignalSpy spy15(qPrefTechnicalDetails::instance(), SIGNAL(percentagegraphChanged(bool)));
+	QSignalSpy spy16(qPrefTechnicalDetails::instance(), SIGNAL(redceilingChanged(bool)));
+	QSignalSpy spy17(qPrefTechnicalDetails::instance(), SIGNAL(rulergraphChanged(bool)));
+	QSignalSpy spy18(qPrefTechnicalDetails::instance(), SIGNAL(show_average_depthChanged(bool)));
+	QSignalSpy spy19(qPrefTechnicalDetails::instance(), SIGNAL(show_ccr_sensorsChanged(bool)));
+	QSignalSpy spy20(qPrefTechnicalDetails::instance(), SIGNAL(show_ccr_setpointChanged(bool)));
+	QSignalSpy spy21(qPrefTechnicalDetails::instance(), SIGNAL(show_icdChanged(bool)));
+	QSignalSpy spy22(qPrefTechnicalDetails::instance(), SIGNAL(show_pictures_in_profileChanged(bool)));
+	QSignalSpy spy23(qPrefTechnicalDetails::instance(), SIGNAL(show_sacChanged(bool)));
+	QSignalSpy spy24(qPrefTechnicalDetails::instance(), SIGNAL(show_scr_ocpo2Changed(bool)));
+	QSignalSpy spy25(qPrefTechnicalDetails::instance(), SIGNAL(tankbarChanged(bool)));
+	QSignalSpy spy26(qPrefTechnicalDetails::instance(), SIGNAL(vpmb_conservatismChanged(int)));
+	QSignalSpy spy27(qPrefTechnicalDetails::instance(), SIGNAL(zoomed_plotChanged(bool)));
+
+	prefs.calcalltissues = true;
+	qPrefTechnicalDetails::set_calcalltissues(false);
+	prefs.calcceiling = true;
+	qPrefTechnicalDetails::set_calcceiling(false);
+	prefs.calcceiling3m = true;
+	qPrefTechnicalDetails::set_calcceiling3m(false);
+	prefs.calcndltts = true;
+	qPrefTechnicalDetails::set_calcndltts(false);
+	prefs.dcceiling = true;
+	qPrefTechnicalDetails::set_dcceiling(false);
+	qPrefTechnicalDetails::set_display_deco_mode(VPMB);
+	prefs.display_unused_tanks = true;
+	qPrefTechnicalDetails::set_display_unused_tanks(false);
+	prefs.ead = true;
+	qPrefTechnicalDetails::set_ead(false);
+	qPrefTechnicalDetails::set_gfhigh(-29);
+	qPrefTechnicalDetails::set_gflow(-24);
+	prefs.gf_low_at_maxdepth = true;
+	qPrefTechnicalDetails::set_gf_low_at_maxdepth(false);
+	prefs.hrgraph = true;
+	qPrefTechnicalDetails::set_hrgraph(false);
+	prefs.mod = true;
+	qPrefTechnicalDetails::set_mod(false);
+	qPrefTechnicalDetails::set_modpO2(-1.12);
+	prefs.percentagegraph = true;
+	qPrefTechnicalDetails::set_percentagegraph(false);
+	prefs.redceiling = true;
+	qPrefTechnicalDetails::set_redceiling(false);
+	prefs.rulergraph = true;
+	qPrefTechnicalDetails::set_rulergraph(false);
+	prefs.show_average_depth = true;
+	qPrefTechnicalDetails::set_show_average_depth(false);
+	prefs.show_ccr_sensors = true;
+	qPrefTechnicalDetails::set_show_ccr_sensors(false);
+	prefs.show_ccr_setpoint = true;
+	qPrefTechnicalDetails::set_show_ccr_setpoint(false);
+	prefs.show_icd = true;
+	qPrefTechnicalDetails::set_show_icd(false);
+	prefs.show_pictures_in_profile = true;
+	qPrefTechnicalDetails::set_show_pictures_in_profile(false);
+	prefs.show_sac = true;
+	qPrefTechnicalDetails::set_show_sac(false);
+	prefs.show_scr_ocpo2 = true;
+	qPrefTechnicalDetails::set_show_scr_ocpo2(false);
+	prefs.tankbar = true;
+	qPrefTechnicalDetails::set_tankbar(false);
+	qPrefTechnicalDetails::set_vpmb_conservatism(-64);
+	prefs.zoomed_plot = true;
+	qPrefTechnicalDetails::set_zoomed_plot(false);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+	QCOMPARE(spy7.count(), 1);
+	QCOMPARE(spy8.count(), 1);
+	QCOMPARE(spy9.count(), 1);
+	QCOMPARE(spy10.count(), 1);
+	QCOMPARE(spy11.count(), 1);
+	QCOMPARE(spy12.count(), 1);
+	QCOMPARE(spy13.count(), 1);
+	QCOMPARE(spy14.count(), 1);
+	QCOMPARE(spy15.count(), 1);
+	QCOMPARE(spy16.count(), 1);
+	QCOMPARE(spy17.count(), 1);
+	QCOMPARE(spy18.count(), 1);
+	QCOMPARE(spy19.count(), 1);
+	QCOMPARE(spy20.count(), 1);
+	QCOMPARE(spy21.count(), 1);
+	QCOMPARE(spy22.count(), 1);
+	QCOMPARE(spy23.count(), 1);
+	QCOMPARE(spy24.count(), 1);
+	QCOMPARE(spy25.count(), 1);
+	QCOMPARE(spy26.count(), 1);
+	QCOMPARE(spy27.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy3.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy4.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy5.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy6.takeFirst().at(0).toInt() == VPMB);
+	QVERIFY(spy7.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy8.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy9.takeFirst().at(0).toInt() == -29);
+	QVERIFY(spy10.takeFirst().at(0).toInt() == -24);
+	QVERIFY(spy11.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy12.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy13.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy14.takeFirst().at(0).toDouble() == -1.12);
+	QVERIFY(spy15.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy16.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy17.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy18.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy19.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy20.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy21.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy22.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy23.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy24.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy25.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy26.takeFirst().at(0).toInt() == -64);
+	QVERIFY(spy27.takeFirst().at(0).toBool() == false);
+}
+
 
 QTEST_MAIN(TestQPrefTechnicalDetails)

@@ -6,6 +6,7 @@
 #include "core/settings/qPrefLocationService.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefLocationService::initTestCase()
 {
@@ -113,5 +114,21 @@ void TestQPrefLocationService::test_oldPreferences()
 	TEST(location->time_threshold(), 30);
 	TEST(location->distance_threshold(), 40);
 }
+
+void TestQPrefLocationService::test_signals()
+{
+	QSignalSpy spy1(qPrefLocationService::instance(), SIGNAL(distance_thresholdChanged(int)));
+	QSignalSpy spy2(qPrefLocationService::instance(), SIGNAL(time_thresholdChanged(int)));
+
+	qPrefLocationService::set_distance_threshold(-2000);
+	qPrefLocationService::set_time_threshold(-90);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toInt() == -2000);
+	QVERIFY(spy2.takeFirst().at(0).toInt() == -90);
+}
+
 
 QTEST_MAIN(TestQPrefLocationService)

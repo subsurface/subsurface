@@ -3,15 +3,18 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPref.h"
 #include "core/settings/qPrefGeocoding.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefGeocoding::initTestCase()
 {
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefGeocoding");
+	qPref::instance()->registerQML(NULL);
 }
 
 void TestQPrefGeocoding::test_struct_get()
@@ -126,5 +129,28 @@ void TestQPrefGeocoding::test_oldPreferences()
 	TEST(geo->second_taxonomy_category(), TC_COUNTRY);
 	TEST(geo->third_taxonomy_category(), TC_NONE);
 }
+
+void TestQPrefGeocoding::test_signals()
+{
+	QSignalSpy spy1(qPrefGeocoding::instance(), SIGNAL(first_taxonomy_categoryChanged(taxonomy_category)));
+	QSignalSpy spy2(qPrefGeocoding::instance(), SIGNAL(second_taxonomy_categoryChanged(taxonomy_category)));
+	QSignalSpy spy3(qPrefGeocoding::instance(), SIGNAL(third_taxonomy_categoryChanged(taxonomy_category)));
+
+	prefs.geocoding.category[0] = TC_NONE;
+	qPrefGeocoding::set_first_taxonomy_category(TC_COUNTRY);
+	prefs.geocoding.category[0] = TC_NONE;
+	qPrefGeocoding::set_second_taxonomy_category(TC_ADMIN_L1);
+	prefs.geocoding.category[0] = TC_NONE;
+	qPrefGeocoding::set_third_taxonomy_category(TC_ADMIN_L2);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toInt() == TC_COUNTRY);
+	QVERIFY(spy2.takeFirst().at(0).toInt() == TC_ADMIN_L1);
+	QVERIFY(spy3.takeFirst().at(0).toInt() == TC_ADMIN_L2);
+}
+
 
 QTEST_MAIN(TestQPrefGeocoding)

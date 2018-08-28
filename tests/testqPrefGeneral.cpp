@@ -4,14 +4,17 @@
 #include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPref.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefGeneral::initTestCase()
 {
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefGeneral");
+	qPref::instance()->registerQML(NULL);
 }
 
 void TestQPrefGeneral::test_struct_get()
@@ -233,5 +236,56 @@ void TestQPrefGeneral::test_oldPreferences()
 	TEST(general->pscr_ratio(), 1);
 	TEST(general->use_default_file(), false);
 }
+
+void TestQPrefGeneral::test_signals()
+{
+	QSignalSpy spy1(qPrefGeneral::instance(), SIGNAL(auto_recalculate_thumbnailsChanged(bool)));
+	QSignalSpy spy2(qPrefGeneral::instance(), SIGNAL(default_cylinderChanged(QString)));
+	QSignalSpy spy3(qPrefGeneral::instance(), SIGNAL(default_filenameChanged(QString)));
+	QSignalSpy spy4(qPrefGeneral::instance(), SIGNAL(default_file_behaviorChanged(def_file_behavior)));
+	QSignalSpy spy5(qPrefGeneral::instance(), SIGNAL(defaultsetpointChanged(int)));
+	QSignalSpy spy6(qPrefGeneral::instance(), SIGNAL(extract_video_thumbnailsChanged(bool)));
+	QSignalSpy spy7(qPrefGeneral::instance(), SIGNAL(extract_video_thumbnails_positionChanged(int)));
+	QSignalSpy spy8(qPrefGeneral::instance(), SIGNAL(ffmpeg_executableChanged(QString)));
+	QSignalSpy spy9(qPrefGeneral::instance(), SIGNAL(o2consumptionChanged(int)));
+	QSignalSpy spy10(qPrefGeneral::instance(), SIGNAL(pscr_ratioChanged(int)));
+	QSignalSpy spy11(qPrefGeneral::instance(), SIGNAL(use_default_fileChanged(bool)));
+	QSignalSpy spy12(qPrefGeneral::instance(), SIGNAL(diveshareExport_uidChanged(QString)));
+	QSignalSpy spy13(qPrefGeneral::instance(), SIGNAL(diveshareExport_privateChanged(bool)));
+
+	prefs.auto_recalculate_thumbnails = true;
+	qPrefGeneral::set_auto_recalculate_thumbnails(false);
+
+	qPrefGeneral::set_default_cylinder("new base21");
+	qPrefGeneral::set_default_filename("new base22");
+	qPrefGeneral::set_default_file_behavior(LOCAL_DEFAULT_FILE);
+	qPrefGeneral::set_defaultsetpoint(24);
+	qPrefGeneral::set_extract_video_thumbnails(false);
+	qPrefGeneral::set_extract_video_thumbnails_position(25);
+	qPrefGeneral::set_ffmpeg_executable("new base26");
+	qPrefGeneral::set_o2consumption(27);
+	qPrefGeneral::set_pscr_ratio(28);
+	qPrefGeneral::set_use_default_file(false);
+	qPrefGeneral::set_diveshareExport_uid("uid1");
+	qPrefGeneral::set_diveshareExport_private(false);
+
+	QCOMPARE(spy1.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+
+	qPrefGeneral::set_default_cylinder("new base21");
+	qPrefGeneral::set_default_filename("new base22");
+	qPrefGeneral::set_default_file_behavior(LOCAL_DEFAULT_FILE);
+	qPrefGeneral::set_defaultsetpoint(24);
+	qPrefGeneral::set_extract_video_thumbnails(false);
+	qPrefGeneral::set_extract_video_thumbnails_position(25);
+	qPrefGeneral::set_ffmpeg_executable("new base26");
+	qPrefGeneral::set_o2consumption(27);
+	qPrefGeneral::set_pscr_ratio(28);
+	qPrefGeneral::set_use_default_file(false);
+	qPrefGeneral::set_diveshareExport_uid("uid1");
+	qPrefGeneral::set_diveshareExport_private(false);
+}
+
 
 QTEST_MAIN(TestQPrefGeneral)

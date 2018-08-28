@@ -14,6 +14,7 @@ private slots:
 	void test_set_struct();
 	void test_multiple();
 	void test_oldPreferences();
+	void test_signals();
 };
 
 #endif // TESTQPREFFACEBOOK_H
