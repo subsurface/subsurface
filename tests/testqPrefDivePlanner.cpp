@@ -4,14 +4,17 @@
 #include "core/pref.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "core/settings/qPref.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefDivePlanner::initTestCase()
 {
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("SubsurfaceTestQPrefDivePlanner");
+	qPref::instance()->registerQML(NULL);
 }
 
 void TestQPrefDivePlanner::test_struct_get()
@@ -433,5 +436,123 @@ void TestQPrefDivePlanner::test_oldPreferences()
 	TEST(planner->planner_deco_mode(), RECREATIONAL);
 
 }
+
+void TestQPrefDivePlanner::test_signals()
+{
+	QSignalSpy spy1(qPrefDivePlanner::instance(), SIGNAL(ascratelast6mChanged(int)));
+	QSignalSpy spy2(qPrefDivePlanner::instance(), SIGNAL(ascratestopsChanged(int)));
+	QSignalSpy spy3(qPrefDivePlanner::instance(), SIGNAL(ascrate50Changed(int)));
+	QSignalSpy spy4(qPrefDivePlanner::instance(), SIGNAL(ascrate75Changed(int)));
+	QSignalSpy spy5(qPrefDivePlanner::instance(), SIGNAL(bestmixendChanged(int)));
+	QSignalSpy spy6(qPrefDivePlanner::instance(), SIGNAL(bottompo2Changed(int)));
+	QSignalSpy spy7(qPrefDivePlanner::instance(), SIGNAL(bottomsacChanged(int)));
+	QSignalSpy spy8(qPrefDivePlanner::instance(), SIGNAL(decopo2Changed(int)));
+	QSignalSpy spy9(qPrefDivePlanner::instance(), SIGNAL(decosacChanged(int)));
+	QSignalSpy spy10(qPrefDivePlanner::instance(), SIGNAL(descrateChanged(int)));
+	QSignalSpy spy11(qPrefDivePlanner::instance(), SIGNAL(display_durationChanged(bool)));
+	QSignalSpy spy12(qPrefDivePlanner::instance(), SIGNAL(display_runtimeChanged(bool)));
+	QSignalSpy spy13(qPrefDivePlanner::instance(), SIGNAL(display_transitionsChanged(bool)));
+	QSignalSpy spy14(qPrefDivePlanner::instance(), SIGNAL(display_variationsChanged(bool)));
+	QSignalSpy spy15(qPrefDivePlanner::instance(), SIGNAL(doo2breaksChanged(bool)));
+	QSignalSpy spy16(qPrefDivePlanner::instance(), SIGNAL(drop_stone_modeChanged(bool)));
+	QSignalSpy spy17(qPrefDivePlanner::instance(), SIGNAL(last_stopChanged(bool)));
+	QSignalSpy spy18(qPrefDivePlanner::instance(), SIGNAL(min_switch_durationChanged(int)));
+	QSignalSpy spy19(qPrefDivePlanner::instance(), SIGNAL(planner_deco_modeChanged(deco_mode)));
+	QSignalSpy spy20(qPrefDivePlanner::instance(), SIGNAL(problemsolvingtimeChanged(int)));
+	QSignalSpy spy21(qPrefDivePlanner::instance(), SIGNAL(reserve_gasChanged(int)));
+	QSignalSpy spy22(qPrefDivePlanner::instance(), SIGNAL(sacfactorChanged(int)));
+	QSignalSpy spy23(qPrefDivePlanner::instance(), SIGNAL(safetystopChanged(bool)));
+	QSignalSpy spy24(qPrefDivePlanner::instance(), SIGNAL(switch_at_req_stopChanged(bool)));
+	QSignalSpy spy25(qPrefDivePlanner::instance(), SIGNAL(verbatim_planChanged(bool)));
+
+	qPrefDivePlanner::set_ascratelast6m(-20);
+	qPrefDivePlanner::set_ascratestops(-21);
+	qPrefDivePlanner::set_ascrate50(-22);
+	qPrefDivePlanner::set_ascrate75(-23);
+	qPrefDivePlanner::set_bestmixend(-21);
+	qPrefDivePlanner::set_bottompo2(-24);
+	qPrefDivePlanner::set_bottomsac(-25);
+	qPrefDivePlanner::set_decopo2(-26);
+	qPrefDivePlanner::set_decosac(-27);
+	qPrefDivePlanner::set_descrate(-28);
+	prefs.display_duration = true;
+	qPrefDivePlanner::set_display_duration(false);
+	prefs.display_runtime = true;
+	qPrefDivePlanner::set_display_runtime(false);
+	prefs.display_transitions = true;
+	qPrefDivePlanner::set_display_transitions(false);
+	prefs.display_variations = true;
+	qPrefDivePlanner::set_display_variations(false);
+	prefs.doo2breaks = true;
+	qPrefDivePlanner::set_doo2breaks(false);
+	prefs.drop_stone_mode = true;
+	qPrefDivePlanner::set_drop_stone_mode(false);
+	prefs.last_stop = true;
+	qPrefDivePlanner::set_last_stop(false);
+	qPrefDivePlanner::set_min_switch_duration(-29);
+	qPrefDivePlanner::set_planner_deco_mode(VPMB);
+	qPrefDivePlanner::set_problemsolvingtime(-30);
+	qPrefDivePlanner::set_reserve_gas(-31);
+	qPrefDivePlanner::set_sacfactor(-32);
+	prefs.safetystop = true;
+	qPrefDivePlanner::set_safetystop(false);
+	prefs.switch_at_req_stop = true;
+	qPrefDivePlanner::set_switch_at_req_stop(false);
+	prefs.verbatim_plan = true;
+	qPrefDivePlanner::set_verbatim_plan(false);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+	QCOMPARE(spy7.count(), 1);
+	QCOMPARE(spy8.count(), 1);
+	QCOMPARE(spy9.count(), 1);
+	QCOMPARE(spy10.count(), 1);
+	QCOMPARE(spy11.count(), 1);
+	QCOMPARE(spy12.count(), 1);
+	QCOMPARE(spy13.count(), 1);
+	QCOMPARE(spy14.count(), 1);
+	QCOMPARE(spy15.count(), 1);
+	QCOMPARE(spy16.count(), 1);
+	QCOMPARE(spy17.count(), 1);
+	QCOMPARE(spy18.count(), 1);
+	QCOMPARE(spy19.count(), 1);
+	QCOMPARE(spy20.count(), 1);
+	QCOMPARE(spy21.count(), 1);
+	QCOMPARE(spy22.count(), 1);
+	QCOMPARE(spy23.count(), 1);
+	QCOMPARE(spy24.count(), 1);
+	QCOMPARE(spy25.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toInt() == -20);
+	QVERIFY(spy2.takeFirst().at(0).toInt() == -21);
+	QVERIFY(spy3.takeFirst().at(0).toInt() == -22);
+	QVERIFY(spy4.takeFirst().at(0).toInt() == -23);
+	QVERIFY(spy5.takeFirst().at(0).toInt() == -21);
+	QVERIFY(spy6.takeFirst().at(0).toInt() == -24);
+	QVERIFY(spy7.takeFirst().at(0).toInt() == -25);
+	QVERIFY(spy8.takeFirst().at(0).toInt() == -26);
+	QVERIFY(spy9.takeFirst().at(0).toInt() == -27);
+	QVERIFY(spy10.takeFirst().at(0).toInt() == -28);
+	QVERIFY(spy11.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy12.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy13.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy14.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy15.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy16.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy17.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy18.takeFirst().at(0).toInt() == -29);
+	QVERIFY(spy19.takeFirst().at(0).toInt() == VPMB);
+	QVERIFY(spy20.takeFirst().at(0).toInt() == -30);
+	QVERIFY(spy21.takeFirst().at(0).toInt() == -31);
+	QVERIFY(spy22.takeFirst().at(0).toInt() == -32);
+	QVERIFY(spy23.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy24.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy25.takeFirst().at(0).toBool() == false);
+}
+
 
 QTEST_MAIN(TestQPrefDivePlanner)

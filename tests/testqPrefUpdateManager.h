@@ -16,6 +16,7 @@ private slots:
 	void test_multiple();
 	void test_oldPreferences();
 	void test_next_check();
+	void test_signals();
 };
 
 #endif // TESTQPREFUPDATEMANAGER_H

@@ -16,6 +16,7 @@ private slots:
 	void test_multiple();
 	void test_unit_system();
 	void test_oldPreferences();
+	void test_signals();
 };
 
 #endif // TESTQPREFUNITS_H

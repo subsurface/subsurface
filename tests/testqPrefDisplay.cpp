@@ -177,7 +177,6 @@ void TestQPrefDisplay::test_signals()
 	QSignalSpy spy7(qPrefDisplay::instance(), SIGNAL(lastDirChanged(QString)));
 	QSignalSpy spy8(qPrefDisplay::instance(), SIGNAL(tooltip_positionChanged(QPointF)));
 	QSignalSpy spy9(qPrefDisplay::instance(), SIGNAL(userSurveyChanged(QString)));
-	QSignalSpy spy9(qPrefDisplay::instance(), SIGNAL(userSurveyChanged(QString)));
 	QSignalSpy spy10(qPrefDisplay::instance(), SIGNAL(mainSplitterChanged(QByteArray)));
 	QSignalSpy spy11(qPrefDisplay::instance(), SIGNAL(topSplitterChanged(QByteArray)));
 	QSignalSpy spy12(qPrefDisplay::instance(), SIGNAL(bottomSplitterChanged(QByteArray)));

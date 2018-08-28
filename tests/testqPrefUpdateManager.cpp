@@ -6,6 +6,7 @@
 #include "core/settings/qPrefUpdateManager.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefUpdateManager::initTestCase()
 {
@@ -162,5 +163,35 @@ void TestQPrefUpdateManager::test_oldPreferences()
 	TEST(update->last_version_used(), QStringLiteral("tomaz-2"));
 	TEST(update->next_check(), date);
 }
+
+void TestQPrefUpdateManager::test_signals()
+{
+	QSignalSpy spy1(qPrefUpdateManager::instance(), SIGNAL(dont_check_for_updatesChanged(bool)));
+	QSignalSpy spy2(qPrefUpdateManager::instance(), SIGNAL(dont_check_existsChanged(bool)));
+	QSignalSpy spy3(qPrefUpdateManager::instance(), SIGNAL(last_version_usedChanged(QString)));
+	QSignalSpy spy4(qPrefUpdateManager::instance(), SIGNAL(next_checkChanged(QDate)));
+	QSignalSpy spy5(qPrefUpdateManager::instance(), SIGNAL(uuidStringChanged(QString)));
+
+	prefs.update_manager.dont_check_for_updates = true;
+	qPrefUpdateManager::set_dont_check_for_updates(false);
+	prefs.update_manager.dont_check_exists = true;
+	qPrefUpdateManager::set_dont_check_exists(false);
+	qPrefUpdateManager::set_last_version_used("signal last_version2");
+	qPrefUpdateManager::set_next_check(QDate::fromString("11/09/1967", "dd/MM/yyyy")); 
+	qPrefUpdateManager::set_uuidString("signal uuid");
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy3.takeFirst().at(0).toString() == "signal last_version2");
+	QVERIFY(spy4.takeFirst().at(0).toDate() == QDate::fromString("11/09/1967", "dd/MM/yyyy")); 
+	QVERIFY(spy5.takeFirst().at(0).toString() == "signal uuid");
+}
+
 
 QTEST_MAIN(TestQPrefUpdateManager)
