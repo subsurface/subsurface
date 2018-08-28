@@ -9,14 +9,20 @@
 
 struct dive;
 
-class FilterModelBase : public QStringListModel {
+class FilterModelBase : public QAbstractListModel {
 	Q_OBJECT
+private:
+	int findInsertionIndex(const QString &name);
 protected:
 	struct Item {
+		QString name;
 		bool checked;
 		int count;
 	};
 	std::vector<Item> items;
+	int indexOf(const QString &name) const;
+	void addItem(const QString &name, bool checked, int count);
+	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 public:
 	virtual bool doFilter(const dive *d) const = 0;
 	void clearFilter();
@@ -27,6 +33,7 @@ public:
 public
 slots:
 	void setNegate(bool negate);
+	void changeName(const QString &oldName, const QString &newName);
 protected:
 	explicit FilterModelBase(QObject *parent = 0);
 	void updateList(const QStringList &new_list);
@@ -73,7 +80,6 @@ public:
 public
 slots:
 	void repopulate();
-	void changeName(const QString &oldName, const QString &newName);
 	void addName(const QString &newName);
 
 private:
