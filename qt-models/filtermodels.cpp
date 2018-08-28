@@ -102,8 +102,13 @@ void FilterModelBase::changeName(const QString &oldName, const QString &newName)
 
 // Update the the items array.
 // The last item is supposed to be the "Show Empty Tags" entry.
-void FilterModelBase::updateList(const QStringList &newList)
+// All other items will be sorted alphabetically. Attention: the passed-in list is modified!
+void FilterModelBase::updateList(QStringList &newList)
 {
+	// Sort list, but leave out last element by using std::prev()
+	if (!newList.empty())
+		std::sort(newList.begin(), std::prev(newList.end()));
+
 	beginResetModel();
 
 	// Keep copy of the old items array to reimport the checked state later.
@@ -264,7 +269,6 @@ void SuitsFilterModel::repopulate()
 			list.append(suit);
 		}
 	}
-	qSort(list);
 	list << tr("No suit set");
 	updateList(list);
 }
@@ -289,7 +293,6 @@ void TagFilterModel::repopulate()
 			list.append(QString(current_tag_entry->tag->name));
 		current_tag_entry = current_tag_entry->next;
 	}
-	qSort(list);
 	list << tr("Empty tags");
 	updateList(list);
 }
@@ -368,7 +371,6 @@ void BuddyFilterModel::repopulate()
 			}
 		}
 	}
-	qSort(list);
 	list << tr("No buddies");
 	updateList(list);
 }
@@ -415,7 +417,6 @@ void LocationFilterModel::repopulate()
 			list.append(location);
 		}
 	}
-	qSort(list);
 	list << tr("No location set");
 	updateList(list);
 }
