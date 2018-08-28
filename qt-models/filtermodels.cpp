@@ -124,7 +124,7 @@ void FilterModelBase::selectAll()
 
 void FilterModelBase::invertSelection()
 {
-	for (Item &item : items)
+	for (Item &item: items)
 		item.checked = !item.checked;
 	anyChecked = std::any_of(items.begin(), items.end(), [](Item &item) { return !!item.checked; });
 	emit dataChanged(createIndex(0, 0), createIndex(rowCount() - 1, 0));
@@ -258,7 +258,7 @@ bool BuddyFilterModel::doFilter(const dive *d) const
 	// Checked means 'Show', Unchecked means 'Hide'.
 	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
 	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
-	for (QString &s : personsList)
+	for (QString &s: personsList)
 		s = s.trimmed();
 	// only show empty buddie dives if the user checked that.
 	if (personsList.isEmpty())
