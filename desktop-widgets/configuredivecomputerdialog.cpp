@@ -1444,13 +1444,7 @@ void ConfigureDiveComputerDialog::on_DiveComputerList_currentRowChanged(int curr
 		/* Not Supported */
 		return;
 	}
-
-	unsigned int transport = DC_TRANSPORT_SERIAL;
-
-
-	if (selected_vendor == QString("Uemis"))
-		transport = DC_TRANSPORT_USBSTORAGE;
-	fill_device_list(transport);
+	fill_device_list(DC_TRANSPORT_SERIAL);
 }
 
 void ConfigureDiveComputerDialog::checkLogFile(int state)
