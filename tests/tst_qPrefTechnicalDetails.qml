@@ -114,4 +114,123 @@ TestCase {
 		PrefTechnicalDetails.zoomed_plot = true
 		compare(PrefTechnicalDetails.zoomed_plot, true)
 	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		property bool spy2 : false
+		property bool spy3 : false
+		property bool spy4 : false
+		property bool spy5 : false
+		property bool spy7 : false
+		property bool spy8 : false
+		property bool spy9 : false
+		property bool spy10 : false
+		property bool spy11 : false
+		property bool spy12 : false
+		property bool spy13 : false
+		property bool spy14 : false
+		property bool spy15 : false
+		property bool spy16 : false
+		property bool spy17 : false
+		property bool spy18 : false
+		property bool spy19 : false
+		property bool spy20 : false
+		property bool spy21 : false
+		property bool spy22 : false
+		property bool spy23 : false
+		property bool spy24 : false
+		property bool spy25 : false
+		property bool spy26 : false
+		property bool spy27 : false
+
+		Connections {
+			target: PrefTechnicalDetails
+			onCalcalltissuesChanged: {spyCatcher.spy1 = true }
+			onCalcceilingChanged: {spyCatcher.spy2 = true }
+			onCalcceiling3mChanged: {spyCatcher.spy3 = true }
+			onCalcndlttsChanged: {spyCatcher.spy4 = true }
+			onDcceilingChanged: {spyCatcher.spy5 = true }
+			onDisplay_unused_tanksChanged: {spyCatcher.spy7 = true }
+			onEadChanged: {spyCatcher.spy8 = true }
+			onGfhighChanged: {spyCatcher.spy9 = true }
+			onGflowChanged: {spyCatcher.spy10 = true }
+			onGf_low_at_maxdepthChanged: {spyCatcher.spy11 = true }
+			onHrgraphChanged: {spyCatcher.spy12 = true }
+			onModChanged: {spyCatcher.spy13 = true }
+			onModpO2Changed: {spyCatcher.spy14 = true }
+			onPercentagegraphChanged: {spyCatcher.spy15 = true }
+			onRedceilingChanged: {spyCatcher.spy16 = true }
+			onRulergraphChanged: {spyCatcher.spy17 = true }
+			onShow_average_depthChanged: {spyCatcher.spy18 = true }
+			onShow_ccr_sensorsChanged: {spyCatcher.spy19 = true }
+			onShow_ccr_setpointChanged: {spyCatcher.spy20 = true }
+			onShow_icdChanged: {spyCatcher.spy21 = true }
+			onShow_pictures_in_profileChanged: {spyCatcher.spy22 = true }
+			onShow_sacChanged: {spyCatcher.spy23 = true }
+			onShow_scr_ocpo2Changed: {spyCatcher.spy24 = true }
+			onTankbarChanged: {spyCatcher.spy25 = true }
+			onVpmb_conservatismChanged: {spyCatcher.spy26 = true }
+			onZoomed_plotChanged: {spyCatcher.spy27 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefTechnicalDetails.calcalltissues = ! PrefTechnicalDetails.calcalltissues
+		PrefTechnicalDetails.calcceiling = ! PrefTechnicalDetails.calcceiling
+		PrefTechnicalDetails.calcceiling3m = ! PrefTechnicalDetails.calcceiling3m
+		PrefTechnicalDetails.calcndltts = ! PrefTechnicalDetails.calcndltts
+		PrefTechnicalDetails.dcceiling = ! PrefTechnicalDetails.dcceiling
+		// 6 does not emit signal
+		PrefTechnicalDetails.display_unused_tanks = ! PrefTechnicalDetails.display_unused_tanks
+		PrefTechnicalDetails.ead = ! PrefTechnicalDetails.ead
+		PrefTechnicalDetails.gfhigh = -27
+		PrefTechnicalDetails.gflow = -25
+		PrefTechnicalDetails.gf_low_at_maxdepth = ! PrefTechnicalDetails.gf_low_at_maxdepth
+		PrefTechnicalDetails.hrgraph = ! PrefTechnicalDetails.hrgraph
+		PrefTechnicalDetails.mod = ! PrefTechnicalDetails.mod
+		PrefTechnicalDetails.modpO2 = -1.02
+		PrefTechnicalDetails.percentagegraph = ! PrefTechnicalDetails.percentagegraph
+		PrefTechnicalDetails.redceiling = ! PrefTechnicalDetails.redceiling
+		PrefTechnicalDetails.rulergraph = ! PrefTechnicalDetails.rulergraph
+		PrefTechnicalDetails.show_average_depth = ! PrefTechnicalDetails.show_average_depth
+		PrefTechnicalDetails.show_ccr_sensors = ! PrefTechnicalDetails.show_ccr_sensors
+		PrefTechnicalDetails.show_ccr_setpoint = ! PrefTechnicalDetails.show_ccr_setpoint
+		PrefTechnicalDetails.show_icd = ! PrefTechnicalDetails.show_icd
+		PrefTechnicalDetails.show_pictures_in_profile = ! PrefTechnicalDetails.show_pictures_in_profile
+		PrefTechnicalDetails.show_sac = ! PrefTechnicalDetails.show_sac
+		PrefTechnicalDetails.show_scr_ocpo2 = ! PrefTechnicalDetails.show_scr_ocpo2
+		PrefTechnicalDetails.tankbar = ! PrefTechnicalDetails.tankbar
+		PrefTechnicalDetails.vpmb_conservatism = -127
+		PrefTechnicalDetails.zoomed_plot = ! PrefTechnicalDetails.zoomed_plot
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy2, true)
+		compare(spyCatcher.spy3, true)
+		compare(spyCatcher.spy4, true)
+		compare(spyCatcher.spy4, true)
+		compare(spyCatcher.spy5, true)
+		compare(spyCatcher.spy7, true)
+		compare(spyCatcher.spy8, true)
+		compare(spyCatcher.spy9, true)
+		compare(spyCatcher.spy10, true)
+		compare(spyCatcher.spy11, true)
+		compare(spyCatcher.spy12, true)
+		compare(spyCatcher.spy13, true)
+		compare(spyCatcher.spy14, true)
+		compare(spyCatcher.spy15, true)
+		compare(spyCatcher.spy16, true)
+		compare(spyCatcher.spy17, true)
+		compare(spyCatcher.spy18, true)
+		compare(spyCatcher.spy19, true)
+		compare(spyCatcher.spy20, true)
+		compare(spyCatcher.spy21, true)
+		compare(spyCatcher.spy22, true)
+		compare(spyCatcher.spy23, true)
+		compare(spyCatcher.spy24, true)
+		compare(spyCatcher.spy25, true)
+		compare(spyCatcher.spy26, true)
+		compare(spyCatcher.spy27, true)
+	}
 }

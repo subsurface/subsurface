@@ -46,4 +46,29 @@ TestCase {
 //TBD		PrefUnits.weight = ??
 //TBD		compare(PrefUnits.weight, ??)
 	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		property bool spy5 : false
+		property bool spy7 : false
+
+		Connections {
+			target: PrefUnits
+			onCoordinates_traditionalChanged: {spyCatcher.spy1 = true }
+			onShow_units_tableChanged: {spyCatcher.spy5 = true }
+			onUnit_systemChanged: {spyCatcher.spy7 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefUnits.coordinates_traditional = ! PrefUnits.coordinates_traditional
+		PrefUnits.show_units_table = ! PrefUnits.show_units_table
+		PrefUnits.unit_system = "qml" 
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy5, true)
+		compare(spyCatcher.spy7, true)
+	}
 }

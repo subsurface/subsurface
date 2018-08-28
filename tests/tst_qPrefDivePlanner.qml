@@ -107,4 +107,112 @@ TestCase {
 		PrefDivePlanner.verbatim_plan = true
 		compare(PrefDivePlanner.verbatim_plan, true)
 	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		property bool spy2 : false
+		property bool spy3 : false
+		property bool spy4 : false
+		property bool spy6 : false
+		property bool spy7 : false
+		property bool spy8 : false
+		property bool spy9 : false
+		property bool spy10 : false
+		property bool spy11 : false
+		property bool spy12 : false
+		property bool spy13 : false
+		property bool spy14 : false
+		property bool spy15 : false
+		property bool spy16 : false
+		property bool spy17 : false
+		property bool spy18 : false
+		property bool spy19 : false
+		property bool spy20 : false
+		property bool spy21 : false
+		property bool spy22 : false
+		property bool spy23 : false
+		property bool spy24 : false
+		property bool spy25 : false
+
+		Connections {
+			target: PrefDivePlanner
+			onAscratelast6mChanged: {spyCatcher.spy1 = true }
+			onAscratestopsChanged: {spyCatcher.spy2 = true }
+			onAscrate50Changed: {spyCatcher.spy3 = true }
+			onAscrate75Changed: {spyCatcher.spy4 = true }
+			onBottompo2Changed: {spyCatcher.spy6 = true }
+			onBottomsacChanged: {spyCatcher.spy7 = true }
+			onDecopo2Changed: {spyCatcher.spy8 = true }
+			onDecosacChanged: {spyCatcher.spy9 = true }
+			onDescrateChanged: {spyCatcher.spy10 = true }
+			onDisplay_durationChanged: {spyCatcher.spy11 = true }
+			onDisplay_runtimeChanged: {spyCatcher.spy12 = true }
+			onDisplay_transitionsChanged: {spyCatcher.spy13 = true }
+			onDisplay_variationsChanged: {spyCatcher.spy14 = true }
+			onDoo2breaksChanged: {spyCatcher.spy15 = true }
+			onDrop_stone_modeChanged: {spyCatcher.spy16 = true }
+			onLast_stopChanged: {spyCatcher.spy17 = true }
+			onMin_switch_durationChanged: {spyCatcher.spy18 = true }
+			onProblemsolvingtimeChanged: {spyCatcher.spy20 = true }
+			onReserve_gasChanged: {spyCatcher.spy21 = true }
+			onSacfactorChanged: {spyCatcher.spy22 = true }
+			onSafetystopChanged: {spyCatcher.spy23 = true }
+			onSwitch_at_req_stopChanged: {spyCatcher.spy24 = true }
+			onVerbatim_planChanged: {spyCatcher.spy25 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefDivePlanner.ascratelast6m = -11
+		PrefDivePlanner.ascratestops = -11
+		PrefDivePlanner.ascrate50 = -12
+		PrefDivePlanner.ascrate75 = -13
+		// 5 not emitting signals
+		PrefDivePlanner.bottompo2 = -14
+		PrefDivePlanner.bottomsac = -15
+		PrefDivePlanner.decopo2 = -16
+		PrefDivePlanner.decosac = -17
+		PrefDivePlanner.descrate = -18
+		PrefDivePlanner.display_duration = ! PrefDivePlanner.display_duration
+		PrefDivePlanner.display_runtime = ! PrefDivePlanner.display_runtime
+		PrefDivePlanner.display_transitions = ! PrefDivePlanner.display_transitions
+		PrefDivePlanner.display_variations = ! PrefDivePlanner.display_variations
+		PrefDivePlanner.doo2breaks = ! PrefDivePlanner.doo2breaks
+		PrefDivePlanner.drop_stone_mode = ! PrefDivePlanner.drop_stone_mode
+		PrefDivePlanner.last_stop = ! PrefDivePlanner.last_stop
+		PrefDivePlanner.min_switch_duration = -19
+		// 19 not emitting signals
+		PrefDivePlanner.problemsolvingtime = -20
+		PrefDivePlanner.reserve_gas = -21
+		PrefDivePlanner.sacfactor = -22
+		PrefDivePlanner.safetystop = ! PrefDivePlanner.safetystop
+		PrefDivePlanner.switch_at_req_stop = ! PrefDivePlanner.switch_at_req_stop
+		PrefDivePlanner.verbatim_plan = ! PrefDivePlanner.verbatim_plan
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy2, true)
+		compare(spyCatcher.spy3, true)
+		compare(spyCatcher.spy4, true)
+		compare(spyCatcher.spy6, true)
+		compare(spyCatcher.spy7, true)
+		compare(spyCatcher.spy8, true)
+		compare(spyCatcher.spy9, true)
+		compare(spyCatcher.spy10, true)
+		compare(spyCatcher.spy11, true)
+		compare(spyCatcher.spy12, true)
+		compare(spyCatcher.spy13, true)
+		compare(spyCatcher.spy14, true)
+		compare(spyCatcher.spy15, true)
+		compare(spyCatcher.spy16, true)
+		compare(spyCatcher.spy17, true)
+		compare(spyCatcher.spy18, true)
+		compare(spyCatcher.spy20, true)
+		compare(spyCatcher.spy21, true)
+		compare(spyCatcher.spy22, true)
+		compare(spyCatcher.spy23, true)
+		compare(spyCatcher.spy24, true)
+		compare(spyCatcher.spy25, true)
+	}
 }
