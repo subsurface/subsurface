@@ -2,6 +2,7 @@
 #include "qt-models/filtermodels.h"
 #include "qt-models/models.h"
 #include "core/display.h"
+#include "core/qthelper.h"
 #include "core/subsurface-string.h"
 #include "qt-models/divetripmodel.h"
 
@@ -26,16 +27,85 @@ CREATE_INSTANCE_METHOD(LocationFilterModel)
 CREATE_INSTANCE_METHOD(SuitsFilterModel)
 CREATE_INSTANCE_METHOD(MultiFilterSortModel)
 
-FilterModelBase::FilterModelBase(QObject *parent) : QStringListModel(parent),
+FilterModelBase::FilterModelBase(QObject *parent) : QAbstractListModel(parent),
 	anyChecked(false),
 	negate(false)
 {
 }
 
-// Update the stringList and the items array.
+// Get index of item with given name, but ignore last item, as this
+// is the "Show Empty Tags" item. Return -1 for not found.
+int FilterModelBase::indexOf(const QString &name) const
+{
+	for (int i = 0; i < rowCount() - 1; i++) {
+		if (name == items[i].name)
+			return i;
+	}
+	return -1;
+}
+
+int FilterModelBase::findInsertionIndex(const QString &name)
+{
+	// Find insertion position. Note: we search only up to the last
+	// item, because the last item is the "Show Empty Tags" item.
+	// N.B: We might do a binary search using std::lower_bound()
+	int i;
+	for (i = 0; i < rowCount() - 1; i++) {
+		if (name < items[i].name)
+			return i;
+	}
+	return i;
+}
+
+void FilterModelBase::addItem(const QString &name, bool checked, int count)
+{
+	int idx = findInsertionIndex(name);
+	beginInsertRows(QModelIndex(), idx, idx);
+	items.insert(items.begin() + idx, { name, checked, count });
+	endInsertRows();
+}
+
+void FilterModelBase::changeName(const QString &oldName, const QString &newName)
+{
+	if (oldName.isEmpty() || newName.isEmpty() || oldName == newName)
+		return;
+	int oldIndex = indexOf(oldName);
+	if (oldIndex < 0)
+		return;
+	int newIndex = indexOf(newName);
+
+	if (newIndex >= 0) {
+		// If there was already an entry with the new name, we are merging entries.
+		// Thus, if the old entry was selected, also select the new entry.
+		if (items[oldIndex].checked && !items[newIndex].checked) {
+			items[newIndex].checked = true;
+			dataChanged(createIndex(newIndex, 0), createIndex(newIndex, 0));
+		}
+		// Now, delete the old item
+		beginRemoveRows(QModelIndex(), oldIndex, oldIndex);
+		items.erase(items.begin() + oldIndex);
+		endRemoveRows();
+	} else {
+		// There was no entry of the same name. We might have to move the item.
+		newIndex = findInsertionIndex(newName);
+		if (oldIndex != newIndex && oldIndex + 1 != newIndex) {
+			beginMoveRows(QModelIndex(), oldIndex, oldIndex, QModelIndex(), newIndex);
+			moveInVector(items, oldIndex, oldIndex + 1, newIndex);
+			endMoveRows();
+		}
+
+		// The item was moved, but the name still has to be modified
+		items[newIndex].name = newName;
+		dataChanged(createIndex(newIndex, 0), createIndex(newIndex, 0));
+	}
+}
+
+// Update the the items array.
 // The last item is supposed to be the "Show Empty Tags" entry.
 void FilterModelBase::updateList(const QStringList &newList)
 {
+	beginResetModel();
+
 	// Keep copy of the old items array to reimport the checked state later.
 	// Note that by using std::move(), this is an essentially free operation:
 	// The data is moved from the old array to the new one and the old array
@@ -46,16 +116,18 @@ void FilterModelBase::updateList(const QStringList &newList)
 	// flag in an undefined state (since we didn't define a default constructor).
 	items.resize(newList.count());
 
-	// First, reset all checked states to false
+	// First, reset all checked states to false and set the names
 	anyChecked = false;
-	for (Item &item: items)
-		item.checked = false;
+	for (int i = 0; i < rowCount(); ++i) {
+		items[i].name = newList[i];
+		items[i].checked = false;
+	}
 
 	// Then, restore the checked state.  Ignore the last item, since
 	// this is the "Show Empty Tags" entry.
 	for (int i = 0; i < (int)oldItems.size() - 1; i++) {
 		if (oldItems[i].checked) {
-			int ind = newList.indexOf(stringList()[i]);
+			int ind = newList.indexOf(oldItems[i].name);
 			if (ind >= 0 && ind < newList.count() - 1) {
 				items[ind].checked = true;
 				anyChecked = true;
@@ -79,12 +151,12 @@ void FilterModelBase::updateList(const QStringList &newList)
 	if (!items.empty())
 		items.back().count = countDives("");
 
-	setStringList(newList);
+	endResetModel();
 }
 
 Qt::ItemFlags FilterModelBase::flags(const QModelIndex &index) const
 {
-	return QStringListModel::flags(index) | Qt::ItemIsUserCheckable;
+	return QAbstractListModel::flags(index) | Qt::ItemIsUserCheckable;
 }
 
 bool FilterModelBase::setData(const QModelIndex &index, const QVariant &value, int role)
@@ -104,13 +176,18 @@ bool FilterModelBase::setData(const QModelIndex &index, const QVariant &value, i
 	return false;
 }
 
+int FilterModelBase::rowCount(const QModelIndex &) const
+{
+	return items.size();
+}
+
 QVariant FilterModelBase::data(const QModelIndex &index, int role) const
 {
 	if (role == Qt::CheckStateRole) {
 		return items[index.row()].checked ? Qt::Checked : Qt::Unchecked;
 	} else if (role == Qt::DisplayRole) {
-		int row = index.row();
-		return QStringLiteral("%1 (%2)").arg(stringList()[row], QString::number(items[row].count));
+		const Item &item = items[index.row()];
+		return QStringLiteral("%1 (%2)").arg(item.name, QString::number(item.count));
 	}
 	return QVariant();
 }
@@ -168,10 +245,9 @@ bool SuitsFilterModel::doFilter(const dive *d) const
 		return items[rowCount() - 1].checked != negate;
 
 	// there is a suit selected
-	QStringList suitList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
-		if (items[i].checked && suit == suitList[i])
+		if (items[i].checked && suit == items[i].name)
 			return !negate;
 	}
 	return negate;
@@ -233,16 +309,12 @@ bool TagFilterModel::doFilter(const dive *d) const
 		return items[rowCount() - 1].checked != negate;
 
 	// have at least one tag.
-	QStringList tagList = stringList();
-	if (!tagList.isEmpty()) {
-		tagList.removeLast(); // remove the "Show Empty Tags";
-		while (head) {
-			QString tagName(head->tag->name);
-			int index = tagList.indexOf(tagName);
-			if (index >= 0 && items[index].checked)
-				return !negate;
-			head = head->next;
-		}
+	while (head) {
+		QString tagName(head->tag->name);
+		int index = indexOf(tagName);
+		if (index >= 0 && items[index].checked)
+			return !negate;
+		head = head->next;
 	}
 	return negate;
 }
@@ -274,10 +346,9 @@ bool BuddyFilterModel::doFilter(const dive *d) const
 		return items[rowCount() - 1].checked != negate;
 
 	// have at least one buddy
-	QStringList buddyList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
-		if (items[i].checked && personsList.contains(buddyList[i], Qt::CaseInsensitive))
+		if (items[i].checked && personsList.contains(items[i].name, Qt::CaseInsensitive))
 			return !negate;
 	}
 	return negate;
@@ -325,10 +396,9 @@ bool LocationFilterModel::doFilter(const dive *d) const
 		return items[rowCount() - 1].checked != negate;
 
 	// There is a location selected
-	QStringList locationList = stringList();
 	// Ignore last item, since this is the "Show Empty Tags" entry
 	for (int i = 0; i < rowCount() - 1; i++) {
-		if (items[i].checked && location == locationList[i])
+		if (items[i].checked && location == items[i].name)
 			return !negate;
 	}
 	return negate;
@@ -350,36 +420,14 @@ void LocationFilterModel::repopulate()
 	updateList(list);
 }
 
-void LocationFilterModel::changeName(const QString &oldName, const QString &newName)
-{
-	if (oldName.isEmpty() || newName.isEmpty() || oldName == newName)
-		return;
-	QStringList list = stringList();
-	int oldIndex = list.indexOf(oldName);
-	if (oldIndex < 0)
-		return;
-	int newIndex = list.indexOf(newName);
-	list[oldIndex] = newName;
-
-	// If there was already an entry with the new name, we are merging entries.
-	// Thus, if the old entry was selected, also select the new entry.
-	if (newIndex >= 0 && items[oldIndex].checked)
-		items[newIndex].checked = true;
-	setStringList(list);
-}
-
 void LocationFilterModel::addName(const QString &newName)
 {
-	// If any item is checked and a new location is added, add the name
-	// of the new location in front of the list and mark it as checked.
-	// Thus, on subsequent repopulation of the list, the new entry will
-	// be registered as already checked.
-	QStringList list = stringList();
-	if (!anyChecked || newName.isEmpty() || list.indexOf(newName) >= 0)
+	if (newName.isEmpty() || indexOf(newName) >= 0)
 		return;
-	list.prepend(newName);
-	items.insert(items.begin(), { true });
-	setStringList(list);
+	int count = countDives(qPrintable(newName));
+	// If any old item was checked, also check the new one so that
+	// dives with the added dive site are shown.
+	addItem(newName, anyChecked, count);
 }
 
 MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyModel(parent),
