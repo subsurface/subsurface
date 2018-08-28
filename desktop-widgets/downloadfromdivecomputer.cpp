@@ -229,6 +229,7 @@ void DownloadFromDCWidget::updateState(states state)
 	currentState = state;
 }
 
+// FIXME! Get the transport list from libdivecomputer!
 void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 {
 	unsigned int transport;
