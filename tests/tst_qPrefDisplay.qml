@@ -29,8 +29,8 @@ TestCase {
 		compare(PrefDisplay.PrefDisplay_invalid_dives, !x4)
 
 		var x5 = PrefDisplay.show_developer
-		PrefDisplay.show_developer = !x4
-		compare(PrefDisplay.show_developer, !x4)
+		PrefDisplay.show_developer = !x5
+		compare(PrefDisplay.show_developer, !x5)
 
 		var x6 = PrefDisplay.theme
 		PrefDisplay.theme = "myColor"
@@ -75,5 +75,58 @@ TestCase {
 		var x16 = PrefDisplay.lastState
 		PrefDisplay.lastState = 17
 		compare(PrefDisplay.lastState, 17)
+	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		// no signals 2,3
+		property bool spy4 : false
+		property bool spy5 : false
+		property bool spy6 : false
+		// no signals 7	
+		property bool spy8 : false
+		property bool spy9 : false
+		// no signals 10,11,12
+		property bool spy13 : false
+		// no signals 14,15
+		property bool spy16 : false
+
+		Connections {
+			target: PrefDisplay
+			onAnimation_speedChanged: {spyCatcher.spy1 = true }
+			onDisplay_invalid_divesChanged: {spyCatcher.spy4 = true }
+			onShow_developerChanged: {spyCatcher.spy5 = true }
+			onThemeChanged: {spyCatcher.spy6 = true }
+			onLastDirChanged: {spyCatcher.spy8 = true }
+			onUserSurveyChanged: {spyCatcher.spy9 = true }
+			onMaximizedChanged: {spyCatcher.spy13 = true }
+			onLastStateChanged: {spyCatcher.spy16 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefDisplay.animation_speed = -1157
+		// 2,3 have no signal
+		PrefDisplay.display_invalid_dives = ! PrefDisplay.display_invalid_dives
+		PrefDisplay.show_developer = ! PrefDisplay.show_developer
+		PrefDisplay.theme = "qml"
+		// 7 has no signal
+		PrefDisplay.lastDir = "qml"
+		PrefDisplay.userSurvey = "qml"
+		// 10, 11, 12 have no signal
+		PrefDisplay.maximized = ! PrefDisplay.maximized
+		// 14,15 have no signal
+		PrefDisplay.lastState = -17
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy4, true)
+		compare(spyCatcher.spy5, true)
+		compare(spyCatcher.spy6, true)
+		compare(spyCatcher.spy8, true)
+		compare(spyCatcher.spy9, true)
+		compare(spyCatcher.spy13, true)
+		compare(spyCatcher.spy16, true)
 	}
 }

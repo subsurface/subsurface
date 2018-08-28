@@ -18,4 +18,29 @@ TestCase {
 		PrefFacebook.user_id = "my user"
 		compare(PrefFacebook.user_id, "my user")
 	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		property bool spy2 : false
+		property bool spy3 : false
+
+		Connections {
+			target: PrefFacebook
+			onAccess_tokenChanged: {spyCatcher.spy1 = true }
+			onAlbum_idChanged: {spyCatcher.spy2 = true }
+			onUser_idChanged: {spyCatcher.spy3 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefFacebook.access_token = "qml"
+		PrefFacebook.album_id = "qml"
+		PrefFacebook.user_id = "qml"
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy2, true)
+		compare(spyCatcher.spy3, true)
+	}
 }

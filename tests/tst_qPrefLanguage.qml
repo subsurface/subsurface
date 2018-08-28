@@ -37,4 +37,49 @@ TestCase {
 		PrefLanguage.use_system_language = true
 		compare(PrefLanguage.use_system_language, true)
 	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		property bool spy2 : false
+		property bool spy3 : false
+		property bool spy4 : false
+		property bool spy5 : false
+		property bool spy6 : false
+		property bool spy7 : false
+		property bool spy8 : false
+
+		Connections {
+			target: PrefLanguage
+			onDate_formatChanged: {spyCatcher.spy1 = true }
+			onDate_format_overrideChanged: {spyCatcher.spy2 = true }
+			onDate_format_shortChanged: {spyCatcher.spy3 = true }
+			onLanguageChanged: {spyCatcher.spy4 = true }
+			onLang_localeChanged: {spyCatcher.spy5 = true }
+			onTime_formatChanged: {spyCatcher.spy6 = true }
+			onTime_format_overrideChanged: {spyCatcher.spy7 = true }
+			onUse_system_languageChanged: {spyCatcher.spy8 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefLanguage.date_format = "qml"
+		PrefLanguage.date_format_override = ! PrefLanguage.date_format_override
+		PrefLanguage.date_format_short = "qml"
+		PrefLanguage.language = "qml"
+		PrefLanguage.lang_locale = "qml"
+		PrefLanguage.time_format = "qml"
+		PrefLanguage.time_format_override = ! PrefLanguage.time_format_override
+		PrefLanguage.use_system_language = ! PrefLanguage.use_system_language
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy2, true)
+		compare(spyCatcher.spy3, true)
+		compare(spyCatcher.spy4, true)
+		compare(spyCatcher.spy5, true)
+		compare(spyCatcher.spy6, true)
+		compare(spyCatcher.spy7, true)
+		compare(spyCatcher.spy8, true)
+	}
 }
