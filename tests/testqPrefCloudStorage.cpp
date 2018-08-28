@@ -6,6 +6,7 @@
 #include "core/settings/qPref.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefCloudStorage::initTestCase()
 {
@@ -282,18 +283,18 @@ void TestQPrefCloudStorage::test_loadFromCloud_var()
 
 void TestQPrefCloudStorage::test_signals()
 {
-	QSignalSpy spy1(qPrefCloudStorage::instance(), SIGNAL(cloud_base_url_changed(QString)));
-	QSignalSpy spy2(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_email_changed(QString)));
-	QSignalSpy spy3(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_email_encoded_changed(QString)));
-	QSignalSpy spy4(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_newpassword_changed(QString)));
-	QSignalSpy spy5(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_password_changed(QString)));
-	QSignalSpy spy6(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_pin_changed(QString)));
-	QSignalSpy spy7(qPrefCloudStorage::instance(), SIGNAL(cloud_timeout_changed(int)));
-	QSignalSpy spy8(qPrefCloudStorage::instance(), SIGNAL(cloud_verification_status_changed(CloudStatus)));
-	QSignalSpy spy9(qPrefCloudStorage::instance(), SIGNAL(git_local_only_changed(bool)));
-	QSignalSpy spy10(qPrefCloudStorage::instance(), SIGNAL(save_password_local_changed(bool)));
-	QSignalSpy spy11(qPrefCloudStorage::instance(), SIGNAL(save_userid_local_changed(bool)));
-	QSignalSpy spy12(qPrefCloudStorage::instance(), SIGNAL(userid_changed(QString)));
+	QSignalSpy spy1(qPrefCloudStorage::instance(), SIGNAL(cloud_base_urlChanged(QString)));
+	QSignalSpy spy2(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_emailChanged(QString)));
+	QSignalSpy spy3(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_email_encodedChanged(QString)));
+	QSignalSpy spy4(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_newpasswordChanged(QString)));
+	QSignalSpy spy5(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_passwordChanged(QString)));
+	QSignalSpy spy6(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_pinChanged(QString)));
+	QSignalSpy spy7(qPrefCloudStorage::instance(), SIGNAL(cloud_timeoutChanged(int)));
+	QSignalSpy spy8(qPrefCloudStorage::instance(), SIGNAL(cloud_verification_statusChanged(int)));
+	QSignalSpy spy9(qPrefCloudStorage::instance(), SIGNAL(git_local_onlyChanged(bool)));
+	QSignalSpy spy10(qPrefCloudStorage::instance(), SIGNAL(save_password_localChanged(bool)));
+	QSignalSpy spy11(qPrefCloudStorage::instance(), SIGNAL(save_userid_localChanged(bool)));
+	QSignalSpy spy12(qPrefCloudStorage::instance(), SIGNAL(useridChanged(QString)));
 
 	qPrefCloudStorage::set_cloud_base_url("t_signal base");
 	qPrefCloudStorage::set_cloud_storage_email("t_signal email");
@@ -302,6 +303,7 @@ void TestQPrefCloudStorage::test_signals()
 	qPrefCloudStorage::set_cloud_storage_password("t_signal pass2");
 	qPrefCloudStorage::set_cloud_storage_pin("t_signal pin");
 	qPrefCloudStorage::set_cloud_timeout(321);
+
 	prefs.cloud_verification_status = qPrefCloudStorage::CS_UNKNOWN;
 	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	prefs.git_local_only = true;

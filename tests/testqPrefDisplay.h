@@ -13,6 +13,7 @@ private slots:
 	void test_set_load_struct();
 	void test_struct_disk();
 	void test_multiple();
+	void test_signals();
 };
 
 #endif // TESTQPREFDISPLAY_H
