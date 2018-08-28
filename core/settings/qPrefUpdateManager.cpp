@@ -62,4 +62,4 @@ void qPrefUpdateManager::disk_next_check(bool doSync)
 		prefs.update_manager.next_check = qPrefPrivate::propValue(group + "/NextCheck", 0).toInt();
 }
 
-HANDLE_PROP_QSTRING(UpdateManager, "UodateManager/UUID", uuidString);
+HANDLE_PROP_QSTRING(UpdateManager, "UpdateManager/UUID", uuidString);
