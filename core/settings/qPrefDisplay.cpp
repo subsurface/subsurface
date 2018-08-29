@@ -61,6 +61,14 @@ void qPrefDisplay::loadSync(bool doSync)
 		load_tooltip_position();
 		load_theme();
 		load_UserSurvey();
+		load_mainSplitter();
+		load_topSplitter();
+		load_bottomSplitter();
+		load_maximized();
+		load_geometry();
+		load_windowState();
+		load_lastState();
+
 	}
 }
 
