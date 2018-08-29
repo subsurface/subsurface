@@ -684,9 +684,12 @@ void DiveListView::removeFromTrip()
 	struct dive *d;
 	QMap<struct dive*, dive_trip*> divesToRemove;
 	for_each_dive (i, d) {
-		if (d->selected)
+		if (d->selected && d->divetrip)
 			divesToRemove.insert(d, d->divetrip);
 	}
+	if (divesToRemove.isEmpty())
+		return;
+
 	UndoRemoveDivesFromTrip *undoCommand = new UndoRemoveDivesFromTrip(divesToRemove);
 	MainWindow::instance()->undoStack->push(undoCommand);
 
