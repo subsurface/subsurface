@@ -14,6 +14,7 @@
 
 #include <QGraphicsSceneMouseEvent>
 #include <QMessageBox>
+#include <QSettings>
 #include <QShortcut>
 
 #define TIME_INITIAL_MAX 30

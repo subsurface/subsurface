@@ -27,6 +27,7 @@ class QItemSelection;
 class DiveListView;
 class MainTab;
 class QWebView;
+class QSettings;
 class UpdateManager;
 class UserManual;
 class DivePlannerWidget;

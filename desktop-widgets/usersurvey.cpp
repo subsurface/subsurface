@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QShortcut>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "desktop-widgets/usersurvey.h"
 #include "ui_usersurvey.h"
@@ -10,7 +11,6 @@
 
 #include "core/qthelper.h"
 #include "core/subsurfacesysinfo.h"
-#include "core/settings/qPrefDisplay.h"
 
 UserSurvey::UserSurvey(QWidget *parent) : QDialog(parent),
 	ui(new Ui::UserSurvey)
@@ -88,7 +88,9 @@ void UserSurvey::on_buttonBox_rejected()
 		// nothing to do here, we'll just ask again the next time they start
 		break;
 	case QDialog::Rejected:
-		qPrefDisplay::set_UserSurvey("declined");
+		QSettings s;
+		s.beginGroup("UserSurvey");
+		s.setValue("SurveyDone", "declined");
 		break;
 	}
 	hide();
@@ -114,7 +116,9 @@ void UserSurvey::requestReceived()
 
 		if (responseBody == "OK") {
 			msgText = tr("Survey successfully submitted.");
-			qPrefDisplay::set_UserSurvey("submitted");
+			QSettings s;
+			s.beginGroup("UserSurvey");
+			s.setValue("SurveyDone", "submitted");
 		} else {
 			msgText = tr("There was an error while trying to check for updates.<br/><br/>%1").arg(responseBody);
 			msgbox.setIcon(QMessageBox::Warning);
