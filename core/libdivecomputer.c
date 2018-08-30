@@ -581,6 +581,8 @@ static void set_dc_serial(struct divecomputer *dc, const char *serial)
 		dc->deviceid = calculate_string_hash(serial);
 }
 
+extern degrees_t parse_degrees(char *buf, char **end);
+
 static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 {
 	// Our dive ID is the string hash of the "Dive ID" string
@@ -597,6 +599,18 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 	if (!strcmp(str->desc, "FW Version")) {
 		dive->dc.fw_version = strdup(str->value);
 		return;
+	}
+	/* GPS data? */
+	if (!strncmp(str->desc, "GPS", 3)) {
+		char *line = (char *) str->value;
+		degrees_t latitude, longitude;
+
+		latitude = parse_degrees(line, &line);
+		if (*line == ',') line++;
+		longitude = parse_degrees(line, &line);
+
+		if (latitude.udeg && longitude.udeg)
+			dive->dive_site_uuid = create_dive_site_with_gps(str->value, latitude, longitude, dive->when);
 	}
 }
 #endif
