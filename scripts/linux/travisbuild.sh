@@ -24,6 +24,8 @@ export QT_DEBUG_PLUGINS=1
 # for debugging: find $QT_ROOT/plugins
 
 env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
+ls -lR subsurface/build | grep LastTest.log
+grep -A1 RESULT\ :\ TestParsePerformance subsurface/build/tests/Testing/Temporary/LastTest.log
 
 # set up the appdir
 mkdir -p appdir/usr/plugins/
