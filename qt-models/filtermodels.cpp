@@ -461,6 +461,8 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 {
 	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
 	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
+	if (!diveVariant.isValid())
+		return true;
 	struct dive *d = (struct dive *)diveVariant.value<void *>();
 
 	// For dives, simply check the hidden_by_filter flag
