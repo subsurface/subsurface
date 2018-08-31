@@ -903,6 +903,7 @@ void DivePlannerPointsModel::createTemporaryPlan()
 		struct deco_state plan_deco_state;
 		struct diveplan *plan_copy;
 
+		memset(&plan_deco_state, 0, sizeof(struct deco_state));
 		plan(&plan_deco_state, &diveplan, &displayed_dive, DECOTIMESTEP, stoptable, &cache, isPlanner(), false);
 		plan_copy = (struct diveplan *)malloc(sizeof(struct diveplan));
 		lock_planner();
