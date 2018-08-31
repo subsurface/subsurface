@@ -37,7 +37,7 @@ int main(int argc, char **argv)
 	argc--;
 
 	// Register types
-	register_qml_types();
+	qPref::instance()->registerQML();
 
 	// Run all tst_*.qml files
 	return quick_test_main(argc, argv, "TestQML", tst_dir);

@@ -35,6 +35,9 @@ public:
 	static void load() { loadSync(false); }
 	static void sync() { loadSync(true); }
 
+	// Register QML
+	void registerQML();
+
 public:
 	enum cloud_status {
 		CS_UNKNOWN,
@@ -50,5 +53,4 @@ public:
 private:
 	static void loadSync(bool doSync);
 };
-
 #endif
