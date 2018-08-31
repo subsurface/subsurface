@@ -155,21 +155,11 @@ static void register_meta_types()
 void register_qml_types()
 {
 	int rc;
-	REGISTER_TYPE(qPref, "SsrfPrefs");
-	REGISTER_TYPE(qPrefCloudStorage, "SsrfCloudStoragePrefs");
-	REGISTER_TYPE(qPrefDisplay, "SsrfDisplayPrefs");
-	REGISTER_TYPE(qPrefDiveComputer, "SsrfDiveComputerPrefs");
-	REGISTER_TYPE(qPrefDivePlanner, "SsrfDivePlannerPrefs");
-	REGISTER_TYPE(qPrefFacebook, "SsrfFacebookPrefs");
-	REGISTER_TYPE(qPrefGeneral, "SsrfGeneralPrefs");
-	REGISTER_TYPE(qPrefGeocoding, "SsrfGeocodingPrefs");
-	REGISTER_TYPE(qPrefLanguage, "SsrfLanguagePrefs");
-	REGISTER_TYPE(qPrefLocationService, "SsrfLocationServicePrefs");
-	REGISTER_TYPE(qPrefPartialPressureGas, "SsrfPartialPressureGasPrefs");
-	REGISTER_TYPE(qPrefProxy, "SsrfProxyPrefs");
-	REGISTER_TYPE(qPrefTechnicalDetails, "SsrfTechnicalDetailsPrefs");
-	REGISTER_TYPE(qPrefUnits, "SsrfUnitPrefs");
-	REGISTER_TYPE(qPrefUpdateManager, "SsrfUpdateManagerPrefs");
+
+	(void)rc;
+
+	// register qPref*
+	qPref::instance()->registerQML();
 
 #ifndef SUBSURFACE_TEST_DATA
 #ifdef SUBSURFACE_MOBILE

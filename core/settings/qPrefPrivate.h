@@ -5,8 +5,11 @@
 // Header used by all qPref<class> implementations to avoid duplicating code
 #include "core/qthelper.h"
 #include "qPref.h"
+
 #include <QObject>
+#include <QDebug>
 #include <QVariant>
+
 
 // implementation class of the interface classes
 class qPrefPrivate {
