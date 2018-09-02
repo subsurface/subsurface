@@ -373,6 +373,11 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 	case DC_SAMPLE_RBT:
 		sample->rbt.seconds = (!strncasecmp(dc->model, "suunto", 6)) ? value.rbt : value.rbt * 60;
 		break;
+#ifdef DC_SAMPLE_TTS
+	case DC_SAMPLE_TTS:
+		sample->tts.seconds = value.time;
+		break;
+#endif
 	case DC_SAMPLE_HEARTBEAT:
 		sample->heartbeat = heartbeat = value.heartbeat;
 		break;
