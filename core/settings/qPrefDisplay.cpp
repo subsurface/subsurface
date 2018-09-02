@@ -44,6 +44,7 @@ static int st_lastState_default = false;
 qPrefDisplay::qPrefDisplay(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefDisplay *qPrefDisplay::instance()
 {
 	static qPrefDisplay *self = new qPrefDisplay;

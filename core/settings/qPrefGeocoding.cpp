@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("geocoding");
 qPrefGeocoding::qPrefGeocoding(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefGeocoding *qPrefGeocoding::instance()
 {
 	static qPrefGeocoding *self = new qPrefGeocoding;

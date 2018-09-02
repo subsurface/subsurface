@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("WebApps/Facebook");
 qPrefFacebook::qPrefFacebook(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefFacebook*qPrefFacebook::instance()
 {
 	static qPrefFacebook *self = new qPrefFacebook;

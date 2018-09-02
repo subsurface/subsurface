@@ -9,6 +9,7 @@ static const QString group = QStringLiteral("Network");
 qPrefProxy::qPrefProxy(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefProxy *qPrefProxy::instance()
 {
 	static qPrefProxy *self = new qPrefProxy;

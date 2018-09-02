@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("CloudStorage");
 qPrefCloudStorage::qPrefCloudStorage(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefCloudStorage *qPrefCloudStorage::instance()
 {
 	static qPrefCloudStorage *self = new qPrefCloudStorage;
