@@ -11,10 +11,10 @@
 QMLPrefs *QMLPrefs::m_instance = NULL;
 
 QMLPrefs::QMLPrefs() :
-	m_credentialStatus(qPref::CS_UNKNOWN),
+	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_developer(false),
 	m_distanceThreshold(1000),
-	m_oldStatus(qPref::CS_UNKNOWN),
+	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_showPin(false),
 	m_timeThreshold(60)
 {
@@ -69,16 +69,16 @@ void QMLPrefs::setCloudUserName(const QString &cloudUserName)
 	emit cloudUserNameChanged();
 }
 
-qPref::cloud_status QMLPrefs::credentialStatus() const
+qPrefCloudStorage::cloud_status QMLPrefs::credentialStatus() const
 {
 	return m_credentialStatus;
 }
 
-void QMLPrefs::setCredentialStatus(const qPref::cloud_status value)
+void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 {
 	if (m_credentialStatus != value) {
 		setOldStatus(m_credentialStatus);
-		if (value == qPref::CS_NOCLOUD) {
+		if (value == qPrefCloudStorage::CS_NOCLOUD) {
 			QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
 			set_filename(NOCLOUD_LOCALSTORAGE);
 			clearCredentials();
@@ -105,12 +105,12 @@ void QMLPrefs::setDistanceThreshold(int distance)
 	emit distanceThresholdChanged();
 }
 
-qPref::cloud_status QMLPrefs::oldStatus() const
+qPrefCloudStorage::cloud_status QMLPrefs::oldStatus() const
 {
 	return m_oldStatus;
 }
 
-void QMLPrefs::setOldStatus(const qPref::cloud_status value)
+void QMLPrefs::setOldStatus(const qPrefCloudStorage::cloud_status value)
 {
 	if (m_oldStatus != value) {
 		m_oldStatus = value;
@@ -172,7 +172,7 @@ void QMLPrefs::cancelCredentialsPinSetup()
 	 * cloud account, so the name is not perfect.
 	 */
 	
-	setCredentialStatus(qPref::CS_UNKNOWN);
+	setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
 	qPrefCloudStorage::set_cloud_storage_email(m_cloudUserName);
 	qPrefCloudStorage::set_cloud_storage_password(m_cloudPassword);
 	qPrefCloudStorage::set_cloud_verification_status(m_credentialStatus);
