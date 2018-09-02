@@ -8,9 +8,9 @@
 
 class qPrefFacebook : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString access_token READ access_token WRITE set_access_token NOTIFY access_token_changed);
-	Q_PROPERTY(QString album_id READ album_id WRITE set_album_id NOTIFY album_id_changed);
-	Q_PROPERTY(QString user_id READ user_id WRITE set_user_id NOTIFY user_id_changed);
+	Q_PROPERTY(QString access_token READ access_token WRITE set_access_token NOTIFY access_tokenChanged);
+	Q_PROPERTY(QString album_id READ album_id WRITE set_album_id NOTIFY album_idChanged);
+	Q_PROPERTY(QString user_id READ user_id WRITE set_user_id NOTIFY user_idChanged);
 
 public:
 	qPrefFacebook(QObject *parent = NULL);
@@ -32,9 +32,9 @@ public slots:
 	static void set_user_id(const QString& value);
 
 signals:
-	void access_token_changed(const QString& value);
-	void album_id_changed(const QString& value);
-	void user_id_changed(const QString& value);
+	void access_tokenChanged(const QString& value);
+	void album_idChanged(const QString& value);
+	void user_idChanged(const QString& value);
 
 private:
 	static void disk_access_token(bool doSync);

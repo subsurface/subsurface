@@ -55,8 +55,8 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->display_deco_mode(), prefs.display_deco_mode);
 	QCOMPARE(tst->display_unused_tanks(), prefs.display_unused_tanks);
 	QCOMPARE(tst->ead(), prefs.ead);
-	QCOMPARE(tst->gfhigh(), (int)prefs.gfhigh);
-	QCOMPARE(tst->gflow(), (int)prefs.gflow);
+	QCOMPARE(tst->gfhigh(), prefs.gfhigh);
+	QCOMPARE(tst->gflow(), prefs.gflow);
 	QCOMPARE(tst->gf_low_at_maxdepth(), prefs.gf_low_at_maxdepth);
 	QCOMPARE(tst->hrgraph(), prefs.hrgraph);
 	QCOMPARE(tst->mod(), prefs.mod);
@@ -72,7 +72,7 @@ void TestQPrefTechnicalDetails::test_struct_get()
 	QCOMPARE(tst->show_sac(), prefs.show_sac);
 	QCOMPARE(tst->show_scr_ocpo2(), prefs.show_scr_ocpo2);
 	QCOMPARE(tst->tankbar(), prefs.tankbar);
-	QCOMPARE(tst->vpmb_conservatism(), (int)prefs.vpmb_conservatism);
+	QCOMPARE(tst->vpmb_conservatism(), prefs.vpmb_conservatism);
 	QCOMPARE(tst->zoomed_plot(), prefs.zoomed_plot);
 }
 
@@ -117,8 +117,8 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.display_deco_mode, RECREATIONAL);
 	QCOMPARE(prefs.display_unused_tanks, false);
 	QCOMPARE(prefs.ead, false);
-	QCOMPARE((int)prefs.gfhigh, 29);
-	QCOMPARE((int)prefs.gflow, 24);
+	QCOMPARE(prefs.gfhigh, 29);
+	QCOMPARE(prefs.gflow, 24);
 	QCOMPARE(prefs.gf_low_at_maxdepth, false);
 	QCOMPARE(prefs.hrgraph, false);
 	QCOMPARE(prefs.mod, false);
@@ -134,7 +134,7 @@ void TestQPrefTechnicalDetails::test_set_struct()
 	QCOMPARE(prefs.show_sac, false);
 	QCOMPARE(prefs.show_scr_ocpo2, false);
 	QCOMPARE(prefs.tankbar, false);
-	QCOMPARE((int)prefs.vpmb_conservatism, 64);
+	QCOMPARE(prefs.vpmb_conservatism, 64);
 	QCOMPARE(prefs.zoomed_plot, false);
 }
 
@@ -208,8 +208,8 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.display_deco_mode, RECREATIONAL);
 	QCOMPARE(prefs.display_unused_tanks, false);
 	QCOMPARE(prefs.ead, false);
-	QCOMPARE((int)prefs.gfhigh, 29);
-	QCOMPARE((int)prefs.gflow, 24);
+	QCOMPARE(prefs.gfhigh, 29);
+	QCOMPARE(prefs.gflow, 24);
 	QCOMPARE(prefs.gf_low_at_maxdepth, false);
 	QCOMPARE(prefs.hrgraph, false);
 	QCOMPARE(prefs.mod, false);
@@ -225,7 +225,7 @@ void TestQPrefTechnicalDetails::test_set_load_struct()
 	QCOMPARE(prefs.show_sac, false);
 	QCOMPARE(prefs.show_scr_ocpo2, false);
 	QCOMPARE(prefs.tankbar, false);
-	QCOMPARE((int)prefs.vpmb_conservatism, 64);
+	QCOMPARE(prefs.vpmb_conservatism, 64);
 	QCOMPARE(prefs.zoomed_plot, false);
 }
 
@@ -300,8 +300,8 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	QCOMPARE(prefs.display_deco_mode, BUEHLMANN);
 	QCOMPARE(prefs.display_unused_tanks, true);
 	QCOMPARE(prefs.ead, true);
-	QCOMPARE((int)prefs.gfhigh, 11);
-	QCOMPARE((int)prefs.gflow, 12);
+	QCOMPARE(prefs.gfhigh, 11);
+	QCOMPARE(prefs.gflow, 12);
 	QCOMPARE(prefs.gf_low_at_maxdepth, true);
 	QCOMPARE(prefs.hrgraph, true);
 	QCOMPARE(prefs.mod, true);
@@ -317,7 +317,7 @@ void TestQPrefTechnicalDetails::test_struct_disk()
 	QCOMPARE(prefs.show_sac, true);
 	QCOMPARE(prefs.show_scr_ocpo2, true);
 	QCOMPARE(prefs.tankbar, true);
-	QCOMPARE((int)prefs.vpmb_conservatism, 15);
+	QCOMPARE(prefs.vpmb_conservatism, 15);
 	QCOMPARE(prefs.zoomed_plot, true);
 }
 

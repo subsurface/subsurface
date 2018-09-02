@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("geocoding");
 qPrefGeocoding::qPrefGeocoding(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefGeocoding *qPrefGeocoding::instance()
 {
 	static qPrefGeocoding *self = new qPrefGeocoding;
@@ -26,7 +27,7 @@ void qPrefGeocoding::set_first_taxonomy_category(taxonomy_category value)
 	if (value != prefs.geocoding.category[0]) {
 		prefs.geocoding.category[0] = value;
 		disk_first_taxonomy_category(true);
-		emit instance()->first_taxonomy_category_changed(value);
+		emit instance()->first_taxonomy_categoryChanged(value);
 	}
 }
 void qPrefGeocoding::disk_first_taxonomy_category(bool doSync)
@@ -43,7 +44,7 @@ void qPrefGeocoding::set_second_taxonomy_category(taxonomy_category value)
 	if (value != prefs.geocoding.category[1]) {
 		prefs.geocoding.category[1] = value;
 		disk_second_taxonomy_category(true);
-		emit instance()->second_taxonomy_category_changed(value);
+		emit instance()->second_taxonomy_categoryChanged(value);
 	}
 }
 void qPrefGeocoding::disk_second_taxonomy_category(bool doSync)
@@ -60,7 +61,7 @@ void qPrefGeocoding::set_third_taxonomy_category(taxonomy_category value)
 	if (value != prefs.geocoding.category[2]) {
 		prefs.geocoding.category[2] = value;
 		disk_third_taxonomy_category(true);
-		emit instance()->third_taxonomy_category_changed(value);
+		emit instance()->third_taxonomy_categoryChanged(value);
 	}
 }
 void qPrefGeocoding::disk_third_taxonomy_category(bool doSync)

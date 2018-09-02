@@ -77,7 +77,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
 	ui->btnUseDefaultFile->setChecked(qPrefGeneral::use_default_file());
 
-	if (qPrefCloudStorage::cloud_verification_status() == qPref::CS_VERIFIED) {
+	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_VERIFIED) {
 		ui->cloudDefaultFile->setEnabled(true);
 	} else {
 		if (ui->cloudDefaultFile->isChecked())

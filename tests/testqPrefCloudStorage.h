@@ -16,6 +16,7 @@ private slots:
 	void test_multiple();
 	void test_oldPreferences();
 	void test_loadFromCloud_var();
+	void test_signals();
 };
 
 #endif // TESTQPREFCLOUDSTORAGE_H

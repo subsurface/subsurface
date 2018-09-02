@@ -8,16 +8,16 @@
 
 class qPrefUnits : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditional_changed);
-	Q_PROPERTY(units::DURATION duration_units READ duration_units WRITE set_duration_units NOTIFY duration_units_changed);
-	Q_PROPERTY(units::LENGTH length READ length WRITE set_length NOTIFY length_changed);
-	Q_PROPERTY(units::PRESSURE pressure READ pressure WRITE set_pressure NOTIFY pressure_changed);
-	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_table_changed);
-	Q_PROPERTY(units::TEMPERATURE temperature READ temperature WRITE set_temperature NOTIFY temperature_changed);
-	Q_PROPERTY(QString unit_system READ unit_system WRITE set_unit_system NOTIFY unit_system_changed);
-	Q_PROPERTY(units::TIME vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_time_changed);
-	Q_PROPERTY(units::VOLUME volume READ volume WRITE set_volume NOTIFY volume_changed);
-	Q_PROPERTY(units::WEIGHT weight READ weight WRITE set_weight NOTIFY weight_changed);
+	Q_PROPERTY(bool coordinates_traditional READ coordinates_traditional WRITE set_coordinates_traditional NOTIFY coordinates_traditionalChanged);
+	Q_PROPERTY(units::DURATION duration_units READ duration_units WRITE set_duration_units NOTIFY duration_unitsChanged);
+	Q_PROPERTY(units::LENGTH length READ length WRITE set_length NOTIFY lengthChanged);
+	Q_PROPERTY(units::PRESSURE pressure READ pressure WRITE set_pressure NOTIFY pressureChanged);
+	Q_PROPERTY(bool show_units_table READ show_units_table WRITE set_show_units_table NOTIFY show_units_tableChanged);
+	Q_PROPERTY(units::TEMPERATURE temperature READ temperature WRITE set_temperature NOTIFY temperatureChanged);
+	Q_PROPERTY(QString unit_system READ unit_system WRITE set_unit_system NOTIFY unit_systemChanged);
+	Q_PROPERTY(units::TIME vertical_speed_time READ vertical_speed_time WRITE set_vertical_speed_time NOTIFY vertical_speed_timeChanged);
+	Q_PROPERTY(units::VOLUME volume READ volume WRITE set_volume NOTIFY volumeChanged);
+	Q_PROPERTY(units::WEIGHT weight READ weight WRITE set_weight NOTIFY weightChanged);
 
 public:
 	qPrefUnits(QObject *parent = NULL);
@@ -53,16 +53,16 @@ public slots:
 	static void set_weight(units::WEIGHT value);
 
 signals:
-	void coordinates_traditional_changed(bool value);
-	void duration_units_changed(int value);
-	void length_changed(int value);
-	void pressure_changed(int value);
-	void show_units_table_changed(bool value);
-	void temperature_changed(int value);
-	void unit_system_changed(const QString& value);
-	void vertical_speed_time_changed(int value);
-	void volume_changed(int value);
-	void weight_changed(int value);
+	void coordinates_traditionalChanged(bool value);
+	void duration_unitsChanged(int value);
+	void lengthChanged(int value);
+	void pressureChanged(int value);
+	void show_units_tableChanged(bool value);
+	void temperatureChanged(int value);
+	void unit_systemChanged(const QString& value);
+	void vertical_speed_timeChanged(int value);
+	void volumeChanged(int value);
+	void weightChanged(int value);
 
 private:
 	static void disk_coordinates_traditional(bool doSync);

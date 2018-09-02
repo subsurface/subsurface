@@ -94,8 +94,8 @@ struct preferences {
 	const char *cloud_storage_newpassword;
 	const char *cloud_storage_password;
 	const char *cloud_storage_pin;
-	short       cloud_timeout;
-	short       cloud_verification_status;
+	int         cloud_timeout;
+	int         cloud_verification_status;
 	bool        git_local_only;
 	bool        save_password_local;
 	bool        save_userid_local;
@@ -185,8 +185,8 @@ struct preferences {
 	enum deco_mode              display_deco_mode;
 	bool                        display_unused_tanks;
 	bool                        ead;
-	short                       gfhigh;
-	short                       gflow;
+	int                         gfhigh;
+	int                         gflow;
 	bool                        gf_low_at_maxdepth;
 	bool                        hrgraph;
 	bool                        mod;
@@ -203,7 +203,7 @@ struct preferences {
 	bool                        show_sac;
 	bool                        show_scr_ocpo2;
 	bool                        tankbar;
-	short                       vpmb_conservatism;
+	int                         vpmb_conservatism;
 	bool                        zoomed_plot;
 
 	// ********** Units **********
