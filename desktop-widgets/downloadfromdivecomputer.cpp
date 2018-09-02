@@ -248,9 +248,11 @@ void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
 
 void DownloadFromDCWidget::on_search_clicked()
 {
-	if (ui.vendor->currentText() == "Uemis") {
+	if (ui.vendor->currentText() == "Uemis" || ui.vendor->currentText() == "Garmin") {
+		QString dialogTitle = ui.vendor->currentText() == "Uemis" ?
+					tr("Find Uemis dive computer") : tr("Find Garmin dive computer");
 		QString dirName = QFileDialog::getExistingDirectory(this,
-								    tr("Find Uemis dive computer"),
+								    dialogTitle,
 								    QDir::homePath(),
 								    QFileDialog::ShowDirsOnly);
 		if (ui.device->findText(dirName) == -1)
