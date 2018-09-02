@@ -52,7 +52,7 @@ void CloudStorageAuthenticate::uploadFinished()
 	qPrefCloudStorage csSettings(parent());
 
 	if (cloudAuthReply == QLatin1String("[VERIFIED]") || cloudAuthReply == QLatin1String("[OK]")) {
-		csSettings.set_cloud_verification_status(qPref::CS_VERIFIED);
+		csSettings.set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 		/* TODO: Move this to a correct place
 		NotificationWidget *nw = MainWindow::instance()->getNotificationWidget();
 		if (nw->getNotificationText() == myLastError)
@@ -61,7 +61,7 @@ void CloudStorageAuthenticate::uploadFinished()
 		myLastError.clear();
 	} else if (cloudAuthReply == QLatin1String("[VERIFY]") ||
 		   cloudAuthReply == QLatin1String("Invalid PIN")) {
-		csSettings.set_cloud_verification_status(qPref::CS_NEED_TO_VERIFY);
+		csSettings.set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 		report_error(qPrintable(tr("Cloud account verification required, enter PIN in preferences")));
 	} else if (cloudAuthReply == QLatin1String("[PASSWDCHANGED]")) {
 		csSettings.set_cloud_storage_password(cloudNewPassword);
@@ -69,7 +69,7 @@ void CloudStorageAuthenticate::uploadFinished()
 		emit passwordChangeSuccessful();
 		return;
 	} else {
-		csSettings.set_cloud_verification_status(qPref::CS_INCORRECT_USER_PASSWD);
+		csSettings.set_cloud_verification_status(qPrefCloudStorage::CS_INCORRECT_USER_PASSWD);
 		myLastError = cloudAuthReply;
 		report_error("%s", qPrintable(cloudAuthReply));
 	}

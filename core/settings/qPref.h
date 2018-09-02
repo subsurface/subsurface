@@ -39,15 +39,6 @@ public:
 	void registerQML(QQmlEngine *engine);
 
 public:
-	enum cloud_status {
-		CS_UNKNOWN,
-		CS_INCORRECT_USER_PASSWD,
-		CS_NEED_TO_VERIFY,
-		CS_VERIFIED,
-		CS_NOCLOUD
-	};
-	Q_ENUM(cloud_status);
-
 	static const QString canonical_version() { return QString(CANONICAL_VERSION_STRING); }
 	static const QString mobile_version() { return QString(MOBILE_VERSION_STRING); }
 

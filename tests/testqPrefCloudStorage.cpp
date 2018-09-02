@@ -27,7 +27,7 @@ void TestQPrefCloudStorage::test_struct_get()
 	prefs.cloud_storage_password = copy_qstring("more secret");
 	prefs.cloud_storage_pin = copy_qstring("a pin");
 	prefs.cloud_timeout = 117;
-	prefs.cloud_verification_status = qPref::CS_NOCLOUD;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_NOCLOUD;
 	prefs.save_password_local = true;
 
 	QCOMPARE(tst->cloud_base_url(), QString(prefs.cloud_base_url));
@@ -53,7 +53,7 @@ void TestQPrefCloudStorage::test_set_struct()
 	tst->set_cloud_storage_password("t2 pass2");
 	tst->set_cloud_storage_pin("t2 pin");
 	tst->set_cloud_timeout(123);
-	tst->set_cloud_verification_status(qPref::CS_VERIFIED);
+	tst->set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	tst->set_save_password_local(false);
 
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t2 base"));
@@ -62,7 +62,7 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t2 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t2 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 123);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
+	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, false);
 
 	// remark is set with set_base_url
@@ -82,7 +82,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	tst->set_cloud_storage_password("t3 pass2");
 	tst->set_cloud_storage_pin("t3 pin");
 	tst->set_cloud_timeout(321);
-	tst->set_cloud_verification_status(qPref::CS_NOCLOUD);
+	tst->set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 
 	prefs.cloud_base_url = copy_qstring("error1");
 	prefs.cloud_git_url = copy_qstring("error1");
@@ -91,7 +91,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	prefs.cloud_storage_password = copy_qstring("error1");
 	prefs.cloud_storage_pin = copy_qstring("error1");
 	prefs.cloud_timeout = 324;
-	prefs.cloud_verification_status = qPref::CS_VERIFIED;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_VERIFIED;
 	prefs.save_password_local = false;
 
 	tst->load();
@@ -101,7 +101,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t3 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t3 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 321);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_NOCLOUD);
+	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_NOCLOUD);
 	QCOMPARE(prefs.save_password_local, true);
 
 	// remark is set with set_base_url
@@ -121,7 +121,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_password = copy_qstring("t4 pass2");
 	prefs.cloud_storage_pin = copy_qstring("t4 pin");
 	prefs.cloud_timeout = 123;
-	prefs.cloud_verification_status = qPref::CS_VERIFIED;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_VERIFIED;
 
 	tst->sync();
 
@@ -132,7 +132,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_password = copy_qstring("error1");
 	prefs.cloud_storage_pin = copy_qstring("error1");
 	prefs.cloud_timeout = 324;
-	prefs.cloud_verification_status = qPref::CS_VERIFIED;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_VERIFIED;
 	prefs.save_password_local = false;
 
 	tst->load();
@@ -143,7 +143,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t4 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t4 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 123);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
+	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, true);
 
 	// remark is set with set_base_url

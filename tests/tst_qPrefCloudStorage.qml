@@ -43,8 +43,8 @@ TestCase {
 		compare(tst.cloud_timeout, 137)
 
 		var x9 = tst.cloud_verification_status
-		tst.cloud_verification_status = SsrfPrefs.CS_VERIFIED
-		compare(tst.cloud_verification_status, SsrfPrefs.CS_VERIFIED)
+		tst.cloud_verification_status = tst.CS_VERIFIED
+		compare(tst.cloud_verification_status, tst.CS_VERIFIED)
 
 		var x11 = tst.save_password_local
 		tst.save_password_local = true

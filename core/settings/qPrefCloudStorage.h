@@ -27,6 +27,15 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
+	enum cloud_status {
+		CS_UNKNOWN,
+		CS_INCORRECT_USER_PASSWD,
+		CS_NEED_TO_VERIFY,
+		CS_VERIFIED,
+		CS_NOCLOUD
+	};
+	Q_ENUM(cloud_status);
+
 	static QString cloud_base_url() { return prefs.cloud_base_url; }
 	static QString cloud_git_url() { return prefs.cloud_git_url; }
 	static QString cloud_storage_email() { return prefs.cloud_storage_email; }

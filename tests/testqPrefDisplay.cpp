@@ -7,6 +7,7 @@
 
 #include <QDate>
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefDisplay::initTestCase()
 {
