@@ -41,8 +41,8 @@ void TestQPrefCloudStorage::test_struct_get()
 	QCOMPARE(tst->cloud_storage_newpassword(), QString(prefs.cloud_storage_newpassword));
 	QCOMPARE(tst->cloud_storage_password(), QString(prefs.cloud_storage_password));
 	QCOMPARE(tst->cloud_storage_pin(), QString(prefs.cloud_storage_pin));
-	QCOMPARE(tst->cloud_timeout(), (int)prefs.cloud_timeout);
-	QCOMPARE(tst->cloud_verification_status(), (int)prefs.cloud_verification_status);
+	QCOMPARE(tst->cloud_timeout(), prefs.cloud_timeout);
+	QCOMPARE(tst->cloud_verification_status(), prefs.cloud_verification_status);
 	QCOMPARE(tst->git_local_only(), prefs.git_local_only);
 	QCOMPARE(tst->save_password_local(), prefs.save_password_local);
 	QCOMPARE(tst->save_userid_local(), prefs.save_userid_local);
@@ -74,8 +74,8 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE(QString(prefs.cloud_storage_newpassword), QString("t2 pass1"));
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t2 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t2 pin"));
-	QCOMPARE((int)prefs.cloud_timeout, 123);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
+	QCOMPARE(prefs.cloud_timeout, 123);
+	QCOMPARE(prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.git_local_only, false);
 	QCOMPARE(prefs.save_password_local, false);
 	QCOMPARE(prefs.save_userid_local, false);
@@ -124,8 +124,8 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t3 email2"));
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t3 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t3 pin"));
-	QCOMPARE((int)prefs.cloud_timeout, 321);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_NOCLOUD);
+	QCOMPARE(prefs.cloud_timeout, 321);
+	QCOMPARE(prefs.cloud_verification_status, (int)qPref::CS_NOCLOUD);
 	QCOMPARE(prefs.git_local_only, true);
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
@@ -180,8 +180,8 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t4 email2"));
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t4 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t4 pin"));
-	QCOMPARE((int)prefs.cloud_timeout, 123);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
+	QCOMPARE(prefs.cloud_timeout, 123);
+	QCOMPARE(prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
 	QCOMPARE(prefs.git_local_only, true);
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
