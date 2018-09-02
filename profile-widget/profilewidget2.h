@@ -171,7 +171,7 @@ private: /*methods*/
 	struct plot_data *getEntryFromPos(QPointF pos);
 	void addActionShortcut(const Qt::Key shortcut, void (ProfileWidget2::*slot)());
 	void createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
-			 double *thresholdSettingsMin, double *thresholdSettingsMax);
+			 const double *thresholdSettingsMin, const double *thresholdSettingsMax);
 	void clearPictures();
 private:
 	DivePlotDataModel *dataModel;
