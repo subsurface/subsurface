@@ -423,7 +423,7 @@ extern struct dive_trip *clone_empty_trip(struct dive_trip *trip);
 extern const struct units SI_units, IMPERIAL_units;
 extern struct units xml_parsing_units;
 
-extern struct units *get_units(void);
+extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
 struct dive_table {

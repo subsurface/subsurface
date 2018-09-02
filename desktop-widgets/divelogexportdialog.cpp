@@ -232,7 +232,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 	FILE *f;
 	QDir texdir = QFileInfo(filename).dir();
 	struct dive *dive;
-	struct units *units = get_units();
+	const struct units *units = get_units();
 	const char *unit;
 	int i;
 	bool need_pagebreak = false;
