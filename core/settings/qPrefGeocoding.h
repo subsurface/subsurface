@@ -8,9 +8,9 @@
 
 class qPrefGeocoding : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(taxonomy_category first_taxonomy_category READ first_taxonomy_category WRITE set_first_taxonomy_category NOTIFY first_taxonomy_category_changed);
-	Q_PROPERTY(taxonomy_category second_taxonomy_category READ second_taxonomy_category WRITE set_second_taxonomy_category NOTIFY second_taxonomy_category_changed);
-	Q_PROPERTY(taxonomy_category third_taxonomy_category READ third_taxonomy_category WRITE set_third_taxonomy_category NOTIFY third_taxonomy_category_changed);
+	Q_PROPERTY(taxonomy_category first_taxonomy_category READ first_taxonomy_category WRITE set_first_taxonomy_category NOTIFY first_taxonomy_categoryChanged);
+	Q_PROPERTY(taxonomy_category second_taxonomy_category READ second_taxonomy_category WRITE set_second_taxonomy_category NOTIFY second_taxonomy_categoryChanged);
+	Q_PROPERTY(taxonomy_category third_taxonomy_category READ third_taxonomy_category WRITE set_third_taxonomy_category NOTIFY third_taxonomy_categoryChanged);
 
 public:
 	qPrefGeocoding(QObject *parent = NULL);
@@ -32,9 +32,9 @@ public slots:
 	static void set_third_taxonomy_category(taxonomy_category value);
 
 signals:
-	void first_taxonomy_category_changed(taxonomy_category value);
-	void second_taxonomy_category_changed(taxonomy_category value);
-	void third_taxonomy_category_changed(taxonomy_category value);
+	void first_taxonomy_categoryChanged(taxonomy_category value);
+	void second_taxonomy_categoryChanged(taxonomy_category value);
+	void third_taxonomy_categoryChanged(taxonomy_category value);
 
 private:
 	static void disk_first_taxonomy_category(bool doSync);

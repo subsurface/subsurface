@@ -63,7 +63,7 @@ void qPrefUnits::set_unit_system(const QString& value)
 			prefs.unit_system = PERSONALIZE;
 		}
 		disk_unit_system(true);
-		emit instance()->unit_system_changed(value);
+		emit instance()->unit_systemChanged(value);
 	}
 }
 DISK_LOADSYNC_ENUM(Units, "/unit_system", unit_system_values, unit_system);

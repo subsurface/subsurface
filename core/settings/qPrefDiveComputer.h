@@ -7,11 +7,11 @@
 
 class qPrefDiveComputer : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString device READ device WRITE set_device NOTIFY device_changed);
-	Q_PROPERTY(QString device_name READ device_name WRITE set_device_name NOTIFY device_name_changed);
-	Q_PROPERTY(int download_mode READ download_mode WRITE set_download_mode NOTIFY download_mode_changed);
-	Q_PROPERTY(QString product READ product WRITE set_product NOTIFY product_changed);
-	Q_PROPERTY(QString vendor READ vendor WRITE set_vendor NOTIFY vendor_changed);
+	Q_PROPERTY(QString device READ device WRITE set_device NOTIFY deviceChanged);
+	Q_PROPERTY(QString device_name READ device_name WRITE set_device_name NOTIFY device_nameChanged);
+	Q_PROPERTY(int download_mode READ download_mode WRITE set_download_mode NOTIFY download_modeChanged);
+	Q_PROPERTY(QString product READ product WRITE set_product NOTIFY productChanged);
+	Q_PROPERTY(QString vendor READ vendor WRITE set_vendor NOTIFY vendorChanged);
 
 public:
 	qPrefDiveComputer(QObject *parent = NULL);
@@ -37,11 +37,11 @@ public slots:
 	static void set_vendor(const QString &vendor);
 
 signals:
-	void device_changed(const QString &device);
-	void device_name_changed(const QString &device_name);
-	void download_mode_changed(int mode);
-	void product_changed(const QString &product);
-	void vendor_changed(const QString &vendor);
+	void deviceChanged(const QString &device);
+	void device_nameChanged(const QString &device_name);
+	void download_modeChanged(int mode);
+	void productChanged(const QString &product);
+	void vendorChanged(const QString &vendor);
 
 private:
 	// functions to load/sync variable with disk

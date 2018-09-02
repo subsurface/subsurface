@@ -84,7 +84,7 @@ void qPrefDisplay::set_divelist_font(const QString &value)
 		disk_divelist_font(true);
 
 		qApp->setFont(QFont(newValue));
-		emit instance()->divelist_font_changed(value);
+		emit instance()->divelist_fontChanged(value);
 	}
 }
 void qPrefDisplay::disk_divelist_font(bool doSync)
@@ -104,7 +104,7 @@ void qPrefDisplay::set_font_size(double value)
 		QFont defaultFont = qApp->font();
 		defaultFont.setPointSizeF(prefs.font_size);
 		qApp->setFont(defaultFont);
-		emit instance()->font_size_changed(value);
+		emit instance()->font_sizeChanged(value);
 	}
 }
 void qPrefDisplay::disk_font_size(bool doSync)
