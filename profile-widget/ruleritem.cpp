@@ -83,7 +83,7 @@ RulerItem2::RulerItem2() : source(new RulerNodeItem2()),
 	textItemBack->setFlag(QGraphicsItem::ItemIgnoresTransformations);
 	setPen(QPen(QColor(Qt::black), 0.0));
 #ifndef SUBSURFACE_MOBILE
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::rulergraph_changed, this, &RulerItem2::settingsChanged);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::rulergraphChanged, this, &RulerItem2::settingsChanged);
 #endif
 }
 

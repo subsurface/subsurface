@@ -307,24 +307,24 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(ui.profPn2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_pn2);
 	connect(ui.profPO2, &QAction::triggered, pp_gas, &qPrefPartialPressureGas::set_po2);
 
-	connect(tec, &qPrefTechnicalDetails::calcalltissues_changed        , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::calcceiling_changed           , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::dcceiling_changed             , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::ead_changed                   , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::calcceiling3m_changed         , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::mod_changed                   , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::calcndltts_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::hrgraph_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::rulergraph_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::show_sac_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::zoomed_plot_changed            , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::show_pictures_in_profile_changed , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::tankbar_changed               , graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(tec, &qPrefTechnicalDetails::percentagegraph_changed       , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcalltissuesChanged        , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcceilingChanged           , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::dcceilingChanged             , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::eadChanged                   , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcceiling3mChanged         , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::modChanged                   , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::calcndlttsChanged            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::hrgraphChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::rulergraphChanged            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::show_sacChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::zoomed_plotChanged            , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::show_pictures_in_profileChanged , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::tankbarChanged               , graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(tec, &qPrefTechnicalDetails::percentagegraphChanged       , graphics(), &ProfileWidget2::actionRequestedReplot);
 
-	connect(pp_gas, &qPrefPartialPressureGas::phe_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(pp_gas, &qPrefPartialPressureGas::pn2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
-	connect(pp_gas, &qPrefPartialPressureGas::po2_changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(pp_gas, &qPrefPartialPressureGas::pheChanged, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(pp_gas, &qPrefPartialPressureGas::pn2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
+	connect(pp_gas, &qPrefPartialPressureGas::po2Changed, graphics(), &ProfileWidget2::actionRequestedReplot);
 
 	// now let's set up some connections
 	connect(graphics(), &ProfileWidget2::enableToolbar ,this, &MainWindow::setEnabledToolbar);
