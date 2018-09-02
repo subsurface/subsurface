@@ -17,9 +17,9 @@ public:
 	static qPrefGeocoding *instance();
 
 	// Load/Sync local settings (disk) and struct preference
-	void loadSync(bool doSync);
-	void load() { loadSync(false); }
-	void sync() { loadSync(true); }
+	static void loadSync(bool doSync);
+	static void load() { loadSync(false); }
+	static void sync() { loadSync(true); }
 
 public:
 	taxonomy_category first_taxonomy_category() { return prefs.geocoding.category[0]; }
