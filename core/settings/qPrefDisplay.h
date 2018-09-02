@@ -8,22 +8,22 @@
 
 class qPrefDisplay : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(int animation_speed READ animation_speed WRITE set_animation_speed NOTIFY animation_speed_changed);
-	Q_PROPERTY(QString divelist_font READ divelist_font WRITE set_divelist_font NOTIFY divelist_font_changed);
-	Q_PROPERTY(double font_size READ font_size WRITE set_font_size NOTIFY font_size_changed);
-	Q_PROPERTY(bool display_invalid_dives READ display_invalid_dives WRITE set_display_invalid_dives NOTIFY display_invalid_dives_changed);
-	Q_PROPERTY(QString lastDir READ lastDir WRITE set_lastDir NOTIFY lastDir_changed);
-	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developer_changed);
-	Q_PROPERTY(QString theme READ theme WRITE set_theme NOTIFY theme_changed);
-	Q_PROPERTY(QPointF tooltip_position READ tooltip_position WRITE set_tooltip_position NOTIFY tooltip_position_changed);
-	Q_PROPERTY(QString UserSurvey READ UserSurvey WRITE set_UserSurvey NOTIFY UserSurvey_changed);
-	Q_PROPERTY(QByteArray mainSplitter READ mainSplitter WRITE set_mainSplitter NOTIFY mainSplitter_changed);
-	Q_PROPERTY(QByteArray topSplitter READ topSplitter WRITE set_topSplitter NOTIFY topSplitter_changed);
-	Q_PROPERTY(QByteArray bottomSplitter READ bottomSplitter WRITE set_bottomSplitter NOTIFY bottomSplitter_changed);
-	Q_PROPERTY(bool maximized READ maximized WRITE set_maximized NOTIFY maximized_changed);
-	Q_PROPERTY(QByteArray geometry READ geometry WRITE set_geometry NOTIFY geometry_changed);
-	Q_PROPERTY(QByteArray windowState READ windowState WRITE set_windowState NOTIFY windowState_changed);
-	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastState_changed);
+	Q_PROPERTY(int animation_speed READ animation_speed WRITE set_animation_speed NOTIFY animation_speedChanged);
+	Q_PROPERTY(QString divelist_font READ divelist_font WRITE set_divelist_font NOTIFY divelist_fontChanged);
+	Q_PROPERTY(double font_size READ font_size WRITE set_font_size NOTIFY font_sizeChanged);
+	Q_PROPERTY(bool display_invalid_dives READ display_invalid_dives WRITE set_display_invalid_dives NOTIFY display_invalid_divesChanged);
+	Q_PROPERTY(QString lastDir READ lastDir WRITE set_lastDir NOTIFY lastDirChanged);
+	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developerChanged);
+	Q_PROPERTY(QString theme READ theme WRITE set_theme NOTIFY themeChanged);
+	Q_PROPERTY(QPointF tooltip_position READ tooltip_position WRITE set_tooltip_position NOTIFY tooltip_positionChanged);
+	Q_PROPERTY(QString UserSurvey READ UserSurvey WRITE set_UserSurvey NOTIFY UserSurveyChanged);
+	Q_PROPERTY(QByteArray mainSplitter READ mainSplitter WRITE set_mainSplitter NOTIFY mainSplitterChanged);
+	Q_PROPERTY(QByteArray topSplitter READ topSplitter WRITE set_topSplitter NOTIFY topSplitterChanged);
+	Q_PROPERTY(QByteArray bottomSplitter READ bottomSplitter WRITE set_bottomSplitter NOTIFY bottomSplitterChanged);
+	Q_PROPERTY(bool maximized READ maximized WRITE set_maximized NOTIFY maximizedChanged);
+	Q_PROPERTY(QByteArray geometry READ geometry WRITE set_geometry NOTIFY geometryChanged);
+	Q_PROPERTY(QByteArray windowState READ windowState WRITE set_windowState NOTIFY windowStateChanged);
+	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastStateChanged);
 
 public:
 	qPrefDisplay(QObject *parent = NULL);
@@ -71,22 +71,22 @@ public slots:
 	static void set_lastState(int value);
 
 signals:
-	void animation_speed_changed(int value);
-	void divelist_font_changed(const QString &value);
-	void font_size_changed(double value);
-	void display_invalid_dives_changed(bool value);
-	void lastDir_changed(const QString &value);
-	void show_developer_changed(bool value);
-	void theme_changed(const QString &value);
-	void tooltip_position_changed(const QPointF &value);
-	void UserSurvey_changed(const QString &value);
-	void mainSplitter_changed(const QByteArray &value);
-	void topSplitter_changed(const QByteArray &value);
-	void bottomSplitter_changed(const QByteArray &value);
-	void maximized_changed(bool value);
-	void geometry_changed(const QByteArray& value);
-	void windowState_changed(const QByteArray& value);
-	void lastState_changed(int value);
+	void animation_speedChanged(int value);
+	void divelist_fontChanged(const QString &value);
+	void font_sizeChanged(double value);
+	void display_invalid_divesChanged(bool value);
+	void lastDirChanged(const QString &value);
+	void show_developerChanged(bool value);
+	void themeChanged(const QString &value);
+	void tooltip_positionChanged(const QPointF &value);
+	void UserSurveyChanged(const QString &value);
+	void mainSplitterChanged(const QByteArray &value);
+	void topSplitterChanged(const QByteArray &value);
+	void bottomSplitterChanged(const QByteArray &value);
+	void maximizedChanged(bool value);
+	void geometryChanged(const QByteArray& value);
+	void windowStateChanged(const QByteArray& value);
+	void lastStateChanged(int value);
 
 private:
 	// functions to load/sync variable with disk

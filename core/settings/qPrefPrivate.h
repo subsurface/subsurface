@@ -152,7 +152,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != prefs.usestruct field) { \
 			prefs.usestruct field = value; \
 			disk_##field(true); \
-			emit qPref##usegroup::instance()->field##_changed(value); \
+			emit qPref##usegroup::instance()->field##Changed(value); \
 		} \
 	}
 #define SET_PREFERENCE_BOOL(usegroup, field) \
@@ -164,7 +164,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != prefs.usestruct field) { \
 			prefs.usestruct field = value; \
 			disk_##field(true); \
-			emit qPref##usegroup::instance()->field##_changed(value); \
+			emit qPref##usegroup::instance()->field##Changed(value); \
 		} \
 	}
 #define SET_PREFERENCE_DOUBLE(usegroup, field) \
@@ -176,7 +176,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != prefs.usestruct field) { \
 			prefs.usestruct field = value; \
 			disk_##field(true); \
-			emit qPref##usegroup::instance()->field##_changed(value); \
+			emit qPref##usegroup::instance()->field##Changed(value); \
 		} \
 	}
 #define SET_PREFERENCE_ENUM(usegroup, type, field) \
@@ -188,7 +188,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != prefs.usestruct field) { \
 			prefs.usestruct field = value; \
 			disk_##field(true); \
-			emit qPref##usegroup::instance()->field##_changed(value); \
+			emit qPref##usegroup::instance()->field##Changed(value); \
 		} \
 	}
 #define SET_PREFERENCE_INT(usegroup, field) \
@@ -200,7 +200,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value. var != prefs.usestruct field . var) { \
 			prefs.usestruct field . var = value . var; \
 			disk_##field(true); \
-			emit qPref##usegroup::instance()->field##_changed(value); \
+			emit qPref##usegroup::instance()->field##Changed(value); \
 		} \
 	}
 #define SET_PREFERENCE_STRUCT(usegroup, type, field, var) \
@@ -212,7 +212,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != prefs.usestruct field) { \
 			qPrefPrivate::copy_txt(&prefs.usestruct field, value); \
 			disk_##field(true); \
-			emit qPref##usegroup::instance()->field##_changed(value); \
+			emit qPref##usegroup::instance()->field##Changed(value); \
 		} \
 	}
 #define SET_PREFERENCE_TXT(usegroup, field) \
@@ -267,7 +267,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != st_##field) { \
 			st_##field = value; \
 			qPrefPrivate::propSetValue(name, st_##field, QPointF()); \
-			emit qPref##useclass::instance()->field##_changed(value); \
+			emit qPref##useclass::instance()->field##Changed(value); \
 		} \
 	} \
 	void qPref##useclass::load_##field() \
@@ -281,7 +281,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != st_##field) { \
 			st_##field = value; \
 			qPrefPrivate::propSetValue(name, st_##field, ""); \
-			emit qPref##useclass::instance()->field##_changed(value); \
+			emit qPref##useclass::instance()->field##Changed(value); \
 		} \
 	} \
 	void qPref##useclass::load_##field() \
@@ -295,7 +295,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != st_##field) { \
 			st_##field = value; \
 			qPrefPrivate::propSetValue(name, st_##field, false); \
-			emit qPref##useclass::instance()->field##_changed(value); \
+			emit qPref##useclass::instance()->field##Changed(value); \
 		} \
 	} \
 	void qPref##useclass::load_##field() \
@@ -309,7 +309,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != st_##field) { \
 			st_##field = value; \
 			qPrefPrivate::propSetValue(name, st_##field, 0.0); \
-			emit qPref##useclass::instance()->field##_changed(value); \
+			emit qPref##useclass::instance()->field##Changed(value); \
 		} \
 	} \
 	void qPref##useclass::load_##field() \
@@ -323,7 +323,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != st_##field) { \
 			st_##field = value; \
 			qPrefPrivate::propSetValue(name, st_##field, 0); \
-			emit qPref##useclass::instance()->field##_changed(value); \
+			emit qPref##useclass::instance()->field##Changed(value); \
 		} \
 	} \
 	void qPref##useclass::load_##field() \
@@ -337,7 +337,7 @@ extern QString keyFromGroupAndName(QString group, QString name);
 		if (value != st_##field) { \
 			st_##field = value; \
 			qPrefPrivate::propSetValue(name, st_##field, QByteArray()); \
-			emit qPref##useclass::instance()->field##_changed(value); \
+			emit qPref##useclass::instance()->field##Changed(value); \
 		} \
 	} \
 	void qPref##useclass::load_##field() \
