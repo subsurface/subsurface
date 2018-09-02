@@ -378,7 +378,7 @@ void ProfileWidget2::replot(struct dive *d)
 }
 
 void ProfileWidget2::createPPGas(PartialPressureGasItem *item, int verticalColumn, color_index_t color, color_index_t colorAlert,
-				 double *thresholdSettingsMin, double *thresholdSettingsMax)
+				 const double *thresholdSettingsMin, const double *thresholdSettingsMax)
 {
 	setupItem(item, gasYAxis, verticalColumn, DivePlotDataModel::TIME, 0);
 	item->setThresholdSettingsKey(thresholdSettingsMin, thresholdSettingsMax);
