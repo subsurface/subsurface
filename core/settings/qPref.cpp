@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+#include "qPrefPrivate.h" // Include first, to make prefs mutable
 #include "qPref.h"
 #include "qPrefPrivate.h"
 #include "qPrefCloudStorage.h"

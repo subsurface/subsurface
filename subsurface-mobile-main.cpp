@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 		default_prefs.units = SI_units;
 	else
 		default_prefs.units = IMPERIAL_units;
-	copy_prefs(&default_prefs, &prefs);
+	copy_prefs(&default_prefs, get_prefs_mutable());
 	fill_computer_list();
 
 	parse_xml_init();
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 	qPrefDisplay::set_animation_speed(0); // we render the profile to pixmap, no animations
 
 	// always show the divecomputer reported ceiling in red
-	prefs.redceiling = 1;
+	get_prefs_mutable()->redceiling = 1;
 
 	init_proxy();
 

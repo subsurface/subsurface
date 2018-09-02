@@ -9,7 +9,8 @@
 #include "git-access.h"
 #include "libdivecomputer/version.h"
 
-struct preferences prefs, git_prefs;
+struct preferences prefs_internal;
+struct preferences git_prefs;
 struct preferences default_prefs = {
 	.cloud_base_url = "https://cloud.subsurface-divelog.org/",
 	.units = SI_UNITS,

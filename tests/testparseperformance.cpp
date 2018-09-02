@@ -20,7 +20,7 @@ void TestParsePerformance::initTestCase()
 	QTextCodec::setCodecForLocale(QTextCodec::codecForMib(106));
 
 	// first, setup the preferences an proxy information
-	copy_prefs(&default_prefs, &prefs);
+	copy_prefs(&default_prefs, get_prefs_mutable());
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
 	QCoreApplication::setApplicationName("Subsurface");

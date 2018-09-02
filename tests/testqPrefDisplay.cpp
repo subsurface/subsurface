@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
+#define PREFERENCES_SOURCE 1 // Make prefs-structure mutable
 #include "testqPrefDisplay.h"
 
 #include "core/pref.h"

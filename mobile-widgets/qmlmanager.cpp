@@ -278,12 +278,12 @@ void QMLManager::openLocalThenRemote(QString url)
 		// if we can load from the cache, we know that we have a valid cloud account
 		if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_UNKNOWN)
 			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
-		prefs.unit_system = git_prefs.unit_system;
+		get_prefs_mutable()->unit_system = git_prefs.unit_system;
 		if (git_prefs.unit_system == IMPERIAL)
 			git_prefs.units = IMPERIAL_units;
 		else if (git_prefs.unit_system == METRIC)
 			git_prefs.units = SI_units;
-		prefs.units = git_prefs.units;
+		get_prefs_mutable()->units = git_prefs.units;
 		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
 		qPrefTechnicalDetails::set_dcceiling(git_prefs.dcceiling);
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
@@ -462,7 +462,7 @@ void QMLManager::saveCloudCredentials()
 	if (!same_string(prefs.cloud_storage_email,
 		qPrintable(QMLPrefs::instance()->cloudUserName()))) {
 		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = copy_qstring(QMLPrefs::instance()->cloudUserName());
+		get_prefs_mutable()->cloud_storage_email = copy_qstring(QMLPrefs::instance()->cloudUserName());
 		cloudCredentialsChanged = true;
 	}
 
@@ -478,7 +478,7 @@ void QMLManager::saveCloudCredentials()
 	if (!same_string(prefs.cloud_storage_password,
 					qPrintable(QMLPrefs::instance()->cloudPassword()))) {
 		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = copy_qstring(QMLPrefs::instance()->cloudPassword());
+		get_prefs_mutable()->cloud_storage_password = copy_qstring(QMLPrefs::instance()->cloudPassword());
 	}
 	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
 		// we came from NOCLOUD and are connecting to a cloud account;
@@ -718,9 +718,9 @@ void QMLManager::revertToNoCloudIfNeeded()
 			git_local_only = m_syncToCloud;
 		}
 		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = NULL;
+		get_prefs_mutable()->cloud_storage_email = NULL;
 		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = NULL;
+		get_prefs_mutable()->cloud_storage_password = NULL;
 		QMLPrefs::instance()->setCloudUserName("");
 		QMLPrefs::instance()->setCloudPassword("");
 		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
@@ -732,17 +732,17 @@ void QMLManager::revertToNoCloudIfNeeded()
 
 void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 {
-	prefs.unit_system = git_prefs.unit_system;
+	get_prefs_mutable()->unit_system = git_prefs.unit_system;
 	if (git_prefs.unit_system == IMPERIAL)
 		git_prefs.units = IMPERIAL_units;
 	else if (git_prefs.unit_system == METRIC)
 		git_prefs.units = SI_units;
-	prefs.units = git_prefs.units;
-	prefs.tankbar = git_prefs.tankbar;
-	prefs.dcceiling = git_prefs.dcceiling;
-	prefs.show_ccr_setpoint = git_prefs.show_ccr_setpoint;
-	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
-	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
+	get_prefs_mutable()->units = git_prefs.units;
+	get_prefs_mutable()->tankbar = git_prefs.tankbar;
+	get_prefs_mutable()->dcceiling = git_prefs.dcceiling;
+	get_prefs_mutable()->show_ccr_setpoint = git_prefs.show_ccr_setpoint;
+	get_prefs_mutable()->show_ccr_sensors = git_prefs.show_ccr_sensors;
+	get_prefs_mutable()->pp_graphs.po2 = git_prefs.pp_graphs.po2;
 	DiveListModel::instance()->clear();
 	process_dives(false, false);
 	DiveListModel::instance()->addAllDives();

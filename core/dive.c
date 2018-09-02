@@ -3795,17 +3795,17 @@ void set_informational_units(const char *units)
 
 }
 
-void set_git_prefs(const char *prefs)
+void set_git_prefs(const char *field)
 {
-	if (strstr(prefs, "TANKBAR"))
+	if (strstr(field, "TANKBAR"))
 		git_prefs.tankbar = 1;
-	if (strstr(prefs, "DCCEILING"))
+	if (strstr(field, "DCCEILING"))
 		git_prefs.dcceiling = 1;
-	if (strstr(prefs, "SHOW_SETPOINT"))
+	if (strstr(field, "SHOW_SETPOINT"))
 		git_prefs.show_ccr_setpoint = 1;
-	if (strstr(prefs, "SHOW_SENSORS"))
+	if (strstr(field, "SHOW_SENSORS"))
 		git_prefs.show_ccr_sensors = 1;
-	if (strstr(prefs, "PO2_GRAPH"))
+	if (strstr(field, "PO2_GRAPH"))
 		git_prefs.pp_graphs.po2 = 1;
 }
 

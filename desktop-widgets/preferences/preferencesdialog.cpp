@@ -139,7 +139,7 @@ void PreferencesDialog::cancelRequested()
 
 void PreferencesDialog::defaultsRequested()
 {
-	copy_prefs(&default_prefs, &prefs);
+	copy_prefs(&default_prefs, get_prefs_mutable());
 	Q_FOREACH(AbstractPreferencesWidget *page, pages) {
 		page->refreshSettings();
 	}

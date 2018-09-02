@@ -66,7 +66,7 @@ void PreferencesGraph::syncSettings()
 
 	qPrefTechnicalDetails::set_modpO2(ui->maxpo2->value());
 	qPrefTechnicalDetails::set_redceiling(ui->red_ceiling->isChecked());
-	prefs.planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
+	get_prefs_mutable()->planner_deco_mode = ui->buehlmann->isChecked() ? BUEHLMANN : VPMB;
 	qPrefTechnicalDetails::set_gflow(ui->gflow->value());
 	qPrefTechnicalDetails::set_gfhigh(ui->gfhigh->value());
 	qPrefTechnicalDetails::set_vpmb_conservatism(ui->vpmb_conservatism->value());

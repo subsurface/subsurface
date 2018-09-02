@@ -470,7 +470,7 @@ QString uiLanguage(QLocale *callerLoc)
 	else
 		uiLang = languages[0];
 
-	prefs.locale.lang_locale = copy_qstring(uiLang);
+	get_prefs_mutable()->locale.lang_locale = copy_qstring(uiLang);
 
 	// there's a stupid Qt bug on MacOS where uiLanguages doesn't give us the country info
 	if (!uiLang.contains('-') && uiLang != loc.bcp47Name()) {
@@ -500,11 +500,11 @@ QString uiLanguage(QLocale *callerLoc)
 		dateFormat.replace("'en' 'den' d:'e'", " d");
 		if (!prefs.date_format_override || empty_string(prefs.date_format)) {
 			free((void *)prefs.date_format);
-			prefs.date_format = copy_qstring(dateFormat);
+			get_prefs_mutable()->date_format = copy_qstring(dateFormat);
 		}
 		if (!prefs.date_format_override || empty_string(prefs.date_format_short)) {
 			free((void *)prefs.date_format_short);
-			prefs.date_format_short = copy_qstring(shortDateFormat);
+			get_prefs_mutable()->date_format_short = copy_qstring(shortDateFormat);
 		}
 	}
 	if (!prefs.time_format_override || empty_string(prefs.time_format)) {
@@ -512,7 +512,7 @@ QString uiLanguage(QLocale *callerLoc)
 		timeFormat.replace("(t)", "").replace(" t", "").replace("t", "").replace("hh", "h").replace("HH", "H").replace("'kl'.", "");
 		timeFormat.replace(".ss", "").replace(":ss", "").replace("ss", "");
 		free((void *)prefs.time_format);
-		prefs.time_format = copy_qstring(timeFormat);
+		get_prefs_mutable()->time_format = copy_qstring(timeFormat);
 	}
 	return uiLang;
 }
@@ -1374,7 +1374,7 @@ int getCloudURL(QString &filename)
 		return report_error("Please configure Cloud storage email and password in the preferences");
 	if (email != prefs.cloud_storage_email_encoded) {
 		free((void *)prefs.cloud_storage_email_encoded);
-		prefs.cloud_storage_email_encoded = copy_qstring(email);
+		get_prefs_mutable()->cloud_storage_email_encoded = copy_qstring(email);
 	}
 	filename = QString(QString(prefs.cloud_git_url) + "/%1[%1]").arg(email);
 	if (verbose)

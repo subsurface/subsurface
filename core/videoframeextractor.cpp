@@ -89,7 +89,7 @@ void VideoFrameExtractor::processItem(QString originalFilename, QString filename
 	if (!ffmpeg.waitForStarted()) {
 		// Since we couldn't sart ffmpeg, turn off thumbnailing
 		// TODO: call the proper preferences-functions
-		prefs.extract_video_thumbnails = false;
+		get_prefs_mutable()->extract_video_thumbnails = false;
 		report_error(qPrintable(tr("ffmpeg failed to start - video thumbnail creation suspended")));
 		qDebug() << "Failed to start ffmpeg";
 		return fail(originalFilename, duration, false);

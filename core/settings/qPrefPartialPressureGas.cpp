@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
+#include "qPrefPrivate.h" // Include first, to make prefs mutable
 #include "qPrefPartialPressureGas.h"
-#include "qPrefPrivate.h"
 
 static const QString group = QStringLiteral("TecDetails");
 

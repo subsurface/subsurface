@@ -764,7 +764,7 @@ extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
 
 extern void set_informational_units(const char *units);
-extern void set_git_prefs(const char *prefs);
+extern void set_git_prefs(const char *field);
 
 extern char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);

@@ -2,6 +2,8 @@
 #ifndef QPREFPRIVATE_H
 #define QPREFPRIVATE_H
 
+#define PREFERENCES_SOURCE 1 // Make prefs-structure mutable
+
 // Header used by all qPref<class> implementations to avoid duplicating code
 #include "core/qthelper.h"
 #include "qPref.h"

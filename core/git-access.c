@@ -915,7 +915,7 @@ static struct git_repository *is_remote_git_repository(char *remote, const char 
 			/* grab the part between "protocol://" and "@" as encoded email address
 			 * (that's our username) and move the rest of the URL forward, remembering
 			 * to copy the closing NUL as well */
-			prefs.cloud_storage_email_encoded = strndup(p, at - p);
+			get_prefs_mutable()->cloud_storage_email_encoded = strndup(p, at - p);
 			memmove(p, at + 1, strlen(at + 1) + 1);
 		}
 	}

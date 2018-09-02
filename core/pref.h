@@ -211,7 +211,29 @@ struct preferences {
 	update_manager_prefs_t update_manager;
 };
 
-extern struct preferences prefs, default_prefs, git_prefs;
+extern struct preferences default_prefs, git_prefs;
+
+/* In general, we want to avoid uncontrolled writing to the
+ * prefs structure. Therefore, prefs is a macro that
+ * casts the underlying structure to const.
+ * Places that nevertheless write to prefs are supposed
+ * to use the "get_prefs_mutable()" function. This allows
+ * us to easily find these places.
+ *
+ * Preferences code, which legitimately writes to prefs,
+ * can define PREFERENCES_SOURCE before including this file.
+ * prefs will then be defined as mutable structures.
+ */
+extern struct preferences prefs_internal; /* Don't use directly! */
+#ifdef PREFERENCES_SOURCE
+#	define prefs prefs_internal
+#else
+#	define prefs (*(const struct preferences*)&prefs_internal)
+static inline struct preferences *get_prefs_mutable()
+{
+	return &prefs_internal;
+}
+#endif // PREFERENCES_SOURCE
 
 extern const char *system_divelist_default_font;
 extern double system_divelist_default_font_size;

@@ -256,7 +256,7 @@ void MapWidgetHelper::calculateSmallCircleRadius(QGeoCoordinate coord)
 void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional)
 {
 	bool savep = prefs.coordinates_traditional;
-	prefs.coordinates_traditional = formatTraditional;
+	get_prefs_mutable()->coordinates_traditional = formatTraditional;
 
 	const int lat = lrint(1000000.0 * coord.latitude());
 	const int lon = lrint(1000000.0 * coord.longitude());
@@ -264,7 +264,7 @@ void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool form
 	QApplication::clipboard()->setText(QString(coordinates), QClipboard::Clipboard);
 
 	free((void *)coordinates);
-	prefs.coordinates_traditional = savep;
+	get_prefs_mutable()->coordinates_traditional = savep;
 }
 
 void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord)

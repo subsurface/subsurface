@@ -19,7 +19,7 @@ int main(int argc, char **argv)
 {
 	QApplication *application = new QApplication(argc, argv);
 	git_libgit2_init();
-	copy_prefs(&default_prefs, &prefs);
+	copy_prefs(&default_prefs, get_prefs_mutable());
 	init_qt_late();
 
 	QCommandLineParser parser;
@@ -50,8 +50,8 @@ int main(int argc, char **argv)
 	// this should have set up the informational preferences - let's grab
 	// the units from there
 
-	prefs.unit_system = git_prefs.unit_system;
-	prefs.units = git_prefs.units;
+	get_prefs_mutable()->unit_system = git_prefs.unit_system;
+	get_prefs_mutable()->units = git_prefs.units;
 
 	// populate the statistics
 	struct dive *d = get_dive(0);
