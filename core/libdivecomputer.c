@@ -418,9 +418,9 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->in_deco = in_deco = false;
 		} else if (value.deco.type == DC_DECO_DECOSTOP ||
 			   value.deco.type == DC_DECO_DEEPSTOP) {
-			sample->in_deco = in_deco = true;
 			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->stoptime.seconds = stoptime = value.deco.time;
+			sample->in_deco = in_deco = stopdepth > 0;
 			ndl = 0;
 		} else if (value.deco.type == DC_DECO_SAFETYSTOP) {
 			sample->in_deco = in_deco = false;
