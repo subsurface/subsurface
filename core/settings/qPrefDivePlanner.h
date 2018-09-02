@@ -7,31 +7,31 @@
 
 class qPrefDivePlanner : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(int ascratelast6m READ ascratelast6m WRITE set_ascratelast6m NOTIFY ascratelast6m_changed);
-	Q_PROPERTY(int ascratestops READ ascratestops WRITE set_ascratestops NOTIFY ascratestops_changed);
-	Q_PROPERTY(int ascrate50 READ ascrate50 WRITE set_ascrate50 NOTIFY ascrate50_changed);
-	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75_changed);
-	Q_PROPERTY(depth_t bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixend_changed);
-	Q_PROPERTY(int bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2_changed);
-	Q_PROPERTY(int bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsac_changed);
-	Q_PROPERTY(int decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2_changed);
-	Q_PROPERTY(int decosac READ decosac WRITE set_decosac NOTIFY decosac_changed);
-	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrate_changed);
-	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_duration_changed);
-	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtime_changed);
-	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY      display_transitions_changed);
-	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variations_changed);
-	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaks_changed);
-	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_mode_changed);
-	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stop_changed);
-	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_duration_changed);
-	Q_PROPERTY(deco_mode planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_mode_changed);
-	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtime_changed);
-	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gas_changed);
-	Q_PROPERTY(int sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactor_changed);
-	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystop_changed);
-	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stop_changed);
-	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_plan_changed);
+	Q_PROPERTY(int ascratelast6m READ ascratelast6m WRITE set_ascratelast6m NOTIFY ascratelast6mChanged);
+	Q_PROPERTY(int ascratestops READ ascratestops WRITE set_ascratestops NOTIFY ascratestopsChanged);
+	Q_PROPERTY(int ascrate50 READ ascrate50 WRITE set_ascrate50 NOTIFY ascrate50Changed);
+	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
+	Q_PROPERTY(depth_t bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
+	Q_PROPERTY(int bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
+	Q_PROPERTY(int bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
+	Q_PROPERTY(int decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
+	Q_PROPERTY(int decosac READ decosac WRITE set_decosac NOTIFY decosacChanged);
+	Q_PROPERTY(int descrate READ descrate WRITE set_descrate NOTIFY descrateChanged);
+	Q_PROPERTY(bool display_duration READ display_duration WRITE set_display_duration NOTIFY display_durationChanged);
+	Q_PROPERTY(bool display_runtime READ display_runtime WRITE set_display_runtime NOTIFY display_runtimeChanged);
+	Q_PROPERTY(bool display_transitions READ display_transitions WRITE set_display_transitions NOTIFY      display_transitionsChanged);
+	Q_PROPERTY(bool display_variations READ display_variations WRITE set_display_variations NOTIFY display_variationsChanged);
+	Q_PROPERTY(bool doo2breaks READ doo2breaks WRITE set_doo2breaks NOTIFY doo2breaksChanged);
+	Q_PROPERTY(bool drop_stone_mode READ drop_stone_mode WRITE set_drop_stone_mode NOTIFY drop_stone_modeChanged);
+	Q_PROPERTY(bool last_stop READ last_stop WRITE set_last_stop NOTIFY last_stopChanged);
+	Q_PROPERTY(int min_switch_duration READ min_switch_duration WRITE set_min_switch_duration NOTIFY min_switch_durationChanged);
+	Q_PROPERTY(deco_mode planner_deco_mode READ planner_deco_mode WRITE set_planner_deco_mode NOTIFY planner_deco_modeChanged);
+	Q_PROPERTY(int problemsolvingtime READ problemsolvingtime WRITE set_problemsolvingtime NOTIFY problemsolvingtimeChanged);
+	Q_PROPERTY(int reserve_gas READ reserve_gas WRITE set_reserve_gas NOTIFY reserve_gasChanged);
+	Q_PROPERTY(int sacfactor READ sacfactor WRITE set_sacfactor NOTIFY sacfactorChanged);
+	Q_PROPERTY(bool safetystop READ safetystop WRITE set_safetystop NOTIFY safetystopChanged);
+	Q_PROPERTY(bool switch_at_req_stop READ switch_at_req_stop WRITE set_switch_at_req_stop NOTIFY switch_at_req_stopChanged);
+	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
 
 public:
 	qPrefDivePlanner(QObject *parent = NULL);
@@ -97,31 +97,31 @@ public slots:
 	static void set_verbatim_plan(bool value);
 
 signals:
-	void ascratelast6m_changed(int value);
-	void ascratestops_changed(int value);
-	void ascrate50_changed(int value);
-	void ascrate75_changed(int value);
-	void bestmixend_changed(depth_t value);
-	void bottompo2_changed(int value);
-	void bottomsac_changed(int value);
-	void decopo2_changed(int value);
-	void decosac_changed(int value);
-	void descrate_changed(int value);
-	void display_duration_changed(bool value);
-	void display_runtime_changed(bool value);
-	void display_transitions_changed(bool value);
-	void display_variations_changed(bool value);
-	void doo2breaks_changed(bool value);
-	void drop_stone_mode_changed(bool value);
-	void last_stop_changed(bool value);
-	void min_switch_duration_changed(int value);
-	void planner_deco_mode_changed(deco_mode value);
-	void problemsolvingtime_changed(int value);
-	void reserve_gas_changed(int value);
-	void sacfactor_changed(int value);
-	void safetystop_changed(bool value);
-	void switch_at_req_stop_changed(bool value);
-	void verbatim_plan_changed(bool value);
+	void ascratelast6mChanged(int value);
+	void ascratestopsChanged(int value);
+	void ascrate50Changed(int value);
+	void ascrate75Changed(int value);
+	void bestmixendChanged(depth_t value);
+	void bottompo2Changed(int value);
+	void bottomsacChanged(int value);
+	void decopo2Changed(int value);
+	void decosacChanged(int value);
+	void descrateChanged(int value);
+	void display_durationChanged(bool value);
+	void display_runtimeChanged(bool value);
+	void display_transitionsChanged(bool value);
+	void display_variationsChanged(bool value);
+	void doo2breaksChanged(bool value);
+	void drop_stone_modeChanged(bool value);
+	void last_stopChanged(bool value);
+	void min_switch_durationChanged(int value);
+	void planner_deco_modeChanged(deco_mode value);
+	void problemsolvingtimeChanged(int value);
+	void reserve_gasChanged(int value);
+	void sacfactorChanged(int value);
+	void safetystopChanged(bool value);
+	void switch_at_req_stopChanged(bool value);
+	void verbatim_planChanged(bool value);
 
 private:
 	static void disk_ascratelast6m(bool doSync);

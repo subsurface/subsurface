@@ -7,15 +7,15 @@
 
 class qPrefCloudStorage : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(QString cloud_base_url READ cloud_base_url WRITE set_cloud_base_url NOTIFY cloud_base_url_changed);
+	Q_PROPERTY(QString cloud_base_url READ cloud_base_url WRITE set_cloud_base_url NOTIFY cloud_base_urlChanged);
 	Q_PROPERTY(QString cloud_git_url READ cloud_git_url);
-	Q_PROPERTY(QString cloud_storage_email READ cloud_storage_email WRITE set_cloud_storage_email NOTIFY cloud_storage_email_changed);
-	Q_PROPERTY(QString cloud_storage_email_encoded READ cloud_storage_email_encoded WRITE set_cloud_storage_email_encoded NOTIFY cloud_storage_email_encoded_changed);
-	Q_PROPERTY(QString cloud_storage_password READ cloud_storage_password WRITE set_cloud_storage_password NOTIFY cloud_storage_password_changed);
-	Q_PROPERTY(QString cloud_storage_pin READ cloud_storage_pin WRITE set_cloud_storage_pin NOTIFY cloud_storage_pin_changed);
-	Q_PROPERTY(int cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_status_changed);
-	Q_PROPERTY(int cloud_timeout READ cloud_timeout WRITE set_cloud_timeout NOTIFY cloud_timeout_changed);
-	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_local_changed);
+	Q_PROPERTY(QString cloud_storage_email READ cloud_storage_email WRITE set_cloud_storage_email NOTIFY cloud_storage_emailChanged);
+	Q_PROPERTY(QString cloud_storage_email_encoded READ cloud_storage_email_encoded WRITE set_cloud_storage_email_encoded NOTIFY cloud_storage_email_encodedChanged);
+	Q_PROPERTY(QString cloud_storage_password READ cloud_storage_password WRITE set_cloud_storage_password NOTIFY cloud_storage_passwordChanged);
+	Q_PROPERTY(QString cloud_storage_pin READ cloud_storage_pin WRITE set_cloud_storage_pin NOTIFY cloud_storage_pinChanged);
+	Q_PROPERTY(int cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_statusChanged);
+	Q_PROPERTY(int cloud_timeout READ cloud_timeout WRITE set_cloud_timeout NOTIFY cloud_timeoutChanged);
+	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_localChanged);
 
 public:
 	qPrefCloudStorage(QObject *parent = NULL);
@@ -48,14 +48,14 @@ public slots:
 	static void set_save_password_local(bool value);
 
 signals:
-	void cloud_base_url_changed(const QString &value);
-	void cloud_storage_email_changed(const QString &value);
-	void cloud_storage_email_encoded_changed(const QString &value);
-	void cloud_storage_password_changed(const QString &value);
-	void cloud_storage_pin_changed(const QString &value);
-	void cloud_timeout_changed(int value);
-	void cloud_verification_status_changed(int value);
-	void save_password_local_changed(bool value);
+	void cloud_base_urlChanged(const QString &value);
+	void cloud_storage_emailChanged(const QString &value);
+	void cloud_storage_email_encodedChanged(const QString &value);
+	void cloud_storage_passwordChanged(const QString &value);
+	void cloud_storage_pinChanged(const QString &value);
+	void cloud_timeoutChanged(int value);
+	void cloud_verification_statusChanged(int value);
+	void save_password_localChanged(bool value);
 
 private:
 	// functions to load/sync variable with disk

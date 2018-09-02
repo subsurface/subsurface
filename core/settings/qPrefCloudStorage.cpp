@@ -37,7 +37,7 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 		}
 
 		disk_cloud_base_url(true);
-		emit instance()->cloud_base_url_changed(value);
+		emit instance()->cloud_base_urlChanged(value);
 	}
 }
 void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
@@ -59,7 +59,7 @@ void qPrefCloudStorage::set_cloud_storage_password(const QString &value)
 	if (value != prefs.cloud_storage_password) {
 		qPrefPrivate::copy_txt(&prefs.cloud_storage_password, value);
 		disk_cloud_storage_password(true);
-		emit instance()->cloud_storage_password_changed(value);
+		emit instance()->cloud_storage_passwordChanged(value);
 	}
 }
 void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
