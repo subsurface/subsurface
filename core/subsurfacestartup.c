@@ -106,7 +106,7 @@ struct preferences default_prefs = {
 
 int run_survey;
 
-struct units *get_units()
+const struct units *get_units()
 {
 	return &prefs.units;
 }

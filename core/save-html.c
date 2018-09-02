@@ -273,7 +273,7 @@ void put_HTML_depth(struct membuffer *b, struct dive *dive, const char *pre, con
 {
 	const char *unit;
 	double value;
-	struct units *units_p = get_units();
+	const struct units *units_p = get_units();
 
 	if (!dive->maxdepth.mm) {
 		put_format(b, "%s--%s", pre, post);
