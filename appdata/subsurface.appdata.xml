@@ -1,34 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2014 Pedro Neves <nevesdiver@gmail.com> -->
-<application>
- <id type="desktop">subsurface.desktop</id>
- <licence>CC-BY-SA</licence>
- <name>Subsurface</name>
- <summary>Manage and display dive computer data</summary>
- <description>
-  <p>
-   Subsurface is an opensource diving logbook that runs on Linux, Windows and Mac.
+<component type="desktop-application">
+  <id>subsurface</id>
+  <metadata_license>CC-BY-SA-3.0</metadata_license>
+  <project_license>GPL-2.0-only</project_license>
+  <name>Subsurface</name>
+  <summary>Manage and display dive computer data</summary>
+  <description>
+    <p>Subsurface is an opensource diving logbook that runs on Linux, Windows and Mac.
    With this program, users can keep track of their dives by logging dive locations (with GPS coordinates),
    weights and exposure protection used, divemasters and dive buddies, etc.
-   Subsurface also enables the users to rate their dives and provide additional dive notes.
-  </p>
-  <p>
-   Dives can be downloaded from a variety of dive computers, inserted manually or imported from other programs.
+   Subsurface also enables the users to rate their dives and provide additional dive notes.</p>
+    <p>Dives can be downloaded from a variety of dive computers, inserted manually or imported from other programs.
    A wide array of diving statistics and information is calculated and displayed, like the user’s SAC rate,
-   partial pressures of O2, N2 and He, calculated deco information, and many more.
-  </p>
-  <p>
-   The dive profiles (and the tank pressure curves) can be visualized in a comprehensive and clean way, that
+   partial pressures of O2, N2 and He, calculated deco information, and many more.</p>
+    <p>The dive profiles (and the tank pressure curves) can be visualized in a comprehensive and clean way, that
    provides the user with additional information on relative velocity (and momentary air consumption) during the dive.
    Subsurface also allows the user to print out a detailed log book that includes dive profiles and other relevant information.
-   The program is localized in about 20 languages and well supported by an active developer community.
-  </p>
- </description>
- <screenshots>
-  <screenshot type="default" width="1860" height="1046">http://subsurface-divelog.org/screenshots/main.png</screenshot>
-  <screenshot width="778" height="438">http://subsurface-divelog.org/screenshots/preferences.png</screenshot>
-  <screenshot width="782" height="440">http://subsurface-divelog.org/screenshots/preferences2.png</screenshot>
- </screenshots>
- <url type="homepage">http://www.http://subsurface-divelog.org/</url>
- <updatecontact>subsurface@subsurface-divelog.org</updatecontact>
-</application>
+   The program is localized in about 20 languages and well supported by an active developer community.</p>
+  </description>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://subsurface-divelog.org/screenshots/main.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://subsurface-divelog.org/screenshots/preferences.png</image>
+    </screenshot>
+    <screenshot>
+      <image>https://subsurface-divelog.org/screenshots/preferences2.png</image>
+    </screenshot>
+  </screenshots>
+  <url type="homepage">https://subsurface-divelog.org</url>
+  <url type="bugtracker">https://github.com/Subsurface-divelog/subsurface/issues</url>
+  <url type="faq">https://subsurface-divelog.org/faq/</url>
+  <url type="help">https://subsurface-divelog.org/documentation/</url>
+  <url type="translate">https://www.transifex.com/subsurface/subsurface/</url>
+  <releases>
+    <release version="" date="" />
+  </releases>
+  <developer_name>The Subsurface development team</developer_name>
+  <update_contact>subsurface@subsurface-divelog.org</update_contact>
+  <content_rating type="oars-1.1" />
+  <provides>
+    <binary>subsurface</binary>
+  </provides>
+</component>
