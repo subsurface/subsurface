@@ -41,11 +41,60 @@ bool subsurface_ignore_font(const char *font)
 	return false;
 }
 
+/* this function converts a win32's utf-16 2 byte string to utf-8.
+ * the caller function should manage the allocated memory.
+ */
+static char *utf16_to_utf8_fl(const wchar_t *utf16, char *file, int line)
+{
+	assert(utf16 != NULL);
+	assert(file != NULL);
+	assert(line);
+	/* estimate buffer size */
+	const int sz = wcslen(utf16) + 1;
+	char *utf8 = (char *)malloc(sz);
+	if (!utf8) {
+		fprintf(stderr, "%s:%d: %s %d.", file, line, "cannot allocate buffer of size", sz);
+		return NULL;
+	}
+	if (WideCharToMultiByte(CP_UTF8, 0, utf16, -1, utf8, sz, NULL, NULL)) {
+		return utf8;
+	}
+	fprintf(stderr, "%s:%d: %s", file, line, "cannot convert string.");
+	free((void *)utf8);
+	return NULL;
+}
+
+#define utf16_to_utf8(s) utf16_to_utf8_fl(s, __FILE__, __LINE__)
+
+/* this function converts a utf-8 string to win32's utf-16 2 byte string.
+ * the caller function should manage the allocated memory.
+ */
+static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
+{
+	assert(utf8 != NULL);
+	assert(file != NULL);
+	assert(line);
+	/* estimate buffer size */
+	const int sz = strlen(utf8) + 1;
+	wchar_t *utf16 = (wchar_t *)malloc(sizeof(wchar_t) * sz);
+	if (!utf16) {
+		fprintf(stderr, "%s:%d: %s %d.", file, line, "cannot allocate buffer of size", sz);
+		return NULL;
+	}
+	if (MultiByteToWideChar(CP_UTF8, 0, utf8, -1, utf16, sz))
+		return utf16;
+	fprintf(stderr, "%s:%d: %s", file, line, "cannot convert string.");
+	free((void *)utf16);
+	return NULL;
+}
+
+#define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
+
 /* this function returns the Win32 Roaming path for the current user as UTF-8.
  * it never returns NULL but fallsback to .\ instead!
  * the append argument will append a wchar_t string to the end of the path.
  */
-static const char *system_default_path_append(const wchar_t *append)
+static wchar_t *system_default_path_append(const wchar_t *append)
 {
 	wchar_t wpath[MAX_PATH] = { 0 };
 	const char *fname = "system_default_path_append()";
@@ -66,27 +115,10 @@ static const char *system_default_path_append(const wchar_t *append)
 		wcscat(wpath, append);
 	}
 
-	/* attempt to convert the UTF-16 string to UTF-8.
-	 * resize the buffer and fallback to .\Subsurface if it fails.
-	 */
-	const int wsz = wcslen(wpath);
-	const int sz = WideCharToMultiByte(CP_UTF8, 0, wpath, wsz, NULL, 0, NULL, NULL);
-	char *path = (char *)malloc(sz + 1);
-	if (!sz)
-		goto fallback;
-	if (WideCharToMultiByte(CP_UTF8, 0, wpath, wsz, path, sz, NULL, NULL)) {
-		path[sz] = '\0';
-		return path;
-	}
-
-fallback:
-	fprintf(stderr, "%s: cannot obtain path as UTF-8!\n", fname);
-	const char *local = ".\\Subsurface";
-	const int len = strlen(local) + 1;
-	path = (char *)realloc(path, len);
-	memset(path, 0, len);
-	strcat(path, local);
-	return path;
+	wchar_t *result = wcsdup(wpath);
+	if (!result)
+		fprintf(stderr, "%s: cannot allocate memory for path!\n", fname);
+	return result;
 }
 
 /* by passing NULL to system_default_path_append() we obtain the pure path.
@@ -95,8 +127,11 @@ fallback:
 const char *system_default_directory(void)
 {
 	static const char *path = NULL;
-	if (!path)
-		path = system_default_path_append(NULL);
+	if (!path) {
+		wchar_t *wpath = system_default_path_append(NULL);
+		path = utf16_to_utf8(wpath);
+		free((void *)wpath);
+	}
 	return path;
 }
 
@@ -112,7 +147,9 @@ const char *system_default_filename(void)
 		wchar_t filename[UNLEN + 5] = { 0 };
 		wcscat(filename, username);
 		wcscat(filename, L".xml");
-		path = system_default_path_append(filename);
+		wchar_t *wpath = system_default_path_append(filename);
+		path = utf16_to_utf8(wpath);
+		free((void *)wpath);
 	}
 	return path;
 }
@@ -204,30 +241,6 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	}
 	return index;
 }
-
-/* this function converts a utf-8 string to win32's utf-16 2 byte string.
- * the caller function should manage the allocated memory.
- */
-static wchar_t *utf8_to_utf16_fl(const char *utf8, char *file, int line)
-{
-	assert(utf8 != NULL);
-	assert(file != NULL);
-	assert(line);
-	/* estimate buffer size */
-	const int sz = strlen(utf8) + 1;
-	wchar_t *utf16 = (wchar_t *)malloc(sizeof(wchar_t) * sz);
-	if (!utf16) {
-		fprintf(stderr, "%s:%d: %s %d.", file, line, "cannot allocate buffer of size", sz);
-		return NULL;
-	}
-	if (MultiByteToWideChar(CP_UTF8, 0, utf8, -1, utf16, sz))
-		return utf16;
-	fprintf(stderr, "%s:%d: %s", file, line, "cannot convert string.");
-	free((void *)utf16);
-	return NULL;
-}
-
-#define utf8_to_utf16(s) utf8_to_utf16_fl(s, __FILE__, __LINE__)
 
 /* bellow we provide a set of wrappers for some I/O functions to use wchar_t.
  * on win32 this solves the issue that we need paths to be utf-16 encoded.
