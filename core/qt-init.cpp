@@ -23,6 +23,9 @@ void init_qt_late()
 
 	QCoreApplication::setOrganizationName("Subsurface");
 	QCoreApplication::setOrganizationDomain("subsurface.hohndel.org");
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)) && defined(Q_OS_LINUX)
+	QGuiApplication::setDesktopFileName("subsurface");
+#endif
 	// enable user specific settings (based on command line argument)
 	if (settings_suffix) {
 		if (verbose)
