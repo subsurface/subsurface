@@ -424,8 +424,14 @@ void subsurface_console_init(void)
 		console_desc.err = freopen("CON", "w", stderr);
 	} else {
 		verbose = 1; /* set the verbose level to '1' */
-		console_desc.out = freopen("subsurface_out.log", "w", stdout);
-		console_desc.err = freopen("subsurface_err.log", "w", stderr);
+		wchar_t *wpath_out = system_default_path_append(L"subsurface_out.log");
+		wchar_t *wpath_err = system_default_path_append(L"subsurface_err.log");
+		if (wpath_out && wpath_err) {
+			console_desc.out = _wfreopen(wpath_out, L"w", stdout);
+			console_desc.err = _wfreopen(wpath_err, L"w", stderr);
+		}
+		free((void *)wpath_out);
+		free((void *)wpath_err);
 	}
 
 	puts(""); /* add an empty line */
