@@ -98,6 +98,9 @@ void DiveListView::calculateInitialColumnWidth(int col)
 	case DiveTripModel::PHOTOS:
 		sw = 5*em;
 		break;
+	case DiveTripModel::BUDDIES:
+		sw = 50*em;
+		break;
 	case DiveTripModel::LOCATION:
 		sw = 50*em;
 		break;

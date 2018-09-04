@@ -25,6 +25,7 @@ public:
 		MAXCNS,
 		TAGS,
 		PHOTOS,
+		BUDDIES,
 		COUNTRY,
 		LOCATION,
 		COLUMNS
@@ -75,6 +76,7 @@ public:
 		MAXCNS,
 		TAGS,
 		PHOTOS,
+		BUDDIES,
 		COUNTRY,
 		LOCATION,
 		COLUMNS
