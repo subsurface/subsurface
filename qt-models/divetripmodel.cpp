@@ -39,6 +39,7 @@ static QVariant dive_table_alignment(int column)
 	case DiveTripModel::TAGS:
 	case DiveTripModel::PHOTOS:
 	case DiveTripModel::COUNTRY:
+	case DiveTripModel::BUDDIES:
 	case DiveTripModel::LOCATION:
 		retVal = int(Qt::AlignLeft | Qt::AlignVCenter);
 		break;
@@ -151,6 +152,9 @@ QVariant DiveItem::data(int column, int role) const
 		case COUNTRY:
 			retVal = QString(get_dive_country(dive));
 			break;
+		case BUDDIES:
+			retVal = QString(dive->buddy);
+			break;
 		case LOCATION:
 			retVal = QString(get_dive_location(dive));
 			break;
@@ -202,6 +206,9 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case COUNTRY:
 			retVal = QString(get_dive_country(dive));
+			break;
+		case BUDDIES:
+			retVal = QString(dive->buddy);
 			break;
 		case LOCATION:
 			retVal = QString(get_dive_location(dive));
@@ -285,6 +292,9 @@ QVariant DiveItem::data(int column, int role) const
 			break;
 		case COUNTRY:
 			retVal = tr("Country");
+			break;
+		case BUDDIES:
+			retVal = tr("Buddy");
 			break;
 		case LOCATION:
 			retVal = tr("Location");
@@ -522,6 +532,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 		case COUNTRY:
 			ret = tr("Country");
 			break;
+		case BUDDIES:
+			ret = tr("Buddy");
+			break;
 		case LOCATION:
 			ret = tr("Location");
 			break;
@@ -575,6 +588,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 			break;
 		case PHOTOS:
 			ret = tr("Media before/during/after dive");
+			break;
+		case BUDDIES:
+			ret = tr("Buddy");
 			break;
 		case LOCATION:
 			ret = tr("Location");
