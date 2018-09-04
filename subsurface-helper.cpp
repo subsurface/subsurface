@@ -35,7 +35,6 @@ static void register_meta_types();
 void init_ui()
 {
 	init_qt_late();
-	register_qml_types();
 	register_meta_types();
 #ifndef SUBSURFACE_MOBILE
 	PluginManager::instance().loadPlugins();
@@ -60,11 +59,15 @@ double get_screen_dpi()
 	return mydesk->physicalDpiX();
 }
 
+// Forward declaration
+static void register_qml_types(QQmlEngine *);
+
 void run_ui()
 {
 
 #ifdef SUBSURFACE_MOBILE
 	QQmlApplicationEngine engine;
+	register_qml_types(&engine);
 	LOG_STP("run_ui qml engine started");
 	KirigamiPlugin::getInstance().registerTypes();
 #if defined(__APPLE__) && !defined(Q_OS_IOS)
@@ -135,6 +138,7 @@ void run_ui()
 	qml_window->show();
 	LOG_STP("run_ui running exec");
 #else
+	register_qml_types(NULL);
 	MainWindow::instance()->show();
 #endif // SUBSURFACE_MOBILE
 	qApp->exec();
@@ -152,16 +156,14 @@ static void register_meta_types()
 	if (rc < 0) \
 		qWarning() << "ERROR: Cannot register " << useQML << ", QML will not work!!";
 
-void register_qml_types()
+void register_qml_types(QQmlEngine *engine)
 {
-	int rc;
-
-	(void)rc;
-
 	// register qPref*
-	qPref::instance()->registerQML();
+	qPref::instance()->registerQML(engine);
 
 #ifndef SUBSURFACE_TEST_DATA
+	int rc;
+
 #ifdef SUBSURFACE_MOBILE
 	REGISTER_TYPE(QMLManager, "QMLManager");
 	REGISTER_TYPE(QMLPrefs, "QMLPrefs");

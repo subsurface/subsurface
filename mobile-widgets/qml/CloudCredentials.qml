@@ -144,7 +144,7 @@ Item {
 				text: qsTr("No cloud mode")
 				onClicked: {
 					manager.syncToCloud = false
-					prefs.credentialStatus = SsrfPrefs.CS_NOCLOUD
+					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
 					manager.saveCloudCredentials()
 					manager.openNoCloudRepo()
 				}

@@ -2,8 +2,7 @@
 #include "qPref.h"
 #include "qPrefPrivate.h"
 
-#include <QQuickItem>
-#include <QQmlEngine>
+#include <QtQml>
 #include <QQmlContext>
 
 qPref::qPref(QObject *parent) : QObject(parent)
@@ -39,28 +38,34 @@ void qPref::loadSync(bool doSync)
 	qPrefUpdateManager::loadSync(doSync);
 }
 
-#define REGISTER_QPREF(useClass, useQML) \
-	rc = qmlRegisterType<useClass>("org.subsurfacedivelog.mobile", 1, 0, useQML); \
-	if (rc < 0) \
-		qWarning() << "ERROR: Cannot register " << useQML << ", QML will not work!!";
-
-void qPref::registerQML()
+Q_DECLARE_METATYPE(deco_mode);
+Q_DECLARE_METATYPE(def_file_behavior);
+Q_DECLARE_METATYPE(taxonomy_category);
+void qPref::registerQML(QQmlEngine *engine)
 {
-	int rc;
+	if (engine) {
+		QQmlContext *ct = engine->rootContext();
 
-	REGISTER_QPREF(qPref, "SsrfPrefs");
-	REGISTER_QPREF(qPrefCloudStorage, "SsrfCloudStoragePrefs");
-	REGISTER_QPREF(qPrefDisplay, "SsrfDisplayPrefs");
-	REGISTER_QPREF(qPrefDiveComputer, "SsrfDiveComputerPrefs");
-	REGISTER_QPREF(qPrefDivePlanner, "SsrfDivePlannerPrefs");
-	REGISTER_QPREF(qPrefFacebook, "SsrfFacebookPrefs");
-	REGISTER_QPREF(qPrefGeneral, "SsrfGeneralPrefs");
-	REGISTER_QPREF(qPrefGeocoding, "SsrfGeocodingPrefs");
-	REGISTER_QPREF(qPrefLanguage, "SsrfLanguagePrefs");
-	REGISTER_QPREF(qPrefLocationService, "SsrfLocationServicePrefs");
-	REGISTER_QPREF(qPrefPartialPressureGas, "SsrfPartialPressureGasPrefs");
-	REGISTER_QPREF(qPrefProxy, "SsrfProxyPrefs");
-	REGISTER_QPREF(qPrefTechnicalDetails, "SsrfTechnicalDetailsPrefs");
-	REGISTER_QPREF(qPrefUnits, "SsrfUnitPrefs");
-	REGISTER_QPREF(qPrefUpdateManager, "SsrfUpdateManagerPrefs");
+		ct->setContextProperty("Pref", qPref::instance());
+		ct->setContextProperty("PrefCloudStorage", qPrefCloudStorage::instance());
+		ct->setContextProperty("PrefDisplay", qPrefDisplay::instance());
+		ct->setContextProperty("PrefDiveComputer", qPrefDiveComputer::instance());
+		ct->setContextProperty("PrefDivePlanner", qPrefDivePlanner::instance());
+		ct->setContextProperty("PrefFacebook", qPrefFacebook::instance());
+		ct->setContextProperty("PrefGeneral", qPrefGeneral::instance());
+		ct->setContextProperty("PrefGeocoding", qPrefGeocoding::instance());
+		ct->setContextProperty("PrefLanguage", qPrefLanguage::instance());
+		ct->setContextProperty("PrefLocationService", qPrefLocationService::instance());
+		ct->setContextProperty("PrefPartialPressureGas", qPrefPartialPressureGas::instance());
+		ct->setContextProperty("PrefProxy", qPrefProxy::instance());
+		ct->setContextProperty("PrefTechnicalDetails", qPrefTechnicalDetails::instance());
+		ct->setContextProperty("PrefUnits", qPrefUnits::instance());
+		ct->setContextProperty("PrefUpdateManager", qPrefUpdateManager::instance());
+	}
+
+	// Register special types
+	qmlRegisterUncreatableType<qPref>("org.subsurfacedivelog.mobile",1,0,"CloudStatus","Enum is not a type");
+	qRegisterMetaType<deco_mode>();
+	qRegisterMetaType<def_file_behavior>();
+	qRegisterMetaType<taxonomy_category>();
 }

@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: prefs.credentialStatus === SsrfPrefs.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
+				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -333,7 +333,7 @@ Kirigami.ScrollablePage {
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onActivated: {
-					general.set_default_cylinder(defaultCylinderBox.currentText)
+					PrefGeneral.set_default_cylinder(defaultCylinderBox.currentText)
 				}
 			}
 		}

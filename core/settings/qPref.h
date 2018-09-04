@@ -5,6 +5,7 @@
 #include "ssrf-version.h"
 
 #include <QObject>
+#include <QQmlEngine>
 
 #include "qPrefCloudStorage.h"
 #include "qPrefDisplay.h"
@@ -23,7 +24,6 @@
 
 class qPref : public QObject {
 	Q_OBJECT
-	Q_ENUMS(cloud_status);
 	Q_PROPERTY(QString canonical_version READ canonical_version);
 	Q_PROPERTY(QString mobile_version READ mobile_version);
 
@@ -36,7 +36,7 @@ public:
 	static void sync() { loadSync(true); }
 
 	// Register QML
-	void registerQML();
+	void registerQML(QQmlEngine *engine);
 
 public:
 	enum cloud_status {
@@ -46,6 +46,7 @@ public:
 		CS_VERIFIED,
 		CS_NOCLOUD
 	};
+	Q_ENUM(cloud_status);
 
 	static const QString canonical_version() { return QString(CANONICAL_VERSION_STRING); }
 	static const QString mobile_version() { return QString(MOBILE_VERSION_STRING); }
