@@ -102,7 +102,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.cylinderModel2 = manager.cylinderInit
 		detailsWindow.cylinderModel3 = manager.cylinderInit
 		detailsWindow.cylinderModel4 = manager.cylinderInit
-		detailsWindow.cylinderIndex0 = general.default_cylinder == "" ? -1 : detailsWindow.cylinderModel0.indexOf(general.default_cylinder)
+		detailsWindow.cylinderIndex0 = PrefGeneral.default_cylinder == "" ? -1 : detailsWindow.cylinderModel0.indexOf(PrefGeneral.default_cylinder)
 		detailsWindow.usedCyl = ["",]
 		detailsWindow.weight = ""
 		detailsWindow.usedGas = []
@@ -192,10 +192,10 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
-					if (prefs.credentialStatus == SsrfPrefs.CS_UNKNOWN) {
+					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == SsrfPrefs.CS_VERIFIED) {
+						if (oldStatus == CloudStatus.CS_VERIFIED) {
 							prefs.credentialStatus = oldStatus
 						}
 					}
@@ -222,8 +222,8 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
-					enabled: prefs.credentialStatus === SsrfPrefs.CS_VERIFIED ||
-							prefs.credentialStatus === SsrfPrefs.CS_NOCLOUD
+					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
+							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -257,14 +257,14 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: prefs.credentialStatus === SsrfPrefs.CS_VERIFIED ||
-							prefs.credentialStatus === SsrfPrefs.CS_NOCLOUD
+					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
+							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
-						if (prefs.credentialStatus === SsrfPrefs.CS_NOCLOUD) {
+						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
 							oldStatus = prefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
-							prefs.credentialStatus = SsrfPrefs.CS_UNKNOWN
+							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()
 						} else {
 							globalDrawer.close()
@@ -279,7 +279,7 @@ Kirigami.ApplicationWindow {
 					name: syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					enabled: prefs.credentialStatus !== SsrfPrefs.CS_NOCLOUD
+					enabled: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
@@ -351,7 +351,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				onTriggered: {
 					globalDrawer.close()
 					settingsWindow.defaultCylinderModel = manager.cylinderInit
-					general.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(general.default_cylinder)
+					PrefGeneral.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefGeneral.default_cylinder)
 					stackView.push(settingsWindow)
 					detailsWindow.endEditMode()
 				}
@@ -598,10 +598,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 	ThemeTest {
 		id: themetest
 		visible: false
-	}
-
-	SsrfGeneralPrefs {
-		id: general
 	}
 
 	onPluggedInDeviceNameChanged: {
