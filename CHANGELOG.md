@@ -1,3 +1,4 @@
+- Desktop: allow buddies to be shown in the divelist [#1587]
 - Windows: write log files to the user path instead of the path where Subsurface
   is installed.
 - Desktop: fix issue with dive list row height in case of larger fonts [#1600]
