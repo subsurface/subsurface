@@ -902,9 +902,8 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	MdbHandle *mdb, *mdb_clon;
 	MdbTableDef *mdb_table;
 	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS], *ver;
+	char *bound_values[MDB_MAX_COLS];
 	int i, dc_model;
-	struct types_list *type_list = NULL, *activity_list = NULL, *gear_list = NULL, *fish_list = NULL, *buddy_list=NULL;
 
 	// Set an european style locale to work date/time conversion
 	setlocale(LC_TIME, "POSIX");
@@ -920,18 +919,39 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	mdb_clon = mdb_clone_handle(mdb);
 	mdb_read_catalog(mdb_clon, MDB_TABLE);
 
+	/* Define arrays for the tables */
+	int	type_num = get_rows_num(mdb_clon, "Type"),
+		activity_num = get_rows_num(mdb_clon, "Activity"),
+		gear_num = get_rows_num(mdb_clon, "Gear"),
+		fish_num = get_rows_num(mdb_clon, "Fish"),
+		suit_num = get_rows_num(mdb_clon, "Suit"),
+		weather_num = get_rows_num(mdb_clon, "Weather"),
+		underwater_num = get_rows_num(mdb_clon, "Underwater"),
+		surface_num = get_rows_num(mdb_clon, "Surface"),
+		buddy_num = get_rows_num(mdb_clon, "Buddy");
+
+	char	*type_list[type_num], *activity_list[activity_num], *gear_list[gear_num],
+		*fish_list[fish_num], *buddy_list[buddy_num], *suit_list[suit_num],
+		*weather_list[weather_num], *underwater_list[underwater_num],
+		*surface_list[surface_num], *smtk_ver[1];
+
+	/* Load auxiliary tables */
+	smtk_build_list(mdb_clon, "Type", type_list);
+	smtk_build_list(mdb_clon, "Activity", activity_list);
+	smtk_build_list(mdb_clon, "Gear", gear_list);
+	smtk_build_list(mdb_clon, "Fish", fish_list);
+	smtk_build_list(mdb_clon, "SmartTrak", smtk_ver);
+	smtk_build_list(mdb_clon, "Suit", suit_list);
+	smtk_build_list(mdb_clon, "Weather", weather_list);
+	smtk_build_list(mdb_clon, "Underwater", underwater_list);
+	smtk_build_list(mdb_clon, "Surface", surface_list);
+	smtk_build_buddies(mdb_clon, buddy_list);
+
 	/* Check Smarttrak version (different number of supported tanks, mixes and so) */
-	ver = smtk_value_by_idx(mdb_clon, "SmartTrak", 1, "1");
-	smtk_version = atoi(ver);
-	free(ver);
+	smtk_version = atoi(smtk_ver[0]);
 	tanks = (smtk_version < 10213) ? 3 : 10;
 
-	/* Load auxiliary tables into lists */
-	smtk_build_list(mdb_clon, "Type", &type_list);
-	smtk_build_list(mdb_clon, "Activity", &activity_list);
-	smtk_build_list(mdb_clon, "Gear", &gear_list);
-	smtk_build_list(mdb_clon, "Fish", &fish_list);
-	smtk_build_buddies(mdb_clon, &buddy_list);
+
 
 	mdb_table = smtk_open_table(mdb, "Dives", col, bound_values);
 	if (!mdb_table) {
@@ -1043,30 +1063,22 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		/* No DC related data */
 		smtkdive->visibility = strtod(col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod(col[13]->bind_ptr, NULL) / 5);
 		smtkdive->weightsystem[0].weight.grams = lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000);
-		smtkdive->suit = smtk_value_by_idx(mdb_clon, "Suit", 1, col[coln(SUITIDX)]->bind_ptr);
+		smtkdive->suit = copy_string(suit_list[atoi(col[coln(SUITIDX)]->bind_ptr) - 1]);
 		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, smtkdive->when, &smtkdive->dive_site_uuid);
-		if (buddy_list)
-			smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr, buddy_list);
-		if (type_list)
-			smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
-		if (activity_list)
-			smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
-		if (gear_list)
-			smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
-		if (fish_list)
-			smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
+		smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr, buddy_list);
+		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
+		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Gear", "GearRelation", gear_list, false);
+		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Fish", "FishRelation", fish_list, false);
+		smtk_parse_other(smtkdive, weather_list, "Weather", col[coln(WEATHERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive, underwater_list, "Underwater", col[coln(UNDERWATERIDX)]->bind_ptr, false);
+		smtk_parse_other(smtkdive, surface_list, "Surface", col[coln(SURFACEIDX)]->bind_ptr, false);
 		smtk_parse_bookmarks(mdb_clon, smtkdive, col[0]->bind_ptr);
 		smtkdive->notes = smtk_concat_str(smtkdive->notes, "\n", "%s", col[coln(REMARKS)]->bind_ptr);
 
 		record_dive_to_table(smtkdive, divetable);
 		free(devdata);
 	}
-	smtk_list_free(type_list);
-	smtk_list_free(activity_list);
-	smtk_list_free(gear_list);
-	smtk_list_free(fish_list);
-	smtk_list_free(buddy_list);
-	smtk_free(bound_values, mdb_table->num_cols);
 	mdb_free_tabledef(mdb_table);
 	mdb_free_catalog(mdb_clon);
 	mdb->catalog = NULL;
