@@ -74,7 +74,7 @@ void TestQPrefUnits::test_set_load_struct()
 
 	auto tst = qPrefUnits::instance();
 
-	tst->set_coordinates_traditional(false);
+	tst->set_coordinates_traditional(true);
 	tst->set_duration_units(units::MINUTES_ONLY);
 	tst->set_length(units::FEET);
 	tst->set_pressure(units::PSI);
@@ -85,7 +85,7 @@ void TestQPrefUnits::test_set_load_struct()
 	tst->set_weight(units::LBS);
 
 	tst->sync();
-	prefs.coordinates_traditional = true;
+	prefs.coordinates_traditional = false;
 	prefs.units.duration_units = units::MIXED;
 	prefs.units.length = units::METERS;
 	prefs.units.pressure = units::BAR;
@@ -96,7 +96,7 @@ void TestQPrefUnits::test_set_load_struct()
 	prefs.units.weight = units::KG;
 
 	tst->load();
-	QCOMPARE(prefs.coordinates_traditional, false);
+	QCOMPARE(prefs.coordinates_traditional, true);
 	QCOMPARE(prefs.units.duration_units, units::MINUTES_ONLY);
 	QCOMPARE(prefs.units.length, units::FEET);
 	QCOMPARE(prefs.units.pressure, units::PSI);
