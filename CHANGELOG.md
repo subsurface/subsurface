@@ -1,3 +1,5 @@
+- Desktop: add support for USB download from the Garmin Descent Mk1
+- Mac: include the FTDI driver and no longer require Mac FTDI drivers to be installed
 - Desktop: allow buddies to be shown in the divelist [#1587]
 - Windows: write log files to the user path instead of the path where Subsurface
   is installed.
