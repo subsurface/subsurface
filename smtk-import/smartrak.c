@@ -623,25 +623,26 @@ static int get_rows_num(MdbHandle *mdb,  char *table_name)
  * be using some other like Vendor (in Gear) or Latin name (in Fish). I'll take a look at this
  * in the future, may be something like Buddy table...
  */
-static void smtk_build_list(MdbHandle *mdb,  char *table_name, struct types_list **head)
+static void smtk_build_list(MdbHandle *mdb,  char *table_name, char *array[])
 {
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
-	char *bound_values[MDB_MAX_COLS];
-	struct types_list *p = NULL;
+	char *bound_values[MDB_MAX_COLS], *str;
 
 	table = smtk_open_table(mdb, table_name, col, bound_values);
 	if (!table)
 		return;
 
-	/* Read the table items into an structured list */
-	while (mdb_fetch_row(table))
-		smtk_head_insert(&p, atoi(col[0]->bind_ptr), copy_string(col[1]->bind_ptr));
-	*head = p;
+	/* Read the table items into the array. Array size has been previously checked
+	 * and allocated, so overflow is not expected */
+	while (mdb_fetch_row(table)) {
+		str = col[1]->bind_ptr;
+		if (str && (!strcmp(str, "---") || !strcmp(str, "--")))
+	               str = NULL;
+		array[atoi(col[0]->bind_ptr) - 1] = copy_string(str);
+	}
 
 	/* clean up and exit */
-	p = NULL;
-	free(p);
 	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
 }
@@ -686,11 +687,10 @@ static struct types_list *smtk_index_list(MdbHandle *mdb, char *table_name, char
  * Buddy table format:
  * | Idx | Text (nickname) | Name | Firstname | Middlename | Title | Picture | Phone | ...
  */
-static void smtk_build_buddies(MdbHandle *mdb, struct types_list **buddies_head) {
+static void smtk_build_buddies(MdbHandle *mdb, char *array[]) {
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
 	char *bound_values[MDB_MAX_COLS], *fullname = NULL, *str = NULL;
-	struct types_list *p = NULL;
 
 	table = smtk_open_table(mdb, "Buddy", col, bound_values);
 	if (!table)
@@ -704,16 +704,13 @@ static void smtk_build_buddies(MdbHandle *mdb, struct types_list **buddies_head)
 		if (!empty_string(col[2]->bind_ptr))
 			fullname = smtk_concat_str(fullname, " ", "%s", col[2]->bind_ptr);
 		if (fullname && !same_string(col[1]->bind_ptr, fullname))
-			smtk_head_insert(&p, atoi(col[0]->bind_ptr), smtk_concat_str(str, "", "%s (%s)", col[1]->bind_ptr, fullname));
+			array[atoi(col[0]->bind_ptr) - 1] = smtk_concat_str(str, "", "%s (%s)", col[1]->bind_ptr, fullname);
 		else
-			smtk_head_insert(&p, atoi(col[0]->bind_ptr), smtk_concat_str(str, "", "%s", col[1]->bind_ptr));
+			array[atoi(col[0]->bind_ptr) - 1] = smtk_concat_str(str, "", "%s", col[1]->bind_ptr);
 		free(fullname);
 		fullname = NULL;
 	}
-	*buddies_head = p;
 
-	p = NULL;
-	free(p);
 	free(str);
 	smtk_free(bound_values, table->num_cols);
 	mdb_free_tabledef(table);
@@ -722,25 +719,17 @@ static void smtk_build_buddies(MdbHandle *mdb, struct types_list **buddies_head)
 /*
  * Returns string with buddies names as registered in smartrak (may be a nickname).
  */
-static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, struct types_list *buddies_head)
+static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, char *buddies_list[])
 {
 	char *str = NULL;
-	struct types_list *rel, *rel_head, *bud;
+	struct types_list *rel, *rel_head;
 
 	rel_head = smtk_index_list(mdb, "BuddyRelation", dive_idx);
 	if (!rel_head)
 		return str;
 
-	for (rel = rel_head; rel; ) {
-		for (bud = buddies_head; bud; ) {
-			if (bud->idx == rel->idx) {
-				str = smtk_concat_str(str, ", ", "%s", bud->text);
-				break;
-			}
-			bud = bud->next;
-		}
-		rel = rel->next;
-	}
+	for (rel = rel_head; rel; rel = rel->next)
+		str = smtk_concat_str(str, ", ", "%s", buddies_list[rel->idx - 1]);
 
 	/* Clean up and exit */
 	smtk_list_free(rel_head);
@@ -753,36 +742,49 @@ static char *smtk_locate_buddy(MdbHandle *mdb, char *dive_idx, struct types_list
  * The "tag" parameter is used to mark if we want this table to be imported
  * into tags or into notes.
  */
-static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_idx, char *table_name, char *rel_table_name, struct types_list *list, bool tag)
+static void smtk_parse_relations(MdbHandle *mdb, struct dive *dive, char *dive_idx, char *table_name, char *rel_table_name, char *list[], bool tag)
 {
 	char *tmp = NULL;
-	struct types_list *diverel_head, *d_runner, *t_runner;
+	struct types_list *diverel_head, *d_runner;
 
 	diverel_head = smtk_index_list(mdb, rel_table_name, dive_idx);
 	if (!diverel_head)
 		return;
 
 	/* Get the text associated with the relations */
-	for (d_runner = diverel_head; d_runner; ) {
-		for (t_runner = list; t_runner; ) {
-			if (t_runner->idx == d_runner->idx) {
-				if (tag)
-					taglist_add_tag(&dive->tag_list, t_runner->text);
-				else
-					tmp = smtk_concat_str(tmp, ", ", "%s", t_runner->text);
-				if (strstr(t_runner->text, "SCR"))
-					dive->dc.divemode = PSCR;
-				else if (strstr(t_runner->text, "CCR"))
-					dive->dc.divemode = CCR;
-				break;
-			}
-			t_runner = t_runner->next;
-		}
-		d_runner = d_runner->next;
+	for (d_runner = diverel_head; d_runner; d_runner = d_runner->next) {
+		if (tag)
+			taglist_add_tag(&dive->tag_list, list[d_runner->idx - 1]);
+		else
+			tmp = smtk_concat_str(tmp, ", ", "%s", list[d_runner->idx - 1]);
+		if (strstr(list[d_runner->idx - 1], "SCR"))
+			dive->dc.divemode = PSCR;
+		else if (strstr(list[d_runner->idx -1], "CCR"))
+			dive->dc.divemode = CCR;
 	}
 	if (tmp)
 		dive->notes = smtk_concat_str(dive->notes, "\n", "Smartrak %s: %s", table_name, tmp);
 	free(tmp);
+	smtk_list_free(diverel_head);
+}
+
+/*
+ * Add data from tables related in Dives table which are not directly supported
+ * in Subsurface. Write them as tags or dive notes by setting true or false the
+ * boolean parameter "tag".
+ */
+static void smtk_parse_other(struct dive *dive, char *list[], char *data_name, char *idx, bool tag)
+{
+       int i = atoi(idx) - 1;
+       char *str = NULL;
+
+       str = list[i];
+       if (str) {
+               if (tag)
+                       taglist_add_tag(&dive->tag_list, str);
+               else
+                       dive->notes = smtk_concat_str(dive->notes, "\n", "Smartrak %s: %s", data_name, str);
+       }
 }
 
 /*
