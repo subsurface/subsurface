@@ -583,6 +583,31 @@ static void smtk_list_free(struct types_list *head)
 	}
 }
 
+/* Return the number of rows in a given table */
+static int get_rows_num(MdbHandle *mdb,  char *table_name)
+{
+	MdbTableDef *table;
+	MdbColumn *col[MDB_MAX_COLS];
+	char *bound_values[MDB_MAX_COLS];
+	int n = 0, i = 0;
+
+	table = smtk_open_table(mdb, table_name, col, bound_values);
+	if (!table)
+		return n;
+
+	/* We can get an sparse array (less rows in the table than
+	 * index). Ensure we allocate as many strings as greater
+	 * index, at least */
+	while (mdb_fetch_row(table)) {
+		i = atoi(col[0]->bind_ptr);
+		if (i > n)
+			n = i;
+	}
+	smtk_free(bound_values, table->num_cols);
+	mdb_free_tabledef(table);
+	return n;
+}
+
 /*
  * Build a list from a given table_name (Type, Gear, etc)
  * Managed tables formats: Just consider Idx and Text
