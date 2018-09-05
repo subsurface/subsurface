@@ -205,46 +205,6 @@ static  MdbTableDef *smtk_open_table(MdbHandle *mdb, char *tablename, MdbColumn 
 }
 
 /*
- * Utility function which returns the value from a given column in a given table,
- * whose row equals the given idx string.
- * Idx should be a numeric value, but all values obtained from mdbtools are strings,
- * so let's compare strings instead of numbers to avoid unnecessary transforms.
- */
-static char *smtk_value_by_idx(MdbHandle *mdb, char *tablename, int colnum, char *idx)
-{
-	MdbCatalogEntry *entry;
-	MdbTableDef *table;
-	MdbColumn *idxcol, *valuecol;
-	char *bounder[MDB_MAX_COLS], *str = NULL;
-	int i = 0;
-
-	entry = mdb_get_catalogentry_by_name(mdb, tablename);
-	table = mdb_read_table(entry);
-	if (!table) {
-		report_error("[Error][smartrak_import]\t%s table doesn't exist\n", tablename);
-		return str;
-	}
-	mdb_read_columns(table);
-	idxcol = g_ptr_array_index(table->columns, 0);
-	valuecol = g_ptr_array_index(table->columns, colnum);
-	for (i = 0; i < table->num_cols; i++) {
-		bounder[i] = (char *) g_malloc(MDB_BIND_SIZE);
-		mdb_bind_column(table, i+1, bounder[i], NULL);
-	}
-	mdb_rewind_table(table);
-	for (i = 0; i < table->num_rows; i++) {
-		mdb_fetch_row(table);
-		if (!strcmp(idxcol->bind_ptr, idx)) {
-			str = copy_string(valuecol->bind_ptr);
-			break;
-		}
-	}
-	smtk_free(bounder, table->num_cols);
-	mdb_free_tabledef(table);
-	return str;
-}
-
-/*
  * Utility function which joins three strings, being the second a separator string,
  * usually a "\n". The third is a format string with an argument list.
  * If the original string is NULL, then just returns the third.
@@ -568,7 +528,6 @@ static void smtk_head_insert(struct types_list **head, int index, char *txt)
 	item->text = txt;
 	*head = item;
 	item = NULL;
-	free(item);
 }
 
 /* Clean types_list lists */
