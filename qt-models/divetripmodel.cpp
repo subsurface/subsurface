@@ -93,78 +93,73 @@ static const QString icon_names[4] = {
 QVariant DiveItem::data(int column, int role) const
 {
 	QVariant retVal;
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (!dive)
-		return QVariant();
 
 	switch (role) {
 	case Qt::TextAlignmentRole:
 		retVal = dive_table_alignment(column);
 		break;
 	case DiveTripModel::SORT_ROLE:
-		Q_ASSERT(dive != NULL);
 		switch (column) {
 		case NR:
-			retVal = (qlonglong)dive->when;
+			retVal = (qlonglong)d->when;
 			break;
 		case DATE:
-			retVal = (qlonglong)dive->when;
+			retVal = (qlonglong)d->when;
 			break;
 		case RATING:
-			retVal = dive->rating;
+			retVal = d->rating;
 			break;
 		case DEPTH:
-			retVal = dive->maxdepth.mm;
+			retVal = d->maxdepth.mm;
 			break;
 		case DURATION:
-			retVal = dive->duration.seconds;
+			retVal = d->duration.seconds;
 			break;
 		case TEMPERATURE:
-			retVal = dive->watertemp.mkelvin;
+			retVal = d->watertemp.mkelvin;
 			break;
 		case TOTALWEIGHT:
-			retVal = total_weight(dive);
+			retVal = total_weight(d);
 			break;
 		case SUIT:
-			retVal = QString(dive->suit);
+			retVal = QString(d->suit);
 			break;
 		case CYLINDER:
-			retVal = QString(dive->cylinder[0].type.description);
+			retVal = QString(d->cylinder[0].type.description);
 			break;
 		case GAS:
-			retVal = nitrox_sort_value(dive);
+			retVal = nitrox_sort_value(d);
 			break;
 		case SAC:
-			retVal = dive->sac;
+			retVal = d->sac;
 			break;
 		case OTU:
-			retVal = dive->otu;
+			retVal = d->otu;
 			break;
 		case MAXCNS:
-			retVal = dive->maxcns;
+			retVal = d->maxcns;
 			break;
 		case TAGS:
 			retVal = displayTags();
 			break;
 		case PHOTOS:
-			retVal = countPhotos(dive);
+			retVal = countPhotos();
 			break;
 		case COUNTRY:
-			retVal = QString(get_dive_country(dive));
+			retVal = QString(get_dive_country(d));
 			break;
 		case BUDDIES:
-			retVal = QString(dive->buddy);
+			retVal = QString(d->buddy);
 			break;
 		case LOCATION:
-			retVal = QString(get_dive_location(dive));
+			retVal = QString(get_dive_location(d));
 			break;
 		}
 		break;
 	case Qt::DisplayRole:
-		Q_ASSERT(dive != NULL);
 		switch (column) {
 		case NR:
-			retVal = dive->number;
+			retVal = d->number;
 			break;
 		case DATE:
 			retVal = displayDate();
@@ -182,22 +177,22 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = prefs.units.show_units_table ? retVal = displayWeightWithUnit() : displayWeight();
 			break;
 		case SUIT:
-			retVal = QString(dive->suit);
+			retVal = QString(d->suit);
 			break;
 		case CYLINDER:
-			retVal = QString(dive->cylinder[0].type.description);
+			retVal = QString(d->cylinder[0].type.description);
 			break;
 		case SAC:
 			retVal = prefs.units.show_units_table ? retVal = displaySacWithUnit() : displaySac();
 			break;
 		case OTU:
-			retVal = dive->otu;
+			retVal = d->otu;
 			break;
 		case MAXCNS:
 			if (prefs.units.show_units_table)
-				retVal = QString("%1%").arg(dive->maxcns);
+				retVal = QString("%1%").arg(d->maxcns);
 			else
-				retVal = dive->maxcns;
+				retVal = d->maxcns;
 			break;
 		case TAGS:
 			retVal = displayTags();
@@ -205,16 +200,16 @@ QVariant DiveItem::data(int column, int role) const
 		case PHOTOS:
 			break;
 		case COUNTRY:
-			retVal = QString(get_dive_country(dive));
+			retVal = QString(get_dive_country(d));
 			break;
 		case BUDDIES:
-			retVal = QString(dive->buddy);
+			retVal = QString(d->buddy);
 			break;
 		case LOCATION:
-			retVal = QString(get_dive_location(dive));
+			retVal = QString(get_dive_location(d));
 			break;
 		case GAS:
-			const char *gas_string = get_dive_gas_string(dive);
+			const char *gas_string = get_dive_gas_string(d);
 			retVal = QString(gas_string);
 			free((void*)gas_string);
 			break;
@@ -227,16 +222,16 @@ QVariant DiveItem::data(int column, int role) const
 			retVal = QVariant();
 			break;
 		case LOCATION:
-			if (dive_has_gps_location(dive)) {
+			if (dive_has_gps_location(d)) {
 				IconMetrics im = defaultIconMetrics();
 				retVal = QIcon(":globe-icon").pixmap(im.sz_small, im.sz_small);
 			}
 			break;
 		case PHOTOS:
-			if (dive->picture_list)
+			if (d->picture_list)
 			{
 				IconMetrics im = defaultIconMetrics();
-				retVal = QIcon(icon_names[countPhotos(dive)]).pixmap(im.sz_small, im.sz_small);
+				retVal = QIcon(icon_names[countPhotos()]).pixmap(im.sz_small, im.sz_small);
 			}	 // If there are photos, show one of the three photo icons: fish= photos during dive;
 			break;	 // sun=photos before/after dive; sun+fish=photos during dive as well as before/after
 		}
@@ -304,15 +299,13 @@ QVariant DiveItem::data(int column, int role) const
 	}
 
 	if (role == DiveTripModel::STAR_ROLE) {
-		Q_ASSERT(dive != NULL);
-		retVal = dive->rating;
+		retVal = d->rating;
 	}
 	if (role == DiveTripModel::DIVE_ROLE) {
-		retVal = QVariant::fromValue<void *>(dive);
+		retVal = QVariant::fromValue<void *>(d);
 	}
 	if (role == DiveTripModel::DIVE_IDX) {
-		Q_ASSERT(dive != NULL);
-		retVal = get_divenr(dive);
+		retVal = get_divenr(d);
 	}
 	return retVal;
 }
@@ -337,12 +330,11 @@ bool DiveItem::setData(const QModelIndex &index, const QVariant &value, int role
 		return false;
 
 	int i;
-	struct dive *d;
-	for_each_dive (i, d) {
-		if (d->number == v)
+	struct dive *dive;
+	for_each_dive (i, dive) {
+		if (dive->number == v)
 			return false;
 	}
-	d = get_dive_by_uniq_id(diveId);
 	d->number = value.toInt();
 	mark_divelist_changed(true);
 	return true;
@@ -350,28 +342,25 @@ bool DiveItem::setData(const QModelIndex &index, const QVariant &value, int role
 
 QString DiveItem::displayDate() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	return get_dive_date_string(dive->when);
+	return get_dive_date_string(d->when);
 }
 
 QString DiveItem::displayDepth() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	return get_depth_string(dive->maxdepth);
+	return get_depth_string(d->maxdepth);
 }
 
 QString DiveItem::displayDepthWithUnit() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	return get_depth_string(dive->maxdepth, true);
+	return get_depth_string(d->maxdepth, true);
 }
 
-int DiveItem::countPhotos(dive *dive) const
+int DiveItem::countPhotos() const
 {	// Determine whether dive has pictures, and whether they were taken during or before/after dive.
 	const int bufperiod = 120; // A 2-min buffer period. Photos within 2 min of dive are assumed as
-	int diveTotaltime = dive_endtime(dive) - dive->when;	// taken during the dive, not before/after.
+	int diveTotaltime = dive_endtime(d) - d->when;	// taken during the dive, not before/after.
 	int pic_offset, icon_index = 0;
-	FOR_EACH_PICTURE (dive) {		// Step through each of the pictures for this dive:
+	FOR_EACH_PICTURE (d) {			// Step through each of the pictures for this dive:
 		pic_offset = picture->offset.seconds;
 		if  ((pic_offset < -bufperiod) | (pic_offset > diveTotaltime+bufperiod)) {
 			icon_index |= 0x02;	// If picture is before/after the dive
@@ -385,43 +374,38 @@ int DiveItem::countPhotos(dive *dive) const
 
 QString DiveItem::displayDuration() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
 	if (prefs.units.show_units_table)
-		return get_dive_duration_string(dive->duration.seconds, tr("h"), tr("min"), "", ":", dive->dc.divemode == FREEDIVE);
+		return get_dive_duration_string(d->duration.seconds, tr("h"), tr("min"), "", ":", d->dc.divemode == FREEDIVE);
 	else
-		return get_dive_duration_string(dive->duration.seconds, "", "", "", ":", dive->dc.divemode == FREEDIVE);
+		return get_dive_duration_string(d->duration.seconds, "", "", "", ":", d->dc.divemode == FREEDIVE);
 }
 
 QString DiveItem::displayTemperature() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (!dive->watertemp.mkelvin)
+	if (!d->watertemp.mkelvin)
 		return QString();
-	return get_temperature_string(dive->watertemp, false);
+	return get_temperature_string(d->watertemp, false);
 }
 
 QString DiveItem::displayTemperatureWithUnit() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (!dive->watertemp.mkelvin)
+	if (!d->watertemp.mkelvin)
 		return QString();
-	return get_temperature_string(dive->watertemp, true);
+	return get_temperature_string(d->watertemp, true);
 }
 
 QString DiveItem::displaySac() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (!dive->sac)
+	if (!d->sac)
 		return QString();
-	return get_volume_string(dive->sac, false);
+	return get_volume_string(d->sac, false);
 }
 
 QString DiveItem::displaySacWithUnit() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	if (!dive->sac)
+	if (!d->sac)
 		return QString();
-	return get_volume_string(dive->sac, true).append(tr("/min"));
+	return get_volume_string(d->sac, true).append(tr("/min"));
 }
 
 QString DiveItem::displayWeight() const
@@ -436,14 +420,12 @@ QString DiveItem::displayWeightWithUnit() const
 
 QString DiveItem::displayTags() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	return get_taglist_string(dive->tag_list);
+	return get_taglist_string(d->tag_list);
 }
 
 int DiveItem::weight() const
 {
-	struct dive *dive = get_dive_by_uniq_id(diveId);
-	weight_t tw = { total_weight(dive) };
+	weight_t tw = { total_weight(d) };
 	return tw.grams;
 }
 
@@ -618,7 +600,7 @@ void DiveTripModel::setupModelData()
 		dive_trip_t *trip = dive->divetrip;
 
 		DiveItem *diveItem = new DiveItem();
-		diveItem->diveId = dive->id;
+		diveItem->d = dive;
 
 		if (!trip || currentLayout == LIST) {
 			diveItem->parent = rootItem.get();
