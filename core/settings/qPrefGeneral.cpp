@@ -67,7 +67,7 @@ void qPrefGeneral::set_default_file_behavior(enum def_file_behavior value)
 void qPrefGeneral::disk_default_file_behavior(bool doSync)
 {
 	if (doSync) {
-		qPrefPrivate::propSetValue(group + "/default_file_behavior", prefs.default_file_behavior);
+		qPrefPrivate::propSetValue(group + "/default_file_behavior", prefs.default_file_behavior, default_prefs.default_file_behavior);
 	} else {
 		prefs.default_file_behavior = (enum def_file_behavior)qPrefPrivate::propValue(group + "/default_file_behavior", default_prefs.default_file_behavior).toInt();
 		if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE)

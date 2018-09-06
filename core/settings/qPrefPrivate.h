@@ -15,7 +15,7 @@ public:
 	// Helper functions
 	static void copy_txt(const char **name, const QString &string);
 
-	static void propSetValue(const QString &key, const QVariant &value);
+	static void propSetValue(const QString &key, const QVariant &value, const QVariant &defaultValue);
 	static QVariant propValue(const QString &key, const QVariant &defaultValue);
 
 private:
@@ -28,7 +28,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
 		else \
 			prefs.usestruct field = qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toBool(); \
 	}
@@ -39,7 +39,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
 		else \
 			prefs.usestruct field = qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toDouble(); \
 	}
@@ -50,7 +50,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
 		else \
 			prefs.usestruct field = (enum type)qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toInt(); \
 	}
@@ -61,7 +61,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
 		else \
 			prefs.usestruct field = qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toInt(); \
 	}
@@ -72,7 +72,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
 		else \
 			prefs.usestruct field = qPrefPrivate::propValue(group + name, defval).toInt(); \
 	}
@@ -83,7 +83,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field . var); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field . var, default_prefs.usestruct field . var); \
 		else \
 			prefs.usestruct field . var = qPrefPrivate::propValue(group + name, default_prefs.usestruct field . var).toInt(); \
 	}
@@ -94,7 +94,7 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field); \
+			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
 		else \
 			prefs.usestruct field = copy_qstring(qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toString()); \
 	}
@@ -222,7 +222,7 @@ private:
 	{ \
 		if (value != st_##field) { \
 			st_##field = value; \
-			qPrefPrivate::propSetValue(name, st_##field); \
+			qPrefPrivate::propSetValue(name, st_##field, QPointF()); \
 			emit qPref##useclass::instance()->field##_changed(value); \
 		} \
 	} \
@@ -236,7 +236,7 @@ private:
 	{ \
 		if (value != st_##field) { \
 			st_##field = value; \
-			qPrefPrivate::propSetValue(name, st_##field); \
+			qPrefPrivate::propSetValue(name, st_##field, ""); \
 			emit qPref##useclass::instance()->field##_changed(value); \
 		} \
 	} \
@@ -250,7 +250,7 @@ private:
 	{ \
 		if (value != st_##field) { \
 			st_##field = value; \
-			qPrefPrivate::propSetValue(name, st_##field); \
+			qPrefPrivate::propSetValue(name, st_##field, false); \
 			emit qPref##useclass::instance()->field##_changed(value); \
 		} \
 	} \
@@ -264,7 +264,7 @@ private:
 	{ \
 		if (value != st_##field) { \
 			st_##field = value; \
-			qPrefPrivate::propSetValue(name, st_##field); \
+			qPrefPrivate::propSetValue(name, st_##field, 0.0); \
 			emit qPref##useclass::instance()->field##_changed(value); \
 		} \
 	} \
@@ -278,7 +278,7 @@ private:
 	{ \
 		if (value != st_##field) { \
 			st_##field = value; \
-			qPrefPrivate::propSetValue(name, st_##field); \
+			qPrefPrivate::propSetValue(name, st_##field, 0); \
 			emit qPref##useclass::instance()->field##_changed(value); \
 		} \
 	} \
@@ -292,7 +292,7 @@ private:
 	{ \
 		if (value != st_##field) { \
 			st_##field = value; \
-			qPrefPrivate::propSetValue(name, st_##field); \
+			qPrefPrivate::propSetValue(name, st_##field, QByteArray()); \
 			emit qPref##useclass::instance()->field##_changed(value); \
 		} \
 	} \

@@ -90,7 +90,7 @@ void qPrefDisplay::set_divelist_font(const QString &value)
 void qPrefDisplay::disk_divelist_font(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::propSetValue(group + "/divelist_font", prefs.divelist_font);
+		qPrefPrivate::propSetValue(group + "/divelist_font", prefs.divelist_font, default_prefs.divelist_font);
 	else
 		setCorrectFont();
 }
@@ -110,7 +110,7 @@ void qPrefDisplay::set_font_size(double value)
 void qPrefDisplay::disk_font_size(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::propSetValue(group + "/font_size", prefs.font_size);
+		qPrefPrivate::propSetValue(group + "/font_size", prefs.font_size, default_prefs.font_size);
 	else
 		setCorrectFont();
 }

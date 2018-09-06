@@ -9,14 +9,17 @@ void qPrefPrivate::copy_txt(const char **name, const QString &string)
 	*name = copy_qstring(string);
 }
 
-void qPrefPrivate::propSetValue(const QString &key, const QVariant &value)
+void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const QVariant &defaultValue)
 {
 	// REMARK: making s static (which would be logical) does NOT work
 	// because it gets initialized too early.
 	// Having it as a local variable is light weight, because it is an
 	// interface class.
 	QSettings s;
-	s.setValue(key, value);
+	if (value != defaultValue)
+		s.setValue(key, value);
+	else
+		s.remove(key);
 }
 
 QVariant qPrefPrivate::propValue(const QString &key, const QVariant &defaultValue)

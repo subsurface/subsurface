@@ -45,7 +45,7 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 {
 	if (doSync) {
-		qPrefPrivate::propSetValue(group + "/cloud_base_url", prefs.cloud_base_url);
+		qPrefPrivate::propSetValue(group + "/cloud_base_url", prefs.cloud_base_url, default_prefs.cloud_base_url);
 	} else {
 		prefs.cloud_base_url = copy_qstring(qPrefPrivate::propValue(group + "/cloud_base_url", default_prefs.cloud_base_url).toString());
 		qPrefPrivate::copy_txt(&prefs.cloud_git_url, QString(prefs.cloud_base_url) + "/git");
@@ -79,7 +79,7 @@ void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
 {
 	if (doSync) {
 		if (prefs.save_password_local)
-			qPrefPrivate::propSetValue(group + "/password", prefs.cloud_storage_password);
+			qPrefPrivate::propSetValue(group + "/password", prefs.cloud_storage_password, default_prefs.cloud_storage_password);
 	} else {
 		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::propValue(group + "/password", default_prefs.cloud_storage_password).toString());
 	}
@@ -102,7 +102,7 @@ void qPrefCloudStorage::disk_userid(bool doSync)
 {
 	if (doSync) {
 		// always save in new position (part of cloud storage group)
-		qPrefPrivate::propSetValue(group + "subsurface_webservice_uid", prefs.userid);
+		qPrefPrivate::propSetValue(group + "subsurface_webservice_uid", prefs.userid, default_prefs.userid);
 	} else {
 		//WARNING: UserId was  stored outside of any group.
 		// try to read from new location, if it fails read from old location
@@ -120,5 +120,5 @@ bool qPrefCloudStorage::loadFromCloud(const QString& email)
 }
 void qPrefCloudStorage::set_loadFromCloud(const QString& email, bool done)
 {
-	qPrefPrivate::propSetValue(QString("loadFromCloud") + email, done);
+	qPrefPrivate::propSetValue(QString("loadFromCloud") + email, done, "");
 }
