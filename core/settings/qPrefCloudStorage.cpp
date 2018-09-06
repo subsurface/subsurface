@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("CloudStorage");
 qPrefCloudStorage::qPrefCloudStorage(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefCloudStorage *qPrefCloudStorage::instance()
 {
 	static qPrefCloudStorage *self = new qPrefCloudStorage;
@@ -112,13 +113,4 @@ void qPrefCloudStorage::disk_userid(bool doSync)
 			prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "subsurface_webservice_uid", default_prefs.userid).toString());
 		}
 	}
-}
-
-bool qPrefCloudStorage::loadFromCloud(const QString& email)
-{
-	return qPrefPrivate::propValue(QString("loadFromCloud") + email, false).toBool();
-}
-void qPrefCloudStorage::set_loadFromCloud(const QString& email, bool done)
-{
-	qPrefPrivate::propSetValue(QString("loadFromCloud") + email, done, "");
 }
