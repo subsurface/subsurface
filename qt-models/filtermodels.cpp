@@ -4,6 +4,7 @@
 #include "core/display.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
+#include "core/subsurface-qt/DiveListNotifier.h"
 #include "qt-models/divetripmodel.h"
 
 #if !defined(SUBSURFACE_MOBILE)
@@ -159,6 +160,58 @@ void FilterModelBase::updateList(QStringList &newList)
 	endResetModel();
 }
 
+// Decrease count of entry with given name. Remove if count reaches zero.
+// Exception: Don't remove the "Show Empty Tags" entry.
+void FilterModelBase::decreaseCount(const QString &name)
+{
+	if (name.isEmpty()) {
+		// Decrease the "Show Empty Tags" entry. Keep it even if count reaches 0.
+		if (items.empty() || items.back().count <= 0)
+			return; // Shouldn't happen!
+		--items.back().count;
+		int idx = items.size() - 1;
+		dataChanged(createIndex(idx, 0), createIndex(idx, 0));
+		return;
+	}
+
+	int idx = indexOf(name);
+	if (idx < 0 || items[idx].count <= 0)
+		return; // Shouldn't happen
+
+	if(--items[idx].count == 0) {
+		beginRemoveRows(QModelIndex(), idx, idx);
+		items.erase(items.begin() + idx);
+		endRemoveRows();
+	} else {
+		dataChanged(createIndex(idx, 0), createIndex(idx, 0));
+	}
+}
+
+// Increase count of entry with given name. If entry doesn't yet exist, add it.
+void FilterModelBase::increaseCount(const QString &name)
+{
+	if (name.isEmpty()) {
+		// Increase the "Show Empty Tags" entry. Keep it even if count reaches 0.
+		if (items.empty())
+			return; // Shouldn't happen!
+		++items.back().count;
+		int idx = items.size() - 1;
+		dataChanged(createIndex(idx, 0), createIndex(idx, 0));
+		return;
+	}
+
+	int idx = indexOf(name);
+	if (idx < 0) {
+		idx = findInsertionIndex(name);
+		beginInsertRows(QModelIndex(), idx, idx);
+		items.insert(items.begin() + idx, { name, anyChecked, 1 });
+		endInsertRows();
+	} else {
+		++items[idx].count;
+		dataChanged(createIndex(idx, 0), createIndex(idx, 0));
+	}
+}
+
 Qt::ItemFlags FilterModelBase::flags(const QModelIndex &index) const
 {
 	return QAbstractListModel::flags(index) | Qt::ItemIsUserCheckable;
@@ -258,6 +311,16 @@ bool SuitsFilterModel::doFilter(const dive *d) const
 	return negate;
 }
 
+void SuitsFilterModel::diveAdded(const dive *d)
+{
+	increaseCount(QString(d->suit));
+}
+
+void SuitsFilterModel::diveDeleted(const dive *d)
+{
+	decreaseCount(QString(d->suit));
+}
+
 void SuitsFilterModel::repopulate()
 {
 	QStringList list;
@@ -322,6 +385,33 @@ bool TagFilterModel::doFilter(const dive *d) const
 	return negate;
 }
 
+void TagFilterModel::diveAdded(const dive *d)
+{
+	struct tag_entry *head = d->tag_list;
+	if (!head) {
+		increaseCount(QString());
+		return;
+	}
+	while (head) {
+		increaseCount(QString());
+		increaseCount(QString(head->tag->name));
+		head = head->next;
+	}
+}
+
+void TagFilterModel::diveDeleted(const dive *d)
+{
+	struct tag_entry *head = d->tag_list;
+	if (!head) {
+		decreaseCount(QString());
+		return;
+	}
+	while (head) {
+		decreaseCount(QString(head->tag->name));
+		head = head->next;
+	}
+}
+
 BuddyFilterModel::BuddyFilterModel(QObject *parent) : FilterModelBase(parent)
 {
 }
@@ -329,6 +419,15 @@ BuddyFilterModel::BuddyFilterModel(QObject *parent) : FilterModelBase(parent)
 int BuddyFilterModel::countDives(const char *s) const
 {
 	return count_dives_with_person(s);
+}
+
+static QStringList getDiveBuddies(const dive *d)
+{
+	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
+	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
+	for (QString &s: personsList)
+		s = s.trimmed();
+	return personsList;
 }
 
 bool BuddyFilterModel::doFilter(const dive *d) const
@@ -339,11 +438,7 @@ bool BuddyFilterModel::doFilter(const dive *d) const
 	if (!anyChecked || rowCount() == 0)
 		return true;
 
-	// Checked means 'Show', Unchecked means 'Hide'.
-	QString persons = QString(d->buddy) + "," + QString(d->divemaster);
-	QStringList personsList = persons.split(',', QString::SkipEmptyParts);
-	for (QString &s: personsList)
-		s = s.trimmed();
+	QStringList personsList = getDiveBuddies(d);
 	// only show empty buddie dives if the user checked that.
 	if (personsList.isEmpty())
 		return items[rowCount() - 1].checked != negate;
@@ -355,6 +450,28 @@ bool BuddyFilterModel::doFilter(const dive *d) const
 			return !negate;
 	}
 	return negate;
+}
+
+void BuddyFilterModel::diveAdded(const dive *d)
+{
+	QStringList buddies = getDiveBuddies(d);
+	if (buddies.empty()) {
+		increaseCount(QString());
+		return;
+	}
+	for(const QString &buddy: buddies)
+		increaseCount(buddy);
+}
+
+void BuddyFilterModel::diveDeleted(const dive *d)
+{
+	QStringList buddies = getDiveBuddies(d);
+	if (buddies.empty()) {
+		decreaseCount(QString());
+		return;
+	}
+	for(const QString &buddy: buddies)
+		decreaseCount(buddy);
 }
 
 void BuddyFilterModel::repopulate()
@@ -406,6 +523,16 @@ bool LocationFilterModel::doFilter(const dive *d) const
 	return negate;
 }
 
+void LocationFilterModel::diveAdded(const dive *d)
+{
+	increaseCount(get_dive_location(d));
+}
+
+void LocationFilterModel::diveDeleted(const dive *d)
+{
+	decreaseCount(get_dive_location(d));
+}
+
 void LocationFilterModel::repopulate()
 {
 	QStringList list;
@@ -435,6 +562,28 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyMo
 	divesDisplayed(0),
 	curr_dive_site(NULL)
 {
+}
+
+void MultiFilterSortModel::divesAdded(const QVector<dive *> &dives)
+{
+	// TODO: We call diveAdded for every dive and model.
+	// If multiple dives are added (e.g. import dive) this will lead to a large
+	// number of model changes and might be a pessimization compared to a full
+	// model reload. Instead, the models should take the vector, calculate the
+	// new fields and add them at once.
+	for (FilterModelBase *model: models) {
+		for (const dive *d: dives)
+			model->diveAdded(d);
+	}
+}
+
+void MultiFilterSortModel::divesDeleted(const QVector<dive *> &dives)
+{
+	// TODO: See comment for divesDeleted
+	for (FilterModelBase *model: models) {
+		for (const dive *d: dives)
+			model->diveDeleted(d);
+	}
 }
 
 bool MultiFilterSortModel::showDive(const struct dive *d) const

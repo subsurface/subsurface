@@ -8,6 +8,7 @@
 #include <vector>
 
 struct dive;
+struct dive_trip;
 
 class FilterModelBase : public QAbstractListModel {
 	Q_OBJECT
@@ -23,8 +24,12 @@ protected:
 	int indexOf(const QString &name) const;
 	void addItem(const QString &name, bool checked, int count);
 	int rowCount(const QModelIndex &parent = QModelIndex()) const override;
+	void decreaseCount(const QString &d);
+	void increaseCount(const QString &d);
 public:
 	virtual bool doFilter(const dive *d) const = 0;
+	virtual void diveAdded(const dive *d) = 0;
+	virtual void diveDeleted(const dive *d) = 0;
 	void clearFilter();
 	void selectAll();
 	void invertSelection();
@@ -56,6 +61,8 @@ slots:
 private:
 	explicit TagFilterModel(QObject *parent = 0);
 	int countDives(const char *) const;
+	void diveAdded(const dive *d);
+	void diveDeleted(const dive *d);
 };
 
 class BuddyFilterModel : public FilterModelBase {
@@ -70,6 +77,8 @@ slots:
 private:
 	explicit BuddyFilterModel(QObject *parent = 0);
 	int countDives(const char *) const;
+	void diveAdded(const dive *d);
+	void diveDeleted(const dive *d);
 };
 
 class LocationFilterModel : public FilterModelBase {
@@ -85,6 +94,8 @@ slots:
 private:
 	explicit LocationFilterModel(QObject *parent = 0);
 	int countDives(const char *) const;
+	void diveAdded(const dive *d);
+	void diveDeleted(const dive *d);
 };
 
 class SuitsFilterModel : public FilterModelBase {
@@ -99,6 +110,8 @@ slots:
 private:
 	explicit SuitsFilterModel(QObject *parent = 0);
 	int countDives(const char *) const;
+	void diveAdded(const dive *d);
+	void diveDeleted(const dive *d);
 };
 
 class MultiFilterSortModel : public QSortFilterProxyModel {
@@ -108,6 +121,8 @@ public:
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
 	void addFilterModel(FilterModelBase *model);
 	void removeFilterModel(FilterModelBase *model);
+	void divesAdded(const QVector<dive *> &dives);
+	void divesDeleted(const QVector<dive *> &dives);
 	bool showDive(const struct dive *d) const;
 	int divesDisplayed;
 public
