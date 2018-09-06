@@ -32,7 +32,7 @@ public:
 	};
 
 	QVariant data(int column, int role) const override;
-	int diveId;
+	dive *d;
 	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	QString displayDate() const;
@@ -46,7 +46,7 @@ public:
 	QString displaySac() const;
 	QString displaySacWithUnit() const;
 	QString displayTags() const;
-	int countPhotos(dive *dive) const;
+	int countPhotos() const;
 	int weight() const;
 };
 
