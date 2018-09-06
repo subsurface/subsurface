@@ -141,9 +141,9 @@ echo Building in $SRC, installing in $INSTALL_ROOT
 if [ ! -z $CMAKE_PREFIX_PATH ] ; then
 	QMAKE=$CMAKE_PREFIX_PATH/../../bin/qmake
 else
-	hash qmake > /dev/null && QMAKE=qmake
-	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null && QMAKE=qmake-qt5
-	[ -z $QMAKE ] && echo "cannot find qmake" && exit 1
+	hash qmake > /dev/null 2> /dev/null && QMAKE=qmake
+	[ -z $QMAKE ] && hash qmake-qt5 > /dev/null 2> /dev/null && QMAKE=qmake-qt5
+	[ -z $QMAKE ] && echo "cannot find qmake or qmake-qt5" && exit 1
 fi
 
 # on Debian and Ubuntu based systems, the private QtLocation and
