@@ -45,7 +45,7 @@ HANDLE_PREFERENCE_BOOL(General, "/auto_recalculate_thumbnails", auto_recalculate
 
 HANDLE_PREFERENCE_TXT(General, "/default_cylinder", default_cylinder);
 
-HANDLE_PREFERENCE_TXT(General, "default_filename", default_filename);
+HANDLE_PREFERENCE_TXT(General, "/default_filename", default_filename);
 
 
 void qPrefGeneral::set_default_file_behavior(enum def_file_behavior value)
