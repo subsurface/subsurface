@@ -228,7 +228,7 @@ bool FilterModelBase::setData(const QModelIndex &index, const QVariant &value, i
 				break;
 			}
 		}
-		dataChanged(index, index);
+		dataChanged(index, index, { role });
 		return true;
 	}
 	return false;
@@ -631,6 +631,14 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 	return false;
 }
 
+void MultiFilterSortModel::filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles)
+{
+	// Only redo the filter if a checkbox changed. If the count of an entry changed,
+	// we do *not* want to recalculate the filters.
+	if (roles.contains(Qt::CheckStateRole))
+		myInvalidate();
+}
+
 void MultiFilterSortModel::myInvalidate()
 {
 #if !defined(SUBSURFACE_MOBILE)
@@ -683,7 +691,7 @@ void MultiFilterSortModel::myInvalidate()
 void MultiFilterSortModel::addFilterModel(FilterModelBase *model)
 {
 	models.append(model);
-	connect(model, SIGNAL(dataChanged(QModelIndex, QModelIndex)), this, SLOT(myInvalidate()));
+	connect(model, &FilterModelBase::dataChanged, this, &MultiFilterSortModel::filterChanged);
 }
 
 void MultiFilterSortModel::removeFilterModel(FilterModelBase *model)
