@@ -29,17 +29,17 @@ void qPrefUnits::loadSync(bool doSync)
 	disk_weight(doSync);
 }
 
-HANDLE_PREFERENCE_BOOL(Units, "/coordinates", coordinates_traditional);
+HANDLE_PREFERENCE_BOOL(Units, "coordinates", coordinates_traditional);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::DURATION, "/duration_units", duration_units, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::DURATION, "duration_units", duration_units, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::LENGTH, "/length", length, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::LENGTH, "length", length, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::PRESSURE, "/pressure", pressure, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::PRESSURE, "pressure", pressure, units.);
 
-HANDLE_PREFERENCE_BOOL_EXT(Units, "/show_units_table", show_units_table, units.);
+HANDLE_PREFERENCE_BOOL_EXT(Units, "show_units_table", show_units_table, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, "/temperature", temperature, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::TEMPERATURE, "temperature", temperature, units.);
 
 QString qPrefUnits::unit_system()
 {
@@ -66,10 +66,10 @@ void qPrefUnits::set_unit_system(const QString& value)
 		emit instance()->unit_system_changed(value);
 	}
 }
-DISK_LOADSYNC_ENUM(Units, "/unit_system", unit_system_values, unit_system);
+DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::TIME, "/vertical_speed_time", vertical_speed_time, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::TIME, "vertical_speed_time", vertical_speed_time, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::VOLUME, "/volume", volume, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::VOLUME, "volume", volume, units.);
 
-HANDLE_PREFERENCE_ENUM_EXT(Units, units::WEIGHT, "/weight", weight, units.);
+HANDLE_PREFERENCE_ENUM_EXT(Units, units::WEIGHT, "weight", weight, units.);

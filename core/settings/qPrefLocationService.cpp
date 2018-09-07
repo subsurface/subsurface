@@ -19,6 +19,6 @@ void qPrefLocationService::loadSync(bool doSync)
 	disk_time_threshold(doSync);
 }
 
-HANDLE_PREFERENCE_INT(LocationService, "/distance_threshold", distance_threshold);
+HANDLE_PREFERENCE_INT(LocationService, "distance_threshold", distance_threshold);
 
-HANDLE_PREFERENCE_INT(LocationService, "/time_threshold", time_threshold);
+HANDLE_PREFERENCE_INT(LocationService, "time_threshold", time_threshold);
