@@ -41,11 +41,11 @@ void qPrefGeneral::loadSync(bool doSync)
 	}
 }
 
-HANDLE_PREFERENCE_BOOL(General, "/auto_recalculate_thumbnails", auto_recalculate_thumbnails);
+HANDLE_PREFERENCE_BOOL(General, "auto_recalculate_thumbnails", auto_recalculate_thumbnails);
 
-HANDLE_PREFERENCE_TXT(General, "/default_cylinder", default_cylinder);
+HANDLE_PREFERENCE_TXT(General, "default_cylinder", default_cylinder);
 
-HANDLE_PREFERENCE_TXT(General, "/default_filename", default_filename);
+HANDLE_PREFERENCE_TXT(General, "default_filename", default_filename);
 
 
 void qPrefGeneral::set_default_file_behavior(enum def_file_behavior value)
@@ -67,9 +67,9 @@ void qPrefGeneral::set_default_file_behavior(enum def_file_behavior value)
 void qPrefGeneral::disk_default_file_behavior(bool doSync)
 {
 	if (doSync) {
-		qPrefPrivate::propSetValue(group + "/default_file_behavior", prefs.default_file_behavior, default_prefs.default_file_behavior);
+		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "default_file_behavior"), prefs.default_file_behavior, default_prefs.default_file_behavior);
 	} else {
-		prefs.default_file_behavior = (enum def_file_behavior)qPrefPrivate::propValue(group + "/default_file_behavior", default_prefs.default_file_behavior).toInt();
+		prefs.default_file_behavior = (enum def_file_behavior)qPrefPrivate::propValue(keyFromGroupAndName(group, "default_file_behavior"), default_prefs.default_file_behavior).toInt();
 		if (prefs.default_file_behavior == UNDEFINED_DEFAULT_FILE)
 			// undefined, so check if there's a filename set and
 			// use that, otherwise go with no default file
@@ -77,19 +77,19 @@ void qPrefGeneral::disk_default_file_behavior(bool doSync)
 	}
 }
 
-HANDLE_PREFERENCE_INT(General, "/defaultsetpoint", defaultsetpoint);
+HANDLE_PREFERENCE_INT(General, "defaultsetpoint", defaultsetpoint);
 
-HANDLE_PREFERENCE_BOOL(General, "/extract_video_thumbnails", extract_video_thumbnails);
+HANDLE_PREFERENCE_BOOL(General, "extract_video_thumbnails", extract_video_thumbnails);
 
-HANDLE_PREFERENCE_INT(General, "/extract_video_thumbnails_position", extract_video_thumbnails_position);
+HANDLE_PREFERENCE_INT(General, "extract_video_thumbnails_position", extract_video_thumbnails_position);
 
-HANDLE_PREFERENCE_TXT(General, "/ffmpeg_executable", ffmpeg_executable);
+HANDLE_PREFERENCE_TXT(General, "ffmpeg_executable", ffmpeg_executable);
 
-HANDLE_PREFERENCE_INT(General, "/o2consumption", o2consumption);
+HANDLE_PREFERENCE_INT(General, "o2consumption", o2consumption);
 
-HANDLE_PREFERENCE_INT(General, "/pscr_ratio", pscr_ratio);
+HANDLE_PREFERENCE_INT(General, "pscr_ratio", pscr_ratio);
 
-HANDLE_PREFERENCE_BOOL(General, "/use_default_file", use_default_file);
+HANDLE_PREFERENCE_BOOL(General, "use_default_file", use_default_file);
 
 HANDLE_PROP_QSTRING(General, "diveshareExport/uid", diveshareExport_uid);
 
