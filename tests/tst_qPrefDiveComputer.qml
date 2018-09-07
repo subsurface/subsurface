@@ -1,39 +1,30 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
 import QtTest 1.2
-import org.subsurfacedivelog.mobile 1.0
 
 TestCase {
 	name: "qPrefDiveComputer"
 
-	SsrfDiveComputerPrefs {
-		id: tst
-	}
-
-	SsrfPrefs {
-		id: prefs
-	}
-
 	function test_variables() {
-		var x1 = tst.device
-		tst.device = "my device"
-		compare(tst.device, "my device")
+		var x1 = PrefDiveComputer.device
+		PrefDiveComputer.device = "my device"
+		compare(PrefDiveComputer.device, "my device")
 
-		var x1 = tst.device_name
-		tst.device_name = "my device name"
-		compare(tst.device_name, "my device name")
+		var x2 = PrefDiveComputer.device_name
+		PrefDiveComputer.device_name = "my device name"
+		compare(PrefDiveComputer.device_name, "my device name")
 
-		var x1 = tst.download_mode
-		tst.download_mode = 19
-		compare(tst.download_mode, 19)
+		var x3 = PrefDiveComputer.download_mode
+		PrefDiveComputer.download_mode = 19
+		compare(PrefDiveComputer.download_mode, 19)
 
-		var x1 = tst.product
-		tst.product = "my product"
-		compare(tst.product, "my product")
+		var x4 = PrefDiveComputer.product
+		PrefDiveComputer.product = "my product"
+		compare(PrefDiveComputer.product, "my product")
 
-		var x1 = tst.vendor
-		tst.vendor = "my vendor"
-		compare(tst.vendor, "my vendor")
+		var x5 = PrefDiveComputer.vendor
+		PrefDiveComputer.vendor = "my vendor"
+		compare(PrefDiveComputer.vendor, "my vendor")
 	}
 }
 
