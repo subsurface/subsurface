@@ -103,14 +103,14 @@ void qPrefCloudStorage::disk_userid(bool doSync)
 {
 	if (doSync) {
 		// always save in new position (part of cloud storage group)
-		qPrefPrivate::propSetValue(group + "subsurface_webservice_uid", prefs.userid, default_prefs.userid);
+		qPrefPrivate::propSetValue(group + "/subsurface_webservice_uid", prefs.userid, default_prefs.userid);
 	} else {
 		//WARNING: UserId was  stored outside of any group.
 		// try to read from new location, if it fails read from old location
-		prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "subsurface_webservice_uid", "NoUserIdHere").toString());
+		prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "/subsurface_webservice_uid", "NoUserIdHere").toString());
 		if (QString(prefs.userid) == "NoUserIdHere") {
 			const QString group = QStringLiteral("");
-			prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "subsurface_webservice_uid", default_prefs.userid).toString());
+			prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "/subsurface_webservice_uid", default_prefs.userid).toString());
 		}
 	}
 }
