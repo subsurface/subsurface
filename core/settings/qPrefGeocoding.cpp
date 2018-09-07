@@ -32,7 +32,7 @@ void qPrefGeocoding::set_first_taxonomy_category(taxonomy_category value)
 void qPrefGeocoding::disk_first_taxonomy_category(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::propSetValue(group + "/cat0", prefs.geocoding.category[0]);
+		qPrefPrivate::propSetValue(group + "/cat0", prefs.geocoding.category[0], default_prefs.geocoding.category[0]);
 	else
 		prefs.geocoding.category[0] = (enum taxonomy_category)qPrefPrivate::propValue(group + "/cat0", default_prefs.geocoding.category[0]).toInt();
 }
@@ -49,7 +49,7 @@ void qPrefGeocoding::set_second_taxonomy_category(taxonomy_category value)
 void qPrefGeocoding::disk_second_taxonomy_category(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::propSetValue(group + "/cat1", prefs.geocoding.category[1]);
+		qPrefPrivate::propSetValue(group + "/cat1", prefs.geocoding.category[1], default_prefs.geocoding.category[1]);
 	else
 		prefs.geocoding.category[1] = (enum taxonomy_category)qPrefPrivate::propValue(group + "/cat1", default_prefs.geocoding.category[1]).toInt();
 }
@@ -66,7 +66,7 @@ void qPrefGeocoding::set_third_taxonomy_category(taxonomy_category value)
 void qPrefGeocoding::disk_third_taxonomy_category(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::propSetValue(group + "/cat2", prefs.geocoding.category[2]);
+		qPrefPrivate::propSetValue(group + "/cat2", prefs.geocoding.category[2], default_prefs.geocoding.category[2]);
 	else
 		prefs.geocoding.category[2] = (enum taxonomy_category)qPrefPrivate::propValue(group + "/cat2", default_prefs.geocoding.category[2]).toInt();
 }

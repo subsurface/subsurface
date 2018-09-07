@@ -57,7 +57,7 @@ void qPrefUpdateManager::set_next_check(const QDate& value)
 void qPrefUpdateManager::disk_next_check(bool doSync)
 {
 	if (doSync)
-		qPrefPrivate::propSetValue(group + "/NextCheck", prefs.update_manager.next_check);
+		qPrefPrivate::propSetValue(group + "/NextCheck", prefs.update_manager.next_check, default_prefs.update_manager.next_check);
 	else
 		prefs.update_manager.next_check = qPrefPrivate::propValue(group + "/NextCheck", 0).toInt();
 }
