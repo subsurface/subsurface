@@ -25,6 +25,7 @@ static int debugCounter;
 
 #define IS_HW(_d) same_string((_d)->vendor, "Heinrichs Weikamp")
 #define IS_SHEARWATER(_d) same_string((_d)->vendor, "Shearwater")
+#define IS_GARMIN(_d) same_string((_d)->vendor, "Garmin")
 
 #define MAXIMAL_HW_CREDIT	255
 #define MINIMAL_HW_CREDIT	32
@@ -271,6 +272,14 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 	return setHwCredit(MAXIMAL_HW_CREDIT);
 }
 
+// Bluez is broken, and doesn't have a sane way to query
+// whether to use a random address or not. So we have to
+// fake it.
+static int use_random_address(dc_user_device_t *user_device)
+{
+	return IS_SHEARWATER(user_device) || IS_GARMIN(user_device);
+}
+
 dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_device_t *user_device)
 {
 	debugCounter = 0;
@@ -302,7 +311,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 #endif
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
-	if (IS_SHEARWATER(user_device))
+	if (use_random_address(user_device))
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
 
 	// Try to connect to the device
