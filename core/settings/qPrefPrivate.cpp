@@ -9,6 +9,12 @@ void qPrefPrivate::copy_txt(const char **name, const QString &string)
 	*name = copy_qstring(string);
 }
 
+QString keyFromGroupAndName(QString group, QString name)
+{
+	QString slash = (group.endsWith('/') || name.startsWith('/')) ? "" : "/";
+	return group + slash + name;
+}
+
 void qPrefPrivate::propSetValue(const QString &key, const QVariant &value, const QVariant &defaultValue)
 {
 	// REMARK: making s static (which would be logical) does NOT work

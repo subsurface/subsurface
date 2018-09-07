@@ -46,16 +46,16 @@ void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 void qPrefCloudStorage::disk_cloud_base_url(bool doSync)
 {
 	if (doSync) {
-		qPrefPrivate::propSetValue(group + "/cloud_base_url", prefs.cloud_base_url, default_prefs.cloud_base_url);
+		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "cloud_base_url"), prefs.cloud_base_url, default_prefs.cloud_base_url);
 	} else {
-		prefs.cloud_base_url = copy_qstring(qPrefPrivate::propValue(group + "/cloud_base_url", default_prefs.cloud_base_url).toString());
+		prefs.cloud_base_url = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, "cloud_base_url"), default_prefs.cloud_base_url).toString());
 		qPrefPrivate::copy_txt(&prefs.cloud_git_url, QString(prefs.cloud_base_url) + "/git");
 	}
 }
 
-HANDLE_PREFERENCE_TXT(CloudStorage, "/email", cloud_storage_email);
+HANDLE_PREFERENCE_TXT(CloudStorage, "email", cloud_storage_email);
 
-HANDLE_PREFERENCE_TXT(CloudStorage, "/email_encoded", cloud_storage_email_encoded);
+HANDLE_PREFERENCE_TXT(CloudStorage, "email_encoded", cloud_storage_email_encoded);
 
 void qPrefCloudStorage::set_cloud_storage_newpassword(const QString &value)
 {
@@ -80,37 +80,37 @@ void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
 {
 	if (doSync) {
 		if (prefs.save_password_local)
-			qPrefPrivate::propSetValue(group + "/password", prefs.cloud_storage_password, default_prefs.cloud_storage_password);
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, "password"), prefs.cloud_storage_password, default_prefs.cloud_storage_password);
 	} else {
-		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::propValue(group + "/password", default_prefs.cloud_storage_password).toString());
+		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, "password"), default_prefs.cloud_storage_password).toString());
 	}
 }
 
-HANDLE_PREFERENCE_TXT(CloudStorage, "/pin", cloud_storage_pin);
+HANDLE_PREFERENCE_TXT(CloudStorage, "pin", cloud_storage_pin);
 
-HANDLE_PREFERENCE_INT(CloudStorage, "/timeout", cloud_timeout);
+HANDLE_PREFERENCE_INT(CloudStorage, "timeout", cloud_timeout);
 
-HANDLE_PREFERENCE_INT(CloudStorage, "/cloud_verification_status", cloud_verification_status);
+HANDLE_PREFERENCE_INT(CloudStorage, "cloud_verification_status", cloud_verification_status);
 
-HANDLE_PREFERENCE_BOOL(CloudStorage, "/git_local_only", git_local_only);
+HANDLE_PREFERENCE_BOOL(CloudStorage, "git_local_only", git_local_only);
 
-HANDLE_PREFERENCE_BOOL(CloudStorage, "/save_password_local", save_password_local);
+HANDLE_PREFERENCE_BOOL(CloudStorage, "save_password_local", save_password_local);
 
-HANDLE_PREFERENCE_BOOL(CloudStorage, "/save_userid_local", save_userid_local);
+HANDLE_PREFERENCE_BOOL(CloudStorage, "save_userid_local", save_userid_local);
 
 SET_PREFERENCE_TXT(CloudStorage, userid);
 void qPrefCloudStorage::disk_userid(bool doSync)
 {
 	if (doSync) {
 		// always save in new position (part of cloud storage group)
-		qPrefPrivate::propSetValue(group + "/subsurface_webservice_uid", prefs.userid, default_prefs.userid);
+		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "subsurface_webservice_uid"), prefs.userid, default_prefs.userid);
 	} else {
 		//WARNING: UserId was  stored outside of any group.
 		// try to read from new location, if it fails read from old location
-		prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "/subsurface_webservice_uid", "NoUserIdHere").toString());
+		prefs.userid = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, "subsurface_webservice_uid"), "NoUserIdHere").toString());
 		if (QString(prefs.userid) == "NoUserIdHere") {
 			const QString group = QStringLiteral("");
-			prefs.userid = copy_qstring(qPrefPrivate::propValue(group + "/subsurface_webservice_uid", default_prefs.userid).toString());
+			prefs.userid = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group,"subsurface_webservice_uid"), default_prefs.userid).toString());
 		}
 	}
 }

@@ -25,14 +25,14 @@ void qPrefProxy::loadSync(bool doSync)
 	disk_proxy_user(doSync);
 }
 
-HANDLE_PREFERENCE_BOOL(Proxy, "/proxy_auth", proxy_auth);
+HANDLE_PREFERENCE_BOOL(Proxy, "proxy_auth", proxy_auth);
 
-HANDLE_PREFERENCE_TXT(Proxy, "/proxy_host", proxy_host);
+HANDLE_PREFERENCE_TXT(Proxy, "proxy_host", proxy_host);
 
-HANDLE_PREFERENCE_TXT(Proxy, "/proxy_pass", proxy_pass);
+HANDLE_PREFERENCE_TXT(Proxy, "proxy_pass", proxy_pass);
 
-HANDLE_PREFERENCE_INT(Proxy, "/proxy_port", proxy_port);
+HANDLE_PREFERENCE_INT(Proxy, "proxy_port", proxy_port);
 
-HANDLE_PREFERENCE_INT_DEF(Proxy, "/proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
+HANDLE_PREFERENCE_INT_DEF(Proxy, "proxy_type", proxy_type, QNetworkProxy::DefaultProxy);
 
-HANDLE_PREFERENCE_TXT(Proxy, "/proxy_user", proxy_user);
+HANDLE_PREFERENCE_TXT(Proxy, "proxy_user", proxy_user);
