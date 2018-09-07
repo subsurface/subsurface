@@ -41,7 +41,7 @@ void TestQPrefDisplay::test_set_struct()
 	auto display = qPrefDisplay::instance();
 
 	display->set_animation_speed(27);
-	display->set_display_invalid_dives(true);
+	display->set_display_invalid_dives(false);
 	display->set_divelist_font("doNotCareAtAll");
 	display->set_font_size(12.0);
 	display->set_show_developer(false);
@@ -58,7 +58,7 @@ void TestQPrefDisplay::test_set_struct()
 	display->set_lastState(17);
 
 	QCOMPARE(prefs.animation_speed, 27);
-	QCOMPARE(prefs.display_invalid_dives, true);
+	QCOMPARE(prefs.display_invalid_dives, false);
 	QCOMPARE(prefs.divelist_font, "doNotCareAtAll");
 	QCOMPARE(prefs.font_size, 12.0);
 	QCOMPARE(prefs.show_developer, false);
@@ -82,7 +82,7 @@ void TestQPrefDisplay::test_set_load_struct()
 	auto display = qPrefDisplay::instance();
 
 	display->set_animation_speed(33);
-	display->set_display_invalid_dives(false);
+	display->set_display_invalid_dives(true);
 	display->set_divelist_font("doNotCareString");
 	display->set_font_size(15.0);
 	display->set_show_developer(true);
@@ -99,14 +99,14 @@ void TestQPrefDisplay::test_set_load_struct()
 	display->set_lastState(27);
 
 	prefs.animation_speed = 17;
-	prefs.display_invalid_dives = true;
+	prefs.display_invalid_dives = false;
 	prefs.divelist_font = copy_qstring("doNotCareAtAll");
 	prefs.font_size = 12.0;
 	prefs.show_developer = false;
 
 	display->load();
 	QCOMPARE(prefs.animation_speed, 33);
-	QCOMPARE(prefs.display_invalid_dives, false);
+	QCOMPARE(prefs.display_invalid_dives, true);
 	QCOMPARE(prefs.divelist_font, "doNotCareString");
 	QCOMPARE(prefs.font_size, 15.0);
 	QCOMPARE(prefs.show_developer, true);
