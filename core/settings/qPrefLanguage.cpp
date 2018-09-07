@@ -26,18 +26,18 @@ void qPrefLanguage::loadSync(bool doSync)
 	disk_use_system_language(doSync);
 }
 
-HANDLE_PREFERENCE_TXT(Language, "/date_format", date_format);
+HANDLE_PREFERENCE_TXT(Language, "date_format", date_format);
 
-HANDLE_PREFERENCE_BOOL(Language,"/date_format_override", date_format_override);
+HANDLE_PREFERENCE_BOOL(Language,"date_format_override", date_format_override);
 
-HANDLE_PREFERENCE_TXT(Language, "/date_format_short", date_format_short);
+HANDLE_PREFERENCE_TXT(Language, "date_format_short", date_format_short);
 
-HANDLE_PREFERENCE_TXT_EXT(Language, "/UiLanguage", language, locale.);
+HANDLE_PREFERENCE_TXT_EXT(Language, "UiLanguage", language, locale.);
 
-HANDLE_PREFERENCE_TXT_EXT(Language, "/UiLangLocale", lang_locale, locale.);
+HANDLE_PREFERENCE_TXT_EXT(Language, "UiLangLocale", lang_locale, locale.);
 
-HANDLE_PREFERENCE_TXT(Language, "/time_format", time_format);
+HANDLE_PREFERENCE_TXT(Language, "time_format", time_format);
 
-HANDLE_PREFERENCE_BOOL(Language, "/time_format_override", time_format_override);
+HANDLE_PREFERENCE_BOOL(Language, "time_format_override", time_format_override);
 
-HANDLE_PREFERENCE_BOOL_EXT(Language, "/UseSystemLanguage", use_system_language, locale.);
+HANDLE_PREFERENCE_BOOL_EXT(Language, "UseSystemLanguage", use_system_language, locale.);

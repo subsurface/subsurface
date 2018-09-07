@@ -22,15 +22,17 @@ private:
 	qPrefPrivate() {}
 };
 
+// helper function to ensure there's a '/' between group and name
+QString keyFromGroupAndName(QString group, QString name);
 
 //******* Macros to generate disk function
 #define DISK_LOADSYNC_BOOL_EXT(usegroup, name, field, usestruct) \
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
 		else \
-			prefs.usestruct field = qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toBool(); \
+			prefs.usestruct field = qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field).toBool(); \
 	}
 #define DISK_LOADSYNC_BOOL(usegroup, name, field) \
 	DISK_LOADSYNC_BOOL_EXT(usegroup, name, field, )
@@ -39,9 +41,9 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
 		else \
-			prefs.usestruct field = qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toDouble(); \
+			prefs.usestruct field = qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field).toDouble(); \
 	}
 #define DISK_LOADSYNC_DOUBLE(usegroup, name, field) \
 	DISK_LOADSYNC_DOUBLE_EXT(usegroup, name, field, )
@@ -50,9 +52,9 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
 		else \
-			prefs.usestruct field = (enum type)qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toInt(); \
+			prefs.usestruct field = (enum type)qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field).toInt(); \
 	}
 #define DISK_LOADSYNC_ENUM(usegroup, name, type, field) \
 	DISK_LOADSYNC_ENUM_EXT(usegroup, name, type, field, )
@@ -61,9 +63,9 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
 		else \
-			prefs.usestruct field = qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toInt(); \
+			prefs.usestruct field = qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field).toInt(); \
 	}
 #define DISK_LOADSYNC_INT(usegroup, name, field) \
 	DISK_LOADSYNC_INT_EXT(usegroup, name, field, )
@@ -72,9 +74,9 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
 		else \
-			prefs.usestruct field = qPrefPrivate::propValue(group + name, defval).toInt(); \
+			prefs.usestruct field = qPrefPrivate::propValue(keyFromGroupAndName(group, name), defval).toInt(); \
 	}
 #define DISK_LOADSYNC_INT_DEF(usegroup, name, field, defval) \
 	DISK_LOADSYNC_INT_DEF_EXT(usegroup, name, field, defval, )
@@ -83,9 +85,9 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field . var, default_prefs.usestruct field . var); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field . var, default_prefs.usestruct field . var); \
 		else \
-			prefs.usestruct field . var = qPrefPrivate::propValue(group + name, default_prefs.usestruct field . var).toInt(); \
+			prefs.usestruct field . var = qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field . var).toInt(); \
 	}
 #define DISK_LOADSYNC_STRUCT(usegroup, name, field, var) \
 	DISK_LOADSYNC_STRUCT_EXT(usegroup, name, field, var, )
@@ -94,9 +96,9 @@ private:
 	void qPref##usegroup::disk_##field(bool doSync) \
 	{ \
 		if (doSync) \
-			qPrefPrivate::propSetValue(group + name, prefs.usestruct field, default_prefs.usestruct field); \
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct field, default_prefs.usestruct field); \
 		else \
-			prefs.usestruct field = copy_qstring(qPrefPrivate::propValue(group + name, default_prefs.usestruct field).toString()); \
+			prefs.usestruct field = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct field).toString()); \
 	}
 #define DISK_LOADSYNC_TXT(usegroup, name, field) \
 	DISK_LOADSYNC_TXT_EXT(usegroup, name, field, )
