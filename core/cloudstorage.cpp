@@ -2,7 +2,7 @@
 #include "cloudstorage.h"
 #include "pref.h"
 #include "qthelper.h"
-#include "settings/qPref.h"
+#include "settings/qPrefCloudStorage.h"
 #include <QApplication>
 
 CloudStorageAuthenticate::CloudStorageAuthenticate(QObject *parent) :

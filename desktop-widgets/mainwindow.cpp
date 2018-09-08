@@ -47,7 +47,10 @@
 #include "core/windowtitleupdate.h"
 #include "desktop-widgets/locationinformation.h"
 #include "preferences/preferencesdialog.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefPartialPressureGas.h"
+#include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefDisplay.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"

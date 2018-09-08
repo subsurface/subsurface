@@ -2,7 +2,7 @@
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "core/qthelper.h"
 #include "core/webservice.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefCloudStorage.h"
 #include "desktop-widgets/mainwindow.h"
 #include "desktop-widgets/usersurvey.h"
 #include "core/divelist.h"

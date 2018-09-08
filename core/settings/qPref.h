@@ -7,21 +7,6 @@
 #include <QObject>
 #include <QQmlEngine>
 
-#include "qPrefCloudStorage.h"
-#include "qPrefDisplay.h"
-#include "qPrefDiveComputer.h"
-#include "qPrefDivePlanner.h"
-#include "qPrefFacebook.h"
-#include "qPrefGeneral.h"
-#include "qPrefGeocoding.h"
-#include "qPrefLanguage.h"
-#include "qPrefLocationService.h"
-#include "qPrefPartialPressureGas.h"
-#include "qPrefProxy.h"
-#include "qPrefTechnicalDetails.h"
-#include "qPrefUnit.h"
-#include "qPrefUpdateManager.h"
-
 class qPref : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QString canonical_version READ canonical_version);
