@@ -3,7 +3,6 @@
 #include "qmlmanager.h"
 
 #include "core/membuffer.h"
-#include "core/settings/qPref.h"
 #include "core/gpslocation.h"
 
 

@@ -12,6 +12,7 @@
 #include "core/qthelper.h"
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPref.h"
+#include "core/settings/qPrefDisplay.h"
 
 #include <QApplication>
 #include <QLocale>

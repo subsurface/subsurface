@@ -2,7 +2,9 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
 #include "core/dive.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QFileDialog>
 

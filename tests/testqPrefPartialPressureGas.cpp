@@ -3,7 +3,7 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefPartialPressureGas.h"
 
 #include <QTest>
 

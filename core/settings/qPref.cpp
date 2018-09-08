@@ -1,6 +1,20 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qPref.h"
 #include "qPrefPrivate.h"
+#include "qPrefCloudStorage.h"
+#include "qPrefDisplay.h"
+#include "qPrefDiveComputer.h"
+#include "qPrefDivePlanner.h"
+#include "qPrefFacebook.h"
+#include "qPrefGeneral.h"
+#include "qPrefGeocoding.h"
+#include "qPrefLanguage.h"
+#include "qPrefLocationService.h"
+#include "qPrefPartialPressureGas.h"
+#include "qPrefProxy.h"
+#include "qPrefTechnicalDetails.h"
+#include "qPrefUnit.h"
+#include "qPrefUpdateManager.h"
 
 #include <QtQml>
 #include <QQmlContext>

@@ -33,9 +33,11 @@
 #include "core/downloadfromdcthread.h"
 #include "core/subsurface-string.h"
 #include "core/pref.h"
-#include "core/settings/qPref.h"
-
 #include "core/ssrf.h"
+#include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPrefLocationService.h"
+#include "core/settings/qPrefTechnicalDetails.h"
+#include "core/settings/qPrefPartialPressureGas.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;

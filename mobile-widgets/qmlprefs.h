@@ -3,7 +3,8 @@
 #define QMLPREFS_H
 
 #include <QObject>
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefDisplay.h"
 
 
 class QMLPrefs : public QObject {

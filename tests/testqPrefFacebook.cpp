@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefFacebook.h"
 
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefFacebook.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
 
