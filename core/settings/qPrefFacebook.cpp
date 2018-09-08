@@ -39,6 +39,6 @@ void qPrefFacebook::set_user_id(const QString &value)
 {
 	if (value != prefs.facebook.user_id) {
 		qPrefPrivate::copy_txt(&prefs.facebook.user_id, value);
-		emit instance()->access_tokenChanged(value);
+		emit instance()->user_idChanged(value);
 	}
 }
