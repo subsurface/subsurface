@@ -890,19 +890,11 @@ void MainWindow::planCanceled()
 
 void MainWindow::planCreated()
 {
-	// get the new dive selected and assign a number if reasonable
-	graphics()->setProfileState();
-	if (displayed_dive.id == 0) {
-		// we might have added a new dive (so displayed_dive was cleared out by clone_dive()
-		dive_list()->unselectDives();
-		select_dive(get_dive(dive_table.nr - 1));
-		dive_list()->selectDive(get_divenr(current_dive)); // TODO: don't convert dive->idx and back
-		set_dive_nr_for_current_dive();
-	}
 	// make sure our UI is in a consistent state
-	information()->updateDiveInfo();
 	showProfile();
-	refreshDisplay();
+	setApplicationState("Default");
+	dive_list()->setEnabled(true);
+	dive_list()->setFocus();
 }
 
 void MainWindow::setPlanNotes()

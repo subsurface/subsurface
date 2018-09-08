@@ -9,13 +9,18 @@
 // We put everything in a namespace, so that we can shorten names without polluting the global namespace
 namespace Command {
 
-// General commands
+// 1) General commands
+
 void clear();				// Reset the undo stack. Delete all commands.
 QAction *undoAction(QObject *parent);	// Create an undo action.
 QAction *redoAction(QObject *parent);	// Create an redo action.
 
-// Dive-list related commands
-void addDive(dive *d, bool autogroup);
+// 2) Dive-list related commands
+
+void addDive(dive *d, bool autogroup, bool newNumber); // If d->dive_trip is null and autogroup is true, dives within the auto-group
+						       // distance are added to a trip. dive d is consumed (the structure is reset)!
+						       // If newNumber is true, the dive is assigned a new number, depending on the
+						       // insertion position.
 void deleteDive(const QVector<struct dive*> &divesToDelete);
 void shiftTime(const QVector<dive *> &changedDives, int amount);
 void renumberDives(const QVector<QPair<dive *, int>> &divesToRenumber);

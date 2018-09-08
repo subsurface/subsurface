@@ -82,7 +82,7 @@ private:
 
 class AddDive : public DiveListBase {
 public:
-	AddDive(dive *dive, bool autogroup);
+	AddDive(dive *dive, bool autogroup, bool newNumber);
 private:
 	void undoit() override;
 	void redoit() override;
