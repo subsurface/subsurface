@@ -54,7 +54,7 @@ HANDLE_PREFERENCE_INT(DivePlanner, "ascrate50", ascrate50);
 
 HANDLE_PREFERENCE_INT(DivePlanner, "ascrate75", ascrate75);
 
-HANDLE_PREFERENCE_STRUCT(DivePlanner, depth_t, "bestmixend", bestmixend, mm);
+HANDLE_PREFERENCE_STRUCT(DivePlanner, "bestmixend", bestmixend, mm);
 
 HANDLE_PREFERENCE_INT(DivePlanner, "bottompo2", bottompo2);
 

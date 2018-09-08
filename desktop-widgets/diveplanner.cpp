@@ -647,7 +647,7 @@ void PlannerSettingsWidget::setDecoPo2(double po2)
 
 void PlannerSettingsWidget::setBestmixEND(int depth)
 {
-	qPrefDivePlanner::instance()->set_bestmixend(units_to_depth(depth));
+	qPrefDivePlanner::instance()->set_bestmixend(units_to_depth(depth).mm);
 }
 
 void PlannerSettingsWidget::setBackgasBreaks(bool dobreaks)

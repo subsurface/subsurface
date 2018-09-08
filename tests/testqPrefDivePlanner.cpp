@@ -50,7 +50,7 @@ void TestQPrefDivePlanner::test_struct_get()
 	QCOMPARE(tst->ascratestops(), prefs.ascratestops);
 	QCOMPARE(tst->ascrate50(), prefs.ascrate50);
 	QCOMPARE(tst->ascrate75(), prefs.ascrate75);
-	QCOMPARE(tst->bestmixend().mm, prefs.bestmixend.mm);
+	QCOMPARE(tst->bestmixend(), prefs.bestmixend.mm);
 	QCOMPARE(tst->bottompo2(), prefs.bottompo2);
 	QCOMPARE(tst->bottomsac(), prefs.bottomsac);
 	QCOMPARE(tst->decopo2(), prefs.decopo2);
@@ -83,9 +83,7 @@ void TestQPrefDivePlanner::test_set_struct()
 	tst->set_ascratestops(21);
 	tst->set_ascrate50(22);
 	tst->set_ascrate75(23);
-	depth_t x;
-	x.mm = 21;
-	tst->set_bestmixend(x);
+	tst->set_bestmixend(21);
 	tst->set_bottompo2(24);
 	tst->set_bottomsac(25);
 	tst->set_decopo2(26);
@@ -144,9 +142,7 @@ void TestQPrefDivePlanner::test_set_load_struct()
 	tst->set_ascratestops(21);
 	tst->set_ascrate50(22);
 	tst->set_ascrate75(23);
-	depth_t x;
-	x.mm = 41;
-	tst->set_bestmixend(x);
+	tst->set_bestmixend(41);
 	tst->set_bottompo2(24);
 	tst->set_bottomsac(25);
 	tst->set_decopo2(26);
@@ -335,7 +331,6 @@ void TestQPrefDivePlanner::test_multiple()
 void TestQPrefDivePlanner::test_oldPreferences()
 {
 	auto planner = qPrefDivePlanner::instance();
-	depth_t x;
 
 	planner->set_last_stop(true);
 	planner->set_verbatim_plan(true);
@@ -354,8 +349,7 @@ void TestQPrefDivePlanner::test_oldPreferences()
 	planner->set_descrate(5);
 	planner->set_bottompo2(6);
 	planner->set_decopo2(7);
-	x.mm = 8;
-	planner->set_bestmixend(x);
+	planner->set_bestmixend(8);
 	planner->set_reserve_gas(9);
 	planner->set_min_switch_duration(10);
 	planner->set_bottomsac(11);
@@ -380,7 +374,7 @@ void TestQPrefDivePlanner::test_oldPreferences()
 	TEST(planner->descrate(), 5);
 	TEST(planner->bottompo2(), 6);
 	TEST(planner->decopo2(), 7);
-	TEST(planner->bestmixend().mm, 8);
+	TEST(planner->bestmixend(), 8);
 	TEST(planner->reserve_gas(), 9);
 	TEST(planner->min_switch_duration(), 10);
 	TEST(planner->bottomsac(), 11);
@@ -405,8 +399,7 @@ void TestQPrefDivePlanner::test_oldPreferences()
 	planner->set_descrate(15);
 	planner->set_bottompo2(16);
 	planner->set_decopo2(17);
-	x.mm = 18;
-	planner->set_bestmixend(x);
+	planner->set_bestmixend(18);
 	planner->set_reserve_gas(19);
 	planner->set_min_switch_duration(110);
 	planner->set_bottomsac(111);
@@ -431,7 +424,7 @@ void TestQPrefDivePlanner::test_oldPreferences()
 	TEST(planner->descrate(), 15);
 	TEST(planner->bottompo2(), 16);
 	TEST(planner->decopo2(), 17);
-	TEST(planner->bestmixend().mm, 18);
+	TEST(planner->bestmixend(), 18);
 	TEST(planner->reserve_gas(), 19);
 	TEST(planner->min_switch_duration(), 110);
 	TEST(planner->bottomsac(), 111);

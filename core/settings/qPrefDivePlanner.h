@@ -11,7 +11,7 @@ class qPrefDivePlanner : public QObject {
 	Q_PROPERTY(int ascratestops READ ascratestops WRITE set_ascratestops NOTIFY ascratestopsChanged);
 	Q_PROPERTY(int ascrate50 READ ascrate50 WRITE set_ascrate50 NOTIFY ascrate50Changed);
 	Q_PROPERTY(int ascrate75 READ ascrate75 WRITE set_ascrate75 NOTIFY ascrate75Changed);
-	Q_PROPERTY(depth_t bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
+	Q_PROPERTY(int bestmixend READ bestmixend WRITE set_bestmixend NOTIFY bestmixendChanged);
 	Q_PROPERTY(int bottompo2 READ bottompo2 WRITE set_bottompo2 NOTIFY bottompo2Changed);
 	Q_PROPERTY(int bottomsac READ bottomsac WRITE set_bottomsac NOTIFY bottomsacChanged);
 	Q_PROPERTY(int decopo2 READ decopo2 WRITE set_decopo2 NOTIFY decopo2Changed);
@@ -47,7 +47,7 @@ public:
 	static int ascratestops() { return prefs.ascratestops; }
 	static int ascrate50() { return prefs.ascrate50; }
 	static int ascrate75() { return prefs.ascrate75; }
-	static depth_t bestmixend() { return prefs.bestmixend; }
+	static int bestmixend() { return prefs.bestmixend.mm; }
 	static int bottompo2() { return prefs.bottompo2; }
 	static int bottomsac() { return prefs.bottomsac; }
 	static int decopo2() { return prefs.decopo2; }
@@ -74,7 +74,7 @@ public slots:
 	static void set_ascratestops(int value);
 	static void set_ascrate50(int value);
 	static void set_ascrate75(int value);
-	static void set_bestmixend(depth_t value);
+	static void set_bestmixend(int value);
 	static void set_bottompo2(int value);
 	static void set_bottomsac(int value);
 	static void set_decopo2(int value);
@@ -101,7 +101,7 @@ signals:
 	void ascratestopsChanged(int value);
 	void ascrate50Changed(int value);
 	void ascrate75Changed(int value);
-	void bestmixendChanged(depth_t value);
+	void bestmixendChanged(int value);
 	void bottompo2Changed(int value);
 	void bottomsacChanged(int value);
 	void decopo2Changed(int value);
