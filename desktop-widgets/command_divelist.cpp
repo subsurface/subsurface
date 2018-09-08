@@ -483,21 +483,28 @@ void DiveListBase::redo()
 	finishWork();
 }
 
-AddDive::AddDive(dive *d, bool autogroup)
+AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 {
 	setText(tr("add dive"));
+	// By convention, d is "displayed dive" and can be overwritten.
 	d->maxdepth.mm = 0;
+	d->dc.maxdepth.mm = 0;
 	fixup_dive(d);
-	d->divetrip = nullptr;
 
-	// Get an owning pointer to a copy of the dive
-	// Note: this destroys the old dive!
+	// Get an owning pointer to a copied or moved dive
+	// Note: if move is true, this destroys the old dive!
 	OwningDivePtr divePtr(clone_dive(d));
+	divePtr->selected = false; // If we clone a planned dive, it might have been selected.
+				   // We have to clear the flag, as selections will be managed
+				   // on dive-addition.
 
 	// If we alloc a new-trip for autogrouping, get an owning pointer to it.
 	OwningTripPtr allocTrip;
-	dive_trip *trip = nullptr;
-	if (autogroup) {
+	dive_trip *trip = divePtr->divetrip;
+	// We have to delete the pointer-to-trip, because this would prevent the core from adding to the trip
+	// and we would get the count-of-dives in the trip wrong. Yes, that's all horribly subtle!
+	divePtr->divetrip = nullptr;
+	if (!trip && autogroup) {
 		bool alloc;
 		trip = get_trip_for_new_dive(divePtr.get(), &alloc);
 		if (alloc)
@@ -505,7 +512,8 @@ AddDive::AddDive(dive *d, bool autogroup)
 	}
 
 	int idx = dive_get_insertion_index(divePtr.get());
-	divePtr->number = get_dive_nr_at_idx(idx);
+	if (newNumber)
+		divePtr->number = get_dive_nr_at_idx(idx);
 
 	divesToAdd.push_back({ std::move(divePtr), std::move(allocTrip), trip, idx });
 }

@@ -799,7 +799,7 @@ void MainTab::acceptChanges()
 		updateDiveSite(ui.location->currDiveSiteUuid(), &displayed_dive);
 		copyTagsToDisplayedDive();
 
-		Command::addDive(&displayed_dive, autogroup);
+		Command::addDive(&displayed_dive, autogroup, true);
 
 		editMode = NONE;
 		MainWindow::instance()->exitEditState();
@@ -810,8 +810,6 @@ void MainTab::acceptChanges()
 		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		emit addDiveFinished();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-		int scrolledBy = MainWindow::instance()->dive_list()->verticalScrollBar()->sliderPosition();
-		MainWindow::instance()->dive_list()->verticalScrollBar()->setSliderPosition(scrolledBy);
 		MainWindow::instance()->dive_list()->setFocus();
 		resetPallete();
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!

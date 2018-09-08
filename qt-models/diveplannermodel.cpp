@@ -7,6 +7,7 @@
 #include "core/device.h"
 #include "core/qthelper.h"
 #include "core/settings/qPrefDivePlanner.h"
+#include "desktop-widgets/command.h"
 #include "core/gettextfromc.h"
 #include <QApplication>
 #include <QTextDocument>
@@ -1110,15 +1111,9 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 	computeVariations(plan_copy, &ds_after_previous_dives);
 
 	free(cache);
-	if (!current_dive || displayed_dive.id != current_dive->id) {
-		// we were planning a new dive, not re-planning an existing on
-		record_dive(clone_dive(&displayed_dive));
-	} else if (current_dive && displayed_dive.id == current_dive->id) {
-		// we are replanning a dive - make sure changes are reflected
-		// correctly in the dive structure and copy it back into the dive table
-		displayed_dive.maxdepth.mm = 0;
-		displayed_dive.dc.maxdepth.mm = 0;
-		fixup_dive(&displayed_dive);
+
+	// Fixup planner notes.
+	if (current_dive && displayed_dive.id == current_dive->id) {
 		// Try to identify old planner output and remove only this part
 		// Treat user provided text as plain text.
 		QTextDocument notesDocument;
@@ -1134,24 +1129,28 @@ void DivePlannerPointsModel::createPlan(bool replanCopy)
 		oldnotes.append(displayed_dive.notes);
 		displayed_dive.notes = copy_qstring(oldnotes);
 		// If we save as new create a copy of the dive here
-		if (replanCopy) {
-			struct dive *copy = alloc_dive();
-			copy_dive(current_dive, copy);
-			copy->id = 0;
-			copy->selected = false;
-			copy->divetrip = NULL;
-			if (current_dive->divetrip)
-				add_dive_to_trip(copy, current_dive->divetrip);
-			record_dive(copy);
-		}
+	}
+
+	setPlanMode(NOTHING);
+	planCreated(); // This signal will exit the profile from planner state. This must be *before* adding the dive,
+		       // so that the Undo-commands update the display accordingly (see condition in updateDiveInfo().
+
+	// Now, add or modify the dive.
+	if (!current_dive || displayed_dive.id != current_dive->id) {
+		// we were planning a new dive, not re-planning an existing one
+		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
+		Command::addDive(&displayed_dive, autogroup, true);
+	} else if (replanCopy) {
+		// we were planning an old dive and save as a new dive
+		displayed_dive.id = dive_getUniqID(); // Things will break horribly if we create dives with the same id.
+		Command::addDive(&displayed_dive, false, false);
+	} else {
+		// we were planning an old dive and rewrite the plan
+		mark_divelist_changed(true);
 		copy_dive(&displayed_dive, current_dive);
 	}
-	mark_divelist_changed(true);
-	sort_table(&dive_table);
 
 	// Remove and clean the diveplan, so we don't delete
 	// the dive by mistake.
 	free_dps(&diveplan);
-	setPlanMode(NOTHING);
-	planCreated();
 }
