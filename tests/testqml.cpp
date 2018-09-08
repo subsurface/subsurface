@@ -1,47 +1,29 @@
 // SPDX-License-Identifier: GPL-2.0
-#include <QApplication>
-#include <QQmlContext>
-#include <QQmlEngine>
-#include <QtQuickTest>
-#include <QtTest>
-
-#include "core/qt-gui.h"
+#include "testqml.h"
 #include "core/settings/qPref.h"
 
-// this is the content of QUICK_TEST_MAIN amended with
-// registration of ssrf classes
+#include <QtQuickTest>
+
+// main loosely copied from QUICK_TEST_MAIN_WITH_SETUP macro
 int main(int argc, char **argv)
 {
-	// QML testing is not supported in the oldest Qt versions we support
-	// if running with Qt version less than 5.10 then skip test
-#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+	return 0;
+#else
 	QTEST_ADD_GPU_BLACKLIST_SUPPORT
 	QTEST_SET_MAIN_SOURCE_PATH
+	QMLTestSetup setup;
 
-	// check that qPref classes exists
-	qPref::instance();
-	qPrefDisplay::instance();
-
-	// prepare Qt application
-	new QApplication(argc, argv);
-
-	// check that we have a directory
-	if (argc < 2) {
-		qDebug() << "ERROR: missing tst_* directory";
-		return -1;
-	}
-	// save tst_dir and pass rest to Qt
-	const char *tst_dir = argv[1];
-	for (int i = 1; i < argc; i++)
-		argv[i] = argv[i + 1];
-	argc--;
-
-	// Register types
+	// register C++ types and classes (but not objects)
 	qPref::instance()->registerQML(NULL);
 
-	// Run all tst_*.qml files
-	return quick_test_main(argc, argv, "TestQML", tst_dir);
-#else
-	return 0;
-#endif
+	return quick_test_main_with_setup(argc, argv, "TestQML", nullptr, &setup);
+#endif //QT_VERSION
 }
+
+void QMLTestSetup::qmlEngineAvailable(QQmlEngine *engine)
+{
+	// register C++ objects (but not types and classes)
+	qPref::instance()->registerQML(engine);
+};
+
