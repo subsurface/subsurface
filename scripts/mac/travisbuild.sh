@@ -19,6 +19,9 @@ bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
 
 cd ${TRAVIS_BUILD_DIR}/build
 
+# build export-html to make sure that didn't get broken
+make export-html
+
 # first build and install Subsurface and then clean up the staging area
 LIBRARY_PATH=${DIR}/install-root/lib make -j2 install
 
