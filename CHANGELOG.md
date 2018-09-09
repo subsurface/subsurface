@@ -1,3 +1,5 @@
+- Desktop: remove UI components of the Webservice GPS import. This functionality will
+be fully replaced by "apply on device".
 - DLF import: record battery status at end of dive
 - Desktop: add support for USB download from the Garmin Descent Mk1
 - Mac: include the FTDI driver and no longer require Mac FTDI drivers to be installed
