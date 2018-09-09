@@ -1992,9 +1992,13 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				battery.volt2 = (ptr[9] << 8) + ptr[8];
 				battery.percent2 = ptr[10];
 				break;
+			case 2:
+				/* Measure He */
+				//printf("%ds he2 cells(0.01 mV): %d %d\n", time, (ptr[5] << 8) + ptr[4], (ptr[9] << 8) + ptr[8]);
+				break;
 			case 3:
 				/* Measure Oxygen */
-				//printf("o2 cells(0.01 mV): %d %d %d %d\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+				//printf("%d s: o2 cells(0.01 mV): %d %d %d %d\n", time, (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
 				break;
 			case 4:
 				/* Measure GPS */
