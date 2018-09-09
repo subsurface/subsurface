@@ -844,13 +844,6 @@ void MainWindow::on_actionDownloadDC_triggered()
 	dlg.exec();
 }
 
-void MainWindow::on_actionDownloadWeb_triggered()
-{
-	SubsurfaceWebServices dlg(this);
-
-	dlg.exec();
-}
-
 void MainWindow::on_actionDivelogs_de_triggered()
 {
 	DivelogsDeWebServices::instance()->downloadDives();
