@@ -120,7 +120,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	}
 
 	if (diveplan->surface_interval < 0) {
-		put_format(&buf, "<div><b>%s (%s) %s<br>",
+		put_format(&buf, "<div><b>%s (%s) %s<br></div>",
 			translate("gettextFromC", "Subsurface"),
 			subsurface_canonical_version(),
 			translate("gettextFromC", "dive plan</b> (overlapping dives detected)"));
