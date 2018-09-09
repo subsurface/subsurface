@@ -433,7 +433,7 @@ void MainTab::updateDiveInfo(bool clear)
 	ui.notes->setText(QString());
 	if (!clear) {
 		QString tmp(displayed_dive.notes);
-		if (tmp.indexOf("<table") != -1) {
+		if (tmp.indexOf("<div") != -1) {
 			tmp.replace(QString("\n"), QString("<br>"));
 			ui.notes->setHtml(tmp);
 		} else {
@@ -1427,7 +1427,7 @@ void MainTab::on_notes_textChanged()
 		if (same_string(displayed_dive.notes, qPrintable(ui.notes->toPlainText())))
 			return;
 		free(displayed_dive.notes);
-		if (ui.notes->toHtml().indexOf("<table") != -1)
+		if (ui.notes->toHtml().indexOf("<div") != -1)
 			displayed_dive.notes = copy_qstring(ui.notes->toHtml());
 		else
 			displayed_dive.notes = copy_qstring(ui.notes->toPlainText());
@@ -1512,7 +1512,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	SHOW_SELECTIVE(suit);
 	if (what.notes) {
 		QString tmp(displayed_dive.notes);
-		if (tmp.contains("<table")) {
+		if (tmp.contains("<div")) {
 			tmp.replace(QString("\n"), QString("<br>"));
 			ui.notes->setHtml(tmp);
 		} else {
