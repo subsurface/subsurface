@@ -45,26 +45,6 @@ protected:
 	QString userAgent;
 };
 
-class SubsurfaceWebServices : public WebServices {
-	Q_OBJECT
-public:
-	explicit SubsurfaceWebServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
-
-private
-slots:
-	void startDownload();
-	void buttonClicked(QAbstractButton *button);
-	void downloadFinished();
-	void downloadError(QNetworkReply::NetworkError error);
-	void startUpload()
-	{
-	} /*no op*/
-private:
-	void setStatusText(int status);
-	void download_dialog_traverse_xml(xmlNodePtr node, unsigned int *download_status);
-	unsigned int download_dialog_parse_response(const QByteArray &length);
-};
-
 class DivelogsDeWebServices : public WebServices {
 	Q_OBJECT
 public:
