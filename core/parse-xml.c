@@ -2013,6 +2013,9 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				break;
 			}
 			break;
+		case 8:
+			/* Deco event */
+			break;
 		default:
 			/* Unknown... */
 			break;
