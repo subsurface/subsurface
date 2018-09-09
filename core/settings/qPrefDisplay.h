@@ -16,7 +16,7 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developerChanged);
 	Q_PROPERTY(QString theme READ theme WRITE set_theme NOTIFY themeChanged);
 	Q_PROPERTY(QPointF tooltip_position READ tooltip_position WRITE set_tooltip_position NOTIFY tooltip_positionChanged);
-	Q_PROPERTY(QString UserSurvey READ UserSurvey WRITE set_UserSurvey NOTIFY UserSurveyChanged);
+	Q_PROPERTY(QString userSurvey READ userSurvey WRITE set_userSurvey NOTIFY userSurveyChanged);
 	Q_PROPERTY(QByteArray mainSplitter READ mainSplitter WRITE set_mainSplitter NOTIFY mainSplitterChanged);
 	Q_PROPERTY(QByteArray topSplitter READ topSplitter WRITE set_topSplitter NOTIFY topSplitterChanged);
 	Q_PROPERTY(QByteArray bottomSplitter READ bottomSplitter WRITE set_bottomSplitter NOTIFY bottomSplitterChanged);
@@ -43,7 +43,7 @@ public:
 	static bool show_developer() { return prefs.show_developer; }
 	static QString theme() { return st_theme; }
 	static QPointF tooltip_position() { return st_tooltip_position; }
-	static QString UserSurvey() { return st_UserSurvey; }
+	static QString userSurvey() { return st_userSurvey; }
 	static QByteArray mainSplitter() { return st_mainSplitter; }
 	static QByteArray topSplitter() { return st_topSplitter; }
 	static QByteArray bottomSplitter() { return st_bottomSplitter; }
@@ -61,7 +61,7 @@ public slots:
 	static void set_show_developer(bool value);
 	static void set_theme(const QString &value);
 	static void set_tooltip_position(const QPointF &value);
-	static void set_UserSurvey(const QString &value);
+	static void set_userSurvey(const QString &value);
 	static void set_mainSplitter(const QByteArray &value);
 	static void set_topSplitter(const QByteArray &value);
 	static void set_bottomSplitter(const QByteArray &value);
@@ -79,7 +79,7 @@ signals:
 	void show_developerChanged(bool value);
 	void themeChanged(const QString &value);
 	void tooltip_positionChanged(const QPointF &value);
-	void UserSurveyChanged(const QString &value);
+	void userSurveyChanged(const QString &value);
 	void mainSplitterChanged(const QByteArray &value);
 	void topSplitterChanged(const QByteArray &value);
 	void bottomSplitterChanged(const QByteArray &value);
@@ -100,7 +100,7 @@ private:
 	static void load_lastDir();
 	static void load_theme();
 	static void load_tooltip_position();
-	static void load_UserSurvey();
+	static void load_userSurvey();
 	static void load_mainSplitter();
 	static void load_topSplitter();
 	static void load_bottomSplitter();
@@ -116,7 +116,7 @@ private:
 	static QString st_lastDir;
 	static QString st_theme;
 	static QPointF st_tooltip_position;
-	static QString st_UserSurvey;
+	static QString st_userSurvey;
 	static QByteArray st_mainSplitter;
 	static QByteArray st_topSplitter;
 	static QByteArray st_bottomSplitter;
