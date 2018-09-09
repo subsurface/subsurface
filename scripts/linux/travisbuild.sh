@@ -23,6 +23,9 @@ export QT_DEBUG_PLUGINS=1
 
 # for debugging: find $QT_ROOT/plugins
 
+# build export-html to make sure that didn't get broken
+make -C subsurface/build export-html
+
 env CTEST_OUTPUT_ON_FAILURE=1 make -C subsurface/build check
 ls -lR subsurface/build | grep LastTest.log
 grep -A1 RESULT\ :\ TestParsePerformance subsurface/build/tests/Testing/Temporary/LastTest.log
