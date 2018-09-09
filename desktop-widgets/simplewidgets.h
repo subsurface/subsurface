@@ -167,6 +167,7 @@ public:
 };
 
 class FilterBase : public QWidget {
+	Q_OBJECT
 	void addContextMenuEntry(const QString &s, void (FilterModelBase::*)());
 protected:
 	FilterBase(FilterModelBase *model, QWidget *parent = 0);
@@ -178,21 +179,25 @@ protected:
 };
 
 class TagFilter : public FilterBase {
+	Q_OBJECT
 public:
 	TagFilter(QWidget *parent = 0);
 };
 
 class BuddyFilter : public FilterBase {
+	Q_OBJECT
 public:
 	BuddyFilter(QWidget *parent = 0);
 };
 
 class SuitFilter : public FilterBase {
+	Q_OBJECT
 public:
 	SuitFilter(QWidget *parent = 0);
 };
 
 class LocationFilter : public FilterBase {
+	Q_OBJECT
 public:
 	LocationFilter(QWidget *parent = 0);
 };

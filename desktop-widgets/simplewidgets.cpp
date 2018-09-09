@@ -541,23 +541,23 @@ void FilterBase::hideEvent(QHideEvent *event)
 
 TagFilter::TagFilter(QWidget *parent) : FilterBase(TagFilterModel::instance(), parent)
 {
-	ui.label->setText(tr("Tags: "));
+	ui.label->setText(tr("Tags") + QStringLiteral(": "));
 }
 
 BuddyFilter::BuddyFilter(QWidget *parent) : FilterBase(BuddyFilterModel::instance(), parent)
 {
-	ui.label->setText(tr("Person: "));
+	ui.label->setText(tr("Person") + QStringLiteral(": "));
 	ui.label->setToolTip(tr("Searches for buddies and divemasters"));
 }
 
 LocationFilter::LocationFilter(QWidget *parent) : FilterBase(LocationFilterModel::instance(), parent)
 {
-	ui.label->setText(tr("Location: "));
+	ui.label->setText(tr("Location") + QStringLiteral(": "));
 }
 
 SuitFilter::SuitFilter(QWidget *parent) : FilterBase(SuitsFilterModel::instance(), parent)
 {
-	ui.label->setText(tr("Suits: "));
+	ui.label->setText(tr("Suits") + QStringLiteral(": "));
 }
 
 MultiFilter::MultiFilter(QWidget *parent) : QWidget(parent)
