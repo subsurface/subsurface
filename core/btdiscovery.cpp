@@ -29,11 +29,15 @@ static dc_descriptor_t *getDeviceType(QString btName)
 		else product = "OSTC 3"; // all OSTCs are HW_FAMILY_OSTC_3
 	}
 
-	if (btName.startsWith("Petrel") || btName.startsWith("Perdix") || btName.startsWith("Predator")) {
+	if (btName.startsWith("Predator") ||
+            btName.startsWith("Petrel") ||
+            btName.startsWith("Perdix") ||
+	    btName.startsWith("Teric")) {
 		vendor = "Shearwater";
 		if (btName.startsWith("Petrel")) product = "Petrel"; // or petrel 2?
 		if (btName.startsWith("Perdix")) product = "Perdix";
 		if (btName.startsWith("Predator")) product = "Predator";
+		if (btName.startsWith("Teric")) product = "Teric";
 	}
 
 	if (btName.startsWith("EON Steel")) {
