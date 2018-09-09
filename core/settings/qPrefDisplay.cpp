@@ -17,8 +17,8 @@ static const QString st_lastDir_default = "";
 QString qPrefDisplay::st_theme;
 static const QString st_theme_default = "Blue";
 
-QString qPrefDisplay::st_UserSurvey;
-static const QString st_UserSurvey_default = "";
+QString qPrefDisplay::st_userSurvey;
+static const QString st_userSurvey_default = "";
 
 QByteArray qPrefDisplay::st_mainSplitter;
 static const QByteArray st_mainSplitter_default = "";
@@ -61,7 +61,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	if (!doSync) {
 		load_tooltip_position();
 		load_theme();
-		load_UserSurvey();
+		load_userSurvey();
 		load_mainSplitter();
 		load_topSplitter();
 		load_bottomSplitter();
@@ -156,7 +156,7 @@ HANDLE_PROP_QSTRING(Display, "Theme/currentTheme", theme);
 
 HANDLE_PROP_QPOINTF(Display, "ProfileMap/tooltip_position", tooltip_position);
 
-HANDLE_PROP_QSTRING(Display, "UserSurvey/SurveyDone", UserSurvey);
+HANDLE_PROP_QSTRING(Display, "UserSurvey/SurveyDone", userSurvey);
 
 HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/mainSplitter", mainSplitter);
 
