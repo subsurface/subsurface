@@ -125,7 +125,6 @@
     </property>
     <addaction name="actionDownloadDC"/>
     <addaction name="actionImportDiveLog"/>
-    <addaction name="actionDownloadWeb"/>
     <addaction name="actionDivelogs_de"/>
    </widget>
    <widget class="QMenu" name="menu_Edit">
@@ -238,14 +237,6 @@
    </property>
    <property name="shortcut">
     <string notr="true">Ctrl+D</string>
-   </property>
-  </action>
-  <action name="actionDownloadWeb">
-   <property name="text">
-    <string>Import &amp;GPS data from Subsurface web service</string>
-   </property>
-   <property name="shortcut">
-    <string notr="true">Ctrl+G</string>
    </property>
   </action>
   <action name="actionEditDeviceNames">

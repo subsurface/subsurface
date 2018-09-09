@@ -37,8 +37,6 @@ void PreferencesNetwork::refreshSettings()
 	ui->cloud_storage_email->setText(prefs.cloud_storage_email);
 	ui->cloud_storage_password->setText(prefs.cloud_storage_password);
 	ui->save_password_local->setChecked(prefs.save_password_local);
-	ui->save_uid_local->setChecked(prefs.save_userid_local);
-	ui->default_uid->setText(QString(prefs.userid).toUpper());
 	updateCloudAuthenticationState();
 }
 
@@ -46,9 +44,6 @@ void PreferencesNetwork::syncSettings()
 {
 	auto cloud = qPrefCloudStorage::instance();
 	auto proxy = qPrefProxy::instance();
-
-	cloud->set_userid(ui->default_uid->text().toUpper());
-	cloud->set_save_userid_local(ui->save_uid_local->checkState());
 
 	proxy->set_proxy_type(ui->proxyType->itemData(ui->proxyType->currentIndex()).toInt());
 	proxy->set_proxy_host(ui->proxyHost->text());
