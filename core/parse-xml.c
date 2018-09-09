@@ -1682,6 +1682,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	unsigned int time = 0;
 	int i;
 	char serial[6];
+	struct {
+		uint16_t volt1;
+		uint8_t percent1;
+		uint16_t volt2;
+		uint8_t percent2;
+	} battery = {0, 0, 0, 0};
 
 	target_table = table;
 
@@ -1980,8 +1986,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			/* measure record */
 			switch (ptr[2] >> 5) {
 			case 1:
-				/* Measure Battery */
-				//printf("B1: %dmV %d% B2: %dmV %d%\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+				/* Measure Battery, recording the last reading only */
+				battery.volt1 = (ptr[5] << 8) + ptr[4];
+				battery.percent1 = ptr[6];
+				battery.volt2 = (ptr[9] << 8) + ptr[8];
+				battery.percent2 = ptr[10];
+				break;
 			case 3:
 				/* Measure Oxygen */
 				//printf("o2 cells(0.01 mV): %d %d %d %d\n", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
@@ -2004,6 +2014,27 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			break;
 		}
 	}
+
+	/* Recording the ending battery status to extra data */
+	if (battery.volt1) {
+		size_t size = snprintf(NULL, 0, "%dmV (%d%%)", battery.volt1, battery.percent1) + 1;
+		char *ptr = malloc(size);
+
+		if (ptr) {
+			snprintf(ptr, size, "%dmV (%d%%)", battery.volt1, battery.percent1);
+			add_extra_data(cur_dc, "Battery 1", ptr);
+			free(ptr);
+		}
+
+		size = snprintf(NULL, 0, "%dmV (%d%%)", battery.volt2, battery.percent2) + 1;
+		ptr = malloc(size);
+		if (ptr) {
+			snprintf(ptr, size, "%dmV (%d%%)", battery.volt2, battery.percent2);
+			add_extra_data(cur_dc, "Battery 2", ptr);
+			free(ptr);
+		}
+	}
+
 	divecomputer_end();
 	dive_end();
 	return 0;
