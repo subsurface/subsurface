@@ -1681,6 +1681,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	};
 	struct battery_status battery_start = {0, 0, 0, 0};
 	struct battery_status battery_end = {0, 0, 0, 0};
+	uint16_t o2_sensor_calibration_values[4] = {0};
 
 	target_table = table;
 
@@ -1999,7 +2000,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 					break;
 				case 2: // CFG_OXYGEN_CALIBRATION
 					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
-					snprintf(config_buf, sizeof(config_buf), "%04u,%04u,%04u,%04u,TIME=%04u-%02u-%02u %02u:%02u:%02u", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10], tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+					o2_sensor_calibration_values[0] = (ptr[5] << 8) + ptr[4];
+					o2_sensor_calibration_values[1] = (ptr[7] << 8) + ptr[6];
+					o2_sensor_calibration_values[2] = (ptr[9] << 8) + ptr[8];
+					o2_sensor_calibration_values[3] = (ptr[11] << 8) + ptr[10];
+					snprintf(config_buf, sizeof(config_buf), "%04u,%04u,%04u,%04u,TIME=%04u-%02u-%02u %02u:%02u:%02u", o2_sensor_calibration_values[0], o2_sensor_calibration_values[1], o2_sensor_calibration_values[2], o2_sensor_calibration_values[3], tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
 					add_extra_data(cur_dc, "CFG_OXYGEN_CALIBRATION", config_buf);
 					break;
 				case 3: // CFG_SERIAL
@@ -2074,6 +2079,16 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			case 3:
 				/* Measure Oxygen */
 				//printf("%d s: o2 cells(0.01 mV): %d %d %d %d\n", time, (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
+				// [Pa/mV] coeficient O2
+				// 100 Pa == 1 mbar
+				sample_start();
+				cur_sample->time.seconds = time;
+				cur_sample->o2sensor[0].mbar = ( ((ptr[5] << 8) + ptr[4]) * o2_sensor_calibration_values[0]) / 10000;
+				cur_sample->o2sensor[1].mbar = ( ((ptr[7] << 8) + ptr[6]) * o2_sensor_calibration_values[1]) / 10000;
+				cur_sample->o2sensor[2].mbar = ( ((ptr[9] << 8) + ptr[8]) * o2_sensor_calibration_values[2]) / 10000;
+				// Subsurface only handles 3 o2 sensors.
+				//cur_sample->o2sensor[3].mbar = ( ((ptr[11] << 8) + ptr[10]) * o2_sensor_calibration_values[3]) / 10000;
+				sample_end();
 				break;
 			case 4:
 				/* Measure GPS */
