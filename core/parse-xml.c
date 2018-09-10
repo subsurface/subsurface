@@ -1949,7 +1949,9 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				event_end();
 				break;
 			case 25:
-				strcpy(cur_event.name, "CCR O2 solenoid opened/closed");
+				// uint16_t solenoid_bitmap = (ptr[7] << 8) + (ptr[6] << 0);
+				// uint32_t time = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0);
+				snprintf(cur_event.name, MAX_EVENT_NAME, "CCR O2 solenoid %s", ptr[12] ? "opened": "closed");
 				break;
 			case 26:
 				strcpy(cur_event.name, "User mark");
