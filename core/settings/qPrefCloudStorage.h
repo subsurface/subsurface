@@ -11,7 +11,6 @@ class qPrefCloudStorage : public QObject {
 	Q_PROPERTY(QString cloud_git_url READ cloud_git_url);
 	Q_PROPERTY(QString cloud_storage_email READ cloud_storage_email WRITE set_cloud_storage_email NOTIFY cloud_storage_email_changed);
 	Q_PROPERTY(QString cloud_storage_email_encoded READ cloud_storage_email_encoded WRITE set_cloud_storage_email_encoded NOTIFY cloud_storage_email_encoded_changed);
-	Q_PROPERTY(QString cloud_storage_newpassword READ cloud_storage_newpassword WRITE set_cloud_storage_newpassword NOTIFY cloud_storage_newpassword_changed);
 	Q_PROPERTY(QString cloud_storage_password READ cloud_storage_password WRITE set_cloud_storage_password NOTIFY cloud_storage_password_changed);
 	Q_PROPERTY(QString cloud_storage_pin READ cloud_storage_pin WRITE set_cloud_storage_pin NOTIFY cloud_storage_pin_changed);
 	Q_PROPERTY(int cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_status_changed);
@@ -34,7 +33,6 @@ public:
 	static QString cloud_git_url() { return prefs.cloud_git_url; }
 	static QString cloud_storage_email() { return prefs.cloud_storage_email; }
 	static QString cloud_storage_email_encoded() { return prefs.cloud_storage_email_encoded; }
-	static QString cloud_storage_newpassword() { return prefs.cloud_storage_newpassword; }
 	static QString cloud_storage_password() { return prefs.cloud_storage_password; }
 	static QString cloud_storage_pin() { return prefs.cloud_storage_pin; }
 	static int cloud_timeout() { return prefs.cloud_timeout; }
@@ -47,7 +45,6 @@ public slots:
 	static void set_cloud_base_url(const QString &value);
 	static void set_cloud_storage_email(const QString &value);
 	static void set_cloud_storage_email_encoded(const QString &value);
-	static void set_cloud_storage_newpassword(const QString &value);
 	static void set_cloud_storage_password(const QString &value);
 	static void set_cloud_storage_pin(const QString &value);
 	static void set_cloud_timeout(int value);
@@ -60,7 +57,6 @@ signals:
 	void cloud_base_url_changed(const QString &value);
 	void cloud_storage_email_changed(const QString &value);
 	void cloud_storage_email_encoded_changed(const QString &value);
-	void cloud_storage_newpassword_changed(const QString &value);
 	void cloud_storage_password_changed(const QString &value);
 	void cloud_storage_pin_changed(const QString &value);
 	void cloud_timeout_changed(int value);
@@ -74,7 +70,6 @@ private:
 	static void disk_cloud_base_url(bool doSync);
 	static void disk_cloud_storage_email(bool doSync);
 	static void disk_cloud_storage_email_encoded(bool doSync);
-	static void disk_cloud_storage_newpassword(bool doSync);
 	static void disk_cloud_storage_password(bool doSync);
 	static void disk_cloud_storage_pin(bool doSync);
 	static void disk_cloud_timeout(bool doSync);

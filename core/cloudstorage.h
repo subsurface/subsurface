@@ -21,6 +21,7 @@ slots:
 private:
 	QNetworkReply *reply;
 	QString userAgent;
+	QString cloudNewPassword;
 };
 
 QNetworkAccessManager *manager();

@@ -91,7 +91,6 @@ struct preferences {
 	const char *cloud_git_url;
 	const char *cloud_storage_email;
 	const char *cloud_storage_email_encoded;
-	const char *cloud_storage_newpassword;
 	const char *cloud_storage_password;
 	const char *cloud_storage_pin;
 	short       cloud_timeout;
