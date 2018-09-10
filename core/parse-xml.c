@@ -1731,6 +1731,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
 	cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
 
+	// Declare initial mix as first cylinder
+	cur_dive->cylinder[0].gasmix.o2.permille = ptr[26] * 10;
+	cur_dive->cylinder[0].gasmix.he.permille = ptr[27] * 10;
+
 	/* Done with parsing what we know about the dive header */
 	ptr += 32;
 
