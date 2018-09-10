@@ -1976,6 +1976,74 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			break;
 		case 6:
 			/* device configuration */
+			switch (((ptr[3] & 0x7f) << 3) + ((ptr[2] & 0xe0) >> 5)) {
+				// Buffer to print extra string into
+				char config_buf[256];
+				// Local variables to temporary decode into
+				struct tm tm;
+				char *device;
+				char *deep_stops;
+				case 0: // TEST_CCR_FULL_1
+					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
+					snprintf(config_buf, sizeof(config_buf), "START=%04u-%02u-%02u %02u:%02u:%02u,TEST=%02X%02X%02X%02X,RESULT=%02X%02X%02X%02X", tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, ptr[7], ptr[6], ptr[5], ptr[4], ptr[11], ptr[10], ptr[9], ptr[8]);
+					add_extra_data(cur_dc, "TEST_CCR_FULL_1", config_buf);
+					break;
+				case 1: // TEST_CCR_PARTIAL_1
+					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
+					snprintf(config_buf, sizeof(config_buf), "START=%04u-%02u-%02u %02u:%02u:%02u,TEST=%02X%02X%02X%02X,RESULT=%02X%02X%02X%02X", tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, ptr[7], ptr[6], ptr[5], ptr[4], ptr[11], ptr[10], ptr[9], ptr[8]);
+					add_extra_data(cur_dc, "TEST_CCR_PARTIAL_1", config_buf);
+					break;
+				case 2: // CFG_OXYGEN_CALIBRATION
+					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
+					snprintf(config_buf, sizeof(config_buf), "%04u,%04u,%04u,%04u,TIME=%04u-%02u-%02u %02u:%02u:%02u", (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10], tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
+					add_extra_data(cur_dc, "CFG_OXYGEN_CALIBRATION", config_buf);
+					break;
+				case 3: // CFG_SERIAL
+					snprintf(config_buf, sizeof(config_buf), "PRODUCT=%c%c%c%c,SERIAL=%c%c%c%c%c%c%c%c", ptr[4], ptr[5], ptr[6], ptr[7], ptr[8], ptr[9], ptr[10], ptr[11], ptr[12], ptr[13], ptr[14], ptr[15]);
+					add_extra_data(cur_dc, "CFG_SERIAL", config_buf);
+					break;
+				case 4: // CFG_CONFIG_DECO
+					switch ((ptr[5] & 0xC0) >> 6) {
+						case 0:
+							deep_stops = "none";
+							break;
+						case 1:
+							deep_stops = "Pyle";
+							break;
+						case 2:
+							deep_stops = "Sladek";
+							break;
+						default:
+							deep_stops = "unknown";
+							break;
+					}
+
+					snprintf(config_buf, sizeof(config_buf), "%s,%s,%s,safety stop required=%s,last_stop=%s,deco_algorithm=%s,stop_rounding=%u,deep_stops=%s", (ptr[4] & 0x80) ? "imperial" : "metric", (ptr[4] & 0x40) ? "sea" : "fresh", (ptr[4] & 0x30) ? "stops" : "ceiling", (ptr[4] & 0x10) ? "yes" : "no", (ptr[4] & 0x08) ? "6m" : "3m", (ptr[4] & 0x04) ? "VPM" : "Buhlmann+GF", (ptr[4] & 0x03) ? (ptr[4] & 0x03) * 30 : 1, deep_stops);
+					add_extra_data(cur_dc, "CFG_CONFIG_DECO part 1", config_buf);
+					snprintf(config_buf, sizeof(config_buf), "deep_stop_len=%u min,gas_switch_len=%u min,gf_low=%u,gf_high=%u,gf_low_bailout=%u,gf_high_bailout=%u,ppO2_low=%4.2f,ppO2_high=%4.2f", (ptr[5] & 0x38) >> 3, ptr[5] & 0x07, ptr[6], ptr[7], ptr[8], ptr[9], ptr[10] / 100.0f, ptr[11] / 100.0f);
+					add_extra_data(cur_dc, "CFG_CONFIG_DECO part 2", config_buf);
+					snprintf(config_buf, sizeof(config_buf), "alarm_global=%u,alarm_cns=%u,alarm_ppO2=%u,alarm_ceiling=%u,alarm_stop_miss=%u,alarm_decentrate=%u,alarm_ascentrate=%u", (ptr[12] & 0x80) >> 7, (ptr[12] & 0x40) >> 6, (ptr[12] & 0x20) >> 5, (ptr[12] & 0x10) >> 4, (ptr[12] & 0x08) >> 3, (ptr[12] & 0x04) >> 2, (ptr[12] & 0x02) >> 1);
+					add_extra_data(cur_dc, "CFG_CONFIG_DECO part 3", config_buf);
+					break;
+				case 5: // CFG_VERSION
+					switch (ptr[4]) {
+						case 0:
+							device = "FREEDOM";
+							break;
+						case 1:
+							device = "LIBERTY_CU";
+							break;
+						case 2:
+							device = "LIBERTY_HS";
+							break;
+						default:
+							device = "UNKNOWN";
+							break;
+					}
+					snprintf(config_buf, sizeof(config_buf), "DEVICE=%s,HW=%d.%d,FW=%d.%d.%d.%d,FLAGS=%04X", device, ptr[5], ptr[6], ptr[7], ptr[8], ptr[9], (ptr[15] << 24) + (ptr[14] << 16) + (ptr[13] << 8) + (ptr[12]), (ptr[11] << 8) + ptr[10]);
+					add_extra_data(cur_dc, "CFG_VERSION", config_buf);
+					break;
+			}
 			break;
 		case 7:
 			/* measure record */
