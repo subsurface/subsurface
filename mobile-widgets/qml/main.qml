@@ -299,28 +299,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 				Kirigami.Action {
 					icon {
-						name: ":/icons/ic_cloud_upload.svg"
-					}
-					text: qsTr("Upload GPS data")
-					onTriggered: {
-						globalDrawer.close();
-						manager.sendGpsData();
-					}
-				}
-
-				Kirigami.Action {
-					icon {
-						name: ":/icons/ic_cloud_download.svg"
-					}
-					text: qsTr("Download GPS data")
-					onTriggered: {
-						globalDrawer.close();
-						manager.downloadGpsData();
-					}
-				}
-
-				Kirigami.Action {
-					icon {
 						name:":/icons/ic_gps_fixed.svg"
 					}
 					text: qsTr("Show GPS fixes")
