@@ -2205,8 +2205,15 @@ void cylinder_renumber(struct dive *dive, int mapping[])
 		dc_cylinder_renumber(dive, dc, mapping);
 }
 
+static bool gasmix_is_invalid(struct gasmix mix)
+{
+	return mix.o2.permille < 0;
+}
+
 int same_gasmix(struct gasmix a, struct gasmix b)
 {
+	if (gasmix_is_invalid(a) || gasmix_is_invalid(b))
+		return 0;
 	if (gasmix_is_air(a) && gasmix_is_air(b))
 		return 1;
 	return a.o2.permille == b.o2.permille && a.he.permille == b.he.permille;
@@ -4314,6 +4321,6 @@ struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc,
 struct gasmix get_gasmix_at_time(const struct dive *d, const struct divecomputer *dc, duration_t time)
 {
 	const struct event *ev = NULL;
-	struct gasmix gasmix = { 0 };
+	struct gasmix gasmix = gasmix_air;
 	return get_gasmix(d, dc, time.seconds, &ev, gasmix);
 }
