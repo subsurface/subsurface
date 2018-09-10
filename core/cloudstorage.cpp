@@ -64,8 +64,7 @@ void CloudStorageAuthenticate::uploadFinished()
 		csSettings.set_cloud_verification_status(qPref::CS_NEED_TO_VERIFY);
 		report_error(qPrintable(tr("Cloud account verification required, enter PIN in preferences")));
 	} else if (cloudAuthReply == QLatin1String("[PASSWDCHANGED]")) {
-		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = strdup(qPrintable(cloudNewPassword));
+		csSettings.set_cloud_storage_password(cloudNewPassword);
 		cloudNewPassword.clear();
 		emit passwordChangeSuccessful();
 		return;
