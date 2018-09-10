@@ -780,7 +780,7 @@ static unsigned int matching_gases(struct dive *dive, struct gasmix gasmix)
 
 static void calculate_sac(struct dive *dive, struct divecomputer *dc, struct plot_info *pi)
 {
-	struct gasmix gasmix = { 0 };
+	struct gasmix gasmix = gasmix_invalid;
 	const struct event *ev = NULL;
 	unsigned int gases = 0;
 
@@ -1021,7 +1021,7 @@ void calculate_deco_information(struct deco_state *ds, const struct deco_state *
 		int last_ndl_tts_calc_time = 0, first_ceiling = 0, current_ceiling, last_ceiling = 0, final_tts = 0 , time_clear_ceiling = 0;
 		if (decoMode() == VPMB)
 			ds->first_ceiling_pressure.mbar = depth_to_mbar(first_ceiling, dive);
-		struct gasmix gasmix = { 0 };
+		struct gasmix gasmix = gasmix_invalid;
 		const struct event *ev = NULL, *evd = NULL;
 		enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 
@@ -1210,7 +1210,7 @@ static void calculate_gas_information_new(struct dive *dive, struct divecomputer
 {
 	int i;
 	double amb_pressure;
-	struct gasmix gasmix = { 0 };
+	struct gasmix gasmix = gasmix_invalid;
 	const struct event *evg = NULL, *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;
 

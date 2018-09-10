@@ -34,10 +34,14 @@ extern const char *cylinderuse_text[];
 extern const char *divemode_text_ui[];
 extern const char *divemode_text[];
 
+// o2 == 0 && he == 0 -> air
+// o2 < 0 -> invalid
 struct gasmix {
 	fraction_t o2;
 	fraction_t he;
 };
+static const struct gasmix gasmix_invalid = { { -1 }, { -1 } };
+static const struct gasmix gasmix_air = { { 0 }, { 0 } };
 
 typedef struct
 {

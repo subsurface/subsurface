@@ -405,7 +405,7 @@ static int calculate_sac(const struct dive *dive)
 static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 {
 	struct divecomputer *dc = &dive->dc;
-	struct gasmix gasmix = { 0 };
+	struct gasmix gasmix = gasmix_air;
 	int i;
 	const struct event *ev = NULL, *evd = NULL;
 	enum divemode_t current_divemode = UNDEF_COMP_TYPE;

@@ -76,7 +76,7 @@ void add_plan_to_notes(struct diveplan *diveplan, struct dive *dive, bool show_d
 	struct membuffer icdbuf = { 0 };
 	const char *deco, *segmentsymbol;
 	int lastdepth = 0, lasttime = 0, lastsetpoint = -1, newdepth = 0, lastprintdepth = 0, lastprintsetpoint = -1;
-	struct gasmix lastprintgasmix = {{ -1 }, { -1 }};
+	struct gasmix lastprintgasmix = gasmix_invalid;
 	struct divedatapoint *dp = diveplan->dp;
 	bool plan_verbatim = prefs.verbatim_plan;
 	bool plan_display_runtime = prefs.display_runtime;
