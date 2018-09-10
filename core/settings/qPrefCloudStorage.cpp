@@ -23,7 +23,6 @@ void qPrefCloudStorage::loadSync(bool doSync)
 	disk_cloud_storage_pin(doSync);
 	disk_cloud_timeout(doSync);
 	disk_cloud_verification_status(doSync);
-	disk_git_local_only(doSync);
 	disk_save_password_local(doSync);
 	disk_save_userid_local(doSync);
 	disk_userid(doSync);
@@ -91,8 +90,6 @@ HANDLE_PREFERENCE_TXT(CloudStorage, "pin", cloud_storage_pin);
 HANDLE_PREFERENCE_INT(CloudStorage, "timeout", cloud_timeout);
 
 HANDLE_PREFERENCE_INT(CloudStorage, "cloud_verification_status", cloud_verification_status);
-
-HANDLE_PREFERENCE_BOOL(CloudStorage, "git_local_only", git_local_only);
 
 HANDLE_PREFERENCE_BOOL(CloudStorage, "save_password_local", save_password_local);
 

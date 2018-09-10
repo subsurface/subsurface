@@ -96,7 +96,6 @@ struct preferences {
 	const char *cloud_storage_pin;
 	short       cloud_timeout;
 	short       cloud_verification_status;
-	bool        git_local_only;
 	bool        save_password_local;
 	bool        save_userid_local;
 	const char *userid;

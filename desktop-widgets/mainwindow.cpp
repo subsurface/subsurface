@@ -660,7 +660,7 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 void MainWindow::on_actionCloudOnline_triggered()
 {
 	bool isOffline = !ui.actionCloudOnline->isChecked();
-	if (isOffline == prefs.git_local_only)
+	if (isOffline == git_local_only)
 		return;
 
 	// Refuse to go online if there is an edit in progress
@@ -673,7 +673,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 		return;
 	}
 
-	prefs.git_local_only = isOffline;
+	git_local_only = isOffline;
 	if (!isOffline) {
 		// User requests to go online. Try to sync cloud storage
 		if (unsaved_changes()) {
@@ -689,7 +689,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 			// If there are no unsaved changes, let's just try to load the remote cloud
 			on_actionCloudstorageopen_triggered();
 		}
-		if (prefs.git_local_only)
+		if (git_local_only)
 			report_error(qPrintable(tr("Failure taking cloud storage online")));
 	}
 
@@ -747,7 +747,7 @@ void MainWindow::updateCloudOnlineStatus()
 	bool is_cloud = existing_filename && prefs.cloud_git_url && prefs.cloud_verification_status == qPref::CS_VERIFIED &&
 			strstr(existing_filename, prefs.cloud_git_url);
 	ui.actionCloudOnline->setEnabled(is_cloud);
-	ui.actionCloudOnline->setChecked(is_cloud && !prefs.git_local_only);
+	ui.actionCloudOnline->setChecked(is_cloud && !git_local_only);
 }
 
 void MainWindow::setCurrentFile(const char *f)
@@ -1729,7 +1729,7 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		if (prefs.git_local_only)
+		if (git_local_only)
 			return tr("[local cache for] %1").arg(email);
 		else
 			return tr("[cloud storage for] %1").arg(email);

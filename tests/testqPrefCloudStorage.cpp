@@ -29,7 +29,6 @@ void TestQPrefCloudStorage::test_struct_get()
 	prefs.cloud_storage_pin = copy_qstring("a pin");
 	prefs.cloud_timeout = 117;
 	prefs.cloud_verification_status = qPref::CS_NOCLOUD;
-	prefs.git_local_only = true;
 	prefs.save_password_local = true;
 	prefs.save_userid_local = true;
 	prefs.userid = copy_qstring("my user");
@@ -43,7 +42,6 @@ void TestQPrefCloudStorage::test_struct_get()
 	QCOMPARE(tst->cloud_storage_pin(), QString(prefs.cloud_storage_pin));
 	QCOMPARE(tst->cloud_timeout(), (int)prefs.cloud_timeout);
 	QCOMPARE(tst->cloud_verification_status(), (int)prefs.cloud_verification_status);
-	QCOMPARE(tst->git_local_only(), prefs.git_local_only);
 	QCOMPARE(tst->save_password_local(), prefs.save_password_local);
 	QCOMPARE(tst->save_userid_local(), prefs.save_userid_local);
 	QCOMPARE(tst->userid(), QString(prefs.userid));
@@ -63,7 +61,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	tst->set_cloud_storage_pin("t2 pin");
 	tst->set_cloud_timeout(123);
 	tst->set_cloud_verification_status(qPref::CS_VERIFIED);
-	tst->set_git_local_only(false);
 	tst->set_save_password_local(false);
 	tst->set_save_userid_local(false);
 	tst->set_userid("t2 user");
@@ -76,7 +73,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t2 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 123);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
-	QCOMPARE(prefs.git_local_only, false);
 	QCOMPARE(prefs.save_password_local, false);
 	QCOMPARE(prefs.save_userid_local, false);
 	QCOMPARE(QString(prefs.userid), QString("t2 user"));
@@ -100,7 +96,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	tst->set_cloud_storage_pin("t3 pin");
 	tst->set_cloud_timeout(321);
 	tst->set_cloud_verification_status(qPref::CS_NOCLOUD);
-	tst->set_git_local_only(true);
 	tst->set_save_userid_local(true);
 	tst->set_userid("t3 user");
 
@@ -113,7 +108,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	prefs.cloud_storage_pin = copy_qstring("error1");
 	prefs.cloud_timeout = 324;
 	prefs.cloud_verification_status = qPref::CS_VERIFIED;
-	prefs.git_local_only = false;
 	prefs.save_password_local = false;
 	prefs.save_userid_local = false;
 	prefs.userid = copy_qstring("error1");
@@ -126,7 +120,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t3 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 321);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_NOCLOUD);
-	QCOMPARE(prefs.git_local_only, true);
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
 	QCOMPARE(QString(prefs.userid), QString("t3 user"));
@@ -153,7 +146,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_pin = copy_qstring("t4 pin");
 	prefs.cloud_timeout = 123;
 	prefs.cloud_verification_status = qPref::CS_VERIFIED;
-	prefs.git_local_only = true;
 	prefs.save_userid_local = true;
 	prefs.userid = copy_qstring("t4 user");
 
@@ -168,7 +160,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_pin = copy_qstring("error1");
 	prefs.cloud_timeout = 324;
 	prefs.cloud_verification_status = qPref::CS_VERIFIED;
-	prefs.git_local_only = false;
 	prefs.save_password_local = false;
 	prefs.save_userid_local = false;
 	prefs.userid = copy_qstring("error1");
@@ -182,7 +173,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t4 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 123);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
-	QCOMPARE(prefs.git_local_only, true);
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
 	QCOMPARE(QString(prefs.userid), QString("t4 user"));
@@ -228,11 +218,6 @@ void TestQPrefCloudStorage::test_oldPreferences()
 	TEST(cloud->cloud_storage_email(), QStringLiteral("tomaz@subsurface.com"));
 	cloud->set_cloud_storage_email("tomaz@gmail.com");
 	TEST(cloud->cloud_storage_email(), QStringLiteral("tomaz@gmail.com"));
-
-	cloud->set_git_local_only(true);
-	TEST(cloud->git_local_only(), true);
-	cloud->set_git_local_only(false);
-	TEST(cloud->git_local_only(), false);
 
 	// Why there's new password and password on the prefs?
 	cloud->set_cloud_storage_newpassword("ABCD");
