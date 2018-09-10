@@ -27,6 +27,15 @@
 
 bool is_subsurface_cloud = false;
 
+// the mobile app assumes that it shouldn't talk to the cloud
+// the desktop app assumes that it should
+#if defined(SUBSURFACE_MOBILE)
+bool git_local_only = true;
+#else
+bool git_local_only = false;
+#endif
+
+
 int (*update_progress_cb)(const char *) = NULL;
 
 static bool includes_string_caseinsensitive(const char *haystack, const char *needle)
@@ -590,7 +599,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 	char *proxy_string;
 	git_config *conf;
 
-	if (prefs.git_local_only) {
+	if (git_local_only) {
 		if (verbose)
 			fprintf(stderr, "don't sync with remote - read from cache only\n");
 		return 0;
@@ -650,7 +659,7 @@ int sync_with_remote(git_repository *repo, const char *remote, const char *branc
 			fprintf(stderr, "remote fetch failed (%s)\n",
 				giterr_last() ? giterr_last()->message : "authentication failed");
 		// Since we failed to sync with online repository, enter offline mode
-		prefs.git_local_only = true;
+		git_local_only = true;
 		error = 0;
 	} else {
 		error = check_remote_status(repo, origin, remote, branch, rt);
@@ -676,7 +685,7 @@ static git_repository *update_local_repo(const char *localdir, const char *remot
 			report_error("Unable to open git cache repository at %s: %s", localdir, giterr_last()->message);
 		return NULL;
 	}
-	if (!prefs.git_local_only)
+	if (!git_local_only)
 		sync_with_remote(repo, remote, branch, rt);
 
 	return repo;
@@ -837,10 +846,10 @@ static struct git_repository *get_remote_repo(const char *localdir, const char *
 		 * remote cloud repo.
 		 */
 		git_repository *ret;
-		bool glo = prefs.git_local_only;
-		prefs.git_local_only = false;
+		bool glo = git_local_only;
+		git_local_only = false;
 		ret = create_local_repo(localdir, remote, branch, rt);
-		prefs.git_local_only = glo;
+		git_local_only = glo;
 		return ret;
 	}
 
