@@ -279,12 +279,15 @@
           <item>
            <widget class="QGroupBox" name="groupBox">
             <property name="enabled">
-             <bool>false</bool>
+             <bool>true</bool>
             </property>
             <property name="title">
-             <string>CSV units</string>
+             <string>Options</string>
             </property>
             <widget class="QComboBox" name="CSVUnits_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="geometry">
               <rect>
                <x>30</x>
@@ -303,6 +306,19 @@
                <string>Imperial</string>
               </property>
              </item>
+            </widget>
+            <widget class="QCheckBox" name="anonymize">
+             <property name="geometry">
+              <rect>
+               <x>10</x>
+               <y>50</y>
+               <width>111</width>
+               <height>20</height>
+              </rect>
+             </property>
+             <property name="text">
+              <string>Anonymize</string>
+             </property>
             </widget>
            </widget>
           </item>
@@ -552,7 +568,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>248</x>
-     <y>254</y>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -568,7 +584,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>316</x>
-     <y>260</y>
+     <y>397</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>
@@ -579,32 +595,32 @@
   <connection>
    <sender>exportCSV</sender>
    <signal>toggled(bool)</signal>
-   <receiver>groupBox</receiver>
+   <receiver>CSVUnits_2</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>39</x>
+     <y>149</y>
     </hint>
     <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
+     <x>322</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>
   <connection>
    <sender>exportCSVDetails</sender>
    <signal>toggled(bool)</signal>
-   <receiver>groupBox</receiver>
+   <receiver>CSVUnits_2</receiver>
    <slot>setEnabled(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>20</x>
-     <y>20</y>
+     <x>39</x>
+     <y>168</y>
     </hint>
     <hint type="destinationlabel">
-     <x>20</x>
-     <y>20</y>
+     <x>322</x>
+     <y>171</y>
     </hint>
    </hints>
   </connection>

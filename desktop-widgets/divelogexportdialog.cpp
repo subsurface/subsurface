@@ -157,7 +157,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 				if (!filename.contains('.'))
 					filename.append(".ssrf");
 				QByteArray bt = QFile::encodeName(filename);
-				save_dives_logic(bt.data(), ui->exportSelected->isChecked());
+				save_dives_logic(bt.data(), ui->exportSelected->isChecked(), ui->anonymize->isChecked());
 			}
 		} else if (ui->exportImageDepths->isChecked()) {
 			filename = QFileDialog::getSaveFileName(this, tr("Save image depths"), lastDir);
@@ -183,7 +183,7 @@ void DiveLogExportDialog::on_buttonBox_accepted()
 		qPrefDisplay::set_lastDir(fileInfo.dir().path());
 		// the non XSLT exports are called directly above, the XSLT based ons are called here
 		if (!stylesheet.isEmpty()) {
-			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8());
+			future = QtConcurrent::run(export_dives_xslt, filename.toUtf8(), ui->exportSelected->isChecked(), ui->CSVUnits_2->currentIndex(), stylesheet.toUtf8(), ui->anonymize->isChecked());
 			MainWindow::instance()->getNotificationWidget()->showNotification(tr("Please wait, exporting..."), KMessageWidget::Information);
 			MainWindow::instance()->getNotificationWidget()->setFuture(future);
 		}

@@ -223,7 +223,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			put_format(&mb, "</site>\n</divesites>\n");
 		}
 
-		save_one_dive_to_mb(&mb, dive);
+		save_one_dive_to_mb(&mb, dive, false);
 
 		if (ds) {
 			put_format(&mb, "</divelog>\n");

@@ -511,12 +511,12 @@ extern int parse_seabear_log(const char *filename);
 extern int parse_txt_file(const char *filename, const char *csv);
 extern int parse_manual_file(const char *filename, char **params, int pnr);
 extern int save_dives(const char *filename);
-extern int save_dives_logic(const char *filename, bool select_only);
-extern int save_dive(FILE *f, struct dive *dive);
-extern int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt);
+extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
+extern int save_dive(FILE *f, struct dive *dive, bool anonymize);
+extern int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize);
 
 struct membuffer;
-extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive);
+extern void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize);
 
 int cylinderuse_from_text(const char *text);
 
