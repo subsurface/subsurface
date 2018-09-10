@@ -30,10 +30,6 @@ TestCase {
 		tst.cloud_storage_email_encoded= "my email enc"
 		compare(tst.cloud_storage_email_encoded, "my email enc")
 
-		var x5 = tst.cloud_storage_newpassword
-		tst.cloud_storage_newpassword = "my new password"
-		compare(tst.cloud_storage_newpassword, "my new password")
-
 		var x6 = tst.cloud_storage_password
 		tst.cloud_storage_password = "my url"
 		compare(tst.cloud_storage_password, "my url")

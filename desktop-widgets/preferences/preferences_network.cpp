@@ -76,7 +76,6 @@ void PreferencesNetwork::syncSettings()
 			connect(cloudAuth, &CloudStorageAuthenticate::passwordChangeSuccessful, this, &PreferencesNetwork::passwordUpdateSuccessful);
 			cloudAuth->backend(email, password, "", newpassword);
 			ui->cloud_storage_new_passwd->setText("");
-			cloud->set_cloud_storage_newpassword(newpassword);
 		}
 	} else if (prefs.cloud_verification_status == qPref::CS_UNKNOWN ||
 		   prefs.cloud_verification_status == qPref::CS_INCORRECT_USER_PASSWD ||

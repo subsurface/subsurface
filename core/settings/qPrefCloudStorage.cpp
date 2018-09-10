@@ -56,17 +56,6 @@ HANDLE_PREFERENCE_TXT(CloudStorage, "email", cloud_storage_email);
 
 HANDLE_PREFERENCE_TXT(CloudStorage, "email_encoded", cloud_storage_email_encoded);
 
-void qPrefCloudStorage::set_cloud_storage_newpassword(const QString &value)
-{
-	if (value == prefs.cloud_storage_newpassword)
-		return;
-
-	qPrefPrivate::copy_txt(&prefs.cloud_storage_newpassword, value);
-
-	// NOT saved on disk, because it is only temporary
-	emit instance()->cloud_storage_newpassword_changed(value);
-}
-
 void qPrefCloudStorage::set_cloud_storage_password(const QString &value)
 {
 	if (value != prefs.cloud_storage_password) {

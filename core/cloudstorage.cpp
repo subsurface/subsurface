@@ -26,6 +26,7 @@ QNetworkReply* CloudStorageAuthenticate::backend(const QString& email,const QStr
 	} else if (!newpasswd.isEmpty()) {
 		requestUrl = QUrl(CLOUDBACKENDUPDATE);
 		payload += QChar(' ') + newpasswd;
+		cloudNewPassword = newpasswd;
 	} else {
 		requestUrl = QUrl(CLOUDBACKENDVERIFY);
 		payload += QChar(' ') + pin;
@@ -64,8 +65,8 @@ void CloudStorageAuthenticate::uploadFinished()
 		report_error(qPrintable(tr("Cloud account verification required, enter PIN in preferences")));
 	} else if (cloudAuthReply == QLatin1String("[PASSWDCHANGED]")) {
 		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = prefs.cloud_storage_newpassword;
-		prefs.cloud_storage_newpassword = NULL;
+		prefs.cloud_storage_password = strdup(qPrintable(cloudNewPassword));
+		cloudNewPassword.clear();
 		emit passwordChangeSuccessful();
 		return;
 	} else {

@@ -307,7 +307,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->date_format = copy_string(src->date_format);
 	dest->date_format_short = copy_string(src->date_format_short);
 	dest->cloud_storage_password = copy_string(src->cloud_storage_password);
-	dest->cloud_storage_newpassword = copy_string(src->cloud_storage_newpassword);
 	dest->cloud_storage_email = copy_string(src->cloud_storage_email);
 	dest->cloud_storage_email_encoded = copy_string(src->cloud_storage_email_encoded);
 	dest->facebook.access_token = copy_string(src->facebook.access_token);
