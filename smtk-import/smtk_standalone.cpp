@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
 			smartrak_import(infile, &dive_table);
 		}
 		qDebug() << "\n[Writing]\n\t" << outfile << "\n";
-		save_dives_logic(outfile, false);
+		save_dives_logic(outfile, false, false);
 		break;
 	}
 }

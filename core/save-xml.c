@@ -63,6 +63,35 @@ static void show_utf8(struct membuffer *b, const char *text, const char *pre, co
 	free(cleaned);
 }
 
+static void blankout(char *c)
+{
+	while(*c) {
+		switch (*c) {
+		case 'A'...'Z':
+			*c = 'X';
+			break;
+		case 'a'...'z':
+			*c = 'x';
+			break;
+		default:
+			;
+		}
+		++c;
+	}
+}
+
+static void show_utf8_blanked(struct membuffer *b, const char *text, const char *pre, const char *post, int is_attribute, bool anonymize)
+{
+	if (!text)
+		return;
+	char *copy = strdup(text);
+
+	if (anonymize)
+		blankout(copy);
+	show_utf8(b, copy, pre, post, is_attribute);
+	free(copy);
+}
+
 static void save_depths(struct membuffer *b, struct divecomputer *dc)
 {
 	/* What's the point of this dive entry again? */
@@ -119,12 +148,12 @@ static void save_salinity(struct membuffer *b, struct divecomputer *dc)
 	put_string(b, " />\n");
 }
 
-static void save_overview(struct membuffer *b, struct dive *dive)
+static void save_overview(struct membuffer *b, struct dive *dive, bool anonymize)
 {
-	show_utf8(b, dive->divemaster, "  <divemaster>", "</divemaster>\n", 0);
-	show_utf8(b, dive->buddy, "  <buddy>", "</buddy>\n", 0);
-	show_utf8(b, dive->notes, "  <notes>", "</notes>\n", 0);
-	show_utf8(b, dive->suit, "  <suit>", "</suit>\n", 0);
+	show_utf8_blanked(b, dive->divemaster, "  <divemaster>", "</divemaster>\n", 0, anonymize);
+	show_utf8_blanked(b, dive->buddy, "  <buddy>", "</buddy>\n", 0, anonymize);
+	show_utf8_blanked(b, dive->notes, "  <notes>", "</notes>\n", 0, anonymize);
+	show_utf8_blanked(b, dive->suit, "  <suit>", "</suit>\n", 0, anonymize);
 }
 
 static void put_gasmix(struct membuffer *b, struct gasmix mix)
@@ -443,7 +472,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 	put_string(b, "/>\n");
 }
 
-void save_one_dive_to_mb(struct membuffer *b, struct dive *dive)
+void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 {
 	struct divecomputer *dc;
 
@@ -469,7 +498,7 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive)
 			   FRACTION(dive->dc.duration.seconds, 60));
 	else
 		put_format(b, ">\n");
-	save_overview(b, dive);
+	save_overview(b, dive, anonymize);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
@@ -481,17 +510,17 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive)
 	put_format(b, "</dive>\n");
 }
 
-int save_dive(FILE *f, struct dive *dive)
+int save_dive(FILE *f, struct dive *dive, bool anonymize)
 {
 	struct membuffer buf = { 0 };
 
-	save_one_dive_to_mb(&buf, dive);
+	save_one_dive_to_mb(&buf, dive, anonymize);
 	flush_buffer(&buf, f);
 	/* Error handling? */
 	return 0;
 }
 
-static void save_trip(struct membuffer *b, dive_trip_t *trip)
+static void save_trip(struct membuffer *b, dive_trip_t *trip, bool anonymize)
 {
 	int i;
 	struct dive *dive;
@@ -510,7 +539,7 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip)
 	 */
 	for_each_dive(i, dive) {
 		if (dive->divetrip == trip)
-			save_one_dive_to_mb(b, dive);
+			save_one_dive_to_mb(b, dive, anonymize);
 	}
 
 	put_format(b, "</trip>\n");
@@ -550,10 +579,10 @@ static void save_one_device(void *_f, const char *model, uint32_t deviceid,
 
 int save_dives(const char *filename)
 {
-	return save_dives_logic(filename, false);
+	return save_dives_logic(filename, false, false);
 }
 
-void save_dives_buffer(struct membuffer *b, const bool select_only)
+void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymize)
 {
 	int i;
 	struct dive *dive;
@@ -600,21 +629,21 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 				continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
-		show_utf8(b, ds->name, " name='", "'", 1);
+		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
 		if (ds->latitude.udeg || ds->longitude.udeg) {
 			put_degrees(b, ds->latitude, " gps='", " ");
 			put_degrees(b, ds->longitude, "", "'");
 		}
-		show_utf8(b, ds->description, " description='", "'", 1);
+		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
 		put_format(b, ">\n");
-		show_utf8(b, ds->notes, "  <notes>", " </notes>\n", 0);
+		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);
 		if (ds->taxonomy.nr) {
 			for (int j = 0; j < ds->taxonomy.nr; j++) {
 				struct taxonomy *t = &ds->taxonomy.category[j];
 				if (t->category != TC_NONE && t->value) {
 					put_format(b, "  <geo cat='%d'", t->category);
 					put_format(b, " origin='%d'", t->origin);
-					show_utf8(b, t->value, " value='", "'/>\n", 1);
+					show_utf8_blanked(b, t->value, " value='", "'/>\n", 1, anonymize);
 				}
 			}
 		}
@@ -630,14 +659,14 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 			if (!dive->selected)
 				continue;
-			save_one_dive_to_mb(b, dive);
+			save_one_dive_to_mb(b, dive, anonymize);
 
 		} else {
 			trip = dive->divetrip;
 
 			/* Bare dive without a trip? */
 			if (!trip) {
-				save_one_dive_to_mb(b, dive);
+				save_one_dive_to_mb(b, dive, anonymize);
 				continue;
 			}
 
@@ -647,7 +676,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 			/* We haven't seen this trip before - save it and all dives */
 			trip->saved = 1;
-			save_trip(b, trip);
+			save_trip(b, trip, anonymize);
 		}
 	}
 	put_format(b, "</dives>\n</divelog>\n");
@@ -710,7 +739,7 @@ static void try_to_backup(const char *filename)
 	}
 }
 
-int save_dives_logic(const char *filename, const bool select_only)
+int save_dives_logic(const char *filename, const bool select_only, bool anonymize)
 {
 	struct membuffer buf = { 0 };
 	FILE *f;
@@ -722,7 +751,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 	if (git)
 		return git_save_dives(git, branch, remote, select_only);
 
-	save_dives_buffer(&buf, select_only);
+	save_dives_buffer(&buf, select_only, anonymize);
 
 	if (same_string(filename, "-")) {
 		f = stdout;
@@ -742,7 +771,7 @@ int save_dives_logic(const char *filename, const bool select_only)
 	return error;
 }
 
-int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt)
+int export_dives_xslt(const char *filename, const bool selected, const int units, const char *export_xslt, bool anonymize)
 {
 	FILE *f;
 	struct membuffer buf = { 0 };
@@ -761,7 +790,7 @@ int export_dives_xslt(const char *filename, const bool selected, const int units
 		return report_error("No filename for export");
 
 	/* Save XML to file and convert it into a memory buffer */
-	save_dives_buffer(&buf, selected);
+	save_dives_buffer(&buf, selected, anonymize);
 
 	/*
 	 * Parse the memory buffer into XML document and

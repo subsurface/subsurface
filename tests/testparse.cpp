@@ -373,13 +373,13 @@ void TestParse::exportCSVDiveDetails()
 {
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 
-	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt");
-	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt");
+	export_dives_xslt("testcsvexportmanual.csv", 0, 0, "xml2manualcsv.xslt", false);
+	export_dives_xslt("testcsvexportmanualimperial.csv", 0, 1, "xml2manualcsv.xslt", false);
 
 	clear_dive_file_data();
 
 	parseCSVmanual(1, "testcsvexportmanualimperial.csv");
-	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt");
+	export_dives_xslt("testcsvexportmanual2.csv", 0, 0, "xml2manualcsv.xslt", false);
 
 	FILE_COMPARE("testcsvexportmanual2.csv",
 		     "testcsvexportmanual.csv");
@@ -422,13 +422,13 @@ void TestParse::exportCSVDiveProfile()
 {
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 
-	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt");
-	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt");
+	export_dives_xslt("testcsvexportprofile.csv", 0, 0, "xml2csv.xslt", false);
+	export_dives_xslt("testcsvexportprofileimperial.csv", 0, 1, "xml2csv.xslt", false);
 
 	clear_dive_file_data();
 
 	parseCSVprofile(1, "testcsvexportprofileimperial.csv");
-	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt");
+	export_dives_xslt("testcsvexportprofile2.csv", 0, 0, "xml2csv.xslt", false);
 
 	FILE_COMPARE("testcsvexportprofile2.csv",
 		     "testcsvexportprofile.csv");
@@ -440,12 +440,12 @@ void TestParse::exportUDDF()
 {
 	parse_file(SUBSURFACE_TEST_DATA "/dives/test40.xml", &dive_table);
 
-	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt");
+	export_dives_xslt("testuddfexport.uddf", 0, 1, "uddf-export.xslt", false);
 
 	clear_dive_file_data();
 
 	parse_file("testuddfexport.uddf", &dive_table);
-	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt");
+	export_dives_xslt("testuddfexport2.uddf", 0, 1, "uddf-export.xslt", false);
 
 	FILE_COMPARE("testuddfexport.uddf",
 		     "testuddfexport2.uddf");
