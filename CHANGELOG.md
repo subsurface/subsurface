@@ -1,3 +1,4 @@
+- Mobile: remove UI components of the Webservice GPS interaction
 - Desktop: remove UI components of the Webservice GPS import. This functionality will
 be fully replaced by "apply on device".
 - DLF import: record battery status at end of dive
