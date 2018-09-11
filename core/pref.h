@@ -96,8 +96,6 @@ struct preferences {
 	short       cloud_timeout;
 	short       cloud_verification_status;
 	bool        save_password_local;
-	bool        save_userid_local;
-	const char *userid;
 
 	// ********** DiveComputer **********
 	dive_computer_prefs_t dive_computer;
