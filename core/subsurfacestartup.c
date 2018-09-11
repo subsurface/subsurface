@@ -299,7 +299,6 @@ void copy_prefs(struct preferences *src, struct preferences *dest)
 	dest->default_cylinder = copy_string(src->default_cylinder);
 	dest->cloud_base_url = copy_string(src->cloud_base_url);
 	dest->cloud_git_url = copy_string(src->cloud_git_url);
-	dest->userid = copy_string(src->userid);
 	dest->proxy_host = copy_string(src->proxy_host);
 	dest->proxy_user = copy_string(src->proxy_user);
 	dest->proxy_pass = copy_string(src->proxy_pass);
