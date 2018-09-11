@@ -30,7 +30,6 @@ public:
 	static bool hasInstance();
 	bool applyLocations();
 	int getGpsNum() const;
-	QString getUserid(QString user, QString passwd);
 	bool hasLocationsSource();
 	QString currentPosition();
 	void setGpsTimeThreshold(int seconds);
@@ -66,10 +65,7 @@ public slots:
 	void newPosition(QGeoPositionInfo pos);
 	void updateTimeout();
 	void positionSourceError(QGeoPositionInfoSource::Error error);
-	void uploadToServer();
-	void downloadFromServer();
 	void postError(QNetworkReply::NetworkError error);
-	void getUseridError(QNetworkReply::NetworkError error);
 #ifdef SUBSURFACE_MOBILE
 	void clearGpsData();
 #endif
