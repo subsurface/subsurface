@@ -944,13 +944,6 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	nonmatch("sample", name, buf);
 }
 
-static void try_to_fill_userid(const char *name, char *buf)
-{
-	UNUSED(name);
-	if (prefs.save_userid_local)
-		set_userid(buf);
-}
-
 static const char *country, *city;
 
 static void divinglog_place(char *place, uint32_t *uuid)
@@ -1382,7 +1375,6 @@ static bool entry(const char *name, char *buf)
 		report_datafile_version(last_xml_version);
 	}
 	if (in_userid) {
-		try_to_fill_userid(name, buf);
 		return true;
 	}
 	if (in_settings) {
@@ -1643,7 +1635,6 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	if (!doc)
 		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
 
-	prefs.save_userid_local = false;
 	reset_all();
 	dive_start();
 	doc = test_xslt_transforms(doc, params);
