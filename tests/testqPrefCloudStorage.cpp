@@ -3,9 +3,10 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefCloudStorage::initTestCase()
 {
@@ -27,7 +28,7 @@ void TestQPrefCloudStorage::test_struct_get()
 	prefs.cloud_storage_password = copy_qstring("more secret");
 	prefs.cloud_storage_pin = copy_qstring("a pin");
 	prefs.cloud_timeout = 117;
-	prefs.cloud_verification_status = qPref::CS_NOCLOUD;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_NOCLOUD;
 	prefs.save_password_local = true;
 	prefs.save_userid_local = true;
 	prefs.userid = copy_qstring("my user");
@@ -57,7 +58,7 @@ void TestQPrefCloudStorage::test_set_struct()
 	tst->set_cloud_storage_password("t2 pass2");
 	tst->set_cloud_storage_pin("t2 pin");
 	tst->set_cloud_timeout(123);
-	tst->set_cloud_verification_status(qPref::CS_VERIFIED);
+	tst->set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	tst->set_save_password_local(false);
 	tst->set_save_userid_local(false);
 	tst->set_userid("t2 user");
@@ -68,7 +69,7 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t2 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t2 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 123);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
+	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, false);
 	QCOMPARE(prefs.save_userid_local, false);
 	QCOMPARE(QString(prefs.userid), QString("t2 user"));
@@ -90,7 +91,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	tst->set_cloud_storage_password("t3 pass2");
 	tst->set_cloud_storage_pin("t3 pin");
 	tst->set_cloud_timeout(321);
-	tst->set_cloud_verification_status(qPref::CS_NOCLOUD);
+	tst->set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 	tst->set_save_userid_local(true);
 	tst->set_userid("t3 user");
 
@@ -101,7 +102,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	prefs.cloud_storage_password = copy_qstring("error1");
 	prefs.cloud_storage_pin = copy_qstring("error1");
 	prefs.cloud_timeout = 324;
-	prefs.cloud_verification_status = qPref::CS_VERIFIED;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_VERIFIED;
 	prefs.save_password_local = false;
 	prefs.save_userid_local = false;
 	prefs.userid = copy_qstring("error1");
@@ -113,7 +114,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t3 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t3 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 321);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_NOCLOUD);
+	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_NOCLOUD);
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
 	QCOMPARE(QString(prefs.userid), QString("t3 user"));
@@ -135,7 +136,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_password = copy_qstring("t4 pass2");
 	prefs.cloud_storage_pin = copy_qstring("t4 pin");
 	prefs.cloud_timeout = 123;
-	prefs.cloud_verification_status = qPref::CS_VERIFIED;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_VERIFIED;
 	prefs.save_userid_local = true;
 	prefs.userid = copy_qstring("t4 user");
 
@@ -148,7 +149,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_password = copy_qstring("error1");
 	prefs.cloud_storage_pin = copy_qstring("error1");
 	prefs.cloud_timeout = 324;
-	prefs.cloud_verification_status = qPref::CS_VERIFIED;
+	prefs.cloud_verification_status = qPrefCloudStorage::CS_VERIFIED;
 	prefs.save_password_local = false;
 	prefs.save_userid_local = false;
 	prefs.userid = copy_qstring("error1");
@@ -161,7 +162,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE(QString(prefs.cloud_storage_password), QString("t4 pass2"));
 	QCOMPARE(QString(prefs.cloud_storage_pin), QString("t4 pin"));
 	QCOMPARE((int)prefs.cloud_timeout, 123);
-	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
+	QCOMPARE((int)prefs.cloud_verification_status, (int)qPrefCloudStorage::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, true);
 	QCOMPARE(prefs.save_userid_local, true);
 	QCOMPARE(QString(prefs.userid), QString("t4 user"));
@@ -229,6 +230,53 @@ void TestQPrefCloudStorage::test_oldPreferences()
 	TEST(cloud->cloud_verification_status(), 0);
 	cloud->set_cloud_verification_status(1);
 	TEST(cloud->cloud_verification_status(), 1);
+}
+
+void TestQPrefCloudStorage::test_signals()
+{
+	QSignalSpy spy1(qPrefCloudStorage::instance(), SIGNAL(cloud_base_urlChanged(QString)));
+	QSignalSpy spy2(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_emailChanged(QString)));
+	QSignalSpy spy3(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_email_encodedChanged(QString)));
+	QSignalSpy spy4(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_passwordChanged(QString)));
+	QSignalSpy spy5(qPrefCloudStorage::instance(), SIGNAL(cloud_storage_pinChanged(QString)));
+	QSignalSpy spy6(qPrefCloudStorage::instance(), SIGNAL(cloud_timeoutChanged(int)));
+	QSignalSpy spy7(qPrefCloudStorage::instance(), SIGNAL(cloud_verification_statusChanged(int)));
+	QSignalSpy spy9(qPrefCloudStorage::instance(), SIGNAL(save_password_localChanged(bool)));
+	QSignalSpy spy10(qPrefCloudStorage::instance(), SIGNAL(save_userid_localChanged(bool)));
+	QSignalSpy spy11(qPrefCloudStorage::instance(), SIGNAL(useridChanged(QString)));
+
+	qPrefCloudStorage::set_cloud_base_url("signal url");
+	qPrefCloudStorage::set_cloud_storage_email("signal myEmail");
+	qPrefCloudStorage::set_cloud_storage_email_encoded("signal encodedMyEMail");
+	qPrefCloudStorage::set_cloud_storage_password("signal more secret");
+	qPrefCloudStorage::set_cloud_storage_pin("signal a pin");
+	qPrefCloudStorage::set_cloud_timeout(11);
+	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
+	qPrefCloudStorage::set_save_password_local(true);
+	qPrefCloudStorage::set_save_userid_local(true);
+	qPrefCloudStorage::set_userid("signal my user");
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+	QCOMPARE(spy7.count(), 1);
+	QCOMPARE(spy9.count(), 1);
+	QCOMPARE(spy10.count(), 1);
+	QCOMPARE(spy11.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toString() == "signal url");
+	QVERIFY(spy2.takeFirst().at(0).toString() == "signal myEmail");
+	QVERIFY(spy3.takeFirst().at(0).toString() == "signal encodedMyEMail");
+	QVERIFY(spy4.takeFirst().at(0).toString() == "signal more secret");
+	QVERIFY(spy5.takeFirst().at(0).toString() == "signal a pin");
+	QVERIFY(spy6.takeFirst().at(0).toInt() == 11);
+	QVERIFY(spy7.takeFirst().at(0).toInt() == qPrefCloudStorage::CS_VERIFIED);
+	QVERIFY(spy9.takeFirst().at(0).toBool() == true);
+	QVERIFY(spy10.takeFirst().at(0).toBool() == true);
+	QVERIFY(spy11.takeFirst().at(0).toString() == "signal my user");
 }
 
 QTEST_MAIN(TestQPrefCloudStorage)

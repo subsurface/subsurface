@@ -5,25 +5,10 @@
 #include "ssrf-version.h"
 
 #include <QObject>
-
-#include "qPrefCloudStorage.h"
-#include "qPrefDisplay.h"
-#include "qPrefDiveComputer.h"
-#include "qPrefDivePlanner.h"
-#include "qPrefFacebook.h"
-#include "qPrefGeneral.h"
-#include "qPrefGeocoding.h"
-#include "qPrefLanguage.h"
-#include "qPrefLocationService.h"
-#include "qPrefPartialPressureGas.h"
-#include "qPrefProxy.h"
-#include "qPrefTechnicalDetails.h"
-#include "qPrefUnit.h"
-#include "qPrefUpdateManager.h"
+#include <QQmlEngine>
 
 class qPref : public QObject {
 	Q_OBJECT
-	Q_ENUMS(cloud_status);
 	Q_PROPERTY(QString canonical_version READ canonical_version);
 	Q_PROPERTY(QString mobile_version READ mobile_version);
 
@@ -35,20 +20,14 @@ public:
 	static void load() { loadSync(false); }
 	static void sync() { loadSync(true); }
 
-public:
-	enum cloud_status {
-		CS_UNKNOWN,
-		CS_INCORRECT_USER_PASSWD,
-		CS_NEED_TO_VERIFY,
-		CS_VERIFIED,
-		CS_NOCLOUD
-	};
+	// Register QML
+	void registerQML(QQmlEngine *engine);
 
+public:
 	static const QString canonical_version() { return QString(CANONICAL_VERSION_STRING); }
 	static const QString mobile_version() { return QString(MOBILE_VERSION_STRING); }
 
 private:
 	static void loadSync(bool doSync);
 };
-
 #endif

@@ -42,6 +42,7 @@ find_package(Qt5 REQUIRED COMPONENTS Core
 				     Test
 				     LinguistTools
 				     Positioning
+				     Quick
 				     Bluetooth)
 
 set(QT_LIBRARIES Qt5::Core
@@ -50,6 +51,7 @@ set(QT_LIBRARIES Qt5::Core
 		 Qt5::Network
 		 Qt5::Svg
 		 Qt5::Positioning
+		 Qt5::Quick
 		 Qt5::Bluetooth)
 
 set(QT5_INCLUDE_PATH ${Qt5_INCLUDE_DIRS} ${Qt5Widgets_INCLUDE_DIRS} ${Qt5Core_INCLUDE_DIRS})
@@ -65,7 +67,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 		NAMES subsurface_corelib
 		PATHS ${CMAKE_BINARY_DIR}/../subsurface/core
 		)
-elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+elseif(CMAKE_SYSTEM_NAME STREQUAL "Linux" OR CMAKE_SYSTEM_NAME STREQUAL "Darwin")
 	find_library(SSRF_CORELIB
 		NAMES subsurface_corelib
 		PATHS ${SSRF_PATH}build/core

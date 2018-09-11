@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("DiveComputer");
 qPrefDiveComputer::qPrefDiveComputer(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefDiveComputer *qPrefDiveComputer::instance()
 {
 	static qPrefDiveComputer *self = new qPrefDiveComputer;

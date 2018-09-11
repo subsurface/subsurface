@@ -2,7 +2,9 @@
 #include "preferences_defaults.h"
 #include "ui_preferences_defaults.h"
 #include "core/dive.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QFileDialog>
 
@@ -77,7 +79,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->velocitySlider->setValue(qPrefDisplay::animation_speed());
 	ui->btnUseDefaultFile->setChecked(qPrefGeneral::use_default_file());
 
-	if (qPrefCloudStorage::cloud_verification_status() == qPref::CS_VERIFIED) {
+	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_VERIFIED) {
 		ui->cloudDefaultFile->setEnabled(true);
 	} else {
 		if (ui->cloudDefaultFile->isChecked())

@@ -1,11 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "testqPrefFacebook.h"
 
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefFacebook.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefFacebook::initTestCase()
 {
@@ -85,5 +86,24 @@ void TestQPrefFacebook::test_oldPreferences()
 	TEST(fb->user_id(),     QStringLiteral("tomaz-user-id-2"));
 	TEST(fb->album_id(),    QStringLiteral("album-id-2"));
 }
+
+void TestQPrefFacebook::test_signals()
+{
+	QSignalSpy spy1(qPrefFacebook::instance(), SIGNAL(access_tokenChanged(QString)));
+	QSignalSpy spy2(qPrefFacebook::instance(), SIGNAL(album_idChanged(QString)));
+	QSignalSpy spy3(qPrefFacebook::instance(), SIGNAL(user_idChanged(QString)));
+
+	qPrefFacebook::set_access_token("t_signal token");
+	qPrefFacebook::set_album_id("t_signal album");
+	qPrefFacebook::set_user_id("t_signal user");
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QVERIFY(spy1.takeFirst().at(0).toString() == "t_signal token");
+	QVERIFY(spy2.takeFirst().at(0).toString() == "t_signal album");
+	QVERIFY(spy3.takeFirst().at(0).toString() == "t_signal user");
+}
+
 
 QTEST_MAIN(TestQPrefFacebook)

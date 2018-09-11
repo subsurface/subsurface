@@ -8,12 +8,12 @@
 
 class qPrefProxy : public QObject {
 	Q_OBJECT
-	Q_PROPERTY(bool proxy_auth READ proxy_auth WRITE set_proxy_auth NOTIFY proxy_auth_changed);
-	Q_PROPERTY(QString proxy_host READ proxy_host WRITE set_proxy_host NOTIFY proxy_host_changed);
-	Q_PROPERTY(QString proxy_pass READ proxy_pass WRITE set_proxy_pass NOTIFY proxy_pass_changed);
-	Q_PROPERTY(int proxy_port READ proxy_port WRITE set_proxy_port NOTIFY proxy_port_changed);
-	Q_PROPERTY(int proxy_type READ proxy_type WRITE set_proxy_type NOTIFY proxy_type_changed);
-	Q_PROPERTY(QString proxy_user READ proxy_user WRITE set_proxy_user NOTIFY proxy_user_changed);
+	Q_PROPERTY(bool proxy_auth READ proxy_auth WRITE set_proxy_auth NOTIFY proxy_authChanged);
+	Q_PROPERTY(QString proxy_host READ proxy_host WRITE set_proxy_host NOTIFY proxy_hostChanged);
+	Q_PROPERTY(QString proxy_pass READ proxy_pass WRITE set_proxy_pass NOTIFY proxy_passChanged);
+	Q_PROPERTY(int proxy_port READ proxy_port WRITE set_proxy_port NOTIFY proxy_portChanged);
+	Q_PROPERTY(int proxy_type READ proxy_type WRITE set_proxy_type NOTIFY proxy_typeChanged);
+	Q_PROPERTY(QString proxy_user READ proxy_user WRITE set_proxy_user NOTIFY proxy_userChanged);
 
 public:
 	qPrefProxy(QObject *parent = NULL);
@@ -41,12 +41,12 @@ public slots:
 	static void set_proxy_user(const QString &value);
 
 signals:
-	void proxy_auth_changed(bool value);
-	void proxy_host_changed(const QString &value);
-	void proxy_pass_changed(const QString &value);
-	void proxy_port_changed(int value);
-	void proxy_type_changed(int value);
-	void proxy_user_changed(const QString &value);
+	void proxy_authChanged(bool value);
+	void proxy_hostChanged(const QString &value);
+	void proxy_passChanged(const QString &value);
+	void proxy_portChanged(int value);
+	void proxy_typeChanged(int value);
+	void proxy_userChanged(const QString &value);
 
 private:
 	static void disk_proxy_auth(bool doSync);

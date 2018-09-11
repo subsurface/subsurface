@@ -1,26 +1,44 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
 import QtTest 1.2
-import org.subsurfacedivelog.mobile 1.0
 
 TestCase {
 	name: "qPrefGeocoding"
 
-	SsrfGeocodingPrefs {
-		id: geo
+	function test_variables() {
+//TBD		var x1 = PrefGeocoding.first_taxonomy_category
+//TBD		PrefGeocoding.first_taxonomy_category = ??
+//TBD		compare(PrefGeocoding.first_taxonom_categroy, ??)
+
+//TBD		var x2 = PrefGeocoding.second_taxonomy_category
+//TBD		PrefGeocoding.second_taxonomy_category = ??
+//TBD		compare(PrefGeocoding.second_taxonom_categroy, ??)
+
+//TBD		var x3 = PrefGeocoding.third_taxonomy_category
+//TBD		PrefGeocoding.third_taxonomy_category = ??
+//TBD		compare(PrefGeocoding.third_taxonom_categroy, ??)
 	}
 
-	function test_variables() {
-//TBD		var x1 = geo.first_taxonomy_category
-//TBD		geo.first_taxonomy_category = ??
-//TBD		compare(geo.first_taxonom_categroy, ??)
+	Item {
+		id: spyCatcher
 
-//TBD		var x2 = geo.second_taxonomy_category
-//TBD		geo.second_taxonomy_category = ??
-//TBD		compare(geo.second_taxonom_categroy, ??)
+//TBD		property bool spy1 : false
+//TBD		property bool spy2 : false
+//TBD		property bool spy3 : false
 
-//TBD		var x3 = geo.third_taxonomy_category
-//TBD		geo.third_taxonomy_category = ??
-//TBD		compare(geo.third_taxonom_categroy, ??)
+		Connections {
+			target: PrefGeocoding
+//TBD			onChanged: {spyCatcher.spy1 = true }
+		}
+	}
+
+	function test_signals() {
+//TBD		PrefGeocoding.first_taxonomy_category = ??
+//TBD		PrefGeocoding.second_taxonomy_category = ??
+//TBD		PrefGeocoding.third_taxonomy_category = ??
+
+//TBD		compare(spyCatcher.spy1, true)
+//TBD		compare(spyCatcher.spy2, true)
+//TBD		compare(spyCatcher.spy3, true)
 	}
 }

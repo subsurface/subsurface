@@ -1,26 +1,38 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
 import QtTest 1.2
-import org.subsurfacedivelog.mobile 1.0
 
 TestCase {
 	name: "qPrefLocationService"
 
-	SsrfLocationServicePrefs {
-		id: tst
-	}
-
-	SsrfPrefs {
-		id: prefs
-	}
-
 	function test_variables() {
-		var x1 = tst.distance_threshold
-		tst.distance_threshold = 123
-		compare(tst.distance_threshold , 123)
+		var x1 = PrefLocationService.distance_threshold
+		PrefLocationService.distance_threshold = 123
+		compare(PrefLocationService.distance_threshold , 123)
 
-		var x2 = tst.time_threshold
-		tst.time_threshold = 12
-		compare(tst.time_threshold , 12)
+		var x2 = PrefLocationService.time_threshold
+		PrefLocationService.time_threshold = 12
+		compare(PrefLocationService.time_threshold , 12)
+	}
+
+	Item {
+		id: spyCatcher
+
+		property bool spy1 : false
+		property bool spy2 : false
+
+		Connections {
+			target: PrefLocationService
+			onDistance_thresholdChanged: {spyCatcher.spy1 = true }
+			onTime_thresholdChanged: {spyCatcher.spy2 = true }
+		}
+	}
+
+	function test_signals() {
+		PrefLocationService.distance_threshold = -123
+		PrefLocationService.time_threshold = -12
+
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy2, true)
 	}
 }

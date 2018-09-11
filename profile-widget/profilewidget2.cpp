@@ -342,16 +342,16 @@ void ProfileWidget2::setupItemOnScene()
 #ifndef SUBSURFACE_MOBILE
 
 	// Visibility Connections
-	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::phe_changed, pheGasItem, &PartialPressureGasItem::setVisible);
-	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2_changed, po2GasItem, &PartialPressureGasItem::setVisible);
-	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pn2_changed, pn2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pheChanged, pheGasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::po2Changed, po2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefPartialPressureGas::instance(), &qPrefPartialPressureGas::pn2Changed, pn2GasItem, &PartialPressureGasItem::setVisible);
 
 	// because it was using a wrong settings.
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_setpoint_changed, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_scr_ocpo2_changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
-	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensors_changed, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_setpointChanged, o2SetpointGasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_scr_ocpo2Changed, ocpo2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensorsChanged, ccrsensor1GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensorsChanged, ccrsensor2GasItem, &PartialPressureGasItem::setVisible);
+	connect(qPrefTechnicalDetails::instance(), &qPrefTechnicalDetails::show_ccr_sensorsChanged, ccrsensor3GasItem, &PartialPressureGasItem::setVisible);
 
 	heartBeatAxis->setTextVisible(true);
 	heartBeatAxis->setLinesVisible(true);

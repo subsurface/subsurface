@@ -3,9 +3,10 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefDiveComputer.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefDiveComputer::initTestCase()
 {
@@ -151,6 +152,33 @@ void TestQPrefDiveComputer::test_oldPreferences()
 	TEST(dc->vendor(), QStringLiteral("Sharewater"));
 	dc->set_vendor("OSTS");
 	TEST(dc->vendor(), QStringLiteral("OSTS"));
+}
+
+void TestQPrefDiveComputer::test_signals()
+{
+	QSignalSpy spy1(qPrefDiveComputer::instance(), SIGNAL(deviceChanged(QString)));
+	QSignalSpy spy2(qPrefDiveComputer::instance(), SIGNAL(device_nameChanged(QString)));
+	QSignalSpy spy3(qPrefDiveComputer::instance(), SIGNAL(download_modeChanged(int)));
+	QSignalSpy spy4(qPrefDiveComputer::instance(), SIGNAL(productChanged(QString)));
+	QSignalSpy spy5(qPrefDiveComputer::instance(), SIGNAL(vendorChanged(QString)));
+
+	qPrefDiveComputer::set_device("t_signal device");
+	qPrefDiveComputer::set_device_name("t_signal device name");
+	qPrefDiveComputer::set_download_mode(-100);
+	qPrefDiveComputer::set_product("t_signal product");
+	qPrefDiveComputer::set_vendor("t_signal vendor");
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toString() == "t_signal device");
+	QVERIFY(spy2.takeFirst().at(0).toString() == "t_signal device name");
+	QVERIFY(spy3.takeFirst().at(0).toInt() == -100);
+	QVERIFY(spy4.takeFirst().at(0).toString() == "t_signal product");
+	QVERIFY(spy5.takeFirst().at(0).toString() == "t_signal vendor");
 }
 
 QTEST_MAIN(TestQPrefDiveComputer)

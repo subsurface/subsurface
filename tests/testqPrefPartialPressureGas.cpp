@@ -3,9 +3,10 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefPartialPressureGas.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefPartialPressureGas::initTestCase()
 {
@@ -183,5 +184,44 @@ void TestQPrefPartialPressureGas::test_oldPreferences()
 	TEST(pp->po2_threshold_max(), 5.0);
 
 }
+
+void TestQPrefPartialPressureGas::test_signals()
+{
+	QSignalSpy spy1(qPrefPartialPressureGas::instance(), SIGNAL(pheChanged(bool)));
+	QSignalSpy spy2(qPrefPartialPressureGas::instance(), SIGNAL(phe_thresholdChanged(double)));
+	QSignalSpy spy3(qPrefPartialPressureGas::instance(), SIGNAL(pn2Changed(bool)));
+	QSignalSpy spy4(qPrefPartialPressureGas::instance(), SIGNAL(pn2_thresholdChanged(double)));
+	QSignalSpy spy5(qPrefPartialPressureGas::instance(), SIGNAL(po2Changed(bool)));
+	QSignalSpy spy6(qPrefPartialPressureGas::instance(), SIGNAL(po2_threshold_maxChanged(double)));
+	QSignalSpy spy7(qPrefPartialPressureGas::instance(), SIGNAL(po2_threshold_minChanged(double)));
+
+	prefs.pp_graphs.phe = true;
+	qPrefPartialPressureGas::set_phe(false);
+	qPrefPartialPressureGas::set_phe_threshold(-22.2);
+	prefs.pp_graphs.pn2 = true;
+	qPrefPartialPressureGas::set_pn2(false);
+	qPrefPartialPressureGas::set_pn2_threshold(-22.3);
+	prefs.pp_graphs.po2 = true;
+	qPrefPartialPressureGas::set_po2(false);
+	qPrefPartialPressureGas::set_po2_threshold_max(-22.4);
+	qPrefPartialPressureGas::set_po2_threshold_min(-22.5);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+	QCOMPARE(spy7.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy2.takeFirst().at(0).toDouble() == -22.2);
+	QVERIFY(spy3.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy4.takeFirst().at(0).toDouble() == -22.3);
+	QVERIFY(spy5.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy6.takeFirst().at(0).toDouble() == -22.4);
+	QVERIFY(spy7.takeFirst().at(0).toDouble() == -22.5);
+}
+
 
 QTEST_MAIN(TestQPrefPartialPressureGas)

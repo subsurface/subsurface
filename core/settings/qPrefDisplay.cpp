@@ -17,8 +17,8 @@ static const QString st_lastDir_default = "";
 QString qPrefDisplay::st_theme;
 static const QString st_theme_default = "Blue";
 
-QString qPrefDisplay::st_UserSurvey;
-static const QString st_UserSurvey_default = "";
+QString qPrefDisplay::st_userSurvey;
+static const QString st_userSurvey_default = "";
 
 QByteArray qPrefDisplay::st_mainSplitter;
 static const QByteArray st_mainSplitter_default = "";
@@ -44,6 +44,7 @@ static int st_lastState_default = false;
 qPrefDisplay::qPrefDisplay(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefDisplay *qPrefDisplay::instance()
 {
 	static qPrefDisplay *self = new qPrefDisplay;
@@ -60,7 +61,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	if (!doSync) {
 		load_tooltip_position();
 		load_theme();
-		load_UserSurvey();
+		load_userSurvey();
 		load_mainSplitter();
 		load_topSplitter();
 		load_bottomSplitter();
@@ -84,7 +85,7 @@ void qPrefDisplay::set_divelist_font(const QString &value)
 		disk_divelist_font(true);
 
 		qApp->setFont(QFont(newValue));
-		emit instance()->divelist_font_changed(value);
+		emit instance()->divelist_fontChanged(value);
 	}
 }
 void qPrefDisplay::disk_divelist_font(bool doSync)
@@ -104,7 +105,7 @@ void qPrefDisplay::set_font_size(double value)
 		QFont defaultFont = qApp->font();
 		defaultFont.setPointSizeF(prefs.font_size);
 		qApp->setFont(defaultFont);
-		emit instance()->font_size_changed(value);
+		emit instance()->font_sizeChanged(value);
 	}
 }
 void qPrefDisplay::disk_font_size(bool doSync)
@@ -155,7 +156,7 @@ HANDLE_PROP_QSTRING(Display, "Theme/currentTheme", theme);
 
 HANDLE_PROP_QPOINTF(Display, "ProfileMap/tooltip_position", tooltip_position);
 
-HANDLE_PROP_QSTRING(Display, "UserSurvey/SurveyDone", UserSurvey);
+HANDLE_PROP_QSTRING(Display, "UserSurvey/SurveyDone", userSurvey);
 
 HANDLE_PROP_QBYTEARRAY(Display, "MainWindow/mainSplitter", mainSplitter);
 

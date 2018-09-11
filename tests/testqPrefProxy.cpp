@@ -3,9 +3,10 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefProxy.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefProxy::initTestCase()
 {
@@ -170,5 +171,38 @@ void TestQPrefProxy::test_oldPreferences()
 	TEST(proxy->proxy_user(), QStringLiteral("unknown_1"));
 	TEST(proxy->proxy_pass(), QStringLiteral("secret_1"));
 }
+
+void TestQPrefProxy::test_signals()
+{
+	QSignalSpy spy1(qPrefProxy::instance(), SIGNAL(proxy_authChanged(bool)));
+	QSignalSpy spy2(qPrefProxy::instance(), SIGNAL(proxy_hostChanged(QString)));
+	QSignalSpy spy3(qPrefProxy::instance(), SIGNAL(proxy_passChanged(QString)));
+	QSignalSpy spy4(qPrefProxy::instance(), SIGNAL(proxy_portChanged(int)));
+	QSignalSpy spy5(qPrefProxy::instance(), SIGNAL(proxy_typeChanged(int)));
+	QSignalSpy spy6(qPrefProxy::instance(), SIGNAL(proxy_userChanged(QString)));
+
+	prefs.proxy_auth = true;
+	qPrefProxy::set_proxy_auth(false);
+	qPrefProxy::set_proxy_host("signal t2 host");
+	qPrefProxy::set_proxy_pass("signal t2 pass");
+	qPrefProxy::set_proxy_port(2524);
+	qPrefProxy::set_proxy_type(22);
+	qPrefProxy::set_proxy_user("signal user");
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy2.takeFirst().at(0).toString() == "signal t2 host");
+	QVERIFY(spy3.takeFirst().at(0).toString() == "signal t2 pass");
+	QVERIFY(spy4.takeFirst().at(0).toInt() == 2524);
+	QVERIFY(spy5.takeFirst().at(0).toInt() == 22);
+	QVERIFY(spy6.takeFirst().at(0).toString() == "signal user");
+}
+
 
 QTEST_MAIN(TestQPrefProxy)

@@ -3,9 +3,10 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefLanguage.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefLanguage::initTestCase()
 {
@@ -197,5 +198,48 @@ void TestQPrefLanguage::test_oldPreferences()
 	TEST(language->use_system_language(), true);
 
 }
+
+void TestQPrefLanguage::test_signals()
+{
+	QSignalSpy spy1(qPrefLanguage::instance(), SIGNAL(date_formatChanged(QString)));
+	QSignalSpy spy2(qPrefLanguage::instance(), SIGNAL(date_format_overrideChanged(bool)));
+	QSignalSpy spy3(qPrefLanguage::instance(), SIGNAL(date_format_shortChanged(QString)));
+	QSignalSpy spy4(qPrefLanguage::instance(), SIGNAL(languageChanged(QString)));
+	QSignalSpy spy5(qPrefLanguage::instance(), SIGNAL(lang_localeChanged(QString)));
+	QSignalSpy spy6(qPrefLanguage::instance(), SIGNAL(time_formatChanged(QString)));
+	QSignalSpy spy7(qPrefLanguage::instance(), SIGNAL(time_format_overrideChanged(bool)));
+	QSignalSpy spy8(qPrefLanguage::instance(), SIGNAL(use_system_languageChanged(bool)));
+
+	qPrefLanguage::set_date_format("signal date2");
+	prefs.date_format_override = true;
+	qPrefLanguage::set_date_format_override(false);
+	qPrefLanguage::set_date_format_short("signal short2");
+	qPrefLanguage::set_language("signal lang format");
+	qPrefLanguage::set_lang_locale("signal loc lang2");
+	qPrefLanguage::set_time_format("signal time2");
+	prefs.time_format_override = true;
+	qPrefLanguage::set_time_format_override(false);
+	prefs.locale.use_system_language = true;
+	qPrefLanguage::set_use_system_language(false);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+	QCOMPARE(spy7.count(), 1);
+	QCOMPARE(spy8.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toString() == "signal date2");
+	QVERIFY(spy2.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy3.takeFirst().at(0).toString() == "signal short2");
+	QVERIFY(spy4.takeFirst().at(0).toString() == "signal lang format");
+	QVERIFY(spy5.takeFirst().at(0).toString() == "signal loc lang2");
+	QVERIFY(spy6.takeFirst().at(0).toString() == "signal time2");
+	QVERIFY(spy7.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy8.takeFirst().at(0).toBool() == false);
+}
+
 
 QTEST_MAIN(TestQPrefLanguage)

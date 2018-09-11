@@ -3,7 +3,8 @@
 #define QMLPREFS_H
 
 #include <QObject>
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefDisplay.h"
 
 
 class QMLPrefs : public QObject {
@@ -20,7 +21,7 @@ class QMLPrefs : public QObject {
 				MEMBER m_cloudUserName
 				WRITE setCloudUserName
 				NOTIFY cloudUserNameChanged)
-	Q_PROPERTY(qPref::cloud_status credentialStatus
+	Q_PROPERTY(qPrefCloudStorage::cloud_status credentialStatus
 				MEMBER m_credentialStatus
 				WRITE setCredentialStatus
 				NOTIFY credentialStatusChanged)
@@ -36,7 +37,7 @@ class QMLPrefs : public QObject {
 				MEMBER m_showPin
 				WRITE setShowPin
 				NOTIFY showPinChanged)
-	Q_PROPERTY(qPref::cloud_status oldStatus
+	Q_PROPERTY(qPrefCloudStorage::cloud_status oldStatus
 				MEMBER m_oldStatus
 				WRITE setOldStatus
 				NOTIFY oldStatusChanged)
@@ -64,16 +65,16 @@ public:
 	const QString cloudUserName() const;
 	void setCloudUserName(const QString &cloudUserName);
 
-	qPref::cloud_status credentialStatus() const;
-	void setCredentialStatus(const qPref::cloud_status value);
+	qPrefCloudStorage::cloud_status credentialStatus() const;
+	void setCredentialStatus(const qPrefCloudStorage::cloud_status value);
 
 	void setDeveloper(bool value);
 
 	int distanceThreshold() const;
 	void setDistanceThreshold(int distance);
 
-	qPref::cloud_status oldStatus() const;
-	void setOldStatus(const qPref::cloud_status value);
+	qPrefCloudStorage::cloud_status oldStatus() const;
+	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 
 	bool showPin() const;
 	void setShowPin(bool enable);
@@ -92,11 +93,11 @@ private:
 	QString m_cloudPassword;
 	QString m_cloudPin;
 	QString m_cloudUserName;
-	qPref::cloud_status m_credentialStatus;
+	qPrefCloudStorage::cloud_status m_credentialStatus;
 	bool m_developer;
 	int m_distanceThreshold;
 	static QMLPrefs *m_instance;
-	qPref::cloud_status m_oldStatus;
+	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
 	int m_timeThreshold;
 

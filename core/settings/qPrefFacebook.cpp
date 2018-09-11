@@ -7,6 +7,7 @@ static const QString group = QStringLiteral("WebApps/Facebook");
 qPrefFacebook::qPrefFacebook(QObject *parent) : QObject(parent)
 {
 }
+
 qPrefFacebook*qPrefFacebook::instance()
 {
 	static qPrefFacebook *self = new qPrefFacebook;
@@ -22,7 +23,7 @@ void qPrefFacebook::set_access_token(const QString &value)
 {
 	if (value != prefs.facebook.access_token) {
 		qPrefPrivate::copy_txt(&prefs.facebook.access_token, value);
-		emit instance()->access_token_changed(value);
+		emit instance()->access_tokenChanged(value);
 	}
 }
 
@@ -30,7 +31,7 @@ void qPrefFacebook::set_album_id(const QString &value)
 {
 	if (value != prefs.facebook.album_id) {
 		qPrefPrivate::copy_txt(&prefs.facebook.album_id, value);
-		emit instance()->album_id_changed(value);
+		emit instance()->album_idChanged(value);
 	}
 }
 
@@ -38,6 +39,6 @@ void qPrefFacebook::set_user_id(const QString &value)
 {
 	if (value != prefs.facebook.user_id) {
 		qPrefPrivate::copy_txt(&prefs.facebook.user_id, value);
-		emit instance()->access_token_changed(value);
+		emit instance()->user_idChanged(value);
 	}
 }

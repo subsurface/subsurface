@@ -1,78 +1,132 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
 import QtTest 1.2
-import org.subsurfacedivelog.mobile 1.0
 
 TestCase {
 	name: "qPrefDisplay"
 
-	SsrfDisplayPrefs {
-		id: display
+	function test_variables() {
+		var x1 = PrefDisplay.animation_speed
+		PrefDisplay.animation_speed = 37
+		compare(PrefDisplay.animation_speed, 37)
+
+		// PrefDisplay.divelist_font is NOT permitted in QML
+		// calling qApp->setFont in the setter crashes in Qt5.11
+		// due to a conflict with the QML font system
+//		var x2 = PrefDisplay.divelist_font
+//		PrefDisplay.divelist_font = "helvitica"
+//		compare(PrefDisplay.divelist_font, "helvitica")
+
+		// PrefDisplay.font_size is NOT permitted in QML
+		// calling qApp->setFont in the setter crashes in Qt5.11
+		// due to a conflict with the QML font system
+//		var x3 = PrefDisplay.font_size
+//		PrefDisplay.font_size = 12.0
+//		compare(PrefDisplay.font_size, 12.0)
+
+		var x4 = PrefDisplay.PrefDisplay_invalid_dives
+		PrefDisplay.PrefDisplay_invalid_dives = !x4
+		compare(PrefDisplay.PrefDisplay_invalid_dives, !x4)
+
+		var x5 = PrefDisplay.show_developer
+		PrefDisplay.show_developer = !x5
+		compare(PrefDisplay.show_developer, !x5)
+
+		var x6 = PrefDisplay.theme
+		PrefDisplay.theme = "myColor"
+		compare(PrefDisplay.theme, "myColor")
+
+//TBD		var x7 = PrefDisplay.tooltip_position
+//TBD		PrefDisplay.tooltip_position = ??
+//TBD		compare(PrefDisplay.tooltip_position, ??)
+
+		var x8 = PrefDisplay.lastDir
+		PrefDisplay.lastDir = "myDir"
+		compare(PrefDisplay.lastDir, "myDir")
+
+		var x9 = PrefDisplay.UserSurvey
+		PrefDisplay.UserSurvey = "yes"
+		compare(PrefDisplay.UserSurvey, "yes")
+
+//TBD		var x10 = PrefDisplay.mainSplitter
+//TBD		PrefDisplay.mainSplitter =  ???
+//TBD		compare(PrefDisplay.mainSplitter, ???)
+
+//TBD		var x11 = PrefDisplay.topSplitter
+//TBD		PrefDisplay.topSplitter =  ???
+//TBD		compare(PrefDisplay.topSplitter, ???)
+
+//TBD		var x12 = PrefDisplay.bottomSplitter
+//TBD		PrefDisplay.bottomSplitter =  ???
+//TBD		compare(PrefDisplay.bottomSplitter, ???)
+
+		var x13 = PrefDisplay.maximized
+		PrefDisplay.maximized = true
+		compare(PrefDisplay.maximized, true)
+
+//TBD		var x14 = PrefDisplay.geometry
+//TBD		PrefDisplay.geometry =  ???
+//TBD		compare(PrefDisplay.geometry, ???)
+
+//TBD		var x15 = PrefDisplay.windowState
+//TBD		PrefDisplay.windowState =  ???
+//TBD		compare(PrefDisplay.windowState, ???)
+
+		var x16 = PrefDisplay.lastState
+		PrefDisplay.lastState = 17
+		compare(PrefDisplay.lastState, 17)
 	}
 
-	function test_variables() {
-		var x0 = display.animation_speed
-		display.animation_speed = 37
-		compare(display.animation_speed, 37)
+	Item {
+		id: spyCatcher
 
-		var x1 = display.divelist_font
-		display.divelist_font = "helvitica"
-		compare(display.divelist_font, "helvitica")
+		property bool spy1 : false
+		// no signals 2,3
+		property bool spy4 : false
+		property bool spy5 : false
+		property bool spy6 : false
+		// no signals 7	
+		property bool spy8 : false
+		property bool spy9 : false
+		// no signals 10,11,12
+		property bool spy13 : false
+		// no signals 14,15
+		property bool spy16 : false
 
-		var x2 = display.font_size
-		display.font_size = 12.0
-		compare(display.font_size, 12.0)
+		Connections {
+			target: PrefDisplay
+			onAnimation_speedChanged: {spyCatcher.spy1 = true }
+			onDisplay_invalid_divesChanged: {spyCatcher.spy4 = true }
+			onShow_developerChanged: {spyCatcher.spy5 = true }
+			onThemeChanged: {spyCatcher.spy6 = true }
+			onLastDirChanged: {spyCatcher.spy8 = true }
+			onUserSurveyChanged: {spyCatcher.spy9 = true }
+			onMaximizedChanged: {spyCatcher.spy13 = true }
+			onLastStateChanged: {spyCatcher.spy16 = true }
+		}
+	}
 
-		var x3 = display.display_invalid_dives
-		display.display_invalid_dives = !x3
-		compare(display.display_invalid_dives, !x3)
+	function test_signals() {
+		PrefDisplay.animation_speed = -1157
+		// 2,3 have no signal
+		PrefDisplay.display_invalid_dives = ! PrefDisplay.display_invalid_dives
+		PrefDisplay.show_developer = ! PrefDisplay.show_developer
+		PrefDisplay.theme = "qml"
+		// 7 has no signal
+		PrefDisplay.lastDir = "qml"
+		PrefDisplay.userSurvey = "qml"
+		// 10, 11, 12 have no signal
+		PrefDisplay.maximized = ! PrefDisplay.maximized
+		// 14,15 have no signal
+		PrefDisplay.lastState = -17
 
-		var x4 = display.show_developer
-		display.show_developer = !x4
-		compare(display.show_developer, !x4)
-
-		var x5 = display.theme
-		display.theme = "myColor"
-		compare(display.theme, "myColor")
-
-//TBD		var x6 = display.tooltip_position
-//TBD		display.tooltip_position = ??
-//TBD		compare(display.tooltip_position, ??)
-
-		var x7 = display.lastDir
-		display.lastDir = "myDir"
-		compare(display.lastDir, "myDir")
-
-		var x8 = display.UserSurvey
-		display.UserSurvey = "yes"
-		compare(display.UserSurvey, "yes")
-
-//TBD		var x9 = display.mainSplitter
-//TBD		display.mainSplitter =  ???
-//TBD		compare(display.mainSplitter, ???)
-
-//TBD		var x10 = display.topSplitter
-//TBD		display.topSplitter =  ???
-//TBD		compare(display.topSplitter, ???)
-
-//TBD		var x11 = display.bottomSplitter
-//TBD		display.bottomSplitter =  ???
-//TBD		compare(display.bottomSplitter, ???)
-
-		var x12 = display.maximized
-		display.maximized = true
-		compare(display.maximized, true)
-
-//TBD		var x13 = display.geometry
-//TBD		display.geometry =  ???
-//TBD		compare(display.geometry, ???)
-
-//TBD		var x14 = display.windowState
-//TBD		display.windowState =  ???
-//TBD		compare(display.windowState, ???)
-
-		var x15 = display.lastState
-		display.lastState = 17
-		compare(display.lastState, 17)
+		compare(spyCatcher.spy1, true)
+		compare(spyCatcher.spy4, true)
+		compare(spyCatcher.spy5, true)
+		compare(spyCatcher.spy6, true)
+		compare(spyCatcher.spy8, true)
+		compare(spyCatcher.spy9, true)
+		compare(spyCatcher.spy13, true)
+		compare(spyCatcher.spy16, true)
 	}
 }

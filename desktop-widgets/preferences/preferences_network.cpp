@@ -4,7 +4,8 @@
 #include "subsurfacewebservices.h"
 #include "core/cloudstorage.h"
 #include "core/dive.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefProxy.h"
 #include <QNetworkProxy>
 
 PreferencesNetwork::PreferencesNetwork() : AbstractPreferencesWidget(tr("Network"),QIcon(":preferences-system-network-icon"), 9), ui(new Ui::PreferencesNetwork())
@@ -57,7 +58,7 @@ void PreferencesNetwork::syncSettings()
 	QString newpassword = ui->cloud_storage_new_passwd->text();
 
 	//TODO: Change this to the Cloud Storage Stuff, not preferences.
-	if (prefs.cloud_verification_status == qPref::CS_VERIFIED && !newpassword.isEmpty()) {
+	if (prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED && !newpassword.isEmpty()) {
 		// deal with password change
 		if (!email.isEmpty() && !password.isEmpty()) {
 			// connect to backend server to check / create credentials
@@ -77,14 +78,14 @@ void PreferencesNetwork::syncSettings()
 			cloudAuth->backend(email, password, "", newpassword);
 			ui->cloud_storage_new_passwd->setText("");
 		}
-	} else if (prefs.cloud_verification_status == qPref::CS_UNKNOWN ||
-		   prefs.cloud_verification_status == qPref::CS_INCORRECT_USER_PASSWD ||
+	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_UNKNOWN ||
+		   prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD ||
 		   email != prefs.cloud_storage_email ||
 		   password != prefs.cloud_storage_password) {
 
 		// different credentials - reset verification status
 		int oldVerificationStatus = cloud->cloud_verification_status();
-		cloud->set_cloud_verification_status(qPref::CS_UNKNOWN);
+		cloud->set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
 		if (!email.isEmpty() && !password.isEmpty()) {
 			// connect to backend server to check / create credentials
 			QRegularExpression reg("^[a-zA-Z0-9@.+_-]+$");
@@ -97,7 +98,7 @@ void PreferencesNetwork::syncSettings()
 			connect(cloudAuth, &CloudStorageAuthenticate::finishedAuthenticate, this, &PreferencesNetwork::updateCloudAuthenticationState);
 			cloudAuth->backend(email, password);
 		}
-	} else if (prefs.cloud_verification_status == qPref::CS_NEED_TO_VERIFY) {
+	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		QString pin = ui->cloud_storage_pin->text();
 		if (!pin.isEmpty()) {
 			// connect to backend server to check / create credentials
@@ -120,19 +121,19 @@ void PreferencesNetwork::syncSettings()
 
 void PreferencesNetwork::updateCloudAuthenticationState()
 {
-	ui->cloud_storage_pin->setEnabled(prefs.cloud_verification_status == qPref::CS_NEED_TO_VERIFY);
-	ui->cloud_storage_pin->setVisible(prefs.cloud_verification_status == qPref::CS_NEED_TO_VERIFY);
-	ui->cloud_storage_pin_label->setEnabled(prefs.cloud_verification_status == qPref::CS_NEED_TO_VERIFY);
-	ui->cloud_storage_pin_label->setVisible(prefs.cloud_verification_status == qPref::CS_NEED_TO_VERIFY);
-	ui->cloud_storage_new_passwd->setEnabled(prefs.cloud_verification_status == qPref::CS_VERIFIED);
-	ui->cloud_storage_new_passwd->setVisible(prefs.cloud_verification_status == qPref::CS_VERIFIED);
-	ui->cloud_storage_new_passwd_label->setEnabled(prefs.cloud_verification_status == qPref::CS_VERIFIED);
-	ui->cloud_storage_new_passwd_label->setVisible(prefs.cloud_verification_status == qPref::CS_VERIFIED);
-	if (prefs.cloud_verification_status == qPref::CS_VERIFIED) {
+	ui->cloud_storage_pin->setEnabled(prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY);
+	ui->cloud_storage_pin->setVisible(prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY);
+	ui->cloud_storage_pin_label->setEnabled(prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY);
+	ui->cloud_storage_pin_label->setVisible(prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY);
+	ui->cloud_storage_new_passwd->setEnabled(prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED);
+	ui->cloud_storage_new_passwd->setVisible(prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED);
+	ui->cloud_storage_new_passwd_label->setEnabled(prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED);
+	ui->cloud_storage_new_passwd_label->setVisible(prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED);
+	if (prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED) {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (credentials verified)"));
-	} else if (prefs.cloud_verification_status == qPref::CS_INCORRECT_USER_PASSWD) {
+	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (incorrect password)"));
-	} else if (prefs.cloud_verification_status == qPref::CS_NEED_TO_VERIFY) {
+	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage (PIN required)"));
 	} else {
 		ui->cloudStorageGroupBox->setTitle(tr("Subsurface cloud storage"));

@@ -3,9 +3,10 @@
 
 #include "core/pref.h"
 #include "core/qthelper.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefUnit.h"
 
 #include <QTest>
+#include <QSignalSpy>
 
 void TestQPrefUnits::initTestCase()
 {
@@ -232,5 +233,58 @@ void TestQPrefUnits::test_oldPreferences()
 	TEST(units->unit_system(), QStringLiteral("personalized"));
 	TEST(units->coordinates_traditional(), true);
 }
+
+void TestQPrefUnits::test_signals()
+{
+	QSignalSpy spy1(qPrefUnits::instance(), SIGNAL(coordinates_traditionalChanged(bool)));
+	QSignalSpy spy2(qPrefUnits::instance(), SIGNAL(duration_unitsChanged(int)));
+	QSignalSpy spy3(qPrefUnits::instance(), SIGNAL(lengthChanged(int)));
+	QSignalSpy spy4(qPrefUnits::instance(), SIGNAL(pressureChanged(int)));
+	QSignalSpy spy5(qPrefUnits::instance(), SIGNAL(show_units_tableChanged(bool)));
+	QSignalSpy spy6(qPrefUnits::instance(), SIGNAL(temperatureChanged(int)));
+	QSignalSpy spy7(qPrefUnits::instance(), SIGNAL(vertical_speed_timeChanged(int)));
+	QSignalSpy spy8(qPrefUnits::instance(), SIGNAL(volumeChanged(int)));
+	QSignalSpy spy9(qPrefUnits::instance(), SIGNAL(weightChanged(int)));
+
+	prefs.coordinates_traditional = true;
+	qPrefUnits::set_coordinates_traditional(false);
+	prefs.units.duration_units = units::MIXED;
+	qPrefUnits::set_duration_units(units::MINUTES_ONLY);
+	prefs.units.length = units::METERS;
+	qPrefUnits::set_length(units::FEET);
+	prefs.units.pressure = units::BAR;
+	qPrefUnits::set_pressure(units::PSI);
+	prefs.units.show_units_table = true;
+	qPrefUnits::set_show_units_table(false);
+	prefs.units.temperature = units::CELSIUS;
+	qPrefUnits::set_temperature(units::FAHRENHEIT);
+	prefs.units.vertical_speed_time = units::MINUTES;
+	qPrefUnits::set_vertical_speed_time(units::SECONDS);
+	prefs.units.volume = units::LITER;
+	qPrefUnits::set_volume(units::CUFT);
+	prefs.units.weight = units::KG;
+	qPrefUnits::set_weight(units::LBS);
+
+	QCOMPARE(spy1.count(), 1);
+	QCOMPARE(spy2.count(), 1);
+	QCOMPARE(spy3.count(), 1);
+	QCOMPARE(spy4.count(), 1);
+	QCOMPARE(spy5.count(), 1);
+	QCOMPARE(spy6.count(), 1);
+	QCOMPARE(spy7.count(), 1);
+	QCOMPARE(spy9.count(), 1);
+	QCOMPARE(spy9.count(), 1);
+
+	QVERIFY(spy1.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy2.takeFirst().at(0).toInt() == units::MINUTES_ONLY);
+	QVERIFY(spy3.takeFirst().at(0).toInt() == units::FEET);
+	QVERIFY(spy4.takeFirst().at(0).toInt() == units::PSI);
+	QVERIFY(spy5.takeFirst().at(0).toBool() == false);
+	QVERIFY(spy6.takeFirst().at(0).toInt() == units::FAHRENHEIT);
+	QVERIFY(spy7.takeFirst().at(0).toInt() == units::SECONDS);
+	QVERIFY(spy8.takeFirst().at(0).toInt() == units::CUFT);
+	QVERIFY(spy9.takeFirst().at(0).toInt() == units::LBS);
+}
+
 
 QTEST_MAIN(TestQPrefUnits)

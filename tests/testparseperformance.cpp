@@ -3,7 +3,8 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/git-access.h"
-#include "core/settings/qPref.h"
+#include "core/settings/qPrefProxy.h"
+#include "core/settings/qPrefCloudStorage.h"
 #include <QFile>
 #include <QDebug>
 #include <QNetworkProxy>
