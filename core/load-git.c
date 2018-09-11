@@ -831,13 +831,13 @@ static void parse_settings_units(char *line, struct membuffer *str, void *unused
 }
 
 static void parse_settings_userid(char *line, struct membuffer *str, void *_unused)
+/* Keep this despite removal of the webservice as there are legacy logbook around
+ * that still have this defined.
+ */
 {
 	UNUSED(str);
 	UNUSED(_unused);
-	if (line) {
-		prefs.save_userid_local = true;
-		set_userid(line);
-	}
+	UNUSED(line);
 }
 
 static void parse_settings_prefs(char *line, struct membuffer *str, void *unused)
@@ -1544,7 +1544,6 @@ static int parse_settings_entry(git_repository *repo, const git_tree_entry *entr
 	git_blob *blob = git_tree_entry_blob(repo, entry);
 	if (!blob)
 		return report_error("Unable to read settings file");
-	prefs.save_userid_local = false;
 	for_each_line(blob, settings_parser, NULL);
 	git_blob_free(blob);
 	return 0;

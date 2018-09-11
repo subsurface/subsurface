@@ -400,12 +400,6 @@ void divecomputer_end(void)
 void userid_start(void)
 {
 	in_userid = true;
-	//if the xml contains userid, keep saving it.
-	// don't call the prefs method here as we don't wanna
-	// actually change the preferences, this is temporary and
-	// will be reverted when the file finishes.
-
-	prefs.save_userid_local = true;
 }
 
 void userid_stop(void)
