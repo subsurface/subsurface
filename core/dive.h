@@ -763,7 +763,6 @@ extern void reset_cylinders(struct dive *dive, bool track_gas);
 extern void dump_cylinders(struct dive *dive, bool verbose);
 #endif
 
-extern void set_userid(const char *user_id);
 extern void set_informational_units(const char *units);
 extern void set_git_prefs(const char *prefs);
 

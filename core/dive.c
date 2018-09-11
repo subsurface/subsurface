@@ -3747,16 +3747,6 @@ timestamp_t get_times()
 	return dive->when;
 }
 
-void set_userid(const char *rUserId)
-{
-	char *userid = strdup(rUserId);
-	if (strlen(userid) > 30)
-		userid[30] = '\0';
-	if (prefs.userid)
-		free((void *)prefs.userid);
-	prefs.userid = userid;
-}
-
 /* this sets a usually unused copy of the preferences with the units
  * that were active the last time the dive list was saved to git storage
  * (this isn't used in XML files); storing the unit preferences in the
