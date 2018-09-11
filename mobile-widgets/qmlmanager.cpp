@@ -490,8 +490,6 @@ void QMLManager::saveCloudCredentials()
 	} else if (cloudCredentialsChanged) {
 		// let's make sure there are no unsaved changes
 		saveChangesLocal();
-		free((void *)prefs.userid);
-		prefs.userid = NULL;
 		syncLoadFromCloud();
 		QString url;
 		getCloudURL(url);
@@ -622,25 +620,7 @@ void QMLManager::retrieveUserid()
 		revertToNoCloudIfNeeded();
 		return;
 	}
-	QMLPrefs::instance()->setCredentialStatus(qPref::CS_VERIFIED);
-	QString userid(prefs.userid);
-	if (userid.isEmpty()) {
-		if (empty_string(prefs.cloud_storage_email) || empty_string(prefs.cloud_storage_password)) {
-			appendTextToLog("cloud user name or password are empty, can't retrieve web user id");
-			revertToNoCloudIfNeeded();
-			return;
-		}
-		appendTextToLog(QStringLiteral("calling getUserid with user %1").arg(prefs.cloud_storage_email));
-		userid = locationProvider->getUserid(prefs.cloud_storage_email, prefs.cloud_storage_password);
-	}
-	if (!userid.isEmpty()) {
-		// overwrite the existing userid
-		free((void *)prefs.userid);
-		prefs.userid = copy_qstring(userid);
-		QSettings s;
-		s.setValue("subsurface_webservice_uid", prefs.userid);
-		s.sync();
-	}
+
 	QMLPrefs::instance()->setCredentialStatus(qPref::CS_VERIFIED);
 	setStartPageText(tr("Cloud credentials valid, loading dives..."));
 	// this only gets called with "alreadySaving" already locked
@@ -1388,17 +1368,6 @@ void QMLManager::applyGpsData()
 {
 	if (locationProvider->applyLocations())
 		refreshDiveList();
-}
-
-void QMLManager::sendGpsData()
-{
-	locationProvider->uploadToServer();
-}
-
-void QMLManager::downloadGpsData()
-{
-	locationProvider->downloadFromServer();
-	populateGpsData();
 }
 
 void QMLManager::populateGpsData()

@@ -168,8 +168,6 @@ public slots:
 	QString addDive();
 	void addDiveAborted(int id);
 	void applyGpsData();
-	void sendGpsData();
-	void downloadGpsData();
 	void populateGpsData();
 	void cancelDownloadDC();
 	void clearGpsData();
@@ -200,7 +198,6 @@ private:
 	SuitCompletionModel suitModel;
 	DiveMasterCompletionModel divemasterModel;
 	LocationInformationModel locationModel;
-	QString m_ssrfGpsWebUserid;
 	QString m_startPageText;
 	QString m_logText;
 	QString m_lastError;
