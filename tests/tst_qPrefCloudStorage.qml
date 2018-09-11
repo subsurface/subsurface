@@ -46,10 +46,6 @@ TestCase {
 		tst.cloud_verification_status = SsrfPrefs.CS_VERIFIED
 		compare(tst.cloud_verification_status, SsrfPrefs.CS_VERIFIED)
 
-		var x10 = tst.git_local_only
-		tst.git_local_only = true 
-		compare(tst.git_local_only, true)
-
 		var x11 = tst.save_password_local
 		tst.save_password_local = true
 		compare(tst.save_password_local, true)
