@@ -29,8 +29,6 @@ void TestQPrefCloudStorage::test_struct_get()
 	prefs.cloud_timeout = 117;
 	prefs.cloud_verification_status = qPref::CS_NOCLOUD;
 	prefs.save_password_local = true;
-	prefs.save_userid_local = true;
-	prefs.userid = copy_qstring("my user");
 
 	QCOMPARE(tst->cloud_base_url(), QString(prefs.cloud_base_url));
 	QCOMPARE(tst->cloud_git_url(), QString(prefs.cloud_git_url));
@@ -41,8 +39,6 @@ void TestQPrefCloudStorage::test_struct_get()
 	QCOMPARE(tst->cloud_timeout(), (int)prefs.cloud_timeout);
 	QCOMPARE(tst->cloud_verification_status(), (int)prefs.cloud_verification_status);
 	QCOMPARE(tst->save_password_local(), prefs.save_password_local);
-	QCOMPARE(tst->save_userid_local(), prefs.save_userid_local);
-	QCOMPARE(tst->userid(), QString(prefs.userid));
 }
 
 void TestQPrefCloudStorage::test_set_struct()
@@ -59,8 +55,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	tst->set_cloud_timeout(123);
 	tst->set_cloud_verification_status(qPref::CS_VERIFIED);
 	tst->set_save_password_local(false);
-	tst->set_save_userid_local(false);
-	tst->set_userid("t2 user");
 
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t2 base"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t2 email"));
@@ -70,8 +64,6 @@ void TestQPrefCloudStorage::test_set_struct()
 	QCOMPARE((int)prefs.cloud_timeout, 123);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, false);
-	QCOMPARE(prefs.save_userid_local, false);
-	QCOMPARE(QString(prefs.userid), QString("t2 user"));
 
 	// remark is set with set_base_url
 	QCOMPARE(QString(prefs.cloud_git_url), QString("t2 base/git"));
@@ -91,8 +83,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	tst->set_cloud_storage_pin("t3 pin");
 	tst->set_cloud_timeout(321);
 	tst->set_cloud_verification_status(qPref::CS_NOCLOUD);
-	tst->set_save_userid_local(true);
-	tst->set_userid("t3 user");
 
 	prefs.cloud_base_url = copy_qstring("error1");
 	prefs.cloud_git_url = copy_qstring("error1");
@@ -103,8 +93,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	prefs.cloud_timeout = 324;
 	prefs.cloud_verification_status = qPref::CS_VERIFIED;
 	prefs.save_password_local = false;
-	prefs.save_userid_local = false;
-	prefs.userid = copy_qstring("error1");
 
 	tst->load();
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t3 base"));
@@ -115,8 +103,6 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	QCOMPARE((int)prefs.cloud_timeout, 321);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_NOCLOUD);
 	QCOMPARE(prefs.save_password_local, true);
-	QCOMPARE(prefs.save_userid_local, true);
-	QCOMPARE(QString(prefs.userid), QString("t3 user"));
 
 	// remark is set with set_base_url
 	QCOMPARE(QString(prefs.cloud_git_url), QString("t3 base/git"));
@@ -136,8 +122,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_pin = copy_qstring("t4 pin");
 	prefs.cloud_timeout = 123;
 	prefs.cloud_verification_status = qPref::CS_VERIFIED;
-	prefs.save_userid_local = true;
-	prefs.userid = copy_qstring("t4 user");
 
 	tst->sync();
 
@@ -150,8 +134,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_timeout = 324;
 	prefs.cloud_verification_status = qPref::CS_VERIFIED;
 	prefs.save_password_local = false;
-	prefs.save_userid_local = false;
-	prefs.userid = copy_qstring("error1");
 
 	tst->load();
 
@@ -163,8 +145,6 @@ void TestQPrefCloudStorage::test_struct_disk()
 	QCOMPARE((int)prefs.cloud_timeout, 123);
 	QCOMPARE((int)prefs.cloud_verification_status, (int)qPref::CS_VERIFIED);
 	QCOMPARE(prefs.save_password_local, true);
-	QCOMPARE(prefs.save_userid_local, true);
-	QCOMPARE(QString(prefs.userid), QString("t4 user"));
 
 	// remark is set with set_base_url
 	QCOMPARE(QString(prefs.cloud_git_url), QString("t4 base/git"));
@@ -174,14 +154,12 @@ void TestQPrefCloudStorage::test_multiple()
 {
 	// test multiple instances have the same information
 
-	prefs.userid = copy_qstring("my user");
 	auto tst_direct = new qPrefCloudStorage;
 
 	prefs.cloud_timeout = 25;
 	auto tst = qPrefCloudStorage::instance();
 
 	QCOMPARE(tst->cloud_timeout(), tst_direct->cloud_timeout());
-	QCOMPARE(tst->userid(), tst_direct->userid());
 	QCOMPARE(tst_direct->cloud_timeout(), 25);
 }
 
@@ -214,16 +192,6 @@ void TestQPrefCloudStorage::test_oldPreferences()
 	TEST(cloud->save_password_local(), true);
 	cloud->set_save_password_local(false);
 	TEST(cloud->save_password_local(), false);
-
-	cloud->set_save_userid_local(1);
-	TEST(cloud->save_userid_local(), true);
-	cloud->set_save_userid_local(0);
-	TEST(cloud->save_userid_local(), false);
-
-	cloud->set_userid("Tomaz");
-	TEST(cloud->userid(), QStringLiteral("Tomaz"));
-	cloud->set_userid("Zamot");
-	TEST(cloud->userid(), QStringLiteral("Zamot"));
 
 	cloud->set_cloud_verification_status(0);
 	TEST(cloud->cloud_verification_status(), 0);
