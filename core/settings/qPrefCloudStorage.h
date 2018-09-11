@@ -16,8 +16,6 @@ class qPrefCloudStorage : public QObject {
 	Q_PROPERTY(int cloud_verification_status READ cloud_verification_status WRITE set_cloud_verification_status NOTIFY cloud_verification_status_changed);
 	Q_PROPERTY(int cloud_timeout READ cloud_timeout WRITE set_cloud_timeout NOTIFY cloud_timeout_changed);
 	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_local_changed);
-	Q_PROPERTY(bool save_userid_local READ save_userid_local WRITE set_save_userid_local NOTIFY save_userid_local_changed);
-	Q_PROPERTY(QString userid READ userid WRITE set_userid NOTIFY userid_changed);
 
 public:
 	qPrefCloudStorage(QObject *parent = NULL);
@@ -38,8 +36,6 @@ public:
 	static int cloud_timeout() { return prefs.cloud_timeout; }
 	static int cloud_verification_status() { return prefs.cloud_verification_status; }
 	static bool save_password_local() { return prefs.save_password_local; }
-	static bool save_userid_local() { return prefs.save_userid_local; }
-	static QString userid() { return prefs.userid; }
 
 public slots:
 	static void set_cloud_base_url(const QString &value);
@@ -50,8 +46,6 @@ public slots:
 	static void set_cloud_timeout(int value);
 	static void set_cloud_verification_status(int value);
 	static void set_save_password_local(bool value);
-	static void set_save_userid_local(bool value);
-	static void set_userid(const QString &value);
 
 signals:
 	void cloud_base_url_changed(const QString &value);
@@ -62,8 +56,6 @@ signals:
 	void cloud_timeout_changed(int value);
 	void cloud_verification_status_changed(int value);
 	void save_password_local_changed(bool value);
-	void save_userid_local_changed(bool value);
-	void userid_changed(const QString &value);
 
 private:
 	// functions to load/sync variable with disk
@@ -75,8 +67,6 @@ private:
 	static void disk_cloud_timeout(bool doSync);
 	static void disk_cloud_verification_status(bool doSync);
 	static void disk_save_password_local(bool doSync);
-	static void disk_save_userid_local(bool doSync);
-	static void disk_userid(bool doSync);
 };
 
 #endif
