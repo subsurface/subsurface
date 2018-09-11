@@ -837,13 +837,6 @@ static void save_units(void *_b)
 			   prefs.units.vertical_speed_time == SECONDS ? "SECONDS" : "MINUTES");
 }
 
-static void save_userid(void *_b)
-{
-	struct membuffer *b = _b;
-	if (prefs.save_userid_local)
-		put_format(b, "userid %30s\n", prefs.userid);
-}
-
 static void save_one_device(void *_b, const char *model, uint32_t deviceid,
 	const char *nickname, const char *serial, const char *firmware)
 {
@@ -870,7 +863,6 @@ static void save_settings(git_repository *repo, struct dir *tree)
 	struct membuffer b = { 0 };
 
 	put_format(&b, "version %d\n", DATAFORMAT_VERSION);
-	save_userid(&b);
 	call_for_each_dc(&b, save_one_device, false);
 	cond_put_format(autogroup, &b, "autogroup\n");
 	save_units(&b);

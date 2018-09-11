@@ -561,9 +561,6 @@ void save_dives_buffer(struct membuffer *b, const bool select_only)
 
 	put_format(b, "<divelog program='subsurface' version='%d'>\n<settings>\n", DATAFORMAT_VERSION);
 
-	if (prefs.save_userid_local)
-		put_format(b, "  <userid>%30s</userid>\n", prefs.userid);
-
 	/* save the dive computer nicknames, if any */
 	call_for_each_dc(b, save_one_device, select_only);
 	if (autogroup)
