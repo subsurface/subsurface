@@ -1679,6 +1679,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 		uint16_t volt2;
 		uint8_t percent2;
 	};
+	struct battery_status battery_start = {0, 0, 0, 0};
 	struct battery_status battery_end = {0, 0, 0, 0};
 
 	target_table = table;
@@ -1978,6 +1979,14 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			/* measure record */
 			switch (ptr[2] >> 5) {
 			case 1:
+				/* Record starting battery level */
+				if (!battery_start.volt1 && !battery_start.volt2) {
+					battery_start.volt1 = (ptr[5] << 8) + ptr[4];
+					battery_start.percent1 = ptr[6];
+					battery_start.volt2 = (ptr[9] << 8) + ptr[8];
+					battery_start.percent2 = ptr[10];
+				}
+
 				/* Measure Battery, recording the last reading only */
 				battery_end.volt1 = (ptr[5] << 8) + ptr[4];
 				battery_end.percent1 = ptr[6];
@@ -2011,6 +2020,26 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 		default:
 			/* Unknown... */
 			break;
+		}
+	}
+
+	/* Recording the starting battery status to extra data */
+	if (battery_start.volt1) {
+		size_t size = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1) + 1;
+		char *ptr = malloc(size);
+
+		if (ptr) {
+			snprintf(ptr, size, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1);
+			add_extra_data(cur_dc, "Battery 1 (start)", ptr);
+			free(ptr);
+		}
+
+		size = snprintf(NULL, 0, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2) + 1;
+		ptr = malloc(size);
+		if (ptr) {
+			snprintf(ptr, size, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2);
+			add_extra_data(cur_dc, "Battery 2 (start)", ptr);
+			free(ptr);
 		}
 	}
 
