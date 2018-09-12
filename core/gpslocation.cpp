@@ -3,6 +3,7 @@
 #include "qt-models/gpslistmodel.h"
 #include "core/pref.h"
 #include "core/qthelper.h"
+#include "core/settings/qPrefLocationService.h"
 #include <time.h>
 #include <unistd.h>
 #include <QDebug>
@@ -36,6 +37,9 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
 	userAgent = getUserAgent();
 	(void)getGpsSource();
 	loadFromStorage();
+
+	// register changes in time threshold
+	connect(qPrefLocationService::instance(), SIGNAL(qPrefLocationService::time_thresholdChanged()), this, SLOT(setGpsTimeThreshold(int seconds)));
 }
 
 GpsLocation *GpsLocation::instance()
