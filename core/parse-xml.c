@@ -1673,12 +1673,13 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	unsigned int time = 0;
 	int i;
 	char serial[6];
-	struct {
+	struct battery_status {
 		uint16_t volt1;
 		uint8_t percent1;
 		uint16_t volt2;
 		uint8_t percent2;
-	} battery = {0, 0, 0, 0};
+	};
+	struct battery_status battery_end = {0, 0, 0, 0};
 
 	target_table = table;
 
@@ -1978,10 +1979,10 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			switch (ptr[2] >> 5) {
 			case 1:
 				/* Measure Battery, recording the last reading only */
-				battery.volt1 = (ptr[5] << 8) + ptr[4];
-				battery.percent1 = ptr[6];
-				battery.volt2 = (ptr[9] << 8) + ptr[8];
-				battery.percent2 = ptr[10];
+				battery_end.volt1 = (ptr[5] << 8) + ptr[4];
+				battery_end.percent1 = ptr[6];
+				battery_end.volt2 = (ptr[9] << 8) + ptr[8];
+				battery_end.percent2 = ptr[10];
 				break;
 			case 2:
 				/* Measure He */
@@ -2014,21 +2015,21 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	}
 
 	/* Recording the ending battery status to extra data */
-	if (battery.volt1) {
-		size_t size = snprintf(NULL, 0, "%dmV (%d%%)", battery.volt1, battery.percent1) + 1;
+	if (battery_end.volt1) {
+		size_t size = snprintf(NULL, 0, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1) + 1;
 		char *ptr = malloc(size);
 
 		if (ptr) {
-			snprintf(ptr, size, "%dmV (%d%%)", battery.volt1, battery.percent1);
-			add_extra_data(cur_dc, "Battery 1", ptr);
+			snprintf(ptr, size, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1);
+			add_extra_data(cur_dc, "Battery 1 (end)", ptr);
 			free(ptr);
 		}
 
-		size = snprintf(NULL, 0, "%dmV (%d%%)", battery.volt2, battery.percent2) + 1;
+		size = snprintf(NULL, 0, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2) + 1;
 		ptr = malloc(size);
 		if (ptr) {
-			snprintf(ptr, size, "%dmV (%d%%)", battery.volt2, battery.percent2);
-			add_extra_data(cur_dc, "Battery 2", ptr);
+			snprintf(ptr, size, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2);
+			add_extra_data(cur_dc, "Battery 2 (end)", ptr);
 			free(ptr);
 		}
 	}
