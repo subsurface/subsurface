@@ -33,10 +33,6 @@ class QMLPrefs : public QObject {
 				MEMBER m_oldStatus
 				WRITE setOldStatus
 				NOTIFY oldStatusChanged)
-	Q_PROPERTY(QString theme
-				READ theme
-				WRITE setTheme
-				NOTIFY themeChanged)
 public:
 	QMLPrefs();
 	~QMLPrefs();
@@ -61,9 +57,6 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 
-	const QString theme() const;
-	void setTheme(QString theme);
-
 public slots:
 	void cancelCredentialsPinSetup();
 	void clearCredentials();
@@ -84,7 +77,6 @@ signals:
 	void credentialStatusChanged();
 	void oldStatusChanged();
 	void showPinChanged();
-	void themeChanged();
 };
 
 #endif

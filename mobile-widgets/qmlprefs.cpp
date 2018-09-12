@@ -108,19 +108,6 @@ void QMLPrefs::setShowPin(bool enable)
 	emit showPinChanged();
 }
 
-const QString QMLPrefs::theme() const
-{
-	return qPrefDisplay::theme();
-}
-
-void QMLPrefs::setTheme(QString theme)
-{
-	qPrefDisplay::set_theme(theme);
-	emit themeChanged();
-}
-
-
-
 /*** public slot functions ***/
 void QMLPrefs::cancelCredentialsPinSetup()
 {   
