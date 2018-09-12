@@ -31,12 +31,16 @@
 #ifndef SUBSURFACE_TEST_DATA
 QObject *qqWindowObject = NULL;
 
+// Forward declaration
+static void register_qml_types(QQmlEngine *);
 static void register_meta_types();
+
 void init_ui()
 {
 	init_qt_late();
 	register_meta_types();
 #ifndef SUBSURFACE_MOBILE
+	register_qml_types(NULL);
 	PluginManager::instance().loadPlugins();
 
 	MainWindow *window = new MainWindow();
@@ -59,8 +63,6 @@ double get_screen_dpi()
 	return mydesk->physicalDpiX();
 }
 
-// Forward declaration
-static void register_qml_types(QQmlEngine *);
 
 void run_ui()
 {
@@ -138,7 +140,6 @@ void run_ui()
 	qml_window->show();
 	LOG_STP("run_ui running exec");
 #else
-	register_qml_types(NULL);
 	MainWindow::instance()->show();
 #endif // SUBSURFACE_MOBILE
 	qApp->exec();
