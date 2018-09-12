@@ -139,8 +139,7 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Blue"
 				onClicked: {
 					blueTheme()
-					prefs.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
 
@@ -192,8 +191,7 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Pink"
 				onClicked: {
 					pinkTheme()
-					prefs.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
 
@@ -244,8 +242,7 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Dark"
 				onClicked: {
 					darkTheme()
-					prefs.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
 		}

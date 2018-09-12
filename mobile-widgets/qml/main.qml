@@ -506,7 +506,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
 			// this needs to pick the theme from persistent preference settings
-			var theme = prefs.theme
+			var theme = PrefDisplay.theme
 			if (theme == "Blue")
 				blueTheme()
 			else if (theme == "Pink")
