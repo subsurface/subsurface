@@ -146,7 +146,6 @@ public:
 public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
-	void savePreferences();
 	void saveCloudCredentials();
 	void tryRetrieveDataFromBackend();
 	void handleError(QNetworkReply::NetworkError nError);
