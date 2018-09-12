@@ -361,7 +361,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					name: ":/icons/ic_adb.svg"
 				}
 				text: qsTr("Developer")
-				visible: prefs.developer
+				visible: PrefDisplay.show_developer
 				Kirigami.Action {
 					text: qsTr("App log")
 					onTriggered: {

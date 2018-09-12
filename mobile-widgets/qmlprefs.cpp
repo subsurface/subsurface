@@ -11,7 +11,6 @@ QMLPrefs *QMLPrefs::m_instance = NULL;
 
 QMLPrefs::QMLPrefs() :
 	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_developer(false),
 	m_distanceThreshold(1000),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_showPin(false),
@@ -85,12 +84,6 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
 	}
-}
-
-void QMLPrefs::setDeveloper(bool value)
-{
-	m_developer = value;
-	emit developerChanged();
 }
 
 int QMLPrefs::distanceThreshold() const
