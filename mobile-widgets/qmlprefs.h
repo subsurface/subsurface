@@ -25,10 +25,6 @@ class QMLPrefs : public QObject {
 				MEMBER m_credentialStatus
 				WRITE setCredentialStatus
 				NOTIFY credentialStatusChanged)
-	Q_PROPERTY(int distanceThreshold
-				MEMBER m_distanceThreshold
-				WRITE setDistanceThreshold
-				NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(bool showPin
 				MEMBER m_showPin
 				WRITE setShowPin
@@ -64,9 +60,6 @@ public:
 	qPrefCloudStorage::cloud_status credentialStatus() const;
 	void setCredentialStatus(const qPrefCloudStorage::cloud_status value);
 
-	int distanceThreshold() const;
-	void setDistanceThreshold(int distance);
-
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 
@@ -88,7 +81,6 @@ private:
 	QString m_cloudPin;
 	QString m_cloudUserName;
 	qPrefCloudStorage::cloud_status m_credentialStatus;
-	int m_distanceThreshold;
 	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
@@ -99,7 +91,6 @@ signals:
 	void cloudPinChanged();
 	void cloudUserNameChanged();
 	void credentialStatusChanged();
-	void distanceThresholdChanged();
 	void oldStatusChanged();
 	void showPinChanged();
 	void themeChanged();

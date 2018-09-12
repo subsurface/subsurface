@@ -278,11 +278,10 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: distanceThreshold
-				text: prefs.distanceThreshold
+				text: PrefLocationService.distance_threshold
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					prefs.distanceThreshold = distanceThreshold.text
-					manager.savePreferences()
+					PrefLocationService.distance_threshold = distanceThreshold.text
 				}
 			}
 
@@ -366,9 +365,7 @@ Kirigami.ScrollablePage {
 				checked: PrefDisplay.show_developer
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					console.log("JAN changing developer menu(" + PrefDisplay.show_developer + ")")
 					PrefDisplay.show_developer = checked
-					console.log("JAN changed developer menu(" + PrefDisplay.show_developer + ")")
 				}
 			}
 		}
