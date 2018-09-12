@@ -167,160 +167,160 @@
         <translation>Söker efter externa enheter...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="198"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="202"/>
         <source>Scanning finished successfully.</source>
         <translation>Sökning avslutad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="214"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
         <source>The local Bluetooth device was %1.</source>
         <extracomment>%1 will be replaced with &quot;turned on&quot; or &quot;turned off&quot;</extracomment>
         <translation>%1 var den lokala blåtandsenheten.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="216"/>
         <source>turned on</source>
         <translation>slå på</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="215"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="216"/>
         <source>turned off</source>
         <translation>slå av</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="231"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="371"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="232"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="372"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="392"/>
         <source>UNPAIRED</source>
         <translation>Ej Parkopplad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="235"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="376"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="389"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="236"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="377"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
         <source>PAIRED</source>
         <translation>Parkopplad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="238"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="381"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="390"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="239"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="382"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="391"/>
         <source>AUTHORIZED_PAIRED</source>
         <translation>IHOPPARNING_GODKÄND</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="253"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="254"/>
         <source>%1 (%2)   [State: %3]</source>
         <translation>%1 (%2) [Status: %3]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="276"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="277"/>
         <source>The device %1 can be used for connection. You can press the Save button.</source>
         <translation>Enheten %1 kan nu användas för anslutningar. Du kan klicka på spara.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="289"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="407"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="290"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="408"/>
         <source>The device %1 must be paired in order to be used. Please use the context menu for pairing options.</source>
         <translation>Enheten %1 måste parkopplas för att kunna användas. Du kan använda kontextmenyn för parkopplingsmöjligheter.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="295"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="296"/>
         <source>A device needs a non-zero address for a connection.</source>
         <translation>Enheten behöver en icke-noll adress för anslutning.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="318"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="319"/>
         <source>The local device was changed.</source>
         <translation>Den lokala enheten uppdaterades.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="338"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
         <source>Pair</source>
         <translation>Parkoppla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="339"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="340"/>
         <source>Remove pairing</source>
         <translation>Ta bort parkoppling.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="355"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="356"/>
         <source>Trying to pair device %1</source>
         <translation>Försök att parkoppla med %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="359"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="360"/>
         <source>Trying to unpair device %1</source>
         <translation>Försöker ta bort parkopplingen med %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="372"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="373"/>
         <source>Device %1 was unpaired.</source>
         <translation>Parkopplingen med %1 togs bort.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="379"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="380"/>
         <source>Device %1 was paired.</source>
         <translation>Parkopplade med %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="384"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="385"/>
         <source>Device %1 was paired and is authorized.</source>
         <translation>Enheten %1 parkopplades och är nu auktoriserad.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="410"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="411"/>
         <source>The device %1 can now be used for connection. You can press the Save button.</source>
         <translation>Enheten %1 kan nu användas för anslutningar. Du kan klicka på spara.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="422"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="423"/>
         <source>Local device error: %1.</source>
         <translation>Fel i lokal enhet: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="423"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="424"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
         <translation>Parnings fel. Om enheten kräver en speciell PIN kod, vänligen försök para enheterna via operativsystemet.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="425"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="426"/>
         <source>Unknown error</source>
         <translation>Okänt fel</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="434"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="435"/>
         <source>The Bluetooth adaptor is powered off, power it on before doing discovery.</source>
         <translation>Blåtandsadaptern är avslagen, slå på den innan sökning.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="437"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="438"/>
         <source>Writing to or reading from the device resulted in an error.</source>
         <translation>Skriva till eller läsa från enheten resulterade i ett fel.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="443"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="444"/>
         <source>An unknown error has occurred.</source>
         <translation>Ett okänt fel har uppstått.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="448"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="449"/>
         <source>Device discovery error: %1.</source>
         <translation>Enhets upptäcknings fel. %1.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="502"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="503"/>
         <source>Not available</source>
         <translation>Inte tillgänglig</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="509"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="510"/>
         <source>The local Bluetooth adapter cannot be accessed.</source>
         <translation>Den lokala blåtands adaptern kan inte nås.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="559"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="560"/>
         <source>The device discovery agent was not created because the %1 address does not match the physical adapter address of any local Bluetooth device.</source>
         <translation>Enhets söknings agenten skapades inte därför att adressen %1 stämmer inte med den fysiska adapteradressen för någon lokal blåtandsenhet.</translation>
     </message>
@@ -328,12 +328,12 @@
 <context>
     <name>BuddyFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="550"/>
-        <source>Person: </source>
-        <translation>Person:</translation>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="549"/>
+        <source>Person</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="551"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="550"/>
         <source>Searches for buddies and divemasters</source>
         <translation>Sök efter parkamrater och divemasters</translation>
     </message>
@@ -341,7 +341,7 @@
 <context>
     <name>BuddyFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="279"/>
+        <location filename="../qt-models/filtermodels.cpp" line="374"/>
         <source>No buddies</source>
         <translation>Inga parkamrater</translation>
     </message>
@@ -1662,102 +1662,102 @@
         <translation>+</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="896"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="895"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1367"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1366"/>
         <source>Backup dive computer settings</source>
         <translation>Säkerhetskopiera dykdatorns inställningar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1368"/>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1389"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1367"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1388"/>
         <source>Backup files</source>
         <translation>Backupfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1372"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1371"/>
         <source>XML backup error</source>
         <translation>XML backup fel</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1373"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1372"/>
         <source>An error occurred while saving the backup file.
 %1</source>
         <translation>Ett fel inträffade när backupfilen skulle sparas.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1376"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1375"/>
         <source>Backup succeeded</source>
         <translation>Backup sparad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1377"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1376"/>
         <source>Your settings have been saved to: %1</source>
         <translation>Dina inställningar har blivit sparade till: %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1388"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1387"/>
         <source>Restore dive computer settings</source>
         <translation>Återställ dykdatorns inställningar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1394"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1393"/>
         <source>XML restore error</source>
         <translation>XML återställningsfel</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1395"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1394"/>
         <source>An error occurred while restoring the backup file.
 %1</source>
         <translation>Ett fel inträffade när backupfilen skulle återställas.
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1399"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1398"/>
         <source>Restore succeeded</source>
         <translation>Återställda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1400"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1399"/>
         <source>Your settings have been restored successfully.</source>
         <translation>Dina inställningar har blivit återställda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1410"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1409"/>
         <source>Select firmware file</source>
         <translation>Välj en firmware-fil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1411"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1410"/>
         <source>All files</source>
         <translation>Alla filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1472"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1465"/>
         <source>Log files</source>
         <translation>Loggfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1497"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1490"/>
         <source>Connecting to device...</source>
         <translation>Ansluter till enhet...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1523"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1516"/>
         <source>Connected to device</source>
         <translation>Ansluten till enhet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1543"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1536"/>
         <source>Disconnected from device</source>
         <translation>Enhet frånkopplad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1471"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Välj fil som loggfil för nerladdningen ifrån dykdatorn</translation>
     </message>
@@ -1973,22 +1973,22 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DiveDetails</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="47"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="55"/>
         <source>Dive details</source>
         <translation>Dykdetaljer</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="142"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="150"/>
         <source>Delete dive</source>
         <translation>Radera dyk</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="159"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="167"/>
         <source>Cancel edit</source>
         <translation>Avbryt redigering</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="169"/>
+        <location filename="../mobile-widgets/qml/DiveDetails.qml" line="177"/>
         <source>Show on map</source>
         <translation>Visa på kartan</translation>
     </message>
@@ -1996,104 +1996,136 @@ radera den valda dykdatorn?</translation>
 <context>
     <name>DiveDetailsEdit</name>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="116"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="159"/>
         <source>Dive %1</source>
         <translation>Dyk %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="120"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="163"/>
         <source>Date:</source>
         <translation>Datum:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="132"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="175"/>
         <source>Location:</source>
         <translation>Plats:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="155"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="198"/>
         <source>Coordinates:</source>
         <translation>Koordinater:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="168"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="211"/>
         <source>Use current
 GPS location:</source>
         <translation>Använd nuvarande
 GPS position:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="189"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="232"/>
         <source>Depth:</source>
         <translation>Djup:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="202"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="245"/>
         <source>Duration:</source>
         <translation>Varaktighet:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="259"/>
         <source>Air Temp:</source>
         <translation>Lufttemp:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="229"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="272"/>
         <source>Water Temp:</source>
         <translation>Vattentemperatur:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="242"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="285"/>
         <source>Suit:</source>
         <translation>Dräkt:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="263"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="306"/>
         <source>Buddy:</source>
         <translation>Parkamrat:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="283"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="326"/>
         <source>Divemaster:</source>
         <translation>Divemaster:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="303"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="346"/>
         <source>Weight:</source>
         <translation>Vikt:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="317"/>
-        <source>Cylinder:</source>
-        <translation>Flaska:</translation>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="361"/>
+        <source>Cylinder1:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="331"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="375"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="435"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="501"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="567"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="633"/>
         <source>Gas mix:</source>
         <translation>Gasblandning:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="345"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="390"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="452"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="518"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="584"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="650"/>
         <source>Start Pressure:</source>
         <translation>Starttryck:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="358"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="404"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="468"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="534"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="600"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="666"/>
         <source>End Pressure:</source>
         <translation>Sluttryck:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="371"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="419"/>
+        <source>Cylinder2:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="484"/>
+        <source>Cylinder3:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="550"/>
+        <source>Cylinder4:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="616"/>
+        <source>Cylinder5:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="681"/>
         <source>Rating:</source>
         <translation>Ranking:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="384"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="694"/>
         <source>Visibility:</source>
         <translation>Sikt:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="398"/>
+        <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="708"/>
         <source>Notes:</source>
         <translation>Anteckningar:</translation>
     </message>
@@ -2262,104 +2294,119 @@ GPS position:</translation>
 <context>
     <name>DiveListView</name>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="855"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="848"/>
         <source>Expand all</source>
         <translation>Expandera alla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="857"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="850"/>
         <source>Collapse all</source>
         <translation>Sammanslå alla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="861"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="854"/>
         <source>Collapse others</source>
         <translation>Fäll samman andra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="865"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="858"/>
         <source>Remove dive(s) from trip</source>
         <translation>Ta bort dyk från resa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="866"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="859"/>
         <source>Create new trip above</source>
         <translation>Ny resa ovan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="880"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="873"/>
         <source>Add dive(s) to trip immediately above</source>
         <translation>Lägg till dyk(en) till resan ovan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="882"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="875"/>
         <source>Add dive(s) to trip immediately below</source>
         <translation>Lägg till dyk(en) till resan nedanför</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="886"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="879"/>
         <source>Merge trip with trip above</source>
         <translation>Sammanfoga resa med resan ovan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="887"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="880"/>
         <source>Merge trip with trip below</source>
         <translation>Sammanfoga resa med resan under</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="891"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="884"/>
         <source>Delete dive(s)</source>
         <translation>Radera dyk(en)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="893"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="886"/>
         <source>Mark dive(s) invalid</source>
         <translation>Markera dyk som ogiltiga</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="897"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="890"/>
         <source>Merge selected dives</source>
         <translation>Slå samman valda dyk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="899"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="892"/>
         <source>Renumber dive(s)</source>
         <translation>Uppdatera numrering</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="900"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="893"/>
         <source>Shift dive times</source>
         <translation>Korrigera dyk tider</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="901"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="894"/>
         <source>Split selected dives</source>
         <translation>Dela markerade dyk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="902"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
         <source>Load image(s) from file(s)</source>
         <translation>Laddar bild(er) från fil(er)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="903"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
         <source>Load image from web</source>
         <translation>Ladda bild från nätet</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="929"/>
-        <source>Image files (%1)</source>
-        <translation>Bild filer (%1)</translation>
+        <location filename="../desktop-widgets/divelistview.cpp" line="922"/>
+        <source>Open media files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="985"/>
-        <source>%1 does not appear to be an image</source>
-        <translation>%1 verkar inte vara en bild</translation>
+        <location filename="../desktop-widgets/divelistview.cpp" line="925"/>
+        <source>Media files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="926"/>
+        <source>Image files</source>
+        <translation>Bildfiler</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="927"/>
-        <source>Open image files</source>
-        <translation>Öppna bildfler</translation>
+        <source>Video files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="928"/>
+        <source>All files</source>
+        <translation>Alla filer</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelistview.cpp" line="984"/>
+        <source>%1 does not appear to be an image</source>
+        <translation>%1 verkar inte vara en bild</translation>
     </message>
 </context>
 <context>
@@ -2560,7 +2607,7 @@ GPS position:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="503"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="102"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <source>Light</source>
         <translation>Ljus</translation>
     </message>
@@ -2570,121 +2617,121 @@ GPS position:</translation>
         <translation>Sand</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="79"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="80"/>
         <source>Generic format that is used for data exchange between a variety of diving related programs.</source>
         <translation>Generellt format som används för att utbyta data emellan olika dykrelaterade program. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="81"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="82"/>
         <source>Comma separated values describing the dive profile.</source>
         <translation>Kommaseparerade värden som beskriver dykprofilen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="83"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="84"/>
         <source>Comma separated values of the dive information. This includes most of the dive details but no profile information.</source>
         <translation>Dykinformationen i kommaseparerat format . Detta inkluderar de flesta av dykets detaljer men inte dykprofilen.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="85"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="86"/>
         <source>Send the dive data to divelogs.de website.</source>
         <translation>Skicka dykdatan till divelogs.de.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="87"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="88"/>
         <source>Send the dive data to dive-share.appspot.com website.</source>
         <translation>Skicka dyk datat till dive-share.appspot.com</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="89"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="90"/>
         <source>HTML export of the dive locations, visualized on a world map.</source>
         <translation>HTML-export av dykplatser visualiserade på en världskarta.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="91"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="92"/>
         <source>Subsurface native XML format.</source>
         <translation>Subsurface eget XML-format.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="93"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="94"/>
         <source>Write depths of images to file.</source>
         <translation>Skriv ljupet av bilderna till fil.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="95"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="96"/>
         <source>Write dive as TeX macros to file.</source>
         <translation>Skriv dyk dyk som TeX macro till fil.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="138"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="134"/>
         <source>Export UDDF file as</source>
         <translation>Exportera som UDDF fil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="139"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="135"/>
         <source>UDDF files</source>
         <translation>UDDF filer</translation>
     </message>
     <message>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="139"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="143"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="147"/>
         <source>CSV files</source>
         <translation>CSV filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="154"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="178"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="150"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="174"/>
         <source>HTML files</source>
         <translation>HTML filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="159"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="155"/>
         <source>Subsurface files</source>
         <translation>Subsurface filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="171"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="167"/>
         <source>TeX files</source>
         <translation>TeX filer</translation>
     </message>
     <message>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="138"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="142"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="146"/>
         <source>Export CSV file as</source>
         <translation>Exportera CSV-fil som</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="153"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="149"/>
         <source>Export world map</source>
         <translation>Exportera världskarta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="158"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="154"/>
         <source>Export Subsurface XML</source>
         <translation>Exportera Subsurface XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="167"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="163"/>
         <source>Save image depths</source>
         <translation>Spara bildernas ljup</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="171"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="167"/>
         <source>Export to TeX file</source>
         <translation>Exportera till TeX fil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="177"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="173"/>
         <source>Export HTML files as</source>
         <translation>Exportera HTML filer son</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="193"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="187"/>
         <source>Please wait, exporting...</source>
         <translation>Vänligen vänta, exporterar...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="228"/>
-        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="410"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="222"/>
+        <location filename="../desktop-widgets/divelogexportdialog.cpp" line="404"/>
         <source>Can&apos;t open file %s</source>
         <translation>Kan inte öppna fil %s</translation>
     </message>
@@ -3044,62 +3091,62 @@ GPS position:</translation>
 <context>
     <name>DivePlannerPointsModel</name>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="169"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="170"/>
         <source>unknown</source>
         <translation>okänd</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="270"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="271"/>
         <source>cyl.</source>
         <translation>flaska</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="376"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="377"/>
         <source>Final depth</source>
         <translation>Slutdjup</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="378"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="379"/>
         <source>Run time</source>
         <translation>Löptid</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="380"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="381"/>
         <source>Duration</source>
         <translation>Varaktighet</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="382"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="383"/>
         <source>Used gas</source>
         <translation>Använd gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="384"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="385"/>
         <source>CC setpoint</source>
         <translation>CC setpoint</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="386"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="387"/>
         <source>Dive mode</source>
         <translation>Dykläge</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1038"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1019"/>
         <source>min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1044"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1025"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1047"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1028"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/diveplannermodel.cpp" line="1094"/>
+        <location filename="../qt-models/diveplannermodel.cpp" line="1075"/>
         <source>Stop times</source>
         <translation>Stopptider</translation>
     </message>
@@ -3304,261 +3351,267 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DiveTripModel</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="479"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="534"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="488"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="546"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="482"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="537"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="491"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="549"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="485"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="540"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="494"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="552"/>
         <source>Rating</source>
         <translation>Rankning</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="488"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="497"/>
         <source>Depth</source>
         <translation>Djup</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="491"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="546"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="500"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="558"/>
         <source>Duration</source>
         <translation>Varaktighet</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="497"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="506"/>
         <source>Weight</source>
         <translation>Vikt</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="500"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="555"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="509"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="567"/>
         <source>Suit</source>
         <translation>Dräkt</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="494"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="503"/>
         <source>Temp.</source>
         <translation>Temp.</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="503"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="558"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="512"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="570"/>
         <source>Cylinder</source>
         <translation>Flaska</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="506"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="561"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="515"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="573"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="509"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="518"/>
         <source>SAC</source>
         <translation>SAC</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="512"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="569"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="521"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="581"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="515"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="572"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="524"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="584"/>
         <source>Max CNS</source>
         <translation>Max CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="518"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="575"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="527"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="587"/>
         <source>Tags</source>
         <translation>Taggar</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="521"/>
-        <source>Photos</source>
-        <translation>Bilder</translation>
+        <location filename="../qt-models/divetripmodel.cpp" line="530"/>
+        <source>Media</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="524"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="533"/>
         <source>Country</source>
         <translation>Land</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="527"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="581"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="536"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="593"/>
+        <source>Buddy</source>
+        <translation>Parkamrat</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="539"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="596"/>
         <source>Location</source>
         <translation>Plats</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="543"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="555"/>
         <source>Depth(%1)</source>
         <translation>Ljup(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="543"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="555"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="543"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="555"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="549"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="561"/>
         <source>Temp.(%1%2)</source>
         <translation>Temp.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="552"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="564"/>
         <source>Weight(%1)</source>
         <translation>Vikt(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="552"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="564"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="552"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="564"/>
         <source>lbs</source>
         <translation>pund</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="566"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="578"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="566"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="578"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="578"/>
-        <source>Photos before/during/after dive</source>
-        <translation>Foton före/under/efter dyket</translation>
+        <location filename="../qt-models/divetripmodel.cpp" line="590"/>
+        <source>Media before/during/after dive</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="155"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="157"/>
         <source>no dives were selected</source>
         <translation>inga dyk var markerade</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="165"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="167"/>
         <source>stylesheet to export to divelogs.de is not found</source>
         <translation>mallen för export till divelogs.de kan inte hittas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="175"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="177"/>
         <source>failed to create zip file for upload: %s</source>
         <translation>misslyckades med att skapa zipfilen för uppladdning: %s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="239"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="241"/>
         <source>internal error</source>
         <translation>internt fel</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="247"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="249"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation>Konvertering av dyk %1 till divelogs.de format misslyckades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="275"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="277"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation>fel vid skrivning av zip fil: %s zip fel %d system fel %d - %s</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="741"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="932"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="522"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="713"/>
         <source>Done</source>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="775"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="556"/>
         <source>Uploading dive list...</source>
         <translation>Laddar upp dyklista...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="807"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="588"/>
         <source>Downloading dive list...</source>
         <translation>Laddar ner dyklista...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="848"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="629"/>
         <source>Downloading %1 dives...</source>
         <translation>Laddar ner %1 dyk...</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="882"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="663"/>
         <source>Download finished - %1</source>
         <translation>Nedladdning klar - %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="896"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="677"/>
         <source>Problem with download</source>
         <translation>Problem med nerladdningen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="897"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="678"/>
         <source>The archive could not be opened:
 </source>
         <translation>Arkiver kunde inte öppnas:
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="906"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="687"/>
         <source>Corrupted download</source>
         <translation>Misslyckad nedladdning</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="907"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="688"/>
         <source>The archive could not be opened:
 %1</source>
         <translation>Arkivet kunde inte öppnas:
 %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="933"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="714"/>
         <source>Upload finished</source>
         <translation>Uppladdning klar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="946"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="727"/>
         <source>Upload failed</source>
         <translation>Uppladdning misslyckades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="730"/>
         <source>Upload successful</source>
         <translation>Uppladdningen lyckades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="952"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="733"/>
         <source>Login failed</source>
         <translation>Inloggning misslyckades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="955"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="736"/>
         <source>Cannot parse response</source>
         <translation>Kan inte tolka respons</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="966"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="747"/>
         <source>Error: %1</source>
         <translation>Fel: %1</translation>
     </message>
@@ -3566,23 +3619,23 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DownloadFromDCWidget</name>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="85"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="84"/>
         <source>Download</source>
         <translation>Ladda ned</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="89"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="88"/>
         <source>Choose Bluetooth download mode</source>
         <translation>Välj Blåtands nerladdnings läge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="123"/>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="126"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="122"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="125"/>
         <source>Connecting to dive computer</source>
         <translation>Ansluter till dykdator</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="219"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="218"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
@@ -3592,42 +3645,47 @@ p, li { white-space: pre-wrap; }
         <translation>Hitta Uemis dykdator</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="278"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="253"/>
+        <source>Find Garmin dive computer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="280"/>
         <source>Cancel download</source>
         <translation>Avbryt nerladdning</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="361"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="362"/>
         <source>Choose file for dive computer download logfile</source>
         <translation>Välj fil som loggfil för nerladdningen ifrån dykdatorn</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="362"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="363"/>
         <source>Log files</source>
         <translation>Loggfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="387"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="388"/>
         <source>Choose file for dive computer binary dump file</source>
         <translation>Välj fil för binär dumpning av nerladdningen ifrån dykdatorn</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="388"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="389"/>
         <source>Dump files</source>
         <translation>Dumpfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="413"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="414"/>
         <source>Retry download</source>
         <translation>Försök igen med nerladdningen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="375"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="376"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="376"/>
+        <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="377"/>
         <source>Saving the libdivecomputer dump will NOT download dives to the dive list.</source>
         <translation>Att spara en libdivecomputer-dump kommer inte att ladda ner dyken till dyklistan.</translation>
     </message>
@@ -3699,9 +3757,9 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="179"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="178"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="196"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="259"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="187"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="206"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="269"/>
         <source>Download</source>
         <translation>Ladda ned</translation>
     </message>
@@ -3727,7 +3785,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.ui" line="298"/>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="191"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="201"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
@@ -3742,57 +3800,63 @@ p, li { white-space: pre-wrap; }
         <translation>Blåtand är inte aktiverad</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="55"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="58"/>
         <source> Vendor name: </source>
         <translation>Tillverkar namn:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="86"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="88"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="192"/>
+        <source>USB device</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="95"/>
         <source> Dive Computer:</source>
         <translation>Dykdator:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="121"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="130"/>
         <source> Connection:</source>
         <translation>Anslutning:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="180"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="189"/>
         <source>Retry</source>
         <translation>Försök igen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="191"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="201"/>
         <source>Quit</source>
         <translation>Avsluta</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="205"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="215"/>
         <source>Rescan</source>
         <translation>Ny sökning</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="213"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="223"/>
         <source> Downloaded dives</source>
         <translation>Nerladdade dyk:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="214"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="224"/>
         <source>Info:</source>
         <translation>Info:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="251"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="261"/>
         <source>Accept</source>
         <translation>Acceptera</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="270"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="280"/>
         <source>Select All</source>
         <translation>Markera Samtliga</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="278"/>
+        <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="288"/>
         <source>Unselect All</source>
         <translation>Avmarkera alla</translation>
     </message>
@@ -3823,12 +3887,12 @@ p, li { white-space: pre-wrap; }
         <translation>Anslut till Facebook </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="335"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="330"/>
         <source>To disconnect Subsurface from your Facebook account, use the &apos;Share on&apos; menu entry.</source>
         <translation>För att koppla ner Subsurface från ditt Facebook-konto, använd &apos;Dela på&apos; menyn.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="346"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="341"/>
         <source>To connect to Facebook, please log in. This enables Subsurface to publish dives to your timeline</source>
         <translation>Logga in för att koppla Subsurface till Facebook. Det tillgängliggör möjligheten att publicera dyk till din Facebook-timeline.</translation>
     </message>
@@ -3836,22 +3900,22 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FacebookManager</name>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="193"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="188"/>
         <source>Facebook logged in successfully</source>
         <translation>Inloggning till Facebook lyckades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="196"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="191"/>
         <source>Error, unknown user id, cannot login.</source>
         <translation>Error, okänt användar id, kan inte logga in.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="294"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="289"/>
         <source>Dive uploaded successfully to Facebook</source>
         <translation>Dyk publicerades till Facebook</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="296"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="291"/>
         <source>Dive upload failed. Please see debug output and send to Subsurface mailing list</source>
         <translation>Uppladdning av dykdata misslyckades. Vänligen se debug-information och skicka resultatet till sändlistan för Subsurface</translation>
     </message>
@@ -3867,17 +3931,17 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>FilterBase</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="525"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="524"/>
         <source>Select All</source>
         <translation>Markera Samtliga</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="526"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="525"/>
         <source>Unselect All</source>
         <translation>Avmarkera alla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="527"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="526"/>
         <source>Invert Selection</source>
         <translation>Invertera markering</translation>
     </message>
@@ -3932,17 +3996,17 @@ p, li { white-space: pre-wrap; }
     <name>FindMovedImagesDialog</name>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
-        <source>Find moved images</source>
+        <source>Find moved media files</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
-        <source>Found images</source>
+        <source>Found media files</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
-        <source>Match only images in selected dive(s)</source>
+        <source>Match only media files in selected dive(s)</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -3958,8 +4022,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
-        <source>Traverse image directories</source>
-        <translation>Traversera bild kataloger</translation>
+        <source>Traverse media directories</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
@@ -3973,17 +4037,17 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
-        <source>No matching images found</source>
+        <source>No matching media files found</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
-        <source>Found &lt;b&gt;%1&lt;/b&gt; images at their current place.</source>
+        <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
-        <source>Found &lt;b&gt;%1&lt;/b&gt; images at new locations:</source>
+        <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -4076,40 +4140,40 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="556"/>
-        <source>Location: </source>
-        <translation>Plats:</translation>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="555"/>
+        <source>Location</source>
+        <translation>Plats</translation>
     </message>
 </context>
 <context>
     <name>LocationFilterDelegate</name>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="489"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="490"/>
         <source> (same GPS fix)</source>
         <translation>(samma GPS position)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="494"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="495"/>
         <source> (~%1 away</source>
         <translation>(~%1 bort</translation>
     </message>
     <message numerus="yes">
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="495"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="496"/>
         <source>, %n dive(s) here)</source>
         <translation><numerusform>, %n dyka här)</numerusform><numerusform>, %n dyk här)</numerusform></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="500"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="501"/>
         <source>(no existing GPS data, add GPS fix from this dive)</source>
         <translation>(ingen existerade GPS data, lägg till GPS position för detta dyk)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="502"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="503"/>
         <source>(no GPS data)</source>
         <translation>(ingen GPS data)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/modeldelegates.cpp" line="504"/>
+        <location filename="../desktop-widgets/modeldelegates.cpp" line="505"/>
         <source>Pick site: </source>
         <translation>Välj plats:</translation>
     </message>
@@ -4117,7 +4181,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>LocationFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="327"/>
+        <location filename="../qt-models/filtermodels.cpp" line="420"/>
         <source>No location set</source>
         <translation>Ingen plats angiven</translation>
     </message>
@@ -4242,8 +4306,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="27"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="447"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="535"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="574"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="534"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="573"/>
         <source>Notes</source>
         <translation>Anteckningar</translation>
     </message>
@@ -4264,19 +4328,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="107"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="308"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="307"/>
         <source>Air temp.</source>
         <translation>Lufttemp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="117"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="309"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="308"/>
         <source>Water temp.</source>
         <translation>Vattentemperatur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="573"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="572"/>
         <source>Location</source>
         <translation>Plats</translation>
     </message>
@@ -4357,8 +4421,8 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="60"/>
-        <source>Photos</source>
-        <translation>Bilder</translation>
+        <source>Media</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="84"/>
@@ -4391,53 +4455,53 @@ p, li { white-space: pre-wrap; }
         <translation>Lägg till viktsystem</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="305"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="304"/>
         <source>Air temp. [%1]</source>
         <translation>Lufttemperatur [%1]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="306"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="305"/>
         <source>Water temp. [%1]</source>
         <translation>Vattentemperatur [%1]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="346"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="345"/>
         <source>This trip is being edited.</source>
         <translation>Detta resmål håller på och ändras.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="353"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="352"/>
         <source>Multiple dives are being edited.</source>
         <translation>Flera dyk håller på och ändras.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="355"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="354"/>
         <source>This dive is being edited.</source>
         <translation>Detta dyk håller på och ändras.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="483"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="523"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="482"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="522"/>
         <source>Trip notes</source>
         <translation>Reseanteckningar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="518"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="517"/>
         <source>Trip location</source>
         <translation>Resmål</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="739"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="738"/>
         <source>New dive site</source>
         <translation>Ny dykplats</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1035"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1034"/>
         <source>Discard the changes?</source>
         <translation>Kassera ändringarna?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1036"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1035"/>
         <source>You are about to discard your changes.</source>
         <translation>Du är påväg att kasta bort dina förändringar</translation>
     </message>
@@ -4470,424 +4534,419 @@ p, li { white-space: pre-wrap; }
         <translation>&amp;Import</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="133"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="132"/>
         <source>&amp;Edit</source>
         <translation>&amp;Redigera</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="138"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="137"/>
         <source>Share on</source>
         <translation>Dela via</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="152"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="151"/>
         <source>&amp;New logbook</source>
         <translation>&amp;Ny Loggbok</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="155"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="154"/>
         <source>New</source>
         <translation>Ny</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="163"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="162"/>
         <source>&amp;Open logbook</source>
         <translation>&amp;Öppna loggbok</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="166"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="577"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="165"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
         <source>Open</source>
         <translation>Öppna</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="174"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="173"/>
         <source>&amp;Save</source>
         <translation>&amp;Spara</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="177"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="176"/>
         <source>Save</source>
         <translation>Spara</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="185"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="184"/>
         <source>Sa&amp;ve as</source>
         <translation>Spara som(&amp;v)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="188"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="187"/>
         <source>Save as</source>
         <translation>Spara som</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="196"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="195"/>
         <source>&amp;Close</source>
         <translation>Stäng</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="199"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="198"/>
         <source>Close</source>
         <translation>Stäng</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="207"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="206"/>
         <source>&amp;Print</source>
         <translation>&amp;Skriv ut</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="215"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="214"/>
         <source>P&amp;references</source>
         <translation>Inställninga&amp;r</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="226"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="225"/>
         <source>&amp;Quit</source>
         <translation>&amp;Avsluta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="237"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="236"/>
         <source>Import from &amp;dive computer</source>
         <translation>Ladda ner från dykdator</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="245"/>
-        <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation>Importera &amp;GPSdata från Subsurface webbtjänst</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="244"/>
         <source>Edit device &amp;names</source>
         <translation>Ändra enhetsnamn</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="258"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="249"/>
         <source>&amp;Add dive</source>
         <translation>Lägg till dyk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="266"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="257"/>
         <source>&amp;Edit dive</source>
         <translation>&amp;Redigera dyk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="271"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="262"/>
         <source>&amp;Copy dive components</source>
         <translation>Kopiera dykkomponenter</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="279"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="270"/>
         <source>&amp;Paste dive components</source>
         <translation>Klistra in dykkomponenter</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="287"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="278"/>
         <source>&amp;Renumber</source>
         <translation>&amp;Renumrering</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="298"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="289"/>
         <source>Auto &amp;group</source>
         <translation>Autogruppering</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="303"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="294"/>
         <source>&amp;Yearly statistics</source>
         <translation>&amp;Årsstatistik</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="311"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="302"/>
         <source>&amp;Dive list</source>
         <translation>Dyklista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="319"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="310"/>
         <source>&amp;Profile</source>
         <translation>&amp;Profil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="327"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="318"/>
         <source>&amp;Info</source>
         <translation>&amp;Info</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="335"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="326"/>
         <source>&amp;All</source>
         <translation>&amp;Alla</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="343"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="334"/>
         <source>P&amp;revious DC</source>
         <translation>Fö&amp;regående dykdator</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="351"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="342"/>
         <source>&amp;Next DC</source>
         <translation>&amp;Nästa dykdator</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="359"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="350"/>
         <source>&amp;About Subsurface</source>
         <translation>Om Subsurface(&amp;a)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="367"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="358"/>
         <source>User &amp;manual</source>
         <translation>Användar&amp;manual</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="375"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="366"/>
         <source>&amp;Map</source>
         <translation>&amp;Karta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="383"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="374"/>
         <source>P&amp;lan dive</source>
         <translation>P&amp;lanera dyk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="391"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="382"/>
         <source>&amp;Import log files</source>
         <translation>&amp;Importera loggfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="394"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="385"/>
         <source>Import divelog files from other applications</source>
         <translation>Importera loggfiler ifrån andra applikationer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="402"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="393"/>
         <source>Import &amp;from divelogs.de</source>
         <translation>Importera &amp;från divelogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="410"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="401"/>
         <source>&amp;Full screen</source>
         <translation>&amp;Fullskärm</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="413"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="404"/>
         <source>Toggle full screen</source>
         <translation>Växla fullskärmsläge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="421"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="412"/>
         <source>&amp;Check for updates</source>
         <translation>&amp;Sök efter uppdateringar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="426"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="417"/>
         <source>&amp;Export</source>
         <translation>&amp;Exportera</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="429"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="420"/>
         <source>Export dive logs</source>
         <translation>Exportera dykloggar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="437"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="428"/>
         <source>Configure &amp;dive computer</source>
         <translation>Konfigurera &amp;dykdatorer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="448"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="439"/>
         <source>Edit &amp;dive in planner</source>
         <translation>Redigera &amp;dyk i dykplaneraren</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="460"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="451"/>
         <source>Toggle pO₂ graph</source>
         <translation>Växla pO₂ graf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="472"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="463"/>
         <source>Toggle pN₂ graph</source>
         <translation>Växla pN₂ graf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="484"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="475"/>
         <source>Toggle pHe graph</source>
         <translation>Slå av/på pHe grafen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="496"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="487"/>
         <source>Toggle DC reported ceiling</source>
         <translation>Slå av/på dykdatorrapporterat takinformation</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="508"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="499"/>
         <source>Toggle calculated ceiling</source>
         <translation>Slå av/på  beräknad takinformation</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="520"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="511"/>
         <source>Toggle calculating all tissues</source>
         <translation>Slå av/på beräkningen av alla vävnader</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="532"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="523"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation>Slå av/på beräknad takinformation i 3m steg</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="544"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="535"/>
         <source>Toggle heart rate</source>
         <translation>Slå av/på hjärtrytm</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="556"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="547"/>
         <source>Toggle MOD</source>
         <translation>Slå av/på MOD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="568"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="559"/>
         <source>Toggle EAD, END, EADD</source>
         <translation>Slå av/på EAD, END, EADD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="580"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="571"/>
         <source>Toggle NDL, TTS</source>
         <translation> Slå av/på NDL, TTS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="592"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="583"/>
         <source>Toggle SAC rate</source>
         <translation>Slå av/på SAC</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="604"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="595"/>
         <source>Toggle ruler</source>
         <translation>Slå av/på mätverktyget</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="616"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="607"/>
         <source>Scale graph</source>
         <translation>Skala graf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="628"/>
-        <source>Toggle pictures</source>
-        <translation>Växla bilder</translation>
+        <location filename="../desktop-widgets/mainwindow.ui" line="619"/>
+        <source>Toggle media</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="640"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="680"/>
+        <source>&amp;Find moved media files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.ui" line="631"/>
         <source>Toggle gas bar</source>
         <translation>Växla gasgrafen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="639"/>
         <source>&amp;Filter divelist</source>
         <translation>&amp;Filtrera dyklista</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="663"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="654"/>
         <source>Toggle tissue heat-map</source>
         <translation>Växla färgdiagram för vävnader</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="668"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="659"/>
         <source>User &amp;survey</source>
         <translation>&amp;Användarundersökning</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="249"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="664"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
         <source>&amp;Undo</source>
         <translation>&amp;Ångra</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="681"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="672"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="251"/>
         <source>&amp;Redo</source>
         <translation>&amp;Gör om</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="689"/>
-        <source>&amp;Find moved images</source>
-        <translation>&amp;Hitta flyttade bilder</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="694"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="685"/>
         <source>Open c&amp;loud storage</source>
         <translation>Öppna molnlagring</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="699"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="690"/>
         <source>Save to clo&amp;ud storage</source>
         <translation>Spara till molnlagring</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="704"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="695"/>
         <source>&amp;Manage dive sites</source>
         <translation>&amp;Hanter dykplatser</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="709"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="700"/>
         <source>Dive Site &amp;Edit</source>
         <translation>Dykplats redigering</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="714"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="705"/>
         <source>Facebook</source>
         <translation>Facebook</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="722"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
         <source>Cloud storage online</source>
         <translation>Molnlagring aktiv</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="376"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="412"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="378"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="414"/>
         <source>Connect to</source>
         <translation>Anslut till</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="406"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="408"/>
         <source>Disconnect from</source>
         <translation>Kopplan ner från</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="568"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="613"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1633"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1620"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker öppna en ny fil.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
         <source>Open file</source>
         <translation>Öppna fil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="578"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2029"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="583"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="677"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="728"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="882"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1890"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="724"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelistview.cpp" line="584"/>
+        <location filename="../desktop-widgets/divelistview.cpp" line="595"/>
         <source>Trying to merge dives with %1min interval in between</source>
         <translation>Försöker slå ihop dyk med %1min interval emellan. </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="270"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
         <source>Template backup created</source>
         <translation>Templat kopia skapad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="272"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4901,213 +4960,213 @@ can overwrite them on startup.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="677"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du går online.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="700"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="696"/>
         <source>Failure taking cloud storage online</source>
         <translation>Aktivering av molnlagring misslyckades</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="769"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du stänger filen.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="882"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Vänligen spara eller avbryt pågående ändring av dyk innan du försöker lägga till ett dyk.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="942"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="929"/>
         <source>Print runtime table</source>
         <translation>Skriv ut körtidstabell</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1000"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Försöker planera om ett dyk som inte är en dykplan.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1890"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Först avsluta den aktuella ändringen innan du försöker göra en annan.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1124"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1111"/>
         <source>Yearly statistics</source>
         <translation>Årsstatistik</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1360"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1402"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
         <source>Dive log files</source>
         <translation>dykloggfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1662"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1649"/>
         <source>Subsurface files</source>
         <translation>Subsurface filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1382"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1413"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1427"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1428"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1429"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1430"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1417"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1431"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1418"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1432"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1375"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1433"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1376"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1390"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1434"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1421"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1391"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1435"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1422"/>
         <source>MkVI files</source>
         <translation>MkVI filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1392"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1436"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1379"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
         <source>APD log viewer</source>
         <translation>APD loggvisare</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1394"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1438"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1439"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
         <source>All files</source>
         <translation>Alla filer</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Vill du spara ändringarna som du gjort i filen %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1453"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1440"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Vill du spara ändringarna som du gjort i filen?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="689"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1458"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
         <source>Save changes?</source>
         <translation>Spara ändringar?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1459"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Ändringar förloras om du inte sparar dom.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1661"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1648"/>
         <source>Save file as</source>
         <translation>Spara fil som</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1749"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1736"/>
         <source>[local cache for] %1</source>
         <translation>[lokal cache för] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1751"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1738"/>
         <source>[cloud storage for] %1</source>
         <translation>[molnlagring för] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1843"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
         <source>Opening datafile from older version</source>
         <translation>Öppnar datafil från en äldre version</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1844"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1831"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Du öppnade en datafil från en äldre version av Subsurface. Vi rekommenderar att du läser manualen för att lära dig om förändringarna i den nya versionen, speciellt om dykplats administrationen som har ändrats signifikant.
 Subsurface har redan försökt att fylla i datat men det kan vara värt besväret att titta på den nya dykplats administrationen och se till att allt ser bra ut.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1855"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1842"/>
         <source>Open dive log file</source>
         <translation>Öppna dyklogg</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2029"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
         <source>Contacting cloud service...</source>
         <translation>Kontaktar molntjänst...</translation>
     </message>
@@ -5164,7 +5223,7 @@ QML modulerna för QtPositioning samt QtLocation kan saknas!</translation>
 <context>
     <name>MultiFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="600"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="599"/>
         <source>Filter shows %1 (of %2) dives</source>
         <translation>Filter visar %1 (av %2) dyk</translation>
     </message>
@@ -5172,12 +5231,12 @@ QML modulerna för QtPositioning samt QtLocation kan saknas!</translation>
 <context>
     <name>OstcFirmwareCheck</name>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="299"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="298"/>
         <source>You should update the firmware on your dive computer: you have version %1 but the latest stable version is %2</source>
         <translation>Du borde uppdatera mjukvaran i din dykdator: du har version %1 men den senaste stabila versionen är %2</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="302"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="301"/>
         <source>
 
 If your device uses Bluetooth, do the same preparations as for a logbook download before continuing with the update</source>
@@ -5186,27 +5245,27 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
 On din enhet använder blåtand, gör samma förberedelser som för loggboks nerladdning innan du fortsätter med uppdateringen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="303"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="302"/>
         <source>Not now</source>
         <translation>Inte nu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="304"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="303"/>
         <source>Update firmware</source>
         <translation>Uppdatera firmware</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="306"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="305"/>
         <source>Firmware upgrade notice</source>
         <translation>Mjukvaruuppdaterings notis</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="324"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="323"/>
         <source>Save the downloaded firmware as</source>
         <translation>Spara nerladdad firmware som</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="325"/>
+        <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="324"/>
         <source>Firmware files</source>
         <translation>Firmware filer</translation>
     </message>
@@ -5344,8 +5403,8 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="76"/>
-        <source>No default file</source>
-        <translation>Ingen standardfil</translation>
+        <source>&amp;No default file</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="83"/>
@@ -5369,6 +5428,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="121"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="242"/>
         <source>...</source>
         <translation>...</translation>
     </message>
@@ -5399,28 +5459,53 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="215"/>
+        <source>Video thumbnails</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="230"/>
+        <source>ffmpeg executable</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="251"/>
+        <source>Extract at position</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="271"/>
+        <source>Extract video thumbnails</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="288"/>
         <source>Clear all settings</source>
         <translation>Rensa alla inställningar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="227"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="300"/>
         <source>Reset all settings to their default value</source>
         <translation>Återställ alla inställningar till deras standardvärde</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="11"/>
         <source>General</source>
         <translation>Allmän</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="24"/>
         <source>Open default log file</source>
         <translation>Öppna standarddykloggen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="24"/>
         <source>Subsurface files</source>
         <translation>Subsurface filer</translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="50"/>
+        <source>Select ffmpeg executable</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -5576,7 +5661,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
-        <source>Recalculate thumbnails if older than image</source>
+        <source>Recalculate thumbnails if older than media file</source>
         <translation type="unfinished"/>
     </message>
     <message>
@@ -5616,7 +5701,7 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
         <translation>Visa medeldjup i profilen</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="9"/>
+        <location filename="../desktop-widgets/preferences/preferences_graph.cpp" line="11"/>
         <source>Profile</source>
         <translation>Profil</translation>
     </message>
@@ -5695,25 +5780,25 @@ On din enhet använder blåtand, gör samma förberedelser som för loggboks ner
         <translation>För att ladda nytt språk fullständigt måste Subsurface startas om.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="96"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="94"/>
         <source>These will be used as is. This might not be what you intended.
 See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="99"/>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="105"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="97"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="103"/>
         <source>Literal characters</source>
         <translation>Bokstavliga tecken</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="100"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="98"/>
         <source>Non-special character(s) in time format.
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="106"/>
+        <location filename="../desktop-widgets/preferences/preferences_language.cpp" line="104"/>
         <source>Non-special character(s) in date format.
 </source>
         <translation type="unfinished"/>
@@ -5764,7 +5849,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="156"/>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="144"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="139"/>
         <source>Subsurface cloud storage</source>
         <translation>Subsurface molnlagring</translation>
     </message>
@@ -5789,73 +5874,58 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation>Spara lösenord lokalt?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.ui" line="231"/>
-        <source>Subsurface web service</source>
-        <translation>Subsurface webbtjänst</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.ui" line="243"/>
-        <source>Default user ID</source>
-        <translation>Förvalt användarid</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.ui" line="253"/>
-        <source>Save user ID locally?</source>
-        <translation>Spara användarid lokalt?</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="10"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="11"/>
         <source>Network</source>
         <translation>Nätverk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="15"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="16"/>
         <source>No proxy</source>
         <translation>Ingen proxy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="16"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="17"/>
         <source>System proxy</source>
         <translation>System proxy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="17"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="18"/>
         <source>HTTP proxy</source>
         <translation>HTTP proxy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="18"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="19"/>
         <source>SOCKS proxy</source>
         <translation>SOCKS proxy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="67"/>
         <source>Change ignored. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Förändring ignorerad. Epostadress och lösenord till molnlagringen kan endast bestå av bokstäver, siffror och följande tecken &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, samt &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="75"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Förändring ignorerad. Epostadress och nytt lösenord till molnlagringen kan endast bestå av bokstäver, siffror och tecken &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, samt &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="98"/>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="112"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="93"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="107"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Molnlagrings email och lösenord kan bara beså av bokstäver, siffror samt &apos;.&apos;, &apos;-&apos;, &apos;_&apos; och &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="138"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="133"/>
         <source>Subsurface cloud storage (credentials verified)</source>
         <translation>Subsurface molnlagring (verifierade referenser)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="140"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
         <translation>Subsurface molnlagring (felaktigt lösenord)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="142"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
         <translation>Subsurface molnlagring (PIN krävs)</translation>
     </message>
@@ -6184,133 +6254,133 @@ Vänligen exportera mallen till en ny fil.</translation>
 <context>
     <name>ProfileWidget2</name>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="799"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="804"/>
         <source> (#%1 of %2)</source>
         <translation> (#%1 av %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="795"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="800"/>
         <source>Unknown dive computer</source>
         <translation>Okänd dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="823"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="828"/>
         <source>Show NDL / TTS was disabled because of excessive processing time</source>
         <translation>Visa NDL / TTS stängdes av pga att det tog för lång tid att beräkna</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1419"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1439"/>
         <source>Add gas change</source>
         <translation>Lägg till gasbyte</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1405"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1425"/>
         <source>Make first dive computer</source>
         <translation>Gör till första dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="791"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="796"/>
         <source>Planned dive</source>
         <translation>Planera dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="793"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="798"/>
         <source>Manually added dive</source>
         <translation>Manuellt tillagt dyk</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1407"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1427"/>
         <source>Delete this dive computer</source>
         <translation>Ta bort denna dykdator</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1422"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
         <source> (cyl. %1)</source>
         <translation>(cyl. %1)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1428"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1448"/>
         <source>Add setpoint change</source>
         <translation>Lägg till setpoint byte</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1430"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1450"/>
         <source>Add bookmark</source>
         <translation>Lägg till bokmärke</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1432"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1452"/>
         <source>Split dive into two</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1442"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1462"/>
         <source>Change divemode</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1466"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1486"/>
         <source>Edit the profile</source>
         <translation>Editera profilen</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1470"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1490"/>
         <source>Remove event</source>
         <translation>Ta bort händelse</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1475"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1495"/>
         <source>Hide similar events</source>
         <translation>Göm liknande händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1482"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1502"/>
         <source>Edit name</source>
         <translation>Ändra namn</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1513"/>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1520"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1533"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1540"/>
         <source>Adjust pressure of cyl. %1 (currently interpolated as %2)</source>
         <translation>Förändra trycket i flaska %1 (nu beräknat till %2)</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1535"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1555"/>
         <source>Unhide all events</source>
         <translation>Visa alla händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1590"/>
         <source>Hide events</source>
         <translation>Göm händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1570"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1590"/>
         <source>Hide all %1 events?</source>
         <translation>Göm alla %1händelser</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1605"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1625"/>
         <source>Remove the selected event?</source>
         <translation>Ta bort markerad händelse</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1606"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1626"/>
         <source>%1 @ %2:%3</source>
         <translation>%1 @ %2:%3</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1757"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1777"/>
         <source>Edit name of bookmark</source>
         <translation>Ändra namnet på bokmärket</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1758"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1778"/>
         <source>Custom name:</source>
         <translation>Valt namn:</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1763"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1783"/>
         <source>Name is too long!</source>
         <translation>Namnet är för långt!</translation>
     </message>
@@ -6318,53 +6388,53 @@ Vänligen exportera mallen till en ny fil.</translation>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="199"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="202"/>
         <source>Starting...</source>
         <translation>Startar...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="253"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="256"/>
         <source>Open local dive data file</source>
         <translation>Öppna lokal dyklogg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="261"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="264"/>
         <source>Opening local data file failed</source>
         <translation>Öppnande av lokal dyklogg misslyckades</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="293"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="296"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation>%1 dyk ladade från lokal dyklogg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="390"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="393"/>
         <source>working in no-cloud mode</source>
         <translation>Arbetar i molnfritt läge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="394"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="397"/>
         <source>Error parsing local storage, giving up</source>
         <translation>Kunde inte läsa lokal lagring, ger upp.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="403"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="406"/>
         <source>no cloud credentials</source>
         <translation>inga moln referenser</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="404"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="489"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="407"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="491"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Vänligen ange giltiga moln referenser</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="447"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>Molnlagrings email och lösenord kan bara beså av bokstäver, siffror samt &apos;.&apos;, &apos;-&apos;, &apos;_&apos; och &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="451"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
         <source>Invalid format for email address</source>
         <translation>Ogiltigt format för epostadress</translation>
     </message>
@@ -6414,50 +6484,50 @@ Vänligen exportera mallen till en ny fil.</translation>
         <translation>Kan inte ansluta till moln lagring</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="645"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="626"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation>Molnreferenser giltiga, läser in dyk...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="655"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="636"/>
         <source>Cloud storage error: %1</source>
         <translation>Molnlagrings fel: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="701"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="682"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Läser in dyk från lokal lagring (&apos;molnfritt&apos; läge)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="747"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Misslyckades ansluta till moln server, återgår till molnfri status</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="772"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="753"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Molnlagring öppnades framgångsrikt. Inga dyk i dyklistan</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="950"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="950"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="951"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="932"/>
         <source>min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="949"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1359"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1358"/>
         <source>Unknown GPS location</source>
         <translation>Okänd GPS position</translation>
     </message>
@@ -6465,7 +6535,7 @@ Vänligen exportera mallen till en ny fil.</translation>
 <context>
     <name>QMLPrefs</name>
     <message>
-        <location filename="../mobile-widgets/qmlprefs.cpp" line="186"/>
+        <location filename="../mobile-widgets/qmlprefs.cpp" line="178"/>
         <source>Starting...</source>
         <translation>Startar...</translation>
     </message>
@@ -6557,116 +6627,126 @@ Vänligen exportera mallen till en ny fil.</translation>
 <context>
     <name>Settings</name>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="13"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="16"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="17"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="20"/>
         <source>Undefined</source>
         <translation>Odefinierad</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="18"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="21"/>
         <source>Incorrect username/password combination</source>
         <translation>Felaktigt användarnamn/lösenords kombination</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="19"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="22"/>
         <source>Credentials need to be verified</source>
         <translation>Referenserna behöver verifieras</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="20"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="23"/>
         <source>Credentials verified</source>
         <translation>Referenser verifierade</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="21"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="24"/>
         <source>No cloud mode</source>
         <translation>Molnfritt läge</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="31"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="34"/>
         <source>Cloud status</source>
         <translation>Molnstatus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="39"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
         <translation>Epost</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="45"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="48"/>
         <source>Not applicable</source>
         <translation>Inte tillämpliga</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="53"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="56"/>
         <source>Change</source>
         <translation>Ändring</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="60"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="63"/>
         <source>Status</source>
         <translation>Status</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="85"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="88"/>
         <source>Theme</source>
         <translation>Tema</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="93"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="96"/>
         <source>Blue</source>
         <translation>Blå</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="108"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="160"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="213"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="111"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="163"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="216"/>
         <source>regular text</source>
         <translation>vanlig text</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="123"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="175"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="228"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="126"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="178"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="231"/>
         <source>Highlight</source>
         <translation>Markera</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="146"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="149"/>
         <source>Pink</source>
         <translation>Rosa</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="198"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="201"/>
         <source>Dark</source>
         <translation>Mörk</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="262"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="265"/>
         <source>Subsurface GPS data webservice</source>
         <translation>Subsurface GPS data webbtjänst</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="271"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="274"/>
         <source>Distance threshold (meters)</source>
         <translation>Avståndsgräns (meter)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="287"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="290"/>
         <source>Time threshold (minutes)</source>
         <translation>Tidsgräns (minuter)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="314"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="318"/>
+        <source>Default Cylinder</source>
+        <translation>Standardflaska</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="327"/>
+        <source>Cylinder:</source>
+        <translation>Flaska:</translation>
+    </message>
+    <message>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
         <source>Developer</source>
         <translation>Utvecklare</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="323"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="361"/>
         <source>Display Developer menu</source>
         <translation>Visa utvecklarmeny</translation>
     </message>
@@ -6701,16 +6781,14 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="128"/>
         <source>Warning!
-Not all images have timestamps in the range between
+Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
-        <translation>Varning!
-Alla bilder har inte en tidstämpel mellan
-30 minuter innan starten och 30 minuter efter slutet på något av de valda dyken.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
-        <source>Load images even if the time does not match the dive time</source>
-        <translation>Ladda bilder även om tiderna inte matchar dyktiden</translation>
+        <source>Load media files even if the time does not match the dive time</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
@@ -6733,39 +6811,39 @@ Alla bilder har inte en tidstämpel mellan
         <translation>Vilket datum och tid visas på bilden?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="307"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="306"/>
         <source>Open image file</source>
         <translation>Öppna bildfler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="309"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="308"/>
         <source>Image files</source>
         <translation>Bildfiler</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="386"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="385"/>
         <source>Selected dive date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="388"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="387"/>
         <source>First selected dive date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="389"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="388"/>
         <source>Last selected dive date/time</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="391"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="390"/>
         <source>
 Files with inappropriate date/time</source>
         <translation>
 Filer med felaktig datum/tid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="401"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="400"/>
         <source>No Exif date/time found</source>
         <translation>Inget Exif datum/tid hittat</translation>
     </message>
@@ -6858,28 +6936,28 @@ Filer med felaktig datum/tid</translation>
         <translation>Importera meddelanden (fel, varningar, etc)</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="59"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="54"/>
         <source>Open SmartTrak files</source>
         <translation>Öppna SmartTrak filer</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="60"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="55"/>
         <source>SmartTrak files</source>
         <translation>SmartTrak filer</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="60"/>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="71"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="55"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="66"/>
         <source>All files</source>
         <translation>Alla filer</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="71"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="66"/>
         <source>Subsurface files</source>
         <translation>Subsurface filer</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="70"/>
+        <location filename="../smtk-import/smrtk2ssrfc_window.cpp" line="65"/>
         <source>Open Subsurface files</source>
         <translation>Öppna Subsurface filer</translation>
     </message>
@@ -6887,64 +6965,64 @@ Filer med felaktig datum/tid</translation>
 <context>
     <name>SocialNetworkDialog</name>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="375"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="370"/>
         <source>Small</source>
         <translation>Små</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="376"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="371"/>
         <source>Medium</source>
         <translation>Medium</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="396"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="391"/>
         <source>Dive date: %1 
 </source>
         <translation>Dykdatum: %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="399"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="394"/>
         <source>Duration: %1 
 </source>
         <translation>Varaktighet: %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="400"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="395"/>
         <source>h</source>
         <comment>abbreviation for hours</comment>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="401"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="396"/>
         <source>min</source>
         <comment>abbreviation for minutes</comment>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="404"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="399"/>
         <source>Dive location: %1 
 </source>
         <translation>Dykplats: %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="407"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="402"/>
         <source>Buddy: %1 
 </source>
         <translation>Parkamrat: %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="410"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="405"/>
         <source>Divemaster: %1 
 </source>
         <translation>Divemaster: %1 
 </translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="413"/>
+        <location filename="../desktop-widgets/plugins/facebook/facebookconnectwidget.cpp" line="408"/>
         <source>
 %1</source>
         <translation>
@@ -7081,65 +7159,17 @@ Filer med felaktig datum/tid</translation>
     </message>
 </context>
 <context>
-    <name>SubsurfaceWebServices</name>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="398"/>
-        <source>Enter User ID and click Download</source>
-        <translation>Mata in användarid och klicka på nerladdning</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="419"/>
-        <source>Webservice</source>
-        <translation>Webbtjänst</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="503"/>
-        <source>Connecting...</source>
-        <translation>Ansluter...</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="522"/>
-        <source>Download finished</source>
-        <translation>Nedladdning klar</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="536"/>
-        <source>Download error: %1</source>
-        <translation>Nedladdningsfel: %1</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="546"/>
-        <source>Connection error: </source>
-        <translation>Kontaktfel:</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="549"/>
-        <source>Invalid user identifier!</source>
-        <translation>Ogiltigt användarid!</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="552"/>
-        <source>Cannot parse response!</source>
-        <translation>Kan inte tolka respons</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="555"/>
-        <source>Download successful</source>
-        <translation>Nedladdningen lyckades</translation>
-    </message>
-</context>
-<context>
     <name>SuitFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="561"/>
-        <source>Suits: </source>
-        <translation>Dräkter:</translation>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="560"/>
+        <source>Suits</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>SuitsFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="170"/>
+        <location filename="../qt-models/filtermodels.cpp" line="272"/>
         <source>No suit set</source>
         <translation>Ingen dräkt vald</translation>
     </message>
@@ -7270,39 +7300,44 @@ Filer med felaktig datum/tid</translation>
         <translation>Zoomnivå</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="52"/>
-        <source>Load image(s) from file(s)</source>
-        <translation>Laddar bild(er) från fil(er)</translation>
-    </message>
-    <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="53"/>
-        <source>Load image(s) from web</source>
-        <translation>Ladda bild(er) från nätet</translation>
+        <source>Load media from file(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="55"/>
-        <source>Delete selected images</source>
-        <translation>Radera valda bilder</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="54"/>
+        <source>Load media file(s) from web</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
-        <source>Delete all images</source>
-        <translation>Radera alla bilder</translation>
+        <source>Delete selected media files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
+        <source>Delete all media files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="58"/>
+        <source>Open folder of selected media files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
         <source>Recalculate selected thumbnails</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
-        <source>Deleting Images</source>
-        <translation>Raderar bilder</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="122"/>
+        <source>Deleting media files</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="104"/>
-        <source>Are you sure you want to delete all images?</source>
-        <translation>Är du säker på att du vill radera alla bilder?</translation>
+        <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="122"/>
+        <source>Are you sure you want to delete all media files?</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -7470,15 +7505,15 @@ mixas av luft och:
 <context>
     <name>TagFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="545"/>
-        <source>Tags: </source>
-        <translation>Taggar:</translation>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="544"/>
+        <source>Tags</source>
+        <translation>Taggar</translation>
     </message>
 </context>
 <context>
     <name>TagFilterModel</name>
     <message>
-        <location filename="../qt-models/filtermodels.cpp" line="195"/>
+        <location filename="../qt-models/filtermodels.cpp" line="296"/>
         <source>Empty tags</source>
         <translation>Toma taggar</translation>
     </message>
@@ -7677,7 +7712,7 @@ mixas av luft och:
 <context>
     <name>TextHyperlinkEventFilter</name>
     <message>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="685"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="684"/>
         <source>%1click to visit %2</source>
         <translation>%1klicka för att besöka %2</translation>
     </message>
@@ -7701,130 +7736,135 @@ mixas av luft och:
 <context>
     <name>TripItem</name>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="73"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="74"/>
         <source>(%1 shown)</source>
         <translation>(%1 visad)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="235"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="247"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="238"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="250"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="241"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
         <source>Rating</source>
         <translation>Rankning</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="244"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="256"/>
         <source>Depth(%1)</source>
         <translation>Ljup(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="244"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="256"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="244"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="256"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="247"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="259"/>
         <source>Duration</source>
         <translation>Varaktighet</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="250"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="262"/>
         <source>Temp.(%1%2)</source>
         <translation>Temp.(%1%2)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="259"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="271"/>
         <source>Cylinder</source>
         <translation>Flaska</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="273"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="285"/>
         <source>Max. CNS</source>
         <translation>Max. CNS</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="276"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="288"/>
         <source>Tags</source>
         <translation>Taggar</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="375"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="291"/>
+        <source>Media before/during/after dive</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="297"/>
+        <source>Buddy</source>
+        <translation>Parkamrat</translation>
+    </message>
+    <message>
+        <location filename="../qt-models/divetripmodel.cpp" line="390"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="375"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="390"/>
         <source>min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="265"/>
         <source>Weight(%1)</source>
         <translation>Vikt(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="419"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="265"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="253"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="419"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="265"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="434"/>
         <source>lbs</source>
         <translation>pund</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="256"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="268"/>
         <source>Suit</source>
         <translation>Dräkt</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="262"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="274"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="267"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="279"/>
         <source>SAC(%1)</source>
         <translation>SAC(%1)</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="267"/>
-        <location filename="../qt-models/divetripmodel.cpp" line="409"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="279"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="424"/>
         <source>/min</source>
         <translation>/min</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="270"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="282"/>
         <source>OTU</source>
         <translation>OTU</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="279"/>
-        <source>Photos before/during/after dive</source>
-        <translation>Foton före/under/efter dyket</translation>
-    </message>
-    <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="282"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="294"/>
         <source>Country</source>
         <translation>Land</translation>
     </message>
     <message>
-        <location filename="../qt-models/divetripmodel.cpp" line="285"/>
+        <location filename="../qt-models/divetripmodel.cpp" line="300"/>
         <source>Location</source>
         <translation>Plats</translation>
     </message>
@@ -7838,81 +7878,81 @@ mixas av luft och:
     </message>
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
-        <source>Enter URL for images</source>
-        <translation>Ange URL för bilder</translation>
+        <source>Enter URL for media files</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>UpdateManager</name>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="61"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="59"/>
         <source>Check for updates.</source>
         <translation>Sök efter uppdateringar</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="62"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="60"/>
         <source>Subsurface was unable to check for updates.</source>
         <translation>Subsurface kunde inte kolla efter uppdateringar.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="67"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="65"/>
         <source>The following error occurred:</source>
         <translation>Följande fel inträffade:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="68"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="66"/>
         <source>Please check your internet connection.</source>
         <translation>Verifiera att du har en fungerande uppkoppling till internet.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="78"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="76"/>
         <source>You are using the latest version of Subsurface.</source>
         <translation>Du använder dig av den senaste versionen av Subsurface.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="81"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="79"/>
         <source>A new version of Subsurface is available.&lt;br/&gt;Click on:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; to download it.</source>
         <translation>En ny version av Subsurface finns tillgänglig.&lt;br/&gt;Klicka på:&lt;br/&gt;&lt;a href=&quot;%1&quot;&gt;%1&lt;/a&gt;&lt;br/&gt; för att ladda ner den.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="87"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="85"/>
         <source>A new version of Subsurface is available.</source>
         <translation>En ny version av Subsurface finns tillgänglig.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="88"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="86"/>
         <source>Latest version is %1, please check %2 our download page %3 for information in how to update.</source>
         <translation>Senaste versionen är %1, vänligen se %2 vår nerladningssida %3 för information om du uppdaterar.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="98"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="96"/>
         <source>Newest release version is </source>
         <translation>Senast släppta version är</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="99"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="97"/>
         <source>The server returned the following information:</source>
         <translation>Servern returnerade följande information:</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="114"/>
         <source>Subsurface is checking every two weeks if a new version is available. 
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface kollar varannan vecka om det har kommit en ny version.
 Om du inte vill att Subsurface skall göra det, vänligen klicka på Avslå</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="118"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
         <source>Decline</source>
         <translation>Avslå</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
         <source>Accept</source>
         <translation>Acceptera</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/updatemanager.cpp" line="121"/>
+        <location filename="../desktop-widgets/updatemanager.cpp" line="119"/>
         <source>Automatic check for updates</source>
         <translation>Sök efter uppdateringar automatiskt</translation>
     </message>
@@ -8087,6 +8127,19 @@ Language: %1</source>
     </message>
 </context>
 <context>
+    <name>VideoFrameExtractor</name>
+    <message>
+        <location filename="../core/videoframeextractor.cpp" line="93"/>
+        <source>ffmpeg failed to start - video thumbnail creation suspended</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core/videoframeextractor.cpp" line="99"/>
+        <source>failed waiting for ffmpeg - video thumbnail creation suspended</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>WSInfoModel</name>
     <message>
         <location filename="../qt-models/weightsysteminfomodel.cpp" line="81"/>
@@ -8142,12 +8195,12 @@ Language: %1</source>
         <translation>Ladda upp</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="327"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="329"/>
         <source>Operation timed out</source>
         <translation>Begäran tog för lång tid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="348"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="350"/>
         <source>Transferring data...</source>
         <translation>Överför data...</translation>
     </message>
@@ -8173,8 +8226,8 @@ Language: %1</source>
 <context>
     <name>WinBluetoothDeviceDiscoveryAgent</name>
     <message>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="582"/>
-        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="613"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="583"/>
+        <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="614"/>
         <source>No error</source>
         <translation>Inget fel</translation>
     </message>
@@ -8295,7 +8348,7 @@ Medel</translation>
 <context>
     <name>getextFromC</name>
     <message>
-        <location filename="../core/libdivecomputer.c" line="810"/>
+        <location filename="../core/libdivecomputer.c" line="829"/>
         <source>Error parsing the header</source>
         <translation>Misslyckades läsa sidhuvudet</translation>
     </message>
@@ -8631,9 +8684,9 @@ Medel</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="36"/>
-        <location filename="../core/equipment.c" line="91"/>
-        <location filename="../core/planner.c" line="1161"/>
-        <location filename="../core/planner.c" line="1164"/>
+        <location filename="../core/equipment.c" line="90"/>
+        <location filename="../core/planner.c" line="1145"/>
+        <location filename="../core/planner.c" line="1148"/>
         <source>oxygen</source>
         <translation>oxygen</translation>
     </message>
@@ -8648,131 +8701,131 @@ Medel</translation>
         <translation>Öppet system</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="295"/>
+        <location filename="../core/dive.c" line="294"/>
         <source>pascal</source>
         <translation>pascal</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="300"/>
+        <location filename="../core/dive.c" line="299"/>
         <location filename="../core/plannernotes.c" line="68"/>
         <location filename="../core/plannernotes.c" line="69"/>
         <location filename="../core/plannernotes.c" line="70"/>
-        <location filename="../core/qthelper.cpp" line="655"/>
-        <location filename="../core/qthelper.cpp" line="847"/>
-        <location filename="../core/qthelper.cpp" line="1319"/>
+        <location filename="../core/qthelper.cpp" line="629"/>
+        <location filename="../core/qthelper.cpp" line="821"/>
+        <location filename="../core/qthelper.cpp" line="1304"/>
         <source>bar</source>
         <translation>bar</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="304"/>
-        <location filename="../core/qthelper.cpp" line="658"/>
-        <location filename="../core/qthelper.cpp" line="849"/>
-        <location filename="../core/qthelper.cpp" line="1318"/>
+        <location filename="../core/dive.c" line="303"/>
+        <location filename="../core/qthelper.cpp" line="632"/>
+        <location filename="../core/qthelper.cpp" line="823"/>
+        <location filename="../core/qthelper.cpp" line="1303"/>
         <source>psi</source>
         <translation>psi</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="341"/>
+        <location filename="../core/dive.c" line="340"/>
         <source>ℓ</source>
         <translation>ℓ</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="346"/>
-        <location filename="../core/qthelper.cpp" line="1342"/>
+        <location filename="../core/dive.c" line="345"/>
+        <location filename="../core/qthelper.cpp" line="1327"/>
         <source>cuft</source>
         <translation>ft³</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="387"/>
-        <location filename="../core/qthelper.cpp" line="571"/>
-        <location filename="../core/qthelper.cpp" line="586"/>
-        <location filename="../core/qthelper.cpp" line="765"/>
-        <location filename="../core/qthelper.cpp" line="1294"/>
+        <location filename="../core/dive.c" line="386"/>
+        <location filename="../core/qthelper.cpp" line="545"/>
+        <location filename="../core/qthelper.cpp" line="560"/>
+        <location filename="../core/qthelper.cpp" line="739"/>
+        <location filename="../core/qthelper.cpp" line="1279"/>
         <source>m</source>
         <translation>m</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="392"/>
-        <location filename="../core/qthelper.cpp" line="574"/>
-        <location filename="../core/qthelper.cpp" line="588"/>
-        <location filename="../core/qthelper.cpp" line="767"/>
-        <location filename="../core/qthelper.cpp" line="1293"/>
+        <location filename="../core/dive.c" line="391"/>
+        <location filename="../core/qthelper.cpp" line="548"/>
+        <location filename="../core/qthelper.cpp" line="562"/>
+        <location filename="../core/qthelper.cpp" line="741"/>
+        <location filename="../core/qthelper.cpp" line="1278"/>
         <source>ft</source>
         <translation>ft</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="415"/>
+        <location filename="../core/dive.c" line="414"/>
         <source>m/min</source>
         <translation>m/min</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="417"/>
+        <location filename="../core/dive.c" line="416"/>
         <source>m/s</source>
         <translation>m/s</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="422"/>
+        <location filename="../core/dive.c" line="421"/>
         <source>ft/min</source>
         <translation>ft/min</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="424"/>
+        <location filename="../core/dive.c" line="423"/>
         <source>ft/s</source>
         <translation>ft/s</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="443"/>
-        <location filename="../core/qthelper.cpp" line="597"/>
-        <location filename="../core/qthelper.cpp" line="607"/>
-        <location filename="../core/qthelper.cpp" line="822"/>
-        <location filename="../core/qthelper.cpp" line="1270"/>
+        <location filename="../core/dive.c" line="442"/>
+        <location filename="../core/qthelper.cpp" line="571"/>
+        <location filename="../core/qthelper.cpp" line="581"/>
+        <location filename="../core/qthelper.cpp" line="796"/>
+        <location filename="../core/qthelper.cpp" line="1255"/>
         <source>lbs</source>
         <translation>pund</translation>
     </message>
     <message>
-        <location filename="../core/dive.c" line="447"/>
-        <location filename="../core/qthelper.cpp" line="595"/>
-        <location filename="../core/qthelper.cpp" line="605"/>
-        <location filename="../core/qthelper.cpp" line="820"/>
-        <location filename="../core/qthelper.cpp" line="1269"/>
+        <location filename="../core/dive.c" line="446"/>
+        <location filename="../core/qthelper.cpp" line="569"/>
+        <location filename="../core/qthelper.cpp" line="579"/>
+        <location filename="../core/qthelper.cpp" line="794"/>
+        <location filename="../core/qthelper.cpp" line="1254"/>
         <source>kg</source>
         <translation>kg</translation>
     </message>
     <message>
-        <location filename="../core/divelist.c" line="683"/>
-        <location filename="../core/equipment.c" line="87"/>
-        <location filename="../core/planner.c" line="1157"/>
-        <location filename="../core/planner.c" line="1160"/>
+        <location filename="../core/divelist.c" line="667"/>
+        <location filename="../core/equipment.c" line="86"/>
+        <location filename="../core/planner.c" line="1141"/>
+        <location filename="../core/planner.c" line="1144"/>
         <source>air</source>
         <translation>luft</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="89"/>
+        <location filename="../core/equipment.c" line="88"/>
         <source>EAN%d</source>
         <translation>EAN%d</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="185"/>
+        <location filename="../core/equipment.c" line="175"/>
         <source>integrated</source>
         <translation>integrerat</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="186"/>
+        <location filename="../core/equipment.c" line="176"/>
         <source>belt</source>
         <translation>bälte</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="187"/>
+        <location filename="../core/equipment.c" line="177"/>
         <source>ankle</source>
         <translation>ankel</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="188"/>
+        <location filename="../core/equipment.c" line="178"/>
         <source>backplate</source>
         <translation>Ryggplatta</translation>
     </message>
     <message>
-        <location filename="../core/equipment.c" line="189"/>
+        <location filename="../core/equipment.c" line="179"/>
         <source>clip-on</source>
         <translation>clip-on</translation>
     </message>
@@ -8849,123 +8902,123 @@ Medel</translation>
         <translation>Ingen dykprofil hittades för &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="73"/>
+        <location filename="../core/git-access.c" line="82"/>
         <source>Checkout from storage (%lu/%lu)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="104"/>
+        <location filename="../core/git-access.c" line="113"/>
         <source>Transfer from storage (%d/%d)</source>
         <translation>Flytta från lagringsplats (%d/%d)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="116"/>
+        <location filename="../core/git-access.c" line="125"/>
         <source>Transfer to storage (%d/%d)</source>
         <translation>Flytta till lagringsplats (%d/%d)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="152"/>
+        <location filename="../core/git-access.c" line="161"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
         <translation>Lokal cache katalog %s är trasig - kan inte synkronisera med Subsurface molnlagring</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="175"/>
-        <location filename="../core/git-access.c" line="195"/>
+        <location filename="../core/git-access.c" line="184"/>
+        <location filename="../core/git-access.c" line="204"/>
         <source>Could not update local cache to newer remote data</source>
         <translation>Kunde inte uppdatera lokal cache med nyare extern data</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="188"/>
+        <location filename="../core/git-access.c" line="197"/>
         <source>Subsurface cloud storage corrupted</source>
         <translation>Subsurface molnlagring skadades</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="324"/>
+        <location filename="../core/git-access.c" line="333"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
         <translation>Kunde inte uppdatera Subsurface molnlagring, försök igen senare</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="384"/>
+        <location filename="../core/git-access.c" line="393"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation>Extern lagring och lokal data separerade. Fel: sammanfogning misslyckades (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="414"/>
+        <location filename="../core/git-access.c" line="423"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation>Extern lagring och lokal data separerade. Kan inte kombinera lokala och externa ändringar</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="448"/>
+        <location filename="../core/git-access.c" line="457"/>
         <source>Remote storage and local data diverged</source>
         <translation>Extern lagring och lokal data separerade</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="451"/>
+        <location filename="../core/git-access.c" line="460"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
         <translation>Extern lagring och lokal data separerade. Fel: skrivning av data misslyckades (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="460"/>
+        <location filename="../core/git-access.c" line="469"/>
         <source>Problems with local cache of Subsurface cloud data</source>
         <translation>Problem med lokal cache av Subsurface molndata</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="461"/>
+        <location filename="../core/git-access.c" line="470"/>
         <source>Moved cache data to %s. Please try the operation again.</source>
         <translation>Flyttade cache data till %s. Vänligen försök igen.</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="508"/>
+        <location filename="../core/git-access.c" line="517"/>
         <source>Update local storage to match cloud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="516"/>
+        <location filename="../core/git-access.c" line="525"/>
         <source>Push local changes to cloud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="534"/>
+        <location filename="../core/git-access.c" line="543"/>
         <source>Try to merge local changes into cloud storage</source>
         <translation>Försöker sammanfoga lokala förändringar i molnlagringsmiljön</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="576"/>
+        <location filename="../core/git-access.c" line="585"/>
         <source>Store data into cloud storage</source>
         <translation>Spara till molnlagring</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="600"/>
+        <location filename="../core/git-access.c" line="609"/>
         <source>Sync with cloud storage</source>
         <translation>Synka med molnlagring</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="627"/>
+        <location filename="../core/git-access.c" line="636"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="640"/>
+        <location filename="../core/git-access.c" line="649"/>
         <source>Successful cloud connection, fetch remote</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="659"/>
+        <location filename="../core/git-access.c" line="668"/>
         <source>Done syncing with cloud storage</source>
         <translation>Klar med synkronisering till molnlagring</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="794"/>
+        <location filename="../core/git-access.c" line="803"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation>Fel på uppkopplingen mot Subsurface molntjänst</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="797"/>
+        <location filename="../core/git-access.c" line="806"/>
         <source>git clone of %s failed (%s)</source>
         <translation>git clone av %s misslyckades (%s)</translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="823"/>
+        <location filename="../core/git-access.c" line="832"/>
         <source>Synchronising data file</source>
         <translation>Synkroniserar datafil</translation>
     </message>
@@ -9064,118 +9117,118 @@ Medel</translation>
         <translation>okänt händelsenummer</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="612"/>
+        <location filename="../core/libdivecomputer.c" line="631"/>
         <source>Error parsing the datetime</source>
         <translation>Kunde inte tolka tid och datum</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="630"/>
+        <location filename="../core/libdivecomputer.c" line="649"/>
         <source>Dive %d: %s</source>
         <translation>Dyk #%d: %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="636"/>
+        <location filename="../core/libdivecomputer.c" line="655"/>
         <source>Error parsing the divetime</source>
         <translation>Kunde inte tolka dyktid</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="646"/>
+        <location filename="../core/libdivecomputer.c" line="665"/>
         <source>Error parsing the maxdepth</source>
         <translation>Kunde inte tolka maxdjup</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="665"/>
+        <location filename="../core/libdivecomputer.c" line="684"/>
         <source>Error parsing temperature</source>
         <translation>Misslyckas läsa temperatur</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="685"/>
+        <location filename="../core/libdivecomputer.c" line="704"/>
         <source>Error parsing the gas mix count</source>
         <translation>Kunde inte tolka antal gasblandningar</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="697"/>
+        <location filename="../core/libdivecomputer.c" line="716"/>
         <source>Error obtaining water salinity</source>
         <translation>Kunde inte ladda vattnets salthalt</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="706"/>
+        <location filename="../core/libdivecomputer.c" line="725"/>
         <source>Error obtaining surface pressure</source>
         <translation>Kunde inte få tag i tyck vid ytan</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="731"/>
+        <location filename="../core/libdivecomputer.c" line="750"/>
         <source>Error obtaining dive mode</source>
         <translation>Misslyckades läsa dykläge</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="754"/>
+        <location filename="../core/libdivecomputer.c" line="773"/>
         <source>Error parsing the gas mix</source>
         <translation>Kunde inte tolka gasblandning</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="780"/>
+        <location filename="../core/libdivecomputer.c" line="799"/>
         <source>Unable to create parser for %s %s</source>
         <translation>Kan inte skapa parser för %s %s</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="786"/>
+        <location filename="../core/libdivecomputer.c" line="805"/>
         <source>Error registering the data</source>
         <translation>Kunde inte registrera parser-data</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="817"/>
+        <location filename="../core/libdivecomputer.c" line="836"/>
         <source>Error parsing the samples</source>
         <translation>Kunde inte tolka sampel</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="824"/>
+        <location filename="../core/libdivecomputer.c" line="843"/>
         <source>Already downloaded dive at %s</source>
         <translation>Dyket %s är redan nedladdat</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1074"/>
+        <location filename="../core/libdivecomputer.c" line="1093"/>
         <source>Event: waiting for user action</source>
         <translation>Händelse: väntar på användaren</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1093"/>
+        <location filename="../core/libdivecomputer.c" line="1112"/>
         <source>model=%s firmware=%u serial=%u</source>
         <translation>modell=%s firmware=%u serenummerl=%u</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1159"/>
+        <location filename="../core/libdivecomputer.c" line="1178"/>
         <source>Error registering the event handler.</source>
         <translation>Kunde inte registrera event-funktion</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1164"/>
+        <location filename="../core/libdivecomputer.c" line="1183"/>
         <source>Error registering the cancellation handler.</source>
         <translation>Kunde inte registrera avbrytningsrutin</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1185"/>
+        <location filename="../core/libdivecomputer.c" line="1204"/>
         <source>Dive data import error</source>
         <translation>Lyckades inte importera dykdata</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1369"/>
+        <location filename="../core/libdivecomputer.c" line="1394"/>
         <source>Unable to create libdivecomputer context</source>
         <translation>Kan inte skapa libdivecomputer context</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1378"/>
+        <location filename="../core/libdivecomputer.c" line="1403"/>
         <source>Unable to open %s %s (%s)</source>
         <translation>Kunde inte öppna fil %s %s (%s)</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1389"/>
+        <location filename="../core/libdivecomputer.c" line="1414"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, it is useful to send the developers the log files. You can copy them to the clipboard in the About dialog.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1391"/>
+        <location filename="../core/libdivecomputer.c" line="1416"/>
         <source>Error opening the device %s %s (%s).
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
@@ -9184,13 +9237,13 @@ I många fall, för att avhjälpa och analysera problemet, kan en loggfil från 
 Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogfönstret.</translation>
     </message>
     <message>
-        <location filename="../core/libdivecomputer.c" line="1403"/>
+        <location filename="../core/libdivecomputer.c" line="1428"/>
         <source>No new dives downloaded from dive computer</source>
         <translation>Inga nya dyk att ladda ner från dykdator</translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="169"/>
-        <location filename="../core/parse-xml.c" line="1159"/>
+        <location filename="../core/parse-xml.c" line="1172"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation>multipla GPS positioner för denna dykplats; även %s
@@ -9198,19 +9251,19 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     </message>
     <message>
         <location filename="../core/load-git.c" line="197"/>
-        <location filename="../core/parse.c" line="495"/>
+        <location filename="../core/parse.c" line="472"/>
         <source>additional name for site: %s
 </source>
         <translation>alternativt namn för platsen: %s
 </translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1673"/>
+        <location filename="../core/load-git.c" line="1672"/>
         <source>Load dives from local cache</source>
         <translation>Dyk ladade från lokal buffert</translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1677"/>
+        <location filename="../core/load-git.c" line="1676"/>
         <source>Successfully opened dive data</source>
         <translation>Lyckades med att öppna dykdata</translation>
     </message>
@@ -9233,12 +9286,12 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
 </translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1624"/>
+        <location filename="../core/parse-xml.c" line="1636"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation>Kunde inte läsa &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2057"/>
+        <location filename="../core/parse-xml.c" line="2136"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Kunde inte öppna formatmall %s</translation>
     </message>
@@ -9269,8 +9322,8 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
         <translation>, effektiv GF=%d/%d</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="322"/>
-        <location filename="../desktop-widgets/simplewidgets.cpp" line="209"/>
+        <location filename="../core/planner.c" line="306"/>
+        <location filename="../desktop-widgets/simplewidgets.cpp" line="208"/>
         <source>SP change</source>
         <translation>SP ändring</translation>
     </message>
@@ -9532,17 +9585,17 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
         <translation>lågt pO₂ värde %.2f vid %d:%02u med gas %s på djup %.*f %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="893"/>
+        <location filename="../core/planner.c" line="877"/>
         <source>Can&apos;t find gas %s</source>
         <translation>Kan inte hitta gas %s</translation>
     </message>
     <message>
-        <location filename="../core/planner.c" line="1165"/>
+        <location filename="../core/planner.c" line="1149"/>
         <source>ean</source>
         <translation>ean</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1386"/>
+        <location filename="../core/profile.c" line="1393"/>
         <source>@: %d:%02d
 D: %.1f%s
 </source>
@@ -9551,84 +9604,84 @@ D: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1398"/>
+        <location filename="../core/profile.c" line="1404"/>
         <source>T: %.1f%s
 </source>
         <translation>T: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1404"/>
+        <location filename="../core/profile.c" line="1410"/>
         <source>V: %.1f%s
 </source>
         <translation>V: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1407"/>
+        <location filename="../core/profile.c" line="1413"/>
         <source>SAC: %.*f%s/min
 </source>
         <translation>SAC: %.*f%s/min
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1409"/>
+        <location filename="../core/profile.c" line="1415"/>
         <source>CNS: %u%%
 </source>
         <translation>CNS: %u%%
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1411"/>
+        <location filename="../core/profile.c" line="1417"/>
         <source>pO%s: %.2fbar
 </source>
         <translation>pO%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1413"/>
+        <location filename="../core/profile.c" line="1419"/>
         <source>pN%s: %.2fbar
 </source>
         <translation>pN%s: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1415"/>
+        <location filename="../core/profile.c" line="1421"/>
         <source>pHe: %.2fbar
 </source>
         <translation>pHe: %.2fbar
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1418"/>
+        <location filename="../core/profile.c" line="1424"/>
         <source>MOD: %d%s
 </source>
         <translation>MOD: %d%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1458"/>
+        <location filename="../core/profile.c" line="1464"/>
         <source>Deco: %umin @ %.0f%s
 </source>
         <translation>Deko: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1450"/>
+        <location filename="../core/profile.c" line="1456"/>
         <source>Safety stop: %umin @ %.0f%s
 </source>
         <translation>Säkerhetsstopp: %umin @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1394"/>
+        <location filename="../core/profile.c" line="1400"/>
         <source>P: %d%s (%s)
 </source>
         <translation>P: %d%s (%s)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1427"/>
+        <location filename="../core/profile.c" line="1433"/>
         <source>EAD: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -9637,7 +9690,7 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1433"/>
+        <location filename="../core/profile.c" line="1439"/>
         <source>END: %d%s
 EADD: %d%s / %.1fg/ℓ
 </source>
@@ -9646,174 +9699,174 @@ EADD: %d%s / %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1438"/>
+        <location filename="../core/profile.c" line="1444"/>
         <source>Density: %.1fg/ℓ
 </source>
         <translation>Densitet: %.1fg/ℓ
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1453"/>
+        <location filename="../core/profile.c" line="1459"/>
         <source>Safety stop: unknown time @ %.0f%s
 </source>
         <translation>Säkerhetsstopp: okänd tid @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1461"/>
+        <location filename="../core/profile.c" line="1467"/>
         <source>Deco: unknown time @ %.0f%s
 </source>
         <translation>Deko: okänd tid @ %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1465"/>
+        <location filename="../core/profile.c" line="1471"/>
         <source>In deco
 </source>
         <translation>I Deko
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1467"/>
+        <location filename="../core/profile.c" line="1473"/>
         <source>NDL: %umin
 </source>
         <translation>NDL: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1470"/>
+        <location filename="../core/profile.c" line="1476"/>
         <source>TTS: %umin
 </source>
         <translation>TTS: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1473"/>
+        <location filename="../core/profile.c" line="1479"/>
         <source>Deco: %umin @ %.0f%s (calc)
 </source>
         <translation>Deko: %umin @ %.0f%s (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1481"/>
+        <location filename="../core/profile.c" line="1487"/>
         <source>In deco (calc)
 </source>
         <translation>I deko (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1484"/>
+        <location filename="../core/profile.c" line="1490"/>
         <source>NDL: %umin (calc)
 </source>
         <translation>NDL: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1486"/>
+        <location filename="../core/profile.c" line="1492"/>
         <source>NDL: &gt;2h (calc)
 </source>
         <translation>NDL: &gt;2h (beräknad)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1490"/>
+        <location filename="../core/profile.c" line="1496"/>
         <source>TTS: %umin (calc)
 </source>
         <translation>TTS: %umin (calc)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1492"/>
+        <location filename="../core/profile.c" line="1498"/>
         <source>TTS: &gt;2h (calc)
 </source>
         <translation>TTS: &gt;2h (beräknad)
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1495"/>
+        <location filename="../core/profile.c" line="1501"/>
         <source>RBT: %umin
 </source>
         <translation>RBT: %umin
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1498"/>
+        <location filename="../core/profile.c" line="1504"/>
         <source>Calculated ceiling %.0f%s
 </source>
         <translation>Beräknat tak %.0f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1504"/>
+        <location filename="../core/profile.c" line="1510"/>
         <source>Tissue %.0fmin: %.1f%s
 </source>
         <translation>Vävnad %.0fmin: %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1510"/>
+        <location filename="../core/profile.c" line="1516"/>
         <source>ICD in leading tissue
 </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1512"/>
+        <location filename="../core/profile.c" line="1518"/>
         <source>heart rate: %d
 </source>
         <translation>hjärtrytm: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1514"/>
+        <location filename="../core/profile.c" line="1520"/>
         <source>bearing: %d
 </source>
         <translation>kurs: %d
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1517"/>
+        <location filename="../core/profile.c" line="1523"/>
         <source>mean depth to here %.1f%s
 </source>
         <translation>medeldjup fram tills hit %.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1614"/>
+        <location filename="../core/profile.c" line="1620"/>
         <source>%sT:%d:%02dmin</source>
         <translation>%sT:%d:%02dmin</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1649"/>
+        <location filename="../core/profile.c" line="1655"/>
         <source>%s %sP:%d%s</source>
         <translation>%s %sP:%d%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1674"/>
+        <location filename="../core/profile.c" line="1680"/>
         <source>%s SAC:%.*f%s/min</source>
         <translation>%s SAC:%.*f%s/min</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1618"/>
-        <location filename="../core/profile.c" line="1622"/>
-        <location filename="../core/profile.c" line="1626"/>
+        <location filename="../core/profile.c" line="1624"/>
+        <location filename="../core/profile.c" line="1628"/>
+        <location filename="../core/profile.c" line="1632"/>
         <source>%s %sD:%.1f%s</source>
         <translation>%s %sD:%.1f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1630"/>
+        <location filename="../core/profile.c" line="1636"/>
         <source>%s %sD:%.1f%s
 </source>
         <translation>%s %sD:%.1f%s
 </translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1634"/>
+        <location filename="../core/profile.c" line="1640"/>
         <source>%s%sV:%.2f%s</source>
         <translation>%s%sV:%.2f%s</translation>
     </message>
     <message>
-        <location filename="../core/profile.c" line="1638"/>
-        <location filename="../core/profile.c" line="1642"/>
+        <location filename="../core/profile.c" line="1644"/>
+        <location filename="../core/profile.c" line="1648"/>
         <source>%s %sV:%.2f%s</source>
         <translation>%s %sV:%.2f%s</translation>
     </message>
@@ -9862,142 +9915,142 @@ EADD: %d%s / %.1fg/ℓ
         <translation>W</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="616"/>
-        <location filename="../core/qthelper.cpp" line="793"/>
+        <location filename="../core/qthelper.cpp" line="590"/>
+        <location filename="../core/qthelper.cpp" line="767"/>
         <source>C</source>
         <translation>C</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="619"/>
-        <location filename="../core/qthelper.cpp" line="795"/>
+        <location filename="../core/qthelper.cpp" line="593"/>
+        <location filename="../core/qthelper.cpp" line="769"/>
         <source>F</source>
         <translation>F</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="870"/>
-        <location filename="../core/qthelper.cpp" line="1246"/>
+        <location filename="../core/qthelper.cpp" line="844"/>
+        <location filename="../core/qthelper.cpp" line="1231"/>
         <source>AIR</source>
         <translation>LUFT</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="872"/>
+        <location filename="../core/qthelper.cpp" line="846"/>
         <source>EAN</source>
         <translation>EAN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="947"/>
+        <location filename="../core/qthelper.cpp" line="921"/>
         <source>more than %1 days</source>
         <translation>mer än %1 dagar</translation>
     </message>
     <message numerus="yes">
-        <location filename="../core/qthelper.cpp" line="1010"/>
+        <location filename="../core/qthelper.cpp" line="984"/>
         <source>(%n dive(s))</source>
         <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1246"/>
+        <location filename="../core/qthelper.cpp" line="1231"/>
         <source>OXYGEN</source>
         <translation>OXYGEN</translation>
     </message>
     <message>
-        <location filename="../core/qthelper.cpp" line="1341"/>
+        <location filename="../core/qthelper.cpp" line="1326"/>
         <source>l</source>
         <translation>l</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="472"/>
-        <location filename="../core/save-html.c" line="556"/>
+        <location filename="../core/save-html.c" line="476"/>
+        <location filename="../core/save-html.c" line="560"/>
         <location filename="../core/worldmap-save.c" line="113"/>
         <source>Can&apos;t open file %s</source>
         <translation>Kan inte öppna fil %s</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="491"/>
+        <location filename="../core/save-html.c" line="495"/>
         <source>Number</source>
         <translation>Nummer</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="492"/>
+        <location filename="../core/save-html.c" line="496"/>
         <source>Date</source>
         <translation>Datum</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="493"/>
+        <location filename="../core/save-html.c" line="497"/>
         <source>Time</source>
         <translation>Tid</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="494"/>
+        <location filename="../core/save-html.c" line="498"/>
         <source>Location</source>
         <translation>Plats</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="495"/>
+        <location filename="../core/save-html.c" line="499"/>
         <source>Air temp.</source>
         <translation>Lufttemp</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="496"/>
+        <location filename="../core/save-html.c" line="500"/>
         <source>Water temp.</source>
         <translation>Vattentemperatur</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="497"/>
+        <location filename="../core/save-html.c" line="501"/>
         <source>Dives</source>
         <translation>Dyk</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="498"/>
+        <location filename="../core/save-html.c" line="502"/>
         <source>Expand all</source>
         <translation>Expandera alla</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="499"/>
+        <location filename="../core/save-html.c" line="503"/>
         <source>Collapse all</source>
         <translation>Sammanslå alla</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="500"/>
+        <location filename="../core/save-html.c" line="504"/>
         <source>Trips</source>
         <translation>Resor</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="501"/>
+        <location filename="../core/save-html.c" line="505"/>
         <source>Statistics</source>
         <translation>Statistik</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="502"/>
+        <location filename="../core/save-html.c" line="506"/>
         <source>Advanced search</source>
         <translation>Avancerad sökning</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="505"/>
+        <location filename="../core/save-html.c" line="509"/>
         <source>Rating</source>
         <translation>Rankning</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="506"/>
+        <location filename="../core/save-html.c" line="510"/>
         <source>Visibility</source>
         <translation>Synlighet</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="507"/>
+        <location filename="../core/save-html.c" line="511"/>
         <source>Duration</source>
         <translation>Varaktighet</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="508"/>
+        <location filename="../core/save-html.c" line="512"/>
         <source>Divemaster</source>
         <translation>Divemaster</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="509"/>
+        <location filename="../core/save-html.c" line="513"/>
         <source>Buddy</source>
         <translation>Parkamrat</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="510"/>
+        <location filename="../core/save-html.c" line="514"/>
         <source>Suit</source>
         <translation>Dräkt</translation>
     </message>
@@ -10008,180 +10061,180 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/divesite-helper.cpp" line="29"/>
-        <location filename="../core/save-html.c" line="511"/>
+        <location filename="../core/save-html.c" line="515"/>
         <source>Tags</source>
         <translation>Taggar</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="512"/>
-        <location filename="../smtk-import/smartrak.c" line="296"/>
-        <location filename="../smtk-import/smartrak.c" line="369"/>
+        <location filename="../core/save-html.c" line="516"/>
+        <location filename="../smtk-import/smartrak.c" line="256"/>
+        <location filename="../smtk-import/smartrak.c" line="329"/>
         <source>Notes</source>
         <translation>Anteckningar</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="513"/>
+        <location filename="../core/save-html.c" line="517"/>
         <source>Show more details</source>
         <translation>Visa mer deltaljer</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="516"/>
+        <location filename="../core/save-html.c" line="520"/>
         <source>Yearly statistics</source>
         <translation>Årsstatistik</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="517"/>
+        <location filename="../core/save-html.c" line="521"/>
         <source>Year</source>
         <translation>År</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="518"/>
+        <location filename="../core/save-html.c" line="522"/>
         <source>Total time</source>
         <translation>Total tid</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="519"/>
+        <location filename="../core/save-html.c" line="523"/>
         <source>Average time</source>
         <translation>Genomsnittlig tid</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="520"/>
+        <location filename="../core/save-html.c" line="524"/>
         <source>Shortest time</source>
         <translation>Kortaste tid</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="521"/>
+        <location filename="../core/save-html.c" line="525"/>
         <source>Longest time</source>
         <translation>Längsta tid</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="522"/>
+        <location filename="../core/save-html.c" line="526"/>
         <source>Average depth</source>
         <translation>Genomsnittligt djup</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="523"/>
+        <location filename="../core/save-html.c" line="527"/>
         <source>Min. depth</source>
         <translation>Minsta. ljup</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="524"/>
+        <location filename="../core/save-html.c" line="528"/>
         <source>Max. depth</source>
         <translation>Maxdjup</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="525"/>
+        <location filename="../core/save-html.c" line="529"/>
         <source>Average SAC</source>
         <translation>Genomsnittlig SAC</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="526"/>
+        <location filename="../core/save-html.c" line="530"/>
         <source>Min. SAC</source>
         <translation>Minsta. SAC</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="527"/>
+        <location filename="../core/save-html.c" line="531"/>
         <source>Max. SAC</source>
         <translation>Största. SAC</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="528"/>
+        <location filename="../core/save-html.c" line="532"/>
         <source>Average temp.</source>
         <translation>Genomsnittlig temp.</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="529"/>
+        <location filename="../core/save-html.c" line="533"/>
         <source>Min. temp.</source>
         <translation>Minsta temp.</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="530"/>
+        <location filename="../core/save-html.c" line="534"/>
         <source>Max. temp.</source>
         <translation>Största temp.</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="531"/>
+        <location filename="../core/save-html.c" line="535"/>
         <source>Back to list</source>
         <translation>Tillbaka till listan</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="534"/>
+        <location filename="../core/save-html.c" line="538"/>
         <source>Dive #</source>
         <translation>Dyk #</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="535"/>
+        <location filename="../core/save-html.c" line="539"/>
         <source>Dive profile</source>
         <translation>Dykprofil</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="536"/>
+        <location filename="../core/save-html.c" line="540"/>
         <source>Dive information</source>
         <translation>Dykinformation</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="537"/>
+        <location filename="../core/save-html.c" line="541"/>
         <source>Dive equipment</source>
         <translation>Dykutrustning</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="538"/>
-        <location filename="../core/save-html.c" line="545"/>
+        <location filename="../core/save-html.c" line="542"/>
+        <location filename="../core/save-html.c" line="549"/>
         <source>Type</source>
         <translation>Typ</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="539"/>
+        <location filename="../core/save-html.c" line="543"/>
         <source>Size</source>
         <translation>Storlek</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="540"/>
+        <location filename="../core/save-html.c" line="544"/>
         <source>Work pressure</source>
         <translation>Arbetstryck</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="541"/>
+        <location filename="../core/save-html.c" line="545"/>
         <source>Start pressure</source>
         <translation>Starttryck</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="542"/>
+        <location filename="../core/save-html.c" line="546"/>
         <source>End pressure</source>
         <translation>Sluttryck</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="543"/>
+        <location filename="../core/save-html.c" line="547"/>
         <source>Gas</source>
         <translation>Gas</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="544"/>
+        <location filename="../core/save-html.c" line="548"/>
         <source>Weight</source>
         <translation>Vikt</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="546"/>
+        <location filename="../core/save-html.c" line="550"/>
         <source>Events</source>
         <translation>Händelser</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="547"/>
+        <location filename="../core/save-html.c" line="551"/>
         <source>Name</source>
         <translation>Namn</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="548"/>
+        <location filename="../core/save-html.c" line="552"/>
         <source>Value</source>
         <translation>Värde</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="549"/>
+        <location filename="../core/save-html.c" line="553"/>
         <source>Coordinates</source>
         <translation>Koordinater</translation>
     </message>
     <message>
-        <location filename="../core/save-html.c" line="550"/>
+        <location filename="../core/save-html.c" line="554"/>
         <source>Dive status</source>
         <translation>Dykstatus</translation>
     </message>
@@ -10211,62 +10264,62 @@ EADD: %d%s / %.1fg/ℓ
         <translation>Alla (baserat på resestatus)</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Jan</source>
         <translation>jan</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Feb</source>
         <translation>feb</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Mar</source>
         <translation>mar</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Apr</source>
         <translation>apr</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>May</source>
         <translation>maj</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="134"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Jun</source>
         <translation>jun</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="135"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Jul</source>
         <translation>jul</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="135"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Aug</source>
         <translation>aug</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="135"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Sep</source>
         <translation>sep</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="135"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Oct</source>
         <translation>okt</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="135"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Nov</source>
         <translation>nov</translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="135"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Dec</source>
         <translation>dec</translation>
     </message>
@@ -10517,10 +10570,15 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="56"/>
         <location filename="../core/divelogexportlogic.cpp" line="92"/>
-        <location filename="../core/qthelper.h" line="74"/>
+        <location filename="../core/qthelper.h" line="76"/>
         <location filename="../desktop-widgets/templatelayout.h" line="111"/>
         <source>sec</source>
         <translation>sek</translation>
+    </message>
+    <message>
+        <location filename="../core/divelogexportlogic.cpp" line="152"/>
+        <source>Cannot find a folder called &apos;theme&apos; in the standard locations</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="49"/>
@@ -10548,77 +10606,77 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Anteckningar:</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="292"/>
+        <location filename="../smtk-import/smartrak.c" line="252"/>
         <source>Built</source>
         <translation>Byggd</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="292"/>
+        <location filename="../smtk-import/smartrak.c" line="252"/>
         <source>Sank</source>
         <translation>Sjönk</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="292"/>
+        <location filename="../smtk-import/smartrak.c" line="252"/>
         <source>Sank Time</source>
         <translation>Nedstigningstid</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="293"/>
+        <location filename="../smtk-import/smartrak.c" line="253"/>
         <source>Reason</source>
         <translation>Anledning</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="293"/>
+        <location filename="../smtk-import/smartrak.c" line="253"/>
         <source>Nationality</source>
         <translation>Nationalitet</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="293"/>
+        <location filename="../smtk-import/smartrak.c" line="253"/>
         <source>Shipyard</source>
         <translation>Varv</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="294"/>
+        <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>ShipType</source>
         <translation>Skeppstyp</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="294"/>
+        <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Length</source>
         <translation>Längd</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="294"/>
+        <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Beam</source>
         <translation>Bredd</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="295"/>
+        <location filename="../smtk-import/smartrak.c" line="255"/>
         <source>Draught</source>
         <translation>Djupgånde</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="295"/>
+        <location filename="../smtk-import/smartrak.c" line="255"/>
         <source>Displacement</source>
         <translation>Deplacement</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="295"/>
+        <location filename="../smtk-import/smartrak.c" line="255"/>
         <source>Cargo</source>
         <translation>Last</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="307"/>
+        <location filename="../smtk-import/smartrak.c" line="267"/>
         <source>Wreck Data</source>
         <translation>Vrakinformation</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="368"/>
+        <location filename="../smtk-import/smartrak.c" line="328"/>
         <source>Altitude</source>
         <translation>Höjd</translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="368"/>
+        <location filename="../smtk-import/smartrak.c" line="328"/>
         <source>Depth</source>
         <translation>Djup</translation>
     </message>
@@ -10663,27 +10721,27 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Storstad</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="951"/>
+        <location filename="../core/save-git.c" line="943"/>
         <source>Start saving data</source>
         <translation>Börja spara data</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="960"/>
+        <location filename="../core/save-git.c" line="952"/>
         <source>Start saving dives</source>
         <translation>Börja spara dyk</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="993"/>
+        <location filename="../core/save-git.c" line="985"/>
         <source>Done creating local cache</source>
         <translation>Färdig med att skapa en lokal buffert</translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1244"/>
+        <location filename="../core/save-git.c" line="1236"/>
         <source>Preparing to save data</source>
         <translation>Förbereder att spara data</translation>
     </message>
     <message>
-        <location filename="../profile-widget/profilewidget2.cpp" line="1633"/>
+        <location filename="../profile-widget/profilewidget2.cpp" line="1653"/>
         <source>modechange</source>
         <translation type="unfinished"/>
     </message>
@@ -10698,7 +10756,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Ta bort denna punkt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="638"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>Spara inte en tom logbok i molnet</translation>
     </message>
@@ -10718,22 +10776,22 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Maximum</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="623"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="404"/>
         <source>Invalid response from server</source>
         <translation>Ogiltigt svar från server</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="631"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="412"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation>Förväntade XML tag &apos;DiveDateReader&apos; men fick istället &apos;%1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="677"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="458"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation>Förväntad XML tagg &apos;DiveDates&apos; gick ej att finna</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="684"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="465"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation>Felformaterat XML svar. Rad %1: %2</translation>
     </message>
@@ -10746,112 +10804,102 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Subsurface-mobile</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="186"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="192"/>
         <source>Dive list</source>
         <translation>Dyklista</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="213"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="219"/>
         <source>Dive management</source>
         <translation>Dykhantering</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="275"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="281"/>
         <source>Disable auto cloud sync</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="275"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="281"/>
         <source>Enable auto cloud sync</source>
         <translation>Aktivera automatisk molnsynkronisering</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="344"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Disable location service</source>
         <translation>Stängav positions tjänsten</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
         <source>Settings</source>
         <translation>Inställningar</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="218"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="224"/>
         <source>Add dive manually</source>
         <translation>Lägg till dyk manuellt</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="232"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="238"/>
         <source>Download from DC</source>
         <translation>Ladda ner från dykdator</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="253"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="259"/>
         <source>Manual sync with cloud</source>
         <translation>Manuellt synkronisera med molnet</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="280"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="286"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
         <translation>Deaktiverande av automatisk molnsynkronisering gör att all data lagras lokalt. Detta kan vara användbart i situationer med begränsad eller ingen nätverksåtkomst. Vänligen välg &apos;Manuell synkronisering med molnlagring&apos; om du har uppkoppling och vill synkronisera ditt data till molnlagringen.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="291"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="297"/>
         <source>GPS</source>
         <translation>GPS</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="399"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="385"/>
         <source>Help</source>
         <translation>Hjälp</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="298"/>
-        <source>Upload GPS data</source>
-        <translation>Ladda upp GPS data</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="244"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="250"/>
         <source>Apply GPS fixes</source>
         <translation>Sätt GPS position</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="309"/>
-        <source>Download GPS data</source>
-        <translation>Ladda ner GPS data</translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="320"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="304"/>
         <source>Show GPS fixes</source>
         <translation>Visa GPS position</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="333"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="317"/>
         <source>Clear GPS cache</source>
         <translation>Rensa GPS cache</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="377"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="363"/>
         <source>Developer</source>
         <translation>Utvecklare</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="380"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
         <source>App log</source>
         <translation>App logg</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="388"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="374"/>
         <source>Theme information</source>
         <translation>Tema information</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="355"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="339"/>
         <source>About</source>
         <translation>Om</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="344"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Run location service</source>
         <translation>Kör positions tjänst</translation>
     </message>
