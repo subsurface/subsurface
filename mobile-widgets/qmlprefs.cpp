@@ -11,7 +11,6 @@ QMLPrefs *QMLPrefs::m_instance = NULL;
 
 QMLPrefs::QMLPrefs() :
 	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_distanceThreshold(1000),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_showPin(false),
 	m_timeThreshold(60)
@@ -84,17 +83,6 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
 	}
-}
-
-int QMLPrefs::distanceThreshold() const
-{
-	return m_distanceThreshold;
-}
-
-void QMLPrefs::setDistanceThreshold(int distance)
-{
-	m_distanceThreshold = distance;
-	emit distanceThresholdChanged();
 }
 
 qPrefCloudStorage::cloud_status QMLPrefs::oldStatus() const

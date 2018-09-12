@@ -278,11 +278,10 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: distanceThreshold
-				text: prefs.distanceThreshold
+				text: PrefLocationService.distance_threshold
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					prefs.distanceThreshold = distanceThreshold.text
-					manager.savePreferences()
+					PrefLocationService.distance_threshold = distanceThreshold.text
 				}
 			}
 
