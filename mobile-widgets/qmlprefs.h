@@ -37,11 +37,6 @@ class QMLPrefs : public QObject {
 				READ theme
 				WRITE setTheme
 				NOTIFY themeChanged)
-	Q_PROPERTY(int timeThreshold
-				MEMBER m_timeThreshold
-				WRITE setTimeThreshold
-				NOTIFY timeThresholdChanged)
-
 public:
 	QMLPrefs();
 	~QMLPrefs();
@@ -66,9 +61,6 @@ public:
 	bool showPin() const;
 	void setShowPin(bool enable);
 
-	int  timeThreshold() const;
-	void setTimeThreshold(int time);
-
 	const QString theme() const;
 	void setTheme(QString theme);
 
@@ -84,7 +76,6 @@ private:
 	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
-	int m_timeThreshold;
 
 signals:
 	void cloudPasswordChanged();
@@ -94,7 +85,6 @@ signals:
 	void oldStatusChanged();
 	void showPinChanged();
 	void themeChanged();
-	void timeThresholdChanged();
 };
 
 #endif

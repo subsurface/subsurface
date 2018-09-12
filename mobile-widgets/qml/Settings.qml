@@ -293,11 +293,10 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: timeThreshold
-				text: prefs.timeThreshold
+				text: PrefLocationService.time_threshold / 60
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					prefs.timeThreshold = timeThreshold.text
-					manager.savePreferences()
+					PrefLocationService.time_threshold = timeThreshold.text * 60
 				}
 			}
 

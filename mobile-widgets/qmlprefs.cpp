@@ -12,8 +12,7 @@ QMLPrefs *QMLPrefs::m_instance = NULL;
 QMLPrefs::QMLPrefs() :
 	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_showPin(false),
-	m_timeThreshold(60)
+	m_showPin(false)
 {
 	// This strange construct is needed because QMLEngine calls new and that
 	// cannot be overwritten
@@ -107,18 +106,6 @@ void QMLPrefs::setShowPin(bool enable)
 {
 	m_showPin = enable;
 	emit showPinChanged();
-}
-
-int QMLPrefs::timeThreshold() const
-{
-	return m_timeThreshold;
-}
-
-void QMLPrefs::setTimeThreshold(int time)
-{
-	m_timeThreshold = time;
-	GpsLocation::instance()->setGpsTimeThreshold(m_timeThreshold * 60);
-	emit timeThresholdChanged();
 }
 
 const QString QMLPrefs::theme() const
