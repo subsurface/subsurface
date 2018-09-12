@@ -363,10 +363,10 @@ Kirigami.ScrollablePage {
 			}
 			SsrfSwitch {
 				id: developerButton
-				checked: prefs.developer
+				checked: PrefDisplay.show_developer
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					prefs.developer = checked
+					PrefDisplay.show_developer = checked
 				}
 			}
 		}
