@@ -26,11 +26,16 @@
 #include <string.h>     // strerror
 #include <errno.h>      // errno
 #include <sys/time.h>   // gettimeofday
-#include <time.h>       // nanosleep
 #include <stdio.h>
 
 #include <libusb.h>
 #include <ftdi.h>
+
+#ifdef _WIN32
+#include <windows.h>    // Sleep
+#else
+#include <time.h>       // nanosleep
+#endif
 
 #ifndef __ANDROID__
 #define INFO(context, fmt, ...)	fprintf(stderr, "INFO: " fmt "\n", ##__VA_ARGS__)
@@ -107,6 +112,9 @@ static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 
 	INFO (device->context, "Sleep: value=%u", timeout);
 
+#ifdef _WIN32
+	Sleep((DWORD)timeout);
+#else
 	struct timespec ts;
 	ts.tv_sec  = (timeout / 1000);
 	ts.tv_nsec = (timeout % 1000) * 1000000;
@@ -117,6 +125,7 @@ static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 			return DC_STATUS_IO;
 		}
 	}
+#endif
 
 	return DC_STATUS_SUCCESS;
 }
