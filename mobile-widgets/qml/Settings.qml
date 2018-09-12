@@ -387,7 +387,7 @@ Kirigami.ScrollablePage {
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onActivated: {
-					PrefGeneral.set_default_cylinder(defaultCylinderBox.currentText)
+					PrefGeneral.default_cylinder = defaultCylinderBox.currentText
 				}
 			}
 		}
