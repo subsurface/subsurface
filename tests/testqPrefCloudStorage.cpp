@@ -210,8 +210,6 @@ void TestQPrefCloudStorage::test_signals()
 	QSignalSpy spy6(qPrefCloudStorage::instance(), SIGNAL(cloud_timeoutChanged(int)));
 	QSignalSpy spy7(qPrefCloudStorage::instance(), SIGNAL(cloud_verification_statusChanged(int)));
 	QSignalSpy spy9(qPrefCloudStorage::instance(), SIGNAL(save_password_localChanged(bool)));
-	QSignalSpy spy10(qPrefCloudStorage::instance(), SIGNAL(save_userid_localChanged(bool)));
-	QSignalSpy spy11(qPrefCloudStorage::instance(), SIGNAL(useridChanged(QString)));
 
 	qPrefCloudStorage::set_cloud_base_url("signal url");
 	qPrefCloudStorage::set_cloud_storage_email("signal myEmail");
@@ -221,8 +219,6 @@ void TestQPrefCloudStorage::test_signals()
 	qPrefCloudStorage::set_cloud_timeout(11);
 	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	qPrefCloudStorage::set_save_password_local(true);
-	qPrefCloudStorage::set_save_userid_local(true);
-	qPrefCloudStorage::set_userid("signal my user");
 
 	QCOMPARE(spy1.count(), 1);
 	QCOMPARE(spy2.count(), 1);
@@ -232,8 +228,6 @@ void TestQPrefCloudStorage::test_signals()
 	QCOMPARE(spy6.count(), 1);
 	QCOMPARE(spy7.count(), 1);
 	QCOMPARE(spy9.count(), 1);
-	QCOMPARE(spy10.count(), 1);
-	QCOMPARE(spy11.count(), 1);
 
 	QVERIFY(spy1.takeFirst().at(0).toString() == "signal url");
 	QVERIFY(spy2.takeFirst().at(0).toString() == "signal myEmail");
@@ -243,8 +237,6 @@ void TestQPrefCloudStorage::test_signals()
 	QVERIFY(spy6.takeFirst().at(0).toInt() == 11);
 	QVERIFY(spy7.takeFirst().at(0).toInt() == qPrefCloudStorage::CS_VERIFIED);
 	QVERIFY(spy9.takeFirst().at(0).toBool() == true);
-	QVERIFY(spy10.takeFirst().at(0).toBool() == true);
-	QVERIFY(spy11.takeFirst().at(0).toString() == "signal my user");
 }
 
 QTEST_MAIN(TestQPrefCloudStorage)

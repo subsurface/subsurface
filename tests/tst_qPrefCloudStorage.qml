@@ -42,14 +42,6 @@ TestCase {
 		var x9 = PrefCloudStorage.save_password_local
 		PrefCloudStorage.save_password_local = true
 		compare(PrefCloudStorage.save_password_local, true)
-
-		var x10 = PrefCloudStorage.save_userid_local
-		PrefCloudStorage.save_userid_local = true
-		compare(PrefCloudStorage.save_userid_local, true)
-
-		var x11 = PrefCloudStorage.userid
-		PrefCloudStorage.userid = "my user"
-		compare(PrefCloudStorage.userid, "my user")
 	}
 
 	Item {
@@ -63,8 +55,6 @@ TestCase {
 		property bool spy7 : false
 		property bool spy8 : false
 		property bool spy9 : false
-		property bool spy10 : false
-		property bool spy11 : false
 
 		Connections {
 			target: PrefCloudStorage
@@ -76,8 +66,6 @@ TestCase {
 			onCloud_timeoutChanged: {spyCatcher.spy7 = true }
 			onCloud_verification_statusChanged: {spyCatcher.spy8 = true }
 			onSave_password_localChanged: {spyCatcher.spy9 = true }
-			onSave_userid_localChanged: {spyCatcher.spy10 = true }
-			onUseridChanged: {spyCatcher.spy11 = true }
 		}
 	}
 
@@ -90,8 +78,6 @@ TestCase {
 		PrefCloudStorage.cloud_timeout = 18
 		PrefCloudStorage.cloud_verification_status = 2
 		PrefCloudStorage.save_password_local = ! PrefCloudStorage.save_password_local
-		PrefCloudStorage.save_userid_local = ! PrefCloudStorage.save_userid_local
-		PrefCloudStorage.userid = "qml"
 
 		compare(spyCatcher.spy1, true)
 		compare(spyCatcher.spy3, true)
@@ -101,7 +87,5 @@ TestCase {
 		compare(spyCatcher.spy7, true)
 		compare(spyCatcher.spy8, true)
 		compare(spyCatcher.spy9, true)
-		compare(spyCatcher.spy10, true)
-		compare(spyCatcher.spy11, true)
 	}
 }
