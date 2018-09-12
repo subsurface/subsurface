@@ -1,3 +1,4 @@
+- Mobil: setting for developer menu entry is remembered across sessions
 - Mobile: remove UI components of the Webservice GPS interaction
 - Desktop: remove UI components of the Webservice GPS import. This functionality will
 be fully replaced by "apply on device".
