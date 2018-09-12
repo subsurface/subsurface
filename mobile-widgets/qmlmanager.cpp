@@ -2,7 +2,7 @@
 #include "qmlmanager.h"
 #include "qmlprefs.h"
 #include <QUrl>
-#include <QSettings>
+#include <QDebug>
 #include <QDebug>
 #include <QNetworkAccessManager>
 #include <QAuthenticator>
@@ -427,7 +427,6 @@ QMLManager *QMLManager::instance()
 
 void QMLManager::saveCloudCredentials()
 {
-	QSettings s;
 	bool cloudCredentialsChanged = false;
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
@@ -446,11 +445,9 @@ void QMLManager::saveCloudCredentials()
 			return;
 		}
 	}
-	s.beginGroup("CloudStorage");
-	s.setValue("email", QMLPrefs::instance()->cloudUserName());
-	s.setValue("password", QMLPrefs::instance()->cloudPassword());
-	s.setValue("cloud_verification_status", QMLPrefs::instance()->credentialStatus());
-	s.sync();
+	qPrefCloudStorage::set_cloud_storage_email(QMLPrefs::instance()->cloudUserName());
+	qPrefCloudStorage::set_cloud_storage_password(QMLPrefs::instance()->cloudPassword());
+	qPrefCloudStorage::set_cloud_verification_status(QMLPrefs::instance()->credentialStatus());
 	if (!same_string(prefs.cloud_storage_email,
 		qPrintable(QMLPrefs::instance()->cloudUserName()))) {
 		free((void *)prefs.cloud_storage_email);
