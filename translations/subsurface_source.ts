@@ -327,7 +327,7 @@
     <name>BuddyFilter</name>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="549"/>
-        <source>Person: </source>
+        <source>Person</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -406,7 +406,7 @@
 <context>
     <name>CloudStorageAuthenticate</name>
     <message>
-        <location filename="../core/cloudstorage.cpp" line="64"/>
+        <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3502,110 +3502,110 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>DivelogsDeWebServices</name>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="155"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="157"/>
         <source>no dives were selected</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="165"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="167"/>
         <source>stylesheet to export to divelogs.de is not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="175"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="177"/>
         <source>failed to create zip file for upload: %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="239"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="241"/>
         <source>internal error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="247"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="249"/>
         <source>Conversion of dive %1 to divelogs.de format failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="275"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="277"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="741"/>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="932"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="522"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="713"/>
         <source>Done</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="775"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="556"/>
         <source>Uploading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="807"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="588"/>
         <source>Downloading dive list...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="848"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="629"/>
         <source>Downloading %1 dives...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="882"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="663"/>
         <source>Download finished - %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="896"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="677"/>
         <source>Problem with download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="897"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="678"/>
         <source>The archive could not be opened:
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="906"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="687"/>
         <source>Corrupted download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="907"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="688"/>
         <source>The archive could not be opened:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="933"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="714"/>
         <source>Upload finished</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="946"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="727"/>
         <source>Upload failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="949"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="730"/>
         <source>Upload successful</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="952"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="733"/>
         <source>Login failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="955"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="736"/>
         <source>Cannot parse response</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="966"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="747"/>
         <source>Error: %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4135,7 +4135,7 @@ p, li { white-space: pre-wrap; }
     <name>LocationFilter</name>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="555"/>
-        <source>Location: </source>
+        <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4530,409 +4530,404 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="133"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="132"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="138"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="137"/>
         <source>Share on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="152"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="151"/>
         <source>&amp;New logbook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="155"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="154"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="163"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="162"/>
         <source>&amp;Open logbook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="166"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="165"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="174"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="173"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="177"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="176"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="185"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="184"/>
         <source>Sa&amp;ve as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="188"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="187"/>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="196"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="195"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="199"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="198"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="207"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="206"/>
         <source>&amp;Print</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="215"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="214"/>
         <source>P&amp;references</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="226"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="225"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="237"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="236"/>
         <source>Import from &amp;dive computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="245"/>
-        <source>Import &amp;GPS data from Subsurface web service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="253"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="244"/>
         <source>Edit device &amp;names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="258"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="249"/>
         <source>&amp;Add dive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="266"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="257"/>
         <source>&amp;Edit dive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="271"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="262"/>
         <source>&amp;Copy dive components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="279"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="270"/>
         <source>&amp;Paste dive components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="287"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="278"/>
         <source>&amp;Renumber</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="298"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="289"/>
         <source>Auto &amp;group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="303"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="294"/>
         <source>&amp;Yearly statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="311"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="302"/>
         <source>&amp;Dive list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="319"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="310"/>
         <source>&amp;Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="327"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="318"/>
         <source>&amp;Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="335"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="326"/>
         <source>&amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="343"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="334"/>
         <source>P&amp;revious DC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="351"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="342"/>
         <source>&amp;Next DC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="359"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="350"/>
         <source>&amp;About Subsurface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="367"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="358"/>
         <source>User &amp;manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="375"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="366"/>
         <source>&amp;Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="383"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="374"/>
         <source>P&amp;lan dive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="391"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="382"/>
         <source>&amp;Import log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="394"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="385"/>
         <source>Import divelog files from other applications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="402"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="393"/>
         <source>Import &amp;from divelogs.de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="410"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="401"/>
         <source>&amp;Full screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="413"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="404"/>
         <source>Toggle full screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="421"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="412"/>
         <source>&amp;Check for updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="426"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="417"/>
         <source>&amp;Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="429"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="420"/>
         <source>Export dive logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="437"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="428"/>
         <source>Configure &amp;dive computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="448"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="439"/>
         <source>Edit &amp;dive in planner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="460"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="451"/>
         <source>Toggle pO₂ graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="472"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="463"/>
         <source>Toggle pN₂ graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="484"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="475"/>
         <source>Toggle pHe graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="496"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="487"/>
         <source>Toggle DC reported ceiling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="508"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="499"/>
         <source>Toggle calculated ceiling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="520"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="511"/>
         <source>Toggle calculating all tissues</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="532"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="523"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="544"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="535"/>
         <source>Toggle heart rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="556"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="547"/>
         <source>Toggle MOD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="568"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="559"/>
         <source>Toggle EAD, END, EADD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="580"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="571"/>
         <source>Toggle NDL, TTS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="592"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="583"/>
         <source>Toggle SAC rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="604"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="595"/>
         <source>Toggle ruler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="616"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="607"/>
         <source>Scale graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="628"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="619"/>
         <source>Toggle media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="689"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="680"/>
         <source>&amp;Find moved media files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="640"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="631"/>
         <source>Toggle gas bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="639"/>
         <source>&amp;Filter divelist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="663"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="654"/>
         <source>Toggle tissue heat-map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="668"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="659"/>
         <source>User &amp;survey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="247"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="664"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="681"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="248"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="672"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="251"/>
         <source>&amp;Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="694"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="685"/>
         <source>Open c&amp;loud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="699"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="690"/>
         <source>Save to clo&amp;ud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="704"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="695"/>
         <source>&amp;Manage dive sites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="709"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="700"/>
         <source>Dive Site &amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="714"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="705"/>
         <source>Facebook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="722"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
         <source>Cloud storage online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="375"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="411"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="378"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="414"/>
         <source>Connect to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="405"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="408"/>
         <source>Disconnect from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="561"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="606"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1624"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1620"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="567"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
         <source>Open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="571"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2020"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="670"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="721"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="873"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="991"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1881"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="724"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4942,12 +4937,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="268"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
         <source>Template backup created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="269"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="272"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4961,212 +4956,212 @@ can overwrite them on startup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="670"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="683"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="693"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="696"/>
         <source>Failure taking cloud storage online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="762"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="873"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="933"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="929"/>
         <source>Print runtime table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="991"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1881"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1115"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1111"/>
         <source>Yearly statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1351"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
         <source>Dive log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1653"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1649"/>
         <source>Subsurface files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
         <source>Cochran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1413"/>
+        <source>DiveLogs.de</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
+        <source>JDiveLog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
+        <source>Liquivision</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
+        <source>Suunto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1417"/>
-        <source>DiveLogs.de</source>
+        <source>UDCF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1418"/>
-        <source>JDiveLog</source>
+        <source>UDDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1375"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
-        <source>Liquivision</source>
+        <source>XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1376"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
-        <source>Suunto</source>
+        <source>Divesoft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1421"/>
-        <source>UDCF</source>
+        <source>Datatrak/WLog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1422"/>
-        <source>UDDF</source>
+        <source>MkVI files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1379"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
-        <source>XML</source>
+        <source>APD log viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
-        <source>Divesoft</source>
+        <source>OSTCtools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
-        <source>Datatrak/WLog</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1382"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
-        <source>MkVI files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1427"/>
-        <source>APD log viewer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1428"/>
-        <source>OSTCtools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1429"/>
         <source>DAN DL7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
         <source>CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1430"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
         <source>All files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1441"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1444"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1440"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="682"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1449"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
         <source>Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1450"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1652"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1648"/>
         <source>Save file as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1740"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1736"/>
         <source>[local cache for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1742"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1738"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1834"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1835"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1831"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1846"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1842"/>
         <source>Open dive log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2020"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5485,22 +5480,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="9"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="11"/>
         <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="24"/>
         <source>Open default log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="22"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="24"/>
         <source>Subsurface files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="48"/>
+        <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="50"/>
         <source>Select ffmpeg executable</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5846,7 +5841,7 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="156"/>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="144"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="139"/>
         <source>Subsurface cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5871,73 +5866,58 @@ See http://doc.qt.io/qt-5/qdatetime.html#toString</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.ui" line="231"/>
-        <source>Subsurface web service</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.ui" line="243"/>
-        <source>Default user ID</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.ui" line="253"/>
-        <source>Save user ID locally?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="10"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="11"/>
         <source>Network</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="15"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="16"/>
         <source>No proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="16"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="17"/>
         <source>System proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="17"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="18"/>
         <source>HTTP proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="18"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="19"/>
         <source>SOCKS proxy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="67"/>
         <source>Change ignored. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="75"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="98"/>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="112"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="93"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="107"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="138"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="133"/>
         <source>Subsurface cloud storage (credentials verified)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="140"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
         <source>Subsurface cloud storage (incorrect password)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="142"/>
+        <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="137"/>
         <source>Subsurface cloud storage (PIN required)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6399,146 +6379,146 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLManager</name>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="199"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="202"/>
         <source>Starting...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="253"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="256"/>
         <source>Open local dive data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="261"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="264"/>
         <source>Opening local data file failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="293"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="296"/>
         <source>%1 dives loaded from local dive data file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="390"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="393"/>
         <source>working in no-cloud mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="394"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="397"/>
         <source>Error parsing local storage, giving up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="403"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="406"/>
         <source>no cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="404"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="485"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="407"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="491"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="443"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="447"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="449"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="498"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="502"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="520"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="535"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="543"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="547"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="549"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="576"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
         <source>Cloud credentials are invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="590"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="604"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
         <source>Cannot open cloud storage: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="617"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="621"/>
         <source>Cannot connect to cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="639"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="626"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="649"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="636"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="695"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="682"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="741"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="766"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="753"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="943"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="944"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="943"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="944"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="945"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="932"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="943"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1371"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1358"/>
         <source>Unknown GPS location</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6546,7 +6526,7 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLPrefs</name>
     <message>
-        <location filename="../mobile-widgets/qmlprefs.cpp" line="179"/>
+        <location filename="../mobile-widgets/qmlprefs.cpp" line="178"/>
         <source>Starting...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7163,58 +7143,10 @@ Files with inappropriate date/time</source>
     </message>
 </context>
 <context>
-    <name>SubsurfaceWebServices</name>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="398"/>
-        <source>Enter User ID and click Download</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="419"/>
-        <source>Webservice</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="503"/>
-        <source>Connecting...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="522"/>
-        <source>Download finished</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="536"/>
-        <source>Download error: %1</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="546"/>
-        <source>Connection error: </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="549"/>
-        <source>Invalid user identifier!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="552"/>
-        <source>Cannot parse response!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="555"/>
-        <source>Download successful</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>SuitFilter</name>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="560"/>
-        <source>Suits: </source>
+        <source>Suits</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -7556,7 +7488,7 @@ mixed from Air and using:
     <name>TagFilter</name>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="544"/>
-        <source>Tags: </source>
+        <source>Tags</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -8241,12 +8173,12 @@ Language: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="327"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="329"/>
         <source>Operation timed out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="348"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="350"/>
         <source>Transferring data...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8941,123 +8873,123 @@ Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="73"/>
+        <location filename="../core/git-access.c" line="82"/>
         <source>Checkout from storage (%lu/%lu)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="104"/>
+        <location filename="../core/git-access.c" line="113"/>
         <source>Transfer from storage (%d/%d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="116"/>
+        <location filename="../core/git-access.c" line="125"/>
         <source>Transfer to storage (%d/%d)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="152"/>
+        <location filename="../core/git-access.c" line="161"/>
         <source>Local cache directory %s corrupted - can&apos;t sync with Subsurface cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="175"/>
-        <location filename="../core/git-access.c" line="195"/>
+        <location filename="../core/git-access.c" line="184"/>
+        <location filename="../core/git-access.c" line="204"/>
         <source>Could not update local cache to newer remote data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="188"/>
+        <location filename="../core/git-access.c" line="197"/>
         <source>Subsurface cloud storage corrupted</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="324"/>
+        <location filename="../core/git-access.c" line="333"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="384"/>
+        <location filename="../core/git-access.c" line="393"/>
         <source>Remote storage and local data diverged. Error: merge failed (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="414"/>
+        <location filename="../core/git-access.c" line="423"/>
         <source>Remote storage and local data diverged. Cannot combine local and remote changes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="448"/>
+        <location filename="../core/git-access.c" line="457"/>
         <source>Remote storage and local data diverged</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="451"/>
+        <location filename="../core/git-access.c" line="460"/>
         <source>Remote storage and local data diverged. Error: writing the data failed (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="460"/>
+        <location filename="../core/git-access.c" line="469"/>
         <source>Problems with local cache of Subsurface cloud data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="461"/>
+        <location filename="../core/git-access.c" line="470"/>
         <source>Moved cache data to %s. Please try the operation again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="508"/>
+        <location filename="../core/git-access.c" line="517"/>
         <source>Update local storage to match cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="516"/>
+        <location filename="../core/git-access.c" line="525"/>
         <source>Push local changes to cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="534"/>
+        <location filename="../core/git-access.c" line="543"/>
         <source>Try to merge local changes into cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="576"/>
+        <location filename="../core/git-access.c" line="585"/>
         <source>Store data into cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="600"/>
+        <location filename="../core/git-access.c" line="609"/>
         <source>Sync with cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="627"/>
+        <location filename="../core/git-access.c" line="636"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="640"/>
+        <location filename="../core/git-access.c" line="649"/>
         <source>Successful cloud connection, fetch remote</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="659"/>
+        <location filename="../core/git-access.c" line="668"/>
         <source>Done syncing with cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="794"/>
+        <location filename="../core/git-access.c" line="803"/>
         <source>Error connecting to Subsurface cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="797"/>
+        <location filename="../core/git-access.c" line="806"/>
         <source>git clone of %s failed (%s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/git-access.c" line="823"/>
+        <location filename="../core/git-access.c" line="832"/>
         <source>Synchronising data file</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9280,25 +9212,25 @@ You can create this logfile by selecting the corresponding checkbox in the downl
     </message>
     <message>
         <location filename="../core/load-git.c" line="169"/>
-        <location filename="../core/parse-xml.c" line="1179"/>
+        <location filename="../core/parse-xml.c" line="1172"/>
         <source>multiple GPS locations for this dive site; also %s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core/load-git.c" line="197"/>
-        <location filename="../core/parse.c" line="478"/>
+        <location filename="../core/parse.c" line="472"/>
         <source>additional name for site: %s
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1673"/>
+        <location filename="../core/load-git.c" line="1672"/>
         <source>Load dives from local cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/load-git.c" line="1677"/>
+        <location filename="../core/load-git.c" line="1676"/>
         <source>Successfully opened dive data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9320,12 +9252,12 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="1644"/>
+        <location filename="../core/parse-xml.c" line="1636"/>
         <source>Failed to parse &apos;%s&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2077"/>
+        <location filename="../core/parse-xml.c" line="2136"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10068,8 +10000,8 @@ EADD: %d%s / %.1fg/ℓ
     </message>
     <message>
         <location filename="../core/save-html.c" line="516"/>
-        <location filename="../smtk-import/smartrak.c" line="296"/>
-        <location filename="../smtk-import/smartrak.c" line="369"/>
+        <location filename="../smtk-import/smartrak.c" line="256"/>
+        <location filename="../smtk-import/smartrak.c" line="329"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10265,62 +10197,62 @@ EADD: %d%s / %.1fg/ℓ
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="118"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Jan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="118"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Feb</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="118"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Mar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="118"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Apr</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="118"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>May</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="118"/>
+        <location filename="../core/subsurfacestartup.c" line="115"/>
         <source>Jun</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="119"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Jul</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="119"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Aug</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="119"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Sep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="119"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Oct</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="119"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Nov</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/subsurfacestartup.c" line="119"/>
+        <location filename="../core/subsurfacestartup.c" line="116"/>
         <source>Dec</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10602,77 +10534,77 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="292"/>
+        <location filename="../smtk-import/smartrak.c" line="252"/>
         <source>Built</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="292"/>
+        <location filename="../smtk-import/smartrak.c" line="252"/>
         <source>Sank</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="292"/>
+        <location filename="../smtk-import/smartrak.c" line="252"/>
         <source>Sank Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="293"/>
+        <location filename="../smtk-import/smartrak.c" line="253"/>
         <source>Reason</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="293"/>
+        <location filename="../smtk-import/smartrak.c" line="253"/>
         <source>Nationality</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="293"/>
+        <location filename="../smtk-import/smartrak.c" line="253"/>
         <source>Shipyard</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="294"/>
+        <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>ShipType</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="294"/>
+        <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="294"/>
+        <location filename="../smtk-import/smartrak.c" line="254"/>
         <source>Beam</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="295"/>
+        <location filename="../smtk-import/smartrak.c" line="255"/>
         <source>Draught</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="295"/>
+        <location filename="../smtk-import/smartrak.c" line="255"/>
         <source>Displacement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="295"/>
+        <location filename="../smtk-import/smartrak.c" line="255"/>
         <source>Cargo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="307"/>
+        <location filename="../smtk-import/smartrak.c" line="267"/>
         <source>Wreck Data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="368"/>
+        <location filename="../smtk-import/smartrak.c" line="328"/>
         <source>Altitude</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../smtk-import/smartrak.c" line="368"/>
+        <location filename="../smtk-import/smartrak.c" line="328"/>
         <source>Depth</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10717,22 +10649,22 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="951"/>
+        <location filename="../core/save-git.c" line="943"/>
         <source>Start saving data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="960"/>
+        <location filename="../core/save-git.c" line="952"/>
         <source>Start saving dives</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="993"/>
+        <location filename="../core/save-git.c" line="985"/>
         <source>Done creating local cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/save-git.c" line="1244"/>
+        <location filename="../core/save-git.c" line="1236"/>
         <source>Preparing to save data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10752,7 +10684,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10772,22 +10704,22 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="623"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="404"/>
         <source>Invalid response from server</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="631"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="412"/>
         <source>Expected XML tag &apos;DiveDateReader&apos;, got instead &apos;%1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="677"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="458"/>
         <source>Expected XML tag &apos;DiveDates&apos; not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="684"/>
+        <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="465"/>
         <source>Malformed XML response. Line %1: %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10820,12 +10752,12 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Disable location service</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="372"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
         <source>Settings</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10855,13 +10787,8 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="407"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="385"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="304"/>
-        <source>Upload GPS data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -10870,42 +10797,37 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="315"/>
-        <source>Download GPS data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="326"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="304"/>
         <source>Show GPS fixes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="339"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="317"/>
         <source>Clear GPS cache</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="385"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="363"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="388"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="366"/>
         <source>App log</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="396"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="374"/>
         <source>Theme information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="361"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="339"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/main.qml" line="350"/>
+        <location filename="../mobile-widgets/qml/main.qml" line="328"/>
         <source>Run location service</source>
         <translation type="unfinished"></translation>
     </message>
