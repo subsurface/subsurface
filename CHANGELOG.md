@@ -1,3 +1,4 @@
+- Desktop: disable UI elements that make no sense during editing [#1445]
 - Mobil: setting for developer menu entry is remembered across sessions
 - Mobile: remove UI components of the Webservice GPS interaction
 - Desktop: remove UI components of the Webservice GPS import. This functionality will
