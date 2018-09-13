@@ -80,9 +80,9 @@
 namespace {
     QProgressDialog *progressDialog = nullptr;
     bool progressDialogCanceled = false;
+    int progressCounter = 0;
 }
 
-static int progressCounter = 0;
 
 extern "C" int updateProgress(const char *text)
 {
