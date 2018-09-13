@@ -1341,93 +1341,92 @@ void MainWindow::on_actionHash_images_triggered()
 	findMovedImagesDialog->show();
 }
 
+
 QString MainWindow::filter_open()
 {
-    QString f = tr(
-        "Dive log files"
-        " (*.ssrf"
-        " *.xml"
-        " *.can"
-        " *.db"
-        " *.sql"
-        " *.dld"
-        " *.jlb"
-        " *.lvd"
-        " *.sde"
-        " *.udcf"
-        " *.uddf"
-        " *.dlf"
-        " *.log"
-        " *.txt"
-        " *.apd"
-        " *.dive"
-        " *.zxu *.zxl"
-        ");;"
-    );
+    QString f = tr("Dive log files");
+    f += " (*.ssrf"
+         " *.xml"
+         " *.can"
+         " *.db"
+         " *.sql"
+         " *.dld"
+         " *.jlb"
+         " *.lvd"
+         " *.sde"
+         " *.udcf"
+         " *.uddf"
+         " *.dlf"
+         " *.log"
+         " *.txt"
+         " *.apd"
+         " *.dive"
+         " *.zxu *.zxl"
+         ");;";
 
-	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
-	f += tr("Cochran") + " (*.can);;";
-	f += tr("DiveLogs.de") + " (*.dld);;";
-	f += tr("JDiveLog") + " (*.jlb);;";
-	f += tr("Liquivision") + " (*.lvd);;";
-	f += tr("Suunto") + " (*.sde *.db);;";
-	f += tr("UDCF") + " (*.udcf);;";
-	f += tr("UDDF") + " (*.uddf);;";
-	f += tr("XML") + " (*.xml);;";
-	f += tr("Divesoft") + " (*.dlf);;";
-	f += tr("Datatrak/WLog") + " (*.log);;";
-	f += tr("MkVI files") + " (*.txt);;";
-	f += tr("APD log viewer") + " (*.apd);;";
-	f += tr("OSTCtools") + " (*.dive);;";
-	f += tr("DAN DL7") + " (*.zxu *.zxl)";
+    f += tr("Subsurface files") + " (*.ssrf *.xml);;";
+    f += tr("Cochran") + " (*.can);;";
+    f += tr("DiveLogs.de") + " (*.dld);;";
+    f += tr("JDiveLog") + " (*.jlb);;";
+    f += tr("Liquivision") + " (*.lvd);;";
+    f += tr("Suunto") + " (*.sde *.db);;";
+    f += tr("UDCF") + " (*.udcf);;";
+    f += tr("UDDF") + " (*.uddf);;";
+    f += tr("XML") + " (*.xml);;";
+    f += tr("Divesoft") + " (*.dlf);;";
+    f += tr("Datatrak/WLog") + " (*.log);;";
+    f += tr("MkVI files") + " (*.txt);;";
+    f += tr("APD log viewer") + " (*.apd);;";
+    f += tr("OSTCtools") + " (*.dive);;";
+    f += tr("DAN DL7") + " (*.zxu *.zxl)";
 
-	return f;
+    return f;
 }
 
 QString MainWindow::filter_import()
 {
-	QString f;
-	f += tr("Dive log files");
-	f += " (*.ssrf";
-	f += " *.xml";
-	f += " *.can";
-	f += " *.csv";
-	f += " *.db" ;
-	f += " *.sql" ;
-	f += " *.dld";
-	f += " *.jlb";
-	f += " *.lvd";
-	f += " *.sde";
-	f += " *.udcf";
-	f += " *.uddf";
-	f += " *.dlf";
-	f += " *.log";
-	f += " *.txt";
-	f += " *.apd";
-	f += " *.dive";
-	f += " *.zxu *.zxl";
-	f += ");;";
+    QString f = tr("Dive log files");
+    f += " (*.ssrf"
+         " *.xml"
+         " *.can"
+         " *.csv"
+         " *.db"
+         " *.sql"
+         " *.dld"
+         " *.jlb"
+         " *.lvd"
+         " *.sde"
+         " *.udcf"
+         " *.uddf"
+         " *.dlf"
+         " *.log"
+         " *.txt"
+         " *.apd"
+         " *.dive"
+         " *.zxu *.zxl"
+         ");;";
 
-	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
-	f += tr("Cochran") + " (*.can);;";
-	f += tr("CSV") + " (*.csv *.CSV);;";
-	f += tr("DiveLogs.de") + " (*.dld);;";
-	f += tr("JDiveLog") + " (*.jlb);;";
-	f += tr("Liquivision") + " (*.lvd);;";
-	f += tr("Suunto") + " (*.sde *.db);;";
-	f += tr("UDCF") + " (*.udcf);;";
-	f += tr("UDDF") + " (*.uddf);;";
-	f += tr("XML") + " (*.xml);;";
-	f += tr("Divesoft") + " (*.dlf);;";
-	f += tr("Datatrak/WLog") + " (*.log);;";
-	f += tr("MkVI files") + " (*.txt);;";
-	f += tr("APD log viewer") + " (*.apd);;";
-	f += tr("OSTCtools") + " (*.dive);;";
-	f += tr("DAN DL7") + " (*.zxu *.zxl);;";
-	f += tr("All files") + " (*.*)";
+    f += tr("Subsurface files") + " (*.ssrf *.xml);;";
+    f += tr("Cochran") + " (*.can);;";
+    f += tr("CSV") + " (*.csv *.CSV);;";
+    f += tr("DiveLogs.de") + " (*.dld);;";
+    f += tr("JDiveLog") + " (*.jlb);;";
+    f += tr("Liquivision") + " (*.lvd);;";
+    f += tr("Suunto") + " (*.sde *.db);;";
+    f += tr("UDCF") + " (*.udcf);;";
+    f += tr("UDDF") + " (*.uddf);;";
+    f += tr("XML") + " (*.xml);;";
+    f += tr("Divesoft") + " (*.dlf);;";
+    f += tr("Datatrak/WLog") + " (*.log);;";
+    f += tr("MkVI files") + " (*.txt);;";
+    f += tr("APD log viewer") + " (*.apd);;";
+    f += tr("OSTCtools") + " (*.dive);;";
+    f += tr("DAN DL7") + " (*.zxu *.zxl);;";
+    f += tr("All files") + " (*.*)";
 
-	return f;
+    return f;
 }
+
 
 bool MainWindow::askSaveChanges()
 {
