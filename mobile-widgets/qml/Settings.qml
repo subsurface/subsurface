@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
+				text: QMLPrefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : QMLPrefs.cloudUserName
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -55,7 +55,7 @@ Kirigami.ScrollablePage {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Change")
 				onClicked: {
-					prefs.cancelCredentialsPinSetup()
+					QMLPrefs.cancelCredentialsPinSetup()
 					rootItem.returnTopPage()
 				}
 			}
@@ -66,7 +66,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: describe[prefs.credentialStatus]
+				text: describe[QMLPrefs.credentialStatus]
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2

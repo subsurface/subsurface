@@ -13,7 +13,6 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 	width: subsurfaceTheme.columnWidth
-	property int credentialStatus: prefs.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.textColor
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
@@ -23,14 +22,14 @@ Kirigami.ScrollablePage {
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
-			if (prefs.credentialStatus === CloudStatus.CS_VERIFIED) {
+			if (QMLPrefs.credentialStatus === CloudStatus.CS_VERIFIED) {
 				console.log("User pulled down dive list - syncing with cloud storage")
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
 				console.log("done syncing, turn off spinner")
 				refreshing = false
 			} else {
-				console.log("sync with cloud storage requested, but credentialStatus is " + prefs.credentialStatus)
+				console.log("sync with cloud storage requested, but credentialStatus is " + QMLPrefs.credentialStatus)
 				console.log("no syncing, turn off spinner")
 				refreshing = false
 			}
@@ -339,8 +338,8 @@ Kirigami.ScrollablePage {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: credentialStatus === CloudStatus.CS_NOCLOUD ||
-									(credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
+		opacity: QMLPrefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
+									(QMLPrefs.credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
@@ -348,8 +347,8 @@ Kirigami.ScrollablePage {
 				page.actions.main = null
 				page.actions.right = null
 				page.title = qsTr("Cloud credentials")
-			} else if (prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-						prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
+			} else if (QMLPrefs.credentialStatus === CloudStatus.CS_VERIFIED ||
+						QMLPrefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.title = qsTr("Dive list")
@@ -440,8 +439,8 @@ Kirigami.ScrollablePage {
 
 	onBackRequested: {
 		if (startPage.visible && diveListView.count > 0 &&
-			prefs.credentialStatus !== CloudStatus.CS_INCORRECT_USER_PASSWD) {
-			prefs.credentialStatus = oldStatus
+			QMLPrefs.credentialStatus !== CloudStatus.CS_INCORRECT_USER_PASSWD) {
+			QMLPrefs.credentialStatus = oldStatus
 			event.accepted = true;
 		}
 		if (!startPage.visible) {

@@ -33,11 +33,12 @@ class QMLPrefs : public QObject {
 				MEMBER m_oldStatus
 				WRITE setOldStatus
 				NOTIFY oldStatusChanged)
-public:
+private:
 	QMLPrefs();
-	~QMLPrefs();
 
+public:
 	static QMLPrefs *instance();
+	static constexpr const char *typeName = "QMLPrefs";
 
 	const QString cloudPassword() const;
 	void setCloudPassword(const QString &cloudPassword);

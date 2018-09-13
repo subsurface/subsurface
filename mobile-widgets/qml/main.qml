@@ -21,12 +21,10 @@ Kirigami.ApplicationWindow {
 		maximumHeight: Kirigami.Units.gridUnit * 2
 		background: Rectangle { color: subsurfaceTheme.primaryColor }
 	}
-	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
 	property alias syncToCloud: manager.syncToCloud
 	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
-	property alias showPin: prefs.showPin
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -173,7 +171,7 @@ Kirigami.ApplicationWindow {
 						visible: text.length > 0
 						level: 3
 						color: "white"
-						text: prefs.cloudUserName
+						text: QMLPrefs.cloudUserName
 						wrapMode: Text.NoWrap
 						elide: Text.ElideRight
 						font.weight: Font.Normal
@@ -191,12 +189,12 @@ Kirigami.ApplicationWindow {
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
-					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
-					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
+					manager.appendTextToLog("requested dive list with credential status " + QMLPrefs.credentialStatus)
+					if (QMLPrefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == CloudStatus.CS_VERIFIED) {
-							prefs.credentialStatus = oldStatus
+						if (QMLPrefs.oldStatus == CloudStatus.CS_VERIFIED) {
+							QMLPrefs.credentialStatus = QMLPrefs.oldStatus
 						}
 					}
 					returnTopPage()
@@ -222,8 +220,8 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: QMLPrefs.credentialStatus === CloudStatus.CS_VERIFIED ||
+							QMLPrefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -257,14 +255,14 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: QMLPrefs.credentialStatus === CloudStatus.CS_VERIFIED ||
+							QMLPrefs.credentialStatus === CloudStatus.CS_NOCLOUD
 					onTriggered: {
-						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
+						if (QMLPrefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
-							oldStatus = prefs.credentialStatus
+							QMLPrefs.oldStatus = QMLPrefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
-							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
+							QMLPrefs.credentialStatus = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()
 						} else {
 							globalDrawer.close()
@@ -279,7 +277,7 @@ Kirigami.ApplicationWindow {
 					name: syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					enabled: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
+					enabled: QMLPrefs.credentialStatus !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
@@ -548,10 +546,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				detailsWindow.endEditMode()
 			}
 		}
-	}
-
-	QMLPrefs {
-		id: prefs
 	}
 
 	QMLManager {

@@ -157,6 +157,19 @@ static void register_meta_types()
 	if (rc < 0) \
 		qWarning() << "ERROR: Cannot register " << useQML << ", QML will not work!!";
 
+template <typename T>
+QObject *instance_as_qobject(QQmlEngine *, QJSEngine *)
+{
+	return T::instance();
+}
+
+template <typename T>
+void register_qml_singleton()
+{
+	if (qmlRegisterSingletonType<T>("org.subsurfacedivelog.mobile", 1, 0, T::typeName, &instance_as_qobject<T>) < 0)
+		qWarning() << QStringLiteral("ERROR: Cannot register %1, QML will not work!").arg(T::typeName);
+}
+
 void register_qml_types(QQmlEngine *engine)
 {
 	// register qPref*
@@ -167,7 +180,7 @@ void register_qml_types(QQmlEngine *engine)
 
 #ifdef SUBSURFACE_MOBILE
 	REGISTER_TYPE(QMLManager, "QMLManager");
-	REGISTER_TYPE(QMLPrefs, "QMLPrefs");
+	register_qml_singleton<QMLPrefs>();
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
 	REGISTER_TYPE(DownloadThread, "DCDownloadThread");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
