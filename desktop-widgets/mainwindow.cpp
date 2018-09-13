@@ -1054,9 +1054,6 @@ void MainWindow::on_actionAddDive_triggered()
 	// now show the mostly empty main tab
 	information()->updateDiveInfo();
 
-	// show main tab
-	information()->setCurrentIndex(0);
-
 	information()->addDiveStarted();
 
 	graphics()->setAddState();

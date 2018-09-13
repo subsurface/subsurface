@@ -270,6 +270,11 @@ void MainTab::toggleTriggeredColumn()
 
 void MainTab::addDiveStarted()
 {
+	ui.tabWidget->setCurrentIndex(0);
+	ui.tabWidget->setTabEnabled(2, false);
+	ui.tabWidget->setTabEnabled(3, false);
+	ui.tabWidget->setTabEnabled(4, false);
+	ui.tabWidget->setTabEnabled(5, false);
 	enableEdition(ADD);
 }
 
@@ -339,6 +344,9 @@ void MainTab::enableEdition(EditMode newEditMode)
 	MainWindow::instance()->dive_list()->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 	MainWindow::instance()->enterEditState();
+	ui.tabWidget->setTabEnabled(2, false);
+	ui.tabWidget->setTabEnabled(3, false);
+	ui.tabWidget->setTabEnabled(5, false);
 
 	if (isTripEdit) {
 		// we are editing trip location and notes
@@ -534,6 +542,8 @@ void MainTab::updateDiveInfo(bool clear)
 			ui.tabWidget->setTabText(0, tr("Notes"));
 			ui.tabWidget->setTabEnabled(1, true);
 			ui.tabWidget->setTabEnabled(2, true);
+			ui.tabWidget->setTabEnabled(3, true);
+			ui.tabWidget->setTabEnabled(4, true);
 			ui.tabWidget->setTabEnabled(5, true);
 			// Recover the tab selected for last dive
 			if (!lastSelectedDive)
