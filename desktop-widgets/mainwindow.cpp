@@ -13,64 +13,69 @@
 #include <QShortcut>
 #include <QToolBar>
 #include <QStatusBar>
+#include <QNetworkProxy>
+#include <QUndoStack>
+#include <QtConcurrentRun>
 
-#include "core/gettextfromc.h"
-#include "core/version.h"
-#include "core/subsurface-string.h"
-#include "desktop-widgets/divelistview.h"
-#include "desktop-widgets/downloadfromdivecomputer.h"
-#include "desktop-widgets/subsurfacewebservices.h"
-#include "desktop-widgets/divecomputermanagementdialog.h"
-#include "desktop-widgets/about.h"
-#include "desktop-widgets/updatemanager.h"
-#include "core/planner.h"
-#include "qt-models/filtermodels.h"
-#include "profile-widget/profilewidget2.h"
+#include "core/color.h"
 #include "core/divecomputer.h"
-#include "desktop-widgets/tab-widgets/maintab.h"
+#include "core/divesitehelpers.h"
+#include "core/gettextfromc.h"
+#include "core/git-access.h"
+#include "core/isocialnetworkintegration.h"
+#include "core/planner.h"
+#include "core/pluginmanager.h"
+#include "core/qthelper.h"
+#include "core/subsurface-string.h"
+#include "core/version.h"
+#include "core/windowtitleupdate.h"
+
+#include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefPartialPressureGas.h"
+#include "core/settings/qPrefTechnicalDetails.h"
+
+#include "desktop-widgets/about.h"
+#include "desktop-widgets/divecomputermanagementdialog.h"
+#include "desktop-widgets/divelistview.h"
+#include "desktop-widgets/divelogexportdialog.h"
+#include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/diveplanner.h"
+#include "desktop-widgets/downloadfromdivecomputer.h"
+#include "desktop-widgets/findmovedimagesdialog.h"
+#include "desktop-widgets/locationinformation.h"
+#include "desktop-widgets/mapwidget.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
+#include "desktop-widgets/updatemanager.h"
+#include "desktop-widgets/usersurvey.h"
+
+#include "profile-widget/profilewidget2.h"
+
 #ifndef NO_PRINTING
 #include <QPrintDialog>
 #include <QBuffer>
 #include "desktop-widgets/printdialog.h"
 #endif
+
+#include "qt-models/cylindermodel.h"
+#include "qt-models/divepicturemodel.h"
+#include "qt-models/diveplannermodel.h"
+#include "qt-models/filtermodels.h"
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
-#include "qt-models/diveplannermodel.h"
-#include "qt-models/cylindermodel.h"
-#include "desktop-widgets/divelogimportdialog.h"
-#include "desktop-widgets/divelogexportdialog.h"
-#include "desktop-widgets/usersurvey.h"
-#include "desktop-widgets/findmovedimagesdialog.h"
-#include "core/divesitehelpers.h"
-#include "core/windowtitleupdate.h"
-#include "desktop-widgets/locationinformation.h"
+
 #include "preferences/preferencesdialog.h"
-#include "core/settings/qPrefPartialPressureGas.h"
-#include "core/settings/qPrefTechnicalDetails.h"
-#include "core/settings/qPrefCloudStorage.h"
-#include "core/settings/qPrefDisplay.h"
 
 #ifndef NO_USERMANUAL
 #include "usermanual.h"
 #endif
-#include "qt-models/divepicturemodel.h"
-#include "core/git-access.h"
-#include <QNetworkProxy>
-#include <QUndoStack>
-#include "core/qthelper.h"
-#include <QtConcurrentRun>
-#include "core/color.h"
-#include "core/isocialnetworkintegration.h"
-#include "core/pluginmanager.h"
 
 #if defined(FBSUPPORT)
 #include "plugins/facebook/facebook_integration.h"
 #include "plugins/facebook/facebookconnectwidget.h"
 #endif
-
-#include "desktop-widgets/mapwidget.h"
 
 QProgressDialog *progressDialog = NULL;
 bool progressDialogCanceled = false;
