@@ -81,6 +81,10 @@ namespace {
 	QProgressDialog *progressDialog = nullptr;
 	bool progressDialogCanceled = false;
 	int progressCounter = 0;
+
+	int round_int (double value) {
+		return static_cast<int>(lrint(value));
+	};
 }
 
 
@@ -1149,24 +1153,13 @@ void MainWindow::on_actionViewAll_triggered()
 {
 	toggleCollapsible(false);
 	beginChangeState(VIEWALL);
-	static QList<int> mainSizes;
+
 	const int appH = qApp->desktop()->size().height();
 	const int appW = qApp->desktop()->size().width();
-	if (mainSizes.empty()) {
-		mainSizes.append(lrint(appH * 0.7));
-		mainSizes.append(lrint(appH * 0.3));
-	}
-	static QList<int> infoProfileSizes;
-	if (infoProfileSizes.empty()) {
-		infoProfileSizes.append(lrint(appW * 0.3));
-		infoProfileSizes.append(lrint(appW * 0.7));
-	}
 
-	static QList<int> listGlobeSizes;
-	if (listGlobeSizes.empty()) {
-		listGlobeSizes.append(lrint(appW * 0.7));
-		listGlobeSizes.append(lrint(appW * 0.3));
-	}
+	QList<int> mainSizes = { round_int(appH * 0.7), round_int(appH * 0.3) };
+	QList<int> infoProfileSizes = { round_int(appW * 0.3), round_int(appW * 0.7) };
+	QList<int> listGlobeSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -1204,7 +1197,7 @@ void MainWindow::enterEditState()
 	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
 	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
 	int appW = qApp->desktop()->size().width();
-	QList<int> infoProfileSizes { (int)lrint(appW * 0.3), (int)lrint(appW * 0.7) };
+	QList<int> infoProfileSizes { round_int(appW * 0.3), round_int(appW * 0.7) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
