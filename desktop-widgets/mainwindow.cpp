@@ -1427,14 +1427,11 @@ QString MainWindow::filter_import()
 
 bool MainWindow::askSaveChanges()
 {
-	QString message;
 	QMessageBox response(this);
 
-	if (existing_filename)
-		message = tr("Do you want to save the changes that you made in the file %1?")
-				.arg(displayedFilename(existing_filename));
-	else
-		message = tr("Do you want to save the changes that you made in the data file?");
+	QString message = existing_filename ?
+		tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
+		tr("Do you want to save the changes that you made in the data file?");
 
 	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Save);
@@ -1729,10 +1726,9 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		if (git_local_only)
-			return tr("[local cache for] %1").arg(email);
-		else
-			return tr("[cloud storage for] %1").arg(email);
+		return git_local_only ?
+			tr("[local cache for] %1").arg(email) :
+			tr("[cloud storage for] %1").arg(email);
 	} else {
 		return fileName;
 	}
