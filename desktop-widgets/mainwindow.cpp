@@ -1166,24 +1166,17 @@ void MainWindow::on_actionViewAll_triggered()
 {
 	toggleCollapsible(false);
 	beginChangeState(VIEWALL);
-	static QList<int> mainSizes;
+
 	const int appH = qApp->desktop()->size().height();
 	const int appW = qApp->desktop()->size().width();
-	if (mainSizes.empty()) {
-		mainSizes.append(lrint(appH * 0.7));
-		mainSizes.append(lrint(appH * 0.3));
-	}
-	static QList<int> infoProfileSizes;
-	if (infoProfileSizes.empty()) {
-		infoProfileSizes.append(lrint(appW * 0.3));
-		infoProfileSizes.append(lrint(appW * 0.7));
-	}
 
-	static QList<int> listGlobeSizes;
-	if (listGlobeSizes.empty()) {
-		listGlobeSizes.append(lrint(appW * 0.7));
-		listGlobeSizes.append(lrint(appW * 0.3));
-	}
+    auto _lrint = [](double value) {
+        return static_cast<int>(std::lrint(value));
+    };
+
+    auto mainSizes = QList<int>{ _lrint(appH * 0.7), _lrint(appH * 0.3) };
+    auto infoProfileSizes = QList<int>{ _lrint(appW * 0.3), _lrint(appW * 0.7) };
+    auto listGlobeSizes = QList<int> { _lrint(appW * 0.7), _lrint(appW * 0.3) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
