@@ -1729,10 +1729,9 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		if (git_local_only)
-			return tr("[local cache for] %1").arg(email);
-		else
-			return tr("[cloud storage for] %1").arg(email);
+        return git_local_only ?
+            tr("[local cache for] %1").arg(email) :
+            tr("[cloud storage for] %1").arg(email);
 	} else {
 		return fileName;
 	}
