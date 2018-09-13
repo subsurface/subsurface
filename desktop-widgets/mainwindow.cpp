@@ -1430,14 +1430,11 @@ QString MainWindow::filter_import()
 
 bool MainWindow::askSaveChanges()
 {
-	QString message;
 	QMessageBox response(this);
 
-	if (existing_filename)
-		message = tr("Do you want to save the changes that you made in the file %1?")
-				.arg(displayedFilename(existing_filename));
-	else
-		message = tr("Do you want to save the changes that you made in the data file?");
+    QString message = existing_filename ?
+        tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
+        tr("Do you want to save the changes that you made in the data file?");
 
 	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Save);
