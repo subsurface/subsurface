@@ -139,8 +139,7 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Blue"
 				onClicked: {
 					blueTheme()
-					prefs.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
 
@@ -192,8 +191,7 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Pink"
 				onClicked: {
 					pinkTheme()
-					prefs.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
 
@@ -244,8 +242,7 @@ Kirigami.ScrollablePage {
 				enabled: subsurfaceTheme.currentTheme !== "Dark"
 				onClicked: {
 					darkTheme()
-					prefs.theme = subsurfaceTheme.currentTheme
-					manager.savePreferences()
+					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
 		}
@@ -278,11 +275,10 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: distanceThreshold
-				text: prefs.distanceThreshold
+				text: PrefLocationService.distance_threshold
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					prefs.distanceThreshold = distanceThreshold.text
-					manager.savePreferences()
+					PrefLocationService.distance_threshold = distanceThreshold.text
 				}
 			}
 
@@ -294,11 +290,10 @@ Kirigami.ScrollablePage {
 
 			Controls.TextField {
 				id: timeThreshold
-				text: prefs.timeThreshold
+				text: PrefLocationService.time_threshold / 60
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
-					prefs.timeThreshold = timeThreshold.text
-					manager.savePreferences()
+					PrefLocationService.time_threshold = timeThreshold.text * 60
 				}
 			}
 
@@ -363,10 +358,10 @@ Kirigami.ScrollablePage {
 			}
 			SsrfSwitch {
 				id: developerButton
-				checked: prefs.developer
+				checked: PrefDisplay.show_developer
 				Layout.preferredWidth: gridWidth * 0.25
 				onClicked: {
-					prefs.developer = checked
+					PrefDisplay.show_developer = checked
 				}
 			}
 		}

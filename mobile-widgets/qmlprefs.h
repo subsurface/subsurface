@@ -25,14 +25,6 @@ class QMLPrefs : public QObject {
 				MEMBER m_credentialStatus
 				WRITE setCredentialStatus
 				NOTIFY credentialStatusChanged)
-	Q_PROPERTY(bool developer
-				MEMBER m_developer
-				WRITE setDeveloper
-				NOTIFY developerChanged)
-	Q_PROPERTY(int distanceThreshold
-				MEMBER m_distanceThreshold
-				WRITE setDistanceThreshold
-				NOTIFY distanceThresholdChanged)
 	Q_PROPERTY(bool showPin
 				MEMBER m_showPin
 				WRITE setShowPin
@@ -41,15 +33,6 @@ class QMLPrefs : public QObject {
 				MEMBER m_oldStatus
 				WRITE setOldStatus
 				NOTIFY oldStatusChanged)
-	Q_PROPERTY(QString theme
-				READ theme
-				WRITE setTheme
-				NOTIFY themeChanged)
-	Q_PROPERTY(int timeThreshold
-				MEMBER m_timeThreshold
-				WRITE setTimeThreshold
-				NOTIFY timeThresholdChanged)
-
 public:
 	QMLPrefs();
 	~QMLPrefs();
@@ -68,22 +51,11 @@ public:
 	qPrefCloudStorage::cloud_status credentialStatus() const;
 	void setCredentialStatus(const qPrefCloudStorage::cloud_status value);
 
-	void setDeveloper(bool value);
-
-	int distanceThreshold() const;
-	void setDistanceThreshold(int distance);
-
 	qPrefCloudStorage::cloud_status oldStatus() const;
 	void setOldStatus(const qPrefCloudStorage::cloud_status value);
 
 	bool showPin() const;
 	void setShowPin(bool enable);
-
-	int  timeThreshold() const;
-	void setTimeThreshold(int time);
-
-	const QString theme() const;
-	void setTheme(QString theme);
 
 public slots:
 	void cancelCredentialsPinSetup();
@@ -94,24 +66,17 @@ private:
 	QString m_cloudPin;
 	QString m_cloudUserName;
 	qPrefCloudStorage::cloud_status m_credentialStatus;
-	bool m_developer;
-	int m_distanceThreshold;
 	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
-	int m_timeThreshold;
 
 signals:
 	void cloudPasswordChanged();
 	void cloudPinChanged();
 	void cloudUserNameChanged();
 	void credentialStatusChanged();
-	void distanceThresholdChanged();
-	void developerChanged();
 	void oldStatusChanged();
 	void showPinChanged();
-	void themeChanged();
-	void timeThresholdChanged();
 };
 
 #endif

@@ -406,8 +406,6 @@ void QMLManager::finishSetup()
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
-	QMLPrefs::instance()->setDistanceThreshold(qPrefLocationService::distance_threshold());
-	QMLPrefs::instance()->setTimeThreshold(qPrefLocationService::time_threshold() / 60);
 }
 
 QMLManager::~QMLManager()
@@ -422,12 +420,6 @@ QMLManager::~QMLManager()
 QMLManager *QMLManager::instance()
 {
 	return m_instance;
-}
-
-void QMLManager::savePreferences()
-{
-    qPrefLocationService::set_time_threshold(QMLPrefs::instance()->timeThreshold() * 60);
-    qPrefLocationService::set_distance_threshold(QMLPrefs::instance()->distanceThreshold());
 }
 
 #define CLOUDURL QString(prefs.cloud_base_url)

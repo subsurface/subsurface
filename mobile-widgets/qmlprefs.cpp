@@ -11,11 +11,8 @@ QMLPrefs *QMLPrefs::m_instance = NULL;
 
 QMLPrefs::QMLPrefs() :
 	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_developer(false),
-	m_distanceThreshold(1000),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_showPin(false),
-	m_timeThreshold(60)
+	m_showPin(false)
 {
 	// This strange construct is needed because QMLEngine calls new and that
 	// cannot be overwritten
@@ -87,23 +84,6 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 	}
 }
 
-void QMLPrefs::setDeveloper(bool value)
-{
-	m_developer = value;
-	emit developerChanged();
-}
-
-int QMLPrefs::distanceThreshold() const
-{
-	return m_distanceThreshold;
-}
-
-void QMLPrefs::setDistanceThreshold(int distance)
-{
-	m_distanceThreshold = distance;
-	emit distanceThresholdChanged();
-}
-
 qPrefCloudStorage::cloud_status QMLPrefs::oldStatus() const
 {
 	return m_oldStatus;
@@ -127,31 +107,6 @@ void QMLPrefs::setShowPin(bool enable)
 	m_showPin = enable;
 	emit showPinChanged();
 }
-
-int QMLPrefs::timeThreshold() const
-{
-	return m_timeThreshold;
-}
-
-void QMLPrefs::setTimeThreshold(int time)
-{
-	m_timeThreshold = time;
-	GpsLocation::instance()->setGpsTimeThreshold(m_timeThreshold * 60);
-	emit timeThresholdChanged();
-}
-
-const QString QMLPrefs::theme() const
-{
-	return qPrefDisplay::theme();
-}
-
-void QMLPrefs::setTheme(QString theme)
-{
-	qPrefDisplay::set_theme(theme);
-	emit themeChanged();
-}
-
-
 
 /*** public slot functions ***/
 void QMLPrefs::cancelCredentialsPinSetup()
