@@ -53,9 +53,9 @@
 #include "profile-widget/profilewidget2.h"
 
 #ifndef NO_PRINTING
-#include <QPrintDialog>
-#include <QBuffer>
-#include "desktop-widgets/printdialog.h"
+    #include <QPrintDialog>
+    #include <QBuffer>
+    #include "desktop-widgets/printdialog.h"
 #endif
 
 #include "qt-models/cylindermodel.h"
@@ -69,12 +69,12 @@
 #include "preferences/preferencesdialog.h"
 
 #ifndef NO_USERMANUAL
-#include "usermanual.h"
+    #include "usermanual.h"
 #endif
 
 #if defined(FBSUPPORT)
-#include "plugins/facebook/facebook_integration.h"
-#include "plugins/facebook/facebookconnectwidget.h"
+    #include "plugins/facebook/facebook_integration.h"
+    #include "plugins/facebook/facebookconnectwidget.h"
 #endif
 
 QProgressDialog *progressDialog = NULL;
