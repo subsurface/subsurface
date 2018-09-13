@@ -103,7 +103,7 @@ extern "C" int updateProgress(const char *text)
 	return progressDialogCanceled;
 }
 
-MainWindow *MainWindow::m_Instance = NULL;
+MainWindow *MainWindow::m_Instance = nullptr;
 
 extern "C" void showErrorFromC(char *buf)
 {
@@ -113,14 +113,14 @@ extern "C" void showErrorFromC(char *buf)
 }
 
 MainWindow::MainWindow() : QMainWindow(),
-	actionNextDive(0),
-	actionPreviousDive(0),
+    actionNextDive(nullptr),
+    actionPreviousDive(nullptr),
 #ifndef NO_USERMANUAL
 	helpView(0),
 #endif
 	state(VIEWALL),
-	survey(0),
-	findMovedImagesDialog(0)
+    survey(nullptr),
+    findMovedImagesDialog(nullptr)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
