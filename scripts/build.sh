@@ -88,7 +88,7 @@ if [ $PLATFORM = Darwin ] ; then
 		exit 1;
 	fi
 	BASESDK=$(ls $SDKROOT | grep "MacOSX10\.1.\.sdk" | head -1 | sed -e "s/MacOSX//;s/\.sdk//")
-	OLDER_MAC="-mmacosx-version-min=${BASESDK} -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
+	OLDER_MAC="-mmacosx-version-min=10.11 -isysroot${SDKROOT}/MacOSX${BASESDK}.sdk"
 	OLDER_MAC_CMAKE="-DCMAKE_OSX_DEPLOYMENT_TARGET=${BASESDK} -DCMAKE_OSX_SYSROOT=${SDKROOT}/MacOSX${BASESDK}.sdk/"
 	if [ ! -d /usr/include ] ; then
 		echo "Error: Xcode Command Line Tools are not installed"
