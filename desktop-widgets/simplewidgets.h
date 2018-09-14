@@ -203,6 +203,7 @@ public:
 };
 
 class TextHyperlinkEventFilter : public QObject {
+	Q_OBJECT
 public:
 	explicit TextHyperlinkEventFilter(QTextEdit *txtEdit);
 
