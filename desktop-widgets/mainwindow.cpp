@@ -142,15 +142,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
 	// and the ones that someone likely sets and then never touches again towards the bottom
-	profileToolbarActions << ui.profCalcCeiling << ui.profCalcAllTissues << // start with various ceilings
-				 ui.profIncrement3m << ui.profDcCeiling <<
-				 ui.profPhe << ui.profPn2 << ui.profPO2 << // partial pressure graphs
-				 ui.profRuler << ui.profScaled << // measuring and scaling
-				 ui.profTogglePicture << ui.profTankbar <<
-				 ui.profMod << ui.profNdl_tts << // various values that a user is either interested in or not
-				 ui.profEad << ui.profSAC <<
-				 ui.profHR << // very few dive computers support this
-				 ui.profTissues; // maybe less frequently used
+	profileToolbarActions = { ui.profCalcCeiling, ui.profCalcAllTissues, // start with various ceilings
+				ui.profIncrement3m, ui.profDcCeiling,
+				ui.profPhe, ui.profPn2, ui.profPO2, // partial pressure graphs
+				ui.profRuler, ui.profScaled, // measuring and scaling
+				ui.profTogglePicture, ui.profTankbar,
+				ui.profMod, ui.profNdl_tts, // various values that a user is either interested in or not
+				ui.profEad, ui.profSAC,
+				ui.profHR, // very few dive computers support this
+				ui.profTissues}; // maybe less frequently used
 
 	QToolBar *toolBar = new QToolBar();
 	Q_FOREACH (QAction *a, profileToolbarActions)
