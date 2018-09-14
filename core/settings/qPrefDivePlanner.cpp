@@ -5,10 +5,6 @@
 
 static const QString group = QStringLiteral("Planner");
 
-qPrefDivePlanner::qPrefDivePlanner(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefDivePlanner *qPrefDivePlanner::instance()
 {
 	static qPrefDivePlanner *self = new qPrefDivePlanner;

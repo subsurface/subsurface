@@ -16,7 +16,6 @@ class qPrefProxy : public QObject {
 	Q_PROPERTY(QString proxy_user READ proxy_user WRITE set_proxy_user NOTIFY proxy_userChanged);
 
 public:
-	qPrefProxy(QObject *parent = NULL);
 	static qPrefProxy *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -49,6 +48,8 @@ signals:
 	void proxy_userChanged(const QString &value);
 
 private:
+	qPrefProxy() {}
+
 	static void disk_proxy_auth(bool doSync);
 	static void disk_proxy_host(bool doSync);
 	static void disk_proxy_pass(bool doSync);

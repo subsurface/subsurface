@@ -13,7 +13,6 @@ class qPrefGeocoding : public QObject {
 	Q_PROPERTY(taxonomy_category third_taxonomy_category READ third_taxonomy_category WRITE set_third_taxonomy_category NOTIFY third_taxonomy_categoryChanged);
 
 public:
-	qPrefGeocoding(QObject *parent = NULL);
 	static qPrefGeocoding *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -37,6 +36,8 @@ signals:
 	void third_taxonomy_categoryChanged(taxonomy_category value);
 
 private:
+	qPrefGeocoding() {}
+
 	static void disk_first_taxonomy_category(bool doSync);
 	static void disk_second_taxonomy_category(bool doSync);
 	static void disk_third_taxonomy_category(bool doSync);

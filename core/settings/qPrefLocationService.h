@@ -12,7 +12,6 @@ class qPrefLocationService : public QObject {
 	Q_PROPERTY(int time_threshold READ time_threshold WRITE set_time_threshold NOTIFY time_thresholdChanged);
 
 public:
-	qPrefLocationService(QObject *parent = NULL);
 	static qPrefLocationService *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -34,6 +33,8 @@ signals:
 
 
 private:
+	qPrefLocationService() {}
+
 	static void disk_distance_threshold(bool doSync);
 	static void disk_time_threshold(bool doSync);
 };
