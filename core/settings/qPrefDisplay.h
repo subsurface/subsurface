@@ -26,7 +26,6 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(int lastState READ lastState WRITE set_lastState NOTIFY lastStateChanged);
 
 public:
-	qPrefDisplay(QObject *parent = NULL);
 	static qPrefDisplay *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -89,6 +88,8 @@ signals:
 	void lastStateChanged(int value);
 
 private:
+	qPrefDisplay() {}
+
 	// functions to load/sync variable with disk
 	static void disk_animation_speed(bool doSync);
 	static void disk_divelist_font(bool doSync);

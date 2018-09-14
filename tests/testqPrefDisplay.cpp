@@ -154,15 +154,13 @@ void TestQPrefDisplay::test_struct_disk()
 void TestQPrefDisplay::test_multiple()
 {
 	// test multiple instances have the same information
-	auto display_direct = qPrefDisplay::instance();
 	prefs.divelist_font = copy_qstring("comic");
-
 	auto display = qPrefDisplay::instance();
 	prefs.font_size = 15.0;
 
-	QCOMPARE(display->divelist_font(), display_direct->divelist_font());
+	QCOMPARE(display->divelist_font(), qPrefDisplay::divelist_font());
 	QCOMPARE(display->divelist_font(), QString("comic"));
-	QCOMPARE(display->font_size(), display_direct->font_size());
+	QCOMPARE(display->font_size(), qPrefDisplay::font_size());
 	QCOMPARE(display->font_size(), 15.0);
 }
 
