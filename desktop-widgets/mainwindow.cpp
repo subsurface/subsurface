@@ -1237,7 +1237,6 @@ void MainWindow::enterState(CurrentState newState)
 		on_actionViewProfile_triggered();
 		break;
 	case EDIT:
-	default:
 		break;
 	}
 }
