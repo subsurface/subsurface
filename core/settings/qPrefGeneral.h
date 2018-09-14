@@ -26,7 +26,6 @@ class qPrefGeneral : public QObject {
 
 
 public:
-	qPrefGeneral(QObject *parent = NULL);
 	static qPrefGeneral *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -90,6 +89,8 @@ signals:
 	void extraEnvironmentalDefaultChanged(bool value);
 
 private:
+	qPrefGeneral() {}
+
 	static void disk_auto_recalculate_thumbnails(bool doSync);
 	static void disk_default_cylinder(bool doSync);
 	static void disk_default_filename(bool doSync);

@@ -19,7 +19,6 @@ class qPrefCloudStorage : public QObject {
 	Q_PROPERTY(bool save_password_local READ save_password_local WRITE set_save_password_local NOTIFY save_password_localChanged);
 
 public:
-	qPrefCloudStorage(QObject *parent = NULL);
 	static qPrefCloudStorage *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -71,6 +70,8 @@ signals:
 	void save_password_localChanged(bool value);
 
 private:
+	qPrefCloudStorage() {}
+
 	// functions to load/sync variable with disk
 	static void disk_cloud_auto_sync(bool doSync);
 	static void disk_cloud_base_url(bool doSync);

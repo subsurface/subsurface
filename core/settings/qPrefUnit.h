@@ -20,7 +20,6 @@ class qPrefUnits : public QObject {
 	Q_PROPERTY(units::WEIGHT weight READ weight WRITE set_weight NOTIFY weightChanged);
 
 public:
-	qPrefUnits(QObject *parent = NULL);
 	static qPrefUnits *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -65,6 +64,8 @@ signals:
 	void weightChanged(int value);
 
 private:
+	qPrefUnits() {}
+
 	static void disk_coordinates_traditional(bool doSync);
 	static void disk_duration_units(bool doSync);
 	static void disk_length(bool doSync);

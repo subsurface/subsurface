@@ -36,7 +36,6 @@ class qPrefDivePlanner : public QObject {
 	Q_PROPERTY(bool verbatim_plan READ verbatim_plan WRITE set_verbatim_plan NOTIFY verbatim_planChanged);
 
 public:
-	qPrefDivePlanner(QObject *parent = NULL);
 	static qPrefDivePlanner *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -135,6 +134,8 @@ signals:
 	void verbatim_planChanged(bool value);
 
 private:
+	qPrefDivePlanner() {}
+
 	static void disk_ascratelast6m(bool doSync);
 	static void disk_ascratestops(bool doSync);
 	static void disk_ascrate50(bool doSync);

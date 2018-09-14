@@ -5,10 +5,6 @@
 
 static const QString group = QStringLiteral("TecDetails");
 
-qPrefTechnicalDetails::qPrefTechnicalDetails(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefTechnicalDetails *qPrefTechnicalDetails::instance()
 {
 	static qPrefTechnicalDetails *self = new qPrefTechnicalDetails;
