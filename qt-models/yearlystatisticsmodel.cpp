@@ -5,7 +5,7 @@
 #include "core/statistics.h"
 
 class YearStatisticsItem : public TreeItem {
-	Q_OBJECT
+	Q_DECLARE_TR_FUNCTIONS(YearStatisticsItem)
 public:
 	enum {
 		YEAR,
