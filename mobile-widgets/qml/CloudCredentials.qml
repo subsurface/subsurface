@@ -14,13 +14,6 @@ Item {
 	property string username: login.text;
 	property string password: password.text;
 
-	function saveCredentials() {
-		prefs.cloudUserName = login.text
-		prefs.cloudPassword = password.text
-		prefs.cloudPin = pin.text
-		manager.saveCloudCredentials()
-	}
-
 	ColumnLayout {
 		id: outerLayout
 		width: loginWindow.width - Kirigami.Units.gridUnit // to ensure the full input fields are visible
@@ -60,7 +53,7 @@ Item {
 
 		Controls.TextField {
 			id: login
-			text: prefs.cloudUserName
+			text: PrefCloudStorage.cloud_storage_email
 			visible: !prefs.showPin
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
@@ -76,7 +69,7 @@ Item {
 
 		Controls.TextField {
 			id: password
-			text: prefs.cloudPassword
+			text: PrefCloudStorage.cloud_storage_password
 			visible: !prefs.showPin
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
@@ -105,7 +98,7 @@ Item {
 				id: registerpin
 				text: qsTr("Register") 
 				onClicked: {
-					saveCredentials()
+					manager.saveCloudCredentials(login.text, password.text, pin.text, true)
 				}
 			}
 			Controls.Label {
@@ -132,7 +125,7 @@ Item {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
-					saveCredentials()
+					manager.saveCloudCredentials(login.text, password.text, pin.text, true)
 				}
 			}
 			Controls.Label {
@@ -143,9 +136,7 @@ Item {
 				id: toNoCloudMode
 				text: qsTr("No cloud mode")
 				onClicked: {
-					manager.syncToCloud = false
-					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
-					manager.saveCloudCredentials()
+					manager.saveCloudCredentials("", "", "", false)
 					manager.openNoCloudRepo()
 				}
 			}

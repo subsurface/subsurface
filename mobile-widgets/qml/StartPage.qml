@@ -10,8 +10,6 @@ Kirigami.ScrollablePage {
 	id: startpage
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
-	function saveCredentials() { cloudCredentials.saveCredentials() }
-
 	ColumnLayout {
 		CloudCredentials {
 			id: cloudCredentials

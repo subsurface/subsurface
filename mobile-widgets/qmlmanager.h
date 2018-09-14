@@ -89,6 +89,7 @@ public:
 	Q_INVOKABLE int getDetectedVendorIndex();
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
 	Q_INVOKABLE int getConnectionIndex(const QString &deviceSubstr);
+	Q_INVOKABLE void saveCloudCredentials(QString user, QString password, QString pin, bool setCred);
 
 	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
@@ -147,7 +148,6 @@ public:
 public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
-	void saveCloudCredentials();
 	void tryRetrieveDataFromBackend();
 	void handleError(QNetworkReply::NetworkError nError);
 	void handleSslErrors(const QList<QSslError> &errors);
