@@ -1769,7 +1769,7 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		csv = fileNamePtr.data();
-		csv.replace(strlen(csv.data()) - 3, 3, "csv");
+		csv.replace(csv.size() - 3, 3, "csv");
 
 		QFileInfo check_file(csv);
 		if (check_file.exists() && check_file.isFile()) {
