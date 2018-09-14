@@ -13,7 +13,6 @@ class qPref : public QObject {
 	Q_PROPERTY(QString mobile_version READ mobile_version);
 
 public:
-	qPref(QObject *parent = NULL);
 	static qPref *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -28,6 +27,8 @@ public:
 	static const QString mobile_version() { return QString(MOBILE_VERSION_STRING); }
 
 private:
+	qPref() {}
+
 	static void loadSync(bool doSync);
 };
 #endif

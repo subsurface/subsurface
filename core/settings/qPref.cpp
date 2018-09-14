@@ -19,10 +19,6 @@
 #include <QtQml>
 #include <QQmlContext>
 
-qPref::qPref(QObject *parent) : QObject(parent)
-{
-}
-
 qPref *qPref::instance()
 {
 	static qPref *self = new qPref;
