@@ -15,7 +15,6 @@ class qPrefUpdateManager : public QObject {
 	Q_PROPERTY(const QString uuidString READ uuidString WRITE set_uuidString NOTIFY uuidStringChanged);
 
 public:
-	qPrefUpdateManager(QObject *parent = NULL);
 	static qPrefUpdateManager *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -45,6 +44,8 @@ signals:
 	void uuidStringChanged(const QString& value);
 
 private:
+	qPrefUpdateManager() {}
+
 	static void disk_dont_check_for_updates(bool doSync);
 	static void disk_last_version_used(bool doSync);
 	static void disk_next_check(bool doSync);
