@@ -112,7 +112,6 @@ slots:
 	void on_actionDivelogs_de_triggered();
 	void on_actionEditDeviceNames_triggered();
 	void on_actionAddDive_triggered();
-	void on_actionEditDive_triggered();
 	void on_actionRenumber_triggered();
 	void on_actionAutoGroup_triggered();
 	void on_actionYearlyStatistics_triggered();

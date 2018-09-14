@@ -1067,11 +1067,6 @@ void MainWindow::on_actionAddDive_triggered()
 	information()->updateDepthDuration();
 }
 
-void MainWindow::on_actionEditDive_triggered()
-{
-	editCurrentDive();
-}
-
 void MainWindow::on_actionRenumber_triggered()
 {
 	RenumberDialog::instance()->renumberOnlySelected(false);
