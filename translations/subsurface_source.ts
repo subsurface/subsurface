@@ -2488,7 +2488,7 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="262"/>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
         <source>Selected dives</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2499,117 +2499,122 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="285"/>
-        <source>CSV units</source>
+        <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="298"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
         <source>Metric</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="303"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="306"/>
         <source>Imperial</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="316"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
+        <source>Anonymize</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="332"/>
         <source>HTML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="334"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="350"/>
         <source>General settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="340"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
         <source>Subsurface numbers</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="369"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
         <source>Export yearly statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="401"/>
         <source>All di&amp;ves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="395"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="411"/>
         <source>Export list only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="402"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
         <source>Export photos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="434"/>
         <source>Style options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="433"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="449"/>
         <source>Font</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="443"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
         <source>Font size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="454"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="470"/>
         <source>8</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="475"/>
         <source>10</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="464"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="480"/>
         <source>12</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="469"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="485"/>
         <source>14</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="490"/>
         <source>16</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="479"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="495"/>
         <source>18</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="484"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="500"/>
         <source>20</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="492"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
         <source>Theme</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="503"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="519"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <source>Light</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="524"/>
         <source>Sand</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4113,7 +4118,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GpsLocation</name>
     <message>
-        <location filename="../core/gpslocation.cpp" line="135"/>
+        <location filename="../core/gpslocation.cpp" line="139"/>
         <source>Unknown GPS location (no GPS source)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4302,8 +4307,8 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="27"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="447"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="534"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="573"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="542"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="583"/>
         <source>Notes</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4324,19 +4329,19 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="107"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="307"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="312"/>
         <source>Air temp.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="117"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="308"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="313"/>
         <source>Water temp.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="572"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="582"/>
         <source>Location</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4451,53 +4456,53 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="304"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="309"/>
         <source>Air temp. [%1]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="305"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="310"/>
         <source>Water temp. [%1]</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="345"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="353"/>
         <source>This trip is being edited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="352"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="360"/>
         <source>Multiple dives are being edited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="354"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="362"/>
         <source>This dive is being edited.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="482"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="522"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="490"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="530"/>
         <source>Trip notes</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="517"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="525"/>
         <source>Trip location</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="738"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="748"/>
         <source>New dive site</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1034"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1044"/>
         <source>Discard the changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1035"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1045"/>
         <source>You are about to discard your changes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4906,7 +4911,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1620"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1617"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4917,7 +4922,7 @@ p, li { white-space: pre-wrap; }
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2013"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4927,7 +4932,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/mainwindow.cpp" line="724"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1874"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4992,176 +4997,176 @@ If answering no, the cloud will only be synced on next call to &quot;Open cloud 
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1874"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1111"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1108"/>
         <source>Yearly statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1344"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
         <source>Dive log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1649"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1364"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1407"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1646"/>
         <source>Subsurface files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1365"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
         <source>Cochran</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1366"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
+        <source>DiveLogs.de</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
+        <source>JDiveLog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
+        <source>Liquivision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1413"/>
-        <source>DiveLogs.de</source>
+        <source>Suunto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
-        <source>JDiveLog</source>
+        <source>UDCF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
-        <source>Liquivision</source>
+        <source>UDDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
-        <source>Suunto</source>
+        <source>XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1417"/>
-        <source>UDCF</source>
+        <source>Divesoft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1418"/>
-        <source>UDDF</source>
+        <source>Datatrak/WLog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1375"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
-        <source>XML</source>
+        <source>MkVI files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1376"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
-        <source>Divesoft</source>
+        <source>APD log viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1421"/>
-        <source>Datatrak/WLog</source>
+        <source>OSTCtools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1422"/>
-        <source>MkVI files</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1379"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
-        <source>APD log viewer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
-        <source>OSTCtools</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
         <source>DAN DL7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
         <source>CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
         <source>All files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1434"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1440"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1442"/>
         <source>Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1443"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1648"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1645"/>
         <source>Save file as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1736"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1733"/>
         <source>[local cache for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1738"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1735"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1827"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1831"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1828"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1842"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1839"/>
         <source>Open dive log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="2013"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6415,110 +6420,110 @@ Please export this template to a different file.</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="407"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="491"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="483"/>
         <source>Please enter valid cloud credentials.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="447"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="439"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="502"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="494"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="516"/>
         <source>Testing cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="547"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="545"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="572"/>
         <source>Cloud credentials are invalid</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="586"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="600"/>
         <source>Cannot open cloud storage: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="621"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="613"/>
         <source>Cannot connect to cloud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="626"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="618"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="636"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="628"/>
         <source>Cloud storage error: %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="682"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="674"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="753"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="745"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="932"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="924"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1358"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1350"/>
         <source>Unknown GPS location</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6526,7 +6531,7 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLPrefs</name>
     <message>
-        <location filename="../mobile-widgets/qmlprefs.cpp" line="178"/>
+        <location filename="../mobile-widgets/qmlprefs.cpp" line="133"/>
         <source>Starting...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6684,60 +6689,60 @@ Please export this template to a different file.</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="111"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="163"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="214"/>
         <source>regular text</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="126"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="178"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="231"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="177"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="229"/>
         <source>Highlight</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="149"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="148"/>
         <source>Pink</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="201"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="199"/>
         <source>Dark</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="265"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="262"/>
         <source>Subsurface GPS data webservice</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="274"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="271"/>
         <source>Distance threshold (meters)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="286"/>
         <source>Time threshold (minutes)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="318"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="313"/>
         <source>Default Cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="327"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="322"/>
         <source>Cylinder:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="347"/>
         <source>Developer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="361"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="356"/>
         <source>Display Developer menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8229,17 +8234,17 @@ Language: %1</source>
 <context>
     <name>YearStatisticsItem</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>h</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>min</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>sec</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8247,70 +8252,70 @@ Language: %1</source>
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="125"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="126"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="128"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="129"/>
         <source>#</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="131"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="132"/>
         <source>Duration 
  Total</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="134"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="135"/>
         <source>
 Average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="137"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="138"/>
         <source>
 Shortest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="140"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="141"/>
         <source>
 Longest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="143"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="144"/>
         <source>Depth (%1)
  Average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="146"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="155"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="164"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="147"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="156"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="165"/>
         <source>
 Minimum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="149"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="158"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="167"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="150"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="159"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="168"/>
         <source>
 Maximum</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="152"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="153"/>
         <source>SAC (%1)
  Average</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="161"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="162"/>
         <source>Temp. (%1)
  Average</source>
         <translation type="unfinished"></translation>
@@ -9257,7 +9262,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2136"/>
+        <location filename="../core/parse-xml.c" line="2222"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation type="unfinished"></translation>
     </message>
