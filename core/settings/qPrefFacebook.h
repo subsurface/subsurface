@@ -13,7 +13,6 @@ class qPrefFacebook : public QObject {
 	Q_PROPERTY(QString user_id READ user_id WRITE set_user_id NOTIFY user_idChanged);
 
 public:
-	qPrefFacebook(QObject *parent = NULL);
 	static qPrefFacebook *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -37,6 +36,8 @@ signals:
 	void user_idChanged(const QString& value);
 
 private:
+	qPrefFacebook() {}
+
 	static void disk_access_token(bool doSync);
 	static void disk_album_id(bool doSync);
 	static void disk_user_id(bool doSync);
