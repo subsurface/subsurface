@@ -380,7 +380,7 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
 	write_hashes();
-	m_Instance = NULL;
+	m_Instance = nullptr;
 }
 
 void MainWindow::setupSocialNetworkMenu()
@@ -747,7 +747,7 @@ void MainWindow::closeCurrentFile()
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data();
-	setCurrentFile(NULL);
+	setCurrentFile(nullptr);
 	cleanUpEmpty();
 	mark_divelist_changed(false);
 
@@ -2027,7 +2027,7 @@ void MainWindow::hideProgressBar()
 	if (progressDialog) {
 		progressDialog->setValue(100);
 		delete progressDialog;
-		progressDialog = NULL;
+		progressDialog = nullptr;
 	}
 }
 
