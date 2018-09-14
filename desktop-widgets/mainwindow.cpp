@@ -507,44 +507,27 @@ void MainWindow::recreateDiveList()
 }
 
 void MainWindow::configureToolbar() {
-	if (selected_dive>0) {
-		if (current_dive->dc.divemode == FREEDIVE) {
-			ui.profCalcCeiling->setDisabled(true);
-			ui.profCalcAllTissues ->setDisabled(true);
-			ui.profIncrement3m->setDisabled(true);
-			ui.profDcCeiling->setDisabled(true);
-			ui.profPhe->setDisabled(true);
-			ui.profPn2->setDisabled(true); //TODO is the same as scuba?
-			ui.profPO2->setDisabled(true); //TODO is the same as scuba?
-			ui.profRuler->setDisabled(false);
-			ui.profScaled->setDisabled(false); // measuring and scaling
-			ui.profTogglePicture->setDisabled(false);
-			ui.profTankbar->setDisabled(true);
-			ui.profMod->setDisabled(true);
-			ui.profNdl_tts->setDisabled(true);
-			ui.profEad->setDisabled(true);
-			ui.profSAC->setDisabled(true);
-			ui.profHR->setDisabled(false);
-			ui.profTissues->setDisabled(true);
-		} else {
-			ui.profCalcCeiling->setDisabled(false);
-			ui.profCalcAllTissues ->setDisabled(false);
-			ui.profIncrement3m->setDisabled(false);
-			ui.profDcCeiling->setDisabled(false);
-			ui.profPhe->setDisabled(false);
-			ui.profPn2->setDisabled(false);
-			ui.profPO2->setDisabled(false); // partial pressure graphs
-			ui.profRuler->setDisabled(false);
-			ui.profScaled->setDisabled(false); // measuring and scaling
-			ui.profTogglePicture->setDisabled(false);
-			ui.profTankbar->setDisabled(false);
-			ui.profMod->setDisabled(false);
-			ui.profNdl_tts->setDisabled(false); // various values that a user is either interested in or not
-			ui.profEad->setDisabled(false);
-			ui.profSAC->setDisabled(false);
-			ui.profHR->setDisabled(false); // very few dive computers support this
-			ui.profTissues->setDisabled(false);; // maybe less frequently used
-		}
+	if (selected_dive > 0) {
+		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
+		ui.profCalcCeiling->setDisabled(freeDiveMode);
+		ui.profCalcCeiling->setDisabled(freeDiveMode);
+		ui.profCalcAllTissues ->setDisabled(freeDiveMode);
+		ui.profIncrement3m->setDisabled(freeDiveMode);
+		ui.profDcCeiling->setDisabled(freeDiveMode);
+		ui.profPhe->setDisabled(freeDiveMode);
+		ui.profPn2->setDisabled(freeDiveMode); //TODO is the same as scuba?
+		ui.profPO2->setDisabled(freeDiveMode); //TODO is the same as scuba?
+		ui.profTankbar->setDisabled(freeDiveMode);
+		ui.profMod->setDisabled(freeDiveMode);
+		ui.profNdl_tts->setDisabled(freeDiveMode);
+		ui.profEad->setDisabled(freeDiveMode);
+		ui.profSAC->setDisabled(freeDiveMode);
+		ui.profTissues->setDisabled(freeDiveMode);
+
+		ui.profRuler->setDisabled(false);
+		ui.profScaled->setDisabled(false); // measuring and scaling
+		ui.profTogglePicture->setDisabled(false);
+		ui.profHR->setDisabled(false);
 	}
 }
 
