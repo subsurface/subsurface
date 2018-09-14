@@ -155,13 +155,11 @@ void TestQPrefCloudStorage::test_multiple()
 {
 	// test multiple instances have the same information
 
-	auto tst_direct = new qPrefCloudStorage;
-
 	prefs.cloud_timeout = 25;
 	auto tst = qPrefCloudStorage::instance();
 
-	QCOMPARE(tst->cloud_timeout(), tst_direct->cloud_timeout());
-	QCOMPARE(tst_direct->cloud_timeout(), 25);
+	QCOMPARE(tst->cloud_timeout(), qPrefCloudStorage::cloud_timeout());
+	QCOMPARE(qPrefCloudStorage::cloud_timeout(), 25);
 }
 
 #define TEST(METHOD, VALUE)      \
