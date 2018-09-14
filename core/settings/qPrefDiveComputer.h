@@ -37,7 +37,6 @@ class qPrefDiveComputer : public QObject {
 	Q_PROPERTY(int download_mode READ download_mode WRITE set_download_mode NOTIFY download_modeChanged)
 
 public:
-	qPrefDiveComputer(QObject *parent = NULL);
 	static qPrefDiveComputer *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -107,6 +106,8 @@ signals:
 	void download_modeChanged(int mode);
 
 private:
+	qPrefDiveComputer() {}
+
 	// functions to load/sync variable with disk
 
 	static void disk_device(bool doSync);

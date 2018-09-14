@@ -81,15 +81,13 @@ void TestQPrefLocationService::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.distance_threshold = 52;
-	auto tst_direct = new qPrefLocationService;
-
 	prefs.time_threshold = 62;
 	auto tst = qPrefLocationService::instance();
 
-	QCOMPARE(tst->distance_threshold(), tst_direct->distance_threshold());
-	QCOMPARE(tst->time_threshold(), tst_direct->time_threshold());
-	QCOMPARE(tst_direct->distance_threshold(), 52);
-	QCOMPARE(tst_direct->time_threshold(), 62);
+	QCOMPARE(tst->distance_threshold(), qPrefLocationService::distance_threshold());
+	QCOMPARE(tst->time_threshold(), qPrefLocationService::time_threshold());
+	QCOMPARE(qPrefLocationService::distance_threshold(), 52);
+	QCOMPARE(qPrefLocationService::time_threshold(), 62);
 }
 
 #define TEST(METHOD, VALUE)      \

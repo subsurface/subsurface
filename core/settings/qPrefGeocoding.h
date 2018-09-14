@@ -13,7 +13,6 @@ class qPrefGeocoding : public QObject {
 	Q_PROPERTY(taxonomy_category third_taxonomy_category READ third_taxonomy_category WRITE set_third_taxonomy_category NOTIFY third_taxonomy_categoryChanged);
 
 public:
-	qPrefGeocoding(QObject *parent = NULL);
 	static qPrefGeocoding *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -22,9 +21,9 @@ public:
 	static void sync() { loadSync(true); }
 
 public:
-	taxonomy_category first_taxonomy_category() { return prefs.geocoding.category[0]; }
-	taxonomy_category second_taxonomy_category() { return prefs.geocoding.category[1]; }
-	taxonomy_category third_taxonomy_category() { return prefs.geocoding.category[2]; }
+	static taxonomy_category first_taxonomy_category() { return prefs.geocoding.category[0]; }
+	static taxonomy_category second_taxonomy_category() { return prefs.geocoding.category[1]; }
+	static taxonomy_category third_taxonomy_category() { return prefs.geocoding.category[2]; }
 
 public slots:
 	static void set_first_taxonomy_category(taxonomy_category value);
@@ -37,6 +36,8 @@ signals:
 	void third_taxonomy_categoryChanged(taxonomy_category value);
 
 private:
+	qPrefGeocoding() {}
+
 	static void disk_first_taxonomy_category(bool doSync);
 	static void disk_second_taxonomy_category(bool doSync);
 	static void disk_third_taxonomy_category(bool doSync);
