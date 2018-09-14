@@ -14,7 +14,6 @@ class qPrefDiveComputer : public QObject {
 	Q_PROPERTY(QString vendor READ vendor WRITE set_vendor NOTIFY vendorChanged);
 
 public:
-	qPrefDiveComputer(QObject *parent = NULL);
 	static qPrefDiveComputer *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -44,6 +43,8 @@ signals:
 	void vendorChanged(const QString &vendor);
 
 private:
+	qPrefDiveComputer() {}
+
 	// functions to load/sync variable with disk
 	static void disk_device(bool doSync);
 	static void disk_device_name(bool doSync);

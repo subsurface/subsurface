@@ -37,7 +37,6 @@ class qPrefTechnicalDetails : public QObject {
 	Q_PROPERTY(bool zoomed_plot READ zoomed_plot WRITE set_zoomed_plot NOTIFY zoomed_plotChanged);
 
 public:
-	qPrefTechnicalDetails(QObject *parent = NULL);
 	static qPrefTechnicalDetails *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -133,6 +132,8 @@ signals:
 	void zoomed_plotChanged(bool value);
 
 private:
+	qPrefTechnicalDetails() {}
+
 	static void disk_calcalltissues(bool doSync);
 	static void disk_calcceiling(bool doSync);
 	static void disk_calcceiling3m(bool doSync);

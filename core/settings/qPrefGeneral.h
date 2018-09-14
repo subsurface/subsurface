@@ -22,7 +22,6 @@ class qPrefGeneral : public QObject {
 	Q_PROPERTY(bool diveshareExport_private READ diveshareExport_private WRITE set_diveshareExport_private NOTIFY diveshareExport_privateChanged);
 
 public:
-	qPrefGeneral(QObject *parent = NULL);
 	static qPrefGeneral *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -76,6 +75,8 @@ signals:
 	void diveshareExport_privateChanged(bool value);
 
 private:
+	qPrefGeneral() {}
+
 	static void disk_auto_recalculate_thumbnails(bool doSync);
 	static void disk_default_cylinder(bool doSync);
 	static void disk_default_filename(bool doSync);

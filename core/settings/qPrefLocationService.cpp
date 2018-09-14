@@ -4,10 +4,6 @@
 
 static const QString group = QStringLiteral("LocationService");
 
-qPrefLocationService::qPrefLocationService(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefLocationService *qPrefLocationService::instance()
 {
 	static qPrefLocationService *self = new qPrefLocationService;
