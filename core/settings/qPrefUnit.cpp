@@ -5,10 +5,6 @@
 
 static const QString group = QStringLiteral("Units");
 
-qPrefUnits::qPrefUnits(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefUnits *qPrefUnits::instance()
 {
 	static qPrefUnits *self = new qPrefUnits;
