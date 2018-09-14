@@ -81,6 +81,10 @@ namespace {
     QProgressDialog *progressDialog = nullptr;
     bool progressDialogCanceled = false;
     int progressCounter = 0;
+
+    int round_int (double value) {
+        return static_cast<int>(std::lrint(value));
+    };
 }
 
 
@@ -1170,13 +1174,9 @@ void MainWindow::on_actionViewAll_triggered()
 	const int appH = qApp->desktop()->size().height();
 	const int appW = qApp->desktop()->size().width();
 
-    auto _lrint = [](double value) {
-        return static_cast<int>(std::lrint(value));
-    };
-
-    auto mainSizes = QList<int>{ _lrint(appH * 0.7), _lrint(appH * 0.3) };
-    auto infoProfileSizes = QList<int>{ _lrint(appW * 0.3), _lrint(appW * 0.7) };
-    auto listGlobeSizes = QList<int> { _lrint(appW * 0.7), _lrint(appW * 0.3) };
+    QList<int> mainSizes = { round_int(appH * 0.7), round_int(appH * 0.3) };
+    QList<int> infoProfileSizes = { round_int(appW * 0.3), round_int(appW * 0.7) };
+    QList<int> listGlobeSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -1214,7 +1214,7 @@ void MainWindow::enterEditState()
 	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
 	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
 	int appW = qApp->desktop()->size().width();
-	QList<int> infoProfileSizes { (int)lrint(appW * 0.3), (int)lrint(appW * 0.7) };
+    QList<int> infoProfileSizes { round_int(appW * 0.3), round_int(appW * 0.7) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
