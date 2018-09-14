@@ -93,13 +93,11 @@ void TestQPrefGeocoding::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.geocoding.category[0] = TC_NONE;
-	auto tst_direct = new qPrefGeocoding;
-
 	prefs.geocoding.category[1] = TC_OCEAN;
 	auto tst = qPrefGeocoding::instance();
 
-	QCOMPARE(tst->first_taxonomy_category(), tst_direct->first_taxonomy_category());
-	QCOMPARE(tst->second_taxonomy_category(), tst_direct->second_taxonomy_category());
+	QCOMPARE(tst->first_taxonomy_category(), qPrefGeocoding::first_taxonomy_category());
+	QCOMPARE(tst->second_taxonomy_category(), qPrefGeocoding::second_taxonomy_category());
 	QCOMPARE(tst->first_taxonomy_category(), TC_NONE);
 	QCOMPARE(tst->second_taxonomy_category(), TC_OCEAN);
 }
