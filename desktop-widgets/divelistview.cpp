@@ -892,8 +892,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		popup.addAction(tr("Renumber dive(s)"), this, SLOT(renumberDives()));
 		popup.addAction(tr("Shift dive times"), this, SLOT(shiftTimes()));
 		popup.addAction(tr("Split selected dives"), this, SLOT(splitDives()));
-		popup.addAction(tr("Load image(s) from file(s)"), this, SLOT(loadImages()));
-		popup.addAction(tr("Load image from web"), this, SLOT(loadWebImages()));
+		popup.addAction(tr("Load media from file(s)"), this, SLOT(loadImages()));
+		popup.addAction(tr("Load media from web"), this, SLOT(loadWebImages()));
 	}
 
 	// "collapse all" really closes all trips,
