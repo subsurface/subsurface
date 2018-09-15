@@ -13,69 +13,80 @@
 #include <QShortcut>
 #include <QToolBar>
 #include <QStatusBar>
+#include <QNetworkProxy>
+#include <QUndoStack>
+#include <QtConcurrentRun>
 
-#include "core/gettextfromc.h"
-#include "core/version.h"
-#include "core/subsurface-string.h"
-#include "desktop-widgets/divelistview.h"
-#include "desktop-widgets/downloadfromdivecomputer.h"
-#include "desktop-widgets/subsurfacewebservices.h"
-#include "desktop-widgets/divecomputermanagementdialog.h"
-#include "desktop-widgets/about.h"
-#include "desktop-widgets/updatemanager.h"
-#include "core/planner.h"
-#include "qt-models/filtermodels.h"
-#include "profile-widget/profilewidget2.h"
+#include "core/color.h"
 #include "core/divecomputer.h"
-#include "desktop-widgets/tab-widgets/maintab.h"
+#include "core/divesitehelpers.h"
+#include "core/gettextfromc.h"
+#include "core/git-access.h"
+#include "core/isocialnetworkintegration.h"
+#include "core/planner.h"
+#include "core/pluginmanager.h"
+#include "core/qthelper.h"
+#include "core/subsurface-string.h"
+#include "core/version.h"
+#include "core/windowtitleupdate.h"
+
+#include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefPartialPressureGas.h"
+#include "core/settings/qPrefTechnicalDetails.h"
+
+#include "desktop-widgets/about.h"
+#include "desktop-widgets/divecomputermanagementdialog.h"
+#include "desktop-widgets/divelistview.h"
+#include "desktop-widgets/divelogexportdialog.h"
+#include "desktop-widgets/divelogimportdialog.h"
 #include "desktop-widgets/diveplanner.h"
+#include "desktop-widgets/downloadfromdivecomputer.h"
+#include "desktop-widgets/findmovedimagesdialog.h"
+#include "desktop-widgets/locationinformation.h"
+#include "desktop-widgets/mapwidget.h"
+#include "desktop-widgets/subsurfacewebservices.h"
+#include "desktop-widgets/tab-widgets/maintab.h"
+#include "desktop-widgets/updatemanager.h"
+#include "desktop-widgets/usersurvey.h"
+
+#include "profile-widget/profilewidget2.h"
+
 #ifndef NO_PRINTING
-#include <QPrintDialog>
-#include <QBuffer>
-#include "desktop-widgets/printdialog.h"
+    #include <QPrintDialog>
+    #include <QBuffer>
+    #include "desktop-widgets/printdialog.h"
 #endif
+
+#include "qt-models/cylindermodel.h"
+#include "qt-models/divepicturemodel.h"
+#include "qt-models/diveplannermodel.h"
+#include "qt-models/filtermodels.h"
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
-#include "qt-models/diveplannermodel.h"
-#include "qt-models/cylindermodel.h"
-#include "desktop-widgets/divelogimportdialog.h"
-#include "desktop-widgets/divelogexportdialog.h"
-#include "desktop-widgets/usersurvey.h"
-#include "desktop-widgets/findmovedimagesdialog.h"
-#include "core/divesitehelpers.h"
-#include "core/windowtitleupdate.h"
-#include "desktop-widgets/locationinformation.h"
+
 #include "preferences/preferencesdialog.h"
-#include "core/settings/qPrefPartialPressureGas.h"
-#include "core/settings/qPrefTechnicalDetails.h"
-#include "core/settings/qPrefCloudStorage.h"
-#include "core/settings/qPrefDisplay.h"
 
 #ifndef NO_USERMANUAL
-#include "usermanual.h"
+    #include "usermanual.h"
 #endif
-#include "qt-models/divepicturemodel.h"
-#include "core/git-access.h"
-#include <QNetworkProxy>
-#include <QUndoStack>
-#include "core/qthelper.h"
-#include <QtConcurrentRun>
-#include "core/color.h"
-#include "core/isocialnetworkintegration.h"
-#include "core/pluginmanager.h"
 
 #if defined(FBSUPPORT)
-#include "plugins/facebook/facebook_integration.h"
-#include "plugins/facebook/facebookconnectwidget.h"
+    #include "plugins/facebook/facebook_integration.h"
+    #include "plugins/facebook/facebookconnectwidget.h"
 #endif
 
-#include "desktop-widgets/mapwidget.h"
+namespace {
+    QProgressDialog *progressDialog = nullptr;
+    bool progressDialogCanceled = false;
+    int progressCounter = 0;
 
-QProgressDialog *progressDialog = NULL;
-bool progressDialogCanceled = false;
+    int round_int (double value) {
+        return static_cast<int>(std::lrint(value));
+    };
+}
 
-static int progressCounter = 0;
 
 extern "C" int updateProgress(const char *text)
 {
@@ -96,7 +107,7 @@ extern "C" int updateProgress(const char *text)
 	return progressDialogCanceled;
 }
 
-MainWindow *MainWindow::m_Instance = NULL;
+MainWindow *MainWindow::m_Instance = nullptr;
 
 extern "C" void showErrorFromC(char *buf)
 {
@@ -106,14 +117,14 @@ extern "C" void showErrorFromC(char *buf)
 }
 
 MainWindow::MainWindow() : QMainWindow(),
-	actionNextDive(0),
-	actionPreviousDive(0),
+    actionNextDive(nullptr),
+    actionPreviousDive(nullptr),
 #ifndef NO_USERMANUAL
 	helpView(0),
 #endif
 	state(VIEWALL),
-	survey(0),
-	findMovedImagesDialog(0)
+    survey(nullptr),
+    findMovedImagesDialog(nullptr)
 {
 	Q_ASSERT_X(m_Instance == NULL, "MainWindow", "MainWindow recreated!");
 	m_Instance = this;
@@ -135,15 +146,15 @@ MainWindow::MainWindow() : QMainWindow(),
 	// what is a sane order for those icons? we should have the ones the user is
 	// most likely to want towards the top so they are always visible
 	// and the ones that someone likely sets and then never touches again towards the bottom
-	profileToolbarActions << ui.profCalcCeiling << ui.profCalcAllTissues << // start with various ceilings
-				 ui.profIncrement3m << ui.profDcCeiling <<
-				 ui.profPhe << ui.profPn2 << ui.profPO2 << // partial pressure graphs
-				 ui.profRuler << ui.profScaled << // measuring and scaling
-				 ui.profTogglePicture << ui.profTankbar <<
-				 ui.profMod << ui.profNdl_tts << // various values that a user is either interested in or not
-				 ui.profEad << ui.profSAC <<
-				 ui.profHR << // very few dive computers support this
-				 ui.profTissues; // maybe less frequently used
+	profileToolbarActions = { ui.profCalcCeiling, ui.profCalcAllTissues, // start with various ceilings
+				ui.profIncrement3m, ui.profDcCeiling,
+				ui.profPhe, ui.profPn2, ui.profPO2, // partial pressure graphs
+				ui.profRuler, ui.profScaled, // measuring and scaling
+				ui.profTogglePicture, ui.profTankbar,
+				ui.profMod, ui.profNdl_tts, // various values that a user is either interested in or not
+				ui.profEad, ui.profSAC,
+				ui.profHR, // very few dive computers support this
+				ui.profTissues}; // maybe less frequently used
 
 	QToolBar *toolBar = new QToolBar();
 	Q_FOREACH (QAction *a, profileToolbarActions)
@@ -369,7 +380,7 @@ MainWindow::MainWindow() : QMainWindow(),
 MainWindow::~MainWindow()
 {
 	write_hashes();
-	m_Instance = NULL;
+	m_Instance = nullptr;
 }
 
 void MainWindow::setupSocialNetworkMenu()
@@ -496,44 +507,27 @@ void MainWindow::recreateDiveList()
 }
 
 void MainWindow::configureToolbar() {
-	if (selected_dive>0) {
-		if (current_dive->dc.divemode == FREEDIVE) {
-			ui.profCalcCeiling->setDisabled(true);
-			ui.profCalcAllTissues ->setDisabled(true);
-			ui.profIncrement3m->setDisabled(true);
-			ui.profDcCeiling->setDisabled(true);
-			ui.profPhe->setDisabled(true);
-			ui.profPn2->setDisabled(true); //TODO is the same as scuba?
-			ui.profPO2->setDisabled(true); //TODO is the same as scuba?
-			ui.profRuler->setDisabled(false);
-			ui.profScaled->setDisabled(false); // measuring and scaling
-			ui.profTogglePicture->setDisabled(false);
-			ui.profTankbar->setDisabled(true);
-			ui.profMod->setDisabled(true);
-			ui.profNdl_tts->setDisabled(true);
-			ui.profEad->setDisabled(true);
-			ui.profSAC->setDisabled(true);
-			ui.profHR->setDisabled(false);
-			ui.profTissues->setDisabled(true);
-		} else {
-			ui.profCalcCeiling->setDisabled(false);
-			ui.profCalcAllTissues ->setDisabled(false);
-			ui.profIncrement3m->setDisabled(false);
-			ui.profDcCeiling->setDisabled(false);
-			ui.profPhe->setDisabled(false);
-			ui.profPn2->setDisabled(false);
-			ui.profPO2->setDisabled(false); // partial pressure graphs
-			ui.profRuler->setDisabled(false);
-			ui.profScaled->setDisabled(false); // measuring and scaling
-			ui.profTogglePicture->setDisabled(false);
-			ui.profTankbar->setDisabled(false);
-			ui.profMod->setDisabled(false);
-			ui.profNdl_tts->setDisabled(false); // various values that a user is either interested in or not
-			ui.profEad->setDisabled(false);
-			ui.profSAC->setDisabled(false);
-			ui.profHR->setDisabled(false); // very few dive computers support this
-			ui.profTissues->setDisabled(false);; // maybe less frequently used
-		}
+	if (selected_dive > 0) {
+		bool freeDiveMode = current_dive->dc.divemode == FREEDIVE;
+		ui.profCalcCeiling->setDisabled(freeDiveMode);
+		ui.profCalcCeiling->setDisabled(freeDiveMode);
+		ui.profCalcAllTissues ->setDisabled(freeDiveMode);
+		ui.profIncrement3m->setDisabled(freeDiveMode);
+		ui.profDcCeiling->setDisabled(freeDiveMode);
+		ui.profPhe->setDisabled(freeDiveMode);
+		ui.profPn2->setDisabled(freeDiveMode); //TODO is the same as scuba?
+		ui.profPO2->setDisabled(freeDiveMode); //TODO is the same as scuba?
+		ui.profTankbar->setDisabled(freeDiveMode);
+		ui.profMod->setDisabled(freeDiveMode);
+		ui.profNdl_tts->setDisabled(freeDiveMode);
+		ui.profEad->setDisabled(freeDiveMode);
+		ui.profSAC->setDisabled(freeDiveMode);
+		ui.profTissues->setDisabled(freeDiveMode);
+
+		ui.profRuler->setDisabled(false);
+		ui.profScaled->setDisabled(false); // measuring and scaling
+		ui.profTogglePicture->setDisabled(false);
+		ui.profHR->setDisabled(false);
 	}
 }
 
@@ -736,7 +730,7 @@ void MainWindow::closeCurrentFile()
 	/* free the dives and trips */
 	clear_git_id();
 	clear_dive_file_data();
-	setCurrentFile(NULL);
+	setCurrentFile(nullptr);
 	cleanUpEmpty();
 	mark_divelist_changed(false);
 
@@ -1151,24 +1145,13 @@ void MainWindow::on_actionViewAll_triggered()
 {
 	toggleCollapsible(false);
 	beginChangeState(VIEWALL);
-	static QList<int> mainSizes;
+
 	const int appH = qApp->desktop()->size().height();
 	const int appW = qApp->desktop()->size().width();
-	if (mainSizes.empty()) {
-		mainSizes.append(lrint(appH * 0.7));
-		mainSizes.append(lrint(appH * 0.3));
-	}
-	static QList<int> infoProfileSizes;
-	if (infoProfileSizes.empty()) {
-		infoProfileSizes.append(lrint(appW * 0.3));
-		infoProfileSizes.append(lrint(appW * 0.7));
-	}
 
-	static QList<int> listGlobeSizes;
-	if (listGlobeSizes.empty()) {
-		listGlobeSizes.append(lrint(appW * 0.7));
-		listGlobeSizes.append(lrint(appW * 0.3));
-	}
+    QList<int> mainSizes = { round_int(appH * 0.7), round_int(appH * 0.3) };
+    QList<int> infoProfileSizes = { round_int(appW * 0.3), round_int(appW * 0.7) };
+    QList<int> listGlobeSizes = { round_int(appW * 0.7), round_int(appW * 0.3) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -1206,7 +1189,7 @@ void MainWindow::enterEditState()
 	ui.topSplitter->setSizes({ EXPANDED, EXPANDED });
 	ui.mainSplitter->setSizes({ EXPANDED, COLLAPSED });
 	int appW = qApp->desktop()->size().width();
-	QList<int> infoProfileSizes { (int)lrint(appW * 0.3), (int)lrint(appW * 0.7) };
+    QList<int> infoProfileSizes { round_int(appW * 0.3), round_int(appW * 0.7) };
 
 	QSettings settings;
 	settings.beginGroup("MainWindow");
@@ -1246,7 +1229,6 @@ void MainWindow::enterState(CurrentState newState)
 		on_actionViewProfile_triggered();
 		break;
 	case EDIT:
-	default:
 		break;
 	}
 }
@@ -1333,103 +1315,100 @@ void MainWindow::on_actionHash_images_triggered()
 	findMovedImagesDialog->show();
 }
 
+
 QString MainWindow::filter_open()
 {
-	QString f;
-	f += tr("Dive log files");
-	f += " (*.ssrf";
-	f += " *.xml";
-	f += " *.can";
-	f += " *.db" ;
-	f += " *.sql" ;
-	f += " *.dld";
-	f += " *.jlb";
-	f += " *.lvd";
-	f += " *.sde";
-	f += " *.udcf";
-	f += " *.uddf";
-	f += " *.dlf";
-	f += " *.log";
-	f += " *.txt";
-	f += " *.apd";
-	f += " *.dive";
-	f += " *.zxu *.zxl";
-	f += ");;";
+    QString f = tr("Dive log files");
+    f += " (*.ssrf"
+         " *.xml"
+         " *.can"
+         " *.db"
+         " *.sql"
+         " *.dld"
+         " *.jlb"
+         " *.lvd"
+         " *.sde"
+         " *.udcf"
+         " *.uddf"
+         " *.dlf"
+         " *.log"
+         " *.txt"
+         " *.apd"
+         " *.dive"
+         " *.zxu *.zxl"
+         ");;";
 
-	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
-	f += tr("Cochran") + " (*.can);;";
-	f += tr("DiveLogs.de") + " (*.dld);;";
-	f += tr("JDiveLog") + " (*.jlb);;";
-	f += tr("Liquivision") + " (*.lvd);;";
-	f += tr("Suunto") + " (*.sde *.db);;";
-	f += tr("UDCF") + " (*.udcf);;";
-	f += tr("UDDF") + " (*.uddf);;";
-	f += tr("XML") + " (*.xml);;";
-	f += tr("Divesoft") + " (*.dlf);;";
-	f += tr("Datatrak/WLog") + " (*.log);;";
-	f += tr("MkVI files") + " (*.txt);;";
-	f += tr("APD log viewer") + " (*.apd);;";
-	f += tr("OSTCtools") + " (*.dive);;";
-	f += tr("DAN DL7") + " (*.zxu *.zxl)";
+    f += tr("Subsurface files") + " (*.ssrf *.xml);;";
+    f += tr("Cochran") + " (*.can);;";
+    f += tr("DiveLogs.de") + " (*.dld);;";
+    f += tr("JDiveLog") + " (*.jlb);;";
+    f += tr("Liquivision") + " (*.lvd);;";
+    f += tr("Suunto") + " (*.sde *.db);;";
+    f += tr("UDCF") + " (*.udcf);;";
+    f += tr("UDDF") + " (*.uddf);;";
+    f += tr("XML") + " (*.xml);;";
+    f += tr("Divesoft") + " (*.dlf);;";
+    f += tr("Datatrak/WLog") + " (*.log);;";
+    f += tr("MkVI files") + " (*.txt);;";
+    f += tr("APD log viewer") + " (*.apd);;";
+    f += tr("OSTCtools") + " (*.dive);;";
+    f += tr("DAN DL7") + " (*.zxu *.zxl)";
 
-	return f;
+    return f;
 }
 
 QString MainWindow::filter_import()
 {
-	QString f;
-	f += tr("Dive log files");
-	f += " (*.ssrf";
-	f += " *.xml";
-	f += " *.can";
-	f += " *.csv";
-	f += " *.db" ;
-	f += " *.sql" ;
-	f += " *.dld";
-	f += " *.jlb";
-	f += " *.lvd";
-	f += " *.sde";
-	f += " *.udcf";
-	f += " *.uddf";
-	f += " *.dlf";
-	f += " *.log";
-	f += " *.txt";
-	f += " *.apd";
-	f += " *.dive";
-	f += " *.zxu *.zxl";
-	f += ");;";
+    QString f = tr("Dive log files");
+    f += " (*.ssrf"
+         " *.xml"
+         " *.can"
+         " *.csv"
+         " *.db"
+         " *.sql"
+         " *.dld"
+         " *.jlb"
+         " *.lvd"
+         " *.sde"
+         " *.udcf"
+         " *.uddf"
+         " *.dlf"
+         " *.log"
+         " *.txt"
+         " *.apd"
+         " *.dive"
+         " *.zxu *.zxl"
+         ");;";
 
-	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
-	f += tr("Cochran") + " (*.can);;";
-	f += tr("CSV") + " (*.csv *.CSV);;";
-	f += tr("DiveLogs.de") + " (*.dld);;";
-	f += tr("JDiveLog") + " (*.jlb);;";
-	f += tr("Liquivision") + " (*.lvd);;";
-	f += tr("Suunto") + " (*.sde *.db);;";
-	f += tr("UDCF") + " (*.udcf);;";
-	f += tr("UDDF") + " (*.uddf);;";
-	f += tr("XML") + " (*.xml);;";
-	f += tr("Divesoft") + " (*.dlf);;";
-	f += tr("Datatrak/WLog") + " (*.log);;";
-	f += tr("MkVI files") + " (*.txt);;";
-	f += tr("APD log viewer") + " (*.apd);;";
-	f += tr("OSTCtools") + " (*.dive);;";
-	f += tr("DAN DL7") + " (*.zxu *.zxl);;";
-	f += tr("All files") + " (*.*)";
+    f += tr("Subsurface files") + " (*.ssrf *.xml);;";
+    f += tr("Cochran") + " (*.can);;";
+    f += tr("CSV") + " (*.csv *.CSV);;";
+    f += tr("DiveLogs.de") + " (*.dld);;";
+    f += tr("JDiveLog") + " (*.jlb);;";
+    f += tr("Liquivision") + " (*.lvd);;";
+    f += tr("Suunto") + " (*.sde *.db);;";
+    f += tr("UDCF") + " (*.udcf);;";
+    f += tr("UDDF") + " (*.uddf);;";
+    f += tr("XML") + " (*.xml);;";
+    f += tr("Divesoft") + " (*.dlf);;";
+    f += tr("Datatrak/WLog") + " (*.log);;";
+    f += tr("MkVI files") + " (*.txt);;";
+    f += tr("APD log viewer") + " (*.apd);;";
+    f += tr("OSTCtools") + " (*.dive);;";
+    f += tr("DAN DL7") + " (*.zxu *.zxl);;";
+    f += tr("All files") + " (*.*)";
 
-	return f;
+    return f;
 }
+
 
 bool MainWindow::askSaveChanges()
 {
-	QString message;
 	QMessageBox response(this);
 
-	if (existing_filename)
-		message = tr("Do you want to save the changes that you made in the file %1?")
-				.arg(displayedFilename(existing_filename));
-	else
-		message = tr("Do you want to save the changes that you made in the data file?");
+    QString message = existing_filename ?
+        tr("Do you want to save the changes that you made in the file %1?").arg(displayedFilename(existing_filename)) :
+        tr("Do you want to save the changes that you made in the data file?");
 
 	response.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
 	response.setDefaultButton(QMessageBox::Save);
@@ -1724,10 +1703,9 @@ QString MainWindow::displayedFilename(QString fullFilename)
 
 	if (fullFilename.contains(prefs.cloud_git_url)) {
 		QString email = fileName.left(fileName.indexOf('['));
-		if (git_local_only)
-			return tr("[local cache for] %1").arg(email);
-		else
-			return tr("[cloud storage for] %1").arg(email);
+        return git_local_only ?
+            tr("[local cache for] %1").arg(email) :
+            tr("[cloud storage for] %1").arg(email);
 	} else {
 		return fileName;
 	}
@@ -1777,7 +1755,7 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		csv = fileNamePtr.data();
-		csv.replace(strlen(csv.data()) - 3, 3, "csv");
+		csv.replace(csv.size() - 3, 3, "csv");
 
 		QFileInfo check_file(csv);
 		if (check_file.exists() && check_file.isFile()) {
@@ -2023,7 +2001,7 @@ void MainWindow::hideProgressBar()
 	if (progressDialog) {
 		progressDialog->setValue(100);
 		delete progressDialog;
-		progressDialog = NULL;
+		progressDialog = nullptr;
 	}
 }
 
