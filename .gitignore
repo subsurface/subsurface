@@ -38,3 +38,4 @@ mobile-widgets/qml/kirigami
 packaging/ios/install-root
 packaging/ios/Info.plist
 packaging/ios/Qt
+appdata/subsurface.appdata.xml
