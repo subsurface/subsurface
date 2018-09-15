@@ -69,6 +69,7 @@ set(SUBSURFACE_CORE_LIB_SRCS
 	load-git.c
 	membuffer.c
 	metadata.cpp
+	xmp_parser.cpp
 	metrics.cpp
 	ostctools.c
 	parse-xml.c
