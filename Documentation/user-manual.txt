@@ -1797,7 +1797,7 @@ synchronization dialog appears (see image below). The time
 synchronization is not perfect between the dive computer used during a dive
 and the camera used during that same dive. These two devices
 often differ by several minutes. _Subsurface_ attempts to synchronize them
-so that the exact times of photographs can be used to position photographs on
+so that the exact times of media can be used to position media on
 the dive profile.
 
 _Subsurface_ synchronizes camera with dive computer in three ways:
@@ -1812,7 +1812,7 @@ _Subsurface_ synchronizes camera with dive computer in three ways:
   setting tool immediately under the heading _Shift times of image(s) by_, in the image below.
   If the camera time is 7 minutes later than that of the dive computer, set the time setting
   tool to a value of 00:07 and select the _Earlier_ radio button.
-  This is appropriate, since the photos need to be shifted
+  This is appropriate, since the media need to be shifted
   7 minutes earlier (camera is 7 minutes ahead of dive computer). Ignore any "AM" or "PM" suffix
   in that tool. Click the _OK_ button and synchronization is done.
 
@@ -1837,10 +1837,10 @@ image::images/LoadImage3b_f23.jpg["FIGURE: Synchronization dialog",align="center
 
 image::images/LoadImage3c_f23.jpg["FIGURE: Synchronization dialog",align="center"]
 
-If the timestamp of a photograph is more than 30 minutes before or after the dive, it is not placed on
+If the timestamp of a photograph or video is more than 30 minutes before or after the dive, it is not placed on
 the dive profile (see the red warning in the image above). However, If the appropriate checkbox is
-selected (see image above) these images can still be placed on the _Photos_ tab of the *Notes* panel
-so that all photos associated with a dive are visible, including images taken before or after the dive.
+selected (see image above) these images can still be placed on the _Media_ tab of the *Notes* panel
+so that all media associated with a dive are visible, including images taken before or after the dive.
 
 [[S_ViewMedia]]
 
@@ -1867,7 +1867,7 @@ After the media have been loaded, they appear in two places:
 
  - the _Media_ tab of the *Notes Panel* (left part of image below).
  - as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
-   each photograph was taken.
+   each photograph or video was taken.
    To view the media on the dive profile, activate the _Toggle media_ button in the tool bar
    to the left of the dive profile:
 
@@ -1900,8 +1900,8 @@ overlap on the dive profile) can easily be accessed in the _Media_ tab. This tab
 a tool for individually accessing the media of a dive, while the stubs on the dive profile
 show when during a dive when a photo/video was taken. The size of the thumbnails in the _Media_ tab can be changed using
 the _Zoom level_ slider at the bottom of the panel. Single-click a thumbnail in
-the _Media_ panel to select a photo. Double-click a thumbnail to view the full-sized image,
-overlaying the _Subsurface_ window. Delete media from the _Photos_ panel by selecting
+the _Media_ panel to select a photo/video. Double-click a thumbnail to view the full-sized image
+or play the video, overlaying the _Subsurface_ window. Delete media from the _Media_ panel by selecting
 it (single-click) and then by pressing the _Del_ key on the keyboard. This removes it BOTH
 from the _Media_ tab as well as the dive profile.
 
@@ -1913,7 +1913,7 @@ external drive, the normal procedure of selection and synchronization (see text 
 After the external drive has been disconnected, _Subsurface_ cannot access these media any more.
 If the display of media is activated (using the toolbox icon to the left of the _Dive Profile_), the
 program shows only the thumbnails and the images cannot be viewed at full-screen size.
-If the external drive with the photos is re-connected, the media can be seen in the normal way.
+If the external drive with the media is re-connected, the media can be seen in the normal way.
 
 ==== Finding out which dives have associated media.
 Inspecting each individual dive in order to determine whether there are associated media can be time consuming. There is a
@@ -1925,12 +1925,12 @@ More information is provided in the section dealing with <<S_Divelist_columns, p
 [[S_FindMovedImages]]
 ==== Moving media among directories, hard disks or computers
 
-After a photograph has been loaded into _Subsurface_ and associated with a specific dive,
+After a photograph or video has been loaded into _Subsurface_ and associated with a specific dive,
 _Subsurface_ saves the path to the directory where the media lie as well as the file name of the each photo/video,
 in order to find it when the dive is opened again.
 If the media or the whole media collection is moved to another drive or to a different
- machine, the path to the media changes. Now, _Subsurface_ looks for the photos at their original location before they were moved,
-cannot find them and cannot display them. Because, after moving photos, large numbers of photos
+ machine, the path to the media changes. Now, _Subsurface_ looks for the photos/videos at their original location before they were moved,
+cannot find them and cannot display them. Because, after moving media, large numbers of files
  may need to be deleted and re-imported from the new disk, _Subsurface_ can locate the media based on their filename and path.
 
 This is done by selecting from the Main Menu: _File ->      Find moved images_. This brings up a window within
@@ -2579,11 +2579,13 @@ two red dots.
 
 [icon="images/icons/ShowPhotos.png"]
 [NOTE]
-Photographs that have been added to a dive can be shown on the profile
+Photographs and videos that have been added to a dive can be shown on the profile
 by selecting
-the *Show-photo* button. The position of a photo on the profile
-shows the exact time when this photo was taken. If this button is not active,
-the photos are hidden.
+the *Show-media* button. The position of a photo on the profile
+shows the exact time when this photo was taken.
+The runtime of videos is represented by a bar if _Subsurface_ was able to
+extract this information from the video file.
+If this button is not active, the photos are hidden.
 
 
 The profile can also include the dive computer reported *ceiling* (more
@@ -2797,17 +2799,17 @@ are associated with a particular dive. There are three icons:
 
 [icon="images/icons/duringPhoto.png"]
 [NOTE]
-This dive has photographs taken during the dive, typically using an underwater camera.
+This dive has photographs or videos taken during the dive, typically using an underwater camera.
 
 [icon="images/icons/outsidePhoto.png"]
 [NOTE]
-This dive has photographs taken immediately before or immediately after the dive. This is useful for
-finding photos of dive teams or boats just before/after the dive, whales or other surface animals seen
+This dive has photographs or videos taken immediately before or immediately after the dive. This is useful for
+finding photos/media of dive teams or boats just before/after the dive, whales or other surface animals seen
 just before or after the dive, or of landscapes as seen from the boat.
 
 [icon="images/icons/inAndOutPhoto.png"]
 [NOTE]
-This dive has photographs taken both during the dive and immediately before or after the dive.
+This dive has photographs or videos taken both during the dive and immediately before or after the dive.
 
 [[S_Renumber]]
 === Renumbering the dives
@@ -2941,10 +2943,10 @@ If this operation is performed, _Subsurface_ scans the selected dive(s) and spli
 dive at points during the dive where the depth is less than a metre.
 
 ==== Load image(s) from file(s)
-This topic is discussed in the section: xref:S_LoadImage[Adding photographs to dives].
+This topic is discussed in the section: xref:S_LoadImage[Adding photographs or videos to dives].
 
 ==== Load image from web
-This topic is discussed in the section: xref:S_LoadImage[Adding photographs to dives].
+This topic is discussed in the section: xref:S_LoadImage[Adding photographs or videos to dives].
 
 ==== Undo dive manipulations
 
@@ -3100,9 +3102,9 @@ image::images/texexample.png["Figure: Export to TeX", align="center"]
 
 
 * _Image depths_, which creates a text file that contains the file names of all
-  photos or images attached
+  photos or videos attached
   to any of the selected dives in the _Dive List_, together with the depth underwater where
-  of each of those photos was taken.
+  of each of those photos/videos was taken.
 
 * _General Settings_, under the HTML tab, provides the following options:
 
@@ -4208,7 +4210,7 @@ dealing with the appropriate operations.
   the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
-- <<S_FindMovedImages, _Find moved images_>> - If photos taken during dives have been moved to
+- <<S_FindMovedImages, _Find moved images_>> - If photos/videos taken during dives have been moved to
       a different disk or directory, locate them and link them to the appropriate dives.
 - <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
