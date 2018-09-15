@@ -1350,26 +1350,25 @@ void MainWindow::on_actionHash_images_triggered()
 
 QString MainWindow::filter_open()
 {
-	QString f;
-	f += tr("Dive log files");
-	f += " (*.ssrf";
-	f += " *.xml";
-	f += " *.can";
-	f += " *.db" ;
-	f += " *.sql" ;
-	f += " *.dld";
-	f += " *.jlb";
-	f += " *.lvd";
-	f += " *.sde";
-	f += " *.udcf";
-	f += " *.uddf";
-	f += " *.dlf";
-	f += " *.log";
-	f += " *.txt";
-	f += " *.apd";
-	f += " *.dive";
-	f += " *.zxu *.zxl";
-	f += ");;";
+	QString f = tr("Dive log files") +
+		    " (*.ssrf"
+		    " *.xml"
+		    " *.can"
+		    " *.db"
+		    " *.sql"
+		    " *.dld"
+		    " *.jlb"
+		    " *.lvd"
+		    " *.sde"
+		    " *.udcf"
+		    " *.uddf"
+		    " *.dlf"
+		    " *.log"
+		    " *.txt"
+		    " *.apd"
+		    " *.dive"
+		    " *.zxu *.zxl"
+		    ");;";
 
 	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
 	f += tr("Cochran") + " (*.can);;";
@@ -1392,27 +1391,26 @@ QString MainWindow::filter_open()
 
 QString MainWindow::filter_import()
 {
-	QString f;
-	f += tr("Dive log files");
-	f += " (*.ssrf";
-	f += " *.xml";
-	f += " *.can";
-	f += " *.csv";
-	f += " *.db" ;
-	f += " *.sql" ;
-	f += " *.dld";
-	f += " *.jlb";
-	f += " *.lvd";
-	f += " *.sde";
-	f += " *.udcf";
-	f += " *.uddf";
-	f += " *.dlf";
-	f += " *.log";
-	f += " *.txt";
-	f += " *.apd";
-	f += " *.dive";
-	f += " *.zxu *.zxl";
-	f += ");;";
+	QString f = tr("Dive log files") +
+		    " (*.ssrf"
+		    " *.xml"
+		    " *.can"
+		    " *.csv"
+		    " *.db"
+		    " *.sql"
+		    " *.dld"
+		    " *.jlb"
+		    " *.lvd"
+		    " *.sde"
+		    " *.udcf"
+		    " *.uddf"
+		    " *.dlf"
+		    " *.log"
+		    " *.txt"
+		    " *.apd"
+		    " *.dive"
+		    " *.zxu *.zxl"
+		    ");;";
 
 	f += tr("Subsurface files") + " (*.ssrf *.xml);;";
 	f += tr("Cochran") + " (*.can);;";
