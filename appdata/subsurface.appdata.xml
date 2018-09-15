@@ -36,7 +36,7 @@
   <url type="help">https://subsurface-divelog.org/documentation/</url>
   <url type="translate">https://www.transifex.com/subsurface/subsurface/</url>
   <releases>
-    <release version="" date="" />
+    <release version="v4.8.1-428-gd16bcd897811" date="2018-09-14" />
   </releases>
   <developer_name>The Subsurface development team</developer_name>
   <update_contact>subsurface@subsurface-divelog.org</update_contact>
