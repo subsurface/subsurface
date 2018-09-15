@@ -2367,12 +2367,12 @@ GPS location:</source>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
-        <source>Load image(s) from file(s)</source>
+        <source>Load media from file(s)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
-        <source>Load image from web</source>
+        <source>Load media from web</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4520,419 +4520,414 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="99"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="98"/>
         <source>&amp;View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="115"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="114"/>
         <source>&amp;Help</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="124"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="123"/>
         <source>&amp;Import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="132"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="131"/>
         <source>&amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="137"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="136"/>
         <source>Share on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="151"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="150"/>
         <source>&amp;New logbook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="154"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="153"/>
         <source>New</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="162"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="161"/>
         <source>&amp;Open logbook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="165"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="164"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="567"/>
         <source>Open</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="173"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="172"/>
         <source>&amp;Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="176"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="175"/>
         <source>Save</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="184"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="183"/>
         <source>Sa&amp;ve as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="187"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="186"/>
         <source>Save as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="195"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="194"/>
         <source>&amp;Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="198"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="197"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="206"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="205"/>
         <source>&amp;Print</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="214"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="213"/>
         <source>P&amp;references</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="225"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="224"/>
         <source>&amp;Quit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="236"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="235"/>
         <source>Import from &amp;dive computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="244"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="243"/>
         <source>Edit device &amp;names</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="249"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="248"/>
         <source>&amp;Add dive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="257"/>
-        <source>&amp;Edit dive</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="262"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="256"/>
         <source>&amp;Copy dive components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="270"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="264"/>
         <source>&amp;Paste dive components</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="278"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="272"/>
         <source>&amp;Renumber</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="289"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="283"/>
         <source>Auto &amp;group</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="294"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="288"/>
         <source>&amp;Yearly statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="302"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="296"/>
         <source>&amp;Dive list</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="310"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="304"/>
         <source>&amp;Profile</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="318"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="312"/>
         <source>&amp;Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="326"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="320"/>
         <source>&amp;All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="334"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="328"/>
         <source>P&amp;revious DC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="342"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="336"/>
         <source>&amp;Next DC</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="350"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="344"/>
         <source>&amp;About Subsurface</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="358"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="352"/>
         <source>User &amp;manual</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="366"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="360"/>
         <source>&amp;Map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="374"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="368"/>
         <source>P&amp;lan dive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="382"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="376"/>
         <source>&amp;Import log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="385"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="379"/>
         <source>Import divelog files from other applications</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="393"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>Import &amp;from divelogs.de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="401"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="395"/>
         <source>&amp;Full screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="404"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
         <source>Toggle full screen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="412"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="406"/>
         <source>&amp;Check for updates</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="417"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="411"/>
         <source>&amp;Export</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="420"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="414"/>
         <source>Export dive logs</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="428"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="422"/>
         <source>Configure &amp;dive computer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="439"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Edit &amp;dive in planner</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="451"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="445"/>
         <source>Toggle pO₂ graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="463"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="457"/>
         <source>Toggle pN₂ graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="475"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="469"/>
         <source>Toggle pHe graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="487"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="481"/>
         <source>Toggle DC reported ceiling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="499"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="493"/>
         <source>Toggle calculated ceiling</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="511"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="505"/>
         <source>Toggle calculating all tissues</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="523"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="517"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="535"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="529"/>
         <source>Toggle heart rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="547"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="541"/>
         <source>Toggle MOD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="559"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="553"/>
         <source>Toggle EAD, END, EADD</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="571"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="565"/>
         <source>Toggle NDL, TTS</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="583"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="577"/>
         <source>Toggle SAC rate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="595"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="589"/>
         <source>Toggle ruler</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="607"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="601"/>
         <source>Scale graph</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="619"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="613"/>
         <source>Toggle media</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="680"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="674"/>
         <source>&amp;Find moved media files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="625"/>
         <source>Toggle gas bar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="639"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="633"/>
         <source>&amp;Filter divelist</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="654"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
         <source>Toggle tissue heat-map</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="659"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="653"/>
         <source>User &amp;survey</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="664"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="658"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="261"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="672"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="251"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="666"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="262"/>
         <source>&amp;Redo</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="685"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="679"/>
         <source>Open c&amp;loud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="690"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="684"/>
         <source>Save to clo&amp;ud storage</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="695"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="689"/>
         <source>&amp;Manage dive sites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="700"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="694"/>
         <source>Dive Site &amp;Edit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="705"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="699"/>
         <source>Facebook</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="707"/>
         <source>Cloud storage online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="414"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="425"/>
         <source>Connect to</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="408"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="419"/>
         <source>Disconnect from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1617"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="558"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="603"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1589"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
         <source>Open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2013"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="568"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1984"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="724"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1874"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="667"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="718"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="863"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="981"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1845"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4942,12 +4937,12 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="282"/>
         <source>Template backup created</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="272"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="283"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4961,212 +4956,212 @@ can overwrite them on startup.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="667"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="680"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="696"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Failure taking cloud storage online</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="759"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="863"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="929"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="923"/>
         <source>Print runtime table</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="981"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1874"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1845"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1108"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1097"/>
         <source>Yearly statistics</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1344"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1320"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
         <source>Dive log files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1364"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1407"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1646"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1382"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1618"/>
         <source>Subsurface files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1365"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1341"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
         <source>Cochran</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1366"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1342"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
         <source>DiveLogs.de</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1343"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
         <source>JDiveLog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1344"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
         <source>Liquivision</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1413"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
         <source>Suunto</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1346"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
         <source>UDCF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1390"/>
         <source>UDDF</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1348"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1391"/>
         <source>XML</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1417"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1349"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1392"/>
         <source>Divesoft</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1418"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1350"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
         <source>Datatrak/WLog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1375"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1351"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1394"/>
         <source>MkVI files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1376"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1352"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1395"/>
         <source>APD log viewer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1421"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1353"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1396"/>
         <source>OSTCtools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1422"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1354"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1397"/>
         <source>DAN DL7</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
         <source>CSV</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1398"/>
         <source>All files</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1434"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1442"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
         <source>Save changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1443"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1645"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1617"/>
         <source>Save file as</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1733"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1705"/>
         <source>[local cache for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1735"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1706"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1827"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1798"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1828"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1799"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1839"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1810"/>
         <source>Open dive log file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2013"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1984"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -10689,7 +10684,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation type="unfinished"></translation>
     </message>
