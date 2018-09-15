@@ -23,39 +23,6 @@ QMLPrefs *QMLPrefs::instance()
 
 
 /*** public functions ***/
-const QString QMLPrefs::cloudPassword() const
-{
-	return m_cloudPassword;
-}
-
-void QMLPrefs::setCloudPassword(const QString &cloudPassword)
-{
-	m_cloudPassword = cloudPassword;
-	emit cloudPasswordChanged();
-}
-
-const QString QMLPrefs::cloudPin() const
-{
-	return m_cloudPin;
-}
-
-void QMLPrefs::setCloudPin(const QString &cloudPin)
-{
-	m_cloudPin = cloudPin;
-	emit cloudPinChanged();
-}
-
-const QString QMLPrefs::cloudUserName() const
-{
-	return m_cloudUserName;
-}
-
-void QMLPrefs::setCloudUserName(const QString &cloudUserName)
-{
-	m_cloudUserName = cloudUserName.toLower();
-	emit cloudUserNameChanged();
-}
-
 qPrefCloudStorage::cloud_status QMLPrefs::credentialStatus() const
 {
 	return m_credentialStatus;

@@ -197,6 +197,10 @@ private:
 	QMLManager();
 	~QMLManager();
 
+	QString m_cloudPassword;
+	QString m_cloudPin;
+	QString m_cloudUserName;
+
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
 	DiveMasterCompletionModel divemasterModel;
