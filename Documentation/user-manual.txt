@@ -125,7 +125,7 @@ it. In most situations the up/down keys can be used to switch
 between dives. The *Dive List* is an important tool for manipulating a dive log.
 
 2. The *Dive Map* on the bottom right, showing the user's dive sites on a world map
-and centered on the site of the last dive selected in the *Dive List*. The map
+and centred on the site of the last dive selected in the *Dive List*. The map
 scale can be increased or decreased.
 
 3. The *Info* on the top left, giving more detailed information on the
@@ -164,7 +164,7 @@ The user decides which of the four panels are displayed by selecting the
 *Info*: Show only the Notes about the last selected dive and statistics for
 all highlighted dives.
 
-*Globe*: Show only the world map, centered on the last selected dive.
+*Globe*: Show only the world map, centred on the last selected dive.
 
 Like other functions that can be accessed via the Main Menu, these options
 can also be triggered using keyboard shortcuts. The shortcuts
@@ -1766,32 +1766,37 @@ TIPS:
   especially on a dive trip with many dives and dive locations.
 
 [[S_LoadImage]]
-=== Adding photographs to dives
+=== Adding photographs or videos to dives
 
-Many (if not most) divers take photographs
-during a dive. _Subsurface_ allows the storage and display of photographs for each dive. Photos are
-superimposed on the dive profile at the times during the dive when they were taken. They can also be viewed
-from the dive profile.
+Many (if not most) divers take photographs or videos
+during a dive. We term these as _media_, meaning either photos or videos. _Subsurface_
+allows the storage and display of these media for each dive. Images are
+superimposed on the dive profile at the times during the dive when they were taken. Media can be viewed either
+from the dive profile or from the _Media_ tab in the *Notes Panel*. _Subsurface_ allows viewing of photographs
+as well as video files in a unified interface.
 
-==== Loading photos and synchronizing between dive computer and camera
+==== Loading media and synchronizing between dive computer and camera
 
 Right-click on a dive or on a group of dives on the dive list, bringing up the xref:S_DiveListContextMenu[Dive list context Menu].
-Select the appropriate option to import images either from
+Select the appropriate option to import media either from
 file or from the Internet. The system file browser appears. Select the folder and
-photographs that need to be loaded into _Subsurface_ and click the _Open_ button.
+media that need to be loaded into _Subsurface_ and click the _Open_ button. Towards the
+bottom of the file browser is a filter that allows showing media (photos and videos),
+only photographs, only videos, or all files. Choose the appropriate option.
 
 image::images/LoadImage2_f20.jpg["FIGURE: Load images option",align="center"]
 
-If photos are imported from the Internet, provide a URL pointing to a single photograph.
-If the URL points to a directory, no images are imported: photos from the Internet
-need to be imported one at a time. If photos are loaded from the Internet, _Subsurface_
-assumes there is an Internet connection each time this photo is viewed within
+If media are imported from the Internet, provide a URL pointing to a single media.
+If the URL points to a directory, no images are imported: images from the Internet
+need to be imported one at a time. If media are loaded from the Internet, _Subsurface_
+assumes there is an Internet connection each time this item is viewed within
 _Subsurface_.
 
-Having selected the local folder or Internet image to be imported, the time synchronization dialog appears (see image below). The time
+Having selected the local folder or Internet image to be imported, the time
+synchronization dialog appears (see image below). The time
 synchronization is not perfect between the dive computer used during a dive
 and the camera used during that same dive. These two devices
-often differ by several minutes. _Subsurface_ attempts to synchronize these two devices
+often differ by several minutes. _Subsurface_ attempts to synchronize them
 so that the exact times of photographs can be used to position photographs on
 the dive profile.
 
@@ -1833,89 +1838,109 @@ image::images/LoadImage3b_f23.jpg["FIGURE: Synchronization dialog",align="center
 image::images/LoadImage3c_f23.jpg["FIGURE: Synchronization dialog",align="center"]
 
 If the timestamp of a photograph is more than 30 minutes before or after the dive, it is not placed on
-the dive profile (see the red warning in the image above). However, If the appropriate checkbox is selected (see image above) these images can still be placed on the _Photos_ tab of the *Notes* panel so that all photos associated with a dive are visible, including photos taken before or after the dive.
+the dive profile (see the red warning in the image above). However, If the appropriate checkbox is
+selected (see image above) these images can still be placed on the _Photos_ tab of the *Notes* panel
+so that all photos associated with a dive are visible, including images taken before or after the dive.
 
-==== Viewing the photos
+[[S_ViewMedia]]
 
-After the images have been loaded, they appear in two places:
+==== Viewing the media
 
- - the _Photos_ tab of the *Notes* panel (left part of image below).
+****
+*Ensuring that thumbnails are created for video files*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+
+Within a panel _Subsurface_ represents media by means of thumbnails (i.e. small versions of images
+that allows listing many images. For a photograph, a thumbnail can easily be
+created because the image is well defined. But, since a video comprises many images, the question arises of
+which image should be used for the thumbnail. Two actions are required to create thumbnails of videos:
+
+* The appropriate settings need to be set in the _Preferences_.
+
+* The program _ffmpeg_ needs to be installed in the computer that runs Subsurface.
+
+Full details are provided in <<S_APPENDIX_F,APPENDIX F>>.
+****
+
+After the media have been loaded, they appear in two places:
+
+ - the _Media_ tab of the *Notes Panel* (left part of image below).
  - as tiny icons (stubs) on the dive profile at the appropriate positions reflecting the time
    each photograph was taken.
-   To view the photos on the dive profile, activate the _show-photos_ button in the tool bar
+   To view the media on the dive profile, activate the _Toggle media_ button in the tool bar
    to the left of the dive profile:
 
 image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align="left"]
 
 This results in a profile display as in the image below:
 
-image::images/LoadImage4_f20.jpg["FIGURE: Photos on dive profile",align="center"]
+image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
 
-Hover the mouse over any of the photo stubs. A thumbnail photo
-is shown of the appropriate photo. See the image below:
+Hover the mouse over any of the media stubs. A thumbnail image
+is shown of the appropriate media. See the image below:
 
-image::images/LoadImage5_f20.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
+image::images/LoadImage5.jpg["FIGURE:Thumbnail photo on dive profile",align="center"]
 
 Clicking on the thumbnail brings up a full size
-photo overlaid on the _Subsurface_ window, allowing a good view of
-the photographs (see the image below). *Note* that the thumbnail
+photo or video overlaid on the _Subsurface_ window, allowing a good view of
+the media (see the image below). *Note* that the thumbnail on the dive profile
 has a small dustbin icon in the bottom right hand corner (see image above). Selecting
 the dustbin removes the image from the dive. Be careful
 when clicking on a thumbnail. Images
-can also be deleted using the _Photos_ tab (see text below).
+can also be deleted using the _Media_ tab (see text below).
 
 image::images/LoadImage6_f20.jpg["FIGURE: Full-screen photo on dive profile",align="center"]
 
-==== The _Photos_ tab
+==== The _Media_ tab
 
-Photographs associated with a dive are shown as thumbnails in the _Photos_ tab of the _Notes_
-panel. Photos taken in rapid succession during a dive (therefore sometimes with large
-overlap on the dive profile) can easily be accessed in the _Photos_ tab. This tab serves as
-a tool for individually accessing the photos of a dive, while the stubs on the dive profile
-show when during a dive a photo was taken. The size of the thumbnails in the _Photos_ tab can be changed using
+Media associated with a dive are shown as thumbnails in the _Media_ tab of the *Notes
+Panel*. Media taken in rapid succession during a dive (therefore sometimes with large
+overlap on the dive profile) can easily be accessed in the _Media_ tab. This tab serves as
+a tool for individually accessing the media of a dive, while the stubs on the dive profile
+show when during a dive when a photo/video was taken. The size of the thumbnails in the _Media_ tab can be changed using
 the _Zoom level_ slider at the bottom of the panel. Single-click a thumbnail in
-the _Photos_ panel to select a photo. Double-click a thumbnail to view the full-sized image,
-overlaying the _Subsurface_ window. Delete a photo from the _Photos_ panel by selecting
-it (single-click) and then by pressing the _Del_ key on the keyboard. This removes the photo BOTH
-from the _Photos_ tab as well as the dive profile.
+the _Media_ panel to select a photo. Double-click a thumbnail to view the full-sized image,
+overlaying the _Subsurface_ window. Delete media from the _Photos_ panel by selecting
+it (single-click) and then by pressing the _Del_ key on the keyboard. This removes it BOTH
+from the _Media_ tab as well as the dive profile.
 
-==== Photos on an external hard disk
-Most underwater photographers store photos on an external drive. If such a drive can be mapped by the operating system
-(almost always the case) the photos can be directly accessed by _Subsurface_. This eases the interaction
-between _Subsurface_ and an external repository of photos. When associating a dive profile with photos from an
+==== Media on an external hard disk
+Most underwater photographers store media on an external drive. If such a drive can be mapped by the operating system
+(almost always the case) the media can be directly accessed by _Subsurface_. This eases the interaction
+between _Subsurface_ and an external repository of media. When associating a dive profile with media from an
 external drive, the normal procedure of selection and synchronization (see text above) is used.
-After the external drive has been disconnected, _Subsurface_ cannot access these photos any more.
-If the display of photos is activated (using the toolbox icon to the left of the _Dive Profile_), the
-program shows a small white dot where each photo should be on the dive profile.
-In addition the _Photos_ tab shows only the file names of the photos.
-If the external drive with the photos is re-connected, the photos can be seen in the normal way.
+After the external drive has been disconnected, _Subsurface_ cannot access these media any more.
+If the display of media is activated (using the toolbox icon to the left of the _Dive Profile_), the
+program shows only the thumbnails and the images cannot be viewed at full-screen size.
+If the external drive with the photos is re-connected, the media can be seen in the normal way.
 
-==== Finding out which dives have associated photos.
-Inspecting each individual dive in order to determine whether there are associated photos can be time consuming. There is a
-rapid way of seeing which dives have associated photos and which not: activate the _Photos_ checkbox in the dropdown
-list obtained by right-clicking on the header bar of the *Divelist*. In the *Divelist*, all dives with associated photographs
-have an icon indicating whether the photographs were taken during the dive, just before/after the dive or both during and before/after the dive.
+==== Finding out which dives have associated media.
+Inspecting each individual dive in order to determine whether there are associated media can be time consuming. There is a
+rapid way of seeing which dives have associated media and which not: activate the _Media_ checkbox in the dropdown
+list obtained by right-clicking on the header bar of the *Divelist*. In the *Divelist*, all dives with associated media
+have an icon indicating whether the media were taken during the dive, just before/after the dive or both during and before/after the dive.
 More information is provided in the section dealing with <<S_Divelist_columns, photo icons on the *Divelist*>>.
 
 [[S_FindMovedImages]]
-==== Moving photographs among directories, hard disks or computers
+==== Moving media among directories, hard disks or computers
 
 After a photograph has been loaded into _Subsurface_ and associated with a specific dive,
-_Subsurface_ saves the directory path where the photo lies as well as the file name of the photo,
+_Subsurface_ saves the path to the directory where the media lie as well as the file name of the each photo/video,
 in order to find it when the dive is opened again.
-If the photo or the whole photo collection is moved to another drive or to a different
- machine, the path to the photo changes. Now, _Subsurface_ looks for the photos at their original location before they were moved,
- cannot find them and cannot display them. Because, after moving photos, large numbers of photos
- may need to be deleted and re-imported from the new location, _Subsurface_ can locate the photos based on their filename and path.
+If the media or the whole media collection is moved to another drive or to a different
+ machine, the path to the media changes. Now, _Subsurface_ looks for the photos at their original location before they were moved,
+cannot find them and cannot display them. Because, after moving photos, large numbers of photos
+ may need to be deleted and re-imported from the new disk, _Subsurface_ can locate the media based on their filename and path.
 
 This is done by selecting from the Main Menu: _File ->      Find moved images_. This brings up a window within
 which the searching of the images can be controlled. The search is started by clicking on _Select folder and scan_.
-Since photos taken with different cameras might have the same filename, the names of the parent folders are likewise compared.
+Since recorded during different dive trips might have the same filename, the names of the parent folders are likewise compared.
 Therefore, the root folder of the NEW picture collection should be chosen. For finer control, it is possible to search
-only for photographs of the currently selected dive(s) by selecting the appropriate option.
+only for media of the currently selected dive(s) by selecting the appropriate option.
 
-After the searching has finished, the original filenames and the new locations of the photographs will be shown.
-The matching parts of the paths are emphasized. Photographs that are found at their known positions are
+After the searching has completed, the original filenames and the new locations of the photographs will be shown.
+The matching parts of the paths are emphasized. Media that are found at their known positions are
 not listed. The proposed changes can be applied by clicking _Apply_ or rejected by clicking _Cancel_.
 
 image::images/FindMovedImages1.jpg["FIGURE:Find moved images",align="center"]
@@ -2767,7 +2792,7 @@ shown in the *Dive List* are saved and used when _Subsurface_ is re-opened.
 
 [[S_Photos_divelist]]
 
-By selecting the _Photos_ checkbox in the dropdown list, an icon is shown indicating whether any photos
+By selecting the _Media_ checkbox in the dropdown list, an icon is shown indicating whether any media
 are associated with a particular dive. There are three icons:
 
 [icon="images/icons/duringPhoto.png"]
@@ -3341,7 +3366,7 @@ apply the new preferences, select _Cancel_.
 
 There are several headings in the *General* panel:
 
-image::images/Pref1_f23.jpg["FIGURE: Preferences general page",align="center"]
+image::images/Pref1.jpg["FIGURE: Preferences general page",align="center"]
 
   ** *Lists and tables*: Specify the font type and font size of the
      *Dive Table* panel: decreasing the font size allows one to see more dives on a screen.
@@ -3370,6 +3395,12 @@ image::images/Pref1_f23.jpg["FIGURE: Preferences general page",align="center"]
      by setting this slider
      with faster animation speed to the left, and a 0 value representing no animation
      at all.
+
+  ** *Video thumbnails*: In generating thumbnails for videos associated with dives, _Subsurface_
+     needs to have the appropriate information (see section on <<S_ViewMedia,View Images>>). Three preferences need to be set
+     as explained in <<S_APPENDIX_F, APPENDIX F>>. These are: a) switch on thumbnails, b) specify
+     the location of the _ffmpeg_ program and c) set the place within video where the thumbnail needs
+     to be obtained from. 
 
   ** *Clear all settings*: As indicated in the button below this heading, all settings are
      cleared and set to default values.
@@ -5110,8 +5141,42 @@ The *data-numberofdives* data attribute is added to the body tag to set the rend
 
 IMPORTANT: All CSS units should be in relative lengths only, to support printing on any page size.
 
-== APPENDIX F: FAQs.
 [[S_APPENDIX_F]]
+
+== APPENDIX F: Setting up video thumbnails.
+
+=== Setting up the appropriate thumbnails for videos that are associated with dives.
+
+In handling video associated with dives, _Subsurface_ needs to create a thumbnail for each video that can be shown
+either on the dive profile or in the _Media_ tab. By default this is a nonspecific placeholder thumbnail.
+To see thumbnails that represent individual videos, _Subsurface_ uses an external program calle _FFmpeg_.
+To create thumbnails for videos, do two things:
+
+1. Install _FFmpeg_ on the computer that runs _Subsurface_. The program can be downloaded from the FFmpeg web site:
+https://www.ffmpeg.org/download.html. Most Linux distributions ship with an _ffmpeg_ package and therefore do not need an additional download.
+
+** On Windows, put the _ffmpeg.exe_ file in the directory containing the _Subsurface_ executable.
+On Mac and Linux, make sure the _ffmpeg_ command is in the path. This should be the case for
+_FFmpeg_ installed from official packages.
+
+
+2. In the _General_ tab of the <<S_Preferences, _Preferences_>>, set the preferences for generating video thumbnails. This is achieved by:
+
+** Checking the _Extract video thumbnails_ box. If _Subsurface_ fails to load the _FFmpeg_ executable,
+this option will be turned off. Re-enable it after successfully installing _FFmpeg_.
+
+** Specifying the path to the _FFmpeg_ executable.
+
+** Choose the position in the video where _Subsurface_
+should try to extract the thumbnail. The left-most and right-most positions of the _Extract at position_
+slider signify the beginning and the end of the video, respectively. Note that if _Subsurface_ cannot
+determine the length of the video (this can be the case for AVI files), the first frame
+of the video will be used.
+
+This should complete the setup of video thumbnails and they should now appear on the dive profile and in the _Media_ tab.
+
+== APPENDIX G: FAQs.
+[[S_APPENDIX_G]]
 === Subsurface appears to miscalculate gas consumption and SAC
 [[SAC_CALCULATION]]
 'Question': I dived with a 12.2 l tank, starting with 220 bar and ending with 100 bar, and I calculate a different SAC compared what _Subsurface_ calculates. Is _Subsurface_
