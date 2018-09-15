@@ -167,7 +167,7 @@ Kirigami.ApplicationWindow {
 						visible: text.length > 0
 						level: 3
 						color: "white"
-						text: prefs.cloudUserName
+						text: PrefCloudStorage.cloud_storage_email
 						wrapMode: Text.NoWrap
 						elide: Text.ElideRight
 						font.weight: Font.Normal
@@ -186,13 +186,6 @@ Kirigami.ApplicationWindow {
 				text: qsTr("Dive list")
 				onTriggered: {
 					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
-					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
-						// the user has asked to change credentials - if the credentials before that
-						// were valid, go back to dive list
-						if (prefs.oldStatus == CloudStatus.CS_VERIFIED) {
-							prefs.credentialStatus = prefs.oldStatus
-						}
-					}
 					returnTopPage()
 					globalDrawer.close()
 				}
@@ -256,7 +249,6 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
-							prefs.oldStatus = prefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
 							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()

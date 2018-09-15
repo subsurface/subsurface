@@ -442,7 +442,6 @@ Kirigami.ScrollablePage {
 	onBackRequested: {
 		if (startPage.visible && diveListView.count > 0 &&
 			prefs.credentialStatus !== CloudStatus.CS_INCORRECT_USER_PASSWD) {
-			prefs.credentialStatus = prefs.oldStatus
 			event.accepted = true;
 		}
 		if (!startPage.visible) {
