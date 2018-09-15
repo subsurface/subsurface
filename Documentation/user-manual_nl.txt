@@ -301,7 +301,7 @@ Om duik informatie van de duikcomputer naar een (desktop) computer te sturen moe
 de twee stukken apparatuur met elkaar communiceren. Hiertoe dient de communicatie
 poort van de desktop PC (welke gebruikt gaat worden om met de duikcomputer te
 communiceren) geselecteerd te worden in _Subsurface_.
-xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Bijlage A]
+xref:S_Appendix_A[Bijlage A]
 geeft technische details voor de ondersteunde besturingssystemen van _Subsurface_, en
 xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Bijlage B]
 bevat specifieke duikcomputer details.
@@ -333,7 +333,7 @@ download sneller en kost dus minder batterijcapaciteit van de duikcomputer
  - De *Device of mountpoint* keuzelijst bevat de USB of Bluetooth poort die
   _Subsurface_ dient te gebruiken om met de duikcomputer te communiceren.
    De juiste poort dient geselecteerd te worden. Raadpleeg
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Bijlage A]
+   xref:S_Appendix_A[Bijlage A]
    and
    xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Bijlage B]
    voor nadere technische details hoe de juste poort te bepalen, voor een specifieke
@@ -396,11 +396,11 @@ Controleer het volgende:
  Zijn de contacten van de duikcomputer en de kabel schoon?
 
  - Controleer
-   xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Bijlage A]
+   xref:S_Appendix_A[Bijlage A]
    om er zeker van te zijn dat het correcte device of mountpoint wordt gebruikt (zie hierboven).
 
  - Controleer of de gebruiker schrijf-rechten heeft op de USB poort op Unix-acchtige systemen. Zo niet, raadpleeg
-  xref:_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer[Bijlage A]
+  xref:S_Appendix_A[Bijlage A]
 
 Als _Subsurface_ de USB adapter niet kan vinden, bestaat de mogelijkheid dat de kabel
 of de adapter niet werkt. Een defecte kabel, naast vuile contacten, is de meest
@@ -3090,7 +3090,7 @@ dit moment worden de Heinrichs-Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) en Suunto V
 (Stinger, Mosquito, D3, Vyper, Vytec, Cobra, Gekko and Zoop) familie ondersteund.
 Vele instellingen van deze duikcomputer kunnen gelezen, bewerkt en weer
 terug geschreven worden. Zie
-<<_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer,Bijlage A>>
+<<S_Appendix_A,Bijlage A>>
 voor details over het op juiste wijze aansluiten van de duikcomputer.
 
 Als de duikcomputer is aangesloten, kies dan uit het hoofdmenu _Bestand -> Duikcomputer configureren_.
@@ -3930,6 +3930,7 @@ ook mogelijk, bijvoorbeeld als je wijze van duiken veranderd.
 
 
 == Bijlage A: Besturingssysteem specifieke informatie om data van duikcomputers te importeren.
+[[S_Appendix_A]]
 
 === Controleer dat de juiste drivers zijn geïnstalleerd op het besturingssysteem
 [icon="images/icons/drivers.jpg"]

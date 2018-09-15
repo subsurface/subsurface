@@ -432,7 +432,7 @@ Some users have more than one _Subsurface_ cloud account and with a need to swit
 Tap the _Change_ button. This opens the _Cloud credentials_ screen.
 change the credential information, then tap the button _Sign-in or register_. The appropriate dive list is shown.
 
-image::mobile-images/SettingsCloudTheme.jpg["FIGURE: Settings: Cloud & Theme",align="center"]
+image::mobile-images/SettingsCloudTheme.jpg["FIGURE: Settings: Cloud &amp; Theme",align="center"]
 
 === Changing the color theme of _Subsurface-mobile_
 
