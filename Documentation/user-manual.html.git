@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
 <title></title>
 <style type="text/css">
 /*
@@ -445,7 +446,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Manual authors</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.7, October 2017</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.7, May 2018</em></span></p></div>
 <div class="paragraph"><p>Welcome as a user of <em>Subsurface</em>, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
 and free dives. <em>Subsurface</em> offers many advantages over other similar
@@ -1009,7 +1010,7 @@ On Unix-like operating systems, does the user have write permission to the
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>If the <em>Subsurface</em> computer does not recognize the USB adaptor by
+<div class="paragraph"><p>If the <em>Subsurface</em> computer does not recognize the USB adapter by
 showing an appropriate device name next to the Mount Point, then there is a
 possibility the cable or USB adaptor is faulty. A faulty cable is the most
 common cause of communication failure between a dive computer and <em>Subsurface</em>.
@@ -1079,7 +1080,7 @@ Ensure <em>Subsurface</em> is paired with the Bluetooth-enabled dive computer.
 </ul></div>
 <div class="paragraph"><p>Select the Download dialogue by selecting
 <em>Import &#8594; Import from dive computer</em> from the <strong>Main Menu</strong>. After checking the
-box labelled <em>"Choose Bluetooth download mode"</em>, the dialogue below appears.</p></div>
+box labeled <em>"Choose Bluetooth download mode"</em>, the dialogue below appears.</p></div>
 <div class="sect4">
 <h5 id="_on_linux_or_macos">On Linux or MacOS:</h5>
 <div class="imageblock" style="text-align:center;">
@@ -1089,8 +1090,10 @@ box labelled <em>"Choose Bluetooth download mode"</em>, the dialogue below appea
 </div>
 <div class="paragraph"><p>Although the <em>Subsurface</em> Bluetooth interface is intended to function without
 Bluetooth pairing at the operating system level, it is always prudent to follow up
-initial Bluetooth pairing problems by pairing the Bluetooth dive computer with the <em>Subsurface</em> computer using the operating system services of the desktop computer. Delete all
-existing pairings and start by scanning for Bluetooth devices from an empty list (on the desktop) of Bluetooth devices. Once <em>Subsurface</em> has recognised the Bluetooth dive
+initial Bluetooth pairing problems by pairing the Bluetooth dive computer with
+the <em>Subsurface</em> computer using the operating system services of the desktop computer. Delete all
+existing pairings and start by scanning for Bluetooth devices from an empty list
+(on the desktop) of Bluetooth devices. Once <em>Subsurface</em> has recognised the Bluetooth dive
 computer, subsequent divelog downloads are likely to be simple.</p></div>
 <div class="paragraph"><p>On the <em>Linux</em> or <em>MacOS</em> platforms the name
 of the <em>Subsurface</em> computer and its Bluetooth address are shown on the right hand side.
@@ -1117,7 +1120,7 @@ address and its pairing status. For BTLE devices the address often starts with "
 If the device is not paired and has a red
 background color, a context menu can be opened by selecting the item with a
 right-click.
-Select the the <em>Pair</em> option and wait for the task to complete. If this dive computer
+Select the <em>Pair</em> option and wait for the task to complete. If this dive computer
 is being paired to Subsurface for the first time, it’s possible Subsurface will
 request a Pass Code or PIN number. The most commonly-used Pass Code is 0000,
 and this works for the Shearwater Petrel. If necessary, consult the user manual of the
@@ -1322,7 +1325,7 @@ data here are the geographic coordinates of the dive location.</p></div>
 <img src="images/Globe_image2.jpg" alt="FIGURE:Location creation panel" />
 </div>
 </div>
-<div class="paragraph"><p>There are three ways of adding the the coordinates:</p></div>
+<div class="paragraph"><p>There are three ways of adding the coordinates:</p></div>
 <div class="paragraph"><p><strong>(1):</strong> Enter coordinates by hand if they are known, using one of
    four formats with latitude followed by longitude:</p></div>
 <div class="literalblock">
@@ -1341,7 +1344,7 @@ then select <em>Apply Changes</em> to save the geolocation for this dive site.
 The dive site information can later be edited by clicking the globe icon to the right of the
 dive site name in the <strong>Notes tab</strong>.</p></div>
 <div class="paragraph"><p><strong>(2):</strong> Use the Dive Map to specify the coordinates. The Dive map now shows
-all the existing dive lications in grey as well as an additional marker in red
+all the existing dive locations in grey as well as an additional marker in red
 (image B above). Drag the red marker to the location of the dive site being entered.
 The map can be dragged and zoomed using the mouse wheel. Position the red marker
 by dragging it on the map, zooming in on the appropriate part of the map and placing
@@ -1358,15 +1361,22 @@ dive site name in the <strong>Notes tab</strong>.</p></div>
 </div>
 <div class="paragraph"><p>Once the dive location data have been saved, the dive on the Dive List has
 a globe icon immediately to the left of the location name of a particular dive.</p></div>
-<div class="paragraph"><p><strong>(3):</strong> Use eiher the Subsurface-Mobile App or the <em>Subsurface</em> Companion App on an
+<div class="paragraph"><p><strong>(3):</strong> Obtain the coordinates using either the Subsurface-Mobile App or the <em>Subsurface</em> Companion App on an
    Android or iPhone device with GPS and if the dive site coordinates
    were stored using one of these apps.
    <a href="#S_Companion">Click here for more information</a></p></div>
-<div class="paragraph"><p><strong>Important</strong>: GPS coordinates of a dive site are linked to the location
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">GPS coordinates of a dive site are linked to the location
 name - so <strong>saving</strong> a dive site with only coordinates and no name
 causes problems. (Subsurface will think all of these
 dives have the same location and try to keep their GPS coordinates the
-same).</p></div>
+same).</td>
+</tr></table>
+</div>
 <div class="paragraph"><p><strong>Dive site name lookup:</strong> If you typed coordinates into the appropriate
 text box, you can do an automated name lookup based on the coordinates.
 This is done when <em>Subsurface</em> uses the Internet to find the name of the dive site
@@ -1597,7 +1607,7 @@ the new data should now be saved permanently on the computer disk.</p></div>
 manufacturers of their dive computers.  <em>Subsurface</em> can import dive logs from a range of
 other dive log software. While import from some software is supported natively,
 others require
-export of the the dive log to an intermediate format that can then be imported
+export of the dive log to an intermediate format that can then be imported
 into <em>Subsurface</em>.
 Currently, <em>Subsurface</em> supports importing CSV log files from several sources.
 Dive log import from APD LogViewer, XP5, Sensus and Seabear files are
@@ -1782,9 +1792,12 @@ info. However, this is Microsoft Windows-based propietary software by Uwatec (to
 using Microsoft Access databases, preventing the integration the importer into the <em>Subsurface</em>
 core application.</p></div>
 <div class="paragraph"><p>A stand alone tool for Linux has been developed to import the <em>.slg</em> files
-generated by SmartTrak to Subsurface&#8217;s <em>.xml</em> format. It can be built together
-with <em>Subsurface</em> for Linux systems. Two dependencies need to be installed in
-your system before building: <em>libglib2.0</em> and <em>libmdb2</em>.</p></div>
+generated by SmartTrak to Subsurface&#8217;s <em>.xml</em> format. It can be downloaded
+from <a href="https://subsurface-divelog.org/downloads">the usual <em>Subsurface</em> repository</a>,
+as a Windows installer or a Linux AppImage.
+The application is not currently supported on Mac.</p></div>
+<div class="paragraph"><p>It can also be built for Linux systems. Two dependencies need to be met in your
+system before building: <em>glib2.0</em> and <em>mdbtools</em> (see below).</p></div>
 <div class="paragraph"><p>In addition, a web service is available for divelog convertions from SmartTrak to <em>Subsurface</em> (see below).</p></div>
 <div class="paragraph"><p>Feel free to contact the <em>Subsurface</em> development team on <a href="mailto:subsurface@subsurface-divelog.org">our mailing list</a>
 for assistance in importing <em>SmartTrak</em> dive logs.</p></div>
@@ -1795,31 +1808,35 @@ have been installed and the <em>Subsurface</em> source tree is in the directory 
 <div class="ulist"><ul>
 <li>
 <p>
-Move to the source tree directory.
+Move to the source tree directory out of <em>Subsurface</em> (e.g. ~/src)
 </p>
 </li>
 <li>
 <p>
-Run  " $ ccmake build " and set SMARTTRAK_IMPORT option to <strong>on</strong> (off by
-  default).
+Run  " $ ./subsurface/scripts/smtk2ssrf-build.sh ", if every thing has gone
+  fine, you will now have an executable named smtk2ssrf in
+  ~/src/subsurface/smtk-import/build
 </p>
 </li>
 <li>
 <p>
-Generate with [c] and save and exit with [g].
+You can run it from this directory, copy it to another one, e.g. <em>~/bin</em> or
+  simply run "sudo make install", and the binary will be installed in
+  /usr/local/bin (which is commonly included in every $PATH).
 </p>
 </li>
 <li>
 <p>
-Build as you prefer, using the <em>build.sh</em> script (recomended) or moving to build
-  directory and running <em>make</em>.
+The script has some options mostly useful for development pourposes. If you
+  think you may need them, please read comments on script header itself.
 </p>
 </li>
 <li>
 <p>
-After a successful build, there will be an executable named <em>smtk2ssrf</em> in the
-  <em>subsurface/build</em> directory.
-  Copy or move it to a directory in your $PATH, e.g. <em>~/bin</em>.
+<strong>WARNING</strong>: While building smtk2ssrf, a light version of <em>Subsurface</em> is
+  built (usable but lacking a lot of features). So, if you commonly use the
+  built executable placed at ~/subsurface/build/, you will need to rebuild it as
+  explained in this manual above.
 </p>
 </li>
 </ul></div>
@@ -2051,11 +2068,11 @@ Pulau Weh,2012-12-20,09:46,55:56,38.6,Karaeng Bontonompo</code></pre>
 <div class="paragraph"><p>The above data are not easily read by a human. Here is the same information in TAB-delimited format:</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>Dive site       Dive date       Time    Dive_duration   Dive_depth      Dive buddy
-Illovo Beach    2012-11-23      10:45   46:15   18.4    John Smith
-Key Largo       2012-11-24      09:12   34:15   20.4    Jason McDonald
-Wismar Baltic   2012-12-01      10:13   35:27   15.4    Dieter Albrecht
-Pulau Weh       2012-12-20      09:46   55:56   38.6    Karaeng Bontonompo</code></pre>
+<pre><code>Dive site      Dive date        Time    Dive_duration   Dive_depth      Dive buddy
+Illovo Beach   2012-11-23       10:45   46:15   18.4    John Smith
+Key Largo      2012-11-24       09:12   34:15   20.4    Jason McDonald
+Wismar Baltic  2012-12-01       10:13   35:27   15.4    Dieter Albrecht
+Pulau Weh      2012-12-20       09:46   55:56   38.6    Karaeng Bontonompo</code></pre>
 </div></div>
 <div class="paragraph"><p>It is clear why many people prefer the TAB-delimited format to the comma-delimited format. The
 disadvantage is that you cannot see
@@ -2719,8 +2736,10 @@ can also be deleted using the <em>Photos</em> tab (see text below).</p></div>
 panel. Photos taken in rapid succession during a dive (therefore sometimes with large
 overlap on the dive profile) can easily be accessed in the <em>Photos</em> tab. This tab serves as
 a tool for individually accessing the photos of a dive, while the stubs on the dive profile
-show when during a dive a photo was taken. Single-click a thumbnail in
-the <em>Photos</em> panel to select a photo. Double-click a thumbnail to view the full-sized image, overlaying the <em>Subsurface</em> window. Deleted a photo from the <em>Photos</em> panel by selecting
+show when during a dive a photo was taken. The size of the thumbnails in the <em>Photos</em> tab can be changed using
+the <em>Zoom level</em> slider at the bottom of the panel. Single-click a thumbnail in
+the <em>Photos</em> panel to select a photo. Double-click a thumbnail to view the full-sized image,
+overlaying the <em>Subsurface</em> window. Delete a photo from the <em>Photos</em> panel by selecting
 it (single-click) and then by pressing the <em>Del</em> key on the keyboard. This removes the photo BOTH
 from the <em>Photos</em> tab as well as the dive profile.</p></div>
 </div>
@@ -2741,7 +2760,8 @@ If the external drive with the photos is re-connected, the photos can be seen in
 <div class="paragraph"><p>Inspecting each individual dive in order to determine whether there are associated photos can be time consuming. There is a
 rapid way of seeing which dives have associated photos and which not: activate the <em>Photos</em> checkbox in the dropdown
 list obtained by right-clicking on the header bar of the <strong>Divelist</strong>. In the <strong>Divelist</strong>, all dives with associated photographs
-have an icon indicating whether the photographs were taken during the dive, just before/after the dive or both during and before/after the dive. More information is provided in the section dealing with <a href="#S_Divelist_columns">photo icons on the <strong>Divelist</strong></a>.</p></div>
+have an icon indicating whether the photographs were taken during the dive, just before/after the dive or both during and before/after the dive.
+More information is provided in the section dealing with <a href="#S_Divelist_columns">photo icons on the <strong>Divelist</strong></a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="S_FindMovedImages">5.5.6. Moving photographs among directories, hard disks or computers</h4>
@@ -2751,58 +2771,20 @@ in order to find it when the dive is opened again.
 If the photo or the whole photo collection is moved to another drive or to a different
  machine, the path to the photo changes. Now, <em>Subsurface</em> looks for the photos at their original location before they were moved,
  cannot find them and cannot display them. Because, after moving photos, large numbers of photos
- may need to be deleted and re-imported from the new location, <em>Subsurface</em> has a mechanism to ease this inconvenience: automatic updates using fingerprints.</p></div>
-<div class="paragraph"><p>When a photo is loaded into <em>Subsurface</em>, a fingerprint for the image is calculated and stored with the
- other reference information for that photo. After moving a photo collection (that has already been loaded
- into <em>Subsurface</em>) to a different directory, disk or computer, <em>Subsurface</em> can:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-look through a particular directory (and all its subdirectories recursively) where photos have been moved to,
-</p>
-</li>
-<li>
-<p>
-calculate fingerprints for all photos in this directory, and
-</p>
-</li>
-<li>
-<p>
-if there is a match between a calculated fingerprint and the one calculated when a photo was
-originally loaded into <em>Subsurface</em> (even if the original file name has changed), automatically update the directory information so that <em>Subsurface</em> can find the photo in the new moved directory.
-</p>
-</li>
-</ul></div>
+ may need to be deleted and re-imported from the new location, <em>Subsurface</em> can locate the photos based on their filename and path.</p></div>
 <div class="paragraph"><p>This is done by selecting from the Main Menu: <em>File &#8594;      Find moved images</em>. This brings up a window within
- which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
- the <em>Scan</em> button towards the bottom right of the panel. The process may require several minutes to
- complete, after which <em>Subsurface</em> will show the appropriate photographs when a particular dive is opened.</p></div>
-<div class="sidebarblock" id="Image_fingerprint_upgrade">
+which the searching of the images can be controlled. The search is started by clicking on <em>Select folder and scan</em>.
+Since photos taken with different cameras might have the same filename, the names of the parent folders are likewise compared.
+Therefore, the root folder of the NEW picture collection should be chosen. For finer control, it is possible to search
+only for photographs of the currently selected dive(s) by selecting the appropriate option.</p></div>
+<div class="paragraph"><p>After the searching has finished, the original filenames and the new locations of the photographs will be shown.
+The matching parts of the paths are emphasized. Photographs that are found at their known positions are
+not listed. The proposed changes can be applied by clicking <em>Apply</em> or rejected by clicking <em>Cancel</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<div class="paragraph"><p><strong>Upgrading legacy photo collections without fingerprints</strong></p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content"><em>Subsurface</em> automatically calculates fingerprints for all images that it can access.
-When manipulating images, ensure that all the images associated with the dive log can be accessed by <em>Subsurface</em>.</td>
-</tr></table>
+<img src="images/FindMovedImages1.jpg" alt="FIGURE:Find moved images" />
 </div>
-<div class="paragraph"><p><em>Subsurface</em> automatically checks and, if necessary, updates the fingerprints associated with a single dive if:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-The images associated with that dive are visible as thumbnails on the <strong>Dive Profile</strong>.
-</p>
-</li>
-<li>
-<p>
-If you edit anything in the <strong>Notes</strong> panel and save the edits by selecting <em>Apply changes</em>.
-</p>
-</li>
-</ul></div>
-</div></div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2839,8 +2821,8 @@ as <em>Subsurface</em> is concerned, there are only two types of information tha
   in time on the <strong>Dive Profile</strong> panel and indicating the cylinder to which the change was made. After
   right-clicking, follow the context menu to "Add gas change" and select the appropriate cylinder from
   those defined during the first step, above (see image below). If the
-  <strong>tank bar</strong> button in the toolbar has been activated, the cylinder switches are also indicated in the
-  tank bar (image below).
+  <strong>gas bar</strong> button in the toolbar has been activated, the cylinder switches are also indicated in the
+  gas bar (image below).
 </p>
 </li>
 </ul></div>
@@ -2895,8 +2877,8 @@ logging of cylinder pressures during sidemount involves three steps, exactly as 
   selecting <em>Add gas change</em>. A list of the appropriate cylinders is shown with the
   currently used cylinder greyed out. In the image below Tank 1 is greyed out, leaving only Tank 2
   to be selected. Select the appropriate cylinder. The cylinder change is then shown on the dive
-  profile with a cylinder symbol. If the <strong>Tank Bar</strong> is activated using the toolbar to the left of the
-  profile, then the cylinder change is also shown on the Tank Bar (see image below). After all
+  profile with a cylinder symbol. If the <strong>gas bar</strong> is activated using the toolbar to the left of the
+  profile, then the cylinder change is also shown on the gas bar (see image below). After all
   the cylinder change events have been recorded on the dive profile, the correct cylinder pressures
   for both cylinders are shown on the dive profile, as in the image below.
 </p>
@@ -2940,13 +2922,53 @@ pSCR diving often involves gas changes, requiring an additional cylinder.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>If a pSCR <em>Dive Mode</em> has been selected, the dive ceiling for that is adjusted for the oxygen
-drop across the mouthpiece, which often requires longer decompression periods. Below is a dive profile
+<div class="paragraph"><p>In pSCR diving, the inspired gas often has a pO<sub>2</sub> below that of the fresh gas from cylinder. This is
+because fresh gas is only supplied at a slow rate and the diver continuously uses oxygen from the loop for metabolism,
+resulting in the so-called "pO<sub>2</sub> drop over the mouthpiece". For pSCR dive profiles the dive ceiling is adjusted for this oxygen
+drop, and often requires longer decompression periods. Below is a dive profile
 of a pSCR dive using EAN36 as bottom gas and oxygen for decompression. Note that this dive lasted
 over two hours.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/pSCR_profile.jpg" alt="FIGURE: pSCR profile" />
+</div>
+</div>
+<div class="paragraph"><p><em>Visualising the pO<sub>2</sub> drop</em>: The difference between the pO<sub>2</sub> of the fresh cylinder gas and the pO<sub>2</sub>
+in the loop can be visualised in <em>Subsurface</em> by opening the <em>Profile</em>
+panel in the <em>File &#8594; Preferences</em> menu item and then providing suitable information in the section
+labelled <em>pSCR options</em>. The <em>pSCR metabolic rate</em> is your rate of oxygen metabolism in liters/min (commonly
+between 0.5 and 2.5). The <em>Dilution ratio</em> is the ratio indicating how much gas in the loop is replaced with
+fresh gas, relative to the gas being breathed (common values are between 1:3 and 1:10). These values are also
+used when planning pSCR dives. If the oxygen content of the loop is not recorded by an oxygen sensor, <em>Subsurface</em>
+estimates the pO<sub>2</sub> in the loop using the information supplied above. This pO<sub>2</sub> is shown as the green line
+representing the oxygen partial pressure in the dive profile. If the oxygen pressure in the loop is measured using
+an oxygen sensor connected to a dive computer, this information is probably recorded by the dive computer and these
+measured pO<sub>2</sub> values are shown on the dive profile. In addition, the <em>Preferences</em> panel allows one to activate
+a checkbox labelled <em>Show equivalent OC pO<sub>2</sub> with pSCR pO<sub>2</sub></em>. This activates display of the pO<sub>2</sub> in the
+fresh gas from the cylinder (an orange line). The vertical distance between the orange graph and the green graph
+indicates the "pO<sub>2</sub> drop over the mouthpiece". Much of pSCR diving involves managing this pO<sub>2</sub> difference.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/DiveModeChange.jpg" alt="Note" />
+</td>
+<td class="content"><em>pSCR and bailout</em>: Gases used in pSCR often yield very low pO<sub>2</sub> values in shallow water. For this reason the diver
+often completes the shallow sections of a dive using open circuit (OC) rather than the rebreather. In this case
+parts of the dive are
+performed OC, while the rest of the dive is performed on the pSCR loop. To indicate such changes in divemode,
+right-click on the dive profile at the appropriate time. From the context menu, select <em>Change divemode</em> and choose
+the appropriate option (see image on left). Some dive computers record such changes in divemode as part of the dive log.
+The appropriate icon is shown on the depth profile (see image below).
+Below is a pSCR dive with the shallow
+sections using OC. An OC divemode was entered right at the start, followed by
+a change to pSCR at 18m. During the ascent, there was a bailout to OC at 14m. Note,
+for the OC sections, the pO<sub>2</sub> is identical to the OC-pO<sub>2</sub> whereas for the pSCR section, the pO<sub>2</sub> (green line)
+differs from the OC-pO<sub>2</sub> (orange line).</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pSCR_profile_bailout.jpg" alt="FIGURE: pSCR profile with bailout" />
 </div>
 </div>
 </div>
@@ -2985,7 +3007,7 @@ for more complete information. Use that software to download the dive data into
 a known directory. From the main menu of <em>Subsurface</em>, select <em>Import &#8594;  Import
 log files</em> to bring up the <a href="#Unified_import">universal import dialogue</a>. As
 explained in that section, the bottom right
-hand of the import dialogue contains a dropdown list (labled <em>Filter:</em>) of appropriate devices
+hand of the import dialogue contains a dropdown list (labeled <em>Filter:</em>) of appropriate devices
 that currently include (Poseidon) MkVI or APD log viewer files. Import for other
 CCR equipment is under active development. Having selected the appropriate CCR format and
 the directory where the original dive logs have been stored from the CCR dive
@@ -3038,7 +3060,7 @@ has been checked.</p></div>
 </div>
 <div class="paragraph"><p>Checking any of these boxes allows the display of additional oxygen-related
 information whenever the pO<sub>2</sub> toolbar button on the <em>Profile</em> panel is activated.
-The first checkbox allows the display of setpoint information. This is a red line
+The first checkbox allows the display of setpoint information. This is an orange line
 superimposed on the green oxygen partial pressure graph and allows a comparison of the
 mean measured oxygen partial pressure and the setpoint values, as shown below.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3047,7 +3069,7 @@ mean measured oxygen partial pressure and the setpoint values, as shown below.</
 </div>
 </div>
 <div class="paragraph"><p>The second checkbox allows the display of the data from each individual oxygen sensor
-of the CCR equipment. The data for each sensor is colour-coded as follows:</p></div>
+of the CCR equipment. The data for each sensor is color-coded as follows:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -3079,7 +3101,44 @@ usual way as for open circuit dives.</p></div>
 <div class="paragraph"><p><em>Events</em>: Several events are logged, e.g. switching the mouthpiece to open circuit.
 These events are indicated by yellow triangles and, if you hover over a triangle,
 a description of that event is given as the bottom line in the <a href="#S_InfoBox">Information Box</a>.</p></div>
-<div class="paragraph"><p><em>Cylinder pressures</em>: Some CCR dive computers like the Poseidon MkVI record the
+<div class="paragraph"><p><em>Bailout</em>: Bailout events during a CCR dive can be recorded in a <em>Subsurface</em> divelog. Right-click
+on the dive profile to generate a dive profile context menu. Select <em>Change divemode</em> and choose
+the appropriate bailout option (probably OC). An appropriate icon is shown on the depth profile (see
+image below). In most CCR equipment it is also
+possible to bailout to pSCR, especially in cases where the electronics died and the diluent supply
+is limited. This can also be reflected in the dive log and Subsurface will calculate and graph the
+appropriate pO<sub>2</sub> values. The case during CCR training is more complex if the instructor prefers
+a low setpoint such as 0.7 to be maintained during bailout. In this case the CCR equipment
+maintains the low setpoint and overrides the OC or pSCR conditions. In such cases it is probably
+more accurate not to record a bailout event in the dive log since <em>Subsurface</em> will calculate pO<sub>2</sub>
+values based on the erroneous assumption that there is no setpoint.
+Below is a dive profile for a CCR dive with bailout at 57 minutes. In this profile
+the green pO<sub>2</sub> graph diverges from the setpoint value and reflects the pO<sub>2</sub> in the OC diluent gas
+(in this case air).
+The pO<sub>2</sub> in the loop (shown as a meandering graph for each oxygen sensor) is irrelevant because
+the actual inspired gas comes directly from the diluent cylinder. In cases where bailout occurs using
+a stage cylinder, indicate the bailout as well as the gas change event and <em>Subsurface</em> will calculate
+all the appropriate pO<sub>2</sub> values. Some dive computers record bailout events as well as gas change
+events: in this case the events are shown automatically in the dive log.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_bailout.jpg" alt="FIGURE: CCR bailout profileh" />
+</div>
+</div>
+<div class="paragraph"><p><em>Deco ceiling</em>: The deco ceiling calculated by Subsurface is not very accurate because the precise pressure of nitrogen
+in the loop can usually not be determined from the dive log imported from the CCR equipment. Many CCR dive
+computers, however, report an internally-calculated deco ceiling that is reported in the dive log,
+reflecting a more accurate assessment. The display of this ceiling is activated
+by clicking the appropriate button to the left of the dive profile:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/icons/cceiling.jpg" alt="DC ceiling icon" />
+</div>
+</div>
+<div class="paragraph"><p>The default color of the computer-generated deco ceiling is white. This can be set to red
+by checking the appropriate check box after selecting <em>File  &#8594;  Preferences  &#8594;  Profile</em>.
+The profile above indicates the dive computer-generated deco ceiling in red.</p></div>
+<div class="paragraph"><p><em>Cylinder pressures</em>: Some CCR dive computers like Poseidon record the
 pressures of the oxygen and diluent cylinders. The pressures of these two cylinders
 are shown as green lines overlapping the depth profile. In addition, start and
 end pressures for both oxygen and diluent cylinders are shown in the <em>Equipment Tab</em>.
@@ -3094,26 +3153,8 @@ case there is agreement from the readings of the two oxygen sensors.</p></div>
 <div class="paragraph"><p><em>Equipment-specific information</em>: Equipment-specific information gathered by
 <em>Subsurface</em> is shown in the <a href="#S_ExtraDataTab">Extra data tab</a>. This may include setup information
 or metadata about the dive.</p></div>
-<div class="paragraph"><p>The deco ceiling calculated by Subsurface is not very accurate because the precise pressure of nitrogen
-in the loop can usually not be determined from the dive log imported from the CCR equipment. Many CCR dive
-computers, however, report an internally-calculated deco ceiling that is reported in the dive log,
-reflecting a more accurate assessment. The display of this ceiling is activated
-by clicking the appropriate button to the left of the dive profile:</p></div>
-<div class="imageblock">
-<div class="content">
-<img src="images/icons/cceiling.jpg" alt="DC ceiling icon" />
-</div>
-</div>
-<div class="paragraph"><p>The default color of the computer-generated deco ceiling is white. This can be set to red
-by checking the appropriate check box after selecting <em>File  &#8594;  Preferences  &#8594;  Profile</em>.
-Below is a dive profile indicating the dive computer-generated deco ceiling:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/CCR_dive_ceilingF22.jpg" alt="FIGURE: CCR computer-generated deco ceiling" />
-</div>
-</div>
-<div class="paragraph"><p>More equipment-specific information for downloading CCR dive logs for
-Poseidon MkVI and APD equipment can be found in <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix B</a>.</p></div>
+<div class="paragraph"><p>More equipment-specific procedures and information for downloading CCR dive logs for
+Poseidon and APD equipment can be found in <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Appendix B</a>.</p></div>
 </div>
 </div>
 </div>
@@ -3383,13 +3424,19 @@ values are dependent on the composition of the breathing gas. The EAD
 is the depth of a hypothetical air dive that has the same partial
 pressure of nitrogen as the current depth of the nitrox dive at
 hand. A nitrox dive leads to the same decompression obligation as an
-air dive to the depth equalling the EAD. The END is the depth of a
+air dive to the depth equaling the EAD. The END is the depth of a
 hypothetical air dive that has the same sum of partial pressures of
 the narcotic gases nitrogen and oxygen as the current trimix dive. A
 trimix diver can expect the same narcotic effect as a diver breathing
-air diving at a depth equalling the END.</td>
+air diving at a depth equaling the END.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>If at some point a isobaric counter diffusion situation is encountered
+in the leading tissue (defined to be a moment in time where helium is
+off-gassing while nitrogen is on-gassing and the net effect is
+on-gassing) this is indicated in the infobox as well. Note that this
+condition not only depends on the gas that is currently breathed but
+on the tissue loadings as well.</p></div>
 <div class="paragraph"><p>Figure (<strong>B</strong>) above shows an information box with a nearly complete set of data.</p></div>
 <div class="sect4">
 <h5 id="S_gas_pressure_graph">The Gas Pressure Bar Graph</h5>
@@ -3545,7 +3592,7 @@ dive. This is shown below the dive depth and water temperature graphs.</td>
 <img src="images/icons/He.jpg" alt="Note" />
 </td>
 <td class="content">Display of the partial pressure of <strong>helium</strong> during the dive.
-This is only important to divers using Trimix, Helitrox or similar breathing gasses.</td>
+This is only important to divers using Trimix, Helitrox or similar breathing gases.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The <strong>air consumption</strong> graph displays the tank pressure and its change during the
@@ -3713,7 +3760,7 @@ red bar. The image below shows a dive which first uses a trimix cylinder (red an
 </td>
 <td class="content">
 <div class="paragraph"><p>Display the tissue heat-map. The heat map summarises, for the duration of the dive, the inert gas tissue pressures
-for each of the 16 tissue compartments of the Bühlmann model. Blue colours mean low gas pressures in a tissue compartment
+for each of the 16 tissue compartments of the Bühlmann model. Blue colors mean low gas pressures in a tissue compartment
 and thus on-gassing, green to red means excess gas in the tissue and thus off-gassing. Fast to slow tissues are indicated from
 top to bottom. The figure below explains in greater detail how the heat map can be interpreted.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3727,17 +3774,17 @@ during the dive. The inert gas pressures of 16 tissue compartments are shown as 
 bars with the quick tissue compartments on the left and the slow tissue compartments
 on the right. Refer to the section on the <a href="#S_gas_pressure_graph">Gas Pressure Graph</a>
 for more details on the different elements of this graph.</p></div>
-<div class="paragraph"><p>Image <strong>B</strong> shows a gradient of unique colours, spanning the whole range of inert gas pressures.
+<div class="paragraph"><p>Image <strong>B</strong> shows a gradient of unique colors, spanning the whole range of inert gas pressures.
 It is possible to map the height of each of the dark green vertical bars of <strong>A</strong> to a
-colour in <strong>B</strong>. For instance, the fastest (leftmost) dark green verical bar in <strong>A</strong> has
+color in <strong>B</strong>. For instance, the fastest (leftmost) dark green vertical bar in <strong>A</strong> has
 a height corresponding to the medium green part of <strong>B</strong>. The height of this bar can therefore be summarised
-using a medium green colour. Similarly, the highest dark green bar in <strong>A</strong> is as high
+using a medium green color. Similarly, the highest dark green bar in <strong>A</strong> is as high
 as the yellow part of <strong>B</strong>. The 14 remaining tissue pressure bars in <strong>A</strong> can also be
-translated to colours. The colours represent three ranges of tissue inert gas pressure:</p></div>
+translated to colors. The colors represent three ranges of tissue inert gas pressure:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-The bottom range in <strong>B</strong> (marked <em>On-gassing</em>) includes colours from light blue to black, representing tissue gas pressures
+The bottom range in <strong>B</strong> (marked <em>On-gassing</em>) includes colors from light blue to black, representing tissue gas pressures
     below the equilibrium pressure of inert gas (bottom horizontal line in <strong>A</strong>). The measurement
     unit is the % of inert gas pressure, relative to the equilibrium inert gas pressure. In this range
     on-gassing of inert gas takes place because the inert gas pressure in the tissue compartment is lower than
@@ -3748,7 +3795,7 @@ The bottom range in <strong>B</strong> (marked <em>On-gassing</em>) includes col
 </li>
 <li>
 <p>
-The central range in <strong>B</strong> includes the colours from black to light green, when the inert gas pressure of a tissue
+The central range in <strong>B</strong> includes the colors from black to light green, when the inert gas pressure of a tissue
     compartment is higher than the equilibrium pressure but less than the ambient pressure.
     In this zone decompression is not very efficient
     because the gradient of inert gas pressure from tissue to the environment is relatively small
@@ -3757,35 +3804,35 @@ The central range in <strong>B</strong> includes the colours from black to light
 </li>
 <li>
 <p>
-The top range in <strong>B</strong> (marked <em>Off-gassing</em>) includes colours from light green to red and white, repesenting tissue gas
+The top range in <strong>B</strong> (marked <em>Off-gassing</em>) includes colors from light green to red and white, repesenting tissue gas
     pressures above that of the total ambient pressure (top of light green area of <strong>A</strong>). The measurement
     unit is the % of inert gas pressure above ambient pressure, relative to the Bühlmann M-value gradient (bottom of red area
     in <strong>A</strong>). These tissue pressures are normally reached while ascending to a shallower depth.
     Below a value of 100%, this range indicates efficient off-gassing of inert gas from the tissue compartment into the
-    environment. Usually, efficient off-gassing is indicated by light green, yellow or orange colours.
+    environment. Usually, efficient off-gassing is indicated by light green, yellow or orange colors.
     Above 100% (red to white in <strong>B</strong>) the M-value gradient is exceeded and the probability of decompression sickness
     increases markedly.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Image <strong>C</strong> shows the colour mapping of each of the vertical bars in <strong>A</strong>, the fast
+<div class="paragraph"><p>Image <strong>C</strong> shows the color mapping of each of the vertical bars in <strong>A</strong>, the fast
 tissues (on the left in <strong>A</strong>) depicted at the top
 and the slow tissue compartments at the bottom of <strong>C</strong>. The highest vertical bar in <strong>A</strong>
 (vertical bar 3rd from the left) is presented as the yellow rectangle 3rd from the top
 in <strong>C</strong>. The 16 vertical bars in <strong>A</strong> are now presented as a vertical
-column of 16 coloured rectangles, representing a snapshot of tissue compartment gas pressures
+column of 16 colored rectangles, representing a snapshot of tissue compartment gas pressures
 at a particular instant during the dive.</p></div>
-<div class="paragraph"><p>Image <strong>D</strong> is a compilation of similar colour mappings of 16 tissue compartments
-during a 10-minute period of a dive, the colours representing the
+<div class="paragraph"><p>Image <strong>D</strong> is a compilation of similar color mappings of 16 tissue compartments
+during a 10-minute period of a dive, the colors representing the
 inert gas loading of a tissue compartment at a point in time during the dive. Faster tissues
 are shown at the top and slower tissues at the bottom, with time
 forming the horizontal axis of the graph. The column of rectangles in <strong>C</strong> can be found
 on the horizontal axis between 9 and 10 minutes.</p></div>
-<div class="paragraph"><p>The colours of the heat map are not affected by the gradient factor settings.
+<div class="paragraph"><p>The colors of the heat map are not affected by the gradient factor settings.
 This is because the heat map indicates tissue pressures relative to the Bühlmann M-value gradient, and
 not relative to any specific gradient factor. For more information external to this manual see:</p></div>
 <div class="paragraph"><p><a href="http://www.tek-dive.com/portal/upload/M-Values.pdf">Understanding M-values by Erik Baker, <em>Immersed</em> Vol. 3, No. 3.</a></p></div>
-<div class="paragraph"><p>Since the colours of the heat map are not affected by the gradient factor(s), the heat map is also
+<div class="paragraph"><p>Since the colors of the heat map are not affected by the gradient factor(s), the heat map is also
 applicable when using the VPM-B decompression model.</p></div>
 <div class="paragraph"><p>The image below compares the profiles and heat maps for two planned decompression dives to 60m:
 the first using the Bühlmann decompression model, the second using the VPM-B decompression model.
@@ -3881,7 +3928,7 @@ just before or after the dive, or of landscapes as seen from the boat.</td>
 <td class="icon">
 <img src="images/icons/inAndOutPhoto.png" alt="Note" />
 </td>
-<td class="content">This dive has photographs taken both during the dive and immdiately before or after the dive.</td>
+<td class="content">This dive has photographs taken both during the dive and immediately before or after the dive.</td>
 </tr></table>
 </div>
 </div>
@@ -4795,16 +4842,44 @@ CCR Options: These options determine oxygen management for CCR dives:
 </li>
 <li>
 <p>
+<em>CCR: Show O<sub>2</sub> sensor values when viewing pO<sub>2</sub>:</em> Show the pO<sub>2</sub>
+    values associated with each of the individual oxygen sensors of a CCR system.
+    See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
+</p>
+</li>
+<li>
+<p>
 <em>CCR: Show setpoints when viewing pO<sub>2</sub>:</em> With this checkbox activated, the pO<sub>2</sub>
     graph on the dive profile has an overlay in red which indicates the CCR setpoint
     values. See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
 </p>
 </li>
+</ul></div>
+</li>
 <li>
 <p>
-<em>CCR: Show individual O<sub>2</sub> sensor values when viewing pO<sub>2</sub>:</em> Show the pO<sub>2</sub>
-    values associated with each of the individual oxygen sensors of a CCR system.
-    See the section on <a href="#S_CCR_dives">Closed Circuit Rebreather dives</a>.
+<em>pSCR options</em>. These preferences determine how passive semi-closed circuit (pSCR) dives
+    are planned and how the pSCR deco ceiling is calculated:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Metabolic rate:</em> this is the
+    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
+    and decompression calculations.
+</p>
+</li>
+<li>
+<p>
+<em>pSCR ratio:</em> The dilution ratio (or dump ratio) is the ratio of gas released to the
+    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
+</p>
+</li>
+<li>
+<p>
+<em>Show equivalent OC with pSCR pO<sub>2</sub></em>: The pO<sub>2</sub> in the pSCR loop is usually lower than the
+    pO<sub>2</sub> of the fresh gas from the cylinder. Activating this checkbox allows the pO<sub>2</sub> graph
+    in the dive profile to also show the pO<sub>2</sub> of the fresh gas entering the loop.
 </p>
 </li>
 </ul></div>
@@ -4850,10 +4925,7 @@ Bühlmann: Set the <em>gradient factors</em> (GFLow and GFHigh) for calculcating
    respect to inert gas loading and the deeper the ceilings are. Gradient
    factors of 20/60 are considered conservative and values of 70/90 are considered
    harsh.
-   In addition decide whether to check the <em>GFLow at max. depth</em> box. If checked, GF_Low is used for the
-   deepest dive depth and linearly increased up to the GF_High value at the surface. If unchecked,
-   GF_Low is used between the deepest dive depth and the first deco stop, after which the
-   gradient factor linearly increases up to the GF_High value at the surface. For more information see:
+   For more information see:
 </p>
 </li>
 <li>
@@ -4868,34 +4940,13 @@ Bühlmann: Set the <em>gradient factors</em> (GFLow and GFHigh) for calculcating
 </li>
 </ul></div>
 </li>
-<li>
-<p>
-<em>pSCR options</em>. These preferences determine how passive semi-closed circuit (pSCR) dives
-    are planned and how the pSCR deco ceiling is calculated:
-</p>
-<div class="ulist" id="GradientFactors_Ref"><ul>
-<li>
-<p>
-<em>Metabolic rate:</em> this is the
-    volume of oxygen used by a diver during a minute. Set this value for pSCR dive planning
-    and decompression calculations.
-</p>
-</li>
-<li>
-<p>
-<em>pSCR ratio:</em> The dilution ratio (or dump ratio) is the ratio of gas released to the
-    environment to that of the gas recirculated to the diver. A 1:10 ratio is commonly used.
-</p>
-</li>
-</ul></div>
-</li>
 </ul></div>
 </li>
 <li>
 <p>
 <strong>Misc</strong>
 </p>
-<div class="ulist"><ul>
+<div class="ulist" id="GradientFactors_Ref"><ul>
 <li>
 <p>
 <em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the
@@ -5182,21 +5233,28 @@ The most efficient way to create a dive profile is to enter the appropriate valu
 </ul></div>
 <div class="sect3">
 <h4 id="_recreational_dives">14.2.1. Recreational dives</h4>
-<div class="paragraph"><p>Recreational mode is what comes closest to planning a dive based on the non-decompression limit (NDL).
+<div class="paragraph"><p>Recreational mode is intended for what most divers would call "recreational", "sports"or "nontechnical" dives,
+remaining within no-deco limits (NDL).
 It computes the maximum time a diver can stay at the current depth without needing mandatory decompression
 stops and without using more than the existing gas (minus a reserve). The planner automatically takes
 into account the nitrogen load incurred in previous dives. But conventional dive tables are also used in a
-way that can take into account previous dives. Why use a dive planner for recreational dives? Using
-recreational dive tables, the maximum depth of a dive is taken into account. But few dives are
-done at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means
+way that can take into account previous dives. Why use a dive planner for recreational dives? The subsurface
+dive planner provides two significant advantages over the use of recreational dive tables for dive planning.</p></div>
+<div class="paragraph"><p>Firstly, using recreational dive tables, the maximum depth of each previous dive is taken into account. But
+few dives are done at a constant depth corresponding to the maximum depth (i.e. a "square" dive profile). This means
 dive tables overestimate the nitrogen load incurred during previous dives. The <em>Subsurface</em>
 dive planner calculates nitrogen load according to the real dive profiles of all uploaded previous dives,
 in a similar way as dive computers calculate nitrogen load during a dive. This means that the diver gets <em>credit,</em>
 in terms of nitrogen load, for not remaining at maximum depth during
 previous dives, so a longer subsequent dive can be planned.
- For the planner to work it&#8217;s crucial to upload all previous dives
-onto <em>Subsurface</em> before doing dive planning.
-To plan a dive, the appropriate settings need to be defined.</p></div>
+For the planner to work it&#8217;s therefore crucial to log previous dives
+in <em>Subsurface</em> before doing dive planning.</p></div>
+<div class="paragraph"><p>Secondly, recreational dive tables are not designed to build additional safety features into a dive. NDL times
+derived from dive tables often take divers close to the limit where decompression sickness (DCS) can arise. The
+Subsurface dive planner allows a diver to build more safety features into a dive plan, preventing recreational
+divers from getting close to the limits of getting a DCS hit. This is performed by specifying appropriate
+gradient factors for a dive plan, as explained below.</p></div>
+<div class="paragraph"><p>To plan a dive, the appropriate settings need to be defined.</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -5232,16 +5290,14 @@ Define the amount of gas the cylinder must have at the end of the bottom section
   need to bring a buddy to the surface using gas sharing. How much gas is used in
   sharing depends on the depth of the ascent. This can be difficult to estimate, so most agencies assume a
   fixed amount of gas, or actually of pressure e.g. 40 or 50 bar or 25% or 33% (rule of thirds). But <em>Subsurface</em> can do better
-  because it knows about the ascent and that is why we add the amount of gas during the ascent (i.e. the "deco gas“).
-  Subsurface still uses a fixed pressure "reserve" but that&#8217;s supposed to be for the additional gas used when
-  there&#8217;s a problem and your pulse rate goes up when you start to buddy breathe. This reserve amount is user configurable.
+  because it knows about the ascent and that is why we add the amount of gas during the ascent.
 </p>
 </li>
 <li>
 <p>
 Define the depth of the dive by dragging the waypoints (white dots) on the dive profile or
   (even better) defining the appropriate depths using the table under <em>Dive planner points</em> as
-  desribed under the previous heading. If
+  described under the previous heading. If
   this is a multilevel dive, set the appropriate dive depths to represent the dive plan by adding
   waypoints to the dive profile or by adding appropriate dive planner points to the <em>Dive Planner Points</em>
   table. <em>Subsurface</em> will automatically extend the bottom section of the dive to the maximum
@@ -5254,19 +5310,40 @@ The ascent speed can be changed. The default ascent speeds are those considered 
   divers.
 </p>
 </li>
+<li>
+<p>
+To build additional safety into the dive plan (over and above those of recreational dive tables),
+  specify gradient factors less than 100% (<em>GFHigh</em>
+  and <em>GFLow</em> under the <em>Planning</em> heading in the planner). On the other hand, to
+  approximate the values in recreational dive tables, set the gradient factors to 100.
+  By reducing the values of GFHigh and GFLow to values below 100, one
+  can build more safety into a dive. Decreasing the values of the gradient factors below 100 will shorten the
+  duration of the dive. This is the price of a larger safety margin. Reasons for using gradient factors less than 100
+  may be the age of the diver, the health of a diver, or unusual conditions such as cold water or strong currents.
+  Realistic conservative values for the gradient factors are GFLow=40% and GFHigh=80%. This allows you to
+  create a cusom dive plan, suited to yourself as well as the dive conditions.
+</p>
+</li>
 </ul></div>
+<div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30 meters with gradient factors of 100. Because the no-deco limit (NDL) is 22
+minutes, there remains a significant amount of air in the cylinder at the end of the dive.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: A recreational dive plan: setup" />
+</div>
+</div>
 <div class="paragraph"><p>The dive profile in the planner shows the maximum dive time within no-deco limits using the
 Bühlmann ZH-L16 algorithm and the gas and depth settings specified as described above. The <em>Subsurface</em> planner
 allows rapid assessment of dive duration as a function of dive depth, given the nitrogen load incurred during previous dives. The
 dive plan includes estimates of the amount of air/gas used, depending on the cylinder settings specified
-under <em>Available gases</em>. If the initial cylinder pressure is set to 0, the dive duration shown is the
+under <em>Available gases</em>. If the start cylinder pressure is left blank, the dive duration shown is the
 true no-deco limit (NDL) without taking into account gas used during the dive. If the surface above the dive profile is RED
 it means that recreational dive limits are exceeded and either the dive duration or the dive depth needs to be reduced.</p></div>
-<div class="paragraph"><p>Below is an image of a dive plan for a recreational dive at 30 meters. Although the no-deco limit (NDL) is 23
-minutes, the duration of the dive is limited by the amount of air in the cylinder.</p></div>
+<div class="paragraph"><p>Below is the same dive plan as above, but with a safety stop and reduced gradient factors for
+a larger safety margin.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec.jpg" alt="FIGURE: A recreational dive plan: setup" />
+<img src="images/Planner_OC_rec2.jpg" alt="FIGURE: A recreational dive plan: gradient factors setup" />
 </div>
 </div>
 </div>
@@ -5283,8 +5360,14 @@ panel of <em>Subsurface</em> is used. If these are changed within the planner (s
 the planner), the new values are
 used without changing the original values in the <em>Preferences</em>.
 Gradient Factor settings strongly affect the calculated ceilings and their depths.
-A very low GFLow value brings on decompression stops early during the dive.
- ** For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.</p></div>
+A very low GFLow value brings on decompression stops early during the dive.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+For more information about Gradient factors, see the section on <a href="#S_GradientFactors">Gradient Factor Preference settings</a>.
+</p>
+</li>
+</ul></div>
 <div class="paragraph"><p>If the VPM-B model is selected, the Conservatism_level needs to be specified on a scale of 0 (least conservative) to 4 (most conservative).
 This model tends to give deco stops at deeper levels than the Bühlmann model and often results in slightly shorter
 dive durations than the Bühlmann model, albeit at the cost of higher tissue compartment pressures in the slow tissues.
@@ -5351,7 +5434,7 @@ the limit of the gas supply but that an appropriate reserve is kept
 for unforeseen circumstances.
 For technical diving, this reserve can be up to 66% of the total available gas.
 In addition to calculating the total gas consumption for every cylinder the planner provides one way
-of calculating the recommended volume of bottom gas which is needed for safe asscent to the
+of calculating the recommended volume of bottom gas which is needed for safe ascent to the
 first deco gas change depth or the surface. This procedure is called the "minimum gas" or "rock bottom"
 consideration and it is used by various (but not all)
 technical diving organisations. See the text below for a detailed explanation.</p></div>
@@ -5419,7 +5502,7 @@ followed by an ascent using EAN50 and using the settings as described above.</p>
 towards the top middle of the planner. The saved dive plan will appear
 in the <strong>Dive List</strong> panel of <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p><strong>The dive plan details</strong></p></div>
-<div class="paragraph"><p>On the bottom right of the dive planner, under <em>Dive Plan Details</em>, the details
+<div class="paragraph"><p>On the bottom right panel of the dive planner, under <em>Dive Plan Details</em>, the details
 of the dive plan are provided. These may be modified by checking any of the
 options under the <em>Notes</em> section of the dive planner, immediately to the left
 of the <em>Dive Plan Details</em>. If a <em>Verbatim dive plan</em>
@@ -5430,68 +5513,50 @@ message is printed underneath the dive plan information.</p></div>
 level is indicated in the <em>Dive Plan Details</em>. This duration INCLUDES the transition
 time to get to that level. However, if the <em>Display transition in deco</em> option is checked,
 the transitions are shown separately from the segment durations at a particular level.</p></div>
-<div class="paragraph"><p>The planner has a check box <em>Display plan variations</em>. By checking this box, the planner
+<div class="paragraph"><p><strong>Dive plan variations</strong>: The planner has a check box <em>Display plan variations</em>. By checking this box, the planner
 provides information about a dive that is a little deeper or slightly
-longer than the planned dive. This can be found near the top of the <em>Dive plan details</em>
-where the dive duration is indicated. Checking this option creates a lot of additional computation,
-to such a degree that the planner is slower than otherwise. The information is typically
-given as:</p></div>
-<div class="literalblock">
-<div class="content">
-<pre><code>Runtime: 53min + 0:52/m + 4:21/min</code></pre>
-</div></div>
-<div class="paragraph"><p>This indicates:</p></div>
+longer than the planned dive. This is found near the top of the <em>Dive plan details</em>
+where the dive duration is indicated. The information is intended to be used if it is necessary to
+modify the ascent "on the fly" in the case of unexpected deviations from the dive plan during the dive.
+For example, if it says "Runtime: 123min, Stop times + 2:49 /m + 1:30 /min" this means: if you dive deeper
+than planned, you should add almost 3 minutes per meter you go deeper to your decompression (and
+you can substract 3 minutes per meter that you stay shallower). If you overstay your bottom
+time, you need to add one and a half minutes to the stops for each minutes you overstay
+and similarly, you can shorten your deco time by one and a half minute for each minute
+you stay shorter. These variations of depth and time are based on the last manually entered segment of the
+dive (not necessarily the deepest). The additional minutes should be distributed
+over the differnent stops in a way proportional to the stop length, i.e. add more of the
+additional minutes to the longer, shallower stops. The given times refer to the
+duration of the decompression phase and do not include the extended bottom time!
+This way of altering dive plans becomes inaccurate for large deviations from the original
+plan. So it should not be trusted for more than a few minutes or meters of
+deviations from the planned bottom time. Checking this option creates a lot of additional computation,
+to such a degree that the planner is slower than otherwise.</p></div>
+<div class="paragraph"><p><strong>Minimum gas requirements</strong>: The planner also estimates the <em>minimum gas</em> pressure
+required for safe ascent after an event that causes the dive to be aborted. The
+calculation assumes that in worst case an out of gas (OoG)
+situation occurs at the end of the planned bottom time at maximum depth, requiring
+additional time at maximum depth to solve the problem and forcing
+the buddy pair the share the gas of one diver. In addition the combined SAC of both
+divers is increased by an estimated factor compared to the SAC of a single diver under normal conditions.
+The result of the minimum gas calculation for the bottom gas is printed to the planner output. There
+are two selector boxes on the left of the <em>Dive plan details</em>:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Calculated dive duration is 53 min.
-</p>
-</li>
-<li>
-<p>
-For each extra meter in depth during the bottom phase of the dive, the duration increases by 52 seconds.
-</p>
-</li>
-<li>
-<p>
-For each extra minute of bottom time, the duration increases by 4 min 21 sec. Thus, if the bottom time is
-   two minutes longer than planned, the dive duration will be (2+2*4min 21 sec) = 10 minutes 42 sec longer and
-   would probably require that each deco stop is 10:42/53:00 = 20% longer than planned. These calculations
-   are only applicable for small deviations from the dive plan, not for larger deviations.
-</p>
-</li>
-<li>
-<p>
-Minimum gas requirements*
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>The planner also estimates the <strong>minimum gas</strong> pressure required for safe ascent after an event that causes the dive
-to be aborted. The calculation assumes that in worst case an out of gas (OoG)
-situation could occur at the end of the planned bottom time at maximum depth. This OoG event forces
-the buddy team the share the gas of one diver and to stay at maximum depth for an additional
-number of minutes.
-At the same moment the combined SAC of both divers is increased by a estimated factor compared to the SAC factor of a single diver under normal conditions.
-The result of the minimum gas calculation for the bottom gas is printed to the planner output. No automatic checks are performed based on this result.
-The feature only gives valid results for simple, rectengular shaped single
-level dive profiles. For multi level dives one would need to check every leg of the profile independently.</p></div>
-<div class="paragraph"><p>There are two selector boxes on the left of the <em>Dive plan details</em>:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<strong>SAC factor</strong>. This is your estimate of the degree to which your SAC increases if a critical problem arises underwater,
-   e.g. gas sharing or entanglement. Realistic values range from 2 to 5, reflecting the gas use of two divers sharing
+<em>SAC factor</em>. This is an estimate of the degree to which your SAC increases if a critical problem arises underwater,
+   e.g. gas sharing or entanglement. Realistic values range from 3 to 5, reflecting the gas use of two divers sharing
    a single gas cylinder after an OoG situation.
 </p>
 </li>
 <li>
 <p>
-<strong>Problem solving time</strong>. This is your estimate of how long you would take to solve the problem before starting the ascent
+<em>Problem solving time</em>. This is an estimate of how long you would take to solve the problem before starting the ascent
    to terminate the dive. The default value is 2 minutes.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Using the above information, the planner then estimates what the minimum botom gas cylinder pressure needs to be for a
+<div class="paragraph"><p>Using the above information, the planner then estimates what the minimum bottom gas cylinder pressure needs to be for a
 safe ascent. This information is given near the bottom of the <em>Dive plan details</em>, following the calculation of
 bottom gas used during the dive if it exactly follows the plan. the minimum gas is typically given as:</p></div>
 <div class="literalblock">
@@ -5502,7 +5567,7 @@ bottom gas used during the dive if it exactly follows the plan. the minimum gas 
 <div class="ulist"><ul>
 <li>
 <p>
-Within parentheses, the <strong>SAC factor</strong> and <strong>Problem solving time</strong> specified.
+Within parentheses, the <em>SAC factor</em> and <em>Problem solving time</em> specified.
 </p>
 </li>
 <li>
@@ -5523,6 +5588,22 @@ The delta-value: number of bars of back gas available at the end of the bottom s
 </p>
 </li>
 </ul></div>
+<div class="paragraph"><p>No automatic checks are performed based on this result.
+The feature only gives valid results for simple, rectangular shaped single
+level dive profiles. For multi level dives one would need to check every leg of the profile independently.</p></div>
+<div class="paragraph"><p><strong>Isobaric counterdiffusion information</strong>: For gas switches during the ascent in hypoxic open-circuit trimix dives information
+about isobaric counterdiffusion (icd) is given near the bottom of the <em>Dive plan details</em>, based on the
+rule-of-fifths (i.e. during a gas change, the increase in nitrogen partial pressure should not exceed
+one fifth of the corresponding decrease in partial pressure of helium). For each gas change, two lines
+are printed, indicating the changes in gas fractions (%) and the equivalent changes in partial pressures. If the
+rule-of-fifths is not met, the relevant information is highlighted in red and a warning message appears
+at the bottom of that table. The gas change events on the dive profile also provide information on icd,
+visible at the bottom of the <em>Information box</em> when the mouse hovers on the respective gas change icon. This information
+is only shown for gas changes relevant with respect to icd. If the rule-of-fifths is not met,
+a red warning exclamation mark is shown over the gas change icon. When relevant, the <em>Information box</em> contains
+information such as: ICD ΔHe:-13% ΔN₂+3%&gt;2.6%. This means: for this gas change, the helium
+decreased with 13% while the nitrogen increased with 3% which
+is more than the 2.6% maximum increase in nitrogen suggested by the rule-of-fifths.</p></div>
 <div class="sidebarblock">
 <div class="content">
 <div class="admonitionblock">
@@ -5530,9 +5611,10 @@ The delta-value: number of bars of back gas available at the end of the bottom s
 <td class="icon">
 <img src="images/icons/warning2.png" alt="Warning" />
 </td>
-<td class="content">The <strong>plan variations</strong> and <strong>minimum gas</strong> estimates are only guidelines for a diver performing dive planning, intended to
-enhance the safety of executing a particular dive plan. They are NOT precise
-and should NOT be relied upon as the only safety features in dive planning. Interpret these estimates
+<td class="content">The <strong>plan variations</strong> and <strong>minimum gas</strong> estimates are only guidelines for a diver performing
+dive planning, intended to enhance the safety of executing a particular dive plan and do not
+replace formal contingency planning for a specific dive. They are NOT precise and should
+NOT be relied upon as the only safety features in dive planning. Interpret these estimates
 within the framework of your formal training to perform dive planning.</td>
 </tr></table>
 </div>
@@ -5545,12 +5627,15 @@ within the framework of your formal training to perform dive planning.</td>
 <em>Open circuit</em> in the dropdown list.
 The parameters of the pSCR dive can be set by selecting  <em>File &#8594;   Preferences &#8594;   Profile</em>
 from the main menu, where the gas consumption calculation takes into account the pSCR dump
-ratio (default 1:10) as well as the metabolic rate. The calculation also takes the oxygen drop
-accross the mouthpiece of the rebreather into account. If the
+ratio (default 1:8) as well as the metabolic rate. Specify the bottom and deco SAC rates.
+Here the SAC in the planner is the volume of gas per minute
+that is exhaled into the loop on the surface, <strong>not</strong> the amount of gas that escapes into the water.
+The calculation takes the oxygen drop
+across the mouthpiece of the rebreather into account. If the
 pO<sub>2</sub> drops below what is considered safe, a warning appears in the <em>Dive plan
 details</em>. A typical pSCR cylinder setup is very similar to an open circuit dive;
-one or more drive cilinders, possibly with different bottom and decompression
-gasses, including gas switches during the dive like in open circuit diving.
+one or more dive cylinders, possibly with different bottom and decompression
+gases, including gas switches during the dive like in open circuit diving.
 Therefore, the setup of the <em>Available gases</em> and the <em>Dive planner points</em> tables
 are very similar to that of a open circuit dive plan, described above. However, no oxygen setpoints
 are specified for pSCR dives. Below is a dive plan for a pSCR dive. The dive is comparable
@@ -5560,6 +5645,48 @@ in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.<
 <div class="content">
 <img src="images/Planner_pSCR.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
 </div>
+</div>
+<div class="sect3">
+<h4 id="_planning_for_pscr_bailout">14.3.1. Planning for pSCR bailout</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/pscr_b1.jpg" alt="Note" />
+</td>
+<td class="content">Open circuit diving is often part of a pSCR dive because, at shallow depths, the pO<sub>2</sub> in the loop is often
+too low for breathing and the shallow parts of a pSCR dive are often done on OC. The change
+from rebreather mode to OC or <em>vice versa</em> is indicated using bailout events. The image on the
+left shows a pSCR dive plan (using three cylinders) where the shallow parts of the dive are performed using EAN50 in
+order to have a sufficient pO<sub>2</sub>. The bottom part of the dive is perfomed with EAN31 (Cyl. 2 in the
+<strong>Available gases</strong> table, also indicated in the <strong>Dive planner points</strong> table). The third cylinder,
+also EAN31, is a bailout cylinder which is, initially, not used.
+In this case the plan is for a cave dive with a bottom time of 20 minutes
+and the turning point in the bottom part of the dive is at 16 minutes (i.e. ten minutes
+into the bottom part of the dive). The orange pO<sub>2</sub> graph indicates the equivalent OC pO<sub>2</sub> during
+the dive and the green pO<sub>2</sub> indicates the estimated pO<sub>2</sub> in the loop, the
+whole dive being performed in rebreather mode. We wish to plan
+for a worst-case scenario with bailout at the turning point (i.e. the furthest point into
+the cave). In the <strong>Dive planner points</strong> table, change the <strong>Dive mode</strong> of the last two segments
+to <strong>OC</strong> (indicated in the left-hand image, labled <strong>A</strong>, below). In this case the existing EAN31
+cylinder (Cyl.2 in the <strong>Dive planner points</strong> table is used for bailout (i.e. the bailout
+cylinder [Cyl. 3] has not been used yet). Note that the pO<sub>2</sub> graph now indicates the appropriate
+pO<sub>2</sub> values, since the gas breathed now has the pO<sub>2</sub> of an OC configuration. In order to switch
+to the bailout cylinder (Cyl. 3), indicate this by selecting the appropriate cylinder in the <strong>Dive planner points</strong> table as
+indicated in the image on the right, below (labeled <strong>B</strong>). The icon on the depth profile
+now shows an overlapping bailout event with cylinder change. As in the graph on the left, the appropriate
+pO<sub>2</sub> values are shown in the pO<sub>2</sub> graphs. The volumes of gas required can be obtained at the bottom of the
+<strong>Dive plan details</strong> panel.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pscr_b2.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+</div>
+</div>
+<div class="paragraph"><p>In the case of a pSCR dive plan for open water, the worst-case scenario is probably bailout at the end of the deepest part of the dive.
+Create a 1-minute segment at the end of the deepest part of the dive plan. This
+last segment (represented by the bottom row of the <strong>Dive planner points</strong> table) is then manipulated using the <strong>Dive mode</strong> and <strong>Used gas</strong>
+columns, as in the cave example, above. See the example of bailout for a CCR dive, below, that uses this approach.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -5586,6 +5713,42 @@ this is calculated for bail out ascents.</p></div>
 </div>
 <div class="paragraph"><p>Note that, in the <em>Dive plan details</em>, the gas consumption for a CCR segment is not calculated,
 so gas consumptions of 0 liters are the norm.</p></div>
+<div class="sect3">
+<h4 id="_planning_for_ccr_bailout">14.4.1. Planning for CCR bailout</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b1.jpg" alt="Note" />
+</td>
+<td class="content">It is often necessary to plan for a worst-case bailout event in order to ensure sufficient bailout gas to reach the
+surface, taking into account decompression. This is done by defining a 1-minute segment at the end of the bottom part
+of the dive, as in the image on the left where a CCR dive to 40m for 21 minutes is planned.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b2.jpg" alt="Note" />
+</td>
+<td class="content">In the dive planner points
+table, change the <em>Dive mode</em> of this 1-minute segment to <em>OC</em>. This signifies bailout. In this case there is bailout to
+the existing diluent cylinder (assuming this cylinder has sufficient gas). The appropriate pO<sub>2</sub> and cylinder pressure
+graphs are shown in the dive profile, as in the image on the left. Note that the setpoint drops to zero after bailout, since
+this value does not apply to breathed bailout gas.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b3.jpg" alt="Note" />
+</td>
+<td class="content">In order to plan for bailout to an external bailout cylinder, change  the <em>Used gas</em> for the 1-minute segment to the
+appropriate cylinder, as in the example on the left. Note that the cylinder change as well as the bailout are indicated with
+overlapping icons.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>The volumes of gases required for bailout can be found at the bottom of the <strong>Dive plan details</strong> panel.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="S_Replan">14.5. Modifying an existing dive plan</h3>
@@ -5656,13 +5819,13 @@ Change the date and time of the <em>dive plan</em> to coincide with that of the
 <p>
 In the <em>Dive List</em>, highlight the dive plan as well as the data for the real dive
   and merge the two dives, making use of the Dive List Context Menu
-  (available by righ-clicking a dive).
+  (available by right-clicking a dive).
 </p>
 </li>
 </ul></div>
 <div class="paragraph"><p>The text version of the dive plan is appended to the Notes in the <em>Notes Tab</em>. With this
 merged dive highlighted in the <em>Dive List</em>, switch
-between the planned profile and the real-life profile using the righ-arrow/left-arrow keyboard keys.</p></div>
+between the planned profile and the real-life profile using the right-arrow/left-arrow keyboard keys.</p></div>
 </div>
 </div>
 </div>
@@ -6285,7 +6448,7 @@ hci0:  Type: BR/EDR  Bus: USB
         RX bytes:1026 acl:0 sco:0 events:47 errors:0
         TX bytes:449 acl:0 sco:0 commands:46 errors:0</code></pre>
 </div></div>
-<div class="paragraph"><p>Check that the status now includes <code><em>UP</em>, <em>RUNNING</em> AND <em>AUTH</em></code>.</p></div>
+<div class="paragraph"><p>Check that the status now includes <em><code>UP</code></em>, <em><code>RUNNING</code></em> AND <em><code>AUTH</code></em>.</p></div>
 <div class="paragraph"><p>If there are multiple controllers running, it&#8217;s easiest to turn off the unused controller(s). For example, for <code>hci1</code>:</p></div>
 <div class="literalblock">
 <div class="content">
@@ -7298,6 +7461,12 @@ cellspacing="0" cellpadding="4">
 </tbody>
 </table>
 </div>
+<div class="paragraph"><p>Please note that some of the variables like <em>notes</em> need to be extended with <em>|safe</em> to support HTML tags:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>        &lt;p&gt; {{ dive.notes|safe }} &lt;/p&gt;</code></pre>
+</div></div>
+<div class="paragraph"><p>Otherwise tags like <em>br</em> would not be converted to line breaks.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> also exports <strong>template_options</strong> data. This data must be used as <em>CSS</em> values to provide a dynamically
 editable template. The exported data is shown in the following table:</p></div>
 <div class="tableblock">
@@ -7554,7 +7723,8 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-21 09:29:27 CEST
+Last updated
+ 2018-09-15 09:39:06 PDT
 </div>
 </div>
 </body>

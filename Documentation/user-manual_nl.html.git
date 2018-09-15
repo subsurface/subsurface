@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
 <title></title>
 <style type="text/css">
 /*
@@ -793,7 +794,7 @@ uitsluitsel geven.</td>
 de twee stukken apparatuur met elkaar communiceren. Hiertoe dient de communicatie
 poort van de desktop PC (welke gebruikt gaat worden om met de duikcomputer te
 communiceren) geselecteerd te worden in <em>Subsurface</em>.
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Bijlage A</a>
+<a href="#S_Appendix_A">Bijlage A</a>
 geeft technische details voor de ondersteunde besturingssystemen van <em>Subsurface</em>, en
 <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Bijlage B</a>
 bevat specifieke duikcomputer details.</p></div>
@@ -842,7 +843,7 @@ Het scherm heeft twee keuzelijsten <strong>Merk</strong> en <strong>Duikcomputer
 De <strong>Device of mountpoint</strong> keuzelijst bevat de USB of Bluetooth poort die
   <em>Subsurface</em> dient te gebruiken om met de duikcomputer te communiceren.
    De juiste poort dient geselecteerd te worden. Raadpleeg
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Bijlage A</a>
+   <a href="#S_Appendix_A">Bijlage A</a>
    and
    <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Bijlage B</a>
    voor nadere technische details hoe de juste poort te bepalen, voor een specifieke
@@ -941,14 +942,14 @@ Geeft de aansluitkabel problemen? Doet de kabel het wel met andere programmatuur
 <li>
 <p>
 Controleer
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Bijlage A</a>
+   <a href="#S_Appendix_A">Bijlage A</a>
    om er zeker van te zijn dat het correcte device of mountpoint wordt gebruikt (zie hierboven).
 </p>
 </li>
 <li>
 <p>
 Controleer of de gebruiker schrijf-rechten heeft op de USB poort op Unix-acchtige systemen. Zo niet, raadpleeg
-  <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Bijlage A</a>
+  <a href="#S_Appendix_A">Bijlage A</a>
 </p>
 </li>
 </ul></div>
@@ -4322,7 +4323,7 @@ dit moment worden de Heinrichs-Weikamp (OSTC 2/2N/2C, OSTC 3, Sport) en Suunto V
 (Stinger, Mosquito, D3, Vyper, Vytec, Cobra, Gekko and Zoop) familie ondersteund.
 Vele instellingen van deze duikcomputer kunnen gelezen, bewerkt en weer
 terug geschreven worden. Zie
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Bijlage A</a>
+<a href="#S_Appendix_A">Bijlage A</a>
 voor details over het op juiste wijze aansluiten van de duikcomputer.</p></div>
 <div class="paragraph"><p>Als de duikcomputer is aangesloten, kies dan uit het hoofdmenu <em>Bestand &#8594; Duikcomputer configureren</em>.
 Selecteer het juiste device of mountpoint, en selecteer het juiste type
@@ -5705,7 +5706,7 @@ ook mogelijk, bijvoorbeeld als je wijze van duiken veranderd.
 <h2 id="_bijlage_a_besturingssysteem_specifieke_informatie_om_data_van_duikcomputers_te_importeren">17. Bijlage A: Besturingssysteem specifieke informatie om data van duikcomputers te importeren.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_controleer_dat_de_juiste_drivers_zijn_geïnstalleerd_op_het_besturingssysteem">17.1. Controleer dat de juiste drivers zijn geïnstalleerd op het besturingssysteem</h3>
+<h3 id="S_Appendix_A">17.1. Controleer dat de juiste drivers zijn geïnstalleerd op het besturingssysteem</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -7213,7 +7214,8 @@ alleen als deze nog niet zijn overschreven door nieuwere duiken.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-10-21 09:35:40 CEST
+Last updated
+ 2018-09-15 10:46:18 PDT
 </div>
 </div>
 </body>

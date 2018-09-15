@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
 <title></title>
 <style type="text/css">
 /*
@@ -882,8 +882,7 @@ cette communication, les utilisateurs doivent trouver l&#8217;information
 appropriée pour renseigner à <em>Subsurface</em> d&#8217;où et comment importer les
 informations de
 plongée.
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
+<a href="#S_Appendix_A">Annexe A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
 ceci pour les différents systèmes d&#8217;exploitation et
 <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
 B</a> contient des informations spécifiques à chaque ordinateur de plongée.</p></div>
@@ -939,8 +938,7 @@ La boîte de dialogue propose deux menus déroulants, <strong>Fournisseur</stron
 Le menu déroulant <strong>Périphérique ou point de montage</strong> le nom du port USB ou
    Bluetooth dont <em>Subsurface</em> a besoin pour communiquer avec l&#8217;ordinateur de
    plongée. Le port approprié doit être sélectionné. Consultez
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-   A</a> et
+   <a href="#S_Appendix_A">Annexe A</a> et
    <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
    B</a> pour obtenir des détails techniques sur la façon de trouver des
    informations sur le port approprié à chaque ordinateur de plongée et, dans
@@ -1054,17 +1052,14 @@ Le câble de connexion est-il fautif ? Le câble fonctionne-t-il avec d&#8217;au
 <li>
 <p>
 Consultez
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-   A</a> pour être certain que le point de montage correct a été spécifié (voir
+   <a href="#S_Appendix_A">Annexe A</a> pour être certain que le point de montage correct a été spécifié (voir
    ci-dessus).
 </p>
 </li>
 <li>
 <p>
 Sur les systèmes d&#8217;exploitation de type Unix, l&#8217;utilisateur a-t-il les
-   droits d'écriture sur le port USB? Si non, consultez
-   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
-   A</a>
+   droits d'écriture sur le port USB? Si non, consultez <a href="#S_Appendix_A">Annexe A</a>
 </p>
 </li>
 </ul></div>
@@ -3629,8 +3624,8 @@ panel. These are:</p></div>
 <td class="content">Affiche la <strong>Profondeur maximale d&#8217;utilisation (MOD)</strong> d&#8217;une plongée, en
 fonction du mélange gazeux utilisé. La MOD dépend de la concentration en
 oxygène du gaz respiré. Pour l&#8217;air (21% d&#8217;oxygène), il vaut envuron 57m si
-une pO<sub>2 maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
-(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO</sub>2
+une pO<sub>2</sub> maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
+(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO~2
 dans le calcul de MOD</em>).  En plongeant sous la MOD, il y a un risque
 important d&#8217;exposition aux dangers liés à la toxicité de l&#8217;oxygène.</td>
 </tr></table>
@@ -4985,7 +4980,7 @@ ces ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
 assurez vous que les pilotes pour votre ordinateur de plongée sont installés
 (également nécessaire pour télécharger les plongées) et que le nom de
 périphérique de l&#8217;ordinateur de plongée est connu. Voir
-<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
+<a href="#S_Appendix_A">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
 <div class="paragraph"><p>Une fois que l&#8217;ordinateur de plongée est connecté à <em>Subsurface</em>,
 sélectionner <em>Fichier &#8594; Configurer l&#8217;ordinateur de plongée</em>, à partir du
 menu principal. Sélectionner le nom du périphérique (ou le point de montage)
@@ -6623,7 +6618,7 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 <h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">17. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">17.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
+<h3 id="S_Appendix_A">17.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -8215,7 +8210,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-06-26 10:17:19 CEST
+ 2018-09-15 10:07:35 PDT
 </div>
 </div>
 </body>

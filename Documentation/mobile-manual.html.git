@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
 <title></title>
 <style type="text/css">
 /*
@@ -902,7 +903,7 @@ Tap the <em>Change</em> button. This opens the <em>Cloud credentials</em> screen
 change the credential information, then tap the button <em>Sign-in or register</em>. The appropriate dive list is shown.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="mobile-images/SettingsCloudTheme.jpg" alt="FIGURE: Settings: Cloud & Theme" />
+<img src="mobile-images/SettingsCloudTheme.jpg" alt="FIGURE: Settings: Cloud &amp; Theme" />
 </div>
 </div>
 </div>
@@ -950,7 +951,8 @@ device and the font characteristics used by <em>Subsurface-mobile</em>.</p></div
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-12-04 22:03:57 PST
+Last updated
+ 2018-09-15 15:42:56 PDT
 </div>
 </div>
 </body>
