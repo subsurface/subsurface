@@ -34,9 +34,6 @@ class QMLPrefs : public QObject {
 				WRITE setOldStatus
 				NOTIFY oldStatusChanged)
 public:
-	QMLPrefs();
-	~QMLPrefs();
-
 	static QMLPrefs *instance();
 
 	const QString cloudPassword() const;
@@ -62,11 +59,12 @@ public slots:
 	void clearCredentials();
 
 private:
+	QMLPrefs();
+
 	QString m_cloudPassword;
 	QString m_cloudPin;
 	QString m_cloudUserName;
 	qPrefCloudStorage::cloud_status m_credentialStatus;
-	static QMLPrefs *m_instance;
 	qPrefCloudStorage::cloud_status m_oldStatus;
 	bool m_showPin;
 

@@ -8,27 +8,17 @@
 
 
 /*** Global and constructors ***/
-QMLPrefs *QMLPrefs::m_instance = NULL;
-
 QMLPrefs::QMLPrefs() :
 	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_showPin(false)
 {
-	// This strange construct is needed because QMLEngine calls new and that
-	// cannot be overwritten
-	if (!m_instance)
-		m_instance = this;
-}
-
-QMLPrefs::~QMLPrefs()
-{
-	m_instance = NULL;
 }
 
 QMLPrefs *QMLPrefs::instance()
 {
-	return m_instance;
+	static QMLPrefs *self = new QMLPrefs;
+	return self;
 }
 
 

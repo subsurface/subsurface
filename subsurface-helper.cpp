@@ -158,8 +158,11 @@ void register_qml_types(QQmlEngine *engine)
 	int rc;
 
 #ifdef SUBSURFACE_MOBILE
+	if (engine) {
+		QQmlContext *ct = engine->rootContext();
+		ct->setContextProperty("prefs", QMLPrefs::instance());
+	}
 	REGISTER_TYPE(QMLManager, "QMLManager");
-	REGISTER_TYPE(QMLPrefs, "QMLPrefs");
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
 	REGISTER_TYPE(DownloadThread, "DCDownloadThread");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");

@@ -26,12 +26,10 @@ Kirigami.ApplicationWindow {
 		maximumHeight: Kirigami.Units.gridUnit * 2
 		background: Rectangle { color: subsurfaceTheme.primaryColor }
 	}
-	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
 	property alias syncToCloud: manager.syncToCloud
 	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
-	property alias showPin: prefs.showPin
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
 	onNotificationTextChanged: {
 		if (notificationText != "") {
@@ -192,8 +190,8 @@ Kirigami.ApplicationWindow {
 					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
 						// the user has asked to change credentials - if the credentials before that
 						// were valid, go back to dive list
-						if (oldStatus == CloudStatus.CS_VERIFIED) {
-							prefs.credentialStatus = oldStatus
+						if (prefs.oldStatus == CloudStatus.CS_VERIFIED) {
+							prefs.credentialStatus = prefs.oldStatus
 						}
 					}
 					returnTopPage()
@@ -259,7 +257,7 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
-							oldStatus = prefs.credentialStatus
+							prefs.oldStatus = prefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
 							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()
@@ -559,10 +557,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				detailsWindow.endEditMode()
 			}
 		}
-	}
-
-	QMLPrefs {
-		id: prefs
 	}
 
 	QMLManager {

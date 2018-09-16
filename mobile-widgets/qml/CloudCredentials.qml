@@ -53,7 +53,7 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Email")
-			visible: !rootItem.showPin
+			visible: !prefs.showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -61,7 +61,7 @@ Item {
 		Controls.TextField {
 			id: login
 			text: prefs.cloudUserName
-			visible: !rootItem.showPin
+			visible: !prefs.showPin
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
@@ -69,7 +69,7 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Password")
-			visible: !rootItem.showPin
+			visible: !prefs.showPin
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
@@ -77,7 +77,7 @@ Item {
 		Controls.TextField {
 			id: password
 			text: prefs.cloudPassword
-			visible: !rootItem.showPin
+			visible: !prefs.showPin
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
@@ -87,20 +87,20 @@ Item {
 
 		Controls.Label {
 			text: qsTr("PIN")
-			visible: rootItem.showPin
+			visible: prefs.showPin
 		}
 		Controls.TextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
-			visible: rootItem.showPin
+			visible: prefs.showPin
 		}
 
 		RowLayout {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: rootItem.showPin
+			visible: prefs.showPin
 			SsrfButton {
 				id: registerpin
 				text: qsTr("Register") 
@@ -126,7 +126,7 @@ Item {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: !rootItem.showPin
+			visible: !prefs.showPin
 
 			SsrfButton {
 				id: signin_register_normal
