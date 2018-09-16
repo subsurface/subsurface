@@ -56,18 +56,13 @@ extern "C" void showErrorFromC(char *buf)
 
 static void progressCallback(const char *text)
 {
-	QMLManager *self = QMLManager::instance();
-	if (self) {
-		self->appendTextToLog(QString(text));
-		self->setProgressMessage(QString(text));
-	}
+	QMLManager::instance()->appendTextToLog(QString(text));
+	QMLManager::instance()->setProgressMessage(QString(text));
 }
 
 static void appendTextToLogStandalone(const char *text)
 {
-	QMLManager *self = QMLManager::instance();
-	if (self)
-		self->appendTextToLog(QString(text));
+	QMLManager::instance()->appendTextToLog(QString(text));
 }
 
 // show the git progress in the passive notification area
@@ -75,24 +70,20 @@ extern "C" int gitProgressCB(const char *text)
 {
 	static QElapsedTimer timer;
 	static qint64 lastTime = 0;
-	static QMLManager *self;
-
-	if (!self)
-		self = QMLManager::instance();
 
 	if (!timer.isValid()) {
 		timer.restart();
 		lastTime = 0;
 	}
-	if (self) {
-		qint64 elapsed = timer.elapsed();
-		self->appendTextToLog(text);
-		self->setNotificationText(text);
-		if (elapsed - lastTime > 50) { // 20 Hz refresh
-			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-		}
-		lastTime = elapsed;
+
+	qint64 elapsed = timer.elapsed();
+	QMLManager::instance()->appendTextToLog(text);
+	QMLManager::instance()->setNotificationText(text);
+	if (elapsed - lastTime > 50) { // 20 Hz refresh
+		qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 	}
+	lastTime = elapsed;
+
 	// return 0 so that we don't end the download
 	return 0;
 }
@@ -1593,10 +1584,7 @@ void writeToAppLogFile(QString logText)
 {
 	// write to storage and flush so that the data doesn't get lost
 	logText.append("\n");
-	QMLManager *self = QMLManager::instance();
-	if (self) {
-		self->writeToAppLogFile(logText);
-	}
+	QMLManager::instance()->writeToAppLogFile(logText);
 }
 
 void QMLManager::writeToAppLogFile(QString logText)
