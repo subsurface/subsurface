@@ -636,7 +636,7 @@ temperatures and SAC; total time and number of dives selected).</p></div>
 <img src="images/main_window_f22.jpg" alt="The Main Window" />
 </div>
 </div>
-<div class="paragraph"><p>The user decides which of the four panels are displayed by selecting the
+<div class="paragraph"><p>Decide which of the four panels are displayed by selecting the
 <strong>View</strong> option on the main menu. This feature has several choices of display:</p></div>
 <div class="paragraph"><p><strong>All</strong>: show all four of the panels as in the screenshot above.</p></div>
 <div class="paragraph"><p><strong>Divelist</strong>: Show only the Dive List.</p></div>
@@ -2362,7 +2362,7 @@ as tiny icons (stubs) on the dive profile at the appropriate positions reflectin
 <div class="paragraph"><p>This results in a profile display as in the image below:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/LoadImage4.jpg" alt="FIGURE: Photos on dive profile" />
+<img src="images/LoadImage4.jpg" alt="FIGURE: Media on dive profile" />
 </div>
 </div>
 <div class="paragraph"><p>Hover the mouse over any of the media stubs. A thumbnail image
@@ -3303,11 +3303,11 @@ two red dots.</td>
 </td>
 <td class="content">Photographs and videos that have been added to a dive can be shown on the profile
 by selecting
-the <strong>Show-media</strong> button. The position of a photo on the profile
-shows the exact time when this photo was taken.
+the <strong>Show-media</strong> button. The position of a photo or video on the profile
+shows the exact time when it was taken.
 The runtime of videos is represented by a bar if <em>Subsurface</em> was able to
 extract this information from the video file.
-If this button is not active, the photos are hidden.</td>
+If this button is not active, the media are hidden.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The profile can also include the dive computer reported <strong>ceiling</strong> (more
@@ -3943,6 +3943,14 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
   of each of those photos/videos was taken.
 </p>
 </li>
+</ul></div>
+<div class="paragraph"><p>When the "Anonymize" option is selected for xml-based file formats, the letters A-Z
+are all replaced by the letter <em>X</em> in the notes, buddy, divemaster, divesite name
+and divesite description fields. This way, you can share dive log files for debugging
+purposes without revealing personal information. Please note, though, that other
+characters are not replaced, so this is not useful for languages with non-latin
+characters and GPS coordinates of dive sites are preserved as well.</p></div>
+<div class="ulist"><ul>
 <li>
 <p>
 <em>General Settings</em>, under the HTML tab, provides the following options:
@@ -4118,7 +4126,7 @@ family members/friends. There are two approaches for doing this.</p></div>
   the appropriate dive log by selecting, from the <strong>Main Menu</strong>, <em>File &#8594; Open logbook</em> and then select your own
   dive log file from the list of files lower down in the menu. However, a problem arises if the users
   prefer different settings for <em>Subsurface</em>. For instance, one diver may prefer to see the dive ceiling in the
-  <strong>Profile Panel</strong> and photos icons in the <strong>Dive List</strong>, while the other may not have these preferences. In addition,
+  <strong>Profile Panel</strong> and media icons in the <strong>Dive List</strong>, while the other may not have these preferences. In addition,
   the cloud connection is normally unique for each <em>Subsurface</em> installation and if more than one user wishes to save
   dive data on the cloud, it is inconvenient to open the <strong>Preferences</strong> and change the user-ID data every time
   the cloud is accessed. To solve these problems, launch <em>Subsurface</em> with a <em>--user=&lt;user name&gt;</em> command-line option.
@@ -5624,7 +5632,7 @@ dealing with the appropriate operations.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_FindMovedImages"><em>Find moved images</em></a> - If photos/videos taken during dives have been moved to
+<a href="#S_FindMovedImages"><em>Find moved media</em></a> - If photos/videos taken during dives have been moved to
       a different disk or directory, locate them and link them to the appropriate dives.
 </p>
 </li>
@@ -7428,7 +7436,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-09-16 07:58:15 PDT
+ 2018-09-16 08:12:42 PDT
 </div>
 </div>
 </body>
