@@ -340,6 +340,56 @@ Kirigami.ScrollablePage {
 			Layout.fillWidth: true
 		}
 		GridLayout {
+			id: unit_system
+			columns: 2
+			width: parent.width - Kirigami.Units.gridUnit
+			Kirigami.Heading {
+				text: qsTr("Units")
+				color: subsurfaceTheme.textColor
+				level: 4
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 2
+			}
+
+			Controls.Label {
+				text: qsTr("Use Imperial Units")
+				Layout.preferredWidth: gridWidth * 0.75
+			}
+			SsrfSwitch {
+				id: imperialButton
+				checked: PrefUnits.unit_system === "imperial"
+				enabled: PrefUnits.unit_system === "metric"
+				Layout.preferredWidth: gridWidth * 0.25
+				onClicked: {
+					PrefUnits.set_unit_system("imperial")
+					manager.changesNeedSaving()
+				}
+			}
+			Controls.Label {
+				text: qsTr("Use Metric Units")
+				Layout.preferredWidth: gridWidth * 0.75
+			}
+			SsrfSwitch {
+				id: metricButtton
+				checked: PrefUnits.unit_system === "metric"
+				enabled: PrefUnits.unit_system === "imperial"
+				Layout.preferredWidth: gridWidth * 0.25
+				onClicked: {
+					PrefUnits.set_unit_system("metric")
+					manager.changesNeedSaving()
+				}
+			}
+		}
+
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
+		}
+
+		GridLayout {
 			id: developer
 			columns: 2
 			width: parent.width - Kirigami.Units.gridUnit
