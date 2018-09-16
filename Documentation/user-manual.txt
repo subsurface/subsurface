@@ -3,8 +3,8 @@
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.7
-// :revdate:October 2017
+// :revnumber: 4.8.2
+// :revdate:September 2018
 :icons:
 :toc2:
 :toc-placement: manual
@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs
 
-[blue]#_Version 4.7, May 2018_#
+[blue]#_Version 4.8, September 2018_#
 
 Welcome as a user of _Subsurface_, an advanced dive logging program with
 extensive infrastructure to describe, organize, interpret and print scuba
@@ -152,7 +152,7 @@ temperatures and SAC; total time and number of dives selected).
 
 image::images/main_window_f22.jpg["The Main Window",align="center"]
 
-The user decides which of the four panels are displayed by selecting the
+Decide which of the four panels are displayed by selecting the
 *View* option on the main menu. This feature has several choices of display:
 
 *All*: show all four of the panels as in the screenshot above.
@@ -1875,7 +1875,7 @@ image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align
 
 This results in a profile display as in the image below:
 
-image::images/LoadImage4.jpg["FIGURE: Photos on dive profile",align="center"]
+image::images/LoadImage4.jpg["FIGURE: Media on dive profile",align="center"]
 
 Hover the mouse over any of the media stubs. A thumbnail image
 is shown of the appropriate media. See the image below:
@@ -2581,11 +2581,11 @@ two red dots.
 [NOTE]
 Photographs and videos that have been added to a dive can be shown on the profile
 by selecting
-the *Show-media* button. The position of a photo on the profile
-shows the exact time when this photo was taken.
+the *Show-media* button. The position of a photo or video on the profile
+shows the exact time when it was taken.
 The runtime of videos is represented by a bar if _Subsurface_ was able to
 extract this information from the video file.
-If this button is not active, the photos are hidden.
+If this button is not active, the media are hidden.
 
 
 The profile can also include the dive computer reported *ceiling* (more
@@ -3220,7 +3220,7 @@ family members/friends. There are two approaches for doing this.
   the appropriate dive log by selecting, from the *Main Menu*, _File -> Open logbook_ and then select your own
   dive log file from the list of files lower down in the menu. However, a problem arises if the users
   prefer different settings for _Subsurface_. For instance, one diver may prefer to see the dive ceiling in the
-  *Profile Panel* and photos icons in the *Dive List*, while the other may not have these preferences. In addition,
+  *Profile Panel* and media icons in the *Dive List*, while the other may not have these preferences. In addition,
   the cloud connection is normally unique for each _Subsurface_ installation and if more than one user wishes to save
   dive data on the cloud, it is inconvenient to open the *Preferences* and change the user-ID data every time
   the cloud is accessed. To solve these problems, launch _Subsurface_ with a _--user=<user name>_ command-line option.
@@ -4210,7 +4210,7 @@ dealing with the appropriate operations.
   the selected dives in the logbook) to one of several formats.
 - <<S_PrintDivelog,_Print_>> -  Print the currently open logbook.
 - <<S_Preferences,_Preferences_>> -  Set the _Subsurface_ preferences.
-- <<S_FindMovedImages, _Find moved images_>> - If photos/videos taken during dives have been moved to
+- <<S_FindMovedImages, _Find moved media_>> - If photos/videos taken during dives have been moved to
       a different disk or directory, locate them and link them to the appropriate dives.
 - <<S_Configure,_Configure dive computer_>> - Edit the configuration of a dive computer.
 - _Quit_ - Quit _Subsurface_.
