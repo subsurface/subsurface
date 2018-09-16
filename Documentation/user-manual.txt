@@ -3106,6 +3106,14 @@ image::images/texexample.png["Figure: Export to TeX", align="center"]
   to any of the selected dives in the _Dive List_, together with the depth underwater where
   of each of those photos/videos was taken.
 
+When the "Anonymize" option is selected for xml-based file formats, the letters A-Z
+are all replaced by the letter 'X' in the notes, buddy, divemaster, divesite name
+and divesite description fields. This way, you can share dive log files for debugging
+purposes without revealing personal information. Please note, though, that other
+characters are not replaced, so this is not useful for languages with non-latin 
+characters and GPS coordinates of dive sites are preserved as well.
+
+
 * _General Settings_, under the HTML tab, provides the following options:
 
 ** Subsurface Numbers: if this option is checked, the dive(s) are exported with the
