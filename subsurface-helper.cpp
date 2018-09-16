@@ -79,7 +79,6 @@ void run_ui()
 	int availableScreenWidth = appScreen->availableSize().width();
 	QQmlApplicationEngine engine;
 	register_qml_types(&engine);
-	LOG_STP("run_ui qml engine started");
 	KirigamiPlugin::getInstance().registerTypes();
 #if defined(__APPLE__) && !defined(Q_OS_IOS)
 	// when running the QML UI on a Mac the deployment of the QML Components seems
@@ -106,7 +105,6 @@ void run_ui()
 	ctxt->setContextProperty("gpsModel", gpsSortModel);
 	ctxt->setContextProperty("vendorList", vendorList);
 	set_non_bt_addresses();
-	LOG_STP("run_ui set_non_bt_adresses");
 
 	ctxt->setContextProperty("connectionListModel", &connectionListModel);
 	ctxt->setContextProperty("logModel", MessageHandlerModel::self());
@@ -125,7 +123,6 @@ void run_ui()
 	engine.load(QUrl(QStringLiteral("qrc:///qml/main.qml")));
 #endif
 	qDebug() << "loaded main.qml";
-	LOG_STP("run_ui qml loaded");
 	qqWindowObject = engine.rootObjects().value(0);
 	if (!qqWindowObject) {
 		fprintf(stderr, "can't create window object\n");
@@ -140,7 +137,6 @@ void run_ui()
 	qDebug() << "qml_window reports width as" << qmlWW << "associated screen width" << qmlSW << "Qt screen reports width as" << availableScreenWidth;
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
 	QMLManager *manager = QMLManager::instance();
-	LOG_STP("run_ui qmlmanager instance started");
 
 	manager->setDevicePixelRatio(qml_window->devicePixelRatio(), qml_window->screen());
 	manager->qmlWindow = qqWindowObject;
@@ -160,7 +156,6 @@ void run_ui()
 	qml_window->setWidth(width);
 #endif // not Q_OS_ANDROID and not Q_OS_IOS
 	qml_window->show();
-	LOG_STP("run_ui running exec");
 #else
 	MainWindow::instance()->show();
 #endif // SUBSURFACE_MOBILE
