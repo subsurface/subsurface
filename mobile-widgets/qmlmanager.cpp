@@ -145,7 +145,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_device_data(new DCDeviceData),
 	m_pluggedInDeviceName("")
 {
-	LOG_STP("qmlmgr starting");
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
@@ -192,7 +191,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
 #endif
-	LOG_STP("qmlmgr log started");
 	set_error_cb(&showErrorFromC);
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
@@ -201,13 +199,11 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	setStartPageText(tr("Starting..."));
-	LOG_STP("qmlmgr start page");
 
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 	m_btEnabled = btDiscovery->btAvailable();
-	LOG_STP("qmlmgr bt available");
 	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 		this, &QMLManager::btHostModeChange);
 	QMLPrefs::instance()->setShowPin(false);
@@ -216,13 +212,10 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	progress_callback = &progressCallback;
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
-	LOG_STP("qmlmgr gps started");
 	set_git_update_cb(&gitProgressCB);
-	LOG_STP("qmlmgr git update");
 
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
-	LOG_STP("qmlmgr sync load cloud");
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -348,7 +341,6 @@ void QMLManager::copyAppLogToClipboard()
 		QTextStream in(&f);
 		copyString += in.readAll();
 	}
-	LOG_STP_CLIPBOARD(&copyString);
 
 	copyString += "---------- finish ----------\n";
 
