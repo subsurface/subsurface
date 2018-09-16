@@ -38,6 +38,7 @@
 #include "core/settings/qPrefLocationService.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
+#include "core/settings/qPrefUnit.h"
 
 QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
@@ -278,12 +279,10 @@ void QMLManager::openLocalThenRemote(QString url)
 		// if we can load from the cache, we know that we have a valid cloud account
 		if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_UNKNOWN)
 			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
-		prefs.unit_system = git_prefs.unit_system;
 		if (git_prefs.unit_system == IMPERIAL)
-			git_prefs.units = IMPERIAL_units;
+			qPrefUnits::set_unit_system("imperial");
 		else if (git_prefs.unit_system == METRIC)
-			git_prefs.units = SI_units;
-		prefs.units = git_prefs.units;
+			qPrefUnits::set_unit_system("metric");
 		qPrefTechnicalDetails::set_tankbar(git_prefs.tankbar);
 		qPrefTechnicalDetails::set_dcceiling(git_prefs.dcceiling);
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
