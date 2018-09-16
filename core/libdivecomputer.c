@@ -1328,11 +1328,8 @@ dc_status_t divecomputer_device_open(device_data_t *data)
 
 	if (transports & DC_TRANSPORT_SERIAL) {
 #ifdef SERIAL_FTDI
-		if (!strcmp(data->devname, "ftdi")) {
-			rc = ftdi_open(&data->iostream, context);
-			if (rc == DC_STATUS_SUCCESS)
-				return rc;
-		}
+		if (!strcmp(data->devname, "ftdi"))
+			return ftdi_open(&data->iostream, context);
 #endif
 		rc = dc_serial_open(&data->iostream, context, data->devname);
 		if (rc == DC_STATUS_SUCCESS)
