@@ -156,7 +156,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_pluggedInDeviceName(""),
 	m_showNonDiveComputers(false)
 {
-	LOG_STP("qmlmgr starting");
 	m_instance = this;
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
@@ -217,7 +216,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
 #endif
-	LOG_STP("qmlmgr log started");
 	set_error_cb(&showErrorFromC);
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
@@ -231,13 +229,11 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	appendTextToLog(getAndroidHWInfo());
 #endif
 	setStartPageText(tr("Starting..."));
-	LOG_STP("qmlmgr start page");
 
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 	m_btEnabled = btDiscovery->btAvailable();
-	LOG_STP("qmlmgr bt available");
 	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 		this, &QMLManager::btHostModeChange);
 	QMLPrefs::instance()->setShowPin(false);
@@ -246,16 +242,13 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	progress_callback = &progressCallback;
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
-	LOG_STP("qmlmgr gps started");
 	set_git_update_cb(&gitProgressCB);
-	LOG_STP("qmlmgr git update");
 
 	// present dive site lists sorted by name
 	locationModel.sort(LocationInformationModel::NAME);
 
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
-	LOG_STP("qmlmgr sync load cloud");
 
 	memset(&m_copyPasteDive, 0, sizeof(m_copyPasteDive));
 	memset(&what, 0, sizeof(what));
@@ -428,7 +421,6 @@ QString QMLManager::getCombinedLogs()
 		QTextStream in(&f);
 		copyString += in.readAll();
 	}
-	LOG_STP_CLIPBOARD(&copyString);
 
 	copyString += "---------- finish ----------\n";
 
