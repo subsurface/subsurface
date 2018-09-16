@@ -40,7 +40,6 @@
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
 
-QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
 
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
@@ -145,7 +144,24 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_device_data(new DCDeviceData),
 	m_pluggedInDeviceName("")
 {
-	m_instance = this;
+}
+
+QMLManager::~QMLManager()
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	if (appLogFileOpen)
+		appLogFile.close();
+#endif
+}
+
+QMLManager *QMLManager::instance()
+{
+	static QMLManager *self = new QMLManager;
+	return self;
+}
+
+void QMLManager::finishConstruct()
+{
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -397,20 +413,6 @@ void QMLManager::finishSetup()
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
-}
-
-QMLManager::~QMLManager()
-{
-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-	if (appLogFileOpen)
-		appLogFile.close();
-#endif
-	m_instance = NULL;
-}
-
-QMLManager *QMLManager::instance()
-{
-	return m_instance;
 }
 
 #define CLOUDURL QString(prefs.cloud_base_url)

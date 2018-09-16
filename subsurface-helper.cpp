@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QQmlEngine>
+#include <QQmlContext>
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QDebug>
 #include <QQuickItem>
+#include <QQmlContext>
 
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
@@ -161,8 +163,9 @@ void register_qml_types(QQmlEngine *engine)
 	if (engine) {
 		QQmlContext *ct = engine->rootContext();
 		ct->setContextProperty("prefs", QMLPrefs::instance());
+		ct->setContextProperty("manager", QMLManager::instance());
+		QMLManager::instance()->finishConstruct();
 	}
-	REGISTER_TYPE(QMLManager, "QMLManager");
 	REGISTER_TYPE(QMLProfile, "QMLProfile");
 	REGISTER_TYPE(DownloadThread, "DCDownloadThread");
 	REGISTER_TYPE(DiveImportedModel, "DCImportModel");
