@@ -4,6 +4,7 @@
 
 #include "core/membuffer.h"
 #include "core/gpslocation.h"
+#include "core/settings/qPrefUnit.h"
 
 
 /*** Global and constructors ***/
@@ -78,6 +79,10 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 			QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
 			set_filename(NOCLOUD_LOCALSTORAGE);
 			clearCredentials();
+			if (qPrefUnits::unit_system() == "imperial")
+				prefs.units = IMPERIAL_units;
+			else if (qPrefUnits::unit_system() == "metric")
+				prefs.units = SI_units;
 		}
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
