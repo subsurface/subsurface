@@ -4204,7 +4204,7 @@ dealing with the appropriate operations.
 - _Save as_ - Save the current logbook under a different file name.
 - _Open cloud storage_ - Open the dive log previously saved in <<S_Cloud_storage,_Cloud storage_>>.
 - _Save to cloud storage_ - Save the current dive log to <<S_Cloud_storage,_Cloud storage_>>.
-- _Take cloud storage online_ - ******************************************************
+- _Cloud storage online_ - Switch between the online version of the logbook,  and the locally stored one.
 - _Close_ -  Close the dive logbook currently open.
 - <<S_ExportLog,_Export_>> -  Export the currently open dive logbook (or
   the selected dives in the logbook) to one of several formats.
@@ -4224,14 +4224,11 @@ dealing with the appropriate operations.
   from a dive computer.
 - <<Unified_import,_Import Log Files_>> - Import dive information from a file in
   in a _Subsurface_-compatible format.
-- <<S_Companion,_Import GPS data from Subsurface web service_>> - Load GPS
-  coordinates from the _Subsurface_ mobile phone app.
 - <<S_ImportingDivelogsDe,_Import from Divelogs.de_>> - Import dive information
   from _www.Divelogs.de_.
 
 === Log
 - <<S_EnterData,_Add Dive_>> - Manually add a new dive to the *Dive List* panel.
-- _Edit dive_ - Edit a dive where the profile was entered by hand and not from a dive computer.
 - <<S_DivePlanner,_Plan Dive_>> - Plan  dives.
 - <<S_Replan,_Edit dive in planner_>> - Edit a dive plan that has been saved into the *Dive List*.
 - <<S_CopyComponents,_Copy dive components_>> - Copy information
