@@ -9,18 +9,19 @@ Cochran: Commander I, Commander II, Commander TM, EMC-14, EMC-16, EMC-20H
 Cressi: Drake, Edy, Giotto, Leonardo, Newton
 Dive Rite: NiTek Q, NiTek Trio
 DiveSystem: Orca, iDive DAN, iDive Deep, iDive Easy, iDive Free, iDive Pro, iDive Reb, iDive Stealth, iDive Tech, iDive X3M
+Garmin: Descent Mk1
 Genesis: React Pro, React Pro White
 Heinrichs Weikamp: Frog, OSTC, OSTC 2, OSTC 2 TR, OSTC 2C, OSTC 2N, OSTC 3, OSTC 4, OSTC Mk2, OSTC Plus, OSTC Sport, OSTC cR
 Hollis: DG02, DG03, TX1
-Mares: Airlab, Darwin, Darwin Air, Icon HD, Icon HD Net Ready, M1, M2, Matrix, Nemo, Nemo Air, Nemo Apneist, Nemo Excel, Nemo Steel, Nemo Titanium, Nemo Wide, Nemo Wide 2, Puck, Puck 2, Puck Air, Puck Pro, Quad, Quad Air, Smart, Smart Apnea
-Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, F10, F11, Geo, Geo 2.0, OC1, OCS, OCi, Pro Plus 2, Pro Plus 2.1, Pro Plus 3, VT 4.1, VT Pro, VT3, VT4, VTX, Veo 1.0, Veo 180, Veo 2.0, Veo 200, Veo 250, Veo 3.0, Versa Pro
+Mares: Airlab, Darwin, Darwin Air, Icon HD, Icon HD Net Ready, M1, M2, Matrix, Nemo, Nemo Air, Nemo Apneist, Nemo Excel, Nemo Steel, Nemo Titanium, Nemo Wide, Nemo Wide 2, Puck, Puck 2, Puck Air, Puck Pro, Quad, Quad Air, Smart, Smart Air, Smart Apnea
+Oceanic: Atom 1.0, Atom 2.0, Atom 3.0, Atom 3.1, Datamask, F10, F11, Geo, Geo 2.0, OC1, OCS, OCi, Pro Plus 2, Pro Plus 2.1, Pro Plus 3, Pro Plus X, VT 4.1, VT Pro, VT3, VT4, VTX, Veo 1.0, Veo 180, Veo 2.0, Veo 200, Veo 250, Veo 3.0, Versa Pro
 Ratio: iDive Deep, iDive Easy, iDive Free, iDive Tech+, iX3M Deep, iX3M Easy, iX3M Pro Deep, iX3M Pro Easy, iX3M Pro Tech+, iX3M Reb, iX3M Tech+
 Reefnet: Sensus, Sensus Pro, Sensus Ultra
 Scubapro: Aladin Sport Matrix, Aladin Square, Chromis, G2, G2 Console, Mantis, Mantis 2, Meridian, XTender 5
 Seabaer: T1, H3, HUDC
 Seac: Guru, Jack
 Seemann: XP5
-Shearwater: Nerd, Nerd 2, Perdix, Perdix AI, Petrel, Petrel 2, Predator
+Shearwater: Nerd, Nerd 2, Perdix, Perdix AI, Petrel, Petrel 2, Predator, Teric
 Sherwood: Amphos, Amphos Air, Insight, Insight 2, Vision, Wisdom, Wisdom 2, Wisdom 3
 Subgear: XP Air, XP-10, XP-3G, XP-Air
 Suunto: Cobra, Cobra 2, Cobra 3, D3, D4, D4f, D4i, D6, D6i, D9, D9tx, DX, EON Core, EON Steel, Eon, Gekko, HelO2, Mosquito, Solution, Solution Alpha, Solution Nitrox, Spyder, Stinger, Vyper, Vyper 2, Vyper Air, Vyper Novo, Vytec, Zoop, Zoop Novo

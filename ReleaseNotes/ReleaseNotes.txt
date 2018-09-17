@@ -8,7 +8,7 @@ New in _Subsurface_ 4.8.2
 - Desktop: disable UI elements that make no sense during editing [#1445]
 - Desktop: Add anonymization option to divelog export
 - Desktop: remove UI components of the Webservice GPS import
-- Desktop: add support for USB download from the Garmin Descent Mk1
+- Desktop: add support for USB storgae style downloads (e.g. Garmin Descent Mk1)
 - Desktop: fix issue with dive list row height in case of larger fonts [#1600]
 - Desktop: fix a bug where it is possible for the user to hide all divelist columns [#1600]
 - Desktop: allow buddies to be shown in the divelist [#1587]
@@ -35,6 +35,11 @@ New in _Subsurface_ 4.8.2
 - Mobile: show developer menu is now saved on disk and remebered between start of Subsurface
 - Android: switch to Download page when dive computer is plugged in and try to
   populate vendor / device / connection based on the information we get
+- Dive computer support:
+  - add Garmin Descent Mk1
+  - add Shearwater Teric
+  - add Mares Smart Air
+  - add Oceanic Pro Plus X
 
 New in _Subsurface_ 4.8.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
