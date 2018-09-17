@@ -2367,13 +2367,13 @@ asukohta:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
-        <source>Load image(s) from file(s)</source>
-        <translation>Lae pilt (pildid) faili(de)st</translation>
+        <source>Load media from file(s)</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
-        <source>Load image from web</source>
-        <translation>Lae pilt veebist</translation>
+        <source>Load media from web</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="922"/>
@@ -2488,7 +2488,7 @@ asukohta:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="262"/>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
         <source>Selected dives</source>
         <translation>Valitud sukeldumised</translation>
     </message>
@@ -2499,117 +2499,122 @@ asukohta:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="285"/>
-        <source>CSV units</source>
-        <translation>CSV mõõtühikud</translation>
+        <source>Options</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="298"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
         <source>Metric</source>
         <translation>SI</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="303"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="306"/>
         <source>Imperial</source>
         <translation>Briti/Ameerika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="316"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
+        <source>Anonymize</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="332"/>
         <source>HTML</source>
         <translation>HTML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="334"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="350"/>
         <source>General settings</source>
         <translation>Üldised seaded</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="340"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
         <source>Subsurface numbers</source>
         <translation>Subsurface numbrid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="369"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
         <source>Export yearly statistics</source>
         <translation>Ekspordi aastased statistikad</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="401"/>
         <source>All di&amp;ves</source>
         <translation>Kõik su&amp;keldumised</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="395"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="411"/>
         <source>Export list only</source>
         <translation>Ekspordi ainult nimekiri</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="402"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
         <source>Export photos</source>
         <translation>Ekspordi fotod</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="434"/>
         <source>Style options</source>
         <translation>Stiili valikud</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="433"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="449"/>
         <source>Font</source>
         <translation>Font</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="443"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
         <source>Font size</source>
         <translation>Fondi suurus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="454"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="470"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="475"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="464"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="480"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="469"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="485"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="490"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="479"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="495"/>
         <source>18</source>
         <translation>18</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="484"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="500"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="492"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
         <source>Theme</source>
         <translation>Teema</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="503"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="519"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <source>Light</source>
         <translation>Valgus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="524"/>
         <source>Sand</source>
         <translation>Liiv</translation>
     </message>
@@ -4121,7 +4126,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GpsLocation</name>
     <message>
-        <location filename="../core/gpslocation.cpp" line="135"/>
+        <location filename="../core/gpslocation.cpp" line="139"/>
         <source>Unknown GPS location (no GPS source)</source>
         <translation type="unfinished"/>
     </message>
@@ -4308,8 +4313,8 @@ Oled kindel et soovid jätkata?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="27"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="447"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="534"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="573"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="542"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="583"/>
         <source>Notes</source>
         <translation>Märkmed</translation>
     </message>
@@ -4330,19 +4335,19 @@ Oled kindel et soovid jätkata?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="107"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="307"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="312"/>
         <source>Air temp.</source>
         <translation>Õhu temp.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="117"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="308"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="313"/>
         <source>Water temp.</source>
         <translation>Vee temp.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="572"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="582"/>
         <source>Location</source>
         <translation>Asukoht</translation>
     </message>
@@ -4457,53 +4462,53 @@ Oled kindel et soovid jätkata?</translation>
         <translation>Lisa raskuste süsteem</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="304"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="309"/>
         <source>Air temp. [%1]</source>
         <translation>Õhu temp. [%1]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="305"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="310"/>
         <source>Water temp. [%1]</source>
         <translation>Vee temp. [%1]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="345"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="353"/>
         <source>This trip is being edited.</source>
         <translation>Seda väljasõitu toimetatakse</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="352"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="360"/>
         <source>Multiple dives are being edited.</source>
         <translation>Mitut sukeldumist toimetatakse</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="354"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="362"/>
         <source>This dive is being edited.</source>
         <translation>Seda sukeldumist toimetatakse.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="482"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="522"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="490"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="530"/>
         <source>Trip notes</source>
         <translation>Väljasõidu märkmed</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="517"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="525"/>
         <source>Trip location</source>
         <translation>Väljasõidu koht</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="738"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="748"/>
         <source>New dive site</source>
         <translation>Uus sukeldumiskoht</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1034"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1044"/>
         <source>Discard the changes?</source>
         <translation>Loobu muudatustest?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1035"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1045"/>
         <source>You are about to discard your changes.</source>
         <translation>Oled muudatustest loobumas.</translation>
     </message>
@@ -4521,419 +4526,414 @@ Oled kindel et soovid jätkata?</translation>
         <translation>&amp;Logi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="99"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="98"/>
         <source>&amp;View</source>
         <translation>&amp;Vaade</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="115"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="114"/>
         <source>&amp;Help</source>
         <translation>&amp;Abi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="124"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="123"/>
         <source>&amp;Import</source>
         <translation>&amp;Import</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="132"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="131"/>
         <source>&amp;Edit</source>
         <translation>&amp;Toimeta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="137"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="136"/>
         <source>Share on</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="151"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="150"/>
         <source>&amp;New logbook</source>
         <translation>&amp;Uus logiraamat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="154"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="153"/>
         <source>New</source>
         <translation>Uus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="162"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="161"/>
         <source>&amp;Open logbook</source>
         <translation>&amp;Ava logiraamat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="165"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="164"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="567"/>
         <source>Open</source>
         <translation>Ava</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="173"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="172"/>
         <source>&amp;Save</source>
         <translation>&amp;Salvesta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="176"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="175"/>
         <source>Save</source>
         <translation>Salvesta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="184"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="183"/>
         <source>Sa&amp;ve as</source>
         <translation>Sa&amp;lvesta nimega</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="187"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="186"/>
         <source>Save as</source>
         <translation>Salvesta nimega</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="195"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="194"/>
         <source>&amp;Close</source>
         <translation>&amp;Sulge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="198"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="197"/>
         <source>Close</source>
         <translation>Sulge</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="206"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="205"/>
         <source>&amp;Print</source>
         <translation>&amp;Väljastus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="214"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="213"/>
         <source>P&amp;references</source>
         <translation>Eelistused</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="225"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="224"/>
         <source>&amp;Quit</source>
         <translation>&amp;Välju</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="236"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="235"/>
         <source>Import from &amp;dive computer</source>
         <translation>Impordi &amp;sukeldumiskompuutrist</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="244"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="243"/>
         <source>Edit device &amp;names</source>
         <translation>Toimeta seadme &amp;nimed</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="249"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="248"/>
         <source>&amp;Add dive</source>
         <translation>&amp;Lisa sukeldumine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="257"/>
-        <source>&amp;Edit dive</source>
-        <translation>&amp;Toimeta sukeldumist</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="262"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="256"/>
         <source>&amp;Copy dive components</source>
         <translation>&amp;Kopeeri sukeldumise komponendid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="270"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="264"/>
         <source>&amp;Paste dive components</source>
         <translation>&amp;kleebi sukeldumise komponendid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="278"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="272"/>
         <source>&amp;Renumber</source>
         <translation>&amp;Nummerda ümber</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="289"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="283"/>
         <source>Auto &amp;group</source>
         <translation>Automaatne grupeerimine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="294"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="288"/>
         <source>&amp;Yearly statistics</source>
         <translation>&amp;Aastane statistika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="302"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="296"/>
         <source>&amp;Dive list</source>
         <translation>&amp;Sukeldumiste nimekiri</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="310"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="304"/>
         <source>&amp;Profile</source>
         <translation>&amp;Profiil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="318"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="312"/>
         <source>&amp;Info</source>
         <translation>&amp;info</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="326"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="320"/>
         <source>&amp;All</source>
         <translation>&amp;Kõik</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="334"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="328"/>
         <source>P&amp;revious DC</source>
         <translation>&amp;Eelmine sukeldumiskompuuter</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="342"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="336"/>
         <source>&amp;Next DC</source>
         <translation>&amp;Järgmine sukeldumiskompuuter</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="350"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="344"/>
         <source>&amp;About Subsurface</source>
         <translation>Subsurface kohta</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="358"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="352"/>
         <source>User &amp;manual</source>
         <translation>Kasutaja &amp;juhend</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="366"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="360"/>
         <source>&amp;Map</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="374"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="368"/>
         <source>P&amp;lan dive</source>
         <translation>P&amp;laneeri sukeldumine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="382"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="376"/>
         <source>&amp;Import log files</source>
         <translation>&amp;Impordi logifailid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="385"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="379"/>
         <source>Import divelog files from other applications</source>
         <translation>Impordi sukeldumislogi failid teistest rakendustest</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="393"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>Import &amp;from divelogs.de</source>
         <translation>Import divelogs.de-st</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="401"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="395"/>
         <source>&amp;Full screen</source>
         <translation>&amp;Täisekraan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="404"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
         <source>Toggle full screen</source>
         <translation>Kuva täisekraan</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="412"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="406"/>
         <source>&amp;Check for updates</source>
         <translation>Kontrolli uuendusi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="417"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="411"/>
         <source>&amp;Export</source>
         <translation>&amp;Eksport</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="420"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="414"/>
         <source>Export dive logs</source>
         <translation>Ekspordi sukeldumiste logid</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="428"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="422"/>
         <source>Configure &amp;dive computer</source>
         <translation>Seadista &amp;dive kompuuter</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="439"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Edit &amp;dive in planner</source>
         <translation>Toimeta &amp;sukeldumine planeerijas</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="451"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="445"/>
         <source>Toggle pO₂ graph</source>
         <translation>pO₂ graaf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="463"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="457"/>
         <source>Toggle pN₂ graph</source>
         <translation>pN₂ graaf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="475"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="469"/>
         <source>Toggle pHe graph</source>
         <translation>pHe graaf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="487"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="481"/>
         <source>Toggle DC reported ceiling</source>
         <translation>Sukeldumiskompuutri poolt antud lagi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="499"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="493"/>
         <source>Toggle calculated ceiling</source>
         <translation>Arvutatud lagi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="511"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="505"/>
         <source>Toggle calculating all tissues</source>
         <translation>Kõik koed</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="523"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="517"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation>Arvutatud lagi 3m intervalliga</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="535"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="529"/>
         <source>Toggle heart rate</source>
         <translation>Südame pulss</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="547"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="541"/>
         <source>Toggle MOD</source>
         <translation>MOD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="559"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="553"/>
         <source>Toggle EAD, END, EADD</source>
         <translation>EAD, END, EADD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="571"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="565"/>
         <source>Toggle NDL, TTS</source>
         <translation>NDL, TTS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="583"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="577"/>
         <source>Toggle SAC rate</source>
         <translation>SAC määr</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="595"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="589"/>
         <source>Toggle ruler</source>
         <translation>Joonlaud</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="607"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="601"/>
         <source>Scale graph</source>
         <translation>Skaleeri graaf</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="619"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="613"/>
         <source>Toggle media</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="680"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="674"/>
         <source>&amp;Find moved media files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="625"/>
         <source>Toggle gas bar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="639"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="633"/>
         <source>&amp;Filter divelist</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="654"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
         <source>Toggle tissue heat-map</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="659"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="653"/>
         <source>User &amp;survey</source>
         <translation>Kasutajaküsitlus</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="664"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="658"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="261"/>
         <source>&amp;Undo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="672"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="251"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="666"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="262"/>
         <source>&amp;Redo</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="685"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="679"/>
         <source>Open c&amp;loud storage</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="690"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="684"/>
         <source>Save to clo&amp;ud storage</source>
         <translation>Salvesta pilve</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="695"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="689"/>
         <source>&amp;Manage dive sites</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="700"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="694"/>
         <source>Dive Site &amp;Edit</source>
         <translation>Sukeldumiskoha toimetamine</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="705"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="699"/>
         <source>Facebook</source>
         <translation>Facebook</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="707"/>
         <source>Cloud storage online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="414"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="425"/>
         <source>Connect to</source>
         <translation>Ühenda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="408"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="419"/>
         <source>Disconnect from</source>
         <translation>Ühenda lahti</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1620"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="558"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="603"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1589"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Enne uue faili avamist salvesta või katkesta käesoleva sukeldumise toimetamine.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
         <source>Open file</source>
         <translation>Ava fail</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="568"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1984"/>
         <source>Cancel</source>
         <translation>Loobu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="724"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="667"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="718"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="863"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="981"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1845"/>
         <source>Warning</source>
         <translation>Hoiatus</translation>
     </message>
@@ -4943,12 +4943,12 @@ Oled kindel et soovid jätkata?</translation>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="282"/>
         <source>Template backup created</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="272"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="283"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4962,212 +4962,212 @@ can overwrite them on startup.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="667"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="680"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="696"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Failure taking cloud storage online</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="759"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Enne faili sulgemist salvesta või katkesta käesoleva sukeldumise toimetamine.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="863"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Enne sukeldumise lisamist salvesta või katkesta käesoleva sukeldumise toimetamine.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="929"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="923"/>
         <source>Print runtime table</source>
         <translation>Väljasta jooksva aja tabel</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="981"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1845"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Lõpeta praegune toimetamine enne järgmise alustamist.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1111"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1097"/>
         <source>Yearly statistics</source>
         <translation>Aastane statistika</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1320"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
         <source>Dive log files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1649"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1382"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1618"/>
         <source>Subsurface files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1341"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
         <source>Cochran</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1413"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1342"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
         <source>DiveLogs.de</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1343"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
         <source>JDiveLog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1344"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
         <source>Liquivision</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
         <source>Suunto</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1417"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1346"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
         <source>UDCF</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1418"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1390"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1375"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1348"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1391"/>
         <source>XML</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1376"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1349"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1392"/>
         <source>Divesoft</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1421"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1350"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
         <source>Datatrak/WLog</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1422"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1351"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1394"/>
         <source>MkVI files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1379"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1352"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1395"/>
         <source>APD log viewer</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1353"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1396"/>
         <source>OSTCtools</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1354"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1397"/>
         <source>DAN DL7</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1398"/>
         <source>All files</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Kas soovid salvestada muudatused mis tegid faili %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1440"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Kas soovid salvestada muudatused mis tegid andmefaili?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
         <source>Save changes?</source>
         <translation>Salvesta muudatused?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Muudatusi lähevad kaotsi kui neid ei salvestata.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1648"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1617"/>
         <source>Save file as</source>
         <translation>Salvesta nimega</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1736"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1705"/>
         <source>[local cache for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1738"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1706"/>
         <source>[cloud storage for] %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1798"/>
         <source>Opening datafile from older version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1831"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1799"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1842"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1810"/>
         <source>Open dive log file</source>
         <translation>Ava sukeldumislogi fail</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1984"/>
         <source>Contacting cloud service...</source>
         <translation type="unfinished"/>
     </message>
@@ -6421,110 +6421,110 @@ Please export this template to a different file.</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="407"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="491"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="483"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Palun sisesta kehtivad pilve volitused.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="447"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="439"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Invalid format for email address</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="502"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="494"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Üritan avada pilvesalvestit uute volitustega</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="516"/>
         <source>Testing cloud credentials</source>
         <translation>Pilve volituste testimine</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="547"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>Incorrect cloud credentials</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="545"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="572"/>
         <source>Cloud credentials are invalid</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="586"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="600"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>Ei saa avada pilve salvestit: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="621"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="613"/>
         <source>Cannot connect to cloud storage</source>
         <translation>Ei saa ühendust pilve salvestiga</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="626"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="618"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="636"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="628"/>
         <source>Cloud storage error: %1</source>
         <translation>Pilve salvesti viga: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="682"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="674"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="753"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="745"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Pilve salvesti avamine õnnestus. Sukeldumiste nimekiri on tühi.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="932"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="924"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1358"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1350"/>
         <source>Unknown GPS location</source>
         <translation>Tundmatu GPS koht</translation>
     </message>
@@ -6532,7 +6532,7 @@ Please export this template to a different file.</source>
 <context>
     <name>QMLPrefs</name>
     <message>
-        <location filename="../mobile-widgets/qmlprefs.cpp" line="178"/>
+        <location filename="../mobile-widgets/qmlprefs.cpp" line="133"/>
         <source>Starting...</source>
         <translation>Alustan...</translation>
     </message>
@@ -6690,60 +6690,60 @@ Please export this template to a different file.</source>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="111"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="163"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="214"/>
         <source>regular text</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="126"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="178"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="231"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="177"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="229"/>
         <source>Highlight</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="149"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="148"/>
         <source>Pink</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="201"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="199"/>
         <source>Dark</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="265"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="262"/>
         <source>Subsurface GPS data webservice</source>
         <translation>Subsurface GPS andmete veebiteenus</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="274"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="271"/>
         <source>Distance threshold (meters)</source>
         <translation>Vahemaa lävi (m)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="286"/>
         <source>Time threshold (minutes)</source>
         <translation>Aja lävi (minutid)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="318"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="313"/>
         <source>Default Cylinder</source>
         <translation>Vaikimisi balloon</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="327"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="322"/>
         <source>Cylinder:</source>
         <translation>Balloon:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="347"/>
         <source>Developer</source>
         <translation>Arendaja</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="361"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="356"/>
         <source>Display Developer menu</source>
         <translation type="unfinished"/>
     </message>
@@ -8246,17 +8246,17 @@ Keel: %1</translation>
 <context>
     <name>YearStatisticsItem</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>sec</source>
         <translation>sek</translation>
     </message>
@@ -8264,79 +8264,79 @@ Keel: %1</translation>
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="125"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="126"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>Aasta
  &gt; Kuu / väljasõit</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="128"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="129"/>
         <source>#</source>
         <translation>#</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="131"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="132"/>
         <source>Duration 
  Total</source>
         <translation>Kestus
 kokku</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="134"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="135"/>
         <source>
 Average</source>
         <translation>
 Keskmine</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="137"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="138"/>
         <source>
 Shortest</source>
         <translation>
 Lühim</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="140"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="141"/>
         <source>
 Longest</source>
         <translation>
 Pikim</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="143"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="144"/>
         <source>Depth (%1)
  Average</source>
         <translation>Sügavus (%1)
 keskmine</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="146"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="155"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="164"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="147"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="156"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="165"/>
         <source>
 Minimum</source>
         <translation>
 Min</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="149"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="158"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="167"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="150"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="159"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="168"/>
         <source>
 Maximum</source>
         <translation>
 Max</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="152"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="153"/>
         <source>SAC (%1)
  Average</source>
         <translation>SAC (%1)
  keskmine</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="161"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="162"/>
         <source>Temp. (%1)
  Average</source>
         <translation>Temp. (%1)
@@ -9285,7 +9285,7 @@ You can create this logfile by selecting the corresponding checkbox in the downl
         <translation>&apos;%s&apos; tuvastamine ebaõnnestus</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2136"/>
+        <location filename="../core/parse-xml.c" line="2222"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Ei suuda avada stiililehte %s</translation>
     </message>
@@ -10729,7 +10729,7 @@ Is the Uemis Zurich plugged in correctly?</source>
         <translation>Eemalda punkt</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation type="unfinished"/>
     </message>

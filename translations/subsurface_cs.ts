@@ -2369,13 +2369,13 @@ GPS polohu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
-        <source>Load image(s) from file(s)</source>
-        <translation>Nahrát obrázek(y) ze souboru(ů)</translation>
+        <source>Load media from file(s)</source>
+        <translation>Nahrát záznam(y) ze souboru(ů)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
-        <source>Load image from web</source>
-        <translation>Nahrát obrázek z webu</translation>
+        <source>Load media from web</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="922"/>
@@ -2490,7 +2490,7 @@ GPS polohu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="262"/>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="372"/>
         <source>Selected dives</source>
         <translation>Vybrané ponory</translation>
     </message>
@@ -2501,117 +2501,122 @@ GPS polohu:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="285"/>
-        <source>CSV units</source>
-        <translation>Jednotky CSV</translation>
+        <source>Options</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="298"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
         <source>Metric</source>
         <translation>Metrické</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="303"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="306"/>
         <source>Imperial</source>
         <translation>Imperiální</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="316"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
+        <source>Anonymize</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="332"/>
         <source>HTML</source>
         <translation>HTML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="334"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="350"/>
         <source>General settings</source>
         <translation>Obecná nastavení</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="340"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="356"/>
         <source>Subsurface numbers</source>
         <translation>Čísla Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="369"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
         <source>Export yearly statistics</source>
         <translation>Uložit roční statistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="385"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="401"/>
         <source>All di&amp;ves</source>
         <translation>Všechny &amp;ponory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="395"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="411"/>
         <source>Export list only</source>
         <translation>Uložit pouze seznam</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="402"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
         <source>Export photos</source>
         <translation>Uložit fotografie</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="418"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="434"/>
         <source>Style options</source>
         <translation>Nastavení stylu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="433"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="449"/>
         <source>Font</source>
         <translation>Písmo</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="443"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
         <source>Font size</source>
         <translation>Velikost písma</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="454"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="470"/>
         <source>8</source>
         <translation>8</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="459"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="475"/>
         <source>10</source>
         <translation>10</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="464"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="480"/>
         <source>12</source>
         <translation>12</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="469"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="485"/>
         <source>14</source>
         <translation>14</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="474"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="490"/>
         <source>16</source>
         <translation>16</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="479"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="495"/>
         <source>18</source>
         <translation>18</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="484"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="500"/>
         <source>20</source>
         <translation>20</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="492"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
         <source>Theme</source>
         <translation>Vzhled</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="503"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="519"/>
         <location filename="../desktop-widgets/divelogexportdialog.cpp" line="103"/>
         <source>Light</source>
         <translation>Světlý</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/divelogexportdialog.ui" line="508"/>
+        <location filename="../desktop-widgets/divelogexportdialog.ui" line="524"/>
         <source>Sand</source>
         <translation>Pískový</translation>
     </message>
@@ -4118,7 +4123,7 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>GpsLocation</name>
     <message>
-        <location filename="../core/gpslocation.cpp" line="135"/>
+        <location filename="../core/gpslocation.cpp" line="139"/>
         <source>Unknown GPS location (no GPS source)</source>
         <translation>Neznámá poloha GPS (žádný zdroj GPS)</translation>
     </message>
@@ -4305,8 +4310,8 @@ Jste si jisti, že chcete pokračovat?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="27"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="447"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="534"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="573"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="542"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="583"/>
         <source>Notes</source>
         <translation>Poznámky</translation>
     </message>
@@ -4327,19 +4332,19 @@ Jste si jisti, že chcete pokračovat?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="107"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="307"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="312"/>
         <source>Air temp.</source>
         <translation>Teplota vzduchu</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="117"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="308"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="313"/>
         <source>Water temp.</source>
         <translation>Teplota vody</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="572"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="582"/>
         <source>Location</source>
         <translation>Lokalita</translation>
     </message>
@@ -4454,53 +4459,53 @@ Jste si jisti, že chcete pokračovat?</translation>
         <translation>Přidat zátěž</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="304"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="309"/>
         <source>Air temp. [%1]</source>
         <translation>Teplota vzduchu [%1]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="305"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="310"/>
         <source>Water temp. [%1]</source>
         <translation>Teplota vody [%1]</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="345"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="353"/>
         <source>This trip is being edited.</source>
         <translation>Tento výlet je upravován.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="352"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="360"/>
         <source>Multiple dives are being edited.</source>
         <translation>Je upravováno více ponorů.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="354"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="362"/>
         <source>This dive is being edited.</source>
         <translation>Tento ponor je upravován.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="482"/>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="522"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="490"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="530"/>
         <source>Trip notes</source>
         <translation>Poznámky k výletu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="517"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="525"/>
         <source>Trip location</source>
         <translation>Lokalita výletu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="738"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="748"/>
         <source>New dive site</source>
         <translation>Nová potápěčská lokalita</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1034"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1044"/>
         <source>Discard the changes?</source>
         <translation>Zahodit změny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1035"/>
+        <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="1045"/>
         <source>You are about to discard your changes.</source>
         <translation>Chystáte se zahodit změny.</translation>
     </message>
@@ -4518,419 +4523,414 @@ Jste si jisti, že chcete pokračovat?</translation>
         <translation>&amp;Ponory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="99"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="98"/>
         <source>&amp;View</source>
         <translation>&amp;Pohled</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="115"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="114"/>
         <source>&amp;Help</source>
         <translation>&amp;Nápověda</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="124"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="123"/>
         <source>&amp;Import</source>
         <translation>&amp;Náhrát</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="132"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="131"/>
         <source>&amp;Edit</source>
         <translation>Úp&amp;ravy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="137"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="136"/>
         <source>Share on</source>
         <translation>Sdílení</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="151"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="150"/>
         <source>&amp;New logbook</source>
         <translation>&amp;Nový deník</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="154"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="153"/>
         <source>New</source>
         <translation>Nový</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="162"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="161"/>
         <source>&amp;Open logbook</source>
         <translation>&amp;Otevřít deník</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="165"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="573"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="164"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="567"/>
         <source>Open</source>
         <translation>Otevřít</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="173"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="172"/>
         <source>&amp;Save</source>
         <translation>&amp;Uložit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="176"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="175"/>
         <source>Save</source>
         <translation>Uložit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="184"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="183"/>
         <source>Sa&amp;ve as</source>
         <translation>Uložit &amp;jako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="187"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="186"/>
         <source>Save as</source>
         <translation>Uložit jako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="195"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="194"/>
         <source>&amp;Close</source>
         <translation>&amp;Zavřít</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="198"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="197"/>
         <source>Close</source>
         <translation>Zavřít</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="206"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="205"/>
         <source>&amp;Print</source>
         <translation>&amp;Tisk</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="214"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="213"/>
         <source>P&amp;references</source>
         <translation>&amp;Nastavení</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="225"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="224"/>
         <source>&amp;Quit</source>
         <translation>&amp;Ukončit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="236"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="235"/>
         <source>Import from &amp;dive computer</source>
         <translation>Náhrát z potápěčského počítače</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="244"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="243"/>
         <source>Edit device &amp;names</source>
         <translation>Upravit zařízení a &amp;názvy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="249"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="248"/>
         <source>&amp;Add dive</source>
         <translation>&amp;Přidat ponor</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="257"/>
-        <source>&amp;Edit dive</source>
-        <translation>&amp;Upravit ponor</translation>
-    </message>
-    <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="262"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="256"/>
         <source>&amp;Copy dive components</source>
         <translation>&amp;Kopírovat data ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="270"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="264"/>
         <source>&amp;Paste dive components</source>
         <translation>&amp;Vložit data ponoru</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="278"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="272"/>
         <source>&amp;Renumber</source>
         <translation>&amp;Přečíslovat</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="289"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="283"/>
         <source>Auto &amp;group</source>
         <translation>&amp;Seskupit automaticky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="294"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="288"/>
         <source>&amp;Yearly statistics</source>
         <translation>&amp;Roční statistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="302"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="296"/>
         <source>&amp;Dive list</source>
         <translation>S&amp;eznam ponorů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="310"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="304"/>
         <source>&amp;Profile</source>
         <translation>&amp;Profil</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="318"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="312"/>
         <source>&amp;Info</source>
         <translation>&amp;Informace</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="326"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="320"/>
         <source>&amp;All</source>
         <translation>&amp;Vše</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="334"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="328"/>
         <source>P&amp;revious DC</source>
         <translation>&amp;Předchozí potápěčský počítač</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="342"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="336"/>
         <source>&amp;Next DC</source>
         <translation>&amp;Následující potápěčský počítač</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="350"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="344"/>
         <source>&amp;About Subsurface</source>
         <translation>&amp;O programu Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="358"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="352"/>
         <source>User &amp;manual</source>
         <translation>Uživatelská &amp;příručka</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="366"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="360"/>
         <source>&amp;Map</source>
         <translation>&amp;Mapa</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="374"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="368"/>
         <source>P&amp;lan dive</source>
         <translation>&amp;Naplánovat ponor</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="382"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="376"/>
         <source>&amp;Import log files</source>
         <translation>&amp;Náhrát log soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="385"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="379"/>
         <source>Import divelog files from other applications</source>
         <translation>Náhrát soubory potápěčského deníku z jiné aplikace</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="393"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="387"/>
         <source>Import &amp;from divelogs.de</source>
         <translation>Náhrát &amp;z divelogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="401"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="395"/>
         <source>&amp;Full screen</source>
         <translation>&amp;Celá obrazovka</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="404"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="398"/>
         <source>Toggle full screen</source>
         <translation>Přepnout zobrazení na celou obrazovku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="412"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="406"/>
         <source>&amp;Check for updates</source>
         <translation>&amp;Zkontrolovat aktualizace</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="417"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="411"/>
         <source>&amp;Export</source>
         <translation>&amp;Uložit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="420"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="414"/>
         <source>Export dive logs</source>
         <translation>Uložit potápěčský deník</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="428"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="422"/>
         <source>Configure &amp;dive computer</source>
         <translation>Nastavit potápěčský počítač</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="439"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Edit &amp;dive in planner</source>
         <translation>&amp;Upravit ponor v plánovači</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="451"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="445"/>
         <source>Toggle pO₂ graph</source>
         <translation>Zobrazit pO₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="463"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="457"/>
         <source>Toggle pN₂ graph</source>
         <translation>Zobrazit pN₂</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="475"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="469"/>
         <source>Toggle pHe graph</source>
         <translation>Zobrazit pHe</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="487"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="481"/>
         <source>Toggle DC reported ceiling</source>
         <translation>Zobrazit strop vypočtený potápěčských počítačem</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="499"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="493"/>
         <source>Toggle calculated ceiling</source>
         <translation>Zobrazit vypočtený strop</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="511"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="505"/>
         <source>Toggle calculating all tissues</source>
         <translation>Zobrazit výpočet všech tkání</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="523"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="517"/>
         <source>Toggle calculated ceiling with 3m increments</source>
         <translation>Zobrazit vypočtený strop s 3m nárůstky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="535"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="529"/>
         <source>Toggle heart rate</source>
         <translation>Zobrazit tepovou frekvenci</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="547"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="541"/>
         <source>Toggle MOD</source>
         <translation>Zobrazit MOD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="559"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="553"/>
         <source>Toggle EAD, END, EADD</source>
         <translation>Zobrazit EAD, END, EADD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="571"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="565"/>
         <source>Toggle NDL, TTS</source>
         <translation>Zobrazit NDL, TTS</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="583"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="577"/>
         <source>Toggle SAC rate</source>
         <translation>Zobrazit SAC rate (rychlost spotřeby plynu)</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="595"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="589"/>
         <source>Toggle ruler</source>
         <translation>Zobrazit pravítko</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="607"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="601"/>
         <source>Scale graph</source>
         <translation>Změnit velikost grafu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="619"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="613"/>
         <source>Toggle media</source>
         <translation>Zobrazit záznamy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="680"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="674"/>
         <source>&amp;Find moved media files</source>
         <translation>&amp;Nalézt přesunuté soubory se záznamy</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="631"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="625"/>
         <source>Toggle gas bar</source>
         <translation>Zobrazit pruh plynů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="639"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="633"/>
         <source>&amp;Filter divelist</source>
         <translation>&amp;Filtrovat seznam ponorů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="654"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
         <source>Toggle tissue heat-map</source>
         <translation>Zobrazit heat mapu tkání</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="659"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="653"/>
         <source>User &amp;survey</source>
         <translation>Uživatelský průzkum</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="664"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="250"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="658"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="261"/>
         <source>&amp;Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="672"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="251"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="666"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="262"/>
         <source>&amp;Redo</source>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="685"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="679"/>
         <source>Open c&amp;loud storage</source>
         <translation>Otevřít &amp;serverové úložiště</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="690"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="684"/>
         <source>Save to clo&amp;ud storage</source>
         <translation>&amp;Uložit na serverové úložiště</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="695"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="689"/>
         <source>&amp;Manage dive sites</source>
         <translation>Správa potápěčských lokalit</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="700"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="694"/>
         <source>Dive Site &amp;Edit</source>
         <translation>&amp;Upravení potápěčské lokality</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="705"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="699"/>
         <source>Facebook</source>
         <translation>Facebook</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.ui" line="713"/>
+        <location filename="../desktop-widgets/mainwindow.ui" line="707"/>
         <source>Cloud storage online</source>
         <translation>Serverové úložiště online.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="414"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="425"/>
         <source>Connect to</source>
         <translation>Připojit k</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="408"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="419"/>
         <source>Disconnect from</source>
         <translation>Odpojit od</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="609"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1620"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="558"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="603"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1589"/>
         <source>Please save or cancel the current dive edit before opening a new file.</source>
         <translation>Před otevřením nového souboru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="570"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="564"/>
         <source>Open file</source>
         <translation>Otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="574"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="568"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1984"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="594"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="724"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="667"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="718"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="863"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="981"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1845"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -4940,12 +4940,12 @@ Jste si jisti, že chcete pokračovat?</translation>
         <translation>Pokus o sloučení ponorů s %1 min intervalem mezi nimi</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="271"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="282"/>
         <source>Template backup created</source>
         <translation>Záloha šablony vytvořena</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="272"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="283"/>
         <source>The following backup printing templates were created:
 
 %1
@@ -4968,214 +4968,214 @@ pouze pro čtení a neměly by být přímo editovány, protože aplikace
 je může při startu přepsat.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="673"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="667"/>
         <source>Please save or cancel the current dive edit before going online</source>
         <translation>Před online připojením prosím uložte nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="686"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="680"/>
         <source>You have unsaved changes. Do you want to commit them to the cloud storage?
 If answering no, the cloud will only be synced on next call to &quot;Open cloud storage&quot; or &quot;Save to cloud storage&quot;.</source>
         <translation>Máte neuložené změny. Chcete je odeslat na serverové úložiště?
 Pokud odpovíte ne, serverové úložiště bude synchronizováno pouze při příštím volání &quot;Otevřít serverové úložiště&quot; nebo &quot;Uložit do serverového úložiště&quot;.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="696"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="690"/>
         <source>Failure taking cloud storage online</source>
         <translation>Chyba online připojení serverového úložiště.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="765"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="759"/>
         <source>Please save or cancel the current dive edit before closing the file.</source>
         <translation>Před zavřením souboru přosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="869"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="863"/>
         <source>Please save or cancel the current dive edit before trying to add a dive.</source>
         <translation>Před přidáním ponoru prosím uložte, nebo zrušte nynější úpravy ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="929"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="923"/>
         <source>Print runtime table</source>
         <translation>Vypsat tabulku koncových časů</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="987"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="981"/>
         <source>Trying to replan a dive that&apos;s not a planned dive.</source>
         <translation>Pokus o přeplánování ponoru, který není plánem ponoru.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1877"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1845"/>
         <source>Please, first finish the current edition before trying to do another.</source>
         <translation>Před prováděním dalších úprav dokončete stávající úpravy.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1111"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1097"/>
         <source>Yearly statistics</source>
         <translation>Roční statistiky</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1320"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1361"/>
         <source>Dive log files</source>
         <translation>Soubory potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1367"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1410"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1649"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1340"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1382"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1618"/>
         <source>Subsurface files</source>
         <translation>Soubory Subsurface</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1368"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1411"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1341"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1383"/>
         <source>Cochran</source>
         <translation>Cochran</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1369"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1413"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1342"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1385"/>
         <source>DiveLogs.de</source>
         <translation>DiveLogs.de</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1370"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1343"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1386"/>
         <source>JDiveLog</source>
         <translation>JDiveLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1371"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1344"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1387"/>
         <source>Liquivision</source>
         <translation>Liquivision</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1372"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1416"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1345"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1388"/>
         <source>Suunto</source>
         <translation>Suunto</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1373"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1417"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1346"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1389"/>
         <source>UDCF</source>
         <translation>UDCF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1374"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1418"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1347"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1390"/>
         <source>UDDF</source>
         <translation>UDDF</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1375"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1419"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1348"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1391"/>
         <source>XML</source>
         <translation>XML</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1376"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1420"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1349"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1392"/>
         <source>Divesoft</source>
         <translation>Divesoft</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1377"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1421"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1350"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1393"/>
         <source>Datatrak/WLog</source>
         <translation>Datatrak/WLog</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1378"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1422"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1351"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1394"/>
         <source>MkVI files</source>
         <translation>MkVI soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1379"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1423"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1352"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1395"/>
         <source>APD log viewer</source>
         <translation>Prohlížeč záznamů APD</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1380"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1424"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1353"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1396"/>
         <source>OSTCtools</source>
         <translation>OSTCtools</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1381"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1425"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1354"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1397"/>
         <source>DAN DL7</source>
         <translation>DAN DL7</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1412"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1384"/>
         <source>CSV</source>
         <translation>CSV</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1426"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1398"/>
         <source>All files</source>
         <translation>Všechny soubory</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1437"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1408"/>
         <source>Do you want to save the changes that you made in the file %1?</source>
         <translation>Chcete uložit změny provedené v souboru %1?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1440"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1409"/>
         <source>Do you want to save the changes that you made in the data file?</source>
         <translation>Chcete uložit změny provedené v souboru s daty?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="685"/>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1445"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="679"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1414"/>
         <source>Save changes?</source>
         <translation>Uložit změny?</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1446"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1415"/>
         <source>Changes will be lost if you don&apos;t save them.</source>
         <translation>Změny budou ztraceny, pokud je neuložíte.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1648"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1617"/>
         <source>Save file as</source>
         <translation>Uložit soubor jako</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1736"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1705"/>
         <source>[local cache for] %1</source>
         <translation>[místní vyrovnávací paměť pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1738"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1706"/>
         <source>[cloud storage for] %1</source>
         <translation>[serverové úložiště pro] %1</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1830"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1798"/>
         <source>Opening datafile from older version</source>
         <translation>Otevírání datového souboru ze starší verze</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1831"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1799"/>
         <source>You opened a data file from an older version of Subsurface. We recommend you read the manual to learn about the changes in the new version, especially about dive site management which has changed significantly.
 Subsurface has already tried to pre-populate the data but it might be worth while taking a look at the new dive site management system and to make sure that everything looks correct.</source>
         <translation>Otevřeli jste datový soubor starší verze Subsurface. Doporučujeme vám přečíst příručku, abyste zjistili změny v nové verzi, zvláště o správě potápěčských lokalit, která se značně změnila.
 Subsurface se pokusil předvyplnit data, ale může být užitečné podívat se na systém nové správy potápěčských lokalit a ujistit se, že vše vypadá správně.</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="1842"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1810"/>
         <source>Open dive log file</source>
         <translation>Otevřít soubor potápěčského deníku</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="2016"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="1984"/>
         <source>Contacting cloud service...</source>
         <translation>Spojení se serverovou službou...</translation>
     </message>
@@ -6435,110 +6435,110 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="407"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="491"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="483"/>
         <source>Please enter valid cloud credentials.</source>
         <translation>Prosím zadejte platné přístupové údaje k serveru.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="447"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="439"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
         <translation>E-mail a heslo k serverovému úložišti mohou obsahovat pouze písmena, čísla a &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, &apos;+&apos;.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="453"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="445"/>
         <source>Invalid format for email address</source>
         <translation>Neplatný formát pro adresy elektronické pošty</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="502"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="494"/>
         <source>Attempting to open cloud storage with new credentials</source>
         <translation>Pokus o otevření serverového úložiště s novými přístupovými údaji</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="524"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="516"/>
         <source>Testing cloud credentials</source>
         <translation>Zkoušení přístupových údajů k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="531"/>
         <source>No response from cloud server to validate the credentials</source>
         <translation>Žádná odpověď serveru k ověření přístupových údajů</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="547"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="539"/>
         <source>Incorrect cloud credentials</source>
         <translation>Nesprávné přístupové údaje k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="553"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="545"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
         <translation>Nelze se připojit k serverovému úložišti - serverový účet neověřen</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="580"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="572"/>
         <source>Cloud credentials are invalid</source>
         <translation>Neplatné přístupové údaje k serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="594"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="586"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
         <translation>Nelze otevřít serverové úložiště: Chyba vytvoření https spojení</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="608"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="600"/>
         <source>Cannot open cloud storage: %1</source>
         <translation>Nelze otevřít serverové úložiště: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="621"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="613"/>
         <source>Cannot connect to cloud storage</source>
         <translation>Nelze se připojit k serverovému úložišti</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="626"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="618"/>
         <source>Cloud credentials valid, loading dives...</source>
         <translation>Přihlašovací údaje k serveru platné. Nahrávají se ponory...</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="636"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="628"/>
         <source>Cloud storage error: %1</source>
         <translation>Chyba serverového úložiště: %1</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="682"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="674"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
         <translation>Nahrávají se ponory s místního úložiště (režim žádný server)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="728"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="720"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
         <translation>Selhalo připojení k serveru, návrat ke stavu bez serveru</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="753"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="745"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
         <translation>Serverové úložiště úspěšně otevřeno. Žádné ponory v seznamu.</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="931"/>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="932"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="924"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="930"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
         <source>sec</source>
         <translation>s</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qmlmanager.cpp" line="1358"/>
+        <location filename="../mobile-widgets/qmlmanager.cpp" line="1350"/>
         <source>Unknown GPS location</source>
         <translation>Neznámá GPS pozice</translation>
     </message>
@@ -6546,7 +6546,7 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
 <context>
     <name>QMLPrefs</name>
     <message>
-        <location filename="../mobile-widgets/qmlprefs.cpp" line="178"/>
+        <location filename="../mobile-widgets/qmlprefs.cpp" line="133"/>
         <source>Starting...</source>
         <translation>Spouštění...</translation>
     </message>
@@ -6704,60 +6704,60 @@ Uložte, prosím, šablonu do jiného souboru.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="111"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="163"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="216"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="162"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="214"/>
         <source>regular text</source>
         <translation>regulární text</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="126"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="178"/>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="231"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="177"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="229"/>
         <source>Highlight</source>
         <translation>Zvýraznění</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="149"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="148"/>
         <source>Pink</source>
         <translation>Růžová</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="201"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="199"/>
         <source>Dark</source>
         <translation>Tmavá</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="265"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="262"/>
         <source>Subsurface GPS data webservice</source>
         <translation>Subsurface GPS webová služba</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="274"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="271"/>
         <source>Distance threshold (meters)</source>
         <translation>Práh vzdálenosti (metry)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="290"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="286"/>
         <source>Time threshold (minutes)</source>
         <translation>Práh času (minuty)</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="318"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="313"/>
         <source>Default Cylinder</source>
         <translation>Výchozí lahev</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="327"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="322"/>
         <source>Cylinder:</source>
         <translation>Lahev:</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="352"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="347"/>
         <source>Developer</source>
         <translation>Vývojář</translation>
     </message>
     <message>
-        <location filename="../mobile-widgets/qml/Settings.qml" line="361"/>
+        <location filename="../mobile-widgets/qml/Settings.qml" line="356"/>
         <source>Display Developer menu</source>
         <translation>Zobrazit vývojářskou nabídku</translation>
     </message>
@@ -8264,17 +8264,17 @@ Jazyk: %1</translation>
 <context>
     <name>YearStatisticsItem</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>h</source>
         <translation>h</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>min</source>
         <translation>min</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="62"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="63"/>
         <source>sec</source>
         <translation>s</translation>
     </message>
@@ -8282,79 +8282,79 @@ Jazyk: %1</translation>
 <context>
     <name>YearlyStatisticsModel</name>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="125"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="126"/>
         <source>Year 
  &gt; Month / Trip</source>
         <translation>Rok 
  &gt; Měsíc / Výlet</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="128"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="129"/>
         <source>#</source>
         <translation>Počet</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="131"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="132"/>
         <source>Duration 
  Total</source>
         <translation>Doba trvání
 Celkem</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="134"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="135"/>
         <source>
 Average</source>
         <translation>
 Průměr</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="137"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="138"/>
         <source>
 Shortest</source>
         <translation>
 Nejkratší</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="140"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="141"/>
         <source>
 Longest</source>
         <translation>
 Nejdelší</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="143"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="144"/>
         <source>Depth (%1)
  Average</source>
         <translation>Hloubka (%1)
 Průměr</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="146"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="155"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="164"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="147"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="156"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="165"/>
         <source>
 Minimum</source>
         <translation>
 Nejmenší</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="149"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="158"/>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="167"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="150"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="159"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="168"/>
         <source>
 Maximum</source>
         <translation>
 Největší</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="152"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="153"/>
         <source>SAC (%1)
  Average</source>
         <translation>SAC (%1)
 Průměr</translation>
     </message>
     <message>
-        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="161"/>
+        <location filename="../qt-models/yearlystatisticsmodel.cpp" line="162"/>
         <source>Temp. (%1)
  Average</source>
         <translation>Teplota (%1)
@@ -9309,7 +9309,7 @@ Tento log soubor můžete vytvořit vybráním odpovídajícího checkboxu v sta
         <translation>Nepodařilo se zpracovat &apos;%s&apos;</translation>
     </message>
     <message>
-        <location filename="../core/parse-xml.c" line="2136"/>
+        <location filename="../core/parse-xml.c" line="2222"/>
         <source>Can&apos;t open stylesheet %s</source>
         <translation>Nelze otevřít styl %s</translation>
     </message>
@@ -10774,7 +10774,7 @@ Je Uemis Zurich správně zapojen?</translation>
         <translation>Odstranit tento bod</translation>
     </message>
     <message>
-        <location filename="../desktop-widgets/mainwindow.cpp" line="634"/>
+        <location filename="../desktop-widgets/mainwindow.cpp" line="628"/>
         <source>Don&apos;t save an empty log to the cloud</source>
         <translation>Neukládat prázdný log do serveru</translation>
     </message>
