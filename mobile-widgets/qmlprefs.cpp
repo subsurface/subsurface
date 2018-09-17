@@ -9,10 +9,10 @@
 
 /*** Global and constructors ***/
 QMLPrefs::QMLPrefs() :
-	m_credentialStatus(qPrefCloudStorage::CS_UNKNOWN),
-	m_oldStatus(qPrefCloudStorage::CS_UNKNOWN),
 	m_showPin(false)
 {
+	m_credentialStatus = (qPrefCloudStorage::cloud_status) qPrefCloudStorage::cloud_verification_status();
+	m_oldStatus = m_credentialStatus;
 }
 
 QMLPrefs *QMLPrefs::instance()

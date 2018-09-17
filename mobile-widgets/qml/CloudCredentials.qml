@@ -98,7 +98,8 @@ Item {
 				id: registerpin
 				text: qsTr("Register") 
 				onClicked: {
-					manager.saveCloudCredentials(login.text, password.text, pin.text, true)
+					manager.tryRetrieveDataFromBackend(pin.text)
+					rootItem.returnTopPage()
 				}
 			}
 			Controls.Label {
@@ -109,7 +110,7 @@ Item {
 				id: cancelpin
 				text: qsTr("Cancel")
 				onClicked: {
-					manager.startPageText = qsTr("Starting...")
+					manager.startPageText = qsTr("Please enter valid cloud credentials..")
 					prefs.credentialStatus = CloudStatus.CS_UNKNOWN
 					rootItem.returnTopPage()
 				}
@@ -126,7 +127,8 @@ Item {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
-					manager.saveCloudCredentials(login.text, password.text, pin.text, true)
+					manager.saveCloudCredentials(login.text, password.text)
+					rootItem.returnTopPage()
 				}
 			}
 			Controls.Label {
@@ -137,7 +139,9 @@ Item {
 				id: toNoCloudMode
 				text: qsTr("No cloud mode")
 				onClicked: {
-					manager.saveCloudCredentials("", "", "", false)
+					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
+					PrefCloudStorage.set_cloud_storage_password = ""
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_NOCLOUD
 					manager.openNoCloudRepo()
 				}
 			}

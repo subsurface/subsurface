@@ -277,8 +277,6 @@ void QMLManager::openLocalThenRemote(QString url)
 			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
-		if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_UNKNOWN)
-			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
 		if (git_prefs.unit_system == IMPERIAL)
 			qPrefUnits::set_unit_system("imperial");
 		else if (git_prefs.unit_system == METRIC)
@@ -309,7 +307,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		alreadySaving = false;
 	} else {
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
-		tryRetrieveDataFromBackend();
+		tryRetrieveDataFromBackend("");
 	}
 	updateAllGlobalLists();
 }
@@ -386,7 +384,8 @@ void QMLManager::finishSetup()
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
 				QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_UNKNOWN) {
-		saveCloudCredentials("", "", "", false);
+		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename, &dive_table);
 		if (error) {
@@ -408,16 +407,10 @@ void QMLManager::finishSetup()
 #define CLOUDURL QString(prefs.cloud_base_url)
 #define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
 
-void QMLManager::saveCloudCredentials(QString user, QString password, QString pin, bool setCred)
+void QMLManager::saveCloudCredentials(QString user, QString password)
 {
-	if (setCred) {
-		m_cloudUserName = user;
-		m_cloudPassword = password;
-		m_cloudPin = pin;
-	} else {
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
-		QMLPrefs::instance()->setShowPin(false);
-	}
+	m_cloudUserName = user;
+	m_cloudPassword = password;
 
 	QSettings s;
 	bool cloudCredentialsChanged = false;
@@ -492,14 +485,10 @@ void QMLManager::saveCloudCredentials(QString user, QString password, QString pi
 		currentGitLocalOnly = git_local_only;
 		git_local_only = false;
 		openLocalThenRemote(url);
-	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY &&
-				!m_cloudPin.isEmpty()) {
-		// the user entered a PIN?
-		tryRetrieveDataFromBackend();
 	}
 }
 
-void QMLManager::tryRetrieveDataFromBackend()
+void QMLManager::tryRetrieveDataFromBackend(QString pin)
 {
 	// if the cloud credentials are present, we should try to get the GPS Webservice ID
 	// and (if we haven't done so) load the dive list
@@ -508,8 +497,7 @@ void QMLManager::tryRetrieveDataFromBackend()
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
-		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password,
-						m_cloudPin);
+		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password, pin);
 		// let's wait here for the signal to avoid too many more nested functions
 		QTimer myTimer;
 		myTimer.setSingleShot(true);
@@ -525,8 +513,9 @@ void QMLManager::tryRetrieveDataFromBackend()
 			return;
 		}
 		myTimer.stop();
-		m_cloudPin = "";
 		if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
+			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
+			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
 			appendTextToLog(QStringLiteral("Incorrect cloud credentials"));
 			setStartPageText(RED_FONT + tr("Incorrect cloud credentials") + END_FONT);
 			revertToNoCloudIfNeeded();
@@ -562,7 +551,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
 		setStartPageText(RED_FONT + tr("Cloud credentials are invalid") + END_FONT);
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_INCORRECT_USER_PASSWD);
+		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();

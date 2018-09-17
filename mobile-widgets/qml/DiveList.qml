@@ -13,7 +13,6 @@ Kirigami.ScrollablePage {
 	title: qsTr("Dive list")
 	verticalScrollBarPolicy: Qt.ScrollBarAlwaysOff
 	width: subsurfaceTheme.columnWidth
-	property int credentialStatus: prefs.credentialStatus
 	property int numDives: diveListView.count
 	property color textColor: subsurfaceTheme.textColor
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
@@ -340,8 +339,8 @@ Kirigami.ScrollablePage {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: credentialStatus === CloudStatus.CS_NOCLOUD ||
-									(credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
+		opacity: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
+									prefs.credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
@@ -441,7 +440,7 @@ Kirigami.ScrollablePage {
 
 	onBackRequested: {
 		if (startPage.visible && diveListView.count > 0 &&
-			prefs.credentialStatus !== CloudStatus.CS_INCORRECT_USER_PASSWD) {
+			prefs.credentialStatus !== CloudStatus.CS_UNKNOWN) {
 			event.accepted = true;
 		}
 		if (!startPage.visible) {
