@@ -3869,12 +3869,11 @@ bool dive_check_picture_time(const struct dive *d, int shift_time, timestamp_t t
 	return false;
 }
 
-bool picture_check_valid(const char *filename, int shift_time)
+bool picture_check_valid_time(timestamp_t timestamp, int shift_time)
 {
 	int i;
 	struct dive *dive;
 
-	timestamp_t timestamp = picture_get_timestamp(filename);
 	for_each_dive (i, dive)
 		if (dive->selected && dive_check_picture_time(dive, shift_time, timestamp))
 			return true;
