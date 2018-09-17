@@ -457,6 +457,13 @@ void MainWindow::enableDisableCloudActions()
 	ui.actionCloudstoragesave->setEnabled(prefs.cloud_verification_status == qPrefCloudStorage::CS_VERIFIED);
 }
 
+void MainWindow::enableDisableOtherDCsActions()
+{
+	bool nr = number_of_computers(current_dive) > 1;
+	ui.actionNextDC->setEnabled(nr);
+	ui.actionPreviousDC->setEnabled(nr);
+}
+
 void MainWindow::setDefaultState() {
 	setApplicationState("Default");
 	if (mainTab->getEditMode() != MainTab::NONE) {
@@ -530,6 +537,7 @@ void MainWindow::selectionChanged()
 		graphics->plotDive(nullptr, false, true);
 		mainTab->updateDiveInfo();
 		configureToolbar();
+		enableDisableOtherDCsActions();
 		MapWidget::instance()->reload();
 	}
 }

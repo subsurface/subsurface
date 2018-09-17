@@ -77,6 +77,7 @@ public:
 	bool inPlanner();
 	NotificationWidget *getNotificationWidget();
 	void enableDisableCloudActions();
+	void enableDisableOtherDCsActions();
 	void setCheckedActionFilterTags(bool checked);
 	void enterEditState();
 	void exitEditState();
