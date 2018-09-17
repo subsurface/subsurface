@@ -216,7 +216,10 @@
 
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="@tags"/>
+    <xsl:call-template name="quote">
+      <xsl:with-param name="line" select="substring-before(translate(translate(@tags, $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(translate(@tags, $fs, ' '), $lf, ' '), '&quot;')"/>
+    </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
 
     <xsl:text>
@@ -330,25 +333,59 @@
   <xsl:template match="divemaster">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="."/>
+    <xsl:call-template name="quote">
+      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+    </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="buddy">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="."/>
+    <xsl:call-template name="quote">
+      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+    </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="suit">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="."/>
+    <xsl:call-template name="quote">
+      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, ' '), '&quot;')"/>
+    </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
   </xsl:template>
   <xsl:template match="notes">
     <xsl:value-of select="$fs"/>
     <xsl:text>&quot;</xsl:text>
-    <xsl:value-of select="translate(translate(., $fs, ' '), $lf, ' ')"/>
+    <xsl:call-template name="quote">
+      <xsl:with-param name="line" select="substring-before(translate(translate(., $fs, ' '), $lf, '\n'), '&quot;')"/>
+      <xsl:with-param name="remaining" select="substring-after(translate(translate(., $fs, ' '), $lf, '\n'), '&quot;')"/>
+    </xsl:call-template>
     <xsl:text>&quot;</xsl:text>
+  </xsl:template>
+
+  <xsl:template name="quote">
+    <xsl:param name="line"/>
+    <xsl:param name="remaining"/>
+
+    <xsl:if test="$line != ''">
+      <xsl:value-of select="concat($line, '&quot;', '&quot;')"/>
+    </xsl:if>
+    <xsl:if test="$remaining != ''">
+	    <xsl:choose>
+		    <xsl:when test="substring-before($remaining, '&quot;') != ''">
+			    <xsl:call-template name="quote">
+				    <xsl:with-param name="line" select="substring-before($remaining, '&quot;')"/>
+				    <xsl:with-param name="remaining" select="substring-after($remaining, '&quot;')"/>
+			    </xsl:call-template>
+		    </xsl:when>
+		    <xsl:otherwise>
+			    <xsl:value-of select="$remaining" />
+		    </xsl:otherwise>
+	    </xsl:choose>
+    </xsl:if>
   </xsl:template>
 </xsl:stylesheet>
