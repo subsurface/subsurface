@@ -330,7 +330,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="549"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Лице</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="550"/>
@@ -2065,7 +2065,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="361"/>
         <source>Cylinder1:</source>
-        <translation type="unfinished"/>
+        <translation>Бутилка 1:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="375"/>
@@ -2097,22 +2097,22 @@ GPS позиция:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="419"/>
         <source>Cylinder2:</source>
-        <translation type="unfinished"/>
+        <translation>Бутилка 2:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="484"/>
         <source>Cylinder3:</source>
-        <translation type="unfinished"/>
+        <translation>Бутилка 3:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="550"/>
         <source>Cylinder4:</source>
-        <translation type="unfinished"/>
+        <translation>Бутилка 4:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="616"/>
         <source>Cylinder5:</source>
-        <translation type="unfinished"/>
+        <translation>Бутилка 5:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="681"/>
@@ -2371,22 +2371,22 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="895"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Зареди медиа от файл(файлове)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="896"/>
         <source>Load media from web</source>
-        <translation type="unfinished"/>
+        <translation>Зареди медия от мрежата</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="922"/>
         <source>Open media files</source>
-        <translation type="unfinished"/>
+        <translation>Отвори медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="925"/>
         <source>Media files</source>
-        <translation type="unfinished"/>
+        <translation>Медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="926"/>
@@ -2396,7 +2396,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="927"/>
         <source>Video files</source>
-        <translation type="unfinished"/>
+        <translation>Видео файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="928"/>
@@ -2503,7 +2503,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="285"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Опции</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
@@ -2518,7 +2518,7 @@ GPS позиция:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
         <source>Anonymize</source>
-        <translation type="unfinished"/>
+        <translation>Направи анонимни</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="332"/>
@@ -3438,7 +3438,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="530"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Медия</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="533"/>
@@ -3505,7 +3505,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="590"/>
         <source>Media before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Медия преди/по време на/след гмуркане</translation>
     </message>
 </context>
 <context>
@@ -3652,7 +3652,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="253"/>
         <source>Find Garmin dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Намери Garmin гмуркачески компютър</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="280"/>
@@ -3813,7 +3813,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="88"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="192"/>
         <source>USB device</source>
-        <translation type="unfinished"/>
+        <translation>USB устройства</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="95"/>
@@ -4002,17 +4002,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <source>Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>Намери преместени медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <source>Found media files</source>
-        <translation type="unfinished"/>
+        <translation>Намерени медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <source>Match only media files in selected dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Намери медия само в избраното гмуркане (гмуркания)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
@@ -4028,7 +4028,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
         <source>Traverse media directories</source>
-        <translation type="unfinished"/>
+        <translation>Обходи папки с медия</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
@@ -4043,17 +4043,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
         <source>No matching media files found</source>
-        <translation type="unfinished"/>
+        <translation>Не могат да бъдат намерени медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>Намерени &lt;b&gt;%1&lt;/b&gt; медия файлове в тяхната текуща локация.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>Намерени &lt;b&gt;%1&lt;/b&gt; медия файлове в нови папки:</translation>
     </message>
 </context>
 <context>
@@ -4427,7 +4427,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="60"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Медия</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="84"/>
@@ -4827,12 +4827,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="613"/>
         <source>Toggle media</source>
-        <translation type="unfinished"/>
+        <translation>Превключи медия</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="674"/>
         <source>&amp;Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Намери преместени медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="625"/>
@@ -5413,7 +5413,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="76"/>
         <source>&amp;No default file</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Няма файл по подразбиране</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="83"/>
@@ -5469,22 +5469,22 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="215"/>
         <source>Video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Миниатюри на видео файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="230"/>
         <source>ffmpeg executable</source>
-        <translation type="unfinished"/>
+        <translation>ffmpeg стартиращ файл</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="251"/>
         <source>Extract at position</source>
-        <translation type="unfinished"/>
+        <translation>Извличане на позиция</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="271"/>
         <source>Extract video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Изличане на видео миниатюри</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="288"/>
@@ -5514,7 +5514,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="50"/>
         <source>Select ffmpeg executable</source>
-        <translation type="unfinished"/>
+        <translation>Избери ffmpeg стартиращ файл</translation>
     </message>
 </context>
 <context>
@@ -5671,7 +5671,7 @@ If your device uses Bluetooth, do the same preparations as for a logbook downloa
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <source>Recalculate thumbnails if older than media file</source>
-        <translation type="unfinished"/>
+        <translation>Обнови миниатюри ако са по-стари от медия файла</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -6795,12 +6795,13 @@ Please export this template to a different file.</source>
         <source>Warning!
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
-        <translation type="unfinished"/>
+        <translation>Внимание!
+Не всички медия файлове имат времеви печати в диапазона 30 минути преди началото и 30 минути след края на избраното гмуркане.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
         <source>Load media files even if the time does not match the dive time</source>
-        <translation type="unfinished"/>
+        <translation>Зареди медия файлове дори ако времената им не съвпадат с времето на гмуркането</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
@@ -7175,7 +7176,7 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="560"/>
         <source>Suits</source>
-        <translation type="unfinished"/>
+        <translation>Водолазни костюми</translation>
     </message>
 </context>
 <context>
@@ -7314,27 +7315,27 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="53"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Зареди медия от файл(файлове)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="54"/>
         <source>Load media file(s) from web</source>
-        <translation type="unfinished"/>
+        <translation>Зареди медия файл(файлове) от мрежата</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
         <source>Delete selected media files</source>
-        <translation type="unfinished"/>
+        <translation>Изтрий избраните медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Delete all media files</source>
-        <translation type="unfinished"/>
+        <translation>Изтрий всички медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="58"/>
         <source>Open folder of selected media files</source>
-        <translation type="unfinished"/>
+        <translation>Отвори папката на избраните медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
@@ -7344,12 +7345,12 @@ Files with inappropriate date/time</source>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="122"/>
         <source>Deleting media files</source>
-        <translation type="unfinished"/>
+        <translation>Изтриване на медия файлове</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="122"/>
         <source>Are you sure you want to delete all media files?</source>
-        <translation type="unfinished"/>
+        <translation>Сигурни ли сте, че искате на изтриете всички медия файлове?</translation>
     </message>
 </context>
 <context>
@@ -7810,7 +7811,7 @@ mixed from Air and using:
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="291"/>
         <source>Media before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Медия преди/по време на/след гмуркане</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="297"/>
@@ -7891,7 +7892,7 @@ mixed from Air and using:
     <message>
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
         <source>Enter URL for media files</source>
-        <translation type="unfinished"/>
+        <translation>Въведете URL за медия файлове</translation>
     </message>
 </context>
 <context>
@@ -8144,12 +8145,12 @@ Language: %1</source>
     <message>
         <location filename="../core/videoframeextractor.cpp" line="93"/>
         <source>ffmpeg failed to start - video thumbnail creation suspended</source>
-        <translation type="unfinished"/>
+        <translation>ffmpeg не може да бъде стартиран - създаването на видео миниатюри отменено</translation>
     </message>
     <message>
         <location filename="../core/videoframeextractor.cpp" line="99"/>
         <source>failed waiting for ffmpeg - video thumbnail creation suspended</source>
-        <translation type="unfinished"/>
+        <translation>грешка при ffmpeg операция - създаването на видео миниатюри отменено</translation>
     </message>
 </context>
 <context>
@@ -10598,7 +10599,7 @@ Uemis Zurich включен ли е правилно?</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="152"/>
         <source>Cannot find a folder called &apos;theme&apos; in the standard locations</source>
-        <translation type="unfinished"/>
+        <translation>Не може да бъде немерена папка &apos;theme&apos; в стандартните локации</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="49"/>
