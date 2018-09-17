@@ -354,6 +354,11 @@ ShiftImageTimesDialog::ShiftImageTimesDialog(QWidget *parent, QStringList fileNa
 	connect(ui.matchAllImages, SIGNAL(toggled(bool)), this, SLOT(matchAllImagesToggled(bool)));
 	dcImageEpoch = (time_t)0;
 
+	// Get times of all files. 0 means that the time couldn't be determined.
+	int numFiles = fileNames.size();
+	timestamps.resize(numFiles);
+	for (int i = 0; i < numFiles; ++i)
+		timestamps[i] = picture_get_timestamp(qPrintable(fileNames[i]));
 	updateInvalid();
 }
 
@@ -375,7 +380,6 @@ void ShiftImageTimesDialog::setOffset(time_t offset)
 
 void ShiftImageTimesDialog::updateInvalid()
 {
-	timestamp_t timestamp;
 	bool allValid = true;
 	ui.warningLabel->hide();
 	ui.invalidFilesText->hide();
@@ -389,17 +393,17 @@ void ShiftImageTimesDialog::updateInvalid()
 	}
 	ui.invalidFilesText->append(tr("\nFiles with inappropriate date/time") + ":");
 
-	Q_FOREACH (const QString &fileName, fileNames) {
-		if (picture_check_valid(qPrintable(fileName), m_amount))
+	int numFiles = fileNames.size();
+	for (int i = 0; i < numFiles; ++i) {
+		if (picture_check_valid_time(timestamps[i], m_amount))
 			continue;
 
-		// We've found invalid image
-		timestamp = picture_get_timestamp(qPrintable(fileName));
-		time_first.setTime_t(timestamp + m_amount);
-		if (timestamp == 0)
-			ui.invalidFilesText->append(fileName + " - " + tr("No Exif date/time found"));
+		// We've found an invalid image
+		time_first.setTime_t(timestamps[i] + m_amount);
+		if (timestamps[i] == 0)
+			ui.invalidFilesText->append(fileNames[i] + " - " + tr("No Exif date/time found"));
 		else
-			ui.invalidFilesText->append(fileName + " - " + time_first.toString());
+			ui.invalidFilesText->append(fileNames[i] + " - " + time_first.toString());
 		allValid = false;
 	}
 

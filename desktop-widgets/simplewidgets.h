@@ -118,6 +118,7 @@ slots:
 
 private:
 	QStringList fileNames;
+	QVector<timestamp_t> timestamps;
 	Ui::ShiftImageTimesDialog ui;
 	time_t m_amount;
 	time_t dcImageEpoch;
