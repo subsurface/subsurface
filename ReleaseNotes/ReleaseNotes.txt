@@ -2,6 +2,40 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.8.2
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: remove "edit dive" from the log menu. Nowadays we edit in place
+- Desktop: disable UI elements that make no sense during editing [#1445]
+- Desktop: Add anonymization option to divelog export
+- Desktop: remove UI components of the Webservice GPS import
+- Desktop: add support for USB download from the Garmin Descent Mk1
+- Desktop: fix issue with dive list row height in case of larger fonts [#1600]
+- Desktop: fix a bug where it is possible for the user to hide all divelist columns [#1600]
+- Desktop: allow buddies to be shown in the divelist [#1587]
+- DLF import: record battery status at start and end of dive
+- Mac: include the FTDI driver and no longer require Mac FTDI drivers to be installed
+- Windows: write log files to the user path instead of the path where Subsurface is installed
+- Desktop/Export: fix bug related to quoted text when exporting to HTML [#1576]
+- Desktop/Map-Widget: add support for filtering of map locations [#1581]
+- Mac: fix problem downloading from divelogs.de
+- Dive media: paint duration of videos on thumbnails in the dive-photo tab
+- Dive media: extract video thumbnails using ffmpeg
+- Dive media: implement "open folder of selected media files" [#1514]
+- Dive media: show play-time of videos on the profile plot
+- Dive media: draw thumbnails on top of deco-ceilings
+- Dive media: Change term "photos" and "images" everywhere in the UI to "media files"
+- Dive media: experimental support for metadata extraction from AVI and WMV files
+- Dive media: sort thumbnails by timestamp
+- Dive media: don't recalculate all pictures on drag & drop
+- Desktop/Profile: immediately update thumbnail positions on deletion
+- Mobile: setting for developer menu entry is remembered across sessions
+- Mobile: remove UI components of the Webservice GPS interaction
+- Mobile: add default cylinder functionality for new dives [#1535]
+- Mobile: enable multiple cylinder editing for dives that uses more than one cylinder
+- Mobile: show developer menu is now saved on disk and remebered between start of Subsurface
+- Android: switch to Download page when dive computer is plugged in and try to
+  populate vendor / device / connection based on the information we get
+
 New in _Subsurface_ 4.8.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Mac: fix crashes when opening the user manual or connecting to Facebook [#1471]
