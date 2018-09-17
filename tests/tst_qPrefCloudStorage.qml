@@ -26,10 +26,6 @@ TestCase {
 		PrefCloudStorage.cloud_storage_password = "my url"
 		compare(PrefCloudStorage.cloud_storage_password, "my url")
 
-		var x6 = PrefCloudStorage.cloud_storage_pin
-		PrefCloudStorage.cloud_storage_pin= "my pin"
-		compare(PrefCloudStorage.cloud_storage_pin, "my pin")
-
 		var x7 = PrefCloudStorage.cloud_timeout
 		PrefCloudStorage.cloud_timeout = 137
 		compare(PrefCloudStorage.cloud_timeout, 137)
@@ -51,7 +47,6 @@ TestCase {
 		property bool spy3 : false
 		property bool spy4 : false
 		property bool spy5 : false
-		property bool spy6 : false
 		property bool spy7 : false
 		property bool spy8 : false
 		property bool spy9 : false
@@ -62,7 +57,6 @@ TestCase {
 			onCloud_storage_emailChanged: {spyCatcher.spy3 = true }
 			onCloud_storage_email_encodedChanged: {spyCatcher.spy4 = true }
 			onCloud_storage_passwordChanged: {spyCatcher.spy5 = true }
-			onCloud_storage_pinChanged: {spyCatcher.spy6 = true }
 			onCloud_timeoutChanged: {spyCatcher.spy7 = true }
 			onCloud_verification_statusChanged: {spyCatcher.spy8 = true }
 			onSave_password_localChanged: {spyCatcher.spy9 = true }
@@ -74,7 +68,6 @@ TestCase {
 		PrefCloudStorage.cloud_storage_email = "qml"
 		PrefCloudStorage.cloud_storage_email_encoded = "qml"
 		PrefCloudStorage.cloud_storage_password = "qml"
-		PrefCloudStorage.cloud_storage_pin = "qml"
 		PrefCloudStorage.cloud_timeout = 18
 		PrefCloudStorage.cloud_verification_status = 2
 		PrefCloudStorage.save_password_local = ! PrefCloudStorage.save_password_local
@@ -83,7 +76,6 @@ TestCase {
 		compare(spyCatcher.spy3, true)
 		compare(spyCatcher.spy4, true)
 		compare(spyCatcher.spy5, true)
-		compare(spyCatcher.spy6, true)
 		compare(spyCatcher.spy7, true)
 		compare(spyCatcher.spy8, true)
 		compare(spyCatcher.spy9, true)

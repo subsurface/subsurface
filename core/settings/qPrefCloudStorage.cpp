@@ -16,7 +16,6 @@ void qPrefCloudStorage::loadSync(bool doSync)
 	disk_cloud_storage_email(doSync);
 	disk_cloud_storage_email_encoded(doSync);
 	disk_cloud_storage_password(doSync);
-	disk_cloud_storage_pin(doSync);
 	disk_cloud_timeout(doSync);
 	disk_cloud_verification_status(doSync);
 	disk_save_password_local(doSync);
@@ -66,8 +65,6 @@ void qPrefCloudStorage::disk_cloud_storage_password(bool doSync)
 		prefs.cloud_storage_password = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, "password"), default_prefs.cloud_storage_password).toString());
 	}
 }
-
-HANDLE_PREFERENCE_TXT(CloudStorage, "pin", cloud_storage_pin);
 
 HANDLE_PREFERENCE_INT(CloudStorage, "timeout", cloud_timeout);
 
