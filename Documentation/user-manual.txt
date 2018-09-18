@@ -1450,8 +1450,6 @@ image::images/MobileGpsMenu.jpg["FIGURE: Subsurface-mobile GPS menu",align="cent
 
 Select the menu option _Disable location service_ at the bottom of the _Subsurface-mobile_ GPS menu.
 
-From the _Subsurface-mobile_ main menu, select _GPS_  -> _Upload GPS data_. The
-locations are uploaded.
 
 ===== Apply the stored GPS locations to dives on the _Subsurface_ dive list.
 
@@ -2814,7 +2812,7 @@ When the "Anonymize" option is selected for xml-based file formats, the letters 
 are all replaced by the letter 'X' in the notes, buddy, divemaster, divesite name
 and divesite description fields. This way, you can share dive log files for debugging
 purposes without revealing personal information. Please note, though, that other
-characters are not replaced, so this is not useful for languages with non-latin 
+characters are not replaced, so this is not useful for languages with non-latin
 characters and GPS coordinates of dive sites are preserved as well.
 
 
