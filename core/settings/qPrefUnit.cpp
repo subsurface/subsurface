@@ -53,19 +53,17 @@ void qPrefUnits::set_unit_system(const QString& value)
 	short int v = value == QStringLiteral("metric") ? METRIC :
 					value == QStringLiteral("imperial")? IMPERIAL :
 							PERSONALIZE;
-	if (v != prefs.unit_system) {
-		if (v == METRIC) {
-			prefs.unit_system = METRIC;
-			prefs.units = SI_units;
-		} else if (v == IMPERIAL) {
-			prefs.unit_system = IMPERIAL;
-			prefs.units = IMPERIAL_units;
-		} else {
-			prefs.unit_system = PERSONALIZE;
-		}
-		disk_unit_system(true);
-		emit instance()->unit_systemChanged(value);
+	if (v == METRIC) {
+		prefs.unit_system = METRIC;
+		prefs.units = SI_units;
+	} else if (v == IMPERIAL) {
+		prefs.unit_system = IMPERIAL;
+		prefs.units = IMPERIAL_units;
+	} else {
+		prefs.unit_system = PERSONALIZE;
 	}
+	disk_unit_system(true);
+	emit instance()->unit_systemChanged(value);
 }
 DISK_LOADSYNC_ENUM(Units, "unit_system", unit_system_values, unit_system);
 
