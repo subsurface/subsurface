@@ -19,7 +19,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Reinout Hoornweg,Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert,
 Salvador Cuñat, Pedro Neves, Stefan Fuchs
 
-[blue]#_Versie 4.7, oktober 2017_#
+[blue]#_Versie 4.8, september 2018_#
 
 Welkom als gebruiker van _Subsurface_, een geavanceerd duiklogboek programma
 met een breed scala aan functionaliteiten om je duiken vast te leggen, organiseren,
@@ -655,20 +655,20 @@ een lijst met mogelijke locaties. Kies de gewenste, en deze locatie is dan van
 toepassing op de duik die wordt bewerkt. Klik dan _Wijzigingen toepassen_ (figuur beneden)
 om de informatie op te slaan.
 
-image::images/Location1.jpg["FIGURE:Locatie keuze panel",align="center"]
+image::images/Location1.jpg["FIGUUR:Locatie keuze panel",align="center"]
 
 *Nieuwe locatie invoeren:* Wanneer er op een nieuwe locatie is gedoken, dient deze
 te worden ingevoerd voor deze duik en later gebruik. Voer de naam in (figuur A
 hieronder)
 
-image::images/Globe_image1.jpg["FIGURE:Locatie creatie panel",align="center"]
+image::images/Globe_image1.jpg["FIGUUR:Locatie creatie panel",align="center"]
 
 Klik op het plus (+) symbool rechts (of dubbelklik) in de blauwe balk om de
 nieuwe locatie vast te leggen. Bewaar de duik om de nieuwe locatie verder te bewerken.
 Bewerken kan door op het globe icoon te klikken (image B hierboven), achtereenvolgens
 verschijnt dan figuur A (zie hieronder)
 
-image::images/Globe_image2.jpg["FIGURE:Locatie creatie panel",align="center"]
+image::images/Globe_image2.jpg["FIGUUR:Locatie creatie panel",align="center"]
 
 Er zijn drie manieren om coördinaten in te voeren:
 
@@ -702,23 +702,24 @@ velden, en kies _Wijzigingen toepassen_ om alles op te slaan. De duikplek kan
 later bewerkt worden door het wereldbol icoon te klikken, rechts naast de naam
 van de duikplek in het *Notities* tabblad.
 
-image::images/Globe_image3.jpg["FIGURE:Locatie aanmaak panel",align="center"]
+image::images/Globe_image3.jpg["FIGUUR:Locatie aanmaak panel",align="center"]
 
 Op moment dat de duikplek is opgeslagen verschijnt het globe symbool in de duiklijst
 (voor de duiken op deze duikplek).
 
-*(3):* Gebruik de _Subsurface-mobile App_ or the _Subsurface_ Companion App_ op een
+*(3):* Gebruik de _Subsurface-mobile App_ op een
 Android of iPhone op de duiklocatie om met de GPS van de telefoon de locatie op
-te slaan. Importeer ze achtereenvolgens in _Subsurface_
-xref:S_Companion[Klik hier voor meer informatie over de Companion app]
+te slaan.
 
-*Belangrijk*: GPS coördinaten van duik locaties zijn gekoppeld
+[icon="images/icons/warning2.png"]
+[WARNING]
+GPS coördinaten van duik locaties zijn gekoppeld
 aan de locatie naam. Daarom levert het problemen op als er een
 locatie wordt aangemaakt zonder naam en met locatie. (Subsurface denkt dan
 dat al deze duiken dezelfde locatie hebben en probeert de GPS coördinaat gelijk
 te houden).
 
-*Locatie naam opzoeken*: Op moment dat er een geldige coördiaat is ingevoerd,
+*Locatie naam opzoeken*: Op moment dat er een geldige coördinaat is ingevoerd,
 kan er een automatische, Internet gebaseerde, zoekactie gestart worden om een
 naam van de locatie te vinden. Dit is niet per definitie de naam van de duikplek.
 Als er een naam wordt gevonden, wordt deze ingevuld in de zogenaamde locatie labels/tags.
@@ -1000,9 +1001,13 @@ in gesloten en gelicenceerde programmatuur gebruik makend van Microsoft Access, 
 het kan derhalve niet met (open source) _Subsurface_ worden geïntegreerd.
 
 Een losstaande tool voor Linux is gemaakt om de _.slg_ bestanden van SmartTrack
-te converteren naar Subsurface's _.xml_ format. Het kan samen met _Subsurface_
-op Linux systemen worden gecompileerd. Twee extra softwarebibliotheken dienen
-aanwezig te zijn: _libglib2.0_ en _libmdb2_.
+te converteren naar Subsurface's _.xml_ formaat. De tool kan worden gedownload van
+https://subsurface-divelog.org/downloads[de gebruikelijke _Subsurface_ repository] als
+een indows installer of een Linux AppImage. Er is geen ondersteuning voor Mac op
+dit moment.
+
+Het kan ook op Linux systemen worden gecompileerd. Twee extra softwarebibliotheken dienen
+aanwezig te zijn: _libglib2.0_ en _libmdb2_ (zie hieronder).
 
 Daarnaast is er een webservice beschikbaar om _SmartTrak_ duiklogs te converteren
 naar _Subsurface_ formaat (zie hieronder).
@@ -1014,18 +1019,21 @@ het gebied van importeren van _SmartTrak_ data.
 
 ===== Compileren van _smtk2ssrf_
 
-Aangenomen dat de bovenstaande twee biliotheken zijn geïnstalleerd, en de
+Aangenomen dat de bovenstaande twee bibliotheken zijn geïnstalleerd, en de
 _Subsurface_ broncode staat in _~/src/subsurface_, dan:
 
-- cd ~/src/subsurface_
-- Draai  " $ ccmake build " en zet SMARTTRAK_IMPORT option op *on* (staat
-standaard uit)
-- In ccmake, genereer met [c] en bewaar en verlaat met [g].
-- Compileer zoals gewenst, met het _build.sh_ script (aangeraden) of cd
-naar build folder en draai _make_.
-- Na een succesvolle compileer sessie, staat er een executeerbaar bestand _smtk2ssrf_ in de
-  _subsurface/build_ folder.
-- Plaats _smtk2ssrf_ in een folder naar keuze, bijvoorbeeld _~/bin_.
+- cd ~/src (dwz. de map waarin subsurface staat)
+- Draai " $ ./subsurface/scripts/smtk2ssrf-build.sh ", als alles goed gaat
+staat er nu in ~/src/subsurface/smtk-import/build een executable smtk2ssrf
+- Het kan geëxecuteerd worden vanaf deze locatie, of bijvoorbeeld verplaatst
+worden naar ~/bin. Of systeembreed geïnstalleerd worden door middel van
+"sudo make install" waarmee het in /usr/local/bin kan worden geplaatst.
+- het build script heeft diverse opties die met name bedoeld zijn voor tijdens
+de ontwikkeling.
+- *WARNING*: bij het compileren van smtk2ssrf wordt een minimale versie van _Subsurface_
+gemaakt. Als je dus regelmatig de executable gebruikt vanuit ~/subsurface/build/, dien
+je ook regelmatig smtk2ssrf opnieuw te compileren.
+
 
 ===== Executeren
 
@@ -1057,7 +1065,7 @@ pagina om _SmartTrak_ bestanden naar _Subsurface_ formaat te converteren. Met de
 kan het _SmartTrak_ bestand worden ingevoerd, en na klikken van _Submit query_ verschijnt snel
 een dialoog box (figuur hieronder) om de geconverteerde data op te slaan op de lokale computer.
 
-image::images/strk2ssrf_web.jpg["FIGURE:Web service om SmartTrak divelog te converteren",align="center"]
+image::images/strk2ssrf_web.jpg["FIGUUR:Web service om SmartTrak divelog te converteren",align="center"]
 
 
 ===== De geïmporteerde duiken samenvoegen met een bestaand logboek
@@ -1254,26 +1262,15 @@ vast te leggen. Dit werkt ruwweg op de volgende wijze:
 1) Neem de smartphone mee naar de duikplek, duikboot, live-aboard, en leg de
 posities (automatisch) vast.
 
-2) Laad de coördinaten naar de _Subsurface_ Internet server.
+2) Voeg coördinaten met behulp van de _Subsurface-mobile_ app toe aan de duiklocaties.
 
-3) Synchroniseer de duiken in de _Subsurface_ Duiklijst  met de coördinaten
-zoals opgeslagen op de _Subsurface_ Internet server.
+3) Synchroniseer met logboek via de _Subsurface_ cloud met de desktop applicatie.
 
-_Subsurface_ heeft twee hulpmiddelen voor deze wijze van vastleggen van coördinaten:
-
-- De _Subsurface Companion App_ (Android en iOS).
-
-- De _Subsurface-mobile_ app (Android en iOS)
-
-Beide applicaties kunnen coördinaten verzamelen, en plaatsen op de _Subsurface_
-Internet server voor verdere synchonisatie met de _Subsurface_ *Duiklijst*.
-De ontwikkeling van de Subsurface Companion App is echter gestopt, en vervangen door de
-_Subsurface-mobile_ app. De _Companion app_ is uitsluitend bedoeld om
-(de positie van) duikplekken vast te leggen, en de _Subsurface-mobile_ app maakt
-ook het bekijken, en deels bewerken van het logboek mogelijk. Hieronder wordt verder
-beschreven hoe de drie stappen uitgevoerd worden met de twee hulpmiddelen.
-
-Kies xref:S_Companion[_hier_] voor de informatie over de _Subsurface Companion App_.
+Bestaande gebruikers gebruiken mogelijk nog de verouderde _Companion app_. Deze app
+wordt reeds jaren niet meer actief ontwikkeld, en is inmiddels uit de Android en iOS
+app stores verwijderd. De functionaliteit is volledig in Subsurface-mobile_ opgenomen.
+Merk op dat de oude GPS webservice eind 2018 zal worden uitgezet, met als gevolg dat
+dan de _Companion app_ niet meer te gebruiken is. Gebruik aub. de opvolger _Subsurface-mobile_.
 
 
 ==== Opslaan en gebruiken van coördinaten met _Subsurface-mobile_
@@ -1336,17 +1333,6 @@ image::images/MobileGpsMenu.jpg["Figuur: Subsurface-mobile GPS menu",align="cent
 Kies de optie _Stop locatie service_ onderaan het _Subsurface-mobile_ GPS menu.
 
 
-===== GPS coördinaten naar de _Subsurface_ Internet server sturen.
-
-Om coördinaten naar de _Subsurface_ Internet server te sturen is er natuurlijk
-een dataverbinding (wifi of via provider) nodig. Als er op de duiklocatie geen
-dataverbinding mogelijk is, kunnen de coördinaten na de duik, of zelfs na
-de trip geüpload worden als een dataverbinding weer mogelijk is.
-
-Selecteer _GPS_ -> _GPS data opladen_ uit het hoofdmenu van _Subsurface-mobile_
-om de data op de server te plaatsen.
-
-
 ===== Voeg de GPS coördinaten toe aan duiken in de _Subsurface_ Duiklijst.
 
 _Subsurface_ gebruikt de eerste GPS coördinaat die is vastgelegd na de start
@@ -1362,300 +1348,35 @@ is (ook) toegankelijk vanuit de app en bevat gedetailleerde informatie over de v
 behandeling, uploaden en synchroniseren van deze data.
 
 
-[[S_Companion]]
-==== Opslaan en gebruiken van coördinaten met de _Subsurface_ Companion App
-
-Gebruikmakend van de *Subsurface Companion App* op een Android apparaat of
-xref:S_iphone[_iPhone_] kunnen GPS coördinaten van duiklocaties automatisch
-in het _Subsurface_ logboek worden opgenomen.
-De Companion App slaat de coördinaten op, op de _Subsurface_ Internet server en
-_Subsurface_  kan deze coördinaten van deze server ophalen.
-
-Dit werkt als volgt:
-
-===== Maak een Companion App account
-
-- maak een account aan op de http://api.hohndel.org/login/[_Subsurface companion web pagina_].
-Je ontvangt een bevestigingsemail met uitleg en een persoonlijke *DIVERID*; een
-lange string letters en cijfers, die toegang geeft tot de _Subsurface_ Internet server
-en de Companion App functionaliteit.
-
-- (Android) Download de app van
-  https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
-  of van
-  https://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
-
-===== (Android) De Subsurface companion app gebruiken
-
-Bij het eerste gebruik zijn er drie opties:
-
-* _Maak een nieuw account._  Dit werkt op dezelde manier als hierboven beschreven
-via een Internet browser. Je kunt (via de app) een *DIVERID* aanvragen, maar
-de verdere afhandeling loopt via de http://api.hohndel.org/login/[_Subsurface companion web pagina_]
-zoals hierboven.
-
-* _Haal een bestaand account op._  Als je je *DIVERID* bent vergeten kan je hiermee een
-verzoek doen deze opnieuw via email te ontvangen.
-
-* _Gebruik een bestaand account._ Voer je *DIVERID* in. De app slaat deze op, en wordt
-niet meer gevraagd totdat je je expliciet je toestel afmeldt via _Disconnect_ (zie hieronder).
-
-[icon="images/icons/important.png"]
-[IMPORTANT]_In het Subsurface_ hoofprogramma, moet de *DIVERID* (Standaard Gebruikers ID)
-ook worden ingevoerd bij _Bestand -> Voorkeuren -> Netwerk_ vanuit het hoofdmenu.
-Dit is nodig voor synchronisatie tussen _Subsurface_ en de Companion App.
-
-
-*Nieuwe duikplekken aanmaken*
-
-Na de activatie van je account kan je duiklocaties aanmaken en naar de server sturen.
-Het Android scherm ziet eruit zoals getoond in het linker figuur *A* hieronder,
-zonder enige duik.
-
-Gebruik het + icoon rechtsboven om een nieuwe locatie toe te voegen. Er
-verschijnt een menu met drie opties:
-
-* Current: er verschijnt een verzoek tot het invullen van de naam van de locatie (en
-eventueel een systeemverzoek om de GPS aan te zetten als deze uit staat), achtereenvolgens
-wordt de locatie bewaard
-
-* Use Map: met deze optie kan er op een kaart een locatie worden aangegeven (zie *B* hieronder).
-Kies de locatie door lang op de gewenste plek op de kaart te klikken (als er fout wordt
-gekozen, kan je gewoon nogmaals lang klikken). Klik dan het vinkje rechtsboven. Er
-verschijnt een veld om de naam van de locatie in te voeren en de datum/tijd van de duik
-(zie *C* hieronder). Vul deze in, in overeenstemming met de tijd van de duikcomputer.
-
-image::images/Companion_5.jpg["Figuur: Companion App, locatie toevoegen met kaart",align="center"]
-
-
-* Import local GPX file: er wordt gezocht naar GPX bestanden op het toestel, en
-als er een GPX bestand wordt geselecteerd (uit de gevonden bestanden) worden de
-locaties hierin getoond. Kies de gewenste locaties, en selecteer het vinkje rechtsboven
-om ze toe te voegen.
-
-
-*Lijst van duiklocaties*
-
-Het hoofdscherm toont een lijst met duiklocaties, naam van de locatie, en
-datum/tijd (zie *A* hieronder). Sommige locaties hebben een "pijl naar boven"
-om te laten zien dat ze nog niet naar de server zijn verstuurd. Ook is er een
-selectie van een aantal locaties mogelijk door middel van het keuzevakje links.
-Operaties zoals naar de server verzenden, of verwijderen gaan op basis van de
-selectie.
-
-Duik locaties in de lijst kunnen op twee manieren worden bekeken. Klik op _Dives_
-en kies de gewenste presentatie: _Dives_; een lijst en _Map_ de locaties op
-een kaart (zie *A* hieronder). Terug van kaart naar lijst presentatie gaat op
-vergelijkbare manier (zie *B* hieronder). Bij het selecteren van een locatie (op de kaart
-of uit de lijst) verschijnt er een detail scherm (zie *C* hieronder).
-
-image::images/Companion_4.jpg["Figuur: Companion App, add location using map",align="center"]
-
-In het detail scherm wordt de naam, datum/tijd en GPS positie getoond en twee
-opties bovenaan het scherm:
-
-- Edit (potlood):  Verander de naam van de locatie
-
-- Maps:  Toont een kaart met de duiklocatie
-
-Na aanpassing en bewaren van een duik locatie (zie *C* hierboven), kan de
-aangepaste data naar de server verstuurd worden, zoals hieronder verder uitgelegd.
-
-
-*Duik locaties naar de server sturen*
-
-Er zijn meerdere manieren om de data naar de server te sturen. De eenvoudigste
-manier is het selecteren van de nieuwe data, en klikken van de pijl naar rechts boven in
-het scherm (zie *A* hieronder).
-
-[icon="images/icons/important.png"]
-[IMPORTANT]
-Let op! Het vuilnisbak icoon doet precies wat het moet doen; het verwijderd
-de gekozen duiklocaties.
-
-image::images/Companion_1.jpg["Figuur: Screen shots (A-B) van companion app",align="center"]
-
-Na een trip met gebruikmaking van de Companion, kunnen de locaties geïmporteerd
-worden in _Subsurface_ (zie hieronder).
-
-
-*Instellingen van de Companion App*
-
-Met aanklikken van de _Settings_ menu optie verschijnt het scherm zoals
-getoond in figuur *B* hierboven.
-
-_Server en account_
-
-- _Web-service URL._ Dit is voor gedefinieerd (http://api.hohndel.org/)
-
-- _User ID._ De DIVERID zoals verkregen uit het registratie proces zoals hierboven
-beschreven. Kopieer en plak de string of tik hem over.
-
-_Synchronisation_
-
-- _Synchronize on startup_. Als geselecteerd worden het apparaat en de server
-automatisch bij opstarten van de app gesynchroniseerd.
-
-- _Upload new dives._ Als geselecteerd worden nieuw toegevoegde locaties
-automatisch naar de server verzonden.
-
-
-_Background service_
-
-In plaats van expliciet de app starten als er een locatie vastgelegd moet worden,
-is het mogelijk de app in de achtergrond te draaien, waarbij dan continue locaties
-worden verzameld.
-
-De volgende instellingen zijn mogelijk:
-
-- _Min duration._ In minuten. De app legt iedere X minuten een locatie vast, totdat
-de gebruiker dit stopt.
-
-- _Min distance._ In meters. De minimale afstand tussen twee locaties.
-
-- _Name template._ De naam van de locaties bij opslaan.
-
-[icon="images/icons/info.jpg"]
-[TIP]
-_Hoe werkt de achtergrond service?_ Neem aan dat de gebruiker de drempels
-op 5 minuten en 50 meter zet. De app legt dan een coördinaat vast op de huidige
-locatie, gevolgd door een nieuwe coördinaat iedere 5 minuten *of* als er 50
-meter wordt verplaatst. De eerste overschrijding van een drempel telt. Als
-er binnen een radius van 50 meter wordt bewogen, wordt er geen nieuwe
-coördinaat vastgelegd. Als er niet wordt bewogen, wordt er één coördinaat
-vastgelegd, in ieder geval totdat de tijdsdrempel wordt overschreden. Als er
-wordt bewogen, ontstaat er een reeks coördinaten die de route iedere 50 meter
-vastlegt.
-
-
-_Other_
-
-- _Mailing List._ De _Subsurface_ mailinglijst. Gebruikers van de app kunnen
-zo een email naar de Subsurface mailinglijst sturen.
-
-- _Subsurface website._ Een link naar de _Subsurface_ website.
-
-- _Version._ De huidige versie van de Companion App.
-
-
-_Search_
-
-Zoek de opgeslagen locaties op naam, datum en tijd.
-
-
-_Start service_
-
-Start de achtergrond service op conform de eerdere instellingen.
-
-
-_Disconnect_
-
-Toegegeven, dit is een slechte naam voor deze optie, die de app afmeldt bij
-de server. Het reset de user ID, en brengt de status terug alsof de app voor
-het eerst geïnstalleerd is. De optie is eigenlijk alleen nuttig om locaties
-van een andere gebruiker te kunnen laden en bewerken.
-
-
-_Send all locations_
-
-Deze optie stuurt alle locaties naar de server.
-
-
-[[S_iphone]]
-===== Subsurface companion app gebruiken op een _iPhone_ om duiklocaties vast te leggen
-
-De gebruikersinterface van de _iPhone_ is erg eenvoudig. Type de *DIVERID* in
-zoals verkregen uit het registratie proces, en selecteer _Dive in_ (zie linker figuur
-hieronder). Je kunt nu starten met het verzamelen van locaties.
-
-image::images/iphone.jpg["Figuur: De iPhone companion app gebruiken",align="center",width=640]
-
-Duiken kunnen automatisch of handmatig worden toegevoegd. In handmatige instelling
-kan een locatie worden worden ingetypt. In automatische mode, wordt er een reeks
-locaties opgenomen, waaruit _Subsurface_ na downloaden de juiste kiest op basis van
-de datum/tijd van de duik. De standaard instelling van de app is automatische mode.
-
-Op moment dat er een duik(locatie) wordt toegevoegd, wordt de locatie service
-automatisch gestart, en verschijnt er een rode balk onderaan het scherm. Klik op
-deze balk na de duik en de locatie service wordt gestopt. Als de locatie service
-actief is, kunnen alleen handmatige locaties toegevoegd worden.
-
-De naam van de duiklocatie kan in _Subsurface_ na downloaden worden bewerkt, in
-de app zijn verder geen mogelijkheden tot bewerken van de naam. De locaties worden
-automatisch naar de _Subsurface_ Internet Server gestuurd; er is geen functie om
-dit handmatig te doen.
-
-
-*Duiklocaties downloaden in _Subsurface_*
-
-Download eerst de duiken uit een duikcomputer of op een andere manier zoals
-elders beschreven. Download dan de GPS coördinaten van de _Subsurface_ Internet
-Server, via het hoofdmenu _Importeren -> GPS gegevens importeren van Subsurface
-webservice_ (ook via ctrl-G bereikbaar). Het scherm zoals hieronder bij *A* getoond
-verschijnt. Bij het eerste gebruik is de _Gebruikers ID_ nog leeg. Vul deze in, en
-selecteer _Downloaden_ om de download te starten; het scherm ziet er nu uit zoals
-bij *B* hieronder:
-
-image::images/DownloadGPS.jpg["Figuur: Downloading Companion app GPS data",align="center"]
-
-De _Apply_ knop is nu selecteerbaar, en deze zet de coördinaten bij de juiste duiken,
-dwz. de coördinaten (en naam van de duiklocatie) worden op basis van tijdstip
-van de duik en tijd van het vastleggen van de coördinaat aan elkaar gekoppeld. Merk
-op dat reeds ingevulde namen van duiklocaties (dus al ingevuld voor de import sessie)
-voor gaan, en niet worden overschreven. De GPS coördinaat wel.
-
-Aangezien _Subsurface_ de duiken en de GPS coördinaten op basis van tijd aan elkaar
-koppelt, dient er een zekere overeenstemming te zijn tussen de twee apparaten.
-_Subsurface_ heeft een ruime tolerantie, maar er is natuurlijk een grens wat
-redelijkerwijs automatisch kan worden gekoppeld. Als er geen match wordt vastgesteld
-vinden er logischerwijs geen wijzigingen plaats in de *Duiklijst*.
-
-Gelijke datum/tijd is niet altijd het geval, bijvoorbeeld door verschil in tijdzones.
-_Subsurface_ is ook niet altijd in staat vast te stellen welke de juiste tijd is (
-bijvoorbeeld bij herhalingsduiken met een kort oppervlakteinterval, waarbij de achtergrond GPS
-vastlegging permanent heeft gedraaid; locaties kunnen dan bij meerdere duiken passen en
-andersom). Een oplossing kan zijn, de datum/tijd van de duiken in de *Duiklijst*
-aan te passen (en later na koppeling van de coördinaten weer terug).
-
-[icon="images/icons/info.jpg"]
-[NOTE]
-TIPS:
-
-- De achtergrond service kan de locatie lijst vullen met nutteloze punten die meer
-corresponderen met de route van de boot, dan met de werkelijke duiklocaties. Het
-is verstandig zoveel mogelijk nutteloze punten te verwijderen van af de smartphone
-om verwarring later te voorkomen. Dit kan overigens alleen met de Android versie.
-
-- Het is nuttig om de juiste locaties op zijn minst een informatieve naam te geven,
-zeker tijdens een trip met meerdere duiken en duiklocaties. Dit vereenvoudigd het later
-correct samenvoegen.
-
 [[S_LoadImage]]
-=== Foto's aan duiken toevoegen
+=== Foto's en video's aan duiken toevoegen
 
-Veel duikers maken foto's tijden het duiken. _Subsurface_ maakt het mogelijk
-foto's gemaakt tijdens het duiken op te slaan en te tonen, in relatie tot
-het duikprofiel.
+Veel duikers maken foto's of video's tijdens het duiken. Ter vereenvoudiging noemen we
+foto's en video's verder media. _Subsurface_ maakt het mogelijk
+media gemaakt tijdens het duiken op te slaan en te tonen, in relatie tot
+het duikprofiel en in het _Media_ tabblad, en de interface voor foto's en video's
+is gelijk.
 
-==== Foto's laden en synchroniseren tussen duikcomputer en camera
+==== Media laden en synchroniseren tussen duikcomputer en camera
 
 Selecteer één of meerdere duiken uit de *Duiklijst*, en roep het
 xref:S_DiveListContextMenu[context menu] op met de rechter muisknop. Kies
-_Laad foto's van bestanden_ of _laad foto's van het web_. Bij _Laad foto's van bestanden_
-verschijnt er een bestandskiezer waarin de te laden foto's geselecteerd kunnen worden.
-Klik dan _Open_.
+_Laad media van bestanden_ of _laad media van het web_. Bij _Laad media van bestanden_
+verschijnt er een bestandskiezer waarin de te laden media geselecteerd kunnen worden.
+Klik dan _Open_. Onderaan de bestandskiezer staat een filter waarmee de lijst beperkt
+kan worden tot alleen foto's of alleen video's, alle bestanden, of alle media.
 
-image::images/LoadImage2_f20.jpg["Figuur: Laad foto's van bestanden optie",align="center"]
+image::images/LoadImage2_f20.jpg["Figuur: Laad media van bestanden optie",align="center"]
 
-Als foto's van het Internet worden geladen, geeft dan een URL van één enkele foto. Er
-kan maximaal één foto tegelijkertijd van Internet worden geladen. _Subsurface_ gaat er ook
-vanuit dat de foto's altijd via Internet benaderd kunnen worden op moment dat deze
+Als media van het Internet worden geladen, geeft dan een URL van één enkel media item. Er
+kan maximaal één media item tegelijkertijd van Internet worden geladen. _Subsurface_ gaat er ook
+vanuit dat de media altijd via Internet benaderd kunnen worden op moment dat deze
 getoond moet worden.
 
-Als de foto's zijn geselecteerd (en _Open_ is gekozen), verschijnt het synchronisatie
+Als de media zijn geselecteerd (en _Open_ is gekozen), verschijnt het synchronisatie
 scherm (zie figuur hieronder).
 De tijd synchronisatie tussen camera en duikcomputer is zelden perfect; er zitten vaak wel
-enkele minuten verschil tussen. _Subsurface_ wil de foto's zo precies mogelijk
+enkele minuten verschil tussen. _Subsurface_ wil de media zo precies mogelijk
 op het profiel plaatsen dus er zijn een drietal manieren om dit te bewerkstelligen:
 
 - *Pro-actief*: stel zelf de klokken van beide apparaten voor de duik gelijk.
@@ -1664,7 +1385,7 @@ van de tijd op de duikcomputer). Je kunt dan na de duik, of zelfs aan het eind v
 aangenomen dat de klokken verder niet aangepast zijn, het verschil tussen beide klokken bepalen.
 In het veld _Tijdstip voor afbeelding(en) verschuiven met_ kan het berekende verschil worden
 ingevoerd (zie figuur hieronder). Als de camera tijd 7 minuten later is dan de duikcomputer tijd,
-voer dan u:07 en selecteer het keuzevakje _vroeger_. Dit klopt want de foto's moeten naar 7 minuten
+voer dan u:07 en selecteer het keuzevakje _vroeger_. Dit klopt want de media moeten naar 7 minuten
 vroeger verplaatst worden, want de camera tijd is 7 minuten later dan de duikcomputer tijd.
 Klik _OK_ en de synchronisatie is voltooid.
 
@@ -1683,121 +1404,118 @@ image::images/LoadImage3c_f23.jpg["Figuur: Synchronisatie dialoog",align="center
 Als de tijd van een foto meer dan 30 minuten voor of na de duik is, wordt deze niet
 geplaatst (zie de rode waarschuwing in de figuur hierboven), tenzij het keuzevakje
 _Laad afbeeldingen zelfs als de tijd niet overeenkomt met de duiktijd_ is geselecteerd.
-Op deze wijze kunnen bijvoorbeeld foto's voor of na de duik toch gekoppeld worden
-met een duik, en op deze manier zichtbaar zijn via het _Foto's_ tabblad van
+Op deze wijze kunnen bijvoorbeeld media voor of na de duik toch gekoppeld worden
+met een duik, en op deze manier zichtbaar zijn via het _Media_ tabblad van
 het *Notities* paneel.
 
 
-==== Foto's bekijken
+==== Media bekijken
 
-Nadat foto's zijn toegevoegd aan duiken, kunnen deze bekeken worden op twee plaatsen:
-
- - de _Foto's_ tab van het *Notities* paneel (linker deel van het figuur hieronder).
- - als miniatuurafbeelding op het duikprofiel op de plek waar de foto is genomen tijdens de duik
-
-Om de miniatuurafbeeldingen in  het duikprofiel weer te geven, dient _toon foto's_
-geactiveerd te zijn:
-
-image::images/icons/ShowPhotos_f20.png["Figuur:Toon foto's knop",align="left"]
-
-De foto's worden dan als volgt getoond:
-
-image::images/LoadImage4_f20.jpg["Figuur: Foto's op het duikprofiel",align="center"]
-
-Bij het bewegen van de muis over de miniaturen, wordt deze in een iets groter
-formaat weergegeven. Zie hieronder:
-
-image::images/LoadImage5_f20.jpg["Figuur:Miniatuur foto op het duikprofiel",align="center"]
-
-Als er op de miniatuurafbeelding wordt geklikt, verschijnt de foto in een externe
-applicatie (zoals gedefinieerd op het systeem), bedoeld om de foto tot in detail
-te kunnen bekijken (zie figuur hieronder). *Merk op* dat de miniatuurafbeelding
-rechtsonder een vuilnisbak symbool bevat; hier klikken verwijderd de foto uit de duik.
-Foto's kunnen ook via de _Foto's_ tab worden verwijderd (zie hieronder).
-
-image::images/LoadImage6_f20.jpg["Figuur: Volledige resolutie weergave via het duikprofiel",align="center"]
-
-==== Het _Foto's_ tabblad
-Foto's die aan een duik zijn gekoppeld worden weergegeven als miniatuurafbeelding op
-het _Foto's_ tabblad. Bij veel foto's in een korte tijd, staan de miniaturen op het
-duikprofiel vaak over elkaar; via het tabblad kunnen ze eenvoudig individueel benaderd
-worden. De miniaturen op het profiel zijn met name bedoeld om de positie tijdens de duik
-weer te geven. Enkel klikken selecteert een foto op het tabblad, dubbel klikken opent
-deze in een externe applicatie. Verwijder een foto (dwz. de associatie met de duik, de
-foto zelf wordt niet verwijderd), door deze te selecteren en met de delete toets kan
-de selectie dan worden verwijderd (van zowel het tabblad als het profiel).
-
-
-==== Foto's op een externe harde schijf
-
-Veel onderwater fotografen bewaren hun foto's op een externe harde schijf. Op
-moment dat de harde schijf zichtbaar is via het besturingssysteem, kan _Subsurface_
-deze schijf (en de foto's) normaal benaderen. Ook het koppelen vam foto's aan duiken
-werkt alsof de foto's op een vaste harde schijf staan; alles werkt zoals eerder
-beschreven. Een verschil is natuurlijk het kunnen loskoppelen van de externe
-harde schijf, waardoor _Subsurface_ niet meer bij de foto's kan. In het profiel
-staan nu witte punten op de plek van de foto's en in het _Foto's_ tabblad staan
-alleen de namen van de foto's. Als de externe harde schijf weer wordt aangesloten,
-werkt het weer zoals voorheen.
-
-
-==== Controleren aan welke duiken foto's hangen.
-
-Individuele duiken bekijken of er foto's aan hangen is relatief tijdrovend.
-Er is een handige manier om dit uit te zoeken. Klik rechts op de kopregel
-van de *Duiklijst* voor het context menu. Je kunt nu de velden kiezen die
-je wilt zien in de duiklijst. Zet het tonen van de Foto kolom aan, en de
-duiken met foto's eraan zijn gemarkeerd met een icoon. Door te klikken op een
-veld in de kop, wordt overigens de lijst gesorteerd. Meer informatie
-in <<S_Divelist_columns, foto iconen in de *Duiklijst*>>.
-
-
-[[S_FindMovedImages]]
-==== Foto's verplaatsen naar andere folders, harde schijven of computers
-
-Als een foto gekoppeld wordt aan een duik, slaat _Subsurface_ het folder pad
-naar de foto op tezamen met de naam van het bestand. Dit alles om de foto weer te kunnen
-openen. Als de foto verplaatst is naar en andere plek, veranderd het pad naar de foto en
-kan _Subsurface_ het bestand niet vinden. Voor het terugvinden heeft _Subsurface_
-specifieke functionaliteit: automatisch terugvinden voor middel van een vingerafdruk.
-
-Naast het eerder genoemde pad en naam van het fotobestand, bepaalt _Subsurface_
-bij het toevoegen van een foto ook de vingerafdruk van de foto en slaat deze intern op.
-Op basis van deze vingerafdruk kan _Subsurface_:
-
-- zoeken vanaf een bepaalde folder (en recursief in alle subdirectory's) naar
-verplaatste foto's,
-- de vingerafdrukken van alle gevonden foto's bepalen,
-- en als een verplaatste wordt gevonden, wordt de koppeling automatisch hersteld,
-ook als het bestand een andere naam heeft gekregen.
-
-Selecteer uit het hoofdmenu _Bestand -> vind verplaatste afbeeldingen_. Er verschijnt
-een bestandskies scherm, en kies daar de nieuwe plek van de foto's, en klik de
-_scan_ knop. Het zoeken kan enkele minuten duren, afhankelijk van de gekozen
-nieuwe plek (en het aantal bestanden dat daar onder staat). Hierna zijn de foto's
-opnieuw gekoppeld, aangenomen dat de juiste nieuwe plek van de foto's is gekozen
-natuurlijk.
-
-
-[[Image_fingerprint_upgrade]]
 ****
-*Oude foto collecties voorzien van vingerafdruk*
-
+*Zorg ervoor dat thumbnails voor video kunnen worden gemaakt*
 [icon="images/icons/important.png"]
 [IMPORTANT]
 
-_Subsurface_ berekent automatisch vingerafdrukken van foto's die het kan benaderen.
-Zorg ervoor dat _Subsurface_ alle foto's kan bekijken die gekoppeld worden aan een duik.
+In het media paneel worden thumbnails van media getoond. Voor foto's
+is dit eenvoudig, maar video's bestaan in feite uit een verzameling statische
+beelden. Twee acties zijn noodzakelijk om thumbnails van video's
+te kunnen gebruiken:
 
-_Subsurface_ controleert automatisch, en vernieuwd wanneer nodig de vingerafdruk op
-de volgende momenten:
+* De vereiste voorkeuren dienen ingesteld te zijn.
 
-- Een duik met foto's wordt geselecteerd, en de miniatuurafbeeldingen zijn
-zichtbaar in het duikprofiel.
-- Op moment dat je iets wijzigt in het *Notities* paneel en de wijzigingen
-opslaat.
+* Het programms _ffmpeg_ dient geïnstalleerd te zijn op de computer.
 
+Alle details zijn te lezen in <<S_APPENDIX_F,Bijlage F>>.
 ****
+
+Nadat media zijn toegevoegd aan duiken, kunnen deze bekeken worden op twee plaatsen:
+
+ - de media tab van het *Notities* paneel (linker deel van het figuur hieronder).
+ - als thumbnails op het duikprofiel op de plek waar het item is genomen tijdens de duik
+
+Om de thumbnails in het duikprofiel weer te geven, dient _toon media_
+geactiveerd te zijn:
+
+image::images/icons/ShowPhotos_f20.png["Figuur:Toon media knop",align="left"]
+
+De items worden dan als volgt getoond:
+
+image::images/LoadImage4_f20.jpg["Figuur: media op het duikprofiel",align="center"]
+
+Bij het bewegen van de muis over de thumbnails, wordt deze in een iets groter
+formaat weergegeven. Zie hieronder:
+
+image::images/LoadImage5_f20.jpg["Figuur:thumbnails media op het duikprofiel",align="center"]
+
+Als er op de thumbnails wordt geklikt, verschijnt het item in een externe
+applicatie (zoals gedefinieerd op het systeem), bedoeld om het item tot in detail
+te kunnen bekijken (zie figuur hieronder). *Merk op* dat de thumbnails
+rechtsonder een vuilnisbak symbool bevat; hier klikken verwijderd het item uit de duik.
+Media kunnen ook via de _Media_ tab worden verwijderd (zie hieronder).
+
+image::images/LoadImage6_f20.jpg["Figuur: Volledige resolutie weergave via het duikprofiel",align="center"]
+
+==== Het _Media_ tabblad
+Media die aan een duik zijn gekoppeld worden weergegeven als thumbnails op
+het _Media_ tabblad. Bij veel items in een korte tijd, staan de thumbnails op het
+duikprofiel vaak over elkaar; via het tabblad kunnen ze eenvoudig individueel benaderd
+worden. De thumbnails op het profiel zijn met name bedoeld om de positie tijdens de duik
+weer te geven. De maat van de thumbnails kan worden aangepast door middel van de
+schuifknop onder aan het scherm. Enkel klikken selecteert een item op het tabblad, dubbel klikken opent
+deze in een externe applicatie. Verwijder een media item (dwz. de associatie met de duik, het item
+zelf wordt niet verwijderd), door deze te selecteren en met de delete toets kan
+de selectie dan worden verwijderd (van zowel het tabblad als het profiel).
+
+
+==== Media op een externe harde schijf
+
+Veel onderwater fotografen bewaren hun media op een externe harde schijf. Op
+moment dat de harde schijf zichtbaar is via het besturingssysteem, kan _Subsurface_
+deze schijf (en de media) normaal benaderen. Ook het koppelen van items aan duiken
+werkt alsof deze op een vaste harde schijf staan; alles werkt zoals eerder
+beschreven. Een verschil is natuurlijk het kunnen loskoppelen van de externe
+harde schijf, waardoor _Subsurface_ niet meer bij de media kan. In het profiel
+staan nu alleen de thumbnails op de plek van de media en in het _Media_ tabblad staan
+alleen eveneens alleen thumbnails die niet kunnen worden vergroot.
+Als de externe harde schijf weer wordt aangesloten,
+werkt het weer zoals voorheen.
+
+
+==== Controleren aan welke duiken media hangt.
+
+Individuele duiken bekijken of er media aan hangen is relatief tijdrovend.
+Er is een handige manier om dit uit te zoeken. Klik rechts op de kopregel
+van de *Duiklijst* voor het context menu. Je kunt nu de velden kiezen die
+je wilt zien in de duiklijst. Zet het tonen van de Media kolom aan, en de
+duiken met items eraan zijn gemarkeerd met een icoon. Door te klikken op een
+veld in de kop, wordt overigens de lijst gesorteerd. Meer informatie
+in <<S_Divelist_columns, media iconen in de *Duiklijst*>>.
+
+
+[[S_FindMovedImages]]
+==== Media verplaatsen naar andere folders, harde schijven of computers
+
+Als een media item gekoppeld wordt aan een duik, slaat _Subsurface_ het folder pad
+naar het item op tezamen met de naam van het bestand. Dit alles om het item weer te kunnen
+openen. Als het item verplaatst is naar en andere plek, veranderd het pad naar de media en
+kan _Subsurface_ het bestand niet vinden. Voor het terugvinden heeft _Subsurface_
+specifieke functionaliteit: automatisch terugvinden op basis van bestandsnaam en pad.
+
+Selecteer uit het hoofdmenu _Bestand -> vind verplaatste afbeeldingen_. Er verschijnt
+een scherm waarin het zoeken naar media kan worden uitgevoerd. Het werkelijk zoeken
+start door op _selecteer map en scan_ te klikken. Media van verschillende camera's
+kunnen natuurlijk dezelfde naam hebben, dus namen van bovenliggende mappen worden
+ook gebruikt bij het zoeken. Kies daarom de top map van de nieuwe media collectie.
+Voor nog meer controle over het proces kan het ook alleen uitgevoerd worden voor
+de op dit moment geselecteerde duiken.
+
+Op moment dat het zoeken beëindigd is, worden de originele bestandsnaam en de
+nieuwe locatie getoond. Overeenkomstige delen van de bestandsnaam zijn vet gedrukt.
+Bestanden die gevonden worden op de bekende locatie worden niet getoond.
+Bevestig of weiger met de bekende knoppen.
+
+
+image::images/FindMovedImages1.jpg["FIGUUR:Zoek verplaatste beelden",align="center"]
 
 === Speciaal soort duiken loggen
 
@@ -1824,7 +1542,7 @@ Voer de cilinders één voor één in, en definieer de maat, inhoud, en druk.
 
 - *Plaats de gaswissels in het duikprofiel*: Als de gaswissels niet uit de duikcomputer komen,
 moeten deze handmatig ingevoerd worden in het duikprofiel. Klik rechts op de gewenste locatie in
-het profiel, en kies _Gaswissel toevoegen_. Als de "cilinder balk", onderaan het profiel
+het profiel, en kies _Gaswissel toevoegen_. Als de "gas balk", onderaan het profiel
 aan staat, zijn ook hier de gebruikte gassen te zien (zie figuur hieronder).
 
 Hieronder staat een voorbeeld van een duik met twee cilinders, de eerste met EAN28,
@@ -1905,12 +1623,42 @@ Om pSCR duiken te loggen in _Subsurface_ is er niet veel specifieks nodig:
 - Voeg (waar van toepassing) de gaswissels toe zoals beschreven in de paragraaf over
 xref:S_MulticylinderDives[multicylinder duiken].
 
-Als de pSCR mode wordt gekozen, wordt de bij pSCR duikers bekende pO~2~ drop berekend,
-en deze wordt meegenomen in de decompressieberekeningen. Dit leidt typisch tot iets meer
-decompressietijd. Hieronder een pSCR duik van iets meer dan 2 uur gebruik makend
+Bij het duiken met een pSCR is vrijwel altijd de pO~2~ in het ingeademde gas lager
+dan de pO~2~ van het gas dat direct uit de cilinder komt. Dit komt omdat er een klein,
+bijvoorbeeld 10%, deel van het gas wordt vervangen bij iedere ademteug, en dus
+uit de overige 90% van het volume van de pSCR zuurstof gemetaboliseerd wordt door
+de duiker. Dit wordt de pO~2~ drop genoemd. Dit leidt typisch tot iets meer
+decompressietijd en bovendien wordt een gas sneller hypoxisch tijdens de opstijging.
+Hieronder een pSCR duik van iets meer dan 2 uur gebruik makend
 van EAN36 met decompressie op zuurstof.
 
 image::images/pSCR_profile.jpg["Figuur: pSCR profiel",align="center"]
+
+_Visualiseren van de pO~2~ drop_: Het verschil tussen pO~2~ zoals het in de
+cilinder zit, en pO~2~ zoals dat wordt ingeademd kan worden gevisualiseerd in
+_Subsuface_. Stel hiertoe in Bestand-Voorkeuren-Profiel de voorkeuren gemarkeerd
+met pSCR in. De optie _pSCR metabolisme gebruik O~2~_ is je persoonlijke zuurstof
+metabolisme (normale waarde in rust ligt in de orde 0.7l/min en stijgt met
+inspanning tot mogelijk 2.5l/min). De optie _Verdunningsratio_ geeft de verhouding
+weer tussen de hoeveel gas die verwijderd wordt uit de loop. Een veel voorkomende
+waarde is 1:10 (dus 10% verwijderen). Deze beide waarden worden ook gebruikt in
+de planner. Als de pSCR zonder zuurstofsensor wordt gebruikt worden deze waarden
+ook gebruikt, en als er wel registratie met een duikcomputer plaatsvindt worden
+actuele waarden gebruikt. Verder is er een optie _Toon gelijkwaardige OC pO~2~ bij
+pSCR pO~2~_. Deze activeert het tonen van de pO~2~ zoals het in de cilinder zit met
+een oranje lijn. De verticale afstand tussen de oranje en groene lijn geeft de
+pO~2~ drop weer.
+
+[icon="images/DiveModeChange.jpg"]
+[NOTE]
+_pSCR en bailout_: gassen zoals gebruikt in het duiken met pSCR kunnen resulteren
+in een erg lage pO~2~ in ondiep water. Een mogelijkheid is om de ondiepe fase van
+de duik met OC te doen. In een dergelijk geval is dus een deel van de duik in pSCR
+mode en een deel OC mode. Dit kan in het duikprofiel worden ingevoerd met behulp
+van het context menu. Sommige duikcomputers kunnen dergelijke mode wisselingen
+vastleggen. Hieronder een voorbeeld van een pSCR duik met de ondiepe delen met OC.
+
+image::images/pSCR_profile_bailout.jpg["FIGUUR: pSCR profile with bailout",align="center"]
 
 
 [[S_CCR_dives]]
@@ -1995,7 +1743,7 @@ in het duikprofiel scherm natuurlijk).
 image::images/CCR_preferences_f20.jpg["Figuur: CCR voorkeuren paneel",align="center"]
 
 Het eerste keuzevakje (Toon setpoint wanneer pO~2~ getoond wordt) toont een
-rode lijn, over de groene lijn van de gemiddelde pO~2~ (van de sensoren). Dit maakt
+oranje lijn, over de groene lijn van de gemiddelde pO~2~ (van de sensoren). Dit maakt
 het eenvoudig vergelijken van setpoint en gemeten waarden door de sensoren mogelijk
 zoals hieronder getoond.
 
@@ -2022,6 +1770,30 @@ _Gebeurtenissen_: Diverse gebeurtenissen worden vastgelegd, zoals het wisselen t
 de loop van de CCR en open circuit. Dit soort gebeurtenissen worden getoond als
 gele driehoekjes op het profiel, en details worden getoond in de xref:S_InfoBox[Informatie Box].
 
+_Bailout_: Bailout gebeurtenissen kunnen worden weergegeven voor CCR duiken. klik
+met de rechter muisknop op het duikprofiel om het context menu te tonen, en selecteer
+_Duimodus wijzigen_ en kies de gewenste (waarschijnlijk OC) duikmode. Er verschijnt
+een icoon op het duikprofiel (zie figuur hieronder). Met veel CCR apparatuur is het
+ook mogelijk naar pSCR mode te wisselen bijvoorbeeld in het geval van een elektronica
+fout. Dit alles is ook zichtbaar in de pO~2~ grafiek van het duikprofiel omdat _Subsurface_
+dit kan berekenen. Merk op dat diverse eCCRs in staat zijn om bij diverse fouten in de
+elektronica naar een bijzondere "parachute" mode te wisselen. Hierbij wordt dan
+(bijvoorbeeld) een relatief laag setpoint van 0.7bar gehandhaafd. In dit soort gevallen
+is het waarschijnlijk beter om geen bailout gebeurtenis in te voeren, omdat _Subsurface_
+er onterecht vanuit gaat dat er geen setpoint gedefinieerd is, en dan onjuiste pO~2~
+berekent.
+
+Hieronder staat een profiel van een CCR duik met bailout op 57 minuten. De groene
+pO~2~ grafiek divergeert van het setpoint en neemt de waarde aan van de pO~2~
+van de gebruikte diluent (lucht in dit geval). De pO~2~ in de loop (te zien in de grafieken
+van alle zuurstofsensoren) is niet relevant, want het werkelijke gas dat wordt
+OC wordt ingeademd komt immers direct uit de diluent. Als er een ander gas dan diluent
+(uit een bailout stage bijvoorbeeld) worst gebruikt tijdens de bailout fase, dient
+er natuurlijk ook een gaswissel naar dat gas te worden ingevoerd.
+
+image::images/CCR_bailout.jpg["FIGUUR: CCR bailout profiel",align="center"]
+
+
 _Cilinder drukken_: Sommige CCR duikcomputers, zoals die van de Poseidon MkVI leggen
 ook de cilinder druk vast. Deze drukken worden over het diepte profiel als
 groene lijn getoond. Daarnaast zijn ook de begin en eind druk ingevuld van zoals
@@ -2036,7 +1808,8 @@ image::images/CCR_dive_profile_f22.jpg["Figuur: CCR duikprofiel",align="center"]
 _Uitrusting-specifieke informatie_: Specifieke informatie mbt. bijvoorbeeld een CCR duik,
 wordt door _Subsurface_ in het xref:S_ExtraDataTab[Extra data tabblad] getoond.
 
-Het decompressie plafond zoals dat berekend wordt door _Subsurface_ is niet erg
+_Decompressie plafond_: Het decompressie plafond zoals dat berekend wordt door _Subsurface_
+is niet erg
 precies, want met name de stikstof en helium druk in de unit wordt niet gerapporteerd
 in de uitvoer van de duikcomputer. Veel CCR duikcomputers rapporteren echter wel
 een zelf berekend decompressie plafond met inachtneming van alle sensor data van de
@@ -2048,11 +1821,11 @@ wordt het tonen van het, door de duikcomputer, berekende plafond aangezet.
 
 De standaard kleur voor het door de duikcomputer berekende plafond is wit.
 Dit kan veranderd worden naar rood via het _Bestand -> Voorkeuren -> Profiel_.
-Hieronder staat een voorbeeld van een duik met een duikcomputer berekend plafond:
+Hieronder staat een voorbeeld van een duik met een duikcomputer berekend plafond in het rood:
 
 image::images/CCR_dive_ceilingF22.jpg["Figuur: CCR computer-gegenereerd deco plafond",align="center"]
 
-Meer apppatuur specifieke informatie over het laden van CCR logs uit Poseidon MkVI en
+Meer apppatuur specifieke procedures en informatie over het laden van CCR logs uit Poseidon MkVI en
 APD apparatuur staan in
 xref:_appendix_b_dive_computer_specific_information_for_importing_dive_information[Bijlage B].
 
@@ -2075,7 +1848,7 @@ Zoom in. Selecteer een kleiner gebied.
 [NOTE]
 Zoom out. Selecteer een groter gebied.
 
-image::images/MapMenu.jpg["FIGURE: Map menu",align="left"]
+image::images/MapMenu.jpg["FIGUUR: Map menu",align="left"]
 
 Een "Hamburger" knop in de rechts-boven hoek met de volgende functies:
 
@@ -2225,7 +1998,14 @@ hypothetische duik op lucht met gelijke pN~2~ + pO~2~ (aanname, zuurstof is
 ook narcotisch) voor de huidige duikdiepte op Trimix. De duiker kan een gelijke
 mate van narcose ervaren als een duik op lucht naar de END diepte.
 
-Figuur (*B*) hierboven toont een informatie box met vrijwel alle mogelijke waarden.
+Als er zich tijdens de duik een isobaric counter diffusie (ICD) situatie
+voordoet in het weefsel dat het meest verzadigd is (ofwel een moment waarbij
+helium ontgast, stikstof gas wordt opgenomen, maar het netto effect
+gas opname is), dan wordt dit ook in de Informatie Box getoond. Merk op dat
+deze toestand niet alleen afhangt van het gas dat op dat moment wordt geademd,
+maar ook de op dat moment geldende weefseldrukken.
+
+Figuur (*B*) hierboven toont een Informatie Box met vrijwel alle mogelijke waarden.
 
 
 [[S_gas_pressure_graph]]
@@ -2367,9 +2147,11 @@ op het profiel, en een aantal (nuttige) waarden worden onder de lijn getoond.
 
 [icon="images/icons/ShowPhotos.png"]
 [NOTE]
-Met de *toon/verberg foto's* knop kunnen foto's die aan een duik zijn gekoppeld
-als miniatuurafbeeldingen op het duikprofiel worden getoond. Als deze knop niet
-actief is, worden de foto's niet getoond.
+Met de *toon/verberg media* knop kan media die aan een duik zijn gekoppeld
+als thumbnails op het duikprofiel worden getoond. De positie van het media item
+op het duikprofiel is precies op het moment van het maken van het media item. Als
+de lengte van een video fragment kan worden bepaald, wordt dit met een balkje weergeven.
+Als *toon/verberg media* knop niet actief is, word de media niet getoond.
 
 In het profiel kan ook het door de duikcomputer berekende decompressie plafond worden
 getoond (of preciezer, de diepste berekende decompressie stop) als rode laag. Niet
@@ -2581,21 +2363,21 @@ sessies van _Subsurface_.
 
 [[S_Photos_divelist]]
 
-De _Foto's_ kolom toont een icoon dat aangeeft dat er foto's gekoppeld zijn
+De _Media_ kolom toont een icoon dat aangeeft dat er media gekoppeld zijn
 aan de duik. Er zijn drie mogelijke iconen:
 
 [icon="images/icons/duringPhoto.png"]
 [NOTE]
-Deze duik heeft foto's gedurende de duik, dus onder water.
+Deze duik heeft media gedurende de duik, dus onder water.
 
 [icon="images/icons/outsidePhoto.png"]
 [NOTE]
-Deze duik heeft foto's voor of na de duik. Nuttig voor bijvoorbeeld oppervlakte
-foto's vanaf de boot.
+Deze duik heeft media voor of na de duik. Nuttig voor bijvoorbeeld oppervlakte
+media vanaf de boot.
 
 [icon="images/icons/inAndOutPhoto.png"]
 [NOTE]
-Deze duiken heeft zowel onder water foto's als foto's voor of na de duik.
+Deze duiken heeft zowel onder water media als media voor of na de duik.
 
 [[S_Renumber]]
 === Hernummer van duiken
@@ -2708,11 +2490,11 @@ de juiste optie te kiezen. _Subsurface_ splitst dan de duiken op de plekken
 waar de duikdiepte minder dan 1m is.
 
 
-==== Foto's vanuit files aan een duik koppelen
-Dit onderwerp wordt besproken in xref:S_LoadImage[foto's aan een duik koppelen].
+==== Media vanuit files aan een duik koppelen
+Dit onderwerp wordt besproken in xref:S_LoadImage[media aan een duik koppelen].
 
-==== Foto's vanaf internet aan een duik koppelen
-Dit onderwerp wordt besproken in xref:S_LoadImage[foto's aan een duik koppelen].
+==== Media vanaf internet aan een duik koppelen
+Dit onderwerp wordt besproken in xref:S_LoadImage[media aan een duik koppelen].
 
 
 ==== Ongedaan maken van duik manipulaties
@@ -2868,10 +2650,17 @@ vanaf de commando regel uit te voeren.
 
 image::images/texexample.png["Figuur: Export to TeX", align="center"]
 
-* _Diepte foto(s)_, maakt een tekst bestand met alle foto bestanden die
+* _Diepte media(s)_, maakt een tekst bestand met alle media bestanden die
 aan de geselecteerde duiken in de *Duiklijst* zijn gekoppeld, inclusief
-de diepte waarop de foto(s) zijn genomen.
+de diepte waarop de media zijn genomen.
 
+Wanneer de "Maak anoniem" optie is geselecteerd in geval van xml-gebaseerde
+bestandsformaten, worden de letters A-Z allemaal vervangen voor de letter X.
+Dit geldt voor de velden notities, buddy, divemaster, locatie en locatiebeschrijving.
+Op deze manier kunnen logboeken eenvoudiger worden gedeeld met bijvoorbeeld de
+ontwikkelaars van _Subsuface_. Merk op dat andere tekens niet worden vervangen, dus
+deze optie is niet relevant voor niet-Latijnse karakters of het verwijdenen van
+GPS coördinaten.
 
 * _Algemene instellingen_, op het HTML tabblad, bied de volgende instellingen:
 
@@ -3131,7 +2920,7 @@ sessies ook gebruikt. Met _Cancel_ worden aanpassingen niet toegepast.
 
 Het *Algemeen* paneel heeft de volgende onderdelen:
 
-image::images/Pref1_f23.jpg["Figuur: Voorkeuren algemeen pagina",align="center"]
+image::images/Pref1.jpg["Figuur: Voorkeuren algemeen pagina",align="center"]
 
   ** *Lijsten en tabellen*: Kies hier lettertype en grootte welke gebruikt wordt
   voor lijsten (zoals de *Duiklijst*) en tabellen. Een kleinere letter zorgt
@@ -3158,6 +2947,12 @@ image::images/Pref1_f23.jpg["Figuur: Voorkeuren algemeen pagina",align="center"]
   ** *Animaties*: Sommige acties in het duikprofiel zijn animaties. Bijvoorbeeld,
   de diepte- en tijd-assen. Met deze instelling kan de snelheid van de animatie worden
   ingesteld. De waarde 0 is geen animatie.
+
+  ** *Video thumbnails*: Om video thumbnails te kunnen maken
+  heeft _Subsurface_ bepaalde informatie nodig (zie <<S_ViewMedia,View Images>>).
+  Drie voorkeuren dienen te worden ingesteld zoals uitgelegd  <<S_APPENDIX_F, Bijlage F>>.
+  Deze zijn: a) set thumbnails aan, b) specificeer de locatie van het _ffmpeg_ programma en
+ c) stel de tijd in waar een thumbnail moet worden gemaakt.
 
   ** *Alle instellingen wissen*: Met de knop hieronder kunnen alle instellingen
   gewist en terug gezet worden naar standaard waarden.
@@ -3207,6 +3002,18 @@ actuele pO~2~. Zie verder xref:S_CCR_dives[Closed Circuit Rebreather duiken].
 Als deze keuze geactiveerd is tonen verschillende lijnen (voor iedere sensor) de
 gemeten O~2~ sensor waarden. Zie verder xref:S_CCR_dives[Closed Circuit Rebreather duiken].
 
+**  _pSCR opties_. Deze voorkeuren zijn bedoeld voor het plannen en berekenen van
+duiken met een passieve semi-close rebreather (pSCR):
+
+*** _Metabolisme ratio:_ Het aantal liters zuurstof dat gebruikt wordt per minuut.
+Waardes tussen 0.7 en 0.9 liter/min zijn gebruikelijk.
+
+*** _Verdunningsratio:_ De verhouding tussen gas dat verwijderd wordt uit de loop,
+en het deel dat behouden blijft in de loop. 1:10 is een veel gebruikte verhouding.
+Deze verhouding is afhankelijk van de fysieke verhouding tussen de grote en kleine
+counter long van de pSCR, dus deze waarde is vaak terug te vinden in de handleiding
+van het apparaat.
+
 * *Plafond display instelling*. Deze instellingen hebben met name betrekking op
 effecten van stikstof en helium in relatie tot de door _Subsurface_ ondersteunde
 decompressie modellen, en het tonen ervan in het duikprofiel:
@@ -3236,29 +3043,12 @@ duikcomputers. Hoe lager de waarde van de gradiënt factor, hoe conservatiever
 de berekening met betrekking verzadiging met inert gas op diepte, en hoe diepte
 het plafond komt te liggen. Een gradiënt factor waarde 20/60 kan als conservatief
 worden beschouwd, en een 70/90 als agressiever.
-
-Beslis verder of je _GFLow op max. diepte_ wilt activeren. Als deze actief is wordt
-GF_Low gebruikt voor het diepste punt van de duik en lineair geïnterpoleerd tot
-GF_High  aan de oppervlakte. Wanneer niet geactiveerd, wordt GF_Low gebruikt tussen
-het diepste punt van de duik en de eerste decompressiestop, en vanaf daar wordt
-GF_Low lineair geïnterpoleerd tot GF_High  aan de oppervlakte. Zie de volgende
-websites voor meer informatie:
+Zie de volgende websites voor meer informatie:
 
  *** http://www.tek-dive.com/portal/upload/M-Values.pdf[Understanding M-values door Erik Baker, _Immersed_ Vol. 3, No. 3.]
 
  *** link:http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html[Gradient factors for dummies, door Kevin Watts]
 
- **  _pSCR opties_. Deze voorkeuren zijn bedoeld voor het plannen en berekenen van
- duiken met een passieve semi-close rebreather (pSCR):
-
- *** _Metabolisme ratio:_ Het aantal liters zuurstof dat gebruikt wordt per minuut.
- Waardes tussen 0.7 en 0.9 liter/min zijn gebruikelijk.
-
- *** _Verdunningsratio:_ De verhouding tussen gas dat verwijderd wordt uit de loop,
- en het deel dat behouden blijft in de loop. 1:10 is een veel gebruikte verhouding.
- Deze verhouding is afhankelijk van de fysieke verhouding tussen de grote en kleine
- counter long van de pSCR, dus deze waarde is vaak terug te vinden in de handleiding
- van het apparaat.
 
 * *Allerlei*
 
@@ -3288,7 +3078,7 @@ Ook kunnen hier gewenste formaten voor datum en tijd worden ingesteld.
 
 In deze voorkeuren worden de diverse communicatie mogelijkheden van _Subsurface_
 met de buitenwereld ingesteld. Bijvoorbeeld voor communicatie met de _Subsurface_
-cloud, de Companion App, of als het nodig of gewenst is via een proxy te
+cloud, of als het nodig of gewenst is via een proxy te
 communiceren.
 
 image::images/Pref5_f23.jpg["Figuur: Voorkeuren Netwerk pagina",align="center"]
@@ -3311,19 +3101,13 @@ _Subsurface_.
 bewaard. Merk op dat dit zonder versleuteling gebeurd in een leesbaar tekst
 bestand.
 
-** _Subsurface webservice_: Als je je aanmeldt bij de <<S_Companion,Subsurface web service>>
-krijg je een lang, en bijna niet te onthouden zogenaamd _Standaard gebruikers ID_.
-Dit is de plek om deze in te stellen. Door de optie _Bewaar gebruikers ID lokaal_
-wordt deze lokaal bewaard.
-
 
 === Georeferentie
 
 _Subsurface_ kan een geografische zoek actie uitvoeren om een naam bij een GPS
 locatie te zoeken. Dit kan natuurlijk alleen als een duikstek een ingevulde GPS
-lokatie heeft, die bijvoorbeeld handmatig, met de kaart rechtsonder, met de
-Companion App of met _Sursurface-mobile_ bepaald is. Voor deze functionaliteit is
-een actieve internet verbinding nodig.
+lokatie heeft, die bijvoorbeeld handmatig, met de kaart rechtsonder, met _Sursurface-mobile_
+bepaald is. Voor deze functionaliteit is een actieve internet verbinding nodig.
 
 De wijze van naamgeving kan via de voorkeuren worden ingesteld. Bijvoorbeeld
 _Country/State/City_ of _City/State/Country_. Zie figuur hieronder:
@@ -3433,20 +3217,31 @@ toevoegen kan met met "+" icoon links boven.
 
 ==== Recreatieve duiken
 
-De recreatieve mode is de meest eenvoudige planning mode die duiken plant binnen
-de niet-decompressie limiet (NDL). Het berekent de maximale tijd die de duiker
+De recreatieve mode is wat de meeste duikers "recreatief-", "niet-technisch-", of
+"sportduiken" noemen en waarbij binnen de niet-decompressie limiet (NDL) wordt gedoken.
+Deze mode berekent de maximale tijd die de duiker
 op de huidige diepte kan blijven zonder in deco te raken, met de ingestelde
 hoeveelheid gas (minus de reserve). De planner neemt de vorige duiken mee in het
 rekenwerk, onder de aanname natuurlijk dat deze reeds in _Subsurface_ zijn
 ingevoerd. Maar normale (handmatige) duiktabellen kunnen ook rekening houden
 met voorafgaande duiken. Waarom zouden we een geautomatiseerde planner willen
-gebruiken voor recreatieve duiken? Duiktabellen werken met één maximale diepte
+gebruiken voor recreatieve duiken? De  Subsurface_ planner biedt twee duidelijke
+voordelen ten opzichte van tabellen.
+
+Ten eerste werken duiktabellen werken met één maximale diepte
 gedurende de duik, maar veel duiken hebben geen mooi "vierkant" duikprofiel.
 Hierdoor wordt de hoeveelheid opgenomen stikstof overdreven. Dit levert
 uiteraard veilige profielen op, maar ook kortere herhalingsduiken op.
 Met de _Subsurface_ planner wordt het werkelijke duikprofiel gebruikt
 voor de berekening, op de manier zoals een duikcomputer dat ook doet. Dit maakt
-langere herhalingsduiken mogelijk.
+langere herhalingsduiken mogelijk. Hiervoor moeten de eerdere duiken natuurlijk
+wel in _Subsurface_ zijn opgeslagen.
+
+Ten tweede zijn duiktabellen niet ontworpen om extra veiligheidsmaatregelen in het
+duikplan op te nemen. Duiken binnen de NDL op basis van tabellen leveren vaker
+plannen op die de kans op decompressieziekte vergroten. Tabellen zijn bijvoorbeeld
+opgesteld met één specifieke gradiënt factor, maar in een planner kunnen we
+deze zelf instellen. Dit wordt hieronder verder uitgelegd.
 
 Om een recreatieve duik te plannen zijn de volgende stappen nodig:
 
@@ -3484,28 +3279,44 @@ binnen de niet-decompressie limiet (NDL).
 - De opstijg snelheid kan ook worden ingesteld. De standaard ingestelde waarden
 worden geacht veilig te zijn voor recreatieve duikers.
 
+- Om meer veiligheid (boven het gebruik van duiktabellen) in de planning in te
+bouwen kunnen gradiënt factoren lager dan 100% (_GFHigh_ en _GFLow_ onder de
+_Planning_ kop in de planner) worden ingesteld. Om de waarden in een recreatieve
+duiktabel te benaderen, kunnen de gradiënt factoren op 100% worden ingesteld. Door
+de waarden van _GFHigh_ en _GFLow_ lager dan 100% in te stellen kan de veiligheid
+worden vergroot. Het verlagen van de gradiënt factoren maakt de mogelijke duiktijd
+(natuurlijk) korter; dat is de prijs van meer veiligheid. Redenen hiervoor zijn
+bijvoorbeeld de leeftijd van de duiker, bijzondere omstandigheden als koud water
+of sterke stroming. Een realistische conservatieve waarde is bijvoorbeeld GFLow=40%
+en GFHigh=80%.
+
+Hieronder staat een figuur van een duikplan voor een recreatieve duik naar 30m met
+gradiënt factoren van 100%. Omdat de NDL hier 22 minuten is blijft er voldoende
+lucht over aan het eind van de duik.
+
+image::images/Planner_OC_rec1.jpg["FIGUUR: Een recreatief duikplan",align="center"]
+
 Het duikprofiel in de planner toont de maximale duiktijd binnen de
 niet-decompressie limiet (NDL) met gebruikmaking van het Bühlmann ZH-L16
 algoritme, en de overige instellingen zoals hierboven besproken: gas keuze, profiel,
-datum/tijd va de duik. Met de _Subsurface_ kan een snelle inschatting gemaakt worden
+datum/tijd van de duik. Met de _Subsurface_ kan een snelle inschatting gemaakt worden
 van het plan met inachtneming van de eerdere duiken. Het plan bevat ook de hoeveelheid
-gebruikt gas. Als bij een cilinder druk de waarde 0 wordt ingevoerd, wordt de duikduur
+gebruikt gas. Als bij een start cilinder druk de waarde wordt leeg gelaten, wordt de duikduur
 zonder inachtneming van het beschikbare gas gedaan. Als het duikprofiel ROOD kleurt,
 valt de duik buiten recreatieve duik limieten, en dient de diepte of tijd verminderd
 te worden.
 
-Hieronder een figuur met een plan voor een recreatieve duik naar 30m. Hoewel de
-niet-decompressie limiet (NDL) 23 minuten bedraagt, is de duik beperkt tot de hoeveelheid
-gas in de cilinder.
+Hieronder hetzelfde plan als hierboven, maar nu met veiligheidsstop en verlaagde
+gradiënt factore voor extra veiligheid.
 
-image::images/Planner_OC_rec.jpg["Figuur: Een recreatief duikplan: setup",align="center"]
+image::images/Planner_OC_rec2.jpg["FIGUUR: Een recreatief duikplan met gradiënt factoren",align="center"]
+
 
 ==== Niet-recreatieve open circuit duiken inclusief decompressie
 
 _Subsurface_ noemt niet-recreatieve duiken, duiken over de grens van de niet-decompressie
 tijden met of zonder gebruik van meerdere gassen, gebruik van helium, etc.
 Dit soort duiken worden in drie stappen gepland:
-
 
 *a) Stikstof management*: stel de gewenste _Opstijg- en afdaalsnelheden_ en
 het gewenste decompressiemodel met zijn parameters in bij _planning_, beide onderaan het
@@ -3516,7 +3327,8 @@ overeenkomstige waarden in het _Voorkeuren -> Profiel_ scherm. Het veranderen in
 de planner heeft geen invloed op de algemene instelling in de _Voorkeuren_.
 Bij Bühlmann beïnvloeden de gradiënt factoren sterk de berekende plafonds en de diepte
 ervan. Zo geeft een erg lage GFLow eerdere en diepere decompressie stops.
- ** Zie xref:S_GradientFactors[gradiënt factoren voorkeuren] voor meer informatie
+
+** Zie xref:S_GradientFactors[gradiënt factoren voorkeuren] voor meer informatie
  over gradiënt factoren.
 
 Als het VPM-B model wordt geselecteerd, dient het conservatisme niveau te worden
@@ -3630,7 +3442,7 @@ aan het begin van de duik (omdat het andere gas niet adembaar is aan de oppervla
 moment dat het nieuwe segment met de "enter" toets wordt bevestigd, wordt het plan
 automatisch aangepast (figuur B hieronder).
 
-image::images/planner1.jpg["FIGURE: Duikplanning: segmenten",align="center"]
+image::images/planner1.jpg["FIGUUR: Duikplanning: segmenten",align="center"]
 
 Hieronder een voorbeeld van een duik naar 55m met Tx20/30 met gebruikmaking van
 het Bühlmann algorithme, gevolgs door een opstijging met EAN50, en de instellingen
@@ -3656,22 +3468,29 @@ niveau. Echter, als _Toon overgangen in deco_ ook is geselecteerd worden ook de 
 tijdens de deco verder gedetailleerd.
 
 De planner heeft een keuzevakje _Toon plan variaties_. Hierdoor gaat de planner
-iets diepere en langere duiken plannen dan de reeds geplande duik. Dit kost veel
-rekentijd, en de planner kan hierdoor merkbaar langzamer worden. De informatie wordt
-als volgt weergegeven:
+iets diepere en langere duiken plannen dan de reeds geplande duik. Deze informatie
+is nuttig om kleine aanpassingen tijdens de duik (deco on-the-fly) vooraf te kunnen
+beoordelen.
+Wanneer bijvoorbeeld "Runtime: 123min, Stop times + 2:49 /m + 1:30 /min" wordt aangegeven
+betekent dit dat je bijna 3 minuten meer decompressieverplichting hebt voor iedere meter
+dieper (en vice versa voor iedere meter ondieper). Overeenkomstig, als je een minuut
+langer op de bodem blijft, neemt de decompressieverplichting met 1:30 toe (en vice versa
+bij en minuut korter).
 
-    Runtime: 53min + 0:52/m + 4:21/min
+Deze variaties van diepte en tijd hebben betrekking op het laatste, handmatig, ingevoerde
+segment van de duik (en dus niet perse de diepste). De verandering in decompressieverplichting
+dient in evenredigheid over de decompressie stops te worden verdeeld.
 
-Dit betekent:
+Merk op dat het hier gaat over de duur van de decompressiefase. Het verschil in
+bodemtijd (of diepte) zit niet in deze getallen! Het is verder belangrijk om je
+te realiseren dat het hier gaat om aanpassingen van enkele meters of minuten ten opzichte van het
+originele plan.
 
- * De berekende duiktijd is 53 min.
- * Voor elke meter dieper gedurende de bodemfase, neemt de duikduur met 52 seconden toe.
- * Voor iedere minuut extra gedurende de bodemfase, neemt de duikduur met 4 minuten en 21 seconden toe.
-   Dus als de bodemtijd 2 minuten langer is, neemt de duikduur toe met 2 + 2x4 min 21 sec = 10 minuten en 21 sec.
-   En iedere decostop is ongeveer 10:42/53:00 = 20% langer dan gepland. Dit soort berekeningen zijn alleen
-   geldig voor kleine aanpassingen van het plan, en geen grotere.
+Deze plan variaties berekenen kost relatief veel rekentijd, en de planner kan
+hierdoor merkbaar langzamer worden.
 
-* Minimum gas requirements*
+
+*Minimum gas requirements*
 
 De planner berekent ook het benodigde *minimum gas* noodzakelijk voor een
 veilige opstijging in geval van een incident.
@@ -3686,14 +3505,13 @@ wordt afgedrukt in de tekst uitvoer van het plan; er zijn geen automatische cont
 op basis van deze berekening. Merk verder op dat een minimum gas berekening
 werkt op een vierkant profiel, en bij duiken met (sterk) verschillende
 dieptes gedurende de duik (in open water ook wel multi-level duiken genoemd) dient
-de berekening op meerdere momenten in de duik te worden gemaakt.
+de berekening op meerdere momenten in de duik te worden gemaakt. De volgende 2 parameters
+zijn van toepassing:
 
-De volgende 2 parameters zijn van toepassing:
-
- * *SAC factor*. Dit is een inschatting hoeveel de SAC zal toenemen ten gevolge
+ * _SAC factor_. Dit is een inschatting hoeveel de SAC zal toenemen ten gevolge
  van het incident. Realistische waarden liggen vermoedelijk tussen 2 en 5, met
  2 duikers op 1 cilinder na een OoG event.
- * *Probleem oplostijd*. Dit is een inschatting van de tijd die nodig is, om vanaf
+ * _Probleem oplostijd_. Dit is een inschatting van de tijd die nodig is, om vanaf
  de bodem de opstijging in te kunnen zetten. De standaard waarde is 2 minuten
 
 Met deze informatie berekent de planner het benodigde minimum gas. Het wordt weergegeven als:
@@ -3702,12 +3520,34 @@ Met deze informatie berekent de planner het benodigde minimum gas. Het wordt wee
 
 Dit geeft aan:
 
- * Tussen haakjes, de *SAC factor* en *Probleem oplostijd* zoals gespecificeerd.
+ * Tussen haakjes, de _SAC factor_ en _Probleem oplostijd_ zoals gespecificeerd.
  * Aantal liters gas nodig voor een veilige opstijging (2130 liters in het voorbeeld hierboven)
  * Aantal bar nodig voor een veilige opstijging (90 bar in in het voorbeeld hierboven).
  * Aantal bar beschikbaar op het eind van de bodemfase, _boven_ de minimum gas eis
    (80 bar in in het voorbeeld hierboven). Een positieve waarde geeft aan dat het plan
    (voor zover het minimum gas betreft) veilig is. Negatief uiteraard niet.
+
+Er worden geen automatische controles gedaan op basis van dit resultaat. Bovendien
+geeft de functionaliteit alleen geldige resultaten voor redelijk vierkante profielen.
+Voor complexere duiken moet per segment apart worden gekeken.
+
+
+*Isobaric counterdiffusion informatie*: voor open-circuit trimix duiken, met
+hypoxische gassen, wordt voor gaswissels tijdens de opstijging informatie gegeven
+over "Isobaric counterdiffusion" (ICD). Dit staat onderaan de duik plan details.
+Deze informatie is gebaseerd op de zogenaamde 1/5 regel; bij een gaswissel mag de
+toename van de partitiele stikstof druk niet groter zijn dan 1/5 van de afname van
+de partitiele helium druk. Voor iedere gaswissel worden 2 regels afgedrukt, met
+daarin de gas fracties (%) en de overeenkomstige veranderingen in partitiele druk.
+Als niet voldaan is aan de 1/5 regel, zijn deze regels rood afgedrukt, en
+verschijnt een extra waarschuwing onderaan de tabel.
+
+De gaswissels in het duikprofiel tonen ook de ICD informatie, waar dit relevant is.
+Er komt een rood uitroepteken op het gaswissel icoon, en details worden getoond
+in de Informatie Box. Als niet voldaan wordt aan de 1/5 regel toont de Informatie Box
+bijvoorbeeld ICD ΔHe:-13% ΔN₂+3%>2.6%. Dit betekent dat voor deze gaswissel het
+helium percentage met 13% daalt en het helium met 5% stijgt, en dat voor deze
+gaswissel 2.6% het maximum is dat wordt voorgesteld voor de 1/5 regel.
 
 ****
 [icon="images/icons/warning2.png"]
@@ -3727,7 +3567,10 @@ er in het hoofdmenu _Voorkeuren -> Profiel_  twee pSCR specifieke opties worden
 gezet. Met _Metabolisme ratio_ kan het werkelijke zuurstofgebruik per minuut worden
 ingesteld (deze is onafhankelijk van de duikdiepte), en met _Verdunningsratio_
 de maatvoering van de counterlong (vaak 1:10, soms 1:14, de handleiding van de
-pSCR biedt uitkomst). Met deze twee opties is _Subsurface_ in staat de pO~2~ drop
+pSCR biedt uitkomst). Specificeer verder de bodem en deco SAC. Merk op dat de SAC
+in de planner het volume is dat in de loop wordt uitgeademd, dus niet het deel dat
+door de pSCR aan het water wordt afgestaan.
+Met deze twee opties is _Subsurface_ in staat de pO~2~ drop
 te bepalen. Als de pO~2~ te laag wordt zal de planner in de tekst uitvoer een
 waarschuwing tonen. De typische cilinder setup van een pSCR duik lijkt sterk
 op die van een open circuit duik; één of meer cilinders (met bodem en
@@ -3739,6 +3582,40 @@ hieronder. Merk op dat de decompressie van de pSCR duik langer duurt, dan die va
 de vergelijkbare CCR duik. Dit komt met name door de pO~2~ drop.
 
 image::images/Planner_pSCR.jpg["Figuur: Planning a pSCR dive: setup",align="center"]
+
+==== pSCR bailout plannen
+
+[icon="images/pscr_b1.jpg"]
+[NOTE]
+OC duiken is vaak een onderdeel van pSCR duiken omdat in de ondiepe fase van de
+duik er meestal sprake is van een te lage pO~2~ in de loop. Door middel van
+bailout gebeurtenissen kunnen deze wissels in het plan worden opgenomen. Het
+figuur links toont een pSCR plan met 3 cilinders, waar de ondiepe delen van de duik
+met EAN50 worden gedaan. De bodemfase wordt gedaan met EAN31 (cilinder 2 in de
+_Beschikbare gasmengsels_ tabel). De 3e cilinder bevat ook EAN31 en is bedoeld
+als bailout. Het plan betreft een grotduik met een bodemtijd van 20 minuten en
+het keerpunt op op minuut 16 in de duik (en dat is 10 minuten in de bodemfase).
+De oranje pO~2~ grafiek toont de equivalente OC pO~2~, en de groene toont de te
+verwachtte pO~2~ in pSCR mode, waarbij de hele duik in pSCR wordt gedaan.
+
+Het plan is nu een bailout scenario te plannen vanaf verste punt in de grot. Verander
+hiertoe in de *duikplanner punten tabel* de *duikmode* van de laatste 2 segmenten
+naar *OC* (zie figuur links gemarkeerd *A*). In dit geval wordt cilinder 2 met EAN31
+gebruikt als bailout, en is cilinder 3 nog niet gebruikt. Merk op dat de pO~2~ grafiek nu
+de OC waarde toont, we zitten immers op OC. Om naar de werkelijke bailout cilinder
+nr. 3 te wisselen dient deze in de *duikplanner punten tabel* te worden gekozen.
+Zie figuur rechts (gemarkeerd *B*). In het duikprofiel zijn 2 iconen te zien:
+het bailout en het gaswissel icoon. De benodigde hoeveelheid gas is onderaan
+het *duikplan details" paneel te zien.
+
+image::images/pscr_b2.jpg["FIGUUR: Een pSCR duik plannen: setup",align="center"]
+
+In geval van het plannen van een open water duik is waarschijnlijk het meest
+ongunstige geval om naar een bailout scenario te gaan het begin van de opstijging.
+Maak hiertoe een segment van 1 minuut aan het eind van de bodemfase en stel
+de duikmode in op OC en kies het te gebruiken gas, zoals hierboven reeds beschreven.
+Een voorbeeld van een dergelijk bailout scenario wordt hieronder voor het CCR
+geval tot in detail beschreven.
 
 
 === CCR duiken plannen
@@ -3757,7 +3634,7 @@ per deel van het profiel een setpoint worden ingevoerd. Een setpoint 0 betekent
 dat dat deel van de duik op open circuit wordt gedaan. De decompressie wordt
 uitgerekend met de setpoint van de laatste deel van het duikprofiel. Als het
 laatste routepunt dus een open circuit punt is, wordt de deco met de open circuit
-gassen berekend (dus een bail-out decompressie berekening).
+gassen berekend (dus een bailout decompressie berekening).
 
 Zie de figuur hieronder voor een voorbeeld van een geplande CCR duik.
 
@@ -3765,6 +3642,32 @@ image::images/Planner_CCR.jpg["Figuur: Een CCR duik plannen: setup",align="cente
 
 Merk op dat in de details van het duikplan (rechtsonder) geen gasberekening voor CCR duiken
 worden gedaan.
+
+
+==== CCR bailout plannen
+
+[icon="images/CCR_b1.jpg"]
+[NOTE]
+Het is in het algemeen noodzakelijk om voor het meest ongunstige geval een bailout
+berekening te maken om veilig aan de oppervlakte te komen met inachtneming van de
+decompressieverplichting. Maak hiertoe een segment van 1 minuut aan aan het eind
+van de bodemfase, zoals getoond in het figuur links waar een CCR duik naar 40m voor
+21 minuten wordt gepland.
+
+[icon="images/CCR_b2.jpg"]
+[NOTE]
+Verander in de duikplanner punten tabel de duikmode van dit 1 minuut segment naar
+OC. Dit betekent bailout naar OC. In dit geval is het OC gas de diluent (aannemende dat
+dit voldoende is). De van toepassing zijnde pO~2~ en flesdruk grafieken worden
+getoond, zoals in de figuur links. Merk op dat het setpoint naar 0 gaat; het is
+immers niet van toepassing tijdens de OC fase.
+
+[icon="images/CCR_b3.jpg"]
+[NOTE]
+Om bailout naar een extere cilinder te plannen dient het _Gebruikt gas_ van het
+1 minuut segment te worden ingesteld, zoals te zien is in het figuur links. Merk
+op dat er 2 overlappende iconen zijn te zien. Het bailout icoon en het gaswissel
+icoon.
 
 
 [[S_Replan]]
@@ -3852,7 +3755,7 @@ De volgende opties zijn mogelijk:
 Hieronder (ter referentie) alle opties in het _Subsurface_ hoofdmenu. Deels
 voorzien van verwijzingen naar beschrijvende artikelen in deze handleiding
 
-=== File
+=== Bestand
 - <<S_NewLogbook,_Nieuw logboek_>> - Sluit het huidige open logboek en begin een nieuwe.
 - _Logbook openen_ - Opent een bestandskiezer om een logboek bestand te kunnen openen.
 - _Bewaar_ - Bewaart het huidige open logboek.
@@ -3861,13 +3764,13 @@ voorzien van verwijzingen naar beschrijvende artikelen in deze handleiding
 <<S_Cloud_storage,_cloud opslag_>>.
 - _Bewaar in cloud opslag_ - Bewaar het huidige loegoek in de
 <<S_Cloud_storage,_cloud opslag_>>.
-- _Maak cloud opslag online_ - ******************************************************
+- _Cloud opslag online_ - een knop om te wissen tussen online en offline cloud opslag.
 - _Sluiten_ -  Sluit het huidige open logboek.
 - <<S_ExportLog,_Exporteren_>> -  Exporteer het huidige open logboek (of enkele
 geselecteerde duiken) in één van de beschikbare formaten.
 - <<S_PrintDivelog,_Afdrukken_>> -  Druk duiken af.
 - <<S_Preferences,_Voorkeuren_>> -  Stel voorkeuren in.
-- <<S_FindMovedImages, _Vind verplaatste afbeeldingen_>> - Als foto's die aan
+- <<S_FindMovedImages, _Vind verplaatste media>> - Als media die aan
 duiken zijn gekoppeld zijn verplaatst kunnen deze worden teruggevonden met deze optie.
 - <<S_Configure,_Duikcomputer configureren_>> - Stel een duikcomputer in.
 - _Afsluiten_ - Beëindig _Subsurface_.
@@ -3881,14 +3784,11 @@ mogelijk. Bijvoorbeeld verwijderen van duiken.
 uit een duikcomputer.
 - <<Unified_import,_Importeer logbestanden_>> - Importeer duik informatie uit
 een bestand dat ondersteund wordt door _Subsurface_.
-- <<S_Companion,_GPS gegevens importeren van Subsurface web service_>> - Importeer
-GPS coördinaten zoals opgeslagen via de mobiele applicaties.
 - <<S_ImportingDivelogsDe,_Importeren van Divelogs.de_>> - Importeer duik informatie
   van _www.Divelogs.de_.
 
 === Logboek
 - <<S_EnterData,_Duik toevoegen_>> - Voeg handmatig een duik toe aan de *Duiklijst*.
-- _Bewerk duik_ - Bewerk een handmatig ingevoerde duik.
 - <<S_DivePlanner,_Duik plannen_>> - Duik plannen.
 - <<S_Replan,_Duik bewerken in planner_>> - Bewerk een duik in de planner.
 - <<S_CopyComponents,_Kopieer duikcomponenten_>> - Kopieer een aantal
@@ -4137,7 +4037,7 @@ worden aangezet, en authenticatie dient te worden geactiveerd:
 		RX bytes:1026 acl:0 sco:0 events:47 errors:0
 		TX bytes:449 acl:0 sco:0 commands:46 errors:0
 
-Controleer nu dat de status ‘UP’, ‘RUNNING’ AND ‘AUTH’ bevat.
+Controleer nu dat de status +UP+', '+RUNNING+' en '+AUTH+' bevat.
 
 Als er meerdere controllers draaien, is het het eenvoudigst om de ongebruikte uit te zetten:
 
@@ -4716,6 +4616,14 @@ Slechts een deel van de duik data wordt door _Grantlee_ geëxporteerd:
 |firstGas| (*string*) eerst gebruikte gas
 |=====================
 
+Merk op dat sommige variabelen zoals 'notes' moeten worden uitgebreid met '|safe'
+om HTML tags te ondersteunen.
+....
+	<p> {{ dive.notes|safe }} </p>
+....
+Anders worden HTML tages zoals 'br' niet geconverteerd naar een echte
+regelovergang.
+
 _Subsurface_ exporteert ook *template_options* data. Deze data moet als  _CSS_ waarden
 worden gebruikt om een dynamisch sjabloon te verkrijgen. De geëxporteerde data
 staat in de volgende tabel:
@@ -4809,9 +4717,45 @@ Het *data-numberofdives* data attribuut wordt toegevoegd aan de body tag.
 BELANGRIJK: Alle CSS eenheden dienen relatieve lengtes te bevatten om afdrukken op
 willekeurige pagina formaten mogelijk te maken.
 
-
-== Bijlage F: FAQs.
 [[S_APPENDIX_F]]
+== APPENDIX F: Instellingen video thumbnails.
+
+=== De juiste thumbnails instellen voor video's gekoppeld aan duiken
+
+Om video's gekoppeld aan duiken te kunnen gebruiken, moet _Subsurface_ een thumbnail
+kunnen maken om te kunnen tonen in het duikprofiel of het _Media_ tabblad. Als standaardinstelling
+wordt een generieke thumbnail gebruikt. Om werkelijke thumbnails te zien gebruikt _Subsurface_
+het externe programma _ffmpeg_. Doorloop de volgende stappen:
+
+1. Installeer _ffmpeg_ op de computer waarop _Subsurface_ wordt gebruikt. Het programma
+kan gedownload worden van https://www.ffmpeg.org/download.html. De meeste Linux
+distributies bevatten dit programma reeds.
+
+** Zet op Windows het _ffmpeg.exe_ bestand in de map waarin de _Subsurface_ executable
+staat. Op Mac en Linux dient het _ffmpeg_ commando in het pad te staan. Als het
+standaard via het OS is geïnstalleerd is dit vrijwel zeker reeds het geval.
+
+2. Stel in het _Algemeen_ tabblad van de <<S_Preferences, _Voorkeuren_>> de voorkeuren
+in om video thumbnail te kunnen maken:
+
+
+** Zet de _extraheer video thumbnails_ box. Als _Subsurface_ de _ffmpeg_ executable
+niet kan uitvoeren, wordt deze knop vanzelf uit gezet. Zet hem weer aan na juiste
+installatie van de _ffmpeg_ executable.
+
+** specificeer het commando waarmee _ffmpeg_ kan worden uitgevoerd.
+
+** Kies de postitie waar _Subsurface_ moet proberen de thumbnail te maken. Uiterst
+links en rechts zijn respectievelijk begin en eind van de video. Merk op dat
+_Subsurface_ de lengte van sommige AVI bestanden niet kan vaststellen. In dat geval
+work het eerste frame gekozen.
+
+Die completeert de instellingen voor video thumbnails en deze zullen nu verschijnen
+in het duikprofiel en het _Media_ tabblad.
+
+
+== Bijlage G: FAQs.
+[[S_APPENDIX_G]]
 === _Subsurface_ lijkt rekenfouten te maken bij gas gebruik en SAC waarden
 [[SAC_CALCULATION]]
 'Vraag': Ik dook met een 12.2 l cilinder, met startdruk van 220 bar en einddruk van
