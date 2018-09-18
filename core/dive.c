@@ -1828,19 +1828,21 @@ static void merge_one_sample(struct sample *sample, int time, struct divecompute
 {
 	int last = dc->samples - 1;
 	if (last >= 0) {
-		static struct sample surface = { .bearing.degrees = -1, .ndl.seconds = -1 };
 		struct sample *prev = dc->sample + last;
 		int last_time = prev->time.seconds;
 		int last_depth = prev->depth.mm;
-		/* Init a few values from prev sample to avoid useless info in XML */
-		surface.bearing.degrees = prev->bearing.degrees;
-		surface.ndl.seconds = prev->ndl.seconds;
 
 		/*
 		 * Only do surface events if the samples are more than
 		 * a minute apart, and shallower than 5m
 		 */
 		if (time > last_time + 60 && last_depth < 5000) {
+			struct sample surface = { 0 };
+
+			/* Init a few values from prev sample to avoid useless info in XML */
+			surface.bearing.degrees = prev->bearing.degrees;
+			surface.ndl.seconds = prev->ndl.seconds;
+
 			add_sample(&surface, last_time + 20, dc);
 			add_sample(&surface, time - 20, dc);
 		}
