@@ -259,7 +259,7 @@ Kirigami.ScrollablePage {
 			width: parent.width
 
 			Kirigami.Heading {
-				text: qsTr("Subsurface GPS data webservice")
+				text: qsTr("GPS location service")
 				color: subsurfaceTheme.textColor
 				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
