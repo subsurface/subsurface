@@ -78,6 +78,19 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 			ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product()));
 	}
 
+	// now lets set the four shortcuts for previously used dive computers
+#define SETUPDC(num) \
+	if (!qPrefDiveComputer::vendor##num().isEmpty()) { \
+		ui.DC##num->setVisible(true); \
+		ui.DC##num->setText(qPrefDiveComputer::vendor##num() + " - " + qPrefDiveComputer::product##num()); \
+	} else { \
+		ui.DC##num->setVisible(false); \
+	}
+	SETUPDC(1)
+	SETUPDC(2)
+	SETUPDC(3)
+	SETUPDC(4)
+
 	updateState(INITIAL);
 	ui.ok->setEnabled(false);
 	ui.downloadCancelRetryButton->setEnabled(true);
