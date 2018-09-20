@@ -16,6 +16,7 @@ fi
 GITVERSION=$(cd subsurface ; git describe --abbrev=12 | sed -e 's/-g.*$// ; s/^v//')
 GITREVISION=$(echo $GITVERSION | sed -e 's/.*-// ; s/.*\..*//')
 VERSION=$(echo $GITVERSION | sed -e 's/-/./')
+GITDATE=$(cd subsurface ; git log -1 --format="%at" | xargs -I{} date -d @{} +%Y-%m-%d)
 LIBDCREVISION=$(cd subsurface/libdivecomputer ; git rev-parse --verify HEAD)
 
 #
@@ -40,6 +41,7 @@ if [[ ! -d subsurface_$VERSION ]]; then
 	cd subsurface_$VERSION;
 	rm -rf .git libdivecomputer/.git libgit2/.git
 	echo $GITVERSION > .gitversion
+	echo $GITDATE > .gitdate
 	echo $LIBDCREVISION > libdivecomputer/revision
 	# dh_make --email dirk@hohndel.org -c gpl2 --createorig --single --yes -p subsurface_$VERSION
 	# rm debian/*.ex debian/*.EX debian/README.*
