@@ -99,6 +99,10 @@ struct preferences {
 
 	// ********** DiveComputer **********
 	dive_computer_prefs_t dive_computer;
+	dive_computer_prefs_t dive_computer1;
+	dive_computer_prefs_t dive_computer2;
+	dive_computer_prefs_t dive_computer3;
+	dive_computer_prefs_t dive_computer4;
 
 	// ********** Display **********
 	bool        display_invalid_dives;

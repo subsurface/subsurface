@@ -145,6 +145,20 @@ extern QString keyFromGroupAndName(QString group, QString name);
 			current_state = QString(prefs.usestruct field); \
 		} \
 	}
+#define DISK_LOADSYNC_TXT_EXT_ALT(usegroup, name, field, usestruct, alt) \
+	void qPref##usegroup::disk_##field##alt(bool doSync) \
+	{ \
+		static QString current_state; \
+		if (doSync) { \
+			if (current_state != QString(prefs.usestruct ## alt .field)) { \
+				current_state = QString(prefs.usestruct ## alt .field); \
+				qPrefPrivate::propSetValue(keyFromGroupAndName(group, name), prefs.usestruct ##alt .field, default_prefs.usestruct ##alt .field); \
+			} \
+		} else { \
+			prefs.usestruct ##alt .field = copy_qstring(qPrefPrivate::propValue(keyFromGroupAndName(group, name), default_prefs.usestruct ##alt .field).toString()); \
+			current_state = QString(prefs.usestruct ##alt .field); \
+		} \
+	}
 #define DISK_LOADSYNC_TXT(usegroup, name, field) \
 	DISK_LOADSYNC_TXT_EXT(usegroup, name, field, )
 
@@ -218,6 +232,17 @@ extern QString keyFromGroupAndName(QString group, QString name);
 			emit instance()->field##Changed(value); \
 		} \
 	}
+
+#define SET_PREFERENCE_TXT_EXT_ALT(usegroup, field, usestruct, alt) \
+	void qPref##usegroup::set_##field##alt(const QString &value) \
+	{ \
+		if (value != prefs.usestruct ##alt .field) { \
+			qPrefPrivate::copy_txt(&prefs.usestruct ##alt .field, value); \
+			disk_##field##alt(true); \
+			emit instance()->field##alt##Changed(value); \
+		} \
+	}
+
 #define SET_PREFERENCE_TXT(usegroup, field) \
 	SET_PREFERENCE_TXT_EXT(usegroup, field, )
 
@@ -263,6 +288,10 @@ extern QString keyFromGroupAndName(QString group, QString name);
 	DISK_LOADSYNC_TXT_EXT(usegroup, name, field, usestruct);
 #define HANDLE_PREFERENCE_TXT(usegroup, name, field) \
 	HANDLE_PREFERENCE_TXT_EXT(usegroup, name, field, )
+
+#define HANDLE_PREFERENCE_TXT_EXT_ALT(usegroup, name, field, usestruct, alt) \
+	SET_PREFERENCE_TXT_EXT_ALT(usegroup, field, usestruct, alt); \
+	DISK_LOADSYNC_TXT_EXT_ALT(usegroup, name, field, usestruct, alt);
 
 #define HANDLE_PROP_QPOINTF(useclass, name, field) \
 	void qPref##useclass::set_##field(const QPointF& value) \
