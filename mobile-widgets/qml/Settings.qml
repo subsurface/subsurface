@@ -364,6 +364,7 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					PrefUnits.set_unit_system("imperial")
 					manager.changesNeedSaving()
+					manager.refreshDiveList()
 				}
 			}
 			Controls.Label {
@@ -378,6 +379,7 @@ Kirigami.ScrollablePage {
 				onClicked: {
 					PrefUnits.set_unit_system("metric")
 					manager.changesNeedSaving()
+					manager.refreshDiveList()
 				}
 			}
 		}
