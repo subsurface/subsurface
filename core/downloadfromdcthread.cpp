@@ -24,6 +24,42 @@ static QString str_error(const char *fmt, ...)
 	return str;
 }
 
+
+static void updateRememberedDCs()
+{
+	QString current = qPrefDiveComputer::vendor() + " - " + qPrefDiveComputer::product();
+	QStringList dcs = {
+		qPrefDiveComputer::vendor1() + " - " + qPrefDiveComputer::product1(),
+		qPrefDiveComputer::vendor2() + " - " + qPrefDiveComputer::product2(),
+		qPrefDiveComputer::vendor3() + " - " + qPrefDiveComputer::product3(),
+		qPrefDiveComputer::vendor4() + " - " + qPrefDiveComputer::product4()
+	};
+	if (dcs.contains(current))
+		// already in the list
+		return;
+	// add the current one as the first remembered one and drop the 4th one
+	// don't get confused by 0-based and 1-based indices!
+	if (dcs[2] != " - ") {
+		qPrefDiveComputer::set_vendor4(qPrefDiveComputer::vendor3());
+		qPrefDiveComputer::set_product4(qPrefDiveComputer::product3());
+		qPrefDiveComputer::set_device4(qPrefDiveComputer::device3());
+	}
+	if (dcs[1] != " - ") {
+		qPrefDiveComputer::set_vendor3(qPrefDiveComputer::vendor2());
+		qPrefDiveComputer::set_product3(qPrefDiveComputer::product2());
+		qPrefDiveComputer::set_device3(qPrefDiveComputer::device2());
+	}
+	if (dcs[0] != " - ") {
+		qPrefDiveComputer::set_vendor2(qPrefDiveComputer::vendor1());
+		qPrefDiveComputer::set_product2(qPrefDiveComputer::product1());
+		qPrefDiveComputer::set_device2(qPrefDiveComputer::device1());
+	}
+	qPrefDiveComputer::set_vendor1(qPrefDiveComputer::vendor());
+	qPrefDiveComputer::set_product1(qPrefDiveComputer::product());
+	qPrefDiveComputer::set_device1(qPrefDiveComputer::device());
+}
+
+
 DownloadThread::DownloadThread()
 {
 	m_data = DCDeviceData::instance();
@@ -61,6 +97,8 @@ void DownloadThread::run()
 	qPrefDiveComputer::set_product(internalData->product);
 	qPrefDiveComputer::set_device(internalData->devname);
 	qPrefDiveComputer::set_device_name(m_data->devBluetoothName());
+
+	updateRememberedDCs();
 }
 
 static void fill_supported_mobile_list()
