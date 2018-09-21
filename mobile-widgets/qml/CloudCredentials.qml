@@ -140,7 +140,7 @@ Item {
 				text: qsTr("No cloud mode")
 				onClicked: {
 					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
-					PrefCloudStorage.set_cloud_storage_password = ""
+					PrefCloudStorage.cloud_storage_password = ""
 					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_NOCLOUD
 					manager.openNoCloudRepo()
 				}
