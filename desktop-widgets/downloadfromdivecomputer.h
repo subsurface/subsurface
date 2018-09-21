@@ -50,6 +50,11 @@ slots:
 	void checkDumpFile(int state);
 	void pickDumpFile();
 	void pickLogFile();
+	void DC1Clicked();
+	void DC2Clicked();
+	void DC3Clicked();
+	void DC4Clicked();
+
 #if defined(BT_SUPPORT)
 	void enableBluetoothMode(int state);
 	void selectRemoteBluetoothDevice();

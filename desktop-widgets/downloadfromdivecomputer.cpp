@@ -83,6 +83,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	if (!qPrefDiveComputer::vendor##num().isEmpty()) { \
 		ui.DC##num->setVisible(true); \
 		ui.DC##num->setText(qPrefDiveComputer::vendor##num() + " - " + qPrefDiveComputer::product##num()); \
+		connect(ui.DC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DC##num##Clicked); \
 	} else { \
 		ui.DC##num->setVisible(false); \
 	}
@@ -113,6 +114,28 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	if (!deviceText.isEmpty())
 		ui.device->setEditText(deviceText);
 }
+
+// DC button slots
+#define DCBUTTON(num) \
+void DownloadFromDCWidget::DC##num##Clicked() \
+{ \
+	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
+	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
+	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
+	ui.device->setCurrentIndex(ui.device->findText(qPrefDiveComputer::device##num())); \
+	if (QSysInfo::kernelType() == "darwin") { \
+		/* it makes no sense that this would be needed on macOS but not Linux */ \
+		QCoreApplication::processEvents(); \
+		ui.vendor->update(); \
+		ui.product->update(); \
+		ui.device->update(); \
+	} \
+}
+
+DCBUTTON(1)
+DCBUTTON(2)
+DCBUTTON(3)
+DCBUTTON(4)
 
 void DownloadFromDCWidget::updateProgressBar()
 {
