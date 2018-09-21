@@ -169,6 +169,59 @@ Kirigami.Page {
 			}
 		}
 
+		GridLayout {
+			id: rememberedDCsGrid
+			visible: PrefDiveComputer.vendor1 !== ""
+			Layout.alignment: Qt.AlignTop
+			Layout.topMargin: Kirigami.Units.smallSpacing * 4
+			columns: 2
+			function setDC(vendor, product, device) {
+				comboVendor.currentIndex = comboVendor.find(vendor);
+				comboProduct.currentIndex = comboProduct.find(product);
+				comboConnection.currentIndex = comboConnection.find(device);
+			}
+			Controls.Label {
+				Layout.columnSpan: 2
+				text: qsTr(" Previously used dive computers: ")
+			}
+			SsrfButton {
+				id: dc1
+				visible: PrefDiveComputer.vendor1 !== ""
+				text: PrefDiveComputer.vendor1 + " - " + PrefDiveComputer.product1
+				onClicked: {
+					// update comboboxes
+					rememberedDCsGrid.setDC(PrefDiveComputer.vendor1, PrefDiveComputer.product1, PrefDiveComputer.device1)
+				}
+			}
+			SsrfButton {
+				id: dc2
+				visible: PrefDiveComputer.vendor2 !== ""
+				text: PrefDiveComputer.vendor2 + " - " + PrefDiveComputer.product2
+				onClicked: {
+					// update comboboxes
+					rememberedDCsGrid.setDC(PrefDiveComputer.vendor2, PrefDiveComputer.product2, PrefDiveComputer.device2)
+				}
+			}
+			SsrfButton {
+				id: dc3
+				visible: PrefDiveComputer.vendor3 !== ""
+				text: PrefDiveComputer.vendor3 + " - " + PrefDiveComputer.product3
+				onClicked: {
+					// update comboboxes
+					rememberedDCsGrid.setDC(PrefDiveComputer.vendor3, PrefDiveComputer.product3, PrefDiveComputer.device3)
+				}
+			}
+			SsrfButton {
+				id: dc4
+				visible: PrefDiveComputer.vendor4 !== ""
+				text: PrefDiveComputer.vendor4 + " - " + PrefDiveComputer.product4
+				onClicked: {
+					// update comboboxes
+					rememberedDCsGrid.setDC(PrefDiveComputer.vendor4, PrefDiveComputer.product4, PrefDiveComputer.device4)
+				}
+			}
+		}
+
 		Controls.ProgressBar {
 			id: progressBar
 			Layout.topMargin: Kirigami.Units.smallSpacing * 4
