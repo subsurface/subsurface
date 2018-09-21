@@ -64,7 +64,7 @@ private:
 	void markChildrenAsDisabled();
 	void markChildrenAsEnabled();
 	void updateDeviceEnabled();
-	void updateRememberedDCs();
+	void showRememberedDCs();
 
 	QStringListModel vendorModel;
 	QStringListModel productModel;

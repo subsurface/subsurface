@@ -79,18 +79,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	}
 
 	// now lets set the four shortcuts for previously used dive computers
-#define SETUPDC(num) \
-	if (!qPrefDiveComputer::vendor##num().isEmpty()) { \
-		ui.DC##num->setVisible(true); \
-		ui.DC##num->setText(qPrefDiveComputer::vendor##num() + " - " + qPrefDiveComputer::product##num()); \
-		connect(ui.DC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DC##num##Clicked); \
-	} else { \
-		ui.DC##num->setVisible(false); \
-	}
-	SETUPDC(1)
-	SETUPDC(2)
-	SETUPDC(3)
-	SETUPDC(4)
+	showRememberedDCs();
 
 	updateState(INITIAL);
 	ui.ok->setEnabled(false);
@@ -113,6 +102,23 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 #endif
 	if (!deviceText.isEmpty())
 		ui.device->setEditText(deviceText);
+}
+
+#define SETUPDC(num) \
+	if (!qPrefDiveComputer::vendor##num().isEmpty()) { \
+		ui.DC##num->setVisible(true); \
+		ui.DC##num->setText(qPrefDiveComputer::vendor##num() + " - " + qPrefDiveComputer::product##num()); \
+		connect(ui.DC##num, &QPushButton::clicked, this, &DownloadFromDCWidget::DC##num##Clicked, Qt::UniqueConnection); \
+	} else { \
+		ui.DC##num->setVisible(false); \
+	}
+
+void DownloadFromDCWidget::showRememberedDCs()
+{
+	SETUPDC(1)
+	SETUPDC(2)
+	SETUPDC(3)
+	SETUPDC(4)
 }
 
 // DC button slots
@@ -354,8 +360,6 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	qPrefDiveComputer::set_product(data->product());
 	qPrefDiveComputer::set_device(data->devName());
 
-	updateRememberedDCs();
-
 #if defined(BT_SUPPORT)
 	qPrefDiveComputer::set_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
 #endif
@@ -376,48 +380,6 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	    !data->saveDump()) {
 		ostcFirmwareCheck = new OstcFirmwareCheck(product);
 	}
-}
-
-void DownloadFromDCWidget::updateRememberedDCs()
-{
-	QString current = qPrefDiveComputer::vendor() + " - " + qPrefDiveComputer::product();
-	QStringList dcs = {
-		qPrefDiveComputer::vendor1() + " - " + qPrefDiveComputer::product1(),
-		qPrefDiveComputer::vendor2() + " - " + qPrefDiveComputer::product2(),
-		qPrefDiveComputer::vendor3() + " - " + qPrefDiveComputer::product3(),
-		qPrefDiveComputer::vendor4() + " - " + qPrefDiveComputer::product4()
-	};
-	if (dcs.contains(current))
-		// already in the list
-		return;
-	// add the current one as the first remembered one and drop the 4th one
-	// don't get confused by 0-based and 1-based indices!
-	if (dcs[2] != " - ") {
-		qPrefDiveComputer::set_vendor4(qPrefDiveComputer::vendor3());
-		qPrefDiveComputer::set_product4(qPrefDiveComputer::product3());
-		qPrefDiveComputer::set_device4(qPrefDiveComputer::device3());
-		ui.DC4->setText(dcs[2]);
-		ui.DC4->setVisible(true);
-	}
-	if (dcs[1] != " - ") {
-		qPrefDiveComputer::set_vendor3(qPrefDiveComputer::vendor2());
-		qPrefDiveComputer::set_product3(qPrefDiveComputer::product2());
-		qPrefDiveComputer::set_device3(qPrefDiveComputer::device2());
-		ui.DC3->setText(dcs[1]);
-		ui.DC3->setVisible(true);
-	}
-	if (dcs[0] != " - ") {
-		qPrefDiveComputer::set_vendor2(qPrefDiveComputer::vendor1());
-		qPrefDiveComputer::set_product2(qPrefDiveComputer::product1());
-		qPrefDiveComputer::set_device2(qPrefDiveComputer::device1());
-		ui.DC2->setText(dcs[0]);
-		ui.DC2->setVisible(true);
-	}
-	qPrefDiveComputer::set_vendor1(qPrefDiveComputer::vendor());
-	qPrefDiveComputer::set_product1(qPrefDiveComputer::product());
-	qPrefDiveComputer::set_device1(qPrefDiveComputer::device());
-	ui.DC1->setText(current);
-	ui.DC1->setVisible(true);
 }
 
 bool DownloadFromDCWidget::preferDownloaded()
@@ -483,6 +445,9 @@ void DownloadFromDCWidget::reject()
 
 void DownloadFromDCWidget::onDownloadThreadFinished()
 {
+	// let's update the remembered DCs
+	showRememberedDCs();
+
 	if (currentState == DOWNLOADING) {
 		if (thread.error.isEmpty())
 			updateState(DONE);
