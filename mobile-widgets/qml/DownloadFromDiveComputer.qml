@@ -169,20 +169,21 @@ Kirigami.Page {
 			}
 		}
 
-		GridLayout {
+		Controls.Label {
+			text: qsTr(" Previously used dive computers: ")
+			visible: PrefDiveComputer.vendor1 !== ""
+		}
+		Flow {
 			id: rememberedDCsGrid
 			visible: PrefDiveComputer.vendor1 !== ""
 			Layout.alignment: Qt.AlignTop
-			Layout.topMargin: Kirigami.Units.smallSpacing * 4
-			columns: 2
+			Layout.topMargin: Kirigami.Units.smallSpacing * 2
+			spacing: Kirigami.Units.smallSpacing;
+			width: subsurfaceTheme.columnWidth - Kirigami.Units.gridUnit * 4
 			function setDC(vendor, product, device) {
 				comboVendor.currentIndex = comboVendor.find(vendor);
 				comboProduct.currentIndex = comboProduct.find(product);
 				comboConnection.currentIndex = comboConnection.find(device);
-			}
-			Controls.Label {
-				Layout.columnSpan: 2
-				text: qsTr(" Previously used dive computers: ")
 			}
 			SsrfButton {
 				id: dc1
