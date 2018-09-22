@@ -104,6 +104,7 @@ struct preferences {
 	bool        display_invalid_dives;
 	const char *divelist_font;
 	double      font_size;
+	double      mobile_scale;
 	bool        show_developer;
 
 	// ********** Facebook **********

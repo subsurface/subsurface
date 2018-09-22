@@ -42,6 +42,7 @@ struct preferences default_prefs = {
 	.show_ccr_sensors = false,
 	.show_scr_ocpo2 = false,
 	.font_size = -1,
+	.mobile_scale = 1.0,
 	.display_invalid_dives = false,
 	.show_sac = false,
 	.display_unused_tanks = false,

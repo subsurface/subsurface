@@ -11,6 +11,7 @@ class qPrefDisplay : public QObject {
 	Q_PROPERTY(int animation_speed READ animation_speed WRITE set_animation_speed NOTIFY animation_speedChanged);
 	Q_PROPERTY(QString divelist_font READ divelist_font WRITE set_divelist_font NOTIFY divelist_fontChanged);
 	Q_PROPERTY(double font_size READ font_size WRITE set_font_size NOTIFY font_sizeChanged);
+	Q_PROPERTY(double mobile_scale READ mobile_scale WRITE set_mobile_scale NOTIFY mobile_scaleChanged);
 	Q_PROPERTY(bool display_invalid_dives READ display_invalid_dives WRITE set_display_invalid_dives NOTIFY display_invalid_divesChanged);
 	Q_PROPERTY(QString lastDir READ lastDir WRITE set_lastDir NOTIFY lastDirChanged);
 	Q_PROPERTY(bool show_developer READ show_developer WRITE set_show_developer NOTIFY show_developerChanged);
@@ -38,6 +39,7 @@ public:
 	static int animation_speed() { return prefs.animation_speed; }
 	static QString divelist_font() { return prefs.divelist_font; }
 	static double font_size() { return prefs.font_size; }
+	static double mobile_scale() { return prefs.mobile_scale; }
 	static bool display_invalid_dives() { return prefs.display_invalid_dives; }
 	static QString lastDir() { return st_lastDir; ; }
 	static bool show_developer() { return prefs.show_developer; }
@@ -56,6 +58,7 @@ public slots:
 	static void set_animation_speed(int value);
 	static void set_divelist_font(const QString &value);
 	static void set_font_size(double value);
+	static void set_mobile_scale(double value);
 	static void set_display_invalid_dives(bool value);
 	static void set_lastDir(const QString &value);
 	static void set_show_developer(bool value);
@@ -74,6 +77,7 @@ signals:
 	void animation_speedChanged(int value);
 	void divelist_fontChanged(const QString &value);
 	void font_sizeChanged(double value);
+	void mobile_scaleChanged(double value);
 	void display_invalid_divesChanged(bool value);
 	void lastDirChanged(const QString &value);
 	void show_developerChanged(bool value);
@@ -93,6 +97,7 @@ private:
 	static void disk_animation_speed(bool doSync);
 	static void disk_divelist_font(bool doSync);
 	static void disk_font_size(bool doSync);
+	static void disk_mobile_scale(bool doSync);
 	static void disk_display_invalid_dives(bool doSync);
 	static void disk_show_developer(bool doSync);
 
