@@ -5,6 +5,7 @@
 #include "core/settings/qPrefGeneral.h"
 #include "core/settings/qPrefDisplay.h"
 #include "core/settings/qPrefCloudStorage.h"
+#include "core/settings/qPrefDiveComputer.h"
 
 #include <QFileDialog>
 
@@ -58,6 +59,19 @@ void PreferencesDefaults::on_extractVideoThumbnails_toggled(bool toggled)
 	ui->videoThumbnailPosition->setEnabled(toggled);
 	ui->ffmpegExecutable->setEnabled(toggled);
 	ui->ffmpegFile->setEnabled(toggled);
+}
+
+void PreferencesDefaults::on_resetRememberedDCs_clicked()
+{
+	qPrefDiveComputer::set_vendor1(QString());
+	qPrefDiveComputer::set_vendor2(QString());
+	qPrefDiveComputer::set_vendor3(QString());
+	qPrefDiveComputer::set_vendor4(QString());
+}
+
+void PreferencesDefaults::on_resetSettings_clicked()
+{
+	// apparently this button was never hooked up?
 }
 
 void PreferencesDefaults::refreshSettings()
