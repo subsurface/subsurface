@@ -15,6 +15,11 @@ Kirigami.ApplicationWindow {
 	title: qsTr("Subsurface-mobile")
 	reachableModeEnabled: false // while it's a good idea, it seems to confuse more than help
 	wideScreen: false // workaround for probably Kirigami bug. See commits.
+
+	// the documentation claims that the ApplicationWindow should pick up the font set on
+	// the C++ side. But as a matter of fact, it doesn't, unless you add this line:
+	font: Qt.application.font
+
 	header: Kirigami.ApplicationHeader {
 		minimumHeight: 0
 		preferredHeight: Math.round(Kirigami.Units.gridUnit * (Qt.platform.os == "ios" ? 2 : 1.5))
@@ -41,18 +46,8 @@ Kirigami.ApplicationWindow {
 	FontMetrics {
 		id: fontMetrics
 		Component.onCompleted: {
-			console.log("Using the following font: " + fontMetrics.font.family)
+			console.log("Using the following font: " + fontMetrics.font.family + " at " + fontMetrics.font.pointSize + "pt")
 		}
-
-		/* this shouldn't be needed anymore
-		Component.onCompleted: {
-			if (Math.round(rootItem.width / Kirigami.Units.gridUnit) < 20) {
-				fontMetrics.font.pointSize = fontMetrics.font.pointSize * 2 / 3
-				Kirigami.Theme.defaultFont.pointSize = fontMetrics.font.pointSize
-				console.log("Reduce font size for narrow screens: " + fontMetrics.font.pointSize)
-			}
-		}
-		*/
 	}
 	visible: false
 
