@@ -244,6 +244,10 @@ are supported in Subsurface. And both Android and iOS devices allow direct
 download of dive data from a hand full of Bluetooth LE enabled dive
 computers.
 
+Use the _Vendor name_ and _Dive Computer_ drop-downs to pick the correct
+dive computer. When downloading from multiple different dive computers, shortcut
+buttons to easily switch between them will appear below the drop-downs.
+
 The process for download is slightly different between the two OSs.
 In our testing we got the best results on iOS when the dive computer was
 in Bluetooth mode before _Subsurface-mobile_ is started. On most dive
