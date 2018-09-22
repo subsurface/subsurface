@@ -1,3 +1,5 @@
+Desktop & Mobile: remember up to four dive computers that have been used to
+  download dives and provide easy shortcut buttons to switch between them
 Mobile: add units selection to Settings page
 ---
 * Always add new entries at the very top of this file above other existing entries and this note.
