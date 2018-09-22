@@ -22,6 +22,8 @@ public slots:
 	void on_localDefaultFile_toggled(bool toggled);
 	void on_ffmpegFile_clicked();
 	void on_extractVideoThumbnails_toggled(bool toggled);
+	void on_resetSettings_clicked();
+	void on_resetRememberedDCs_clicked();
 
 private:
 	Ui::PreferencesDefaults *ui;
