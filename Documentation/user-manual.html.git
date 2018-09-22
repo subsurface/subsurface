@@ -897,6 +897,18 @@ The <strong>Device or Mount Point</strong> drop-down list contains the USB or Bl
    specific dive
    computer and, in some cases, how to do the correct settings to the operating
    system of the computer on which <em>Subsurface</em> is running.
+   Some dive computers disable this drop-down as they use other means to find and
+   connect to the device. For some dive computers the data entered here is actually
+   the mount point of the USB storage device as which the dive computer identifies
+   itself.
+</p>
+</li>
+<li>
+<p>
+Below the three drop downs are up to four shortcut buttons that allow you to
+   easily switch between multiple dive computers that you are frequently downloading
+   from. These buttons only appear once you have downloaded from different dive
+   computers.
 </p>
 </li>
 <li>
@@ -7434,7 +7446,7 @@ cannot be salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-09-18 15:11:32 PDT
+ 2018-09-21 19:29:32 PDT
 </div>
 </div>
 </body>
