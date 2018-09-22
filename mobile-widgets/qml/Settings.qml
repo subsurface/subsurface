@@ -339,6 +339,41 @@ Kirigami.ScrollablePage {
 			opacity: 0.5
 			Layout.fillWidth: true
 		}
+
+		GridLayout {
+			id: divecomputers
+			columns: 2
+			width: parent.width - Kirigami.Units.gridUnit
+			Kirigami.Heading {
+				text: qsTr("Dive computers")
+				color: subsurfaceTheme.textColor
+				level: 4
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing
+				Layout.columnSpan: 2
+			}
+			Controls.Label {
+				text: qsTr("Forget remembered dive computers")
+				Layout.preferredWidth: gridWidth * 0.75
+			}
+			SsrfButton {
+				id: forgetDCButton
+				text: qsTr("Forget")
+				onClicked: {
+					PrefDiveComputer.vendor1 = ""
+					PrefDiveComputer.vendor2 = ""
+					PrefDiveComputer.vendor3 = ""
+					PrefDiveComputer.vendor4 = ""
+				}
+			}
+		}
+
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
+		}
 		GridLayout {
 			id: unit_system
 			columns: 2
