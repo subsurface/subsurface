@@ -30,7 +30,7 @@ QByteArray qPrefDisplay::st_bottomSplitter;
 static const QByteArray st_bottomSplitter_default = "";
 
 bool qPrefDisplay::st_maximized;
-static bool st_maximized_default = false; 
+static bool st_maximized_default = false;
 
 QByteArray qPrefDisplay::st_geometry;
 static const QByteArray st_geometry_default = 0;
@@ -39,7 +39,7 @@ QByteArray qPrefDisplay::st_windowState;
 static const QByteArray st_windowState_default = 0;
 
 int qPrefDisplay::st_lastState;
-static int st_lastState_default = false; 
+static int st_lastState_default = false;
 
 qPrefDisplay::qPrefDisplay(QObject *parent) : QObject(parent)
 {
@@ -56,6 +56,7 @@ void qPrefDisplay::loadSync(bool doSync)
 	disk_animation_speed(doSync);
 	disk_divelist_font(doSync);
 	disk_font_size(doSync);
+	disk_mobile_scale(doSync);
 	disk_display_invalid_dives(doSync);
 	disk_show_developer(doSync);
 	if (!doSync) {
@@ -103,17 +104,46 @@ void qPrefDisplay::set_font_size(double value)
 		disk_font_size(true);
 
 		QFont defaultFont = qApp->font();
-		defaultFont.setPointSizeF(prefs.font_size);
+		defaultFont.setPointSizeF(prefs.font_size * prefs.mobile_scale);
 		qApp->setFont(defaultFont);
 		emit instance()->font_sizeChanged(value);
 	}
 }
+
 void qPrefDisplay::disk_font_size(bool doSync)
 {
-	if (doSync)
-		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "font_size"), prefs.font_size, default_prefs.font_size);
-	else
+	// inverted logic compared to the other disk_xxx functions
+	if (!doSync)
 		setCorrectFont();
+#if !defined(SUBSURFACE_MOBILE)
+	// we never want to save the font_size to disk - we always want to grab that from the system default
+	else
+		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "font_size"), prefs.font_size, default_prefs.font_size);
+#endif
+}
+
+void qPrefDisplay::set_mobile_scale(double value)
+{
+	if (!IS_FP_SAME(value, prefs.mobile_scale)) {
+		prefs.mobile_scale = value;
+		disk_mobile_scale(true);
+
+		QFont defaultFont = qApp->font();
+		defaultFont.setPointSizeF(prefs.font_size * prefs.mobile_scale);
+		qApp->setFont(defaultFont);
+		emit instance()->mobile_scaleChanged(value);
+		emit instance()->font_sizeChanged(value);
+	}
+}
+
+void qPrefDisplay::disk_mobile_scale(bool doSync)
+{
+	if (doSync) {
+		qPrefPrivate::propSetValue(keyFromGroupAndName(group, "mobile_scale"), prefs.mobile_scale, default_prefs.mobile_scale);
+	} else {
+		prefs.mobile_scale = qPrefPrivate::propValue(keyFromGroupAndName(group, "mobile_scale"), default_prefs.mobile_scale).toDouble();
+		setCorrectFont();
+	}
 }
 
 //JAN static const QString group = QStringLiteral("Animations");
@@ -134,6 +164,7 @@ void qPrefDisplay::setCorrectFont()
 	}
 
 	prefs.font_size = qPrefPrivate::propValue(keyFromGroupAndName(group, "font_size"), prefs.font_size).toFloat();
+
 	// painful effort to ignore previous default fonts on Windows - ridiculous
 	QString fontName = defaultFont.toString();
 	if (fontName.contains(","))
@@ -144,7 +175,7 @@ void qPrefDisplay::setCorrectFont()
 		free((void *)prefs.divelist_font);
 		prefs.divelist_font = copy_qstring(fontName);
 	}
-	defaultFont.setPointSizeF(prefs.font_size);
+	defaultFont.setPointSizeF(prefs.font_size * prefs.mobile_scale);
 	qApp->setFont(defaultFont);
 
 	prefs.display_invalid_dives = qPrefPrivate::propValue(keyFromGroupAndName(group, "displayinvalid"), default_prefs.display_invalid_dives).toBool();
