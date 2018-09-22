@@ -1,10 +1,10 @@
-// Subsurface 4.5 User Manual
+// Subsurface 4.8 User Manual
 // ==========================
 // :author: Manual authors: Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 // Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Willem
 // Ferguson, Salvador Cuñat, Pedro Neves
-// :revnumber: 4.7
-// :revdate: October 2017
+// :revnumber: 4.8.2
+// :revdate: September 2018
 :icons:
 :toc2:
 :toc-placement: manual
@@ -20,7 +20,7 @@ image::images/Subsurface4Banner.jpg["Banner",align="center"]
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves, Stefan Fuchs
 
-[BLUE]#_Versión 4.7, Mayo 2018_#
+[BLUE]#_Versión 4.8, Septiembre 2018_#
 
 Bienvenido como usuario de _Subsurface_, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
@@ -785,10 +785,9 @@ del nombre del lugar en la pestaña *Notas*.
 
 image::images/Globe_image3.jpg["FIGURA:Panel de creación de posición",align="center"]
 
-*(3):* Obtener las coordenadas usando las apps _Subsurface-mobile_ o
-_Subsurface companion_ en un dispositivo Android o iPhone con GPS, si las
-coordenadas del punto de buceo se guardaron utilizando una de estas apps. Haz
-clic xref:S_Companion[aquí] para más información.
+*(3):* Obtener las coordenadas usando la app _Subsurface-mobile_ en un
+dispositivo Android o iPhone con GPS, si las coordenadas del punto de buceo
+se guardaron utilizando esta app.
 
 [icon="images/icons/warning2.png"]
 [WARNING]
@@ -1424,29 +1423,18 @@ ubicaciones de las inmersiones. Esto se hace como sigue:
 1) Llevar el dispositivo móvil en el barco de buceo o vida abordo, para
 recoger automáticamente coordenadas.
 
-2) Subir las coordenadas desde el dispositivo móvil al servidor de internet de
-Subsurface.
+2) Añadir las coordenadas recogidas a las inmersiones usando la app
+_Subsurface-mobile_.
+3) Sincronizar el divelog con la nube de _Subsurface_ usando la app
+_Subsurface-mobile_.
 
-3) Sincronizar los buceos de la lista de _Subsurface_ con las coordenadas del
-servidor de internet.
-
-_Subsurface_ dispone de dos herramientas para hacer esta tarea:
-
-- La _app Subsurface companion_ (Android e iOS)
-
-- La _app Subsurface-mobile_ (Android e iOS)
-
-Ambas aplicaciones efectuan la recogida de coordenadas y la sincronización con
-inmersiones de la lista. Sin embargo, la app companion no está siendo
-desarrollada y ha sido reeemplazada por la app _Subsurface-mobile_.  Mientras
-que la app companion servía exclusivamente para recoger coordenadas y hacerlas
-disponibles para la versión de sobremesa de _Subsurface_, _Subsurface-mobile_
-efectua muchas de las funciones de la versión de sobremesa, incluyendo la
-visualización y gestión de de la información de buceo. A continuación se
-describen los tres pasos mencionados anteriormente para cada una de las apps
-moviles.
-
-Para información sobre el uso de _Subsurface companion_, pulsa click xref:S_Companion[_aquí_].
+Los usuarios puede que usen todavía la anticuada app _Companion_. Sin embargo,
+esta app no se ha desarrollado en varios años y ha sido eliminada de los
+repositorios de Android e iOS. Su funcionalidad está totalmente integrada en
+_Subsurface-mobile_.
+El antiguo servicio de posiciones GPS en internet se cerrará a finales de 2018
+y a partir de ese momento, la app _Companion_ ya no se podrá utilizar. Por
+favor, usa la app _Subsurface-mobile_ en su lugar.
 
 ==== Guardar y utilizar coordenadas GPS utilizando _Subsurface-mobile_
 
@@ -1507,16 +1495,6 @@ image::images/MobileGpsMenu.jpg["FIGURA: Menú GPS de Subsurface-mobile",align="
 Selecciona la opción _Deshabilitar el servicio de posicionamiento_ en la parte
 inferior del menú GPS de _Subsurface-mobile_.
 
-===== Subir las posiciones GPS al servidor de internet de _Subsurface_
-
-*N.B.* La subida de posiciones GPS al servidor de internet, solo puede hacerse
-si se dispone de una conexión decente, vía red telefónica o wifi. Si la red no
-está disponible desde el punto de buceo, la subida de posiciones solo podrá
-tener lugar cuando se haya restablecido la conexión.
-
-Desde el menú principal de _Subsurface-mobile_, selecciona _GPS_->_Subir datos
-GPS_.
-
 ===== Aplicar las posiciones guardadas a las inmersiones de la lista
 
 _Subsurface_ aplica la primera posición GPS recogida tras el comienzo de la
@@ -1530,324 +1508,33 @@ El https://subsurface-divelog.org/documentation/subsurface-mobile-user-manual[ma
 recogida, subida, gestión y sincronizado de estas información.
 
 
-[[S_Companion]]
-==== Importar coordenadas GPS con la app _Subsurface_ Companion para teléfonos móviles
-
-Utilizando la app _Subsurface_ Companion en un dispositivo Android o xref:S_iphone[_iPhone_]
-con GPS, se pueden pasar automáticamente las coordenadas de los
-puntos de buceo al registro de _Subsurface_. La app Companion guarda las
-ubicaciones de buceo en un servidor dedicado basado en internet. _Subsurface_
-puede recoger las coordenadas desde este servidor.
-
-Para hacer esto:
-
-===== Crear una cuenta para la app Companion
-
- - Registrarse en la http://api.hohndel.org/login/[página web de _Subsurface_
-   companion]. Se recibirá un correo de confirmación con instrucciones y un
-   *DIVERID* personal, un largo número que te dará acceso a las capacidades de la
-   app Companion.
-
- - Descargar la app desde
-   https://play.google.com/store/apps/details?id=org.subsurface[Google Play Store]
-   o desde
-   https://f-droid.org/repository/browse/?fdfilter=subsurface&fdid=org.subsurface[F-Droid].
-
-
-===== Utilizar _Subsurface_ companion en un smartphone Android
-
-La primera vez que se utiliza, la app tiene tres opciones:
-
-* _Create a new account_. Equivalente a registrase en la página de _Subsurface_
-  companion utilizando un navegador de internet. Se puede solicitar un *DIVERID*
-  con esta opción que se recibirá vía correo electrónico y se confirmará a través
-  de la http://api.hohndel.org/login/[_página web de Subsurface companion] para
-  activar la cuenta.
-
-* _Retrieve an account_. Si el usuario olvidó su *DIVERID* recibirá un correo
-  para recuperar el número.
-
-* _Use an existing account_. Se pide el *DIVERID*. La app conserva el *DIVERID*
-  y no lo vuelve a pedir, a menos que se utilice la opción _Disconnect_ en el menú
-  (ver a continuación).
-
-[icon="images/icons/important.png"]
-[IMPORTANT]
-En _Subsurface_ el DIVERID también debe marcarse en el panel Preferencias, al
-que se llega seleccionando _Archivo→Preferencias→General_ desde el menú
-principal en el propio _Subsurface_.
-Esto facilitará la sincronización entre _Subsurface_ y la app Companion.
-
-*Crear nuevas ubicaciones de buceo*
-
-Ahora se está preparado para tomar una posición de buceo y enviarla al servidor.
-La pantalla de Android se verá como lo imagen de abajo a la izquierda (*A*),
-pero sin ninguna inmersión.
-
-Tocando el icono "+" de arriba a la derecha se abrirá un menú con tres opciones:
-
-
-* Current: Se pedirá un nombre para el lugar (o que se active el GPS si estaba
-  apagado). Tras lo cual se guardará la posición actual.
-
-* Use map: Esta opción permite al usuario fijar una posición buscándola en un
-  mapamundi. Se muestra un mapamundi(ver *B* a continuación) sobre el cual indicar
-  la posición con una pulsación larga en la pantalla táctil (si la posición
-  marcada es errónea, simplemente se indica una nueva). A continuación hay que
-  seleccionar el símbolo de chequeo arriba a la derecha. Se mostrará un dialogo
-  que permitirá introducir un nombre para el punto seleccionado y la fecha y hora
-  del buceo (ver *C* abajo). De cara a importar esta posición de buceo a
-  _Subsurface_ es recomendable fijar la misma hora de inmersión que la marcada por
-  el ordenador de buceo.
-
-image::images/Companion_5.jpg["FIGURA: Companion App, añadir posición usando e mapa",align="center"]
-
-* Importar desde archivos GPX: El dispositivo android buscará archivos .gpx y
-  mostrará los que se localicen. El archivo que se seleccione se abrirá y se
-  mostrarán las posiciones que contiene. Ahora hay que elegir las ubicaciones
-  correctas y luego seleccionar el símbolo de chequeo arriba ala derecha, tras lo
-  cual las posiciones se enviarán al servicio web y se añadirán a la lista del
-  dispositivo android.
-
-*Listas de ubicaciones de buceo*
-
-La pantalla principal muestra una lista de ubicaciones de buceo, cada una con un
-nombre, fecha y hora (ver *A* debajo). Algunas posiciones pueden tener una
-flechita sobre la casilla de selección, lo que indica que necesitan remitirse al
-servidor. Se pueden seleccionar posiciones individuales de la lista. Una
-posición seleccionada tiene una marca de chequeo en la casilla de selección. Se
-pueden efectuar operaciones en grupo (como _Delete_ o _Send_) sobre todas las
-operaciones seleccionadas a la vez.
-
-Las posiciones de buceo de la lista pueden visualizarse de dos maneras: una
-lista de ubicaciones o un mapa sobre el que se indican las posiciones. La forma
-de visualizarla (lista o mapa) se modifica seleccionando _Dives_ arriba a la
-izquierda de la pantalla (ver *A* abajo) y luego eligiendo el modo. Si se
-selecciona una ubicación (en la lista o en el mapa), se abre un panel de edición
-(ver *C abajo) donde pueden cambiarse algunos detalles.
-
-image::images/Companion_4.jpg["FIGURE: Companion App, añadir posición usando el mapa",align="center"]
-
-Cuando se pulsa sobre una posición (*sin* seleccionar la casilla), se mostrarán
-el nombre del punto, la fecha y hora y las coordenadas GPS, con dos opciones
-arriba de la pantalla:
-
-- Edit (lapiz): Permite cambiar el nombre u otras características del punto de
-  buceo.
-
-- Maps: Muestra el punto de buceo sobre un mapa.
-
-Tras editar y guardar la posición de buceo (ver *C* abajo), se necesita subirla
-al servidor, como se explicará a continuación.
-
-*Subir puntos de buceo*
-
-Hay varias formas de enviar los buceos al servidor; la más fácil es simplemente
-seleccionar la inmersión (ver la imagen *A* abajo) y luego pulsar la flecha
-arriba a la derecha de la pantalla.
-
-[icon="images/icons/important.png"]
-[IMPORTANT]
-El usuario debe tener cuidado ya que el icono de papelera de la derecha
-significa exactamente lo que se supone: borra los puntos de buceo seleccionados.
-
-
-image::images/Companion_1.jpg["FIGURA: Capturas (A-B) de la app companion",align="center"]
-
-Después de un viaje de buceo usando Companion, todos los puntos de inmersión
-estarán listos para ser descargados a un diario de _Subsurface_ (ver a
-continuación).
-
-*Ajustes de la Companion app*
-
-Seleccionar la opción Settings del menú, resulta en la imagen B de arriba a la
-derecha.
-
-_Server and account_
-
- - _Web-service URL_. Esta está predefinida (http://api.hohndel.org/)
-
- - _User ID._ El DIVERID obtenido al registrarse como indicábamos antes. La forma
-   más fácil de introducirlo es simplemente copiar y pegar desde el correo de
-   confirmación pero, desde luego, el usuario teclearlo carácter a carácter.
-
-_Synchronization_
-
- - _Synchronize on startup_. Si se selecciona, los puntos de buceo del
-   dispositivo android y los del servicio web se sincronizarán cada vez que se
-   inicie la app.
-
- - _Upload new dives_. Si se selecciona, cada vez que el usuario añada una
-   ubicación de buceo, se enviará automáticamente al servidor.
-
-_Background service_
-
-En vez de tomar una sola ubicación de buceo, los usuarios pueden dejar el
-servicio ejecutándose en segundo plano en tu dispositivo android, tomando
-continuamente posiciones GPS
-
-Los ajustes, a continuación, definirán el comportamiento del servicio:
-
- - _Min duration_. En minutos. La app intentará tomar una posición cada X minutos
-   hasta que el usuario la detenga.
-
- - _Min distance_. En metros. Distancia mínima entre dos posiciones.
-
- - _Name template_. La plantilla de nombre que usará la app cuando guarde las
-   posiciones.
-
-[icon="images/icons/info.jpg"]
-[TIP]
-_¿ Como trabaja el servicio en segundo plano ?_ Suponiendo que el usuario ha
-fijado 5 minutos y 50 metros en los ajustes anteriores, la app tomará una
-posición en la ubicación actual, seguida por otra cada 5 minutos *o* cada vez
-que se desplace 50 metros de la posición anterior. Si las siguientes ubicaciones
-están en el radio de 50 metros de la anterior, no se guardarán. De esta forma,
-si el usuario no se está moviendo, solo se guarda una posición, pero si se
-mueve, puede llegar a tener una traza de su viaje al guardar una ubicación cada
-50 metros.
-
-_Other_
-
- - _Mailing List_. El buzón de correo de _Subsurface_. El usuario enviar mails a
-   la lista de correo de _Subsurface_.
-
- - _Subsurface  website_. Un link a la URL de la página de _Subsurface_.
-
- - _Version_. Muestra la versión actual de la app Companion.
-
-_Search_
-
-Se utiliza para buscar en las ubicaciones de buceo guardadas, por nombre o por
-fecha y hora.
-
-_Start service_
-
-Inicia el servicio en segundo plano siguiendo los ajustes previamente definidos.
-
-
-_Disconnect_
-
-Esta opción está mal nombrada. "Desconecta" la app del servidor reseteando el
-DIVERID en la app, y retorna a la primera pantalla desde la que se puede crear
-una cuenta, reactivar el DIVERID o volver a poner el del usuario. Desconectar
-puede ser útil si se desea descargar a un dispositivo android posiciones de otro
-buceador registrado o enviar la posición actual al servidor con el ID de otro
-buceador registrado.
-
-_Send all locations_
-
-Esta opción envía todas las posiciones guardadas en el dispositivo android al
-servidor.
-
-[[S_iphone]]
-===== Usar la app Subsurface companion en un _iPhone_ para registra puntos de buceo
-
-El interfaz de iPhone es bastante simple. Se necesita introducir la ID de
-usuario (obtenida durante el registro) en el espacio reservado para ello, luego
-seleccionar "Dive in" (ver parte izquierda de la imágen de abajo) y se empieza
-a recoger información de las ubicaciones.
-
-image::images/iphone.jpg["FIGURE: Usiar la aplicación iPhone companion",align="center",width=640]
-
-Las inmersiones se pueden añadir de forma automática o manual. En modo manual,
-se añade una sola ubicación de buceo o "waypoint" al flujo de entrada de datos
-del GPS. En modo automático se crea una traza continua de posiciones GPS de las
-cuales, posteriormente, después de haberse importado, _Subsurface_ puede
-seleccionar las posiciones correctas en base a las horas de los buceos. El modo
-por defecto para el _iPhone_ es el automático.  Cuando se añade una inmersión,
-el servicio de posicionamiento se inicia automáticamente y aparece una barra
-roja en la parte de abajo de la pantalla. Tras el buceo, se puede hacer clic en
-la barra roja para detener el servicio de posicionamiento. Mientras el servicio
-se está ejecutando, solo se pueden añadir inmersiones usando el mecanismo
-manual.
-
-Se puede editar el nombre del punto de buceo posteriormente, seleccionando la
-inmersión de la lista y clicando en el nombre. No hay otros campos editables.
-La lista se sube automáticamente desde el _iPhone_ al servicio web y no hay
-opción a hacerlo manualmente.
-
-*Descargar ubicaciones de buceo al diario en _Subsurface_*
-
-Hay que descargar a _Subsurface_ las inmersiones del ordenador de buceo, o
-crearlas manualmente, antes de obtener las coordenadas del servifor. El diálogo
-de descarga se puede obtener vía _Ctrl+G_ o desde el menú principal de
-_Subsurface_, _Importar → Importar datos GPS del servicio Subsurface_,
-resultando la imagen de abajo a la izquierda (A). La primera vez que se use, el
-campo DIVERID estará en blanco. Introducir el DIVERID. Después se pulsa el botón
-Descargar y comenzará la descarga, tras lo cual aparece la pantalla de abajo a
-la derecha (*B*):
-
-image::images/DownloadGPS.jpg["FIGURE: Descargar datos GPS de la app Companion]",align="center"]
-
-Nótese que ahora está activo el botón _Aplicar_. Pulsarlo para actualizar las
-inmersiones recién creadas o descargadas a _Subsurface_, lo cual aplicará las
-coordenadas y los nombres que se hayan dado en la app en todas las inmersiones
-en las que coincidan las fechas y las horas de las posiciones GPS descargadas.
-Si se ha introducido en _Subsurface_ el nombre del punto de buceo antes de
-descargar las coordenadas GPS, este nombre tendrá preferencia sobre los
-descargados.
-
-Ya que _Subsurface_ busca coincidencias entre las localizaciones GPS del
-dispositivo android y la información del ordenador de buceo basándose en la
-fecha y la hora, la asignación automática depende de la coincidencia entre los
-datos de ambos dispositivos. Aunque _Subsurface_ tiene un margen de tolerancia
-muy amplio, puede ser incapaz de identificar la inmersión correcta, si hay mucha
-diferencia entre la hora del ordenador de buceo y la del dispositivo android,
-resultando en que no haya actualización.
-
-Fechas y horas similares en los dispositivos no siempre son posibles y puede
-haber muchas razones para ello (p.e. zonas horarias), o _Subsurface_ puede ser
-incapaz de decidir cual es la posición correcta de una inmersión (p.e. en
-inmersiones repetitivas mientras se ejecuta el servicio en 2º plano puede haber
-varios puntos incluidos en el rango de tiempo que casen no solo para la primera
-inmersión, sino también para las siguientes). Una solución alternativa para esta
-situación sería editar manualmente la hora en la lista de inmersiones de
-_Subsurface_ *antes* de descargar los datos GPS, para hacerla coincidir con la
-de estos, y luego volver a cambiarla a la correcta *después* de la descarga.
-
-[icon="images/icons/info.jpg"]
-[NOTE]
-SUGERENCIAS:
-
- - El servicio en segundo plano es una herramienta poderosa, pero puede llenar la
-   lista de localizaciones con muchas posiciones innecesarias que no correspondan a
-   los puntos exactos de buceo, sino a la ruta seguida por el barco. Actualmente,
-   borrar estas posiciones del servidor resulta difícil. En algunas situaciones
-   resulta, pues, prudente limpiar la lista del dispositivo android antes de enviar
-   los puntos al servidor simplemente borrando los que no sean correctos. Esto
-   puede ser necesario, por ejemplo, si se desea mantener limpia la lista de
-   ubicaciones para poder visualizarlas en el mapa del servidor o del dispositivo
-   android.
-
- - También tendría sentido proporcionar nombres significativos a las
-   localizaciones enviadas al servidor o, al menos, usar tal nombre en el ajuste
-   _Name Template_ si se va a ejecutar el background service, especialmente durante
-   los viajes de buceo con muchas inmersiones y puntos de buceo.
-
 [[S_LoadImage]]
 
-=== El cargador de fotografías de _Subsurface_
+=== Añadir fotografías o vídeos a las inmersiones
 
-Muchos buceadores (si no la mayoría) toman fotografías durante sus inmersiones.
-_Subsurface_ nos permite almacenar y mostrar fotogrfías de cada inmersión. Las
-fotos se superponen en el perfil de la inmersión, en los momentos donde se
-tomaron y pueden visualizarse desde allí.
+Muchos buceadores (si no la mayoría) toman fotografías o vídeos durante sus
+inmersiones. LLamaremos a estos archivos "medios" refiriendonos a fotos o
+vídeos.
+_Subsurface_ nos permite almacenar y mostrar estos medios en cada inmersión.
+Sus miniaturas se superponen en el perfil de la inmersión, en los momentos
+donde se tomaron. Los medios pueden visualizarse desde el perfil o desde la
+pestaña _Medios_ en el *Panel de Notas*. _Subsurface_ permite visualizar las
+fotos o vídeos en un interfaz unificado.
 
-==== Cargar fotos y sincronizar la cámara con el ordenador de buceo
+==== Cargar medios y sincronizar la cámara con el ordenador de buceo
 
 Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
 clic-derecho en la selección lo que nos mostrará el xref:S_DiveListContextMenu[Menú contextual de la lista de inmersiones].
-Hacemos click-izquierdo en la opción apropiada para cargar las imágenes desde
+Hacemos click-izquierdo en la opción apropiada para cargar los medios desde
 un archivo o desde internet y aparecerá el navegador del sistema. Selecciona
-la carpeta y las fotografías que necesiten cargarse en _Subsurface_ y clica el
+la carpeta y las medios que necesiten cargarse en _Subsurface_ y clica el
 botón _Abrir_.
 
 image::images/LoadImage2_f20.jpg["FIGURA: Opción de carga de imágenes",align="center"]
 
-Si las fotos se importan desde Internet, indica una URL que apunte a una sola
-fotografía. Si se indica una carpeta no se importan: las fotos de internet se
-importan una a una. Si las fotos se cargan desde internet, _Susbsurface_
+Si los medios se importan desde Internet, indica una URL que apunte a una sola
+archivo. Si se indica una carpeta no se importan: los medios de internet se
+importan una a una. Si los medios se cargan desde internet, _Susbsurface_
 supone que existe una conexión activa cada vez que se visualiza una foto.
 
 Tras haber seleccionado la carpeta local o la imagen de internet, se desplegará
@@ -1896,115 +1583,133 @@ image::images//LoadImage3b_f23.jpg["FIGURA: Diálogo de sincronización",align="
 
 image::images/LoadImage3c_f23.jpg["FIGURE: Diálogo de sincronización",align="center"]
 
-Si la hora de la foto es muy anterior o posterior al buceo, no se sitúa sobre el
+Si la hora de la foto o video es muy anterior o posterior al buceo, no se sitúa sobre el
 perfil de la inmersión (ver el aviso en rojo de la imágen anterior). Sin
-embargo, si se selecciona la casilla apropiada (ver imágen anterior) estas
-fotos aún pueden situarse en la pestaña _Fotos_ del panel de *Notas* de forma
-que todas las fotos asociadas con un buceo puedan visualizarse, incluidas las
-que se hayan tomado antes o despues de la inmersión.
+embargo, si se selecciona la casilla apropiada (ver imágen anterior) estos
+medios aún pueden situarse en la pestaña _Medios_ del panel de *Notas* de forma
+que todas las fotos o videos asociados con un buceo puedan visualizarse,
+incluidos los que se hayan tomado antes o despues de la inmersión.
 
-==== Visualizar las imágenes
+[[S_ViewMedia]]
+==== Visualizar los medios
+
+****
+*Asegurarse de que se crean las miniaturas para los archivos de vídeo*
+[icon="images/icons/important.png"]
+[IMPORTANT]
+_Subsurface_ presenta los medios en un panel a través de miniaturas. En el
+caso de una foto crear la miniatura es sencillo ya que la imagen está bien
+definida. Sin embargo, al hallarse un vídeo compuesto por muchas imágenes
+surge la cuestión de cual utilizar para la miniatura. Se requieren dos
+acciones para crear las miniaturas de los vídeos:
+
+* Completar el ajuste correspondiente en las _Preferencias_.
+
+* Se necesita tener instalado el programa _ffmpeg_ en el ordenador que ejecute
+_Subsurface_.
+
+Se proporcionan detalles completos en <<S_APPENDIX_F, el apéndice F>>.
+****
 
 Después que las imágenes han sido cargadas aparecen en dos lugares:
 
- - La pestaña _Fotos_ del panel _Notas_ (lado izquierdo de la imágen a
+ - La pestaña _Medios_ del panel _Notas_ (lado izquierdo de la imágen a
 continuación).
  - Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
-   que relejan la hora en que se tomó cada fotografía. Para ver las fotos sobre el
-   perfil, activa el botón _Mostrar fotos_ a la izquierda del perfil:
+   que relejan la hora en que se tomó cada foto o video. Para ver los medios sobre el
+   perfil, activa el botón _Mostrar medios_ a la izquierda del perfil:
 
 image::images/icons/ShowPhotos_f20.png["FIGURE:Show photos toolbar button",align="left"]
 
 Esto producirá un perfil como el que se muestra a continuación
 
-image::images/LoadImage4_f20.jpg["FIGURA: Fotos sobre un perfil de inmersión",align="center"]
+image::images/LoadImage4_f20.jpg["FIGURA: Medios sobre un perfil de inmersión",align="center"]
 
-Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
-de la foto. Ver imagen a continuación:
+Si se sitúa el ratón sobre uno de los iconos, se mostrará una miniatura del
+medio. Ver imagen a continuación:
 
 image::images/LoadImage5_f20.jpg["FIGURA: Foto reducida sobre perfil de inmersión",align="center"]
 
 Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
-completo sobre la ventana de _Subsurface_. Esto permite una buena visión de las
-fotos que han sido importadas. Ver imagen a continuación.
-Cada imagen reducida tiene una pequeña papelera en su esquina superior
+completo sobre la ventana de _Subsurface_. Esto permite una buena visión de los
+medios que han sido importados. Ver imagen a continuación.
+Cada miniatura tiene una pequeña papelera en su esquina superior
 izquierda (ver imagen anterior). Si se selecciona la papelera, la foto se
 borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
-sobre las imágenes. Las imágenes  también puede borrase desde la pestaña _Fotos_
-(ver en el siguiente punto).
+sobre las imágenes. Las imágenes  también puede borrase desde la pestaña
+_Medios_ (ver en el siguiente punto).
 
 image::images/LoadImage6_f20.jpg["FIGURA: Foto a pantalla completa sobre el perfil de inmersión",align="center"]
 
-==== La pestaña _Fotos_
+==== La pestaña _Medios_
 
-Las fotografías asociadas a una inmersión se muestran como miniaturas en la
-pestaña _Fotos_ del _Panel de inmersión_. Se puede acceder con facilidad a las
-fotos hechas en rápida sucesión durante la inmersión, desde la pestaña _Fotos_.
-Esta pestaña es una herramienta para acceder individualmente a las fotos de un
+Los medios asociados a una inmersión se muestran como miniaturas en la
+pestaña _Medios_ del _Panel de Notas_. Se puede acceder con facilidad a las
+fotos hechas en rápida sucesión durante la inmersión, desde la pestaña _Medios_.
+Esta pestaña es una herramienta para acceder individualmente a los medios de un
 buceo, mientras que las "chinchetas" en el perfil de inmersión proporcionan una
-indicación de cuando se tomó la foto. El tamaño de las miniaturas de la
-pestaña _Fotos_ se puede modificar usando el control deslizante de la parte de
+indicación de cuando se grabó el medio. El tamaño de las miniaturas de la
+pestaña _Medios_ se puede modificar usando el control deslizante de la parte de
 abajo del panel. Clicando una sola vez sobre una de la
-miniaturas de la pestaña _Fotos_, seleccionamos una foto. Haciendo doble-clic
-sobre una miniatura, se muestra la imagen a tamaño completo superpuesta a la
-ventana de _Subsurface_. Podemos borrar una foto desde la pestaña _Fotos_
-seleccionándola (un solo clic) y pulsando a continuación la tecla _Supr_ en el
-teclado. Esto eliminará la foto tanto de la pestaña _Fotos_ como del _Perfil de
-la inmersión_.
+miniaturas de la pestaña _Medios_, seleccionamos una foto. Haciendo doble-clic
+sobre una miniatura, se muestra la imagen a tamaño completo o se visualiza el
+video superpuesto a la ventana de _Subsurface_. Podemos borrar un medio desde
+la pestaña _Medios_ seleccionándolo (un solo clic) y pulsando a continuación la
+tecla _Supr_ en el teclado. Esto eliminará el medio tanto de la pestaña
+_Medios_ como del _Perfil de la inmersión_.
 
 ==== Fotos en disco duro externo
 
 La mayoría de fotosubs guardan sus fotografías en un disco duro externo. Si este
 disco puede mapearse (como es casi siempre el caso) _Subsurface_ puede acceder
-directamente a las fotos. Esto facilita la interacción entre _Subsurface_ y un
-repositorio externo de fotos. Cuando se asocia un perfil de inmersión con fotos
-de un disco externo se utiliza el procedimiento normal de selección
+directamente a los medios. Esto facilita la interacción entre _Subsurface_ y un
+repositorio externo de medios. Cuando se asocia un perfil de inmersión con
+medios de un disco externo se utiliza el procedimiento normal de selección
 y sincronización (ver en el texto anterior). Sin embargo, después de que el
-disco externo haya sido desconectado, _Subsurface ya no podrá acceder a las
-fotos. Si se ha activado la visualización de fotos sobre el perfil (utilizando
+disco externo haya sido desconectado, _Subsurface_ ya no podrá acceder a los
+medios. Si se ha activado la visualización de miniaturas sobre el perfil (utilizando
 la barra de herramientas a la izquierda del perfil), el programa solo mostrará
-unos pequeños puntos blancos donde deberían mostrarse las fotos. Además, la
-pestaña _Fotos_ solo mostrará los nombres de los archivos de las imágenes. Este
-es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
-se vuelve a conectar, las fotos se visualizarán normalmente.
+las miniaturas y no se podrán ver los vídeos o las imágenes a tamaño completo.
+Si, posteriormente, el disco externo con los medios se vuelve a conectar, los
+medios podrán visualizarse normalmente.
 
-==== Averiguar que inmersiones tienen fotos asociadas
-Inspeccionar cada inmersión individual para saber si tiene asociadas fotos
+==== Averiguar que inmersiones tienen medios asociados
+Inspeccionar cada inmersión individual para saber si tiene asociados medios
 puede llevarnos mucho tiempo. Hay una forma rápida de saber que inmersiones
-tiene asociadas fotos y cuales no: activa la casilla _Fotos_ en la lista
+tiene asociados medios y cuales no: activa la casilla _Medios_ en la lista
 desplegable que se obtiene al hacer clic-derecho en la barra de encabezamiento
-de la *Lista de Inmersiones*, todos los buceos con fotos asociadas mostrarán
-un icono indicando si las fotografías se tomaron durante la inmersión, antes,
+de la *Lista de Inmersiones*, todos los buceos con medios asociados mostrarán
+un icono indicando si los medios se grabaron durante la inmersión, antes,
 después o todo ello. Hay más información en la sección del manual que cubre
 los <<S_Divelist_columns, iconos de fotos en la *Lista de Inmersiones*>>.
 
 [[S_FindMovedImages]]
-==== Mover fotografías entre directorios, discos duros u ordenadores
+==== Mover medios entre directorios, discos duros u ordenadores
 
-Tras haber cargado una fotografía en _subsurface_ y haberla asociado a un buceo
-determinado, se archiva el directorio donde la foto permanece guardada, para poder
-encontrarla cuando se vuelva a abrir la inmersión. Si la foto o la colección
-completa de fotos se trasladan a otro disco o a una máquina distinta, la ruta
-a la imágen cambia.
-Cuando esto sucede, _Subsurface_ busca las fotos en el directorio original
-desde el que fueron cargadas, no las encuentra y, por tanto,
-no las puede mostrar. Ya que, después de mover fotos, un gran número puede
+Tras haber cargado un medio en _subsurface_ y haberlo asociado a un buceo
+determinado, se archiva el directorio donde el archivo permanece guardado, para poder
+encontrarlo cuando se vuelva a abrir la inmersión. Si la foto, la colección
+completa de fotos o el vídeo se trasladan a otro disco o a una máquina distinta,
+la ruta al archivo cambia.
+Cuando esto sucede, _Subsurface_ busca los medios en el directorio original
+desde el que fueron cargados, no los encuentra y, por tanto,
+no los puede mostrar. Ya que, después de mover medios, un gran número puede
 necesitar borrarse y reimportarse desde la nueva localización, _Subsurface_
-puede localizar las fotos basandose en su nombre y su ruta de acceso.
+puede localizar los archivos basandose en su nombre y su ruta de acceso.
 
 Esto se consigue seleccionando desde el Menú Principal: _Archivo -> Encontrar
 imágenes desplazadas_. Se presentará una ventana desde la cual puede
 controlarse la búsqueda de imágenes. La busqueda se inicia haciendo
-clic en _Seleccionar carpeta y escanear_. Ya que las fotos tomadas con
+clic en _Seleccionar carpeta y escanear_. Ya que los medios grabados con
 diferentes cámaras pueden tener los mismos nombres, se tiene en cuenta el
-nombre de la carpeta. Asi pues, hay que selccionar el directorio raiz de la
-nueva colección de fotos. Para un mejor control es posible buscar solo por
-fotografías de la inmersión actualmente seleccionada, indicando la
+nombre de la carpeta. Asi pues, hay que seleccionar el directorio raiz de la
+nueva colección de medios. Para un mejor control es posible buscar solo por
+archivos de la inmersión actualmente seleccionada, indicando la
 correspondiente opción.
 
 Despues de que haya terminado la busqueda, se mostrarán los nombres originales
 y las nuevas ubicaciones de las fotografías. Las partes coincidentes de las
-rutas de acceso se enfatizarán. No se mostrarán las fotos que se encuentren en
+rutas de acceso se enfatizarán. No se mostrarán los medios que se encuentren en
 sus posiciones conocidas. Los cambios propuestos pueden aplicarse clicando en
 _Aplicar_ o rechazarse clicando en _Cancelar_.
 
@@ -2747,12 +2452,12 @@ la izquierda del perfil La medición se hace arrastrando los puntos rojos a los
 dos puntos del perfil entre los que deseas medir. La información se facilita en
 el área blanca horizontal bajo los dos puntos.
 
-[icon="images/icons/ShowPhotos_f20.png"]
+[icon="images/icons/ShowPhotos.png"]
 [NOTE]
-Las fotografías que se han añadido a una inmersión pueden mostrarse en el perfil
-seleccionando el botón *Mostrar foto* en la barra de herramientas a la izquierda
-del perfil. La posición de la foto en el perfil indica la hora exacta a la que
-se tomó. Si el botón no está activado, las fotos permanecen ocultas.
+Las fotografías o vídeos que se han añadido a una inmersión pueden mostrarse en el perfil
+seleccionando el botón *Mostrar medios* en la barra de herramientas a la izquierda
+del perfil. La posición de la foto o vídeo en el perfil indica la hora exacta a la que
+se tomó. Si el botón no está activado, los medios permanecen ocultos.
 
 El perfil de buceo también puede incluir el *techo* registrado por el ordenador
 de buceo (o, más precisamente, la parada deco más profunda que el ordenador de
@@ -3002,24 +2707,24 @@ guardan y reutilizan cada vez que se abre _Subsurface_.
 
 [[S_Photos_divelist]]
 
-Al seleccionar la casilla _Fotos_ de la lista desplegable, se mostrará un
-icono indicando si existe alguna foto asociada a cada inmersión concreta. Hay
+Al seleccionar la casilla _Medios_ de la lista desplegable, se mostrará un
+icono indicando si existe algun archivo asociado a cada inmersión concreta. Hay
 tres iconos:
 
 [icon="images/icons/duringPhoto.png"]
 [NOTE]
-Esta inmersión tiene fotografías tomadas durante el buceo, habitualmente con
+Esta inmersión tiene fotos o vídeos tomados durante el buceo, habitualmente con
 una cámara sumergible.
 
 [icon="images/icons/outsidePhoto.png"]
 [NOTE]
-Esta inmersión tiene fotos tomadas inmediatamente antes o después del buceo.
-Es útil para encontrar fotos de los compañeros o de barcos, ballenas u otros
+Esta inmersión tiene fotos o vídeos tomados inmediatamente antes o después del buceo.
+Es útil para encontrar imágenes de los compañeros o de barcos, ballenas u otros
 animales vistos en superficie antes o después del buceo, o paisajes.
 
 [icon="images/icons/inAndOutPhoto.png"]
 [NOTE]
-Esta inmersión tiene fotos tomadas durante el buceo y antes o después del
+Esta inmersión tiene fotos o vídeos tomados durante el buceo y antes o después del
 mismo.
 
 ==== Seleccionar inmersiones en una ubicación concreta
@@ -3165,10 +2870,10 @@ _Subsurface_ divide la inmersión(es) seleccionada(s) en puntos donde la
 profundidad es inferior a un metro.
 
 ==== Cargar imágenes desde archivo
-Este tema se discute en la sección: xref:S_LoadImage[Adding photographs to dives].
+Este tema se discute en la sección: xref:S_LoadImage[Añadir fotos o vídeos a inmersiones].
 
 ==== Cargar imágenes desde la web
-Este tema se discute en la sección: xref:S_LoadImage[Adding photographs to dives].
+Este tema se discute en la sección: xref:S_LoadImage[Añadir fotos o vídeos a inmersiones].
 
 ==== Deshacer manipulaciones de inmersiones
 
@@ -3341,9 +3046,17 @@ image::images/texexample.png["Figure: Export to TeX", align="center"]
 
 
 * _Profundidad de imágenes_, que crea un fichero de texto que contiene los
-  nombres de todos los archivos de imágenes añadidos a cualquiera de los buceos
+  nombres de todos los archivos de imagen o vídeo añadidos a cualquiera de los buceos
   seleccionados del la _Lista de inmersiones_, junto con la profundidad a la
-  fue tomada la fotografía.
+  fue grabado el medio.
+
+Cuando se selecciona la opción "Anonimizar" para los archivos basados en
+formato xml, las letras A-Z se reemplazan con X en las notas, compañero,
+divemaster, nombre del punto de buceo y descripción del punto. De esta forma
+se pueden compartir los archivos para propositos de depuración sin revelar
+información personal. Por favor, repara en que no se sustituyen otros
+caracteres, por lo que esto no es útil para lenguajes con caracteres no
+latinos, y que las coordenadas GPS también se conservan.
 
 * _Ajustes generales_, en la pestaña HTML, se proporcionan las siguientes
   opciones:
@@ -3466,7 +3179,7 @@ mismo ordenador. Existen dos aproximaciones para hacer esto:
      los utilizados recientemente. Sin embargo surgirán problemas si los
      usuarios prefieren diferentes ajustes para _Subsurface_. Por ejemplo, un
      buceador puede preferir visualizar el techo en el perfil y los iconos de
-     fotos en la *Lista de Inmersiones* y el otro no. Además, la conexión a la
+     medios en la *Lista de Inmersiones* y el otro no. Además, la conexión a la
      nube es única para cada instalación de _Subsurface_ y, si más de un
      usuario deseara guardar datos en la nube sería bastante molesto tener que
      abrir las *Preferencias*  y cambiar cada vez la ID de usuario. Para
@@ -3633,7 +3346,7 @@ _Cancelar_.
 
 Hay varios ajustes en el panel *General*:
 
-image::images/Pref1_f23.jpg["FIGURA: Pantalla de General en Preferencias",align="center"]
+image::images/Pref1.jpg["FIGURA: Pantalla de General en Preferencias",align="center"]
 
 ** *Listas y tablas*: Aquí se pueden elegir el tipo de fuente y el tamaño de la
     misma en el panel *Lista de inmersiones*. Reduciendo el tamaño de la fuente, se
@@ -3669,11 +3382,12 @@ image::images/Pref1_f23.jpg["FIGURA: Pantalla de General en Preferencias",align=
     controlarse ajustando esta regleta, con mayor velocidad a la izquierda y
     significando "0" ninguna animación en absoluto.
 
-** *Servicio web de Subsurface*: Cuando uno se suscribe al <<S_Companion,
-    servicio web de Subsurface>>, se proporciona una ID de usuario muy larga y
-    difícil de recordar. Este es el lugar donde guardar esa ID. Seleccionando la
-    opción _¿Guardar localmente la ID de usuario?_ nos aseguramos de que se guarda
-    una copia de dicha ID en el ordenador.
+** *Miniaturas de vídeo*: Al generar miniaturas para vídeos asociados a
+    inmersiones, _Subsurface_ necesita tener la información apropiada (ver la
+    sección <<S_ViewMedia,Visualizar medios>>). Hay que ajustar tres
+    preferencias como se indica en <<S_APPENDIX_F, el Apéndice F>>. Estas son;
+    a) activar las miniaturas, b) indicar la ubicación del programa _ffmpeg_ y
+    c) Seleccionar la posición en el vídeo en la que obtener la miniatura.
 
 ** *Borrar todos los ajustes* Tal como se indica en el botón bajo esta cabecera,
     se borran todos los ajustes y se reinician con los valores por defecto.
@@ -3824,9 +3538,8 @@ y hora que se usarán en los detalles de las inmersiones.
 Este panel facilita la comunicación entre _Subsurface_ y las fuentes de datos en
 internet.
 
-Esto es importante cuando _Subsurface_ tiene que comunicarse con servicios como
-el <<S_Companion,servicio web de _Subsurface_>>, importar/exportar datos de
-_Divelogs.de_ o cuando quieres comunicarte a través de un proxy.
+Esto es importante cuando _Subsurface_ tiene que comunicarse con servicios web
+como el Almacenamiento en la Nube o a través de un proxy.
 
 image::images/Pref5_f23.jpg["FIGURA: página de preferencias de red",align="center"]
 
@@ -3851,18 +3564,12 @@ Este diálogo tiene tres secciones:
      a la nube en el disco duro. ¡¡¡ OJO !!! La contraseña se guarda en texto
      plano sin encriptar.
 
-** _Servicio web de Subsurface_:
-   Al suscribirnos al <<S_Companion,Servicio web de Subsurface>>, se nos
-   facilita una identificación de usuario muy larga y dificil de recordar.
-   Este es el lugar donde guardarla. Seleccionando la opción, nos asegurammos
-   de tener una copia local de la misma.
-
 === Georefencia
 
 _Subsurface_ proporciona un servicio de búsqueda geográfica (Esto es, la
 capacidad de buscar el nombre de un lugar, en base a unas coordenadas
 geográficas proporcionadas haciendo clic en el panel *Globo*, de un GPS o
-desde la app _Subsurface companion_) basado en internet, que localiza el
+desde la app _Subsurface mobile_) basado en internet, que localiza el
 nombre conocido más cercano a nuestra posición. Obviamente la función solo
 actúa con conexión a internet. La configuración se puede efectuar como en
 la imagen a continuación
@@ -4626,7 +4333,7 @@ de este manual que describen las operaciones con más detalle.
 - <<S_PrintDivelog,_Imprimir_>> - Imprime el registro de inmersiones abierto.
 - <<S_Preferences, _Preferencias_>> - Fija las preferencias del usuario de
   _Subsurface_.
-- <<S_FindMovedImages, _Encontrar imágenes movidas_>> - Si las fotos que se
+- <<S_FindMovedImages, _Encontrar medios movidos_>> - Si las fotos que se
   hicieron durante las inmersiones se han cambiado de carpeta o de disco, las
   localiza y las une alas inmersiones correspondientes.
 - <<S_Configure, _Configurar ordenador de buceo_>> - Edita la configuración de
@@ -4642,16 +4349,12 @@ una inmersión.
   información desde un ordenador de buceo.
 - <<Unified_import,_Importar Archivos de registro_>> - Importa información de
   buceo desde un fichero que esté en un formato compatible con _Subsurface_.
-- <<S_Companion,_Importar datos GPS del Servicio web de Subsurface_>> - Carga
-  coordenadas GPS desde la app para teléfonos móviles.
 - <<S_ImportingDivelogsDe,_Importar desde Divelogs.de_>> - Importa información
   de buceo desde www.divelogs.de.
 
 === Registro
 - <<S_EnterData,_Añadir inmersión_>> - Añade manualmente una nueva inmersión al
   panel Lista de inmersiones.
-- _Editar inmersión_ - Edita una inmersión cuyo perfil se hizo manualmente y no
-  descargándola desde un ordenador de buceo.
 - <<S_DivePlanner,_Planificar inmersión_>> - Esta característica permite
   planificar inmersiones.
 - <<S_Replan,_Editar inmersión en planificador_>> - Edita un plan de buceo que se ha
@@ -5632,7 +5335,45 @@ IMPORTANTE: Todas las unidades CSS deben estar en longitudes relativas para
 imprimir en cualquier tamaño de página.
 
 [[S_APPENDIX_F]]
-== APÉNDICE F: Preguntas Frecuentes
+== APENDICE F: Ajustar las miniaturas de vídeo
+
+=== Ajustar las miniaturas apropiadas para vídeos asociados a inmersiones.
+
+Al manejar vídeos asociados a inmersiones, _Subsurface_ necesita crear una
+miniatura para cada vídeo, que se mostrará en el perfil o en la pestaña
+_Medios_ . Para ver miniaturas que representen vídeos, _Subsurface_ utiliza un
+programa externo llamado _FFmpeg_.
+Para crear las miniaturas hay que hacer dos cosas:
+
+1. Instalar _FFmpeg_ en el ordenador que corre _Subsurface_. El programa puede
+descargarse desde la página web de FFmpeg:
+https://www.ffmpeg.org/download.html .
+La mayoría de distribuciones de Linux incluyen un paquete ffmpeg y no se
+necesitará ninguna otra descarga.
+
+** En Windows, sitúa el archivo ffmpeg.exe en la carpeta que contiene el
+ejecutable de Subsurface. En Mac y Linux, asegurate de que el comando ffmpeg
+se encuentra en tu $PATH (este es el caso si se ha instalado desde un paquete
+oficial).
+
+2. En la pestaña _General_ de las <<S_Preferences, _Preferencias_>>, ajústalas
+para generar miniaturas:
+
+** Selecciona la casilla _Extraer miniatura de vídeo_. Si _Subsurface_ no
+puede cargar el ejecutable ffmpeg, esta opción se desactivará automáticamente.
+Reactívala después de haber instalado correctamente _FFmpeg_.
+
+** Especifica la ruta al ejecutable _FFmpeg_.
+
+** Selecciona la posición del vídeo en la que _Subsurface_ debe intentar
+extraer la miniatura. Los extremos izquierdo y derecho de la regla indican el
+comienzo y el fin del vídeo, respectivamente. Si Subsurface no puede
+determinar el tamaño del vídeo (como puede suceder en archivos AVI), se
+utilizará la primera imagen del vídeo.
+
+
+[[S_APPENDIX_G]]
+== APÉNDICE G: Preguntas Frecuentes
 
 === _Subsurface_ parece calcular mal el consumo de gas y el CAS
 [[SAC_CALCULATION]]
