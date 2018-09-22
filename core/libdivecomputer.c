@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <time.h>
 #include "gettext.h"
 #include "dive.h"
 #include "subsurface-string.h"
@@ -615,7 +616,7 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 		longitude = parse_degrees(line, &line);
 
 		if (latitude.udeg && longitude.udeg)
-			dive->dive_site_uuid = create_dive_site_with_gps(str->value, latitude, longitude, dive->when);
+			dive->dive_site_uuid = create_dive_site_with_gps(str->value, latitude, longitude, time(NULL));
 	}
 }
 #endif
