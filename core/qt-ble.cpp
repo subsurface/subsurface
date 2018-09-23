@@ -47,11 +47,6 @@ static int debugCounter;
 	} while (timer.elapsed() < (ms));				\
 } while (0)
 
-static void waitFor(int ms)
-{
-	WAITFOR(false, ms);
-}
-
 extern "C" {
 
 void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState)
@@ -226,11 +221,8 @@ dc_status_t BLEObject::setHwCredit(unsigned int c)
 						QLowEnergyService::WriteWithResponse);
 
 	/* And wait for the answer*/
-	int msec = BLE_TIMEOUT;
-	while (msec > 0 && !isCharacteristicWritten) {
-		waitFor(100);
-		msec -= 100;
-	}
+	WAITFOR(isCharacteristicWritten, BLE_TIMEOUT);
+
 	if (!isCharacteristicWritten)
 		return DC_STATUS_TIMEOUT;
 	return DC_STATUS_SUCCESS;
@@ -318,11 +310,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 	controller->connectToDevice();
 
 	// Create a timer. If the connection doesn't succeed after five seconds or no error occurs then stop the opening step
-	int msec = BLE_TIMEOUT;
-	while (msec > 0 && controller->state() == QLowEnergyController::ConnectingState) {
-		waitFor(100);
-		msec -= 100;
-	}
+	WAITFOR(controller->state() != QLowEnergyController::ConnectingState, BLE_TIMEOUT);
 
 	switch (controller->state()) {
 	case QLowEnergyController::ConnectedState:
@@ -350,11 +338,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 
 	controller->discoverServices();
 
-	msec = BLE_TIMEOUT;
-	while (msec > 0 && controller->state() == QLowEnergyController::DiscoveringState) {
-		waitFor(100);
-		msec -= 100;
-	}
+	WAITFOR(controller->state() != QLowEnergyController::DiscoveringState, BLE_TIMEOUT);
 
 	qDebug() << " .. done discovering services";
 	if (ble->preferredService() == nullptr) {
@@ -365,11 +349,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 	}
 
 	qDebug() << " .. discovering details";
-	msec = BLE_TIMEOUT;
-	while (msec > 0 && ble->preferredService()->state() == QLowEnergyService::DiscoveringServices) {
-		waitFor(100);
-		msec -= 100;
-	}
+	WAITFOR(ble->preferredService()->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
 
 	if (ble->preferredService()->state() != QLowEnergyService::ServiceDiscovered) {
 		qDebug() << "failed to find suitable service on" << devaddr;
