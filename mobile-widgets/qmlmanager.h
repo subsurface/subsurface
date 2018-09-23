@@ -87,6 +87,7 @@ public:
 	Q_INVOKABLE int getMatchingAddress(const QString &vendor, const QString &product);
 	Q_INVOKABLE int getDetectedVendorIndex();
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
+	Q_INVOKABLE int getConnectionIndex(const QString &deviceSubstr);
 
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
