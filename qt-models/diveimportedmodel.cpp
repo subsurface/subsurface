@@ -177,7 +177,7 @@ void DiveImportedModel::recordDives()
 		diveTable->dives[i] = NULL;
 	}
 	diveTable->nr = 0;
-	process_dives(true, true);
+	process_imported_dives(true);
 	if (autogroup)
 		autogroup_dives();
 }

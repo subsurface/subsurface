@@ -454,8 +454,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 	dive = get_dive(dive_table.nr - 1);
 	if (dive != NULL) {
 		uniqId = get_dive(dive_table.nr - 1)->id;
-		process_dives(true, preferDownloaded());
-		// after process_dives does any merging or resorting needed, we need
+		process_imported_dives(preferDownloaded());
+		// after process_imported_dives does any merging or resorting needed, we need
 		// to recreate the model for the dive list so we can select the newest dive
 		MainWindow::instance()->recreateDiveList();
 		idx = get_idx_by_uniq_id(uniqId);

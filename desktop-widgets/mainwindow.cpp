@@ -616,7 +616,7 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	QByteArray fileNamePtr = QFile::encodeName(filename);
 	if (!parse_file(fileNamePtr.data(), &dive_table))
 		setCurrentFile(fileNamePtr.data());
-	process_dives(false, false);
+	process_loaded_dives();
 	hideProgressBar();
 	refreshDisplay();
 }
@@ -1737,7 +1737,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		parse_file(fileNamePtr.data(), &dive_table);
 	}
-	process_dives(true, false);
+	process_imported_dives(false);
 	refreshDisplay();
 }
 
@@ -1767,7 +1767,7 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
 		diveLogImport->show();
 	}
-	process_dives(true, false);
+	process_imported_dives(false);
 	refreshDisplay();
 }
 
@@ -1789,7 +1789,7 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	}
 	hideProgressBar();
 	updateRecentFiles();
-	process_dives(false, false);
+	process_loaded_dives();
 
 	refreshDisplay();
 
@@ -1827,7 +1827,7 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	if (csvFiles.size()) {
 		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
 		diveLogImport->show();
-		process_dives(true, false);
+		process_imported_dives(false);
 		refreshDisplay();
 	}
 

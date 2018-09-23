@@ -288,7 +288,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		qPrefTechnicalDetails::set_show_ccr_setpoint(git_prefs.show_ccr_setpoint);
 		qPrefTechnicalDetails::set_show_ccr_sensors(git_prefs.show_ccr_sensors);
 		qPrefPartialPressureGas::set_po2(git_prefs.pp_graphs.po2);
-		process_dives(false, false);
+		process_loaded_dives();
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
@@ -326,7 +326,7 @@ void QMLManager::mergeLocalRepo()
 {
 	char *filename = NOCLOUD_LOCALSTORAGE;
 	parse_file(filename, &dive_table);
-	process_dives(true, false);
+	process_imported_dives(false);
 }
 
 void QMLManager::copyAppLogToClipboard()
@@ -735,7 +735,7 @@ void QMLManager::consumeFinishedLoad(timestamp_t currentDiveTimestamp)
 	prefs.show_ccr_sensors = git_prefs.show_ccr_sensors;
 	prefs.pp_graphs.po2 = git_prefs.pp_graphs.po2;
 	DiveListModel::instance()->clear();
-	process_dives(false, false);
+	process_loaded_dives();
 	DiveListModel::instance()->addAllDives();
 	if (currentDiveTimestamp)
 		setUpdateSelectedDive(dlSortModel->getIdxForId(get_dive_id_closest_to(currentDiveTimestamp)));
