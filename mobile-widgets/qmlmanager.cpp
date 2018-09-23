@@ -1760,6 +1760,11 @@ int QMLManager::getDetectedProductIndex(const QString &currentVendorText)
 	return m_device_data->getDetectedProductIndex(currentVendorText);
 }
 
+int QMLManager::getConnectionIndex(const QString &deviceSubstr)
+{
+	return connectionListModel.indexOf(deviceSubstr);
+}
+
 void QMLManager::showDownloadPage(QString deviceString)
 {
 	// we pass the indices for the three combo boxes for vendor, product, and connection

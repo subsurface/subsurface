@@ -183,7 +183,7 @@ Kirigami.Page {
 			function setDC(vendor, product, device) {
 				comboVendor.currentIndex = comboVendor.find(vendor);
 				comboProduct.currentIndex = comboProduct.find(product);
-				comboConnection.currentIndex = comboConnection.find(device);
+				comboConnection.currentIndex = manager.getConnectionIndex(device);
 			}
 			SsrfButton {
 				id: dc1
