@@ -191,6 +191,10 @@ Kirigami.Page {
 				text: PrefDiveComputer.vendor1 + " - " + PrefDiveComputer.product1
 				onClicked: {
 					// update comboboxes
+					dc1.enabled = false
+					dc2.enabled = true
+					dc3.enabled = true
+					dc4.enabled = true
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor1, PrefDiveComputer.product1, PrefDiveComputer.device1)
 				}
 			}
@@ -200,6 +204,10 @@ Kirigami.Page {
 				text: PrefDiveComputer.vendor2 + " - " + PrefDiveComputer.product2
 				onClicked: {
 					// update comboboxes
+					dc1.enabled = true
+					dc2.enabled = false
+					dc3.enabled = true
+					dc4.enabled = true
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor2, PrefDiveComputer.product2, PrefDiveComputer.device2)
 				}
 			}
@@ -209,6 +217,10 @@ Kirigami.Page {
 				text: PrefDiveComputer.vendor3 + " - " + PrefDiveComputer.product3
 				onClicked: {
 					// update comboboxes
+					dc1.enabled = true
+					dc2.enabled = true
+					dc3.enabled = false
+					dc4.enabled = true
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor3, PrefDiveComputer.product3, PrefDiveComputer.device3)
 				}
 			}
@@ -218,6 +230,10 @@ Kirigami.Page {
 				text: PrefDiveComputer.vendor4 + " - " + PrefDiveComputer.product4
 				onClicked: {
 					// update comboboxes
+					dc1.enabled = true
+					dc2.enabled = true
+					dc3.enabled = true
+					dc4.enabled = false
 					rememberedDCsGrid.setDC(PrefDiveComputer.vendor4, PrefDiveComputer.product4, PrefDiveComputer.device4)
 				}
 			}
@@ -350,6 +366,7 @@ Kirigami.Page {
 			comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
 			if (visible && PrefDiveComputer.vendor !== "" ) {
 				rememberedDCsGrid.setDC(PrefDiveComputer.vendor1, PrefDiveComputer.product1, PrefDiveComputer.device1)
+				dc1.enabled = false
 			}
 		}
 	}
