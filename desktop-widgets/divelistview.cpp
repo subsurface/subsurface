@@ -671,7 +671,8 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	dive_trip_t *trip_b = (dive_trip_t *)b.data(DiveTripModel::TRIP_ROLE).value<void *>();
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
-	combine_trips(trip_a, trip_b);
+	UndoMergeTrips *undoCommand = new UndoMergeTrips(trip_a, trip_b);
+	MainWindow::instance()->undoStack->push(undoCommand);
 	rememberSelection();
 	reload(currentLayout, false);
 	restoreSelection();
@@ -694,7 +695,7 @@ void DiveListView::removeFromTrip()
 	//TODO: move this to C-code.
 	int i;
 	struct dive *d;
-	QVector<struct dive *> divesToRemove;
+	QVector<dive *> divesToRemove;
 	for_each_dive (i, d) {
 		if (d->selected && d->divetrip)
 			divesToRemove.append(d);
@@ -717,15 +718,16 @@ void DiveListView::newTripAbove()
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
 	//TODO: port to c-code.
-	dive_trip_t *trip;
 	int idx;
 	rememberSelection();
-	trip = create_and_hookup_trip_from_dive(d);
+	QVector<dive *> dives;
 	for_each_dive (idx, d) {
 		if (d->selected)
-			add_dive_to_trip(d, trip);
+			dives.append(d);
 	}
-	trip->expanded = 1;
+	UndoCreateTrip *undoCommand = new UndoCreateTrip(dives);
+	MainWindow::instance()->undoStack->push(undoCommand);
+
 	reload(currentLayout, false);
 	mark_divelist_changed(true);
 	restoreSelection();
@@ -764,16 +766,16 @@ void DiveListView::addToTrip(int delta)
 
 	rememberSelection();
 
-	add_dive_to_trip(d, trip);
+	QVector<dive *> dives;
 	if (d->selected) { // there are possibly other selected dives that we should add
 		int idx;
 		for_each_dive (idx, d) {
 			if (d->selected)
-				add_dive_to_trip(d, trip);
+				dives.append(d);
 		}
 	}
-	trip->expanded = 1;
-	mark_divelist_changed(true);
+	UndoAddDivesToTrip *undoEntry = new UndoAddDivesToTrip(dives, trip);
+	MainWindow::instance()->undoStack->push(undoEntry);
 
 	reload(currentLayout, false);
 	restoreSelection();

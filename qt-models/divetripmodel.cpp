@@ -643,8 +643,6 @@ void DiveTripModel::setupModelData()
 
 	beginResetModel();
 
-	if (autogroup)
-		autogroup_dives();
 	items.clear();
 	while (--i >= 0) {
 		dive *d = get_dive(i);
@@ -665,7 +663,6 @@ void DiveTripModel::setupModelData()
 		if (it == items.end()) {
 			// We didn't find an entry for this trip -> add one
 			items.emplace_back(trip, d);
-
 		} else {
 			// We found the trip -> simply add the dive
 			it->dives.push_back(d);

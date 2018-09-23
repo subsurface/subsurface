@@ -157,9 +157,27 @@ struct DiveToAdd {
 	int		 idx;		// Position in divelist
 };
 
+// This helper structure describes a dive that should be moved to / removed from
+// a trip. If the "trip" member is null, the dive is removed from its trip (if
+// it is in a trip, that is)
+struct DiveToTrip
+{
+	struct dive	*dive;
+	dive_trip	*trip;
+};
+
+// This helper structure describes a number of dives to add to /remove from /
+// move between trips.
+// It has ownership of the trips (if any) that have to be added before hand.
+struct DivesToTrip
+{
+	std::vector<DiveToTrip> divesToMove;		// If dive_trip is null, remove from trip
+	std::vector<OwningTripPtr> tripsToAdd;
+};
+
 class UndoAddDive : public QUndoCommand {
 public:
-	UndoAddDive(dive *dive);	// Warning: old dive will be erased (moved in C++-speak)!
+	UndoAddDive(dive *dive);
 private:
 	void undo() override;
 	void redo() override;
@@ -211,20 +229,36 @@ private:
 	QVector<QPair<int, int>> divesToRenumber;
 };
 
-class UndoRemoveDivesFromTrip : public QUndoCommand {
+// The classes UndoRemoveDivesFromTrip, UndoRemoveAutogenTrips, UndoCreateTrip,
+// UndoAutogroupDives and UndoMergeTrips all do the same thing, just the intialization
+// differs. Therefore, define a base class with the proper data-structures, redo()
+// and undo() functions and derive to specialize the initialization.
+class UndoTripBase : public QUndoCommand {
 	Q_DECLARE_TR_FUNCTIONS(Command)
-public:
-	UndoRemoveDivesFromTrip(const QVector<dive *> &divesToRemove);
-private:
+protected:
 	void undo() override;
 	void redo() override;
 
-	// For redo
-	QVector<dive *> divesToRemove;
-
-	// For undo
-	std::vector<std::pair<dive *, dive_trip *>> divesToAdd;
-	std::vector<OwningTripPtr> tripsToAdd;
+	// For redo and undo
+	DivesToTrip divesToMove;
+};
+struct UndoRemoveDivesFromTrip : public UndoTripBase {
+	UndoRemoveDivesFromTrip(const QVector<dive *> &divesToRemove);
+};
+struct UndoRemoveAutogenTrips : public UndoTripBase {
+	UndoRemoveAutogenTrips();
+};
+struct UndoAddDivesToTrip : public UndoTripBase {
+	UndoAddDivesToTrip(const QVector<dive *> &divesToAdd, dive_trip *trip);
+};
+struct UndoCreateTrip : public UndoTripBase {
+	UndoCreateTrip(const QVector<dive *> &divesToAdd);
+};
+struct UndoAutogroupDives : public UndoTripBase {
+	UndoAutogroupDives();
+};
+struct UndoMergeTrips : public UndoTripBase {
+	UndoMergeTrips(dive_trip *trip1, dive_trip *trip2);
 };
 
 class UndoSplitDives : public QUndoCommand {

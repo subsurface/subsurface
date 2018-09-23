@@ -1009,6 +1009,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	}
 
 	process_imported_dives(&table, false, false);
+	autogroup_dives();
 	MainWindow::instance()->undoStack->clear();
 	MainWindow::instance()->refreshDisplay();
 }

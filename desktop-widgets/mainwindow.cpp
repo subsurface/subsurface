@@ -48,6 +48,7 @@
 #include "desktop-widgets/mapwidget.h"
 #include "desktop-widgets/subsurfacewebservices.h"
 #include "desktop-widgets/tab-widgets/maintab.h"
+#include "desktop-widgets/undocommands.h"
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/usersurvey.h"
 
@@ -66,7 +67,6 @@
 #include "qt-models/tankinfomodel.h"
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/yearlystatisticsmodel.h"
-
 #include "preferences/preferencesdialog.h"
 
 #ifndef NO_USERMANUAL
@@ -618,6 +618,8 @@ void MainWindow::on_actionCloudstorageopen_triggered()
 	if (!parse_file(fileNamePtr.data(), &dive_table))
 		setCurrentFile(fileNamePtr.data());
 	process_loaded_dives();
+	if (autogroup)
+		autogroup_dives();
 	undoStack->clear();
 	hideProgressBar();
 	refreshDisplay();
@@ -1073,9 +1075,9 @@ void MainWindow::on_actionAutoGroup_triggered()
 {
 	set_autogroup(ui.actionAutoGroup->isChecked());
 	if (autogroup)
-		autogroup_dives();
+		undoStack->push(new UndoAutogroupDives);
 	else
-		remove_autogen_trips();
+		undoStack->push(new UndoRemoveAutogenTrips);
 	refreshDisplay();
 	mark_divelist_changed(true);
 }
@@ -1741,6 +1743,8 @@ void MainWindow::importFiles(const QStringList fileNames)
 		parse_file(fileNamePtr.data(), &table);
 	}
 	process_imported_dives(&table, false, false);
+	if (autogroup)
+		autogroup_dives();
 	undoStack->clear();
 	refreshDisplay();
 }
@@ -1764,6 +1768,8 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	hideProgressBar();
 	updateRecentFiles();
 	process_loaded_dives();
+	if (autogroup)
+		autogroup_dives();
 	undoStack->clear();
 
 	refreshDisplay();

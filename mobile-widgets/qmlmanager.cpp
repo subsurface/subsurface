@@ -1300,7 +1300,7 @@ void QMLManager::deleteDive(int id)
 		deletedDive = alloc_dive();
 	copy_dive(d, deletedDive);
 	if (!deletedTrip) {
-		deletedTrip = (struct dive_trip *)calloc(1, sizeof(struct dive_trip));
+		deletedTrip = alloc_trip();
 	} else {
 		free(deletedTrip->location);
 		free(deletedTrip->notes);
