@@ -348,13 +348,8 @@ Kirigami.Page {
 
 		onVisibleChanged: {
 			comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
-			if (visible) {
-				comboVendor.currentIndex = manager.getDetectedVendorIndex()
-				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
-				comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
-				manager.DC_vendor = comboVendor.currentText
-				manager.DC_product = comboProduct.currentText
-				manager.DC_devName = comboConnection.currentText
+			if (visible && PrefDiveComputer.vendor !== "" ) {
+				rememberedDCsGrid.setDC(PrefDiveComputer.vendor1, PrefDiveComputer.product1, PrefDiveComputer.device1)
 			}
 		}
 	}
