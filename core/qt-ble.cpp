@@ -100,20 +100,6 @@ void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 void BLEObject::addService(const QBluetoothUuid &newService)
 {
 	qDebug() << "Found service" << newService;
-	bool isStandardUuid = false;
-	newService.toUInt16(&isStandardUuid);
-	if (IS_HW(device)) {
-		/* The HW BT/BLE piece or hardware uses, what we
-		 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
-		 * manufacturer applied for an own UUID for its product, and this was granted
-		 * by the Bluetooth SIG.
-		 */
-		if (newService != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
-			return; // skip all services except the right one
-	} else if (isStandardUuid) {
-		qDebug () << " .. ignoring standard service";
-		return;
-	}
 
 	auto service = controller->createServiceObject(newService, this);
 	qDebug() << " .. created service object" << service;
@@ -197,6 +183,80 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	memcpy((char *)data, packet.data(), packet.size());
 	if (actual)
 		*actual += packet.size();
+
+	return DC_STATUS_SUCCESS;
+}
+
+//
+// select_preferred_service() gets called after all services
+// have been discovered, and the discovery process has been
+// started (by addService(), which calls service->discoverDetails())
+//
+// The role of this function is to wait for all service
+// discovery to finish, and pick the preferred service.
+//
+// NOTE! Picking the preferred service is divecomputer-specific.
+// Right now we special-case the HW known service number, but for
+// others we just pick the first one that isn't a standard service.
+//
+// That's wrong, but works for the simple case.
+//
+dc_status_t BLEObject::select_preferred_service(void)
+{
+	QLowEnergyService *s;
+
+	// Wait for each service to finish discovering
+	foreach (s, services) {
+		WAITFOR(s->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
+	}
+
+	// Print out the services for debugging
+	foreach (s, services) {
+		qDebug() << "Found service" << s->serviceUuid() << s->serviceName();
+
+		QLowEnergyCharacteristic c;
+		foreach (c, s->characteristics()) {
+			qDebug() << "   c:" << c.uuid();
+
+			QLowEnergyDescriptor d;
+			foreach (d, c.descriptors())
+				qDebug() << "        d:" << d.uuid();
+		}
+	}
+
+	// Pick the preferred one
+	foreach (s, services) {
+		if (s->state() != QLowEnergyService::ServiceDiscovered)
+			continue;
+
+		bool isStandardUuid = false;
+		QBluetoothUuid uuid = s->serviceUuid();
+
+		uuid.toUInt16(&isStandardUuid);
+
+		if (IS_HW(device)) {
+			/* The HW BT/BLE piece or hardware uses, what we
+			 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
+			 * manufacturer applied for an own UUID for its product, and this was granted
+			 * by the Bluetooth SIG.
+			 */
+			if (uuid != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
+				continue; // skip all services except the right one
+		} else if (isStandardUuid) {
+			qDebug () << " .. ignoring standard service" << uuid;
+			continue;
+		}
+
+		preferred = s;
+		qDebug() << "Using service" << s->serviceUuid() << "as preferred service";
+		break;
+	}
+
+	if (!preferred) {
+		qDebug() << "failed to find suitable service";
+		report_error("Failed to find suitable BLE GATT service");
+		return DC_STATUS_IO;
+	}
 
 	return DC_STATUS_SUCCESS;
 }
@@ -341,23 +401,15 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 	WAITFOR(controller->state() != QLowEnergyController::DiscoveringState, BLE_TIMEOUT);
 
 	qDebug() << " .. done discovering services";
-	if (ble->preferredService() == nullptr) {
+
+	dc_status_t error = ble->select_preferred_service();
+
+	if (error != DC_STATUS_SUCCESS) {
 		qDebug() << "failed to find suitable service on" << devaddr;
 		report_error("Failed to find suitable service on '%s'", devaddr);
 		delete ble;
-		return DC_STATUS_IO;
+		return error;
 	}
-
-	qDebug() << " .. discovering details";
-	WAITFOR(ble->preferredService()->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
-
-	if (ble->preferredService()->state() != QLowEnergyService::ServiceDiscovered) {
-		qDebug() << "failed to find suitable service on" << devaddr;
-		report_error("Failed to find suitable service on '%s'", devaddr);
-		delete ble;
-		return DC_STATUS_IO;
-	}
-
 
 	qDebug() << " .. enabling notifications";
 

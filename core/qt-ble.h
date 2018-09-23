@@ -23,9 +23,8 @@ public:
 	dc_status_t write(const void* data, size_t size, size_t *actual);
 	dc_status_t read(void* data, size_t size, size_t *actual);
 
-	//TODO: need better mode of selecting the desired service than below
-	inline QLowEnergyService *preferredService()
-				{ return services.isEmpty() ? nullptr : services[0]; }
+	inline QLowEnergyService *preferredService() { return preferred; }
+	dc_status_t select_preferred_service(void);
 
 public slots:
 	void addService(const QBluetoothUuid &newService);
@@ -39,6 +38,7 @@ private:
 	QVector<QLowEnergyService *> services;
 
 	QLowEnergyController *controller = nullptr;
+	QLowEnergyService *preferred = nullptr;
 	QList<QByteArray> receivedPackets;
 	bool isCharacteristicWritten;
 	dc_user_device_t *device;
