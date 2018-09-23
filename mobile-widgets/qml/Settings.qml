@@ -359,6 +359,7 @@ Kirigami.ScrollablePage {
 			SsrfButton {
 				id: forgetDCButton
 				text: qsTr("Forget")
+				enabled: PrefDiveComputer.vendor1 !== ""
 				onClicked: {
 					PrefDiveComputer.vendor1 = ""
 					PrefDiveComputer.vendor2 = ""
