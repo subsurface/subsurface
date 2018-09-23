@@ -137,9 +137,9 @@ void TestGitStorage::testGitStorageCloudOfflineSync()
 	// read the local repo from the previous test and add dive 10
 	QCOMPARE(parse_file(qPrintable(localCacheRepo), &dive_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test10.xml", &dive_table), 0);
-	// calling process_dive() sorts the table, but calling it with
-	// is_imported == true causes it to try to update the window title... let's not do that
-	process_dives(false, false);
+	// calling process_loaded_dives() sorts the table, but calling process_imported_dives()
+	// causes it to try to update the window title... let's not do that
+	process_loaded_dives();
 	// now save only to the local cache but not to the remote server
 	QCOMPARE(save_dives(qPrintable(localCacheRepo)), 0);
 	QCOMPARE(save_dives("./SampleDivesV3plus10local.ssrf"), 0);
@@ -186,14 +186,14 @@ void TestGitStorage::testGitStorageCloudMerge()
 	QString localCacheRepoSave = localCacheDir + "save[ssrftest@hohndel.org]";
 	QCOMPARE(parse_file(qPrintable(localCacheRepoSave), &dive_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	QCOMPARE(save_dives(qPrintable(localCacheRepoSave)), 0);
 	clear_dive_file_data();
 
 	// now we open the cloud storage repo and add a different dive to it
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &dive_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml", &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	QCOMPARE(save_dives(qPrintable(cloudTestRepo)), 0);
 	clear_dive_file_data();
 
@@ -208,9 +208,9 @@ void TestGitStorage::testGitStorageCloudMerge()
 	clear_dive_file_data();
 	QCOMPARE(parse_file("./SampleDivesV3plus10local.ssrf", &dive_table), 0);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test11.xml", &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test12.xml", &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	QCOMPARE(save_dives("./SampleDivesV3plus10-11-12.ssrf"), 0);
 	QFile org("./SampleDivesV3plus10-11-12-merged.ssrf");
 	org.open(QFile::ReadOnly);
@@ -232,7 +232,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
 	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
 	QCOMPARE(parse_file(qPrintable(localCacheRepo), &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	struct dive *dive = get_dive(1);
 	delete_single_dive(1);
 	QCOMPARE(save_dives("./SampleDivesMinus1.ssrf"), 0);
@@ -248,7 +248,7 @@ void TestGitStorage::testGitStorageCloudMerge2()
 	}
 	// now we open the cloud storage repo and modify that first dive
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	dive = get_dive(1);
 	QVERIFY(dive != NULL);
 	free(dive->notes);
@@ -288,7 +288,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	QString localCacheDir(get_local_dir("https://cloud.subsurface-divelog.org/git/ssrftest@hohndel.org", "ssrftest@hohndel.org"));
 	QString localCacheRepo = localCacheDir + "[ssrftest@hohndel.org]";
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	struct dive *dive = get_dive(0);
 	QVERIFY(dive != 0);
 	dive->notes = strdup("Create multi line dive notes\nLine 2\nLine 3\nLine 4\nLine 5\nThat should be enough");
@@ -300,7 +300,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	clear_dive_file_data();
 
 	QCOMPARE(parse_file(qPrintable(localCacheRepo), &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	dive = get_dive(0);
 	dive->notes = strdup("Create multi line dive notes\nDifferent line 2 and removed 3-5\n\nThat should be enough");
 	dive = get_dive(1);
@@ -319,7 +319,7 @@ void TestGitStorage::testGitStorageCloudMerge3()
 	}
 	// now we open the cloud storage repo and modify those first dive notes differently
 	QCOMPARE(parse_file(qPrintable(cloudTestRepo), &dive_table), 0);
-	process_dives(false, false);
+	process_loaded_dives();
 	dive = get_dive(0);
 	dive->notes = strdup("Completely different dive notes\nBut also multi line");
 	dive = get_dive(1);

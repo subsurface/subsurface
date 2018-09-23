@@ -22,9 +22,9 @@ void TestMerge::testMergeEmpty()
 	 * check that we correctly merge mixed cylinder dives
 	 */
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &dive_table), 0);
-	process_dives(true, false);
+	process_imported_dives(false);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &dive_table), 0);
-	process_dives(true, false);
+	process_imported_dives(false);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);
@@ -45,9 +45,9 @@ void TestMerge::testMergeBackwards()
 	 * check that we correctly merge mixed cylinder dives
 	 */
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test48.xml", &dive_table), 0);
-	process_dives(true, false);
+	process_imported_dives(false);
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &dive_table), 0);
-	process_dives(true, false);
+	process_imported_dives(false);
 	QCOMPARE(save_dives("./testmerge47+48.ssrf"), 0);
 	QFile org(SUBSURFACE_TEST_DATA "/dives/test47+48.xml");
 	org.open(QFile::ReadOnly);

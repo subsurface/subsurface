@@ -3,6 +3,8 @@
 /* core logic for the dive list -
  * accessed through the following interfaces:
  *
+ * void process_loaded_dives();
+ * void process_imported_dives(bool prefer_imported);
  * dive_trip_t *dive_trip_list;
  * unsigned int amount_selected;
  * void dump_selection(void)
@@ -1259,17 +1261,32 @@ static void try_to_renumber(struct dive *last, int preexisting)
 	}
 }
 
-void process_dives(bool is_imported, bool prefer_imported)
+void process_loaded_dives()
+{
+	int i;
+	struct dive *dive;
+
+	/* Register dive computer nick names */
+	for_each_dive(i, dive)
+		set_dc_nickname(dive);
+
+	sort_table(&dive_table);
+}
+
+void process_imported_dives(bool prefer_imported)
 {
 	int i;
 	int preexisting = dive_table.preexisting;
-	bool did_merge = false;
 	struct dive *last;
+
+	/* If no dives were imported, don't bother doing anything */
+	if (preexisting >= dive_table.nr)
+		return;
 
 	/* check if we need a nickname for the divecomputer for newly downloaded dives;
 	 * since we know they all came from the same divecomputer we just check for the
 	 * first one */
-	if (preexisting < dive_table.nr && dive_table.dives[preexisting]->downloaded)
+	if (dive_table.dives[preexisting]->downloaded)
 		set_dc_nickname(dive_table.dives[preexisting]);
 	else
 		/* they aren't downloaded, so record / check all new ones */
@@ -1315,24 +1332,17 @@ void process_dives(bool is_imported, bool prefer_imported)
 		delete_single_dive(i + 1);
 		// keep the id or the first dive for the merged dive
 		merged->id = id;
-
-		/* this means the table was changed */
-		did_merge = true;
 	}
+
 	/* make sure no dives are still marked as downloaded */
 	for (i = 1; i < dive_table.nr; i++)
 		dive_table.dives[i]->downloaded = false;
 
-	if (is_imported) {
-		/* If there are dives in the table, are they numbered */
-		if (!last || last->number)
-			try_to_renumber(last, preexisting);
+	/* If there are dives in the table, are they numbered */
+	if (!last || last->number)
+		try_to_renumber(last, preexisting);
 
-		/* did we add dives or divecomputers to the dive table? */
-		if (did_merge || preexisting < dive_table.nr) {
-			mark_divelist_changed(true);
-		}
-	}
+	mark_divelist_changed(true);
 }
 
 void set_dive_nr_for_current_dive()

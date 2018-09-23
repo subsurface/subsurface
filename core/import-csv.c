@@ -135,7 +135,7 @@ static int parse_dan_format(const char *filename, char **params, int pnr)
 		 */
 
 		if (end_ptr)
-			process_dives(true, false);
+			process_imported_dives(false);
 
 		mem_csv.buffer = malloc(mem.size + 1);
 		mem_csv.size = mem.size;
