@@ -1208,7 +1208,7 @@ static struct dive *create_new_dive(timestamp_t when)
 
 static dive_trip_t *create_new_trip(int yyyy, int mm, int dd)
 {
-	dive_trip_t *trip = calloc(1, sizeof(dive_trip_t));
+	dive_trip_t *trip = alloc_trip();
 	struct tm tm = { 0 };
 
 	/* We'll fill in the real data from the trip descriptor file */

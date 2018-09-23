@@ -22,7 +22,10 @@
  * void remove_dive_from_trip(struct dive *dive, bool was_autogen)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
+ * dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
  * void autogroup_dives(void)
+ * void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
+ * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * struct dive *unregister_dive(int idx)
  * void delete_single_dive(int idx)
  * void add_single_dive(int idx, struct dive *dive)
@@ -877,12 +880,27 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 		trip->when = dive->when;
 }
 
+dive_trip_t *alloc_trip(void)
+{
+	return calloc(1, sizeof(dive_trip_t));
+}
+
+dive_trip_t *create_trip_from_dive(struct dive *dive)
+{
+	dive_trip_t *trip;
+
+	trip = alloc_trip();
+	trip->when = dive->when;
+	trip->location = copy_string(get_dive_location(dive));
+
+	return trip;
+}
+
 dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 {
-	dive_trip_t *dive_trip = calloc(1, sizeof(dive_trip_t));
+	dive_trip_t *dive_trip = alloc_trip();
 
-	dive_trip->when = dive->when;
-	dive_trip->location = copy_string(get_dive_location(dive));
+	dive_trip = create_trip_from_dive(dive);
 	insert_trip(&dive_trip);
 
 	dive->tripflag = IN_TRIP;
@@ -891,14 +909,23 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 }
 
 /*
- * Walk the dives from the oldest dive, and see if we can autogroup them
+ * Collect dives for auto-grouping. Pass in first dive which should be checked.
+ * Returns range of dives that should be autogrouped and trip it should be
+ * associated to. If the returned trip was newly allocated, the last bool
+ * is set to true. Caller still has to register it in the system. Note
+ * whereas this looks complicated - it is needed by the undo-system, which
+ * manually injects the new trips. If there are no dives to be autogrouped,
+ * return NULL.
  */
-void autogroup_dives(void)
+dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
 {
 	int i;
 	struct dive *dive, *lastdive = NULL;
 
-	for_each_dive(i, dive) {
+	/* Find first dive that should be merged and remember any previous
+	 * dive that could be merged into.
+	 */
+	for (i = start; (dive = get_dive(i)) != NULL; i++) {
 		dive_trip_t *trip;
 
 		if (dive->divetrip) {
@@ -911,21 +938,53 @@ void autogroup_dives(void)
 			continue;
 		}
 
-		/* Do we have a trip we can combine this into? */
-		if (lastdive && dive->when < lastdive->when + TRIP_THRESHOLD) {
-			dive_trip_t *trip = lastdive->divetrip;
-			add_dive_to_trip(dive, trip);
+		/* We found a dive, let's see if we have to allocate a new trip */
+		if (!lastdive || dive->when >= lastdive->when + TRIP_THRESHOLD) {
+			/* allocate new trip */
+			trip = create_trip_from_dive(dive);
+			trip->autogen = true;
+			*allocated = true;
+		} else {
+			/* use trip of previous dive */
+			trip = lastdive->divetrip;
+			*allocated = false;
+		}
+
+		// Now, find all dives that will be added to this trip
+		lastdive = dive;
+		*from = i;
+		for (*to = *from + 1; (dive = get_dive(*to)) != NULL; (*to)++) {
+			if (dive->divetrip || !DIVE_NEEDS_TRIP(dive) ||
+			    dive->when >= lastdive->when + TRIP_THRESHOLD)
+				break;
 			if (get_dive_location(dive) && !trip->location)
 				trip->location = copy_string(get_dive_location(dive));
 			lastdive = dive;
-			continue;
 		}
-
-		lastdive = dive;
-		trip = create_and_hookup_trip_from_dive(dive);
-		trip->autogen = 1;
+		return trip;
 	}
 
+	/* Did not find anyhting - mark as end */
+	return NULL;
+}
+
+/*
+ * Walk the dives from the oldest dive, and see if we can autogroup them
+ */
+void autogroup_dives(void)
+{
+	int from, to;
+	dive_trip_t *trip;
+	int i, j;
+	bool alloc;
+
+	for(i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
+		/* If this was newly allocated, add trip to list */
+		if (alloc)
+			insert_trip(&trip);
+		for (j = from; j < to; ++j)
+			add_dive_to_trip(get_dive(j), trip);
+	}
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -1207,6 +1266,26 @@ void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 	 * calls delete_trip(trip_b) when the last dive has been moved */
 	while (trip_b->dives)
 		add_dive_to_trip(trip_b->dives, trip_a);
+}
+
+/* Out of two strings, copy the string that is not empty (if any). */
+static char *copy_non_empty_string(const char *a, const char *b)
+{
+	return copy_string(empty_string(b) ? a : b);
+}
+
+/* Combine trips new. This combines two trips, generating a
+ * new trip. To support undo, we have to preserve the old trips. */
+dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
+{
+	dive_trip_t *trip;
+
+	trip = alloc_trip();
+	trip->when = trip_a->when;
+	trip->location = copy_non_empty_string(trip_a->location, trip_b->location);
+	trip->notes = copy_non_empty_string(trip_a->notes, trip_b->notes);
+
+	return trip;
 }
 
 void mark_divelist_changed(bool changed)

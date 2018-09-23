@@ -282,7 +282,7 @@ void trip_start(void)
 	if (cur_trip)
 		return;
 	dive_end();
-	cur_trip = calloc(1, sizeof(dive_trip_t));
+	cur_trip = alloc_trip();
 	memset(&cur_tm, 0, sizeof(cur_tm));
 }
 
