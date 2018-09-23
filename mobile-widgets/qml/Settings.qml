@@ -365,6 +365,7 @@ Kirigami.ScrollablePage {
 					PrefDiveComputer.vendor2 = ""
 					PrefDiveComputer.vendor3 = ""
 					PrefDiveComputer.vendor4 = ""
+					PrefDiveComputer.vendor = ""
 				}
 			}
 		}
