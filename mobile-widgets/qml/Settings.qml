@@ -245,6 +245,41 @@ Kirigami.ScrollablePage {
 					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
+			Kirigami.Heading {
+				text: qsTr("Scaling")
+				color: subsurfaceTheme.textColor
+				level: 4
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 3
+			}
+			Row {
+				Layout.preferredWidth: gridWidth * 0.8
+				Layout.columnSpan: 3
+				spacing: Kirigami.Units.largeSpacing
+				SsrfButton {
+					text: qsTr("smaller")
+					enabled: PrefDisplay.mobile_scale !== 0.85
+					onClicked: {
+						PrefDisplay.mobile_scale = 0.85
+					}
+				}
+				SsrfButton {
+					text: qsTr("regular")
+					enabled: PrefDisplay.mobile_scale !== 1.0
+					onClicked: {
+						PrefDisplay.mobile_scale = 1.0
+					}
+				}
+				SsrfButton {
+					text: qsTr("larger")
+					enabled: PrefDisplay.mobile_scale !== 1.15
+					onClicked: {
+						PrefDisplay.mobile_scale = 1.15
+					}
+				}
+			}
+
 		}
 
 		Rectangle {
