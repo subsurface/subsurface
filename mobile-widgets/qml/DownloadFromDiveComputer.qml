@@ -179,7 +179,7 @@ Kirigami.Page {
 			Layout.alignment: Qt.AlignTop
 			Layout.topMargin: Kirigami.Units.smallSpacing * 2
 			spacing: Kirigami.Units.smallSpacing;
-			width: subsurfaceTheme.columnWidth - Kirigami.Units.gridUnit * 4
+			Layout.fillWidth: true
 			function setDC(vendor, product, device) {
 				comboVendor.currentIndex = comboVendor.find(vendor);
 				comboProduct.currentIndex = comboProduct.find(product);
