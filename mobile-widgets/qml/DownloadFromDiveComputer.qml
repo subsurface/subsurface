@@ -347,6 +347,7 @@ Kirigami.Page {
 		}
 
 		onVisibleChanged: {
+			comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
 			if (visible) {
 				comboVendor.currentIndex = manager.getDetectedVendorIndex()
 				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
