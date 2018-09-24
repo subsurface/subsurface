@@ -121,6 +121,17 @@ void DownloadFromDCWidget::showRememberedDCs()
 	SETUPDC(4)
 }
 
+int DownloadFromDCWidget::deviceIndex(QString deviceText)
+{
+	int rv = ui.device->findText(deviceText);
+	if (rv == -1) {
+		// we need to insert the device text into the model
+		ui.device->addItem(deviceText);
+		rv = ui.device->findText(deviceText);
+	}
+	return rv;
+}
+
 // DC button slots
 #define DCBUTTON(num) \
 void DownloadFromDCWidget::DC##num##Clicked() \
@@ -128,7 +139,7 @@ void DownloadFromDCWidget::DC##num##Clicked() \
 	ui.vendor->setCurrentIndex(ui.vendor->findText(qPrefDiveComputer::vendor##num())); \
 	productModel.setStringList(productList[qPrefDiveComputer::vendor##num()]); \
 	ui.product->setCurrentIndex(ui.product->findText(qPrefDiveComputer::product##num())); \
-	ui.device->setCurrentIndex(ui.device->findText(qPrefDiveComputer::device##num())); \
+	ui.device->setCurrentIndex(deviceIndex(qPrefDiveComputer::device##num())); \
 	if (QSysInfo::kernelType() == "darwin") { \
 		/* it makes no sense that this would be needed on macOS but not Linux */ \
 		QCoreApplication::processEvents(); \
