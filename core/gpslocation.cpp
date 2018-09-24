@@ -39,7 +39,7 @@ GpsLocation::GpsLocation(void (*showMsgCB)(const char *), QObject *parent) :
 	loadFromStorage();
 
 	// register changes in time threshold
-	connect(qPrefLocationService::instance(), SIGNAL(qPrefLocationService::time_thresholdChanged()), this, SLOT(setGpsTimeThreshold(int seconds)));
+	connect(qPrefLocationService::instance(), SIGNAL(time_thresholdChanged(int)), this, SLOT(setGpsTimeThreshold(int)));
 }
 
 GpsLocation *GpsLocation::instance()

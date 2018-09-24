@@ -32,7 +32,6 @@ public:
 	int getGpsNum() const;
 	bool hasLocationsSource();
 	QString currentPosition();
-	void setGpsTimeThreshold(int seconds);
 
 	QMap<qint64, gpsTracker> currentGPSInfo() const;
 
@@ -66,6 +65,7 @@ public slots:
 	void updateTimeout();
 	void positionSourceError(QGeoPositionInfoSource::Error error);
 	void postError(QNetworkReply::NetworkError error);
+	void setGpsTimeThreshold(int seconds);
 #ifdef SUBSURFACE_MOBILE
 	void clearGpsData();
 #endif
