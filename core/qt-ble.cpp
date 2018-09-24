@@ -49,17 +49,12 @@ static int debugCounter;
 
 extern "C" {
 
-void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState)
+void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState newState)
 {
-	QList<QLowEnergyCharacteristic> list;
-
+	qDebug() << "serviceStateChanged";
 	auto service = qobject_cast<QLowEnergyService*>(sender());
 	if (service)
-		list = service->characteristics();
-
-	Q_FOREACH(QLowEnergyCharacteristic c, list) {
-		qDebug() << "   " << c.uuid().toString();
-	}
+		qDebug() << service->serviceUuid() << newState;
 }
 
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
@@ -131,6 +126,24 @@ BLEObject::~BLEObject()
 	delete controller;
 }
 
+// a write characteristic needs Write or WriteNoResponse
+static bool is_write_characteristic(const QLowEnergyCharacteristic &c)
+{
+	return c.properties() &
+		 (QLowEnergyCharacteristic::Write |
+		  QLowEnergyCharacteristic::WriteNoResponse);
+}
+
+// We need a Notify or Indicate for the reading side, and
+// a descriptor to enable it
+static bool is_read_characteristic(const QLowEnergyCharacteristic &c)
+{
+	return !c.descriptors().empty() &&
+		(c.properties() &
+		  (QLowEnergyCharacteristic::Notify |
+		   QLowEnergyCharacteristic::Indicate));
+}
+
 dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 {
 	if (actual) *actual = 0;
@@ -142,23 +155,23 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 		} while (!receivedPackets.isEmpty());
 	}
 
-	QList<QLowEnergyCharacteristic> list = preferredService()->characteristics();
+	foreach (const QLowEnergyCharacteristic &c, preferredService()->characteristics()) {
+		if (!is_write_characteristic(c))
+			continue;
 
-	if (list.isEmpty())
-		return DC_STATUS_IO;
+		QByteArray bytes((const char *)data, (int) size);
 
-	QByteArray bytes((const char *)data, (int) size);
+		QLowEnergyService::WriteMode mode;
+		mode = (c.properties() & QLowEnergyCharacteristic::WriteNoResponse) ?
+				QLowEnergyService::WriteWithoutResponse :
+				QLowEnergyService::WriteWithResponse;
 
-	const QLowEnergyCharacteristic &c = list.constFirst();
-	QLowEnergyService::WriteMode mode;
+		preferredService()->writeCharacteristic(c, bytes, mode);
+		if (actual) *actual = size;
+		return DC_STATUS_SUCCESS;
+	}
 
-	mode = (c.properties() & QLowEnergyCharacteristic::WriteNoResponse) ?
-			QLowEnergyService::WriteWithoutResponse :
-			QLowEnergyService::WriteWithResponse;
-
-	preferredService()->writeCharacteristic(c, bytes, mode);
-	if (actual) *actual = size;
-	return DC_STATUS_SUCCESS;
+	return DC_STATUS_IO;
 }
 
 dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
@@ -203,29 +216,25 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 //
 dc_status_t BLEObject::select_preferred_service(void)
 {
-	QLowEnergyService *s;
-
 	// Wait for each service to finish discovering
-	foreach (s, services) {
+	foreach (const QLowEnergyService *s, services) {
 		WAITFOR(s->state() != QLowEnergyService::DiscoveringServices, BLE_TIMEOUT);
 	}
 
 	// Print out the services for debugging
-	foreach (s, services) {
+	foreach (const QLowEnergyService *s, services) {
 		qDebug() << "Found service" << s->serviceUuid() << s->serviceName();
 
-		QLowEnergyCharacteristic c;
-		foreach (c, s->characteristics()) {
+		foreach (const QLowEnergyCharacteristic &c, s->characteristics()) {
 			qDebug() << "   c:" << c.uuid();
 
-			QLowEnergyDescriptor d;
-			foreach (d, c.descriptors())
+			foreach (const QLowEnergyDescriptor &d, c.descriptors())
 				qDebug() << "        d:" << d.uuid();
 		}
 	}
 
 	// Pick the preferred one
-	foreach (s, services) {
+	foreach (QLowEnergyService *s, services) {
 		if (s->state() != QLowEnergyService::ServiceDiscovered)
 			continue;
 
@@ -245,8 +254,26 @@ dc_status_t BLEObject::select_preferred_service(void)
 		} else if (isStandardUuid) {
 			qDebug () << " .. ignoring standard service" << uuid;
 			continue;
+		} else {
+			bool hasread = false;
+			bool haswrite = false;
+
+			foreach (const QLowEnergyCharacteristic &c, s->characteristics()) {
+				hasread |= is_read_characteristic(c);
+				haswrite |= is_write_characteristic(c);
+			}
+
+			if (!hasread) {
+				qDebug () << " .. ignoring service without read characteristic" << uuid;
+				continue;
+			}
+			if (!haswrite) {
+				qDebug () << " .. ignoring service without write characteristic" << uuid;
+				continue;
+			}
 		}
 
+		// We now know that the service has both read and write characteristics
 		preferred = s;
 		qDebug() << "Using service" << s->serviceUuid() << "as preferred service";
 		break;
@@ -415,42 +442,33 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 
 	/* Enable notifications */
 	QList<QLowEnergyCharacteristic> list = ble->preferredService()->characteristics();
+	if (IS_HW(user_device)) {
+		dc_status_t r = ble->setupHwTerminalIo(list);
+		if (r != DC_STATUS_SUCCESS) {
+			delete ble;
+			return r;
+		}
+	} else {
+		foreach (const QLowEnergyCharacteristic &c, list) {
+			if (!is_read_characteristic(c))
+				continue;
 
-	if (!list.isEmpty()) {
-		const QLowEnergyCharacteristic &c = list.constLast();
+			qDebug() << "Using read characteristic" << c.uuid();
 
-		if (IS_HW(user_device)) {
-			dc_status_t r = ble->setupHwTerminalIo(list);
-			if (r != DC_STATUS_SUCCESS) {
-				delete ble;
-				return r;
-			}
-		} else {
 			QList<QLowEnergyDescriptor> l = c.descriptors();
+			QLowEnergyDescriptor d = l.first();
 
-			qDebug() << "Descriptor list with" << l.length() << "elements";
-
-			QLowEnergyDescriptor d;
-			foreach(d, l)
-				qDebug() << "Descriptor:" << d.name() << "uuid:" << d.uuid().toString();
-
-			if (!l.isEmpty()) {
-				bool foundCCC = false;
-				foreach (d, l) {
-					if (d.type() == QBluetoothUuid::ClientCharacteristicConfiguration) {
-						// pick the correct characteristic
-						foundCCC = true;
-						break;
-					}
+			foreach (const QLowEnergyDescriptor &tmp, l) {
+				if (tmp.type() == QBluetoothUuid::ClientCharacteristicConfiguration) {
+					d = tmp;
+					break;
 				}
-				if (!foundCCC)
-					// if we didn't find a ClientCharacteristicConfiguration, try the first one
-					d = l.first();
-
-				qDebug() << "now writing \"0x0100\" to the descriptor" << d.uuid().toString();
-
-				ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
 			}
+
+			qDebug() << "now writing \"0x0100\" to the descriptor" << d.uuid().toString();
+
+			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
+			break;
 		}
 	}
 
