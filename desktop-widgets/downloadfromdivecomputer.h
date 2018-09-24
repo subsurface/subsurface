@@ -54,6 +54,7 @@ slots:
 	void DC2Clicked();
 	void DC3Clicked();
 	void DC4Clicked();
+	int deviceIndex(QString deviceText);
 
 #if defined(BT_SUPPORT)
 	void enableBluetoothMode(int state);
