@@ -104,6 +104,9 @@ int enumerate_devices(device_callback_t callback, void *userdata, unsigned int t
 	struct dirent *ep = NULL;
 	size_t i;
 	if (transport & DC_TRANSPORT_SERIAL) {
+		// on Mac we always support FTDI now
+		callback("FTDI", userdata);
+
 		const char *dirname = "/dev";
 		const char *patterns[] = {
 			"tty.*",
