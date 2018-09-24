@@ -11,14 +11,6 @@
 #include <QUrlQuery>
 #include <QApplication>
 #include <QTimer>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
-
-#define GPS_FIX_ADD_URL "http://api.subsurface-divelog.org/api/dive/add/"
-#define GPS_FIX_DELETE_URL "http://api.subsurface-divelog.org/api/dive/delete/"
-#define GPS_FIX_DOWNLOAD_URL "http://api.subsurface-divelog.org/api/dive/get/"
-#define GET_WEBSERVICE_UID_URL "https://cloud.subsurface-divelog.org/webuserid/"
 
 GpsLocation *GpsLocation::m_Instance = NULL;
 
