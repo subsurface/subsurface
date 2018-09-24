@@ -9,6 +9,7 @@
 #include <QEventLoop>
 #include <QThread>
 #include <QTimer>
+#include <QTime>
 #include <QDebug>
 #include <QLoggingCategory>
 
@@ -59,6 +60,7 @@ void BLEObject::serviceStateChanged(QLowEnergyService::ServiceState newState)
 
 void BLEObject::characteristcStateChanged(const QLowEnergyCharacteristic &c, const QByteArray &value)
 {
+	qDebug() << QTime::currentTime() << "packet RECV" << value.toHex();
 	if (IS_HW(device)) {
 		if (c.uuid() == hwAllCharacteristics[HW_OSTC_BLE_DATA_TX]) {
 			hw_credit--;
@@ -156,6 +158,7 @@ dc_status_t BLEObject::write(const void *data, size_t size, size_t *actual)
 			continue;
 
 		QByteArray bytes((const char *)data, (int) size);
+		qDebug() << QTime::currentTime() << "packet SEND" << bytes.toHex();
 
 		QLowEnergyService::WriteMode mode;
 		mode = (c.properties() & QLowEnergyCharacteristic::WriteNoResponse) ?
@@ -179,6 +182,8 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 		if (list.isEmpty())
 			return DC_STATUS_IO;
 
+		qDebug() << QTime::currentTime() << "packet WAIT";
+
 		WAITFOR(!receivedPackets.isEmpty(), BLE_TIMEOUT);
 		if (receivedPackets.isEmpty())
 			return DC_STATUS_IO;
@@ -192,6 +197,8 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 	memcpy((char *)data, packet.data(), packet.size());
 	if (actual)
 		*actual += packet.size();
+
+	qDebug() << QTime::currentTime() << "packet READ" << packet.toHex();
 
 	return DC_STATUS_SUCCESS;
 }
