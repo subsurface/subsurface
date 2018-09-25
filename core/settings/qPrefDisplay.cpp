@@ -99,7 +99,7 @@ void qPrefDisplay::disk_divelist_font(bool doSync)
 
 void qPrefDisplay::set_font_size(double value)
 {
-	if (value != prefs.font_size) {
+	if (!IS_FP_SAME(value, prefs.font_size)) {
 		prefs.font_size = value;
 		disk_font_size(true);
 
