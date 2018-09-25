@@ -4,6 +4,7 @@ import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.2 as Controls
 import QtQuick.Window 2.2
 import org.kde.kirigami 2.2 as Kirigami
+import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.Page {
 
@@ -24,9 +25,6 @@ Kirigami.Page {
 			text: "Screen"
 			Layout.columnSpan: 2
 			level: 3
-		}
-		FontMetrics {
-			id: fm
 		}
 
 		Controls.Label {
@@ -67,35 +65,35 @@ Kirigami.Page {
 			text: "FontMetrics pointSize:"
 		}
 		Controls.Label {
-			text: fm.font.pointSize
+			text: fontMetrics.font.pointSize
 		}
 
 		Controls.Label {
 			text: "FontMetrics pixelSize:"
 		}
 		Controls.Label {
-			text: Number(fm.height).toFixed(2)
+			text: Number(fontMetrics.height).toFixed(2)
 		}
 
 		Controls.Label {
 			text: "FontMetrics devicePixelRatio:"
 		}
 		Controls.Label {
-			text: Number(fm.height / fm.font.pointSize).toFixed(2)
+			text: Number(fontMetrics.height / fontMetrics.font.pointSize).toFixed(2)
 		}
 
 		Controls.Label {
 			text: "Text item pixelSize:"
 		}
 		Text {
-			text: font.pixelSize
+			text: fontMetrics.font.pixelSize
 		}
 
 		Controls.Label {
 			text: "Text item pointSize:"
 		}
 		Text {
-			text: font.pointSize
+			text: fontMetrics.font.pointSize
 		}
 
 		Controls.Label {
@@ -109,7 +107,7 @@ Kirigami.Page {
 			text: "Height of default font:"
 		}
 		Text {
-			text: Number(font.pixelSize / Screen.pixelDensity).toFixed(2) + "mm"
+			text: Number(fontMetrics.font.pixelSize / Screen.pixelDensity).toFixed(2) + "mm"
 		}
 
 		Controls.Label {
