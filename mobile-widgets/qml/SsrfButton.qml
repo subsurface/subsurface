@@ -15,6 +15,7 @@ Button {
 	contentItem: Text {
 		id: buttonText
 		text: root.text
+		font.pointSize: subsurfaceTheme.regularPointSize
 		anchors.centerIn: buttonBackground
 		color: root.pressed ? subsurfaceTheme.darkerPrimaryTextColor :subsurfaceTheme.primaryTextColor
 	}

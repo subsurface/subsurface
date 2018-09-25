@@ -55,14 +55,19 @@ Kirigami.Page {
 			Layout.alignment: Qt.AlignTop
 			Layout.topMargin: Kirigami.Units.smallSpacing * 4
 			columns: 2
-			Controls.Label { text: qsTr(" Vendor name: ") }
+			Controls.Label {
+				text: qsTr(" Vendor name: ")
+				font.pointSize: subsurfaceTheme.regularPointSize
+			}
 			Controls.ComboBox {
 				id: comboVendor
 				Layout.fillWidth: true
+				Layout.preferredHeight: fontMetrics.height * 2.5
 				model: vendorList
 				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboVendor.width
+					height: fontMetrics.height * 2.0
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.regularPointSize
@@ -92,14 +97,19 @@ Kirigami.Page {
 					}
 				}
 			}
-			Controls.Label { text: qsTr(" Dive Computer:") }
+			Controls.Label {
+				text: qsTr(" Dive Computer:")
+				font.pointSize: subsurfaceTheme.regularPointSize
+			}
 			Controls.ComboBox {
 				id: comboProduct
 				Layout.fillWidth: true
+				Layout.preferredHeight: fontMetrics.height * 2.5
 				model: null
 				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboProduct.width
+					height: fontMetrics.height * 2.0
 					contentItem: Text {
 						text: modelData
 						font.pointSize: subsurfaceTheme.regularPointSize
@@ -127,17 +137,21 @@ Kirigami.Page {
 					currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
 				}
 			}
-			Controls.Label { text: qsTr(" Connection:") }
+			Controls.Label {
+				text: qsTr(" Connection:")
+				font.pointSize: subsurfaceTheme.regularPointSize
+			}
 			Controls.ComboBox {
 				id: comboConnection
 				Layout.fillWidth: true
+				Layout.preferredHeight: fontMetrics.height * 2.5
 				model: connectionListModel
 				currentIndex: -1
 				delegate: Controls.ItemDelegate {
 					width: comboConnection.width
+					height: fontMetrics.height * 2.0
 					contentItem: Text {
 						text: modelData
-						// color: "#21be2b"
 						font.pointSize: subsurfaceTheme.smallPointSize
 						verticalAlignment: Text.AlignVCenter
 						elide: Text.ElideRight
