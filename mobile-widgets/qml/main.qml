@@ -46,7 +46,9 @@ Kirigami.ApplicationWindow {
 	FontMetrics {
 		id: fontMetrics
 		Component.onCompleted: {
-			console.log("Using the following font: " + fontMetrics.font.family + " at " + fontMetrics.font.pointSize + "pt")
+			console.log("Using the following font: " + fontMetrics.font.family
+				    + " at " + subsurfaceTheme.basePointSize + "pt" +
+				    " with mobile_scale: " + PrefDisplay.mobile_scale)
 		}
 	}
 	visible: false
@@ -444,9 +446,16 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 	QtObject {
 		id: subsurfaceTheme
-		property int regularPointSize: fontMetrics.font.pointSize
-		property int titlePointSize: Math.round(regularPointSize * 1.5)
-		property int smallPointSize: Math.round(regularPointSize * 0.8)
+
+		// basePointSize is determinded at start of the app and shall
+		// never be changed. This is very tricky. In order to break the
+		// binding between basePointSize and fontMetrics.font.pointSize we
+		// multipy it by 1.0 in the onComplete hander of this object.
+		property double basePointSize: fontMetrics.font.pointSize;
+
+		property double regularPointSize: fontMetrics.font.pointSize
+		property double titlePointSize: regularPointSize * 1.5
+		property double smallPointSize: regularPointSize * 0.8
 
 		// colors currently in use
 		property string currentTheme
@@ -500,6 +509,13 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		property int columnWidth: Math.round(rootItem.width/(Kirigami.Units.gridUnit*28)) > 0 ? Math.round(rootItem.width / Math.round(rootItem.width/(Kirigami.Units.gridUnit*28))) : rootItem.width
 		Component.onCompleted: {
+			// break binding explicitly. Now we have a basePointSize that we can
+			// use to easily scale against
+			basePointSize = basePointSize * 1.0;
+
+			// set the initial UI scaling as in the the preferences
+			fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
+
 			// this needs to pick the theme from persistent preference settings
 			var theme = PrefDisplay.theme
 			if (theme == "Blue")
