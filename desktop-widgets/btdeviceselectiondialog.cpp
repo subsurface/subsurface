@@ -849,11 +849,12 @@ void WinBluetoothDeviceDiscoveryAgent::doWork()
 		DWORD addressSize = BTH_ADDR_BUF_LEN;
 
 		// Collect the address of the device from the WSAQUERYSETW
-		SOCKADDR_BTH *socketBthAddress = (SOCKADDR_BTH *) pResults->lpcsaBuffer->RemoteAddr.lpSockaddr;
+		LPSOCKADDR socketBthAddress = pResults->lpcsaBuffer->RemoteAddr.lpSockaddr;
+		DWORD socketBthAddressLength = pResults->lpcsaBuffer->RemoteAddr.iSockaddrLength;
 
 		// Convert the BTH_ADDR to string
-		if ((result = WSAAddressToStringW((LPSOCKADDR) socketBthAddress,
-					sizeof (*socketBthAddress),
+		if ((result = WSAAddressToStringW(socketBthAddress,
+					socketBthAddressLength,
 					NULL,
 					reinterpret_cast<wchar_t*>(deviceAddress.data()),
 					&addressSize
