@@ -296,7 +296,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
 		QMLPrefs::instance()->setShowPin(true);
 	} else {
-		if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
+		if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD) {
 			// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
 			git_local_only = false;
 			appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
@@ -422,6 +422,7 @@ void QMLManager::saveCloudCredentials(QString user, QString password)
 			setStartPageText(RED_FONT + tr("Cloud password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 			return;
 		}
+		
 		qPrefCloudStorage::set_cloud_storage_password(password);
 	}
 	if (qPrefCloudStorage::cloud_storage_email() != user) {
@@ -653,19 +654,11 @@ void QMLManager::revertToNoCloudIfNeeded()
 		currentGitLocalOnly = false;
 		git_local_only = true;
 	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
-		// we tried to switch to a cloud account and had previously used local data,
-		// but connecting to the cloud account (and subsequently merging the local
-		// and cloud data) failed - so let's delete the cloud credentials and go
-		// back to CS_NOCLOUD mode in order to prevent us from losing the locally stored
-		// dives
+	if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD) {
 		if (m_syncToCloud == false) {
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
 			git_local_only = m_syncToCloud;
 		}
-		qPrefCloudStorage::set_cloud_storage_email("");
-		qPrefCloudStorage::set_cloud_storage_password("");
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
 		set_filename(NOCLOUD_LOCALSTORAGE);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}

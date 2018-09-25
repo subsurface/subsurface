@@ -12,7 +12,6 @@ QMLPrefs::QMLPrefs() :
 	m_showPin(false)
 {
 	m_credentialStatus = (qPrefCloudStorage::cloud_status) qPrefCloudStorage::cloud_verification_status();
-	m_oldStatus = m_credentialStatus;
 }
 
 QMLPrefs *QMLPrefs::instance()
@@ -31,7 +30,6 @@ qPrefCloudStorage::cloud_status QMLPrefs::credentialStatus() const
 void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 {
 	if (m_credentialStatus != value) {
-		setOldStatus(m_credentialStatus);
 		if (value == qPrefCloudStorage::CS_NOCLOUD) {
 			QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
 			set_filename(NOCLOUD_LOCALSTORAGE);
@@ -44,19 +42,6 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 		}
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
-	}
-}
-
-qPrefCloudStorage::cloud_status QMLPrefs::oldStatus() const
-{
-	return m_oldStatus;
-}
-
-void QMLPrefs::setOldStatus(const qPrefCloudStorage::cloud_status value)
-{
-	if (m_oldStatus != value) {
-		m_oldStatus = value;
-		emit oldStatusChanged();
 	}
 }
 
