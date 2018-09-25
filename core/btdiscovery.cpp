@@ -71,7 +71,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 }
 
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
-	discoveryAgent(NULL)
+	discoveryAgent(nullptr)
 {
 	if (m_instance) {
 		qDebug() << "trying to create an additional BTDiscovery object";
@@ -98,25 +98,24 @@ void BTDiscovery::BTDiscoveryReDiscover()
 	if (1) {
 #endif
 		m_btValid = true;
-#if defined(Q_OS_WIN) || defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
-		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
-		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+#if !defined(Q_OS_ANDROID)
+		if (discoveryAgent == nullptr) {
+			discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
+			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+		}
 		qDebug() << "starting BLE discovery";
 		discoveryAgent->start();
-#endif
-#if defined(Q_OS_ANDROID)
+#else
 		getBluetoothDevices();
 		// and add the paired devices to the internal data
 		// So behaviour is same on Linux/Bluez stack and
 		// Android/Java stack with respect to discovery
-		for (int i = 0; i < btPairedDevices.length(); i++) {
+		for (int i = 0; i < btPairedDevices.length(); i++)
 			btDeviceDiscoveredMain(btPairedDevices[i]);
-
-		}
 #endif
-		for (int i = 0; i < btPairedDevices.length(); i++) {
+		for (int i = 0; i < btPairedDevices.length(); i++)
 			qDebug() << "Paired =" << btPairedDevices[i].name << btPairedDevices[i].address;
-		}
+
 #if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
 		QTimer timer;
 		timer.setSingleShot(true);
