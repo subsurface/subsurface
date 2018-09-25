@@ -304,6 +304,7 @@ Kirigami.ScrollablePage {
 					wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 					visible: text !== ""
 					font.weight: Font.Bold
+					font.pointSize: subsurfaceTheme.regularPointSize
 					anchors {
 						top: parent.top
 						left: dateBox.right
