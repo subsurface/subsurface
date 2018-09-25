@@ -322,16 +322,21 @@ static void temperature(char *buffer, temperature_t *temperature)
 static void sampletime(char *buffer, duration_t *time)
 {
 	int i;
-	int min, sec;
+	int hr, min, sec;
 
-	i = sscanf(buffer, "%d:%d", &min, &sec);
+	i = sscanf(buffer, "%d:%d:%d", &hr, &min, &sec);
 	switch (i) {
 	case 1:
-		sec = min;
-		min = 0;
+		min = hr;
+		hr = 0;
 	/* fallthrough */
 	case 2:
-		time->seconds = sec + min * 60;
+		sec = min;
+		min = hr;
+		hr = 0;
+	/* fallthrough */
+	case 3:
+		time->seconds = (hr * 60 + min) * 60 + sec;
 		break;
 	default:
 		printf("Strange sample time reading %s\n", buffer);
