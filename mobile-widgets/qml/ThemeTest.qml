@@ -62,6 +62,13 @@ Kirigami.Page {
 		}
 
 		Controls.Label {
+			text: "basePointSize:"
+		}
+		Controls.Label {
+			text: subsurfaceTheme.basePointSize
+		}
+
+		Controls.Label {
 			text: "FontMetrics pointSize:"
 		}
 		Controls.Label {
