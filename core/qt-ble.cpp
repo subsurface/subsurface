@@ -100,10 +100,6 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 	qDebug() << " .. created service object" << service;
 	if (service) {
 		services.append(service);
-		connect(service, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
-		connect(service, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
-		connect(service, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
-		connect(service, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
 		service->discoverDetails();
 	}
 }
@@ -284,6 +280,11 @@ dc_status_t BLEObject::select_preferred_service(void)
 		report_error("Failed to find suitable BLE GATT service");
 		return DC_STATUS_IO;
 	}
+
+	connect(preferred, &QLowEnergyService::stateChanged, this, &BLEObject::serviceStateChanged);
+	connect(preferred, &QLowEnergyService::characteristicChanged, this, &BLEObject::characteristcStateChanged);
+	connect(preferred, &QLowEnergyService::characteristicWritten, this, &BLEObject::characteristicWritten);
+	connect(preferred, &QLowEnergyService::descriptorWritten, this, &BLEObject::writeCompleted);
 
 	return DC_STATUS_SUCCESS;
 }
