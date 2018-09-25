@@ -262,6 +262,7 @@ Kirigami.ScrollablePage {
 					enabled: PrefDisplay.mobile_scale !== 0.85
 					onClicked: {
 						PrefDisplay.mobile_scale = 0.85
+						fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
 					}
 				}
 				SsrfButton {
@@ -269,6 +270,7 @@ Kirigami.ScrollablePage {
 					enabled: PrefDisplay.mobile_scale !== 1.0
 					onClicked: {
 						PrefDisplay.mobile_scale = 1.0
+						fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
 					}
 				}
 				SsrfButton {
@@ -276,6 +278,7 @@ Kirigami.ScrollablePage {
 					enabled: PrefDisplay.mobile_scale !== 1.15
 					onClicked: {
 						PrefDisplay.mobile_scale = 1.15
+						fontMetrics.font.pointSize = subsurfaceTheme.basePointSize * PrefDisplay.mobile_scale;
 					}
 				}
 			}
