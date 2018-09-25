@@ -23,6 +23,9 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	timer(new QTimer(this)),
 	dumpWarningShown(false),
 	ostcFirmwareCheck(0),
+#if defined (BT_SUPPORT)
+	btd(nullptr),
+#endif
 	currentState(INITIAL)
 {
 	diveImportedModel = new DiveImportedModel(this);
@@ -299,6 +302,19 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
 {
 	updateDeviceEnabled();
+}
+
+void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
+{
+#if defined(Q_OS_MACOS)
+	if (isBluetoothAddress(device)) {
+		// ensure we have a discovery running
+		if (btd == nullptr)
+			btd = BTDiscovery::instance();
+	}
+#else
+	Q_UNUSED(device)
+#endif
 }
 
 void DownloadFromDCWidget::on_search_clicked()
