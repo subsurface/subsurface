@@ -845,18 +845,18 @@ void WinBluetoothDeviceDiscoveryAgent::doWork()
 		}
 
 		// Found a device
-		QString deviceAddress(BTH_ADDR_BUF_LEN, Qt::Uninitialized);
-		DWORD addressSize = BTH_ADDR_BUF_LEN;
 
 		// Collect the address of the device from the WSAQUERYSETW
 		LPSOCKADDR socketBthAddress = pResults->lpcsaBuffer->RemoteAddr.lpSockaddr;
 		DWORD socketBthAddressLength = pResults->lpcsaBuffer->RemoteAddr.iSockaddrLength;
+		wchar_t deviceAddressBuffer[BTH_ADDR_BUF_LEN];
+		DWORD addressSize = BTH_ADDR_BUF_LEN;
 
 		// Convert the BTH_ADDR to string
 		if ((result = WSAAddressToStringW(socketBthAddress,
 					socketBthAddressLength,
 					NULL,
-					reinterpret_cast<wchar_t*>(deviceAddress.data()),
+					deviceAddressBuffer,
 					&addressSize
 					)) != SUCCESS) {
 			// Get the last error and emit a signal
@@ -870,13 +870,13 @@ void WinBluetoothDeviceDiscoveryAgent::doWork()
 		if (!isActive())
 			break;
 
-		// Remove the round parentheses
+		// Construct device address string, remove the round parentheses and truncate
+		QString deviceAddress = QString::fromWCharArray(deviceAddressBuffer);
 		deviceAddress.remove(')');
 		deviceAddress.remove('(');
-
-		// Save the name of the discovered device and truncate the address
-		QString deviceName = QString::fromWCharArray(pResults->lpszServiceInstanceName);
 		deviceAddress.truncate(BTH_ADDR_PRETTY_STRING_LEN);
+
+		QString deviceName = QString::fromWCharArray(pResults->lpszServiceInstanceName);
 
 		// Create an object with information about the discovered device
 		QBluetoothDeviceInfo deviceInfo(QBluetoothAddress(deviceAddress), deviceName, 0);
