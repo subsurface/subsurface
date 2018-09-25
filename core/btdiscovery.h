@@ -17,6 +17,7 @@
 #endif
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
+bool isBluetoothAddress(const QString &address);
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
 
 class BTDiscovery : public QObject {

@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QDebug>
 #include <QLoggingCategory>
+#include <QRegularExpression>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
@@ -300,6 +301,14 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 #endif // Q_OS_ANDROID
 
 QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+
+bool isBluetoothAddress(const QString &address)
+{
+	QRegularExpression re("(LE:)*([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}|{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})",
+			      QRegularExpression::CaseInsensitiveOption);
+	QRegularExpressionMatch m = re.match(address);
+	return m.hasMatch();
+}
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)
 {
