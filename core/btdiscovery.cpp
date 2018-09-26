@@ -179,12 +179,11 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		qDebug() << id.toByteArray();
 	}
 
-#if defined(Q_OS_IOS)
-	// On Desktop this is called when "Save" button is clicked. All
-	// DeviceInfo are stored as data on the ui list items.
-	// On mobile (iOS) the current ConnectionListModel does not support
-	// additional data, so just save all discovered devices.
-
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS)
+	// on macOS and iOS we need to scan in order to be able to access a device;
+	// let's remember the information we scanned on this run so we can at least
+	// refer back to it and don't need to open the separate scanning dialog every
+	// time we try to download from a BT/BLE dive computer.
 	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
 #endif
 
