@@ -1,3 +1,4 @@
+- cloudCreds - simplify adding/changing cloud credentials, and secure user is locked while doing so
 - Dive media: rudimentary support for XMP metadata
 - Desktop & Mobile: remember up to four dive computers that have been used to
   download dives and provide easy shortcut buttons to switch between them
