@@ -17,7 +17,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "mobile-widgets/qmlmanager.h"
-#include "mobile-widgets/qmlprefs.h"
 #include "qt-models/divelistmodel.h"
 #include "qt-models/gpslistmodel.h"
 #include "qt-models/messagehandlermodel.h"
@@ -162,7 +161,6 @@ void register_qml_types(QQmlEngine *engine)
 #ifdef SUBSURFACE_MOBILE
 	if (engine) {
 		QQmlContext *ct = engine->rootContext();
-		ct->setContextProperty("prefs", QMLPrefs::instance());
 		ct->setContextProperty("manager", QMLManager::instance());
 		QMLManager::instance()->finishConstruct();
 	}
