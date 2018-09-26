@@ -50,6 +50,7 @@ public:
 	QList<btVendorProduct> getBtDcs();
 	QBluetoothLocalDevice localBtDevice;
 	void BTDiscoveryReDiscover();
+	void discoverAddress(QString address);
 
 private:
 	static BTDiscovery *m_instance;
