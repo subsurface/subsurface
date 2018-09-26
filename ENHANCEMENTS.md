@@ -5,14 +5,15 @@ features. The fork will be synced with subsurface master from time to time, but 
 after every release tag.
 
 Subsurface git hash currently used:
-d16bcd8978115768a3d9ff0fa081a2f2a018255b
+f6ee900826b9f5c81382cd961cfe3e6bee4d9bdb
 
 Added enhancements:
-None
-
-Enhancements in progress:
 cloudCreds - simplify adding/changing cloud credentials, and secure user is locked while doing so
 
+Enhancements in progress:
+Simplify navigation structure, remove stack etc.
+
+References:
 Subsurface can be found at http://subsurface-divelog.org
 
 Subsurface user forum is at http://subsurface-divelog.org/user-forum/
