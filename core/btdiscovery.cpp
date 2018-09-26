@@ -10,6 +10,9 @@
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
+namespace {
+	QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+}
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
 static dc_descriptor_t *getDeviceType(QString btName)
@@ -299,7 +302,6 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 }
 #endif // Q_OS_ANDROID
 
-QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
 
 bool isBluetoothAddress(const QString &address)
 {
