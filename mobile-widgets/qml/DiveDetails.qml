@@ -55,7 +55,7 @@ Kirigami.Page {
 	title: currentItem && currentItem.modelData ? currentItem.modelData.dive.location : qsTr("Dive details")
 	state: "view"
 	leftPadding: 0
-	topPadding: Kirigami.Units.gridUnit * 2 // make room for the title bar
+	topPadding: Kirigami.Units.gridUnit / 2
 	rightPadding: 0
 	bottomPadding: 0
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
