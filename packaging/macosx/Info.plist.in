@@ -18,5 +18,6 @@
 	<string>6.0</string>
 	<key>CFBundleVersion</key>
 	<string>@SHORT_VERSION@</string>
+	<key>NSSupportsAutomaticGraphicsSwitching</key><true/>
 </dict>
 </plist>
