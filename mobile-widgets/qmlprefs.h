@@ -10,7 +10,7 @@
 class QMLPrefs : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(qPrefCloudStorage::cloud_status credentialStatus
-				MEMBER m_credentialStatus
+				READ credentialStatus
 				WRITE setCredentialStatus
 				NOTIFY credentialStatusChanged)
 public:
@@ -23,8 +23,6 @@ public slots:
 
 private:
 	QMLPrefs();
-
-	qPrefCloudStorage::cloud_status m_credentialStatus;
 
 signals:
 	void credentialStatusChanged();

@@ -91,6 +91,7 @@ public:
 	Q_INVOKABLE int getConnectionIndex(const QString &deviceSubstr);
 	Q_INVOKABLE void saveCloudCredentials(QString user, QString password);
 	Q_INVOKABLE void tryRetrieveDataFromBackend(QString pin);
+	Q_INVOKABLE void setNOCloud();
 
 	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
