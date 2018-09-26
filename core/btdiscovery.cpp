@@ -7,6 +7,8 @@
 #include <QDebug>
 #include <QLoggingCategory>
 #include <QRegularExpression>
+#include <QElapsedTimer>
+#include <QCoreApplication>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
@@ -327,7 +329,20 @@ QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 {
 	if (btDeviceInfo.contains(devaddr))
 		return btDeviceInfo[devaddr];
-	qDebug() << "need to scan for" << devaddr;
+	if(!btDeviceInfo.keys().contains(devaddr)) {
+		qDebug() << "still looking scan is still running, we should just wait for a few moments";
+		// wait for a maximum of 30 more seconds
+		// yes, that seems crazy, but on my Mac I see this take more than 20 seconds
+		QElapsedTimer timer;
+		timer.start();
+		do {
+			if (btDeviceInfo.keys().contains(devaddr))
+				return btDeviceInfo[devaddr];
+			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+			QThread::msleep(100);
+		} while (timer.elapsed() < 30000);
+	}
+	qDebug() << "notify user that we can't find" << devaddr;
 	return QBluetoothDeviceInfo();
 }
 #endif // BT_SUPPORT
