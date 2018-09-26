@@ -168,19 +168,25 @@ void DownloadFromDCWidget::updateProgressBar()
 			progress_bar_text = "";
 	}
 	if (!empty_string(progress_bar_text)) {
+		// once the progress bar text is set, setup the maximum so the user sees actual progress
 		ui.progressBar->setFormat(progress_bar_text);
+		ui.progressBar->setMaximum(100);
 #if defined(Q_OS_MAC)
 		// on mac the progress bar doesn't show its text
 		ui.progressText->setText(progress_bar_text);
 #endif
 	} else {
 		if (IS_FP_SAME(progress_bar_fraction, 0.0)) {
+			// while we are waiting to connect, set the maximum to 0 so we get a busy indication
+			ui.progressBar->setMaximum(0);
 			ui.progressBar->setFormat(tr("Connecting to dive computer"));
 #if defined(Q_OS_MAC)
 			// on mac the progress bar doesn't show its text
 			ui.progressText->setText(tr("Connecting to dive computer"));
 #endif
 		} else {
+			// we have some progress - reset the maximum so the user sees actual progress
+			ui.progressBar->setMaximum(100);
 			ui.progressBar->setFormat("%p%");
 #if defined(Q_OS_MAC)
 			// on mac the progress bar doesn't show its text
