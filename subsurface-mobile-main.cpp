@@ -13,6 +13,7 @@
 #include "core/subsurfacestartup.h"
 #include "core/settings/qPref.h"
 #include "core/settings/qPrefDisplay.h"
+#include "core/settings/qPrefCloudStorage.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -63,6 +64,7 @@ int main(int argc, char **argv)
 
 	// some hard coded settings
 	qPrefDisplay::set_animation_speed(0); // we render the profile to pixmap, no animations
+	qPrefCloudStorage::set_save_password_local(true);
 
 	// always show the divecomputer reported ceiling in red
 	prefs.redceiling = 1;
