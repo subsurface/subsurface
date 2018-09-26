@@ -36,7 +36,7 @@ Kirigami.AbstractListItem {
 		SsrfCheckBox {
 			id: diveIsSelected
 			checked: innerListItem.selected;
-			width: childrenRect.width - Kirigami.Units.smallSpacing;
+			width: childrenRect.width + 4 * Kirigami.Units.smallSpacing;
 			height: childrenRect.heigh - Kirigami.Units.smallSpacing;
 			anchors.verticalCenter: parent.verticalCenter
 			onClicked: {
