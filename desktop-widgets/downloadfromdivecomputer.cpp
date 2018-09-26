@@ -309,6 +309,7 @@ void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
 		// ensure we have a discovery running
 		if (btd == nullptr)
 			btd = BTDiscovery::instance();
+		btd->discoverAddress(device);
 	}
 #else
 	Q_UNUSED(device)

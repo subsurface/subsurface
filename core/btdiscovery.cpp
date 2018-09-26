@@ -302,6 +302,13 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 }
 #endif // Q_OS_ANDROID
 
+void BTDiscovery::discoverAddress(QString address)
+{
+	if (!btDeviceInfo.keys().contains(address) && !discoveryAgent->isActive()) {
+		qDebug() << "restarting discovery agent";
+		discoveryAgent->start();
+	}
+}
 
 bool isBluetoothAddress(const QString &address)
 {
