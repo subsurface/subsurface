@@ -14,13 +14,6 @@ Item {
 	property string username: login.text;
 	property string password: password.text;
 
-	function saveCredentials() {
-		prefs.cloudUserName = login.text
-		prefs.cloudPassword = password.text
-		prefs.cloudPin = pin.text
-		manager.saveCloudCredentials()
-	}
-
 	ColumnLayout {
 		id: outerLayout
 		width: loginWindow.width - Kirigami.Units.gridUnit // to ensure the full input fields are visible
@@ -53,15 +46,15 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Email")
-			visible: !rootItem.showPin
+			visible: (PrefCloudStorage.cloud_verification_status != CloudStatus.CS_NEED_TO_VERIFY)
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
 		Controls.TextField {
 			id: login
-			text: prefs.cloudUserName
-			visible: !rootItem.showPin
+			text: PrefCloudStorage.cloud_storage_email
+			visible: (PrefCloudStorage.cloud_verification_status != CloudStatus.CS_NEED_TO_VERIFY)
 			Layout.fillWidth: true
 			inputMethodHints: Qt.ImhEmailCharactersOnly |
 					  Qt.ImhNoAutoUppercase
@@ -69,15 +62,15 @@ Item {
 
 		Controls.Label {
 			text: qsTr("Password")
-			visible: !rootItem.showPin
+			visible: (PrefCloudStorage.cloud_verification_status != CloudStatus.CS_NEED_TO_VERIFY)
 			font.pointSize: subsurfaceTheme.smallPointSize
 			color: subsurfaceTheme.secondaryTextColor
 		}
 
 		Controls.TextField {
 			id: password
-			text: prefs.cloudPassword
-			visible: !rootItem.showPin
+			text: PrefCloudStorage.cloud_storage_password
+			visible: (PrefCloudStorage.cloud_verification_status != CloudStatus.CS_NEED_TO_VERIFY)
 			echoMode: TextInput.PasswordEchoOnEdit
 			inputMethodHints: Qt.ImhSensitiveData |
 					  Qt.ImhHiddenText |
@@ -87,25 +80,26 @@ Item {
 
 		Controls.Label {
 			text: qsTr("PIN")
-			visible: rootItem.showPin
+			visible: (PrefCloudStorage.cloud_verification_status == CloudStatus.CS_NEED_TO_VERIFY)
 		}
 		Controls.TextField {
 			id: pin
 			text: ""
 			Layout.fillWidth: true
-			visible: rootItem.showPin
+			visible: (PrefCloudStorage.cloud_verification_status == CloudStatus.CS_NEED_TO_VERIFY)
 		}
 
 		RowLayout {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: rootItem.showPin
+			visible: (PrefCloudStorage.cloud_verification_status == CloudStatus.CS_NEED_TO_VERIFY)
 			SsrfButton {
 				id: registerpin
 				text: qsTr("Register") 
 				onClicked: {
-					saveCredentials()
+					manager.tryRetrieveDataFromBackend(pin.text)
+					rootItem.returnTopPage()
 				}
 			}
 			Controls.Label {
@@ -116,7 +110,8 @@ Item {
 				id: cancelpin
 				text: qsTr("Cancel")
 				onClicked: {
-					prefs.cancelCredentialsPinSetup()
+					manager.startPageText = qsTr("Please enter valid cloud credentials..")
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 					rootItem.returnTopPage()
 				}
 			}
@@ -126,13 +121,14 @@ Item {
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.smallSpacing
 			spacing: Kirigami.Units.smallSpacing
-			visible: !rootItem.showPin
+			visible: (PrefCloudStorage.cloud_verification_status != CloudStatus.CS_NEED_TO_VERIFY)
 
 			SsrfButton {
 				id: signin_register_normal
 				text: qsTr("Sign-in or Register")
 				onClicked: {
-					saveCredentials()
+					manager.saveCloudCredentials(login.text, password.text)
+					rootItem.returnTopPage()
 				}
 			}
 			Controls.Label {
@@ -143,10 +139,8 @@ Item {
 				id: toNoCloudMode
 				text: qsTr("No cloud mode")
 				onClicked: {
-					manager.syncToCloud = false
-					prefs.credentialStatus = CloudStatus.CS_NOCLOUD
-					manager.saveCloudCredentials()
-					manager.openNoCloudRepo()
+					manager.setNOCloud()
+					rootItem.returnTopPage()
 				}
 			}
 		}

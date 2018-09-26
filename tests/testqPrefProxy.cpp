@@ -122,14 +122,12 @@ void TestQPrefProxy::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.proxy_port= 37;
-	auto tst_direct = new qPrefProxy;
-
 	prefs.proxy_type = 25;
 	auto tst = qPrefProxy::instance();
 
-	QCOMPARE(tst->proxy_port(), tst_direct->proxy_port());
+	QCOMPARE(tst->proxy_port(), qPrefProxy::proxy_port());
 	QCOMPARE(tst->proxy_port(), 37);
-	QCOMPARE(tst->proxy_type(), tst_direct->proxy_type());
+	QCOMPARE(tst->proxy_type(), qPrefProxy::proxy_type());
 	QCOMPARE(tst->proxy_type(), 25);
 }
 

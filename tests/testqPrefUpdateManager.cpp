@@ -114,15 +114,14 @@ void TestQPrefUpdateManager::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.update_manager.dont_check_for_updates = false;
-	auto tst_direct = new qPrefUpdateManager;
 
 	prefs.update_manager.dont_check_exists = false;
 	auto tst = qPrefUpdateManager::instance();
 
-	QCOMPARE(tst->dont_check_for_updates(), tst_direct->dont_check_for_updates());
+	QCOMPARE(tst->dont_check_for_updates(), qPrefUpdateManager::dont_check_for_updates());
 	QCOMPARE(tst->dont_check_for_updates(), false);
-	QCOMPARE(tst->dont_check_exists(), tst_direct->dont_check_exists());
-	QCOMPARE(tst_direct->dont_check_exists(), false);
+	QCOMPARE(tst->dont_check_exists(), qPrefUpdateManager::dont_check_exists());
+	QCOMPARE(qPrefUpdateManager::dont_check_exists(), false);
 }
 
 void TestQPrefUpdateManager::test_next_check()

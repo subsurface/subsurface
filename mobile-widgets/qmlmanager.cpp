@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qmlmanager.h"
-#include "qmlprefs.h"
 #include <QUrl>
 #include <QSettings>
 #include <QDebug>
@@ -35,12 +34,12 @@
 #include "core/pref.h"
 #include "core/ssrf.h"
 #include "core/settings/qPrefGeneral.h"
+#include "core/settings/qPrefCloudStorage.h"
 #include "core/settings/qPrefLocationService.h"
 #include "core/settings/qPrefTechnicalDetails.h"
 #include "core/settings/qPrefPartialPressureGas.h"
 #include "core/settings/qPrefUnit.h"
 
-QMLManager *QMLManager::m_instance = NULL;
 bool noCloudToCloud = false;
 
 #define RED_FONT QLatin1Literal("<font color=\"red\">")
@@ -57,18 +56,13 @@ extern "C" void showErrorFromC(char *buf)
 
 static void progressCallback(const char *text)
 {
-	QMLManager *self = QMLManager::instance();
-	if (self) {
-		self->appendTextToLog(QString(text));
-		self->setProgressMessage(QString(text));
-	}
+	QMLManager::instance()->appendTextToLog(QString(text));
+	QMLManager::instance()->setProgressMessage(QString(text));
 }
 
 static void appendTextToLogStandalone(const char *text)
 {
-	QMLManager *self = QMLManager::instance();
-	if (self)
-		self->appendTextToLog(QString(text));
+	QMLManager::instance()->appendTextToLog(QString(text));
 }
 
 // show the git progress in the passive notification area
@@ -76,24 +70,20 @@ extern "C" int gitProgressCB(const char *text)
 {
 	static QElapsedTimer timer;
 	static qint64 lastTime = 0;
-	static QMLManager *self;
-
-	if (!self)
-		self = QMLManager::instance();
 
 	if (!timer.isValid()) {
 		timer.restart();
 		lastTime = 0;
 	}
-	if (self) {
-		qint64 elapsed = timer.elapsed();
-		self->appendTextToLog(text);
-		self->setNotificationText(text);
-		if (elapsed - lastTime > 50) { // 20 Hz refresh
-			qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
-		}
-		lastTime = elapsed;
+
+	qint64 elapsed = timer.elapsed();
+	QMLManager::instance()->appendTextToLog(text);
+	QMLManager::instance()->setNotificationText(text);
+	if (elapsed - lastTime > 50) { // 20 Hz refresh
+		qApp->processEvents(QEventLoop::ExcludeUserInputEvents);
 	}
+	lastTime = elapsed;
+
 	// return 0 so that we don't end the download
 	return 0;
 }
@@ -145,8 +135,24 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	m_device_data(new DCDeviceData),
 	m_pluggedInDeviceName("")
 {
-	LOG_STP("qmlmgr starting");
-	m_instance = this;
+}
+
+QMLManager::~QMLManager()
+{
+#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
+	if (appLogFileOpen)
+		appLogFile.close();
+#endif
+}
+
+QMLManager *QMLManager::instance()
+{
+	static QMLManager *self = new QMLManager;
+	return self;
+}
+
+void QMLManager::finishConstruct()
+{
 	m_lastDevicePixelRatio = qApp->devicePixelRatio();
 	timer.start();
 	connect(qobject_cast<QApplication *>(QApplication::instance()), &QApplication::applicationStateChanged, this, &QMLManager::applicationStateChanged);
@@ -192,7 +198,6 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 		appendTextToLog("No writeable location found, in-memory log only and no libdivecomputer log");
 	}
 #endif
-	LOG_STP("qmlmgr log started");
 	set_error_cb(&showErrorFromC);
 	appendTextToLog("Starting " + getUserAgent());
 	appendTextToLog(QStringLiteral("built with libdivecomputer v%1").arg(dc_version(NULL)));
@@ -201,28 +206,22 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	git_libgit2_version(&git_maj, &git_min, &git_rev);
 	appendTextToLog(QStringLiteral("built with libgit2 %1.%2.%3").arg(git_maj).arg(git_min).arg(git_rev));
 	setStartPageText(tr("Starting..."));
-	LOG_STP("qmlmgr start page");
 
 	// ensure that we start the BTDiscovery - this should be triggered by the export of the class
 	// to QML, but that doesn't seem to always work
 	BTDiscovery *btDiscovery = BTDiscovery::instance();
 	m_btEnabled = btDiscovery->btAvailable();
-	LOG_STP("qmlmgr bt available");
 	connect(&btDiscovery->localBtDevice, &QBluetoothLocalDevice::hostModeStateChanged,
 		this, &QMLManager::btHostModeChange);
-	QMLPrefs::instance()->setShowPin(false);
 	// create location manager service
 	locationProvider = new GpsLocation(&appendTextToLogStandalone, this);
 	progress_callback = &progressCallback;
 	connect(locationProvider, SIGNAL(haveSourceChanged()), this, SLOT(hasLocationSourceChanged()));
 	setLocationServiceAvailable(locationProvider->hasLocationsSource());
-	LOG_STP("qmlmgr gps started");
 	set_git_update_cb(&gitProgressCB);
-	LOG_STP("qmlmgr git update");
 
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
-	LOG_STP("qmlmgr sync load cloud");
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
@@ -273,12 +272,10 @@ void QMLManager::openLocalThenRemote(QString url)
 		 *    no cloud repo solves this.
 		 */
 
-		if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD)
-			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NEED_TO_VERIFY);
+		if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD)
+			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 	} else {
 		// if we can load from the cache, we know that we have a valid cloud account
-		if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_UNKNOWN)
-			QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
 		if (git_prefs.unit_system == IMPERIAL)
 			qPrefUnits::set_unit_system("imperial");
 		else if (git_prefs.unit_system == METRIC)
@@ -294,14 +291,14 @@ void QMLManager::openLocalThenRemote(QString url)
 		appendTextToLog(QStringLiteral("%1 dives loaded from cache").arg(dive_table.nr));
 		setNotificationText(tr("%1 dives loaded from local dive data file").arg(dive_table.nr));
 	}
-	if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
+	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NEED_TO_VERIFY) {
 		appendTextToLog(QStringLiteral("have cloud credentials, but still needs PIN"));
-		QMLPrefs::instance()->setShowPin(true);
-	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
-		// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
-		git_local_only = false;
-		appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
+	} else {
+		if (qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_NOCLOUD) {
+			// if we switch to credentials from CS_NOCLOUD, we take things online temporarily
+			git_local_only = false;
+			appendTextToLog(QStringLiteral("taking things online to be able to switch to cloud account"));
+		}
 	}
 	set_filename(fileNamePrt.data());
 	if (git_local_only) {
@@ -309,7 +306,7 @@ void QMLManager::openLocalThenRemote(QString url)
 		alreadySaving = false;
 	} else {
 		appendTextToLog(QStringLiteral("have cloud credentials, trying to connect"));
-		tryRetrieveDataFromBackend();
+		tryRetrieveDataFromBackend("");
 	}
 	updateAllGlobalLists();
 }
@@ -348,7 +345,6 @@ void QMLManager::copyAppLogToClipboard()
 		QTextStream in(&f);
 		copyString += in.readAll();
 	}
-	LOG_STP_CLIPBOARD(&copyString);
 
 	copyString += "---------- finish ----------\n";
 
@@ -372,23 +368,19 @@ void QMLManager::copyAppLogToClipboard()
 void QMLManager::finishSetup()
 {
 	// Initialize cloud credentials.
-	QMLPrefs::instance()->setCloudUserName(qPrefCloudStorage::cloud_storage_email());
-	QMLPrefs::instance()->setCloudPassword(qPrefCloudStorage::cloud_storage_password());
 	setSyncToCloud(!git_local_only);
-	QMLPrefs::instance()->setCredentialStatus((qPrefCloudStorage::cloud_status) prefs.cloud_verification_status);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
-	if (!QMLPrefs::instance()->cloudUserName().isEmpty() &&
-	    !QMLPrefs::instance()->cloudPassword().isEmpty() &&
+	if (!qPrefCloudStorage::cloud_storage_email().isEmpty() &&
+	    !qPrefCloudStorage::cloud_storage_password().isEmpty() &&
 	    getCloudURL(url) == 0) {
 		// we know that we are the first ones to access git storage, so we don't need to test,
 		// but we need to make sure we stay the only ones accessing git storage
 		alreadySaving = true;
 		openLocalThenRemote(url);
 	} else if (!empty_string(existing_filename) &&
-				QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_UNKNOWN) {
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
-		saveCloudCredentials();
+				qPrefCloudStorage::cloud_verification_status() != qPrefCloudStorage::CS_UNKNOWN) {
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 		appendTextToLog(tr("working in no-cloud mode"));
 		int error = parse_file(existing_filename, &dive_table);
 		if (error) {
@@ -401,112 +393,72 @@ void QMLManager::finishSetup()
 			appendTextToLog(QString("working in no-cloud mode, finished loading %1 dives from %2").arg(dive_table.nr).arg(existing_filename));
 		}
 	} else {
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_UNKNOWN);
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
 		appendTextToLog(tr("no cloud credentials"));
 		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
 	}
 }
 
-QMLManager::~QMLManager()
-{
-#if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
-	if (appLogFileOpen)
-		appLogFile.close();
-#endif
-	m_instance = NULL;
-}
-
-QMLManager *QMLManager::instance()
-{
-	return m_instance;
-}
-
 #define CLOUDURL QString(prefs.cloud_base_url)
 #define CLOUDREDIRECTURL CLOUDURL + "/cgi-bin/redirect.pl"
 
-void QMLManager::saveCloudCredentials()
+void QMLManager::saveCloudCredentials(QString user, QString password)
 {
-	QSettings s;
-	bool cloudCredentialsChanged = false;
+	// Only called with status == CS_UNKNOWN (user/password input from user)
+	// Purpose is to see if the user presented verified user/password
+	// true) status = CS_VERIFIED, load diveList
+	// false) status = CS_NEED_TO_VERIFY, request pin from user
+
 	// make sure we only have letters, numbers, and +-_. in password and email address
 	QRegularExpression regExp("^[a-zA-Z0-9@.+_-]+$");
-	if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD) {
-		// in case of NO_CLOUD, the email address + passwd do not care, so do not check it.
-		if (QMLPrefs::instance()->cloudPassword().isEmpty() ||
-			!regExp.match(QMLPrefs::instance()->cloudPassword()).hasMatch() ||
-			!regExp.match(QMLPrefs::instance()->cloudUserName()).hasMatch()) {
-			setStartPageText(RED_FONT + tr("Cloud storage email and password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
+	if (qPrefCloudStorage::cloud_storage_password() != password) {
+		// Password changed, validate it
+		if (password.isEmpty() ||
+			!regExp.match(password).hasMatch()) {
+			setStartPageText(RED_FONT + tr("Cloud password can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
 			return;
 		}
+		
+		qPrefCloudStorage::set_cloud_storage_password(password);
+	}
+	if (qPrefCloudStorage::cloud_storage_email() != user) {
+		// user (== email) is changed, validate it
+		if (user.isEmpty() ||
+			!regExp.match(user).hasMatch()) {
+			setStartPageText(RED_FONT + tr("Cloud storage email can only consist of letters, numbers, and '.', '-', '_', and '+'.") + END_FONT);
+			return;
+		}
+
 		// use the same simplistic regex as the backend to check email addresses
 		regExp = QRegularExpression("^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9.+_-]+\\.[a-zA-Z0-9]+");
-		if (!regExp.match(QMLPrefs::instance()->cloudUserName()).hasMatch()) {
+		if (!regExp.match(user).hasMatch()) {
 			setStartPageText(RED_FONT + tr("Invalid format for email address") + END_FONT);
 			return;
 		}
-	}
-	s.beginGroup("CloudStorage");
-	s.setValue("email", QMLPrefs::instance()->cloudUserName());
-	s.setValue("password", QMLPrefs::instance()->cloudPassword());
-	s.setValue("cloud_verification_status", QMLPrefs::instance()->credentialStatus());
-	s.sync();
-	if (!same_string(prefs.cloud_storage_email,
-		qPrintable(QMLPrefs::instance()->cloudUserName()))) {
-		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = copy_qstring(QMLPrefs::instance()->cloudUserName());
-		cloudCredentialsChanged = true;
+		qPrefCloudStorage::set_cloud_storage_email(user);
 	}
 
-	cloudCredentialsChanged |= !same_string(prefs.cloud_storage_password,
-								qPrintable(QMLPrefs::instance()->cloudPassword()));
-
-	if (QMLPrefs::instance()->credentialStatus() != qPrefCloudStorage::CS_NOCLOUD &&
-		!cloudCredentialsChanged) {
-		// just go back to the dive list
-		QMLPrefs::instance()->setCredentialStatus(QMLPrefs::instance()->oldStatus());
-	}
-
-	if (!same_string(prefs.cloud_storage_password,
-					qPrintable(QMLPrefs::instance()->cloudPassword()))) {
-		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = copy_qstring(QMLPrefs::instance()->cloudPassword());
-	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD && cloudCredentialsChanged && dive_table.nr) {
-		// we came from NOCLOUD and are connecting to a cloud account;
-		// since we already have dives in the table, let's remember that so we can keep them
-		noCloudToCloud = true;
-		appendTextToLog("transitioning from no-cloud to cloud and have dives");
-	}
-	if (QMLPrefs::instance()->cloudUserName().isEmpty() ||
-		QMLPrefs::instance()->cloudPassword().isEmpty()) {
-		setStartPageText(RED_FONT + tr("Please enter valid cloud credentials.") + END_FONT);
-	} else if (cloudCredentialsChanged) {
-		// let's make sure there are no unsaved changes
-		saveChangesLocal();
-		syncLoadFromCloud();
-		QString url;
-		getCloudURL(url);
-		manager()->clearAccessCache(); // remove any chached credentials
-		clear_git_id(); // invalidate our remembered GIT SHA
-		DiveListModel::instance()->clear();
-		GpsListModel::instance()->clear();
-		setStartPageText(tr("Attempting to open cloud storage with new credentials"));
-		// we therefore know that no one else is already accessing THIS git repo;
-		// let's make sure we stay the only ones doing so
-		alreadySaving = true;
-		// since we changed credentials, we need to try to connect to the cloud, regardless
-		// of whether we're in offline mode or not, to make sure the repository is synced
-		currentGitLocalOnly = git_local_only;
-		git_local_only = false;
-		openLocalThenRemote(url);
-	} else if (prefs.cloud_verification_status == qPrefCloudStorage::CS_NEED_TO_VERIFY &&
-				!QMLPrefs::instance()->cloudPin().isEmpty()) {
-		// the user entered a PIN?
-		tryRetrieveDataFromBackend();
-	}
+	// let's make sure there are no unsaved changes
+	saveChangesLocal();
+	syncLoadFromCloud();
+	QString url;
+	getCloudURL(url);
+	manager()->clearAccessCache(); // remove any chached credentials
+	clear_git_id(); // invalidate our remembered GIT SHA
+	DiveListModel::instance()->clear();
+	GpsListModel::instance()->clear();
+	setStartPageText(tr("Attempting to open cloud storage with new credentials"));
+	// we therefore know that no one else is already accessing THIS git repo;
+	// let's make sure we stay the only ones doing so
+	alreadySaving = true;
+	// since we changed credentials, we need to try to connect to the cloud, regardless
+	// of whether we're in offline mode or not, to make sure the repository is synced
+	currentGitLocalOnly = git_local_only;
+	git_local_only = false;
+	openLocalThenRemote(url);
 }
 
-void QMLManager::tryRetrieveDataFromBackend()
+void QMLManager::tryRetrieveDataFromBackend(QString pin)
 {
 	// if the cloud credentials are present, we should try to get the GPS Webservice ID
 	// and (if we haven't done so) load the dive list
@@ -515,8 +467,7 @@ void QMLManager::tryRetrieveDataFromBackend()
 		setStartPageText(tr("Testing cloud credentials"));
 		appendTextToLog("Have credentials, let's see if they are valid");
 		CloudStorageAuthenticate *csa = new CloudStorageAuthenticate(this);
-		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password,
-						QMLPrefs::instance()->cloudPin());
+		csa->backend(prefs.cloud_storage_email, prefs.cloud_storage_password, pin);
 		// let's wait here for the signal to avoid too many more nested functions
 		QTimer myTimer;
 		myTimer.setSingleShot(true);
@@ -532,8 +483,8 @@ void QMLManager::tryRetrieveDataFromBackend()
 			return;
 		}
 		myTimer.stop();
-		QMLPrefs::instance()->setCloudPin("");
 		if (prefs.cloud_verification_status == qPrefCloudStorage::CS_INCORRECT_USER_PASSWD) {
+			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
 			appendTextToLog(QStringLiteral("Incorrect cloud credentials"));
 			setStartPageText(RED_FONT + tr("Incorrect cloud credentials") + END_FONT);
 			revertToNoCloudIfNeeded();
@@ -543,11 +494,9 @@ void QMLManager::tryRetrieveDataFromBackend()
 			appendTextToLog(QStringLiteral("Need to verify the email address - enter PIN"));
 			setStartPageText(RED_FONT + tr("Cannot connect to cloud storage - cloud account not verified") + END_FONT);
 			revertToNoCloudIfNeeded();
-			QMLPrefs::instance()->setShowPin(true);
+			qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NEED_TO_VERIFY);
 			return;
 		}
-		if (QMLPrefs::instance()->showPin())
-			QMLPrefs::instance()->setShowPin(false);
 
 		// now check the redirect URL to make sure everything is set up on the cloud server
 		connect(manager(), &QNetworkAccessManager::authenticationRequired, this, &QMLManager::provideAuth, Qt::UniqueConnection);
@@ -569,7 +518,7 @@ void QMLManager::provideAuth(QNetworkReply *reply, QAuthenticator *auth)
 		// OK, credentials have been tried and didn't work, so they are invalid
 		appendTextToLog("Cloud credentials are invalid");
 		setStartPageText(RED_FONT + tr("Cloud credentials are invalid") + END_FONT);
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_INCORRECT_USER_PASSWD);
+		qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_UNKNOWN);
 		reply->disconnect();
 		reply->abort();
 		reply->deleteLater();
@@ -613,7 +562,7 @@ void QMLManager::retrieveUserid()
 		revertToNoCloudIfNeeded();
 		return;
 	}
-	QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_VERIFIED);
+	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	setStartPageText(tr("Cloud credentials valid, loading dives..."));
 	// this only gets called with "alreadySaving" already locked
 	loadDivesWithValidCredentials();
@@ -698,23 +647,11 @@ void QMLManager::revertToNoCloudIfNeeded()
 		currentGitLocalOnly = false;
 		git_local_only = true;
 	}
-	if (QMLPrefs::instance()->oldStatus() == qPrefCloudStorage::CS_NOCLOUD) {
-		// we tried to switch to a cloud account and had previously used local data,
-		// but connecting to the cloud account (and subsequently merging the local
-		// and cloud data) failed - so let's delete the cloud credentials and go
-		// back to CS_NOCLOUD mode in order to prevent us from losing the locally stored
-		// dives
+	if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 		if (m_syncToCloud == false) {
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
 			git_local_only = m_syncToCloud;
 		}
-		free((void *)prefs.cloud_storage_email);
-		prefs.cloud_storage_email = NULL;
-		free((void *)prefs.cloud_storage_password);
-		prefs.cloud_storage_password = NULL;
-		QMLPrefs::instance()->setCloudUserName("");
-		QMLPrefs::instance()->setCloudPassword("");
-		QMLPrefs::instance()->setCredentialStatus(qPrefCloudStorage::CS_NOCLOUD);
 		set_filename(NOCLOUD_LOCALSTORAGE);
 		setStartPageText(RED_FONT + tr("Failed to connect to cloud server, reverting to no cloud status") + END_FONT);
 	}
@@ -1192,7 +1129,7 @@ void QMLManager::openNoCloudRepo()
 void QMLManager::saveChangesLocal()
 {
 	if (unsaved_changes()) {
-		if (QMLPrefs::instance()->credentialStatus() == qPrefCloudStorage::CS_NOCLOUD) {
+		if (qPrefCloudStorage::cloud_verification_status() == qPrefCloudStorage::CS_NOCLOUD) {
 			if (empty_string(existing_filename)) {
 				char *filename = NOCLOUD_LOCALSTORAGE;
 				git_create_local_repo(filename);
@@ -1599,10 +1536,7 @@ void writeToAppLogFile(QString logText)
 {
 	// write to storage and flush so that the data doesn't get lost
 	logText.append("\n");
-	QMLManager *self = QMLManager::instance();
-	if (self) {
-		self->writeToAppLogFile(logText);
-	}
+	QMLManager::instance()->writeToAppLogFile(logText);
 }
 
 void QMLManager::writeToAppLogFile(QString logText)
@@ -1860,4 +1794,19 @@ void QMLManager::appInitialized()
 #if defined(Q_OS_ANDROID)
 	checkPendingIntents();
 #endif
+}
+
+void QMLManager::setNOCloud()
+{
+	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
+	QMLManager::instance()->appendTextToLog("Switching to no cloud mode");
+	set_filename(NOCLOUD_LOCALSTORAGE);
+	if (qPrefUnits::unit_system() == "imperial")
+		prefs.units = IMPERIAL_units;
+	else if (qPrefUnits::unit_system() == "metric")
+		prefs.units = SI_units;
+
+	// do not clear cloud user to let user remember from where the data came
+	qPrefCloudStorage::set_cloud_storage_password("");
+	openNoCloudRepo();
 }

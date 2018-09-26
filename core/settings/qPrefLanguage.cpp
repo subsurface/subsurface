@@ -4,10 +4,6 @@
 
 static const QString group = QStringLiteral("Language");
 
-qPrefLanguage::qPrefLanguage(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefLanguage *qPrefLanguage::instance()
 {
 	static qPrefLanguage *self = new qPrefLanguage;

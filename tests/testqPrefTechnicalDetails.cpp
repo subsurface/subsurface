@@ -329,15 +329,13 @@ void TestQPrefTechnicalDetails::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.gfhigh = 27;
-	auto tst_direct = new qPrefTechnicalDetails;
-
 	prefs.gflow = 25;
 	auto tst = qPrefTechnicalDetails::instance();
 
-	QCOMPARE(tst->gfhigh(), tst_direct->gfhigh());
-	QCOMPARE(tst->gflow(), tst_direct->gflow());
-	QCOMPARE(tst_direct->gfhigh(), 27);
-	QCOMPARE(tst_direct->gflow(), 25);
+	QCOMPARE(tst->gfhigh(), qPrefTechnicalDetails::gfhigh());
+	QCOMPARE(tst->gflow(), qPrefTechnicalDetails::gflow());
+	QCOMPARE(qPrefTechnicalDetails::gfhigh(), 27);
+	QCOMPARE(qPrefTechnicalDetails::gflow(), 25);
 }
 
 #define TEST(METHOD, VALUE)      \

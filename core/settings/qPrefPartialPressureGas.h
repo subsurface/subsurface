@@ -16,7 +16,6 @@ class qPrefPartialPressureGas : public QObject {
 	Q_PROPERTY(double po2_threshold_min READ po2_threshold_min WRITE set_po2_threshold_min NOTIFY po2_threshold_minChanged);
 
 public:
-	qPrefPartialPressureGas(QObject *parent = NULL);
 	static qPrefPartialPressureGas *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -52,6 +51,8 @@ signals:
 	void po2_threshold_minChanged(double value);
 
 private:
+	qPrefPartialPressureGas() {}
+
 	static void disk_phe(bool doSync);
 	static void disk_phe_threshold(bool doSync);
 	static void disk_pn2(bool doSync);

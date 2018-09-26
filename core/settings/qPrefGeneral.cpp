@@ -11,10 +11,6 @@ static const QString st_diveshareExport_uid_default = "";
 bool qPrefGeneral::st_diveshareExport_private;
 static const bool st_diveshareExport_private_default = false;
 
-qPrefGeneral::qPrefGeneral(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefGeneral *qPrefGeneral::instance()
 {
 	static qPrefGeneral *self = new qPrefGeneral;

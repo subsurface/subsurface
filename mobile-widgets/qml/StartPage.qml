@@ -10,8 +10,6 @@ Kirigami.ScrollablePage {
 	id: startpage
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
-	function saveCredentials() { cloudCredentials.saveCredentials() }
-
 	ColumnLayout {
 		CloudCredentials {
 			id: cloudCredentials
@@ -30,7 +28,7 @@ Kirigami.ScrollablePage {
 		}
 		Controls.Label {
 			id: explanationTextBasic
-			visible: !showPin
+			visible: (PrefCloudStorage.cloud_verification_status != CloudStatus.CS_NEED_TO_VERIFY)
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
@@ -43,7 +41,7 @@ Kirigami.ScrollablePage {
 		}
 		Controls.Label {
 			id: explanationTextPin
-			visible: showPin
+			visible: (PrefCloudStorage.cloud_verification_status == CloudStatus.CS_NEED_TO_VERIFY)
 			Layout.fillWidth: true
 			Layout.margins: Kirigami.Units.gridUnit
 			Layout.topMargin: Kirigami.Units.gridUnit * 3
@@ -52,7 +50,7 @@ Kirigami.ScrollablePage {
 				"If you do not receive an email from us within 15 minutes, please check " +
 				"the correct spelling of your email address and your spam box first.<br/><br/>" +
 				"In case of any problems regarding cloud account setup, please contact us " +
-				"at our user forum \(https://subsurface-divelog.org/user-forum/\).<br/><br/>").arg(prefs.cloudUserName)
+				"at our user forum \(https://subsurface-divelog.org/user-forum/\).<br/><br/>").arg(PrefCloudStorage.cloud_storage_email)
 			wrapMode: Text.WordWrap
 		}
 		Item { width: Kirigami.Units.gridUnit; height: 3 * Kirigami.Units.gridUnit}

@@ -4,10 +4,6 @@
 
 static const QString group = QStringLiteral("TecDetails");
 
-qPrefPartialPressureGas::qPrefPartialPressureGas(QObject *parent) : QObject(parent)
-{
-}
-
 qPrefPartialPressureGas *qPrefPartialPressureGas::instance()
 {
 	static qPrefPartialPressureGas *self = new qPrefPartialPressureGas;

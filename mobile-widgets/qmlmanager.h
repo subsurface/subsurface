@@ -50,9 +50,10 @@ class QMLManager : public QObject {
 	Q_PROPERTY(bool DC_saveDump READ DC_saveDump WRITE DC_setSaveDump)
 	Q_PROPERTY(int DC_deviceId READ DC_deviceId WRITE DC_setDeviceId)
 	Q_PROPERTY(QString pluggedInDeviceName MEMBER m_pluggedInDeviceName NOTIFY pluggedInDeviceNameChanged)
+
 public:
-	QMLManager();
-	~QMLManager();
+	static QMLManager *instance();
+	void finishConstruct();
 
 	QString DC_vendor() const;
 	void DC_setVendor(const QString& vendor);
@@ -88,8 +89,10 @@ public:
 	Q_INVOKABLE int getDetectedVendorIndex();
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
 	Q_INVOKABLE int getConnectionIndex(const QString &deviceSubstr);
+	Q_INVOKABLE void saveCloudCredentials(QString user, QString password);
+	Q_INVOKABLE void tryRetrieveDataFromBackend(QString pin);
+	Q_INVOKABLE void setNOCloud();
 
-	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
 	QString consumeError();
 
@@ -147,8 +150,6 @@ public:
 public slots:
 	void appInitialized();
 	void applicationStateChanged(Qt::ApplicationState state);
-	void saveCloudCredentials();
-	void tryRetrieveDataFromBackend();
 	void handleError(QNetworkReply::NetworkError nError);
 	void handleSslErrors(const QList<QSslError> &errors);
 	void retrieveUserid();
@@ -194,6 +195,9 @@ public slots:
 	void showDownloadPage(QString deviceString);
 
 private:
+	QMLManager();
+	~QMLManager();
+
 	BuddyCompletionModel buddyModel;
 	SuitCompletionModel suitModel;
 	DiveMasterCompletionModel divemasterModel;
@@ -206,7 +210,6 @@ private:
 	bool m_verboseEnabled;
 	GpsLocation *locationProvider;
 	bool m_loadFromCloud;
-	static QMLManager *m_instance;
 	struct dive *deletedDive;
 	struct dive_trip *deletedTrip;
 	QString m_notificationText;

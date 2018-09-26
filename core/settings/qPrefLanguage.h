@@ -17,7 +17,6 @@ class qPrefLanguage : public QObject {
 	Q_PROPERTY(bool use_system_language READ use_system_language WRITE set_use_system_language NOTIFY use_system_languageChanged);
 
 public:
-	qPrefLanguage(QObject *parent = NULL);
 	static qPrefLanguage *instance();
 
 	// Load/Sync local settings (disk) and struct preference
@@ -56,6 +55,8 @@ signals:
 	void use_system_languageChanged(bool value);
 
 private:
+	qPrefLanguage() {}
+
 	static void disk_date_format(bool doSync);
 	static void disk_date_format_override(bool doSync);
 	static void disk_date_format_short(bool doSync);

@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
+				text: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -55,7 +55,8 @@ Kirigami.ScrollablePage {
 				Layout.alignment: Qt.AlignRight
 				text: qsTr("Change")
 				onClicked: {
-					prefs.cancelCredentialsPinSetup()
+					manager.startPageText = qsTr("Starting...")
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 					rootItem.returnTopPage()
 				}
 			}
@@ -66,7 +67,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: describe[prefs.credentialStatus]
+				text: describe[PrefCloudStorage.cloud_verification_status]
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -366,7 +367,7 @@ Kirigami.ScrollablePage {
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onActivated: {
-					PrefGeneral.set_default_cylinder(defaultCylinderBox.currentText)
+					PrefGeneral.default_cylinder = defaultCylinderBox.currentText
 				}
 			}
 		}

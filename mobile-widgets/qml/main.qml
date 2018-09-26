@@ -26,21 +26,18 @@ Kirigami.ApplicationWindow {
 		maximumHeight: Kirigami.Units.gridUnit * 2
 		background: Rectangle { color: subsurfaceTheme.primaryColor }
 	}
-	property alias oldStatus: prefs.oldStatus
-	property alias notificationText: manager.notificationText
-	property alias syncToCloud: manager.syncToCloud
-	property alias locationServiceEnabled: manager.locationServiceEnabled
-	property alias pluggedInDeviceName: manager.pluggedInDeviceName
-	property alias showPin: prefs.showPin
 	property alias defaultCylinderIndex: settingsWindow.defaultCylinderIndex
-	onNotificationTextChanged: {
-		if (notificationText != "") {
-			// there's a risk that we have a >5 second gap in update events;
-			// still, keep the timeout at 5s to avoid odd unchanging notifications
-			showPassiveNotification(notificationText, 5000)
-		} else {
-			// hiding the notification right away may be a mistake as it hides the last warning / error
-			hidePassiveNotification();
+	Connections {
+		target: manager
+		onNotificationTextChanged: {
+			if (manager.notificationText != "") {
+				// there's a risk that we have a >5 second gap in update events;
+				// still, keep the timeout at 5s to avoid odd unchanging notifications
+				showPassiveNotification(manager.notificationText, 5000)
+			} else {
+				// hiding the notification right away may be a mistake as it hides the last warning / error
+				hidePassiveNotification();
+			}
 		}
 	}
 	FontMetrics {
@@ -170,7 +167,7 @@ Kirigami.ApplicationWindow {
 						visible: text.length > 0
 						level: 3
 						color: "white"
-						text: prefs.cloudUserName
+						text: PrefCloudStorage.cloud_storage_email
 						wrapMode: Text.NoWrap
 						elide: Text.ElideRight
 						font.weight: Font.Normal
@@ -188,14 +185,7 @@ Kirigami.ApplicationWindow {
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
-					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
-					if (prefs.credentialStatus == CloudStatus.CS_UNKNOWN) {
-						// the user has asked to change credentials - if the credentials before that
-						// were valid, go back to dive list
-						if (oldStatus == CloudStatus.CS_VERIFIED) {
-							prefs.credentialStatus = oldStatus
-						}
-					}
+					manager.appendTextToLog("requested dive list with credential status " + PrefCloudStorage.cloud_verification_status)
 					returnTopPage()
 					globalDrawer.close()
 				}
@@ -219,8 +209,8 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED ||
+							PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -254,14 +244,13 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED ||
+							PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD
 					onTriggered: {
-						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
+						if (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
-							oldStatus = prefs.credentialStatus
 							manager.startPageText = "Enter valid cloud storage credentials"
-							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
+							PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()
 						} else {
 							globalDrawer.close()
@@ -273,13 +262,13 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 				icon {
-					name: syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
+					name: manager.syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
-				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					enabled: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
+				text: manager.syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
+					enabled: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
-						syncToCloud = !syncToCloud
-						if (!syncToCloud) {
+						manager.syncToCloud = !manager.syncToCloud
+						if (!manager.syncToCloud) {
 							showPassiveNotification(qsTr("Turning off automatic sync to cloud causes all data to only be \
 stored locally. This can be very useful in situations with limited or no network access. Please choose 'Manual sync with cloud' \
 if you have network connectivity and want to sync your data to cloud storage."), 10000)
@@ -320,12 +309,12 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 				Kirigami.Action {
 					icon {
-						name: locationServiceEnabled ?  ":/icons/ic_location_off.svg" : ":/icons/ic_place.svg"
+						name: manager.locationServiceEnabled ?  ":/icons/ic_location_off.svg" : ":/icons/ic_place.svg"
 					}
-					text: locationServiceEnabled ? qsTr("Disable location service") : qsTr("Run location service")
+					text: manager.locationServiceEnabled ? qsTr("Disable location service") : qsTr("Run location service")
 					onTriggered: {
 						globalDrawer.close();
-						locationServiceEnabled = !locationServiceEnabled
+						manager.locationServiceEnabled = !manager.locationServiceEnabled
 					}
 				}
 			},
@@ -388,7 +377,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		Kirigami.Icon {
 			source: ":/icons/" + (subsurfaceTheme.currentTheme != "" ? subsurfaceTheme.currentTheme : "Blue") + "_gps.svg"
 			enabled: false
-			visible: locationServiceEnabled
+			visible: manager.locationServiceEnabled
 		}
 
 	}
@@ -561,14 +550,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		}
 	}
 
-	QMLPrefs {
-		id: prefs
-	}
-
-	QMLManager {
-		id: manager
-	}
-
 	Settings {
 		id: settingsWindow
 		visible: false
@@ -611,19 +592,22 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
-	onPluggedInDeviceNameChanged: {
-		if (detailsWindow.state === 'edit' || detailsWindow.state === 'add') {
-			/* we're in the middle of editing / adding a dive */
-			console.log("Download page requested by Android Intent, but adding/editing dive; no action taken")
-		} else {
-			console.log("Show download page for device " + pluggedInDeviceName)
-			/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
-			var vendorProductConnection = pluggedInDeviceName.split(';')
-			if (vendorProductConnection.length === 3)
-				diveList.showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
-			else
-				diveList.showDownloadPage()
-			console.log("done showing download page")
+	Connections {
+		target: manager
+		onPluggedInDeviceNameChanged: {
+			if (detailsWindow.state === 'edit' || detailsWindow.state === 'add') {
+				/* we're in the middle of editing / adding a dive */
+				console.log("Download page requested by Android Intent, but adding/editing dive; no action taken")
+			} else {
+				console.log("Show download page for device " + manager.pluggedInDeviceName)
+				/* if we recognized the device, we'll pass in a triple of ComboBox indeces as "vendor;product;connection" */
+				var vendorProductConnection = manager.pluggedInDeviceName.split(';')
+				if (vendorProductConnection.length === 3)
+					diveList.showDownloadPage(vendorProductConnection[0], vendorProductConnection[1], vendorProductConnection[2])
+				else
+					diveList.showDownloadPage()
+				console.log("done showing download page")
+			}
 		}
 	}
 

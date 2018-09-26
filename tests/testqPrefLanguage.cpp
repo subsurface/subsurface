@@ -141,15 +141,14 @@ void TestQPrefLanguage::test_multiple()
 	// test multiple instances have the same information
 
 	prefs.locale.use_system_language = false;
-	auto tst_direct = new qPrefLanguage;
 
 	prefs.time_format_override = true;
 	auto tst = qPrefLanguage::instance();
 
-	QCOMPARE(tst->use_system_language(), tst_direct->use_system_language());
-	QCOMPARE(tst->time_format_override(), tst_direct->time_format_override());
-	QCOMPARE(tst_direct->use_system_language(), false);
-	QCOMPARE(tst_direct->time_format_override(), true);
+	QCOMPARE(tst->use_system_language(), qPrefLanguage::use_system_language());
+	QCOMPARE(tst->time_format_override(), qPrefLanguage::time_format_override());
+	QCOMPARE(qPrefLanguage::use_system_language(), false);
+	QCOMPARE(qPrefLanguage::time_format_override(), true);
 }
 
 #define TEST(METHOD, VALUE)      \
