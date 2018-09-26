@@ -185,7 +185,7 @@ Kirigami.ApplicationWindow {
 				}
 				text: qsTr("Dive list")
 				onTriggered: {
-					manager.appendTextToLog("requested dive list with credential status " + prefs.credentialStatus)
+					manager.appendTextToLog("requested dive list with credential status " + PrefCloudStorage.cloud_verification_status)
 					returnTopPage()
 					globalDrawer.close()
 				}
@@ -209,8 +209,8 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/ic_add.svg"
 					}
 					text: qsTr("Add dive manually")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED ||
+							PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						globalDrawer.close()
 						returnTopPage()  // otherwise odd things happen with the page stack
@@ -244,13 +244,13 @@ Kirigami.ApplicationWindow {
 						name: ":/icons/cloud_sync.svg"
 					}
 					text: qsTr("Manual sync with cloud")
-					enabled: prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-							prefs.credentialStatus === CloudStatus.CS_NOCLOUD
+					enabled: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED ||
+							PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD
 					onTriggered: {
-						if (prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
+						if (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD) {
 							returnTopPage()
 							manager.startPageText = "Enter valid cloud storage credentials"
-							prefs.credentialStatus = CloudStatus.CS_UNKNOWN
+							PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 							globalDrawer.close()
 						} else {
 							globalDrawer.close()
@@ -265,7 +265,7 @@ Kirigami.ApplicationWindow {
 					name: manager.syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: manager.syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					enabled: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
+					enabled: PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						manager.syncToCloud = !manager.syncToCloud
 						if (!manager.syncToCloud) {

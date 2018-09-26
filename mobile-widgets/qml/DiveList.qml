@@ -22,14 +22,14 @@ Kirigami.ScrollablePage {
 	supportsRefreshing: true
 	onRefreshingChanged: {
 		if (refreshing) {
-			if (prefs.credentialStatus === CloudStatus.CS_VERIFIED) {
+			if (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED) {
 				console.log("User pulled down dive list - syncing with cloud storage")
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
 				console.log("done syncing, turn off spinner")
 				refreshing = false
 			} else {
-				console.log("sync with cloud storage requested, but credentialStatus is " + prefs.credentialStatus)
+				console.log("sync with cloud storage requested, but credentialStatus is " + PrefCloudStorage.cloud_verification_status)
 				console.log("no syncing, turn off spinner")
 				refreshing = false
 			}
@@ -339,8 +339,8 @@ Kirigami.ScrollablePage {
 	StartPage {
 		id: startPage
 		anchors.fill: parent
-		opacity: (prefs.credentialStatus === CloudStatus.CS_NOCLOUD ||
-									prefs.credentialStatus === CloudStatus.CS_VERIFIED) ? 0 : 1
+		opacity: (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ||
+					PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED) ? 0 : 1
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
@@ -348,8 +348,8 @@ Kirigami.ScrollablePage {
 				page.actions.main = null
 				page.actions.right = null
 				page.title = qsTr("Cloud credentials")
-			} else if (prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-						prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
+			} else if (PrefCloudStorage.cloud_verification_status === CloudStatus.CS_VERIFIED ||
+						PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.title = qsTr("Dive list")
@@ -440,7 +440,7 @@ Kirigami.ScrollablePage {
 
 	onBackRequested: {
 		if (startPage.visible && diveListView.count > 0 &&
-			prefs.credentialStatus !== CloudStatus.CS_UNKNOWN) {
+			PrefCloudStorage.cloud_verification_status !== CloudStatus.CS_UNKNOWN) {
 			event.accepted = true;
 		}
 		if (!startPage.visible) {

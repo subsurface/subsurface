@@ -45,7 +45,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
+				text: PrefCloudStorage.cloud_verification_status === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : PrefCloudStorage.cloud_storage_email
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
@@ -56,7 +56,7 @@ Kirigami.ScrollablePage {
 				text: qsTr("Change")
 				onClicked: {
 					manager.startPageText = qsTr("Starting...")
-					prefs.credentialStatus = CloudStatus.CS_UNKNOWN
+					PrefCloudStorage.cloud_verification_status = CloudStatus.CS_UNKNOWN
 					rootItem.returnTopPage()
 				}
 			}
@@ -67,7 +67,7 @@ Kirigami.ScrollablePage {
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
-				text: describe[prefs.credentialStatus]
+				text: describe[PrefCloudStorage.cloud_verification_status]
 				Layout.alignment: Qt.AlignRight
 				Layout.preferredWidth: gridWidth * 0.60
 				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
