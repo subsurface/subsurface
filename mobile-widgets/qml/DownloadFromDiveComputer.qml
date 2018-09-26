@@ -9,10 +9,10 @@ import org.kde.kirigami 2.2 as Kirigami
 
 Kirigami.Page {
 	id: diveComputerDownloadWindow
-	anchors.top:parent.top
-	width: parent.width
-	height: parent.height
-	Layout.fillWidth: true;
+	leftPadding: Kirigami.Units.gridUnit / 2
+	rightPadding: Kirigami.Units.gridUnit / 2
+	topPadding: 0
+	bottomPadding: 0
 	title: qsTr("Dive Computer")
 	background: Rectangle { color: subsurfaceTheme.backgroundColor }
 
@@ -49,12 +49,12 @@ Kirigami.Page {
 		anchors.top: parent.top
 		height: parent.height
 		width: parent.width
-		Layout.fillWidth: true
 		GridLayout {
 			id: buttonGrid
 			Layout.alignment: Qt.AlignTop
 			Layout.topMargin: Kirigami.Units.smallSpacing * 4
 			columns: 2
+			rowSpacing: 0
 			Controls.Label {
 				text: qsTr(" Vendor name: ")
 				font.pointSize: subsurfaceTheme.regularPointSize
@@ -313,7 +313,7 @@ Kirigami.Page {
 		ListView {
 			id: dlList
 			Layout.topMargin: Kirigami.Units.smallSpacing * 4
-			Layout.bottomMargin: bottomButtons.height * 1.5
+			Layout.bottomMargin: bottomButtons.height / 2
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 
@@ -334,7 +334,6 @@ Kirigami.Page {
 
 		RowLayout {
 			id: bottomButtons
-			Layout.fillWidth: true
 			Controls.Label {
 				text: ""  // Spacer on the left for hamburger menu
 				Layout.fillWidth: true
@@ -343,6 +342,7 @@ Kirigami.Page {
 				id: acceptButton
 				enabled: divesDownloaded
 				text: qsTr("Accept")
+				bottomPadding: Kirigami.Units.gridUnit / 2
 				onClicked: {
 					manager.appendTextToLog("Save downloaded dives that were selected")
 					importModel.recordDives()
@@ -362,6 +362,7 @@ Kirigami.Page {
 				id: select
 				enabled: divesDownloaded
 				text: qsTr("Select All")
+				bottomPadding: Kirigami.Units.gridUnit / 2
 				onClicked : {
 					importModel.selectAll()
 				}
@@ -370,6 +371,7 @@ Kirigami.Page {
 				id: unselect
 				enabled: divesDownloaded
 				text: qsTr("Unselect All")
+				bottomPadding: Kirigami.Units.gridUnit / 2
 				onClicked : {
 					importModel.selectNone()
 				}
