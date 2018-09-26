@@ -191,8 +191,15 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 	QByteArray packet = receivedPackets.takeFirst();
 
-	if ((size_t)packet.size() > size)
-		return DC_STATUS_NOMEMORY;
+	// Did we get more than asked for?
+	//
+	// Put back the left-over at the beginning of the
+	// received packet list, and truncate the packet
+	// we got to just the part asked for.
+	if ((size_t)packet.size() > size) {
+		receivedPackets.prepend(packet.mid(size));
+		packet.truncate(size);
+	}
 
 	memcpy((char *)data, packet.data(), packet.size());
 	if (actual)
