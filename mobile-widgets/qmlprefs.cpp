@@ -8,8 +8,7 @@
 
 
 /*** Global and constructors ***/
-QMLPrefs::QMLPrefs() :
-	m_showPin(false)
+QMLPrefs::QMLPrefs()
 {
 	m_credentialStatus = (qPrefCloudStorage::cloud_status) qPrefCloudStorage::cloud_verification_status();
 }
@@ -43,15 +42,4 @@ void QMLPrefs::setCredentialStatus(const qPrefCloudStorage::cloud_status value)
 		m_credentialStatus = value;
 		emit credentialStatusChanged();
 	}
-}
-
-bool QMLPrefs::showPin() const
-{
-	return m_showPin;
-}
-
-void QMLPrefs::setShowPin(bool enable)
-{
-	m_showPin = enable;
-	emit showPinChanged();
 }
