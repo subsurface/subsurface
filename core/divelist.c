@@ -931,14 +931,7 @@ void delete_single_dive(int idx)
 	for (i = idx; i < dive_table.nr - 1; i++)
 		dive_table.dives[i] = dive_table.dives[i + 1];
 	dive_table.dives[--dive_table.nr] = NULL;
-	/* free all allocations */
-	free(dive->dc.sample);
-	free((void *)dive->notes);
-	free((void *)dive->divemaster);
-	free((void *)dive->buddy);
-	free((void *)dive->suit);
-	taglist_free(dive->tag_list);
-	free(dive);
+	free_dive(dive);
 }
 
 struct dive **grow_dive_table(struct dive_table *table)

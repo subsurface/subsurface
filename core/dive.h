@@ -544,6 +544,7 @@ extern timestamp_t utc_mktime(struct tm *tm);
 extern void utc_mkdate(timestamp_t, struct tm *tm);
 
 extern struct dive *alloc_dive(void);
+extern void free_dive(struct dive *);
 extern void record_dive_to_table(struct dive *dive, struct dive_table *table);
 extern void record_dive(struct dive *dive);
 extern void clear_dive(struct dive *dive);

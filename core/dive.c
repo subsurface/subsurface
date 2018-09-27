@@ -528,11 +528,7 @@ static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
 		*_dptr = 0;                              \
 	}
 
-/* copy_dive makes duplicates of many components of a dive;
- * in order not to leak memory, we need to free those .
- * copy_dive doesn't play with the divetrip and forward/backward pointers
- * so we can ignore those */
-void clear_dive(struct dive *d)
+static void free_dive_structures(struct dive *d)
 {
 	if (!d)
 		return;
@@ -550,6 +546,23 @@ void clear_dive(struct dive *d)
 		free((void *)d->cylinder[i].type.description);
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
 		free((void *)d->weightsystem[i].description);
+}
+
+void free_dive(struct dive *d)
+{
+	free_dive_structures(d);
+	free(d);
+}
+
+/* copy_dive makes duplicates of many components of a dive;
+ * in order not to leak memory, we need to free those .
+ * copy_dive doesn't play with the divetrip and forward/backward pointers
+ * so we can ignore those */
+void clear_dive(struct dive *d)
+{
+	if (!d)
+		return;
+	free_dive_structures(d);
 	memset(d, 0, sizeof(struct dive));
 }
 
