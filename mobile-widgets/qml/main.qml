@@ -455,6 +455,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 
 		property double regularPointSize: fontMetrics.font.pointSize
 		property double titlePointSize: regularPointSize * 1.5
+		property double headingPointSize: regularPointSize * 1.2
 		property double smallPointSize: regularPointSize * 0.8
 
 		// colors currently in use
