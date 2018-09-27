@@ -10,6 +10,7 @@ class TestHelper : public QObject {
 private slots:
 	void initTestCase();
 	void recognizeBtAddress();
+	void parseNameAddress();
 };
 
 #endif
