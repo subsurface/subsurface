@@ -120,6 +120,7 @@ void UpdateManager::requestReceived()
 			response.setIcon(QMessageBox::Question);
 			response.setWindowModality(Qt::WindowModal);
 			update_settings->set_dont_check_for_updates(response.exec() != QMessageBox::Accepted);
+			update_settings->set_dont_check_exists(true);
 		}
 	}
 }
