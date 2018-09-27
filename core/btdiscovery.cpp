@@ -305,6 +305,10 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 
 void BTDiscovery::discoverAddress(QString address)
 {
+	// let's make sure there is no device name mixed in with the address
+	QString btAddress;
+	btAddress = extractBluetoothAddress(address);
+
 #if defined(Q_OS_MACOS)
 	// macOS appears to need a fresh scan if we want to switch devices
 	static QString lastAddress;
@@ -322,10 +326,33 @@ void BTDiscovery::discoverAddress(QString address)
 
 bool isBluetoothAddress(const QString &address)
 {
+	return extractBluetoothAddress(address) != QString();
+}
+QString extractBluetoothAddress(const QString &address)
+{
 	QRegularExpression re("(LE:)*([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}|{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})",
 			      QRegularExpression::CaseInsensitiveOption);
 	QRegularExpressionMatch m = re.match(address);
-	return m.hasMatch();
+	return m.captured(0);
+}
+
+QString extractBluetoothNameAddress(const QString &address, QString &name)
+{
+	// sometimes our device text is of the form "name (address)", sometimes it's just "address"
+	// let's simply return the address
+	name = QString();
+	QString extractedAddress = extractBluetoothAddress(address);
+	if (extractedAddress == address.trimmed())
+		return address;
+
+	QRegularExpression re("^([^()]+)\\(([^)]*\\))$");
+	QRegularExpressionMatch m = re.match(address);
+	if (m.hasMatch()) {
+		name = m.captured(1).trimmed();
+		return extractedAddress;
+	}
+	qDebug() << "can't parse address" << address;
+	return QString();
 }
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)

@@ -23,4 +23,22 @@ void TestHelper::recognizeBtAddress()
 	QCOMPARE(isBluetoothAddress("LE:{6e50ff5d-cdd3-4c43-ag0a-1ed4c7d2d2a5}"), false);
 }
 
+void TestHelper::parseNameAddress()
+{
+	QString name, address;
+	address = extractBluetoothNameAddress("01:a2:b3:c4:d5:06", name);
+	QCOMPARE(address, "01:a2:b3:c4:d5:06");
+	QCOMPARE(name, QString());
+	address = extractBluetoothNameAddress("somename (01:a2:b3:c4:d5:06)", name);
+	QCOMPARE(address, "01:a2:b3:c4:d5:06");
+	QCOMPARE(name, QString("somename"));
+	address = extractBluetoothNameAddress("garbage", name);
+	QCOMPARE(address, QString());
+	QCOMPARE(name, QString());
+	address = extractBluetoothNameAddress("somename (LE:{6e50ff5d-cdd3-4c43-a80a-1ed4c7d2d2a5})", name);
+	QCOMPARE(address, "LE:{6e50ff5d-cdd3-4c43-a80a-1ed4c7d2d2a5}");
+	QCOMPARE(name, QString("somename"));
+
+}
+
 QTEST_GUILESS_MAIN(TestHelper)
