@@ -366,8 +366,10 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
 		} else {
-			data->setDevName(qPrefDiveComputer::device());
-			data->setDevBluetoothName(qPrefDiveComputer::device_name());
+			QString name, address;
+			address = extractBluetoothNameAddress(ui.device->currentText(), name);
+			data->setDevName(address);
+			data->setDevBluetoothName(name);
 		}
 	} else
 		// this breaks an "else if" across lines... not happy...
