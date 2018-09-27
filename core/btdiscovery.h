@@ -17,7 +17,9 @@
 #endif
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo);
+bool isBluetoothAddress(const QString &address);
 QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr);
+dc_descriptor_t *getDeviceType(QString btName);
 
 class BTDiscovery : public QObject {
 	Q_OBJECT
@@ -48,6 +50,7 @@ public:
 	QList<btVendorProduct> getBtDcs();
 	QBluetoothLocalDevice localBtDevice;
 	void BTDiscoveryReDiscover();
+	void discoverAddress(QString address);
 
 private:
 	static BTDiscovery *m_instance;

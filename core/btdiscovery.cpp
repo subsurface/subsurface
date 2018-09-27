@@ -5,12 +5,18 @@
 #include "core/libdivecomputer.h"
 #include <QTimer>
 #include <QDebug>
+#include <QRegularExpression>
+#include <QElapsedTimer>
+#include <QCoreApplication>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
+namespace {
+	QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+}
 BTDiscovery *BTDiscovery::m_instance = NULL;
 
-static dc_descriptor_t *getDeviceType(QString btName)
+dc_descriptor_t *getDeviceType(QString btName)
 // central function to convert a BT name to a Subsurface known vendor/model pair
 {
 	QString vendor, product;
@@ -70,7 +76,7 @@ static dc_descriptor_t *getDeviceType(QString btName)
 }
 
 BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
-	discoveryAgent(NULL)
+	discoveryAgent(nullptr)
 {
 	if (m_instance) {
 		qDebug() << "trying to create an additional BTDiscovery object";
@@ -96,9 +102,11 @@ void BTDiscovery::BTDiscoveryReDiscover()
 	if (1) {
 #endif
 		m_btValid = true;
-#if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
-		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
-		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS)  || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
+		if (discoveryAgent == nullptr) {
+			discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
+			connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
+		}
 		qDebug() << "starting BLE discovery";
 		discoveryAgent->start();
 #endif
@@ -176,12 +184,11 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		qDebug() << id.toByteArray();
 	}
 
-#if defined(Q_OS_IOS)
-	// On Desktop this is called when "Save" button is clicked. All
-	// DeviceInfo are stored as data on the ui list items.
-	// On mobile (iOS) the current ConnectionListModel does not support
-	// additional data, so just save all discovered devices.
-
+#if defined(Q_OS_IOS) || defined(Q_OS_MACOS)
+	// on macOS and iOS we need to scan in order to be able to access a device;
+	// let's remember the information we scanned on this run so we can at least
+	// refer back to it and don't need to open the separate scanning dialog every
+	// time we try to download from a BT/BLE dive computer.
 	saveBtDeviceInfo(btDeviceAddress(&device, false), device);
 #endif
 
@@ -298,7 +305,30 @@ bool BTDiscovery::checkException(const char* method, const QAndroidJniObject *ob
 }
 #endif // Q_OS_ANDROID
 
-QHash<QString, QBluetoothDeviceInfo> btDeviceInfo;
+void BTDiscovery::discoverAddress(QString address)
+{
+#if defined(Q_OS_MACOS)
+	// macOS appears to need a fresh scan if we want to switch devices
+	static QString lastAddress;
+	if (lastAddress != address) {
+		btDeviceInfo.clear();
+		discoveryAgent->stop();
+		lastAddress = address;
+	}
+#endif
+	if (!btDeviceInfo.keys().contains(address) && !discoveryAgent->isActive()) {
+		qDebug() << "restarting discovery agent";
+		discoveryAgent->start();
+	}
+}
+
+bool isBluetoothAddress(const QString &address)
+{
+	QRegularExpression re("(LE:)*([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}|{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}})",
+			      QRegularExpression::CaseInsensitiveOption);
+	QRegularExpressionMatch m = re.match(address);
+	return m.hasMatch();
+}
 
 void saveBtDeviceInfo(const QString &devaddr, QBluetoothDeviceInfo deviceInfo)
 {
@@ -309,7 +339,20 @@ QBluetoothDeviceInfo getBtDeviceInfo(const QString &devaddr)
 {
 	if (btDeviceInfo.contains(devaddr))
 		return btDeviceInfo[devaddr];
-	qDebug() << "need to scan for" << devaddr;
+	if(!btDeviceInfo.keys().contains(devaddr)) {
+		qDebug() << "still looking scan is still running, we should just wait for a few moments";
+		// wait for a maximum of 30 more seconds
+		// yes, that seems crazy, but on my Mac I see this take more than 20 seconds
+		QElapsedTimer timer;
+		timer.start();
+		do {
+			if (btDeviceInfo.keys().contains(devaddr))
+				return btDeviceInfo[devaddr];
+			QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+			QThread::msleep(100);
+		} while (timer.elapsed() < 30000);
+	}
+	qDebug() << "notify user that we can't find" << devaddr;
 	return QBluetoothDeviceInfo();
 }
 #endif // BT_SUPPORT

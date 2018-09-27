@@ -21,6 +21,9 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	timer(new QTimer(this)),
 	dumpWarningShown(false),
 	ostcFirmwareCheck(0),
+#if defined (BT_SUPPORT)
+	btd(nullptr),
+#endif
 	currentState(INITIAL)
 {
 	diveImportedModel = new DiveImportedModel(this);
@@ -165,19 +168,25 @@ void DownloadFromDCWidget::updateProgressBar()
 			progress_bar_text = "";
 	}
 	if (!empty_string(progress_bar_text)) {
+		// once the progress bar text is set, setup the maximum so the user sees actual progress
 		ui.progressBar->setFormat(progress_bar_text);
+		ui.progressBar->setMaximum(100);
 #if defined(Q_OS_MAC)
 		// on mac the progress bar doesn't show its text
 		ui.progressText->setText(progress_bar_text);
 #endif
 	} else {
 		if (IS_FP_SAME(progress_bar_fraction, 0.0)) {
+			// while we are waiting to connect, set the maximum to 0 so we get a busy indication
+			ui.progressBar->setMaximum(0);
 			ui.progressBar->setFormat(tr("Connecting to dive computer"));
 #if defined(Q_OS_MAC)
 			// on mac the progress bar doesn't show its text
 			ui.progressText->setText(tr("Connecting to dive computer"));
 #endif
 		} else {
+			// we have some progress - reset the maximum so the user sees actual progress
+			ui.progressBar->setMaximum(100);
 			ui.progressBar->setFormat("%p%");
 #if defined(Q_OS_MAC)
 			// on mac the progress bar doesn't show its text
@@ -297,6 +306,20 @@ void DownloadFromDCWidget::on_vendor_currentIndexChanged(const QString &vendor)
 void DownloadFromDCWidget::on_product_currentIndexChanged(const QString &)
 {
 	updateDeviceEnabled();
+}
+
+void DownloadFromDCWidget::on_device_currentTextChanged(const QString &device)
+{
+#if defined(Q_OS_MACOS)
+	if (isBluetoothAddress(device)) {
+		// ensure we have a discovery running
+		if (btd == nullptr)
+			btd = BTDiscovery::instance();
+		btd->discoverAddress(device);
+	}
+#else
+	Q_UNUSED(device)
+#endif
 }
 
 void DownloadFromDCWidget::on_search_clicked()
@@ -527,11 +550,15 @@ void DownloadFromDCWidget::on_ok_clicked()
 	accept();
 }
 
+dc_descriptor_t *DownloadFromDCWidget::getDescriptor() const
+{
+	return descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+}
+
 void DownloadFromDCWidget::updateDeviceEnabled()
 {
 	// Set up the DC descriptor
-	dc_descriptor_t *descriptor = NULL;
-	descriptor = descriptorLookup.value(ui.vendor->currentText() + ui.product->currentText());
+	dc_descriptor_t *descriptor = getDescriptor();
 
 	// call dc_descriptor_get_transport to see if the dc_transport_t is DC_TRANSPORT_SERIAL
 	if (dc_descriptor_get_transports(descriptor) & (DC_TRANSPORT_SERIAL | DC_TRANSPORT_USBSTORAGE)) {
@@ -590,7 +617,7 @@ void DownloadFromDCWidget::markChildrenAsEnabled()
 void DownloadFromDCWidget::selectRemoteBluetoothDevice()
 {
 	if (!btDeviceSelectionDialog) {
-		btDeviceSelectionDialog = new BtDeviceSelectionDialog(this);
+		btDeviceSelectionDialog = new BtDeviceSelectionDialog(ui.device->currentText(), getDescriptor(), this);
 		connect(btDeviceSelectionDialog, SIGNAL(finished(int)),
 			this, SLOT(bluetoothSelectionDialogIsFinished(int)));
 	}

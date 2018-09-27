@@ -43,6 +43,7 @@ slots:
 	void on_search_clicked();
 	void on_vendor_currentIndexChanged(const QString &vendor);
 	void on_product_currentIndexChanged(const QString &product);
+	void on_device_currentTextChanged(const QString &device);
 
 	void onDownloadThreadFinished();
 	void updateProgressBar();
@@ -66,6 +67,7 @@ private:
 	void markChildrenAsEnabled();
 	void updateDeviceEnabled();
 	void showRememberedDCs();
+	dc_descriptor_t *getDescriptor() const;
 
 	QStringListModel vendorModel;
 	QStringListModel productModel;
@@ -82,6 +84,7 @@ private:
 	DiveImportedModel *diveImportedModel;
 #if defined(BT_SUPPORT)
 	BtDeviceSelectionDialog *btDeviceSelectionDialog;
+	BTDiscovery *btd;
 #endif
 
 public:

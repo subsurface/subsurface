@@ -1473,7 +1473,7 @@ void ConfigureDiveComputerDialog::pickLogFile()
 void ConfigureDiveComputerDialog::selectRemoteBluetoothDevice()
 {
 	if (!btDeviceSelectionDialog) {
-		btDeviceSelectionDialog = new BtDeviceSelectionDialog(this);
+		btDeviceSelectionDialog = new BtDeviceSelectionDialog(ui.device->currentText(), device_data.descriptor, this);
 		connect(btDeviceSelectionDialog, SIGNAL(finished(int)),
 			this, SLOT(bluetoothSelectionDialogIsFinished(int)));
 	}
