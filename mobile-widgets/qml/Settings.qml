@@ -28,31 +28,28 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: cloudSetting
 			columns: 3
-			Layout.bottomMargin: Kirigami.Units.gridUnit
 
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Cloud status")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
 			}
 			Controls.Label {
 				text: qsTr("Email")
-				Layout.alignment: Qt.AlignRight
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.15
-				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			Controls.Label {
 				text: prefs.credentialStatus === CloudStatus.CS_NOCLOUD ? qsTr("Not applicable") : prefs.cloudUserName
-				Layout.alignment: Qt.AlignRight
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
-				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
 			}
 			SsrfButton {
 				id: changeCloudSettings
-				Layout.alignment: Qt.AlignRight
 				text: qsTr("Change")
 				onClicked: {
 					prefs.cancelCredentialsPinSetup()
@@ -61,15 +58,15 @@ Kirigami.ScrollablePage {
 			}
 			Controls.Label {
 				text: qsTr("Status")
-				Layout.alignment: Qt.AlignRight
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.15
-				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 			}
 			Controls.Label {
 				text: describe[prefs.credentialStatus]
-				Layout.alignment: Qt.AlignRight
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.60
-				Layout.preferredHeight: Kirigami.Units.gridUnit * 2
+				Layout.preferredHeight: Kirigami.Units.gridUnit * 1.5
 			}
 		}
 
@@ -82,18 +79,19 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: themeSettings
 			columns: 3
-			Layout.bottomMargin: Kirigami.Units.gridUnit
 
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Theme")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
 			}
 			Controls.Label {
 				text: qsTr("Blue")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
@@ -109,6 +107,7 @@ Kirigami.ScrollablePage {
 					Text {
 						id: sampleRegularBlue
 						text: qsTr("regular text")
+						font.pointSize: subsurfaceTheme.regularPointSize
 						color: subsurfaceTheme.blueTextColor
 						anchors {
 							horizontalCenter: parent.horizontalCenter
@@ -124,6 +123,7 @@ Kirigami.ScrollablePage {
 					Text {
 						id: sampleHighlightBlue
 						text: qsTr("Highlight")
+						font.pointSize: subsurfaceTheme.regularPointSize
 						color: subsurfaceTheme.bluePrimaryTextColor
 						anchors {
 							horizontalCenter: parent.horizontalCenter
@@ -146,6 +146,7 @@ Kirigami.ScrollablePage {
 			Controls.Label {
 				id: pinkLabel
 				text: qsTr("Pink")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
 			}
@@ -160,6 +161,7 @@ Kirigami.ScrollablePage {
 					Text {
 						id: sampleRegularPink
 						text: qsTr("regular text")
+						font.pointSize: subsurfaceTheme.regularPointSize
 						color: subsurfaceTheme.pinkTextColor
 						anchors {
 							horizontalCenter: parent.horizontalCenter
@@ -175,6 +177,7 @@ Kirigami.ScrollablePage {
 					Text {
 						id: sampleHighlightPink
 						text: qsTr("Highlight")
+						font.pointSize: subsurfaceTheme.regularPointSize
 						color: subsurfaceTheme.pinkPrimaryTextColor
 						anchors {
 							horizontalCenter: parent.horizontalCenter
@@ -197,6 +200,7 @@ Kirigami.ScrollablePage {
 
 			Controls.Label {
 				text: qsTr("Dark")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				color: subsurfaceTheme.textColor
 				rightPadding: Kirigami.Units.gridUnit
 				Layout.preferredWidth: gridWidth * 0.15
@@ -212,6 +216,7 @@ Kirigami.ScrollablePage {
 					Text {
 						id: sampleRegularDark
 						text: qsTr("regular text")
+						font.pointSize: subsurfaceTheme.regularPointSize
 						color: subsurfaceTheme.darkTextColor
 						anchors {
 							horizontalCenter: parent.horizontalCenter
@@ -227,6 +232,7 @@ Kirigami.ScrollablePage {
 					Text {
 						id: sampleHighlightDark
 						text: qsTr("Highlight")
+						font.pointSize: subsurfaceTheme.regularPointSize
 						color: subsurfaceTheme.darkPrimaryTextColor
 						anchors {
 							horizontalCenter: parent.horizontalCenter
@@ -245,10 +251,11 @@ Kirigami.ScrollablePage {
 					PrefDisplay.theme = subsurfaceTheme.currentTheme
 				}
 			}
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Scaling")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 3
@@ -294,12 +301,12 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: gpsPrefs
 			columns: 2
-			width: parent.width
 
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("GPS location service")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
@@ -307,13 +314,14 @@ Kirigami.ScrollablePage {
 
 			Controls.Label {
 				text: qsTr("Distance threshold (meters)")
-				Layout.alignment: Qt.AlignRight
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 
 			Controls.TextField {
 				id: distanceThreshold
 				text: PrefLocationService.distance_threshold
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
 					PrefLocationService.distance_threshold = distanceThreshold.text
@@ -322,13 +330,14 @@ Kirigami.ScrollablePage {
 
 			Controls.Label {
 				text: qsTr("Time threshold (minutes)")
-				Layout.alignment: Qt.AlignRight
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 
 			Controls.TextField {
 				id: timeThreshold
 				text: PrefLocationService.time_threshold / 60
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.25
 				onEditingFinished: {
 					PrefLocationService.time_threshold = timeThreshold.text * 60
@@ -342,27 +351,29 @@ Kirigami.ScrollablePage {
 			opacity: 0.5
 			Layout.fillWidth: true
 		}
+
 		GridLayout {
 			id: defaultCylinder
 			columns: 2
-			width: parent.width - Kirigami.Units.gridUnit
+			Layout.rightMargin: Kirigami.Units.gridUnit * 1.5
 
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Default Cylinder")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
 			}
 			Controls.Label {
-				Layout.alignment: Qt.AlignRight
 				text: qsTr("Cylinder:")
-				font.pointSize: subsurfaceTheme.smallPointSize
+				font.pointSize: subsurfaceTheme.regularPointSize
 			}
 			Controls.ComboBox {
 				id: defaultCylinderBox
-				flat: true
+				font.pointSize: subsurfaceTheme.regularPointSize
+				Layout.preferredHeight: fontMetrics.height * 2.5
 				inputMethodHints: Qt.ImhNoPredictiveText
 				Layout.fillWidth: true
 				onActivated: {
@@ -370,7 +381,6 @@ Kirigami.ScrollablePage {
 				}
 			}
 		}
-
 		Rectangle {
 			color: subsurfaceTheme.darkerPrimaryColor
 			height: 1
@@ -381,17 +391,18 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: divecomputers
 			columns: 2
-			width: parent.width - Kirigami.Units.gridUnit
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Dive computers")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing
 				Layout.columnSpan: 2
 			}
 			Controls.Label {
 				text: qsTr("Forget remembered dive computers")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfButton {
@@ -417,11 +428,11 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: unit_system
 			columns: 2
-			width: parent.width - Kirigami.Units.gridUnit
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Units")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
@@ -429,6 +440,7 @@ Kirigami.ScrollablePage {
 
 			Controls.Label {
 				text: qsTr("Use Imperial Units")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
@@ -444,6 +456,7 @@ Kirigami.ScrollablePage {
 			}
 			Controls.Label {
 				text: qsTr("Use Metric Units")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
@@ -469,11 +482,11 @@ Kirigami.ScrollablePage {
 		GridLayout {
 			id: developer
 			columns: 2
-			width: parent.width - Kirigami.Units.gridUnit
-			Kirigami.Heading {
+			Controls.Label {
 				text: qsTr("Developer")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
 				color: subsurfaceTheme.textColor
-				level: 4
 				Layout.topMargin: Kirigami.Units.largeSpacing
 				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
 				Layout.columnSpan: 2
@@ -481,6 +494,7 @@ Kirigami.ScrollablePage {
 
 			Controls.Label {
 				text: qsTr("Display Developer menu")
+				font.pointSize: subsurfaceTheme.regularPointSize
 				Layout.preferredWidth: gridWidth * 0.75
 			}
 			SsrfSwitch {
