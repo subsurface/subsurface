@@ -1,7 +1,8 @@
 diff -ur ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/src/controls/GlobalDrawer.qml
---- ../kirigami/src/controls/GlobalDrawer.qml	2018-06-16 16:18:42.000000000 +0900
-+++ src/controls/GlobalDrawer.qml	2018-06-17 05:05:31.000000000 +0900
-@@ -249,15 +249,11 @@
+--- ../kirigami/src/controls/GlobalDrawer.qml	2018-09-27 15:27:32.340600738 +0200
++++ src/controls/GlobalDrawer.qml	2018-09-27 16:45:29.689438950 +0200
+@@ -328,17 +328,13 @@
+                 ColumnLayout {
                      id: topContent
                      spacing: 0
 -                    Layout.alignment: Qt.AlignHCenter
@@ -11,10 +12,11 @@ diff -ur ../kirigami/src/controls/GlobalDrawer.qml mobile-widgets/qml/kirigami/s
 -                    Layout.topMargin: root.topPadding
                      Layout.fillWidth: true
                      Layout.fillHeight: true
+                     Layout.preferredHeight: implicitHeight * opacity
                      //NOTE: why this? just Layout.fillWidth: true doesn't seem sufficient
                      //as items are added only after this column creation
 -                    Layout.minimumWidth: parent.width - root.leftPadding - root.rightPadding
 +                    Layout.minimumWidth: parent.width
-                     visible: children.length > 0 && childrenRect.height > 0
-                 }
- 
+                     visible: children.length > 0 && childrenRect.height > 0 && opacity > 0
+                     opacity: !root.collapsed || showTopContentWhenCollapsed
+                     Behavior on opacity {
