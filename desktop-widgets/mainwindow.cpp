@@ -1733,12 +1733,13 @@ void MainWindow::importFiles(const QStringList fileNames)
 		return;
 
 	QByteArray fileNamePtr;
+	struct dive_table table = { 0 };
 
 	for (int i = 0; i < fileNames.size(); ++i) {
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		parse_file(fileNamePtr.data(), &dive_table);
+		parse_file(fileNamePtr.data(), &table);
 	}
-	process_imported_dives(false);
+	process_imported_dives(&table, false);
 	refreshDisplay();
 }
 

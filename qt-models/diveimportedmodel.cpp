@@ -163,21 +163,17 @@ void DiveImportedModel::recordDives()
 		// nothing to do, just exit
 		return;
 
-	// walk the table of imported dives and record the ones that the user picked
-	// clearing out the table as we go
-	for (int i = 0; i < rowCount(); i++) {
-		struct dive *d = diveTable->dives[i];
-		if (d && checkStates[i]) {
-			record_dive(d);
-		} else {
-			// we should free the dives that weren't recorded
-			clear_dive(d);
-			free(d);
-		}
-		diveTable->dives[i] = NULL;
+	// delete non-selected dives
+	int total = diveTable->nr;
+	int j = 0;
+	for (int i = 0; i < total; i++) {
+		if (checkStates[i])
+			j++;
+		else
+			delete_dive_from_table(&downloadTable, j);
 	}
-	diveTable->nr = 0;
-	process_imported_dives(true);
+
+	process_imported_dives(diveTable, true);
 	if (autogroup)
 		autogroup_dives();
 }
