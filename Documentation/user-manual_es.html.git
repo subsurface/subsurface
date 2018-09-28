@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.9" />
+<meta name="generator" content="AsciiDoc 8.6.10" />
 <title></title>
 <style type="text/css">
 /*
@@ -445,7 +446,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Autores</strong>: Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat,
 Pedro Neves, Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="BLUE"><em>Versión 4.6, Marzo 2017</em></span></p></div>
+<div class="paragraph"><p><span class="BLUE"><em>Versión 4.8, Septiembre 2018</em></span></p></div>
 <div class="paragraph"><p>Bienvenido como usuario de <em>Subsurface</em>, un avanzado programa de registro de
 inmersiones con extensa infraestructura para describir, organizar e
 interpretar buceos en apnea o con botella. <em>Subsurface</em> ofrece muchas ventajas
@@ -1033,8 +1034,8 @@ muestran buceos en la Lista de inmersiones pero se crearán dos ficheros en la
 carpeta seleccionada arriba:</p></div>
 <div class="literalblock">
 <div class="content">
-<pre><code>_Subsurface_.log
-_Subsurface_.bin</code></pre>
+<pre><code>subsurface.log
+subsurface.bin</code></pre>
 </div></div>
 <div class="paragraph"><p>Estos ficheros deberían ser remitidos a la lista de correo de <em>Subsurface</em>:
 <em>subsurface</em>@hohndel.org_ solicitando que los ficheros sean analizados,
@@ -1045,10 +1046,15 @@ información sobre las inmersiones grabadas en el ordenador de buceo.</p></div>
 <div class="sect3">
 <h4 id="S_Bluetooth">5.2.2. Conectar <em>Subsurface</em> con ordenadores de buceo con Bluetooth</h4>
 <div class="paragraph"><p>Bluetooth se está convirtiendo en una forma cada vez más común de comunicación
-entre los ordenadores de buceo y <em>Subsurface</em>. Por ejemplo, este mecanismo se
-usa en el Shearwater Petrel Mk2 o el OSTC3. <em>Subsurface</em> proporciona un
-interfaz Bluetooth muy independiente del sistema operativo utilizado. Ajustar
-<em>Subsurface</em> para comunicación con Bluetooth requiere cuatro pasos:</p></div>
+entre los ordenadores de buceo y <em>Subsurface</em>. <em>Subsurface</em> proporciona un
+interfaz Bluetooth muy independiente del sistema operativo utilizado. Un
+número cada vez mayor de ordenadores de buceo utiliza Bluetooth Low Energy
+(BTLE) como medio de comunicación. Sin embargo, BTLE no es un protocolo
+estandarizado, en consecuencia, es necesario  efectuar adaptaciones para cada
+modelo de ordenador de buceo. Visita el link:
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">lista
+de ordenadores de buceo soportados</a>.</p></div>
+<div class="paragraph"><p>Ajustar <em>Subsurface</em> para comunicación con Bluetooth requiere cuatro pasos:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -1086,12 +1092,19 @@ a continuación.</p></div>
 <img src="images/DC_import_Bluetooth.jpg" alt="FIGURA: Descarga Bluetooth" />
 </div>
 </div>
+<div class="paragraph"><p>Aunque el interfaz bluetooth de <em>Subsurface</em> se ha diseñado para funcionar
+sin emparejamiento Bluetooth a nivel de sistema operativo, siempre es
+conveniente enfrentar los problemas iniciales de emparejamiento utilizando los
+servicios del sistema operativo del PC para emparejar <em>Subsurface</em> con el
+ordenador de buceo.  Elimina todos los emparejamientos existentes y empieza
+por escanear los dispositivos bluetooth desde una lista vacía (en el ordenador
+de sobremesa). Una vez que <em>Subsurface</em> haya reconocido el ordenador de buceo
+con bluetooth , las siguientes descargas de inmersiones al divelog resultarán
+sencillas.</p></div>
 <div class="paragraph"><p>En plataformas <em>Linux</em> o <em>MacOS</em> el nombre del ordenador con <em>Subsurface</em>
-se muestran en el lado derecho. En el lado izquierdo, si el ordenador tiene
-conectado más de un dispositivo  Bluetooth, se puede seleccionar cual se desea
-conectar a <em>Subsurface</em>.
-Bajo la dirección se muestra el estado del adaptador (activado/desactivado) y
-puede cambiarse pulsando el botón <em>Activar/desactivar</em>.</p></div>
+se muestran en el lado derecho.Bajo la dirección se muestra el estado del
+adaptador (activado/desactivado) y puede cambiarse pulsando el botón
+<em>Activar/desactivar</em>.</p></div>
 <div class="paragraph"><p>Si no se muestra la dirección Bluetooth, es que <em>Subsurface</em> no localiza el
 dispositivo Bluetooth del ordenador en que se ejecuta. Asegúrate de que el
 driver Bluetooth está instalado correctamente y comprueba que se puede usar
@@ -1107,7 +1120,8 @@ la relación (tal vez entre otros dispositivos Bluetooth) de la lista de la
 izquierda del diálogo (ver imagen anterior). Si no es así, pulsa el botón,
 <em>Limpiar</em> y efectúa una nueva búsqueda utilizando el botón <em>Buscar</em>. Si
 <em>Subsurface</em> "ve" el ordenador de buceo, la línea de la lista contendrá el
-nombre del dispositivo, su dirección y su estado de emparejamiento. Si el
+nombre del dispositivo, su dirección y su estado de emparejamiento. En los
+dispositivos BTLE, a menudo, su dirección comienza con LE. Si el
 dispositivo no está emparejado y tiene un fondo rojo, se puede abrir un menú
 contextual seleccionando su línea y pulsando clic-derecho.
 Pulsa el botón <em>Emparejar</em> y espera a que se complete la tarea. Si este
@@ -1290,53 +1304,45 @@ buceo. Introduce, solo entonces, el nombre del lugar de la inmersión en el
 campo de texto etiquetado <em>Ubicación</em> de la pestaña <strong>Notas</strong>.</td>
 </tr></table>
 </div>
-<div class="paragraph"><p>Teclea el nombre del punto de buceo, p.e. "Tihany, Lake Balaton, Hungary".
+<div class="paragraph"><p><strong>Utilizar ubicaciones de buceo existentes_</strong> Teclea el nombre del punto de
+buceo, p.e. "Tihany, Lake Balaton, Hungary".
 Si se han efectuado varias inmersiones en el mismo lugar, la información del
 primer buceo se reutiliza.
-La información existente puede editarse en cualquier momento seleccionando
-(en el panel <strong>Lista de Inmersiones</strong>) un buceo efectuado en el lugar deseado y
-abriendo la información de la ubicación haciendo clic en el botón con el globo
-a la derecha del nombre del lugar (ver imagen <strong>A</strong> a continuación).
-Cuando se introduce el nombre de una ubicación, aparece una lista desplegable
-mostrando todos los lugares con nombres similares. Si el lugar se ha utilizado
-antes, pulsa en el nombre preexistente.</p></div>
-<div class="paragraph"><p>Los nombres de la lista desplegable contienen, bien un símbolo de un globo (que
-indica que existe en la base de datos de <em>Subsurface</em>), bien un símbolo <strong>+</strong> (que
-indicaría un nombre que puede ser añadido a la base de datos).
-Así pues, si este punto de buceo no ha sido usado con anterioridad, aparece un
-mensaje como el siguiente (imagen <strong>A</strong> a continuación):</p></div>
+Así pues, si un punto de buceo se ha utilizado con anterioridad, el nombre de
+ese punto (y otros nombres similares) aparecerán bajo el recuadro de texto del
+lugar de buceo (imagen a continuación). Haz doble-clic en el punto de buceo
+correspondiente y este lugar quedará asociado a la inmersión que se está
+editando. Luego selecciona <em>Aplicar cambios</em> (imagen a continuación) para
+guardar la geolocalización de este punto de inmersión.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Locations1_f22.jpg" alt="FIGURA: Panel de descripción de ubicación" />
+<img src="images/Location1.jpg" alt="FIGURA:Panel de selección de ubicación" />
 </div>
 </div>
-<div class="paragraph"><p>Haz doble clic en el icono de la Tierra y aparecerá un panel para
-introducir las coordenadas y otra información sobre el lugar que pueda ser
-importante (imagen <strong>B</strong>, anterior). Lo más importante son las coordenadas del
-punto. Hay tres formas de especificarlas:</p></div>
-<div class="olist loweralpha"><ol class="loweralpha">
-<li>
-<p>
-El usuario puede encontrar las coordenadas en el mapamundi situado abajo a la
-   derecha en la ventana de <em>Subsurface</em>. El mapa muestra una barra marrón indicando
-   "Sin datos de ubicación - Mueve el mapa y haz doble clic para fijar la posición
-   del buceo". Al hacer doble clic en el lugar apropiado, la barra marrón desaparece
-   y las coordenadas quedan grabadas
-</p>
-</li>
-<li>
-<p>
-Se pueden obtener las coordenadas desde la apps <em>Subsurface Companion</em> o
-   <em>Subsurface mobile</em> si se dispone de un dispositivo android o iPhone con
-   GPS y se guardaron las coordenadas del punto de buceo usando ese
-   dispositivo. <a href="#S_Companion">Pulsa aquí para más información</a>
-</p>
-</li>
-<li>
-<p>
-Se pueden introducir las coordenadas a mano, si son conocidas, usando uno de
-   estos cuatro formatos, con la latitud seguida de la longitud:
-</p>
+<div class="paragraph"><p><strong>Introducir un nuevo punto de buceo:</strong> Por otra parte, tras haber buceado en un
+lugar nuevo, necesita crearse un nuevo registro que se utilizará para esta y
+posteriores inmersiones en el mismo sitio. Teclea el nombre del nuevo punto de
+buceo en la casilla de texto (imagen A a continuación).</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image1.jpg" alt="FIGURA:Panel de creación de posición" />
+</div>
+</div>
+<div class="paragraph"><p>Haz doble-clic en la barra azul debajo del nombre. La barra azul desaparecerá
+(imagen B anterior) y el icono de un globo a la derecha del nombre se volverá
+azul. Haz clic en este icono (imagen B anterior) y se abrirá una ventana en la
+que introducir los detalles del nuevo punto de inmersión (imagen A a
+continuación). Aparecerá un icono sobre el globo terráqueo para indicar que se
+está editando el punto de buceo. Los datos más importantes en esta pantalla
+son las coordenadas del lugar de inmersión.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image2.jpg" alt="FIGURA:Panel de creación de posición" />
+</div>
+</div>
+<div class="paragraph"><p>Hay tres formas de añadir las coordenadas del punto de buceo:</p></div>
+<div class="paragraph"><p><strong>(1):</strong> Introducir las coordenadas a mano, si son conocidas, usando uno de
+estos cuatro formatos, con la latitud seguida de la longitud:</p></div>
 <div class="literalblock">
 <div class="content">
 <pre><code>Formato ISO 6709 Annex D, p.e. 30°13'28.9"N 30°49'1.5"E
@@ -1344,18 +1350,46 @@ Grados y minutos decimales, p.e. N30º 13.49760', E30º 49.30788'
 Grados minutos y segundos, p.e. N30° 13' 29.8" , E30° 49' 1.5"
 Grados decimales, p.e. 30.22496 , 30.821798</code></pre>
 </div></div>
-</li>
-</ol></div>
 <div class="paragraph"><p>Las latitudes del hemisferio sur se dan con una <strong>S</strong>, p.e. S30º o con un valor
 negativo, p.e. -30.22496. De igual forma, las longitudes al oeste se facilita
 con una <strong>W</strong>, p.e. W07°, o con un valor negativo, p.e. -7.34323. Algunos teclados
 no tienen el símbolo °. Puede reemplazarse con una <strong>d</strong> como en N30d W20d.
-Si se ha proporcionado un nombre y unas coordenadas, guarda la información
-seleccionando el botón <em>Aplicar cambios</em> arriba en el panel.</p></div>
-<div class="paragraph"><p><strong>Importante</strong>: Las coordenadas GPS de un punto están unidas a un nombre, por
+Introduce cualquier otra información  sobre el sitio de buceo (Descripción y
+notas), luego pulsa <em>Aplicar cambios</em> para guardar la feolocalización de este
+punto de inmersión. La información del  lugar de buceo puede editarse
+posteriormente haciendo clic en el icono del globo a la derecha de la casilla
+del nombre del lugar en la pestaña <strong>Notas</strong>.</p></div>
+<div class="paragraph"><p><strong>(2):</strong> Utilizar el mapamundi para especificar las coordenadas, En el napa se
+mostrarán ahora todas las ubicaciones de buceo en gris, y un marcador en rojo
+(imagen B anterior). Arrastra el marcador rojo a la posición del punto de
+buceo que se esté editando. Se puede hacer zoom en el mapa con la rueda del
+ratón. Sitúa el marcador en el lugar adecuado (imagen B a continuación). Las
+coordenadas de la posición se insertarán automáticamente en la casilla de
+texto correspondiente de la ventana (imagen A a continuación).Introduce
+cualquier otra información  sobre el sitio de buceo (Descripción y
+notas), luego pulsa <em>Aplicar cambios</em> para guardar la feolocalización de este
+punto de inmersión. La información del  lugar de buceo puede editarse
+posteriormente haciendo clic en el icono del globo a la derecha de la casilla
+del nombre del lugar en la pestaña <strong>Notas</strong>.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Globe_image3.jpg" alt="FIGURA:Panel de creación de posición" />
+</div>
+</div>
+<div class="paragraph"><p><strong>(3):</strong> Obtener las coordenadas usando la app <em>Subsurface-mobile</em> en un
+dispositivo Android o iPhone con GPS, si las coordenadas del punto de buceo
+se guardaron utilizando esta app.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">Las coordenadas GPS de un punto están unidas a un nombre, por
 tanto, guardar inmersiones  con coordenadas sin una descripción del lugar
 causará comportamientos inesperados (<em>Subsurface</em> creerá que todos estos puntos
-son el mismo e intentará hacer que toas las coordenadas sean iguales).</p></div>
+son el mismo e intentará hacer que toas las coordenadas sean iguales).</td>
+</tr></table>
+</div>
 <div class="paragraph"><p><strong>Búsqueda de nombres de puntos de buceo</strong>: Si se han introducido coordenadas,
 se puede efectuar una busca automatizada  del nombre basada en ellas. Se hace
 cuando <em>Subsurface_utiliza internet para encontrar el nombre del punto de
@@ -1781,42 +1815,53 @@ información del formato DAN, pasando por datos de los compañeros de buceo y
 otros.</p></div>
 <div class="paragraph"><p>Se ha desarrollado una pequeña herramienta independiente para importar los
 archivos .slg generados por SmartTrak al formato .xml de <em>Subsurface</em>. Puede
-compilarse junto con <em>Subsurface</em> en sistemas Linux.  Se necesita instalar dos
-dependencias antes compilar: libglib2.0 y libmdb2.</p></div>
+descargarse desde <a href="https://subsurface-divelog.org/downloads">el repositorio habitual de <em>Subsurface</em></a>,
+como instalador para Windows, o como AppImage para Linux.
+Actualmente la aplicación no está soportada en Mac.</p></div>
+<div class="paragraph"><p>También puede compilarse en sistemas Linux.  Se necesita instalar dos
+dependencias antes de compilar: <em>glib2.0</em> y <em>mdbtools</em> (ver a continuación).</p></div>
+<div class="paragraph"><p>Además, está disponible un servicio web para convertir divelogs desde
+SmartTrak a <em>Subsurface</em> (ver a continuación).</p></div>
 <div class="paragraph"><p>Si necesitas ayuda puedes contactar con el equipo de <em>Subsurface</em> en
 <a href="mailto:subsurface@subsurface-divelog.org">nuestra lista de correo</a></p></div>
-<div class="paragraph"><p>Suponiendo que se hayan instalado las dependencias y que el directorio raíz
-del código de <em>Subsurface</em> sea ~/src/subsurface, entonces:</p></div>
 <div class="sect4">
 <h5 id="_compilar_em_smtk2ssrf_em">Compilar <em>smtk2ssrf</em></h5>
+<div class="paragraph"><p>Suponiendo que se hayan instalado las dependencias y que el directorio raíz
+del código de <em>Subsurface</em> sea ~/src/subsurface, entonces:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Sitúate en el directorio raíz del código de <em>Subsurface</em>
+Sitúate en el directorio raíz del código, fuera de <em>Subsurface</em> (~/src en el
+  ejemplo)
 </p>
 </li>
 <li>
 <p>
-Ejecuta " $ ccmake build " y ajusta la opción SMARTTRAK_IMPORT a <strong>ON</strong> (por
-  defecto en OFF).
+Ejecuta " $ ./subsurface/scripts/smtk2ssrf-build.sh " y, si todo va bien,
+  obtendrás un binario ejecutable en la carpeta
+  ~/src/subsurface/smtk-import/build
 </p>
 </li>
 <li>
 <p>
-Selecciona [c] y [g] para generar la configuración de cmake y guardarla.
+Puedes ejecutarlo desde allí, copiarlo a una carpeta que esté en tu $PATH o
+  moverte allí y correr "$ sudo make install" que. por defecto lo instalará en
+  /usr/local/bin, el cual suele estar incluido en el $PATH
 </p>
 </li>
 <li>
 <p>
-Compila el código como prefieras, usando el script build.sh (recomendado) o
-  yendo al directorio "build" y ejecutando "make".
+El script tiene algunas opciones de ejecución en línea de comandos útiles
+  mayormente para desarrollo, si crees que puedes necesitarlas, por favor, lee
+  el encabezamiento del script.
 </p>
 </li>
 <li>
 <p>
-Si se ha compilado el código con éxito, habrá un ejecutable en el directorio
-  "build" llamado smtk2ssrf, cópialo o muévelo a un directorio que se
-  encuentre incluido en tu $PATH, p.e. ~/bin
+<strong>AVISO</strong>: Al compilar smtk2ssrf, se recompila una versión aligerada de
+  <em>Subsurface</em>. Esto carecerá de importancia excepto si utilizas habitualmente
+  el binario compilado previamente que se encuentra en ~/src/subsurface/build.
+  En ese caso tendrás que recompilar <em>Subsurface</em>.
 </p>
 </li>
 </ul></div>
@@ -1853,6 +1898,20 @@ importarán y se guardarán en el archivo file.xml situado en la carpeta output.
 <div class="paragraph"><p>Comprueba los mensajes de aviso o error que puedan aparecer en la ventana
 gráfica o en la consola, algunos pueden ser interesantes, ya que el soporte de
 los ordenadores Galileo y familia está, aún, en progreso.</p></div>
+</div>
+<div class="sect4">
+<h5 id="_te_da_pereza_lo_anterior_un_servicio_web_para_importar_em_smarttrak_em_a_em_subsurface_em">¿ Te da pereza lo anterior ? Un servicio web para importar <em>SmartTrak</em> a <em>Subsurface</em></h5>
+<div class="paragraph"><p>Visita el sitio web en <em>https://thetheoreticaldiver.org/rch-cgi-bin/smtk2ssrf.pl</em></p></div>
+<div class="paragraph"><p>Es un servicio web sin ningún lujo para convertir el formato de los divelogs.
+Selecciona el botón <em>Browse</em>. Esto te permitirá navegar por las carpetas de tu
+ordenador y seleccionar el divelog de <em>SmartTrak</em> a importar. Una vez
+seleccionado pulsa el botón <em>Submit query</em>. Tras unos momentos, aparecerá una
+ventana de diálogo para guardar el archivo creado en tu ordenador.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/strk2ssrf_web.jpg" alt="FIGURA:Servicio web apara convertir divelogs de SmartTrak" />
+</div>
+</div>
 </div>
 <div class="sect4">
 <h5 id="_mezclar_las_inmersiones_importadas_en_el_divelog_existente">Mezclar las inmersiones importadas en el divelog existente</h5>
@@ -2090,33 +2149,17 @@ asegurarse de que el resto funciona.</p></div>
 ubicaciones de las inmersiones. Esto se hace como sigue:</p></div>
 <div class="paragraph"><p>1) Llevar el dispositivo móvil en el barco de buceo o vida abordo, para
 recoger automáticamente coordenadas.</p></div>
-<div class="paragraph"><p>2) Subir las coordenadas desde el dispositivo móvil al servidor de internet de
-Subsurface.</p></div>
-<div class="paragraph"><p>3) Sincronizar los buceos de la lista de <em>Subsurface</em> con las coordenadas del
-servidor de internet.</p></div>
-<div class="paragraph"><p><em>Subsurface</em> dispone de dos herramientas para hacer esta tarea:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-La <em>app Subsurface companion</em> (Android e iOS)
-</p>
-</li>
-<li>
-<p>
-La <em>app Subsurface-mobile</em> (Android e iOS)
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>Ambas aplicaciones efectuan la recogida de coordenadas y la sincronización con
-inmersiones de la lista. Sin embargo, la app companion no está siendo
-desarrollada y ha sido reeemplazada por la app <em>Subsurface-mobile</em>.  Mientras
-que la app companion servía exclusivamente para recoger coordenadas y hacerlas
-disponibles para la versión de sobremesa de <em>Subsurface</em>, <em>Subsurface-mobile</em>
-efectua muchas de las funciones de la versión de sobremesa, incluyendo la
-visualización y gestión de de la información de buceo. A continuación se
-describen los tres pasos mencionados anteriormente para cada una de las apps
-moviles.</p></div>
-<div class="paragraph"><p>Para información sobre el uso de <em>Subsurface companion</em>, pulsa click <a href="#S_Companion"><em>aquí</em></a>.</p></div>
+<div class="paragraph"><p>2) Añadir las coordenadas recogidas a las inmersiones usando la app
+<em>Subsurface-mobile</em>.
+3) Sincronizar el divelog con la nube de <em>Subsurface</em> usando la app
+<em>Subsurface-mobile</em>.</p></div>
+<div class="paragraph"><p>Los usuarios puede que usen todavía la anticuada app <em>Companion</em>. Sin embargo,
+esta app no se ha desarrollado en varios años y ha sido eliminada de los
+repositorios de Android e iOS. Su funcionalidad está totalmente integrada en
+<em>Subsurface-mobile</em>.
+El antiguo servicio de posiciones GPS en internet se cerrará a finales de 2018
+y a partir de ese momento, la app <em>Companion</em> ya no se podrá utilizar. Por
+favor, usa la app <em>Subsurface-mobile</em> en su lugar.</p></div>
 <div class="sect3">
 <h4 id="_guardar_y_utilizar_coordenadas_gps_utilizando_em_subsurface_mobile_em">5.4.1. Guardar y utilizar coordenadas GPS utilizando <em>Subsurface-mobile</em></h4>
 <div class="sect4">
@@ -2162,39 +2205,31 @@ minutos.
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p><strong>¿Como se recogen las coordenadas GPS?</strong>  Suponiendo que el buceadror ajusta 5
+<div class="paragraph"><p><strong>¿Como se recogen las coordenadas GPS?</strong>  Suponiendo que el buceador ajusta 5
 minutos y 50 metros en la pantalla de preferencias, la app tomará una posición
 en el punto actual, seguida por otra cada 5 minutos <strong>o</strong> cada vez que nos
 desplacemos más de 50 metros de la posición anterior, lo que ocurra primero.
-Si las siguentes posiciones se encuentran en el radio de 50 metros indicado,
+Si las siguientes posiciones se encuentran en el radio de 50 metros indicado,
 las posiciones no se guardan. Si el buceador no se mueve, solo se guardará la
 primera posición. Si el buceador se mueve, se obtendrá una traza de la ruta
 seguida, al guardarse las posiciones cada 50 metros.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_activar_la_recogida_automatica_de_posiciones_gps">Activar la recogida automática de posiciones GPS</h5>
-<div class="paragraph"><p>El menú principal de <em>Subsurface-mobile</em> tiene una casilla seleccionable en la
-parte inferior izquierda etiquetada "Activar servicio de posicionamiento" (ver
-imagen a continuación) Al seleccionar la casilla, el servicio se inicia y
-comienza la recogida automática de posiciones.</p></div>
+<div class="paragraph"><p>El menú GPS de <em>Subsurface-mobile</em> tiene una opción en la parte inferior
+etiquetada "Activar servicio de posicionamiento" (ver imagen a continuación).
+Al seleccionar la opción, el servicio se inicia y comienza la recogida
+automática de posiciones.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/MobileMenu.jpg" alt="FIGURA: Subsurface-mobile menú principal" />
+<img src="images/MobileGpsMenu.jpg" alt="FIGURA: Menú GPS de Subsurface-mobile" />
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_despues_de_la_inmersion_detener_la_grabacion_automatica_de_gps">Despues de la inmersión, detener la grabación automática de GPS</h5>
-<div class="paragraph"><p>Desactiva la casilla seleccionada anteriormente.</p></div>
-</div>
-<div class="sect4">
-<h5 id="_subir_las_posiciones_gps_al_servidor_de_internet_de_em_subsurface_em">Subir las posiciones GPS al servidor de internet de <em>Subsurface</em></h5>
-<div class="paragraph"><p><strong>N.B.</strong> La subida de posiciones GPS al servidor de internet, solo puede hacerse
-si se dispone de una conexión decente, vía red telefónica o wifi. Si la red no
-está disponible desde el punto de buceo, la subida de posiciones solo podrá
-tener lugar cuando se haya restablecido la conexión.</p></div>
-<div class="paragraph"><p>Desde el menú principal de <em>Subsurface-mobile</em>, selecciona <em>GPS</em>&#8594;_Subir datos
-GPS_.</p></div>
+<h5 id="_despues_de_la_inmersion_detener_la_grabacion_automatica_de_gps">Después de la inmersión, detener la grabación automática de GPS</h5>
+<div class="paragraph"><p>Selecciona la opción <em>Deshabilitar el servicio de posicionamiento</em> en la parte
+inferior del menú GPS de <em>Subsurface-mobile</em>.</p></div>
 </div>
 <div class="sect4">
 <h5 id="_aplicar_las_posiciones_guardadas_a_las_inmersiones_de_la_lista">Aplicar las posiciones guardadas a las inmersiones de la lista</h5>
@@ -2208,401 +2243,33 @@ cada buceo.</p></div>
 recogida, subida, gestión y sincronizado de estas información.</p></div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="S_Companion">5.4.2. Importar coordenadas GPS con la app <em>Subsurface</em> Companion para teléfonos móviles</h4>
-<div class="paragraph"><p>Utilizando la app <em>Subsurface</em> Companion en un dispositivo Android o <a href="#S_iphone"><em>iPhone</em></a>
-con GPS, se pueden pasar automáticamente las coordenadas de los
-puntos de buceo al registro de <em>Subsurface</em>. La app Companion guarda las
-ubicaciones de buceo en un servidor dedicado basado en internet. <em>Subsurface</em>
-puede recoger las coordenadas desde este servidor.</p></div>
-<div class="paragraph"><p>Para hacer esto:</p></div>
-<div class="sect4">
-<h5 id="_crear_una_cuenta_para_la_app_companion">Crear una cuenta para la app Companion</h5>
-<div class="ulist"><ul>
-<li>
-<p>
-Registrarse en la <a href="http://api.hohndel.org/login/">página web de <em>Subsurface</em>
-   companion</a>. Se recibirá un correo de confirmación con instrucciones y un
-   <strong>DIVERID</strong> personal, un largo número que te dará acceso a las capacidades de la
-   app Companion.
-</p>
-</li>
-<li>
-<p>
-Descargar la app desde
-   <a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play Store</a>
-   o desde
-   <a href="https://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect4">
-<h5 id="_utilizar_em_subsurface_em_companion_en_un_smartphone_android">Utilizar <em>Subsurface</em> companion en un smartphone Android</h5>
-<div class="paragraph"><p>La primera vez que se utiliza, la app tiene tres opciones:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Create a new account</em>. Equivalente a registrase en la página de <em>Subsurface</em>
-  companion utilizando un navegador de internet. Se puede solicitar un <strong>DIVERID</strong>
-  con esta opción que se recibirá vía correo electrónico y se confirmará a través
-  de la <a href="http://api.hohndel.org/login/">_página web de Subsurface companion</a> para
-  activar la cuenta.
-</p>
-</li>
-<li>
-<p>
-<em>Retrieve an account</em>. Si el usuario olvidó su <strong>DIVERID</strong> recibirá un correo
-  para recuperar el número.
-</p>
-</li>
-<li>
-<p>
-<em>Use an existing account</em>. Se pide el <strong>DIVERID</strong>. La app conserva el <strong>DIVERID</strong>
-  y no lo vuelve a pedir, a menos que se utilice la opción <em>Disconnect</em> en el menú
-  (ver a continuación).
-</p>
-</li>
-</ul></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content">En <em>Subsurface</em> el DIVERID también debe marcarse en el panel Preferencias, al
-que se llega seleccionando <em>Archivo→Preferencias→General</em> desde el menú
-principal en el propio <em>Subsurface</em>.
-Esto facilitará la sincronización entre <em>Subsurface</em> y la app Companion.</td>
-</tr></table>
-</div>
-<div class="paragraph"><p><strong>Crear nuevas ubicaciones de buceo</strong></p></div>
-<div class="paragraph"><p>Ahora se está preparado para tomar una posición de buceo y enviarla al servidor.
-La pantalla de Android se verá como lo imagen de abajo a la izquierda (<strong>A</strong>),
-pero sin ninguna inmersión.</p></div>
-<div class="paragraph"><p>Tocando el icono "+" de arriba a la derecha se abrirá un menú con tres opciones:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Current: Se pedirá un nombre para el lugar (o que se active el GPS si estaba
-  apagado). Tras lo cual se guardará la posición actual.
-</p>
-</li>
-<li>
-<p>
-Use map: Esta opción permite al usuario fijar una posición buscándola en un
-  mapamundi. Se muestra un mapamundi(ver <strong>B</strong> a continuación) sobre el cual indicar
-  la posición con una pulsación larga en la pantalla táctil (si la posición
-  marcada es errónea, simplemente se indica una nueva). A continuación hay que
-  seleccionar el símbolo de chequeo arriba a la derecha. Se mostrará un dialogo
-  que permitirá introducir un nombre para el punto seleccionado y la fecha y hora
-  del buceo (ver <strong>C</strong> abajo). De cara a importar esta posición de buceo a
-  <em>Subsurface</em> es recomendable fijar la misma hora de inmersión que la marcada por
-  el ordenador de buceo.
-</p>
-</li>
-</ul></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion_5.jpg" alt="FIGURA: Companion App, añadir posición usando e mapa" />
-</div>
-</div>
-<div class="ulist"><ul>
-<li>
-<p>
-Importar desde archivos GPX: El dispositivo android buscará archivos .gpx y
-  mostrará los que se localicen. El archivo que se seleccione se abrirá y se
-  mostrarán las posiciones que contiene. Ahora hay que elegir las ubicaciones
-  correctas y luego seleccionar el símbolo de chequeo arriba ala derecha, tras lo
-  cual las posiciones se enviarán al servicio web y se añadirán a la lista del
-  dispositivo android.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Listas de ubicaciones de buceo</strong></p></div>
-<div class="paragraph"><p>La pantalla principal muestra una lista de ubicaciones de buceo, cada una con un
-nombre, fecha y hora (ver <strong>A</strong> debajo). Algunas posiciones pueden tener una
-flechita sobre la casilla de selección, lo que indica que necesitan remitirse al
-servidor. Se pueden seleccionar posiciones individuales de la lista. Una
-posición seleccionada tiene una marca de chequeo en la casilla de selección. Se
-pueden efectuar operaciones en grupo (como <em>Delete</em> o <em>Send</em>) sobre todas las
-operaciones seleccionadas a la vez.</p></div>
-<div class="paragraph"><p>Las posiciones de buceo de la lista pueden visualizarse de dos maneras: una
-lista de ubicaciones o un mapa sobre el que se indican las posiciones. La forma
-de visualizarla (lista o mapa) se modifica seleccionando <em>Dives</em> arriba a la
-izquierda de la pantalla (ver <strong>A</strong> abajo) y luego eligiendo el modo. Si se
-selecciona una ubicación (en la lista o en el mapa), se abre un panel de edición
-(ver *C abajo) donde pueden cambiarse algunos detalles.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion_4.jpg" alt="FIGURE: Companion App, añadir posición usando el mapa" />
-</div>
-</div>
-<div class="paragraph"><p>Cuando se pulsa sobre una posición (<strong>sin</strong> seleccionar la casilla), se mostrarán
-el nombre del punto, la fecha y hora y las coordenadas GPS, con dos opciones
-arriba de la pantalla:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Edit (lapiz): Permite cambiar el nombre u otras características del punto de
-  buceo.
-</p>
-</li>
-<li>
-<p>
-Maps: Muestra el punto de buceo sobre un mapa.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>Tras editar y guardar la posición de buceo (ver <strong>C</strong> abajo), se necesita subirla
-al servidor, como se explicará a continuación.</p></div>
-<div class="paragraph"><p><strong>Subir puntos de buceo</strong></p></div>
-<div class="paragraph"><p>Hay varias formas de enviar los buceos al servidor; la más fácil es simplemente
-seleccionar la inmersión (ver la imagen <strong>A</strong> abajo) y luego pulsar la flecha
-arriba a la derecha de la pantalla.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content">El usuario debe tener cuidado ya que el icono de papelera de la derecha
-significa exactamente lo que se supone: borra los puntos de buceo seleccionados.</td>
-</tr></table>
-</div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion_1.jpg" alt="FIGURA: Capturas (A-B) de la app companion" />
-</div>
-</div>
-<div class="paragraph"><p>Después de un viaje de buceo usando Companion, todos los puntos de inmersión
-estarán listos para ser descargados a un diario de <em>Subsurface</em> (ver a
-continuación).</p></div>
-<div class="paragraph"><p><strong>Ajustes de la Companion app</strong></p></div>
-<div class="paragraph"><p>Seleccionar la opción Settings del menú, resulta en la imagen B de arriba a la
-derecha.</p></div>
-<div class="paragraph"><p><em>Server and account</em></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Web-service URL</em>. Esta está predefinida (<a href="http://api.hohndel.org/">http://api.hohndel.org/</a>)
-</p>
-</li>
-<li>
-<p>
-<em>User ID.</em> El DIVERID obtenido al registrarse como indicábamos antes. La forma
-   más fácil de introducirlo es simplemente copiar y pegar desde el correo de
-   confirmación pero, desde luego, el usuario teclearlo carácter a carácter.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Synchronization</em></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Synchronize on startup</em>. Si se selecciona, los puntos de buceo del
-   dispositivo android y los del servicio web se sincronizarán cada vez que se
-   inicie la app.
-</p>
-</li>
-<li>
-<p>
-<em>Upload new dives</em>. Si se selecciona, cada vez que el usuario añada una
-   ubicación de buceo, se enviará automáticamente al servidor.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Background service</em></p></div>
-<div class="paragraph"><p>En vez de tomar una sola ubicación de buceo, los usuarios pueden dejar el
-servicio ejecutándose en segundo plano en tu dispositivo android, tomando
-continuamente posiciones GPS</p></div>
-<div class="paragraph"><p>Los ajustes, a continuación, definirán el comportamiento del servicio:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Min duration</em>. En minutos. La app intentará tomar una posición cada X minutos
-   hasta que el usuario la detenga.
-</p>
-</li>
-<li>
-<p>
-<em>Min distance</em>. En metros. Distancia mínima entre dos posiciones.
-</p>
-</li>
-<li>
-<p>
-<em>Name template</em>. La plantilla de nombre que usará la app cuando guarde las
-   posiciones.
-</p>
-</li>
-</ul></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/info.jpg" alt="Tip" />
-</td>
-<td class="content"><em>¿ Como trabaja el servicio en segundo plano ?</em> Suponiendo que el usuario ha
-fijado 5 minutos y 50 metros en los ajustes anteriores, la app tomará una
-posición en la ubicación actual, seguida por otra cada 5 minutos <strong>o</strong> cada vez
-que se desplace 50 metros de la posición anterior. Si las siguientes ubicaciones
-están en el radio de 50 metros de la anterior, no se guardarán. De esta forma,
-si el usuario no se está moviendo, solo se guarda una posición, pero si se
-mueve, puede llegar a tener una traza de su viaje al guardar una ubicación cada
-50 metros.</td>
-</tr></table>
-</div>
-<div class="paragraph"><p><em>Other</em></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Mailing List</em>. El buzón de correo de <em>Subsurface</em>. El usuario enviar mails a
-   la lista de correo de <em>Subsurface</em>.
-</p>
-</li>
-<li>
-<p>
-<em>Subsurface  website</em>. Un link a la URL de la página de <em>Subsurface</em>.
-</p>
-</li>
-<li>
-<p>
-<em>Version</em>. Muestra la versión actual de la app Companion.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Search</em></p></div>
-<div class="paragraph"><p>Se utiliza para buscar en las ubicaciones de buceo guardadas, por nombre o por
-fecha y hora.</p></div>
-<div class="paragraph"><p><em>Start service</em></p></div>
-<div class="paragraph"><p>Inicia el servicio en segundo plano siguiendo los ajustes previamente definidos.</p></div>
-<div class="paragraph"><p><em>Disconnect</em></p></div>
-<div class="paragraph"><p>Esta opción está mal nombrada. "Desconecta" la app del servidor reseteando el
-DIVERID en la app, y retorna a la primera pantalla desde la que se puede crear
-una cuenta, reactivar el DIVERID o volver a poner el del usuario. Desconectar
-puede ser útil si se desea descargar a un dispositivo android posiciones de otro
-buceador registrado o enviar la posición actual al servidor con el ID de otro
-buceador registrado.</p></div>
-<div class="paragraph"><p><em>Send all locations</em></p></div>
-<div class="paragraph"><p>Esta opción envía todas las posiciones guardadas en el dispositivo android al
-servidor.</p></div>
-</div>
-<div class="sect4">
-<h5 id="S_iphone">Usar la app Subsurface companion en un <em>iPhone</em> para registra puntos de buceo</h5>
-<div class="paragraph"><p>El interfaz de iPhone es bastante simple. Se necesita introducir la ID de
-usuario (obtenida durante el registro) en el espacio reservado para ello, luego
-seleccionar "Dive in" (ver parte izquierda de la imágen de abajo) y se empieza
-a recoger información de las ubicaciones.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/iphone.jpg" alt="FIGURE: Usiar la aplicación iPhone companion" width="640" />
-</div>
-</div>
-<div class="paragraph"><p>Las inmersiones se pueden añadir de forma automática o manual. En modo manual,
-se añade una sola ubicación de buceo o "waypoint" al flujo de entrada de datos
-del GPS. En modo automático se crea una traza continua de posiciones GPS de las
-cuales, posteriormente, después de haberse importado, <em>Subsurface</em> puede
-seleccionar las posiciones correctas en base a las horas de los buceos. El modo
-por defecto para el <em>iPhone</em> es el automático.  Cuando se añade una inmersión,
-el servicio de posicionamiento se inicia automáticamente y aparece una barra
-roja en la parte de abajo de la pantalla. Tras el buceo, se puede hacer clic en
-la barra roja para detener el servicio de posicionamiento. Mientras el servicio
-se está ejecutando, solo se pueden añadir inmersiones usando el mecanismo
-manual.</p></div>
-<div class="paragraph"><p>Se puede editar el nombre del punto de buceo posteriormente, seleccionando la
-inmersión de la lista y clicando en el nombre. No hay otros campos editables.
-La lista se sube automáticamente desde el <em>iPhone</em> al servicio web y no hay
-opción a hacerlo manualmente.</p></div>
-<div class="paragraph"><p><strong>Descargar ubicaciones de buceo al diario en <em>Subsurface</em></strong></p></div>
-<div class="paragraph"><p>Hay que descargar a <em>Subsurface</em> las inmersiones del ordenador de buceo, o
-crearlas manualmente, antes de obtener las coordenadas del servifor. El diálogo
-de descarga se puede obtener vía <em>Ctrl+G</em> o desde el menú principal de
-<em>Subsurface</em>, <em>Importar → Importar datos GPS del servicio Subsurface</em>,
-resultando la imagen de abajo a la izquierda (A). La primera vez que se use, el
-campo DIVERID estará en blanco. Introducir el DIVERID. Después se pulsa el botón
-Descargar y comenzará la descarga, tras lo cual aparece la pantalla de abajo a
-la derecha (<strong>B</strong>):</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/DownloadGPS.jpg" alt="FIGURE: Descargar datos GPS de la app Companion]" />
-</div>
-</div>
-<div class="paragraph"><p>Nótese que ahora está activo el botón <em>Aplicar</em>. Pulsarlo para actualizar las
-inmersiones recién creadas o descargadas a <em>Subsurface</em>, lo cual aplicará las
-coordenadas y los nombres que se hayan dado en la app en todas las inmersiones
-en las que coincidan las fechas y las horas de las posiciones GPS descargadas.
-Si se ha introducido en <em>Subsurface</em> el nombre del punto de buceo antes de
-descargar las coordenadas GPS, este nombre tendrá preferencia sobre los
-descargados.</p></div>
-<div class="paragraph"><p>Ya que <em>Subsurface</em> busca coincidencias entre las localizaciones GPS del
-dispositivo android y la información del ordenador de buceo basándose en la
-fecha y la hora, la asignación automática depende de la coincidencia entre los
-datos de ambos dispositivos. Aunque <em>Subsurface</em> tiene un margen de tolerancia
-muy amplio, puede ser incapaz de identificar la inmersión correcta, si hay mucha
-diferencia entre la hora del ordenador de buceo y la del dispositivo android,
-resultando en que no haya actualización.</p></div>
-<div class="paragraph"><p>Fechas y horas similares en los dispositivos no siempre son posibles y puede
-haber muchas razones para ello (p.e. zonas horarias), o <em>Subsurface</em> puede ser
-incapaz de decidir cual es la posición correcta de una inmersión (p.e. en
-inmersiones repetitivas mientras se ejecuta el servicio en 2º plano puede haber
-varios puntos incluidos en el rango de tiempo que casen no solo para la primera
-inmersión, sino también para las siguientes). Una solución alternativa para esta
-situación sería editar manualmente la hora en la lista de inmersiones de
-<em>Subsurface</em> <strong>antes</strong> de descargar los datos GPS, para hacerla coincidir con la
-de estos, y luego volver a cambiarla a la correcta <strong>después</strong> de la descarga.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/info.jpg" alt="Note" />
-</td>
-<td class="content">SUGERENCIAS:</td>
-</tr></table>
-</div>
-<div class="ulist"><ul>
-<li>
-<p>
-El servicio en segundo plano es una herramienta poderosa, pero puede llenar la
-   lista de localizaciones con muchas posiciones innecesarias que no correspondan a
-   los puntos exactos de buceo, sino a la ruta seguida por el barco. Actualmente,
-   borrar estas posiciones del servidor resulta difícil. En algunas situaciones
-   resulta, pues, prudente limpiar la lista del dispositivo android antes de enviar
-   los puntos al servidor simplemente borrando los que no sean correctos. Esto
-   puede ser necesario, por ejemplo, si se desea mantener limpia la lista de
-   ubicaciones para poder visualizarlas en el mapa del servidor o del dispositivo
-   android.
-</p>
-</li>
-<li>
-<p>
-También tendría sentido proporcionar nombres significativos a las
-   localizaciones enviadas al servidor o, al menos, usar tal nombre en el ajuste
-   <em>Name Template</em> si se va a ejecutar el background service, especialmente durante
-   los viajes de buceo con muchas inmersiones y puntos de buceo.
-</p>
-</li>
-</ul></div>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="S_LoadImage">5.5. El cargador de fotografías de <em>Subsurface</em></h3>
-<div class="paragraph"><p>Muchos buceadores (si no la mayoría) toman fotografías durante sus inmersiones.
-<em>Subsurface</em> nos permite almacenar y mostrar fotogrfías de cada inmersión. Las
-fotos se superponen en el perfil de la inmersión, en los momentos donde se
-tomaron y pueden visualizarse desde allí.</p></div>
+<h3 id="S_LoadImage">5.5. Añadir fotografías o vídeos a las inmersiones</h3>
+<div class="paragraph"><p>Muchos buceadores (si no la mayoría) toman fotografías o vídeos durante sus
+inmersiones. LLamaremos a estos archivos "medios" refiriendonos a fotos o
+vídeos.
+<em>Subsurface</em> nos permite almacenar y mostrar estos medios en cada inmersión.
+Sus miniaturas se superponen en el perfil de la inmersión, en los momentos
+donde se tomaron. Los medios pueden visualizarse desde el perfil o desde la
+pestaña <em>Medios</em> en el <strong>Panel de Notas</strong>. <em>Subsurface</em> permite visualizar las
+fotos o vídeos en un interfaz unificado.</p></div>
 <div class="sect3">
-<h4 id="_cargar_fotos_y_sincronizar_la_camara_con_el_ordenador_de_buceo">5.5.1. Cargar fotos y sincronizar la cámara con el ordenador de buceo</h4>
+<h4 id="_cargar_medios_y_sincronizar_la_camara_con_el_ordenador_de_buceo">5.5.1. Cargar medios y sincronizar la cámara con el ordenador de buceo</h4>
 <div class="paragraph"><p>Se selecciona una inmersión o un grupo de ellas en la lista. Luego se hace
 clic-derecho en la selección lo que nos mostrará el <a href="#S_DiveListContextMenu">Menú contextual de la lista de inmersiones</a>.
-Hacemos click-izquierdo en la opción apropiada para cargar las imágenes desde
+Hacemos click-izquierdo en la opción apropiada para cargar los medios desde
 un archivo o desde internet y aparecerá el navegador del sistema. Selecciona
-la carpeta y las fotografías que necesiten cargarse en <em>Subsurface</em> y clica el
+la carpeta y las medios que necesiten cargarse en <em>Subsurface</em> y clica el
 botón <em>Abrir</em>.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage2_f20.jpg" alt="FIGURA: Opción de carga de imágenes" />
 </div>
 </div>
-<div class="paragraph"><p>Si las fotos se importan desde Internet, indica una URL que apunte a una sola
-fotografía. Si se indica una carpeta no se importan: las fotos de internet se
-importan una a una. Si las fotos se cargan desde internet, <em>Susbsurface</em>
+<div class="paragraph"><p>Si los medios se importan desde Internet, indica una URL que apunte a una sola
+archivo. Si se indica una carpeta no se importan: los medios de internet se
+importan una a una. Si los medios se cargan desde internet, <em>Susbsurface</em>
 supone que existe una conexión activa cada vez que se visualiza una foto.</p></div>
 <div class="paragraph"><p>Tras haber seleccionado la carpeta local o la imagen de internet, se desplegará
 el diálogo de sincronización que se muestra a continuación. El
@@ -2667,28 +2334,58 @@ posicionarlas en el perfil de la inmersión.</p></div>
 <img src="images/LoadImage3c_f23.jpg" alt="FIGURE: Diálogo de sincronización" />
 </div>
 </div>
-<div class="paragraph"><p>Si la hora de la foto es muy anterior o posterior al buceo, no se sitúa sobre el
+<div class="paragraph"><p>Si la hora de la foto o video es muy anterior o posterior al buceo, no se sitúa sobre el
 perfil de la inmersión (ver el aviso en rojo de la imágen anterior). Sin
-embargo, si se selecciona la casilla apropiada (ver imágen anterior) estas
-fotos aún pueden situarse en la pestaña <em>Fotos</em> del panel de <strong>Notas</strong> de forma
-que todas las fotos asociadas con un buceo puedan visualizarse, incluidas las
-que se hayan tomado antes o despues de la inmersión.</p></div>
+embargo, si se selecciona la casilla apropiada (ver imágen anterior) estos
+medios aún pueden situarse en la pestaña <em>Medios</em> del panel de <strong>Notas</strong> de forma
+que todas las fotos o videos asociados con un buceo puedan visualizarse,
+incluidos los que se hayan tomado antes o despues de la inmersión.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_visualizar_las_imagenes">5.5.2. Visualizar las imágenes</h4>
+<h4 id="S_ViewMedia">5.5.2. Visualizar los medios</h4>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph"><p><strong>Asegurarse de que se crean las miniaturas para los archivos de vídeo</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content"><em>Subsurface</em> presenta los medios en un panel a través de miniaturas. En el
+caso de una foto crear la miniatura es sencillo ya que la imagen está bien
+definida. Sin embargo, al hallarse un vídeo compuesto por muchas imágenes
+surge la cuestión de cual utilizar para la miniatura. Se requieren dos
+acciones para crear las miniaturas de los vídeos:</td>
+</tr></table>
+</div>
+<div class="ulist"><ul>
+<li>
+<p>
+Completar el ajuste correspondiente en las <em>Preferencias</em>.
+</p>
+</li>
+<li>
+<p>
+Se necesita tener instalado el programa <em>ffmpeg</em> en el ordenador que ejecute
+<em>Subsurface</em>.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Se proporcionan detalles completos en <a href="#S_APPENDIX_F">el apéndice F</a>.</p></div>
+</div></div>
 <div class="paragraph"><p>Después que las imágenes han sido cargadas aparecen en dos lugares:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-La pestaña <em>Fotos</em> del panel <em>Notas</em> (lado izquierdo de la imágen a
+La pestaña <em>Medios</em> del panel <em>Notas</em> (lado izquierdo de la imágen a
 continuación).
 </p>
 </li>
 <li>
 <p>
 Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
-   que relejan la hora en que se tomó cada fotografía. Para ver las fotos sobre el
-   perfil, activa el botón <em>Mostrar fotos</em> a la izquierda del perfil:
+   que relejan la hora en que se tomó cada foto o video. Para ver los medios sobre el
+   perfil, activa el botón <em>Mostrar medios</em> a la izquierda del perfil:
 </p>
 </li>
 </ul></div>
@@ -2700,24 +2397,24 @@ Como pequeños iconos (chinchetas) sobre el perfil de inmersión, en posiciones
 <div class="paragraph"><p>Esto producirá un perfil como el que se muestra a continuación</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/LoadImage4_f20.jpg" alt="FIGURA: Fotos sobre un perfil de inmersión" />
+<img src="images/LoadImage4_f20.jpg" alt="FIGURA: Medios sobre un perfil de inmersión" />
 </div>
 </div>
-<div class="paragraph"><p>Si se sitúa el ratón sobre uno de los iconos, se mostrará una versión reducida
-de la foto. Ver imagen a continuación:</p></div>
+<div class="paragraph"><p>Si se sitúa el ratón sobre uno de los iconos, se mostrará una miniatura del
+medio. Ver imagen a continuación:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage5_f20.jpg" alt="FIGURA: Foto reducida sobre perfil de inmersión" />
 </div>
 </div>
 <div class="paragraph"><p>Si hacemos clic sobre la imagen reducida aparecerá la fotografía a tamaño
-completo sobre la ventana de <em>Subsurface</em>. Esto permite una buena visión de las
-fotos que han sido importadas. Ver imagen a continuación.
-Cada imagen reducida tiene una pequeña papelera en su esquina superior
+completo sobre la ventana de <em>Subsurface</em>. Esto permite una buena visión de los
+medios que han sido importados. Ver imagen a continuación.
+Cada miniatura tiene una pequeña papelera en su esquina superior
 izquierda (ver imagen anterior). Si se selecciona la papelera, la foto se
 borra de la inmersión, así pues, hay que tener un poco de cuidado al clicar
-sobre las imágenes. Las imágenes  también puede borrase desde la pestaña <em>Fotos</em>
-(ver en el siguiente punto).</p></div>
+sobre las imágenes. Las imágenes  también puede borrase desde la pestaña
+<em>Medios</em> (ver en el siguiente punto).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage6_f20.jpg" alt="FIGURA: Foto a pantalla completa sobre el perfil de inmersión" />
@@ -2725,111 +2422,79 @@ sobre las imágenes. Las imágenes  también puede borrase desde la pestaña <em
 </div>
 </div>
 <div class="sect3">
-<h4 id="_la_pestana_em_fotos_em">5.5.3. La pestaña <em>Fotos</em></h4>
-<div class="paragraph"><p>Las fotografías asociadas a una inmersión se muestran como miniaturas en la
-pestaña <em>Fotos</em> del <em>Panel de inmersión</em>. Se puede acceder con facilidad a las
-fotos hechas en rápida sucesión durante la inmersión, desde la pestaña <em>Fotos</em>.
-Esta pestaña es una herramienta para acceder individualmente a las fotos de un
+<h4 id="_la_pestana_em_medios_em">5.5.3. La pestaña <em>Medios</em></h4>
+<div class="paragraph"><p>Los medios asociados a una inmersión se muestran como miniaturas en la
+pestaña <em>Medios</em> del <em>Panel de Notas</em>. Se puede acceder con facilidad a las
+fotos hechas en rápida sucesión durante la inmersión, desde la pestaña <em>Medios</em>.
+Esta pestaña es una herramienta para acceder individualmente a los medios de un
 buceo, mientras que las "chinchetas" en el perfil de inmersión proporcionan una
-indicación de cuando se tomó la foto. Clicando una sola vez sobre una de la
-miniaturas de la pestaña <em>Fotos</em>, seleccionamos una foto. Haciendo doble-clic
-sobre una miniatura, se muestra la imagen a tamaño completo superpuesta a la
-ventana de <em>Subsurface</em>. Podemos borrar una foto desde la pestaña <em>Fotos</em>
-seleccionándola (un solo clic) y pulsando a continuación la tecla <em>Supr</em> en el
-teclado. Esto eliminará la foto tanto de la pestaña <em>Fotos</em> como del <em>Perfil de
-la inmersión</em>.</p></div>
+indicación de cuando se grabó el medio. El tamaño de las miniaturas de la
+pestaña <em>Medios</em> se puede modificar usando el control deslizante de la parte de
+abajo del panel. Clicando una sola vez sobre una de la
+miniaturas de la pestaña <em>Medios</em>, seleccionamos una foto. Haciendo doble-clic
+sobre una miniatura, se muestra la imagen a tamaño completo o se visualiza el
+video superpuesto a la ventana de <em>Subsurface</em>. Podemos borrar un medio desde
+la pestaña <em>Medios</em> seleccionándolo (un solo clic) y pulsando a continuación la
+tecla <em>Supr</em> en el teclado. Esto eliminará el medio tanto de la pestaña
+<em>Medios</em> como del <em>Perfil de la inmersión</em>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_fotos_en_disco_duro_externo">5.5.4. Fotos en disco duro externo</h4>
 <div class="paragraph"><p>La mayoría de fotosubs guardan sus fotografías en un disco duro externo. Si este
 disco puede mapearse (como es casi siempre el caso) <em>Subsurface</em> puede acceder
-directamente a las fotos. Esto facilita la interacción entre <em>Subsurface</em> y un
-repositorio externo de fotos. Cuando se asocia un perfil de inmersión con fotos
-de un disco externo se utiliza el procedimiento normal de selección
+directamente a los medios. Esto facilita la interacción entre <em>Subsurface</em> y un
+repositorio externo de medios. Cuando se asocia un perfil de inmersión con
+medios de un disco externo se utiliza el procedimiento normal de selección
 y sincronización (ver en el texto anterior). Sin embargo, después de que el
-disco externo haya sido desconectado, <em>Subsurface ya no podrá acceder a las
-fotos. Si se ha activado la visualización de fotos sobre el perfil (utilizando
+disco externo haya sido desconectado, <em>Subsurface</em> ya no podrá acceder a los
+medios. Si se ha activado la visualización de miniaturas sobre el perfil (utilizando
 la barra de herramientas a la izquierda del perfil), el programa solo mostrará
-unos pequeños puntos blancos donde deberían mostrarse las fotos. Además, la
-pestaña _Fotos</em> solo mostrará los nombres de los archivos de las imágenes. Este
-es el funcionamiento normal. Si, posteriormente, el disco externo con las fotos
-se vuelve a conectar, las fotos se visualizarán normalmente.</p></div>
+las miniaturas y no se podrán ver los vídeos o las imágenes a tamaño completo.
+Si, posteriormente, el disco externo con los medios se vuelve a conectar, los
+medios podrán visualizarse normalmente.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_averiguar_que_inmersiones_tienen_fotos_asociadas">5.5.5. Averiguar que inmersiones tienen fotos asociadas</h4>
-<div class="paragraph"><p>Inspeccionar cada inmersión individual para saber si tiene asociadas fotos
+<h4 id="_averiguar_que_inmersiones_tienen_medios_asociados">5.5.5. Averiguar que inmersiones tienen medios asociados</h4>
+<div class="paragraph"><p>Inspeccionar cada inmersión individual para saber si tiene asociados medios
 puede llevarnos mucho tiempo. Hay una forma rápida de saber que inmersiones
-tiene asociadas fotos y cuales no: activa la casilla <em>Fotos</em> en la lista
+tiene asociados medios y cuales no: activa la casilla <em>Medios</em> en la lista
 desplegable que se obtiene al hacer clic-derecho en la barra de encabezamiento
-de la <strong>Lista de Inmersiones</strong>, todos los buceos con fotos asociadas mostrarán
-un icono indicando si las fotografías se tomaron durante la inmersión, antes,
+de la <strong>Lista de Inmersiones</strong>, todos los buceos con medios asociados mostrarán
+un icono indicando si los medios se grabaron durante la inmersión, antes,
 después o todo ello. Hay más información en la sección del manual que cubre
 los <a href="#S_Divelist_columns">iconos de fotos en la <strong>Lista de Inmersiones</strong></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_FindMovedImages">5.5.6. Mover fotografías entre directorios, discos duros u ordenadores</h4>
-<div class="paragraph"><p>Tras haber cargado una fotografía en <em>subsurface</em> y haberla asociado a un buceo
-determinado, se archiva el directorio donde la foto permanece guardada, para poder
-encontrarla cuando se vuelva a abrir la inmersión. Si la foto o la colección
-completa de fotos se trasladan a otro disco o a una máquina distinta, la ruta
-a la imágen cambia.
-Cuando esto sucede, <em>Subsurface</em> busca las fotos en el directorio original
-desde el que fueron cargadas, no las encuentra y, por tanto,
-no las puede mostrar. Ya que, después de mover fotos, un gran número puede
+<h4 id="S_FindMovedImages">5.5.6. Mover medios entre directorios, discos duros u ordenadores</h4>
+<div class="paragraph"><p>Tras haber cargado un medio en <em>subsurface</em> y haberlo asociado a un buceo
+determinado, se archiva el directorio donde el archivo permanece guardado, para poder
+encontrarlo cuando se vuelva a abrir la inmersión. Si la foto, la colección
+completa de fotos o el vídeo se trasladan a otro disco o a una máquina distinta,
+la ruta al archivo cambia.
+Cuando esto sucede, <em>Subsurface</em> busca los medios en el directorio original
+desde el que fueron cargados, no los encuentra y, por tanto,
+no los puede mostrar. Ya que, después de mover medios, un gran número puede
 necesitar borrarse y reimportarse desde la nueva localización, <em>Subsurface</em>
-tiene un mecanismo que facilita el proceso de actualizar la información del
-directorio para cada foto: actualizaciones automáticas utilizando huellas.</p></div>
-<div class="paragraph"><p>Cuando se carga una foto en <em>Subsurface</em>, se calcula una huella para la imagen
-y se guarda con la otra información de referencia para la foto. Tras mover una
-colección de fotos (que ya ha sido cargada en <em>Subsurface</em>) a un directorio,
-disco u ordenador diferente, <em>Subsurface</em> puede llevar a cabo los siguientes
-pasos:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Buscar en un directorio concreto (y todos sus subdireectorios recursivamente)
-al que se han llevado las fotos.
-</p>
-</li>
-<li>
-<p>
-Calcular huellas para todas las fotos de este directorio, y
-</p>
-</li>
-<li>
-<p>
-si hay coincidencia entre una de las huellas calculadas y la que se calculó
-al cargar la foto en <em>Subsurface</em> (incluso si el nombre del archivo hubiera
-cambiado), actualizar automáticamente la información de directorio, de foma que
-<em>Subsurface</em> pueda encontrar la foto en el nuevo directorio.
-</p>
-</li>
-</ul></div>
+puede localizar los archivos basandose en su nombre y su ruta de acceso.</p></div>
 <div class="paragraph"><p>Esto se consigue seleccionando desde el Menú Principal: <em>Archivo &#8594; Encontrar
-imágenes desplazadas</em>. Esto presenta una ventana en la cual es necesario
-especificar el NUEVO directorio de las fotos. Se selecciona el directorio
-apropiado y se clica el botón <em>Escanear</em> en la parte inferior derecha del
-panel. El proceso puede requerir varios minutos para completarse, tras lo
-cual <em>Subsurface</em> mostrará las fotos correctas cuando se abra un buceo.</p></div>
-<div class="sidebarblock" id="Image_fingerprint_upgrade">
+imágenes desplazadas</em>. Se presentará una ventana desde la cual puede
+controlarse la búsqueda de imágenes. La busqueda se inicia haciendo
+clic en <em>Seleccionar carpeta y escanear</em>. Ya que los medios grabados con
+diferentes cámaras pueden tener los mismos nombres, se tiene en cuenta el
+nombre de la carpeta. Asi pues, hay que seleccionar el directorio raiz de la
+nueva colección de medios. Para un mejor control es posible buscar solo por
+archivos de la inmersión actualmente seleccionada, indicando la
+correspondiente opción.</p></div>
+<div class="paragraph"><p>Despues de que haya terminado la busqueda, se mostrarán los nombres originales
+y las nuevas ubicaciones de las fotografías. Las partes coincidentes de las
+rutas de acceso se enfatizarán. No se mostrarán los medios que se encuentren en
+sus posiciones conocidas. Los cambios propuestos pueden aplicarse clicando en
+<em>Aplicar</em> o rechazarse clicando en <em>Cancelar</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<div class="paragraph"><p><strong>Actualizar colecciones de fotos existentes sin huella</strong></p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content"><em>Subsurface</em> calcula automáticamente huellas para todas las imágenes a las
-que tiene acceso. Cuando manipules estas imágenes, asegúrate de que todas las
-imágenes asociadas al divelog queden accesibles.  <em>Subsurface</em>, automáticamente
-comprueba y actualiza (en caso necesario) las huellas asociadas a cada buceo
-si:
-- Las imágenes asociadas a ese buceo son visibles como miniaturas en el perfil.
-- Se edita cualquier cosa en el panel <strong>Notas</strong> y se guardan las modificaciones
-con <em>Guardar cambios</em>.</td>
-</tr></table>
+<img src="images/FindMovedImages1.jpg" alt="FIGURE:Find moved images" />
 </div>
-</div></div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -2871,7 +2536,7 @@ dos clases de información que necesitan proporcionarse:</p></div>
   el momento adecuado del panel <strong>Perfil de inmersión</strong> y señalar la botella a la
   que se cambió. Tras hacer clic derecho, seguir el menú contextual a "Añadir
   cambio de gas" y seleccionar la botella apropiada entre las definidas en el
-  primer paso (ver imagen a continuación). Si el botón <strong>Barra de botellas</strong> de
+  primer paso (ver imagen a continuación). Si el botón <strong>Barra de gases</strong> de
   la barra de herramientas se ha activado, los cambios también se indicarán en
   la barra (ver imágen a continuación).
 </p>
@@ -2886,6 +2551,25 @@ deco.</p></div>
 <img src="images/multicylinder_dive.jpg" alt="FIGURa: Perfil multi tanque" />
 </div>
 </div>
+<div class="paragraph"><p>Diversos ordenadores de buceo graban automáticamente la presión de las
+botellas. En este caso no se necesita intervención manual.
+Los ordenadores más antiguos (p.e. el Galileo de Uwatec y varios modelos de
+Suunto) gestionan más de un emisor en las botellas, cambiando de un sensor a
+otro al cambiar de botella el buceador y proporcionando un registro secuencial
+de presiones de las botellas durante la inmersión. Algunos de los últimos
+modelos (como el Shearwater Perdix AI o el Scubapro G2) graban dos o más
+presiones al mismo tiempo y continuamente durante la inmersión completa. En
+estos casos <em>Subsurface</em> interpreta correctamente los datos.
+Hay un esfuerzo continuo en el equipo de desarrollo de <em>Subsurface</em> por añadir
+nuevos modelos de ordenadores de buceo a aquellos de los que ya se puede
+descargar y por representar correctamente las presiones de las botellas.
+Independientemente del tipo de gestión de los sensores de los ordenadores de
+buceo, los buceadores técnicos probablemente utilicen ambos métodos de
+registro de presiones, manual y automático, cuando utilicen más de dos gases.
+Sin embargo, el registro automático simplifica el registro de las inmersiones
+en lateral (en las que utilicen dos botellas). Visita el link
+<a href="https://subsurface-divelog.org/documentation/supported-dive-computers/">lista
+de ordenadores de buceo soportados</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_inmersiones_en_montaje_lateral_sidemount">5.6.2. Inmersiones en montaje lateral (sidemount)</h4>
@@ -2893,7 +2577,8 @@ deco.</p></div>
 con ambas o todas las botellas conteniendo la misma mezcla. Aunque es una
 configuración popular entre los espeleo buceadores, el buceo en lateral se
 puede efectuar por buceadores recreativos que hayan completado el entrenamiento
-adecuado.  Registrar inmersiones en sidemount se hace en tres pasos:</p></div>
+adecuado.  Registrar inmersiones en sidemount se hace en tres pasos,
+exactamente como con las inmersiones multi botella anteriores:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -2979,14 +2664,65 @@ El buceo con pSCR, a menudo, requiere cambios de gas, necesitando una botella
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>Si se ha seleccionado pSCR en el <em>Modo de inmersión</em>, el techo de buceo para
-inmersiones pSCR se ajusta para la caída de oxígeno a través de la boquilla
-que, a menudo, requiere mayores períodos de descompresión. A continuación un
+<div class="paragraph"><p>En buceo con pSCR, a menudo, el gas respirado tiene una pO<sub>2</sub> por debajo de
+la del gas de la botella. Esto se debe a que el gas se suministra a un ritmo
+lento mientras que el buceador consume oxigeno continuamente del circuito,
+resultando en la llamada "caida de pO<sub>2</sub> en la boquilla"
+En los perfiles de pSCR, el techo de buceo para se ajusta para esta caída
+y, a menudo, requiere mayores períodos de descompresión. A continuación un
 perfil de inmersión de un buceo con pSCR usando EAN36 como gas de fondo y
 oxígeno para la descompresión. Fíjate que la inmersión duró unas dos horas.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/pSCR_profile.jpg" alt="FIGURA: Perfil pSCR" />
+</div>
+</div>
+<div class="paragraph"><p><em>Visualizar la caida de pO<sub>2</sub></em>: La diferencia entre la presión parcial de
+oxígeno entre la botella y el circuito puede visualizarse en <em>Subsurface</em>
+abriendo el panel <em>Perfil</em> en el menú <em>Archivo &#8594; Preferencias</em> y ajustando la
+información de la sección etiquetada <em>Opciones pSCR</em>. El <em>ratio metabólico de
+pSCR</em> es tu ritmo de metabolización de oxígeno en litros/minuto (habitualmente
+entre 0.5 y 2.5). El <em>Ratio de disolución</em> es el ratio que indica cuanto gas
+del circuito se reemplaza con gas nuevo, en relación al gas que se está
+respirando (los valores habituales se sitúan entre 1:3 y 1:10). Estos valores
+también se usan al planificar inmersiones con pSCR. Si el oxígeno del circuito
+no es recogido por un sensor, <em>Subsurface</em> estima la pO<sub>2</sub> del circuito usando
+la información indicada anteriormente. Esta pO<sub>2</sub> se muestra como la línea
+verde que representa la presión parcial de oxigeno en el perfil de inmersión.
+Si la presión parcial de oxígeno se mide con un sensor conectado a un
+ordenador de buceo, serán estos los valores que se mostrarán en el perfil.
+Adicionalmente, el panel <em>Preferencias</em> nos permite activar una casilla
+etiquetada <em>Mostrar pO<sub>2</sub> equivalente a OC con pSCR</em>. Esto hará que se muestre
+la pO<sub>2</sub> del gas que se inyecta desde la botella (línea naranja). La distancia
+vertical entre las líneas verde y naranja señala la caida de presión en la
+boquilla. Mucha parte del buceo en pSCR requiere la gestión de esta caída de
+presión.</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/DiveModeChange.jpg" alt="Note" />
+</td>
+<td class="content"><em>pSCR y bailout</em>: Los gases que se utilizan en pSCR tienen, a menudo,
+presiones parciales de oxígeno muy bajas cuando se usan a poca profundidad.
+Por esta razón, el buceador suele completar las etapas más superficiales
+utilizando OC.
+Para indicar tales cambios en la inmersión haz clic-derecho con el ratón sobre
+el perfil en el momento oportuno de la inmersión. Del menú contextual que se
+desplegará selecciona <em>Cambiar el modo de buceo</em> y selecciona la opción
+apropiada (ver imagen de la derecha). Algunos ordenadores de buceo registran
+esstos cambios en el modo de buceo como parte del divelog. El icono apropiado
+se mostrará sobre el perfil de la inmersión (ver imagen a continuación).
+A continuación se muestra una inmersión con pSCR en la que se utiliza OC en
+las secciones más superficiales. Justo al comienzo se entra en OC, luego se
+cambia a pSCR a 18 m. Durante el ascenso se cambia a OC a 14 m. Fijaos que,
+para las secciones en OC la pO<sub>2</sub> es idéntica  a la de OC mientrar que en las
+secciones con pSCR, la pO<sub>2</sub> (línea verde) difiere de la de de OC (línea
+naranja).</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pSCR_profile_bailout.jpg" alt="FIGURA: perfil pSCR con bailout" />
 </div>
 </div>
 </div>
@@ -3003,20 +2739,28 @@ oxígeno respirable llevando a cabo dos acciones:
 a) Eliminan dióxido de carbono del gas que se ha exhalado.
 b) Regulan la concentración de oxígeno para que permanezca en los límites.
 La interfaz CCR de <em>Subsurface</em> es experimental actualmente y se halla bajo
-desarrollo activo. <em>Subsurface</em> soporta en estos momentos el Poseidon MKVI y
-los PD Discovery/Evolution  En contraste con un ordenador
-de buceo recreativo convencional, el ordenador de un sistema CCR no permite
-descargar un diario que contenga múltiples inmersiones. En su lugar, cada buceo
-se guarda independientemente. Esto significa que <em>SUbsurface</em> no puede descargar
-el diario directamente desde un CCR, sino que lo importa de la misma manera que
-se importan datos de otras bases de datos digitales, una inmersión cada vez.</td>
+desarrollo activo. <em>Subsurface</em> soporta en estos momentos el Poseidon MKVI,
+los APD Discovery/Evolution  y los ordenadores de Shearwater conectados a
+sistemas CCR. En contraste con un ordenador de buceo recreativo convencional,
+el ordenador de un sistema CCR no permite descargar un diario que contenga
+múltiples inmersiones. En su lugar, cada buceo se guarda independientemente.
+Esto significa que <em>SUbsurface</em> no puede descargar el diario directamente desde
+un CCR, sino que lo importa de la misma manera que se importan datos de otras
+bases de datos digitales, una inmersión cada vez. Sin embargo, los ordenadores
+Shearwater son diferentes en este aspecto y permites descargas de múltiples
+inmersiones.</td>
 </tr></table>
 </div>
 <div class="sect4">
 <h5 id="_importar_una_inmersion_con_ccr">Importar una inmersión con CCR</h5>
-<div class="paragraph"><p>Véase la sección que trata de  <a href="#S_ImportingAlienDiveLogs">Importar información de buceo de otras fuentes digitales</a>.
-Los datos de las inmersiones con CCR se obtienen desde el software propietario
-obtenido al adquirir el equipo CCR.  Vease <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Apéndice B</a>
+<div class="paragraph"><p>Para los controladores Shearwater para CCR, o divelogs sueltos de Shearwater
+CCR, simplemente descarga como harías si se tratara de inmersiones en circuito
+abierto; <em>Subsurface</em> interpretará el divelog correctamente.
+Excepto para los ordenadores de Shearwate, los divelogs para CCR se obtienen
+en la actualidad del software propietario obtenido al adquirir el equipo CCR.
+Lee la sección que trata de
+<a href="#S_ImportingAlienDiveLogs">Importar información de buceo de otras fuentes digitales</a> y
+<a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Apéndice B</a>
 para mayor información. Utiliza dicho software para descargar los datos del
 buceo a una carpeta conocida. Desde el menú principal de <em>Subsurface</em>,
 seleccionar <em>Import &#8594; Importar archivos de registro</em> para desplegar el
@@ -3073,7 +2817,7 @@ del Perfil de Inmersión.</p></div>
 adicional relativa al oxígeno, siempre que el botón pO<sub>2</sub> de la barra de
 herramientas del panel <em>Perfil</em> esté activado.</p></div>
 <div class="paragraph"><p>La primera casilla permite mostrar información del setpoint. Esta es una línea
-roja superpuesta al gráfico verde de presión parcial de oxígeno y permite
+naranja superpuesta al gráfico verde de presión parcial de oxígeno y permite
 comparar la media de presiones parciales de oxígeno medidas, frente al valor
 del setpoint, como se muestra a continuación.</p></div>
 <div class="imageblock" style="text-align:center;">
@@ -3115,6 +2859,51 @@ helio (en su caso) se muestran de la forma habitual para las inmersiones OC.</p>
 de la boquilla.  Estos eventos se muestran como triángulos amarillos y, si se
 pasa el ratón sobre el icono, se da una descripción del evento en la línea
 inferior del <a href="#S_InfoBox">Recuadro de información</a>.</p></div>
+<div class="paragraph"><p><em>Bailout</em>: Los cambios a bailout durante un buceo con CCR pueden registrarse
+en <em>Subsurface</em>. Haz clic-derecho con el ratón sobre el perfil de inmersión en
+el momento adecuado de la misma, para generar un menú contextual. Selecciona
+<em>Cambiar el modo de buceo</em> y elige la opción de bailout correspondiente
+(probablemente OC). Se mostrará un icono sobre el perfil de la inmersión (ver
+imágen a continuación). En la mayoria de equipos CCR es posible cambiar a
+pSCR, especialmente en casos en que la electrónica muere y el suministro de
+diluente es limitado. Esto también puede reflejarse en el divelog y
+<em>Subsurface</em> calculará y mostrará los valores de la pO<sub>2</sub>. El caso durante el
+entrenamiento con CCR e más complejo si el instructor prefiere que se mantenga
+un pO<sub>2</sub> bajo, como 0.7 durante el bailout. En este caso el equipo de CCR el
+setpoint y sobrescribe las condiciones de OC o pSCR. En estos casos es
+probabemente más preciso no registrar un evento de bailout en el divelog, ya
+que <em>Subsurface</em> calculará valores de pO<sub>2</sub> basandose en la asumción erronea
+de que no hay setpoint.
+A continuación se muestra un perfil de una inmersión con CCR y bailout a los
+57 minutos. En este perfil el gráfico verde de pO<sub>2</sub> diverge del setpoint y
+refleja la pO<sub>2</sub> del diluente (en este caso aire).
+La pO<sub>2</sub> del circuito (mostrada como un gráfico de la media de cada sensor de
+oxígeno) es irrelevante ya que el gas que se respira viene directamente de la
+botella. En los casos en que el bailout se hace usando una botella de stage,
+indicar el bailout y el cambio de gas hará que <em>Subsurface</em> calcule los
+valores apropiados de pO<sub>2</sub>. Algunos ordenadores de buceo registran los
+bailouts y los cambios de gas, en este caso se mostrarán automáticamente en el
+perfil.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/CCR_bailout.jpg" alt="FIGURA: perfil de bailout con CCR" />
+</div>
+</div>
+<div class="paragraph"><p><em>Techo de deco</em>: El techo calculado por <em>Subsurface</em> no es muy preciso porque
+la presión de nitrógeno necesaria no suele poderse determinar a partir del
+registro importado del CCR. Sin embargo muchos ordenadores de los equipos CCR
+reportan el techo que calculan internamente y que reflejan valores más
+precisos. Mostrar estos valores se activa pulsando el botón apropiado de la
+izquierda del perfil:</p></div>
+<div class="imageblock">
+<div class="content">
+<img src="images/icons/cceiling.jpg" alt="DC ceiling icon" />
+</div>
+</div>
+<div class="paragraph"><p>El color por defecto del techo generado por el ordenador de buceo es blanco.
+Puede cambiarse a rojo desde la correspondiente casilla del menú
+<em>Preferencias</em>. El perfil anterior muestra el perfil del ordenador de buceo en
+rojo.</p></div>
 <div class="paragraph"><p><em>Presiones de las botellas</em>: Algunos ordenadores de buceo CCR, como el MKVI de
 Poseidon, registran las presiones de las botellas de oxígeno y diluyente. Las
 presiones de estas dos botellas se muestran como líneas verdes sobre el perfil
@@ -3131,25 +2920,6 @@ entre las lecturas de los dos sensores de oxígeno.</p></div>
 <div class="paragraph"><p><em>Información especifica del equipo</em>: <em>Subsurface</em> recoge información que puede
 ser especifica de un tipo de equipo concreto. Se muestra en la <a href="#S_ExtraDataTab">pestaña Otros Datos</a>.
 Puede incluir información de ajustes o metadatos sobre la inmersión.</p></div>
-<div class="paragraph"><p>El techo calculado por <em>Subsurface</em> no es muy preciso dado que no se puede
-determinar fiablemente la presión de nitrógeno en el circuito desde el divelog
-importado del equipo del CCR. Muchos ordenadores de buceo CCR, sin embargo,
-informan del techo calculado internamente por ellos mismos y este se mostrará
-en el perfil activando el botón correspondiente a la izquierda del perfil:</p></div>
-<div class="imageblock">
-<div class="content">
-<img src="images/icons/cceiling.jpg" alt="Icono de techo" />
-</div>
-</div>
-<div class="paragraph"><p>El color por defecto del techo de deco generado por el ordenador es blanco. Sin
-embargo, puede ajustarse a rojo seleccionando la correspondiente casilla en
-<em>Archivo &#8594; Preferencias &#8594; Perfil</em>. A continuación se muestra un perfil
-mostrando el techo deco generado por el ordenador de buceo:</p></div>
-<div class="imageblock">
-<div class="content">
-<img src="images/CCR_dive_ceilingF22.jpg" alt="FIGURA: Perfil de inmersión con CCR" />
-</div>
-</div>
 <div class="paragraph"><p>Se puede encontrar más información, específica para cada ordenador, sobre
 como descargar divelogs de CCR en el <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Apéndice B</a></p></div>
 </div>
@@ -3160,6 +2930,65 @@ como descargar divelogs de CCR en el <a href="#_appendix_b_dive_computer_specifi
 <div class="sect1">
 <h2 id="_obtener_mas_informacion_sobre_inmersiones_guardadas_en_el_diario">6. Obtener más información sobre inmersiones guardadas en el diario</h2>
 <div class="sectionbody">
+<div class="paragraph"><p>El Mapa de Inmersiones tiene algunos botones útiles para manipular algunos
+aspectos de una inmersión, los comentamos a continuación;</p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewMode.jpg" alt="Note" />
+</td>
+<td class="content">Selecciona este botón para visualizar el mapa como una imagen por satélite o
+como una representación de un mapa de Google.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/MapViewPlus.jpg" alt="Note" />
+</td>
+<td class="content">Incrementa el zoom, se visualiza una menor área del mapa</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>+[NOTE]
+Reduce el zoom, se visualiza una mayor área del mapa</p></div>
+<div class="imageblock" style="text-align:left;">
+<div class="content">
+<img src="images/MapMenu.jpg" alt="FIGURA: Menú del mapa" />
+</div>
+</div>
+<div class="paragraph"><p>El botón "hamburguesa" de arriba a la derecha del mapa activa el menú, sus
+opciones son:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Abrir ubicación en <em>Google Maps</em>: Abre la posición de la inmersión
+seleccionada en una ventana separada de <em>Google Maps</em> con el punto de
+inmersión señalado por un marcador de gota.
+</p>
+</li>
+<li>
+<p>
+Copiar ubicación al portapapeles (decimal): Copia las coordenadas de la
+inmersión seleccionada al portapapeles en grados decimales, p.e. -25.933905
+30.710572.
+</p>
+</li>
+<li>
+<p>
+Copiar ubicación al portapapeles (sexagesimal): Copia las coordenadas de la
+inmersión seleccionada al portapapeles en grados sexagesimales, p.e.
+25°56&#8217;02.058"S 30°42&#8217;38.059"E.
+</p>
+</li>
+<li>
+<p>
+Seleccionar puntos de buceo visibles: En la Lista de Inmersiones, selecciona
+todos los puntos de inmersión que se visualizan en el mapa. Esto permite
+seleccionar fácilmente todos los puntos de buceo en área determinada para
+revisarlos u obtener estadísticas de ellos.
+</p>
+</li>
+</ul></div>
 <div class="sect2">
 <h3 id="_la_pestana_informacion_para_inmersiones_individuales">6.1. La pestaña Información (para inmersiones individuales)</h3>
 <div class="paragraph"><p>La pestaña Información proporciona alguna información resumida
@@ -3314,7 +3143,7 @@ requisitos descompresivos en ese instante de tiempo (Deco), el Tiempo hasta la
 superficie (TTS), el techo calculado así como el techo calculado para varios
 compartimentos de tejidos de Bühlmann.</p></div>
 <div class="paragraph"><p>El usuario tiene control sobre varios de los datos que se muestran en la Caja
-de Información, mostrados como cuatro de los botones en lka columna a la
+de Información, mostrados como cuatro de los botones en la columna a la
 izquierda del panel del perfil. Estos son:</p></div>
 <div class="admonitionblock">
 <table><tr>
@@ -3386,6 +3215,12 @@ el mismo efecto narcótico que en una inmersión con aire a una profundidad
 igual a la PNE.</td>
 </tr></table>
 </div>
+<div class="paragraph"><p>Si en algún momento se encuentra en el tejido principal una situación de
+contradifusión isobárica (definida como un momento en el tiempo en el que se
+elimina helio mientras se carga nitrógeno y el efecto total es cargar gas
+inerte) este se indica también en la caja de información. Date cuenta de que
+esta condición no depende solo del gas respirado, sino de la carga de los
+tejidos también.</p></div>
 <div class="paragraph"><p>La figura <strong>B</strong> anterior muestra una Caja de Información con un conjunto de
 datos casi completo.</p></div>
 <div class="sect4">
@@ -3575,6 +3410,9 @@ refiere a valores absolutos, sino que se calcula en relación a la media
 normalizada de aire consumido durante este buceo. Así pues, las áreas en rojo o
 naranja indican momentos de consumo por encima de la media mientras que el verde
 oscuro indicará momentos de consumo de gas por debajo de la media.</p></div>
+<div class="paragraph"><p>En modo planificador, el CAS se fija constante durante el tiempo de fondo así
+como durante la descompresión. Así pues, durante la planificación, el color es
+una indicación de la densidad del gas respirado.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -3609,12 +3447,12 @@ el área blanca horizontal bajo los dos puntos.</td>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
-<img src="images/icons/ShowPhotos_f20.png" alt="Note" />
+<img src="images/icons/ShowPhotos.png" alt="Note" />
 </td>
-<td class="content">Las fotografías que se han añadido a una inmersión pueden mostrarse en el perfil
-seleccionando el botón <strong>Mostrar foto</strong> en la barra de herramientas a la izquierda
-del perfil. La posición de la foto en el perfil indica la hora exacta a la que
-se tomó. Si el botón no está activado, las fotos permanecen ocultas.</td>
+<td class="content">Las fotografías o vídeos que se han añadido a una inmersión pueden mostrarse en el perfil
+seleccionando el botón <strong>Mostrar medios</strong> en la barra de herramientas a la izquierda
+del perfil. La posición de la foto o vídeo en el perfil indica la hora exacta a la que
+se tomó. Si el botón no está activado, los medios permanecen ocultos.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>El perfil de buceo también puede incluir el <strong>techo</strong> registrado por el ordenador
@@ -3906,15 +3744,15 @@ columnas que puede mostrarse en la lista (ver imagen anterior). Si seleccionamos
 un valor para que se muestre o desaparezca de la lista, esta se actualiza
 inmediatamente. Las preferencias para la información que muestre la lista se
 guardan y reutilizan cada vez que se abre <em>Subsurface</em>.</p></div>
-<div class="paragraph" id="S_Photos_divelist"><p>Al seleccionar la casilla <em>Fotos</em> de la lista desplegable, se mostrará un
-icono indicando si existe alguna foto asociada a cada inmersión concreta. Hay
+<div class="paragraph" id="S_Photos_divelist"><p>Al seleccionar la casilla <em>Medios</em> de la lista desplegable, se mostrará un
+icono indicando si existe algun archivo asociado a cada inmersión concreta. Hay
 tres iconos:</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/duringPhoto.png" alt="Note" />
 </td>
-<td class="content">Esta inmersión tiene fotografías tomadas durante el buceo, habitualmente con
+<td class="content">Esta inmersión tiene fotos o vídeos tomados durante el buceo, habitualmente con
 una cámara sumergible.</td>
 </tr></table>
 </div>
@@ -3923,8 +3761,8 @@ una cámara sumergible.</td>
 <td class="icon">
 <img src="images/icons/outsidePhoto.png" alt="Note" />
 </td>
-<td class="content">Esta inmersión tiene fotos tomadas inmediatamente antes o después del buceo.
-Es útil para encontrar fotos de los compañeros o de barcos, ballenas u otros
+<td class="content">Esta inmersión tiene fotos o vídeos tomados inmediatamente antes o después del buceo.
+Es útil para encontrar imágenes de los compañeros o de barcos, ballenas u otros
 animales vistos en superficie antes o después del buceo, o paisajes.</td>
 </tr></table>
 </div>
@@ -3933,7 +3771,7 @@ animales vistos en superficie antes o después del buceo, o paisajes.</td>
 <td class="icon">
 <img src="images/icons/inAndOutPhoto.png" alt="Note" />
 </td>
-<td class="content">Esta inmersión tiene fotos tomadas durante el buceo y antes o después del
+<td class="content">Esta inmersión tiene fotos o vídeos tomados durante el buceo y antes o después del
 mismo.</td>
 </tr></table>
 </div>
@@ -4087,11 +3925,11 @@ profundidad es inferior a un metro.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_cargar_imagenes_desde_archivo">7.4.7. Cargar imágenes desde archivo</h4>
-<div class="paragraph"><p>Este tema se discute en la sección: <a href="#S_LoadImage">Adding photographs to dives</a>.</p></div>
+<div class="paragraph"><p>Este tema se discute en la sección: <a href="#S_LoadImage">Añadir fotos o vídeos a inmersiones</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_cargar_imagenes_desde_la_web">7.4.8. Cargar imágenes desde la web</h4>
-<div class="paragraph"><p>Este tema se discute en la sección: <a href="#S_LoadImage">Adding photographs to dives</a>.</p></div>
+<div class="paragraph"><p>Este tema se discute en la sección: <a href="#S_LoadImage">Añadir fotos o vídeos a inmersiones</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_deshacer_manipulaciones_de_inmersiones">7.4.9. Deshacer manipulaciones de inmersiones</h4>
@@ -4320,11 +4158,20 @@ Formato <em>TeX</em>, un archivo para imprimir usando el software tipográfico T
 <li>
 <p>
 <em>Profundidad de imágenes</em>, que crea un fichero de texto que contiene los
-  nombres de todos los archivos de imágenes añadidos a cualquiera de los buceos
+  nombres de todos los archivos de imagen o vídeo añadidos a cualquiera de los buceos
   seleccionados del la <em>Lista de inmersiones</em>, junto con la profundidad a la
-  fue tomada la fotografía.
+  fue grabado el medio.
 </p>
 </li>
+</ul></div>
+<div class="paragraph"><p>Cuando se selecciona la opción "Anonimizar" para los archivos basados en
+formato xml, las letras A-Z se reemplazan con X en las notas, compañero,
+divemaster, nombre del punto de buceo y descripción del punto. De esta forma
+se pueden compartir los archivos para propositos de depuración sin revelar
+información personal. Por favor, repara en que no se sustituyen otros
+caracteres, por lo que esto no es útil para lenguajes con caracteres no
+latinos, y que las coordenadas GPS también se conservan.</p></div>
+<div class="ulist"><ul>
 <li>
 <p>
 <em>Ajustes generales</em>, en la pestaña HTML, se proporcionan las siguientes
@@ -4509,7 +4356,7 @@ mismo ordenador. Existen dos aproximaciones para hacer esto:</p></div>
      los utilizados recientemente. Sin embargo surgirán problemas si los
      usuarios prefieren diferentes ajustes para <em>Subsurface</em>. Por ejemplo, un
      buceador puede preferir visualizar el techo en el perfil y los iconos de
-     fotos en la <strong>Lista de Inmersiones</strong> y el otro no. Además, la conexión a la
+     medios en la <strong>Lista de Inmersiones</strong> y el otro no. Además, la conexión a la
      nube es única para cada instalación de <em>Subsurface</em> y, si más de un
      usuario deseara guardar datos en la nube sería bastante molesto tener que
      abrir las <strong>Preferencias</strong>  y cambiar cada vez la ID de usuario. Para
@@ -4774,7 +4621,7 @@ permanentemente, selecciona el botón <em>Guardar</em>. Si no se desea, pulsa
 <div class="paragraph"><p>Hay varios ajustes en el panel <strong>General</strong>:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Pref1_f23.jpg" alt="FIGURA: Pantalla de General en Preferencias" />
+<img src="images/Pref1.jpg" alt="FIGURA: Pantalla de General en Preferencias" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -4843,10 +4690,12 @@ permanentemente, selecciona el botón <em>Guardar</em>. Si no se desea, pulsa
 </li>
 <li>
 <p>
-<strong>Servicio web de Subsurface</strong>: Cuando uno se suscribe al <a href="#S_Companion">servicio web de Subsurface</a>, se proporciona una ID de usuario muy larga y
-    difícil de recordar. Este es el lugar donde guardar esa ID. Seleccionando la
-    opción <em>¿Guardar localmente la ID de usuario?</em> nos aseguramos de que se guarda
-    una copia de dicha ID en el ordenador.
+<strong>Miniaturas de vídeo</strong>: Al generar miniaturas para vídeos asociados a
+    inmersiones, <em>Subsurface</em> necesita tener la información apropiada (ver la
+    sección <a href="#S_ViewMedia">Visualizar medios</a>). Hay que ajustar tres
+    preferencias como se indica en <a href="#S_APPENDIX_F">el Apéndice F</a>. Estas son;
+    a) activar las miniaturas, b) indicar la ubicación del programa <em>ffmpeg</em> y
+    c) Seleccionar la posición en el vídeo en la que obtener la miniatura.
 </p>
 </li>
 <li>
@@ -4930,18 +4779,46 @@ inmersiones con CCRs
 </li>
 <li>
 <p>
+<em>CCR: Mostrar los valores de O<sub>2</sub> de los sensores al visualizar la pO<sub>2</sub>:</em>
+    Muestra los valores de pO<sub>2</sub> asociados a cada sensor de oxígeno en un
+    sistema CCR. Visita la sección <a href="#S_CCR_dives">Inmersiones con rebreather de circuito cerrado</a>.
+</p>
+</li>
+<li>
+<p>
 <em>CCR: Mostrar los setpoints al ver la pO<sub>2</sub></em>: Con esta casilla activada,
     el gráfico de pO<sub>2</sub> del Perfil mostrará una capa en rojo que indicará los
     valores del setpoint. Ver la sección en
     <a href="#S_CCR_dives">Inmersiones con Rebrather de circuito cerrado</a>.
 </p>
 </li>
+</ul></div>
+</li>
 <li>
 <p>
-<em>CCR: Mostrar los valores individuales de los sensores de O<sub>2</sub> al ver la
-    pO<sub>2</sub></em>: Muestra los valores de pO<sub>2</sub> asociados con cada uno de los sensores de
-    oxígeno de un sistema CCR. Ver la sección de
-    <a href="#S_CCR_dives">Inmersiones con Rebrather de circuito cerrado</a>.
+<em>Opciones pSCR</em>. Estas preferencias determinan como se planifican las
+    inmersiones con circuito semi-cerrado pasivo y como se calcula su techo.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+<em>Ratio metabólico:</em> Este es el volumen de oxígeno consumido por un
+    buceador en un minuto. Ajusta este valor para planificar inmersiones y
+    decos con pSCR.
+</p>
+</li>
+<li>
+<p>
+<em>Ratio pSCR:</em> Este es el ritmo al que se libera gas al entorno en relación
+    al gas recirculado al buceador. Un ratio común suele ser 1:10.
+</p>
+</li>
+<li>
+<p>
+<em>Mostrar equivalencia de pO<sub>2</sub> entre pSCR y OC:</em> La pO<sub>2</sub> en el circuito
+    pSCR es menor, habitualmente que la pO<sub>2</sub> del gas de la botella. Activar
+    esta casilla permite que el gráfico de pO<sub>2</sub> del perfil de la inmersión
+    muestre también la pO<sub>2</sub> del gas que entra en el circuito.
 </p>
 </li>
 </ul></div>
@@ -4990,13 +4867,7 @@ ordenadores. A menor valor de un factor de gradiente, tanto más conservativos
 son los cálculos con respecto a la carga de gases inertes y la profundidad de
 los techos. Factores de gradiente de 20/60 se consideran conservativos y de
 70/90 se consideran arriesgados.
-Además hay que decidir si se activa la casilla <em>GFbajo a la máxima
-profundidad</em>. Si se selecciona, el GF_bajo se usa para la profundidad máxima
-del buceo y se incrementa linealmente hasta el GF_alto al llegar a superficie.
-Si no se selecciona, el GF_bajo se usa entre la máxima profundidad y la
-primera parada de descompresión, a partir de la cual el factor de gradiente se
-incrementará linealmente hasta el valor del GF_alto en superficie. Para más
-información visita
+Para más información visita
 </p>
 </li>
 <li>
@@ -5010,27 +4881,6 @@ información visita
 </p>
 </li>
 </ul></div>
-</li>
-<li>
-<p>
-<em>Opciones de _pSCR</em>. Estas preferencias determinan como se planificará las
-inmersiones con rebrather de circuito semicerrado pasivo (pSCR) y como se
-calculará el techo de descompresión:
-</p>
-</li>
-<li>
-<p>
-<em>Ratio metabólico</em>: Para un rebreather semicerrado (pSCR)
-   este es el volumen de oxígeno usado por el buceador en un minuto. Fija este
-   valor para planificar buceos con pSCR y cálculos de descompresión.
-</p>
-</li>
-<li>
-<p>
-<em>pSCR Ratio</em>: En equipos pSCR el ratio de vertido es la cantidad de gas
-   expulsada del circuito frente a la cantidad de gas recirculada en el circuito.
-   Se suele usar un ratio 1:10.
-</p>
 </li>
 </ul></div>
 </li>
@@ -5072,9 +4922,8 @@ y hora que se usarán en los detalles de las inmersiones.</p></div>
 <h3 id="_red">13.5. Red</h3>
 <div class="paragraph"><p>Este panel facilita la comunicación entre <em>Subsurface</em> y las fuentes de datos en
 internet.</p></div>
-<div class="paragraph"><p>Esto es importante cuando <em>Subsurface</em> tiene que comunicarse con servicios como
-el <a href="#S_Companion">servicio web de <em>Subsurface</em></a>, importar/exportar datos de
-<em>Divelogs.de</em> o cuando quieres comunicarte a través de un proxy.</p></div>
+<div class="paragraph"><p>Esto es importante cuando <em>Subsurface</em> tiene que comunicarse con servicios web
+como el Almacenamiento en la Nube o a través de un proxy.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref5_f23.jpg" alt="FIGURA: página de preferencias de red" />
@@ -5117,15 +4966,6 @@ el <a href="#S_Companion">servicio web de <em>Subsurface</em></a>, importar/expo
 </li>
 </ul></div>
 </li>
-<li>
-<p>
-<em>Servicio web de Subsurface</em>:
-   Al suscribirnos al <a href="#S_Companion">Servicio web de Subsurface</a>, se nos
-   facilita una identificación de usuario muy larga y dificil de recordar.
-   Este es el lugar donde guardarla. Seleccionando la opción, nos asegurammos
-   de tener una copia local de la misma.
-</p>
-</li>
 </ul></div>
 </div>
 <div class="sect2">
@@ -5133,7 +4973,7 @@ el <a href="#S_Companion">servicio web de <em>Subsurface</em></a>, importar/expo
 <div class="paragraph"><p><em>Subsurface</em> proporciona un servicio de búsqueda geográfica (Esto es, la
 capacidad de buscar el nombre de un lugar, en base a unas coordenadas
 geográficas proporcionadas haciendo clic en el panel <strong>Globo</strong>, de un GPS o
-desde la app <em>Subsurface companion</em>) basado en internet, que localiza el
+desde la app <em>Subsurface mobile</em>) basado en internet, que localiza el
 nombre conocido más cercano a nuestra posición. Obviamente la función solo
 actúa con conexión a internet. La configuración se puede efectuar como en
 la imagen a continuación</p></div>
@@ -5221,7 +5061,7 @@ pueda copiarse con facilidad a otro software. También es donde se imprimirá
 cualquier mensaje de aviso sobre el plan de buceo.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/PlannerWindow1_f20.jpg" alt="FIGURA: Ventana de inicio del planificador" />
+<img src="images/PlannerWindow1.jpg" alt="FIGURA: Ventana de inicio del planificador" />
 </div>
 </div>
 </div>
@@ -5339,8 +5179,9 @@ La forma más eficiente de crear un perfil es introducir los valores
 </ul></div>
 <div class="sect3">
 <h4 id="_inmersiones_recreativas">14.2.1. Inmersiones recreativas</h4>
-<div class="paragraph"><p>El modo recreativo es lo que más se aproxima a planificar una inmersión
-basándonos en el límite de no descompresión (LND). Tiene en cuenta el tiempo
+<div class="paragraph"><p>El modo recreativo está dirigido a lo que la mayoría de buceadores
+denominarían "recreativo", "deportivo" o "no técnico", permaneciendo dentro
+del límite de no descompresión (LND). Tiene en cuenta el tiempo
 que un buceador puede estar a la profundidad actual sin incurrir en paradas
 de descompresión obligatorias, y usando el gas disponible menos una reserva.
 El planificador  tiene en cuenta automáticamente la carga nitrógeno acumulada
@@ -5358,6 +5199,13 @@ máxima en las inmersiones anteriores, permitiendo planificar una inmersión
 posterior más larga. Para que el planificador funcione es, pues, crucial haber
 descargado a <em>Subsurface</em> todas las inmersiones anteriores antes de hacer la
 planificación.</p></div>
+<div class="paragraph"><p>En segundo lugar, las tablas recreativas no están pensadas para añadir más
+seguridad a una inmersión. Los LND derivados de las tablas, a menudo, llevan a
+los buzos cerca de donde puede surgir una enfermedad descompresiva (DCS). El
+planificador de <em>Subsurface</em> permite al buceador incluir más características
+de seguridad en un plan de buceo, evitando que los buceadores recreativos se
+acerquen al límite de tener una enfermedad descompresiva. Esto se hace
+ajustando los factores de gradiente como se explica a continuación.</p></div>
 <div class="paragraph"><p>Para planificar un buceo, es necesario definir los ajustes apropiados.</p></div>
 <div class="ulist"><ul>
 <li>
@@ -5399,9 +5247,7 @@ Definir la cantidad de gas que se pretende que sobre en la botella al final
   difícil estimar cuanto gas se usaría al compartir, así que la mayoría de
   agencias establecen una cantidad fija p.e 40 o 50 bares. <em>Subsurface</em> aún lo
   hace mejor, porque conoce el ascenso y tiene en cuenta el gas consumido en
-  el mismo. Además de esto, <em>Subsurface</em> aún utiliza una reserva fija de
-  presión. La cantidad de gas de esta reserva puede ser configurada por el
-  usuario.
+  el mismo.
 </p>
 </li>
 <li>
@@ -5423,7 +5269,30 @@ Se puede modificar la velocidad de ascenso. Las velocidades de ascenso
 </li>
 <li>
 <p>
-El perfil del planificador indica el tiempo máximo de inmersión dentro de
+Para añadir seguridad adicional al plan, especifica factores de gradiente
+  inferiores al 100% (GFalto y GFbajo debajo del encabezamiento del
+  planificador). Por contra, para aproximarse a los valores de las tablas de
+  buceo recreativas, ajusta los factores de gradiente a 100%. Reduciendo los
+  factores de gradiente por debajo de 100% acortará la duración de la inmersión.
+  Este es el precio de un mayor margen de seguridad. Razones para utilizar
+  factores de gradiente inferiores a 100% pueden ser: la edad del buceador, su
+  salud o condiciones ambientales unusuales como aguas frias o fuertes
+  corrientes. Valores conservativos realistas de los factores de gradiente son,
+  por ejemplo: GFbajo=40% y GFalto=80%. Esto te permite crear un plan a medida,
+  adecuado a ti y a las condiciones de la inmersión.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>A continuación se muestra una imagen de un plan de buceo para una inmersión
+recreativa a 30m con factores de gradiente del 100%. Al ser el límite de no
+descompresión de 22 minutos, queda una cantidad significativa de aire en la
+botella al final de la inmersión.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_rec1.jpg" alt="FIGURA: Plan de inmersión recreativa: Ajuste" />
+</div>
+</div>
+<div class="paragraph"><p>El perfil del planificador indica el tiempo máximo de inmersión dentro de
 los límites de no descompresión, utilizando el algoritmo Bülmann ZH-L16 y el
 gas y la profundidad especificados como se ha descrito anteriormente. El
 planificador de <em>Subsurface</em> permite una visualización rápida de la duración
@@ -5435,19 +5304,13 @@ Si la presión inicial de la botella se ajusta a "0", la duración del buceo que
 se mostrará será el auténtico límite de no descompresión (LND) sin tener en
 cuenta el gas utilizado durante la inmersión. Si la superficie sobre el perfil
 se vuelve roja, significa que se han sobrepasado los límites del buceo recreativo
-y se necesita reducir, bien la profundidad, bien la duración.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>A continuación se muestra una imagen de un plan para una inmersión recreativa
-a 30 metros. Aunque el límite de no descompresión es 23 minutos, la duración
-del buceo se ve limitada por la cantidad de aire en la botella, reflejada por
-la ventana de texto informativa abajo a la derecha del panel en la que se nos
-indica que no existe suficiente gas para compartir con el compañero durante el
-ascenso.</p></div>
+y se necesita reducir, bien la profundidad, bien la duración.</p></div>
+<div class="paragraph"><p>A continuación se muestra el mismo plan de antes, pero con una parada de
+seguridad y factores de gradiente reducidos para incrementar el margen de
+seguridad.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec.jpg" alt="FIGURE: A recreational dive plan: setup" />
+<img src="images/Planner_OC_rec2.jpg" alt="FIGURE: A recreational dive plan: gradient factors setup" />
 </div>
 </div>
 </div>
@@ -5471,13 +5334,23 @@ Un <em>GF bajo</em> muy pequeño produce paradas de descompresión más pronto d
 inmersión.
 ** Para más información sobre factores de gradiente visita la sección
 <a href="#S_GradientFactors">Ajustes de la Preferencias de factores de gradiente</a>.</p></div>
-<div class="paragraph"><p>Si se seleccioná ell modelo VPM-B, es necesario especificar el nivel de
+<div class="paragraph"><p>Si se seleccioná el modelo VPM-B, es necesario especificar el nivel de
 conservadurismo, en una escala de 0 (menos conservador) a 4 (más conservador).
 Este modelo tiende a dar paradas deco a mayores profundidades que el modelo de
 Bühlmann y, a menudo, produce perfiles ligeramente más cortos que este último
 al coste de mayores presiones en los tejidos de los compartimentos lentos..
 Cuando elijas uno de los modelos, recuerda que no son modelos fisiológicos
 exactos, sino modelos matemáticos que parecen funcionar en la práctica.</p></div>
+<div class="paragraph"><p>Date cuenta, también, que el modelo VPM-B asume intrinsecamente que la
+eliminación de gases solo sucede durante la fase de ascenso de la inmersión
+(que es la parte que controla el planificador). Así pues, es posible generar
+resultados erróneos si introduces puntos de ruta en la zona de la fase de
+descompresión. Esto tiene especial relevancia si se está editando una
+inmersión existente, ya que tendrá puntos de ruta hasta la superficie. Para
+estas inmersiones, primero elimina todos los puntos de ruta correspondientes a
+la fase de ascenso. Es más fácil de hacer si se mantiene pulsada la tecla de
+Ctrl al tiempo que se hace clic en el icono de la papelera que hay junto al
+primer punto de la fase de ascenso, en la tabla del lado izquierdo.</p></div>
 <div class="paragraph"><p>Para más información externa a este manual ver:</p></div>
 <div class="ulist"><ul>
 <li>
@@ -5536,21 +5409,7 @@ proporciona una forma de calcular la cantidad recomendada de gas de fondo que
 se necesitaría para un ascenso seguro hasta el primer cambio a un gas de deco
 o hasta la superficie. A este procedimiento se le llama "gas mínimo" o "rock
 bottom" y se utiliza por algunas (no todas) las organizaciones de buceo
-técnico. El cálculo asume que, en el peor caso, se puede producir una
-situación de perdida de gas (OoG del inglés "out of gas") al final del tiempo
-de fondo planeado y a la máxima profundidad. Este evento OoG obliga al equipo
-de compañeros a compartir el gas de uno de ellos y a permanecer a máxima
-profundidad un tiempo adicional de n minutos (opción en preferencias "Tiempo
-de resolución de problema").
-En el mismo momento, el CAS combinado de ambos buceadores se incrementa por un
-factor estimado (opción en preferencias "Factor CAS") en comparación con el
-CAS de un sólo buceador en condiciones normales.
-El resultado del cálculo de gas mínimo de fondo se imprime en la salida del
-planificador como una información adicional. No se efectúan chequeos
-automáticos basados en este resultado
-Por favor, date cuenta de que esta funcionalidad sólo proporciona resultados
-válidos para inmersiones simples de perfil rectangular. Para inmersiones multi
-nivel, se deberían comprobar cada tramo del perfil independientemente.</p></div>
+técnico. Lee el texto a continuación para una explicación detallada.</p></div>
 <div class="paragraph"><p>Ahora, por fin, se puede empezar la planificación detallada de tiempos y
 profundidades. <em>Subsurface</em> ofrece una interfaz gráfica única para llevar a cabo
 esta parte de la planificación. El mecanismo es similar a introducir a mano un
@@ -5579,14 +5438,46 @@ podría crearse el plan completo editando los puntos desde el diálogo.</p></div
 <a href="#S_CreateProfile">Crear a mano un perfil de inmersión</a>. Estos cambios deberían
 reflejar las botellas y composiciones de gas definidas en la table <em>Gases
 disponibles</em>. Si se usan dos o más gases, se sugerirán automáticamente cambios
-de gas durante la fase de ascenso a superficie
-.
-A continuación hay un ejemplo de planificación de inmersión a 45m usando
-Tx21/35, seguido de un ascenso usando EAN50 y oxígeno y utilizando los ajustes
-descritos anteriormente:</p></div>
+de gas durante la fase de ascenso a superficie.</p></div>
+<div class="paragraph"><p>Es necesario introducir las botellas que se van a usar en el plan, en la tabla
+de <em>Gases disponibles</em>. En la columna <em>Tipo</em> selecciona el tamaño de botella
+apropiado de la lista desplegable que aparece al hacer doble clic en la
+casilla de esta columna. Por defecto, se listan un gran número de tamaños y
+cualquier nuevo tamaño de botella puede crearse introduciéndolo en la casilla
+de texto. El tamaño de la botella, la presión inicial y las profundidades de
+cambio se inicializan automáticamente. Especifica la composición del gas (p.e.
+el contenido de helio y oxígeno). Cualquier valor distinto de cero en la
+columna "CC setpoint"  de la tabla de puntos de ruta del planificador indicará
+que ese segmento de la inmersión se efectuará usando un reciclador de circuito
+cerrado. Si el último segmento introducido manualmente corresponde  CCR, la
+fase de ascenso se computa asumiendo que se realiza con CCR con el setpoint
+indicado. Si el último segmento, por corto que sea se realiza en circuito
+abierto (el setpoint se fija a cero) la descompresión se computa en OC y
+planificador solo contemplará cambios de gas en modo OC.</p></div>
+<div class="paragraph"><p>Introduce segmentos de perfil de inmersión en la tabla de <em>Puntos del
+planificador</em> facilitando una duración del segmento y su profundidad final. Si
+se usa más de una botella durante la inmersión, asegúrate de que se ha
+seleccionado la correcta para cada segmento del plan haciendo doble clic en la
+casilla y eligiéndola del desplegable en la columna <em>Gas usado</em>. En caso
+necesario, inserta una fila en la tabla de <em>Puntos del planificador</em> y
+ajustando el valor del tiempo como corresponda. En la imagen A a continuación,
+se ha añadido un segmento (que usa una botella de EAN50) y se desea utilizar
+este gas desde el inicio de la inmersión (el otro gas no es respirable en
+superficie).
+Al presionar la tecla INTRO del teclado, este segmento se moverá al principio
+de la tabla y el plan se ajustará automáticamente para tener en cuenta este
+nuevo segmento (imagen B a continuación).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_deco_VPM.jpg" alt="FIGURA: Planificar una inmersión: construcción" />
+<img src="images/planner1.jpg" alt="FIGURA: Planificar una inmersión: Segmentos" />
+</div>
+</div>
+<div class="paragraph"><p>A continuación hay un ejemplo de un plan de buceo que usa Tx20/30 y algoritmo
+Bühlmann, seguido de un ascenso  usando EAN50 y los ajustes descritos
+anteriormente.</p></div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/Planner_OC_deco.jpg" alt="FIGURA: Planificar una inmersión: Ajustes" />
 </div>
 </div>
 <div class="paragraph"><p>Una vez que lo anterior se ha completado, se puede guardar clicando el botón
@@ -5594,7 +5485,7 @@ descritos anteriormente:</p></div>
 guardado aparecerá en el panel <strong>Lista de Inmersiones</strong>.</p></div>
 <div class="paragraph"><p><strong>Los detalles del plan de buceo</strong></p></div>
 <div class="paragraph"><p>En la parte inferior derecha del planificador, bajo el encabezamiento <em>Detalles
-del plan de buceo</em>, se proporcionan los detalles exactos del plan de inmersión.
+del plan de buceo</em>, se proporcionan los detalles del plan de inmersión.
 Estos detalles pueden modificarse seleccionando cualquiera de las opciones bajo
 el encabezamiento <em>Notas</em> del planificador, justo a la izquierda
 del anterior. Si se solicita un <em>Plan de buceo detallado</em>, se obtendrá un plan
@@ -5605,6 +5496,135 @@ duración de cada segmento de profundidad en los <em>Detalles del plan de buceo<
 Esta duración INCLUYE el tiempo de transición hasta llegar al nivel. Sin
 embargo, si se selecciona <em>Mostrar transiciones en deco</em>, las transiciones se
 muestran separadamente de las duraciones de las paradas en cada nivel.</p></div>
+<div class="paragraph"><p><strong>Variaciones del plan</strong>: El planificador tiene una casilla seleccionable <em>Mostrar variaciones del
+plan</em>. Al seleccionar esta casilla, el planificador facilita información
+sobre una inmersión que es ligeramente más profunda o algo más larga que la
+planeada. La información se encuentra al principio de los <em>Detalles del plan
+de inmersión</em>, donde se indica la duración de la inmersión. Esta información
+puede utilizarse si es necesario modificar el ascenso sobre la marcha, en caso
+de producirse desviaciones inesperadas del plan durante el buceo.
+Por ejemplo, si dice "Runtime: 123min Stop times + 2:49 /m + 1:30 /min" esto
+significa: si vas más profundo de lo planeado, deberias añadir a la
+descompresión por lo menos 3 minutos por cada metro de más (y al contrario,
+podrías restar 3 minutos por cada metro que hayas bajado de menos). Si excedes
+tu tiempo  de fondo, has de añadir un minuto y medio a las paradas por cada
+minuto que te hayas pasado del tiempo planeado, y de manera similar, puedes
+acortar las paradas un minuto y medio por cada minuto menos de tiempo de
+fondo. Estas variaciones de profundidad y tiempo se basan en el último
+segmento de inmersión introducido manualmente, no necesariamente el más
+profundo. Los minutos adicionales deben repartirse proporcionalmente a la
+longitud de la parada, por ejemplo, añade más minutos a las paradas más
+superficiales. Los tiempos proporcionados se refieren a la duración de la
+descompresión y no incluyen el tiempo de más en fondo. Esta forma de alterar
+los planes de buceo resulta imprecisa en desviaciones grandes del plan
+original. Asi pues, no puede confiarse en ella para desviaciones de más de
+unos pocos minutos o metros. Activar esta opción sobrecarga mucho los
+procesos, hasta tal punto que el planificador se ralentiza sobremanera.</p></div>
+<div class="paragraph"><p><strong>Requisitos de gas mínimo</strong>: El planificador también estima la presión mínima de gas necesaria para un
+ascenso seguro tras un evento que provoque abortar la inmersión. El cálculo
+asume que, en el peor caso, se produce una situación de pérdida de gas que
+sucede al final del tiempo de fondo y a profundidad máxima. Esta situación de
+perdida de gas obliga a la pareja de buceadores a compartir el gas de un
+buzo y requiere un periodo adicional de tiempo para resolver el problema.
+Además se incrementa el CAS de ambos buzos en un factor estimado, en relación
+a su consumo en condiciones normales.
+El resultado del cálculo de gas mínimo se muestra en la salida del
+planificador, no se efectúan comprobaciones automáticas basadas en este
+resultado.
+Esta capacidad solo da resultados para inmersiones simples, de perfil
+cuadrado, para inmersiones multinivel se necesitaría comprobar cada tramo del
+perfil independientemente.</p></div>
+<div class="paragraph"><p>Hay dos casillas selectoras a la izquierda de la ventana <em>Detalles del plan de
+inmersión</em>:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>*_Factor del CAS_*, Esta es una estimación del grado en que se incrementará
+tu consumo si se produce un problema crítico debajo del agua, por ejemplo
+tener que compartir gas o quedar enredado. Un valor realista se situará entre
+2 y 5, reflejando el gas usado por dos buceadores compartiendo una sola
+botella  tras una situación de perdida de gas.
+*_Tiempo de resolución_*. Esta es una estimación del tiempo que llevaría
+solucionar el problema acaecido antes de iniciar el ascenso para terminar la
+inmersión. El valor por defecto es de 2 minutos.</code></pre>
+</div></div>
+<div class="paragraph"><p>Utilizando la información comentada, el planificador estima la presión mínima
+de gas de fondo necesaria para poder efectuar un ascenso seguro. Esta
+a información se presenta cerca del final de los <em>Detalles del plan de
+inmersión</em>, tras el cálculo de gas de fondo necesario para el buceo si se
+completase el plan. El gas mínimo se presenta como:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>Minimum gas (based on 2.0xSAC/+1min@81m): 2130 l/90bar/Δ:+80bar</code></pre>
+</div></div>
+<div class="paragraph"><p>Esto significa:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+Entre paréntesis, el <em>Factor del CAS</em> y el <em>Tiempo de resolución</em>
+   indicados.
+</p>
+</li>
+<li>
+<p>
+Los litros de gas requeridos para un ascenso seguro (2130 litros en el
+   ejemplo)
+</p>
+</li>
+<li>
+<p>
+Los bares de gas necesarios para efectuar un ascenso seguro (90 bars en el
+   ejemplo anterior)
+</p>
+</li>
+<li>
+<p>
+El valor-delta: número de bares de gas de fondo disponibles al final del
+   tiempo en fondo, <em>por encima o por debajo</em> del mínimo necesario (80 bares
+   en el ejemplo anterior). Un valor positivo indica un plan seguro, Un valor
+   negativo reflejaría insuficiente gas para efectuar un ascenso seguro.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>No se efectuan comprobaciones automáticas en base a este resultado.
+Esta opción solo da resultados válidos para inmersiones simples de perfil
+rectangular. Para inmersiones multinivel se necesitaría comprobar cada una de
+las patas del perfil independientemente.</p></div>
+<div class="paragraph"><p><strong>Información de contradifusión isobárica</strong>: Para cambios de gas durante el
+ascenso en inmersiones con trimix en cicuito abierto se proporciona
+información sobre contradifusión isobárica cerca de la parte de abajo de los
+<em>Detalles del Plan de Buceo</em>, basada en la regla de los quintos (durante un
+cambio de gas, el incremento de la presión parcial de nitrógeno no debería
+exceder de un quinto de la disminución de la presión parcial de helio). Por
+cada cambio de gas se imprimen dos líneas que indican los cambios en
+fracciones (%) de gas y los cambios equivalentes en presiones parciales. Si no
+se cumple la regla de los quintos, aparece la información pertinente y muestra
+un mensaje de aviso en el fondo de la tabla. Los cambios de gas tambien
+proporcionan información sobre contradifusión isobárica, visibles en la parte
+de abajo de la <em>Caja de información</em> cuando el ratón pasa sobre el icono de
+cambio de gas. Esta información solo se muestra en cambios de gas en los que
+la contradifusión isobárica es pertinente. Si no se cumple la regla de los
+quintos, se muestra en rojo una marca de exclamación aparece sobre el icono de
+cambio de gas. Cuando corresponde la <em>Caja de información</em> contiene
+información como: ICD ΔHe:-13% ΔN₂+3%&gt;2.6%, lo que significa: para este cambio
+de gas, el helio se ha reducido un 13% mientras que el nitrógeno se ha
+incrementado un 3% que es más del 2.6% sugerido por la regla de los quintos.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/warning2.png" alt="Warning" />
+</td>
+<td class="content">Las <strong>Variaciones del plan</strong> y el <strong>gas mínimo</strong> estimados son solo guías para un
+buceador haciendo tareas de planificación de inmersiones y se  supone que
+mejora la seguridad de un plan de buceo concreto, pero no sustituyen la
+planificación formal de contingencias para una inmersión específica.
+No son precisos ni deben tomarse como las únicas medidas de seguridad al
+planificar una inmersión. Interpreta estas estimaciones en el marco de tu
+entrenamiento formal para planificar inmersiones.</td>
+</tr></table>
+</div>
+</div></div>
 </div>
 </div>
 <div class="sect2">
@@ -5614,11 +5634,14 @@ semi-cerrado, selecciona <em>pSCR</em> en lugar de <em>Circuito abierto</em> en 
 desplegable.
 Los parámetros para la inmersción con pSCR se pueden ajustar seleccionando
 <em>Archivo &#8594; Preferencias &#8594; Perfil</em> desde el menú principal, donde el cálculo
-de consumo de gas tiene en cuenta el ratio de vertido (por defecto 1:10) así
-como el ratio de metabolismo. El cálculo también tiene en cuenta la pérdida
-de oxígeno por la boquilla del rebreather. Si la pO<sub>2</sub> cae por debajo de lo que
-se considera un valor seguro, aparecerá un aviso en los <em>Detalles del plan de
-buceo</em>.  Una configuración típica con pSCR es muy similar a la de un buceo en
+de consumo de gas tiene en cuenta el ratio de vertido (por defecto 1:8) así
+como el ratio de metabolismo. Especifica el CAS en fondo y en deco. Aquí el
+CAS del planificador es el volumen de gas por minuto que se exala en el
+circuito en superficie, <strong>no</strong> la cantidad de gas que se expulsa al agua. El
+cálculo también tiene en cuenta la pérdida de oxígeno por la boquilla del
+rebreather. Si la pO<sub>2</sub> cae por debajo de lo que se considera un valor seguro,
+aparecerá un aviso en los <em>Detalles del plan de buceo</em>.
+Una configuración típica con pSCR es muy similar a la de un buceo en
 circuito abierto; una o más botellas, posiblemente con diferentes gases de
 fondo y deco, incluyendo cambios de gas durante la inmersión, como en circuito
 abierto. Así pues, el ajuste de las tablas de <em>Gases disponibles</em>
@@ -5630,8 +5653,59 @@ notar la mayor duración del ascenso debido al menor contenido de oxígeno en el
 circuito por la caída de oxígeno en la boquilla del equipo pSCR.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_pSCR1_f20.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
 </div>
+</div>
+<div class="sect3">
+<h4 id="_planificar_ascensos_de_emergencia_con_pscr">14.3.1. Planificar ascensos de emergencia con pSCR</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/pscr_b1.jpg" alt="Note" />
+</td>
+<td class="content">Bucear en circuito abierto forma parte amenudo de las inmersiones con pSCR,
+porque a pequeñas profundidades la pO<sub>2</sub> en el circuito es demasiado baja. El
+cambio de rebreather a circuito abierto y viceversa se indica usando eventos
+de "bailout". La imagen a la izquierda muestra un plan con pSCR (utilizando
+tres botellas) en el que las partes más superficiales se llevan a cabo usando
+EAN50 para poder tener una pO<sub>2</sub> suficiente. La parte profunda se lleva a cabo
+usando con EAN31 (bot. 2 en la tabla de gases disponibles, también indicada en
+la tabla de profundidades). La tercera botella, también de EAN31, es una
+botella de emergencia, que, en principio, no se va a usar.
+En este caso, el plan es para una inmersión en cueva con un tiempo en fondo de
+20 minutos y el punto de retorno en la parte profunda de la inmersión es a los
+16 minutos. El gráfico naranja de pO<sub>2</sub> indica la presión equivalente en
+circuito abierto durante el buceo y la pO<sub>2</sub> verde  indica la pO<sub>2</sub> estimada
+en el circuito; toda la inmersión se efectua en modo rebreather. Queremos
+planear para una situación de "peor escenario" con una emergencia en el punto
+de retorno (punto más lejano dentro de la cueva). En la tabla <strong>Puntos del
+Planificador de Inmersiones</strong>, cambia el <strong>Modo de buceo</strong> de los dos últimos
+segmentos a <strong>OC</strong> (indicado en la imagen de la izquierda etiquetada <strong>A</strong> a
+continuación). En este caso la botella de EAN31 (bot.2 en la tabla) se usará
+para el bailout (la botella de emergencia bot.3 no se ha usado todavía).
+Fíjate que el gráfico de pO<sub>2</sub> indica ahora los valores adecuados, ya que el
+gas que respiramos ahora tiene la pO<sub>2</sub> de una configuración de circuito
+abierto. Para pasar a la botella de emergencia (bot.3), indícalo seleccionando
+la botella en la tabla <strong>Puntos del Planificador de inmersiones</strong> como se indica
+en la imagen de la derecha (<strong>B</strong>). El icono del perfil mostrará ahora un evento
+de bailout superpuesto con un cambio de botella. Como en el gráfico de la
+izquierda, los valores apropiados de pO<sub>2</sub> se muestran en el perfil. Los
+volumenes de gas necesarios se encuentran al final del panel <strong>Detalles del
+Plan de Buceo</strong>.</td>
+</tr></table>
+</div>
+<div class="imageblock" style="text-align:center;">
+<div class="content">
+<img src="images/pscr_b2.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
+</div>
+</div>
+<div class="paragraph"><p>En el caso de un plan de inmersión en aguas abiertas con pSCR, el "peor
+escenacio" es, probablemente, una emergencia al final de la parte más profunda
+de la inmersión. Crea un segmento de 1 minuto al final de la parte más
+profunda del plan. Luego manipula el segmento utilizando las columnas <strong>Modo de
+buceo</strong> y <strong>Gas usado</strong>, como en el ejemplo anterior de la cueva. Visita el
+ejemplo de emergencia para una inmersión con CCR, a continuación, que utiliza
+esta aproximación.</p></div>
 </div>
 </div>
 <div class="sect2">
@@ -5657,11 +5731,54 @@ pero, desde luego, lo hace para ascensos de emergencia en circuito abierto.</p><
 <div class="paragraph"><p>El perfil para una inmersión con CCR puede parecerse a la imagen a continuación</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_CCR1_f20.jpg" alt="FIGURE: Planning a CCR dive: setup" />
+<img src="images/Planner_CCR.jpg" alt="FIGURE: Planning a CCR dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Fíjate que, en los <em>Detalles del plan de buceo</em>, no se calcula el consumo de
 gas para un segmento en CCR, por tanto, lo normal es obtener valores de 0 l.</p></div>
+<div class="sect3">
+<h4 id="_planificar_emergencias_con_ccr">14.4.1. Planificar emergencias con CCR</h4>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b1.jpg" alt="Note" />
+</td>
+<td class="content">A menudo es necerario planificar casos de "peor escenario" para asegurarnos de
+que dispondremos de gas suficiente, en caso de emergencia, para alcanzar la
+superficie, teniendo en cuenta la descompresión. Esto se hace definiendo
+segmentos de 1 minuto al final de la parte de fondo de la inmersión, como se
+muestra en la imagen de la izquierda donde se planifica una inmersión a 40m
+durante 21 minutos.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b2.jpg" alt="Note" />
+</td>
+<td class="content">En los puntos de la tabla del plan, cambia el <em>Modo de buceo</em> de este segmento
+de 1 minuto a <em>OC</em>. Esto significa emergencia. En este caso hay un bailout a
+la botella del diluyente (asumiendo que esta botella tenga gas suficiente). La
+pO<sub>2</sub> apropiada y la presión de la botella se muestran en el perfil de la
+inmersión, como en la imagen de la izquierda. Fíjate que el setpoint cae a
+cero tras el cambio, ya que este valor no se aplica al gas de emergencia
+respirado.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/CCR_b3.jpg" alt="Note" />
+</td>
+<td class="content">De cara a planificar para un cambio a una botella de emergencia externa,
+cambia el <em>Gas Usado</em> en el segmento de 1 minuto a la botella apropiada, como
+en el ejemplo de la izquierda. Fijate que el cambio de botella y el evento de
+bailout se indican con iconos superpuestos.</td>
+</tr></table>
+</div>
+<div class="paragraph"><p>Los volumenes de gases necesarios para el bailout se pueden ver al final del
+panel <strong>Detalles del Plan de buceo</strong>.</p></div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="S_Replan">14.5. Modificar un plan de inmersión existente</h3>
@@ -5878,7 +5995,7 @@ de este manual que describen las operaciones con más detalle.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_FindMovedImages"><em>Encontrar imágenes movidas</em></a> - Si las fotos que se
+<a href="#S_FindMovedImages"><em>Encontrar medios movidos</em></a> - Si las fotos que se
   hicieron durante las inmersiones se han cambiado de carpeta o de disco, las
   localiza y las une alas inmersiones correspondientes.
 </p>
@@ -5924,12 +6041,6 @@ una inmersión.
 </li>
 <li>
 <p>
-<a href="#S_Companion"><em>Importar datos GPS del Servicio web de Subsurface</em></a> - Carga
-  coordenadas GPS desde la app para teléfonos móviles.
-</p>
-</li>
-<li>
-<p>
 <a href="#S_ImportingDivelogsDe"><em>Importar desde Divelogs.de</em></a> - Importa información
   de buceo desde www.divelogs.de.
 </p>
@@ -5943,12 +6054,6 @@ una inmersión.
 <p>
 <a href="#S_EnterData"><em>Añadir inmersión</em></a> - Añade manualmente una nueva inmersión al
   panel Lista de inmersiones.
-</p>
-</li>
-<li>
-<p>
-<em>Editar inmersión</em> - Edita una inmersión cuyo perfil se hizo manualmente y no
-  descargándola desde un ordenador de buceo.
 </p>
 </li>
 <li>
@@ -6368,7 +6473,7 @@ hci0:  Type: BR/EDR  Bus: USB
         RX bytes:1026 acl:0 sco:0 events:47 errors:0
         TX bytes:449 acl:0 sco:0 commands:46 errors:0</code></pre>
 </div></div>
-<div class="paragraph"><p>Comprueba que el estado ahora incluye <code><em>UP</em>, <em>RUNNING</em> y <em>AUTH</em></code>.</p></div>
+<div class="paragraph"><p>Comprueba que el estado ahora incluye <em><code>UP</code></em>, <em><code>RUNNING</code></em> y <em><code>AUTH</code></em>.</p></div>
 <div class="paragraph"><p>If se están ejecutando múltiples controladores, lo más simple es desconectar
 los no utilizados, por ejemplo, para <code>hci1</code>:</p></div>
 <div class="literalblock">
@@ -7443,6 +7548,13 @@ cellspacing="0" cellpadding="4">
 </tbody>
 </table>
 </div>
+<div class="paragraph"><p>Fíjate que algunas de las variables como "notes" necesitan extenderse con
+"|safe" para soportar etiquetas HTML:</p></div>
+<div class="literalblock">
+<div class="content">
+<pre><code>        &lt;p&gt; {{ dive.notes|safe }} &lt;p&gt;</code></pre>
+</div></div>
+<div class="paragraph"><p>De otra forma etiquetas como "br" no se convertirán en saltos de línea.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> también pasa datos de la plantilla <strong>template_options</strong>. Estos datos
 deben usarse como valores <em>CSS</em> para proporcionar una plantilla editable de
 forma dinámica. Los datos exportados se muestran en la tabla a continuación:</p></div>
@@ -7627,10 +7739,73 @@ imprimir en cualquier tamaño de página.</p></div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="S_APPENDIX_F">22. APÉNDICE F: Preguntas Frecuentes</h2>
+<h2 id="S_APPENDIX_F">22. APENDICE F: Ajustar las miniaturas de vídeo</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_em_subsurface_em_parece_calcular_mal_el_consumo_de_gas_y_el_cas">22.1. <em>Subsurface</em> parece calcular mal el consumo de gas y el CAS</h3>
+<h3 id="_ajustar_las_miniaturas_apropiadas_para_videos_asociados_a_inmersiones">22.1. Ajustar las miniaturas apropiadas para vídeos asociados a inmersiones.</h3>
+<div class="paragraph"><p>Al manejar vídeos asociados a inmersiones, <em>Subsurface</em> necesita crear una
+miniatura para cada vídeo, que se mostrará en el perfil o en la pestaña
+<em>Medios</em> . Para ver miniaturas que representen vídeos, <em>Subsurface</em> utiliza un
+programa externo llamado <em>FFmpeg</em>.
+Para crear las miniaturas hay que hacer dos cosas:</p></div>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+Instalar <em>FFmpeg</em> en el ordenador que corre <em>Subsurface</em>. El programa puede
+descargarse desde la página web de FFmpeg:
+<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a> .
+La mayoría de distribuciones de Linux incluyen un paquete ffmpeg y no se
+necesitará ninguna otra descarga.
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+En Windows, sitúa el archivo ffmpeg.exe en la carpeta que contiene el
+ejecutable de Subsurface. En Mac y Linux, asegurate de que el comando ffmpeg
+se encuentra en tu $PATH (este es el caso si se ha instalado desde un paquete
+oficial).
+</p>
+</li>
+</ul></div>
+</li>
+<li>
+<p>
+En la pestaña <em>General</em> de las <a href="#S_Preferences"><em>Preferencias</em></a>, ajústalas
+para generar miniaturas:
+</p>
+<div class="ulist"><ul>
+<li>
+<p>
+Selecciona la casilla <em>Extraer miniatura de vídeo</em>. Si <em>Subsurface</em> no
+puede cargar el ejecutable ffmpeg, esta opción se desactivará automáticamente.
+Reactívala después de haber instalado correctamente <em>FFmpeg</em>.
+</p>
+</li>
+<li>
+<p>
+Especifica la ruta al ejecutable <em>FFmpeg</em>.
+</p>
+</li>
+<li>
+<p>
+Selecciona la posición del vídeo en la que <em>Subsurface</em> debe intentar
+extraer la miniatura. Los extremos izquierdo y derecho de la regla indican el
+comienzo y el fin del vídeo, respectivamente. Si Subsurface no puede
+determinar el tamaño del vídeo (como puede suceder en archivos AVI), se
+utilizará la primera imagen del vídeo.
+</p>
+</li>
+</ul></div>
+</li>
+</ol></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="S_APPENDIX_G">23. APÉNDICE G: Preguntas Frecuentes</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_em_subsurface_em_parece_calcular_mal_el_consumo_de_gas_y_el_cas">23.1. <em>Subsurface</em> parece calcular mal el consumo de gas y el CAS</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Pregunta</em>: Buceé con una botella de 12,2 l empezando con 220 bar y terminando
 con 100 bar y yo calculo un CAS distinto al que calcula <em>Subsurface</em> ¿Está
 calculándolo mal <em>Subsurface</em>?</p></div>
@@ -7662,7 +7837,7 @@ altas presiones. A 400 bar realmente no contiene el doble de aire que a 200 bar.
 A presiones más bajas, el aire se comporta bastante como un gas ideal.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_algunos_perfiles_de_inmersion_tienen_discrepancias_de_tiempos_con_las_muestras_que_toma_mi_ordenador_de_buceo">22.2. Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …</h3>
+<h3 id="_algunos_perfiles_de_inmersion_tienen_discrepancias_de_tiempos_con_las_muestras_que_toma_mi_ordenador_de_buceo">23.2. Algunos perfiles de inmersión tienen discrepancias de tiempos con las muestras que toma mi ordenador de buceo …</h3>
 <div class="paragraph"><p><em>Subsurface</em> termina por ignorar el tiempo en superficie por varios motivos
 (profundidad media, tiempo de inmersión, CAS, etc).</p></div>
 <div class="paragraph"><p><em>Pregunta</em>: ¿Por qué las duraciones de los buceos en mi ordenador difieren de
@@ -7677,7 +7852,7 @@ mucho rato pero pasar la mayor parte del tiempo en superficie. En este caso no
 querrás que te cuente como algún tipo de inmersión larga.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_se_han_perdido_algunos_perfiles_en_la_descarga">22.3. Se han perdido algunos perfiles en la descarga</h3>
+<h3 id="_se_han_perdido_algunos_perfiles_en_la_descarga">23.3. Se han perdido algunos perfiles en la descarga</h3>
 <div class="paragraph" id="DC_HISTORY"><p><em>Pregunta</em>: No consigo descargar todas mis inmersiones, solo las más recientes,
 incluso aunque el manual de mi ordenador de buceo afirma que guarda el historial
 de, por ejemplo, 999 buceos.</p></div>
@@ -7700,7 +7875,8 @@ sido sobrescritos.</p></div>
 <div id="footnotes"><hr /></div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2017-04-22 10:19:56 PDT
+Last updated
+ 2018-09-23 17:52:40 PDT
 </div>
 </div>
 </body>
