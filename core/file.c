@@ -220,16 +220,16 @@ static int open_by_filename(const char *filename, const char *fmt, struct memblo
 		return report_error(translate("gettextFromC", csv_warning), filename);
 	/* Truly nasty intentionally obfuscated Cochran Anal software */
 	if (!strcasecmp(fmt, "CAN"))
-		return try_to_open_cochran(filename, mem);
+		return try_to_open_cochran(filename, mem, table);
 	/* Cochran export comma-separated-value files */
 	if (!strcasecmp(fmt, "DPT"))
-		return try_to_open_csv(mem, CSV_DEPTH);
+		return try_to_open_csv(mem, CSV_DEPTH, table);
 	if (!strcasecmp(fmt, "LVD"))
-		return try_to_open_liquivision(filename, mem);
+		return try_to_open_liquivision(filename, mem, table);
 	if (!strcasecmp(fmt, "TMP"))
-		return try_to_open_csv(mem, CSV_TEMP);
+		return try_to_open_csv(mem, CSV_TEMP, table);
 	if (!strcasecmp(fmt, "HP1"))
-		return try_to_open_csv(mem, CSV_PRESSURE);
+		return try_to_open_csv(mem, CSV_PRESSURE, table);
 
 	return 0;
 }

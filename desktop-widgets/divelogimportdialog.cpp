@@ -844,9 +844,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	if (ui->knownImports->currentText() != "Manual import") {
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
-
-				parse_seabear_log(qPrintable(fileNames[i]));
-
+				parse_seabear_log(qPrintable(fileNames[i]), &dive_table);
 			} else {
 				char *params[49];
 				int pnr = 0;
@@ -862,7 +860,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				}
 				pnr = setup_csv_params(r, params, pnr);
 				parse_csv_file(qPrintable(fileNames[i]), params, pnr - 1,
-						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv");
+						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv",
+						&dive_table);
 			}
 		}
 	} else {
@@ -926,7 +925,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				params[pnr++] = intdup(r.indexOf(tr("Rating")));
 				params[pnr++] = NULL;
 
-				parse_manual_file(qPrintable(fileNames[i]), params, pnr - 1);
+				parse_manual_file(qPrintable(fileNames[i]), params, pnr - 1, &dive_table);
 			} else {
 				char *params[51];
 				int pnr = 0;
@@ -942,7 +941,8 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 				}
 				pnr = setup_csv_params(r, params, pnr);
 				parse_csv_file(qPrintable(fileNames[i]), params, pnr - 1,
-						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv");
+						specialCSV.contains(ui->knownImports->currentIndex()) ? qPrintable(CSVApps[ui->knownImports->currentIndex()].name) : "csv",
+						&dive_table);
 			}
 		}
 	}

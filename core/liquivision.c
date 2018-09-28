@@ -132,7 +132,7 @@ static int handle_event_ver3(int code, const unsigned char *ps, unsigned int ps_
 	return skip;
 }
 
-static void parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size)
+static void parse_dives (int log_version, const unsigned char *buf, unsigned int buf_size, struct dive_table *table)
 {
 	unsigned int ptr = 0;
 	unsigned char model;
@@ -428,7 +428,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 
 		// End dive
 		dive->downloaded = true;
-		record_dive(dive);
+		record_dive_to_table(dive, table);
 		dive = NULL;
 		mark_divelist_changed(true);
 
@@ -442,7 +442,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 	free(dive);
 }
 
-int try_to_open_liquivision(const char *filename, struct memblock *mem)
+int try_to_open_liquivision(const char *filename, struct memblock *mem, struct dive_table *table)
 {
 	UNUSED(filename);
 	const unsigned char *buf = mem->buffer;
@@ -466,7 +466,7 @@ int try_to_open_liquivision(const char *filename, struct memblock *mem)
 	}
 	ptr += 4;
 
-	parse_dives(log_version, buf + ptr, buf_size - ptr);
+	parse_dives(log_version, buf + ptr, buf_size - ptr, table);
 
 	return 1;
 }
