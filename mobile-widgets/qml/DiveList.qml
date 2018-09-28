@@ -314,15 +314,6 @@ Kirigami.ScrollablePage {
 					}
 					color: subsurfaceTheme.lightPrimaryTextColor
 				}
-				MouseArea {
-					anchors.fill: sectionText
-					onClicked: {
-						if (activeTrip === section)
-							activeTrip = ""
-						else
-							activeTrip = section
-					}
-				}
 			}
 			Rectangle {
 				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
