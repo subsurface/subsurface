@@ -1,3 +1,5 @@
+- Mobile: make dive list and download pages scalable
+- Mobile: add scaling capability for the user interface
 - Dive media: rudimentary support for XMP metadata
 - Desktop & Mobile: remember up to four dive computers that have been used to
   download dives and provide easy shortcut buttons to switch between them
