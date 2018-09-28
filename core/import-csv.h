@@ -21,12 +21,12 @@ enum csv_format {
 extern "C" {
 #endif
 
-int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
-int try_to_open_csv(struct memblock *mem, enum csv_format type);
-int parse_txt_file(const char *filename, const char *csv);
+int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate, struct dive_table *table);
+int try_to_open_csv(struct memblock *mem, enum csv_format type, struct dive_table *table);
+int parse_txt_file(const char *filename, const char *csv, struct dive_table *table);
 
-int parse_seabear_log(const char *filename);
-int parse_manual_file(const char *filename, char **params, int pnr);
+int parse_seabear_log(const char *filename, struct dive_table *table);
+int parse_manual_file(const char *filename, char **params, int pnr, struct dive_table *table);
 
 #ifdef __cplusplus
 }

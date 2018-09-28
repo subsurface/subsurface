@@ -602,7 +602,7 @@ int datatrak_import(struct memblock *mem, struct dive_table *table)
 			rc = 1;
 			goto out;
 		} else {
-			record_dive(ptdive);
+			record_dive_to_table(ptdive, table);
 		}
 		i++;
 	}

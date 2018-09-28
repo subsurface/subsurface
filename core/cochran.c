@@ -600,7 +600,8 @@ static void cochran_parse_samples(struct dive *dive, const unsigned char *log,
 }
 
 static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
-			       const unsigned char *in, unsigned size)
+			       const unsigned char *in, unsigned size,
+			       struct dive_table *table)
 {
 	unsigned char *buf = malloc(size);
 	struct dive *dive;
@@ -785,13 +786,13 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 	}
 
 	dive->downloaded = true;
-	record_dive(dive);
+	record_dive_to_table(dive, table);
 	mark_divelist_changed(true);
 
 	free(buf);
 }
 
-int try_to_open_cochran(const char *filename, struct memblock *mem)
+int try_to_open_cochran(const char *filename, struct memblock *mem, struct dive_table *table)
 {
 	UNUSED(filename);
 	unsigned int i;
@@ -822,7 +823,7 @@ int try_to_open_cochran(const char *filename, struct memblock *mem)
 			break;
 
 		cochran_parse_dive(decode, mod, mem->buffer + dive1,
-						dive2 - dive1);
+						dive2 - dive1, table);
 	}
 
 	return 1; // no further processing needed

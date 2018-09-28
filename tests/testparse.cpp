@@ -107,7 +107,7 @@ int TestParse::parseCSV(int units, std::string file)
 	params[pnr++] = intdup(-1);
 	params[pnr++] = NULL;
 
-	return parse_manual_file(file.c_str(), params, pnr - 1);
+	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table);
 }
 
 int TestParse::parseDivingLog()
@@ -216,7 +216,7 @@ void TestParse::testParseHUDC()
 	params[pnr++] = NULL;
 
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/TestDiveSeabearHUDC.csv",
-				params, pnr - 1, "csv"),
+				params, pnr - 1, "csv", &dive_table),
 		 0);
 
 	QCOMPARE(dive_table.nr, 1);
@@ -261,7 +261,7 @@ void TestParse::testParseNewFormat()
 							       "/dives/")
 						   .append(files.at(i))
 						   .toLatin1()
-						   .data()),
+						   .data(), &dive_table),
 			 0);
 		QCOMPARE(dive_table.nr, i + 1);
 	}
@@ -367,7 +367,7 @@ int TestParse::parseCSVmanual(int units, std::string file)
 	params[pnr++] = intdup(units);
 	params[pnr++] = NULL;
 
-	return parse_manual_file(file.c_str(), params, pnr - 1);
+	return parse_manual_file(file.c_str(), params, pnr - 1, &dive_table);
 }
 
 void TestParse::exportCSVDiveDetails()
@@ -416,7 +416,7 @@ int TestParse::parseCSVprofile(int units, std::string file)
 	params[pnr++] = intdup(units);
 	params[pnr++] = NULL;
 
-	return parse_csv_file(file.c_str(), params, pnr - 1, "csv");
+	return parse_csv_file(file.c_str(), params, pnr - 1, "csv", &dive_table);
 }
 
 void TestParse::exportCSVDiveProfile()
@@ -510,7 +510,7 @@ void TestParse::parseDL7()
 
 	clear_dive_file_data();
 	QCOMPARE(parse_csv_file(SUBSURFACE_TEST_DATA "/dives/DL7.zxu",
-				params, pnr - 1, "DL7"),
+				params, pnr - 1, "DL7", &dive_table),
 		 0);
 	QCOMPARE(dive_table.nr, 3);
 

@@ -1758,7 +1758,7 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 
 		QFileInfo check_file(csv);
 		if (check_file.exists() && check_file.isFile()) {
-			if (parse_txt_file(fileNamePtr.data(), csv) == 0)
+			if (parse_txt_file(fileNamePtr.data(), csv, &dive_table) == 0)
 				csvFiles += fileNames.at(i);
 		} else {
 			csvFiles += fileNamePtr;
