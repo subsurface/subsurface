@@ -47,7 +47,7 @@ static timestamp_t parse_date(const char *date)
 	return utc_mktime(&tm);
 }
 
-void add_sample_data(struct sample *sample, enum csv_format type, double val)
+static void add_sample_data(struct sample *sample, enum csv_format type, double val)
 {
 	switch (type) {
 	case CSV_DEPTH:
