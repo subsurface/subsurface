@@ -23,6 +23,7 @@
 #include "core/gettextfromc.h"
 #include "core/git-access.h"
 #include "core/isocialnetworkintegration.h"
+#include "core/import-csv.h"
 #include "core/planner.h"
 #include "core/pluginmanager.h"
 #include "core/qthelper.h"
