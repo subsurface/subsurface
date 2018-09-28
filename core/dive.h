@@ -506,10 +506,6 @@ extern int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *
 extern int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *table);
 
 extern int parse_file(const char *filename, struct dive_table *table);
-extern int parse_csv_file(const char *filename, char **params, int pnr, const char *csvtemplate);
-extern int parse_seabear_log(const char *filename);
-extern int parse_txt_file(const char *filename, const char *csv);
-extern int parse_manual_file(const char *filename, char **params, int pnr);
 extern int save_dives(const char *filename);
 extern int save_dives_logic(const char *filename, bool select_only, bool anonymize);
 extern int save_dive(FILE *f, struct dive *dive, bool anonymize);

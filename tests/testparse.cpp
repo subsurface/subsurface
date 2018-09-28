@@ -3,6 +3,7 @@
 #include "core/dive.h"
 #include "core/divelist.h"
 #include "core/file.h"
+#include "core/import-csv.h"
 #include "core/parse.h"
 #include "core/qthelper.h"
 #include "core/subsurface-string.h"
