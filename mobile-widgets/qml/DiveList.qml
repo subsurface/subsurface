@@ -372,14 +372,10 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	Text {
-		// make sure this gets pushed far enough down so that it's not obscured by the page title
-		// it would be nicer to use Controls.Label, but due to a QML bug that isn't possible with a
-		// weird "component versioning" error
-		// using this property means that we require Qt 5.6 / QtQuick2.6
-		topPadding: Kirigami.Units.iconSizes.large
-		leftPadding: Kirigami.Units.iconSizes.large
-
+	Controls.Label {
+		anchors.fill: parent
+		horizontalAlignment: Text.AlignHCenter
+		verticalAlignment: Text.AlignVCenter
 		text: qsTr("No dives in dive list")
 		visible: diveListView.visible && diveListView.count === 0
 	}
