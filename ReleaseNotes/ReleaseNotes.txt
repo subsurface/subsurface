@@ -2,6 +2,21 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.8.3
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Desktop: enable GPU switching on macOS
+- Dive media: rudimentary support for XMP metadata
+- Desktop & Mobile: remember up to four dive computers that have been used to
+  download dives and provide easy shortcut buttons to switch between them
+- Mobile: make dive list and download pages scalable
+- Mobile: add scaling capability for the user interface
+- Mobile: add units selection to Settings page
+- Dive computer support:
+  - add support for Mares BlueLink Pro based BLE download
+  - add support for Aqualung i100
+  - Garmin Descent Mk1: allow import of FIT files downloaded from Garmin Connect
+  - fix bug in Shearwater Teric support
+
 New in _Subsurface_ 4.8.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Desktop: remove "edit dive" from the log menu. Nowadays we edit in place
