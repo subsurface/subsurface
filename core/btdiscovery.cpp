@@ -5,6 +5,7 @@
 #include "core/libdivecomputer.h"
 #include <QTimer>
 #include <QDebug>
+#include <QLoggingCategory>
 
 extern QMap<QString, dc_descriptor_t *> descriptorLookup;
 
@@ -78,6 +79,7 @@ BTDiscovery::BTDiscovery(QObject*) : m_btValid(false),
 	}
 	m_instance = this;
 #if defined(BT_SUPPORT)
+	QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = true"));
 	BTDiscoveryReDiscover();
 #endif
 }
