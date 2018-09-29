@@ -149,12 +149,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="139"/>
         <source>Trying to turn on the local Bluetooth device...</source>
-        <translation>Försöker slå på Bluetooth-enheten...</translation>
+        <translation>Försöker slå på Bluetooth...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="142"/>
         <source>Trying to turn off the local Bluetooth device...</source>
-        <translation>Försöker slå av Bluetooth-enheten...</translation>
+        <translation>Försöker slå av Bluetooth...</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="174"/>
@@ -180,12 +180,12 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="216"/>
         <source>turned on</source>
-        <translation>slå på</translation>
+        <translation>påslagen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="216"/>
         <source>turned off</source>
-        <translation>slå av</translation>
+        <translation>avslagen</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="232"/>
@@ -356,7 +356,7 @@
     <message>
         <location filename="../core/checkcloudconnection.cpp" line="65"/>
         <source>Cloud connection failed</source>
-        <translation>Molnanslutning misslyckades</translation>
+        <translation>Anslutning till molntjänst misslyckades</translation>
     </message>
 </context>
 <context>
@@ -1566,7 +1566,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
         <source>Metric</source>
-        <translation>Metrisk</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
@@ -2040,7 +2040,7 @@ GPS-position:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="271"/>
         <source>Water Temp:</source>
-        <translation>Vattentemperatur:</translation>
+        <translation>Vattentemp:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="284"/>
@@ -2508,7 +2508,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
         <source>Metric</source>
-        <translation>Metrisk</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="306"/>
@@ -2781,7 +2781,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="127"/>
         <source>Metric</source>
-        <translation>Metrisk</translation>
+        <translation>Meter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="132"/>
@@ -3234,7 +3234,7 @@ GPS-position:</translation>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="130"/>
         <source>Ceiling</source>
-        <translation>Tak</translation>
+        <translation>Takdjup</translation>
     </message>
     <message>
         <location filename="../qt-models/diveplotdatamodel.cpp" line="132"/>
@@ -4028,7 +4028,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="121"/>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="240"/>
         <source>Select folder and scan</source>
-        <translation>Välj katalog och påbörja avsökning</translation>
+        <translation>Välj katalog och påbörja sökning</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
@@ -4340,13 +4340,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="107"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="312"/>
         <source>Air temp.</source>
-        <translation>Lufttemp</translation>
+        <translation>Lufttemp.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="117"/>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="313"/>
         <source>Water temp.</source>
-        <translation>Vattentemperatur</translation>
+        <translation>Vattentemp.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.ui" line="192"/>
@@ -4467,12 +4467,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="309"/>
         <source>Air temp. [%1]</source>
-        <translation>Lufttemperatur [%1]</translation>
+        <translation>Lufttemp. [%1]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="310"/>
         <source>Water temp. [%1]</source>
-        <translation>Vattentemperatur [%1]</translation>
+        <translation>Vattentemp. [%1]</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="353"/>
@@ -4521,7 +4521,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="61"/>
         <source>&amp;File</source>
-        <translation>&amp;File</translation>
+        <translation>&amp;Arkiv</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="82"/>
@@ -4597,7 +4597,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="194"/>
         <source>&amp;Close</source>
-        <translation>Stäng</translation>
+        <translation>&amp;Stäng</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="197"/>
@@ -4627,7 +4627,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="243"/>
         <source>Edit device &amp;names</source>
-        <translation>Ändra enhet &amp; namn</translation>
+        <translation>Ändra enhetsn&amp;amn</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="248"/>
@@ -4752,12 +4752,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="422"/>
         <source>Configure &amp;dive computer</source>
-        <translation>Konfigurera &amp;dykdatorer</translation>
+        <translation>Konfigurera &amp;dykdator</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="433"/>
         <source>Edit &amp;dive in planner</source>
-        <translation>Redigera &amp;dyk i dykplaneraren</translation>
+        <translation>Redigera &amp;dykplan</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="445"/>
@@ -4777,12 +4777,12 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="481"/>
         <source>Toggle DC reported ceiling</source>
-        <translation>Slå av/på rapportering för tak (ceiling) från dykdator</translation>
+        <translation>Slå av/på rapportering av takdjup från dykdator</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="493"/>
         <source>Toggle calculated ceiling</source>
-        <translation>Slå av/på beräknat tak (ceiling)</translation>
+        <translation>Slå av/på beräknat takdjup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="505"/>
@@ -4792,7 +4792,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="517"/>
         <source>Toggle calculated ceiling with 3m increments</source>
-        <translation>Slå av/på beräknat tak (ceiling) i 3m inkrement</translation>
+        <translation>Slå av/på beräknat takdjup i 3m inkrement</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="529"/>
@@ -4847,7 +4847,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="633"/>
         <source>&amp;Filter divelist</source>
-        <translation>&amp;Filtrera dyklista</translation>
+        <translation>&amp;Filtrera dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="648"/>
@@ -4948,7 +4948,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="283"/>
         <source>Template backup created</source>
-        <translation>Templat kopia skapad</translation>
+        <translation>Backupkopia av mall skapad</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="284"/>
@@ -4988,7 +4988,7 @@ Om du svarar Nej kommer förändringarna synkroniseras nästa gång du väljer &
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="691"/>
         <source>Failure taking cloud storage online</source>
-        <translation>Aktivering av molnlagring misslyckades</translation>
+        <translation>Misslyckades med att aktivera molnlagringstjänsten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="760"/>
@@ -5183,7 +5183,7 @@ Subsurface har redan försökt att fylla i datat men det kan vara värt besväre
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="1985"/>
         <source>Contacting cloud service...</source>
-        <translation>Kontaktar molntjänst...</translation>
+        <translation>Kontaktar molnlagringstjänst...</translation>
     </message>
 </context>
 <context>
@@ -5505,7 +5505,7 @@ On din enhet använder Bluetooth, genomför samma förberedelser som vid nedladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="301"/>
         <source>Reset all settings to their default value</source>
-        <translation>Återställ alla inställningar till deras standardvärde</translation>
+        <translation>Återställ alla värden till standardinställningar</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="12"/>
@@ -5572,17 +5572,17 @@ On din enhet använder Bluetooth, genomför samma förberedelser som vid nedladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="239"/>
         <source>Ceiling display setup</source>
-        <translation>Inställningar för tak (ceiling)</translation>
+        <translation>Inställningar för takdjup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="314"/>
         <source>Draw dive computer reported ceiling red</source>
-        <translation>Rita tak (ceiling) rapporterad från dykdator i röd färg</translation>
+        <translation>Rita takdjup rapporterad från dykdator i röd färg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="268"/>
         <source>Algorithm for calculated ceiling:</source>
-        <translation>Algoritm för beräknat tak:</translation>
+        <translation>Algoritm för beräknat takdjup:</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="298"/>
@@ -5647,7 +5647,7 @@ On din enhet använder Bluetooth, genomför samma förberedelser som vid nedladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="138"/>
         <source>Dive planner default setpoint</source>
-        <translation>Dykplanerarens standard setpoint</translation>
+        <translation>Dykplanerarens standardsetpoint</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="161"/>
@@ -5677,7 +5677,7 @@ On din enhet använder Bluetooth, genomför samma förberedelser som vid nedladd
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="288"/>
         <source>Conservatism level</source>
-        <translation>Konservatism nivå</translation>
+        <translation>Nivå konservatism</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
@@ -5874,7 +5874,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="156"/>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="139"/>
         <source>Subsurface cloud storage</source>
-        <translation>Subsurface molnlagring</translation>
+        <translation>Subsurface molnlagringstjänst</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.ui" line="165"/>
@@ -5924,23 +5924,23 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="67"/>
         <source>Change ignored. Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>Förändring ignorerad. E-postadress och lösenord till molntjänsten kan endast bestå av bokstäver, siffror och &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, samt &apos;+&apos;.</translation>
+        <translation>Förändring ignorerad. E-post och lösenord till molnlagringstjänsten kan endast bestå av bokstäver, siffror och &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, samt &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="71"/>
         <source>Change ignored. Cloud storage email and new password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>Förändring ignorerad. E-postadress och nytt lösenord till molntjänsten kan endast bestå av bokstäver, siffror &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, samt &apos;+&apos;.</translation>
+        <translation>Förändring ignorerad. E-post och nytt lösenord till molnlagringstjänsten kan endast bestå av bokstäver, siffror &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, samt &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="93"/>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="107"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>Molnlagrings email och lösenord kan bara beså av bokstäver, siffror samt &apos;.&apos;, &apos;-&apos;, &apos;_&apos; och &apos;+&apos;.</translation>
+        <translation>E-post och lösenord till molnlagringstjänsten kan endast bestå av bokstäver, siffror samt &apos;.&apos;, &apos;-&apos;, &apos;_&apos; och &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="133"/>
         <source>Subsurface cloud storage (credentials verified)</source>
-        <translation>Subsurface molnlagring (verifierade referenser)</translation>
+        <translation>Subsurface molnlagring (uppgifter verifierade)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_network.cpp" line="135"/>
@@ -5973,7 +5973,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="33"/>
         <source>&amp;Metric</source>
-        <translation>&amp;Metrisk</translation>
+        <translation>&amp;Meter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="40"/>
@@ -5983,7 +5983,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="47"/>
         <source>Personali&amp;ze</source>
-        <translation>Personifiera</translation>
+        <translation>Personl&amp;ig</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="57"/>
@@ -6174,7 +6174,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="41"/>
         <source>&amp;Dive list print</source>
-        <translation>&amp;Utskrift av dyklista</translation>
+        <translation>&amp;Utskrift av dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="57"/>
@@ -6189,7 +6189,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="79"/>
         <source>Print only selected dives</source>
-        <translation>Skriv ut valda dyk</translation>
+        <translation>Skriv bara ut markerade dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/printoptions.ui" line="92"/>
@@ -6443,58 +6443,58 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="405"/>
         <source>no cloud credentials</source>
-        <translation>inga moln referenser</translation>
+        <translation>inga molnuppgifter</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="406"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="482"/>
         <source>Please enter valid cloud credentials.</source>
-        <translation>Vänligen ange giltiga moln referenser</translation>
+        <translation>Vänligen ange giltiga uppgifter för molntjänst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="438"/>
         <source>Cloud storage email and password can only consist of letters, numbers, and &apos;.&apos;, &apos;-&apos;, &apos;_&apos;, and &apos;+&apos;.</source>
-        <translation>Molnlagrings email och lösenord kan bara beså av bokstäver, siffror samt &apos;.&apos;, &apos;-&apos;, &apos;_&apos; och &apos;+&apos;.</translation>
+        <translation>E-post och lösenord till molntjänsten kan endast bestå av bokstäver, siffror samt &apos;.&apos;, &apos;-&apos;, &apos;_&apos; och &apos;+&apos;.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="444"/>
         <source>Invalid format for email address</source>
-        <translation>Ogiltigt format för epostadress</translation>
+        <translation>Ogiltigt format för e-postadress</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="493"/>
         <source>Attempting to open cloud storage with new credentials</source>
-        <translation>Försöker öppna moln lagring med nya referenser</translation>
+        <translation>Försöker öppna molnlagringstjänst med nya uppgifter</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="515"/>
         <source>Testing cloud credentials</source>
-        <translation>Testar moln referenser</translation>
+        <translation>Testar molnuppgifter</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="530"/>
         <source>No response from cloud server to validate the credentials</source>
-        <translation>Inget svar från molnservern för verifiering av referenser</translation>
+        <translation>Inget svar från molntjänsten vid verifiering av uppgifter</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="538"/>
         <source>Incorrect cloud credentials</source>
-        <translation>Felaktiga molnreferenser</translation>
+        <translation>Felaktiga molnuppgifter</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="544"/>
         <source>Cannot connect to cloud storage - cloud account not verified</source>
-        <translation>Kan inte ansluta till moln lagring - molnkonto inte verifierat</translation>
+        <translation>Kan inte ansluta till molnlagringstjänst - kontouppgifter är inte verifierade</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="571"/>
         <source>Cloud credentials are invalid</source>
-        <translation>Moln referenser är ogiltiga</translation>
+        <translation>Ogiltiga uppgifter till molnlagringstjänst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="585"/>
         <source>Cannot open cloud storage: Error creating https connection</source>
-        <translation>Kan inte öppna moln lagring: Gick inte skapa https koppling</translation>
+        <translation>Kan inte öppna molnlagringstjänst: Misslyckades med att skapa en https-anslutning</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="599"/>
@@ -6504,17 +6504,17 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="612"/>
         <source>Cannot connect to cloud storage</source>
-        <translation>Kan inte ansluta till moln lagring</translation>
+        <translation>Kan inte ansluta till molnlagringstjänst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="617"/>
         <source>Cloud credentials valid, loading dives...</source>
-        <translation>Molnreferenser giltiga, läser in dyk...</translation>
+        <translation>Molnuppgifter giltiga, laddar dyk...</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="627"/>
         <source>Cloud storage error: %1</source>
-        <translation>Fel uppstod i molnlagring: %1</translation>
+        <translation>Fel uppstod i molnlagringstjänsten: %1</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="673"/>
@@ -6524,7 +6524,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="719"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation>Misslyckades ansluta till moln server, återgår till molnfri status</translation>
+        <translation>Misslyckades med att ansluta till molntjänst, återgår till molnfritt läge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="744"/>
@@ -6682,12 +6682,12 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="33"/>
         <source>Cloud status</source>
-        <translation>Molnstatus</translation>
+        <translation>Status molnlagringstjänst</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="42"/>
         <source>Email</source>
-        <translation>Epost</translation>
+        <translation>E-post</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="47"/>
@@ -6993,7 +6993,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="242"/>
         <source>Exit</source>
-        <translation>Utgång</translation>
+        <translation>Avsluta</translation>
     </message>
     <message>
         <location filename="../smtk-import/smrtk2ssrfc_window.ui" line="270"/>
@@ -7129,7 +7129,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="44"/>
         <source>The text to the right will be posted as the description with your dive profile graph to Facebook. The album name is required (the profile graph will be posted to that album).</source>
-        <translation>Texten till höger kommer att anges som beskrivning med bilden av din dykprofil på Facebook. Namnet på albumet är obligatoriskt (profilbilden kommer att laddas upp till det albumet).</translation>
+        <translation>Texten till höger kommer att anges som beskrivning till grafen av din dykprofil på Facebook. Namnet på albumet är obligatoriskt (dykprofilen kommer att laddas upp till det albumet).</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plugins/facebook/socialnetworksdialog.ui" line="57"/>
@@ -7192,12 +7192,12 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="37"/>
         <source>To use Subsurface-mobile with Subsurface cloud storage, please enter your cloud credentials.&lt;br/&gt;&lt;br/&gt;If this is the first time you use Subsurface cloud storage, enter a valid email (all lower case) and a password of your choice (letters and numbers).&lt;br/&gt;&lt;br/&gt;To use Subsurface-mobile only with local data on this device, select the no cloud button above.</source>
-        <translation>För att använda Subsurface-mobile med molnlagring, vänligen ange dina uppgifter.&lt;br/&gt;&lt;br/&gt;Om det är första gången du använder tjänsten, ange en giltig e-postadress (bara små bokstäver) och ett lösenord (bokstäver och siffror).&lt;br/&gt;&lt;br/&gt;För att använda Subsurface-mobile med endast lokalt sparad data, klicka på ikonen för molnfritt läge ovan.</translation>
+        <translation>För att använda Subsurface-mobile med molnlagringstjänsten, vänligen ange dina uppgifter.&lt;br/&gt;&lt;br/&gt;Om det är första gången du använder tjänsten, ange en giltig e-postadress (bara små bokstäver) och ett lösenord (bokstäver och siffror).&lt;br/&gt;&lt;br/&gt;För att använda Subsurface-mobile med endast lokalt sparad data, klicka på ikonen för molnfritt läge ovan.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
         <source>Thank you for registering with Subsurface. We sent &lt;b&gt;%1&lt;/b&gt; a PIN code to complete the registration. If you do not receive an email from us within 15 minutes, please check the correct spelling of your email address and your spam box first.&lt;br/&gt;&lt;br/&gt;In case of any problems regarding cloud account setup, please contact us at our user forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Tack för att du registrerade med Subsurface. Vi skickade &lt;b&gt;%1&lt;/b&gt; en PIN kod för att avsluta registreringen. Om du inte får ett epostmeddelande från oss inom 15 minuter, vänligen kontrollera stavningen av din epostadress samt korgen för skräppost. &lt;br/&gt;&lt;br/&gt;Om du har några problem gällande ditt molnkonto, vänligen kontakta os via vårat användar forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Tack för att du registrerade dig med Subsurface. Vi skickade &lt;b&gt;%1&lt;/b&gt; en PIN-kod för att avsluta registreringen. Om du inte får ett e-postmeddelande från oss inom 15 minuter, vänligen kontrollera stavningen av din e-postadress samt din mapp för skräppost. &lt;br/&gt;&lt;br/&gt;Om du har några problem gällande ditt konto, vänligen kontakta oss på vårat användarforum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>
@@ -7225,12 +7225,12 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/about.ui" line="104"/>
         <source>&amp;Close</source>
-        <translation>Stäng</translation>
+        <translation>&amp;Stäng</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/about.cpp" line="20"/>
         <source>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform divelog software&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, and others, 2011-2018&lt;/span&gt;</source>
-        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multi-platform dyklogg mjukvara&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, med flera, 2011-2018&lt;/span&gt;</translation>
+        <translation>&lt;span style=&apos;font-size: 18pt; font-weight: bold;&apos;&gt;Subsurface %1 &lt;/span&gt;&lt;br&gt;&lt;br&gt;Multiplatforms-mjukvara för dykloggning&lt;br&gt;&lt;span style=&apos;font-size: 8pt&apos;&gt;Linus Torvalds, Dirk Hohndel, Tomaz Canabrava, med flera, 2011-2018&lt;/span&gt;</translation>
     </message>
 </context>
 <context>
@@ -7475,7 +7475,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="15"/>
         <source>Highest temperature</source>
-        <translation>Högsta templeratur</translation>
+        <translation>Högsta temperatur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="16"/>
@@ -7485,7 +7485,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="17"/>
         <source>Average temperature of all selected dives</source>
-        <translation>Snitttemperatur på alla valda dyk</translation>
+        <translation>Medeltemperatur på alla valda dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDiveStatistics.cpp" line="18"/>
@@ -8002,7 +8002,7 @@ mixas av luft och:
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="96"/>
         <source>Newest release version is </source>
-        <translation>Senast släppta version är</translation>
+        <translation>Senaste versionen är</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="97"/>
@@ -8014,12 +8014,12 @@ mixas av luft och:
         <source>Subsurface is checking every two weeks if a new version is available. 
 If you don&apos;t want Subsurface to continue checking, please click Decline.</source>
         <translation>Subsurface kollar varannan vecka om det har kommit en ny version.
-Om du inte vill att Subsurface skall göra det, vänligen klicka på Avslå</translation>
+Om du inte vill att Subsurface skall göra det, vänligen klicka på Avstå</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="116"/>
         <source>Decline</source>
-        <translation>Avslå</translation>
+        <translation>Avstå</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="117"/>
@@ -8091,7 +8091,7 @@ Om du inte vill att Subsurface skall göra det, vänligen klicka på Avslå</tra
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="96"/>
         <source>Manually entering dives</source>
-        <translation>Manuella importer</translation>
+        <translation>Lägger till dyk manuellt</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="103"/>
@@ -8116,7 +8116,7 @@ Om du inte vill att Subsurface skall göra det, vänligen klicka på Avslå</tra
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="75"/>
         <source>Where are you importing data from?</source>
-        <translation>Var importerar du data ifrån?</translation>
+        <translation>Var importerar du dykdata ifrån?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="19"/>
@@ -8495,7 +8495,7 @@ Medel</translation>
         <location filename="../core/cochran.c" line="422"/>
         <location filename="../core/libdivecomputer.c" line="262"/>
         <source>ceiling</source>
-        <translation>ceiling</translation>
+        <translation>takdjup</translation>
     </message>
     <message>
         <location filename="../core/cochran.c" line="391"/>
@@ -8757,7 +8757,7 @@ Medel</translation>
     <message>
         <location filename="../core/dive.c" line="36"/>
         <source>diluent</source>
-        <translation>diluent</translation>
+        <translation>utspädd</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="36"/>
@@ -8899,7 +8899,7 @@ Medel</translation>
     <message>
         <location filename="../core/equipment.c" line="178"/>
         <source>backplate</source>
-        <translation>Ryggplatta</translation>
+        <translation>ryggplatta</translation>
     </message>
     <message>
         <location filename="../core/equipment.c" line="179"/>
@@ -9007,12 +9007,12 @@ Medel</translation>
     <message>
         <location filename="../core/git-access.c" line="197"/>
         <source>Subsurface cloud storage corrupted</source>
-        <translation>Subsurface molnlagring skadades</translation>
+        <translation>Subsurface molnlagringstjänst skadad</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="333"/>
         <source>Could not update Subsurface cloud storage, try again later</source>
-        <translation>Kunde inte uppdatera Subsurface molnlagring, försök igen senare</translation>
+        <translation>Kunde inte uppdatera Subsurface molnlagringstjänst, försök igen senare</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="393"/>
@@ -9052,7 +9052,7 @@ Medel</translation>
     <message>
         <location filename="../core/git-access.c" line="525"/>
         <source>Push local changes to cloud storage</source>
-        <translation>Skicka lokala förändringar till molnlagring</translation>
+        <translation>Skicka lokala förändringar till molnlagringstjänsten</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="543"/>
@@ -9067,12 +9067,12 @@ Medel</translation>
     <message>
         <location filename="../core/git-access.c" line="609"/>
         <source>Sync with cloud storage</source>
-        <translation>Synka med molnlagring</translation>
+        <translation>Synkronisera med molnlagringstjänst</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="636"/>
         <source>Can&apos;t reach cloud server, working with local data</source>
-        <translation>Kan inte ansluta till molntjänst , arbetar med data lokalt</translation>
+        <translation>Kan inte ansluta till molnlagringstjänsten, arbetar med data lokalt</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="649"/>
@@ -9082,12 +9082,12 @@ Medel</translation>
     <message>
         <location filename="../core/git-access.c" line="668"/>
         <source>Done syncing with cloud storage</source>
-        <translation>Klar med synkronisering till molnlagring</translation>
+        <translation>Klar med synkronisering till molnlagringstjänsten</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="803"/>
         <source>Error connecting to Subsurface cloud storage</source>
-        <translation>Fel på uppkopplingen mot Subsurface molntjänst</translation>
+        <translation>Fel på uppkopplingen mot molnlagringstjänsten för Subsurface</translation>
     </message>
     <message>
         <location filename="../core/git-access.c" line="806"/>
@@ -9155,7 +9155,7 @@ Medel</translation>
     <message>
         <location filename="../core/libdivecomputer.c" line="273"/>
         <source>ceiling (safety stop)</source>
-        <translation>ceiling (säkerhetsstopp)</translation>
+        <translation>taket (säkerhetsstopp)</translation>
     </message>
     <message>
         <location filename="../core/libdivecomputer.c" line="274"/>
@@ -9495,7 +9495,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="405"/>
         <source>Deco model: VPM-B at nominal conservatism</source>
-        <translation>Deko modell: VPM-B med nominal konservatism</translation>
+        <translation>Dekomodell: VPM-B med nominell konservatism</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="496"/>
@@ -9605,7 +9605,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="407"/>
         <source>Deco model: VPM-B at +%d conservatism</source>
-        <translation>Deko modell: VPM-B med +%d konservatism</translation>
+        <translation>Dekomodell: VPM-B med +%d konservatism</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="411"/>
@@ -9871,7 +9871,7 @@ EADD: %d%s / %.1fg/ℓ
         <location filename="../core/profile.c" line="1504"/>
         <source>Calculated ceiling %.0f%s
 </source>
-        <translation>Beräknat tak %.0f%s
+        <translation>Beräknat takdjup %.0f%s
 </translation>
     </message>
     <message>
@@ -10224,12 +10224,12 @@ EADD: %d%s / %.1fg/ℓ
     <message>
         <location filename="../core/save-html.c" line="533"/>
         <source>Min. temp.</source>
-        <translation>Minsta temp.</translation>
+        <translation>Min. temp.</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="534"/>
         <source>Max. temp.</source>
-        <translation>Största temp.</translation>
+        <translation>Max. temp.</translation>
     </message>
     <message>
         <location filename="../core/save-html.c" line="535"/>
@@ -10667,12 +10667,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../core/worldmap-save.c" line="52"/>
         <source>Air temp.:</source>
-        <translation>Lufttemperatur:</translation>
+        <translation>Lufttemp:</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="55"/>
         <source>Water temp.:</source>
-        <translation>Vattentemperatur:</translation>
+        <translation>Vattentemp:</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="57"/>
@@ -10762,7 +10762,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../profile-widget/diveprofileitem.cpp" line="190"/>
         <source>planned waypoint above ceiling</source>
-        <translation>planerat mål ovanför tak</translation>
+        <translation>planerat mål ovanför takdjup</translation>
     </message>
     <message>
         <location filename="../core/taxonomy.c" line="8"/>
@@ -10837,7 +10837,7 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../desktop-widgets/mainwindow.cpp" line="629"/>
         <source>Don&apos;t save an empty log to the cloud</source>
-        <translation>Spara inte en tom logbok i molnet</translation>
+        <translation>Spara inte en tom loggbok till molntjänsten</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="34"/>
@@ -11164,7 +11164,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="485"/>
         <source>Conservatism level</source>
-        <translation>Konservatism nivå</translation>
+        <translation>Nivå konservatism</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="495"/>
