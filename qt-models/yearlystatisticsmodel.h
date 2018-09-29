@@ -26,7 +26,7 @@ public:
 		COLUMNS
 	};
 
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 	YearlyStatisticsModel(QObject *parent = 0);
 	void update_yearly_stats();
 };

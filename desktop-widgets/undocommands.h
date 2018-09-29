@@ -8,8 +8,8 @@
 class UndoDeleteDive : public QUndoCommand {
 public:
 	UndoDeleteDive(QList<struct dive*> deletedDives);
-	void undo();
-	void redo();
+	void undo() override;
+	void redo() override;
 
 private:
 	QList<struct dive*> diveList;
@@ -19,8 +19,8 @@ private:
 class UndoShiftTime : public QUndoCommand {
 public:
 	UndoShiftTime(QList<int> changedDives, int amount);
-	void undo();
-	void redo();
+	void undo() override;
+	void redo() override;
 
 private:
 	QList<int> diveList;
@@ -30,8 +30,8 @@ private:
 class UndoRenumberDives : public QUndoCommand {
 public:
 	UndoRenumberDives(QMap<int, QPair<int, int> > originalNumbers);
-	void undo();
-	void redo();
+	void undo() override;
+	void redo() override;
 
 private:
 	QMap<int,QPair<int, int> > oldNumbers;
@@ -40,8 +40,8 @@ private:
 class UndoRemoveDivesFromTrip : public QUndoCommand {
 public:
 	UndoRemoveDivesFromTrip(QMap<struct dive*, dive_trip*> removedDives);
-	void undo();
-	void redo();
+	void undo() override;
+	void redo() override;
 
 private:
 	QMap<struct dive*, dive_trip*> divesToUndo;

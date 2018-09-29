@@ -31,10 +31,10 @@ public:
 		COLUMNS
 	};
 
-	QVariant data(int column, int role) const;
+	QVariant data(int column, int role) const override;
 	int diveId;
-	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	Qt::ItemFlags flags(const QModelIndex &index) const;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
+	Qt::ItemFlags flags(const QModelIndex &index) const override;
 	QString displayDate() const;
 	QString displayDuration() const;
 	QString displayDepth() const;
@@ -53,7 +53,7 @@ public:
 struct TripItem : public TreeItem {
 	Q_DECLARE_TR_FUNCTIONS(TripItem)
 public:
-	QVariant data(int column, int role) const;
+	QVariant data(int column, int role) const override;
 	dive_trip_t *trip;
 };
 
@@ -97,8 +97,8 @@ public:
 
 	static DiveTripModel *instance();
 	Qt::ItemFlags flags(const QModelIndex &index) const;
-	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
-	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
+	QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 	DiveTripModel(QObject *parent = 0);
 	Layout layout() const;
 	void setLayout(Layout layout);
