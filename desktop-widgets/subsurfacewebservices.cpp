@@ -793,17 +793,16 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 	}
 }
 
-UserSurveyServices::UserSurveyServices(QWidget *parent, Qt::WindowFlags f) : WebServices(parent, f)
+UserSurveyServices::UserSurveyServices(QWidget *parent, Qt::WindowFlags f) : QDialog(parent, f)
 {
-
 }
 
-QNetworkReply* UserSurveyServices::sendSurvey(QString values)
+QNetworkReply *UserSurveyServices::sendSurvey(QString values)
 {
 	QNetworkRequest request;
 	request.setUrl(QString("http://subsurface-divelog.org/survey?%1").arg(values));
 	request.setRawHeader("Accept", "text/xml");
-	request.setRawHeader("User-Agent", userAgent.toUtf8());
-	reply = manager()->get(request);
+	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
+	QNetworkReply *reply = manager()->get(request);
 	return reply;
 }
