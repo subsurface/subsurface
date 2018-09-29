@@ -26,7 +26,7 @@ slots:
 	virtual void startDownload() = 0;
 	virtual void startUpload() = 0;
 	virtual void buttonClicked(QAbstractButton *button) = 0;
-	virtual void downloadTimedOut();
+	void downloadTimedOut();
 
 protected
 slots:
