@@ -951,6 +951,22 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	MainWindow::instance()->refreshDisplay();
 }
 
+// Since this is a non-modal dialog, the caller can't delete it at the call-site.
+// Therefore, hook into the accept() and reject() functions and schedule the object
+// for deletion with deleteLater(). Horrible, but absolutely the "Qt-way".
+// TODO: Think about making the dialog modal.
+void DiveLogImportDialog::accept()
+{
+	QDialog::accept();
+	deleteLater();
+}
+
+void DiveLogImportDialog::reject()
+{
+	QDialog::reject();
+	deleteLater();
+}
+
 TagDragDelegate::TagDragDelegate(QObject *parent) : QStyledItemDelegate(parent)
 {
 }
