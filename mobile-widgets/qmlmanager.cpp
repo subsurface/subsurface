@@ -1294,11 +1294,9 @@ void QMLManager::deleteDive(int id)
 		appendTextToLog("trying to delete non-existing dive");
 		return;
 	}
-	// clean up (or create) the storage for the deleted dive and trip (if applicable)
+	// create the storage for the deleted dive and trip (if applicable)
 	if (!deletedDive)
 		deletedDive = alloc_dive();
-	else
-		clear_dive(deletedDive);
 	copy_dive(d, deletedDive);
 	if (!deletedTrip) {
 		deletedTrip = (struct dive_trip *)calloc(1, sizeof(struct dive_trip));
