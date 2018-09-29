@@ -1752,8 +1752,7 @@ void MainWindow::importTxtFiles(const QStringList fileNames)
 	QByteArray fileNamePtr, csv;
 
 	for (int i = 0; i < fileNames.size(); ++i) {
-		fileNamePtr = QFile::encodeName(fileNames.at(i));
-		csv = fileNamePtr.data();
+		csv = fileNamePtr = QFile::encodeName(fileNames.at(i));
 		csv.replace(csv.size() - 3, 3, "csv");
 
 		QFileInfo check_file(csv);
