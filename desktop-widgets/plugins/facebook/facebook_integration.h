@@ -13,12 +13,12 @@ class FacebookPlugin : public ISocialNetworkIntegration {
 	Q_OBJECT
 public:
 	explicit FacebookPlugin(QObject* parent = 0);
-	bool isConnected();
-	void requestLogin();
-	void requestLogoff();
-	QString socialNetworkIcon() const;
-	QString socialNetworkName() const;
-	void requestUpload();
+	bool isConnected() override;
+	void requestLogin() override;
+	void requestLogoff() override;
+	QString socialNetworkIcon() const override;
+	QString socialNetworkName() const override;
+	void requestUpload() override;
 private:
 	FacebookConnectWidget *fbConnectWidget;
 };

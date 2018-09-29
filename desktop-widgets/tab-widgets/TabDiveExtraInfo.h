@@ -15,8 +15,8 @@ class TabDiveExtraInfo : public TabBase {
 public:
 	TabDiveExtraInfo(QWidget *parent = 0);
 	~TabDiveExtraInfo();
-	void updateData();
-	void clear();
+	void updateData() override;
+	void clear() override;
 private:
 	Ui::TabDiveExtraInfo *ui;
 	ExtraDataModel *extraDataModel;

@@ -13,8 +13,8 @@ class PreferencesUnits : public AbstractPreferencesWidget {
 public:
 	PreferencesUnits();
 	~PreferencesUnits();
-	void refreshSettings();
-	void syncSettings();
+	void refreshSettings() override;
+	void syncSettings() override;
 private:
 	Ui::PreferencesUnits *ui;
 };

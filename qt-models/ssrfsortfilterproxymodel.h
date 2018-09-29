@@ -17,9 +17,9 @@ class SsrfSortFilterProxyModel : public QSortFilterProxyModel {
 
 public:
 	SsrfSortFilterProxyModel(QObject *parent = 0);
-	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const;
-	bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const;
-	bool filterAcceptsColumn(int source_column, const QModelIndex& source_parent) const;
+	bool lessThan(const QModelIndex& source_left, const QModelIndex& source_right) const override;
+	bool filterAcceptsRow(int source_row, const QModelIndex& source_parent) const override;
+	bool filterAcceptsColumn(int source_column, const QModelIndex& source_parent) const override;
 
 	void setLessThan(less_than_cb func);
 	void setFilterRow(filter_accepts_row_cb func);

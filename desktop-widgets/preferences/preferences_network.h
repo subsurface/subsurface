@@ -14,8 +14,8 @@ class PreferencesNetwork : public AbstractPreferencesWidget {
 public:
 	PreferencesNetwork();
 	~PreferencesNetwork();
-	void refreshSettings();
-	void syncSettings();
+	void refreshSettings() override;
+	void syncSettings() override;
 
 public slots:
 	void proxyType_changed(int i);

@@ -72,10 +72,10 @@ class DiveProfileItem : public AbstractProfilePolygonItem {
 
 public:
 	DiveProfileItem();
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void settingsToggled(bool toggled);
-	void settingsChanged();
+	void settingsChanged() override;
 	void plot_depth_sample(struct plot_data *entry, QFlags<Qt::AlignmentFlag> flags, const QColor &color);
 	int maxCeiling(int row);
 
@@ -89,8 +89,8 @@ class DiveMeanDepthItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	DiveMeanDepthItem();
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
 	void createTextItem();
@@ -102,8 +102,8 @@ class DiveTemperatureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	DiveTemperatureItem();
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
 	void createTextItem(int seconds, int mkelvin);
@@ -113,8 +113,8 @@ class DiveHeartrateItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	DiveHeartrateItem();
-	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
 	void createTextItem(int seconds, int hr);
@@ -125,8 +125,8 @@ class DivePercentageItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	DivePercentageItem(int i);
-	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
 	QString visibilityKey;
@@ -139,8 +139,8 @@ class DiveAmbPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	DiveAmbPressureItem();
-	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
 	QString visibilityKey;
@@ -150,8 +150,8 @@ class DiveGFLineItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	DiveGFLineItem();
-	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight);
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+	void modelDataChanged(const QModelIndex &topLeft, const QModelIndex &bottomRight) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
 private:
 	QString visibilityKey;
@@ -161,8 +161,8 @@ class DiveGasPressureItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 
 public:
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 
 private:
 	void plotPressureValue(int mbar, int sec, QFlags<Qt::AlignmentFlag> align, double offset);
@@ -175,9 +175,9 @@ class DiveCalculatedCeiling : public AbstractProfilePolygonItem {
 
 public:
 	DiveCalculatedCeiling(ProfileWidget2 *profileWidget);
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	void settingsChanged();
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void settingsChanged() override;
 
 public
 slots:
@@ -195,8 +195,8 @@ class DiveReportedCeiling : public AbstractProfilePolygonItem {
 
 public:
 	DiveReportedCeiling();
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
 };
 
 class DiveCalculatedTissue : public DiveCalculatedCeiling {
@@ -204,15 +204,15 @@ class DiveCalculatedTissue : public DiveCalculatedCeiling {
 public:
 	DiveCalculatedTissue(ProfileWidget2 *profileWidget);
 	void setVisible(bool visible);
-	void settingsChanged();
+	void settingsChanged() override;
 };
 
 class PartialPressureGasItem : public AbstractProfilePolygonItem {
 	Q_OBJECT
 public:
 	PartialPressureGasItem();
-	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0);
-	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex());
+	void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override;
+	void modelDataChanged(const QModelIndex &topLeft = QModelIndex(), const QModelIndex &bottomRight = QModelIndex()) override;
 	void setThresholdSettingsKey(const double *prefPointerMin, const double *prefPointerMax);
 	void setVisibilitySettingsKey(const QString &setVisibilitySettingsKey);
 	void setColors(const QColor &normalColor, const QColor &alertColor);

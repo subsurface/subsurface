@@ -40,8 +40,8 @@ public:
 	QTableView *view();
 
 protected:
-	void showEvent(QShowEvent *);
-	void resizeEvent(QResizeEvent *);
+	void showEvent(QShowEvent *) override;
+	void resizeEvent(QResizeEvent *) override;
 
 signals:
 	void addButtonClicked();
