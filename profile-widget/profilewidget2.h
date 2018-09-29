@@ -84,7 +84,7 @@ public:
 	double getFontPrintScale();
 	void setFontPrintScale(double scale);
 #ifndef SUBSURFACE_MOBILE
-	bool eventFilter(QObject *, QEvent *);
+	bool eventFilter(QObject *, QEvent *) override;
 	void clearHandlers();
 #endif
 	void recalcCeiling();
@@ -146,18 +146,18 @@ slots: // Necessary to call from QAction's signals.
 #endif
 
 protected:
-	void resizeEvent(QResizeEvent *event);
+	void resizeEvent(QResizeEvent *event) override;
 #ifndef SUBSURFACE_MOBILE
-	void wheelEvent(QWheelEvent *event);
-	void mouseMoveEvent(QMouseEvent *event);
-	void contextMenuEvent(QContextMenuEvent *event);
-	void mouseDoubleClickEvent(QMouseEvent *event);
-	void mousePressEvent(QMouseEvent *event);
-	void mouseReleaseEvent(QMouseEvent *event);
+	void wheelEvent(QWheelEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void contextMenuEvent(QContextMenuEvent *event) override;
+	void mouseDoubleClickEvent(QMouseEvent *event) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 #endif
-	void dropEvent(QDropEvent *event);
-	void dragEnterEvent(QDragEnterEvent *event);
-	void dragMoveEvent(QDragMoveEvent *event);
+	void dropEvent(QDropEvent *event) override;
+	void dragEnterEvent(QDragEnterEvent *event) override;
+	void dragMoveEvent(QDragMoveEvent *event) override;
 
 
 private: /*methods*/

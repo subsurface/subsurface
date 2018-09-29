@@ -55,15 +55,15 @@ public:
 
 	void addColor(QColor color);
 
-	QSize sizeHint() const;
-	QSize minimumSizeHint() const;
+	QSize sizeHint() const override;
+	QSize minimumSizeHint() const override;
 
 signals:
 	void editingFinished();
 
 protected:
-	void paintEvent(QPaintEvent *e);
-	void keyPressEvent(QKeyEvent *e);
+	void paintEvent(QPaintEvent *e) override;
+	void keyPressEvent(QKeyEvent *e) override;
 
 private:
 	struct Private;

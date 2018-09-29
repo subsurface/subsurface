@@ -56,8 +56,8 @@ public:
 	~MapLocationModel();
 
 	Q_INVOKABLE MapLocation *get(int row);
-	QVariant data(const QModelIndex &index, int role) const;
-	int rowCount(const QModelIndex &parent) const;
+	QVariant data(const QModelIndex &index, int role) const override;
+	int rowCount(const QModelIndex &parent) const override;
 	int count();
 	void add(MapLocation *);
 	void addList(QVector<MapLocation *>);
@@ -68,7 +68,7 @@ public:
 	quint32 selectedUuid();
 
 protected:
-	QHash<int, QByteArray> roleNames() const;
+	QHash<int, QByteArray> roleNames() const override;
 
 private:
 	QVector<MapLocation *> m_mapLocations;

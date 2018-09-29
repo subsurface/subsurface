@@ -22,7 +22,7 @@ public:
 	void recalculate();
 
 protected:
-	void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
+	void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
 private:
 	struct plot_info pInfo;
 	struct plot_data *entry;
