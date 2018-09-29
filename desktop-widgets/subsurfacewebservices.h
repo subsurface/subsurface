@@ -77,17 +77,11 @@ private:
 	bool uploadMode;
 };
 
-class UserSurveyServices : public WebServices {
+class UserSurveyServices : public QDialog {
 	Q_OBJECT
 public:
 	QNetworkReply* sendSurvey(QString values);
 	explicit UserSurveyServices(QWidget *parent = 0, Qt::WindowFlags f = 0);
-private
-slots:
-	// need to declare them as no ops or Qt4 is unhappy
-	void startDownload() { }
-	void startUpload() { }
-	void buttonClicked(QAbstractButton *button) { Q_UNUSED(button) }
 };
 
 #endif // SUBSURFACEWEBSERVICES_H
