@@ -285,6 +285,7 @@ i686-w64-mingw32.shared-cmake \
 	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 	-DMAKE_TESTS=OFF \
+	-DBTSUPPORT=ON -DBLESUPPORT=ON \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
