@@ -318,14 +318,10 @@ Kirigami.ScrollablePage {
 				}
 			}
 			Rectangle {
-				height: Math.max(2, Kirigami.Units.gridUnit / 12) // we want a thicker line
-				anchors {
-					bottom: headingBackground.top
-					left: parent.left
-					rightMargin: Kirigami.Units.gridUnit * -2
-					right: parent.right
-				}
-				color: subsurfaceTheme.lightPrimaryColor
+				height: section == "" ? 0 : 1
+				width: parent.width
+				anchors.top: headingBackground.bottom
+				color: "#B2B2B2"
 			}
 		}
 	}
