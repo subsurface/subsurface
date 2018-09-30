@@ -291,16 +291,6 @@ QStringList DCDeviceData::getProductListFromVendor(const QString &vendor)
 
 int DCDeviceData::getMatchingAddress(const QString &vendor, const QString &product)
 {
-	if (qPrefDiveComputer::vendor() == vendor &&
-	    qPrefDiveComputer::product() == product) {
-		// we are trying to show the last dive computer selected
-		for (int i = 0; i < connectionListModel.rowCount(); i++) {
-			QString address = connectionListModel.address(i);
-			if (address.contains(qPrefDiveComputer::device()))
-				return i;
-		}
-	}
-
 	for (int i = 0; i < connectionListModel.rowCount(); i++) {
 		QString address = connectionListModel.address(i);
 		if (address.contains(product))
@@ -453,14 +443,6 @@ device_data_t *DCDeviceData::internalData()
 
 int DCDeviceData::getDetectedVendorIndex()
 {
-	if (!qPrefDiveComputer::vendor().isEmpty()) {
-		// use the last one
-		for (int i = 0; i < vendorList.length(); i++) {
-			if (vendorList[i] == qPrefDiveComputer::vendor())
-				return i;
-		}
-	}
-
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
@@ -473,16 +455,6 @@ int DCDeviceData::getDetectedVendorIndex()
 
 int DCDeviceData::getDetectedProductIndex(const QString &currentVendorText)
 {
-	if (!qPrefDiveComputer::vendor().isEmpty()) {
-		if (qPrefDiveComputer::vendor() == currentVendorText) {
-			// we are trying to show the last dive computer selected
-			for (int i = 0; i < productList[currentVendorText].length(); i++) {
-				if (productList[currentVendorText][i] == qPrefDiveComputer::product())
-					return i;
-			}
-		}
-	}
-
 #if defined(BT_SUPPORT)
 	QList<BTDiscovery::btVendorProduct> btDCs = BTDiscovery::instance()->getBtDcs();
 
