@@ -405,8 +405,10 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 #endif
 	qDebug() << "qt_ble_open(" << devaddr << ")";
 
+#if !defined(Q_OS_WIN)
 	if (use_random_address(user_device))
 		controller->setRemoteAddressType(QLowEnergyController::RandomAddress);
+#endif
 
 	// Try to connect to the device
 	controller->connectToDevice();
