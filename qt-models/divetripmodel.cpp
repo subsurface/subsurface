@@ -310,14 +310,6 @@ QVariant DiveItem::data(int column, int role) const
 	return retVal;
 }
 
-Qt::ItemFlags DiveItem::flags(const QModelIndex &index) const
-{
-	if (index.column() == NR) {
-		return TreeItem::flags(index) | Qt::ItemIsEditable;
-	}
-	return TreeItem::flags(index);
-}
-
 bool DiveItem::setData(const QModelIndex &index, const QVariant &value, int role)
 {
 	if (role != Qt::EditRole)
@@ -436,19 +428,70 @@ DiveTripModel *DiveTripModel::instance()
 }
 
 DiveTripModel::DiveTripModel(QObject *parent) :
-	TreeModel(parent),
+	QAbstractItemModel(parent),
 	currentLayout(TREE)
 {
-	columns = COLUMNS;
+}
+
+int DiveTripModel::columnCount(const QModelIndex&) const
+{
+	return COLUMNS;
+}
+
+int DiveTripModel::rowCount(const QModelIndex &parent) const
+{
+	// No parent means top level - return the number of top-level items
+	if (!parent.isValid())
+		return items.size();
+
+	// If the parent has a parent, this is a dive -> no entries
+	if (parent.parent().isValid())
+		return 0;
+
+	// If this is outside of our top-level list -> no entries
+	int row = parent.row();
+	if (row < 0 || row >= (int)items.size())
+		return 0;
+
+	// Only trips have items
+	const Item &entry =  items[parent.row()];
+	return entry.trip ? entry.dives.size() : 0;
+}
+
+static const quintptr noParent = ~(quintptr)0; // This is the "internalId" marker for top-level item
+
+QModelIndex DiveTripModel::index(int row, int column, const QModelIndex &parent) const
+{
+	if (!hasIndex(row, column, parent))
+		return QModelIndex();
+
+	// In the "internalId", we store either ~0 no top-level items or the
+	// index of the parent item. A top-level item has an invalid parent.
+	return createIndex(row, column, parent.isValid() ? parent.row() : noParent);
+}
+
+QModelIndex DiveTripModel::parent(const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return QModelIndex();
+
+	// In the "internalId", we store either ~0 for top-level items
+	// or the index of the parent item.
+	quintptr id = index.internalId();
+	if (id == noParent)
+		return QModelIndex();
+
+	// Parent must be top-level item
+	return createIndex(id, 0, noParent);
 }
 
 Qt::ItemFlags DiveTripModel::flags(const QModelIndex &index) const
 {
-	if (!index.isValid())
-		return 0;
+	dive *d = diveOrNull(index);
+	Qt::ItemFlags base = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-	TripItem *item = static_cast<TripItem *>(index.internalPointer());
-	return item->flags(index);
+	// Only dives have editable fields and only the number is editable
+	return d && index.column() == NR ? base | Qt::ItemIsEditable : base;
 }
 
 QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int role) const
@@ -584,43 +627,49 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 	return ret;
 }
 
+DiveTripModel::Item::Item(dive_trip *t, dive *d) : trip(t),
+	dives({ d })
+{
+}
+
+DiveTripModel::Item::Item(dive *d) : trip(nullptr),
+	dives({ d })
+{
+}
+
 void DiveTripModel::setupModelData()
 {
 	int i = dive_table.nr;
 
 	beginResetModel();
 
-	clear();
 	if (autogroup)
 		autogroup_dives();
-	QMap<dive_trip_t *, TripItem *> trips;
+	items.clear();
 	while (--i >= 0) {
-		struct dive *dive = get_dive(i);
-		update_cylinder_related_info(dive);
-		dive_trip_t *trip = dive->divetrip;
+		dive *d = get_dive(i);
+		update_cylinder_related_info(d);
+		dive_trip_t *trip = d->divetrip;
 
-		DiveItem *diveItem = new DiveItem();
-		diveItem->d = dive;
-
+		// If this dive doesn't have a trip or we are in list-mode, add
+		// as top-level item.
 		if (!trip || currentLayout == LIST) {
-			diveItem->parent = rootItem.get();
-			rootItem->children.push_back(diveItem);
+			items.emplace_back(d);
 			continue;
 		}
-		if (currentLayout == LIST)
-			continue;
 
-		if (!trips.keys().contains(trip)) {
-			TripItem *tripItem = new TripItem();
-			tripItem->trip = trip;
-			tripItem->parent = rootItem.get();
-			tripItem->children.push_back(diveItem);
-			trips[trip] = tripItem;
-			rootItem->children.push_back(tripItem);
-			continue;
+		// Check if that trip is already known to us: search for the first item
+		// where item->trip is equal to trip.
+		auto it = std::find_if(items.begin(), items.end(), [trip](const Item &item)
+				       { return item.trip == trip; });
+		if (it == items.end()) {
+			// We didn't find an entry for this trip -> add one
+			items.emplace_back(trip, d);
+
+		} else {
+			// We found the trip -> simply add the dive
+			it->dives.push_back(d);
 		}
-		TripItem *tripItem = trips[trip];
-		tripItem->children.push_back(diveItem);
 	}
 
 	endResetModel();
@@ -637,11 +686,47 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
 	setupModelData();
 }
 
+QPair<dive_trip *, dive *> DiveTripModel::tripOrDive(const QModelIndex &index) const
+{
+	if (!index.isValid())
+		return { nullptr, nullptr };
+
+	QModelIndex parent = index.parent();
+	// An invalid parent means that we're at the top-level
+	if (!parent.isValid()) {
+		const Item &entry = items[index.row()];
+		if (entry.trip)
+			return { entry.trip, nullptr };		// A trip
+		else
+			return { nullptr, entry.dives[0] };	// A dive
+	}
+
+	// Otherwise, we're at a leaf -> thats a dive
+	return { nullptr, items[parent.row()].dives[index.row()] };
+}
+
+dive *DiveTripModel::diveOrNull(const QModelIndex &index) const
+{
+	return tripOrDive(index).second;
+}
+
+QVariant DiveTripModel::data(const QModelIndex &index, int role) const
+{
+	// Set the font for all items alike
+	if (role == Qt::FontRole)
+		return defaultModelFont();
+
+	auto entry = tripOrDive(index);
+	if (entry.first)
+		return TripItem(entry.first).data(index.column(), role);
+	else if (entry.second)
+		return DiveItem(entry.second).data(index.column(), role);
+	else
+		return QVariant();
+}
+
 bool DiveTripModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-	TreeItem *item = static_cast<TreeItem *>(index.internalPointer());
-	DiveItem *diveItem = dynamic_cast<DiveItem *>(item);
-	if (!diveItem)
-		return false;
-	return diveItem->setData(index, value, role);
+	dive *d = diveOrNull(index);
+	return d ? DiveItem(d).setData(index, value, role) : false;
 }
