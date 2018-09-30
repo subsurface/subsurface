@@ -179,6 +179,20 @@ Kirigami.Page {
 					else
 						manager.DC_bluetoothMode = false
 					manager.DC_devName = currentText
+					dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
+					for (var i = 1; i < 5; i++) {
+						if (comboProduct.currentIndex === -1 && currentText === "FTDI"){
+							if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.device" + i).toUpperCase() === currentText){
+								rememberedDCsGrid.setDC(eval("PrefDiveComputer.vendor" + i), eval("PrefDiveComputer.product" + i), ("PrefDiveComputer.device" + i))
+							}
+						}else if (comboProduct.currentIndex !== -1 && currentText === "FTDI") {
+							if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.product" + i) === comboProduct.currentText && eval("PrefDiveComputer.device" + i).toUpperCase() === currentText){
+								eval("dc"+ i + ".enabled = false")
+							}
+						}else if ( eval("PrefDiveComputer.vendor" + i) === comboVendor.currentText && eval("PrefDiveComputer.product" + i) === comboProduct.currentText && eval("PrefDiveComputer.product" + i) +" " + eval("PrefDiveComputer.device" + i).toUpperCase() === currentText){
+							eval("dc"+ i + ".enabled = false")
+						}
+					}
 				}
 			}
 		}
@@ -380,9 +394,12 @@ Kirigami.Page {
 
 		onVisibleChanged: {
 			comboVendor.currentIndex = comboProduct.currentIndex = comboConnection.currentIndex = -1
-			if (visible && PrefDiveComputer.vendor !== "" ) {
-				rememberedDCsGrid.setDC(PrefDiveComputer.vendor1, PrefDiveComputer.product1, PrefDiveComputer.device1)
-				dc1.enabled = false
+			dc1.enabled = dc2.enabled = dc3.enabled = dc4.enabled = true
+			if (visible) {
+				comboVendor.currentIndex = manager.getDetectedVendorIndex()
+				comboProduct.currentIndex = manager.getDetectedProductIndex(comboVendor.currentText)
+				comboConnection.currentIndex = manager.getMatchingAddress(comboVendor.currentText, comboProduct.currentText)
+				
 			}
 		}
 	}
