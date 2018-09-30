@@ -31,8 +31,8 @@ static dc_descriptor_t *getDeviceType(QString btName)
 	}
 
 	if (btName.startsWith("Predator") ||
-            btName.startsWith("Petrel") ||
-            btName.startsWith("Perdix") ||
+	    btName.startsWith("Petrel") ||
+	    btName.startsWith("Perdix") ||
 	    btName.startsWith("Teric")) {
 		vendor = "Shearwater";
 		if (btName.startsWith("Petrel")) product = "Petrel"; // or petrel 2?
@@ -98,7 +98,7 @@ void BTDiscovery::BTDiscoveryReDiscover()
 	if (1) {
 #endif
 		m_btValid = true;
-#if defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
+#if defined(Q_OS_WIN) || defined(Q_OS_IOS) || (defined(Q_OS_LINUX) && !defined(Q_OS_ANDROID))
 		discoveryAgent = new QBluetoothDeviceDiscoveryAgent(this);
 		connect(discoveryAgent, &QBluetoothDeviceDiscoveryAgent::deviceDiscovered, this, &BTDiscovery::btDeviceDiscovered);
 		qDebug() << "starting BLE discovery";
@@ -178,7 +178,7 @@ void BTDiscovery::btDeviceDiscovered(const QBluetoothDeviceInfo &device)
 		qDebug() << id.toByteArray();
 	}
 
-#if defined(Q_OS_IOS)
+#if defined(Q_OS_IOS) || defined(Q_OS_WIN)
 	// On Desktop this is called when "Save" button is clicked. All
 	// DeviceInfo are stored as data on the ui list items.
 	// On mobile (iOS) the current ConnectionListModel does not support
