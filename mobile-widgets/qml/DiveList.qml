@@ -196,7 +196,7 @@ Kirigami.ScrollablePage {
 				}
 				Rectangle {
 					visible: deleteButtonVisible
-					height: diveListEntry.height - Kirigami.Units.smallSpacing
+					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
 					width: height - 3 * Kirigami.Units.smallSpacing
 					color: subsurfaceTheme.contrastAccentColor
 					antialiasing: true
@@ -204,6 +204,8 @@ Kirigami.ScrollablePage {
 					anchors {
 						left: diveListEntry.right
 						right: parent.right
+						verticalCenter: diveListEntry.verticalCenter
+						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
 					}
 					Kirigami.Icon {
 						anchors {
@@ -211,7 +213,7 @@ Kirigami.ScrollablePage {
 							verticalCenter: parent.verticalCenter
 						}
 						source: ":/icons/trash-empty"
-						width: Kirigami.Units.iconSizes.smallMedium
+						width: parent.height
 						height: width
 					}
 					MouseArea {
