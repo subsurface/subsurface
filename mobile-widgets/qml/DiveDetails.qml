@@ -294,7 +294,7 @@ Kirigami.Page {
 			orientation: ListView.Horizontal
 			highlightFollowsCurrentItem: false
 			focus: true
-			clip: false
+			clip: true
 			snapMode: ListView.SnapOneItem
 			highlightRangeMode: ListView.StrictlyEnforceRange
 			onMovementEnded: {
