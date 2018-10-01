@@ -1811,8 +1811,8 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	}
 
 	if (csvFiles.size()) {
-		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
-		diveLogImport->show();
+		DiveLogImportDialog diveLogImport(csvFiles, this);
+		diveLogImport.exec();
 	}
 }
 
