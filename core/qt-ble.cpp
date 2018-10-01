@@ -366,6 +366,7 @@ dc_status_t BLEObject::setupHwTerminalIo(QList<QLowEnergyCharacteristic> allC)
 	return setHwCredit(MAXIMAL_HW_CREDIT);
 }
 
+#if !defined(Q_OS_WIN)
 // Bluez is broken, and doesn't have a sane way to query
 // whether to use a random address or not. So we have to
 // fake it.
@@ -373,6 +374,7 @@ static int use_random_address(dc_user_device_t *user_device)
 {
 	return IS_SHEARWATER(user_device) || IS_GARMIN(user_device);
 }
+#endif
 
 dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_device_t *user_device)
 {
