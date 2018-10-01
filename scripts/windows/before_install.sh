@@ -86,8 +86,8 @@ git clone https://github.com/brianb/mdbtools.git
 
 # get prebuilt mxe libraries for mdbtools and glib.
 # do not overwrite upstream prebuilt mxe binaries if there is any coincidence.
-wget -q https://www.dropbox.com/s/842skyusb96ii1u/mxe-static-minimal-994ad473.tar.xz
-[[ ! -f mxe-static-minimal-994ad473.tar.xz ]] && exit 1
+wget -q https://www.dropbox.com/s/b2iw7p5e6c52gf4/mxe-static-minimal-97c0fbfd.tar.xz
+[[ ! -f mxe-static-minimal-97c0fbfd.tar.xz ]] && exit 1
 cd mxe
-tar -xJf ../mxe-static-minimal-994ad473.tar.xz --skip-old-files
+tar -xJf ../mxe-static-minimal-97c0fbfd.tar.xz --skip-old-files
 ls -al usr/
