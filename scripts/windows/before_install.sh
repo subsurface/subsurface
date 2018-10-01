@@ -2,6 +2,10 @@
 
 set -x
 
+# it appears that Travis has an older version of Ubuntu 14.04 - so old
+# that my binaries don't work antymore (openssl incompatibilty)
+sudo apt-get update && sudo apt-get upgrade -y
+
 # Travis only pulls shallow repos. But that messes with git describe.
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
