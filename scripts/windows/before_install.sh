@@ -17,9 +17,9 @@ cd mxe
 tar xJf ../mxe-97c0fbfd.tar.xz
 
 # hack around path dependency - needs to be fixed
-sudo mkdir -p /data/winqt551/
-sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /data/winqt551/mxe-current
-ls -l /data/winqt551/mxe-current/usr
+sudo mkdir -p /data/winqt571/
+sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /data/winqt571/mxe-master
+ls -l /data/winqt571/mxe-master/usr
 sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /usr/src/mxe
 
 # libdivecomputer uses the wrong include path for libusb
