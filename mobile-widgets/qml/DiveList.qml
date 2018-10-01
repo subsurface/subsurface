@@ -256,8 +256,8 @@ Kirigami.ScrollablePage {
 				Rectangle {
 					id: dateBox
 					visible: section != ""
-					height: section == "" ? 0 : 2 * Kirigami.Units.gridUnit
-					width: section == "" ? 0 : 2.5 * Kirigami.Units.gridUnit
+					height: section == "" ? 0 : parent.height - Kirigami.Units.smallSpacing
+					width: section == "" ? 0 : 2.5 * Kirigami.Units.gridUnit * PrefDisplay.mobile_scale
 					color: subsurfaceTheme.primaryColor
 					radius: Kirigami.Units.smallSpacing * 2
 					antialiasing: true
