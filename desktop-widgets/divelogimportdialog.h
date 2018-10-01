@@ -89,8 +89,6 @@ slots:
 	void loadFileContents(int value, enum whatChanged triggeredBy);
 	int setup_csv_params(QStringList r, char **params, int pnr);
 	int parseTxtHeader(QString fileName, char **params, int pnr);
-	void accept() override;
-	void reject() override;
 
 private:
 	bool selector;
