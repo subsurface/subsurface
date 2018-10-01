@@ -15,7 +15,24 @@ static QString subsurface_index = "subsurface/csvindex";
 
 #define SILENCE_WARNING 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ""
 
-const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = {
+struct CSVAppConfig {
+	QString name;
+	int time;
+	int depth;
+	int temperature;
+	int po2;
+	int sensor1;
+	int sensor2;
+	int sensor3;
+	int cns;
+	int ndl;
+	int tts;
+	int stopdepth;
+	int pressure;
+	int setpoint;
+	QString separator;
+};
+static const CSVAppConfig CSVApps[] = {
 	// time, depth, temperature, po2, sensor1, sensor2, sensor3, cns, ndl, tts, stopdepth, pressure, setpoint
 	// indices are 0 based, -1 means the column doesn't exist
 	{ "Manual import", SILENCE_WARNING },
@@ -28,7 +45,6 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "AV1", 0, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, " " },
 	{ "Poseidon MkVI", 0, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
-	{ NULL, SILENCE_WARNING }
 };
 
 enum Known {
@@ -347,8 +363,8 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	specialCSV << AV1;
 	specialCSV << POSEIDON;
 
-	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
-		ui->knownImports->addItem(CSVApps[i].name);
+	for (const CSVAppConfig &conf: CSVApps)
+		ui->knownImports->addItem(conf.name);
 
 	ui->CSVSeparator->addItems( QStringList() << tr("Tab") << "," << ";" << "|");
 

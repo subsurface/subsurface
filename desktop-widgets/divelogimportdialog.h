@@ -103,26 +103,6 @@ private:
 	QString hw;
 	bool txtLog;
 
-	struct CSVAppConfig {
-		QString name;
-		int time;
-		int depth;
-		int temperature;
-		int po2;
-		int sensor1;
-		int sensor2;
-		int sensor3;
-		int cns;
-		int ndl;
-		int tts;
-		int stopdepth;
-		int pressure;
-		int setpoint;
-		QString separator;
-	};
-
-#define CSVAPPS 11
-	static const CSVAppConfig CSVApps[CSVAPPS];
 };
 
 class TagDragDelegate : public QStyledItemDelegate {
