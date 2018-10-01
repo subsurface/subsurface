@@ -27,6 +27,7 @@ const DiveLogImportDialog::CSVAppConfig DiveLogImportDialog::CSVApps[CSVAPPS] = 
 	{ "Seabear CSV", 0, 1, 5, -1, -1, -1, -1, -1, 2, 3, 4, 6, -1, ";" },
 	{ "SubsurfaceCSV", -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "Tab" },
 	{ "AV1", 0, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, " " },
+	{ "Poseidon MkVI", 0, 2, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, "," },
 	{ NULL, SILENCE_WARNING }
 };
 
@@ -39,7 +40,8 @@ enum Known {
 	SENSUS,
 	SEABEAR,
 	SUBSURFACE,
-	AV1
+	AV1,
+	POSEIDON
 };
 
 ColumnNameProvider::ColumnNameProvider(QObject *parent) : QAbstractListModel(parent)
@@ -106,8 +108,6 @@ int ColumnNameProvider::mymatch(QString value) const
 	}
 	return -1;
 }
-
-
 
 ColumnNameView::ColumnNameView(QWidget*)
 {
@@ -345,6 +345,7 @@ DiveLogImportDialog::DiveLogImportDialog(QStringList fn, QWidget *parent) : QDia
 	specialCSV << SUBSURFACE;
 	specialCSV << DL7;
 	specialCSV << AV1;
+	specialCSV << POSEIDON;
 
 	for (int i = 0; !CSVApps[i].name.isNull(); ++i)
 		ui->knownImports->addItem(CSVApps[i].name);
@@ -378,9 +379,24 @@ void DiveLogImportDialog::loadFileContentsKnownTypesSelected(int value)
 	loadFileContents(value, KNOWNTYPES);
 }
 
+// Turn a "*.csv" or "*.txt" filename into a pair of both, "*.csv" and "*.txt".
+// If the input wasn't either "*.csv" or "*.txt", then both returned strings
+// are empty
+static QPair<QString, QString> poseidonFileNames(const QString &fn)
+{
+	if (fn.endsWith(".csv", Qt::CaseInsensitive)) {
+		QString txt = fn.left(fn.size() - 3) + "txt";
+		return { fn, txt };
+	} else if (fn.endsWith(".txt", Qt::CaseInsensitive)) {
+		QString csv = fn.left(fn.size() - 3) + "csv";
+		return { csv, fn };
+	} else {
+		return { QString(), QString() };
+	}
+}
+
 void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 {
-	QFile f(fileNames.first());
 	QList<QStringList> fileColumns;
 	QStringList currColumns;
 	QStringList headers;
@@ -389,6 +405,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	bool xp5 = false;
 	bool apd = false;
 	bool dl7 = false;
+	bool poseidon = false;
 
 	// reset everything
 	ColumnNameProvider *provider = new ColumnNameProvider(this);
@@ -397,6 +414,26 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	resultModel = new ColumnNameResult(this);
 	ui->tableView->setModel(resultModel);
 
+	// Poseidon MkVI is special: it is made up of a .csv *and* a .txt file.
+	// If the user specified one, we'll try to check for the other.
+	QString fileName = fileNames.first();
+	QPair<QString, QString> pair = poseidonFileNames(fileName);
+	if (!pair.second.isEmpty()) {
+		QFile f_txt(pair.second);
+		f_txt.open(QFile::ReadOnly);
+		QString firstLine = f_txt.readLine();
+		if (firstLine.startsWith("MkVI_Config ")) {
+			poseidon = true;
+			fileName = pair.first; // Read data from CSV
+			headers.append("Time");
+			headers.append("Depth");
+			blockSignals(true);
+			ui->knownImports->setCurrentText("Poseidon MkVI");
+			blockSignals(false);
+		}
+	}
+
+	QFile f(fileName);
 	f.open(QFile::ReadOnly);
 	QString firstLine = f.readLine();
 	if (firstLine.contains("SEABEAR")) {
@@ -497,10 +534,7 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 			}
 		}
 		firstLine = f.readLine().trimmed();
-
 	}
-
-
 
 	// Special handling for APD Log Viewer
 	if ((triggeredBy == KNOWNTYPES && (value == APD || value == APD2)) || (triggeredBy == INITIAL && fileNames.first().endsWith(".apd", Qt::CaseInsensitive))) {
@@ -726,6 +760,12 @@ void DiveLogImportDialog::loadFileContents(int value, whatChanged triggeredBy)
 	while (rows < 10 && !f.atEnd()) {
 		QString currLine = f.readLine().trimmed();
 		currColumns = currLine.split(separator);
+		// For Poseidon, read only columns where the second value is 8 (=depth)
+		if (poseidon) {
+			if (currColumns.size() < 3 || currColumns[1] != "8")
+				continue;
+			currColumns.removeAt(1);
+		}
 		fileColumns.append(currColumns);
 		rows += 1;
 	}
@@ -845,6 +885,9 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		for (int i = 0; i < fileNames.size(); ++i) {
 			if (ui->knownImports->currentText() == "Seabear CSV") {
 				parse_seabear_log(qPrintable(fileNames[i]), &dive_table);
+			} else if (ui->knownImports->currentText() == "Poseidon MkVI") {
+				QPair<QString, QString> pair = poseidonFileNames(fileNames[i]);
+				parse_txt_file(qPrintable(pair.second), qPrintable(pair.first), &dive_table);
 			} else {
 				char *params[49];
 				int pnr = 0;

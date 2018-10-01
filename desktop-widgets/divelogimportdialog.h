@@ -121,7 +121,7 @@ private:
 		QString separator;
 	};
 
-#define CSVAPPS 10
+#define CSVAPPS 11
 	static const CSVAppConfig CSVApps[CSVAPPS];
 };
 

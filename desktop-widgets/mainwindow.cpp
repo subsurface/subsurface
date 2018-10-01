@@ -1742,35 +1742,6 @@ void MainWindow::importFiles(const QStringList fileNames)
 	refreshDisplay();
 }
 
-void MainWindow::importTxtFiles(const QStringList fileNames)
-{
-	QStringList csvFiles;
-
-	if (fileNames.isEmpty())
-		return;
-
-	QByteArray fileNamePtr, csv;
-
-	for (int i = 0; i < fileNames.size(); ++i) {
-		csv = fileNamePtr = QFile::encodeName(fileNames.at(i));
-		csv.replace(csv.size() - 3, 3, "csv");
-
-		QFileInfo check_file(csv);
-		if (check_file.exists() && check_file.isFile()) {
-			if (parse_txt_file(fileNamePtr.data(), csv, &dive_table) == 0)
-				csvFiles += fileNames.at(i);
-		} else {
-			csvFiles += fileNamePtr;
-		}
-	}
-	if (csvFiles.size()) {
-		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
-		diveLogImport->show();
-	}
-	process_imported_dives(false);
-	refreshDisplay();
-}
-
 void MainWindow::loadFiles(const QStringList fileNames)
 {
 	if (fileNames.isEmpty()) {
@@ -1805,6 +1776,19 @@ void MainWindow::loadFiles(const QStringList fileNames)
 	}
 }
 
+static const char *csvExtensions[] = {
+	".csv", ".apd", ".zxu", ".zxl", ".txt"
+};
+
+static bool isCsvFile(const QString &s)
+{
+	for (const char *ext: csvExtensions) {
+		if (s.endsWith(ext, Qt::CaseInsensitive))
+			return true;
+	}
+	return false;
+}
+
 void MainWindow::on_actionImportDiveLog_triggered()
 {
 	QStringList fileNames = QFileDialog::getOpenFileNames(this, tr("Open dive log file"), lastUsedDir(), filter_import());
@@ -1813,12 +1797,14 @@ void MainWindow::on_actionImportDiveLog_triggered()
 		return;
 	updateLastUsedDir(QFileInfo(fileNames[0]).dir().path());
 
-	QStringList logFiles = fileNames.filter(QRegExp("^(?!.*\\.(csv|txt|apd|zxu|zxl))", Qt::CaseInsensitive));
-	QStringList csvFiles = fileNames.filter(".csv", Qt::CaseInsensitive);
-	csvFiles += fileNames.filter(".apd", Qt::CaseInsensitive);
-	csvFiles += fileNames.filter(".zxu", Qt::CaseInsensitive);
-	csvFiles += fileNames.filter(".zxl", Qt::CaseInsensitive);
-	QStringList txtFiles = fileNames.filter(".txt", Qt::CaseInsensitive);
+	QStringList logFiles;
+	QStringList csvFiles;
+	for (const QString &fn: fileNames) {
+		if (isCsvFile(fn))
+			csvFiles.append(fn);
+		else
+			logFiles.append(fn);
+	}
 
 	if (logFiles.size()) {
 		importFiles(logFiles);
@@ -1827,10 +1813,6 @@ void MainWindow::on_actionImportDiveLog_triggered()
 	if (csvFiles.size()) {
 		DiveLogImportDialog *diveLogImport = new DiveLogImportDialog(csvFiles, this);
 		diveLogImport->show();
-	}
-
-	if (txtFiles.size()) {
-		importTxtFiles(txtFiles);
 	}
 }
 
