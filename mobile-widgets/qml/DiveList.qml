@@ -334,12 +334,8 @@ Kirigami.ScrollablePage {
 		visible: opacity > 0
 		Behavior on opacity { NumberAnimation { duration: Kirigami.Units.shortDuration } }
 		function setupActions() {
-			if (visible) {
-				page.actions.main = null
-				page.actions.right = null
-				page.title = qsTr("Cloud credentials")
-			} else if (prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
-						prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
+			if (prefs.credentialStatus === CloudStatus.CS_VERIFIED ||
+					prefs.credentialStatus === CloudStatus.CS_NOCLOUD) {
 				page.actions.main = page.downloadFromDCAction
 				page.actions.right = page.addDiveAction
 				page.title = qsTr("Dive list")
@@ -348,7 +344,7 @@ Kirigami.ScrollablePage {
 			} else {
 				page.actions.main = null
 				page.actions.right = null
-				page.title = qsTr("Dive list")
+				page.title = qsTr("Cloud credentials")
 			}
 		}
 		onVisibleChanged: {
