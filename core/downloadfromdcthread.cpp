@@ -27,12 +27,12 @@ static QString str_error(const char *fmt, ...)
 
 static void updateRememberedDCs()
 {
-	QString current = qPrefDiveComputer::vendor() + " - " + qPrefDiveComputer::product();
+	QString current = qPrefDiveComputer::vendor() + " - " + qPrefDiveComputer::product() + " - " + qPrefDiveComputer::device();
 	QStringList dcs = {
-		qPrefDiveComputer::vendor1() + " - " + qPrefDiveComputer::product1(),
-		qPrefDiveComputer::vendor2() + " - " + qPrefDiveComputer::product2(),
-		qPrefDiveComputer::vendor3() + " - " + qPrefDiveComputer::product3(),
-		qPrefDiveComputer::vendor4() + " - " + qPrefDiveComputer::product4()
+		qPrefDiveComputer::vendor1() + " - " + qPrefDiveComputer::product1() + " - " + qPrefDiveComputer::device1(),
+		qPrefDiveComputer::vendor2() + " - " + qPrefDiveComputer::product2() + " - " + qPrefDiveComputer::device2(),
+		qPrefDiveComputer::vendor3() + " - " + qPrefDiveComputer::product3() + " - " + qPrefDiveComputer::device3(),
+		qPrefDiveComputer::vendor4() + " - " + qPrefDiveComputer::product4() + " - " + qPrefDiveComputer::device4()
 	};
 	if (dcs.contains(current))
 		// already in the list
