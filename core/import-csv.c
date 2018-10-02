@@ -129,14 +129,6 @@ static int parse_dan_format(const char *filename, char **params, int pnr, struct
 		char *iter_end = NULL;
 		unsigned int pnr_local = pnr;
 
-		/*
-		 * Process the dives, but let the last round be parsed
-		 * from C++ code
-		 */
-
-		if (end_ptr)
-			process_imported_dives(false);
-
 		mem_csv.buffer = malloc(mem.size + 1);
 		mem_csv.size = mem.size;
 
