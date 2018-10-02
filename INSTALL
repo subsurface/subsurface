@@ -35,7 +35,7 @@ see https://github.com/Subsurface-divelog/libdc.git
 
 In order to get the modified sources, do
 - locate yourself in the subsurface repo on your local computer
-- run "git submoule init"
+- run "git submodule init"
 - run "git submodule update"
 
 The branches won't have a pretty history and will include ugly merges,
