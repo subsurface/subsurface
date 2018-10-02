@@ -410,11 +410,11 @@ Kirigami.ScrollablePage {
 				text: qsTr("Forget")
 				enabled: PrefDiveComputer.vendor1 !== ""
 				onClicked: {
-					PrefDiveComputer.vendor1 = ""
-					PrefDiveComputer.vendor2 = ""
-					PrefDiveComputer.vendor3 = ""
-					PrefDiveComputer.vendor4 = ""
-					PrefDiveComputer.vendor = ""
+					PrefDiveComputer.vendor1 = PrefDiveComputer.product1 = PrefDiveComputer.device1 = ""
+					PrefDiveComputer.vendor2 = PrefDiveComputer.product2 = PrefDiveComputer.device2 = ""
+					PrefDiveComputer.vendor3 = PrefDiveComputer.product3 = PrefDiveComputer.device3 = ""
+					PrefDiveComputer.vendor4 = PrefDiveComputer.product4 = PrefDiveComputer.device4 = ""
+					PrefDiveComputer.vendor = PrefDiveComputer.product = PrefDiveComputer.device = ""
 				}
 			}
 		}
