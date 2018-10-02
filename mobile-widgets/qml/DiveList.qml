@@ -226,13 +226,11 @@ Kirigami.ScrollablePage {
 						}
 					}
 				}
-				Item {
-					Timer {
-						id: timer
-						interval: 4000
-						onTriggered: {
-							deleteButtonVisible = false
-						}
+				Timer {
+					id: timer
+					interval: 4000
+					onTriggered: {
+						deleteButtonVisible = false
 					}
 				}
 			}
