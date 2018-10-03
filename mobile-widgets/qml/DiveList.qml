@@ -404,6 +404,7 @@ Kirigami.ScrollablePage {
 			name: ":/icons/downloadDC"
 			color: subsurfaceTheme.primaryColor
 		}
+		text: qsTr("Download dives")
 		onTriggered: {
 			showDownloadPage()
 		}
@@ -413,6 +414,7 @@ Kirigami.ScrollablePage {
 		icon {
 			name: ":/icons/list-add"
 		}
+		text: qsTr("Add dive")
 		onTriggered: {
 			startAddDive()
 		}

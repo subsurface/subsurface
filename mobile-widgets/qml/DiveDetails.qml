@@ -189,6 +189,7 @@ Kirigami.Page {
 			name: state !== "view" ? ":/icons/document-save.svg" : ":/icons/document-edit.svg"
 			color: subsurfaceTheme.primaryColor
 		}
+		text: state !== "view" ? qsTr("Save edits") : qsTr("Edit dive")
 		onTriggered: {
 			manager.appendTextToLog("save/edit button triggered")
 			if (state === "edit" || state === "add") {
