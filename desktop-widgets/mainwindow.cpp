@@ -1739,7 +1739,7 @@ void MainWindow::importFiles(const QStringList fileNames)
 		fileNamePtr = QFile::encodeName(fileNames.at(i));
 		parse_file(fileNamePtr.data(), &table);
 	}
-	process_imported_dives(&table, false);
+	process_imported_dives(&table, false, false);
 	refreshDisplay();
 }
 

@@ -1339,10 +1339,13 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
  * Add imported dive to global dive table. Overlapping dives will
  * be merged if possible. If prefer_imported is true, data of the
  * new dives are prioritized in such a case.
+ * If downloaded is true, only the divecomputer of the first dive
+ * will be considered, as it is assumed that all dives come from
+ * the same computer.
  * Note: the dives in import_table are consumed! On return import_table
  * has size 0.
  */
-void process_imported_dives(struct dive_table *import_table, bool prefer_imported)
+void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded)
 {
 	int i, j;
 	struct dive *old_dive, *merged;
@@ -1356,7 +1359,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	/* check if we need a nickname for the divecomputer for newly downloaded dives;
 	 * since we know they all came from the same divecomputer we just check for the
 	 * first one */
-	if (import_table->dives[0]->downloaded)
+	if (downloaded)
 		set_dc_nickname(import_table->dives[0]);
 	else
 		/* they aren't downloaded, so record / check all new ones */

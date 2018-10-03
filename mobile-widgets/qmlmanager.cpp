@@ -325,8 +325,9 @@ void QMLManager::updateAllGlobalLists()
 void QMLManager::mergeLocalRepo()
 {
 	char *filename = NOCLOUD_LOCALSTORAGE;
-	parse_file(filename, &dive_table);
-	process_imported_dives(false);
+	struct dive_table table = { 0 };
+	parse_file(filename, &table);
+	process_imported_dives(&table, false, false);
 }
 
 void QMLManager::copyAppLogToClipboard()
