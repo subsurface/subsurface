@@ -197,7 +197,6 @@ static void uemis_get_weight(char *buffer, weightsystem_t *weight, int diveid)
 static struct dive *uemis_start_dive(uint32_t deviceid)
 {
 	struct dive *dive = alloc_dive();
-	dive->downloaded = true;
 	dive->dc.model = strdup("Uemis Zurich");
 	dive->dc.deviceid = deviceid;
 	return dive;
@@ -1147,12 +1146,12 @@ static int get_memory(struct dive_table *td, int checkpoint)
 	return UEMIS_MEM_OK;
 }
 
-/* mark a dive as deleted by setting download to false
- * this will be picked up by some cleaning statement later */
+/* we misuse the hidden_by_filter flag to mark a dive as deleted.
+ * this will be picked up by some cleaning statement later. */
 static void do_delete_dives(struct dive_table *td, int idx)
 {
 	for (int x = idx; x < td->nr; x++)
-		td->dives[x]->downloaded = false;
+		td->dives[x]->hidden_by_filter = true;
 }
 
 static bool load_uemis_divespot(const char *mountpath, int divespot_id)
@@ -1265,7 +1264,7 @@ static bool get_matching_dive(int idx, char *newmax, int *uemis_mem_status, devi
 #endif
 						deleted_files++;
 						/* mark this log entry as deleted and cleanup later, otherwise we mess up our array */
-						dive->downloaded = false;
+						dive->hidden_by_filter = true;
 #if UEMIS_DEBUG & 2
 						fprintf(debugfile, "Deleted dive from %s, with id %d from table -- newmax is %s\n", d_time, dive->dc.diveid, newmax);
 #endif
@@ -1471,7 +1470,7 @@ const char *do_uemis_import(device_data_t *data)
 	 * to see if we have to clean some dead bodies from our download table */
 	next_table_index = 0;
 	while (next_table_index < data->download_table->nr) {
-		if (!data->download_table->dives[next_table_index]->downloaded)
+		if (data->download_table->dives[next_table_index]->hidden_by_filter)
 			uemis_delete_dive(data, data->download_table->dives[next_table_index]->dc.diveid);
 		else
 			next_table_index++;

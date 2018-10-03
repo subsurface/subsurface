@@ -427,7 +427,6 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		}
 
 		// End dive
-		dive->downloaded = true;
 		record_dive_to_table(dive, table);
 		dive = NULL;
 		mark_divelist_changed(true);

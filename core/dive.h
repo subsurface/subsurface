@@ -309,7 +309,6 @@ struct dive {
 	struct dive *next, **pprev;
 	bool selected;
 	bool hidden_by_filter;
-	bool downloaded;
 	timestamp_t when;
 	uint32_t dive_site_uuid;
 	char *notes;
