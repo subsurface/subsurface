@@ -785,7 +785,6 @@ static void cochran_parse_dive(const unsigned char *decode, unsigned mod,
 		dc->duration.seconds = duration;
 	}
 
-	dive->downloaded = true;
 	record_dive_to_table(dive, table);
 	mark_divelist_changed(true);
 

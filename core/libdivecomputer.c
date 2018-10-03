@@ -861,7 +861,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 			add_dive_to_trip(dive, devdata->trip);
 	}
 
-	dive->downloaded = true;
 	record_dive_to_table(dive, devdata->download_table);
 	mark_divelist_changed(true);
 	return true;
