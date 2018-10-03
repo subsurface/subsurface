@@ -346,14 +346,22 @@ if [ ! -f ../configure ] ; then
 fi
 CFLAGS="$OLDER_MAC -I$INSTALL_ROOT/include $LIBDC_CFLAGS" ../configure --prefix=$INSTALL_ROOT --disable-examples
 if [ $PLATFORM = Darwin ] ; then
-	# it seems that on my Mac some of the configure tests for libdivecomputer
-	# pass even though the feature tested for is actually missing
-	# let's hack around that
-	sed -i .bak 's/^#define HAVE_CLOCK_GETTIME 1/\/* #undef HAVE_CLOCK_GETTIME *\//' config.h
+	# remove some copmpiler options that aren't supported on Mac
+	# otherwise the log gets very noisy
 	for i in $(find . -name Makefile)
 	do
 		sed -i .bak 's/-Wrestrict//;s/-Wno-unused-but-set-variable//' $i
 	done
+	# it seems that on my Mac some of the configure tests for libdivecomputer
+	# pass even though the feature tested for is actually missing
+	# let's hack around that
+	# touch config.status, recreate config.h and then disable HAVE_CLOCK_GETTIME
+	# this seems to work so that the Makefile doesn't re-run the
+	# configure process and overwrite all the changes we just made
+	touch config.status
+	make config.h
+	grep CLOCK_GETTIME config.h
+	sed -i .bak 's/^#define HAVE_CLOCK_GETTIME 1/#undef HAVE_CLOCK_GETTIME /' config.h
 fi
 make -j4
 make install
