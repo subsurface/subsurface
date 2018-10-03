@@ -431,7 +431,7 @@ extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
 struct dive_table {
-	int nr, allocated, preexisting;
+	int nr, allocated;
 	struct dive **dives;
 };
 

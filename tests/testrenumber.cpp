@@ -9,7 +9,6 @@ void TestRenumber::setup()
 {
 	QCOMPARE(parse_file(SUBSURFACE_TEST_DATA "/dives/test47.xml", &dive_table), 0);
 	process_loaded_dives();
-	dive_table.preexisting = dive_table.nr;
 }
 
 void TestRenumber::testMerge()
@@ -20,7 +19,6 @@ void TestRenumber::testMerge()
 	QCOMPARE(dive_table.nr, 1);
 	QCOMPARE(unsaved_changes(), 1);
 	mark_divelist_changed(false);
-	dive_table.preexisting = dive_table.nr;
 }
 
 void TestRenumber::testMergeAndAppend()

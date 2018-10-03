@@ -611,7 +611,6 @@ void DiveTripModel::setupModelData()
 	clear();
 	if (autogroup)
 		autogroup_dives();
-	dive_table.preexisting = dive_table.nr;
 	QMap<dive_trip_t *, TripItem *> trips;
 	while (--i >= 0) {
 		struct dive *dive = get_dive(i);
