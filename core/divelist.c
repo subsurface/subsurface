@@ -1367,9 +1367,6 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	sort_table(import_table);
 	merge_imported_dives(import_table);
 
-	for (i = 0; i < import_table->nr; i++)
-		import_table->dives[i]->downloaded = true;
-
 	/* Merge newly imported dives into the dive table.
 	 * Since both lists (old and new) are sorted, we can step
 	 * through them concurrently and locate the insertions points.
@@ -1415,10 +1412,6 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	/* If there are still dives to add, add them at the end of the dive table. */
 	for ( ; i <  import_table->nr; i++)
 		add_single_dive(dive_table.nr, import_table->dives[i]);
-
-	/* make sure no dives are still marked as downloaded */
-	for (i = 0; i < dive_table.nr; i++)
-		dive_table.dives[i]->downloaded = false;
 
 	/* we took care of all dives, clean up the import table */
 	import_table->nr = 0;
