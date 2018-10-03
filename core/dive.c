@@ -2759,11 +2759,6 @@ static int match_dc_dive(const struct divecomputer *a, const struct divecomputer
 	return 0;
 }
 
-static bool new_without_trip(const struct dive *a)
-{
-	return a->downloaded && !a->divetrip;
-}
-
 /*
  * Do we want to automatically try to merge two dives that
  * look like they are the same dive?
@@ -2802,16 +2797,13 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
 	    same_string(b->dc.model, "manually added dive"))
 		return 0;
 
-	/* Don't try to merge dives with different trip information */
-	if (a->divetrip != b->divetrip) {
-		/*
-		 * Exception: if the dive is downloaded without any
-		 * explicit trip information, we do want to merge it
-		 * with existing old dives even if they have trips.
-		 */
-		if (!new_without_trip(a) && !new_without_trip(b))
-			return 0;
-	}
+	/* Don't try to merge dives with different trip information
+	 * Exception: if the dive is downloaded without any
+	 * explicit trip information, we do want to merge it
+	 * with existing old dives even if they have trips.
+	 */
+	if (a->divetrip != b->divetrip && b->divetrip)
+		return 0;
 
 	/*
 	 * Do some basic sanity testing of the values we
@@ -2843,6 +2835,11 @@ static int likely_same_dive(const struct dive *a, const struct dive *b)
  * This could do a lot more merging. Right now it really only
  * merges almost exact duplicates - something that happens easily
  * with overlapping dive downloads.
+ *
+ * If new dives are merged into the dive table, dive a is supposed to
+ * be the old dive and dive b is supposed to be the newly imported
+ * dive. If the flag "prefer_downloaded" is set, data of the latter
+ * will take priority over the former.
  */
 struct dive *try_to_merge(struct dive *a, struct dive *b, bool prefer_downloaded)
 {
@@ -3328,16 +3325,20 @@ int count_dives_with_suit(const char *suit)
  *     two must have a different start time, and "offset" is the relative
  *     time difference between the two.
  *
- * (a) two different dive computers that we might want to merge into
+ * (b) two different dive computers that we might want to merge into
  *     one single dive with multiple dive computers.
  *
  *     This is the "try_to_merge()" case, which will have offset == 0,
  *     even if the dive times might be different.
+ *
+ * If new dives are merged into the dive table, dive a is supposed to
+ * be the old dive and dive b is supposed to be the newly imported
+ * dive. If the flag "prefer_downloaded" is set, data of the latter
+ * will take priority over the former.
  */
 struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer_downloaded)
 {
 	struct dive *res = alloc_dive();
-	struct dive *dl = NULL;
 
 	if (offset) {
 		/*
@@ -3348,15 +3349,6 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 		 */
 		if (likely_same_dive(a, b))
 			offset = 0;
-	} else {
-		/* Aim for newly downloaded dives to be 'b' (keep old dive data first) */
-		if (a->downloaded && !b->downloaded) {
-			struct dive *tmp = a;
-			a = b;
-			b = tmp;
-		}
-		if (prefer_downloaded && b->downloaded)
-			dl = b;
 	}
 
 	if (same_string(a->dc.model, "planned dive")) {
@@ -3364,7 +3356,7 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 		a = b;
 		b = tmp;
 	}
-	res->when = dl ? dl->when : a->when;
+	res->when = prefer_downloaded ? b->when : a->when;
 	res->selected = a->selected || b->selected;
 	merge_trip(res, a, b);
 	MERGE_TXT(res, a, b, notes, "\n--\n");
@@ -3379,9 +3371,9 @@ struct dive *merge_dives(struct dive *a, struct dive *b, int offset, bool prefer
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	merge_equipment(res, a, b);
 	merge_temperatures(res, a, b);
-	if (dl) {
+	if (prefer_downloaded) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
-		join_dive_computers(&res->dc, &dl->dc, &a->dc, 1);
+		join_dive_computers(&res->dc, &b->dc, &a->dc, 1);
 	} else if (offset && might_be_same_device(&a->dc, &b->dc))
 		interleave_dive_computers(&res->dc, &a->dc, &b->dc, offset);
 	else
