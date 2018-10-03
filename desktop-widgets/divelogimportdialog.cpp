@@ -1007,7 +1007,7 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 		}
 	}
 
-	process_imported_dives(&table, false);
+	process_imported_dives(&table, false, false);
 	MainWindow::instance()->refreshDisplay();
 }
 

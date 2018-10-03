@@ -173,7 +173,7 @@ void DiveImportedModel::recordDives()
 			delete_dive_from_table(&downloadTable, j);
 	}
 
-	process_imported_dives(diveTable, true);
+	process_imported_dives(diveTable, true, true);
 	if (autogroup)
 		autogroup_dives();
 }

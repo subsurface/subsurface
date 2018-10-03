@@ -506,7 +506,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 		// remember the last downloaded dive (on most dive computers this will be the chronologically
 		// first new dive) and select it again after processing all the dives
 		int uniqId = downloadTable.dives[downloadTable.nr - 1]->id;
-		process_imported_dives(&downloadTable, preferDownloaded());
+		process_imported_dives(&downloadTable, preferDownloaded(), true);
 		// after process_imported_dives does any merging or resorting needed, we need
 		// to recreate the model for the dive list so we can select the newest dive
 		MainWindow::instance()->recreateDiveList();

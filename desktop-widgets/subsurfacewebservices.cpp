@@ -769,7 +769,7 @@ void DivelogsDeWebServices::buttonClicked(QAbstractButton *button)
 		/* parse file and import dives */
 		struct dive_table table = { 0 };
 		parse_file(QFile::encodeName(zipFile.fileName()), &table);
-		process_imported_dives(&table, false);
+		process_imported_dives(&table, false, false);
 		MainWindow::instance()->refreshDisplay();
 
 		/* store last entered user/pass in config */

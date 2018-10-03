@@ -19,7 +19,7 @@ extern int init_decompression(struct deco_state *ds, struct dive *dive);
 
 /* divelist core logic functions */
 extern void process_loaded_dives();
-extern void process_imported_dives(struct dive_table *import_table, bool prefer_imported);
+extern void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded);
 extern char *get_dive_gas_string(struct dive *dive);
 
 struct dive **grow_dive_table(struct dive_table *table);
