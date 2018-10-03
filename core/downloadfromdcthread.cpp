@@ -77,7 +77,6 @@ void DownloadThread::run()
 #endif
 	qDebug() << "Starting download from " << (internalData->bluetooth_mode ? "BT" : internalData->devname);
 	downloadTable.nr = 0;
-	dive_table.preexisting = dive_table.nr;
 
 	Q_ASSERT(internalData->download_table != nullptr);
 	const char *errorText;
