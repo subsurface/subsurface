@@ -91,6 +91,8 @@ void DownloadThread::run()
 		error = str_error(errorText, internalData->devname, internalData->vendor, internalData->product);
 		qDebug() << "Finishing download thread:" << error;
 	} else {
+		if (!downloadTable.nr)
+			error = tr("No new dives downloaded from dive computer");
 		qDebug() << "Finishing download thread:" << downloadTable.nr << "dives downloaded";
 	}
 	qPrefDiveComputer::set_vendor(internalData->vendor);
