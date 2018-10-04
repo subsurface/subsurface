@@ -1422,8 +1422,6 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		data->device = NULL;
 		dc_iostream_close(data->iostream);
 		data->iostream = NULL;
-		if (!downloadTable.nr)
-			dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
 	}
 
 	dc_context_free(data->context);
