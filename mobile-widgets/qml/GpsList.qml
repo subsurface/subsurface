@@ -20,6 +20,8 @@ Kirigami.ScrollablePage {
 			id: listItem
 			enabled: true
 			width: parent.width
+			backgroundColor: subsurfaceTheme.backgroundColor
+			activeBackgroundColor: subsurfaceTheme.primaryColor
 			GridLayout {
 				columns: 4
 				id: timeAndName
