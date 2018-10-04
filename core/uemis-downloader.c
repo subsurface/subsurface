@@ -1029,12 +1029,11 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 	return true;
 }
 
-static char *uemis_get_divenr(char *deviceidstr, int force)
+static char *uemis_get_divenr(char *deviceidstr, struct dive_table *table, int force)
 {
 	uint32_t deviceid, maxdiveid = 0;
 	int i;
 	char divenr[10];
-	struct dive_table *table;
 	deviceid = atoi(deviceidstr);
 	mindiveid = 0xFFFFFFFF;
 
@@ -1044,11 +1043,11 @@ static char *uemis_get_divenr(char *deviceidstr, int force)
 	 * already have.
 	 *
 	 * Also, if "force_download" is true, do this even if we
-	 * don't have any dives (maxdiveid will remain zero)
+	 * don't have any dives (maxdiveid will remain ~0).
+	 *
+	 * Otherwise, use the global dive table.
 	 */
-	if (force || downloadTable.nr)
-		table = &downloadTable;
-	else
+	if (!force && !table->nr)
 		table = &dive_table;
 
 	for (i = 0; i < table->nr; i++) {
@@ -1350,7 +1349,7 @@ const char *do_uemis_import(device_data_t *data)
 		goto bail;
 
 	param_buff[1] = "notempty";
-	newmax = uemis_get_divenr(deviceid, force_download);
+	newmax = uemis_get_divenr(deviceid, data->download_table, force_download);
 	if (verbose)
 		fprintf(stderr, "Uemis downloader: start looking at dive nr %s\n", newmax);
 
