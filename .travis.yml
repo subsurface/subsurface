@@ -18,6 +18,13 @@ matrix:
       sudo: required
       language: c++
 
+    - env: SUBSURFACE_PLATFORM='windows-container'
+      os: linux
+      filter_secrets: false
+      language: c++
+      services:
+          - docker
+
     - env: SUBSURFACE_PLATFORM='linux'
       os: linux
       dist: trusty
