@@ -52,7 +52,7 @@ extern "C" {
 extern char *get_minutes(int seconds);
 extern void init_stats_summary(struct stats_summary *stats);
 extern void free_stats_summary(struct stats_summary *stats);
-extern void calculate_stats_summary(struct stats_summary *stats);
+extern void calculate_stats_summary(struct stats_summary *stats, bool selected_only);
 extern void calculate_stats_selected(stats_t *stats_selection);
 extern void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS]);
 extern void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot);

@@ -177,7 +177,7 @@ void YearlyStatisticsModel::update_yearly_stats()
 	int i, month = 0;
 	unsigned int j, combined_months;
 	stats_summary_auto_free stats;
-	calculate_stats_summary(&stats);
+	calculate_stats_summary(&stats, false);
 
 	for (i = 0; stats.stats_yearly != NULL && stats.stats_yearly[i].period; ++i) {
 		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_yearly[i]);
