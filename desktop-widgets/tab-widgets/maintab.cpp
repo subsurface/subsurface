@@ -424,8 +424,6 @@ void MainTab::updateDiveInfo(bool clear)
 		setEnabled(false);
 	editMode = IGNORE; // don't trigger on changes to the widgets
 
-	process_selected_dives();
-
 	for (auto widget : extraWidgets) {
 		widget->updateData();
 	}

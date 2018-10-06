@@ -44,6 +44,8 @@ void TabDiveStatistics::clear()
 
 void TabDiveStatistics::updateData()
 {
+	stats_t stats_selection;
+	calculate_stats_selected(&stats_selection);
 	clear();
 	ui->depthLimits->setMaximum(get_depth_string(stats_selection.max_depth, true));
 	if (amount_selected > 1)
