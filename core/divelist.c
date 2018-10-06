@@ -1420,3 +1420,32 @@ void sort_table(struct dive_table *table)
 {
 	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
 }
+
+/*
+ * Calculate surface interval for dive starting at "when". Currently, we
+ * might display dives which are not yet in the divelist, therefore the
+ * input parameter is a timestamp.
+ * If the given dive starts during a different dive, the surface interval
+ * is 0. If we can't determine a surface interval (first dive), <0 is
+ * returned. This does *not* consider pathological cases such as dives
+ * that happened inside other dives. The interval will always be calculated
+ * with respect to the dive that started previously.
+ */
+timestamp_t get_surface_interval(timestamp_t when)
+{
+	int i;
+	timestamp_t prev_end;
+
+	/* find previous dive. might want to use a binary search. */
+	for (i = dive_table.nr - 1; i >= 0; --i) {
+		if (dive_table.dives[i]->when < when)
+			break;
+	}
+	if (i < 0)
+		return -1;
+
+	prev_end = dive_endtime(dive_table.dives[i]);
+	if (prev_end > when)
+		return 0;
+	return when - prev_end;
+}

@@ -77,12 +77,9 @@ void TabDiveInformation::updateData()
 	ui->diveTimeText->setText(get_dive_duration_string(displayed_dive.duration.seconds, tr("h"), tr("min"), tr("sec"),
 			" ", displayed_dive.dc.divemode == FREEDIVE));
 
-	struct dive *prevd;
-	process_all_dives(&displayed_dive, &prevd);
-
-	if (prevd)
-		ui->surfaceIntervalText->setText(get_dive_surfint_string(displayed_dive.when - (dive_endtime(prevd)), tr("d"), tr("h"), tr("min")));
-
+	timestamp_t surface_interval = get_surface_interval(displayed_dive.when);
+	if (surface_interval >= 0)
+		ui->surfaceIntervalText->setText(get_dive_surfint_string(surface_interval, tr("d"), tr("h"), tr("min")));
 	else
 		ui->surfaceIntervalText->clear();
 
