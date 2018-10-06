@@ -24,6 +24,7 @@ public:
 	dc_status_t read(void* data, size_t size, size_t *actual);
 
 	inline QLowEnergyService *preferredService() { return preferred; }
+	inline int descriptorWritten() { return desc_written; }
 	dc_status_t select_preferred_service(void);
 
 public slots:
@@ -43,6 +44,7 @@ private:
 	bool isCharacteristicWritten;
 	dc_user_device_t *device;
 	unsigned int hw_credit = 0;
+	unsigned int desc_written = 0;
 
 	QList<QUuid> hwAllCharacteristics = {
 		"{00000001-0000-1000-8000-008025000000}", // HW_OSTC_BLE_DATA_RX
