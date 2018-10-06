@@ -424,13 +424,7 @@ void MainTab::updateDiveInfo(bool clear)
 		setEnabled(false);
 	editMode = IGNORE; // don't trigger on changes to the widgets
 
-	// This method updates ALL tabs whenever a new dive or trip is
-	// selected.
-	// If exactly one trip has been selected, we show the location / notes
-	// for the trip in the Info tab, otherwise we show the info of the
-	// selected_dive
 	process_selected_dives();
-	process_all_dives();
 
 	for (auto widget : extraWidgets) {
 		widget->updateData();

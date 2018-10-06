@@ -176,13 +176,15 @@ void YearlyStatisticsModel::update_yearly_stats()
 {
 	int i, month = 0;
 	unsigned int j, combined_months;
+	stats_summary_auto_free stats;
+	calculate_stats_summary(&stats);
 
-	for (i = 0; stats_yearly != NULL && stats_yearly[i].period; ++i) {
-		YearStatisticsItem *item = new YearStatisticsItem(stats_yearly[i]);
+	for (i = 0; stats.stats_yearly != NULL && stats.stats_yearly[i].period; ++i) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_yearly[i]);
 		combined_months = 0;
-		for (j = 0; combined_months < stats_yearly[i].selection_size; ++j) {
-			combined_months += stats_monthly[month].selection_size;
-			YearStatisticsItem *iChild = new YearStatisticsItem(stats_monthly[month]);
+		for (j = 0; combined_months < stats.stats_yearly[i].selection_size; ++j) {
+			combined_months += stats.stats_monthly[month].selection_size;
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_monthly[month]);
 			item->children.append(iChild);
 			iChild->parent = item;
 			month++;
@@ -191,11 +193,10 @@ void YearlyStatisticsModel::update_yearly_stats()
 		item->parent = rootItem.get();
 	}
 
-
-	if (stats_by_trip != NULL && stats_by_trip[0].is_trip == true) {
-		YearStatisticsItem *item = new YearStatisticsItem(stats_by_trip[0]);
-		for (i = 1; stats_by_trip != NULL && stats_by_trip[i].is_trip; ++i) {
-			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_trip[i]);
+	if (stats.stats_by_trip != NULL && stats.stats_by_trip[0].is_trip == true) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_trip[0]);
+		for (i = 1; stats.stats_by_trip != NULL && stats.stats_by_trip[i].is_trip; ++i) {
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_trip[i]);
 			item->children.append(iChild);
 			iChild->parent = item;
 		}
@@ -204,12 +205,12 @@ void YearlyStatisticsModel::update_yearly_stats()
 	}
 
 	/* Show the statistic sorted by dive type */
-	if (stats_by_type != NULL && stats_by_type[0].selection_size) {
-		YearStatisticsItem *item = new YearStatisticsItem(stats_by_type[0]);
+	if (stats.stats_by_type != NULL && stats.stats_by_type[0].selection_size) {
+		YearStatisticsItem *item = new YearStatisticsItem(stats.stats_by_type[0]);
 		for (i = 1; i <= NUM_DIVEMODE; ++i) {
-			if (stats_by_type[i].selection_size == 0)
+			if (stats.stats_by_type[i].selection_size == 0)
 				continue;
-			YearStatisticsItem *iChild = new YearStatisticsItem(stats_by_type[i]);
+			YearStatisticsItem *iChild = new YearStatisticsItem(stats.stats_by_type[i]);
 			item->children.append(iChild);
 			iChild->parent = item;
 		}
