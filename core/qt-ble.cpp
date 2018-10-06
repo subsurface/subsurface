@@ -92,6 +92,7 @@ void BLEObject::characteristicWritten(const QLowEnergyCharacteristic &c, const Q
 void BLEObject::writeCompleted(const QLowEnergyDescriptor&, const QByteArray&)
 {
 	qDebug() << "BLE write completed";
+	desc_written++;
 }
 
 void BLEObject::addService(const QBluetoothUuid &newService)
@@ -489,6 +490,7 @@ dc_status_t qt_ble_open(void **io, dc_context_t *, const char *devaddr, dc_user_
 			qDebug() << "now writing \"0x0100\" to the descriptor" << d.uuid().toString();
 
 			ble->preferredService()->writeDescriptor(d, QByteArray::fromHex("0100"));
+			WAITFOR(ble->descriptorWritten(), 1000);
 			break;
 		}
 	}
