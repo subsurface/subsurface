@@ -430,13 +430,14 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	mkdir -p build
 	mkdir -p J10build
 	cd build
-	$QMAKE -query
 	$QMAKE "INCLUDEPATH=$INSTALL_ROOT/include" ../googlemaps.pro
 	# on Travis the compiler doesn't support c++1z, yet qmake adds that flag;
 	# since things compile fine with c++11, let's just hack that away
 	# similarly, don't use -Wdata-time
-	mv Makefile Makefile.bak
-	cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
+	if [ "$TRAVIS" = "true" ] ; then
+		mv Makefile Makefile.bak
+		cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
+	fi
 	make -j4
 	make install
 	popd
