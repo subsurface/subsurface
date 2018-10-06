@@ -410,7 +410,7 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 	void *io = NULL;
 
 	static const dc_custom_cbs_t callbacks = {
-		NULL, /* set_timeout */
+		qt_ble_set_timeout, /* set_timeout */
 		NULL, /* set_latency */
 		NULL, /* set_break */
 		NULL, /* set_dtr */
