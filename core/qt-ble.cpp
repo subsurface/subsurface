@@ -542,4 +542,10 @@ dc_status_t qt_ble_write(void *io, const void* data, size_t size, size_t *actual
 	return ble->write(data, size, actual);
 }
 
+const char *qt_ble_get_name(void *io)
+{
+	BLEObject *ble = (BLEObject *) io;
+	return ble->get_name();
+}
+
 } /* extern "C" */

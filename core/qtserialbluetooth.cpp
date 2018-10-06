@@ -424,6 +424,7 @@ ble_packet_open(dc_iostream_t **iostream, dc_context_t *context, const char* dev
 		NULL, /* purge */
 		qt_custom_sleep, /* sleep */
 		qt_ble_close, /* close */
+		qt_ble_get_name, /* get_name */
 	};
 
 	rc = qt_ble_open(&io, context, devaddr, (dc_user_device_t *) userdata);
