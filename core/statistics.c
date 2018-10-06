@@ -3,7 +3,7 @@
  *
  * core logic for the Info & Stats page -
  * char *get_minutes(int seconds);
- * void process_all_dives(struct dive *dive, struct dive **prev_dive);
+ * void process_all_dives();
  */
 #include "gettext.h"
 #include <string.h>
@@ -91,7 +91,7 @@ char *get_minutes(int seconds)
 	return buf;
 }
 
-void process_all_dives(struct dive *dive, struct dive **prev_dive)
+void process_all_dives()
 {
 	int idx;
 	struct dive *dp;
@@ -105,7 +105,6 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	dive_trip_t *trip_ptr = 0;
 	unsigned int size, tsize;
 
-	*prev_dive = NULL;
 	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
 		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
@@ -152,11 +151,6 @@ void process_all_dives(struct dive *dive, struct dive **prev_dive)
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
 	for_each_dive (idx, dp) {
-		if (dive && dp->when == dive->when) {
-			/* that's the one we are showing */
-			if (idx > 0)
-				*prev_dive = dive_table.dives[idx - 1];
-		}
 		process_dive(dp, &stats);
 
 		/* yearly statistics */

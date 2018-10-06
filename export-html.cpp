@@ -54,11 +54,7 @@ int main(int argc, char **argv)
 	prefs.units = git_prefs.units;
 
 	// populate the statistics
-	struct dive *d = get_dive(0);
-	struct dive *pd;
-	if (d) {
-		process_all_dives(d, &pd);
-	}
+	process_all_dives();
 
 	// now set up the export settings to create the HTML export
 	struct htmlExportSetting hes;
