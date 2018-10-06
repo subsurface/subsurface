@@ -131,6 +131,7 @@ BLEObject::BLEObject(QLowEnergyController *c, dc_user_device_t *d)
 	device = d;
 	debugCounter = 0;
 	isCharacteristicWritten = false;
+	timeout = BLE_TIMEOUT;
 }
 
 BLEObject::~BLEObject()
@@ -203,7 +204,7 @@ dc_status_t BLEObject::read(void *data, size_t size, size_t *actual)
 
 		qDebug() << QTime::currentTime() << "packet WAIT";
 
-		WAITFOR(!receivedPackets.isEmpty(), BLE_TIMEOUT);
+		WAITFOR(!receivedPackets.isEmpty(), timeout);
 		if (receivedPackets.isEmpty())
 			return DC_STATUS_IO;
 	}
@@ -514,6 +515,17 @@ static void checkThreshold()
 		QLoggingCategory::setFilterRules(QStringLiteral("qt.bluetooth* = false"));
 		qDebug() << "turning off further BT debug output";
 	}
+}
+
+/*
+ * NOTE! The 'set_timeout()' function only affects the timeout
+ * for qt_ble_read(), not for the various general BLE operations.
+ */
+dc_status_t qt_ble_set_timeout(void *io, int timeout)
+{
+	BLEObject *ble = (BLEObject *) io;
+	ble->set_timeout(timeout);
+	return DC_STATUS_SUCCESS;
 }
 
 dc_status_t qt_ble_read(void *io, void* data, size_t size, size_t *actual)
