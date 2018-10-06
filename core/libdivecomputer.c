@@ -1413,16 +1413,18 @@ const char *do_libdivecomputer_import(device_data_t *data)
 #else
 			err = translate("gettextFromC", "Error opening the device %s %s (%s).\nIn most cases, in order to debug this issue, a libdivecomputer logfile will be useful.\nYou can create this logfile by selecting the corresponding checkbox in the download dialog.");
 #endif
-	}
-
-	if (rc == DC_STATUS_SUCCESS) {
-		err = do_device_import(data);
-		/* TODO: Show the logfile to the user on error. */
-		dc_device_close(data->device);
-		data->device = NULL;
+		if (rc == DC_STATUS_SUCCESS) {
+			err = do_device_import(data);
+			/* TODO: Show the logfile to the user on error. */
+			dc_device_close(data->device);
+			data->device = NULL;
+			if (!downloadTable.nr)
+				dev_info(data, translate("gettextFromC", "No new dives downloaded from dive computer"));
+		}
 		dc_iostream_close(data->iostream);
 		data->iostream = NULL;
 	}
+
 
 	dc_context_free(data->context);
 	data->context = NULL;
