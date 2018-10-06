@@ -15,6 +15,7 @@ CURRENT_LIBXML2="v2.9.4"
 CURRENT_LIBFTDI="1.3"
 CURRENT_KIRIGAMI="8691651c1f0d09430416ba5fe2130647554b06a9"
 CURRENT_BREEZE_ICONS=""
+CURRENT_GRANTLEE="v5.0.0"
 
 # Checkout library from git
 # Ensure specified version is checked out,
@@ -182,6 +183,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		sqlite)
 			curl_download_library sqlite https://www.sqlite.org/2017/ sqlite-autoconf-${CURRENT_SQLITE}.tar.gz
+			;;
+		grantlee)
+			git_checkout_library grantlee $CURRENT_GRANTLEE https://github.com/steveire/grantlee.git
 			;;
 		*)
 			echo "unknown package \"$package\""
