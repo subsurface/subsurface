@@ -207,8 +207,10 @@ QString TemplateLayout::generateStatistics()
 	QVariantList years;
 
 	int i = 0;
-	while (stats_yearly != NULL && stats_yearly[i].period) {
-		YearInfo year(stats_yearly[i]);
+	stats_summary_auto_free stats;
+	calculate_stats_summary(&stats);
+	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
+		YearInfo year(stats.stats_yearly[i]);
 		years.append(QVariant::fromValue(year));
 		i++;
 	}

@@ -3,7 +3,7 @@
  *
  * core logic for the Info & Stats page -
  * char *get_minutes(int seconds);
- * void process_all_dives();
+ * void calculate_stats_summary(struct stats_summary *out);
  */
 #include "gettext.h"
 #include <string.h>
@@ -14,12 +14,7 @@
 #include "divelist.h"
 #include "statistics.h"
 
-static stats_t stats;
 stats_t stats_selection;
-stats_t *stats_monthly = NULL;
-stats_t *stats_yearly = NULL;
-stats_t *stats_by_trip = NULL;
-stats_t *stats_by_type = NULL;
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
@@ -91,7 +86,13 @@ char *get_minutes(int seconds)
 	return buf;
 }
 
-void process_all_dives()
+/*
+ * Calculate a summary of the statistics and put in the stats_summary
+ * structure provided in the first parameter.
+ * Before first use, it should be initialized with init_stats_summary().
+ * After use, memory must be released with free_stats_summary().
+ */
+void calculate_stats_summary(struct stats_summary *out)
 {
 	int idx;
 	struct dive *dp;
@@ -104,8 +105,8 @@ void process_all_dives()
 	int trip_iter = 0;
 	dive_trip_t *trip_ptr = 0;
 	unsigned int size, tsize;
+	stats_t stats = { 0 };
 
-	memset(&stats, 0, sizeof(stats));
 	if (dive_table.nr > 0) {
 		stats.shortest_time.seconds = dive_table.dives[0]->duration.seconds;
 		stats.min_depth.mm = dive_table.dives[0]->maxdepth.mm;
@@ -116,37 +117,33 @@ void process_all_dives()
 	 * case (one dive per year or all dives during
 	 * one month) for yearly and monthly statistics*/
 
-	free(stats_yearly);
-	free(stats_monthly);
-	free(stats_by_trip);
-	free(stats_by_type);
-
 	size = sizeof(stats_t) * (dive_table.nr + 1);
 	tsize = sizeof(stats_t) * (NUM_DIVEMODE + 1);
-	stats_yearly = malloc(size);
-	stats_monthly = malloc(size);
-	stats_by_trip = malloc(size);
-	stats_by_type = malloc(tsize);
-	if (!stats_yearly || !stats_monthly || !stats_by_trip || !stats_by_type)
+	free_stats_summary(out);
+	out->stats_yearly = malloc(size);
+	out->stats_monthly = malloc(size);
+	out->stats_by_trip = malloc(size);
+	out->stats_by_type = malloc(tsize);
+	if (!out->stats_yearly || !out->stats_monthly || !out->stats_by_trip || !out->stats_by_type)
 		return;
-	memset(stats_yearly, 0, size);
-	memset(stats_monthly, 0, size);
-	memset(stats_by_trip, 0, size);
-	memset(stats_by_type, 0, tsize);
-	stats_yearly[0].is_year = true;
+	memset(out->stats_yearly, 0, size);
+	memset(out->stats_monthly, 0, size);
+	memset(out->stats_by_trip, 0, size);
+	memset(out->stats_by_type, 0, tsize);
+	out->stats_yearly[0].is_year = true;
 
 	/* Setting the is_trip to true to show the location as first
 	 * field in the statistics window */
-	stats_by_type[0].location = strdup(translate("gettextFromC", "All (by type stats)"));
-	stats_by_type[0].is_trip = true;
-	stats_by_type[1].location = strdup(translate("gettextFromC", divemode_text_ui[OC]));
-	stats_by_type[1].is_trip = true;
-	stats_by_type[2].location = strdup(translate("gettextFromC", divemode_text_ui[CCR]));
-	stats_by_type[2].is_trip = true;
-	stats_by_type[3].location = strdup(translate("gettextFromC", divemode_text_ui[PSCR]));
-	stats_by_type[3].is_trip = true;
-	stats_by_type[4].location = strdup(translate("gettextFromC", divemode_text_ui[FREEDIVE]));
-	stats_by_type[4].is_trip = true;
+	out->stats_by_type[0].location = strdup(translate("gettextFromC", "All (by type stats)"));
+	out->stats_by_type[0].is_trip = true;
+	out->stats_by_type[1].location = strdup(translate("gettextFromC", divemode_text_ui[OC]));
+	out->stats_by_type[1].is_trip = true;
+	out->stats_by_type[2].location = strdup(translate("gettextFromC", divemode_text_ui[CCR]));
+	out->stats_by_type[2].is_trip = true;
+	out->stats_by_type[3].location = strdup(translate("gettextFromC", divemode_text_ui[PSCR]));
+	out->stats_by_type[3].is_trip = true;
+	out->stats_by_type[4].location = strdup(translate("gettextFromC", divemode_text_ui[FREEDIVE]));
+	out->stats_by_type[4].is_trip = true;
 
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
@@ -160,20 +157,20 @@ void process_all_dives()
 
 		if (current_year != tm.tm_year) {
 			current_year = tm.tm_year;
-			process_dive(dp, &(stats_yearly[++year_iter]));
-			stats_yearly[year_iter].is_year = true;
+			process_dive(dp, &(out->stats_yearly[++year_iter]));
+			out->stats_yearly[year_iter].is_year = true;
 		} else {
-			process_dive(dp, &(stats_yearly[year_iter]));
+			process_dive(dp, &(out->stats_yearly[year_iter]));
 		}
-		stats_yearly[year_iter].selection_size++;
-		stats_yearly[year_iter].period = current_year;
+		out->stats_yearly[year_iter].selection_size++;
+		out->stats_yearly[year_iter].period = current_year;
 
 		/* stats_by_type[0] is all the dives combined */
-		stats_by_type[0].selection_size++;
-		process_dive(dp, &(stats_by_type[0]));
+		out->stats_by_type[0].selection_size++;
+		process_dive(dp, &(out->stats_by_type[0]));
 
-		process_dive(dp, &(stats_by_type[dp->dc.divemode + 1]));
-		stats_by_type[dp->dc.divemode + 1].selection_size++;
+		process_dive(dp, &(out->stats_by_type[dp->dc.divemode + 1]));
+		out->stats_by_type[dp->dc.divemode + 1].selection_size++;
 
 		if (dp->divetrip != NULL) {
 			if (trip_ptr != dp->divetrip) {
@@ -182,15 +179,15 @@ void process_all_dives()
 			}
 
 			/* stats_by_trip[0] is all the dives combined */
-			stats_by_trip[0].selection_size++;
-			process_dive(dp, &(stats_by_trip[0]));
-			stats_by_trip[0].is_trip = true;
-			stats_by_trip[0].location = strdup(translate("gettextFromC", "All (by trip stats)"));
+			out->stats_by_trip[0].selection_size++;
+			process_dive(dp, &(out->stats_by_trip[0]));
+			out->stats_by_trip[0].is_trip = true;
+			out->stats_by_trip[0].location = strdup(translate("gettextFromC", "All (by trip stats)"));
 
-			process_dive(dp, &(stats_by_trip[trip_iter]));
-			stats_by_trip[trip_iter].selection_size++;
-			stats_by_trip[trip_iter].is_trip = true;
-			stats_by_trip[trip_iter].location = dp->divetrip->location;
+			process_dive(dp, &(out->stats_by_trip[trip_iter]));
+			out->stats_by_trip[trip_iter].selection_size++;
+			out->stats_by_trip[trip_iter].is_trip = true;
+			out->stats_by_trip[trip_iter].location = dp->divetrip->location;
 		}
 
 		/* monthly statistics */
@@ -202,12 +199,28 @@ void process_all_dives()
 			if (prev_month != current_month || prev_year != current_year)
 				month_iter++;
 		}
-		process_dive(dp, &(stats_monthly[month_iter]));
-		stats_monthly[month_iter].selection_size++;
-		stats_monthly[month_iter].period = current_month;
+		process_dive(dp, &(out->stats_monthly[month_iter]));
+		out->stats_monthly[month_iter].selection_size++;
+		out->stats_monthly[month_iter].period = current_month;
 		prev_month = current_month;
 		prev_year = current_year;
 	}
+}
+
+void free_stats_summary(struct stats_summary *stats)
+{
+	free(stats->stats_yearly);
+	free(stats->stats_monthly);
+	free(stats->stats_by_trip);
+	free(stats->stats_by_type);
+}
+
+void init_stats_summary(struct stats_summary *stats)
+{
+	stats->stats_yearly = NULL;
+	stats->stats_monthly = NULL;
+	stats->stats_by_trip = NULL;
+	stats->stats_by_type = NULL;
 }
 
 /* make sure we skip the selected summary entries */

@@ -12,10 +12,6 @@
 #include "core/units.h"
 #include "core/dive.h"	// For MAX_CYLINDERS
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 typedef struct
 {
 	int period;
@@ -42,18 +38,48 @@ typedef struct
 	char *location;
 } stats_t;
 extern stats_t stats_selection;
-extern stats_t *stats_yearly;
-extern stats_t *stats_monthly;
-extern stats_t *stats_by_trip;
-extern stats_t *stats_by_type;
+
+struct stats_summary {
+	stats_t *stats_yearly;
+	stats_t *stats_monthly;
+	stats_t *stats_by_trip;
+	stats_t *stats_by_type;
+};
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern char *get_minutes(int seconds);
-extern void process_all_dives();
+extern void init_stats_summary(struct stats_summary *stats);
+extern void free_stats_summary(struct stats_summary *stats);
+extern void calculate_stats_summary(struct stats_summary *stats);
 extern void get_gas_used(struct dive *dive, volume_t gases[MAX_CYLINDERS]);
 extern void process_selected_dives(void);
 void selected_dives_gas_parts(volume_t *o2_tot, volume_t *he_tot);
 
 #ifdef __cplusplus
+}
+#endif
+
+/*
+ * For C++ code, provide a convenience version of stats_summary
+ * that initializes the structure on construction and frees
+ * resources when it goes out of scope. Apart from that, it
+ * can be used as a stats_summary replacement.
+ */
+#ifdef __cplusplus
+struct stats_summary_auto_free : public stats_summary {
+	stats_summary_auto_free();
+	~stats_summary_auto_free();
+};
+inline stats_summary_auto_free::stats_summary_auto_free()
+{
+	init_stats_summary(this);
+}
+inline stats_summary_auto_free::~stats_summary_auto_free()
+{
+	free_stats_summary(this);
 }
 #endif
 

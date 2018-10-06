@@ -49,12 +49,8 @@ int main(int argc, char **argv)
 
 	// this should have set up the informational preferences - let's grab
 	// the units from there
-
 	prefs.unit_system = git_prefs.unit_system;
 	prefs.units = git_prefs.units;
-
-	// populate the statistics
-	process_all_dives();
 
 	// now set up the export settings to create the HTML export
 	struct htmlExportSetting hes;
