@@ -70,6 +70,7 @@ void DownloadThread::run()
 	auto internalData = m_data->internalData();
 	internalData->descriptor = descriptorLookup[m_data->vendor() + m_data->product()];
 	internalData->download_table = &downloadTable;
+	internalData->btname = strdup(m_data->devBluetoothName().toUtf8());
 #if defined(Q_OS_ANDROID)
 	// on Android we either use BT, a USB device, or we download via FTDI cable
 	if (!internalData->bluetooth_mode && (same_string(internalData->devname, "FTDI") || same_string(internalData->devname, "")))
