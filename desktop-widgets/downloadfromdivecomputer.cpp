@@ -487,34 +487,30 @@ void DownloadFromDCWidget::on_cancel_clicked()
 
 void DownloadFromDCWidget::on_ok_clicked()
 {
-	struct dive *dive;
-
 	if (currentState != DONE && currentState != ERROR)
 		return;
 
-	// record all the dives in the 'real' dive_table
-	for (int i = 0; i < downloadTable.nr; i++) {
+	// delete non-selected dives
+	int total = downloadTable.nr;
+	int j = 0;
+	for (int i = 0; i < total; i++) {
 		if (diveImportedModel->data(diveImportedModel->index(i, 0), Qt::CheckStateRole) == Qt::Checked)
-			record_dive(downloadTable.dives[i]);
+			j++;
 		else
-			clear_dive(downloadTable.dives[i]);
-		downloadTable.dives[i] = NULL;
+			delete_dive_from_table(&downloadTable, j);
 	}
-	downloadTable.nr = 0;
 
-	int uniqId, idx;
-	// remember the last downloaded dive (on most dive computers this will be the chronologically
-	// first new dive) and select it again after processing all the dives
 	MainWindow::instance()->dive_list()->unselectDives();
 
-	dive = get_dive(dive_table.nr - 1);
-	if (dive != NULL) {
-		uniqId = get_dive(dive_table.nr - 1)->id;
-		process_imported_dives(preferDownloaded());
+	if (downloadTable.nr > 0) {
+		// remember the last downloaded dive (on most dive computers this will be the chronologically
+		// first new dive) and select it again after processing all the dives
+		int uniqId = downloadTable.dives[downloadTable.nr - 1]->id;
+		process_imported_dives(&downloadTable, preferDownloaded(), true);
 		// after process_imported_dives does any merging or resorting needed, we need
 		// to recreate the model for the dive list so we can select the newest dive
 		MainWindow::instance()->recreateDiveList();
-		idx = get_idx_by_uniq_id(uniqId);
+		int idx = get_idx_by_uniq_id(uniqId);
 		// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
 		// (but not visible as selected)
 		MainWindow::instance()->dive_list()->unselectDives();

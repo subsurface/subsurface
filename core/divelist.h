@@ -19,7 +19,7 @@ extern int init_decompression(struct deco_state *ds, struct dive *dive);
 
 /* divelist core logic functions */
 extern void process_loaded_dives();
-extern void process_imported_dives(bool prefer_imported);
+extern void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded);
 extern char *get_dive_gas_string(struct dive *dive);
 
 struct dive **grow_dive_table(struct dive_table *table);
@@ -42,6 +42,7 @@ extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
 extern bool is_trip_before_after(const struct dive *dive, bool before);
 extern void set_dive_nr_for_current_dive();
+extern void delete_dive_from_table(struct dive_table *table, int idx);
 
 int get_min_datafile_version();
 void reset_min_datafile_version();

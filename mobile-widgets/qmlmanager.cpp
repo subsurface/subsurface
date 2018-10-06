@@ -325,8 +325,9 @@ void QMLManager::updateAllGlobalLists()
 void QMLManager::mergeLocalRepo()
 {
 	char *filename = NOCLOUD_LOCALSTORAGE;
-	parse_file(filename, &dive_table);
-	process_imported_dives(false);
+	struct dive_table table = { 0 };
+	parse_file(filename, &table);
+	process_imported_dives(&table, false, false);
 }
 
 void QMLManager::copyAppLogToClipboard()
@@ -671,7 +672,6 @@ successful_exit:
 	// for the remote data - which then later gets merged with the remote data if necessary
 	if (noCloudToCloud) {
 		git_storage_update_progress(qPrintable(tr("Loading dives from local storage ('no cloud' mode)")));
-		dive_table.preexisting = dive_table.nr;
 		mergeLocalRepo();
 		DiveListModel::instance()->clear();
 		DiveListModel::instance()->addAllDives();

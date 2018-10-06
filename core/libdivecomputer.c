@@ -503,7 +503,7 @@ static int find_dive(struct divecomputer *match)
 {
 	int i;
 
-	for (i = dive_table.preexisting - 1; i >= 0; i--) {
+	for (i = dive_table.nr - 1; i >= 0; i--) {
 		struct dive *old = dive_table.dives[i];
 
 		if (match_one_dive(match, old))
@@ -861,7 +861,6 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 			add_dive_to_trip(dive, devdata->trip);
 	}
 
-	dive->downloaded = true;
 	record_dive_to_table(dive, devdata->download_table);
 	mark_divelist_changed(true);
 	return true;

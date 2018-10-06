@@ -16,7 +16,7 @@
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
  * void insert_trip(dive_trip_t **dive_trip_p)
- * void remove_dive_from_trip(struct dive *dive)
+ * void remove_dive_from_trip(struct dive *dive, bool was_autogen)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
  * void autogroup_dives(void)
@@ -30,6 +30,7 @@
  * void remove_autogen_trips()
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
+ * void delete_dive_from_table(struct dive_table *table, int idx)
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -917,21 +918,29 @@ void autogroup_dives(void)
 #endif
 }
 
+/* Remove a dive from a dive table. This assumes that the
+ * dive was already removed from any trip and deselected.
+ * It simply shrinks the table and frees the trip */
+void delete_dive_from_table(struct dive_table *table, int idx)
+{
+	int i;
+	free_dive(table->dives[idx]);
+	for (i = idx; i < table->nr - 1; i++)
+		table->dives[i] = table->dives[i + 1];
+	table->dives[--table->nr] = NULL;
+}
+
 /* this implements the mechanics of removing the dive from the table,
  * but doesn't deal with updating dive trips, etc */
 void delete_single_dive(int idx)
 {
-	int i;
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return; /* this should never happen */
 	remove_dive_from_trip(dive, false);
 	if (dive->selected)
 		deselect_dive(idx);
-	for (i = idx; i < dive_table.nr - 1; i++)
-		dive_table.dives[i] = dive_table.dives[i + 1];
-	dive_table.dives[--dive_table.nr] = NULL;
-	free_dive(dive);
+	delete_dive_from_table(&dive_table, idx);
 }
 
 struct dive **grow_dive_table(struct dive_table *table)
@@ -1219,16 +1228,16 @@ void remove_autogen_trips()
  * what the numbers should be - in which case you need to do
  * a manual re-numbering.
  */
-static void try_to_renumber(struct dive *last, int preexisting)
+static void try_to_renumber(int preexisting)
 {
 	int i, nr;
+	struct dive *last = get_dive(preexisting - 1);
 
 	/*
-	 * If the new dives aren't all strictly at the end,
-	 * we're going to expect the user to do a manual
-	 * renumbering.
+	 * If there was a last dive, but it didn't have
+	 * a number, give up.
 	 */
-	if (preexisting && get_dive(preexisting - 1) != last)
+	if (last && !last->number)
 		return;
 
 	/*
@@ -1266,40 +1275,18 @@ void process_loaded_dives()
 	sort_table(&dive_table);
 }
 
-void process_imported_dives(bool prefer_imported)
+/*
+ * Merge subsequent dives in a table, if mergeable. This assumes
+ * that the dives are neither selected, not part of a trip, as
+ * is the case of freshly imported dives.
+ */
+static void merge_imported_dives(struct dive_table *table)
 {
 	int i;
-	int preexisting = dive_table.preexisting;
-	struct dive *last;
-
-	/* If no dives were imported, don't bother doing anything */
-	if (preexisting >= dive_table.nr)
-		return;
-
-	/* check if we need a nickname for the divecomputer for newly downloaded dives;
-	 * since we know they all came from the same divecomputer we just check for the
-	 * first one */
-	if (dive_table.dives[preexisting]->downloaded)
-		set_dc_nickname(dive_table.dives[preexisting]);
-	else
-		/* they aren't downloaded, so record / check all new ones */
-		for (i = preexisting; i < dive_table.nr; i++)
-			set_dc_nickname(dive_table.dives[i]);
-
-	for (i = preexisting; i < dive_table.nr; i++)
-		dive_table.dives[i]->downloaded = true;
-
-	/* This does the right thing for -1: NULL */
-	last = get_dive(preexisting - 1);
-
-	sort_table(&dive_table);
-
-	for (i = 1; i < dive_table.nr; i++) {
-		struct dive **pp = &dive_table.dives[i - 1];
-		struct dive *prev = pp[0];
-		struct dive *dive = pp[1];
+	for (i = 1; i < table->nr; i++) {
+		struct dive *prev = table->dives[i - 1];
+		struct dive *dive = table->dives[i];
 		struct dive *merged;
-		int id;
 
 		/* only try to merge overlapping dives - or if one of the dives has
 		 * zero duration (that might be a gps marker from the webservice) */
@@ -1307,33 +1294,134 @@ void process_imported_dives(bool prefer_imported)
 		    dive_endtime(prev) < dive->when)
 			continue;
 
-		merged = try_to_merge(prev, dive, prefer_imported);
+		merged = try_to_merge(prev, dive, false);
 		if (!merged)
 			continue;
 
-		// remember the earlier dive's id
-		id = prev->id;
-
-		/* careful - we might free the dive that last points to. Oops... */
-		if (last == prev || last == dive)
-			last = merged;
+		/* Overwrite the first of the two dives and remove the second */
+		free_dive(prev);
+		table->dives[i - 1] = merged;
+		delete_dive_from_table(table, i);
 
 		/* Redo the new 'i'th dive */
 		i--;
-		add_single_dive(i, merged);
-		delete_single_dive(i + 1);
-		delete_single_dive(i + 1);
-		// keep the id or the first dive for the merged dive
-		merged->id = id;
+	}
+}
+
+/*
+ * Try to merge a new dive into the dive at position idx. Return
+ * true on success. On success, the dive to add and the old dive
+ * will be deleted. On failure, they are untouched.
+ * If "prefer_imported" is true, use data of the new dive.
+ */
+static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imported)
+{
+	struct dive *old_dive = dive_table.dives[idx];
+	struct dive_trip *trip = old_dive->divetrip;
+	struct dive *merged = try_to_merge(old_dive, dive_to_add, prefer_imported);
+	if (!merged)
+		return false;
+
+	merged->id = old_dive->id;
+	merged->selected = old_dive->selected;
+	dive_table.dives[idx] = merged;
+	if (trip) {
+		remove_dive_from_trip(old_dive, false);
+		add_dive_to_trip(merged, trip);
+	}
+	free_dive(old_dive);
+	free_dive(dive_to_add);
+
+	return true;
+}
+
+/*
+ * Add imported dive to global dive table. Overlapping dives will
+ * be merged if possible. If prefer_imported is true, data of the
+ * new dives are prioritized in such a case.
+ * If downloaded is true, only the divecomputer of the first dive
+ * will be considered, as it is assumed that all dives come from
+ * the same computer.
+ * Note: the dives in import_table are consumed! On return import_table
+ * has size 0.
+ */
+void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded)
+{
+	int i, j;
+	struct dive *old_dive, *merged;
+	int preexisting;
+	bool sequence_changed = false;
+
+	/* If no dives were imported, don't bother doing anything */
+	if (!import_table->nr)
+		return;
+
+	/* check if we need a nickname for the divecomputer for newly downloaded dives;
+	 * since we know they all came from the same divecomputer we just check for the
+	 * first one */
+	if (downloaded)
+		set_dc_nickname(import_table->dives[0]);
+	else
+		/* they aren't downloaded, so record / check all new ones */
+		for (i = 0; i < import_table->nr; i++)
+			set_dc_nickname(import_table->dives[i]);
+
+	/* Sort the table of dives to be imported and combine mergable dives */
+	sort_table(import_table);
+	merge_imported_dives(import_table);
+
+	/* Merge newly imported dives into the dive table.
+	 * Since both lists (old and new) are sorted, we can step
+	 * through them concurrently and locate the insertions points.
+	 * Once found, check if the new dive can be merged in the
+	 * previous or next dive.
+	 * Note that this doesn't consider pathological cases such as:
+	 *  - New dive "connects" two old dives (turn three into one).
+	 *  - New dive can not be merged into adjacent but some further dive.
+	 */
+	j = 0; /* Index in old dives */
+	preexisting = dive_table.nr; /* Remember old size for renumbering */
+	for (i = 0; i < import_table->nr; i++) {
+		struct dive *dive_to_add = import_table->dives[i];
+
+		/* Find insertion point. */
+		while (j < dive_table.nr && dive_table.dives[j]->when < dive_to_add->when)
+			j++;
+
+		/* Try to merge into previous dive. */
+		if (j > 0 && dive_endtime(dive_table.dives[j - 1]) > dive_to_add->when) {
+			if (try_to_merge_into(dive_to_add, j - 1, prefer_imported))
+				continue;
+		}
+
+		/* That didn't merge into the previous dive. If we're
+		 * at the end of the dive table, quit the loop and add
+		 * all new dives at the end. */
+		if (j >= dive_table.nr)
+			break;
+
+		/* Try to merge into next dive. */
+		if (dive_endtime(dive_to_add) > dive_table.dives[j]->when) {
+			if (try_to_merge_into(dive_to_add, j, prefer_imported))
+				continue;
+		}
+
+		/* We couldnt merge dives, add at the given position. */
+		add_single_dive(j, dive_to_add);
+		j++;
+		sequence_changed = true;
 	}
 
-	/* make sure no dives are still marked as downloaded */
-	for (i = 1; i < dive_table.nr; i++)
-		dive_table.dives[i]->downloaded = false;
+	/* If there are still dives to add, add them at the end of the dive table. */
+	for ( ; i <  import_table->nr; i++)
+		add_single_dive(dive_table.nr, import_table->dives[i]);
 
-	/* If there are dives in the table, are they numbered */
-	if (!last || last->number)
-		try_to_renumber(last, preexisting);
+	/* we took care of all dives, clean up the import table */
+	import_table->nr = 0;
+
+	/* If the sequence wasn't changed, renumber */
+	if (!sequence_changed)
+		try_to_renumber(preexisting);
 
 	mark_divelist_changed(true);
 }

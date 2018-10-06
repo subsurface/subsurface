@@ -309,7 +309,6 @@ struct dive {
 	struct dive *next, **pprev;
 	bool selected;
 	bool hidden_by_filter;
-	bool downloaded;
 	timestamp_t when;
 	uint32_t dive_site_uuid;
 	char *notes;
@@ -431,7 +430,7 @@ extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
 struct dive_table {
-	int nr, allocated, preexisting;
+	int nr, allocated;
 	struct dive **dives;
 };
 
