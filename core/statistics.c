@@ -4,6 +4,7 @@
  * core logic for the Info & Stats page -
  * char *get_minutes(int seconds);
  * void calculate_stats_summary(struct stats_summary *out);
+ * void calculate_stats_selected(stats_t *stats_selection);
  */
 #include "gettext.h"
 #include <string.h>
@@ -13,8 +14,6 @@
 #include "display.h"
 #include "divelist.h"
 #include "statistics.h"
-
-stats_t stats_selection;
 
 static void process_temperatures(struct dive *dp, stats_t *stats)
 {
@@ -224,21 +223,21 @@ void init_stats_summary(struct stats_summary *stats)
 }
 
 /* make sure we skip the selected summary entries */
-void process_selected_dives(void)
+void calculate_stats_selected(stats_t *stats_selection)
 {
 	struct dive *dive;
 	unsigned int i, nr;
 
-	memset(&stats_selection, 0, sizeof(stats_selection));
+	memset(stats_selection, 0, sizeof(*stats_selection));
 
 	nr = 0;
 	for_each_dive(i, dive) {
 		if (dive->selected) {
-			process_dive(dive, &stats_selection);
+			process_dive(dive, stats_selection);
 			nr++;
 		}
 	}
-	stats_selection.selection_size = nr;
+	stats_selection->selection_size = nr;
 }
 
 #define SOME_GAS 5000 // 5bar drop in cylinder pressure makes cylinder used
