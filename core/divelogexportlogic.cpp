@@ -79,7 +79,7 @@ static void exportHTMLstatistics(const QString filename, struct htmlExportSettin
 
 	stats_t total_stats;
 
-	calculate_stats_summary(&stats);
+	calculate_stats_summary(&stats, hes.selectedOnly);
 	total_stats.selection_size = 0;
 	total_stats.total_time.seconds = 0;
 

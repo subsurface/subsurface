@@ -208,7 +208,7 @@ QString TemplateLayout::generateStatistics()
 
 	int i = 0;
 	stats_summary_auto_free stats;
-	calculate_stats_summary(&stats);
+	calculate_stats_summary(&stats, false);
 	while (stats.stats_yearly != NULL && stats.stats_yearly[i].period) {
 		YearInfo year(stats.stats_yearly[i]);
 		years.append(QVariant::fromValue(year));

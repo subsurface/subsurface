@@ -3,7 +3,7 @@
  *
  * core logic for the Info & Stats page -
  * char *get_minutes(int seconds);
- * void calculate_stats_summary(struct stats_summary *out);
+ * void calculate_stats_summary(struct stats_summary *out, bool selected_only);
  * void calculate_stats_selected(stats_t *stats_selection);
  */
 #include "gettext.h"
@@ -91,7 +91,7 @@ char *get_minutes(int seconds)
  * Before first use, it should be initialized with init_stats_summary().
  * After use, memory must be released with free_stats_summary().
  */
-void calculate_stats_summary(struct stats_summary *out)
+void calculate_stats_summary(struct stats_summary *out, bool selected_only)
 {
 	int idx;
 	struct dive *dp;
@@ -147,6 +147,8 @@ void calculate_stats_summary(struct stats_summary *out)
 	/* this relies on the fact that the dives in the dive_table
 	 * are in chronological order */
 	for_each_dive (idx, dp) {
+		if (selected_only && !dp->selected)
+			continue;
 		process_dive(dp, &stats);
 
 		/* yearly statistics */
