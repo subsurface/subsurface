@@ -406,19 +406,8 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 	PRINTING="-DNO_PRINTING=OFF"
 
 	cd $SRC
-
-	if [ ! -d grantlee ] ; then
-		if [[ $1 = local ]] ; then
-			git clone $SRC/../grantlee grantlee
-		else
-			git clone https://github.com/steveire/grantlee.git
-		fi
-	fi
-	cd grantlee
-	if ! git checkout v5.0.0 ; then
-		echo "can't check out v5.0.0 of grantlee -- giving up"
-		exit 1
-	fi
+	./subsurface/scripts/get-dep-lib.sh single . grantlee
+	pushd grantlee
 	mkdir -p build
 	cd build
 	cmake $OLDER_MAC_CMAKE -DCMAKE_BUILD_TYPE=$DEBUGRELEASE \
@@ -427,6 +416,7 @@ if [ "$BUILDGRANTLEE" = "1" ] ; then
 		$SRC/grantlee
 	make -j4
 	make install
+	popd
 else
 	PRINTING="-DNO_PRINTING=ON"
 fi
@@ -435,17 +425,8 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	# build the googlemaps map plugin
 
 	cd $SRC
-	if [ ! -d googlemaps ] ; then
-		if [[ $1 = local ]] ; then
-			git clone $SRC/../googlemaps googlemaps
-		else
-			git clone https://github.com/Subsurface-divelog/googlemaps.git
-		fi
-	fi
-	cd googlemaps
-	git checkout master
-	git pull --rebase
-
+	./subsurface/scripts/get-dep-lib.sh single . googlemaps
+	pushd googlemaps
 	mkdir -p build
 	mkdir -p J10build
 	cd build
@@ -458,6 +439,7 @@ if [ "$SKIP_GOOGLEMAPS" != "1" ] ; then
 	cat Makefile.bak | sed -e 's/std=c++1z/std=c++11/g ; s/-Wdate-time//' > Makefile
 	make -j4
 	make install
+	popd
 fi
 
 # finally, build Subsurface
