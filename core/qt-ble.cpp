@@ -98,6 +98,24 @@ void BLEObject::addService(const QBluetoothUuid &newService)
 {
 	qDebug() << "Found service" << newService;
 
+	if (IS_HW(device)) {
+		/* The HW BT/BLE piece or hardware uses, what we
+		 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
+		 * manufacturer applied for an own UUID for its product, and this was granted
+		 * by the Bluetooth SIG.
+		 */
+		if (newService != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
+			return; // skip all services except the right one
+	} else {
+		bool isStandardUuid = false;
+
+		newService.toUInt16(&isStandardUuid);
+		if (isStandardUuid) {
+			qDebug () << " .. ignoring standard service" << newService;
+			return;
+		}
+	}
+
 	auto service = controller->createServiceObject(newService, this);
 	qDebug() << " .. created service object" << service;
 	if (service) {
@@ -248,39 +266,23 @@ dc_status_t BLEObject::select_preferred_service(void)
 		if (s->state() != QLowEnergyService::ServiceDiscovered)
 			continue;
 
-		bool isStandardUuid = false;
+		bool hasread = false;
+		bool haswrite = false;
 		QBluetoothUuid uuid = s->serviceUuid();
 
-		uuid.toUInt16(&isStandardUuid);
+		foreach (const QLowEnergyCharacteristic &c, s->characteristics()) {
+			hasread |= is_read_characteristic(c);
+			haswrite |= is_write_characteristic(c);
+		}
 
-		if (IS_HW(device)) {
-			/* The HW BT/BLE piece or hardware uses, what we
-			 * call here, "a Standard UUID. It is standard because the Telit/Stollmann
-			 * manufacturer applied for an own UUID for its product, and this was granted
-			 * by the Bluetooth SIG.
-			 */
-			if (uuid != QUuid("{0000fefb-0000-1000-8000-00805f9b34fb}"))
-				continue; // skip all services except the right one
-		} else if (isStandardUuid) {
-			qDebug () << " .. ignoring standard service" << uuid;
+		if (!hasread) {
+			qDebug () << " .. ignoring service without read characteristic" << uuid;
 			continue;
-		} else {
-			bool hasread = false;
-			bool haswrite = false;
+		}
 
-			foreach (const QLowEnergyCharacteristic &c, s->characteristics()) {
-				hasread |= is_read_characteristic(c);
-				haswrite |= is_write_characteristic(c);
-			}
-
-			if (!hasread) {
-				qDebug () << " .. ignoring service without read characteristic" << uuid;
-				continue;
-			}
-			if (!haswrite) {
-				qDebug () << " .. ignoring service without write characteristic" << uuid;
-				continue;
-			}
+		if (!haswrite) {
+			qDebug () << " .. ignoring service without write characteristic" << uuid;
+			continue;
 		}
 
 		// We now know that the service has both read and write characteristics
