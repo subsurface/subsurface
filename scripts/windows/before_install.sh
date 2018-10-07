@@ -2,6 +2,10 @@
 
 set -x
 
+# it appears that Travis has an older version of Ubuntu 14.04 - so old
+# that my binaries don't work antymore (openssl incompatibilty)
+sudo apt-get update && sudo apt-get upgrade -y
+
 # Travis only pulls shallow repos. But that messes with git describe.
 # Sorry Travis, fetching the whole thing and the tags as well...
 git fetch --unshallow
@@ -11,15 +15,15 @@ git describe
 # grab our own custom MXE environment
 cd ${TRAVIS_BUILD_DIR}/..
 echo "Downloading prebuilt MXE environment from Subsurface-divelog.org"
-wget -q http://subsurface-divelog.org/downloads/mxe-994ad473.tar.xz
+wget -q http://subsurface-divelog.org/downloads/mxe-97c0fbfd.tar.xz
 mkdir -p mxe
 cd mxe
-tar xJf ../mxe-994ad473.tar.xz
+tar xJf ../mxe-97c0fbfd.tar.xz
 
 # hack around path dependency - needs to be fixed
-sudo mkdir -p /data/winqt551/
-sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /data/winqt551/mxe-current
-ls -l /data/winqt551/mxe-current/usr
+sudo mkdir -p /data/winqt571/
+sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /data/winqt571/mxe-master
+ls -l /data/winqt571/mxe-master/usr
 sudo ln -s ${TRAVIS_BUILD_DIR}/../mxe /usr/src/mxe
 
 # libdivecomputer uses the wrong include path for libusb
@@ -82,8 +86,8 @@ git clone https://github.com/brianb/mdbtools.git
 
 # get prebuilt mxe libraries for mdbtools and glib.
 # do not overwrite upstream prebuilt mxe binaries if there is any coincidence.
-wget https://www.dropbox.com/s/842skyusb96ii1u/mxe-static-minimal-994ad473.tar.xz
-[[ ! -f mxe-static-minimal-994ad473.tar.xz ]] && exit 1
+wget -q https://www.dropbox.com/s/b2iw7p5e6c52gf4/mxe-static-minimal-97c0fbfd.tar.xz
+[[ ! -f mxe-static-minimal-97c0fbfd.tar.xz ]] && exit 1
 cd mxe
-tar -xJf ../mxe-static-minimal-994ad473.tar.xz --skip-old-files
+tar -xJf ../mxe-static-minimal-97c0fbfd.tar.xz --skip-old-files
 ls -al usr/

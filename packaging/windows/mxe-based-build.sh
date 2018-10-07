@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # build Subsurface for Win32
 #
@@ -85,7 +85,13 @@ exec 1> >(tee ./winbuild.log) 2>&1
 
 # this is run on a rather powerful machine - if you want less
 # build parallelism, please change this variable
-JOBS="-j4"
+if [ "$TRAVIS" = "" ] ; then
+	JOBS="-j4"
+else
+	echo "Running on Travis"
+	echo "Diskspace: "
+	df -h
+fi
 
 EXECDIR=`pwd`
 BASEDIR=$(cd "$EXECDIR/.."; pwd)
@@ -128,6 +134,9 @@ fi
 
 # grantlee
 
+echo "Build Grantlee"
+sleep 2
+
 cd "$BUILDDIR"
 if [[ ! -d grantlee || -f build.grantlee ]] ; then
 	rm -f build.grantlee
@@ -143,6 +152,9 @@ if [[ ! -d grantlee || -f build.grantlee ]] ; then
 fi
 
 # libgit2:
+
+echo "Build libgit2"
+sleep 2
 
 cd "$BUILDDIR"
 if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
