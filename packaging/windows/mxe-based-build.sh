@@ -82,6 +82,13 @@ exec 1> >(tee ./winbuild.log) 2>&1
 # for debugging
 #trap "set +x; sleep 1; set -x" DEBUG
 
+if [[ "$1" == "-noftdi" ]] ; then
+	shift
+	FTDI="OFF"
+else
+	FTDI="ON"
+fi
+
 # this is run on a rather powerful machine - if you want less
 # build parallelism, please change this variable
 JOBS="-j4"
@@ -269,6 +276,7 @@ i686-w64-mingw32.shared-cmake \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 	-DMAKE_TESTS=OFF \
 	-DBTSUPPORT=ON -DBLESUPPORT=ON \
+	-DFTDISUPPORT=$FTDI \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
 	"$BASEDIR"/subsurface
 
