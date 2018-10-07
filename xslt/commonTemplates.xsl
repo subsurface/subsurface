@@ -292,22 +292,11 @@
     <xsl:param name="remaining"/>
     <xsl:choose>
       <xsl:when test="$index > 0">
-        <xsl:choose>
-          <xsl:when test="substring($line, 1, 1) = '&quot;'">
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="$index -1"/>
-              <xsl:with-param name="line" select="substring-after($line, $fs)"/>
-              <xsl:with-param name="remaining" select="$remaining"/>
-            </xsl:call-template>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:call-template name="getFieldByIndex">
-              <xsl:with-param name="index" select="$index -1"/>
-              <xsl:with-param name="line" select="substring-after($line, $fs)"/>
-              <xsl:with-param name="remaining" select="$remaining"/>
-            </xsl:call-template>
-          </xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="getFieldByIndex">
+          <xsl:with-param name="index" select="$index -1"/>
+          <xsl:with-param name="line" select="substring-after($line, $fs)"/>
+          <xsl:with-param name="remaining" select="$remaining"/>
+        </xsl:call-template>
       </xsl:when>
       <xsl:otherwise>
         <xsl:choose>
