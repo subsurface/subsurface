@@ -286,6 +286,34 @@
     <xsl:value-of select="concat($year, '-', $month, '-', $day, ' ', $time)"/>
   </xsl:template>
 
+  <xsl:template name="unquote">
+    <xsl:param name="field" />
+    <xsl:param name="value" />
+
+    <xsl:variable name="quote">
+      <xsl:choose>
+        <xsl:when test="$value != ''">
+          <xsl:value-of select="'&quot;'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="''"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="substring-before($field, '&quot;') = ''">
+        <xsl:value-of select="concat($value, '&quot;', $field)" />
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="unquote">
+          <xsl:with-param name="field" select="substring-after(substring-after($field, '&quot;'), '&quot;')" />
+          <xsl:with-param name="value" select="concat($value, $quote, substring-before($field, '&quot;'))" />
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+
   <xsl:template name="getFieldByIndex">
     <xsl:param name="index"/>
     <xsl:param name="line"/>
@@ -303,7 +331,21 @@
           <xsl:when test="substring($line, 1, 1) = '&quot;'">
             <xsl:choose>
               <xsl:when test="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)) != ''">
-                <xsl:value-of select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))"/>
+
+
+                <xsl:choose>
+                  <xsl:when test="substring-before(substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)), '&quot;') != ''">
+                    <xsl:call-template name="unquote">
+                      <xsl:with-param name="field" select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))" />
+                      <xsl:with-param name="value" select="''" />
+                    </xsl:call-template>
+                  </xsl:when>
+                  <xsl:otherwise>
+
+                    <xsl:value-of select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))"/>
+                  </xsl:otherwise>
+                </xsl:choose>
+
               </xsl:when>
               <xsl:otherwise>
                 <xsl:choose>
