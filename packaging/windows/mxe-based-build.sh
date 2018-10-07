@@ -42,7 +42,6 @@
 # ~/src/mxe                    <- MXE git with Qt5, automake (see above)
 #      /grantlee               <- Grantlee 5.0.0 sources from git
 #      /subsurface             <- current subsurface git
-#      /libgit2                <- libgit2 0.23.1 or similar
 #      /googlemaps             <- Google Maps plugin for QtLocation from git
 #
 # ~/src/win32                  <- build directory
@@ -138,22 +137,6 @@ if [[ ! -d grantlee || -f build.grantlee ]] ; then
 		-DBUILD_TESTS=OFF \
 		"$BASEDIR"/grantlee
 
-	make $JOBS
-	make install
-fi
-
-# libgit2:
-
-cd "$BUILDDIR"
-if [[ ! -d libgit2 || -f build.libgit2 ]] ; then
-	rm -f build.libgit2
-	mkdir -p libgit2
-	cd libgit2
-	i686-w64-mingw32.shared-cmake \
-		-DBUILD_CLAR=OFF -DTHREADSAFE=ON \
-		-DCMAKE_BUILD_TYPE=$RELEASE \
-		-DDLLTOOL="$BASEDIR"/"$MXEDIR"/usr/bin/i686-w64-mingw32.shared-dlltool \
-		"$BASEDIR"/libgit2
 	make $JOBS
 	make install
 fi
@@ -286,6 +269,7 @@ i686-w64-mingw32.shared-cmake \
 	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
 	-DMAKE_TESTS=OFF \
 	-DBTSUPPORT=ON -DBLESUPPORT=ON \
+	-DLIBGIT2_FROM_PKGCONFIG=ON \
 	"$BASEDIR"/subsurface
 
 make $JOBS "$@"
