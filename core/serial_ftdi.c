@@ -103,6 +103,20 @@ static dc_status_t serial_ftdi_get_transmitted (ftdi_serial_t *device)
 	return DC_STATUS_UNSUPPORTED;
 }
 
+/*
+ * Get an msec value on some random base
+ */
+static unsigned int serial_ftdi_get_msec(void)
+{
+#ifdef _WIN32
+	return GetTickCount();
+#else
+	struct timeval tv;
+	gettimeofday(&tv, NULL);
+	return tv.tv_sec * 1000 + tv.tv_usec / 1000;
+#endif
+}
+
 static dc_status_t serial_ftdi_sleep (void *io, unsigned int timeout)
 {
 	ftdi_serial_t *device = io;
@@ -390,8 +404,7 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 	if (timeout == -1)
 		timeout = 10000;
 
-	int backoff = 1;
-	int slept = 0;
+	unsigned int start_time = serial_ftdi_get_msec();
 	unsigned int nbytes = 0;
 	while (nbytes < size) {
 		int n = ftdi_read_data (device->ftdi_ctx, (unsigned char *) data + nbytes, size - nbytes);
@@ -401,12 +414,11 @@ static dc_status_t serial_ftdi_read (void *io, void *data, size_t size, size_t *
 			ERROR (device->context, "%s", ftdi_get_error_string(device->ftdi_ctx));
 			return DC_STATUS_IO; //Error during read call.
 		} else if (n == 0) {
-			if (slept >= timeout) {
+			if (serial_ftdi_get_msec() - start_time > timeout) {
 				ERROR(device->context, "%s", "FTDI read timed out.");
 				return DC_STATUS_TIMEOUT;
 			}
-			serial_ftdi_sleep (device, backoff);
-			slept += backoff;
+			serial_ftdi_sleep (device, 1);
 		}
 
 		nbytes += n;
