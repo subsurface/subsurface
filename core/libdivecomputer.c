@@ -1425,6 +1425,7 @@ const char *do_libdivecomputer_import(device_data_t *data)
 		data->iostream = NULL;
 	}
 
+
 	dc_context_free(data->context);
 	data->context = NULL;
 
