@@ -175,6 +175,7 @@ void delete_dive_site(uint32_t id)
 		if (ds->uuid == id) {
 			free(ds->name);
 			free(ds->notes);
+			free_taxonomy(&ds->taxonomy);
 			free(ds);
 			if (nr - 1 > i)
 				memmove(&dive_site_table.dive_sites[i],
