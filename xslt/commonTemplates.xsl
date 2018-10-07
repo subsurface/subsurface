@@ -302,8 +302,8 @@
         <xsl:choose>
           <xsl:when test="substring($line, 1, 1) = '&quot;'">
             <xsl:choose>
-              <xsl:when test="substring-before(substring-after($line, '&quot;'), '&quot;') != ''">
-                <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
+              <xsl:when test="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)) != ''">
+                <xsl:value-of select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))"/>
               </xsl:when>
               <xsl:otherwise>
                 <xsl:choose>
