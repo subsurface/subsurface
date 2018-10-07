@@ -330,15 +330,17 @@
         <xsl:choose>
           <xsl:when test="substring($line, 1, 1) = '&quot;'">
             <xsl:choose>
-              <xsl:when test="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)) != ''">
-
-
+              <!-- We either have a field that ends with quote and field separator, or the last character of line is quote -->
+              <xsl:when test="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)) != '' or substring($line, string-length($line), 1)">
                 <xsl:choose>
                   <xsl:when test="substring-before(substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs)), '&quot;') != ''">
                     <xsl:call-template name="unquote">
                       <xsl:with-param name="field" select="substring-before(substring-after($line, '&quot;'), concat('&quot;', $fs))" />
                       <xsl:with-param name="value" select="''" />
                     </xsl:call-template>
+                  </xsl:when>
+                  <xsl:when test="substring($line, string-length($line), 1) = '&quot;'">
+                    <xsl:value-of select="substring-before(substring-after($line, '&quot;'), '&quot;')"/>
                   </xsl:when>
                   <xsl:otherwise>
 
