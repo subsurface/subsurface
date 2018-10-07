@@ -1348,7 +1348,6 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
 void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded)
 {
 	int i, j;
-	struct dive *old_dive, *merged;
 	int preexisting;
 	bool sequence_changed = false;
 
