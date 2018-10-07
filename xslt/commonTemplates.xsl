@@ -303,7 +303,7 @@
 
     <xsl:choose>
       <xsl:when test="substring-before($field, '&quot;') = ''">
-        <xsl:value-of select="concat($value, '&quot;', $field)" />
+        <xsl:value-of select="concat($value, $quote, $field)" />
       </xsl:when>
       <xsl:otherwise>
         <xsl:call-template name="unquote">
