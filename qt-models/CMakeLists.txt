@@ -26,7 +26,6 @@ set(SUBSURFACE_DESKTOP_MODELS_LIB_SRCS
 	divetripmodel.cpp
 	diveplannermodel.cpp
 	divecomputerextradatamodel.cpp
-	ssrfsortfilterproxymodel.cpp
 )
 
 # models exclusively used in mobile builds
