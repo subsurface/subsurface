@@ -21,6 +21,7 @@ void TestQPrefCloudStorage::test_struct_get()
 
 	auto tst = qPrefCloudStorage::instance();
 
+	prefs.cloud_auto_sync = true;
 	prefs.cloud_base_url = copy_qstring("new url");
 	prefs.cloud_git_url = copy_qstring("new again url");
 	prefs.cloud_storage_email = copy_qstring("myEmail");
@@ -31,6 +32,7 @@ void TestQPrefCloudStorage::test_struct_get()
 	prefs.cloud_verification_status = qPrefCloudStorage::CS_NOCLOUD;
 	prefs.save_password_local = true;
 
+	QCOMPARE(tst->cloud_auto_sync(), prefs.cloud_auto_sync);
 	QCOMPARE(tst->cloud_base_url(), QString(prefs.cloud_base_url));
 	QCOMPARE(tst->cloud_git_url(), QString(prefs.cloud_git_url));
 	QCOMPARE(tst->cloud_storage_email(), QString(prefs.cloud_storage_email));
@@ -48,6 +50,7 @@ void TestQPrefCloudStorage::test_set_struct()
 
 	auto tst = qPrefCloudStorage::instance();
 
+	tst->set_cloud_auto_sync(false);
 	tst->set_cloud_base_url("t2 base");
 	tst->set_cloud_storage_email("t2 email");
 	tst->set_cloud_storage_email_encoded("t2 email2");
@@ -57,6 +60,7 @@ void TestQPrefCloudStorage::test_set_struct()
 	tst->set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	tst->set_save_password_local(false);
 
+	QCOMPARE(prefs.cloud_auto_sync, false);
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t2 base"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t2 email"));
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t2 email2"));
@@ -80,11 +84,13 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	tst->set_cloud_storage_email("t3 email");
 	tst->set_cloud_storage_email_encoded("t3 email2");
 	tst->set_save_password_local(true);
+	tst->set_cloud_auto_sync(true);
 	tst->set_cloud_storage_password("t3 pass2");
 	tst->set_cloud_storage_pin("t3 pin");
 	tst->set_cloud_timeout(321);
 	tst->set_cloud_verification_status(qPrefCloudStorage::CS_NOCLOUD);
 
+	prefs.cloud_auto_sync = false;
 	prefs.cloud_base_url = copy_qstring("error1");
 	prefs.cloud_git_url = copy_qstring("error1");
 	prefs.cloud_storage_email = copy_qstring("error1");
@@ -96,6 +102,7 @@ void TestQPrefCloudStorage::test_set_load_struct()
 	prefs.save_password_local = false;
 
 	tst->load();
+	QCOMPARE(prefs.cloud_auto_sync, true);
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t3 base"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t3 email"));
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t3 email2"));
@@ -119,6 +126,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 	prefs.cloud_storage_email = copy_qstring("t4 email");
 	prefs.cloud_storage_email_encoded = copy_qstring("t4 email2");
 	prefs.save_password_local = true;
+	prefs.cloud_auto_sync = true;
 	prefs.cloud_storage_password = copy_qstring("t4 pass2");
 	prefs.cloud_storage_pin = copy_qstring("t4 pin");
 	prefs.cloud_timeout = 123;
@@ -126,6 +134,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 
 	tst->sync();
 
+	prefs.cloud_auto_sync = false;
 	prefs.cloud_base_url = copy_qstring("error1");
 	prefs.cloud_git_url = copy_qstring("error1");
 	prefs.cloud_storage_email = copy_qstring("error1");
@@ -138,6 +147,7 @@ void TestQPrefCloudStorage::test_struct_disk()
 
 	tst->load();
 
+	QCOMPARE(prefs.cloud_auto_sync, true);
 	QCOMPARE(QString(prefs.cloud_base_url), QString("t4 base"));
 	QCOMPARE(QString(prefs.cloud_storage_email), QString("t4 email"));
 	QCOMPARE(QString(prefs.cloud_storage_email_encoded), QString("t4 email2"));
@@ -189,6 +199,11 @@ void TestQPrefCloudStorage::test_oldPreferences()
 	cloud->set_cloud_storage_password("ABCABC");
 	TEST(cloud->cloud_storage_password(), QStringLiteral("ABCABC"));
 
+	cloud->set_cloud_auto_sync(true);
+	TEST(cloud->cloud_auto_sync(), true);
+	cloud->set_cloud_auto_sync(false);
+	TEST(cloud->cloud_auto_sync(), false);
+
 	cloud->set_save_password_local(true);
 	TEST(cloud->save_password_local(), true);
 	cloud->set_save_password_local(false);
@@ -210,6 +225,7 @@ void TestQPrefCloudStorage::test_signals()
 	QSignalSpy spy6(qPrefCloudStorage::instance(), SIGNAL(cloud_timeoutChanged(int)));
 	QSignalSpy spy7(qPrefCloudStorage::instance(), SIGNAL(cloud_verification_statusChanged(int)));
 	QSignalSpy spy9(qPrefCloudStorage::instance(), SIGNAL(save_password_localChanged(bool)));
+	QSignalSpy spy10(qPrefCloudStorage::instance(), SIGNAL(cloud_auto_syncChanged(bool)));
 
 	qPrefCloudStorage::set_cloud_base_url("signal url");
 	qPrefCloudStorage::set_cloud_storage_email("signal myEmail");
@@ -219,6 +235,7 @@ void TestQPrefCloudStorage::test_signals()
 	qPrefCloudStorage::set_cloud_timeout(11);
 	qPrefCloudStorage::set_cloud_verification_status(qPrefCloudStorage::CS_VERIFIED);
 	qPrefCloudStorage::set_save_password_local(true);
+	qPrefCloudStorage::set_cloud_auto_sync(true);
 
 	QCOMPARE(spy1.count(), 1);
 	QCOMPARE(spy2.count(), 1);
@@ -228,6 +245,7 @@ void TestQPrefCloudStorage::test_signals()
 	QCOMPARE(spy6.count(), 1);
 	QCOMPARE(spy7.count(), 1);
 	QCOMPARE(spy9.count(), 1);
+	QCOMPARE(spy10.count(), 1);
 
 	QVERIFY(spy1.takeFirst().at(0).toString() == "signal url");
 	QVERIFY(spy2.takeFirst().at(0).toString() == "signal myEmail");
@@ -237,6 +255,7 @@ void TestQPrefCloudStorage::test_signals()
 	QVERIFY(spy6.takeFirst().at(0).toInt() == 11);
 	QVERIFY(spy7.takeFirst().at(0).toInt() == qPrefCloudStorage::CS_VERIFIED);
 	QVERIFY(spy9.takeFirst().at(0).toBool() == true);
+	QVERIFY(spy10.takeFirst().at(0).toBool() == true);
 }
 
 QTEST_MAIN(TestQPrefCloudStorage)

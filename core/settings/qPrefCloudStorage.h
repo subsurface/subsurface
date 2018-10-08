@@ -7,6 +7,7 @@
 
 class qPrefCloudStorage : public QObject {
 	Q_OBJECT
+	Q_PROPERTY(bool cloud_auto_sync READ cloud_auto_sync WRITE set_cloud_auto_sync NOTIFY cloud_auto_syncChanged);
 	Q_PROPERTY(QString cloud_base_url READ cloud_base_url WRITE set_cloud_base_url NOTIFY cloud_base_urlChanged);
 	Q_PROPERTY(QString cloud_git_url READ cloud_git_url);
 	Q_PROPERTY(QString cloud_storage_email READ cloud_storage_email WRITE set_cloud_storage_email NOTIFY cloud_storage_emailChanged);
@@ -36,6 +37,7 @@ public:
 	};
 	Q_ENUM(cloud_status);
 
+	static bool cloud_auto_sync() { return prefs.cloud_auto_sync; }
 	static QString cloud_base_url() { return prefs.cloud_base_url; }
 	static QString cloud_git_url() { return prefs.cloud_git_url; }
 	static QString cloud_storage_email() { return prefs.cloud_storage_email; }
@@ -47,6 +49,7 @@ public:
 	static bool save_password_local() { return prefs.save_password_local; }
 
 public slots:
+	static void set_cloud_auto_sync(bool value);
 	static void set_cloud_base_url(const QString &value);
 	static void set_cloud_storage_email(const QString &value);
 	static void set_cloud_storage_email_encoded(const QString &value);
@@ -57,6 +60,7 @@ public slots:
 	static void set_save_password_local(bool value);
 
 signals:
+	void cloud_auto_syncChanged(bool value);
 	void cloud_base_urlChanged(const QString &value);
 	void cloud_storage_emailChanged(const QString &value);
 	void cloud_storage_email_encodedChanged(const QString &value);
@@ -68,6 +72,7 @@ signals:
 
 private:
 	// functions to load/sync variable with disk
+	static void disk_cloud_auto_sync(bool doSync);
 	static void disk_cloud_base_url(bool doSync);
 	static void disk_cloud_storage_email(bool doSync);
 	static void disk_cloud_storage_email_encoded(bool doSync);
