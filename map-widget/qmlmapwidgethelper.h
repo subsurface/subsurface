@@ -21,7 +21,7 @@ class MapWidgetHelper : public QObject {
 	Q_OBJECT
 	Q_PROPERTY(QObject *map MEMBER m_map)
 	Q_PROPERTY(MapLocationModel *model MEMBER m_mapLocationModel NOTIFY modelChanged)
-	Q_PROPERTY(bool editMode READ editMode WRITE setEditMode NOTIFY editModeChanged)
+	Q_PROPERTY(bool editMode MEMBER m_editMode NOTIFY editModeChanged)
 	Q_PROPERTY(QString pluginObject READ pluginObject NOTIFY pluginObjectChanged)
 
 public:
@@ -37,8 +37,8 @@ public:
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
 	void updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude);
-	bool editMode();
-	void setEditMode(bool editMode);
+	void enterEditMode();
+	void exitEditMode();
 	QString pluginObject();
 
 private:

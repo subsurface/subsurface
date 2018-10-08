@@ -82,27 +82,21 @@ void MapWidget::repopulateLabels()
 void MapWidget::reload()
 {
 	CHECK_IS_READY_RETURN_VOID();
-	setEditMode(false);
+	m_mapHelper->exitEditMode();
 	if (!skipReload)
 		m_mapHelper->reloadMapLocations();
-}
-
-void MapWidget::setEditMode(bool editMode)
-{
-	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->setEditMode(editMode);
 }
 
 void MapWidget::endGetDiveCoordinates()
 {
 	CHECK_IS_READY_RETURN_VOID();
-	setEditMode(false);
+	m_mapHelper->exitEditMode();
 }
 
 void MapWidget::prepareForGetDiveCoordinates()
 {
 	CHECK_IS_READY_RETURN_VOID();
-	setEditMode(true);
+	m_mapHelper->enterEditMode();
 }
 
 void MapWidget::selectedDivesChanged(QList<int> list)
