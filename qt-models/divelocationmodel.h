@@ -4,9 +4,9 @@
 
 #include <QAbstractTableModel>
 #include <QStringListModel>
+#include <QSortFilterProxyModel>
 #include <stdint.h>
 #include "core/units.h"
-#include "ssrfsortfilterproxymodel.h"
 
 #define RECENTLY_ADDED_DIVESITE 1
 
