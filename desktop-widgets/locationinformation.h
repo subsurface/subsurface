@@ -4,6 +4,7 @@
 
 #include "core/units.h"
 #include "ui_locationInformation.h"
+#include "qt-models/divelocationmodel.h"
 #include <stdint.h>
 #include <QAbstractListModel>
 #include <QSortFilterProxyModel>
@@ -48,6 +49,7 @@ private:
 	Ui::LocationInformation ui;
 	bool modified;
 	QAction *acceptAction, *rejectAction;
+	GPSLocationInformationModel filter_model;
 };
 
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {

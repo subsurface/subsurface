@@ -10,9 +10,6 @@
 
 #define RECENTLY_ADDED_DIVESITE 1
 
-bool filter_same_gps_cb (QAbstractItemModel *m, int sourceRow, const QModelIndex& parent);
-
-
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
@@ -34,6 +31,19 @@ public slots:
 	QStringList allSiteNames() const;
 private:
 	QStringList locationNames;
+};
+
+// To access only divesites at the given GPS coordinates with the exception of a given dive site
+class GPSLocationInformationModel : public QSortFilterProxyModel {
+Q_OBJECT
+private:
+	uint32_t ignoreUuid;
+	degrees_t latitude, longitude;
+	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
+public:
+	GPSLocationInformationModel(QObject *parent = nullptr);
+	void set(uint32_t ignoreUuid, degrees_t latitude, degrees_t longitude);
+	void setCoordinates(degrees_t latitude, degrees_t longitude);
 };
 
 class GeoReferencingOptionsModel : public QStringListModel {

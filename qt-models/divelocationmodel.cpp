@@ -116,21 +116,35 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 	setStringList(list);
 }
 
-bool filter_same_gps_cb (QAbstractItemModel *model, int sourceRow, const QModelIndex& parent)
+bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const
 {
-	int ref_lat = displayed_dive_site.latitude.udeg;
-	int ref_lon = displayed_dive_site.longitude.udeg;
-	uint32_t ref_uuid = displayed_dive_site.uuid;
-	QSortFilterProxyModel *self = (QSortFilterProxyModel*) model;
-
-	uint32_t ds_uuid = self->sourceModel()->index(sourceRow, LocationInformationModel::UUID, parent).data().toUInt();
-	struct dive_site *ds = get_dive_site_by_uuid(ds_uuid);
-
-	if (!ds)
+	uint32_t uuid = sourceModel()->index(sourceRow, LocationInformationModel::UUID, parent).data().toUInt();
+	if (uuid == ignoreUuid || uuid == RECENTLY_ADDED_DIVESITE)
 		return false;
+	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 
-	if (ds->latitude.udeg == 0 || ds->longitude.udeg == 0)
-		return false;
+	return ds && ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg;
+}
 
-	return ds->latitude.udeg == ref_lat && ds->longitude.udeg == ref_lon && ds->uuid != ref_uuid;
+GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),
+	ignoreUuid(0),
+	latitude({ 0 }),
+	longitude({ 0 })
+{
+	setSourceModel(LocationInformationModel::instance());
+}
+
+void GPSLocationInformationModel::set(uint32_t ignoreUuidIn, degrees_t latitudeIn, degrees_t longitudeIn)
+{
+	ignoreUuid = ignoreUuidIn;
+	latitude = latitudeIn;
+	longitude = longitudeIn;
+	invalidate();
+}
+
+void GPSLocationInformationModel::setCoordinates(degrees_t latitudeIn, degrees_t longitudeIn)
+{
+	latitude = latitudeIn;
+	longitude = longitudeIn;
+	invalidate();
 }
