@@ -273,13 +273,14 @@ Kirigami.ApplicationWindow {
 				}
 				Kirigami.Action {
 				icon {
-					name: syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
+					name: PrefCloudStorage.cloud_auto_sync ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
-				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
+				text: PrefCloudStorage.cloud_auto_sync ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
 					visible: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
-						syncToCloud = !syncToCloud
-						if (!syncToCloud) {
+						PrefCloudStorage.cloud_auto_sync = !PrefCloudStorage.cloud_auto_sync
+						syncToCloud = PrefCloudStorage.cloud_auto_sync
+						if (!PrefCloudStorage.cloud_auto_sync) {
 							showPassiveNotification(qsTr("Turning off automatic sync to cloud causes all data to only be \
 stored locally. This can be very useful in situations with limited or no network access. Please choose 'Manual sync with cloud' \
 if you have network connectivity and want to sync your data to cloud storage."), 10000)
