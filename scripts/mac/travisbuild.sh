@@ -15,6 +15,10 @@ export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 cd ${TRAVIS_BUILD_DIR}/..
 DIR=$(pwd)
 
+# first build Subsurface-mobile to ensure this didn't get broken
+bash -e -x ./subsurface/scripts/build.sh -mobile
+
+# now Subsurface with WebKit
 bash -e -x ./subsurface/scripts/build.sh -desktop -build-with-webkit -release
 
 cd ${TRAVIS_BUILD_DIR}/build
