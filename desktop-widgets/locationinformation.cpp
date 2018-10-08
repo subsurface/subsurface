@@ -562,11 +562,18 @@ static struct dive_site *get_dive_site_name_start_which_str(const QString &str)
 
 void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString&)
 {
+	// This function fills the first two entries with potential names of
+	// a dive site to be generated. The first entry is simply the entered
+	// text. The second entry is the first known dive site name starting
+	// with the entered text.
 	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
 	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
 	model->setData(i0, text());
 
-	QString i1_name = INVALID_DIVE_SITE_NAME;
+	// Note: if i1_name stays empty, the line will automatically
+	// be filtered out by the proxy filter, as it does not contain
+	// the user entered text.
+	QString i1_name;
 	if (struct dive_site *ds = get_dive_site_name_start_which_str(text())) {
 		const QString orig_name = QString(ds->name).toLower();
 		const QString new_name = text().toLower();
