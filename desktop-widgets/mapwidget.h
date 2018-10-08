@@ -25,7 +25,7 @@ public:
 	void reload();
 
 signals:
-	void coordinatesChanged();
+	void coordinatesChanged(degrees_t latitude, degrees_t longitude);
 
 public slots:
 	void centerOnSelectedDiveSite();
@@ -35,7 +35,7 @@ public slots:
 	void repopulateLabels();
 	void prepareForGetDiveCoordinates();
 	void selectedDivesChanged(QList<int>);
-	void coordinatesChangedLocal();
+	void coordinatesChangedLocal(degrees_t latitude, degrees_t longitude);
 	void doneLoading(QQuickWidget::Status status);
 	void updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude);
 

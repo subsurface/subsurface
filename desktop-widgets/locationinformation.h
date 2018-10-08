@@ -2,6 +2,7 @@
 #ifndef LOCATIONINFORMATION_H
 #define LOCATIONINFORMATION_H
 
+#include "core/units.h"
 #include "ui_locationInformation.h"
 #include <stdint.h>
 #include <QAbstractListModel>
@@ -20,7 +21,7 @@ protected:
 public slots:
 	void acceptChanges();
 	void rejectChanges();
-	void updateGpsCoordinates();
+	void updateGpsCoordinates(degrees_t latitude, degrees_t longitude);
 	void markChangedWidget(QWidget *w);
 	void enableEdition();
 	void resetState();

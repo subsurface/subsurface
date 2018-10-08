@@ -272,9 +272,8 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeo
 	MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(uuid);
 	if (loc)
 		loc->setCoordinate(coord);
-	displayed_dive_site.latitude.udeg = lrint(coord.latitude() * 1000000.0);
-	displayed_dive_site.longitude.udeg = lrint(coord.longitude() * 1000000.0);
-	emit coordinatesChanged();
+	emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
+				degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
 }
 
 void MapWidgetHelper::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude)
@@ -305,9 +304,8 @@ void MapWidgetHelper::setEditMode(bool editMode)
 		} else {
 			coord = exists->coordinate();
 		}
-		displayed_dive_site.latitude.udeg = lrint(coord.latitude() * 1000000.0);
-		displayed_dive_site.longitude.udeg = lrint(coord.longitude() * 1000000.0);
-		emit coordinatesChanged();
+		emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
+					degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
 	}
 	emit editModeChanged();
 }

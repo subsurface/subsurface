@@ -46,8 +46,7 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 	m_mapHelper = rootObject()->findChild<MapWidgetHelper *>();
 	connect(m_mapHelper, SIGNAL(selectedDivesChanged(QList<int>)),
 		this, SLOT(selectedDivesChanged(QList<int>)));
-	connect(m_mapHelper, SIGNAL(coordinatesChanged()),
-		this, SLOT(coordinatesChangedLocal()));
+	connect(m_mapHelper, &MapWidgetHelper::coordinatesChanged, this, &MapWidget::coordinatesChangedLocal);
 }
 
 void MapWidget::centerOnSelectedDiveSite()
@@ -116,10 +115,10 @@ void MapWidget::selectedDivesChanged(QList<int> list)
 	skipReload = false;
 }
 
-void MapWidget::coordinatesChangedLocal()
+void MapWidget::coordinatesChangedLocal(degrees_t latitude, degrees_t longitude)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	emit coordinatesChanged();
+	emit coordinatesChanged(latitude, longitude);
 }
 
 void MapWidget::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude)

@@ -141,10 +141,10 @@ void LocationInformationWidget::clearLabels()
 	ui.locationTags->clear();
 }
 
-void LocationInformationWidget::updateGpsCoordinates()
+void LocationInformationWidget::updateGpsCoordinates(degrees_t latitude, degrees_t longitude)
 {
 	QString oldText = ui.diveSiteCoordinates->text();
-	const char *coords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+	const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
 	ui.diveSiteCoordinates->setText(coords);
 	enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
 	free((void *)coords);
