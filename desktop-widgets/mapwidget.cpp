@@ -93,10 +93,10 @@ void MapWidget::endGetDiveCoordinates()
 	m_mapHelper->exitEditMode();
 }
 
-void MapWidget::prepareForGetDiveCoordinates()
+void MapWidget::prepareForGetDiveCoordinates(uint32_t uuid)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->enterEditMode();
+	m_mapHelper->enterEditMode(uuid);
 }
 
 void MapWidget::selectedDivesChanged(QList<int> list)

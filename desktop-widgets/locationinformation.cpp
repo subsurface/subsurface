@@ -49,14 +49,8 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
 	ui.diveSiteListView->installEventFilter(this);
 	// Map Management Code.
-	connect(this, &LocationInformationWidget::requestCoordinates,
-		MapWidget::instance(), &MapWidget::prepareForGetDiveCoordinates);
-	connect(this, &LocationInformationWidget::endRequestCoordinates,
-		MapWidget::instance(), &MapWidget::endGetDiveCoordinates);
 	connect(MapWidget::instance(), &MapWidget::coordinatesChanged,
 		this, &LocationInformationWidget::updateGpsCoordinates);
-	connect(this, &LocationInformationWidget::endEditDiveSite,
-		MapWidget::instance(), &MapWidget::repopulateLabels);
 }
 
 bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
@@ -213,19 +207,11 @@ void LocationInformationWidget::acceptChanges()
 	copy_dive_site(currentDs, &displayed_dive_site);
 	mark_divelist_changed(true);
 	resetState();
-	emit endRequestCoordinates();
-	emit endEditDiveSite();
-	emit stopFilterDiveSite();
-	updateLocationOnMap();
 }
 
 void LocationInformationWidget::rejectChanges()
 {
 	resetState();
-	emit endRequestCoordinates();
-	emit stopFilterDiveSite();
-	emit endEditDiveSite();
-	updateLocationOnMap();
 }
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
@@ -240,8 +226,7 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 	} else {
 		clearLabels();
 	}
-	emit requestCoordinates();
-
+	MapWidget::instance()->prepareForGetDiveCoordinates(displayed_dive_site.uuid);
 	QGroupBox::showEvent(ev);
 }
 
@@ -264,6 +249,11 @@ void LocationInformationWidget::resetState()
 	MainWindow::instance()->dive_list()->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.diveSiteMessage->setText(tr("Dive site management"));
+	MapWidget::instance()->endGetDiveCoordinates();
+	MapWidget::instance()->repopulateLabels();
+	emit stopFilterDiveSite();
+	emit endEditDiveSite();
+	updateLocationOnMap();
 }
 
 void LocationInformationWidget::enableEdition()

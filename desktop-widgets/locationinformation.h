@@ -41,8 +41,6 @@ signals:
 	void endEditDiveSite();
 	void startFilterDiveSite(uint32_t uuid);
 	void stopFilterDiveSite();
-	void requestCoordinates();
-	void endRequestCoordinates();
 	void nameChanged(const QString &oldName, const QString &newName);
 
 private:
