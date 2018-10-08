@@ -2,6 +2,7 @@
 #ifndef MAPWIDGET_H
 #define MAPWIDGET_H
 
+#include "core/units.h"
 #include <QQuickWidget>
 #include <QList>
 
@@ -36,7 +37,7 @@ public slots:
 	void selectedDivesChanged(QList<int>);
 	void coordinatesChangedLocal();
 	void doneLoading(QQuickWidget::Status status);
-	void updateCurrentDiveSiteCoordinatesToMap();
+	void updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude);
 
 private:
 	void setEditMode(bool editMode);

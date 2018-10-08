@@ -122,10 +122,10 @@ void MapWidget::coordinatesChangedLocal()
 	emit coordinatesChanged();
 }
 
-void MapWidget::updateCurrentDiveSiteCoordinatesToMap()
+void MapWidget::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->updateCurrentDiveSiteCoordinatesToMap();
+	m_mapHelper->updateDiveSiteCoordinates(uuid, latitude, longitude);
 }
 
 MapWidget::~MapWidget()
