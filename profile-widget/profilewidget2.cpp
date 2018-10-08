@@ -734,7 +734,16 @@ void ProfileWidget2::plotDive(struct dive *d, bool force, bool doClearPictures)
 		ccrsensor2GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
 		ccrsensor3GasItem->setVisible(prefs.show_ccr_sensors && (currentdc->no_o2sensors > 1));
 		ocpo2GasItem->setVisible((currentdc->divemode == PSCR) && prefs.show_scr_ocpo2);
-		temperatureItem->setVisible(false);
+		//when no gas graph, we can show temperature
+		if (!po2GasItem->isVisible() &&
+		    !o2SetpointGasItem->isVisible() &&
+		    !ccrsensor1GasItem->isVisible() &&
+		    !ccrsensor2GasItem->isVisible() &&
+		    !ccrsensor3GasItem->isVisible() &&
+		    !ocpo2GasItem->isVisible())
+			temperatureItem->setVisible(true);
+		else
+			temperatureItem->setVisible(false);
 	} else {
 		tankItem->setVisible(prefs.tankbar);
 		gasYAxis->setPos(itemPos.partialPressure.pos.off);
