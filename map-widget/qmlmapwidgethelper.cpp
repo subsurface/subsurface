@@ -125,19 +125,13 @@ void MapWidgetHelper::reloadMapLocations()
 	QVector<uint32_t> locationUuids;
 	qreal latitude, longitude;
 
-	if (displayed_dive_site.uuid && dive_site_has_gps_location(&displayed_dive_site)) {
-		latitude = displayed_dive_site.latitude.udeg * 0.000001;
-		longitude = displayed_dive_site.longitude.udeg * 0.000001;
-		location = new MapLocation(displayed_dive_site.uuid, QGeoCoordinate(latitude, longitude),
-		                           QString(displayed_dive_site.name));
-		locationList.append(location);
-		locationNameMap[QString(displayed_dive_site.name)] = location;
-	}
 	for_each_dive(idx, dive) {
-		if (dive->hidden_by_filter)
+		// Don't show dive sites of hidden dives, unless this is the currently
+		// displayed (edited) dive.
+		if (dive->hidden_by_filter && dive != current_dive)
 			continue;
 		struct dive_site *ds = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(ds) || ds->uuid == displayed_dive_site.uuid || locationUuids.contains(ds->uuid))
+		if (!dive_site_has_gps_location(ds) || locationUuids.contains(ds->uuid))
 			continue;
 		latitude = ds->latitude.udeg * 0.000001;
 		longitude = ds->longitude.udeg * 0.000001;
