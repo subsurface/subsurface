@@ -55,7 +55,7 @@ signals:
 	void modelChanged();
 	void editModeChanged();
 	void selectedDivesChanged(QList<int> list);
-	void coordinatesChanged();
+	void coordinatesChanged(degrees_t latitude, degrees_t longitude);
 	void pluginObjectChanged();
 };
 
