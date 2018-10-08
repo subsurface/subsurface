@@ -6,7 +6,6 @@
 #include "core/qthelper.h"
 #include "desktop-widgets/mapwidget.h"
 #include "qt-models/filtermodels.h"
-#include "qt-models/divelocationmodel.h"
 #include "core/divesitehelpers.h"
 #include "desktop-widgets/modeldelegates.h"
 
@@ -42,10 +41,7 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	connect(ui.diveSiteCoordinates, SIGNAL(returnPressed()), this, SLOT(updateLocationOnMap()));
 	ui.diveSiteCoordinates->installEventFilter(this);
 
-	SsrfSortFilterProxyModel *filter_model = new SsrfSortFilterProxyModel(this);
-	filter_model->setSourceModel(LocationInformationModel::instance());
-	filter_model->setFilterRow(filter_same_gps_cb);
-	ui.diveSiteListView->setModel(filter_model);
+	ui.diveSiteListView->setModel(&filter_model);
 	ui.diveSiteListView->setModelColumn(LocationInformationModel::NAME);
 	ui.diveSiteListView->installEventFilter(this);
 	// Map Management Code.
@@ -217,6 +213,7 @@ void LocationInformationWidget::rejectChanges()
 void LocationInformationWidget::showEvent(QShowEvent *ev)
 {
 	if (displayed_dive_site.uuid) {
+		filter_model.set(displayed_dive_site.uuid, displayed_dive_site.latitude, displayed_dive_site.longitude);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
@@ -224,6 +221,7 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 		if (m)
 			m->invalidate();
 	} else {
+		filter_model.set(0, degrees_t{ 0 }, degrees_t{ 0 });
 		clearLabels();
 	}
 	MapWidget::instance()->prepareForGetDiveCoordinates(displayed_dive_site.uuid);
@@ -324,9 +322,11 @@ void LocationInformationWidget::reverseGeocode()
 
 void LocationInformationWidget::updateLocationOnMap()
 {
-	if (displayed_dive_site.uuid)
-		MapWidget::instance()->updateDiveSiteCoordinates(displayed_dive_site.uuid, displayed_dive_site.latitude,
-								 displayed_dive_site.longitude);
+	if (!displayed_dive_site.uuid)
+		return;
+	MapWidget::instance()->updateDiveSiteCoordinates(displayed_dive_site.uuid, displayed_dive_site.latitude,
+							 displayed_dive_site.longitude);
+	filter_model.setCoordinates(displayed_dive_site.latitude, displayed_dive_site.longitude);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)
