@@ -40,7 +40,6 @@ public slots:
 	void updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude);
 
 private:
-	void setEditMode(bool editMode);
 	static MapWidget *m_instance;
 	QQuickItem *m_rootItem;
 	MapWidgetHelper *m_mapHelper;

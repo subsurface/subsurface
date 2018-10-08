@@ -285,28 +285,27 @@ void MapWidgetHelper::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitud
 	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(coord)));
 }
 
-bool MapWidgetHelper::editMode()
+void MapWidgetHelper::exitEditMode()
 {
-	return m_editMode;
+	m_editMode = false;
+	emit editModeChanged();
 }
 
-void MapWidgetHelper::setEditMode(bool editMode)
+void MapWidgetHelper::enterEditMode()
 {
-	m_editMode = editMode;
+	m_editMode = true;
 	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(displayed_dive_site.uuid);
-	if (editMode) {
-		QGeoCoordinate coord;
-		// if divesite uuid doesn't exist in the model, add a new MapLocation.
-		if (!exists) {
-			coord = m_map->property("center").value<QGeoCoordinate>();
-			m_mapLocationModel->add(new MapLocation(displayed_dive_site.uuid, coord,
-			                                        QString(displayed_dive_site.name)));
-		} else {
-			coord = exists->coordinate();
-		}
-		emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
-					degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
+	QGeoCoordinate coord;
+	// if divesite uuid doesn't exist in the model, add a new MapLocation.
+	if (!exists) {
+		coord = m_map->property("center").value<QGeoCoordinate>();
+		m_mapLocationModel->add(new MapLocation(displayed_dive_site.uuid, coord,
+							QString(displayed_dive_site.name)));
+	} else {
+		coord = exists->coordinate();
 	}
+	emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
+				degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
 	emit editModeChanged();
 }
 
