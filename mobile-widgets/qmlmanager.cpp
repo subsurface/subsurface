@@ -677,6 +677,7 @@ successful_exit:
 		DiveListModel::instance()->addAllDives();
 		appendTextToLog(QStringLiteral("%1 dives loaded after importing nocloud local storage").arg(dive_table.nr));
 		noCloudToCloud = false;
+		mark_divelist_changed(true);
 		saveChangesLocal();
 		if (m_syncToCloud == false) {
 			appendTextToLog(QStringLiteral("taking things back offline now that storage is synced"));
