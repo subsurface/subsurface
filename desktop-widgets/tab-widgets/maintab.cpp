@@ -643,7 +643,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (verbose)
 		qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
-	emit diveSiteChanged(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
+	emit diveSiteChanged();
 }
 
 void MainTab::addCylinder_clicked()
@@ -1384,7 +1384,7 @@ void MainTab::on_location_diveSiteSelected()
 	if (ui.location->text().isEmpty()) {
 		displayed_dive.dive_site_uuid = 0;
 		markChangedWidget(ui.location);
-		emit diveSiteChanged(0);
+		emit diveSiteChanged();
 		return;
 	} else {
 		if (ui.location->currDiveSiteUuid() != displayed_dive.dive_site_uuid) {

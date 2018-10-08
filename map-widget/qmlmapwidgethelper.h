@@ -27,6 +27,7 @@ public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
 	void centerOnDiveSite(struct dive_site *);
+	void centerOnSelectedDiveSite();
 	Q_INVOKABLE QGeoCoordinate getCoordinatesForUUID(QVariant dive_site_uuid);
 	Q_INVOKABLE void centerOnDiveSiteUUID(QVariant dive_site_uuid);
 	Q_INVOKABLE void reloadMapLocations();

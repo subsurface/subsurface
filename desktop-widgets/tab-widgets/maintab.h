@@ -59,7 +59,7 @@ public:
 signals:
 	void addDiveFinished();
 	void dateTimeChanged();
-	void diveSiteChanged(struct dive_site * ds);
+	void diveSiteChanged();
 public
 slots:
 	void addCylinder_clicked();
