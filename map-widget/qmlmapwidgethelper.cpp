@@ -41,53 +41,53 @@ void MapWidgetHelper::centerOnDiveSiteUUID(QVariant dive_site_uuid)
 
 void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
+	if (!ds || !dive_site_has_gps_location(ds)) {
+		// dive site with no GPS
+		m_mapLocationModel->setSelectedUuid(ds ? ds->uuid : 0, false);
+		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
+	} else {
+		// dive site with GPS
+		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+		QGeoCoordinate dsCoord (ds->latitude.udeg * 0.000001, ds->longitude.udeg * 0.000001);
+		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
+	}
+}
+
+void MapWidgetHelper::centerOnSelectedDiveSite()
+{
 	QVector<struct dive_site *> selDS;
 	QVector<QGeoCoordinate> selGC;
-	QGeoCoordinate dsCoord;
 
-// selection of multiple dives is only possible on the desktop.
-// in the case of the mobile version only handle the passed dive_site.
-#ifndef SUBSURFACE_MOBILE
 	int idx;
 	struct dive *dive;
 	for_each_dive (idx, dive) {
+		if (!dive->selected)
+			continue;
 		struct dive_site *dss = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(dss) || !dive->selected)
+		if (!dive_site_has_gps_location(dss))
 			continue;
 		// only store dive sites with GPS
 		selDS.append(dss);
 		selGC.append(QGeoCoordinate(dss->latitude.udeg * 0.000001,
 		                            dss->longitude.udeg * 0.000001));
 	}
-#else
-	if (dive_site_has_gps_location(ds)) {
-		selDS.append(ds);
-		selGC.append(QGeoCoordinate(ds->latitude.udeg * 0.000001,
-		                            ds->longitude.udeg * 0.000001));
-	}
-#endif
-	if (!dive_site_has_gps_location(ds) && !selDS.size()) {
-		// only a single dive site with no GPS selected
-		m_mapLocationModel->setSelectedUuid(ds ? ds->uuid : 0, false);
+
+	if (selDS.isEmpty()) {
+		// no selected dives with GPS coordinates
+		m_mapLocationModel->setSelectedUuid(0, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 
 	} else if (selDS.size() == 1) {
-		// a single dive site with GPS selected
-		ds = selDS.at(0);
-		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
-		dsCoord.setLatitude(ds->latitude.udeg * 0.000001);
-		dsCoord.setLongitude(ds->longitude.udeg * 0.000001);
-		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
+		centerOnDiveSite(selDS[0]);
 	} else if (selDS.size() > 1) {
 		/* more than one dive sites with GPS selected.
 		 * find the most top-left and bottom-right dive sites on the map coordinate system. */
-		ds = selDS.at(0);
-		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+		m_mapLocationModel->setSelectedUuid(selDS[0]->uuid, false);
 		qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
 		bool start = true;
-		foreach(QGeoCoordinate gc, selGC) {
-			qreal lat = gc.latitude();
-			qreal lon = gc.longitude();
+		for(struct dive_site *dss: selDS) {
+			qreal lat = dss->latitude.udeg * 0.000001;
+			qreal lon = dss->longitude.udeg * 0.000001;
 			if (start) {
 				minLat = maxLat = lat;
 				minLon = maxLon = lon;

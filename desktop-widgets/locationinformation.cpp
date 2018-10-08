@@ -360,7 +360,6 @@ bool DiveLocationFilterProxyModel::lessThan(const QModelIndex &source_left, cons
 	return source_left.data().toString() < source_right.data().toString();
 }
 
-
 DiveLocationModel::DiveLocationModel(QObject*)
 {
 	resetModel();

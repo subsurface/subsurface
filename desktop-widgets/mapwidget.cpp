@@ -50,6 +50,13 @@ void MapWidget::doneLoading(QQuickWidget::Status status)
 		this, SLOT(coordinatesChangedLocal()));
 }
 
+void MapWidget::centerOnSelectedDiveSite()
+{
+	CHECK_IS_READY_RETURN_VOID();
+	if (!skipReload)
+		m_mapHelper->centerOnSelectedDiveSite();
+}
+
 void MapWidget::centerOnDiveSite(struct dive_site *ds)
 {
 	CHECK_IS_READY_RETURN_VOID();
@@ -60,9 +67,9 @@ void MapWidget::centerOnDiveSite(struct dive_site *ds)
 void MapWidget::centerOnIndex(const QModelIndex& idx)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	struct dive_site *ds = get_dive_site_by_uuid(idx.model()->index(idx.row(), 0).data().toInt());
+	struct dive_site *ds = get_dive_site_by_uuid(idx.model()->index(idx.row(), 0).data().toUInt());
 	if (!ds || !dive_site_has_gps_location(ds))
-		centerOnDiveSite(&displayed_dive_site);
+		centerOnSelectedDiveSite();
 	else
 		centerOnDiveSite(ds);
 }

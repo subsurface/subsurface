@@ -27,6 +27,7 @@ signals:
 	void coordinatesChanged();
 
 public slots:
+	void centerOnSelectedDiveSite();
 	void centerOnDiveSite(struct dive_site *);
 	void centerOnIndex(const QModelIndex& idx);
 	void endGetDiveCoordinates();
