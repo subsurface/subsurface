@@ -57,8 +57,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 		this, &LocationInformationWidget::updateGpsCoordinates);
 	connect(this, &LocationInformationWidget::endEditDiveSite,
 		MapWidget::instance(), &MapWidget::repopulateLabels);
-	connect(this, &LocationInformationWidget::coordinatesChanged,
-		MapWidget::instance(), &MapWidget::updateCurrentDiveSiteCoordinatesToMap);
 }
 
 bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
@@ -70,7 +68,7 @@ bool LocationInformationWidget::eventFilter(QObject *object, QEvent *ev)
 		contextMenu.exec(ctx->globalPos());
 		return true;
 	} else if (ev->type() == QEvent::FocusOut && object == ui.diveSiteCoordinates) {
-		emit coordinatesChanged();
+		updateLocationOnMap();
 	}
 	return false;
 }
@@ -218,7 +216,7 @@ void LocationInformationWidget::acceptChanges()
 	emit endRequestCoordinates();
 	emit endEditDiveSite();
 	emit stopFilterDiveSite();
-	emit coordinatesChanged();
+	updateLocationOnMap();
 }
 
 void LocationInformationWidget::rejectChanges()
@@ -227,7 +225,7 @@ void LocationInformationWidget::rejectChanges()
 	emit endRequestCoordinates();
 	emit stopFilterDiveSite();
 	emit endEditDiveSite();
-	emit coordinatesChanged();
+	updateLocationOnMap();
 }
 
 void LocationInformationWidget::showEvent(QShowEvent *ev)
@@ -336,7 +334,9 @@ void LocationInformationWidget::reverseGeocode()
 
 void LocationInformationWidget::updateLocationOnMap()
 {
-	emit coordinatesChanged();
+	if (displayed_dive_site.uuid)
+		MapWidget::instance()->updateDiveSiteCoordinates(displayed_dive_site.uuid, displayed_dive_site.latitude,
+								 displayed_dive_site.longitude);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)

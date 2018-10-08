@@ -2,6 +2,7 @@
 #ifndef QMLMAPWIDGETHELPER_H
 #define QMLMAPWIDGETHELPER_H
 
+#include "core/units.h"
 #include <QObject>
 #include <QGeoCoordinate>
 #include <QVariant>
@@ -35,7 +36,7 @@ public:
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
-	void updateCurrentDiveSiteCoordinatesToMap();
+	void updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude);
 	bool editMode();
 	void setEditMode(bool editMode);
 	QString pluginObject();

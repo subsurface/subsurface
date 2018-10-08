@@ -277,12 +277,12 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeo
 	emit coordinatesChanged();
 }
 
-void MapWidgetHelper::updateCurrentDiveSiteCoordinatesToMap()
+void MapWidgetHelper::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude)
 {
-	const qreal latitude = displayed_dive_site.latitude.udeg * 0.000001;
-	const qreal longitude = displayed_dive_site.longitude.udeg * 0.000001;
-	QGeoCoordinate coord(latitude, longitude);
-	m_mapLocationModel->updateMapLocationCoordinates(displayed_dive_site.uuid, coord);
+	const qreal latitude_r = latitude.udeg * 0.000001;
+	const qreal longitude_r = longitude.udeg * 0.000001;
+	QGeoCoordinate coord(latitude_r, longitude_r);
+	m_mapLocationModel->updateMapLocationCoordinates(uuid, coord);
 	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(coord)));
 }
 
