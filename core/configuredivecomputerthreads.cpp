@@ -895,8 +895,6 @@ static dc_status_t write_ostc4_settings(dc_device_t *device, DeviceDetails *m_de
 	return rc;
 }
 
-
-#if DC_VERSION_CHECK(0, 5, 0)
 static dc_status_t read_ostc3_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
 	dc_status_t rc;
@@ -1434,7 +1432,6 @@ static dc_status_t write_ostc3_settings(dc_device_t *device, DeviceDetails *m_de
 
 	return rc;
 }
-#endif /* DC_VERSION_CHECK(0, 5, 0) */
 
 static dc_status_t read_ostc_settings(dc_device_t *device, DeviceDetails *m_deviceDetails, dc_event_callback_t progress_cb, void *userdata)
 {
@@ -2132,7 +2129,6 @@ void ReadSettingsThread::run()
 			emit error(tr("Failed!"));
 		}
 		break;
-#if DC_VERSION_CHECK(0, 5, 0)
 	case DC_FAMILY_HW_OSTC3:
 		rc = read_ostc3_settings(m_data->device, m_deviceDetails, DeviceThread::event_cb, this);
 		if (rc == DC_STATUS_SUCCESS)
@@ -2140,7 +2136,7 @@ void ReadSettingsThread::run()
 		else
 			emit error(tr("Failed!"));
 		break;
-#endif // divecomputer 0.5.0
+
 #ifdef DEBUG_OSTC
 	case DC_FAMILY_NULL:
 #endif
@@ -2181,7 +2177,6 @@ void WriteSettingsThread::run()
 			emit error(tr("Failed!"));
 		}
 		break;
-#if DC_VERSION_CHECK(0, 5, 0)
 	case DC_FAMILY_HW_OSTC3:
 		// FIXME: Is this the best way?
 		if (m_deviceDetails->model == "OSTC 4")
@@ -2191,7 +2186,6 @@ void WriteSettingsThread::run()
 		if (rc != DC_STATUS_SUCCESS)
 			emit error(tr("Failed!"));
 		break;
-#endif // divecomputer 0.5.0
 #ifdef DEBUG_OSTC
 	case DC_FAMILY_NULL:
 #endif
@@ -2221,14 +2215,12 @@ void FirmwareUpdateThread::run()
 		return;
 	}
 	switch (dc_device_get_type(m_data->device)) {
-#if DC_VERSION_CHECK(0, 5, 0)
 	case DC_FAMILY_HW_OSTC3:
 		rc = hw_ostc3_device_fwupdate(m_data->device, qPrintable(m_fileName));
 		break;
 	case DC_FAMILY_HW_OSTC:
 		rc = hw_ostc_device_fwupdate(m_data->device, qPrintable(m_fileName));
 		break;
-#endif // divecomputer 0.5.0
 	default:
 		emit error(tr("This feature is not yet available for the selected dive computer."));
 		return;
@@ -2248,12 +2240,10 @@ void ResetSettingsThread::run()
 {
 	dc_status_t rc = DC_STATUS_SUCCESS;
 
-#if DC_VERSION_CHECK(0, 5, 0)
 	if (dc_device_get_type(m_data->device) == DC_FAMILY_HW_OSTC3) {
 		rc = hw_ostc3_device_config_reset(m_data->device);
 		emit progress(100);
 	}
-#endif // divecomputer 0.5.0
 	if (rc != DC_STATUS_SUCCESS) {
 		emit error(tr("Reset settings failed!"));
 	}

@@ -32,18 +32,6 @@
 #include "core/file.h"
 #include <QtGlobal>
 
-//
-// If we have an old libdivecomputer, it doesn't
-// have the new DC_TANKINFO bits, but just volume
-// type information.
-//
-#ifndef DC_TANKINFO_METRIC
-#define DC_TANKINFO_METRIC	DC_TANKVOLUME_METRIC
-#define DC_TANKINFO_IMPERIAL	DC_TANKVOLUME_IMPERIAL
-#define DC_TANKINFO_CC_O2	0
-#define DC_TANKINFO_CC_DILUENT	0
-#endif
-
 char *dumpfile_name;
 char *logfile_name;
 const char *progress_bar_text = "";
@@ -109,7 +97,6 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 	unsigned int i;
 	int rc;
 
-#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 	unsigned int ntanks = 0;
 	rc = dc_parser_get_field(parser, DC_FIELD_TANK_COUNT, 0, &ntanks);
 	if (rc == DC_STATUS_SUCCESS) {
@@ -121,7 +108,6 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			report_error("Warning: smaller number of gases (%d) than cylinders (%d). Assuming air.", ngases, ntanks);
 		}
 	}
-#endif
 	bool no_volume = true;
 
 	for (i = 0; i < MAX_CYLINDERS && (i < ngases || i < ntanks); i++) {
@@ -158,7 +144,6 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 			dive->cylinder[i].gasmix.he.permille = 0;
 		}
 
-#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 		if (i < ntanks) {
 			dc_tank_t tank = { 0 };
 			rc = dc_parser_get_field(parser, DC_FIELD_TANK, i, &tank);
@@ -234,7 +219,6 @@ static int parse_gasmixes(device_data_t *devdata, struct dive *dive, dc_parser_t
 				}
 			}
 		}
-#endif
 		if (no_volume) {
 			/* for the first tank, if there is no tanksize available from the
 			 * dive computer, fill in the default tank information (if set) */
@@ -394,7 +378,6 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 		printf("</vendor>\n");
 		break;
 #endif
-#if DC_VERSION_CHECK(0, 3, 0)
 	case DC_SAMPLE_SETPOINT:
 		/* for us a setpoint means constant pO2 from here */
 		sample->setpoint.mbar = po2 = lrint(value.setpoint * 1000);
@@ -428,7 +411,6 @@ sample_cb(dc_sample_type_t type, dc_sample_value_t value, void *userdata)
 			sample->stopdepth.mm = stopdepth = lrint(value.deco.depth * 1000.0);
 			sample->stoptime.seconds = stoptime = value.deco.time;
 		}
-#endif
 	default:
 		break;
 	}
@@ -669,11 +651,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dc.maxdepth.mm = lrint(maxdepth * 1000);
 
-#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
-	// if this is defined then we have a fairly late version of libdivecomputer
-	// from the 0.5 development cylcle - most likely temperatures and tank sizes
-	// are supported
-
 	// Parse temperatures
 	double temperature;
 	dc_field_type_t temp_fields[] = {DC_FIELD_TEMPERATURE_SURFACE,
@@ -696,7 +673,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 				break;
 			}
 	}
-#endif
 
 	// Parse the gas mixes.
 	unsigned int ngases = 0;
@@ -706,7 +682,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 		return rc;
 	}
 
-#if DC_VERSION_CHECK(0, 3, 0)
 	// Check if the libdivecomputer version already supports salinity & atmospheric
 	dc_salinity_t salinity = {
 		.type = DC_WATER_SALT,
@@ -728,7 +703,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	}
 	if (rc == DC_STATUS_SUCCESS)
 		dive->dc.surface_pressure.mbar = lrint(surface_pressure * 1000.0);
-#endif
 
 #ifdef DC_FIELD_STRING
 	// The dive parsing may give us more device information
@@ -744,7 +718,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 	}
 #endif
 
-#if DC_VERSION_CHECK(0, 5, 0) && defined(DC_GASMIX_UNKNOWN)
 	dc_divemode_t divemode;
 	rc = dc_parser_get_field(parser, DC_FIELD_DIVEMODE, 0, &divemode);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
@@ -767,7 +740,6 @@ static dc_status_t libdc_header_parser(dc_parser_t *parser, device_data_t *devda
 			dive->dc.divemode = PSCR;
 			break;
 		}
-#endif
 
 	rc = parse_gasmixes(devdata, dive, parser, ngases);
 	if (rc != DC_STATUS_SUCCESS && rc != DC_STATUS_UNSUPPORTED) {
