@@ -16,6 +16,7 @@ qPrefCloudStorage *qPrefCloudStorage::instance()
 
 void qPrefCloudStorage::loadSync(bool doSync)
 {
+	disk_cloud_auto_sync(doSync);
 	disk_cloud_base_url(doSync);
 	disk_cloud_storage_email(doSync);
 	disk_cloud_storage_email_encoded(doSync);
@@ -25,6 +26,8 @@ void qPrefCloudStorage::loadSync(bool doSync)
 	disk_cloud_verification_status(doSync);
 	disk_save_password_local(doSync);
 }
+
+HANDLE_PREFERENCE_BOOL(CloudStorage, "cloud_auto_sync", cloud_auto_sync);
 
 void qPrefCloudStorage::set_cloud_base_url(const QString &value)
 {
