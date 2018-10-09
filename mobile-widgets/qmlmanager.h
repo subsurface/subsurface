@@ -28,7 +28,6 @@ class QMLManager : public QObject {
 	Q_PROPERTY(QString startPageText MEMBER m_startPageText WRITE setStartPageText NOTIFY startPageTextChanged)
 	Q_PROPERTY(bool verboseEnabled MEMBER m_verboseEnabled WRITE setVerboseEnabled NOTIFY verboseEnabledChanged)
 	Q_PROPERTY(QString notificationText MEMBER m_notificationText WRITE setNotificationText NOTIFY notificationTextChanged)
-	Q_PROPERTY(bool syncToCloud MEMBER m_syncToCloud WRITE setSyncToCloud NOTIFY syncToCloudChanged)
 	Q_PROPERTY(int updateSelectedDive MEMBER m_updateSelectedDive WRITE setUpdateSelectedDive NOTIFY updateSelectedDiveChanged)
 	Q_PROPERTY(int selectedDiveTimestamp MEMBER m_selectedDiveTimestamp WRITE setSelectedDiveTimestamp NOTIFY selectedDiveTimestampChanged)
 	Q_PROPERTY(QStringList suitList READ suitList NOTIFY suitListChanged)
@@ -88,6 +87,7 @@ public:
 	Q_INVOKABLE int getDetectedVendorIndex();
 	Q_INVOKABLE int getDetectedProductIndex(const QString &currentVendorText);
 	Q_INVOKABLE int getConnectionIndex(const QString &deviceSubstr);
+	Q_INVOKABLE void setGitLocalOnly(const bool &value);
 
 	static QMLManager *instance();
 	Q_INVOKABLE void registerError(QString error);
@@ -114,9 +114,6 @@ public:
 
 	QString notificationText() const;
 	void setNotificationText(QString text);
-
-	bool syncToCloud() const;
-	void setSyncToCloud(bool status);
 
 	int updateSelectedDive() const;
 	void setUpdateSelectedDive(int idx);
@@ -210,7 +207,6 @@ private:
 	struct dive *deletedDive;
 	struct dive_trip *deletedTrip;
 	QString m_notificationText;
-	bool m_syncToCloud;
 	int m_updateSelectedDive;
 	int m_selectedDiveTimestamp;
 	qreal m_lastDevicePixelRatio;
@@ -241,7 +237,6 @@ signals:
 	void loadFromCloudChanged();
 	void startPageTextChanged();
 	void notificationTextChanged();
-	void syncToCloudChanged();
 	void updateSelectedDiveChanged();
 	void selectedDiveTimestampChanged();
 	void sendScreenChanged(QScreen *screen);

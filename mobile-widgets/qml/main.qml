@@ -28,7 +28,6 @@ Kirigami.ApplicationWindow {
 	}
 	property alias oldStatus: prefs.oldStatus
 	property alias notificationText: manager.notificationText
-	property alias syncToCloud: manager.syncToCloud
 	property alias locationServiceEnabled: manager.locationServiceEnabled
 	property alias pluggedInDeviceName: manager.pluggedInDeviceName
 	property alias showPin: prefs.showPin
@@ -279,7 +278,7 @@ Kirigami.ApplicationWindow {
 					visible: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						PrefCloudStorage.cloud_auto_sync = !PrefCloudStorage.cloud_auto_sync
-						syncToCloud = PrefCloudStorage.cloud_auto_sync
+						manager.setGitLocalOnly(PrefCloudStorage.cloud_auto_sync)
 						if (!PrefCloudStorage.cloud_auto_sync) {
 							showPassiveNotification(qsTr("Turning off automatic sync to cloud causes all data to only be \
 stored locally. This can be very useful in situations with limited or no network access. Please choose 'Manual sync with cloud' \

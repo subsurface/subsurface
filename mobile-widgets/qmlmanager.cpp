@@ -375,7 +375,7 @@ void QMLManager::finishSetup()
 	// Initialize cloud credentials.
 	QMLPrefs::instance()->setCloudUserName(qPrefCloudStorage::cloud_storage_email());
 	QMLPrefs::instance()->setCloudPassword(qPrefCloudStorage::cloud_storage_password());
-	setSyncToCloud(!git_local_only);
+	git_local_only = !prefs.cloud_auto_sync;
 	QMLPrefs::instance()->setCredentialStatus((qPrefCloudStorage::cloud_status) prefs.cloud_verification_status);
 	// if the cloud credentials are valid, we should get the GPS Webservice ID as well
 	QString url;
@@ -679,9 +679,9 @@ successful_exit:
 		noCloudToCloud = false;
 		mark_divelist_changed(true);
 		saveChangesLocal();
-		if (m_syncToCloud == false) {
+		if (git_local_only == false) {
 			appendTextToLog(QStringLiteral("taking things back offline now that storage is synced"));
-			git_local_only = m_syncToCloud;
+			git_local_only = true;
 		}
 	}
 	// if we got here just for an initial connection to the cloud, reset to offline
@@ -705,9 +705,9 @@ void QMLManager::revertToNoCloudIfNeeded()
 		// and cloud data) failed - so let's delete the cloud credentials and go
 		// back to CS_NOCLOUD mode in order to prevent us from losing the locally stored
 		// dives
-		if (m_syncToCloud == false) {
+		if (git_local_only == true) {
 			appendTextToLog(QStringLiteral("taking things back offline since sync with cloud failed"));
-			git_local_only = m_syncToCloud;
+			git_local_only = false;
 		}
 		free((void *)prefs.cloud_storage_email);
 		prefs.cloud_storage_email = NULL;
@@ -1492,13 +1492,6 @@ void QMLManager::setNotificationText(QString text)
 	emit notificationTextChanged();
 }
 
-void QMLManager::setSyncToCloud(bool status)
-{
-	m_syncToCloud = status;
-	git_local_only = !status;
-	emit syncToCloudChanged();
-}
-
 void QMLManager::setUpdateSelectedDive(int idx)
 {
 	m_updateSelectedDive = idx;
@@ -1762,6 +1755,11 @@ int QMLManager::getDetectedProductIndex(const QString &currentVendorText)
 int QMLManager::getConnectionIndex(const QString &deviceSubstr)
 {
 	return connectionListModel.indexOf(deviceSubstr);
+}
+
+void QMLManager::setGitLocalOnly(const bool &value)
+{
+	git_local_only = value;
 }
 
 void QMLManager::showDownloadPage(QString deviceString)
