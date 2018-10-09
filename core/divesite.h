@@ -73,8 +73,6 @@ unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degree
 uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t divetime);
 void merge_dive_sites(uint32_t ref, uint32_t *uuids, int count);
 
-#define INVALID_DIVE_SITE_NAME "development use only - not a valid dive site name"
-
 #ifdef __cplusplus
 }
 QString constructLocationTags(struct dive_site *ds, bool for_maintab);

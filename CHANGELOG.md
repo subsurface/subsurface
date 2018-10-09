@@ -1,3 +1,5 @@
+- Desktop: don't show "invalid dive site" debugging message
+- Map: zoom on dive site when selecting items in dive site list
 - Performance: calculate full statistics only when needed
 - HTML export: write statistics of exported dives only
 - Desktop: fix calculation of surface interval in the case of overlappimg dives
