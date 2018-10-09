@@ -351,7 +351,7 @@ bool DiveLocationFilterProxyModel::filterAcceptsRow(int source_row, const QModel
 	if (source_row == 0)
 		return true;
 
-	QString sourceString = sourceModel()->index(source_row, DiveLocationModel::NAME).data(Qt::DisplayRole).toString();
+	QString sourceString = sourceModel()->index(source_row, LocationInformationModel::NAME).data(Qt::DisplayRole).toString();
 	return sourceString.toLower().contains(location_line_edit->text().toLower());
 }
 
@@ -377,7 +377,7 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	static const QIcon geoCode(":geotag-icon");
 
 	if (index.row() <= 1) { // two special cases.
-		if (index.column() == UUID) {
+		if (index.column() == LocationInformationModel::UUID) {
 			return RECENTLY_ADDED_DIVESITE;
 		}
 		switch (role) {
@@ -394,35 +394,12 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 
 	// The dive sites are -2 because of the first two items.
 	struct dive_site *ds = get_dive_site(index.row() - 2);
-	switch (role) {
-	case Qt::EditRole:
-	case Qt::DisplayRole:
-		switch (index.column()) {
-		case UUID:
-			return ds->uuid;
-		case NAME:
-			return ds->name;
-		case LATITUDE:
-			return ds->latitude.udeg;
-		case LONGITUDE:
-			return ds->longitude.udeg;
-		case DESCRIPTION:
-			return ds->description;
-		case NOTES:
-			return ds->name;
-		}
-		break;
-	case Qt::DecorationRole: {
-		if (dive_site_has_gps_location(ds))
-			return geoCode;
-	}
-	}
-	return QVariant();
+	return LocationInformationModel::getDiveSiteData(ds, index.column(), role);
 }
 
 int DiveLocationModel::columnCount(const QModelIndex&) const
 {
-	return COLUMNS;
+	return LocationInformationModel::COLUMNS;
 }
 
 int DiveLocationModel::rowCount(const QModelIndex&) const
@@ -453,10 +430,10 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 	location_line_edit = this;
 
 	proxy->setSourceModel(model);
-	proxy->setFilterKeyColumn(DiveLocationModel::NAME);
+	proxy->setFilterKeyColumn(LocationInformationModel::NAME);
 
 	view->setModel(proxy);
-	view->setModelColumn(DiveLocationModel::NAME);
+	view->setModelColumn(LocationInformationModel::NAME);
 	view->setItemDelegate(new LocationFilterDelegate());
 	view->setEditTriggers(QAbstractItemView::NoEditTriggers);
 	view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
@@ -525,10 +502,10 @@ void DiveLocationLineEdit::focusOutEvent(QFocusEvent *ev)
 void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 {
 	QModelIndex idx = index;
-	if (index.column() == DiveLocationModel::UUID)
-		idx = index.model()->index(index.row(), DiveLocationModel::NAME);
+	if (index.column() == LocationInformationModel::UUID)
+		idx = index.model()->index(index.row(), LocationInformationModel::NAME);
 
-	QModelIndex uuidIndex = index.model()->index(index.row(), DiveLocationModel::UUID);
+	QModelIndex uuidIndex = index.model()->index(index.row(), LocationInformationModel::UUID);
 	uint32_t uuid = uuidIndex.data().toInt();
 	currType = uuid == 1 ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
 	currUuid = uuid;
@@ -566,8 +543,8 @@ void DiveLocationLineEdit::setTemporaryDiveSiteName(const QString&)
 	// a dive site to be generated. The first entry is simply the entered
 	// text. The second entry is the first known dive site name starting
 	// with the entered text.
-	QModelIndex i0 = model->index(0, DiveLocationModel::NAME);
-	QModelIndex i1 = model->index(1, DiveLocationModel::NAME);
+	QModelIndex i0 = model->index(0, LocationInformationModel::NAME);
+	QModelIndex i1 = model->index(1, LocationInformationModel::NAME);
 	model->setData(i0, text());
 
 	// Note: if i1_name stays empty, the line will automatically

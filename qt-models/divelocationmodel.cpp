@@ -32,20 +32,15 @@ int LocationInformationModel::rowCount(const QModelIndex&) const
 	return dive_site_table.nr;
 }
 
-QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
+QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, int column, int role)
 {
-	if (!index.isValid())
-		return QVariant();
-
-	struct dive_site *ds = get_dive_site(index.row());
-
 	if (!ds)
 		return QVariant();
 
 	switch(role) {
 	case Qt::EditRole:
 	case Qt::DisplayRole :
-		switch(index.column()) {
+		switch(column) {
 		case UUID: return ds->uuid;
 		case NAME: return ds->name;
 		case LATITUDE: return ds->latitude.udeg;
@@ -68,6 +63,15 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 		return ds->uuid;
 	}
 	return QVariant();
+}
+
+QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
+{
+	if (!index.isValid())
+		return QVariant();
+
+	struct dive_site *ds = get_dive_site(index.row());
+	return getDiveSiteData(ds, index.column(), role);
 }
 
 void LocationInformationModel::update()

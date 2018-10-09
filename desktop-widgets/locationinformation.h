@@ -63,7 +63,6 @@ public:
 class DiveLocationModel : public QAbstractTableModel {
 	Q_OBJECT
 public:
-	enum columns{UUID, NAME, LATITUDE, LONGITUDE, DESCRIPTION, NOTES, COLUMNS};
 	DiveLocationModel(QObject *o = 0);
 	void resetModel();
 	QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const;
