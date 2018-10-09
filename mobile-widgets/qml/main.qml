@@ -276,7 +276,7 @@ Kirigami.ApplicationWindow {
 					name: syncToCloud ?  ":/icons/ic_cloud_off.svg" : ":/icons/ic_cloud_done.svg"
 				}
 				text: syncToCloud ? qsTr("Disable auto cloud sync") : qsTr("Enable auto cloud sync")
-					enabled: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
+					visible: prefs.credentialStatus !== CloudStatus.CS_NOCLOUD
 					onTriggered: {
 						syncToCloud = !syncToCloud
 						if (!syncToCloud) {
