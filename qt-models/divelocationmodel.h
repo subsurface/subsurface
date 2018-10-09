@@ -25,7 +25,6 @@ public:
 	int rowCount(const QModelIndex &parent = QModelIndex()) const;
 	QVariant data(const QModelIndex &index = QModelIndex(), int role = Qt::DisplayRole) const;
 	bool removeRows(int row, int count, const QModelIndex & parent = QModelIndex());
-	void setFirstRowTextField(QLineEdit *textField);
 
 public slots:
 	void update();
@@ -33,7 +32,6 @@ public slots:
 private:
 	int internalRowCount;
 	QStringList locationNames;
-	QLineEdit *textField;
 };
 
 class GeoReferencingOptionsModel : public QStringListModel {

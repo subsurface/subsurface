@@ -19,8 +19,7 @@ LocationInformationModel *LocationInformationModel::instance()
 }
 
 LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTableModel(obj),
-	internalRowCount(0),
-	textField(NULL)
+	internalRowCount(0)
 {
 }
 
@@ -31,19 +30,7 @@ int LocationInformationModel::columnCount(const QModelIndex&) const
 
 int LocationInformationModel::rowCount(const QModelIndex&) const
 {
-	return internalRowCount + 2;
-}
-
-static struct dive_site *get_dive_site_name_start_which_str(const QString& str) {
-	struct dive_site *ds;
-	int i;
-	for_each_dive_site(i,ds) {
-		QString dsName(ds->name);
-		if (dsName.startsWith(str)) {
-			return ds;
-		}
-	}
-	return NULL;
+	return internalRowCount;
 }
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
@@ -51,39 +38,7 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	if (!index.isValid())
 		return QVariant();
 
-	// Special case to handle the 'create dive site' with name.
-	if (index.row() < 2) {
-		if (index.column() == UUID)
-			return RECENTLY_ADDED_DIVESITE;
-		switch(role) {
-			case Qt::DisplayRole : {
-				if (index.row() == 1) {
-					struct dive_site *ds = get_dive_site_name_start_which_str(textField->text());
-					if(ds)
-						return ds->name;
-				}
-				return textField->text();
-			}
-			case Qt::ToolTipRole : {
-				return QString(tr("Create dive site with this name"));
-			}
-			case Qt::EditRole : {
-				if (index.row() == 1) {
-					struct dive_site *ds = get_dive_site_name_start_which_str(textField->text());
-					if (!ds)
-						return INVALID_DIVE_SITE_NAME;
-					if (QString(ds->name) == textField->text())
-						return INVALID_DIVE_SITE_NAME;
-
-				}
-				return textField->text();
-			}
-			case Qt::DecorationRole : return QIcon(":list-add-icon");
-		}
-	}
-
-	// The dive sites are -2 because of the first two items.
-	struct dive_site *ds = get_dive_site(index.row() - 2);
+	struct dive_site *ds = get_dive_site(index.row());
 
 	if (!ds)
 		return QVariant();
@@ -116,11 +71,6 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 	return QVariant();
 }
 
-void LocationInformationModel::setFirstRowTextField(QLineEdit *t)
-{
-	textField = t;
-}
-
 void LocationInformationModel::update()
 {
 	beginResetModel();
@@ -142,7 +92,7 @@ bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 	if(row >= rowCount())
 		return false;
 
-	beginRemoveRows(QModelIndex(), row + 2, row + 2);
+	beginRemoveRows(QModelIndex(), row, row);
 	struct dive_site *ds = get_dive_site(row);
 	if (ds)
 		delete_dive_site(ds->uuid);
