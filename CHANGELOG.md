@@ -1,3 +1,4 @@
+- Mobile: preserve manual/auto sync with cloud [#1725]
 - Performance: calculate full statistics only when needed
 - HTML export: write statistics of exported dives only
 - Desktop: fix calculation of surface interval in the case of overlappimg dives
