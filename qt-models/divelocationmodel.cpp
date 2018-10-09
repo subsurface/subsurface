@@ -18,8 +18,7 @@ LocationInformationModel *LocationInformationModel::instance()
 	return self;
 }
 
-LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTableModel(obj),
-	internalRowCount(0)
+LocationInformationModel::LocationInformationModel(QObject *obj) : QAbstractTableModel(obj)
 {
 }
 
@@ -30,7 +29,7 @@ int LocationInformationModel::columnCount(const QModelIndex&) const
 
 int LocationInformationModel::rowCount(const QModelIndex&) const
 {
-	return internalRowCount;
+	return dive_site_table.nr;
 }
 
 QVariant LocationInformationModel::data(const QModelIndex &index, int role) const
@@ -74,10 +73,9 @@ QVariant LocationInformationModel::data(const QModelIndex &index, int role) cons
 void LocationInformationModel::update()
 {
 	beginResetModel();
-	internalRowCount = dive_site_table.nr;
 	qSort(dive_site_table.dive_sites, dive_site_table.dive_sites + dive_site_table.nr, dive_site_less_than);
 	locationNames.clear();
-	for (int i = 0; i < internalRowCount; i++)
+	for (int i = 0; i < dive_site_table.nr; i++)
 		locationNames << QString(dive_site_table.dive_sites[i]->name);
 	endResetModel();
 }
@@ -96,7 +94,6 @@ bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 	struct dive_site *ds = get_dive_site(row);
 	if (ds)
 		delete_dive_site(ds->uuid);
-	internalRowCount = dive_site_table.nr;
 	endRemoveRows();
 	return true;
 }
