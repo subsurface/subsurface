@@ -197,6 +197,7 @@ Kirigami.Page {
 							break
 						}
 					}
+					download.text = qsTr("Download")
 
 				}
 			}
