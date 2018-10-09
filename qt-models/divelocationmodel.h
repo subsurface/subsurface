@@ -30,7 +30,6 @@ public slots:
 	void update();
 	QStringList allSiteNames() const;
 private:
-	int internalRowCount;
 	QStringList locationNames;
 };
 
