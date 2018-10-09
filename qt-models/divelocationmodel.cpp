@@ -137,21 +137,6 @@ QStringList LocationInformationModel::allSiteNames() const
 	return locationNames;
 }
 
-bool LocationInformationModel::setData(const QModelIndex &index, const QVariant &value, int role)
-{
-	if (!index.isValid() || index.row() < 2)
-		return false;
-
-	if (role != Qt::EditRole)
-		return false;
-
-	struct dive_site *ds = get_dive_site(index.row());
-	free(ds->name);
-	ds->name = copy_qstring(value.toString());
-	emit dataChanged(index, index);
-	return true;
-}
-
 bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 {
 	if(row >= rowCount())
