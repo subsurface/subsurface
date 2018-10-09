@@ -53,6 +53,6 @@ void ConnectionListModel::removeAllAddresses()
 
 int ConnectionListModel::indexOf(QString address)
 {
-	const QRegExp re(address, Qt::CaseInsensitive);
+	const QRegExp re(".*" + address + ".*", Qt::CaseInsensitive);
 	return m_addresses.indexOf(re);
 }
