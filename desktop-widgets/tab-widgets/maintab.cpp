@@ -1279,7 +1279,7 @@ void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
 	QStringList addedList, removedList;
 	struct dive *cd = current_dive;
 
-	diffTaggedStrings(cd->buddy, displayed_dive.buddy, addedList, removedList);
+	if (diffTaggedStrings(cd->buddy, displayed_dive.buddy, addedList, removedList))
 	MODIFY_DIVES(selectedDives,
 		QStringList oldList = QString(mydive->buddy).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
 		QString newString;
@@ -1301,7 +1301,7 @@ void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
 	);
 	addedList.clear();
 	removedList.clear();
-	diffTaggedStrings(cd->divemaster, displayed_dive.divemaster, addedList, removedList);
+	if (diffTaggedStrings(cd->divemaster, displayed_dive.divemaster, addedList, removedList))
 	MODIFY_DIVES(selectedDives,
 		QStringList oldList = QString(mydive->divemaster).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
 		QString newString;
@@ -1323,7 +1323,7 @@ void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
 	);
 }
 
-void MainTab::diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList)
+int MainTab::diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList)
 {
 	QStringList displayedList, currentList;
 	currentList = currentString.split(',', QString::SkipEmptyParts);
@@ -1336,6 +1336,7 @@ void MainTab::diffTaggedStrings(QString currentString, QString displayedString, 
 		if (!currentList.contains(tag, Qt::CaseInsensitive))
 			addedList << tag.trimmed();
 	}
+	return removedList.length() + addedList.length();
 }
 
 void MainTab::on_tagWidget_textChanged()
