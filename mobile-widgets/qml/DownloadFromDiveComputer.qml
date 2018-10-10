@@ -303,6 +303,7 @@ Kirigami.Page {
 			SsrfButton {
 				id:rescanbutton
 				text: qsTr("Rescan")
+				enabled: manager.btEnabled
 				onClicked: {
 					manager.btRescan()
 				}
