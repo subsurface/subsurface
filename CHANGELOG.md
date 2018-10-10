@@ -1,3 +1,6 @@
+- Filter: don't recalculate all filters on dive list-modifying operations
+- Desktop: don't recalculate full dive list on dive list-modifying operations
+- Undo: implement undo/redo for all dive list-modifying operations
 - Mobile: preserve manual/auto sync with cloud [#1725]
 - Desktop: don't show "invalid dive site" debugging message
 - Map: zoom on dive site when selecting items in dive site list
