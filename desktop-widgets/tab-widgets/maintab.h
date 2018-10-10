@@ -119,7 +119,7 @@ private:
 	void copyTagsToDisplayedDive();
 	void saveTags(const QVector<dive *> &selectedDives);
 	void saveTaggedStrings(const QVector<dive *> &selectedDives);
-	void diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList);
+	int diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList);
 	void markChangedWidget(QWidget *w);
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
