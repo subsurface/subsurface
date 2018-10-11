@@ -455,6 +455,8 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	struct dive_site *ds = get_dive_site_by_uuid(
 		index.model()->data(index.model()->index(index.row(),0)).toInt()
 	);
+	struct dive_site *currentDiveSite = current_dive ? get_dive_site_for_dive(current_dive) : nullptr;
+	bool currentDiveSiteHasGPS = currentDiveSite && dive_site_has_gps_location(currentDiveSite);
 	//Special case: do not show name, but instead, show
 	if (index.row() < 2) {
 		diveSiteName = index.data().toString();
@@ -482,14 +484,14 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		free( (void*) gpsCoords);
 	}
 
-	if (dive_site_has_gps_location(ds) && dive_site_has_gps_location(&displayed_dive_site)) {
+	if (dive_site_has_gps_location(ds) && currentDiveSiteHasGPS) {
 		// so we are showing a completion and both the current dive site and the completion
 		// have a GPS fix... so let's show the distance
-		if (ds->latitude.udeg == displayed_dive_site.latitude.udeg &&
-		    ds->longitude.udeg == displayed_dive_site.longitude.udeg) {
+		if (ds->latitude.udeg == currentDiveSite->latitude.udeg &&
+		    ds->longitude.udeg == currentDiveSite->longitude.udeg) {
 			bottomText += tr(" (same GPS fix)");
 		} else {
-			int distanceMeters = get_distance(ds->latitude, ds->longitude, displayed_dive_site.latitude, displayed_dive_site.longitude);
+			int distanceMeters = get_distance(ds->latitude, ds->longitude, currentDiveSite->latitude, currentDiveSite->longitude);
 			QString distance = distance_string(distanceMeters);
 			int nr = nr_of_dives_at_dive_site(ds->uuid, false);
 			bottomText += tr(" (~%1 away").arg(distance);
@@ -497,7 +499,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 		}
 	}
 	if (bottomText.isEmpty()) {
-		if (dive_site_has_gps_location(&displayed_dive_site))
+		if (currentDiveSiteHasGPS)
 			bottomText = tr("(no existing GPS data, add GPS fix from this dive)");
 		else
 			bottomText = tr("(no GPS data)");
