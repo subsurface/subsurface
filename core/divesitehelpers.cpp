@@ -20,17 +20,7 @@
 #include <QEventLoop>
 #include <QTimer>
 
-ReverseGeoLookupThread* ReverseGeoLookupThread::instance()
-{
-	static ReverseGeoLookupThread* self = new ReverseGeoLookupThread();
-	return self;
-}
-
-ReverseGeoLookupThread::ReverseGeoLookupThread(QObject *obj) : QThread(obj)
-{
-}
-
-void ReverseGeoLookupThread::run()
+void reverseGeoLookup()
 {
 	QNetworkRequest request;
 	QNetworkAccessManager *rgl = new QNetworkAccessManager();
@@ -41,7 +31,7 @@ void ReverseGeoLookupThread::run()
 
 	request.setRawHeader("Accept", "text/json");
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
-	connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
+	QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
 	struct dive_site *ds = &displayed_dive_site;
 
@@ -50,7 +40,7 @@ void ReverseGeoLookupThread::run()
 
 	QNetworkReply *reply = rgl->get(request);
 	timer.setSingleShot(true);
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
 
@@ -119,13 +109,13 @@ void ReverseGeoLookupThread::run()
 		}
 	} else {
 		report_error("timeout accessing geonames.org");
-		disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		QObject::disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 		reply->abort();
 	}
 	// next check the oceans API to figure out the body of water
 	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 	reply = rgl->get(request);
-	connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
 	if (timer.isActive()) {
@@ -165,7 +155,7 @@ void ReverseGeoLookupThread::run()
 		}
 	} else {
 		report_error("timeout accessing geonames.org");
-		disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		QObject::disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 		reply->abort();
 	}
 

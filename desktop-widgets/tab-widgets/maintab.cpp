@@ -195,21 +195,6 @@ MainTab::MainTab(QWidget *parent) : QTabWidget(parent),
 		ui.cylinders->view()->horizontalHeader()->addAction(action);
 	}
 
-	ui.waitingSpinner->setRoundness(70.0);
-	ui.waitingSpinner->setMinimumTrailOpacity(15.0);
-	ui.waitingSpinner->setTrailFadePercentage(70.0);
-	ui.waitingSpinner->setNumberOfLines(8);
-	ui.waitingSpinner->setLineLength(5);
-	ui.waitingSpinner->setLineWidth(3);
-	ui.waitingSpinner->setInnerRadius(5);
-	ui.waitingSpinner->setRevolutionsPerSecond(1);
-
-	connect(ReverseGeoLookupThread::instance(), SIGNAL(finished()),
-			LocationInformationModel::instance(), SLOT(update()));
-
-	connect(ReverseGeoLookupThread::instance(), &QThread::finished,
-			this, &MainTab::setCurrentLocationIndex);
-
 	connect(ui.diveNotesMessage, &KMessageWidget::showAnimationFinished,
 					ui.location, &DiveLocationLineEdit::fixPopupPosition);
 
@@ -243,16 +228,6 @@ void MainTab::setCurrentLocationIndex()
 		else
 			ui.location->clear();
 	}
-}
-
-void MainTab::enableGeoLookupEdition()
-{
-	ui.waitingSpinner->stop();
-}
-
-void MainTab::disableGeoLookupEdition()
-{
-	ui.waitingSpinner->start();
 }
 
 void MainTab::toggleTriggeredColumn()

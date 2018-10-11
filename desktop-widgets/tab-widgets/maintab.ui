@@ -230,9 +230,6 @@
                  </property>
                 </widget>
                </item>
-               <item>
-                <widget class="QtWaitingSpinner" name="waitingSpinner" native="true"/>
-               </item>
               </layout>
              </item>
              <item>
@@ -598,12 +595,6 @@
    <class>TagWidget</class>
    <extends>QPlainTextEdit</extends>
    <header>desktop-widgets/tagwidget.h</header>
-  </customwidget>
-  <customwidget>
-   <class>QtWaitingSpinner</class>
-   <extends>QWidget</extends>
-   <header>desktop-widgets/qtwaitingspinner.h</header>
-   <container>1</container>
   </customwidget>
   <customwidget>
    <class>DiveLocationLineEdit</class>
