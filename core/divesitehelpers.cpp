@@ -19,6 +19,7 @@
 #include <QUrlQuery>
 #include <QEventLoop>
 #include <QTimer>
+#include <memory>
 
 void reverseGeoLookup()
 {
@@ -41,9 +42,13 @@ void reverseGeoLookup()
 	// first check the findNearbyPlaces API from geonames - that should give us country, state, city
 	request.setUrl(geonamesURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 
-	QNetworkReply *reply = rgl.get(request);
+	// By using a std::unique_ptr<>, we can exit from the function at any point
+	// and the reply will be freed. Likewise, when overwriting the pointer with
+	// a new value. According to Qt's documentation it is fine the delete the
+	// reply as long as we're not in a slot connected to error() or finish().
+	std::unique_ptr<QNetworkReply> reply(rgl.get(request));
 	timer.setSingleShot(true);
-	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	QObject::connect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
 
@@ -51,17 +56,17 @@ void reverseGeoLookup()
 		timer.stop();
 		if (reply->error() > 0) {
 			report_error("got error accessing geonames.org: %s", qPrintable(reply->errorString()));
-			goto clear_reply;
+			return;
 		}
 		int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 		if (v < 200 || v >= 300)
-			goto clear_reply;
+			return;
 		QByteArray fullReply = reply->readAll();
 		QJsonParseError errorObject;
 		QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
 		if (errorObject.error != QJsonParseError::NoError) {
 			report_error("error parsing geonames.org response: %s", qPrintable(errorObject.errorString()));
-			goto clear_reply;
+			return;
 		}
 		QJsonObject obj = jsonDoc.object();
 		QVariant geoNamesObject = obj.value("geonames").toVariant();
@@ -112,30 +117,30 @@ void reverseGeoLookup()
 		}
 	} else {
 		report_error("timeout accessing geonames.org");
-		QObject::disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		QObject::disconnect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 		reply->abort();
 	}
 	// next check the oceans API to figure out the body of water
 	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
-	reply = rgl.get(request);
-	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+	reply.reset(rgl.get(request)); // Note: frees old reply.
+	QObject::connect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
 	if (timer.isActive()) {
 		timer.stop();
 		if (reply->error() > 0) {
 			report_error("got error accessing oceans API of geonames.org: %s", qPrintable(reply->errorString()));
-			goto clear_reply;
+			return;
 		}
 		int v = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();
 		if (v < 200 || v >= 300)
-			goto clear_reply;
+			return;
 		QByteArray fullReply = reply->readAll();
 		QJsonParseError errorObject;
 		QJsonDocument jsonDoc = QJsonDocument::fromJson(fullReply, &errorObject);
 		if (errorObject.error != QJsonParseError::NoError) {
 			report_error("error parsing geonames.org response: %s", qPrintable(errorObject.errorString()));
-			goto clear_reply;
+			return;
 		}
 		QJsonObject obj = jsonDoc.object();
 		QVariant oceanObject = obj.value("ocean").toVariant();
@@ -158,10 +163,7 @@ void reverseGeoLookup()
 		}
 	} else {
 		report_error("timeout accessing geonames.org");
-		QObject::disconnect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
+		QObject::disconnect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 		reply->abort();
 	}
-
-clear_reply:
-	reply->deleteLater();
 }
