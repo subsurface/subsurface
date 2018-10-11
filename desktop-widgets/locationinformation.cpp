@@ -330,7 +330,7 @@ void LocationInformationWidget::resetPallete()
 
 void LocationInformationWidget::reverseGeocode()
 {
-	reverseGeoLookup();
+	reverseGeoLookup(displayed_dive_site.latitude, displayed_dive_site.longitude, &displayed_dive_site.taxonomy);
 	updateLabels();
 }
 
