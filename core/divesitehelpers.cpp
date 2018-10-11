@@ -22,8 +22,11 @@
 
 void reverseGeoLookup()
 {
+	// By making the QNetworkAccessManager static and local to this function,
+	// only one manager exists for all geo-lookups and it is only initialized
+	// on first call to this function.
+	static QNetworkAccessManager rgl;
 	QNetworkRequest request;
-	QNetworkAccessManager *rgl = new QNetworkAccessManager();
 	QEventLoop loop;
 	QString geonamesURL("http://api.geonames.org/findNearbyPlaceNameJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
 	QString geonamesOceanURL("http://api.geonames.org/oceanJSON?lang=%1&lat=%2&lng=%3&radius=50&username=dirkhh");
@@ -38,7 +41,7 @@ void reverseGeoLookup()
 	// first check the findNearbyPlaces API from geonames - that should give us country, state, city
 	request.setUrl(geonamesURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
 
-	QNetworkReply *reply = rgl->get(request);
+	QNetworkReply *reply = rgl.get(request);
 	timer.setSingleShot(true);
 	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
@@ -114,7 +117,7 @@ void reverseGeoLookup()
 	}
 	// next check the oceans API to figure out the body of water
 	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
-	reply = rgl->get(request);
+	reply = rgl.get(request);
 	QObject::connect(reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
 	loop.exec();
@@ -161,6 +164,4 @@ void reverseGeoLookup()
 
 clear_reply:
 	reply->deleteLater();
-
-	rgl->deleteLater();
 }
