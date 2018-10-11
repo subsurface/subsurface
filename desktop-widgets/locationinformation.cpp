@@ -330,8 +330,7 @@ void LocationInformationWidget::resetPallete()
 
 void LocationInformationWidget::reverseGeocode()
 {
-	ReverseGeoLookupThread *geoLookup = ReverseGeoLookupThread::instance();
-	geoLookup->run();
+	reverseGeoLookup();
 	updateLabels();
 }
 

@@ -2,18 +2,6 @@
 #ifndef DIVESITEHELPERS_H
 #define DIVESITEHELPERS_H
 
-#include "units.h"
-#include <QThread>
-
-class ReverseGeoLookupThread : public QThread {
-Q_OBJECT
-public:
-	static ReverseGeoLookupThread *instance();
-	void lookup(struct dive_site *ds);
-	void run() override;
-
-private:
-	ReverseGeoLookupThread(QObject *parent = 0);
-};
+void reverseGeoLookup();
 
 #endif // DIVESITEHELPERS_H

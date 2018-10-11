@@ -98,8 +98,6 @@ slots:
 	void updateTextLabels(bool showUnits = true);
 	void escDetected(void);
 	void showLocation();
-	void enableGeoLookupEdition();
-	void disableGeoLookupEdition();
 	void setCurrentLocationIndex();
 	EditMode getEditMode() const;
 private:
