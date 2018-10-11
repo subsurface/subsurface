@@ -21,7 +21,7 @@
 #include <QTimer>
 #include <memory>
 
-void reverseGeoLookup()
+void reverseGeoLookup(degrees_t latitude, degrees_t longitude, taxonomy_data *taxonomy)
 {
 	// By making the QNetworkAccessManager static and local to this function,
 	// only one manager exists for all geo-lookups and it is only initialized
@@ -37,10 +37,8 @@ void reverseGeoLookup()
 	request.setRawHeader("User-Agent", getUserAgent().toUtf8());
 	QObject::connect(&timer, SIGNAL(timeout()), &loop, SLOT(quit()));
 
-	struct dive_site *ds = &displayed_dive_site;
-
 	// first check the findNearbyPlaces API from geonames - that should give us country, state, city
-	request.setUrl(geonamesURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
+	request.setUrl(geonamesURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
 
 	// By using a std::unique_ptr<>, we can exit from the function at any point
 	// and the reply will be freed. Likewise, when overwriting the pointer with
@@ -74,41 +72,41 @@ void reverseGeoLookup()
 		if (geoNames.count() > 0) {
 			QVariantMap firstData = geoNames.at(0).toMap();
 			int ri = 0, l3 = -1, lt = -1;
-			if (ds->taxonomy.category == NULL) {
-				ds->taxonomy.category = alloc_taxonomy();
+			if (taxonomy->category == NULL) {
+				taxonomy->category = alloc_taxonomy();
 			} else {
 				// clear out the data (except for the ocean data)
 				int ocean;
-				if ((ocean = taxonomy_index_for_category(&ds->taxonomy, TC_OCEAN)) > 0) {
-					ds->taxonomy.category[0] = ds->taxonomy.category[ocean];
-					ds->taxonomy.nr = 1;
+				if ((ocean = taxonomy_index_for_category(taxonomy, TC_OCEAN)) > 0) {
+					taxonomy->category[0] = taxonomy->category[ocean];
+					taxonomy->nr = 1;
 				} else {
 					// ocean is -1 if there is no such entry, and we didn't copy above
 					// if ocean is 0, so the following gets us the correct count
-					ds->taxonomy.nr = ocean + 1;
+					taxonomy->nr = ocean + 1;
 				}
 			}
 			// get all the data - OCEAN is special, so start at COUNTRY
 			for (int j = TC_COUNTRY; j < TC_NR_CATEGORIES; j++) {
 				if (firstData[taxonomy_api_names[j]].isValid()) {
-					ds->taxonomy.category[ri].category = j;
-					ds->taxonomy.category[ri].origin = taxonomy_origin::GEOCODED;
-					free((void *)ds->taxonomy.category[ri].value);
-					ds->taxonomy.category[ri].value = copy_qstring(firstData[taxonomy_api_names[j]].toString());
+					taxonomy->category[ri].category = j;
+					taxonomy->category[ri].origin = taxonomy_origin::GEOCODED;
+					free((void *)taxonomy->category[ri].value);
+					taxonomy->category[ri].value = copy_qstring(firstData[taxonomy_api_names[j]].toString());
 					ri++;
 				}
 			}
-			ds->taxonomy.nr = ri;
-			l3 = taxonomy_index_for_category(&ds->taxonomy, TC_ADMIN_L3);
-			lt = taxonomy_index_for_category(&ds->taxonomy, TC_LOCALNAME);
+			taxonomy->nr = ri;
+			l3 = taxonomy_index_for_category(taxonomy, TC_ADMIN_L3);
+			lt = taxonomy_index_for_category(taxonomy, TC_LOCALNAME);
 			if (l3 == -1 && lt != -1) {
 				// basically this means we did get a local name (what we call town), but just like most places
 				// we didn't get an adminName_3 - which in some regions is the actual city that town belongs to,
 				// then we copy the town into the city
-				ds->taxonomy.category[ri].value = copy_string(ds->taxonomy.category[lt].value);
-				ds->taxonomy.category[ri].origin = taxonomy_origin::GEOCOPIED;
-				ds->taxonomy.category[ri].category = TC_ADMIN_L3;
-				ds->taxonomy.nr++;
+				taxonomy->category[ri].value = copy_string(taxonomy->category[lt].value);
+				taxonomy->category[ri].origin = taxonomy_origin::GEOCOPIED;
+				taxonomy->category[ri].category = TC_ADMIN_L3;
+				taxonomy->nr++;
 			}
 			mark_divelist_changed(true);
 		} else {
@@ -121,7 +119,7 @@ void reverseGeoLookup()
 		reply->abort();
 	}
 	// next check the oceans API to figure out the body of water
-	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(ds->latitude.udeg / 1000000.0).arg(ds->longitude.udeg / 1000000.0));
+	request.setUrl(geonamesOceanURL.arg(uiLanguage(NULL).section(QRegExp("[-_ ]"), 0, 0)).arg(latitude.udeg / 1000000.0).arg(longitude.udeg / 1000000.0));
 	reply.reset(rgl.get(request)); // Note: frees old reply.
 	QObject::connect(&*reply, SIGNAL(finished()), &loop, SLOT(quit()));
 	timer.start(5000);   // 5 secs. timeout
@@ -147,17 +145,17 @@ void reverseGeoLookup()
 		QVariantMap oceanName = oceanObject.toMap();
 		if (oceanName["name"].isValid()) {
 			int idx;
-			if (ds->taxonomy.category == NULL)
-				ds->taxonomy.category = alloc_taxonomy();
-			idx = taxonomy_index_for_category(&ds->taxonomy, TC_OCEAN);
+			if (taxonomy->category == NULL)
+				taxonomy->category = alloc_taxonomy();
+			idx = taxonomy_index_for_category(taxonomy, TC_OCEAN);
 			if (idx == -1)
-				idx = ds->taxonomy.nr;
+				idx = taxonomy->nr;
 			if (idx < TC_NR_CATEGORIES) {
-				ds->taxonomy.category[idx].category = TC_OCEAN;
-				ds->taxonomy.category[idx].origin = taxonomy_origin::GEOCODED;
-				ds->taxonomy.category[idx].value = copy_qstring(oceanName["name"].toString());
-				if (idx == ds->taxonomy.nr)
-					ds->taxonomy.nr++;
+				taxonomy->category[idx].category = TC_OCEAN;
+				taxonomy->category[idx].origin = taxonomy_origin::GEOCODED;
+				taxonomy->category[idx].value = copy_qstring(oceanName["name"].toString());
+				if (idx == taxonomy->nr)
+					taxonomy->nr++;
 			}
 			mark_divelist_changed(true);
 		}
