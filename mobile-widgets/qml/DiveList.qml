@@ -4,7 +4,7 @@ import QtQuick.Controls 2.2 as Controls
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
-import org.kde.kirigami 2.4 as Kirigami
+import org.kde.kirigami 2.5 as Kirigami
 import org.subsurfacedivelog.mobile 1.0
 
 Kirigami.ScrollablePage {
@@ -113,7 +113,7 @@ Kirigami.ScrollablePage {
 				if (detailsWindow.state === "view") {
 					diveListView.currentIndex = index
 					detailsWindow.showDiveIndex(index);
-					stackView.push(detailsWindow);
+					pageStack.push(detailsWindow);
 				}
 			}
 
@@ -387,7 +387,7 @@ Kirigami.ScrollablePage {
 
 	function showDownloadPage(vendor, product, connection) {
 		downloadFromDc.dcImportModel.clearTable()
-		stackView.push(downloadFromDc)
+		pageStack.push(downloadFromDc)
 		if (vendor !== undefined && product !== undefined && connection !== undefined) {
 			/* set up the correct values on the download page */
 			if (vendor !== -1)
