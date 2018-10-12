@@ -369,14 +369,6 @@ bool MainTab::isEditing()
 	return editMode != NONE;
 }
 
-void MainTab::showLocation()
-{
-	if (get_dive_site_by_uuid(displayed_dive.dive_site_uuid))
-		ui.location->setCurrentDiveSiteUuid(displayed_dive.dive_site_uuid);
-	else
-		ui.location->clear();
-}
-
 void MainTab::updateDepthDuration()
 {
 	ui.depth->setVisible(true);
