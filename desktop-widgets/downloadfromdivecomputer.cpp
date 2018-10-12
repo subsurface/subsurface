@@ -527,7 +527,7 @@ void DownloadFromDCWidget::on_ok_clicked()
 			delete_dive_from_table(&downloadTable, j);
 	}
 
-	MainWindow::instance()->dive_list()->unselectDives();
+	MainWindow::instance()->dive_list->unselectDives();
 
 	if (downloadTable.nr > 0) {
 		// remember the last downloaded dive (on most dive computers this will be the chronologically
@@ -542,8 +542,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 		int idx = get_idx_by_uniq_id(uniqId);
 		// this shouldn't be necessary - but there are reports that somehow existing dives stay selected
 		// (but not visible as selected)
-		MainWindow::instance()->dive_list()->unselectDives();
-		MainWindow::instance()->dive_list()->selectDive(idx, true);
+		MainWindow::instance()->dive_list->unselectDives();
+		MainWindow::instance()->dive_list->selectDive(idx, true);
 	}
 
 	if (ostcFirmwareCheck && currentState == DONE) {

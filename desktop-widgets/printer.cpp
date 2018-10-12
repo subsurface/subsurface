@@ -134,7 +134,7 @@ void Printer::flowRender()
 void Printer::render(int Pages = 0)
 {
 	// keep original preferences
-	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics();
+	QPointer<ProfileWidget2> profile = MainWindow::instance()->graphics;
 	int profileFrameStyle = profile->frameStyle();
 	int animationOriginal = qPrefDisplay::animation_speed();
 	double fontScale = profile->getFontPrintScale();

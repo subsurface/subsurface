@@ -92,7 +92,7 @@ void TagWidget::reparse()
 	 * Do not show the completer when not in edit mode - basically
 	 * this returns when we are accepting or discarding the changes.
 	 */
-	if (MainWindow::instance()->information()->isEditing() == false) {
+	if (MainWindow::instance()->information->isEditing() == false) {
 		return;
 	}
 
@@ -186,7 +186,7 @@ void TagWidget::keyPressEvent(QKeyEvent *e)
 	  }
 	}
 	if (e->key() == Qt::Key_Tab && lastFinishedTag) {		    // if we already end in comma, go to next/prev field
-		MainWindow::instance()->information()->nextInputField(e);   // by sending the key event to the MainTab widget
+		MainWindow::instance()->information->nextInputField(e);     // by sending the key event to the MainTab widget
 	} else if (e->key() == Qt::Key_Tab || e->key() == Qt::Key_Return) { // otherwise let's pretend this is a comma instead
 		QKeyEvent fakeEvent(e->type(), Qt::Key_Comma, e->modifiers(), QString(","));
 		keyPressEvent(&fakeEvent);

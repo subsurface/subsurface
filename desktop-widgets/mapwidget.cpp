@@ -103,9 +103,9 @@ void MapWidget::selectedDivesChanged(QList<int> list)
 {
 	CHECK_IS_READY_RETURN_VOID();
 	skipReload = true;
-	MainWindow::instance()->dive_list()->unselectDives();
+	MainWindow::instance()->dive_list->unselectDives();
 	if (!list.empty())
-		MainWindow::instance()->dive_list()->selectDives(list);
+		MainWindow::instance()->dive_list->selectDives(list);
 	skipReload = false;
 }
 

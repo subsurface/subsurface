@@ -59,14 +59,10 @@ public:
 	MainWindow();
 	~MainWindow();
 	static MainWindow *instance();
-	MainTab *information();
 	void loadRecentFiles();
 	void updateRecentFiles();
 	void updateRecentFilesMenu();
 	void addRecentFile(const QString &file, bool update);
-	DiveListView *dive_list();
-	DivePlannerWidget *divePlannerWidget();
-	PlannerSettingsWidget *divePlannerSettingsWidget();
 	LocationInformationWidget *locationInformationWidget();
 	void setTitle();
 
@@ -74,8 +70,6 @@ public:
 	void importFiles(const QStringList importFiles);
 	void cleanUpEmpty();
 	void setToolButtonsEnabled(bool enabled);
-	ProfileWidget2 *graphics() const;
-	PlannerDetails *plannerDetails() const;
 	void printPlan();
 	void checkSurvey();
 	void setApplicationState(const QByteArray& state);
@@ -87,6 +81,12 @@ public:
 	void enterEditState();
 	void exitEditState();
 
+	MainTab *information;
+	PlannerDetails *plannerDetails;
+	PlannerSettingsWidget *divePlannerSettingsWidget;
+	ProfileWidget2 *graphics;
+	DivePlannerWidget *divePlannerWidget;
+	DiveListView *dive_list;
 private
 slots:
 	/* file menu action */
