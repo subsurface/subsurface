@@ -1280,47 +1280,47 @@ void MainTab::saveTaggedStrings(const QVector<dive *> &selectedDives)
 	struct dive *cd = current_dive;
 
 	if (diffTaggedStrings(cd->buddy, displayed_dive.buddy, addedList, removedList))
-	MODIFY_DIVES(selectedDives,
-		QStringList oldList = QString(mydive->buddy).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
-		QString newString;
-		QString comma;
-		Q_FOREACH (const QString tag, oldList) {
-			if (!removedList.contains(tag, Qt::CaseInsensitive)) {
-				newString += comma + tag;
-				comma = ", ";
+		MODIFY_DIVES(selectedDives,
+			QStringList oldList = QString(mydive->buddy).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
+			QString newString;
+			QString comma;
+			Q_FOREACH (const QString tag, oldList) {
+				if (!removedList.contains(tag, Qt::CaseInsensitive)) {
+					newString += comma + tag;
+					comma = ", ";
+				}
 			}
-		}
-		Q_FOREACH (const QString tag, addedList) {
-			if (!oldList.contains(tag, Qt::CaseInsensitive)) {
-				newString += comma + tag;
-				comma = ", ";
+			Q_FOREACH (const QString tag, addedList) {
+				if (!oldList.contains(tag, Qt::CaseInsensitive)) {
+					newString += comma + tag;
+					comma = ", ";
+				}
 			}
-		}
-		free(mydive->buddy);
-		mydive->buddy = copy_qstring(newString);
-	);
+			free(mydive->buddy);
+			mydive->buddy = copy_qstring(newString);
+		);
 	addedList.clear();
 	removedList.clear();
 	if (diffTaggedStrings(cd->divemaster, displayed_dive.divemaster, addedList, removedList))
-	MODIFY_DIVES(selectedDives,
-		QStringList oldList = QString(mydive->divemaster).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
-		QString newString;
-		QString comma;
-		Q_FOREACH (const QString tag, oldList) {
-			if (!removedList.contains(tag, Qt::CaseInsensitive)) {
-				newString += comma + tag;
-				comma = ", ";
+		MODIFY_DIVES(selectedDives,
+			QStringList oldList = QString(mydive->divemaster).split(QRegExp("\\s*,\\s*"), QString::SkipEmptyParts);
+			QString newString;
+			QString comma;
+			Q_FOREACH (const QString tag, oldList) {
+				if (!removedList.contains(tag, Qt::CaseInsensitive)) {
+					newString += comma + tag;
+					comma = ", ";
+				}
 			}
-		}
-		Q_FOREACH (const QString tag, addedList) {
-			if (!oldList.contains(tag, Qt::CaseInsensitive)) {
-				newString += comma + tag;
-				comma = ", ";
+			Q_FOREACH (const QString tag, addedList) {
+				if (!oldList.contains(tag, Qt::CaseInsensitive)) {
+					newString += comma + tag;
+					comma = ", ";
+				}
 			}
-		}
-		free(mydive->divemaster);
-		mydive->divemaster = copy_qstring(newString);
-	);
+			free(mydive->divemaster);
+			mydive->divemaster = copy_qstring(newString);
+		);
 }
 
 int MainTab::diffTaggedStrings(QString currentString, QString displayedString, QStringList &addedList, QStringList &removedList)
