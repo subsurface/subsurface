@@ -415,20 +415,11 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		struct dive_site *ds = NULL;
-		// if we are showing a dive and editing it, let's refer to the displayed_dive_site as that
-		// already may contain changes, otherwise start with the dive site referred to by the displayed
-		// dive
-		if (rememberEM == DIVE) {
-			ds = &displayed_dive_site;
-		} else {
-			ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-			if (ds)
-				copy_dive_site(ds, &displayed_dive_site);
-		}
-
+		ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if (ds) {
 			ui.location->setCurrentDiveSiteUuid(ds->uuid);
 			ui.locationTags->setText(constructLocationTags(ds, true));
+			copy_dive_site(ds, &displayed_dive_site);
 		} else {
 			ui.location->clear();
 			ui.locationTags->clear();
