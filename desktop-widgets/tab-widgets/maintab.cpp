@@ -656,9 +656,10 @@ MainTab::EditMode MainTab::getEditMode() const
 
 void MainTab::refreshDisplayedDiveSite()
 {
-	if (displayed_dive_site.uuid) {
-		copy_dive_site(get_dive_site_by_uuid(displayed_dive_site.uuid), &displayed_dive_site);
-		ui.location->setCurrentDiveSiteUuid(displayed_dive_site.uuid);
+	struct dive_site *ds = get_dive_site_for_dive(&displayed_dive);
+	if (ds) {
+		copy_dive_site(ds, &displayed_dive_site);
+		ui.location->setCurrentDiveSiteUuid(ds->uuid);
 	}
 }
 
