@@ -244,7 +244,7 @@ void LocationInformationWidget::resetState()
 {
 	modified = false;
 	resetPallete();
-	MainWindow::instance()->dive_list->setEnabled(true);
+	MainWindow::instance()->diveList->setEnabled(true);
 	MainWindow::instance()->setEnabledToolbar(true);
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	MapWidget::instance()->endGetDiveCoordinates();
@@ -256,7 +256,7 @@ void LocationInformationWidget::resetState()
 
 void LocationInformationWidget::enableEdition()
 {
-	MainWindow::instance()->dive_list->setEnabled(false);
+	MainWindow::instance()->diveList->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 	ui.diveSiteMessage->setText(tr("You are editing a dive site"));
 }

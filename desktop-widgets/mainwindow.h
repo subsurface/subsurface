@@ -81,12 +81,12 @@ public:
 	void enterEditState();
 	void exitEditState();
 
-	MainTab *information;
+	MainTab *mainTab;
 	PlannerDetails *plannerDetails;
 	PlannerSettingsWidget *divePlannerSettingsWidget;
 	ProfileWidget2 *graphics;
 	DivePlannerWidget *divePlannerWidget;
-	DiveListView *dive_list;
+	DiveListView *diveList;
 private
 slots:
 	/* file menu action */
