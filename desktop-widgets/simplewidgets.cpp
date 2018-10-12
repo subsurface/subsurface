@@ -159,7 +159,7 @@ void RenumberDialog::renumberOnlySelected(bool selected)
 void RenumberDialog::buttonClicked(QAbstractButton *button)
 {
 	if (ui.buttonBox->buttonRole(button) == QDialogButtonBox::AcceptRole) {
-		MainWindow::instance()->dive_list()->rememberSelection();
+		MainWindow::instance()->dive_list->rememberSelection();
 		// we remember a list from dive uuid to a new number
 		QVector<QPair<dive *, int>> renumberedDives;
 		int i;
@@ -205,7 +205,7 @@ void SetpointDialog::buttonClicked(QAbstractButton *button)
 		invalidate_dive_cache(current_dive);
 	}
 	mark_divelist_changed(true);
-	MainWindow::instance()->graphics()->replot();
+	MainWindow::instance()->graphics->replot();
 }
 
 SetpointDialog::SetpointDialog(QWidget *parent) : QDialog(parent),

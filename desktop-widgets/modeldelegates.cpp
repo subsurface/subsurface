@@ -263,10 +263,10 @@ TankInfoDelegate::TankInfoDelegate(QObject *parent) : ComboBoxDelegate(TankInfoM
 
 void TankInfoDelegate::reenableReplot(QWidget*, QAbstractItemDelegate::EndEditHint)
 {
-	MainWindow::instance()->graphics()->setReplot(true);
+	MainWindow::instance()->graphics->setReplot(true);
 	// FIXME: We need to replot after a cylinder is selected but the replot below overwrites
 	//        the newly selected cylinder.
-	//	MainWindow::instance()->graphics()->replot();
+	//	MainWindow::instance()->graphics->replot();
 }
 
 void TankInfoDelegate::revertModelData(QWidget*, QAbstractItemDelegate::EndEditHint hint)
@@ -290,7 +290,7 @@ QWidget *TankInfoDelegate::createEditor(QWidget *parent, const QStyleOptionViewI
 	currCylinderData.type = copy_string(cyl->type.description);
 	currCylinderData.pressure = cyl->type.workingpressure.mbar;
 	currCylinderData.size = cyl->type.size.mliter;
-	MainWindow::instance()->graphics()->setReplot(false);
+	MainWindow::instance()->graphics->setReplot(false);
 	return delegate;
 }
 

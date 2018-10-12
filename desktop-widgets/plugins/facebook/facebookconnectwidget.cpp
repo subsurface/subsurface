@@ -197,7 +197,7 @@ void FacebookManager::userIdReceived()
 QPixmap FacebookManager::grabProfilePixmap()
 {
 	qCDebug(lcFacebook) << "Grabbing Dive Profile pixmap";
-	ProfileWidget2 *profile = MainWindow::instance()->graphics();
+	ProfileWidget2 *profile = MainWindow::instance()->graphics;
 
 	QSize size = fbInfo.profileSize == FacebookInfo::SMALL  ? QSize(800,600) :
 		     fbInfo.profileSize == FacebookInfo::MEDIUM ? QSize(1024,760) :

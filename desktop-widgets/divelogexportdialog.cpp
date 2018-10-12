@@ -275,7 +275,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		if (selected_only && !dive->selected)
 			continue;
 
-		ProfileWidget2 *profile = MainWindow::instance()->graphics();
+		ProfileWidget2 *profile = MainWindow::instance()->graphics;
 		profile->plotDive(dive, true);
 		profile->setToolTipVisibile(false);
 		QPixmap pix = QPixmap::grabWidget(profile);

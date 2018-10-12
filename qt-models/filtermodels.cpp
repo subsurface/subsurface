@@ -644,7 +644,7 @@ void MultiFilterSortModel::myInvalidate()
 #if !defined(SUBSURFACE_MOBILE)
 	int i;
 	struct dive *d;
-	DiveListView *dlv = MainWindow::instance()->dive_list();
+	DiveListView *dlv = MainWindow::instance()->dive_list;
 
 	divesDisplayed = 0;
 
