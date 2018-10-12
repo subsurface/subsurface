@@ -109,12 +109,12 @@ void TabDivePhotos::recalculateSelectedThumbnails()
 //TODO: This looks overly wrong. We shouldn't call MainWindow to retrieve the DiveList to add Images.
 void TabDivePhotos::addPhotosFromFile()
 {
-	MainWindow::instance()->dive_list->loadImages();
+	MainWindow::instance()->diveList->loadImages();
 }
 
 void TabDivePhotos::addPhotosFromURL()
 {
-	MainWindow::instance()->dive_list->loadWebImages();
+	MainWindow::instance()->diveList->loadWebImages();
 }
 
 void TabDivePhotos::removeAllPhotos()

@@ -293,7 +293,7 @@ void MainTab::updateTextLabels(bool showUnits)
 void MainTab::enableEdition(EditMode newEditMode)
 {
 	const bool isTripEdit = MainWindow::instance() &&
-		MainWindow::instance()->dive_list->selectedTrips().count() == 1;
+		MainWindow::instance()->diveList->selectedTrips().count() == 1;
 
 	if (((newEditMode == DIVE || newEditMode == NONE) && current_dive == NULL) || editMode != NONE)
 		return;
@@ -317,7 +317,7 @@ void MainTab::enableEdition(EditMode newEditMode)
 	}
 
 	ui.editDiveSiteButton->setEnabled(false);
-	MainWindow::instance()->dive_list->setEnabled(false);
+	MainWindow::instance()->diveList->setEnabled(false);
 	MainWindow::instance()->setEnabledToolbar(false);
 	MainWindow::instance()->enterEditState();
 	ui.tabWidget->setTabEnabled(2, false);
@@ -430,7 +430,7 @@ void MainTab::updateDiveInfo(bool clear)
 		localTime.setTimeSpec(Qt::UTC);
 		ui.dateEdit->setDate(localTime.date());
 		ui.timeEdit->setTime(localTime.time());
-		if (MainWindow::instance() && MainWindow::instance()->dive_list->selectedTrips().count() == 1) {
+		if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 			// Remember the tab selected for last dive
 			if (lastSelectedDive)
 				lastTabSelectedDive = ui.tabWidget->currentIndex();
@@ -442,7 +442,7 @@ void MainTab::updateDiveInfo(bool clear)
 			if (lastSelectedDive)
 				ui.tabWidget->setCurrentIndex(lastTabSelectedDiveTrip);
 			lastSelectedDive = false;
-			currentTrip = *MainWindow::instance()->dive_list->selectedTrips().begin();
+			currentTrip = *MainWindow::instance()->diveList->selectedTrips().begin();
 			// only use trip relevant fields
 			ui.divemaster->setVisible(false);
 			ui.DivemasterLabel->setVisible(false);
@@ -763,11 +763,11 @@ void MainTab::acceptChanges()
 		ui.editDiveSiteButton->setEnabled(!ui.location->text().isEmpty());
 		emit addDiveFinished();
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-		MainWindow::instance()->dive_list->setFocus();
+		MainWindow::instance()->diveList->setFocus();
 		resetPallete();
 		displayed_dive.divetrip = nullptr; // Should not be necessary, just in case!
 		return;
-	} else if (MainWindow::instance() && MainWindow::instance()->dive_list->selectedTrips().count() == 1) {
+	} else if (MainWindow::instance() && MainWindow::instance()->diveList->selectedTrips().count() == 1) {
 		/* now figure out if things have changed */
 		if (displayedTrip.notes && !same_string(displayedTrip.notes, currentTrip->notes)) {
 			currentTrip->notes = copy_string(displayedTrip.notes);
@@ -932,13 +932,13 @@ void MainTab::acceptChanges()
 		mark_divelist_changed(true);
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
 	}
-	int scrolledBy = MainWindow::instance()->dive_list->verticalScrollBar()->sliderPosition();
+	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if (editMode == MANUALLY_ADDED_DIVE) {
-		MainWindow::instance()->dive_list->reload(DiveTripModel::CURRENT, true);
+		MainWindow::instance()->diveList->reload(DiveTripModel::CURRENT, true);
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
-		MainWindow::instance()->dive_list->unselectDives();
-		MainWindow::instance()->dive_list->selectDive(newDiveNr, true);
+		MainWindow::instance()->diveList->unselectDives();
+		MainWindow::instance()->diveList->selectDive(newDiveNr, true);
 		editMode = NONE;
 		MainWindow::instance()->refreshDisplay();
 		MainWindow::instance()->graphics->replot();
@@ -946,13 +946,13 @@ void MainTab::acceptChanges()
 		editMode = NONE;
 		if (do_replot)
 			MainWindow::instance()->graphics->replot();
-		MainWindow::instance()->dive_list->rememberSelection();
+		MainWindow::instance()->diveList->rememberSelection();
 		MainWindow::instance()->refreshDisplay();
-		MainWindow::instance()->dive_list->restoreSelection();
+		MainWindow::instance()->diveList->restoreSelection();
 	}
 	DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::NOTHING);
-	MainWindow::instance()->dive_list->verticalScrollBar()->setSliderPosition(scrolledBy);
-	MainWindow::instance()->dive_list->setFocus();
+	MainWindow::instance()->diveList->verticalScrollBar()->setSliderPosition(scrolledBy);
+	MainWindow::instance()->diveList->setFocus();
 	MainWindow::instance()->exitEditState();
 	cylindersModel->changed = false;
 	weightModel->changed = false;
@@ -1003,7 +1003,7 @@ void MainTab::rejectChanges()
 	// no harm done to call cancelPlan even if we were not in ADD or PLAN mode...
 	DivePlannerPointsModel::instance()->cancelPlan();
 	if(lastMode == ADD)
-		MainWindow::instance()->dive_list->restoreSelection();
+		MainWindow::instance()->diveList->restoreSelection();
 
 	// now make sure that the correct dive is displayed
 	if (current_dive)

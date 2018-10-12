@@ -137,8 +137,8 @@ MainWindow::MainWindow() : QMainWindow(),
 	// widgets will change on the mainwindow.
 
 	// for the "default" mode
-	information = new MainTab(this);
-	dive_list = new DiveListView(this);
+	mainTab = new MainTab(this);
+	diveList = new DiveListView(this);
 	graphics = new ProfileWidget2(this);
 	MapWidget *mapWidget = MapWidget::instance();
 
@@ -178,7 +178,7 @@ MainWindow::MainWindow() : QMainWindow(),
 			this, &MainWindow::setDefaultState);
 	connect(diveSiteEdit, SIGNAL(endEditDiveSite()), this, SLOT(refreshDisplay()));
 	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
-			information, &MainTab::refreshDisplayedDiveSite);
+			mainTab, &MainTab::refreshDisplayedDiveSite);
 
 	std::pair<QByteArray, QVariant> enabled = std::make_pair("enabled", QVariant(true));
 	std::pair<QByteArray, QVariant> disabled = std::make_pair("enabled", QVariant(false));
@@ -187,12 +187,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	enabledList.push_back(enabled);
 	disabledList.push_back(disabled);
 
-	registerApplicationState("Default", information, profileContainer, dive_list, mapWidget );
-	registerApplicationState("AddDive", information, profileContainer, dive_list, mapWidget );
-	registerApplicationState("EditDive", information, profileContainer, dive_list, mapWidget );
+	registerApplicationState("Default", mainTab, profileContainer, diveList, mapWidget );
+	registerApplicationState("AddDive", mainTab, profileContainer, diveList, mapWidget );
+	registerApplicationState("EditDive", mainTab, profileContainer, diveList, mapWidget );
 	registerApplicationState("PlanDive", divePlannerWidget, profileContainer, divePlannerSettingsWidget, plannerDetails );
-	registerApplicationState("EditPlannedDive", divePlannerWidget, profileContainer, dive_list, mapWidget );
-	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, dive_list, mapWidget);
+	registerApplicationState("EditPlannedDive", divePlannerWidget, profileContainer, diveList, mapWidget );
+	registerApplicationState("EditDiveSite", diveSiteEdit, profileContainer, diveList, mapWidget);
 
 	setStateProperties("Default", enabledList, enabledList, enabledList,enabledList);
 	setStateProperties("AddDive", enabledList, enabledList, enabledList,enabledList);
@@ -211,9 +211,9 @@ MainWindow::MainWindow() : QMainWindow(),
 	}
 	connect(&diveListNotifier, &DiveListNotifier::selectionChanged, this, &MainWindow::selectionChanged);
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), this, SLOT(readSettings()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), dive_list, SLOT(update()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), dive_list, SLOT(reloadHeaderActions()));
-	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), information, SLOT(updateDiveInfo()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveList, SLOT(update()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), diveList, SLOT(reloadHeaderActions()));
+	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), mainTab, SLOT(updateDiveInfo()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), divePlannerSettingsWidget, SLOT(settingsChanged()));
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), TankInfoModel::instance(), SLOT(update()));
@@ -224,14 +224,14 @@ MainWindow::MainWindow() : QMainWindow(),
 		connect(actionsRecent[i], SIGNAL(triggered(bool)), this, SLOT(recentFileTriggered(bool)));
 	}
 	ui.menuFile->insertSeparator(ui.actionQuit);
-	connect(information, SIGNAL(addDiveFinished()), graphics, SLOT(setProfileState()));
-	connect(information, SIGNAL(dateTimeChanged()), graphics, SLOT(dateTimeChanged()));
+	connect(mainTab, SIGNAL(addDiveFinished()), graphics, SLOT(setProfileState()));
+	connect(mainTab, SIGNAL(dateTimeChanged()), graphics, SLOT(dateTimeChanged()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCreated()), this, SLOT(planCreated()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(planCanceled()), this, SLOT(planCanceled()));
 	connect(DivePlannerPointsModel::instance(), SIGNAL(variationsComputed(QString)), this, SLOT(updateVariations(QString)));
 	connect(plannerDetails->printPlan(), SIGNAL(pressed()), divePlannerWidget, SLOT(printDecoPlan()));
 	connect(this, SIGNAL(startDiveSiteEdit()), this, SLOT(on_actionDiveSiteEdit_triggered()));
-	connect(information, &MainTab::diveSiteChanged, mapWidget, &MapWidget::centerOnSelectedDiveSite);
+	connect(mainTab, &MainTab::diveSiteChanged, mapWidget, &MapWidget::centerOnSelectedDiveSite);
 	connect(this, &MainWindow::showError, ui.mainErrorMessage, &NotificationWidget::showError, Qt::AutoConnection);
 
 	connect(&windowTitleUpdate, &WindowTitleUpdate::updateTitle, this, &MainWindow::setAutomaticTitle);
@@ -245,12 +245,12 @@ MainWindow::MainWindow() : QMainWindow(),
 	graphics->setEmptyState();
 	initialUiSetup();
 	readSettings();
-	dive_list->reload(DiveTripModel::TREE);
-	dive_list->reloadHeaderActions();
-	dive_list->setFocus();
+	diveList->reload(DiveTripModel::TREE);
+	diveList->reloadHeaderActions();
+	diveList->setFocus();
 	MapWidget::instance()->reload();
-	dive_list->expand(dive_list->model()->index(0, 0));
-	dive_list->scrollTo(dive_list->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
+	diveList->expand(diveList->model()->index(0, 0));
+	diveList->scrollTo(diveList->model()->index(0, 0), QAbstractItemView::PositionAtCenter);
 	divePlannerWidget->settingsChanged();
 	divePlannerSettingsWidget->settingsChanged();
 #ifdef NO_USERMANUAL
@@ -342,7 +342,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	connect(graphics, &ProfileWidget2::enableShortcuts, this, &MainWindow::enableShortcuts);
 	connect(graphics, &ProfileWidget2::refreshDisplay, this, &MainWindow::refreshDisplay);
 	connect(graphics, &ProfileWidget2::editCurrentDive, this, &MainWindow::editCurrentDive);
-	connect(graphics, &ProfileWidget2::updateDiveInfo, information, &MainTab::updateDiveInfo);
+	connect(graphics, &ProfileWidget2::updateDiveInfo, mainTab, &MainTab::updateDiveInfo);
 
 	connect(PreferencesDialog::instance(), SIGNAL(settingsChanged()), graphics, SLOT(settingsChanged()));
 
@@ -459,7 +459,7 @@ void MainWindow::enableDisableCloudActions()
 
 void MainWindow::setDefaultState() {
 	setApplicationState("Default");
-	if (information->getEditMode() != MainTab::NONE) {
+	if (mainTab->getEditMode() != MainTab::NONE) {
 		ui.bottomLeft->currentWidget()->setEnabled(false);
 	}
 }
@@ -472,22 +472,22 @@ MainWindow *MainWindow::instance()
 // This gets called after one or more dives were added, edited or downloaded for a dive computer
 void MainWindow::refreshDisplay(bool doRecreateDiveList)
 {
-	information->reload();
+	mainTab->reload();
 	TankInfoModel::instance()->update();
 	MapWidget::instance()->reload();
 	if (doRecreateDiveList)
 		recreateDiveList();
 
 	setApplicationState("Default");
-	dive_list->setEnabled(true);
-	dive_list->setFocus();
+	diveList->setEnabled(true);
+	diveList->setFocus();
 	WSInfoModel::instance()->updateInfo();
 	ui.actionAutoGroup->setChecked(autogroup);
 }
 
 void MainWindow::recreateDiveList()
 {
-	dive_list->reload(DiveTripModel::CURRENT);
+	diveList->reload(DiveTripModel::CURRENT);
 	TagFilterModel::instance()->repopulate();
 	BuddyFilterModel::instance()->repopulate();
 	LocationFilterModel::instance()->repopulate();
@@ -523,12 +523,12 @@ void MainWindow::configureToolbar() {
 void MainWindow::selectionChanged()
 {
 	if (!current_dive) {
-		information->clearTabs();
-		information->updateDiveInfo(true);
+		mainTab->clearTabs();
+		mainTab->updateDiveInfo(true);
 		graphics->setEmptyState();
 	} else {
 		graphics->plotDive(nullptr, false, true);
-		information->updateDiveInfo();
+		mainTab->updateDiveInfo();
 		configureToolbar();
 		MapWidget::instance()->reload();
 	}
@@ -639,8 +639,8 @@ void MainWindow::on_actionCloudstoragesave_triggered()
 
 	if (verbose)
 		qDebug() << "Saving cloud storage to:" << filename;
-	if (information->isEditing())
-		information->acceptChanges();
+	if (mainTab->isEditing())
+		mainTab->acceptChanges();
 
 	showProgressBar();
 	int error = save_dives(qPrintable(filename));
@@ -661,7 +661,7 @@ void MainWindow::on_actionCloudOnline_triggered()
 	// Refuse to go online if there is an edit in progress
 	if (!isOffline &&
 	    (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-	    information->isEditing())) {
+	    mainTab->isEditing())) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before going online"));
 		// We didn't switch to online, therefore uncheck the checkbox
 		ui.actionCloudOnline->setChecked(false);
@@ -694,10 +694,10 @@ void MainWindow::on_actionCloudOnline_triggered()
 
 void MainWindow::cleanUpEmpty()
 {
-	information->clearTabs();
-	information->updateDiveInfo(true);
+	mainTab->clearTabs();
+	mainTab->updateDiveInfo(true);
 	graphics->setEmptyState();
-	dive_list->reload(DiveTripModel::TREE);
+	diveList->reload(DiveTripModel::TREE);
 	MapWidget::instance()->reload();
 	if (!existing_filename)
 		setTitle();
@@ -707,7 +707,7 @@ void MainWindow::cleanUpEmpty()
 bool MainWindow::okToClose(QString message)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		information->isEditing() ) {
+		mainTab->isEditing() ) {
 		QMessageBox::warning(this, tr("Warning"), message);
 		return false;
 	}
@@ -809,9 +809,9 @@ void MainWindow::on_actionPreferences_triggered()
 
 void MainWindow::on_actionQuit_triggered()
 {
-	if (information->isEditing()) {
-		information->rejectChanges();
-		if (information->isEditing())
+	if (mainTab->isEditing()) {
+		mainTab->rejectChanges();
+		if (mainTab->isEditing())
 			// didn't discard the edits
 			return;
 	}
@@ -852,7 +852,7 @@ bool MainWindow::plannerStateClean()
 		return false;
 
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		information->isEditing()) {
+		mainTab->isEditing()) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please save or cancel the current dive edit before trying to add a dive."));
 		return false;
 	}
@@ -880,8 +880,8 @@ void MainWindow::planCreated()
 	// make sure our UI is in a consistent state
 	showProfile();
 	setApplicationState("Default");
-	dive_list->setEnabled(true);
-	dive_list->setFocus();
+	diveList->setEnabled(true);
+	diveList->setFocus();
 }
 
 void MainWindow::setPlanNotes()
@@ -1014,9 +1014,9 @@ void MainWindow::on_actionAddDive_triggered()
 	if (!plannerStateClean())
 		return;
 
-	if (dive_list->selectedTrips().count() >= 1) {
-		dive_list->rememberSelection();
-		dive_list->clearSelection();
+	if (diveList->selectedTrips().count() >= 1) {
+		diveList->rememberSelection();
+		diveList->clearSelection();
 	}
 
 	setApplicationState("AddDive");
@@ -1026,9 +1026,9 @@ void MainWindow::on_actionAddDive_triggered()
 	setupForAddAndPlan("manually added dive"); // don't translate, stored in the XML file
 
 	// now show the mostly empty main tab
-	information->updateDiveInfo();
+	mainTab->updateDiveInfo();
 
-	information->addDiveStarted();
+	mainTab->addDiveStarted();
 
 	graphics->setAddState();
 	DivePlannerPointsModel::instance()->createSimpleDive();
@@ -1038,7 +1038,7 @@ void MainWindow::on_actionAddDive_triggered()
 	displayed_dive.duration = displayed_dive.dc.duration;
 
 	// now that we have the correct depth and duration, update the dive info
-	information->updateDepthDuration();
+	mainTab->updateDepthDuration();
 }
 
 void MainWindow::on_actionRenumber_triggered()
@@ -1240,7 +1240,7 @@ void MainWindow::on_actionPreviousDC_triggered()
 	dc_number = (dc_number + nrdc - 1) % nrdc;
 	configureToolbar();
 	graphics->plotDive(nullptr, false, true);
-	information->updateDiveInfo();
+	mainTab->updateDiveInfo();
 }
 
 void MainWindow::on_actionNextDC_triggered()
@@ -1249,7 +1249,7 @@ void MainWindow::on_actionNextDC_triggered()
 	dc_number = (dc_number + 1) % nrdc;
 	configureToolbar();
 	graphics->plotDive(nullptr, false, true);
-	information->updateDiveInfo();
+	mainTab->updateDiveInfo();
 }
 
 void MainWindow::on_actionFullScreen_triggered(bool checked)
@@ -1480,7 +1480,7 @@ void MainWindow::writeSettings()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
 	if (DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING ||
-		information->isEditing()) {
+		mainTab->isEditing()) {
 		on_actionQuit_triggered();
 		event->ignore();
 		return;
@@ -1613,8 +1613,8 @@ int MainWindow::file_save_as(void)
 	if (filename.isNull() || filename.isEmpty())
 		return report_error("No filename to save into");
 
-	if (information->isEditing())
-		information->acceptChanges();
+	if (mainTab->isEditing())
+		mainTab->acceptChanges();
 
 	if (save_dives(qPrintable(filename)))
 		return -1;
@@ -1637,8 +1637,8 @@ int MainWindow::file_save(void)
 	if (is_cloud && !saveToCloudOK())
 		return -1;
 
-	if (information->isEditing())
-		information->acceptChanges();
+	if (mainTab->isEditing())
+		mainTab->acceptChanges();
 
 	current_default = prefs.default_filename;
 	if (strcmp(existing_filename, current_default) == 0) {
@@ -1801,7 +1801,7 @@ void MainWindow::editCurrentDive()
 	if (!current_dive)
 		return;
 
-	if (information->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
+	if (mainTab->isEditing() || DivePlannerPointsModel::instance()->currentMode() != DivePlannerPointsModel::NOTHING) {
 		QMessageBox::warning(this, tr("Warning"), tr("Please, first finish the current edition before trying to do another."));
 		return;
 	}
@@ -1815,15 +1815,15 @@ void MainWindow::editCurrentDive()
 		graphics->setAddState();
 		setApplicationState("EditDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		information->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else if (defaultDC == "planned dive") {
 		DivePlannerPointsModel::instance()->setPlanMode(DivePlannerPointsModel::PLAN);
 		setApplicationState("EditPlannedDive");
 		DivePlannerPointsModel::instance()->loadFromDive(d);
-		information->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
+		mainTab->enableEdition(MainTab::MANUALLY_ADDED_DIVE);
 	} else {
 		setApplicationState("EditDive");
-		information->enableEdition();
+		mainTab->enableEdition();
 	}
 }
 
@@ -1865,7 +1865,7 @@ void MainWindow::on_paste_triggered()
 {
 	// take the data in our copyPasteDive and apply it to selected dives
 	selective_copy_dive(&copyPasteDive, &displayed_dive, what, false);
-	information->showAndTriggerEditSelective(what);
+	mainTab->showAndTriggerEditSelective(what);
 }
 
 void MainWindow::on_actionFilterTags_triggered()
