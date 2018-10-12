@@ -26,6 +26,7 @@ TagWidget::TagWidget(QWidget *parent) : GroupedLineEdit(parent), m_completer(NUL
 		addColor(QColor(Qt::green).darker(120));
 		addColor(QColor(Qt::blue).darker(120));
 	} // light text. get a dark background.
+	setTabChangesFocus(true);
 	setFocusPolicy(Qt::StrongFocus);
 }
 
