@@ -97,7 +97,6 @@ slots:
 	void toggleTriggeredColumn();
 	void updateTextLabels(bool showUnits = true);
 	void escDetected(void);
-	void showLocation();
 	void setCurrentLocationIndex();
 	EditMode getEditMode() const;
 private:
