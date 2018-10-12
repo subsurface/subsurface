@@ -155,7 +155,7 @@ Kirigami.Page {
 			var deletedId = currentItem.modelData.dive.id
 			var deletedIndex = diveDetailsListView.currentIndex
 			manager.deleteDive(deletedId)
-			stackView.pop()
+			pageStack.pop()
 			showPassiveNotification("Dive deleted", 3000, "Undo",
 						function() {
 							diveDetailsListView.currentIndex = manager.undoDelete(deletedId) ? deletedIndex : diveDetailsListView.currentIndex
@@ -206,7 +206,7 @@ Kirigami.Page {
 			event.accepted = true;
 		} else if (state === "add") {
 			endEditMode()
-			stackView.pop()
+			pageStack.pop()
 			event.accepted = true;
 		}
 		// if we were in view mode, don't accept the event and pop the page

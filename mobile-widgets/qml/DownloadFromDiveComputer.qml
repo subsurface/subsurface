@@ -292,7 +292,7 @@ Kirigami.Page {
 				onClicked: {
 					manager.cancelDownloadDC()
 					if (!progressBar.visible) {
-						stackView.pop();
+						pageStack.pop();
 						download.text = qsTr("Download")
 						divesDownloaded = false
 						manager.progressMessage = ""
@@ -356,7 +356,7 @@ Kirigami.Page {
 					manager.saveChangesLocal()
 					diveModel.clear()
 					diveModel.addAllDives()
-					stackView.pop();
+					pageStack.pop();
 					download.text = qsTr("Download")
 					divesDownloaded = false
 				}

@@ -56,8 +56,8 @@ Kirigami.ApplicationWindow {
 	// opacity: 0
 
 	function returnTopPage() {
-		for (var i=stackView.depth; i>1; i--) {
-			stackView.pop()
+		for (var i=pageStack.depth; i>1; i--) {
+			pageStack.pop()
 		}
 		detailsWindow.endEditMode()
 	}
@@ -69,7 +69,7 @@ Kirigami.ApplicationWindow {
 	function showMap() {
 		globalDrawer.close()
 		returnTopPage()
-		stackView.push(mapPage)
+		pageStack.push(mapPage)
 	}
 
 	function startAddDive() {
@@ -105,7 +105,7 @@ Kirigami.ApplicationWindow {
 		detailsWindow.startpressure = []
 		detailsWindow.endpressure = []
 		detailsWindow.gpsCheckbox = false
-		stackView.push(detailsWindow)
+		pageStack.push(detailsWindow)
 	}
 
 	globalDrawer: Kirigami.GlobalDrawer {
@@ -236,7 +236,7 @@ Kirigami.ApplicationWindow {
 					onTriggered: {
 						globalDrawer.close()
 						downloadFromDc.dcImportModel.clearTable()
-						stackView.push(downloadFromDc)
+						pageStack.push(downloadFromDc)
 					}
 				}
 				Kirigami.Action {
@@ -303,7 +303,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 						globalDrawer.close()
 						returnTopPage()
 						manager.populateGpsData();
-						stackView.push(gpsWindow)
+						pageStack.push(gpsWindow)
 					}
 				}
 
@@ -336,7 +336,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				text: qsTr("About")
 				onTriggered: {
 					globalDrawer.close()
-					stackView.push(aboutWindow)
+					pageStack.push(aboutWindow)
 					detailsWindow.endEditMode()
 				}
 			},
@@ -349,7 +349,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					globalDrawer.close()
 					settingsWindow.defaultCylinderModel = manager.cylinderInit
 					PrefGeneral.default_cylinder === "" ? defaultCylinderIndex = "-1" : defaultCylinderIndex = settingsWindow.defaultCylinderModel.indexOf(PrefGeneral.default_cylinder)
-					stackView.push(settingsWindow)
+					pageStack.push(settingsWindow)
 					detailsWindow.endEditMode()
 				}
 			},
@@ -363,7 +363,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("App log")
 					onTriggered: {
 						globalDrawer.close()
-						stackView.push(logWindow)
+						pageStack.push(logWindow)
 					}
 				}
 
@@ -371,7 +371,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 					text: qsTr("Theme information")
 					onTriggered: {
 						globalDrawer.close()
-						stackView.push(themetest)
+						pageStack.push(themetest)
 					}
 				}
 			},
@@ -527,7 +527,6 @@ if you have network connectivity and want to sync your data to cloud storage."),
 				darkTheme()
 		}
 	}
-	property Item stackView: pageStack
 	pageStack.initialPage: DiveList {
 		id: diveList
 		opacity: 0
@@ -546,7 +545,7 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		if (pageStack.currentItem === null) {
 			console.log("there's no current page")
 		} else {
-			stackView.interactive = pageStack.currentItem.objectName !== mapPage.objectName
+			pageStack.interactive = pageStack.currentItem.objectName !== mapPage.objectName
 
 			// is there a better way to reload the map markers instead of doing that
 			// every time the map page is shown - e.g. link to the dive list model somehow?
