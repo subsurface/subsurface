@@ -3,11 +3,11 @@
 #include "pref.h"
 #include "gettextfromc.h"
 
-QString constructLocationTags(struct dive_site *ds, bool for_maintab)
+QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab)
 {
 	QString locationTag;
 
-	if (!ds || !ds->taxonomy.nr)
+	if (!taxonomy->nr)
 		return locationTag;
 
 	/* Check if the user set any of the 3 geocoding categories */
@@ -33,9 +33,9 @@ QString constructLocationTags(struct dive_site *ds, bool for_maintab)
 	for (int i = 0; i < 3; i++) {
 		if (prefs.geocoding.category[i] == TC_NONE)
 			continue;
-		for (int j = 0; j < ds->taxonomy.nr; j++) {
-			if (ds->taxonomy.category[j].category == prefs.geocoding.category[i]) {
-				QString tag = ds->taxonomy.category[j].value;
+		for (int j = 0; j < taxonomy->nr; j++) {
+			if (taxonomy->category[j].category == prefs.geocoding.category[i]) {
+				QString tag = taxonomy->category[j].value;
 				if (!tag.isEmpty()) {
 					locationTag += connector + tag;
 					connector = " / ";

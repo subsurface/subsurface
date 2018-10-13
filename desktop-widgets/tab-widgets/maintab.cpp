@@ -418,7 +418,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if (ds) {
 			ui.location->setCurrentDiveSiteUuid(ds->uuid);
-			ui.locationTags->setText(constructLocationTags(ds, true));
+			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
 		} else {
 			ui.location->clear();
 			ui.locationTags->clear();

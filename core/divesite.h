@@ -75,7 +75,7 @@ void merge_dive_sites(uint32_t ref, uint32_t *uuids, int count);
 
 #ifdef __cplusplus
 }
-QString constructLocationTags(struct dive_site *ds, bool for_maintab);
+QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab);
 
 #endif
 
