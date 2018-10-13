@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "taxonomy.h"
 #include "gettext.h"
+#include "subsurface-string.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -38,6 +39,27 @@ void free_taxonomy(struct taxonomy_data *t)
 		free(t->category);
 		t->category = NULL;
 		t->nr = 0;
+	}
+}
+
+void copy_taxonomy(struct taxonomy_data *orig, struct taxonomy_data *copy)
+{
+	if (orig->category == NULL) {
+		free_taxonomy(copy);
+	} else {
+		if (copy->category == NULL)
+			copy->category = alloc_taxonomy();
+		for (int i = 0; i < TC_NR_CATEGORIES; i++) {
+			if (i < copy->nr) {
+				free((void *)copy->category[i].value);
+				copy->category[i].value = NULL;
+			}
+			if (i < orig->nr) {
+				copy->category[i] = orig->category[i];
+				copy->category[i].value = copy_string(orig->category[i].value);
+			}
+		}
+		copy->nr = orig->nr;
 	}
 }
 

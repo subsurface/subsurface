@@ -20,6 +20,7 @@
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
 {
 	memset(&displayed_dive_site, 0, sizeof(displayed_dive_site));
+	memset(&taxonomy, 0, sizeof(taxonomy));
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
 
@@ -97,7 +98,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteName->setText(displayed_dive_site.name);
 	else
 		ui.diveSiteName->clear();
-	const char *country = taxonomy_get_country(&displayed_dive_site.taxonomy);
+	const char *country = taxonomy_get_country(&taxonomy);
 	if (country)
 		ui.diveSiteCountry->setText(country);
 	else
@@ -118,7 +119,7 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCoordinates->clear();
 	}
 
-	ui.locationTags->setText(constructLocationTags(&displayed_dive_site, false));
+	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
 
 }
 
@@ -172,15 +173,15 @@ void LocationInformationWidget::acceptChanges()
 		free(uiString);
 	}
 	uiString = copy_qstring(ui.diveSiteCountry->text());
-	// if the user entered a different contriy, first update the taxonomy
-	// for the displayed dive site; this below will get copied into the currentDs
-	if (!same_string(uiString, taxonomy_get_country(&displayed_dive_site.taxonomy)) &&
+	// if the user entered a different country, first update the local taxonomy
+	// this below will get copied into the currentDs
+	if (!same_string(uiString, taxonomy_get_country(&taxonomy)) &&
 	    !empty_string(uiString))
-		taxonomy_set_country(&displayed_dive_site.taxonomy, uiString, taxonomy_origin::GEOMANUAL);
+		taxonomy_set_country(&taxonomy, uiString, taxonomy_origin::GEOMANUAL);
 	else
 		free(uiString);
 	// now update the currentDs (which we then later copy back ontop of displayed_dive_site
-	copy_dive_site_taxonomy(&displayed_dive_site, currentDs);
+	copy_taxonomy(&taxonomy, &currentDs->taxonomy);
 
 	uiString = copy_qstring(ui.diveSiteNotes->document()->toPlainText());
 	if (!same_string(uiString, currentDs->notes)) {
@@ -214,6 +215,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 {
 	if (ds) {
 		copy_dive_site(ds, &displayed_dive_site);
+		copy_taxonomy(&ds->taxonomy, &taxonomy);
 		filter_model.set(displayed_dive_site.uuid, displayed_dive_site.latitude, displayed_dive_site.longitude);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
@@ -283,7 +285,7 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 
 void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& text)
 {
-	if (!same_string(qPrintable(text), taxonomy_get_country(&displayed_dive_site.taxonomy)))
+	if (!same_string(qPrintable(text), taxonomy_get_country(&taxonomy)))
 		markChangedWidget(ui.diveSiteCountry);
 }
 
@@ -317,7 +319,7 @@ void LocationInformationWidget::resetPallete()
 
 void LocationInformationWidget::reverseGeocode()
 {
-	reverseGeoLookup(displayed_dive_site.latitude, displayed_dive_site.longitude, &displayed_dive_site.taxonomy);
+	reverseGeoLookup(displayed_dive_site.latitude, displayed_dive_site.longitude, &taxonomy);
 	updateLabels();
 }
 
