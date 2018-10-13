@@ -200,7 +200,6 @@ void LocationInformationWidget::acceptChanges()
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
 	}
-	copy_dive_site(currentDs, &displayed_dive_site);
 	mark_divelist_changed(true);
 	resetState();
 }
@@ -210,9 +209,10 @@ void LocationInformationWidget::rejectChanges()
 	resetState();
 }
 
-void LocationInformationWidget::showEvent(QShowEvent *ev)
+void LocationInformationWidget::initFields(dive_site *ds)
 {
-	if (displayed_dive_site.uuid) {
+	if (ds) {
+		copy_dive_site(ds, &displayed_dive_site);
 		filter_model.set(displayed_dive_site.uuid, displayed_dive_site.latitude, displayed_dive_site.longitude);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
@@ -221,11 +221,11 @@ void LocationInformationWidget::showEvent(QShowEvent *ev)
 		if (m)
 			m->invalidate();
 	} else {
+		clear_dive_site(&displayed_dive_site);
 		filter_model.set(0, degrees_t{ 0 }, degrees_t{ 0 });
 		clearLabels();
 	}
 	MapWidget::instance()->prepareForGetDiveCoordinates(displayed_dive_site.uuid);
-	QGroupBox::showEvent(ev);
 }
 
 void LocationInformationWidget::markChangedWidget(QWidget *w)

@@ -1677,7 +1677,6 @@ void clear_dive_file_data()
 		delete_dive_site(get_dive_site(0)->uuid);
 
 	clear_dive(&displayed_dive);
-	clear_dive_site(&displayed_dive_site);
 
 	reset_min_datafile_version();
 	saved_git_id = "";

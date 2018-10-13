@@ -173,7 +173,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	profLayout->addWidget(profileWidget);
 	profileContainer->setLayout(profLayout);
 
-	LocationInformationWidget * diveSiteEdit = new LocationInformationWidget();
+	diveSiteEdit = new LocationInformationWidget(this);
 	connect(diveSiteEdit, &LocationInformationWidget::endEditDiveSite,
 			this, &MainWindow::setDefaultState);
 	connect(diveSiteEdit, SIGNAL(endEditDiveSite()), this, SLOT(refreshDisplay()));
@@ -445,7 +445,9 @@ void MainWindow::setStateProperties(const QByteArray& state, const PropertyList&
 	stateProperties[state] = PropertiesForQuadrant(tl, tr, bl, br);
 }
 
-void MainWindow::on_actionDiveSiteEdit_triggered() {
+void MainWindow::on_actionDiveSiteEdit_triggered()
+{
+	diveSiteEdit->initFields(get_dive_site_for_dive(&displayed_dive));
 	setApplicationState("EditDiveSite");
 }
 
@@ -957,7 +959,6 @@ void MainWindow::setupForAddAndPlan(const char *model)
 {
 	// clean out the dive and give it an id and the correct dc model
 	clear_dive(&displayed_dive);
-	clear_dive_site(&displayed_dive_site);
 	displayed_dive.id = dive_getUniqID();
 	displayed_dive.when = QDateTime::currentMSecsSinceEpoch() / 1000L + gettimezoneoffset() + 3600;
 	displayed_dive.dc.model = strdup(model); // don't translate! this is stored in the XML file

@@ -214,6 +214,7 @@ private:
 	void enterState(CurrentState);
 	bool filesAsArguments;
 	UpdateManager *updateManager;
+	LocationInformationWidget *diveSiteEdit;
 
 	bool plannerStateClean();
 	void setupForAddAndPlan(const char *model);
