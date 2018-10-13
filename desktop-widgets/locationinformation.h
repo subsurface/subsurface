@@ -52,7 +52,7 @@ private:
 	bool modified;
 	QAction *acceptAction, *rejectAction;
 	GPSLocationInformationModel filter_model;
-	dive_site displayed_dive_site;
+	dive_site *diveSite;
 	taxonomy_data taxonomy;
 };
 

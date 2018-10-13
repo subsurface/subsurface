@@ -17,9 +17,8 @@
 #include <QDesktopWidget>
 #include <QScrollBar>
 
-LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
+LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false), diveSite(nullptr)
 {
-	memset(&displayed_dive_site, 0, sizeof(displayed_dive_site));
 	memset(&taxonomy, 0, sizeof(taxonomy));
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
@@ -73,6 +72,8 @@ void LocationInformationWidget::enableLocationButtons(bool enable)
 
 void LocationInformationWidget::mergeSelectedDiveSites()
 {
+	if (!diveSite)
+		return;
 	if (QMessageBox::warning(MainWindow::instance(), tr("Merging dive sites"),
 				 tr("You are about to merge dive sites, you can't undo that action \n Are you sure you want to continue?"),
 				 QMessageBox::Ok, QMessageBox::Cancel) != QMessageBox::Ok)
@@ -85,7 +86,7 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 		selected_dive_sites[i] = (uint32_t)idx.data(LocationInformationModel::UUID_ROLE).toInt();
 		i++;
 	}
-	merge_dive_sites(displayed_dive_site.uuid, selected_dive_sites, i);
+	merge_dive_sites(diveSite->uuid, selected_dive_sites, i);
 	LocationInformationModel::instance()->update();
 	QSortFilterProxyModel *m = (QSortFilterProxyModel *)ui.diveSiteListView->model();
 	m->invalidate();
@@ -94,8 +95,12 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 
 void LocationInformationWidget::updateLabels()
 {
-	if (displayed_dive_site.name)
-		ui.diveSiteName->setText(displayed_dive_site.name);
+	if (!diveSite) {
+		clearLabels();
+		return;
+	}
+	if (diveSite->name)
+		ui.diveSiteName->setText(diveSite->name);
 	else
 		ui.diveSiteName->clear();
 	const char *country = taxonomy_get_country(&taxonomy);
@@ -103,16 +108,16 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteCountry->setText(country);
 	else
 		ui.diveSiteCountry->clear();
-	if (displayed_dive_site.description)
-		ui.diveSiteDescription->setText(displayed_dive_site.description);
+	if (diveSite->description)
+		ui.diveSiteDescription->setText(diveSite->description);
 	else
 		ui.diveSiteDescription->clear();
-	if (displayed_dive_site.notes)
-		ui.diveSiteNotes->setPlainText(displayed_dive_site.notes);
+	if (diveSite->notes)
+		ui.diveSiteNotes->setPlainText(diveSite->notes);
 	else
 		ui.diveSiteNotes->clear();
-	if (displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg) {
-		const char *coords = printGPSCoords(displayed_dive_site.latitude.udeg, displayed_dive_site.longitude.udeg);
+	if (diveSite->latitude.udeg || diveSite->longitude.udeg) {
+		const char *coords = printGPSCoords(diveSite->latitude.udeg, diveSite->longitude.udeg);
 		ui.diveSiteCoordinates->setText(coords);
 		free((void *)coords);
 	} else {
@@ -158,54 +163,52 @@ bool parseGpsText(const QString &text, degrees_t &latitude, degrees_t &longitude
 
 void LocationInformationWidget::acceptChanges()
 {
-	char *uiString;
-	struct dive_site *currentDs;
-	uiString = copy_qstring(ui.diveSiteName->text());
-	if (get_dive_site_by_uuid(displayed_dive_site.uuid) != NULL) {
-		currentDs = get_dive_site_by_uuid(displayed_dive_site.uuid);
-	} else {
+	if (!diveSite) {
 		qWarning() << "did not have valid dive site in LocationInformationWidget";
-		currentDs = get_dive_site_by_uuid(create_dive_site_from_current_dive(uiString));
-		displayed_dive.dive_site_uuid = currentDs->uuid;
+		return;
 	}
-	if (!same_string(uiString, currentDs->name)) {
-		emit nameChanged(QString(currentDs->name), ui.diveSiteName->text());
-		free(currentDs->name);
-		currentDs->name = uiString;
+
+	char *uiString;
+	uiString = copy_qstring(ui.diveSiteName->text());
+	if (!same_string(uiString, diveSite->name)) {
+		emit nameChanged(QString(diveSite->name), ui.diveSiteName->text());
+		free(diveSite->name);
+		diveSite->name = uiString;
 	} else {
 		free(uiString);
 	}
 	uiString = copy_qstring(ui.diveSiteDescription->text());
-	if (!same_string(uiString, currentDs->description)) {
-		free(currentDs->description);
-		currentDs->description = uiString;
+	if (!same_string(uiString, diveSite->description)) {
+		free(diveSite->description);
+		diveSite->description = uiString;
 	} else {
 		free(uiString);
 	}
 	uiString = copy_qstring(ui.diveSiteCountry->text());
 	// if the user entered a different country, first update the local taxonomy
-	// this below will get copied into the currentDs
+	// this below will get copied into the diveSite
 	if (!same_string(uiString, taxonomy_get_country(&taxonomy)) &&
 	    !empty_string(uiString))
 		taxonomy_set_country(&taxonomy, uiString, taxonomy_origin::GEOMANUAL);
 	else
 		free(uiString);
-	// now update the currentDs (which we then later copy back ontop of displayed_dive_site
-	copy_taxonomy(&taxonomy, &currentDs->taxonomy);
+	// now update the diveSite
+	copy_taxonomy(&taxonomy, &diveSite->taxonomy);
 
 	uiString = copy_qstring(ui.diveSiteNotes->document()->toPlainText());
-	if (!same_string(uiString, currentDs->notes)) {
-		free(currentDs->notes);
-		currentDs->notes = uiString;
+	if (!same_string(uiString, diveSite->notes)) {
+		free(diveSite->notes);
+		diveSite->notes = uiString;
 	} else {
 		free(uiString);
 	}
 
 	if (!ui.diveSiteCoordinates->text().isEmpty())
-		parseGpsText(ui.diveSiteCoordinates->text(), currentDs->latitude, currentDs->longitude);
-	if (dive_site_is_empty(currentDs)) {
-		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
+		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->latitude, diveSite->longitude);
+	if (dive_site_is_empty(diveSite)) {
+		LocationInformationModel::instance()->removeRow(get_divesite_idx(diveSite));
 		displayed_dive.dive_site_uuid = 0;
+		diveSite = nullptr;
 	}
 	mark_divelist_changed(true);
 	resetState();
@@ -218,22 +221,22 @@ void LocationInformationWidget::rejectChanges()
 
 void LocationInformationWidget::initFields(dive_site *ds)
 {
+	diveSite = ds;
 	if (ds) {
-		copy_dive_site(ds, &displayed_dive_site);
 		copy_taxonomy(&ds->taxonomy, &taxonomy);
-		filter_model.set(displayed_dive_site.uuid, displayed_dive_site.latitude, displayed_dive_site.longitude);
+		filter_model.set(ds->uuid, ds->latitude, ds->longitude);
 		updateLabels();
-		enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
+		enableLocationButtons(dive_site_has_gps_location(ds));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
-		emit startFilterDiveSite(displayed_dive_site.uuid);
+		emit startFilterDiveSite(ds->uuid);
 		if (m)
 			m->invalidate();
 	} else {
-		clear_dive_site(&displayed_dive_site);
+		free_taxonomy(&taxonomy);
 		filter_model.set(0, degrees_t{ 0 }, degrees_t{ 0 });
 		clearLabels();
 	}
-	MapWidget::instance()->prepareForGetDiveCoordinates(displayed_dive_site.uuid);
+	MapWidget::instance()->prepareForGetDiveCoordinates(ds ? ds->uuid : 0);
 }
 
 void LocationInformationWidget::markChangedWidget(QWidget *w)
@@ -271,10 +274,12 @@ void LocationInformationWidget::enableEdition()
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString &text)
 {
+	if (!diveSite)
+		return;
 	degrees_t latitude, longitude;
-	bool ok_old = displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg;
+	bool ok_old = diveSite->latitude.udeg || diveSite->longitude.udeg;
 	bool ok = parseGpsText(text, latitude, longitude);
-	if (ok != ok_old || latitude.udeg != displayed_dive_site.latitude.udeg || longitude.udeg != displayed_dive_site.longitude.udeg) {
+	if (ok != ok_old || latitude.udeg != diveSite->latitude.udeg || longitude.udeg != diveSite->longitude.udeg) {
 		if (ok) {
 			markChangedWidget(ui.diveSiteCoordinates);
 			enableLocationButtons(true);
@@ -293,19 +298,19 @@ void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& te
 
 void LocationInformationWidget::on_diveSiteDescription_textChanged(const QString &text)
 {
-	if (!same_string(qPrintable(text), displayed_dive_site.description))
+	if (diveSite && !same_string(qPrintable(text), diveSite->description))
 		markChangedWidget(ui.diveSiteDescription);
 }
 
 void LocationInformationWidget::on_diveSiteName_textChanged(const QString &text)
 {
-	if (!same_string(qPrintable(text), displayed_dive_site.name))
+	if (diveSite && !same_string(qPrintable(text), diveSite->name))
 		markChangedWidget(ui.diveSiteName);
 }
 
 void LocationInformationWidget::on_diveSiteNotes_textChanged()
 {
-	if (!same_string(qPrintable(ui.diveSiteNotes->toPlainText()), displayed_dive_site.notes))
+	if (diveSite && !same_string(qPrintable(ui.diveSiteNotes->toPlainText()), diveSite->notes))
 		markChangedWidget(ui.diveSiteNotes);
 }
 
@@ -330,12 +335,12 @@ void LocationInformationWidget::reverseGeocode()
 
 void LocationInformationWidget::updateLocationOnMap()
 {
-	if (!displayed_dive_site.uuid)
+	if (!diveSite)
 		return;
 	degrees_t latitude, longitude;
 	if (!parseGpsText(ui.diveSiteCoordinates->text(), latitude, longitude))
 		return;
-	MapWidget::instance()->updateDiveSiteCoordinates(displayed_dive_site.uuid, latitude, longitude);
+	MapWidget::instance()->updateDiveSiteCoordinates(diveSite->uuid, latitude, longitude);
 	filter_model.setCoordinates(latitude, longitude);
 }
 
