@@ -693,8 +693,6 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 
 	newDs = get_dive_site_by_uuid(pickedUuid);
 
-	// Copy everything from the displayed_dive_site, so we have the latitude, longitude, notes, etc.
-	// The user *might* be using wrongly the 'choose dive site' just to edit the name of it, sigh.
 	if (origDs) {
 		if(createdNewDive) {
 			copy_dive_site(origDs, newDs);
