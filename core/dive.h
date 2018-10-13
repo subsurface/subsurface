@@ -439,7 +439,6 @@ struct dive_table {
 
 extern struct dive_table dive_table, downloadTable;
 extern struct dive displayed_dive;
-extern struct dive_site displayed_dive_site;
 extern unsigned int dc_number;
 extern struct dive *current_dive;
 #define current_dc (get_dive_dc(current_dive, dc_number))

@@ -3,6 +3,7 @@
 #define LOCATIONINFORMATION_H
 
 #include "core/units.h"
+#include "core/divesite.h"
 #include "ui_locationInformation.h"
 #include "qt-models/divelocationmodel.h"
 #include <stdint.h>
@@ -50,6 +51,7 @@ private:
 	bool modified;
 	QAction *acceptAction, *rejectAction;
 	GPSLocationInformationModel filter_model;
+	dive_site displayed_dive_site;
 };
 
 class DiveLocationFilterProxyModel : public QSortFilterProxyModel {
