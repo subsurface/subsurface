@@ -20,10 +20,10 @@ extern int init_decompression(struct deco_state *ds, struct dive *dive);
 /* divelist core logic functions */
 extern void process_loaded_dives();
 extern void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded);
-extern char *get_dive_gas_string(struct dive *dive);
+extern char *get_dive_gas_string(const struct dive *dive);
 
 struct dive **grow_dive_table(struct dive_table *table);
-extern void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
+extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern int get_divesite_idx(const struct dive_site *ds);
 extern struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen);
