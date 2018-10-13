@@ -19,6 +19,7 @@
 
 LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBox(parent), modified(false)
 {
+	memset(&displayed_dive_site, 0, sizeof(displayed_dive_site));
 	ui.setupUi(this);
 	ui.diveSiteMessage->setCloseButtonVisible(false);
 
@@ -373,7 +374,7 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 		case Qt::DisplayRole:
 			return new_ds_value[index.row()];
 		case Qt::ToolTipRole:
-			return displayed_dive_site.uuid ?
+			return displayed_dive.dive_site_uuid ?
 				tr("Create a new dive site, copying relevant information from the current dive.") :
 				tr("Create a new dive site with this name");
 		case Qt::DecorationRole:
