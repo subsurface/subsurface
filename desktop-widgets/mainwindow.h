@@ -35,6 +35,7 @@ class ProfileWidget2;
 class PlannerDetails;
 class PlannerSettingsWidget;
 class LocationInformationWidget;
+class FilterWidget2;
 
 typedef std::pair<QByteArray, QVariant> WidgetProperty;
 typedef QVector<WidgetProperty> PropertyList;
