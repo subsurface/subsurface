@@ -151,7 +151,7 @@ private:
 };
 
 namespace Ui{
-	class FilterWidget2;
+	class FilterWidget;
 };
 
 class MultiFilter : public QWidget {
@@ -164,7 +164,7 @@ slots:
 
 public:
 	MultiFilter(QWidget *parent);
-	Ui::FilterWidget2 ui;
+	Ui::FilterWidget ui;
 };
 
 class FilterBase : public QWidget {
@@ -173,7 +173,7 @@ class FilterBase : public QWidget {
 protected:
 	FilterBase(FilterModelBase *model, QWidget *parent = 0);
 	FilterModelBase *model;
-	Ui::FilterWidget ui;
+	Ui::ListFilter ui;
 	void showEvent(QShowEvent *) override;
 	void hideEvent(QHideEvent *) override;
 	friend class MultiFilter;

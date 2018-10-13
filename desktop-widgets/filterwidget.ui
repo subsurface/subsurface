@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FilterWidget2</class>
- <widget class="QWidget" name="FilterWidget2">
+ <class>FilterWidget</class>
+ <widget class="QWidget" name="FilterWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string></string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -70,10 +70,10 @@
      <item>
       <widget class="QToolButton" name="clear">
        <property name="toolTip">
-	<string>Reset filters</string>
+        <string>Reset filters</string>
        </property>
        <property name="icon">
-        <iconset resource="../subsurface.qrc">
+        <iconset>
          <normaloff>:edit-clear-icon</normaloff>:edit-clear-icon</iconset>
        </property>
        <property name="autoRaise">
@@ -84,10 +84,10 @@
      <item>
       <widget class="QToolButton" name="maximize">
        <property name="toolTip">
-	<string>Show/hide filters</string>
+        <string>Show/hide filters</string>
        </property>
        <property name="icon">
-        <iconset resource="../subsurface.qrc">
+        <iconset>
          <normaloff>:hide-icon</normaloff>:hide-icon</iconset>
        </property>
        <property name="autoRaise">
@@ -101,7 +101,7 @@
         <string>Close and reset filters</string>
        </property>
        <property name="icon">
-        <iconset resource="../subsurface.qrc">
+        <iconset>
          <normaloff>:filter-close</normaloff>:filter-close</iconset>
        </property>
        <property name="autoRaise">
@@ -125,7 +125,7 @@
         <x>0</x>
         <y>0</y>
         <width>594</width>
-        <height>337</height>
+        <height>332</height>
        </rect>
       </property>
      </widget>
