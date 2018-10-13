@@ -8,7 +8,8 @@
  * dive_trip_t *dive_trip_list;
  * unsigned int amount_selected;
  * void dump_selection(void)
- * void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
+ * void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
+ * char *get_dive_gas_string(const struct dive *dive)
  * int total_weight(const struct dive *dive)
  * int get_divenr(const struct dive *dive)
  * int get_divesite_idx(const struct dive_site *ds)
@@ -105,14 +106,14 @@ void set_autogroup(bool value)
  *  - Nitrox trumps air (even if hypoxic)
  * These are the same rules as the inter-dive sorting rules.
  */
-void get_dive_gas(struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
+void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2max_p)
 {
 	int i;
 	int maxo2 = -1, maxhe = -1, mino2 = 1000;
 
 
 	for (i = 0; i < MAX_CYLINDERS; i++) {
-		cylinder_t *cyl = dive->cylinder + i;
+		const cylinder_t *cyl = dive->cylinder + i;
 		int o2 = get_o2(cyl->gasmix);
 		int he = get_he(cyl->gasmix);
 
@@ -659,7 +660,7 @@ void update_cylinder_related_info(struct dive *dive)
 #define UTF8_ELLIPSIS "\xE2\x80\xA6"
 
 /* callers needs to free the string */
-char *get_dive_gas_string(struct dive *dive)
+char *get_dive_gas_string(const struct dive *dive)
 {
 	int o2, he, o2max;
 	char *buffer = malloc(MAX_GAS_STRING);
