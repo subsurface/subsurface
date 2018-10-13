@@ -419,11 +419,9 @@ void MainTab::updateDiveInfo(bool clear)
 		if (ds) {
 			ui.location->setCurrentDiveSiteUuid(ds->uuid);
 			ui.locationTags->setText(constructLocationTags(ds, true));
-			copy_dive_site(ds, &displayed_dive_site);
 		} else {
 			ui.location->clear();
 			ui.locationTags->clear();
-			clear_dive_site(&displayed_dive_site);
 		}
 
 		// Subsurface always uses "local time" as in "whatever was the local time at the location"
@@ -657,10 +655,8 @@ MainTab::EditMode MainTab::getEditMode() const
 void MainTab::refreshDisplayedDiveSite()
 {
 	struct dive_site *ds = get_dive_site_for_dive(&displayed_dive);
-	if (ds) {
-		copy_dive_site(ds, &displayed_dive_site);
+	if (ds)
 		ui.location->setCurrentDiveSiteUuid(ds->uuid);
-	}
 }
 
 // when this is called we already have updated the current_dive and know that it exists
@@ -906,9 +902,6 @@ void MainTab::acceptChanges()
 		// so let's make sure here that our data is consistent now that we have handled the
 		// dive sites
 		displayed_dive.dive_site_uuid = current_dive->dive_site_uuid;
-		struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
-		if (ds)
-			copy_dive_site(ds, &displayed_dive_site);
 
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive

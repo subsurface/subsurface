@@ -14,9 +14,9 @@ Q_OBJECT
 public:
 	LocationInformationWidget(QWidget *parent = 0);
 	bool eventFilter(QObject*, QEvent*) override;
+	void initFields(dive_site *ds);
 
 protected:
-	void showEvent(QShowEvent *);
 	void enableLocationButtons(bool enable);
 
 public slots:
