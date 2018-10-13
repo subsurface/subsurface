@@ -120,7 +120,6 @@ void LocationInformationWidget::updateLabels()
 	}
 
 	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
-
 }
 
 void LocationInformationWidget::clearLabels()
@@ -138,10 +137,23 @@ void LocationInformationWidget::updateGpsCoordinates(degrees_t latitude, degrees
 	QString oldText = ui.diveSiteCoordinates->text();
 	const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
 	ui.diveSiteCoordinates->setText(coords);
-	enableLocationButtons(dive_site_has_gps_location(&displayed_dive_site));
+	enableLocationButtons(latitude.udeg || longitude.udeg);
 	free((void *)coords);
 	if (oldText != ui.diveSiteCoordinates->text())
 		markChangedWidget(ui.diveSiteCoordinates);
+}
+
+// Parse GPS text into latitude and longitude.
+// On error, false is returned and the output parameters are left unmodified.
+bool parseGpsText(const QString &text, degrees_t &latitude, degrees_t &longitude)
+{
+	double lat, lon;
+	if (parseGpsText(text, &lat, &lon)) {
+		latitude.udeg = lrint(lat * 1000000.0);
+		longitude.udeg = lrint(lon * 1000000.0);
+		return true;
+	}
+	return false;
 }
 
 void LocationInformationWidget::acceptChanges()
@@ -156,8 +168,6 @@ void LocationInformationWidget::acceptChanges()
 		currentDs = get_dive_site_by_uuid(create_dive_site_from_current_dive(uiString));
 		displayed_dive.dive_site_uuid = currentDs->uuid;
 	}
-	currentDs->latitude = displayed_dive_site.latitude;
-	currentDs->longitude = displayed_dive_site.longitude;
 	if (!same_string(uiString, currentDs->name)) {
 		emit nameChanged(QString(currentDs->name), ui.diveSiteName->text());
 		free(currentDs->name);
@@ -191,13 +201,8 @@ void LocationInformationWidget::acceptChanges()
 		free(uiString);
 	}
 
-	if (!ui.diveSiteCoordinates->text().isEmpty()) {
-		double lat, lon;
-		if (parseGpsText(ui.diveSiteCoordinates->text(), &lat, &lon)) {
-			currentDs->latitude.udeg = lrint(lat * 1000000.0);
-			currentDs->longitude.udeg = lrint(lon * 1000000.0);
-		}
-	}
+	if (!ui.diveSiteCoordinates->text().isEmpty())
+		parseGpsText(ui.diveSiteCoordinates->text(), currentDs->latitude, currentDs->longitude);
 	if (dive_site_is_empty(currentDs)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(currentDs));
 		displayed_dive.dive_site_uuid = 0;
@@ -266,21 +271,18 @@ void LocationInformationWidget::enableEdition()
 
 void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString &text)
 {
-	uint lat = displayed_dive_site.latitude.udeg;
-	uint lon = displayed_dive_site.longitude.udeg;
-	const char *coords = printGPSCoords(lat, lon);
-	if (!same_string(qPrintable(text), coords)) {
-		double latitude, longitude;
-		if (parseGpsText(text, &latitude, &longitude)) {
-			displayed_dive_site.latitude.udeg = lrint(latitude * 1000000);
-			displayed_dive_site.longitude.udeg = lrint(longitude * 1000000);
+	degrees_t latitude, longitude;
+	bool ok_old = displayed_dive_site.latitude.udeg || displayed_dive_site.longitude.udeg;
+	bool ok = parseGpsText(text, latitude, longitude);
+	if (ok != ok_old || latitude.udeg != displayed_dive_site.latitude.udeg || longitude.udeg != displayed_dive_site.longitude.udeg) {
+		if (ok) {
 			markChangedWidget(ui.diveSiteCoordinates);
-			enableLocationButtons(latitude != 0 && longitude != 0);
+			enableLocationButtons(true);
+			filter_model.setCoordinates(latitude, longitude);
 		} else {
 			enableLocationButtons(false);
 		}
 	}
-	free((void *)coords);
 }
 
 void LocationInformationWidget::on_diveSiteCountry_textChanged(const QString& text)
@@ -319,17 +321,22 @@ void LocationInformationWidget::resetPallete()
 
 void LocationInformationWidget::reverseGeocode()
 {
-	reverseGeoLookup(displayed_dive_site.latitude, displayed_dive_site.longitude, &taxonomy);
-	updateLabels();
+	degrees_t latitude, longitude;
+	if (!parseGpsText(ui.diveSiteCoordinates->text(), latitude, longitude))
+		return;
+	reverseGeoLookup(latitude, longitude, &taxonomy);
+	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
 }
 
 void LocationInformationWidget::updateLocationOnMap()
 {
 	if (!displayed_dive_site.uuid)
 		return;
-	MapWidget::instance()->updateDiveSiteCoordinates(displayed_dive_site.uuid, displayed_dive_site.latitude,
-							 displayed_dive_site.longitude);
-	filter_model.setCoordinates(displayed_dive_site.latitude, displayed_dive_site.longitude);
+	degrees_t latitude, longitude;
+	if (!parseGpsText(ui.diveSiteCoordinates->text(), latitude, longitude))
+		return;
+	MapWidget::instance()->updateDiveSiteCoordinates(displayed_dive_site.uuid, latitude, longitude);
+	filter_model.setCoordinates(latitude, longitude);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)
