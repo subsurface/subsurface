@@ -42,6 +42,8 @@
  * bool is_trip_before_after(const struct dive *dive, bool before)
  * void delete_dive_from_table(struct dive_table *table, int idx)
  * int find_next_visible_dive(timestamp_t when);
+ * void clear_dive_file_data()
+ * void clear_table(struct dive_table *table)
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -1681,6 +1683,16 @@ void clear_dive_file_data()
 
 	reset_min_datafile_version();
 	saved_git_id = "";
+}
+
+/*
+ * Clear a dive_table
+ */
+void clear_table(struct dive_table *table)
+{
+	for (int i = 0; i < table->nr; i++)
+		free(table->dives[i]);
+	table->nr = 0;
 }
 
 /* This function defines the sort ordering of dives. The core
