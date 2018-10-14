@@ -1023,7 +1023,8 @@ dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocat
 }
 
 /*
- * Walk the dives from the oldest dive, and see if we can autogroup them
+ * Walk the dives from the oldest dive, and see if we can autogroup them.
+ * But only do this when the user selected autogrouping.
  */
 void autogroup_dives(void)
 {
@@ -1031,6 +1032,9 @@ void autogroup_dives(void)
 	dive_trip_t *trip;
 	int i, j;
 	bool alloc;
+
+	if (!autogroup)
+		return;
 
 	for(i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
 		/* If this was newly allocated, add trip to list */
