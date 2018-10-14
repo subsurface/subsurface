@@ -40,11 +40,8 @@
  * bool dive_less_than(const struct dive *a, const struct dive *b)
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
-<<<<<<< HEAD
  * void delete_dive_from_table(struct dive_table *table, int idx)
-=======
  * int find_next_visible_dive(timestamp_t when);
->>>>>>> Undo: select dives after add, remove, merge, split dive commands
  */
 #include <unistd.h>
 #include <stdio.h>
