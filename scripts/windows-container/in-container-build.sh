@@ -14,5 +14,4 @@ mkdir -p win32
 cd win32
 bash -ex ../subsurface/packaging/windows/mxe-based-build.sh installer
 
-# re-enable this when smtk2ssrf is figured out
-#bash -ex ${TRAVIS_BUILD_DIR}/packaging/windows/smtk2ssrf-mxe-build.sh -i
+bash -ex ../subsurface/packaging/windows/smtk2ssrf-mxe-build.sh -a -i

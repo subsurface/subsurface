@@ -24,7 +24,6 @@ cd ${TRAVIS_BUILD_DIR}
 wget -c https://raw.githubusercontent.com/dirkhh/uploadtool/master/upload.sh
 bash ./upload.sh ${TRAVIS_BUILD_DIR}/../win32/subsurface/subsurface*.exe*
 
-
 # upload smtk2ssrf
-#cd ${TRAVIS_BUILD_DIR}/../win32/smtk-import
-#bash ../subsurface/upload.sh smtk2ssrf*.exe*
+cd ${TRAVIS_BUILD_DIR}/../win32/smtk-import
+bash ../subsurface/upload.sh smtk2ssrf*.exe*
