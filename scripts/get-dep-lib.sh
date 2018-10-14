@@ -16,6 +16,7 @@ CURRENT_LIBFTDI="1.3"
 CURRENT_KIRIGAMI="8691651c1f0d09430416ba5fe2130647554b06a9"
 CURRENT_BREEZE_ICONS=""
 CURRENT_GRANTLEE="v5.0.0"
+CURRENT_MDBTOOLS="master"
 
 # Checkout library from git
 # Ensure specified version is checked out,
@@ -186,6 +187,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		grantlee)
 			git_checkout_library grantlee $CURRENT_GRANTLEE https://github.com/steveire/grantlee.git
+			;;
+		mdbtools)
+			git_checkout_library mdbtools $CURRENT_MDBTOOLS https://github.com/brianb/mdbtools.git
 			;;
 		*)
 			echo "unknown package \"$package\""
