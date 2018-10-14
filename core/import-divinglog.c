@@ -271,7 +271,7 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 	UNUSED(columns);
 	UNUSED(column);
 
-	int retval = 0;
+	int retval = 0, diveid;
 	sqlite3 *handle = (sqlite3 *)param;
 	char *err = NULL;
 	char get_profile_template[] = "select ProfileInt,Profile,Profile2,Profile3,Profile4,Profile5 from Logbook where ID = %d";

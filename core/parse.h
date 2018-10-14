@@ -55,7 +55,6 @@ extern struct dive_table dive_table;
 extern struct dive_table *target_table;
 
 extern int metric;
-extern int diveid;
 
 int trimspace(char *buffer);
 void clear_table(struct dive_table *table);

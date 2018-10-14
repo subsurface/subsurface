@@ -15,7 +15,6 @@
 #include "gettext.h"
 
 int metric = 1;
-int diveid = -1;
 
 event_allocation_t event_allocation = { .event.deleted = 1 };
 struct parser_settings cur_settings;
@@ -47,7 +46,6 @@ struct divecomputer *get_dc(void)
 {
 	return cur_dc ?: &cur_dive->dc;
 }
-
 
 /* Trim a character string by removing leading and trailing white space characters.
  * Parameter: a pointer to a null-terminated character string (buffer);
