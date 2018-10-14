@@ -40,7 +40,6 @@ uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, stru
 	return 0;
 }
 
-
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
@@ -167,16 +166,22 @@ bool is_dive_site_used(uint32_t uuid, bool select_only)
 	return found;
 }
 
+void free_dive_site(struct dive_site *ds)
+{
+	free(ds->name);
+	free(ds->notes);
+	free(ds->description);
+	free_taxonomy(&ds->taxonomy);
+	free(ds);
+}
+
 void delete_dive_site(uint32_t id)
 {
 	int nr = dive_site_table.nr;
 	for (int i = 0; i < nr; i++) {
 		struct dive_site *ds = get_dive_site(i);
 		if (ds->uuid == id) {
-			free(ds->name);
-			free(ds->notes);
-			free_taxonomy(&ds->taxonomy);
-			free(ds);
+			free_dive_site(ds);
 			if (nr - 1 > i)
 				memmove(&dive_site_table.dive_sites[i],
 					&dive_site_table.dive_sites[i+1],
