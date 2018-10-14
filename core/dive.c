@@ -1212,7 +1212,6 @@ static void match_standard_cylinder(cylinder_type_t *type)
 	type->description = p;
 }
 
-
 /*
  * There are two ways to give cylinder size information:
  *  - total amount of gas in cuft (depends on working pressure and physical size)
@@ -1225,8 +1224,6 @@ static void match_standard_cylinder(cylinder_type_t *type)
  */
 static void sanitize_cylinder_type(cylinder_type_t *type)
 {
-	double volume_of_air, volume;
-
 	/* If we have no working pressure, it had *better* be just a physical size! */
 	if (!type->workingpressure.mbar)
 		return;
@@ -1234,15 +1231,6 @@ static void sanitize_cylinder_type(cylinder_type_t *type)
 	/* No size either? Nothing to go on */
 	if (!type->size.mliter)
 		return;
-
-	if (xml_parsing_units.volume == CUFT) {
-		double bar = type->workingpressure.mbar / 1000.0;
-		/* confusing - we don't really start from ml but millicuft !*/
-		volume_of_air = cuft_to_l(type->size.mliter);
-		/* milliliters at 1 atm: not corrected for compressibility! */
-		volume = volume_of_air / bar_to_atm(bar);
-		type->size.mliter = lrint(volume);
-	}
 
 	/* Ok, we have both size and pressure: try to match a description */
 	match_standard_cylinder(type);
