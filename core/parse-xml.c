@@ -35,7 +35,7 @@ int last_xml_version = -1;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 
-struct units xml_parsing_units;
+static struct units xml_parsing_units;
 const struct units SI_units = SI_UNITS;
 const struct units IMPERIAL_units = IMPERIAL_UNITS;
 

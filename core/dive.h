@@ -427,7 +427,6 @@ extern void unregister_trip(dive_trip_t *trip);
 extern void free_trip(dive_trip_t *trip);
 
 extern const struct units SI_units, IMPERIAL_units;
-extern struct units xml_parsing_units;
 
 extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
