@@ -4,59 +4,6 @@
 
 #include "core/dive.h"
 #include <QAbstractItemModel>
-#include <QCoreApplication>		// For Q_DECLARE_TR_FUNCTIONS
-
-struct DiveItem {
-	Q_DECLARE_TR_FUNCTIONS(TripItem)		// Is that TripItem on purpose?
-public:
-	enum Column {
-		NR,
-		DATE,
-		RATING,
-		DEPTH,
-		DURATION,
-		TEMPERATURE,
-		TOTALWEIGHT,
-		SUIT,
-		CYLINDER,
-		GAS,
-		SAC,
-		OTU,
-		MAXCNS,
-		TAGS,
-		PHOTOS,
-		BUDDIES,
-		COUNTRY,
-		LOCATION,
-		COLUMNS
-	};
-
-	QVariant data(int column, int role) const;
-	dive *d;
-	DiveItem(dive *dIn) : d(dIn) {}			// Trivial constructor
-	bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole);
-	QString displayDate() const;
-	QString displayDuration() const;
-	QString displayDepth() const;
-	QString displayDepthWithUnit() const;
-	QString displayTemperature() const;
-	QString displayTemperatureWithUnit() const;
-	QString displayWeight() const;
-	QString displayWeightWithUnit() const;
-	QString displaySac() const;
-	QString displaySacWithUnit() const;
-	QString displayTags() const;
-	int countPhotos() const;
-	int weight() const;
-};
-
-struct TripItem {
-	Q_DECLARE_TR_FUNCTIONS(TripItem)
-public:
-	QVariant data(int column, int role) const;
-	dive_trip_t *trip;
-	TripItem(dive_trip_t *tIn) : trip(tIn) {}	// Trivial constructor
-};
 
 class DiveTripModel : public QAbstractItemModel {
 	Q_OBJECT
@@ -164,6 +111,10 @@ private:
 	int findDiveIdx(const dive *d) const;			// Find _top_level_ dive
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
 	int findInsertionIndex(timestamp_t when) const;		// Where to insert item with timestamp "when"
+
+	// Access trip and dive data
+	static QVariant diveData(const struct dive *d, int column, int role);
+	static QVariant tripData(const dive_trip *trip, int column, int role);
 
 	// Select or deselect dives
 	void changeDiveSelection(dive_trip *trip, const QVector<dive *> &dives, bool select);
