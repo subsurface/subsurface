@@ -228,8 +228,7 @@ void dive_site_end(void)
 		if (verbose > 3)
 			printf("completed dive site uuid %x8 name {%s}\n", ds->uuid, ds->name);
 	}
-	free_taxonomy(&cur_dive_site->taxonomy);
-	free(cur_dive_site);
+	free_dive_site(cur_dive_site);
 	cur_dive_site = NULL;
 }
 
@@ -254,7 +253,7 @@ void dive_end(void)
 	if (!cur_dive)
 		return;
 	if (!is_dive())
-		free(cur_dive);
+		free_dive(cur_dive);
 	else
 		record_dive_to_table(cur_dive, target_table);
 	cur_dive = NULL;

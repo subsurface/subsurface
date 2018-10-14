@@ -56,6 +56,7 @@ void dive_site_table_sort();
 struct dive_site *alloc_or_get_dive_site(uint32_t uuid);
 int nr_of_dives_at_dive_site(uint32_t uuid, bool select_only);
 bool is_dive_site_used(uint32_t uuid, bool select_only);
+void free_dive_site(struct dive_site *ds);
 void delete_dive_site(uint32_t id);
 uint32_t create_dive_site(const char *name, timestamp_t divetime);
 uint32_t create_dive_site_from_current_dive(const char *name);
