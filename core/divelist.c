@@ -1691,7 +1691,7 @@ void clear_dive_file_data()
 void clear_table(struct dive_table *table)
 {
 	for (int i = 0; i < table->nr; i++)
-		free(table->dives[i]);
+		free_dive(table->dives[i]);
 	table->nr = 0;
 }
 
