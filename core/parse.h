@@ -57,7 +57,6 @@ extern struct dive_table *target_table;
 extern int metric;
 
 int trimspace(char *buffer);
-void clear_table(struct dive_table *table);
 void start_match(const char *type, const char *name, char *buffer);
 void nonmatch(const char *type, const char *name, char *buffer);
 void event_start(void);
