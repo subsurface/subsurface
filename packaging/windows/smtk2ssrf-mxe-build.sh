@@ -162,6 +162,9 @@ fi
 		     --enable-shared=no \
 		     --disable-man \
 		     --disable-gmdb2
+# hack to make mdbtools build outsource
+ln -vs "$BUILDDIR"/mdbtools/include/mdbver.h "$BASEDIR"/mdbtools/include/mdbver.h
+
 make $JOBS >/dev/null && make install || \
 	echo -e "$RED---> Building mdbtools failed ...$LIGHT_GRAY Trying to build with precompiled mxe binaries$DEFAULT"
 
