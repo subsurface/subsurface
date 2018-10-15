@@ -489,14 +489,24 @@ static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
 
 static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, const int mapping[]);
 
-/* copy dive computer and renumber the cylinders */
+/* copy dive computer list and renumber the cylinders
+ * space for the first divecomputer is provided by the
+ * caller, the remainder is allocated */
 static void copy_dc_renumber(struct dive *d, const struct divecomputer *sdc, struct divecomputer *ddc, const int cylinders_map[])
 {
-	*ddc = *sdc;
-	ddc->model = copy_string(sdc->model);
-	copy_samples(sdc, ddc);
-	copy_events(sdc, ddc);
-	dc_cylinder_renumber(d, ddc, cylinders_map);
+	for (;;) {
+		*ddc = *sdc;
+		ddc->model = copy_string(sdc->model);
+		copy_samples(sdc, ddc);
+		copy_events(sdc, ddc);
+		dc_cylinder_renumber(d, ddc, cylinders_map);
+		if (!sdc->next)
+			break;
+		sdc = sdc->next;
+		ddc->next = calloc(1, sizeof(struct divecomputer));
+		ddc = ddc->next;
+	}
+	ddc->next = NULL;
 }
 
 /* copy an element in a list of pictures */
