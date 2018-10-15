@@ -63,7 +63,6 @@ typedef struct {
 	const char *product;
 	const char *device;
 	const char *device_name;
-	int download_mode;
 } dive_computer_prefs_t;
 
 enum unit_system_values {

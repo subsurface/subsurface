@@ -20,7 +20,6 @@ void qPrefDiveComputer::loadSync(bool doSync)
 	// last computer used
 	disk_device(doSync);
 	disk_device_name(doSync);
-	disk_download_mode(doSync);
 	disk_product(doSync);
 	disk_vendor(doSync);
 
@@ -41,7 +40,6 @@ void qPrefDiveComputer::loadSync(bool doSync)
 // these are the 'active' settings
 HANDLE_PREFERENCE_TXT_EXT(DiveComputer, "dive_computer_device", device, dive_computer.)
 HANDLE_PREFERENCE_TXT_EXT(DiveComputer, "dive_computer_device_name", device_name, dive_computer.)
-HANDLE_PREFERENCE_INT_EXT(DiveComputer, "dive_computer_download_mode", download_mode, dive_computer.)
 HANDLE_PREFERENCE_TXT_EXT(DiveComputer, "dive_computer_product", product, dive_computer.)
 HANDLE_PREFERENCE_TXT_EXT(DiveComputer, "dive_computer_vendor", vendor, dive_computer.)
 

@@ -94,7 +94,7 @@ DownloadFromDCWidget::DownloadFromDCWidget(QWidget *parent, Qt::WindowFlags f) :
 	QString deviceText = qPrefDiveComputer::device();
 #if defined(BT_SUPPORT)
 	ui.bluetoothMode->setText(tr("Choose Bluetooth download mode"));
-	ui.bluetoothMode->setChecked(qPrefDiveComputer::download_mode() == DC_TRANSPORT_BLUETOOTH);
+	ui.bluetoothMode->setChecked(isBluetoothAddress(qPrefDiveComputer::device()));
 	btDeviceSelectionDialog = 0;
 	connect(ui.bluetoothMode, SIGNAL(stateChanged(int)), this, SLOT(enableBluetoothMode(int)));
 	connect(ui.chooseBluetoothDevice, SIGNAL(clicked()), this, SLOT(selectRemoteBluetoothDevice()));
@@ -397,10 +397,6 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 	qPrefDiveComputer::set_vendor(data->vendor());
 	qPrefDiveComputer::set_product(data->product());
 	qPrefDiveComputer::set_device(data->devName());
-
-#if defined(BT_SUPPORT)
-	qPrefDiveComputer::set_download_mode(ui.bluetoothMode->isChecked() ? DC_TRANSPORT_BLUETOOTH : DC_TRANSPORT_SERIAL);
-#endif
 
 	// before we start, remember where the dive_table ended
 	previousLast = dive_table.nr;
