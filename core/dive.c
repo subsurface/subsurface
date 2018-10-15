@@ -3440,7 +3440,6 @@ int count_dives_with_suit(const char *suit)
 struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset, bool prefer_downloaded, struct dive_trip **trip)
 {
 	struct dive *res = alloc_dive();
-	const struct dive *dl = NULL;
 	const struct dive *preferred_trip;
 	int cylinders_map_a[MAX_CYLINDERS], cylinders_map_b[MAX_CYLINDERS];
 
@@ -3482,7 +3481,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	merge_temperatures(res, a, b);
 	if (prefer_downloaded) {
 		/* If we prefer downloaded, do those first, and get rid of "might be same" computers */
-		join_dive_computers(res, &res->dc, &dl->dc, &a->dc, cylinders_map_b, cylinders_map_a, 1);
+		join_dive_computers(res, &res->dc, &b->dc, &a->dc, cylinders_map_b, cylinders_map_a, 1);
 	} else if (offset && might_be_same_device(&a->dc, &b->dc))
 		interleave_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a, cylinders_map_b, offset);
 	else
