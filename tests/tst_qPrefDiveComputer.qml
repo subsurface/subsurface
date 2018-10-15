@@ -14,10 +14,6 @@ TestCase {
 		PrefDiveComputer.device_name = "my device name"
 		compare(PrefDiveComputer.device_name, "my device name")
 
-		var x3 = PrefDiveComputer.download_mode
-		PrefDiveComputer.download_mode = 19
-		compare(PrefDiveComputer.download_mode, 19)
-
 		var x4 = PrefDiveComputer.product
 		PrefDiveComputer.product = "my product"
 		compare(PrefDiveComputer.product, "my product")
@@ -32,7 +28,6 @@ TestCase {
 
 		property bool spy1 : false
 		property bool spy2 : false
-		property bool spy3 : false
 		property bool spy4 : false
 		property bool spy5 : false
 
@@ -40,7 +35,6 @@ TestCase {
 			target: PrefDiveComputer
 			onDeviceChanged: {spyCatcher.spy1 = true }
 			onDevice_nameChanged: {spyCatcher.spy2 = true }
-			onDownload_modeChanged: {spyCatcher.spy3 = true }
 			onProductChanged: {spyCatcher.spy4 = true }
 			onVendorChanged: {spyCatcher.spy5 = true }
 		}
@@ -49,13 +43,11 @@ TestCase {
 	function test_signals() {
 		PrefDiveComputer.device = "qml"
 		PrefDiveComputer.device_name = "qml"
-		PrefDiveComputer.download_mode = -19
 		PrefDiveComputer.product = "qml"
 		PrefDiveComputer.vendor = "qml"
 
 		compare(spyCatcher.spy1, true)
 		compare(spyCatcher.spy2, true)
-		compare(spyCatcher.spy3, true)
 		compare(spyCatcher.spy4, true)
 		compare(spyCatcher.spy5, true)
 	}
