@@ -1600,6 +1600,9 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	if (!sequence_changed)
 		try_to_renumber(preexisting);
 
+	/* We might have deleted the old selected dive.
+	 * Choose the newest dive as selected (if any) */
+	current_dive = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1] : NULL;
 	mark_divelist_changed(true);
 }
 
