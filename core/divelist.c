@@ -1507,6 +1507,7 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
 		add_dive_to_trip(merged, trip);
 	}
 	free_dive(old_dive);
+	remove_dive_from_trip(dive_to_add, false);
 	free_dive(dive_to_add);
 
 	return true;
