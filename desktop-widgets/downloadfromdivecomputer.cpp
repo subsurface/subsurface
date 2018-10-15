@@ -363,7 +363,7 @@ void DownloadFromDCWidget::on_downloadCancelRetryButton_clicked()
 #if defined(BT_SUPPORT)
 	data->setBluetoothMode(ui.bluetoothMode->isChecked());
 	if (data->bluetoothMode()) {
-		// Get the selected device address from dialog or from preferences
+		// Get the selected device address
 		if (btDeviceSelectionDialog != NULL) {
 			data->setDevName(btDeviceSelectionDialog->getSelectedDeviceAddress());
 			data->setDevBluetoothName(btDeviceSelectionDialog->getSelectedDeviceName());
