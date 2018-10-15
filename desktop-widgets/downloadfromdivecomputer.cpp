@@ -523,9 +523,8 @@ void DownloadFromDCWidget::on_ok_clicked()
 			delete_dive_from_table(&downloadTable, j);
 	}
 
-	MainWindow::instance()->diveList->unselectDives();
-
 	if (downloadTable.nr > 0) {
+		MainWindow::instance()->diveList->unselectDives();
 		// remember the last downloaded dive (on most dive computers this will be the chronologically
 		// first new dive) and select it again after processing all the dives
 		int uniqId = downloadTable.dives[downloadTable.nr - 1]->id;
