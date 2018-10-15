@@ -551,6 +551,7 @@ void clear_deco(struct deco_state *ds, double surface_pressure)
 	}
 	ds->gf_low_pressure_this_dive = surface_pressure + buehlmann_config.gf_low_position_min;
 	ds->max_ambient_pressure = 0.0;
+	ds->ci_pointing_to_guiding_tissue = -1;
 }
 
 void cache_deco_state(struct deco_state *src, struct deco_state **cached_datap)
