@@ -2130,7 +2130,8 @@ static void merge_weightsystem_info(weightsystem_t *res, const weightsystem_t *a
 {
 	if (!a->weight.grams)
 		a = b;
-	*res = *a;
+	res->weight = a->weight;
+	res->description = copy_string(a->description);
 }
 
 /* get_cylinder_idx_by_use(): Find the index of the first cylinder with a particular CCR use type.
