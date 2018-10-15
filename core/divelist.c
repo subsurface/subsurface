@@ -1249,11 +1249,13 @@ struct dive *merge_two_dives(struct dive *a, struct dive *b)
 
 void select_dive(struct dive *dive)
 {
-	if (dive && !dive->selected) {
+	if (!dive)
+		return;
+	if (!dive->selected) {
 		dive->selected = 1;
 		amount_selected++;
-		current_dive = dive;
 	}
+	current_dive = dive;
 }
 
 void deselect_dive(struct dive *dive)
