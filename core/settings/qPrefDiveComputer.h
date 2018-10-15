@@ -34,7 +34,6 @@ class qPrefDiveComputer : public QObject {
 	Q_PROPERTY(QString vendor2 READ vendor2 WRITE set_vendor2 NOTIFY vendor2Changed)
 	Q_PROPERTY(QString vendor3 READ vendor3 WRITE set_vendor3 NOTIFY vendor3Changed)
 	Q_PROPERTY(QString vendor4 READ vendor4 WRITE set_vendor4 NOTIFY vendor4Changed)
-	Q_PROPERTY(int download_mode READ download_mode WRITE set_download_mode NOTIFY download_modeChanged)
 
 public:
 	qPrefDiveComputer(QObject *parent = NULL);
@@ -50,7 +49,6 @@ public:
 	IMPLEMENT5GETTERS(device_name)
 	IMPLEMENT5GETTERS(product)
 	IMPLEMENT5GETTERS(vendor)
-	static int download_mode() { return prefs.dive_computer.download_mode; }
 
 public slots:
 	static void set_device(const QString &device);
@@ -77,8 +75,6 @@ public slots:
 	static void set_vendor3(const QString &vendor);
 	static void set_vendor4(const QString &vendor);
 
-	static void set_download_mode(int mode);
-
 signals:
 	void deviceChanged(const QString &device);
 	void device1Changed(const QString &device);
@@ -103,8 +99,6 @@ signals:
 	void vendor2Changed(const QString &vendor);
 	void vendor3Changed(const QString &vendor);
 	void vendor4Changed(const QString &vendor);
-
-	void download_modeChanged(int mode);
 
 private:
 	// functions to load/sync variable with disk
@@ -132,9 +126,6 @@ private:
 	static void disk_vendor2(bool doSync);
 	static void disk_vendor3(bool doSync);
 	static void disk_vendor4(bool doSync);
-
-	static void disk_download_mode(bool doSync);
-
 };
 
 #endif
