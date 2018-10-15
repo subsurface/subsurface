@@ -3475,7 +3475,7 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 	MERGE_MAX(res, a, b, number);
 	MERGE_NONZERO(res, a, b, cns);
 	MERGE_NONZERO(res, a, b, visibility);
-	MERGE_NONZERO(res, a, b, picture_list);
+	STRUCTURED_LIST_COPY(struct picture, a->picture_list ? a->picture_list : b->picture_list, res->picture_list, copy_pl);
 	taglist_merge(&res->tag_list, a->tag_list, b->tag_list);
 	merge_cylinders(res, a, b, cylinders_map_a, cylinders_map_b);
 	merge_equipment(res, a, b);
