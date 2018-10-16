@@ -4157,11 +4157,7 @@ void delete_current_divecomputer(void)
 		/* remove the first one, so copy the second one in place of the first and free the second one
 		 * be careful about freeing the no longer needed structures - since we copy things around we can't use free_dc()*/
 		struct divecomputer *fdc = dc->next;
-		free(dc->sample);
-		free((void *)dc->model);
-		free((void *)dc->serial);
-		free((void *)dc->fw_version);
-		free_events(dc->events);
+		free_dc_contents(dc);
 		memcpy(dc, fdc, sizeof(struct divecomputer));
 		free(fdc);
 	} else {
