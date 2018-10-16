@@ -31,9 +31,11 @@ void PreferencesGraph::refreshSettings()
 	if (prefs.display_deco_mode == BUEHLMANN) {
 		ui->buehlmann->setChecked(true);
 		ui->vpmb->setChecked(false);
+		on_buehlmann_toggled(true);
 	} else {
 		ui->buehlmann->setChecked(false);
 		ui->vpmb->setChecked(true);
+		on_buehlmann_toggled(false);
 	}
 
 	ui->gflow->setValue(prefs.gflow);
