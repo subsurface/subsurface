@@ -473,57 +473,6 @@ struct dive *alloc_dive(void)
 	return dive;
 }
 
-static void free_dc(struct divecomputer *dc);
-static void free_dc_contents(struct divecomputer *dc);
-static void free_pic(struct picture *picture);
-
-/* this is very different from the copy_divecomputer later in this file;
- * this function actually makes full copies of the content */
-static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
-{
-	*ddc = *sdc;
-	ddc->model = copy_string(sdc->model);
-	copy_samples(sdc, ddc);
-	copy_events(sdc, ddc);
-}
-
-static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, const int mapping[]);
-
-/* copy dive computer list and renumber the cylinders
- * space for the first divecomputer is provided by the
- * caller, the remainder is allocated */
-static void copy_dc_renumber(struct dive *d, const struct divecomputer *sdc, struct divecomputer *ddc, const int cylinders_map[])
-{
-	for (;;) {
-		*ddc = *sdc;
-		ddc->model = copy_string(sdc->model);
-		copy_samples(sdc, ddc);
-		copy_events(sdc, ddc);
-		dc_cylinder_renumber(d, ddc, cylinders_map);
-		if (!sdc->next)
-			break;
-		sdc = sdc->next;
-		ddc->next = calloc(1, sizeof(struct divecomputer));
-		ddc = ddc->next;
-	}
-	ddc->next = NULL;
-}
-
-/* copy an element in a list of pictures */
-static void copy_pl(struct picture *sp, struct picture *dp)
-{
-	*dp = *sp;
-	dp->filename = copy_string(sp->filename);
-}
-
-/* copy an element in a list of tags */
-static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
-{
-	dt->tag = malloc(sizeof(struct divetag));
-	dt->tag->name = copy_string(st->tag->name);
-	dt->tag->source = copy_string(st->tag->source);
-}
-
 /* Clear everything but the first element;
  * this works for taglist, picturelist, even dive computers */
 #define STRUCTURED_LIST_FREE(_type, _start, _free) \
@@ -548,6 +497,62 @@ static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
 		}                                        \
 		*_dptr = 0;                              \
 	}
+
+static void free_dc(struct divecomputer *dc);
+static void free_dc_contents(struct divecomputer *dc);
+static void free_pic(struct picture *picture);
+
+/* copy an element in a list of dive computer extra data */
+static void copy_extra_data(struct extra_data *sed, struct extra_data *ded)
+{
+	ded->key = copy_string(sed->key);
+	ded->value = copy_string(sed->value);
+}
+
+/* this is very different from the copy_divecomputer later in this file;
+ * this function actually makes full copies of the content */
+static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
+{
+	*ddc = *sdc;
+	ddc->model = copy_string(sdc->model);
+	copy_samples(sdc, ddc);
+	copy_events(sdc, ddc);
+	STRUCTURED_LIST_COPY(struct extra_data, sdc->extra_data, ddc->extra_data, copy_extra_data);
+}
+
+static void dc_cylinder_renumber(struct dive *dive, struct divecomputer *dc, const int mapping[]);
+
+/* copy dive computer list and renumber the cylinders
+ * space for the first divecomputer is provided by the
+ * caller, the remainder is allocated */
+static void copy_dc_renumber(struct dive *d, const struct divecomputer *sdc, struct divecomputer *ddc, const int cylinders_map[])
+{
+	for (;;) {
+		copy_dc(sdc, ddc);
+		dc_cylinder_renumber(d, ddc, cylinders_map);
+		if (!sdc->next)
+			break;
+		sdc = sdc->next;
+		ddc->next = calloc(1, sizeof(struct divecomputer));
+		ddc = ddc->next;
+	}
+	ddc->next = NULL;
+}
+
+/* copy an element in a list of pictures */
+static void copy_pl(struct picture *sp, struct picture *dp)
+{
+	*dp = *sp;
+	dp->filename = copy_string(sp->filename);
+}
+
+/* copy an element in a list of tags */
+static void copy_tl(struct tag_entry *st, struct tag_entry *dt)
+{
+	dt->tag = malloc(sizeof(struct divetag));
+	dt->tag->name = copy_string(st->tag->name);
+	dt->tag->source = copy_string(st->tag->source);
+}
 
 static void free_dive_structures(struct dive *d)
 {
@@ -2961,11 +2966,18 @@ void free_events(struct event *ev)
 	}
 }
 
+static void free_extra_data(struct extra_data *ed)
+{
+	free((void *)ed->key);
+	free((void *)ed->value);
+}
+
 static void free_dc_contents(struct divecomputer *dc)
 {
 	free(dc->sample);
 	free((void *)dc->model);
 	free_events(dc->events);
+	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
 }
 
 static void free_dc(struct divecomputer *dc)
@@ -3075,11 +3087,11 @@ static const struct divecomputer *find_matching_computer(const struct divecomput
 	return p;
 }
 
-
 static void copy_dive_computer(struct divecomputer *res, const struct divecomputer *a)
 {
 	*res = *a;
 	res->model = copy_string(a->model);
+	STRUCTURED_LIST_COPY(struct extra_data, a->extra_data, res->extra_data, copy_extra_data);
 	res->samples = res->alloc_samples = 0;
 	res->sample = NULL;
 	res->events = NULL;
