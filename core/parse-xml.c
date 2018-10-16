@@ -270,6 +270,9 @@ static void extra_data_end(void)
 	// don't save partial structures - we must have both key and value
 	if (cur_extra_data.key && cur_extra_data.value)
 		add_extra_data(get_dc(), cur_extra_data.key, cur_extra_data.value);
+	free((void *)cur_extra_data.key);
+	free((void *)cur_extra_data.value);
+	cur_extra_data.key = cur_extra_data.value = NULL;
 }
 
 static void weight(char *buffer, weight_t *weight)
