@@ -64,9 +64,45 @@ HANDLE_PREFERENCE_BOOL(TechnicalDetails, "display_unused_tanks", display_unused_
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "ead", ead);
 
-HANDLE_PREFERENCE_INT(TechnicalDetails, "gfhigh", gfhigh);
+void qPrefTechnicalDetails::set_gfhigh(int value)
+{
+	if (value != prefs.gfhigh) {
+		prefs.gfhigh = value;
+		disk_gfhigh(true);
+		emit instance()->gfhighChanged(value);
+	}
+}
 
-HANDLE_PREFERENCE_INT(TechnicalDetails, "gflow", gflow);
+void qPrefTechnicalDetails::disk_gfhigh(bool doSync)
+{
+	if (doSync) {
+		if (prefs.gfhigh)
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, "gfhigh"), prefs.gfhigh, default_prefs.gfhigh);
+	} else {
+		prefs.gfhigh = qPrefPrivate::propValue(keyFromGroupAndName(group, "gfhigh"), default_prefs.gfhigh).toInt();
+		set_gf(-1, prefs.gfhigh);
+	}
+}
+
+void qPrefTechnicalDetails::set_gflow(int value)
+{
+	if (value != prefs.gflow) {
+		prefs.gflow = value;
+		disk_gflow(true);
+		emit instance()->gflowChanged(value);
+	}
+}
+
+void qPrefTechnicalDetails::disk_gflow(bool doSync)
+{
+	if (doSync) {
+		if (prefs.gflow)
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, "gflow"), prefs.gflow, default_prefs.gflow);
+	} else {
+		prefs.gflow = qPrefPrivate::propValue(keyFromGroupAndName(group, "gflow"), default_prefs.gflow).toInt();
+		set_gf(prefs.gflow, -1);
+	}
+}
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "gf_low_at_maxdepth", gf_low_at_maxdepth);
 
@@ -98,6 +134,24 @@ HANDLE_PREFERENCE_BOOL(TechnicalDetails, "show_scr_ocpo2", show_scr_ocpo2);
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "tankbar", tankbar);
 
-HANDLE_PREFERENCE_INT(TechnicalDetails, "vpmb_conservatism", vpmb_conservatism);
+void qPrefTechnicalDetails::set_vpmb_conservatism(int value)
+{
+	if (value != prefs.vpmb_conservatism) {
+		prefs.vpmb_conservatism = value;
+		disk_vpmb_conservatism(true);
+		emit instance()->vpmb_conservatismChanged(value);
+	}
+}
+
+void qPrefTechnicalDetails::disk_vpmb_conservatism(bool doSync)
+{
+	if (doSync) {
+		if (prefs.vpmb_conservatism)
+			qPrefPrivate::propSetValue(keyFromGroupAndName(group, "vpmb_conservatism"), prefs.vpmb_conservatism, default_prefs.vpmb_conservatism);
+	} else {
+		prefs.vpmb_conservatism = qPrefPrivate::propValue(keyFromGroupAndName(group, "vpmb_conservatism"), default_prefs.vpmb_conservatism).toInt();
+		set_vpmb_conservatism(prefs.vpmb_conservatism);
+	}
+}
 
 HANDLE_PREFERENCE_BOOL(TechnicalDetails, "zoomed_plot", zoomed_plot);
