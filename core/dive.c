@@ -515,6 +515,8 @@ static void copy_dc(const struct divecomputer *sdc, struct divecomputer *ddc)
 {
 	*ddc = *sdc;
 	ddc->model = copy_string(sdc->model);
+	ddc->serial = copy_string(sdc->serial);
+	ddc->fw_version = copy_string(sdc->fw_version);
 	copy_samples(sdc, ddc);
 	copy_events(sdc, ddc);
 	STRUCTURED_LIST_COPY(struct extra_data, sdc->extra_data, ddc->extra_data, copy_extra_data);
@@ -2976,6 +2978,8 @@ static void free_dc_contents(struct divecomputer *dc)
 {
 	free(dc->sample);
 	free((void *)dc->model);
+	free((void *)dc->serial);
+	free((void *)dc->fw_version);
 	free_events(dc->events);
 	STRUCTURED_LIST_FREE(struct extra_data, dc->extra_data, free_extra_data);
 }
@@ -3091,6 +3095,8 @@ static void copy_dive_computer(struct divecomputer *res, const struct divecomput
 {
 	*res = *a;
 	res->model = copy_string(a->model);
+	res->serial = copy_string(a->serial);
+	res->fw_version = copy_string(a->fw_version);
 	STRUCTURED_LIST_COPY(struct extra_data, a->extra_data, res->extra_data, copy_extra_data);
 	res->samples = res->alloc_samples = 0;
 	res->sample = NULL;
@@ -4153,6 +4159,8 @@ void delete_current_divecomputer(void)
 		struct divecomputer *fdc = dc->next;
 		free(dc->sample);
 		free((void *)dc->model);
+		free((void *)dc->serial);
+		free((void *)dc->fw_version);
 		free_events(dc->events);
 		memcpy(dc, fdc, sizeof(struct divecomputer));
 		free(fdc);
