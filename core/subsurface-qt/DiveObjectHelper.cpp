@@ -434,3 +434,9 @@ QStringList DiveObjectHelper::firstGas() const
 	}
 	return gas;
 }
+
+// for a full text search / filter function
+QString DiveObjectHelper::fullText() const
+{
+	return trip() + location() + buddy() + divemaster() + suit() + tags();
+}

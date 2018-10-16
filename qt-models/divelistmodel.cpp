@@ -10,8 +10,9 @@ DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(pa
 
 void DiveListSortModel::setFilter(QString f)
 {
-	setFilterRole(DiveListModel::DiveSiteRole);
-	setFilterRegExp(f);
+	setFilterRole(DiveListModel::FullTextRole);
+	setFilterRegExp(QString(".*%1.*").arg(f));
+	setFilterCaseSensitivity(Qt::CaseInsensitive);
 }
 
 void DiveListSortModel::resetFilter()
@@ -162,7 +163,7 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	switch(role) {
 	case DiveRole: return QVariant::fromValue<QObject*>(curr_dive);
 	case DiveDateRole: return (qlonglong)curr_dive->timestamp();
-	case DiveSiteRole: return curr_dive->location();
+	case FullTextRole: return curr_dive->fullText();
 	}
 	return QVariant();
 
@@ -173,7 +174,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	QHash<int, QByteArray> roles;
 	roles[DiveRole] = "dive";
 	roles[DiveDateRole] = "date";
-	roles[DiveSiteRole] = "site";
+	roles[FullTextRole] = "fulltext";
 	return roles;
 }
 
