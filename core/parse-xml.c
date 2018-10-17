@@ -970,6 +970,8 @@ static void divinglog_place(char *place, uint32_t *uuid)
 		*uuid = create_dive_site(buffer, cur_dive->when);
 
 	// TODO: capture the country / city info in the taxonomy instead
+	free(city);
+	free(country);
 	city = NULL;
 	country = NULL;
 }
@@ -1201,7 +1203,7 @@ static void gps_picture_location(char *buffer, struct picture *pic)
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
 static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 {
-	char *hash;
+	char *hash = NULL;
 	start_match("dive", name, buf);
 
 	switch (import_source) {
