@@ -13,11 +13,11 @@
 #include "membuffer.h"
 #include "gettext.h"
 
-extern int divinglog_cylinder(void *handle, int columns, char **data, char **column)
+static int divinglog_cylinder(void *param, int columns, char **data, char **column)
 {
-	UNUSED(handle);
 	UNUSED(columns);
 	UNUSED(column);
+	struct parser_state *state = (struct parser_state *)param;
 
 	short dbl = 1;
 	//char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d";
@@ -27,13 +27,13 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 	 * better to ignore those.
 	 */
 
-	if (cur_cylinder_index >= MAX_CYLINDERS)
+	if (state->cur_cylinder_index >= MAX_CYLINDERS)
 		return 0;
 
 	if (data[7] && atoi(data[7]) > 0)
 		dbl = 2;
 
-	cylinder_start();
+	cylinder_start(state);
 
 	/*
 	 * Assuming that we have to double the cylinder size, if double
@@ -41,29 +41,29 @@ extern int divinglog_cylinder(void *handle, int columns, char **data, char **col
 	 */
 
 	if (data[1] && atoi(data[1]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].type.size.mliter = atol(data[1]) * 1000 * dbl;
+		state->cur_dive->cylinder[state->cur_cylinder_index].type.size.mliter = atol(data[1]) * 1000 * dbl;
 
 	if (data[2] && atoi(data[2]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].start.mbar = atol(data[2]) * 1000;
+		state->cur_dive->cylinder[state->cur_cylinder_index].start.mbar = atol(data[2]) * 1000;
 	if (data[3] && atoi(data[3]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].end.mbar = atol(data[3]) * 1000;
+		state->cur_dive->cylinder[state->cur_cylinder_index].end.mbar = atol(data[3]) * 1000;
 	if (data[4] && atoi(data[4]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].type.workingpressure.mbar = atol(data[4]) * 1000;
+		state->cur_dive->cylinder[state->cur_cylinder_index].type.workingpressure.mbar = atol(data[4]) * 1000;
 	if (data[5] && atoi(data[5]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = atol(data[5]) * 10;
+		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.o2.permille = atol(data[5]) * 10;
 	if (data[6] && atoi(data[6]) > 0)
-		cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = atol(data[6]) * 10;
+		state->cur_dive->cylinder[state->cur_cylinder_index].gasmix.he.permille = atol(data[6]) * 10;
 
-	cylinder_end();
+	cylinder_end(state);
 
 	return 0;
 }
 
-extern int divinglog_profile(void *handle, int columns, char **data, char **column)
+static int divinglog_profile(void *param, int columns, char **data, char **column)
 {
-	UNUSED(handle);
 	UNUSED(columns);
 	UNUSED(column);
+	struct parser_state *state = (struct parser_state *)param;
 
 	int sinterval = 0;
 	unsigned long time;
@@ -121,11 +121,11 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 
 	time = 0;
 	while (len1 >= 12) {
-		sample_start();
+		sample_start(state);
 
-		cur_sample->time.seconds = time;
-		cur_sample->in_deco = ptr1[5] - '0' ? true : false;
-		cur_sample->depth.mm = atoi_n(ptr1, 5) * 10;
+		state->cur_sample->time.seconds = time;
+		state->cur_sample->in_deco = ptr1[5] - '0' ? true : false;
+		state->cur_sample->depth.mm = atoi_n(ptr1, 5) * 10;
 
 		if (len2 >= 11) {
 			int temp = atoi_n(ptr2, 3);
@@ -133,23 +133,23 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			int tank = atoi_n(ptr2+7, 1);
 			int rbt = atoi_n(ptr2+8, 3) * 60;
 
-			cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10.0f);
-			cur_sample->pressure[0].mbar = pressure * 100;
-			cur_sample->rbt.seconds = rbt;
+			state->cur_sample->temperature.mkelvin = C_to_mkelvin(temp / 10.0f);
+			state->cur_sample->pressure[0].mbar = pressure * 100;
+			state->cur_sample->rbt.seconds = rbt;
 			if (oldcyl != tank) {
-				struct gasmix mix = cur_dive->cylinder[tank].gasmix;
+				struct gasmix mix = state->cur_dive->cylinder[tank].gasmix;
 				int o2 = get_o2(mix);
 				int he = get_he(mix);
 
-				event_start();
-				cur_event.time.seconds = time;
-				strcpy(cur_event.name, "gaschange");
+				event_start(state);
+				state->cur_event.time.seconds = time;
+				strcpy(state->cur_event.name, "gaschange");
 
 				o2 = (o2 + 5) / 10;
 				he = (he + 5) / 10;
-				cur_event.value = o2 + (he << 16);
+				state->cur_event.value = o2 + (he << 16);
 
-				event_end();
+				event_end(state);
 				oldcyl = tank;
 			}
 
@@ -157,7 +157,7 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		}
 
 		if (len3 >= 14) {
-			cur_sample->heartbeat = atoi_n(ptr3+8, 3);
+			state->cur_sample->heartbeat = atoi_n(ptr3+8, 3);
 			ptr3 += 14; len3 -= 14;
 		}
 
@@ -167,15 +167,15 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			 * either 0 or TTS when in deco.
 			 */
 			int val = atoi_n(ptr4, 3);
-			if (cur_sample->in_deco) {
-				cur_sample->ndl.seconds = 0;
+			if (state->cur_sample->in_deco) {
+				state->cur_sample->ndl.seconds = 0;
 				if (val)
-					cur_sample->tts.seconds = val * 60;
+					state->cur_sample->tts.seconds = val * 60;
 			} else {
-				cur_sample->ndl.seconds = val * 60;
+				state->cur_sample->ndl.seconds = val * 60;
 			}
-			cur_sample->stoptime.seconds = atoi_n(ptr4+3, 3) * 60;
-			cur_sample->stopdepth.mm = atoi_n(ptr4+6, 3) * 1000;
+			state->cur_sample->stoptime.seconds = atoi_n(ptr4+3, 3) * 60;
+			state->cur_sample->stopdepth.mm = atoi_n(ptr4+6, 3) * 1000;
 			ptr4 += 9; len4 -= 9;
 		}
 
@@ -203,15 +203,15 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 			int setpoint = atoi_n(ptr5 + 17, 2);
 
 			if (ppo2_1 > 0)
-				cur_sample->o2sensor[0].mbar = ppo2_1 * 100;
+				state->cur_sample->o2sensor[0].mbar = ppo2_1 * 100;
 			if (ppo2_2 > 0)
-				cur_sample->o2sensor[1].mbar = ppo2_2 * 100;
+				state->cur_sample->o2sensor[1].mbar = ppo2_2 * 100;
 			if (ppo2_3 > 0)
-				cur_sample->o2sensor[2].mbar = ppo2_3 * 100;
+				state->cur_sample->o2sensor[2].mbar = ppo2_3 * 100;
 			if (cns > 0)
-				cur_sample->cns = lrintf(cns / 10.0f);
+				state->cur_sample->cns = lrintf(cns / 10.0f);
 			if (setpoint > 0)
-				cur_sample->setpoint.mbar = setpoint * 100;
+				state->cur_sample->setpoint.mbar = setpoint * 100;
 			ptr5 += 19; len5 -= 19;
 		}
 
@@ -219,44 +219,44 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 		 * Count the number of o2 sensors
 		 */
 
-		if (!cur_dive->dc.no_o2sensors && (cur_sample->o2sensor[0].mbar || cur_sample->o2sensor[1].mbar || cur_sample->o2sensor[2].mbar)) {
-			cur_dive->dc.no_o2sensors = cur_sample->o2sensor[0].mbar ? 1 : 0 +
-				 cur_sample->o2sensor[1].mbar ? 1 : 0 +
-				 cur_sample->o2sensor[2].mbar ? 1 : 0;
+		if (!state->cur_dive->dc.no_o2sensors && (state->cur_sample->o2sensor[0].mbar || state->cur_sample->o2sensor[1].mbar || state->cur_sample->o2sensor[2].mbar)) {
+			state->cur_dive->dc.no_o2sensors = state->cur_sample->o2sensor[0].mbar ? 1 : 0 +
+				 state->cur_sample->o2sensor[1].mbar ? 1 : 0 +
+				 state->cur_sample->o2sensor[2].mbar ? 1 : 0;
 		}
 
-		sample_end();
+		sample_end(state);
 
 		/* Remaining bottom time warning */
 		if (ptr1[6] - '0') {
-			event_start();
-			cur_event.time.seconds = time;
-			strcpy(cur_event.name, "rbt");
-			event_end();
+			event_start(state);
+			state->cur_event.time.seconds = time;
+			strcpy(state->cur_event.name, "rbt");
+			event_end(state);
 		}
 
 		/* Ascent warning */
 		if (ptr1[7] - '0') {
-			event_start();
-			cur_event.time.seconds = time;
-			strcpy(cur_event.name, "ascent");
-			event_end();
+			event_start(state);
+			state->cur_event.time.seconds = time;
+			strcpy(state->cur_event.name, "ascent");
+			event_end(state);
 		}
 
 		/* Deco stop ignored */
 		if (ptr1[8] - '0') {
-			event_start();
-			cur_event.time.seconds = time;
-			strcpy(cur_event.name, "violation");
-			event_end();
+			event_start(state);
+			state->cur_event.time.seconds = time;
+			strcpy(state->cur_event.name, "violation");
+			event_end(state);
 		}
 
 		/* Workload warning */
 		if (ptr1[9] - '0') {
-			event_start();
-			cur_event.time.seconds = time;
-			strcpy(cur_event.name, "workload");
-			event_end();
+			event_start(state);
+			state->cur_event.time.seconds = time;
+			strcpy(state->cur_event.name, "workload");
+			event_end(state);
 		}
 
 		ptr1 += 12; len1 -= 12;
@@ -266,56 +266,57 @@ extern int divinglog_profile(void *handle, int columns, char **data, char **colu
 	return 0;
 }
 
-extern int divinglog_dive(void *param, int columns, char **data, char **column)
+static int divinglog_dive(void *param, int columns, char **data, char **column)
 {
 	UNUSED(columns);
 	UNUSED(column);
 
 	int retval = 0, diveid;
-	sqlite3 *handle = (sqlite3 *)param;
+	struct parser_state *state = (struct parser_state *)param;
+	sqlite3 *handle = state->sql_handle;
 	char *err = NULL;
 	char get_profile_template[] = "select ProfileInt,Profile,Profile2,Profile3,Profile4,Profile5 from Logbook where ID = %d";
 	char get_cylinder0_template[] = "select 0,TankSize,PresS,PresE,PresW,O2,He,DblTank from Logbook where ID = %d";
 	char get_cylinder_template[] = "select TankID,TankSize,PresS,PresE,PresW,O2,He,DblTank from Tank where LogID = %d order by TankID";
 	char get_buffer[1024];
 
-	dive_start();
+	dive_start(state);
 	diveid = atoi(data[13]);
-	cur_dive->number = atoi(data[0]);
+	state->cur_dive->number = atoi(data[0]);
 
-	cur_dive->when = (time_t)(atol(data[1]));
+	state->cur_dive->when = (time_t)(atol(data[1]));
 
 	if (data[2])
-		cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(data[2], cur_dive->when);
+		state->cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(data[2], state->cur_dive->when);
 
 	if (data[3])
-		utf8_string(data[3], &cur_dive->buddy);
+		utf8_string(data[3], &state->cur_dive->buddy);
 
 	if (data[4])
-		utf8_string(data[4], &cur_dive->notes);
+		utf8_string(data[4], &state->cur_dive->notes);
 
 	if (data[5])
-		cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[5], NULL, 0) * 1000);
+		state->cur_dive->dc.maxdepth.mm = lrint(strtod_flags(data[5], NULL, 0) * 1000);
 
 	if (data[6])
-		cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
+		state->cur_dive->dc.duration.seconds = atoi(data[6]) * 60;
 
 	if (data[7])
-		utf8_string(data[7], &cur_dive->divemaster);
+		utf8_string(data[7], &state->cur_dive->divemaster);
 
 	if (data[8])
-		cur_dive->airtemp.mkelvin = C_to_mkelvin(atol(data[8]));
+		state->cur_dive->airtemp.mkelvin = C_to_mkelvin(atol(data[8]));
 
 	if (data[9])
-		cur_dive->watertemp.mkelvin = C_to_mkelvin(atol(data[9]));
+		state->cur_dive->watertemp.mkelvin = C_to_mkelvin(atol(data[9]));
 
 	if (data[10]) {
-		cur_dive->weightsystem[0].weight.grams = atol(data[10]) * 1000;
-		cur_dive->weightsystem[0].description = strdup(translate("gettextFromC", "unknown"));
+		state->cur_dive->weightsystem[0].weight.grams = atol(data[10]) * 1000;
+		state->cur_dive->weightsystem[0].description = strdup(translate("gettextFromC", "unknown"));
 	}
 
 	if (data[11])
-		cur_dive->suit = strdup(data[11]);
+		state->cur_dive->suit = strdup(data[11]);
 
 	/* Divinglog has following visibility options: good, medium, bad */
 	if (data[14]) {
@@ -323,37 +324,37 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		case '0':
 			break;
 		case '1':
-			cur_dive->visibility = 5;
+			state->cur_dive->visibility = 5;
 			break;
 		case '2':
-			cur_dive->visibility = 3;
+			state->cur_dive->visibility = 3;
 			break;
 		case '3':
-			cur_dive->visibility = 1;
+			state->cur_dive->visibility = 1;
 			break;
 		default:
 			break;
 		}
 	}
 
-	settings_start();
-	dc_settings_start();
+	settings_start(state);
+	dc_settings_start(state);
 
 	if (data[12]) {
-		cur_dive->dc.model = strdup(data[12]);
+		state->cur_dive->dc.model = strdup(data[12]);
 	} else {
-		cur_settings.dc.model = strdup("Divinglog import");
+		state->cur_settings.dc.model = strdup("Divinglog import");
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder0_template, diveid);
-	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, 0, &err);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_cylinder0 failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_cylinder_template, diveid);
-	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, 0, &err);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_cylinder, state, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_cylinder failed.\n");
 		return 1;
@@ -365,31 +366,31 @@ extern int divinglog_dive(void *param, int columns, char **data, char **column)
 		case '0':
 			break;
 		case '1':
-			cur_dive->dc.divemode = PSCR;
+			state->cur_dive->dc.divemode = PSCR;
 			break;
 		case '2':
-			cur_dive->dc.divemode = CCR;
+			state->cur_dive->dc.divemode = CCR;
 			break;
 		}
 	}
 
-	dc_settings_end();
-	settings_end();
+	dc_settings_end(state);
+	settings_end(state);
 
 	if (data[12]) {
-		cur_dive->dc.model = strdup(data[12]);
+		state->cur_dive->dc.model = strdup(data[12]);
 	} else {
-		cur_dive->dc.model = strdup("Divinglog import");
+		state->cur_dive->dc.model = strdup("Divinglog import");
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, diveid);
-	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, 0, &err);
+	retval = sqlite3_exec(handle, get_buffer, &divinglog_profile, state, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query divinglog_profile failed.\n");
 		return 1;
 	}
 
-	dive_end();
+	dive_end(state);
 
 	return SQLITE_OK;
 }
@@ -403,11 +404,16 @@ int parse_divinglog_buffer(sqlite3 *handle, const char *url, const char *buffer,
 
 	int retval;
 	char *err = NULL;
-	target_table = table;
+	struct parser_state state;
+
+	init_parser_state(&state);
+	state.target_table = table;
+	state.sql_handle = handle;
 
 	char get_dives[] = "select Number,strftime('%s',Divedate || ' ' || ifnull(Entrytime,'00:00')),Country || ' - ' || City || ' - ' || Place,Buddy,Comments,Depth,Divetime,Divemaster,Airtemp,Watertemp,Weight,Divesuit,Computer,ID,Visibility,SupplyType from Logbook where UUID not in (select UUID from DeletedRecords)";
 
-	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, handle, &err);
+	retval = sqlite3_exec(handle, get_dives, &divinglog_dive, &state, &err);
+	free_parser_state(&state);
 
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "Database query failed '%s'.\n", url);

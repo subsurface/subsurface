@@ -35,11 +35,10 @@ int last_xml_version = -1;
 
 static xmlDoc *test_xslt_transforms(xmlDoc *doc, const char **params);
 
-static struct units xml_parsing_units;
 const struct units SI_units = SI_UNITS;
 const struct units IMPERIAL_units = IMPERIAL_UNITS;
 
-static void divedate(const char *buffer, timestamp_t *when)
+static void divedate(const char *buffer, timestamp_t *when, struct parser_state *state)
 {
 	int d, m, y;
 	int hh, mm, ss;
@@ -55,43 +54,43 @@ static void divedate(const char *buffer, timestamp_t *when)
 		fprintf(stderr, "Unable to parse date '%s'\n", buffer);
 		return;
 	}
-	cur_tm.tm_year = y;
-	cur_tm.tm_mon = m - 1;
-	cur_tm.tm_mday = d;
-	cur_tm.tm_hour = hh;
-	cur_tm.tm_min = mm;
-	cur_tm.tm_sec = ss;
+	state->cur_tm.tm_year = y;
+	state->cur_tm.tm_mon = m - 1;
+	state->cur_tm.tm_mday = d;
+	state->cur_tm.tm_hour = hh;
+	state->cur_tm.tm_min = mm;
+	state->cur_tm.tm_sec = ss;
 
-	*when = utc_mktime(&cur_tm);
+	*when = utc_mktime(&state->cur_tm);
 }
 
-static void divetime(const char *buffer, timestamp_t *when)
+static void divetime(const char *buffer, timestamp_t *when, struct parser_state *state)
 {
 	int h, m, s = 0;
 
 	if (sscanf(buffer, "%d:%d:%d", &h, &m, &s) >= 2) {
-		cur_tm.tm_hour = h;
-		cur_tm.tm_min = m;
-		cur_tm.tm_sec = s;
-		*when = utc_mktime(&cur_tm);
+		state->cur_tm.tm_hour = h;
+		state->cur_tm.tm_min = m;
+		state->cur_tm.tm_sec = s;
+		*when = utc_mktime(&state->cur_tm);
 	}
 }
 
 /* Libdivecomputer: "2011-03-20 10:22:38" */
-static void divedatetime(char *buffer, timestamp_t *when)
+static void divedatetime(char *buffer, timestamp_t *when, struct parser_state *state)
 {
 	int y, m, d;
 	int hr, min, sec;
 
 	if (sscanf(buffer, "%d-%d-%d %d:%d:%d",
 		   &y, &m, &d, &hr, &min, &sec) == 6) {
-		cur_tm.tm_year = y;
-		cur_tm.tm_mon = m - 1;
-		cur_tm.tm_mday = d;
-		cur_tm.tm_hour = hr;
-		cur_tm.tm_min = min;
-		cur_tm.tm_sec = sec;
-		*when = utc_mktime(&cur_tm);
+		state->cur_tm.tm_year = y;
+		state->cur_tm.tm_mon = m - 1;
+		state->cur_tm.tm_mday = d;
+		state->cur_tm.tm_hour = hr;
+		state->cur_tm.tm_min = min;
+		state->cur_tm.tm_sec = sec;
+		*when = utc_mktime(&state->cur_tm);
 	}
 }
 
@@ -184,7 +183,7 @@ static enum number_type integer_or_float(char *buffer, union int_or_float *res)
 	return parse_float(buffer, &res->fp, &end);
 }
 
-static void pressure(char *buffer, pressure_t *pressure)
+static void pressure(char *buffer, pressure_t *pressure, struct parser_state *state)
 {
 	double mbar = 0.0;
 	union int_or_float val;
@@ -194,7 +193,7 @@ static void pressure(char *buffer, pressure_t *pressure)
 		/* Just ignore zero values */
 		if (!val.fp)
 			break;
-		switch (xml_parsing_units.pressure) {
+		switch (state->xml_parsing_units.pressure) {
 		case PASCAL:
 			mbar = val.fp / 100;
 			break;
@@ -218,13 +217,13 @@ static void pressure(char *buffer, pressure_t *pressure)
 	}
 }
 
-static void cylinder_use(char *buffer, enum cylinderuse *cyl_use)
+static void cylinder_use(char *buffer, enum cylinderuse *cyl_use, struct parser_state *state)
 {
 	if (trimspace(buffer)) {
 		int use = cylinderuse_from_text(buffer);
 		*cyl_use = use;
 		if (use == OXYGEN)
-			o2pressure_sensor = cur_cylinder_index;
+			state->o2pressure_sensor = state->cur_cylinder_index;
 	}
 }
 
@@ -240,13 +239,13 @@ static void salinity(char *buffer, int *salinity)
 	}
 }
 
-static void depth(char *buffer, depth_t *depth)
+static void depth(char *buffer, depth_t *depth, struct parser_state *state)
 {
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		switch (xml_parsing_units.length) {
+		switch (state->xml_parsing_units.length) {
 		case METERS:
 			depth->mm = lrint(val.fp * 1000);
 			break;
@@ -260,28 +259,28 @@ static void depth(char *buffer, depth_t *depth)
 	}
 }
 
-static void extra_data_start(void)
+static void extra_data_start(struct parser_state *state)
 {
-	memset(&cur_extra_data, 0, sizeof(struct extra_data));
+	memset(&state->cur_extra_data, 0, sizeof(struct extra_data));
 }
 
-static void extra_data_end(void)
+static void extra_data_end(struct parser_state *state)
 {
 	// don't save partial structures - we must have both key and value
-	if (cur_extra_data.key && cur_extra_data.value)
-		add_extra_data(get_dc(), cur_extra_data.key, cur_extra_data.value);
-	free((void *)cur_extra_data.key);
-	free((void *)cur_extra_data.value);
-	cur_extra_data.key = cur_extra_data.value = NULL;
+	if (state->cur_extra_data.key && state->cur_extra_data.value)
+		add_extra_data(get_dc(state), state->cur_extra_data.key, state->cur_extra_data.value);
+	free((void *)state->cur_extra_data.key);
+	free((void *)state->cur_extra_data.value);
+	state->cur_extra_data.key = state->cur_extra_data.value = NULL;
 }
 
-static void weight(char *buffer, weight_t *weight)
+static void weight(char *buffer, weight_t *weight, struct parser_state *state)
 {
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		switch (xml_parsing_units.weight) {
+		switch (state->xml_parsing_units.weight) {
 		case KG:
 			weight->grams = lrint(val.fp * 1000);
 			break;
@@ -295,13 +294,13 @@ static void weight(char *buffer, weight_t *weight)
 	}
 }
 
-static void temperature(char *buffer, temperature_t *temperature)
+static void temperature(char *buffer, temperature_t *temperature, struct parser_state *state)
 {
 	union int_or_float val;
 
 	switch (integer_or_float(buffer, &val)) {
 	case FLOAT:
-		switch (xml_parsing_units.temperature) {
+		switch (state->xml_parsing_units.temperature) {
 		case KELVIN:
 			temperature->mkelvin = lrint(val.fp * 1000);
 			break;
@@ -402,12 +401,12 @@ static void percent(char *buffer, fraction_t *fraction)
 	}
 }
 
-static void gasmix(char *buffer, fraction_t *fraction)
+static void gasmix(char *buffer, fraction_t *fraction, struct parser_state *state)
 {
 	/* libdivecomputer does negative percentages. */
 	if (*buffer == '-')
 		return;
-	if (cur_cylinder_index < MAX_CYLINDERS)
+	if (state->cur_cylinder_index < MAX_CYLINDERS)
 		percent(buffer, fraction);
 }
 
@@ -496,10 +495,25 @@ static int match(const char *pattern, const char *name,
 	return 1;
 }
 
+typedef void (*matchfn_state_t)(char *buffer, void *, struct parser_state *state);
+static int match_state(const char *pattern, const char *name,
+		       matchfn_state_t fn, char *buf, void *data, struct parser_state *state)
+{
+	if (!match_name(pattern, name))
+		return 0;
+	fn(buf, data, state);
+	return 1;
+}
+
 #define MATCH(pattern, fn, dest) ({ 			\
 	/* Silly type compatibility test */ 		\
 	if (0) (fn)("test", dest);			\
 	match(pattern, name, (matchfn_t) (fn), buf, dest); })
+
+#define MATCH_STATE(pattern, fn, dest) ({ 		\
+	/* Silly type compatibility test */ 		\
+	if (0) (fn)("test", dest, state);		\
+	match_state(pattern, name, (matchfn_state_t) (fn), buf, dest, state); })
 
 static void get_index(char *buffer, int *i)
 {
@@ -626,40 +640,40 @@ static void psi_or_bar(char *buffer, pressure_t *pressure)
 	}
 }
 
-static int divinglog_fill_sample(struct sample *sample, const char *name, char *buf)
+static int divinglog_fill_sample(struct sample *sample, const char *name, char *buf, struct parser_state *state)
 {
 	return MATCH("time.p", sampletime, &sample->time) ||
-	       MATCH("depth.p", depth, &sample->depth) ||
+	       MATCH_STATE("depth.p", depth, &sample->depth) ||
 	       MATCH("temp.p", fahrenheit, &sample->temperature) ||
 	       MATCH("press1.p", psi_or_bar, &sample->pressure[0]) ||
 	       0;
 }
 
-static void uddf_gasswitch(char *buffer, struct sample *sample)
+static void uddf_gasswitch(char *buffer, struct sample *sample, struct parser_state *state)
 {
 	int idx = atoi(buffer);
 	int seconds = sample->time.seconds;
-	struct dive *dive = cur_dive;
-	struct divecomputer *dc = get_dc();
+	struct dive *dive = state->cur_dive;
+	struct divecomputer *dc = get_dc(state);
 
 	add_gas_switch_event(dive, dc, seconds, idx);
 }
 
-static int uddf_fill_sample(struct sample *sample, const char *name, char *buf)
+static int uddf_fill_sample(struct sample *sample, const char *name, char *buf, struct parser_state *state)
 {
 	return MATCH("divetime", sampletime, &sample->time) ||
-	       MATCH("depth", depth, &sample->depth) ||
-	       MATCH("temperature", temperature, &sample->temperature) ||
-	       MATCH("tankpressure", pressure, &sample->pressure[0]) ||
-	       MATCH("ref.switchmix", uddf_gasswitch, sample) ||
+	       MATCH_STATE("depth", depth, &sample->depth) ||
+	       MATCH_STATE("temperature", temperature, &sample->temperature) ||
+	       MATCH_STATE("tankpressure", pressure, &sample->pressure[0]) ||
+	       MATCH_STATE("ref.switchmix", uddf_gasswitch, sample) ||
 	       0;
 }
 
-static void eventtime(char *buffer, duration_t *duration)
+static void eventtime(char *buffer, duration_t *duration, struct parser_state *state)
 {
 	sampletime(buffer, duration);
-	if (cur_sample)
-		duration->seconds += cur_sample->time.seconds;
+	if (state->cur_sample)
+		duration->seconds += state->cur_sample->time.seconds;
 }
 
 static void try_to_match_autogroup(const char *name, char *buf)
@@ -697,12 +711,12 @@ void add_gas_switch_event(struct dive *dive, struct divecomputer *dc, int second
 	}
 }
 
-static void get_cylinderindex(char *buffer, uint8_t *i)
+static void get_cylinderindex(char *buffer, uint8_t *i, struct parser_state *state)
 {
 	*i = atoi(buffer);
-	if (lastcylinderindex != *i) {
-		add_gas_switch_event(cur_dive, get_dc(), cur_sample->time.seconds, *i);
-		lastcylinderindex = *i;
+	if (state->lastcylinderindex != *i) {
+		add_gas_switch_event(state->cur_dive, get_dc(state), state->cur_sample->time.seconds, *i);
+		state->lastcylinderindex = *i;
 	}
 }
 
@@ -723,61 +737,61 @@ static void parse_libdc_deco(char *buffer, struct sample *s)
 	}
 }
 
-static void try_to_fill_dc_settings(const char *name, char *buf)
+static void try_to_fill_dc_settings(const char *name, char *buf, struct parser_state *state)
 {
 	start_match("divecomputerid", name, buf);
-	if (MATCH("model.divecomputerid", utf8_string, &cur_settings.dc.model))
+	if (MATCH("model.divecomputerid", utf8_string, &state->cur_settings.dc.model))
 		return;
-	if (MATCH("deviceid.divecomputerid", hex_value, &cur_settings.dc.deviceid))
+	if (MATCH("deviceid.divecomputerid", hex_value, &state->cur_settings.dc.deviceid))
 		return;
-	if (MATCH("nickname.divecomputerid", utf8_string, &cur_settings.dc.nickname))
+	if (MATCH("nickname.divecomputerid", utf8_string, &state->cur_settings.dc.nickname))
 		return;
-	if (MATCH("serial.divecomputerid", utf8_string, &cur_settings.dc.serial_nr))
+	if (MATCH("serial.divecomputerid", utf8_string, &state->cur_settings.dc.serial_nr))
 		return;
-	if (MATCH("firmware.divecomputerid", utf8_string, &cur_settings.dc.firmware))
+	if (MATCH("firmware.divecomputerid", utf8_string, &state->cur_settings.dc.firmware))
 		return;
 
 	nonmatch("divecomputerid", name, buf);
 }
 
-static void try_to_fill_event(const char *name, char *buf)
+static void try_to_fill_event(const char *name, char *buf, struct parser_state *state)
 {
 	start_match("event", name, buf);
-	if (MATCH("event", event_name, cur_event.name))
+	if (MATCH("event", event_name, state->cur_event.name))
 		return;
-	if (MATCH("name", event_name, cur_event.name))
+	if (MATCH("name", event_name, state->cur_event.name))
 		return;
-	if (MATCH("time", eventtime, &cur_event.time))
+	if (MATCH_STATE("time", eventtime, &state->cur_event.time))
 		return;
-	if (MATCH("type", get_index, &cur_event.type))
+	if (MATCH("type", get_index, &state->cur_event.type))
 		return;
-	if (MATCH("flags", get_index, &cur_event.flags))
+	if (MATCH("flags", get_index, &state->cur_event.flags))
 		return;
-	if (MATCH("value", get_index, &cur_event.value))
+	if (MATCH("value", get_index, &state->cur_event.value))
 		return;
-	if (MATCH("divemode", event_divemode, &cur_event.value))
+	if (MATCH("divemode", event_divemode, &state->cur_event.value))
 		return;
-	if (MATCH("cylinder", get_index, &cur_event.gas.index)) {
+	if (MATCH("cylinder", get_index, &state->cur_event.gas.index)) {
 		/* We add one to indicate that we got an actual cylinder index value */
-		cur_event.gas.index++;
+		state->cur_event.gas.index++;
 		return;
 	}
-	if (MATCH("o2", percent, &cur_event.gas.mix.o2))
+	if (MATCH("o2", percent, &state->cur_event.gas.mix.o2))
 		return;
-	if (MATCH("he", percent, &cur_event.gas.mix.he))
+	if (MATCH("he", percent, &state->cur_event.gas.mix.he))
 		return;
 	nonmatch("event", name, buf);
 }
 
-static int match_dc_data_fields(struct divecomputer *dc, const char *name, char *buf)
+static int match_dc_data_fields(struct divecomputer *dc, const char *name, char *buf, struct parser_state *state)
 {
-	if (MATCH("maxdepth", depth, &dc->maxdepth))
+	if (MATCH_STATE("maxdepth", depth, &dc->maxdepth))
 		return 1;
-	if (MATCH("meandepth", depth, &dc->meandepth))
+	if (MATCH_STATE("meandepth", depth, &dc->meandepth))
 		return 1;
-	if (MATCH("max.depth", depth, &dc->maxdepth))
+	if (MATCH_STATE("max.depth", depth, &dc->maxdepth))
 		return 1;
-	if (MATCH("mean.depth", depth, &dc->meandepth))
+	if (MATCH_STATE("mean.depth", depth, &dc->meandepth))
 		return 1;
 	if (MATCH("duration", duration, &dc->duration))
 		return 1;
@@ -789,41 +803,41 @@ static int match_dc_data_fields(struct divecomputer *dc, const char *name, char 
 		return 1;
 	if (MATCH("surfacetime", duration, &dc->surfacetime))
 		return 1;
-	if (MATCH("airtemp", temperature, &dc->airtemp))
+	if (MATCH_STATE("airtemp", temperature, &dc->airtemp))
 		return 1;
-	if (MATCH("watertemp", temperature, &dc->watertemp))
+	if (MATCH_STATE("watertemp", temperature, &dc->watertemp))
 		return 1;
-	if (MATCH("air.temperature", temperature, &dc->airtemp))
+	if (MATCH_STATE("air.temperature", temperature, &dc->airtemp))
 		return 1;
-	if (MATCH("water.temperature", temperature, &dc->watertemp))
+	if (MATCH_STATE("water.temperature", temperature, &dc->watertemp))
 		return 1;
-	if (MATCH("pressure.surface", pressure, &dc->surface_pressure))
+	if (MATCH_STATE("pressure.surface", pressure, &dc->surface_pressure))
 		return 1;
 	if (MATCH("salinity.water", salinity, &dc->salinity))
 		return 1;
-	if (MATCH("key.extradata", utf8_string, &cur_extra_data.key))
+	if (MATCH("key.extradata", utf8_string, &state->cur_extra_data.key))
 		return 1;
-	if (MATCH("value.extradata", utf8_string, &cur_extra_data.value))
+	if (MATCH("value.extradata", utf8_string, &state->cur_extra_data.value))
 		return 1;
 	if (MATCH("divemode", get_dc_type, &dc->divemode))
 		return 1;
 	if (MATCH("salinity", salinity, &dc->salinity))
 		return 1;
-	if (MATCH("atmospheric", pressure, &dc->surface_pressure))
+	if (MATCH_STATE("atmospheric", pressure, &dc->surface_pressure))
 		return 1;
 	return 0;
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
-static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
+static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf, struct parser_state *state)
 {
 	unsigned int deviceid;
 
 	start_match("divecomputer", name, buf);
 
-	if (MATCH("date", divedate, &dc->when))
+	if (MATCH_STATE("date", divedate, &dc->when))
 		return;
-	if (MATCH("time", divetime, &dc->when))
+	if (MATCH_STATE("time", divetime, &dc->when))
 		return;
 	if (MATCH("model", utf8_string, &dc->model))
 		return;
@@ -837,57 +851,57 @@ static void try_to_fill_dc(struct divecomputer *dc, const char *name, char *buf)
 		return;
 	if (MATCH("no_o2sensors", get_sensor, &dc->no_o2sensors))
 		return;
-	if (match_dc_data_fields(dc, name, buf))
+	if (match_dc_data_fields(dc, name, buf, state))
 		return;
 
 	nonmatch("divecomputer", name, buf);
 }
 
 /* We're in samples - try to convert the random xml value to something useful */
-static void try_to_fill_sample(struct sample *sample, const char *name, char *buf)
+static void try_to_fill_sample(struct sample *sample, const char *name, char *buf, struct parser_state *state)
 {
 	int in_deco;
 	pressure_t p;
 
 	start_match("sample", name, buf);
-	if (MATCH("pressure.sample", pressure, &sample->pressure[0]))
+	if (MATCH_STATE("pressure.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("cylpress.sample", pressure, &sample->pressure[0]))
+	if (MATCH_STATE("cylpress.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("pdiluent.sample", pressure, &sample->pressure[0]))
+	if (MATCH_STATE("pdiluent.sample", pressure, &sample->pressure[0]))
 		return;
-	if (MATCH("o2pressure.sample", pressure, &sample->pressure[1]))
+	if (MATCH_STATE("o2pressure.sample", pressure, &sample->pressure[1]))
 		return;
 	/* Christ, this is ugly */
-	if (MATCH("pressure0.sample", pressure, &p)) {
+	if (MATCH_STATE("pressure0.sample", pressure, &p)) {
 		add_sample_pressure(sample, 0, p.mbar);
 		return;
 	}
-	if (MATCH("pressure1.sample", pressure, &p)) {
+	if (MATCH_STATE("pressure1.sample", pressure, &p)) {
 		add_sample_pressure(sample, 1, p.mbar);
 		return;
 	}
-	if (MATCH("pressure2.sample", pressure, &p)) {
+	if (MATCH_STATE("pressure2.sample", pressure, &p)) {
 		add_sample_pressure(sample, 2, p.mbar);
 		return;
 	}
-	if (MATCH("pressure3.sample", pressure, &p)) {
+	if (MATCH_STATE("pressure3.sample", pressure, &p)) {
 		add_sample_pressure(sample, 3, p.mbar);
 		return;
 	}
-	if (MATCH("pressure4.sample", pressure, &p)) {
+	if (MATCH_STATE("pressure4.sample", pressure, &p)) {
 		add_sample_pressure(sample, 4, p.mbar);
 		return;
 	}
-	if (MATCH("cylinderindex.sample", get_cylinderindex, &sample->sensor[0]))
+	if (MATCH_STATE("cylinderindex.sample", get_cylinderindex, &sample->sensor[0]))
 		return;
 	if (MATCH("sensor.sample", get_sensor, &sample->sensor[0]))
 		return;
-	if (MATCH("depth.sample", depth, &sample->depth))
+	if (MATCH_STATE("depth.sample", depth, &sample->depth))
 		return;
-	if (MATCH("temp.sample", temperature, &sample->temperature))
+	if (MATCH_STATE("temp.sample", temperature, &sample->temperature))
 		return;
-	if (MATCH("temperature.sample", temperature, &sample->temperature))
+	if (MATCH_STATE("temperature.sample", temperature, &sample->temperature))
 		return;
 	if (MATCH("sampletime.sample", sampletime, &sample->time))
 		return;
@@ -903,7 +917,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	}
 	if (MATCH("stoptime.sample", sampletime, &sample->stoptime))
 		return;
-	if (MATCH("stopdepth.sample", depth, &sample->stopdepth))
+	if (MATCH_STATE("stopdepth.sample", depth, &sample->stopdepth))
 		return;
 	if (MATCH("cns.sample", get_uint16, &sample->cns))
 		return;
@@ -923,25 +937,24 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 		return;
 	if (MATCH("setpoint.sample", double_to_o2pressure, &sample->setpoint))
 		return;
-	if (MATCH("ppo2.sample", double_to_o2pressure, &sample->o2sensor[next_o2_sensor])) {
-		next_o2_sensor++;
+	if (MATCH("ppo2.sample", double_to_o2pressure, &sample->o2sensor[state->next_o2_sensor])) {
+		state->next_o2_sensor++;
 		return;
 	}
 	if (MATCH("deco.sample", parse_libdc_deco, sample))
 		return;
 	if (MATCH("time.deco", sampletime, &sample->stoptime))
 		return;
-	if (MATCH("depth.deco", depth, &sample->stopdepth))
+	if (MATCH_STATE("depth.deco", depth, &sample->stopdepth))
 		return;
 
-	switch (import_source) {
+	switch (state->import_source) {
 	case DIVINGLOG:
-		if (divinglog_fill_sample(sample, name, buf))
+		if (divinglog_fill_sample(sample, name, buf, state))
 			return;
 		break;
-
 	case UDDF:
-		if (uddf_fill_sample(sample, name, buf))
+		if (uddf_fill_sample(sample, name, buf, state))
 			return;
 		break;
 
@@ -952,47 +965,45 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	nonmatch("sample", name, buf);
 }
 
-static const char *country, *city;
-
-static void divinglog_place(char *place, uint32_t *uuid)
+static void divinglog_place(char *place, uint32_t *uuid, struct parser_state *state)
 {
 	char buffer[1024];
 
 	snprintf(buffer, sizeof(buffer),
 		 "%s%s%s%s%s",
 		 place,
-		 city ? ", " : "",
-		 city ? city : "",
-		 country ? ", " : "",
-		 country ? country : "");
+		 state->city ? ", " : "",
+		 state->city ? state->city : "",
+		 state->country ? ", " : "",
+		 state->country ? state->country : "");
 	*uuid = get_dive_site_uuid_by_name(buffer, NULL);
 	if (*uuid == 0)
-		*uuid = create_dive_site(buffer, cur_dive->when);
+		*uuid = create_dive_site(buffer, state->cur_dive->when);
 
 	// TODO: capture the country / city info in the taxonomy instead
-	free(city);
-	free(country);
-	city = NULL;
-	country = NULL;
+	free(state->city);
+	free(state->country);
+	state->city = NULL;
+	state->country = NULL;
 }
 
-static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
+static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
-	return MATCH("divedate", divedate, &dive->when) ||
-	       MATCH("entrytime", divetime, &dive->when) ||
+	return MATCH_STATE("divedate", divedate, &dive->when) ||
+	       MATCH_STATE("entrytime", divetime, &dive->when) ||
 	       MATCH("divetime", duration, &dive->dc.duration) ||
-	       MATCH("depth", depth, &dive->dc.maxdepth) ||
-	       MATCH("depthavg", depth, &dive->dc.meandepth) ||
+	       MATCH_STATE("depth", depth, &dive->dc.maxdepth) ||
+	       MATCH_STATE("depthavg", depth, &dive->dc.meandepth) ||
 	       MATCH("tanktype", utf8_string, &dive->cylinder[0].type.description) ||
 	       MATCH("tanksize", cylindersize, &dive->cylinder[0].type.size) ||
-	       MATCH("presw", pressure, &dive->cylinder[0].type.workingpressure) ||
-	       MATCH("press", pressure, &dive->cylinder[0].start) ||
-	       MATCH("prese", pressure, &dive->cylinder[0].end) ||
+	       MATCH_STATE("presw", pressure, &dive->cylinder[0].type.workingpressure) ||
+	       MATCH_STATE("press", pressure, &dive->cylinder[0].start) ||
+	       MATCH_STATE("prese", pressure, &dive->cylinder[0].end) ||
 	       MATCH("comments", utf8_string, &dive->notes) ||
 	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
-	       MATCH("name.country", utf8_string, &country) ||
-	       MATCH("name.city", utf8_string, &city) ||
-	       MATCH("name.place", divinglog_place, &dive->dive_site_uuid) ||
+	       MATCH("name.country", utf8_string, &state->country) ||
+	       MATCH("name.city", utf8_string, &state->city) ||
+	       MATCH_STATE("name.place", divinglog_place, &dive->dive_site_uuid) ||
 	       0;
 }
 
@@ -1001,7 +1012,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf)
  *
  * There are many variations on that. This handles the useful cases.
  */
-static void uddf_datetime(char *buffer, timestamp_t *when)
+static void uddf_datetime(char *buffer, timestamp_t *when, struct parser_state *state)
 {
 	char c;
 	int y, m, d, hh, mm, ss;
@@ -1037,11 +1048,11 @@ success:
 	*when = utc_mktime(&tm);
 }
 
-#define uddf_datedata(name, offset)                              \
-	static void uddf_##name(char *buffer, timestamp_t *when) \
-	{                                                        \
-		cur_tm.tm_##name = atoi(buffer) + offset;        \
-		*when = utc_mktime(&cur_tm);                     \
+#define uddf_datedata(name, offset)                                                          \
+	static void uddf_##name(char *buffer, timestamp_t *when, struct parser_state *state) \
+	{                                                                                    \
+		state->cur_tm.tm_##name = atoi(buffer) + offset;                             \
+		*when = utc_mktime(&state->cur_tm);                                          \
 	}
 
 uddf_datedata(year, 0)
@@ -1050,16 +1061,16 @@ uddf_datedata(mday, 0)
 uddf_datedata(hour, 0)
 uddf_datedata(min, 0)
 
-static int uddf_dive_match(struct dive *dive, const char *name, char *buf)
+static int uddf_dive_match(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
-	return MATCH("datetime", uddf_datetime, &dive->when) ||
+	return MATCH_STATE("datetime", uddf_datetime, &dive->when) ||
 	       MATCH("diveduration", duration, &dive->dc.duration) ||
-	       MATCH("greatestdepth", depth, &dive->dc.maxdepth) ||
-	       MATCH("year.date", uddf_year, &dive->when) ||
-	       MATCH("month.date", uddf_mon, &dive->when) ||
-	       MATCH("day.date", uddf_mday, &dive->when) ||
-	       MATCH("hour.time", uddf_hour, &dive->when) ||
-	       MATCH("minute.time", uddf_min, &dive->when) ||
+	       MATCH_STATE("greatestdepth", depth, &dive->dc.maxdepth) ||
+	       MATCH_STATE("year.date", uddf_year, &dive->when) ||
+	       MATCH_STATE("month.date", uddf_mon, &dive->when) ||
+	       MATCH_STATE("day.date", uddf_mday, &dive->when) ||
+	       MATCH_STATE("hour.time", uddf_hour, &dive->when) ||
+	       MATCH_STATE("minute.time", uddf_min, &dive->when) ||
 	       0;
 }
 
@@ -1158,7 +1169,7 @@ static void gps_location(char *buffer, struct dive_site *ds)
 	parse_location(buffer, &ds->location);
 }
 
-static void gps_in_dive(char *buffer, struct dive *dive)
+static void gps_in_dive(char *buffer, struct dive *dive, struct parser_state *state)
 {
 	struct dive_site *ds = NULL;
 	location_t location;
@@ -1172,7 +1183,7 @@ static void gps_in_dive(char *buffer, struct dive *dive)
 		if (ds) {
 			// found a site nearby; in case it turns out this one had a different name let's
 			// remember the original coordinates so we can create the correct dive site later
-			cur_location = location;
+			state->cur_location = location;
 			dive->dive_site_uuid = uuid;
 		} else {
 			dive->dive_site_uuid = create_dive_site_with_gps("", &location, dive->when);
@@ -1201,19 +1212,19 @@ static void gps_picture_location(char *buffer, struct picture *pic)
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
-static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
+static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, struct parser_state *state)
 {
 	char *hash = NULL;
 	start_match("dive", name, buf);
 
-	switch (import_source) {
+	switch (state->import_source) {
 	case DIVINGLOG:
-		if (divinglog_dive_match(dive, name, buf))
+		if (divinglog_dive_match(dive, name, buf, state))
 			return;
 		break;
 
 	case UDDF:
-		if (uddf_dive_match(dive, name, buf))
+		if (uddf_dive_match(dive, name, buf, state))
 			return;
 		break;
 
@@ -1228,37 +1239,37 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("tripflag", get_tripflag, &dive->tripflag))
 		return;
-	if (MATCH("date", divedate, &dive->when))
+	if (MATCH_STATE("date", divedate, &dive->when))
 		return;
-	if (MATCH("time", divetime, &dive->when))
+	if (MATCH_STATE("time", divetime, &dive->when))
 		return;
-	if (MATCH("datetime", divedatetime, &dive->when))
+	if (MATCH_STATE("datetime", divedatetime, &dive->when))
 		return;
 	/*
 	 * Legacy format note: per-dive depths and duration get saved
 	 * in the first dive computer entry
 	 */
-	if (match_dc_data_fields(&dive->dc, name, buf))
+	if (match_dc_data_fields(&dive->dc, name, buf, state))
 		return;
 
-	if (MATCH("filename.picture", utf8_string, &cur_picture->filename))
+	if (MATCH("filename.picture", utf8_string, &state->cur_picture->filename))
 		return;
-	if (MATCH("offset.picture", offsettime, &cur_picture->offset))
+	if (MATCH("offset.picture", offsettime, &state->cur_picture->offset))
 		return;
-	if (MATCH("gps.picture", gps_picture_location, cur_picture))
+	if (MATCH("gps.picture", gps_picture_location, state->cur_picture))
 		return;
 	if (MATCH("hash.picture", utf8_string, &hash)) {
 		/* Legacy -> ignore. */
 		free(hash);
 		return;
 	}
-	if (MATCH("cylinderstartpressure", pressure, &dive->cylinder[0].start))
+	if (MATCH_STATE("cylinderstartpressure", pressure, &dive->cylinder[0].start))
 		return;
-	if (MATCH("cylinderendpressure", pressure, &dive->cylinder[0].end))
+	if (MATCH_STATE("cylinderendpressure", pressure, &dive->cylinder[0].end))
 		return;
-	if (MATCH("gps", gps_in_dive, dive))
+	if (MATCH_STATE("gps", gps_in_dive, dive))
 		return;
-	if (MATCH("Place", gps_in_dive, dive))
+	if (MATCH_STATE("Place", gps_in_dive, dive))
 		return;
 	if (MATCH("latitude", gps_lat, dive))
 		return;
@@ -1272,9 +1283,9 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("lon", gps_long, dive))
 		return;
-	if (MATCH("location", add_dive_site, dive))
+	if (MATCH_STATE("location", add_dive_site, dive))
 		return;
-	if (MATCH("name.dive", add_dive_site, dive))
+	if (MATCH_STATE("name.dive", add_dive_site, dive))
 		return;
 	if (MATCH("suit", utf8_string, &dive->suit))
 		return;
@@ -1290,56 +1301,56 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf)
 		return;
 	if (MATCH("visibility.dive", get_rating, &dive->visibility))
 		return;
-	if (cur_ws_index < MAX_WEIGHTSYSTEMS) {
-		if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[cur_ws_index].description))
+	if (state->cur_ws_index < MAX_WEIGHTSYSTEMS) {
+		if (MATCH("description.weightsystem", utf8_string, &dive->weightsystem[state->cur_ws_index].description))
 			return;
-		if (MATCH("weight.weightsystem", weight, &dive->weightsystem[cur_ws_index].weight))
+		if (MATCH_STATE("weight.weightsystem", weight, &dive->weightsystem[state->cur_ws_index].weight))
 			return;
-		if (MATCH("weight", weight, &dive->weightsystem[cur_ws_index].weight))
-			return;
-	}
-	if (cur_cylinder_index < MAX_CYLINDERS) {
-		if (MATCH("size.cylinder", cylindersize, &dive->cylinder[cur_cylinder_index].type.size))
-			return;
-		if (MATCH("workpressure.cylinder", pressure, &dive->cylinder[cur_cylinder_index].type.workingpressure))
-			return;
-		if (MATCH("description.cylinder", utf8_string, &dive->cylinder[cur_cylinder_index].type.description))
-			return;
-		if (MATCH("start.cylinder", pressure, &dive->cylinder[cur_cylinder_index].start))
-			return;
-		if (MATCH("end.cylinder", pressure, &dive->cylinder[cur_cylinder_index].end))
-			return;
-		if (MATCH("use.cylinder", cylinder_use, &dive->cylinder[cur_cylinder_index].cylinder_use))
-			return;
-		if (MATCH("depth.cylinder", depth, &dive->cylinder[cur_cylinder_index].depth))
-			return;
-		if (MATCH("o2", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
-			return;
-		if (MATCH("o2percent", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.o2))
-			return;
-		if (MATCH("n2", gasmix_nitrogen, &dive->cylinder[cur_cylinder_index].gasmix))
-			return;
-		if (MATCH("he", gasmix, &dive->cylinder[cur_cylinder_index].gasmix.he))
+		if (MATCH_STATE("weight", weight, &dive->weightsystem[state->cur_ws_index].weight))
 			return;
 	}
-	if (MATCH("air.divetemperature", temperature, &dive->airtemp))
+	if (state->cur_cylinder_index < MAX_CYLINDERS) {
+		if (MATCH("size.cylinder", cylindersize, &dive->cylinder[state->cur_cylinder_index].type.size))
+			return;
+		if (MATCH_STATE("workpressure.cylinder", pressure, &dive->cylinder[state->cur_cylinder_index].type.workingpressure))
+			return;
+		if (MATCH("description.cylinder", utf8_string, &dive->cylinder[state->cur_cylinder_index].type.description))
+			return;
+		if (MATCH_STATE("start.cylinder", pressure, &dive->cylinder[state->cur_cylinder_index].start))
+			return;
+		if (MATCH_STATE("end.cylinder", pressure, &dive->cylinder[state->cur_cylinder_index].end))
+			return;
+		if (MATCH_STATE("use.cylinder", cylinder_use, &dive->cylinder[state->cur_cylinder_index].cylinder_use))
+			return;
+		if (MATCH_STATE("depth.cylinder", depth, &dive->cylinder[state->cur_cylinder_index].depth))
+			return;
+		if (MATCH_STATE("o2", gasmix, &dive->cylinder[state->cur_cylinder_index].gasmix.o2))
+			return;
+		if (MATCH_STATE("o2percent", gasmix, &dive->cylinder[state->cur_cylinder_index].gasmix.o2))
+			return;
+		if (MATCH("n2", gasmix_nitrogen, &dive->cylinder[state->cur_cylinder_index].gasmix))
+			return;
+		if (MATCH_STATE("he", gasmix, &dive->cylinder[state->cur_cylinder_index].gasmix.he))
+			return;
+	}
+	if (MATCH_STATE("air.divetemperature", temperature, &dive->airtemp))
 		return;
-	if (MATCH("water.divetemperature", temperature, &dive->watertemp))
+	if (MATCH_STATE("water.divetemperature", temperature, &dive->watertemp))
 		return;
 
 	nonmatch("dive", name, buf);
 }
 
 /* We're in the top-level trip xml. Try to convert whatever value to a trip value */
-static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *buf)
+static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *buf, struct parser_state *state)
 {
 	start_match("trip", name, buf);
 
 	dive_trip_t *dive_trip = *dive_trip_p;
 
-	if (MATCH("date", divedate, &dive_trip->when))
+	if (MATCH_STATE("date", divedate, &dive_trip->when))
 		return;
-	if (MATCH("time", divetime, &dive_trip->when))
+	if (MATCH_STATE("time", divetime, &dive_trip->when))
 		return;
 	if (MATCH("location", utf8_string, &dive_trip->location))
 		return;
@@ -1381,43 +1392,43 @@ static void try_to_fill_dive_site(struct dive_site **ds_p, const char *name, cha
 	nonmatch("divesite", name, buf);
 }
 
-static bool entry(const char *name, char *buf)
+static bool entry(const char *name, char *buf, struct parser_state *state)
 {
 	if (!strncmp(name, "version.program", sizeof("version.program") - 1) ||
 	    !strncmp(name, "version.divelog", sizeof("version.divelog") - 1)) {
 		last_xml_version = atoi(buf);
 		report_datafile_version(last_xml_version);
 	}
-	if (in_userid) {
+	if (state->in_userid) {
 		return true;
 	}
-	if (in_settings) {
-		try_to_fill_dc_settings(name, buf);
+	if (state->in_settings) {
+		try_to_fill_dc_settings(name, buf, state);
 		try_to_match_autogroup(name, buf);
 		return true;
 	}
-	if (cur_dive_site) {
-		try_to_fill_dive_site(&cur_dive_site, name, buf);
+	if (state->cur_dive_site) {
+		try_to_fill_dive_site(&state->cur_dive_site, name, buf);
 		return true;
 	}
-	if (!cur_event.deleted) {
-		try_to_fill_event(name, buf);
+	if (!state->cur_event.deleted) {
+		try_to_fill_event(name, buf, state);
 		return true;
 	}
-	if (cur_sample) {
-		try_to_fill_sample(cur_sample, name, buf);
+	if (state->cur_sample) {
+		try_to_fill_sample(state->cur_sample, name, buf, state);
 		return true;
 	}
-	if (cur_dc) {
-		try_to_fill_dc(cur_dc, name, buf);
+	if (state->cur_dc) {
+		try_to_fill_dc(state->cur_dc, name, buf, state);
 		return true;
 	}
-	if (cur_dive) {
-		try_to_fill_dive(cur_dive, name, buf);
+	if (state->cur_dive) {
+		try_to_fill_dive(state->cur_dive, name, buf, state);
 		return true;
 	}
-	if (cur_trip) {
-		try_to_fill_trip(&cur_trip, name, buf);
+	if (state->cur_trip) {
+		try_to_fill_trip(&state->cur_trip, name, buf, state);
 		return true;
 	}
 	return true;
@@ -1462,7 +1473,7 @@ static const char *nodename(xmlNode *node, char *buf, int len)
 
 #define MAXNAME 32
 
-static bool visit_one_node(xmlNode *node)
+static bool visit_one_node(xmlNode *node, struct parser_state *state)
 {
 	xmlChar *content;
 	char buffer[MAXNAME];
@@ -1474,30 +1485,30 @@ static bool visit_one_node(xmlNode *node)
 
 	name = nodename(node, buffer, sizeof(buffer));
 
-	return entry(name, (char *)content);
+	return entry(name, (char *)content, state);
 }
 
-static bool traverse(xmlNode *root);
+static bool traverse(xmlNode *root, struct parser_state *state);
 
-static bool traverse_properties(xmlNode *node)
+static bool traverse_properties(xmlNode *node, struct parser_state *state)
 {
 	xmlAttr *p;
 	bool ret = true;
 
 	for (p = node->properties; p; p = p->next)
-		if ((ret = traverse(p->children)) == false)
+		if ((ret = traverse(p->children, state)) == false)
 			break;
 	return ret;
 }
 
-static bool visit(xmlNode *n)
+static bool visit(xmlNode *n, struct parser_state *state)
 {
-	return visit_one_node(n) && traverse_properties(n) && traverse(n->children);
+	return visit_one_node(n, state) && traverse_properties(n, state) && traverse(n->children, state);
 }
 
-static void DivingLog_importer(void)
+static void DivingLog_importer(struct parser_state *state)
 {
-	import_source = DIVINGLOG;
+	state->import_source = DIVINGLOG;
 
 	/*
 	 * Diving Log units are really strange.
@@ -1509,15 +1520,15 @@ static void DivingLog_importer(void)
 	 *
 	 * Crazy f*%^ morons.
 	 */
-	xml_parsing_units = SI_units;
+	state->xml_parsing_units = SI_units;
 }
 
-static void uddf_importer(void)
+static void uddf_importer(struct parser_state *state)
 {
-	import_source = UDDF;
-	xml_parsing_units = SI_units;
-	xml_parsing_units.pressure = PASCAL;
-	xml_parsing_units.temperature = KELVIN;
+	state->import_source = UDDF;
+	state->xml_parsing_units = SI_units;
+	state->xml_parsing_units.pressure = PASCAL;
+	state->xml_parsing_units.temperature = KELVIN;
 }
 
 /*
@@ -1526,7 +1537,7 @@ static void uddf_importer(void)
  */
 static struct nesting {
 	const char *name;
-	void (*start)(void), (*end)(void);
+	void (*start)(struct parser_state *), (*end)(struct parser_state *);
 } nesting[] = {
 	  { "divecomputerid", dc_settings_start, dc_settings_end },
 	  { "settings", settings_start, settings_end },
@@ -1553,9 +1564,9 @@ static struct nesting {
 	  { "Divinglog", DivingLog_importer },
 	  { "uddf", uddf_importer },
 	  { NULL, }
-  };
+};
 
-static bool traverse(xmlNode *root)
+static bool traverse(xmlNode *root, struct parser_state *state)
 {
 	xmlNode *n;
 	bool ret = true;
@@ -1564,7 +1575,7 @@ static bool traverse(xmlNode *root)
 		struct nesting *rule = nesting;
 
 		if (!n->name) {
-			if ((ret = visit(n)) == false)
+			if ((ret = visit(n, state)) == false)
 				break;
 			continue;
 		}
@@ -1576,17 +1587,17 @@ static bool traverse(xmlNode *root)
 		} while (rule->name);
 
 		if (rule->start)
-			rule->start();
-		if ((ret = visit(n)) == false)
+			rule->start(state);
+		if ((ret = visit(n, state)) == false)
 			break;
 		if (rule->end)
-			rule->end();
+			rule->end(state);
 	}
 	return ret;
 }
 
 /* Per-file reset */
-static void reset_all(void)
+static void reset_all(struct parser_state *state)
 {
 	/*
 	 * We reset the units for each file. You'd think it was
@@ -1595,8 +1606,8 @@ static void reset_all(void)
 	 * data within one file, we might have to reset it per
 	 * dive for that format.
 	 */
-	xml_parsing_units = SI_units;
-	import_source = UNKNOWN;
+	state->xml_parsing_units = SI_units;
+	state->import_source = UNKNOWN;
 }
 
 /* divelog.de sends us xml files that claim to be iso-8859-1
@@ -1625,14 +1636,16 @@ static const char *preprocess_divelog_de(const char *buffer)
 }
 
 int parse_xml_buffer(const char *url, const char *buffer, int size,
-		      struct dive_table *table, const char **params)
+		     struct dive_table *table, const char **params)
 {
 	UNUSED(size);
 	xmlDoc *doc;
 	const char *res = preprocess_divelog_de(buffer);
 	int ret = 0;
+	struct parser_state state;
 
-	target_table = table;
+	init_parser_state(&state);
+	state.target_table = table;
 	doc = xmlReadMemory(res, strlen(res), url, NULL, 0);
 	if (!doc)
 		doc = xmlReadMemory(res, strlen(res), url, "latin1", 0);
@@ -1643,14 +1656,15 @@ int parse_xml_buffer(const char *url, const char *buffer, int size,
 	if (!doc)
 		return report_error(translate("gettextFromC", "Failed to parse '%s'"), url);
 
-	reset_all();
-	dive_start();
+	reset_all(&state);
+	dive_start(&state);
 	doc = test_xslt_transforms(doc, params);
-	if (!traverse(xmlDocGetRootElement(doc))) {
+	if (!traverse(xmlDocGetRootElement(doc), &state)) {
 		// we decided to give up on parsing... why?
 		ret = -1;
 	}
-	dive_end();
+	dive_end(&state);
+	free_parser_state(&state);
 	xmlFreeDoc(doc);
 	return ret;
 }
@@ -1690,24 +1704,26 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	struct battery_status battery_start = {0, 0, 0, 0};
 	struct battery_status battery_end = {0, 0, 0, 0};
 	uint16_t o2_sensor_calibration_values[4] = {0};
+	struct parser_state state;
 
-	target_table = table;
+	init_parser_state(&state);
+	state.target_table = table;
 
 	// Check for the correct file magic
 	if (ptr[0] != 'D' || ptr[1] != 'i' || ptr[2] != 'v' || ptr[3] != 'E')
 		return -1;
 
-	dive_start();
-	divecomputer_start();
+	dive_start(&state);
+	divecomputer_start(&state);
 
-	cur_dc->model = strdup("DLF import");
+	state.cur_dc->model = strdup("DLF import");
 	// (ptr[7] << 8) + ptr[6] Is "Serial"
 	snprintf(serial, sizeof(serial), "%d", (ptr[7] << 8) + ptr[6]);
-	cur_dc->serial = strdup(serial);
-	cur_dc->when = parse_dlf_timestamp(ptr + 8);
-	cur_dive->when = cur_dc->when;
+	state.cur_dc->serial = strdup(serial);
+	state.cur_dc->when = parse_dlf_timestamp(ptr + 8);
+	state.cur_dive->when = state.cur_dc->when;
 
-	cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
+	state.cur_dc->duration.seconds = ((ptr[14] & 0xFE) << 16) + (ptr[13] << 8) + ptr[12];
 
 	// ptr[14] >> 1 is scrubber used in %
 
@@ -1715,41 +1731,41 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 	switch((ptr[15] & 0x30) >> 3) {
 	case 0: // unknown
 	case 1:
-		cur_dc->divemode = OC;
+		state.cur_dc->divemode = OC;
 		break;
 	case 2:
-		cur_dc->divemode = CCR;
+		state.cur_dc->divemode = CCR;
 		break;
 	case 3:
-		cur_dc->divemode = CCR; // mCCR
+		state.cur_dc->divemode = CCR; // mCCR
 		break;
 	case 4:
-		cur_dc->divemode = FREEDIVE;
+		state.cur_dc->divemode = FREEDIVE;
 		break;
 	case 5:
-		cur_dc->divemode = OC; // Gauge
+		state.cur_dc->divemode = OC; // Gauge
 		break;
 	case 6:
-		cur_dc->divemode = PSCR; // ASCR
+		state.cur_dc->divemode = PSCR; // ASCR
 		break;
 	case 7:
-		cur_dc->divemode = PSCR;
+		state.cur_dc->divemode = PSCR;
 		break;
 	}
 
-	cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
-	cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
+	state.cur_dc->maxdepth.mm = ((ptr[21] << 8) + ptr[20]) * 10;
+	state.cur_dc->surface_pressure.mbar = ((ptr[25] << 8) + ptr[24]) / 10;
 
 	// Declare initial mix as first cylinder
-	cur_dive->cylinder[0].gasmix.o2.permille = ptr[26] * 10;
-	cur_dive->cylinder[0].gasmix.he.permille = ptr[27] * 10;
+	state.cur_dive->cylinder[0].gasmix.o2.permille = ptr[26] * 10;
+	state.cur_dive->cylinder[0].gasmix.he.permille = ptr[27] * 10;
 
 	/* Done with parsing what we know about the dive header */
 	ptr += 32;
 
 	// We're going to interpret ppO2 saved as a sensor value in these modes.
-	if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
-		cur_dc->no_o2sensors = 1;
+	if (state.cur_dc->divemode == CCR || state.cur_dc->divemode == PSCR)
+		state.cur_dc->no_o2sensors = 1;
 
 	for (; ptr < buffer + size; ptr += 16) {
 		time = ((ptr[0] >> 4) & 0x0f) +
@@ -1759,31 +1775,31 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 		switch (event) {
 		case 0:
 			/* Regular sample */
-			sample_start();
-			cur_sample->time.seconds = time;
-			cur_sample->depth.mm = ((ptr[5] << 8) + ptr[4]) * 10;
+			sample_start(&state);
+			state.cur_sample->time.seconds = time;
+			state.cur_sample->depth.mm = ((ptr[5] << 8) + ptr[4]) * 10;
 			// Crazy precision on these stored values...
 			// Only store value if we're in CCR/PSCR mode,
 			// because we rather calculate ppo2 our selfs.
-			if (cur_dc->divemode == CCR || cur_dc->divemode == PSCR)
-				cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
+			if (state.cur_dc->divemode == CCR || state.cur_dc->divemode == PSCR)
+				state.cur_sample->o2sensor[0].mbar = ((ptr[7] << 8) + ptr[6]) / 10;
 
 			// In some test files, ndl / tts / temp is bogus if this bits are 1
 			// flag bits in ptr[11] & 0xF0 is probably involved to,
 			if ((ptr[2] >> 5) != 1) {
 				// NDL in minutes, 10 bit
-				cur_sample->ndl.seconds = (((ptr[9] & 0x03) << 8) + ptr[8]) * 60;
+				state.cur_sample->ndl.seconds = (((ptr[9] & 0x03) << 8) + ptr[8]) * 60;
 				// TTS in minutes, 10 bit
-				cur_sample->tts.seconds = (((ptr[10] & 0x0F) << 6) + (ptr[9] >> 2)) * 60;
+				state.cur_sample->tts.seconds = (((ptr[10] & 0x0F) << 6) + (ptr[9] >> 2)) * 60;
 				// Temperature in 1/10 C, 10 bit signed
-				cur_sample->temperature.mkelvin = ((ptr[11] & 0x20) ? -1 : 1)  * (((ptr[11] & 0x1F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
+				state.cur_sample->temperature.mkelvin = ((ptr[11] & 0x20) ? -1 : 1)  * (((ptr[11] & 0x1F) << 4) + (ptr[10] >> 4)) * 100 + ZERO_C_IN_MKELVIN;
 			}
-			cur_sample->stopdepth.mm = ((ptr[13] << 8) + ptr[12]) * 10;
-			if (cur_sample->stopdepth.mm)
-				cur_sample->in_deco = true;
+			state.cur_sample->stopdepth.mm = ((ptr[13] << 8) + ptr[12]) * 10;
+			if (state.cur_sample->stopdepth.mm)
+				state.cur_sample->in_deco = true;
 			//ptr[14] is helium content, always zero?
 			//ptr[15] is setpoint, what the computer thinks you should aim for?
-			sample_end();
+			sample_end(&state);
 			break;
 		case 1: /* dive event */
 		case 2: /* automatic parameter change */
@@ -1794,43 +1810,43 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 			if (ptr[4] == 18)
 				continue;
 
-			event_start();
-			cur_event.time.seconds = time;
+			event_start(&state);
+			state.cur_event.time.seconds = time;
 			switch (ptr[4]) {
 			case 1:
-				strcpy(cur_event.name, "Setpoint Manual");
-				cur_event.value = ptr[6];
-				sample_start();
-				cur_sample->setpoint.mbar = ptr[6] * 10;
-				sample_end();
+				strcpy(state.cur_event.name, "Setpoint Manual");
+				state.cur_event.value = ptr[6];
+				sample_start(&state);
+				state.cur_sample->setpoint.mbar = ptr[6] * 10;
+				sample_end(&state);
 				break;
 			case 2:
-				strcpy(cur_event.name, "Setpoint Auto");
-				cur_event.value = ptr[6];
-				sample_start();
-				cur_sample->setpoint.mbar = ptr[6] * 10;
-				sample_end();
+				strcpy(state.cur_event.name, "Setpoint Auto");
+				state.cur_event.value = ptr[6];
+				sample_start(&state);
+				state.cur_sample->setpoint.mbar = ptr[6] * 10;
+				sample_end(&state);
 				switch (ptr[7]) {
 				case 0:
-					strcat(cur_event.name, " Manual");
+					strcat(state.cur_event.name, " Manual");
 					break;
 				case 1:
-					strcat(cur_event.name, " Auto Start");
+					strcat(state.cur_event.name, " Auto Start");
 					break;
 				case 2:
-					strcat(cur_event.name, " Auto Hypox");
+					strcat(state.cur_event.name, " Auto Hypox");
 					break;
 				case 3:
-					strcat(cur_event.name, " Auto Timeout");
+					strcat(state.cur_event.name, " Auto Timeout");
 					break;
 				case 4:
-					strcat(cur_event.name, " Auto Ascent");
+					strcat(state.cur_event.name, " Auto Ascent");
 					break;
 				case 5:
-					strcat(cur_event.name, " Auto Stall");
+					strcat(state.cur_event.name, " Auto Stall");
 					break;
 				case 6:
-					strcat(cur_event.name, " Auto SP Low");
+					strcat(state.cur_event.name, " Auto SP Low");
 					break;
 				default:
 					break;
@@ -1838,69 +1854,69 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				break;
 			case 3:
 				// obsolete
-				strcpy(cur_event.name, "OC");
+				strcpy(state.cur_event.name, "OC");
 				break;
 			case 4:
 				// obsolete
-				strcpy(cur_event.name, "CCR");
+				strcpy(state.cur_event.name, "CCR");
 				break;
 			case 5:
-				strcpy(cur_event.name, "gaschange");
-				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
-				cur_event.value = ptr[7] << 8 ^ ptr[6];
+				strcpy(state.cur_event.name, "gaschange");
+				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
 
 				found = false;
-				for (i = 0; i < cur_cylinder_index; ++i) {
-					if (cur_dive->cylinder[i].gasmix.o2.permille == ptr[6] * 10 && cur_dive->cylinder[i].gasmix.he.permille == ptr[7] * 10) {
+				for (i = 0; i < state.cur_cylinder_index; ++i) {
+					if (state.cur_dive->cylinder[i].gasmix.o2.permille == ptr[6] * 10 && state.cur_dive->cylinder[i].gasmix.he.permille == ptr[7] * 10) {
 						found = true;
 						break;
 					}
 				}
 				if (!found) {
-					cylinder_start();
-					cur_dive->cylinder[cur_cylinder_index].gasmix.o2.permille = ptr[6] * 10;
-					cur_dive->cylinder[cur_cylinder_index].gasmix.he.permille = ptr[7] * 10;
-					cylinder_end();
-					cur_event.gas.index = cur_cylinder_index;
+					cylinder_start(&state);
+					state.cur_dive->cylinder[state.cur_cylinder_index].gasmix.o2.permille = ptr[6] * 10;
+					state.cur_dive->cylinder[state.cur_cylinder_index].gasmix.he.permille = ptr[7] * 10;
+					cylinder_end(&state);
+					state.cur_event.gas.index = state.cur_cylinder_index;
 				} else {
-					cur_event.gas.index = i;
+					state.cur_event.gas.index = i;
 				}
 				break;
 			case 6:
-				strcpy(cur_event.name, "Start");
+				strcpy(state.cur_event.name, "Start");
 				break;
 			case 7:
-				strcpy(cur_event.name, "Too Fast");
+				strcpy(state.cur_event.name, "Too Fast");
 				break;
 			case 8:
-				strcpy(cur_event.name, "Above Ceiling");
+				strcpy(state.cur_event.name, "Above Ceiling");
 				break;
 			case 9:
-				strcpy(cur_event.name, "Toxic");
+				strcpy(state.cur_event.name, "Toxic");
 				break;
 			case 10:
-				strcpy(cur_event.name, "Hypox");
+				strcpy(state.cur_event.name, "Hypox");
 				break;
 			case 11:
-				strcpy(cur_event.name, "Critical");
+				strcpy(state.cur_event.name, "Critical");
 				break;
 			case 12:
-				strcpy(cur_event.name, "Sensor Disabled");
+				strcpy(state.cur_event.name, "Sensor Disabled");
 				break;
 			case 13:
-				strcpy(cur_event.name, "Sensor Enabled");
+				strcpy(state.cur_event.name, "Sensor Enabled");
 				break;
 			case 14:
-				strcpy(cur_event.name, "O2 Backup");
+				strcpy(state.cur_event.name, "O2 Backup");
 				break;
 			case 15:
-				strcpy(cur_event.name, "Peer Down");
+				strcpy(state.cur_event.name, "Peer Down");
 				break;
 			case 16:
-				strcpy(cur_event.name, "HS Down");
+				strcpy(state.cur_event.name, "HS Down");
 				break;
 			case 17:
-				strcpy(cur_event.name, "Inconsistent");
+				strcpy(state.cur_event.name, "Inconsistent");
 				break;
 			case 18:
 				// key pressed - It should never get in here
@@ -1908,84 +1924,84 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				break;
 			case 19:
 				// obsolete
-				strcpy(cur_event.name, "SCR");
+				strcpy(state.cur_event.name, "SCR");
 				break;
 			case 20:
-				strcpy(cur_event.name, "Above Stop");
+				strcpy(state.cur_event.name, "Above Stop");
 				break;
 			case 21:
-				strcpy(cur_event.name, "Safety Miss");
+				strcpy(state.cur_event.name, "Safety Miss");
 				break;
 			case 22:
-				strcpy(cur_event.name, "Fatal");
+				strcpy(state.cur_event.name, "Fatal");
 				break;
 			case 23:
-				strcpy(cur_event.name, "gaschange");
-				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
-				cur_event.value = ptr[7] << 8 ^ ptr[6];
-				event_end();
+				strcpy(state.cur_event.name, "gaschange");
+				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
+				event_end(&state);
 				break;
 			case 24:
-				strcpy(cur_event.name, "gaschange");
-				cur_event.type = SAMPLE_EVENT_GASCHANGE2;
-				cur_event.value = ptr[7] << 8 ^ ptr[6];
-				event_end();
+				strcpy(state.cur_event.name, "gaschange");
+				state.cur_event.type = SAMPLE_EVENT_GASCHANGE2;
+				state.cur_event.value = ptr[7] << 8 ^ ptr[6];
+				event_end(&state);
 				// This is both a mode change and a gas change event
 				// so we encode it as two separate events.
-				event_start();
-				strcpy(cur_event.name, "Change Mode");
+				event_start(&state);
+				strcpy(state.cur_event.name, "Change Mode");
 				switch (ptr[8]) {
 				case 1:
-					strcat(cur_event.name, ": OC");
+					strcat(state.cur_event.name, ": OC");
 					break;
 				case 2:
-					strcat(cur_event.name, ": CCR");
+					strcat(state.cur_event.name, ": CCR");
 					break;
 				case 3:
-					strcat(cur_event.name, ": mCCR");
+					strcat(state.cur_event.name, ": mCCR");
 					break;
 				case 4:
-					strcat(cur_event.name, ": Free");
+					strcat(state.cur_event.name, ": Free");
 					break;
 				case 5:
-					strcat(cur_event.name, ": Gauge");
+					strcat(state.cur_event.name, ": Gauge");
 					break;
 				case 6:
-					strcat(cur_event.name, ": ASCR");
+					strcat(state.cur_event.name, ": ASCR");
 					break;
 				case 7:
-					strcat(cur_event.name, ": PSCR");
+					strcat(state.cur_event.name, ": PSCR");
 					break;
 				default:
 					break;
 				}
-				event_end();
+				event_end(&state);
 				break;
 			case 25:
 				// uint16_t solenoid_bitmap = (ptr[7] << 8) + (ptr[6] << 0);
 				// uint32_t time = (ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0);
-				snprintf(cur_event.name, MAX_EVENT_NAME, "CCR O2 solenoid %s", ptr[12] ? "opened": "closed");
+				snprintf(state.cur_event.name, MAX_EVENT_NAME, "CCR O2 solenoid %s", ptr[12] ? "opened": "closed");
 				break;
 			case 26:
-				strcpy(cur_event.name, "User mark");
+				strcpy(state.cur_event.name, "User mark");
 				break;
 			case 27:
-				snprintf(cur_event.name, MAX_EVENT_NAME, "%sGF Switch (%d/%d)", ptr[6] ? "Bailout, ": "", ptr[7], ptr[8]);
+				snprintf(state.cur_event.name, MAX_EVENT_NAME, "%sGF Switch (%d/%d)", ptr[6] ? "Bailout, ": "", ptr[7], ptr[8]);
 				break;
 			case 28:
-				strcpy(cur_event.name, "Peer Up");
+				strcpy(state.cur_event.name, "Peer Up");
 				break;
 			case 29:
-				strcpy(cur_event.name, "HS Up");
+				strcpy(state.cur_event.name, "HS Up");
 				break;
 			case 30:
-				snprintf(cur_event.name, MAX_EVENT_NAME, "CNS %d%%", ptr[6]);
+				snprintf(state.cur_event.name, MAX_EVENT_NAME, "CNS %d%%", ptr[6]);
 				break;
 			default:
 				// No values above 30 had any description
 				break;
 			}
-			event_end();
+			event_end(&state);
 			break;
 		case 6:
 			/* device configuration */
@@ -1999,12 +2015,12 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				case 0: // TEST_CCR_FULL_1
 					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
 					snprintf(config_buf, sizeof(config_buf), "START=%04u-%02u-%02u %02u:%02u:%02u,TEST=%02X%02X%02X%02X,RESULT=%02X%02X%02X%02X", tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, ptr[7], ptr[6], ptr[5], ptr[4], ptr[11], ptr[10], ptr[9], ptr[8]);
-					add_extra_data(cur_dc, "TEST_CCR_FULL_1", config_buf);
+					add_extra_data(state.cur_dc, "TEST_CCR_FULL_1", config_buf);
 					break;
 				case 1: // TEST_CCR_PARTIAL_1
 					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
 					snprintf(config_buf, sizeof(config_buf), "START=%04u-%02u-%02u %02u:%02u:%02u,TEST=%02X%02X%02X%02X,RESULT=%02X%02X%02X%02X", tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, ptr[7], ptr[6], ptr[5], ptr[4], ptr[11], ptr[10], ptr[9], ptr[8]);
-					add_extra_data(cur_dc, "TEST_CCR_PARTIAL_1", config_buf);
+					add_extra_data(state.cur_dc, "TEST_CCR_PARTIAL_1", config_buf);
 					break;
 				case 2: // CFG_OXYGEN_CALIBRATION
 					utc_mkdate(parse_dlf_timestamp(ptr + 12), &tm);
@@ -2013,11 +2029,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 					o2_sensor_calibration_values[2] = (ptr[9] << 8) + ptr[8];
 					o2_sensor_calibration_values[3] = (ptr[11] << 8) + ptr[10];
 					snprintf(config_buf, sizeof(config_buf), "%04u,%04u,%04u,%04u,TIME=%04u-%02u-%02u %02u:%02u:%02u", o2_sensor_calibration_values[0], o2_sensor_calibration_values[1], o2_sensor_calibration_values[2], o2_sensor_calibration_values[3], tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec);
-					add_extra_data(cur_dc, "CFG_OXYGEN_CALIBRATION", config_buf);
+					add_extra_data(state.cur_dc, "CFG_OXYGEN_CALIBRATION", config_buf);
 					break;
 				case 3: // CFG_SERIAL
 					snprintf(config_buf, sizeof(config_buf), "PRODUCT=%c%c%c%c,SERIAL=%c%c%c%c%c%c%c%c", ptr[4], ptr[5], ptr[6], ptr[7], ptr[8], ptr[9], ptr[10], ptr[11], ptr[12], ptr[13], ptr[14], ptr[15]);
-					add_extra_data(cur_dc, "CFG_SERIAL", config_buf);
+					add_extra_data(state.cur_dc, "CFG_SERIAL", config_buf);
 					break;
 				case 4: // CFG_CONFIG_DECO
 					switch ((ptr[5] & 0xC0) >> 6) {
@@ -2036,11 +2052,11 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 					}
 
 					snprintf(config_buf, sizeof(config_buf), "%s,%s,%s,safety stop required=%s,last_stop=%s,deco_algorithm=%s,stop_rounding=%u,deep_stops=%s", (ptr[4] & 0x80) ? "imperial" : "metric", (ptr[4] & 0x40) ? "sea" : "fresh", (ptr[4] & 0x30) ? "stops" : "ceiling", (ptr[4] & 0x10) ? "yes" : "no", (ptr[4] & 0x08) ? "6m" : "3m", (ptr[4] & 0x04) ? "VPM" : "Buhlmann+GF", (ptr[4] & 0x03) ? (ptr[4] & 0x03) * 30 : 1, deep_stops);
-					add_extra_data(cur_dc, "CFG_CONFIG_DECO part 1", config_buf);
+					add_extra_data(state.cur_dc, "CFG_CONFIG_DECO part 1", config_buf);
 					snprintf(config_buf, sizeof(config_buf), "deep_stop_len=%u min,gas_switch_len=%u min,gf_low=%u,gf_high=%u,gf_low_bailout=%u,gf_high_bailout=%u,ppO2_low=%4.2f,ppO2_high=%4.2f", (ptr[5] & 0x38) >> 3, ptr[5] & 0x07, ptr[6], ptr[7], ptr[8], ptr[9], ptr[10] / 100.0f, ptr[11] / 100.0f);
-					add_extra_data(cur_dc, "CFG_CONFIG_DECO part 2", config_buf);
+					add_extra_data(state.cur_dc, "CFG_CONFIG_DECO part 2", config_buf);
 					snprintf(config_buf, sizeof(config_buf), "alarm_global=%u,alarm_cns=%u,alarm_ppO2=%u,alarm_ceiling=%u,alarm_stop_miss=%u,alarm_decentrate=%u,alarm_ascentrate=%u", (ptr[12] & 0x80) >> 7, (ptr[12] & 0x40) >> 6, (ptr[12] & 0x20) >> 5, (ptr[12] & 0x10) >> 4, (ptr[12] & 0x08) >> 3, (ptr[12] & 0x04) >> 2, (ptr[12] & 0x02) >> 1);
-					add_extra_data(cur_dc, "CFG_CONFIG_DECO part 3", config_buf);
+					add_extra_data(state.cur_dc, "CFG_CONFIG_DECO part 3", config_buf);
 					break;
 				case 5: // CFG_VERSION
 					switch (ptr[4]) {
@@ -2058,7 +2074,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 							break;
 					}
 					snprintf(config_buf, sizeof(config_buf), "DEVICE=%s,HW=%d.%d,FW=%d.%d.%d.%d,FLAGS=%04X", device, ptr[5], ptr[6], ptr[7], ptr[8], ptr[9], (ptr[15] << 24) + (ptr[14] << 16) + (ptr[13] << 8) + (ptr[12]), (ptr[11] << 8) + ptr[10]);
-					add_extra_data(cur_dc, "CFG_VERSION", config_buf);
+					add_extra_data(state.cur_dc, "CFG_VERSION", config_buf);
 					break;
 			}
 			break;
@@ -2089,20 +2105,20 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				//printf("%d s: o2 cells(0.01 mV): %d %d %d %d\n", time, (ptr[5] << 8) + ptr[4], (ptr[7] << 8) + ptr[6], (ptr[9] << 8) + ptr[8], (ptr[11] << 8) + ptr[10]);
 				// [Pa/mV] coeficient O2
 				// 100 Pa == 1 mbar
-				sample_start();
-				cur_sample->time.seconds = time;
-				cur_sample->o2sensor[0].mbar = ( ((ptr[5] << 8) + ptr[4]) * o2_sensor_calibration_values[0]) / 10000;
-				cur_sample->o2sensor[1].mbar = ( ((ptr[7] << 8) + ptr[6]) * o2_sensor_calibration_values[1]) / 10000;
-				cur_sample->o2sensor[2].mbar = ( ((ptr[9] << 8) + ptr[8]) * o2_sensor_calibration_values[2]) / 10000;
+				sample_start(&state);
+				state.cur_sample->time.seconds = time;
+				state.cur_sample->o2sensor[0].mbar = ( ((ptr[5] << 8) + ptr[4]) * o2_sensor_calibration_values[0]) / 10000;
+				state.cur_sample->o2sensor[1].mbar = ( ((ptr[7] << 8) + ptr[6]) * o2_sensor_calibration_values[1]) / 10000;
+				state.cur_sample->o2sensor[2].mbar = ( ((ptr[9] << 8) + ptr[8]) * o2_sensor_calibration_values[2]) / 10000;
 				// Subsurface only handles 3 o2 sensors.
-				//cur_sample->o2sensor[3].mbar = ( ((ptr[11] << 8) + ptr[10]) * o2_sensor_calibration_values[3]) / 10000;
-				sample_end();
+				//state.cur_sample->o2sensor[3].mbar = ( ((ptr[11] << 8) + ptr[10]) * o2_sensor_calibration_values[3]) / 10000;
+				sample_end(&state);
 				break;
 			case 4:
 				/* Measure GPS */
-				cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
-				cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
-				cur_dive->dive_site_uuid = create_dive_site_with_gps("DLF imported", &cur_location, cur_dive->when);
+				state.cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
+				state.cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
+				state.cur_dive->dive_site_uuid = create_dive_site_with_gps("DLF imported", &state.cur_location, state.cur_dive->when);
 				break;
 			default:
 				break;
@@ -2124,7 +2140,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 
 		if (ptr) {
 			snprintf(ptr, size, "%dmV (%d%%)", battery_start.volt1, battery_start.percent1);
-			add_extra_data(cur_dc, "Battery 1 (start)", ptr);
+			add_extra_data(state.cur_dc, "Battery 1 (start)", ptr);
 			free(ptr);
 		}
 
@@ -2132,7 +2148,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 		ptr = malloc(size);
 		if (ptr) {
 			snprintf(ptr, size, "%dmV (%d%%)", battery_start.volt2, battery_start.percent2);
-			add_extra_data(cur_dc, "Battery 2 (start)", ptr);
+			add_extra_data(state.cur_dc, "Battery 2 (start)", ptr);
 			free(ptr);
 		}
 	}
@@ -2144,7 +2160,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 
 		if (ptr) {
 			snprintf(ptr, size, "%dmV (%d%%)", battery_end.volt1, battery_end.percent1);
-			add_extra_data(cur_dc, "Battery 1 (end)", ptr);
+			add_extra_data(state.cur_dc, "Battery 1 (end)", ptr);
 			free(ptr);
 		}
 
@@ -2152,13 +2168,14 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 		ptr = malloc(size);
 		if (ptr) {
 			snprintf(ptr, size, "%dmV (%d%%)", battery_end.volt2, battery_end.percent2);
-			add_extra_data(cur_dc, "Battery 2 (end)", ptr);
+			add_extra_data(state.cur_dc, "Battery 2 (end)", ptr);
 			free(ptr);
 		}
 	}
 
-	divecomputer_end();
-	dive_end();
+	divecomputer_end(&state);
+	dive_end(&state);
+	free_parser_state(&state);
 	return 0;
 }
 
