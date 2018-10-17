@@ -387,6 +387,7 @@ Kirigami.ScrollablePage {
 		currentIndex: -1
 		delegate: diveDelegate
 		header: filterHeader
+		headerPositioning: ListView.OverlayHeader
 		boundsBehavior: Flickable.DragOverBounds
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
