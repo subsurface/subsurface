@@ -363,14 +363,58 @@ Kirigami.ScrollablePage {
 		text: qsTr("No dives in dive list")
 		visible: diveListView.visible && diveListView.count === 0
 	}
-
 	Component {
 		id: filterHeader
 		RowLayout {
+			id: filterBar
+			states: [
+				State {
+					name: "isVisible"
+					when: rootItem.filterToggle
+					PropertyChanges { target: filterBar; visible: true; height: sitefilter.implicitHeight }
+				},
+				State {
+					name: "isHidden"
+					when: !rootItem.filterToggle
+					PropertyChanges { target: filterBar; visible: false; height: 0 }
+				}
+
+			]
+			transitions: [
+				Transition {
+					from: "isHidden"
+					to: "isVisible"
+					SequentialAnimation {
+						NumberAnimation {
+							property: "visible"
+							duration: 1
+						}
+						NumberAnimation {
+							property: "height"
+							duration: 200
+							easing.type: Easing.InOutQuad
+						}
+					}
+				},
+				Transition {
+					from: "isVisible"
+					to: "isHidden"
+					SequentialAnimation {
+						NumberAnimation {
+							property: "height"
+							duration: 200
+							easing.type: Easing.InOutQuad
+						}
+						NumberAnimation {
+							property: "visible"
+							duration: 1
+						}
+					}
+				}
+			]
+
 			anchors.left: parent.left
 			anchors.right: parent.right
-			visible: rootItem.filterToggle
-			height: rootItem.filterToggle ? sitefilter.implicitHeight * 1.1 : 0
 			Rectangle {
 				width: Kirigami.Units.gridUnit / 4
 			}
@@ -397,7 +441,6 @@ Kirigami.ScrollablePage {
 			Rectangle {
 				width: Kirigami.Units.regularSpacing
 			}
-
 		}
 	}
 
