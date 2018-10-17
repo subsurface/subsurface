@@ -19,6 +19,7 @@ public slots:
 	int getIdxForId(int id);
 	void setFilter(QString f);
 	void resetFilter();
+	int shown();
 };
 
 class DiveListModel : public QAbstractListModel
