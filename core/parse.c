@@ -394,10 +394,16 @@ void userid_stop(void)
 	in_userid = false;
 }
 
+/*
+ * Copy whitespace-trimmed string. Warning: the passed in string will be freed,
+ * therefore make sure to only pass in to NULL-initialized pointers or pointers
+ * to owned strings
+ */
 void utf8_string(char *buffer, void *_res)
 {
 	char **res = _res;
 	int size;
+	free(*res);
 	size = trimspace(buffer);
 	if(size)
 		*res = strdup(buffer);
