@@ -240,8 +240,6 @@ void ToolTipItem::refresh(const QPointF &pos)
 	refreshTime.start();
 
 	int time = lrint(timeAxis->valueAt(pos));
-	if (time == lastTime)
-		return;
 
 	lastTime = time;
 	clear();
