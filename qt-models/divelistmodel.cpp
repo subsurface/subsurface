@@ -20,6 +20,11 @@ void DiveListSortModel::resetFilter()
 	setFilterRegExp("");
 }
 
+int DiveListSortModel::shown()
+{
+	return rowCount();
+}
+
 int DiveListSortModel::getDiveId(int idx)
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
