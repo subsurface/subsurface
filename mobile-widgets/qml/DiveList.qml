@@ -385,37 +385,23 @@ Kirigami.ScrollablePage {
 					from: "isHidden"
 					to: "isVisible"
 					SequentialAnimation {
-						NumberAnimation {
-							property: "visible"
-							duration: 1
-						}
-						NumberAnimation {
-							property: "height"
-							duration: 200
-							easing.type: Easing.InOutQuad
-						}
+						NumberAnimation { property: "visible"; duration: 1 }
+						NumberAnimation { property: "height"; duration: 200; easing.type: Easing.InOutQuad }
 					}
 				},
 				Transition {
 					from: "isVisible"
 					to: "isHidden"
 					SequentialAnimation {
-						NumberAnimation {
-							property: "height"
-							duration: 200
-							easing.type: Easing.InOutQuad
-						}
-						NumberAnimation {
-							property: "visible"
-							duration: 1
-						}
+						NumberAnimation { property: "height"; duration: 200; easing.type: Easing.InOutQuad }
+						NumberAnimation { property: "visible"; duration: 1 }
 					}
 				}
 			]
 
 			anchors.left: parent.left
 			anchors.right: parent.right
-			Rectangle {
+			Rectangle { // margins didn't work, but adding a rectangle did
 				width: Kirigami.Units.gridUnit / 4
 			}
 			onVisibleChanged: numShown.text = diveModel.shown()
