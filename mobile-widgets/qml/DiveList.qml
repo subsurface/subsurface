@@ -410,7 +410,7 @@ Kirigami.ScrollablePage {
 				verticalAlignment: TextInput.AlignVCenter
 				text: ""
 				placeholderText: "Full text search"
-				onTextChanged: {
+				onAccepted: {
 					rootItem.filterPattern = text
 					diveModel.setFilter(text)
 					numShown.text = diveModel.shown()
