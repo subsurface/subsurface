@@ -415,6 +415,10 @@ Kirigami.ScrollablePage {
 					diveModel.setFilter(text)
 					numShown.text = diveModel.shown()
 				}
+				onVisibleChanged: {
+					// reset the filter when it gets toggled
+					text = ""
+				}
 			}
 			Controls.Label {
 				id: numShown
