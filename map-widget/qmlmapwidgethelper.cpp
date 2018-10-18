@@ -302,6 +302,7 @@ void MapWidgetHelper::enterEditMode(quint32 uuid)
 	} else {
 		coord = exists->coordinate();
 	}
+	centerOnDiveSiteUUID(uuid);
 	emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
 				degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
 	emit editModeChanged();
