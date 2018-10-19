@@ -75,6 +75,7 @@ private slots:
 	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
 	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 	void currentDiveChanged();
+	void filterFinished();
 private:
 	// The model has up to two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
