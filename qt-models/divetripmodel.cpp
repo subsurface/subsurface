@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divetripmodel.h"
+#include "qt-models/filtermodels.h"
 #include "core/gettextfromc.h"
 #include "core/metrics.h"
 #include "core/divelist.h"
@@ -319,6 +320,9 @@ DiveTripModel::DiveTripModel(QObject *parent) :
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModel::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModel::divesDeselected);
 	connect(&diveListNotifier, &DiveListNotifier::currentDiveChanged, this, &DiveTripModel::currentDiveChanged);
+
+	// Update trip headers if filter finished
+	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &DiveTripModel::filterFinished);
 }
 
 int DiveTripModel::columnCount(const QModelIndex&) const
@@ -1093,5 +1097,17 @@ void DiveTripModel::currentDiveChanged()
 			return;
 		}
 		emit newCurrentDive(createIndex(diveIdx, 0, idx));
+	}
+}
+
+void DiveTripModel::filterFinished()
+{
+	// If the filter finished, update all trip items to show the correct number of displayed dives
+	// in each trip. Without doing this, only trip headers of expanded trips were updated.
+	if (currentLayout == LIST)
+		return; // No trips in list mode
+	for (int idx = 0; idx < (int)items.size(); ++idx) {
+		QModelIndex tripIndex = createIndex(idx, 0, noParent);
+		dataChanged(tripIndex, tripIndex);
 	}
 }
