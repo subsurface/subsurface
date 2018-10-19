@@ -367,6 +367,7 @@ Kirigami.ScrollablePage {
 		id: filterHeader
 		RowLayout {
 			id: filterBar
+			z: 5 //make sure it sits on top
 			states: [
 				State {
 					name: "isVisible"
