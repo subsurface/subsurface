@@ -418,6 +418,9 @@ Kirigami.ScrollablePage {
 				onVisibleChanged: {
 					// reset the filter when it gets toggled
 					text = ""
+					if (visible) {
+						forceActiveFocus()
+					}
 				}
 			}
 			Controls.Label {
