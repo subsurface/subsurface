@@ -401,13 +401,13 @@ Kirigami.ScrollablePage {
 
 			anchors.left: parent.left
 			anchors.right: parent.right
-			Rectangle { // margins didn't work, but adding a rectangle did
-				width: Kirigami.Units.gridUnit / 4
-			}
+			anchors.leftMargin: Kirigami.Units.gridUnit / 2
+			anchors.rightMargin: Kirigami.Units.gridUnit / 2
 			onVisibleChanged: numShown.text = diveModel.shown()
 			Controls.TextField  {
 				id: sitefilter
 				verticalAlignment: TextInput.AlignVCenter
+				Layout.fillWidth: true
 				text: ""
 				placeholderText: "Full text search"
 				onAccepted: {
@@ -427,9 +427,6 @@ Kirigami.ScrollablePage {
 				// instead of having a misleading 0 here, just don't show a count
 				// it gets set whenever visibility or the search text changes
 				text: ""
-			}
-			Rectangle {
-				width: Kirigami.Units.regularSpacing
 			}
 		}
 	}
