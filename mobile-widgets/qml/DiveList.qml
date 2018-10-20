@@ -20,6 +20,8 @@ Kirigami.ScrollablePage {
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property string activeTrip
 	property bool showBusy: false
+	property QtObject diveListModel: diveModel
+	property string numShownText
 
 	supportsRefreshing: true
 	onRefreshingChanged: {
@@ -409,7 +411,6 @@ Kirigami.ScrollablePage {
 				anchors.right: parent.right
 				anchors.leftMargin: Kirigami.Units.gridUnit / 2
 				anchors.rightMargin: Kirigami.Units.gridUnit / 2
-				onVisibleChanged: numShown.text = diveModel.shown()
 				Controls.TextField  {
 					id: sitefilter
 					z: 10
@@ -424,7 +425,6 @@ Kirigami.ScrollablePage {
 						diveModel.setFilter(text)
 						console.log("back from setFilter")
 						showBusy = false
-						numShown.text = diveModel.shown()
 					}
 					onEnabledChanged: {
 						// reset the filter when it gets toggled
@@ -438,10 +438,7 @@ Kirigami.ScrollablePage {
 					id: numShown
 					z: 10
 					verticalAlignment: Text.AlignVCenter
-					// when this is first rendered, the model is still empty, so
-					// instead of having a misleading 0 here, just don't show a count
-					// it gets set whenever visibility or the search text changes
-					text: ""
+					text: numShownText
 				}
 			}
 		}
@@ -452,7 +449,7 @@ Kirigami.ScrollablePage {
 		anchors.fill: parent
 		opacity: 1.0 - startPage.opacity
 		visible: opacity > 0
-		model: diveModel
+		model: page.diveListModel
 		currentIndex: -1
 		delegate: diveDelegate
 		header: filterHeader
