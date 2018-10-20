@@ -38,14 +38,6 @@ static void cond_put_format(int cond, struct membuffer *b, const char *fmt, ...)
 
 #define SAVE(str, x) cond_put_format(dive->x, b, str " %d\n", dive->x)
 
-static void show_gps(struct membuffer *b, degrees_t latitude, degrees_t longitude)
-{
-	if (latitude.udeg || longitude.udeg) {
-		put_degrees(b, latitude, "gps ", " ");
-		put_degrees(b, longitude, "", "\n");
-	}
-}
-
 static void quote(struct membuffer *b, const char *text)
 {
 	const char *p = text;
@@ -613,7 +605,7 @@ static int save_one_picture(git_repository *repo, struct dir *dir, struct pictur
 	unsigned h;
 
 	show_utf8(&buf, "filename ", pic->filename, "\n");
-	show_gps(&buf, pic->latitude, pic->longitude);
+	put_location(&buf, &pic->location, "gps ", "\n");
 
 	/* Picture loading will load even negative offsets.. */
 	if (offset < 0) {
@@ -921,7 +913,7 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 		show_utf8(&b, "name ", ds->name, "\n");
 		show_utf8(&b, "description ", ds->description, "\n");
 		show_utf8(&b, "notes ", ds->notes, "\n");
-		show_gps(&b, ds->latitude, ds->longitude);
+		put_location(&b, &ds->location, "gps ", "\n");
 		for (int j = 0; j < ds->taxonomy.nr; j++) {
 			struct taxonomy *t = &ds->taxonomy.category[j];
 			if (t->category != TC_NONE && t->value) {

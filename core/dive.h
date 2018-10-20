@@ -363,8 +363,7 @@ extern enum divemode_t get_divemode_at_time(const struct divecomputer *dc, int d
 struct picture {
 	char *filename;
 	offset_t offset;
-	degrees_t latitude;
-	degrees_t longitude;
+	location_t location;
 	struct picture *next;
 };
 

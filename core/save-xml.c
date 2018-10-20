@@ -464,10 +464,7 @@ static void save_picture(struct membuffer *b, struct picture *pic)
 		}
 		put_format(b, " offset='%c%u:%02u min'", sign, FRACTION(offset, 60));
 	}
-	if (pic->latitude.udeg || pic->longitude.udeg) {
-		put_degrees(b, pic->latitude, " gps='", " ");
-		put_degrees(b, pic->longitude, "", "'");
-	}
+	put_location(b, &pic->location, " gps='","'");
 
 	put_string(b, "/>\n");
 }
@@ -630,10 +627,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
 		show_utf8_blanked(b, ds->name, " name='", "'", 1, anonymize);
-		if (ds->latitude.udeg || ds->longitude.udeg) {
-			put_degrees(b, ds->latitude, " gps='", " ");
-			put_degrees(b, ds->longitude, "", "'");
-		}
+		put_location(b, &ds->location, " gps='", "'");
 		show_utf8_blanked(b, ds->description, " description='", "'", 1, anonymize);
 		put_format(b, ">\n");
 		show_utf8_blanked(b, ds->notes, "  <notes>", " </notes>\n", 0, anonymize);

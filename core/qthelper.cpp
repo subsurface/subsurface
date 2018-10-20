@@ -75,14 +75,16 @@ QString distance_string(int distanceInMeters)
 	return str;
 }
 
-extern "C" const char *printGPSCoords(int lat, int lon)
+extern "C" const char *printGPSCoords(const location_t *loc)
 {
+	int lat = loc->lat.udeg;
+	int lon = loc->lon.udeg;
 	unsigned int latdeg, londeg;
 	unsigned int latmin, lonmin;
 	double latsec, lonsec;
 	QString lath, lonh, result;
 
-	if (!lat && !lon)
+	if (!has_location(loc))
 		return strdup("");
 
 	if (prefs.coordinates_traditional) {
@@ -247,30 +249,24 @@ bool parseGpsText(const QString &gps_text, double *latitude, double *longitude)
 #if 0 // we'll need something like this for the dive site management, eventually
 bool gpsHasChanged(struct dive *dive, struct dive *master, const QString &gps_text, bool *parsed_out)
 {
-	double latitude, longitude;
-	int latudeg, longudeg;
+	location_t location;
 	bool ignore;
 	bool *parsed = parsed_out ?: &ignore;
 	*parsed = true;
 
 	/* if we have a master and the dive's gps address is different from it,
 	 * don't change the dive */
-	if (master && (master->latitude.udeg != dive->latitude.udeg ||
-		       master->longitude.udeg != dive->longitude.udeg))
+	if (master && !same_location(&master->location, &dive->location))
 		return false;
 
-	if (!(*parsed = parseGpsText(gps_text, &latitude, &longitude)))
+	if (!(*parsed = parseGpsText(gps_text, location)))
 		return false;
-
-	latudeg = lrint(1000000 * latitude);
-	longudeg = lrint(1000000 * longitude);
 
 	/* if dive gps didn't change, nothing changed */
-	if (dive->latitude.udeg == latudeg && dive->longitude.udeg == longudeg)
+	if (same_location(&dive->location, location))
 		return false;
 	/* ok, update the dive and mark things changed */
-	dive->latitude.udeg = latudeg;
-	dive->longitude.udeg = longudeg;
+	dive->location = location;
 	return true;
 }
 #endif

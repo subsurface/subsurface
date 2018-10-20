@@ -14,8 +14,7 @@
 #define GPS_CURRENT_POS gettextFromC::tr("Waiting to aquire GPS location")
 
 struct gpsTracker {
-	degrees_t latitude;
-	degrees_t longitude;
+	location_t location;
 	qint64 when;
 	QString name;
 	int idx;

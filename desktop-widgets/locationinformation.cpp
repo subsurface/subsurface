@@ -116,8 +116,8 @@ void LocationInformationWidget::updateLabels()
 		ui.diveSiteNotes->setPlainText(diveSite->notes);
 	else
 		ui.diveSiteNotes->clear();
-	if (diveSite->latitude.udeg || diveSite->longitude.udeg) {
-		const char *coords = printGPSCoords(diveSite->latitude.udeg, diveSite->longitude.udeg);
+	if (has_location(&diveSite->location)) {
+		const char *coords = printGPSCoords(&diveSite->location);
 		ui.diveSiteCoordinates->setText(coords);
 		free((void *)coords);
 	} else {
@@ -137,12 +137,13 @@ void LocationInformationWidget::clearLabels()
 	ui.locationTags->clear();
 }
 
-void LocationInformationWidget::updateGpsCoordinates(degrees_t latitude, degrees_t longitude)
+void LocationInformationWidget::updateGpsCoordinates(const location_t &location)
 {
 	QString oldText = ui.diveSiteCoordinates->text();
-	const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
+
+	const char *coords = printGPSCoords(&location);
 	ui.diveSiteCoordinates->setText(coords);
-	enableLocationButtons(latitude.udeg || longitude.udeg);
+	enableLocationButtons(has_location(&location));
 	free((void *)coords);
 	if (oldText != ui.diveSiteCoordinates->text())
 		markChangedWidget(ui.diveSiteCoordinates);
@@ -150,12 +151,11 @@ void LocationInformationWidget::updateGpsCoordinates(degrees_t latitude, degrees
 
 // Parse GPS text into latitude and longitude.
 // On error, false is returned and the output parameters are left unmodified.
-bool parseGpsText(const QString &text, degrees_t &latitude, degrees_t &longitude)
+bool parseGpsText(const QString &text, location_t &location)
 {
 	double lat, lon;
 	if (parseGpsText(text, &lat, &lon)) {
-		latitude.udeg = lrint(lat * 1000000.0);
-		longitude.udeg = lrint(lon * 1000000.0);
+		location = create_location(lat, lon);
 		return true;
 	}
 	return false;
@@ -204,7 +204,7 @@ void LocationInformationWidget::acceptChanges()
 	}
 
 	if (!ui.diveSiteCoordinates->text().isEmpty())
-		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->latitude, diveSite->longitude);
+		parseGpsText(ui.diveSiteCoordinates->text(), diveSite->location);
 	if (dive_site_is_empty(diveSite)) {
 		LocationInformationModel::instance()->removeRow(get_divesite_idx(diveSite));
 		displayed_dive.dive_site_uuid = 0;
@@ -224,7 +224,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 	diveSite = ds;
 	if (ds) {
 		copy_taxonomy(&ds->taxonomy, &taxonomy);
-		filter_model.set(ds->uuid, ds->latitude, ds->longitude);
+		filter_model.set(ds->uuid, ds->location);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
@@ -233,7 +233,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 			m->invalidate();
 	} else {
 		free_taxonomy(&taxonomy);
-		filter_model.set(0, degrees_t{ 0 }, degrees_t{ 0 });
+		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });
 		clearLabels();
 	}
 	MapWidget::instance()->prepareForGetDiveCoordinates(ds ? ds->uuid : 0);
@@ -276,14 +276,14 @@ void LocationInformationWidget::on_diveSiteCoordinates_textChanged(const QString
 {
 	if (!diveSite)
 		return;
-	degrees_t latitude, longitude;
-	bool ok_old = diveSite->latitude.udeg || diveSite->longitude.udeg;
-	bool ok = parseGpsText(text, latitude, longitude);
-	if (ok != ok_old || latitude.udeg != diveSite->latitude.udeg || longitude.udeg != diveSite->longitude.udeg) {
+	location_t location;
+	bool ok_old = has_location(&diveSite->location);
+	bool ok = parseGpsText(text, location);
+	if (ok != ok_old || !same_location(&location, &diveSite->location)) {
 		if (ok) {
 			markChangedWidget(ui.diveSiteCoordinates);
 			enableLocationButtons(true);
-			filter_model.setCoordinates(latitude, longitude);
+			filter_model.setCoordinates(location);
 		} else {
 			enableLocationButtons(false);
 		}
@@ -326,10 +326,10 @@ void LocationInformationWidget::resetPallete()
 
 void LocationInformationWidget::reverseGeocode()
 {
-	degrees_t latitude, longitude;
-	if (!parseGpsText(ui.diveSiteCoordinates->text(), latitude, longitude))
+	location_t location;
+	if (!parseGpsText(ui.diveSiteCoordinates->text(), location))
 		return;
-	reverseGeoLookup(latitude, longitude, &taxonomy);
+	reverseGeoLookup(location.lat, location.lon, &taxonomy);
 	ui.locationTags->setText(constructLocationTags(&taxonomy, false));
 }
 
@@ -337,11 +337,11 @@ void LocationInformationWidget::updateLocationOnMap()
 {
 	if (!diveSite)
 		return;
-	degrees_t latitude, longitude;
-	if (!parseGpsText(ui.diveSiteCoordinates->text(), latitude, longitude))
+	location_t location;
+	if (!parseGpsText(ui.diveSiteCoordinates->text(), location))
 		return;
-	MapWidget::instance()->updateDiveSiteCoordinates(diveSite->uuid, latitude, longitude);
-	filter_model.setCoordinates(latitude, longitude);
+	MapWidget::instance()->updateDiveSiteCoordinates(diveSite->uuid, location);
+	filter_model.setCoordinates(location);
 }
 
 DiveLocationFilterProxyModel::DiveLocationFilterProxyModel(QObject*)

@@ -46,9 +46,9 @@ QVariant GpsListModel::data(const QModelIndex &index, int role) const
 	else if (role == GpsNameRole)
 		return gt.name;
 	else if (role == GpsLatitudeRole)
-		return QString::number(gt.latitude.udeg / 1000000.0, 'f', 6);
+		return QString::number(gt.location.lat.udeg / 1000000.0, 'f', 6);
 	else if (role == GpsLongitudeRole)
-		return QString::number(gt.longitude.udeg / 1000000.0, 'f', 6);
+		return QString::number(gt.location.lon.udeg / 1000000.0, 'f', 6);
 	return QVariant();
 }
 

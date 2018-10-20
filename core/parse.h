@@ -18,7 +18,7 @@ extern event_allocation_t event_allocation;
 extern struct divecomputer *cur_dc;
 extern struct dive *cur_dive;
 extern struct dive_site *cur_dive_site;
-extern degrees_t cur_latitude, cur_longitude;
+extern location_t cur_location;
 extern dive_trip_t *cur_trip;
 extern struct sample *cur_sample;
 extern struct picture *cur_picture;

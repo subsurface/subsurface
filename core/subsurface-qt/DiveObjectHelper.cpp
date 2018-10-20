@@ -108,7 +108,7 @@ QString DiveObjectHelper::location() const
 QString DiveObjectHelper::gps() const
 {
 	struct dive_site *ds = get_dive_site_by_uuid(m_dive->dive_site_uuid);
-	return ds ? QString(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg)) : QString();
+	return ds ? QString(printGPSCoords(&ds->location)) : QString();
 }
 
 QString DiveObjectHelper::gps_decimal() const

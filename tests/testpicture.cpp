@@ -40,8 +40,8 @@ void TestPicture::addPicture()
 	// 1st appearing at time 21:01
 	// 2nd appearing at time 22:01
 	QVERIFY(pic1->offset.seconds == 1261);
-	QVERIFY(pic1->latitude.udeg == 47934500);
-	QVERIFY(pic1->longitude.udeg == 11334500);
+	QVERIFY(pic1->location.lat.udeg == 47934500);
+	QVERIFY(pic1->location.lon.udeg == 11334500);
 	QVERIFY(pic2->offset.seconds == 1321);
 
 	learnPictureFilename(pic1->filename, PIC1_NAME);

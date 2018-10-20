@@ -696,9 +696,8 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 			newDs->name = copy_qstring(ui.location->text());
 			newDs->uuid = pickedUuid;
 			qDebug() << "Creating and copying dive site";
-		} else if (newDs->latitude.udeg == 0 && newDs->longitude.udeg == 0) {
-			newDs->latitude.udeg = origDs->latitude.udeg;
-			newDs->longitude.udeg = origDs->longitude.udeg;
+		} else if (!has_location(&newDs->location)) {
+			newDs->location = origDs->location;
 			qDebug() << "Copying GPS information";
 		}
 	}

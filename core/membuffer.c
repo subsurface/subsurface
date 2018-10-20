@@ -218,6 +218,14 @@ void put_degrees(struct membuffer *b, degrees_t value, const char *pre, const ch
 	put_format(b, "%s%s%u.%06u%s", pre, sign, FRACTION(udeg, 1000000), post);
 }
 
+void put_location(struct membuffer *b, location_t *loc, const char *pre, const char *post)
+{
+	if (has_location(loc)) {
+		put_degrees(b, loc->lat, pre, " ");
+		put_degrees(b, loc->lon, "", post);
+	}
+}
+
 void put_quoted(struct membuffer *b, const char *text, int is_attribute, int is_html)
 {
 	const char *p = text;

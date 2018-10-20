@@ -315,8 +315,8 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		put_format(&buf, "\\def\\place{%s}\n", site ? site->name : "");
 		put_format(&buf, "\\def\\spot{}\n");
 		put_format(&buf, "\\def\\sitename{%s}\n", site ? site->name : "");
-		site ? put_format(&buf, "\\def\\gpslat{%f}\n", site->latitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslat{}\n");
-		site ? put_format(&buf, "\\def\\gpslon{%f}\n", site->longitude.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
+		site ? put_format(&buf, "\\def\\gpslat{%f}\n", site->location.lat.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslat{}\n");
+		site ? put_format(&buf, "\\def\\gpslon{%f}\n", site->location.lon.udeg / 1000000.0) : put_format(&buf, "\\def\\gpslon{}\n");
 		put_format(&buf, "\\def\\computer{%s}\n", dive->dc.model);
 		put_format(&buf, "\\def\\country{%s}\n", qPrintable(country));
 		put_format(&buf, "\\def\\time{%u:%02u}\n", FRACTION(dive->duration.seconds, 60));

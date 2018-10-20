@@ -18,7 +18,7 @@ struct dive_site
 {
 	uint32_t uuid;
 	char *name;
-	degrees_t latitude, longitude;
+	location_t location;
 	char *description;
 	char *notes;
 	struct taxonomy_data taxonomy;
@@ -60,17 +60,17 @@ void free_dive_site(struct dive_site *ds);
 void delete_dive_site(uint32_t id);
 uint32_t create_dive_site(const char *name, timestamp_t divetime);
 uint32_t create_dive_site_from_current_dive(const char *name);
-uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude, timestamp_t divetime);
+uint32_t create_dive_site_with_gps(const char *name, const location_t *, timestamp_t divetime);
 uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp);
-uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, struct dive_site **dsp);
-uint32_t get_dive_site_uuid_by_gps_and_name(char *name, degrees_t latitude, degrees_t longitude);
-uint32_t get_dive_site_uuid_by_gps_proximity(degrees_t latitude, degrees_t longitude, int distance, struct dive_site **dsp);
+uint32_t get_dive_site_uuid_by_gps(const location_t *, struct dive_site **dsp);
+uint32_t get_dive_site_uuid_by_gps_and_name(char *name, const location_t *);
+uint32_t get_dive_site_uuid_by_gps_proximity(const location_t *, int distance, struct dive_site **dsp);
 bool dive_site_is_empty(struct dive_site *ds);
 void copy_dive_site_taxonomy(struct dive_site *orig, struct dive_site *copy);
 void copy_dive_site(struct dive_site *orig, struct dive_site *copy);
 void merge_dive_site(struct dive_site *a, struct dive_site *b);
 void clear_dive_site(struct dive_site *ds);
-unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2);
+unsigned int get_distance(const location_t *loc1, const location_t *loc2);
 uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t divetime);
 void merge_dive_sites(uint32_t ref, uint32_t *uuids, int count);
 

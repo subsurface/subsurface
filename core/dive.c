@@ -4048,8 +4048,7 @@ void dive_create_picture(struct dive *dive, const char *filename, int shift_time
 	struct picture *picture = alloc_picture();
 	picture->filename = strdup(filename);
 	picture->offset.seconds = metadata.timestamp - dive->when + shift_time;
-	picture->longitude = metadata.longitude;
-	picture->latitude = metadata.latitude;
+	picture->location = metadata.location;
 
 	dive_add_picture(dive, picture);
 	dive_set_geodata_from_picture(dive, picture);
@@ -4078,12 +4077,11 @@ unsigned int dive_get_picture_count(struct dive *dive)
 void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 {
 	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
-	if (!dive_site_has_gps_location(ds) && (picture->latitude.udeg || picture->longitude.udeg)) {
+	if (!dive_site_has_gps_location(ds) && has_location(&picture->location)) {
 		if (ds) {
-			ds->latitude = picture->latitude;
-			ds->longitude = picture->longitude;
+			ds->location = picture->location;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", picture->latitude, picture->longitude, dive->when);
+			dive->dive_site_uuid = create_dive_site_with_gps("", &picture->location, dive->when);
 			invalidate_dive_cache(dive);
 		}
 	}
@@ -4428,7 +4426,7 @@ int get_idx_by_uniq_id(int id)
 
 bool dive_site_has_gps_location(const struct dive_site *ds)
 {
-	return ds && (ds->latitude.udeg || ds->longitude.udeg);
+	return ds && has_location(&ds->location);
 }
 
 int dive_has_gps_location(const struct dive *dive)

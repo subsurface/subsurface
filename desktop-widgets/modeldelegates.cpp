@@ -479,7 +479,7 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	}
 
 	if (bottomText.isEmpty()) {
-		const char *gpsCoords = printGPSCoords(ds->latitude.udeg, ds->longitude.udeg);
+		const char *gpsCoords = printGPSCoords(&ds->location);
 		bottomText = QString(gpsCoords);
 		free( (void*) gpsCoords);
 	}
@@ -487,11 +487,10 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	if (dive_site_has_gps_location(ds) && currentDiveSiteHasGPS) {
 		// so we are showing a completion and both the current dive site and the completion
 		// have a GPS fix... so let's show the distance
-		if (ds->latitude.udeg == currentDiveSite->latitude.udeg &&
-		    ds->longitude.udeg == currentDiveSite->longitude.udeg) {
+		if (same_location(&ds->location, &currentDiveSite->location)) {
 			bottomText += tr(" (same GPS fix)");
 		} else {
-			int distanceMeters = get_distance(ds->latitude, ds->longitude, currentDiveSite->latitude, currentDiveSite->longitude);
+			int distanceMeters = get_distance(&ds->location, &currentDiveSite->location);
 			QString distance = distance_string(distanceMeters);
 			int nr = nr_of_dives_at_dive_site(ds->uuid, false);
 			bottomText += tr(" (~%1 away").arg(distance);
