@@ -64,10 +64,12 @@ Kirigami.ApplicationWindow {
 
 	function showBusy() {
 		busy.running = true
+		diveList.diveListModel = null
 	}
 
 	function hideBusy() {
 		busy.running = false
+		diveList.diveListModel = diveModel
 	}
 
 	function returnTopPage() {
