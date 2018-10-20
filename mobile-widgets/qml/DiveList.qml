@@ -373,9 +373,18 @@ Kirigami.ScrollablePage {
 	}
 	Component {
 		id: filterHeader
+		Rectangle {
+			id: filterRectangle
+			default property alias data: filterBar.data
+			implicitHeight: filterBar.implicitHeight
+			implicitWidth: filterBar.implicitWidth
+			height: filterBar.height
+			anchors.left: parent.left
+			anchors.right: parent.right
+			color: subsurfaceTheme.backgroundColor
+			enabled: rootItem.filterToggle
 		RowLayout {
 			id: filterBar
-			enabled: rootItem.filterToggle
 			z: 5 //make sure it sits on top
 			states: [
 				State {
@@ -403,6 +412,7 @@ Kirigami.ScrollablePage {
 			onVisibleChanged: numShown.text = diveModel.shown()
 			Controls.TextField  {
 				id: sitefilter
+				z: 10
 				verticalAlignment: TextInput.AlignVCenter
 				Layout.fillWidth: true
 				text: ""
@@ -426,12 +436,14 @@ Kirigami.ScrollablePage {
 			}
 			Controls.Label {
 				id: numShown
+				z: 10
 				verticalAlignment: Text.AlignVCenter
 				// when this is first rendered, the model is still empty, so
 				// instead of having a misleading 0 here, just don't show a count
 				// it gets set whenever visibility or the search text changes
 				text: ""
 			}
+		}
 		}
 	}
 
