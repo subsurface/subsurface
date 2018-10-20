@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-2.0
 import QtQuick 2.6
-import QtQuick.Controls 2.2 as Controls
+import QtQuick.Controls 2.4 as Controls
 import QtQuick.Layouts 1.2
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
@@ -19,6 +19,7 @@ Kirigami.ScrollablePage {
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property string activeTrip
+	property bool showBusy: false
 
 	supportsRefreshing: true
 	onRefreshingChanged: {
@@ -324,6 +325,13 @@ Kirigami.ScrollablePage {
 		}
 	}
 
+	Controls.BusyIndicator {
+		running: showBusy
+		z: 10
+		anchors.fill: parent
+		anchors.margins: Kirigami.Units.gridUnit
+	}
+
 	StartPage {
 		id: startPage
 		anchors.fill: parent
@@ -412,8 +420,12 @@ Kirigami.ScrollablePage {
 				text: ""
 				placeholderText: "Full text search"
 				onAccepted: {
+					showBusy = true
+					console.log("show busy")
 					rootItem.filterPattern = text
 					diveModel.setFilter(text)
+					console.log("back from setFilter")
+					showBusy = false
 					numShown.text = diveModel.shown()
 				}
 				onVisibleChanged: {
