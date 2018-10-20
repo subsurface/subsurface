@@ -19,7 +19,6 @@ Kirigami.ScrollablePage {
 	property color secondaryTextColor: subsurfaceTheme.secondaryTextColor
 	property int horizontalPadding: Kirigami.Units.gridUnit / 2 - Kirigami.Units.smallSpacing  + 1
 	property string activeTrip
-	property bool showBusy: false
 	property QtObject diveListModel: diveModel
 	property string numShownText
 
@@ -327,13 +326,6 @@ Kirigami.ScrollablePage {
 		}
 	}
 
-	Controls.BusyIndicator {
-		running: showBusy
-		z: 10
-		anchors.fill: parent
-		anchors.margins: Kirigami.Units.gridUnit
-	}
-
 	StartPage {
 		id: startPage
 		anchors.fill: parent
@@ -419,12 +411,9 @@ Kirigami.ScrollablePage {
 					text: ""
 					placeholderText: "Full text search"
 					onAccepted: {
-						showBusy = true
-						console.log("show busy")
 						rootItem.filterPattern = text
 						diveModel.setFilter(text)
 						console.log("back from setFilter")
-						showBusy = false
 					}
 					onEnabledChanged: {
 						// reset the filter when it gets toggled
