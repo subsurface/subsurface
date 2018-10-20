@@ -438,5 +438,10 @@ QStringList DiveObjectHelper::firstGas() const
 // for a full text search / filter function
 QString DiveObjectHelper::fullText() const
 {
-	return trip() + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags() + ":-:" + notes();
+	return fullTextNoNotes() + ":-:" + notes();
+}
+
+QString DiveObjectHelper::fullTextNoNotes() const
+{
+	return trip() + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags();
 }
