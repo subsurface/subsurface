@@ -169,6 +169,7 @@ QVariant DiveListModel::data(const QModelIndex &index, int role) const
 	case DiveRole: return QVariant::fromValue<QObject*>(curr_dive);
 	case DiveDateRole: return (qlonglong)curr_dive->timestamp();
 	case FullTextRole: return curr_dive->fullText();
+	case FullTextNoNotesRole: return curr_dive->fullTextNoNotes();
 	}
 	return QVariant();
 
@@ -180,6 +181,7 @@ QHash<int, QByteArray> DiveListModel::roleNames() const
 	roles[DiveRole] = "dive";
 	roles[DiveDateRole] = "date";
 	roles[FullTextRole] = "fulltext";
+	roles[FullTextNoNotesRole] = "fulltextnonotes";
 	return roles;
 }
 
