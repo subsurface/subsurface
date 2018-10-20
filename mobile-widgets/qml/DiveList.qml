@@ -383,67 +383,67 @@ Kirigami.ScrollablePage {
 			anchors.right: parent.right
 			color: subsurfaceTheme.backgroundColor
 			enabled: rootItem.filterToggle
-		RowLayout {
-			id: filterBar
-			z: 5 //make sure it sits on top
-			states: [
-				State {
-					name: "isVisible"
-					when: rootItem.filterToggle
-					PropertyChanges { target: filterBar; height: sitefilter.implicitHeight }
-				},
-				State {
-					name: "isHidden"
-					when: !rootItem.filterToggle
-					PropertyChanges { target: filterBar; height: 0 }
-				}
+			RowLayout {
+				id: filterBar
+				z: 5 //make sure it sits on top
+				states: [
+					State {
+						name: "isVisible"
+						when: rootItem.filterToggle
+						PropertyChanges { target: filterBar; height: sitefilter.implicitHeight }
+					},
+					State {
+						name: "isHidden"
+						when: !rootItem.filterToggle
+						PropertyChanges { target: filterBar; height: 0 }
+					}
 
-			]
-			transitions: [
-				Transition {
-					NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }
-				}
-			]
+				]
+				transitions: [
+					Transition {
+						NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }
+					}
+				]
 
-			anchors.left: parent.left
-			anchors.right: parent.right
-			anchors.leftMargin: Kirigami.Units.gridUnit / 2
-			anchors.rightMargin: Kirigami.Units.gridUnit / 2
-			onVisibleChanged: numShown.text = diveModel.shown()
-			Controls.TextField  {
-				id: sitefilter
-				z: 10
-				verticalAlignment: TextInput.AlignVCenter
-				Layout.fillWidth: true
-				text: ""
-				placeholderText: "Full text search"
-				onAccepted: {
-					showBusy = true
-					console.log("show busy")
-					rootItem.filterPattern = text
-					diveModel.setFilter(text)
-					console.log("back from setFilter")
-					showBusy = false
-					numShown.text = diveModel.shown()
-				}
-				onEnabledChanged: {
-					// reset the filter when it gets toggled
-					text = ""
-					if (visible) {
-						forceActiveFocus()
+				anchors.left: parent.left
+				anchors.right: parent.right
+				anchors.leftMargin: Kirigami.Units.gridUnit / 2
+				anchors.rightMargin: Kirigami.Units.gridUnit / 2
+				onVisibleChanged: numShown.text = diveModel.shown()
+				Controls.TextField  {
+					id: sitefilter
+					z: 10
+					verticalAlignment: TextInput.AlignVCenter
+					Layout.fillWidth: true
+					text: ""
+					placeholderText: "Full text search"
+					onAccepted: {
+						showBusy = true
+						console.log("show busy")
+						rootItem.filterPattern = text
+						diveModel.setFilter(text)
+						console.log("back from setFilter")
+						showBusy = false
+						numShown.text = diveModel.shown()
+					}
+					onEnabledChanged: {
+						// reset the filter when it gets toggled
+						text = ""
+						if (visible) {
+							forceActiveFocus()
+						}
 					}
 				}
+				Controls.Label {
+					id: numShown
+					z: 10
+					verticalAlignment: Text.AlignVCenter
+					// when this is first rendered, the model is still empty, so
+					// instead of having a misleading 0 here, just don't show a count
+					// it gets set whenever visibility or the search text changes
+					text: ""
+				}
 			}
-			Controls.Label {
-				id: numShown
-				z: 10
-				verticalAlignment: Text.AlignVCenter
-				// when this is first rendered, the model is still empty, so
-				// instead of having a misleading 0 here, just don't show a count
-				// it gets set whenever visibility or the search text changes
-				text: ""
-			}
-		}
 		}
 	}
 
