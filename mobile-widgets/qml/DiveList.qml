@@ -375,36 +375,24 @@ Kirigami.ScrollablePage {
 		id: filterHeader
 		RowLayout {
 			id: filterBar
+			enabled: rootItem.filterToggle
 			z: 5 //make sure it sits on top
 			states: [
 				State {
 					name: "isVisible"
 					when: rootItem.filterToggle
-					PropertyChanges { target: filterBar; visible: true; height: sitefilter.implicitHeight }
+					PropertyChanges { target: filterBar; height: sitefilter.implicitHeight }
 				},
 				State {
 					name: "isHidden"
 					when: !rootItem.filterToggle
-					PropertyChanges { target: filterBar; visible: false; height: 0 }
+					PropertyChanges { target: filterBar; height: 0 }
 				}
 
 			]
 			transitions: [
 				Transition {
-					from: "isHidden"
-					to: "isVisible"
-					SequentialAnimation {
-						NumberAnimation { property: "visible"; duration: 1 }
-						NumberAnimation { property: "height"; duration: 200; easing.type: Easing.InOutQuad }
-					}
-				},
-				Transition {
-					from: "isVisible"
-					to: "isHidden"
-					SequentialAnimation {
-						NumberAnimation { property: "height"; duration: 200; easing.type: Easing.InOutQuad }
-						NumberAnimation { property: "visible"; duration: 1 }
-					}
+					NumberAnimation { property: "height"; duration: 400; easing.type: Easing.InOutQuad }
 				}
 			]
 
@@ -428,7 +416,7 @@ Kirigami.ScrollablePage {
 					showBusy = false
 					numShown.text = diveModel.shown()
 				}
-				onVisibleChanged: {
+				onEnabledChanged: {
 					// reset the filter when it gets toggled
 					text = ""
 					if (visible) {
