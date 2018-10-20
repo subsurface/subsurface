@@ -411,8 +411,7 @@ Kirigami.ScrollablePage {
 					text: ""
 					placeholderText: "Full text search"
 					onAccepted: {
-						rootItem.filterPattern = text
-						diveModel.setFilter(text)
+						manager.setFilter(text)
 						console.log("back from setFilter")
 					}
 					onEnabledChanged: {
@@ -451,6 +450,10 @@ Kirigami.ScrollablePage {
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
 		section.labelPositioning: ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
+		onModelChanged: {
+			numShownText = diveModel.shown()
+			console.log("update number shown to " + numShownText)
+		}
 		Connections {
 			target: detailsWindow
 			onCurrentIndexChanged: diveListView.currentIndex = detailsWindow.currentIndex
