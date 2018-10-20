@@ -119,7 +119,6 @@ void run_ui()
 	}
 	QQuickWindow *qml_window = qobject_cast<QQuickWindow *>(qqWindowObject);
 	qml_window->setIcon(QIcon(":subsurface-mobile-icon"));
-	qqWindowObject->setProperty("messageText", QVariant("Subsurface-mobile startup"));
 	qDebug() << "qqwindow devicePixelRatio" << qml_window->devicePixelRatio() << qml_window->screen()->devicePixelRatio();
 	QScreen *screen = qml_window->screen();
 	QObject::connect(qml_window, &QQuickWindow::screenChanged, QMLManager::instance(), &QMLManager::screenChanged);
