@@ -26,10 +26,8 @@ Kirigami.ScrollablePage {
 	onRefreshingChanged: {
 		if (refreshing) {
 			if (prefs.credentialStatus === CloudStatus.CS_VERIFIED) {
-				console.log("User pulled down dive list - syncing with cloud storage")
 				detailsWindow.endEditMode()
 				manager.saveChangesCloud(true)
-				console.log("done syncing, turn off spinner")
 				refreshing = false
 			} else {
 				console.log("sync with cloud storage requested, but credentialStatus is " + prefs.credentialStatus)
@@ -412,7 +410,6 @@ Kirigami.ScrollablePage {
 					placeholderText: "Full text search"
 					onAccepted: {
 						manager.setFilter(text)
-						console.log("back from setFilter")
 					}
 					onEnabledChanged: {
 						// reset the filter when it gets toggled
@@ -452,7 +449,6 @@ Kirigami.ScrollablePage {
 		section.labelPositioning: ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels
 		onModelChanged: {
 			numShownText = diveModel.shown()
-			console.log("update number shown to " + numShownText)
 		}
 		Connections {
 			target: detailsWindow
