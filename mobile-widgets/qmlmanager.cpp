@@ -15,6 +15,8 @@
 #include <QDateTime>
 #include <QClipboard>
 #include <QFile>
+#include <QtConcurrent>
+#include <QFuture>
 
 #include <QBluetoothLocalDevice>
 
@@ -1845,6 +1847,17 @@ void QMLManager::showDownloadPage(QString deviceString)
 	// inform the QML UI that it should show the download page
 	m_pluggedInDeviceName = strdup(qPrintable(name));
 	emit pluggedInDeviceNameChanged();
+}
+
+void QMLManager::setFilter(const QString filterText)
+{
+	// show that we are doing something, then do something in another thread in order not to block the UI
+	QMetaObject::invokeMethod(qmlWindow, "showBusy");
+	QFuture<void> future = QtConcurrent::run(QThreadPool::globalInstance(),
+						 [=]{
+		dlSortModel->setFilter(filterText);
+		QMetaObject::invokeMethod(qmlWindow, "hideBusy");
+	});
 }
 
 #if defined(Q_OS_ANDROID)
