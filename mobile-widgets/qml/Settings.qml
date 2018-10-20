@@ -478,6 +478,57 @@ Kirigami.ScrollablePage {
 			opacity: 0.5
 			Layout.fillWidth: true
 		}
+		GridLayout {
+			id: filterPrefs
+			columns: 2
+
+			Controls.Label {
+				text: qsTr("Filter preferences")
+				font.pointSize: subsurfaceTheme.headingPointSize
+				font.weight: Font.Light
+				color: subsurfaceTheme.textColor
+				Layout.topMargin: Kirigami.Units.largeSpacing
+				Layout.bottomMargin: Kirigami.Units.largeSpacing / 2
+				Layout.columnSpan: 2
+			}
+			Controls.Label {
+				text: qsTr("Include notes in full text filtering")
+				font.pointSize: subsurfaceTheme.regularPointSize
+				Layout.preferredWidth: gridWidth * 0.75
+			}
+
+			SsrfSwitch {
+				id: fullTextNotes
+				checked: PrefGeneral.filterFullTextNotes
+				Layout.preferredWidth: gridWidth * 0.25
+				onClicked: {
+					PrefGeneral.set_filterFullTextNotes(checked)
+				}
+			}
+
+			Controls.Label {
+				text: qsTr("Match filter case sensitive")
+				font.pointSize: subsurfaceTheme.regularPointSize
+				Layout.preferredWidth: gridWidth * 0.75
+			}
+
+			SsrfSwitch {
+				id: filterCaseSensitive
+				checked: PrefGeneral.filterCaseSensitive
+				Layout.preferredWidth: gridWidth * 0.25
+				onClicked: {
+					PrefGeneral.set_filterCaseSensitive(checked)
+				}
+			}
+
+		}
+
+		Rectangle {
+			color: subsurfaceTheme.darkerPrimaryColor
+			height: 1
+			opacity: 0.5
+			Layout.fillWidth: true
+		}
 
 		GridLayout {
 			id: developer
