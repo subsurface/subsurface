@@ -36,6 +36,9 @@ void qPrefGeneral::loadSync(bool doSync)
 	disk_o2consumption(doSync);
 	disk_pscr_ratio(doSync);
 	disk_use_default_file(doSync);
+	disk_filterFullTextNotes(doSync);
+	disk_filterCaseSensitive(doSync);
+
 	if (!doSync) {
 		load_diveshareExport_uid();
 		load_diveshareExport_private();
@@ -95,3 +98,7 @@ HANDLE_PREFERENCE_BOOL(General, "use_default_file", use_default_file);
 HANDLE_PROP_QSTRING(General, "diveshareExport/uid", diveshareExport_uid);
 
 HANDLE_PROP_BOOL(General, "diveshareExport/private", diveshareExport_private);
+
+HANDLE_PREFERENCE_BOOL(General, "filterFullTextNotes", filterFullTextNotes);
+
+HANDLE_PREFERENCE_BOOL(General, "filterCaseSensitive", filterCaseSensitive);

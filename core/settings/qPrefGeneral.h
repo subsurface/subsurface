@@ -20,6 +20,8 @@ class qPrefGeneral : public QObject {
 	Q_PROPERTY(bool use_default_file READ use_default_file WRITE set_use_default_file NOTIFY use_default_fileChanged);
 	Q_PROPERTY(QString diveshareExport_uid READ diveshareExport_uid WRITE set_diveshareExport_uid NOTIFY diveshareExport_uidChanged);
 	Q_PROPERTY(bool diveshareExport_private READ diveshareExport_private WRITE set_diveshareExport_private NOTIFY diveshareExport_privateChanged);
+	Q_PROPERTY(bool filterFullTextNotes READ filterFullTextNotes WRITE set_filterFullTextNotes NOTIFY filterFullTextNotesChanged)
+	Q_PROPERTY(bool filterCaseSensitive READ filterCaseSensitive WRITE set_filterCaseSensitive NOTIFY filterCaseSensitiveChanged)
 
 public:
 	qPrefGeneral(QObject *parent = NULL);
@@ -44,6 +46,8 @@ public:
 	static bool use_default_file() { return prefs.use_default_file; }
 	static QString diveshareExport_uid() { return st_diveshareExport_uid; }
 	static bool diveshareExport_private() { return st_diveshareExport_private; }
+	static bool filterFullTextNotes() { return prefs.filterFullTextNotes; }
+	static bool filterCaseSensitive() { return prefs.filterCaseSensitive; }
 
 public slots:
 	static void set_auto_recalculate_thumbnails(bool value);
@@ -59,6 +63,8 @@ public slots:
 	static void set_use_default_file(bool value);
 	static void set_diveshareExport_uid(const QString& value);
 	static void set_diveshareExport_private(bool value);
+	static void set_filterFullTextNotes(bool value);
+	static void set_filterCaseSensitive(bool value);
 
 signals:
 	void auto_recalculate_thumbnailsChanged(bool value);
@@ -74,6 +80,8 @@ signals:
 	void use_default_fileChanged(bool value);
 	void diveshareExport_uidChanged(const QString& value);
 	void diveshareExport_privateChanged(bool value);
+	void filterFullTextNotesChanged(bool value);
+	void filterCaseSensitiveChanged(bool value);
 
 private:
 	static void disk_auto_recalculate_thumbnails(bool doSync);
@@ -87,6 +95,8 @@ private:
 	static void disk_o2consumption(bool doSync);
 	static void disk_pscr_ratio(bool doSync);
 	static void disk_use_default_file(bool doSync);
+	static void disk_filterFullTextNotes(bool doSync);
+	static void disk_filterCaseSensitive(bool doSync);
 
 	// class variables are load only
 	static void load_diveshareExport_uid();
