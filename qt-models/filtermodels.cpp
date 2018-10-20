@@ -641,10 +641,8 @@ void MultiFilterSortModel::filterChanged(const QModelIndex &from, const QModelIn
 
 void MultiFilterSortModel::myInvalidate()
 {
-#if !defined(SUBSURFACE_MOBILE)
 	int i;
 	struct dive *d;
-	DiveListView *dlv = MainWindow::instance()->diveList;
 
 	divesDisplayed = 0;
 
@@ -658,33 +656,11 @@ void MultiFilterSortModel::myInvalidate()
 
 	invalidateFilter();
 
-	// first make sure the trips are no longer shown as selected
-	// (but without updating the selection state of the dives... this just cleans
-	//  up an oddity in the filter handling)
-	// TODO: This should go internally to DiveList, to be triggered after a filter is due.
-	dlv->clearTripSelection();
-
-	// if we have no more selected dives, clean up the display - this later triggers us
-	// to pick one of the dives that are shown in the list as selected dive which is the
-	// natural behavior
-	if (amount_selected == 0) {
-		MainWindow::instance()->cleanUpEmpty();
-	} else {
-		// otherwise find the dives that should still be selected (the filter above unselected any
-		// dive that's no longer visible) and select them again
-		QList<int> curSelectedDives;
-		for_each_dive (i, d) {
-			if (d->selected)
-				curSelectedDives.append(get_divenr(d));
-		}
-		dlv->selectDives(curSelectedDives);
-	}
-
 	emit filterFinished();
 
-	if (curr_dive_site) {
-		dlv->expandAll();
-	}
+#if !defined(SUBSURFACE_MOBILE)
+	if (curr_dive_site)
+		MainWindow::instance()->diveList->expandAll();
 #endif
 }
 
