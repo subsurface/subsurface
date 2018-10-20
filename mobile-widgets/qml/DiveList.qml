@@ -362,7 +362,7 @@ Kirigami.ScrollablePage {
 		anchors.fill: parent
 		horizontalAlignment: Text.AlignHCenter
 		verticalAlignment: Text.AlignVCenter
-		text: qsTr("No dives in dive list")
+		text: diveListModel ? qsTr("No dives in dive list") : qsTr("Please wait, filtering dive list")
 		visible: diveListView.visible && diveListView.count === 0
 	}
 	Component {
