@@ -29,8 +29,11 @@ public:
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
 	void clearTripSelection();
+	void selectDive(QModelIndex index, bool scrollto = false, bool toggle = false);
 	void selectDive(int dive_table_idx, bool scrollto = false, bool toggle = false);
 	void selectDives(const QList<int> &newDiveSelection);
+	void selectFirstDive();
+	QModelIndex indexOfFirstDive();
 	void rememberSelection();
 	void restoreSelection();
 	void contextMenuEvent(QContextMenuEvent *event);
@@ -60,6 +63,7 @@ slots:
 	void loadWebImages();
 	void diveSelectionChanged(const QVector<QModelIndex> &indexes, bool select);
 	void currentDiveChanged(QModelIndex index);
+	void filterFinished();
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;

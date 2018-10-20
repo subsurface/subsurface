@@ -47,6 +47,9 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	connect(DiveTripModel::instance(), &DiveTripModel::selectionChanged, this, &DiveListView::diveSelectionChanged);
 	connect(DiveTripModel::instance(), &DiveTripModel::newCurrentDive, this, &DiveListView::currentDiveChanged);
 
+	// Update selection if all selected dives were hidden by filter
+	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &DiveListView::filterFinished);
+
 	header()->setStretchLastSection(true);
 
 	installEventFilter(this);
@@ -349,17 +352,11 @@ QList<dive_trip_t *> DiveListView::selectedTrips()
 	return ret;
 }
 
-void DiveListView::selectDive(int i, bool scrollto, bool toggle)
+void DiveListView::selectDive(QModelIndex idx, bool scrollto, bool toggle)
 {
-	if (i == -1)
+	if (!idx.isValid())
 		return;
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
-	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, i, 2, Qt::MatchRecursive);
-	QItemSelectionModel::SelectionFlags flags;
-	if (match.isEmpty())
-		return;
-	QModelIndex idx = match.first();
-	flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
+	QItemSelectionModel::SelectionFlags flags = toggle ? QItemSelectionModel::Toggle : QItemSelectionModel::Select;
 	flags |= QItemSelectionModel::Rows;
 	selectionModel()->setCurrentIndex(idx, flags);
 	if (idx.parent().isValid()) {
@@ -371,6 +368,18 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 	}
 	if (scrollto)
 		scrollTo(idx, PositionAtCenter);
+}
+
+void DiveListView::selectDive(int i, bool scrollto, bool toggle)
+{
+	if (i == -1)
+		return;
+	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
+	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, i, 2, Qt::MatchRecursive);
+	if (match.isEmpty())
+		return;
+	QModelIndex idx = match.first();
+	selectDive(idx, scrollto, toggle);
 }
 
 void DiveListView::selectDives(const QList<int> &newDiveSelection)
@@ -414,6 +423,28 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 	emit diveListNotifier.selectionChanged();
 	dontEmitDiveChangedSignal = false;
 	return;
+}
+
+// Get index of first dive. This assumes that trips without dives are never shown.
+// May return an invalid index if no dive is found.
+QModelIndex DiveListView::indexOfFirstDive()
+{
+	// Fetch the first top-level item. If this is a trip, it is supposed to have at least
+	// one child. In that case return the child. Otherwise return the top-level item, which
+	// should be a dive.
+	QAbstractItemModel *m = model();
+	QModelIndex firstDiveOrTrip = m->index(0, 0);
+	if (!firstDiveOrTrip.isValid())
+		return QModelIndex();
+	QModelIndex child = m->index(0, 0, firstDiveOrTrip);
+	return child.isValid() ? child : firstDiveOrTrip;
+}
+
+void DiveListView::selectFirstDive()
+{
+	QModelIndex first = indexOfFirstDive();
+	if (first.isValid())
+		setCurrentIndex(first);
 }
 
 bool DiveListView::eventFilter(QObject *, QEvent *event)
@@ -476,19 +507,11 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 	if (!forceSort)
 		return;
 
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
 	sortByColumn(sortColumn, currentOrder);
-	if (amount_selected && current_dive != NULL) {
+	if (amount_selected && current_dive != NULL)
 		selectDive(get_divenr(current_dive), true);
-	} else {
-		QModelIndex firstDiveOrTrip = m->index(0, 0);
-		if (firstDiveOrTrip.isValid()) {
-			if (m->index(0, 0, firstDiveOrTrip).isValid())
-				setCurrentIndex(m->index(0, 0, firstDiveOrTrip));
-			else
-				setCurrentIndex(firstDiveOrTrip);
-		}
-	}
+	else
+		selectFirstDive();
 	if (selectedIndexes().count()) {
 		QModelIndex curr = selectedIndexes().first();
 		curr = curr.parent().isValid() ? curr.parent() : curr;
@@ -1027,6 +1050,18 @@ void DiveListView::loadImageFromURL(QUrl url)
 			matchImagesToDives(QStringList(url.toString()));
 		}
 	}
+}
+
+void DiveListView::filterFinished()
+{
+	// first make sure the trips are no longer shown as selected
+	// (but without updating the selection state of the dives... this just cleans
+	// up an oddity in the filter handling)
+	clearTripSelection();
+
+	// If there are no more selected dives, select the first visible dive
+	if (!selectionModel()->hasSelection())
+		selectFirstDive();
 }
 
 QString DiveListView::lastUsedImageDir()
