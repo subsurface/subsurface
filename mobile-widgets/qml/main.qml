@@ -55,8 +55,20 @@ Kirigami.ApplicationWindow {
 	}
 	visible: false
 
-	// TODO: Verify where the opacity went to.
-	// opacity: 0
+	BusyIndicator {
+		id: busy
+		running: false
+		anchors.fill: parent
+		anchors.margins: Kirigami.Units.gridUnit
+	}
+
+	function showBusy() {
+		busy.running = true
+	}
+
+	function hideBusy() {
+		busy.running = false
+	}
 
 	function returnTopPage() {
 		for (var i=pageStack.depth; i>1; i--) {
