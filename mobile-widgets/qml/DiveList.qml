@@ -510,12 +510,7 @@ Kirigami.ScrollablePage {
 		text: qsTr("Filter dives")
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
-			if (rootItem.filterToggle) {
-				diveModel.setFilter(rootItem.filterPattern)
-			} else {
-				diveModel.resetFilter()
-				rootItem.filterPattern = ""
-			}
+			diveModel.resetFilter()
 		}
 	}
 
