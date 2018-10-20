@@ -126,6 +126,8 @@ struct preferences {
 	int         o2consumption; // ml per min
 	int         pscr_ratio; // dump ratio times 1000
 	bool        use_default_file;
+	bool        filterFullTextNotes; // mobile only - include notes information in full text searh
+	bool        filterCaseSensitive; // mobile only - make fltering case sensitive
 
 	// ********** Geocoding **********
 	geocoding_prefs_t geocoding;
