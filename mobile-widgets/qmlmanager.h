@@ -136,6 +136,7 @@ public:
 	QStringList cylinderInit() const;
 	Q_INVOKABLE void setStatusbarColor(QColor color);
 	void btHostModeChange(QBluetoothLocalDevice::HostMode state);
+	QObject *qmlWindow;
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	void writeToAppLogFile(QString logText);
