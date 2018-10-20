@@ -204,10 +204,7 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", dive->dive_site_uuid);
 			put_quoted(&mb, ds->name, 1, 0);
 			put_format(&mb, "'");
-			if (ds->latitude.udeg || ds->longitude.udeg) {
-				put_degrees(&mb, ds->latitude, " gps='", " ");
-				put_degrees(&mb, ds->longitude, "", "'");
-			}
+			put_location(&mb, &ds->location, " gps='", "'");
 			put_format(&mb, ">\n");
 			if (ds->taxonomy.nr) {
 				for (int j = 0; j < ds->taxonomy.nr; j++) {

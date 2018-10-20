@@ -191,8 +191,8 @@ void put_HTML_coordinates(struct membuffer *b, struct dive *dive)
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds)
 		return;
-	degrees_t latitude = ds->latitude;
-	degrees_t longitude = ds->longitude;
+	degrees_t latitude = ds->location.lat;
+	degrees_t longitude = ds->location.lon;
 
 	//don't put coordinates if in (0,0)
 	if (!latitude.udeg && !longitude.udeg)

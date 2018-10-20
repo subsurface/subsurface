@@ -43,8 +43,8 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		switch(column) {
 		case UUID: return ds->uuid;
 		case NAME: return ds->name;
-		case LATITUDE: return ds->latitude.udeg;
-		case LONGITUDE: return ds->longitude.udeg;
+		case LATITUDE: return ds->location.lat.udeg;
+		case LONGITUDE: return ds->location.lon.udeg;
 		case COORDS: return "TODO";
 		case DESCRIPTION: return ds->description;
 		case NOTES: return ds->name;
@@ -123,28 +123,25 @@ bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIn
 		return false;
 	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 
-	return ds && ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg;
+	return ds && same_location(&ds->location, &location);
 }
 
 GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),
 	ignoreUuid(0),
-	latitude({ 0 }),
-	longitude({ 0 })
+	location({{0},{0}})
 {
 	setSourceModel(LocationInformationModel::instance());
 }
 
-void GPSLocationInformationModel::set(uint32_t ignoreUuidIn, degrees_t latitudeIn, degrees_t longitudeIn)
+void GPSLocationInformationModel::set(uint32_t ignoreUuidIn, const location_t &locationIn)
 {
 	ignoreUuid = ignoreUuidIn;
-	latitude = latitudeIn;
-	longitude = longitudeIn;
+	location = locationIn;
 	invalidate();
 }
 
-void GPSLocationInformationModel::setCoordinates(degrees_t latitudeIn, degrees_t longitudeIn)
+void GPSLocationInformationModel::setCoordinates(const location_t &locationIn)
 {
-	latitude = latitudeIn;
-	longitude = longitudeIn;
+	location = locationIn;
 	invalidate();
 }

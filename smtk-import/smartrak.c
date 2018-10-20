@@ -323,7 +323,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 	int i;
 	uint32_t d;
 	struct dive_site *ds;
-	degrees_t lat, lon;
+	location_t loc;
 	char *str = NULL, *loc_idx = NULL, *site = NULL, *notes = NULL;
 	const char *site_fields[] = {QT_TRANSLATE_NOOP("gettextFromC", "Altitude"), QT_TRANSLATE_NOOP("gettextFromC", "Depth"),
 				     QT_TRANSLATE_NOOP("gettextFromC", "Notes")};
@@ -337,8 +337,7 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 		mdb_fetch_row(table);
 	loc_idx = copy_string(col[2]->bind_ptr);
 	site = copy_string(col[1]->bind_ptr);
-	lat.udeg = lrint(strtod(col[6]->bind_ptr, NULL) * 1000000);
-	lon.udeg = lrint(strtod(col[7]->bind_ptr, NULL) * 1000000);
+	loc = create_location(strtod(col[6]->bind_ptr, NULL), strtod(col[7]->bind_ptr, NULL));
 
 	for (i = 8; i < 11; i++) {
 		switch (i) {
@@ -376,10 +375,10 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 
 	*location = get_dive_site_uuid_by_name(str, NULL);
 	if (*location == 0) {
-		if (lat.udeg == 0 && lon.udeg == 0)
+		if (!has_location(&loc))
 			*location = create_dive_site(str, when);
 		else
-			*location = create_dive_site_with_gps(str, lat, lon, when);
+			*location = create_dive_site_with_gps(str, &loc, when);
 	}
 	smtk_free(bound_values, table->num_cols);
 

@@ -28,7 +28,7 @@ QGeoCoordinate MapWidgetHelper::getCoordinatesForUUID(QVariant dive_site_uuid)
 	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 	if (!ds || !dive_site_has_gps_location(ds))
 		return QGeoCoordinate(0.0, 0.0);
-	return QGeoCoordinate(ds->latitude.udeg * 0.000001, ds->longitude.udeg * 0.000001);
+	return QGeoCoordinate(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 }
 
 void MapWidgetHelper::centerOnDiveSiteUUID(QVariant dive_site_uuid)
@@ -48,7 +48,7 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 	} else {
 		// dive site with GPS
 		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
-		QGeoCoordinate dsCoord (ds->latitude.udeg * 0.000001, ds->longitude.udeg * 0.000001);
+		QGeoCoordinate dsCoord (ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 	}
 }
@@ -68,8 +68,8 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 			continue;
 		// only store dive sites with GPS
 		selDS.append(dss);
-		selGC.append(QGeoCoordinate(dss->latitude.udeg * 0.000001,
-		                            dss->longitude.udeg * 0.000001));
+		selGC.append(QGeoCoordinate(dss->location.lat.udeg * 0.000001,
+		                            dss->location.lon.udeg * 0.000001));
 	}
 
 	if (selDS.isEmpty()) {
@@ -86,8 +86,8 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 		qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
 		bool start = true;
 		for(struct dive_site *dss: selDS) {
-			qreal lat = dss->latitude.udeg * 0.000001;
-			qreal lon = dss->longitude.udeg * 0.000001;
+			qreal lat = dss->location.lat.udeg * 0.000001;
+			qreal lon = dss->location.lon.udeg * 0.000001;
 			if (start) {
 				minLat = maxLat = lat;
 				minLon = maxLon = lon;
@@ -133,8 +133,8 @@ void MapWidgetHelper::reloadMapLocations()
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds) || locationUuids.contains(ds->uuid))
 			continue;
-		latitude = ds->latitude.udeg * 0.000001;
-		longitude = ds->longitude.udeg * 0.000001;
+		latitude = ds->location.lat.udeg * 0.000001;
+		longitude = ds->location.lon.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
 		QString name(ds->name);
 		// don't add dive locations with the same name, unless they are
@@ -164,8 +164,8 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 		if (!dive_site_has_gps_location(ds))
 			continue;
 #ifndef SUBSURFACE_MOBILE
-		const qreal latitude = ds->latitude.udeg * 0.000001;
-		const qreal longitude = ds->longitude.udeg * 0.000001;
+		const qreal latitude = ds->location.lat.udeg * 0.000001;
+		const qreal longitude = ds->location.lon.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
 		if (locationCoord.distanceTo(dsCoord) < m_smallCircleRadius)
 			m_selectedDiveIds.append(idx);
@@ -194,8 +194,8 @@ void MapWidgetHelper::selectVisibleLocations()
 		struct dive_site *ds = get_dive_site_for_dive(dive);
 		if (!dive_site_has_gps_location(ds))
 			continue;
-		const qreal latitude = ds->latitude.udeg * 0.000001;
-		const qreal longitude = ds->longitude.udeg * 0.000001;
+		const qreal latitude = ds->location.lat.udeg * 0.000001;
+		const qreal longitude = ds->location.lon.udeg * 0.000001;
 		QGeoCoordinate dsCoord(latitude, longitude);
 		QPointF point;
 		QMetaObject::invokeMethod(m_map, "fromCoordinate", Q_RETURN_ARG(QPointF, point),
@@ -247,14 +247,17 @@ void MapWidgetHelper::calculateSmallCircleRadius(QGeoCoordinate coord)
 	m_smallCircleRadius = coord2.distanceTo(coord);
 }
 
+static location_t mk_location(QGeoCoordinate coord)
+{
+	return create_location(coord.latitude(), coord.longitude());
+}
+
 void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional)
 {
 	bool savep = prefs.coordinates_traditional;
 	prefs.coordinates_traditional = formatTraditional;
-
-	const int lat = lrint(1000000.0 * coord.latitude());
-	const int lon = lrint(1000000.0 * coord.longitude());
-	const char *coordinates = printGPSCoords(lat, lon);
+	location_t location = mk_location(coord);
+	const char *coordinates = printGPSCoords(&location);
 	QApplication::clipboard()->setText(QString(coordinates), QClipboard::Clipboard);
 
 	free((void *)coordinates);
@@ -266,14 +269,14 @@ void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeo
 	MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(uuid);
 	if (loc)
 		loc->setCoordinate(coord);
-	emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
-				degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
+	location_t location = mk_location(coord);
+	emit coordinatesChanged(location);
 }
 
-void MapWidgetHelper::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude)
+void MapWidgetHelper::updateDiveSiteCoordinates(uint32_t uuid, const location_t &location)
 {
-	const qreal latitude_r = latitude.udeg * 0.000001;
-	const qreal longitude_r = longitude.udeg * 0.000001;
+	const qreal latitude_r = location.lat.udeg * 0.000001;
+	const qreal longitude_r = location.lon.udeg * 0.000001;
 	QGeoCoordinate coord(latitude_r, longitude_r);
 	m_mapLocationModel->updateMapLocationCoordinates(uuid, coord);
 	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(coord)));
@@ -303,8 +306,8 @@ void MapWidgetHelper::enterEditMode(quint32 uuid)
 		coord = exists->coordinate();
 	}
 	centerOnDiveSiteUUID(uuid);
-	emit coordinatesChanged(degrees_t { (int)lrint(coord.latitude() * 1000000.0) },
-				degrees_t { (int)lrint(coord.longitude() * 1000000.0) });
+	location_t location = mk_location(coord);
+	emit coordinatesChanged(location);
 	emit editModeChanged();
 }
 

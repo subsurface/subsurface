@@ -754,14 +754,11 @@ void QMLManager::refreshDiveList()
 
 static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, double lon, const char *locationtext)
 {
+	location_t location = create_location(lat, lon);
 	if (ds) {
-		ds->latitude.udeg = lrint(lat * 1000000);
-		ds->longitude.udeg = lrint(lon * 1000000);
+		ds->location = location;
 	} else {
-		degrees_t latData, lonData;
-		latData.udeg = lrint(lat * 1000000);
-		lonData.udeg = lrint(lon * 1000000);
-		d->dive_site_uuid = create_dive_site_with_gps(locationtext, latData, lonData, d->when);
+		d->dive_site_uuid = create_dive_site_with_gps(locationtext, &location, d->when);
 	}
 }
 
@@ -1481,7 +1478,7 @@ QString QMLManager::getGpsFromSiteName(const QString& siteName)
 	uuid = get_dive_site_uuid_by_name(qPrintable(siteName), NULL);
 	if (uuid) {
 		ds = get_dive_site_by_uuid(uuid);
-		return QString(printGPSCoords(ds->latitude.udeg, ds->longitude.udeg));
+		return QString(printGPSCoords(&ds->location));
 	}
 	return "";
 }

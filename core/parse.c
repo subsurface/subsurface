@@ -22,7 +22,7 @@ struct parser_settings cur_settings;
 struct divecomputer *cur_dc = NULL;
 struct dive *cur_dive = NULL;
 struct dive_site *cur_dive_site = NULL;
-degrees_t cur_latitude, cur_longitude;
+location_t cur_location;
 dive_trip_t *cur_trip = NULL;
 struct sample *cur_sample = NULL;
 struct picture *cur_picture = NULL;
@@ -258,8 +258,8 @@ void dive_end(void)
 		record_dive_to_table(cur_dive, target_table);
 	cur_dive = NULL;
 	cur_dc = NULL;
-	cur_latitude.udeg = 0;
-	cur_longitude.udeg = 0;
+	cur_location.lat.udeg = 0;
+	cur_location.lon.udeg = 0;
 	cur_cylinder_index = 0;
 	cur_ws_index = 0;
 }
@@ -442,19 +442,17 @@ void add_dive_site(char *ds_name, struct dive *dive)
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				uint32_t exact_match_uuid = get_dive_site_uuid_by_gps_and_name(buffer, ds->latitude, ds->longitude);
+				uint32_t exact_match_uuid = get_dive_site_uuid_by_gps_and_name(buffer, &ds->location);
 				if (exact_match_uuid) {
 					dive->dive_site_uuid = exact_match_uuid;
 				} else {
 					dive->dive_site_uuid = create_dive_site(buffer, dive->when);
 					struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
-					if (cur_latitude.udeg || cur_longitude.udeg) {
+					if (has_location(&cur_location)) {
 						// we started this uuid with GPS data, so lets use those
-						newds->latitude = cur_latitude;
-						newds->longitude = cur_longitude;
+						newds->location = cur_location;
 					} else {
-						newds->latitude = ds->latitude;
-						newds->longitude = ds->longitude;
+						newds->location = ds->location;
 					}
 					newds->notes = add_to_string(newds->notes, translate("gettextFromC", "additional name for site: %s\n"), ds->name);
 				}

@@ -1066,7 +1066,7 @@ static int uddf_dive_match(struct dive *dive, const char *name, char *buf)
  * We don't do exponentials etc, if somebody does
  * GPS locations in that format, they are insane.
  */
-degrees_t parse_degrees(char *buf, char **end)
+static degrees_t parse_degrees(char *buf, char **end)
 {
 	int sign = 1, decimals = 6, value = 0;
 	degrees_t ret;
@@ -1112,86 +1112,90 @@ degrees_t parse_degrees(char *buf, char **end)
 static void gps_lat(char *buffer, struct dive *dive)
 {
 	char *end;
-	degrees_t latitude = parse_degrees(buffer, &end);
+	location_t location = { };
 	struct dive_site *ds = get_dive_site_for_dive(dive);
+
+	location.lat = parse_degrees(buffer, &end);
 	if (!ds) {
-		dive->dive_site_uuid = create_dive_site_with_gps(NULL, latitude, (degrees_t){0}, dive->when);
+		dive->dive_site_uuid = create_dive_site_with_gps(NULL, &location, dive->when);
 	} else {
-		if (ds->latitude.udeg && ds->latitude.udeg != latitude.udeg)
+		if (ds->location.lat.udeg && ds->location.lat.udeg != location.lat.udeg)
 			fprintf(stderr, "Oops, changing the latitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
-		ds->latitude = latitude;
+		ds->location.lat = location.lat;
 	}
 }
 
 static void gps_long(char *buffer, struct dive *dive)
 {
 	char *end;
-	degrees_t longitude = parse_degrees(buffer, &end);
+	location_t location = { };
 	struct dive_site *ds = get_dive_site_for_dive(dive);
+
+	location.lon = parse_degrees(buffer, &end);
 	if (!ds) {
-		dive->dive_site_uuid = create_dive_site_with_gps(NULL, (degrees_t){0}, longitude, dive->when);
+		dive->dive_site_uuid = create_dive_site_with_gps(NULL, &location, dive->when);
 	} else {
-		if (ds->longitude.udeg && ds->longitude.udeg != longitude.udeg)
+		if (ds->location.lon.udeg && ds->location.lon.udeg != location.lon.udeg)
 			fprintf(stderr, "Oops, changing the longitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
-		ds->longitude = longitude;
+		ds->location.lon = location.lon;
 	}
 
 }
 
-static void gps_location(char *buffer, struct dive_site *ds)
+/* We allow either spaces or a comma between the decimal degrees */
+void parse_location(char *buffer, location_t *loc)
 {
 	char *end;
+	loc->lat = parse_degrees(buffer, &end);
+	if (*end == ',') end++;
+	loc->lon = parse_degrees(end, &end);
+}
 
-	ds->latitude = parse_degrees(buffer, &end);
-	ds->longitude = parse_degrees(end, &end);
+static void gps_location(char *buffer, struct dive_site *ds)
+{
+	parse_location(buffer, &ds->location);
 }
 
 static void gps_in_dive(char *buffer, struct dive *dive)
 {
-	char *end;
 	struct dive_site *ds = NULL;
-	degrees_t latitude = parse_degrees(buffer, &end);
-	degrees_t longitude = parse_degrees(end, &end);
+	location_t location;
 	uint32_t uuid = dive->dive_site_uuid;
+
+	parse_location(buffer, &location);
 	if (uuid == 0) {
 		// check if we have a dive site within 20 meters of that gps fix
-		uuid = get_dive_site_uuid_by_gps_proximity(latitude, longitude, 20, &ds);
+		uuid = get_dive_site_uuid_by_gps_proximity(&location, 20, &ds);
 
 		if (ds) {
 			// found a site nearby; in case it turns out this one had a different name let's
 			// remember the original coordinates so we can create the correct dive site later
-			cur_latitude = latitude;
-			cur_longitude = longitude;
+			cur_location = location;
 			dive->dive_site_uuid = uuid;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", latitude, longitude, dive->when);
+			dive->dive_site_uuid = create_dive_site_with_gps("", &location, dive->when);
 			ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 		}
 	} else {
 		ds = get_dive_site_by_uuid(uuid);
 		if (dive_site_has_gps_location(ds) &&
-		    (latitude.udeg != 0 || longitude.udeg != 0) &&
-		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
+		    has_location(&location) && !same_location(&ds->location, &location)) {
 			// Houston, we have a problem
 			fprintf(stderr, "dive site uuid in dive, but gps location (%10.6f/%10.6f) different from dive location (%10.6f/%10.6f)\n",
-				ds->latitude.udeg / 1000000.0, ds->longitude.udeg / 1000000.0,
-				latitude.udeg / 1000000.0, longitude.udeg / 1000000.0);
-			const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
+				ds->location.lat.udeg / 1000000.0, ds->location.lon.udeg / 1000000.0,
+				location.lat.udeg / 1000000.0, location.lon.udeg / 1000000.0);
+			const char *coords = printGPSCoords(&location);
 			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
 			free((void *)coords);
 		} else {
-			ds->latitude = latitude;
-			ds->longitude = longitude;
+			ds->location = location;
 		}
 	}
 }
 
 static void gps_picture_location(char *buffer, struct picture *pic)
 {
-	char *end;
-
-	pic->latitude = parse_degrees(buffer, &end);
-	pic->longitude = parse_degrees(end, &end);
+	parse_location(buffer, &pic->location);
 }
 
 /* We're in the top-level dive xml. Try to convert whatever value to a dive value */
@@ -2100,9 +2104,9 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				break;
 			case 4:
 				/* Measure GPS */
-				cur_latitude.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
-				cur_longitude.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
-				cur_dive->dive_site_uuid = create_dive_site_with_gps("DLF imported", cur_latitude, cur_longitude, cur_dive->when);
+				cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
+				cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
+				cur_dive->dive_site_uuid = create_dive_site_with_gps("DLF imported", &cur_location, cur_dive->when);
 				break;
 			default:
 				break;

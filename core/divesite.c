@@ -26,12 +26,12 @@ uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp)
 }
 
 /* there could be multiple sites at the same GPS fix - return the first one */
-uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, struct dive_site **dsp)
+uint32_t get_dive_site_uuid_by_gps(const location_t *loc, struct dive_site **dsp)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds) {
-		if (ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg) {
+		if (same_location(loc, &ds->location)) {
 			if (dsp)
 				*dsp = ds;
 			return ds->uuid;
@@ -43,23 +43,23 @@ uint32_t get_dive_site_uuid_by_gps(degrees_t latitude, degrees_t longitude, stru
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-uint32_t get_dive_site_uuid_by_gps_and_name(char *name, degrees_t latitude, degrees_t longitude)
+uint32_t get_dive_site_uuid_by_gps_and_name(char *name, const location_t *loc)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds) {
-		if (ds->latitude.udeg == latitude.udeg && ds->longitude.udeg == longitude.udeg && same_string(ds->name, name))
+		if (same_location(loc, &ds->location) && same_string(ds->name, name))
 			return ds->uuid;
 	}
 	return 0;
 }
 
 // Calculate the distance in meters between two coordinates.
-unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degrees_t lon2)
+unsigned int get_distance(const location_t *loc1, const location_t *loc2)
 {
-	double lat2_r = udeg_to_radians(lat2.udeg);
-	double lat_d_r = udeg_to_radians(lat2.udeg-lat1.udeg);
-	double lon_d_r = udeg_to_radians(lon2.udeg-lon1.udeg);
+	double lat2_r = udeg_to_radians(loc2->lat.udeg);
+	double lat_d_r = udeg_to_radians(loc2->lat.udeg - loc1->lat.udeg);
+	double lon_d_r = udeg_to_radians(loc2->lon.udeg - loc1->lon.udeg);
 
 	double a = sin(lat_d_r/2) * sin(lat_d_r/2) +
 		cos(lat2_r) * cos(lat2_r) * sin(lon_d_r/2) * sin(lon_d_r/2);
@@ -70,7 +70,7 @@ unsigned int get_distance(degrees_t lat1, degrees_t lon1, degrees_t lat2, degree
 }
 
 /* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */
-uint32_t get_dive_site_uuid_by_gps_proximity(degrees_t latitude, degrees_t longitude, int distance, struct dive_site **dsp)
+uint32_t get_dive_site_uuid_by_gps_proximity(const location_t *loc, int distance, struct dive_site **dsp)
 {
 	int i;
 	int uuid = 0;
@@ -78,7 +78,7 @@ uint32_t get_dive_site_uuid_by_gps_proximity(degrees_t latitude, degrees_t longi
 	unsigned int cur_distance, min_distance = distance;
 	for_each_dive_site (i, ds) {
 		if (dive_site_has_gps_location(ds) &&
-		    (cur_distance = get_distance(ds->latitude, ds->longitude, latitude, longitude)) < min_distance) {
+		    (cur_distance = get_distance(&ds->location, loc)) < min_distance) {
 			min_distance = cur_distance;
 			uuid = ds->uuid;
 			if (dsp)
@@ -232,13 +232,12 @@ uint32_t create_dive_site_from_current_dive(const char *name)
 }
 
 /* same as before, but with GPS data */
-uint32_t create_dive_site_with_gps(const char *name, degrees_t latitude, degrees_t longitude, timestamp_t divetime)
+uint32_t create_dive_site_with_gps(const char *name, const location_t *loc, timestamp_t divetime)
 {
 	uint32_t uuid = create_divesite_uuid(name, divetime);
 	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
-	ds->latitude = latitude;
-	ds->longitude = longitude;
+	ds->location = *loc;
 
 	return ds->uuid;
 }
@@ -250,8 +249,7 @@ bool dive_site_is_empty(struct dive_site *ds)
 	       (empty_string(ds->name) &&
 	       empty_string(ds->description) &&
 	       empty_string(ds->notes) &&
-	       ds->latitude.udeg == 0 &&
-	       ds->longitude.udeg == 0);
+	       !has_location(&ds->location));
 }
 
 void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
@@ -260,8 +258,7 @@ void copy_dive_site(struct dive_site *orig, struct dive_site *copy)
 	free(copy->notes);
 	free(copy->description);
 
-	copy->latitude = orig->latitude;
-	copy->longitude = orig->longitude;
+	copy->location = orig->location;
 	copy->name = copy_string(orig->name);
 	copy->notes = copy_string(orig->notes);
 	copy->description = copy_string(orig->description);
@@ -290,8 +287,7 @@ static void merge_string(char **a, char **b)
 
 void merge_dive_site(struct dive_site *a, struct dive_site *b)
 {
-	if (!a->latitude.udeg) a->latitude.udeg = b->latitude.udeg;
-	if (!a->longitude.udeg) a->longitude.udeg = b->longitude.udeg;
+	if (!has_location(&a->location)) a->location = b->location;
 	merge_string(&a->name, &b->name);
 	merge_string(&a->notes, &b->notes);
 	merge_string(&a->description, &b->description);
@@ -310,8 +306,8 @@ void clear_dive_site(struct dive_site *ds)
 	ds->name = NULL;
 	ds->notes = NULL;
 	ds->description = NULL;
-	ds->latitude.udeg = 0;
-	ds->longitude.udeg = 0;
+	ds->location.lat.udeg = 0;
+	ds->location.lon.udeg = 0;
 	ds->uuid = 0;
 	ds->taxonomy.nr = 0;
 	free_taxonomy(&ds->taxonomy);

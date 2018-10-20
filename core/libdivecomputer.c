@@ -569,7 +569,7 @@ static void set_dc_serial(struct divecomputer *dc, const char *serial)
 		dc->deviceid = calculate_string_hash(serial);
 }
 
-extern degrees_t parse_degrees(char *buf, char **end);
+extern void parse_location(char *, location_t *);
 
 static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 {
@@ -591,14 +591,12 @@ static void parse_string_field(struct dive *dive, dc_field_string_t *str)
 	/* GPS data? */
 	if (!strncmp(str->desc, "GPS", 3)) {
 		char *line = (char *) str->value;
-		degrees_t latitude, longitude;
+		location_t location;
 
-		latitude = parse_degrees(line, &line);
-		if (*line == ',') line++;
-		longitude = parse_degrees(line, &line);
+		parse_location(line, &location);
 
-		if (latitude.udeg && longitude.udeg)
-			dive->dive_site_uuid = create_dive_site_with_gps(str->value, latitude, longitude, time(NULL));
+		if (location.lat.udeg && location.lon.udeg)
+			dive->dive_site_uuid = create_dive_site_with_gps(str->value, &location, time(NULL));
 	}
 }
 #endif

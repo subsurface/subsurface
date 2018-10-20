@@ -31,7 +31,7 @@ struct keyword_action {
 };
 #define ARRAY_SIZE(array) (sizeof(array)/sizeof(array[0]))
 
-extern degrees_t parse_degrees(char *buf, char **end);
+extern void parse_location(char *buf, location_t *);
 git_blob *git_tree_entry_blob(git_repository *repo, const git_tree_entry *entry);
 
 static char *get_utf8(struct membuffer *b)
@@ -152,25 +152,24 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {
 	UNUSED(str);
 	uint32_t uuid;
-	degrees_t latitude = parse_degrees(line, &line);
-	degrees_t longitude = parse_degrees(line, &line);
+	location_t location;
 	struct dive *dive = _dive;
 	struct dive_site *ds = get_dive_site_for_dive(dive);
+
+	parse_location(line, &location);
 	if (!ds) {
-		uuid = get_dive_site_uuid_by_gps(latitude, longitude, NULL);
+		uuid = get_dive_site_uuid_by_gps(&location, NULL);
 		if (!uuid)
-			uuid = create_dive_site_with_gps("", latitude, longitude, dive->when);
+			uuid = create_dive_site_with_gps("", &location, dive->when);
 		dive->dive_site_uuid = uuid;
 	} else {
-		if (dive_site_has_gps_location(ds) &&
-		    (ds->latitude.udeg != latitude.udeg || ds->longitude.udeg != longitude.udeg)) {
-			const char *coords = printGPSCoords(latitude.udeg, longitude.udeg);
+		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
+			const char *coords = printGPSCoords(&location);
 			// we have a dive site that already has GPS coordinates
 			ds->notes = add_to_string(ds->notes, translate("gettextFromC", "multiple GPS locations for this dive site; also %s\n"), coords);
 			free((void *)coords);
 		}
-		ds->latitude = latitude;
-		ds->longitude = longitude;
+		ds->location = location;
 	}
 
 }
@@ -274,14 +273,12 @@ static void parse_site_name(char *line, struct membuffer *str, void *_ds)
 static void parse_site_notes(char *line, struct membuffer *str, void *_ds)
 { UNUSED(line); struct dive_site *ds = _ds; ds->notes = strdup(mb_cstring(str)); }
 
-extern degrees_t parse_degrees(char *buf, char **end);
 static void parse_site_gps(char *line, struct membuffer *str, void *_ds)
 {
 	UNUSED(str);
 	struct dive_site *ds = _ds;
 
-	ds->latitude = parse_degrees(line, &line);
-	ds->longitude = parse_degrees(line, &line);
+	parse_location(line, &ds->location);
 }
 
 static void parse_site_geo(char *line, struct membuffer *str, void *_ds)
@@ -949,8 +946,7 @@ static void parse_picture_gps(char *line, struct membuffer *str, void *_pic)
 	UNUSED(str);
 	struct picture *pic = _pic;
 
-	pic->latitude = parse_degrees(line, &line);
-	pic->longitude = parse_degrees(line, &line);
+	parse_location(line, &pic->location);
 }
 
 static void parse_picture_hash(char *line, struct membuffer *str, void *_pic)

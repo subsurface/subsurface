@@ -36,7 +36,7 @@ public:
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
-	void updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude);
+	void updateDiveSiteCoordinates(uint32_t uuid, const location_t &);
 	void enterEditMode(uint32_t uuid);
 	void exitEditMode();
 	QString pluginObject();
@@ -55,7 +55,7 @@ signals:
 	void modelChanged();
 	void editModeChanged();
 	void selectedDivesChanged(QList<int> list);
-	void coordinatesChanged(degrees_t latitude, degrees_t longitude);
+	void coordinatesChanged(const location_t &);
 	void pluginObjectChanged();
 };
 

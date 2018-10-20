@@ -38,12 +38,12 @@ class GPSLocationInformationModel : public QSortFilterProxyModel {
 Q_OBJECT
 private:
 	uint32_t ignoreUuid;
-	degrees_t latitude, longitude;
+	location_t location;
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 public:
 	GPSLocationInformationModel(QObject *parent = nullptr);
-	void set(uint32_t ignoreUuid, degrees_t latitude, degrees_t longitude);
-	void setCoordinates(degrees_t latitude, degrees_t longitude);
+	void set(uint32_t ignoreUuid, const location_t &);
+	void setCoordinates(const location_t &);
 };
 
 class GeoReferencingOptionsModel : public QStringListModel {

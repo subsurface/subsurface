@@ -134,6 +134,29 @@ typedef struct
 	int udeg;
 } degrees_t;
 
+typedef struct pos {
+	degrees_t lat, lon;
+} location_t;
+
+static inline bool has_location(const location_t *loc)
+{
+	return loc->lat.udeg || loc->lon.udeg;
+}
+
+static inline bool same_location(const location_t *a, const location_t *b)
+{
+	return (a->lat.udeg == b->lat.udeg) && (a->lon.udeg == b->lon.udeg);
+}
+
+static inline location_t create_location(double lat, double lon)
+{
+	location_t location = {
+		{ (int) lrint(lat * 1000000) },
+		{ (int) lrint(lon * 1000000) }
+	};
+	return location;
+}
+
 static inline double udeg_to_radians(int udeg)
 {
 	return (udeg * M_PI) / (1000000.0 * 180.0);

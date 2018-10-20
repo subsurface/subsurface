@@ -97,8 +97,7 @@ static bool parseExif(QFile &f, struct metadata *metadata)
 			easyexif::EXIFInfo exif;
 			if (exif.parseFromEXIFSegment(reinterpret_cast<const unsigned char *>(data.constData()), len) != PARSE_EXIF_SUCCESS)
 				return false;
-			metadata->longitude.udeg = lrint(1000000.0 * exif.GeoLocation.Longitude);
-			metadata->latitude.udeg = lrint(1000000.0 * exif.GeoLocation.Latitude);
+			metadata->location = create_location(exif.GeoLocation.Latitude, exif.GeoLocation.Longitude);
 			metadata->timestamp = exif.epoch();
 			return true;
 		}
@@ -521,8 +520,8 @@ extern "C" mediatype_t get_metadata(const char *filename_in, metadata *data)
 {
 	data->timestamp = 0;
 	data->duration.seconds = 0;
-	data->latitude.udeg = 0;
-	data->longitude.udeg = 0;
+	data->location.lat.udeg = 0;
+	data->location.lon.udeg = 0;
 
 	QString filename = localFilePath(QString(filename_in));
 	QFile f(filename);

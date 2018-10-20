@@ -24,7 +24,7 @@ protected:
 public slots:
 	void acceptChanges();
 	void rejectChanges();
-	void updateGpsCoordinates(degrees_t latitude, degrees_t longitude);
+	void updateGpsCoordinates(const location_t &);
 	void markChangedWidget(QWidget *w);
 	void enableEdition();
 	void resetState();

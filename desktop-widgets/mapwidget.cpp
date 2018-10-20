@@ -109,16 +109,16 @@ void MapWidget::selectedDivesChanged(QList<int> list)
 	skipReload = false;
 }
 
-void MapWidget::coordinatesChangedLocal(degrees_t latitude, degrees_t longitude)
+void MapWidget::coordinatesChangedLocal(const location_t &location)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	emit coordinatesChanged(latitude, longitude);
+	emit coordinatesChanged(location);
 }
 
-void MapWidget::updateDiveSiteCoordinates(uint32_t uuid, degrees_t latitude, degrees_t longitude)
+void MapWidget::updateDiveSiteCoordinates(uint32_t uuid, const location_t &location)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->updateDiveSiteCoordinates(uuid, latitude, longitude);
+	m_mapHelper->updateDiveSiteCoordinates(uuid, location);
 }
 
 MapWidget::~MapWidget()
