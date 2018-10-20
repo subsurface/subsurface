@@ -289,7 +289,7 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 	if (!trip)
 		return;
 
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
+	QAbstractItemModel *m = model();
 	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::TRIP_ROLE, QVariant::fromValue<void *>(trip), 2, Qt::MatchRecursive);
 	QItemSelectionModel::SelectionFlags flags;
 	if (!match.count())
@@ -374,7 +374,7 @@ void DiveListView::selectDive(int i, bool scrollto, bool toggle)
 {
 	if (i == -1)
 		return;
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
+	QAbstractItemModel *m = model();
 	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, i, 2, Qt::MatchRecursive);
 	if (match.isEmpty())
 		return;
@@ -411,7 +411,7 @@ void DiveListView::selectDives(const QList<int> &newDiveSelection)
 		if ((d = get_dive(newSelection)) != NULL && !d->hidden_by_filter)
 			selectDive(newSelection);
 	}
-	QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(model());
+	QAbstractItemModel *m = model();
 	QModelIndexList idxList = m->match(m->index(0, 0), DiveTripModel::DIVE_IDX, get_divenr(current_dive), 2, Qt::MatchRecursive);
 	if (!idxList.isEmpty()) {
 		QModelIndex idx = idxList.first();
