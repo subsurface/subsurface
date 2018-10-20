@@ -2,6 +2,7 @@
 #include "qt-models/divelistmodel.h"
 #include "core/qthelper.h"
 #include <QDateTime>
+#include "core/settings/qPrefGeneral.h"
 
 DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
@@ -10,9 +11,14 @@ DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(pa
 
 void DiveListSortModel::setFilter(QString f)
 {
-	setFilterRole(DiveListModel::FullTextRole);
+	if (qPrefGeneral::filterFullTextNotes())
+		setFilterRole(DiveListModel::FullTextRole);
+	else
+		setFilterRole(DiveListModel::FullTextNoNotesRole);
+
 	setFilterRegExp(QString(".*%1.*").arg(f));
-	setFilterCaseSensitivity(Qt::CaseInsensitive);
+	if (!qPrefGeneral::filterCaseSensitive())
+		setFilterCaseSensitivity(Qt::CaseInsensitive);
 }
 
 void DiveListSortModel::resetFilter()
