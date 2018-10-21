@@ -168,11 +168,13 @@ bool is_dive_site_used(uint32_t uuid, bool select_only)
 
 void free_dive_site(struct dive_site *ds)
 {
-	free(ds->name);
-	free(ds->notes);
-	free(ds->description);
-	free_taxonomy(&ds->taxonomy);
-	free(ds);
+	if (ds) {
+		free(ds->name);
+		free(ds->notes);
+		free(ds->description);
+		free_taxonomy(&ds->taxonomy);
+		free(ds);
+	}
 }
 
 void delete_dive_site(uint32_t id)

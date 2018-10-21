@@ -765,9 +765,11 @@ void insert_trip_dont_merge(dive_trip_t *dive_trip)
 /* free resources associated with a trip structure */
 void free_trip(dive_trip_t *trip)
 {
-	free(trip->location);
-	free(trip->notes);
-	free(trip);
+	if (trip) {
+		free(trip->location);
+		free(trip->notes);
+		free(trip);
+	}
 }
 
 /* remove trip from the trip-list, but don't free its memory.
