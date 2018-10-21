@@ -761,9 +761,8 @@ void MainWindow::on_actionClose_triggered()
 {
 	if (okToClose(tr("Please save or cancel the current dive edit before closing the file."))) {
 		closeCurrentFile();
-		// hide any pictures and the filter
 		DivePictureModel::instance()->updateDivePictures();
-		ui.multiFilter->closeFilter();
+		setApplicationState("Default");
 		recreateDiveList();
 	}
 }
@@ -1876,13 +1875,7 @@ void MainWindow::on_paste_triggered()
 
 void MainWindow::on_actionFilterTags_triggered()
 {
-	if (ui.multiFilter->isVisible()) {
-		ui.multiFilter->closeFilter();
-		ui.actionFilterTags->setChecked(false);
-	} else {
-		ui.multiFilter->setVisible(true);
-		ui.actionFilterTags->setChecked(true);
-	}
+	setApplicationState(getCurrentAppState() == "FilterDive" ? "Default" : "FilterDive");
 }
 
 void MainWindow::setCheckedActionFilterTags(bool checked)
