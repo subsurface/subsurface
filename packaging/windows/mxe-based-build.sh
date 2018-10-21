@@ -27,7 +27,11 @@
 #
 # now you can start the build
 #
-# make libxml2 libxslt libusb1 libzip libssh2 curl qt5 nsis
+# make libxml2 libxslt libusb1 libzip libssh2 libftdi1 curl qt5 nsis
+#
+#     (if you intend to build Subsurface without user space FTDI support
+#      you can drop libftdi1 from that list and start this script with
+#      -noftdi )
 #
 # After quite a while (depending on your machine anywhere from 15-20
 # minutes to several hours) you should have a working MXE install in
