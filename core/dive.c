@@ -500,7 +500,6 @@ struct dive *alloc_dive(void)
 
 static void free_dc(struct divecomputer *dc);
 static void free_dc_contents(struct divecomputer *dc);
-static void free_pic(struct picture *picture);
 
 /* copy an element in a list of dive computer extra data */
 static void copy_extra_data(struct extra_data *sed, struct extra_data *ded)
@@ -569,7 +568,7 @@ static void free_dive_structures(struct dive *d)
 	taglist_free(d->tag_list);
 	free_dc_contents(&d->dc);
 	STRUCTURED_LIST_FREE(struct divecomputer, d->dc.next, free_dc);
-	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_pic);
+	STRUCTURED_LIST_FREE(struct picture, d->picture_list, free_picture);
 	for (int i = 0; i < MAX_CYLINDERS; i++)
 		free((void *)d->cylinder[i].type.description);
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++)
@@ -2990,7 +2989,7 @@ static void free_dc(struct divecomputer *dc)
 	free(dc);
 }
 
-static void free_pic(struct picture *picture)
+void free_picture(struct picture *picture)
 {
 	if (picture) {
 		free(picture->filename);
