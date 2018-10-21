@@ -27,7 +27,7 @@
 #
 # now you can start the build
 #
-# make libxml2 libxslt libusb1 libzip libssh2 curl qt5 nsis
+# make libxml2 libxslt libusb1 libzip libssh2 libftdi1 curl qt5 nsis
 #
 # After quite a while (depending on your machine anywhere from 15-20
 # minutes to several hours) you should have a working MXE install in
