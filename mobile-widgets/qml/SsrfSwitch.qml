@@ -6,8 +6,8 @@ import org.kde.kirigami 2.4 as Kirigami
 Switch {
 	id: root
 	indicator: Rectangle {
-		implicitWidth: Kirigami.Units.largeSpacing * 2.2
-		implicitHeight: Kirigami.Units.largeSpacing * 0.75
+		implicitWidth: 36 * PrefDisplay.mobile_scale
+		implicitHeight: 12 * PrefDisplay.mobile_scale
 		x: root.leftPadding
 		y: parent.height / 2 - height / 2
 		radius: height / 2
@@ -18,8 +18,8 @@ Switch {
 		Rectangle {
 			x: root.checked ? parent.width - width : 0
 			y: parent.height / 2 - height / 2
-			width: Kirigami.Units.largeSpacing * 1.1
-			height: Kirigami.Units.largeSpacing * 1.1
+			width: 20 * PrefDisplay.mobile_scale
+			height: 20 * PrefDisplay.mobile_scale
 			radius: height / 2
 			color: root.down || root.checked ?
 				subsurfaceTheme.primaryColor : subsurfaceTheme.lightPrimaryColor
