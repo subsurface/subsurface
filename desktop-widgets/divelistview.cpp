@@ -25,6 +25,7 @@
 #include "qt-models/divepicturemodel.h"
 #include "core/metrics.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
+#include "desktop-widgets/simplewidgets.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
 	currentLayout(DiveTripModel::TREE), dontEmitDiveChangedSignal(false), selectionSaved(false),

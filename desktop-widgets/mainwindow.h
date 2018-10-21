@@ -18,6 +18,7 @@
 #include "ui_plannerDetails.h"
 #include "desktop-widgets/notificationwidget.h"
 #include "core/gpslocation.h"
+#include "core/dive.h"
 
 #define NUM_RECENT_FILES 4
 

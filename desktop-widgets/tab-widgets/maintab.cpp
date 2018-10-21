@@ -27,6 +27,7 @@
 #include "core/gettextfromc.h"
 #include "desktop-widgets/locationinformation.h"
 #include "desktop-widgets/command.h"
+#include "desktop-widgets/simplewidgets.h"
 
 #include "TabDiveExtraInfo.h"
 #include "TabDiveInformation.h"
@@ -688,7 +689,6 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
 		pickedDs = create_dive_site(qPrintable(name), displayed_dive.when);
 		createdNewDive = true;
-		LocationFilterModel::instance()->addName(name);
 	}
 
 	if (origDs) {

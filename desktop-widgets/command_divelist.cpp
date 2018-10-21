@@ -109,11 +109,6 @@ std::vector<DiveToAdd> DiveListBase::removeDives(std::vector<dive *> &divesToDel
 	std::vector<DiveToAdd> res;
 	res.reserve(divesToDelete.size());
 
-	// First, tell the filters that dives are removed. This could
-	// be done later using the emitted signals, but we do this here
-	// for symmetry with addDives()
-	MultiFilterSortModel::instance()->divesDeleted(QVector<dive *>::fromStdVector(divesToDelete));
-
 	for (dive *d: divesToDelete)
 		res.push_back(removeDive(d));
 	divesToDelete.clear();
@@ -153,7 +148,6 @@ std::vector<dive *> DiveListBase::addDives(std::vector<DiveToAdd> &divesToAdd)
 	QVector<dive *> divesForFilter;
 	for (const DiveToAdd &entry: divesToAdd)
 		divesForFilter.push_back(entry.dive.get());
-	MultiFilterSortModel::instance()->divesAdded(divesForFilter);
 
 	// At the end of the function, to send the proper dives-added signals,
 	// we the the list of added trips. Create this list now.

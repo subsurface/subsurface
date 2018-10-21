@@ -34,8 +34,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->addAction(rejectAction);
 
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
-	connect(this, SIGNAL(nameChanged(const QString &, const QString &)),
-		LocationFilterModel::instance(), SLOT(changeName(const QString &, const QString &)));
 	connect(ui.updateLocationButton, SIGNAL(clicked()), this, SLOT(updateLocationOnMap()));
 	connect(ui.diveSiteCoordinates, SIGNAL(returnPressed()), this, SLOT(updateLocationOnMap()));
 	ui.diveSiteCoordinates->installEventFilter(this);
