@@ -9,6 +9,7 @@
 #include <QMimeData>
 #include <QRegExp>
 #include <QUndoStack>
+#include <QPainter>
 #include "core/qthelper.h"
 #include "core/import-csv.h"
 

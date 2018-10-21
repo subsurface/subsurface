@@ -33,7 +33,6 @@ set (SUBSURFACE_UI
 	diveplanner.ui
 	diveshareexportdialog.ui
 	downloadfromdivecomputer.ui
-	filterwidget.ui
 	filterwidget2.ui
 	findmovedimagesdialog.ui
 	listfilter.ui

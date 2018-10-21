@@ -54,6 +54,7 @@
 #include "desktop-widgets/updatemanager.h"
 #include "desktop-widgets/usersurvey.h"
 #include "desktop-widgets/filterwidget2.h"
+#include "desktop-widgets/simplewidgets.h"
 
 #include "profile-widget/profilewidget2.h"
 
@@ -204,8 +205,6 @@ MainWindow::MainWindow() : QMainWindow(),
 	setStateProperties("EditDiveSite", enabledList, disabledList, disabledList, enabledList);
 	setStateProperties("FilterDive", enabledList, enabledList, enabledList, enabledList);
 	setApplicationState("Default");
-
-	ui.multiFilter->hide();
 
 	setWindowIcon(QIcon(":subsurface-icon"));
 	if (!QIcon::hasThemeIcon("window-close")) {
@@ -497,10 +496,6 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 void MainWindow::recreateDiveList()
 {
 	diveList->reload();
-	TagFilterModel::instance()->repopulate();
-	BuddyFilterModel::instance()->repopulate();
-	LocationFilterModel::instance()->repopulate();
-	SuitsFilterModel::instance()->repopulate();
 	MultiFilterSortModel::instance()->myInvalidate();
 }
 
