@@ -1,29 +1,58 @@
 // SPDX-License-Identifier: GPL-2.0
 #include "qt-models/divelistmodel.h"
 #include "core/qthelper.h"
-#include <QDateTime>
 #include "core/settings/qPrefGeneral.h"
+#include <QDateTime>
 
 DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(parent)
 {
-
+	updateFilterState();
 }
 
+void DiveListSortModel::updateFilterState()
+{
+	if (filterString.isEmpty()) {
+		filteredRows.clear();
+		return;
+	}
+	// store this in local variables to avoid having to call these methods over and over
+	bool includeNotes = qPrefGeneral::filterFullTextNotes();
+	Qt::CaseSensitivity cs = qPrefGeneral::filterCaseSensitive() ? Qt::CaseSensitive : Qt::CaseInsensitive;
+
+	// get the underlying model and re-calculate the filter value for each dive
+	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
+	filteredRows.clear();
+	filteredRows.resize(mySourceModel->rowCount());
+	for (int i = 0; i < mySourceModel->rowCount(); i++) {
+		QString fullText = includeNotes? mySourceModel->at(i)->fullText() : mySourceModel->at(i)->fullTextNoNotes();
+		filteredRows.at(i) = fullText.contains(filterString, cs);
+	}
+}
+
+void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
+{
+	QSortFilterProxyModel::setSourceModel(sourceModel);
+}
 void DiveListSortModel::setFilter(QString f)
 {
-	if (qPrefGeneral::filterFullTextNotes())
-		setFilterRole(DiveListModel::FullTextRole);
-	else
-		setFilterRole(DiveListModel::FullTextNoNotesRole);
-
-	setFilterRegExp(QString(".*%1.*").arg(f));
-	if (!qPrefGeneral::filterCaseSensitive())
-		setFilterCaseSensitivity(Qt::CaseInsensitive);
+	filterString = f;
+	updateFilterState();
+	invalidateFilter();
 }
 
 void DiveListSortModel::resetFilter()
 {
-	setFilterRegExp("");
+	filterString = "";
+	filteredRows.clear();
+	invalidateFilter();
+}
+
+// filtering is way too slow on mobile. Maybe we should roll our own?
+bool DiveListSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
+	Q_UNUSED(source_parent)
+
+	return filteredRows.size() > source_row ? filteredRows[source_row] : true;
 }
 
 int DiveListSortModel::shown()
@@ -52,12 +81,14 @@ void DiveListSortModel::clear()
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
 	mySourceModel->clear();
+	filteredRows.clear();
 }
 
 void DiveListSortModel::addAllDives()
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
 	mySourceModel->addAllDives();
+	updateFilterState();
 }
 
 DiveListModel *DiveListModel::m_instance = NULL;

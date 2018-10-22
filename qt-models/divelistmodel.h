@@ -12,6 +12,7 @@ class DiveListSortModel : public QSortFilterProxyModel
 	Q_OBJECT
 public:
 	DiveListSortModel(QObject *parent = 0);
+	void setSourceModel(QAbstractItemModel *sourceModel);
 	Q_INVOKABLE void addAllDives();
 	Q_INVOKABLE void clear();
 public slots:
@@ -20,6 +21,12 @@ public slots:
 	void setFilter(QString f);
 	void resetFilter();
 	int shown();
+protected:
+	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
+private:
+	std::vector<bool> filteredRows;
+	QString filterString;
+	void updateFilterState();
 };
 
 class DiveListModel : public QAbstractListModel
