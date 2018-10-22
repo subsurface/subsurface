@@ -86,23 +86,8 @@ static int cobalt_location(void *param, int columns, char **data, char **column)
 {
 	UNUSED(columns);
 	UNUSED(column);
-	struct parser_state *state = (struct parser_state *)param;
-
-	static char *location = NULL;
-	if (data[0]) {
-		if (location) {
-			char *tmp = malloc(strlen(location) + strlen(data[0]) + 4);
-			if (!tmp)
-				return -1;
-			sprintf(tmp, "%s / %s", location, data[0]);
-			free(location);
-			location = NULL;
-			state->cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(tmp, state->cur_dive->when);
-			free(tmp);
-		} else {
-			location = strdup(data[0]);
-		}
-	}
+	char **location = (char **)param;
+	*location = data[0] ? strdup(data[0]) : NULL;
 	return 0;
 }
 
@@ -116,6 +101,7 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	struct parser_state *state = (struct parser_state *)param;
 	sqlite3 *handle = state->sql_handle;
 	char *err = NULL;
+	char *location, *location_site;
 	char get_profile_template[] = "select runtime*60,(DepthPressure*10000/SurfacePressure)-10000,p.Temperature from Dive AS d JOIN TrackPoints AS p ON d.Id=p.DiveId where d.Id=%d";
 	char get_cylinder_template[] = "select FO2,FHe,StartingPressure,EndingPressure,TankSize,TankPressure,TotalConsumption from GasMixes where DiveID=%d and StartingPressure>0 and EndingPressure > 0 group by FO2,FHe";
 	char get_buddy_template[] = "select l.Data from Items AS i, List AS l ON i.Value1=l.Id where i.DiveId=%d and l.Type=4";
@@ -190,18 +176,32 @@ static int cobalt_dive(void *param, int columns, char **data, char **column)
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_location_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_location failed.\n");
 		return 1;
 	}
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_site_template, state->cur_dive->number);
-	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, state, &err);
+	retval = sqlite3_exec(handle, get_buffer, &cobalt_location, &location_site, &err);
 	if (retval != SQLITE_OK) {
 		fprintf(stderr, "%s", "Database query cobalt_location (site) failed.\n");
 		return 1;
 	}
+
+	if (location && location_site) {
+		char *tmp = malloc(strlen(location) + strlen(location_site) + 4);
+		if (!tmp) {
+			free(location);
+			free(location_site);
+			return 1;
+		}
+		sprintf(tmp, "%s / %s", location, location_site);
+		state->cur_dive->dive_site_uuid = find_or_create_dive_site_with_name(tmp, state->cur_dive->when);
+		free(tmp);
+	}
+	free(location);
+	free(location_site);
 
 	snprintf(get_buffer, sizeof(get_buffer) - 1, get_profile_template, state->cur_dive->number);
 	retval = sqlite3_exec(handle, get_buffer, &cobalt_profile_sample, state, &err);
