@@ -46,7 +46,6 @@ enum import_source {
 	LIBDIVECOMPUTER,
 	DIVINGLOG,
 	UDDF,
-	SSRF_WS,
 } import_source;
 
 /* the dive table holds the overall dive list; target table points at

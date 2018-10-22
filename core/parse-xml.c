@@ -1520,11 +1520,6 @@ static void uddf_importer(void)
 	xml_parsing_units.temperature = KELVIN;
 }
 
-static void subsurface_webservice(void)
-{
-	import_source = SSRF_WS;
-}
-
 /*
  * I'm sure this could be done as some fancy DTD rules.
  * It's just not worth the headache.
@@ -1557,7 +1552,6 @@ static struct nesting {
 	  /* Import type recognition */
 	  { "Divinglog", DivingLog_importer },
 	  { "uddf", uddf_importer },
-	  { "output", subsurface_webservice },
 	  { NULL, }
   };
 
