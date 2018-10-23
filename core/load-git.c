@@ -151,17 +151,17 @@ static int get_hex(const char *line)
 static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 {
 	UNUSED(str);
-	uint32_t uuid;
 	location_t location;
 	struct dive *dive = _dive;
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 
 	parse_location(line, &location);
 	if (!ds) {
-		uuid = get_dive_site_uuid_by_gps(&location, NULL);
-		if (!uuid)
-			uuid = create_dive_site_with_gps("", &location, dive->when);
-		dive->dive_site_uuid = uuid;
+		ds = get_dive_site_by_gps(&location);
+		if (!ds)
+			dive->dive_site_uuid = create_dive_site_with_gps("", &location, dive->when);
+		else
+			dive->dive_site_uuid = ds->uuid;
 	} else {
 		if (dive_site_has_gps_location(ds) && !same_location(&ds->location, &location)) {
 			const char *coords = printGPSCoords(&location);
@@ -177,15 +177,15 @@ static void parse_dive_gps(char *line, struct membuffer *str, void *_dive)
 static void parse_dive_location(char *line, struct membuffer *str, void *_dive)
 {
 	UNUSED(line);
-	uint32_t uuid;
 	char *name = get_utf8(str);
 	struct dive *dive = _dive;
 	struct dive_site *ds = get_dive_site_for_dive(dive);
 	if (!ds) {
-		uuid = get_dive_site_uuid_by_name(name, NULL);
-		if (!uuid)
-			uuid = create_dive_site(name, dive->when);
-		dive->dive_site_uuid = uuid;
+		ds = get_dive_site_by_name(name);
+		if (!ds)
+			dive->dive_site_uuid = create_dive_site(name, dive->when);
+		else
+			dive->dive_site_uuid = ds->uuid;
 	} else {
 		// we already had a dive site linked to the dive
 		if (empty_string(ds->name)) {

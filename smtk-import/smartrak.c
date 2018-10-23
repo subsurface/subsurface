@@ -373,17 +373,19 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 		str = smtk_concat_str(str, ", ", "%s", col[1]->bind_ptr); // Locality
 	str =  smtk_concat_str(str, ", ", "%s", site);
 
-	*location = get_dive_site_uuid_by_name(str, NULL);
-	if (*location == 0) {
+	ds = get_dive_site_by_name(str);
+	if (!ds) {
 		if (!has_location(&loc))
 			*location = create_dive_site(str, when);
 		else
 			*location = create_dive_site_with_gps(str, &loc, when);
+		ds = get_dive_site_by_uuid(*location);
+	} else {
+		*location = ds->uuid;
 	}
 	smtk_free(bound_values, table->num_cols);
 
 	/* Insert site notes */
-	ds = get_dive_site_by_uuid(*location);
 	ds->notes = copy_string(notes);
 	free(notes);
 

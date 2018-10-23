@@ -872,16 +872,17 @@ parsed:
 bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString location, QString gps)
 {
 	bool diveChanged = false;
-	uint32_t uuid = 0;
 	struct dive_site *ds = get_dive_site_for_dive(d);
 	qDebug() << "checkLocation" << location << "gps" << gps << "dive had" << myDive->location() << "gps" << myDive->gas();
 	if (myDive->location() != location) {
 		diveChanged = true;
 		if (!ds)
-			uuid = get_dive_site_uuid_by_name(qPrintable(location), NULL);
-		if (!uuid && !location.isEmpty())
-			uuid = create_dive_site(qPrintable(location), d->when);
-		d->dive_site_uuid = uuid;
+			ds = get_dive_site_by_name(qPrintable(location));
+		if (!ds && !location.isEmpty()) {
+			uint32_t uuid = create_dive_site(qPrintable(location), d->when);
+			ds = get_dive_site_by_uuid(uuid);
+		}
+		d->dive_site_uuid = ds ? ds->uuid : 0;
 	}
 	// now make sure that the GPS coordinates match - if the user changed the name but not
 	// the GPS coordinates, this still does the right thing as the now new dive site will
@@ -1474,15 +1475,13 @@ QString QMLManager::getVersion() const
 }
 
 QString QMLManager::getGpsFromSiteName(const QString& siteName)
-{	uint32_t uuid;
+{
 	struct dive_site *ds;
 
-	uuid = get_dive_site_uuid_by_name(qPrintable(siteName), NULL);
-	if (uuid) {
-		ds = get_dive_site_by_uuid(uuid);
+	ds = get_dive_site_by_name(qPrintable(siteName));
+	if (ds)
 		return QString(printGPSCoords(&ds->location));
-	}
-	return "";
+	return QString();
 }
 
 void QMLManager::setNotificationText(QString text)

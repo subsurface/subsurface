@@ -11,47 +11,41 @@
 struct dive_site_table dive_site_table;
 
 /* there could be multiple sites of the same name - return the first one */
-uint32_t get_dive_site_uuid_by_name(const char *name, struct dive_site **dsp)
+struct dive_site *get_dive_site_by_name(const char *name)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds) {
-		if (same_string(ds->name, name)) {
-			if (dsp)
-				*dsp = ds;
-			return ds->uuid;
-		}
+		if (same_string(ds->name, name))
+			return ds;
 	}
-	return 0;
+	return NULL;
 }
 
 /* there could be multiple sites at the same GPS fix - return the first one */
-uint32_t get_dive_site_uuid_by_gps(const location_t *loc, struct dive_site **dsp)
+struct dive_site *get_dive_site_by_gps(const location_t *loc)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds) {
-		if (same_location(loc, &ds->location)) {
-			if (dsp)
-				*dsp = ds;
-			return ds->uuid;
-		}
+		if (same_location(loc, &ds->location))
+			return ds;
 	}
-	return 0;
+	return NULL;
 }
 
 /* to avoid a bug where we have two dive sites with different name and the same GPS coordinates
  * and first get the gps coordinates (reading a V2 file) and happen to get back "the other" name,
  * this function allows us to verify if a very specific name/GPS combination already exists */
-uint32_t get_dive_site_uuid_by_gps_and_name(char *name, const location_t *loc)
+struct dive_site *get_dive_site_by_gps_and_name(char *name, const location_t *loc)
 {
 	int i;
 	struct dive_site *ds;
 	for_each_dive_site (i, ds) {
 		if (same_location(loc, &ds->location) && same_string(ds->name, name))
-			return ds->uuid;
+			return ds;
 	}
-	return 0;
+	return NULL;
 }
 
 // Calculate the distance in meters between two coordinates.
@@ -70,22 +64,19 @@ unsigned int get_distance(const location_t *loc1, const location_t *loc2)
 }
 
 /* find the closest one, no more than distance meters away - if more than one at same distance, pick the first */
-uint32_t get_dive_site_uuid_by_gps_proximity(const location_t *loc, int distance, struct dive_site **dsp)
+struct dive_site *get_dive_site_by_gps_proximity(const location_t *loc, int distance)
 {
 	int i;
-	int uuid = 0;
-	struct dive_site *ds;
+	struct dive_site *ds, *res = NULL;
 	unsigned int cur_distance, min_distance = distance;
 	for_each_dive_site (i, ds) {
 		if (dive_site_has_gps_location(ds) &&
 		    (cur_distance = get_distance(&ds->location, loc)) < min_distance) {
 			min_distance = cur_distance;
-			uuid = ds->uuid;
-			if (dsp)
-				*dsp = ds;
+			res = ds;
 		}
 	}
-	return uuid;
+	return res;
 }
 
 /* try to create a uniqe ID - fingers crossed */

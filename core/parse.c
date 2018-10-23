@@ -417,16 +417,10 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 	char *to_free = NULL;
 	int size = trimspace(buffer);
 	if(size) {
-		uint32_t uuid = dive->dive_site_uuid;
-		struct dive_site *ds = get_dive_site_by_uuid(uuid);
-		if (uuid && !ds) {
-			// that's strange - we have a uuid but it doesn't exist - let's just ignore it
-			fprintf(stderr, "dive contains a non-existing dive site uuid %x\n", dive->dive_site_uuid);
-			uuid = 0;
-		}
-		if (!uuid) {
+		struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+		if (!ds) {
 			// if the dive doesn't have a uuid, check if there's already a dive site by this name
-			uuid = get_dive_site_uuid_by_name(buffer, &ds);
+			ds = get_dive_site_by_name(buffer);
 		}
 		if (ds) {
 			// we have a uuid, let's hope there isn't a different name
@@ -437,9 +431,9 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				// but wait, we could have gotten this one based on GPS coords and could
 				// have had two different names for the same site... so let's search the other
 				// way around
-				uint32_t exact_match_uuid = get_dive_site_uuid_by_gps_and_name(buffer, &ds->location);
-				if (exact_match_uuid) {
-					dive->dive_site_uuid = exact_match_uuid;
+				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location);
+				if (exact_match) {
+					dive->dive_site_uuid = exact_match->uuid;
 				} else {
 					dive->dive_site_uuid = create_dive_site(buffer, dive->when);
 					struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
@@ -453,7 +447,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				}
 			} else {
 				// add the existing dive site to the current dive
-				dive->dive_site_uuid = uuid;
+				dive->dive_site_uuid = ds->uuid;
 			}
 		} else {
 			dive->dive_site_uuid = create_dive_site(buffer, dive->when);
