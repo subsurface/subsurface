@@ -499,6 +499,7 @@ Kirigami.ScrollablePage {
 		onTriggered: {
 			rootItem.filterToggle = !rootItem.filterToggle
 			diveModel.resetFilter()
+			numShownText = diveModel.shown()
 		}
 	}
 
