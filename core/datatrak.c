@@ -204,7 +204,7 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 	ds = get_dive_site_by_name(buffer);
 	dt_dive->dive_site_uuid = ds ? ds->uuid : 0;
 	if (dt_dive->dive_site_uuid == 0)
-		dt_dive->dive_site_uuid = create_dive_site(buffer, dt_dive->when);
+		dt_dive->dive_site_uuid = create_dive_site(buffer, dt_dive->when)->uuid;
 	free(locality);
 	locality = NULL;
 	free(dive_point);

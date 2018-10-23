@@ -4080,7 +4080,7 @@ void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 		if (ds) {
 			ds->location = picture->location;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", &picture->location, dive->when);
+			dive->dive_site_uuid = create_dive_site_with_gps("", &picture->location, dive->when)->uuid;
 			invalidate_dive_cache(dive);
 		}
 	}

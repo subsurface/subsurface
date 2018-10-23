@@ -435,8 +435,8 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				if (exact_match) {
 					dive->dive_site_uuid = exact_match->uuid;
 				} else {
-					dive->dive_site_uuid = create_dive_site(buffer, dive->when);
-					struct dive_site *newds = get_dive_site_by_uuid(dive->dive_site_uuid);
+					struct dive_site *newds = create_dive_site(buffer, dive->when);
+					dive->dive_site_uuid = newds->uuid;
 					if (has_location(&state->cur_location)) {
 						// we started this uuid with GPS data, so lets use those
 						newds->location = state->cur_location;
@@ -450,7 +450,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				dive->dive_site_uuid = ds->uuid;
 			}
 		} else {
-			dive->dive_site_uuid = create_dive_site(buffer, dive->when);
+			dive->dive_site_uuid = create_dive_site(buffer, dive->when)->uuid;
 		}
 	}
 	free(to_free);
