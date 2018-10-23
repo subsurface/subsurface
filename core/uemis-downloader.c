@@ -79,7 +79,7 @@ static uint32_t mindiveid;
 /* Linked list to remember already executed divespot download requests */
 struct divespot_mapping {
 	int divespot_id;
-	uint32_t dive_site_uuid;
+	struct dive_site *dive_site;
 	struct divespot_mapping *next;
 };
 static struct divespot_mapping *divespot_mapping = NULL;
@@ -95,7 +95,7 @@ static void erase_divespot_mapping()
 	divespot_mapping = NULL;
 }
 
-static void add_to_divespot_mapping(int divespot_id, uint32_t dive_site_uuid)
+static void add_to_divespot_mapping(int divespot_id, struct dive_site *ds)
 {
 	struct divespot_mapping *ndm = (struct divespot_mapping*)calloc(1, sizeof(struct divespot_mapping));
 	struct divespot_mapping **pdm = &divespot_mapping;
@@ -105,7 +105,7 @@ static void add_to_divespot_mapping(int divespot_id, uint32_t dive_site_uuid)
 		cdm = cdm->next;
 	
 	ndm->divespot_id = divespot_id;
-	ndm->dive_site_uuid = dive_site_uuid;
+	ndm->dive_site = ds;
 	ndm->next = NULL;
 	if (cdm)
 		cdm->next = ndm;
@@ -129,7 +129,7 @@ static struct dive_site *get_dive_site_by_divespot_id(int divespot_id)
 	struct divespot_mapping *dm = divespot_mapping;
 	while (dm) {
 		if (dm->divespot_id == divespot_id)
-			return get_dive_site_by_uuid(dm->dive_site_uuid);
+			return dm->dive_site;
 		dm = dm->next;
 	}
 	return NULL;
@@ -1197,7 +1197,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 					dive->dive_site_uuid = ods->uuid;
 				}
 			}
-			add_to_divespot_mapping(divespot_id, dive->dive_site_uuid);
+			add_to_divespot_mapping(divespot_id, get_dive_site_by_uuid(dive->dive_site_uuid));
 		} else {
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
