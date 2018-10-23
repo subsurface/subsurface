@@ -605,7 +605,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 				if (d->dive_site_uuid == ds->uuid)
 					d->dive_site_uuid = 0;
 			}
-			delete_dive_site(ds->uuid);
+			delete_dive_site(ds);
 			i--; // since we just deleted that one
 			continue;
 		} else if (ds->name &&
@@ -617,7 +617,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 			if (!is_dive_site_used(ds, false)) {
 				if (verbose)
 					fprintf(stderr, "Deleted unused auto-created dive site %s\n", ds->name);
-				delete_dive_site(ds->uuid);
+				delete_dive_site(ds);
 				i--; // since we just deleted that one
 				continue;
 			}

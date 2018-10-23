@@ -172,12 +172,11 @@ void free_dive_site(struct dive_site *ds)
 	}
 }
 
-void delete_dive_site(uint32_t id)
+void delete_dive_site(struct dive_site *ds)
 {
 	int nr = dive_site_table.nr;
 	for (int i = 0; i < nr; i++) {
-		struct dive_site *ds = get_dive_site(i);
-		if (ds->uuid == id) {
+		if (ds == get_dive_site(i)) {
 			free_dive_site(ds);
 			if (nr - 1 > i)
 				memmove(&dive_site_table.dive_sites[i],
@@ -329,7 +328,7 @@ void merge_dive_sites(uint32_t ref, uint32_t* uuids, int count)
 	for(i = 0; i < count; i++) {
 		if (uuids[i] == ref)
 			continue;
-		delete_dive_site(uuids[i]);
+		delete_dive_site(get_dive_site_by_uuid(uuids[i]));
 	}
 	mark_divelist_changed(true);
 }

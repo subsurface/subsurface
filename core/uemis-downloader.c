@@ -1193,7 +1193,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 			if (ods) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {
-					delete_dive_site(nds->uuid);
+					delete_dive_site(nds);
 					dive->dive_site_uuid = ods->uuid;
 				}
 			}
@@ -1202,7 +1202,7 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
 			*/
-			delete_dive_site(dive->dive_site_uuid);
+			delete_dive_site(get_dive_site_by_uuid(dive->dive_site_uuid));
 		}
 	}
 }

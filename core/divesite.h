@@ -57,7 +57,7 @@ struct dive_site *alloc_or_get_dive_site(uint32_t uuid);
 int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only);
 bool is_dive_site_used(struct dive_site *ds, bool select_only);
 void free_dive_site(struct dive_site *ds);
-void delete_dive_site(uint32_t id);
+void delete_dive_site(struct dive_site *ds);
 struct dive_site *create_dive_site(const char *name, timestamp_t divetime);
 struct dive_site *create_dive_site_from_current_dive(const char *name);
 struct dive_site *create_dive_site_with_gps(const char *name, const location_t *, timestamp_t divetime);

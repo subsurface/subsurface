@@ -97,7 +97,7 @@ bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 	beginRemoveRows(QModelIndex(), row, row);
 	struct dive_site *ds = get_dive_site(row);
 	if (ds)
-		delete_dive_site(ds->uuid);
+		delete_dive_site(ds);
 	endRemoveRows();
 	return true;
 }

@@ -1687,7 +1687,7 @@ void clear_dive_file_data()
 	while (dive_table.nr)
 		delete_single_dive(0);
 	while (dive_site_table.nr)
-		delete_dive_site(get_dive_site(0)->uuid);
+		delete_dive_site(get_dive_site(0));
 
 	clear_dive(&displayed_dive);
 

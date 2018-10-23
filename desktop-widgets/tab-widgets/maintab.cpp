@@ -888,7 +888,7 @@ void MainTab::acceptChanges()
 		if (oldDs && !is_dive_site_used(oldDs, false)) {
 			if (verbose)
 				qDebug() << "delete now unused dive site" << (oldDs->name ? oldDs->name : "without name");
-			delete_dive_site(oldDs->uuid);
+			delete_dive_site(oldDs);
 			MapWidget::instance()->reload();
 		}
 		// the code above can change the correct uuid for the displayed dive site - and the
