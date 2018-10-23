@@ -713,7 +713,6 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 	return pickedUuid;
 }
 
-
 // Get the list of selected dives, but put the current dive at the last position of the vector
 static QVector<dive *> getSelectedDivesCurrentLast()
 {
@@ -880,18 +879,16 @@ void MainTab::acceptChanges()
 		}
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
-		uint32_t oldUuid = cd->dive_site_uuid;
+		struct dive_site *oldDs = get_dive_site_by_uuid(cd->dive_site_uuid);
 		uint32_t newUuid = 0;
 		MODIFY_DIVES(selectedDives,
 			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
 				newUuid = updateDiveSite(newUuid == 0 ? ui.location->currDiveSiteUuid() : newUuid, mydive);
 		);
-		if (!is_dive_site_used(oldUuid, false)) {
-			if (verbose) {
-				struct dive_site *ds = get_dive_site_by_uuid(oldUuid);
-				qDebug() << "delete now unused dive site" << ((ds && ds->name) ? ds->name : "without name");
-			}
-			delete_dive_site(oldUuid);
+		if (oldDs && !is_dive_site_used(oldDs, false)) {
+			if (verbose)
+				qDebug() << "delete now unused dive site" << (oldDs->name ? oldDs->name : "without name");
+			delete_dive_site(oldDs->uuid);
 			MapWidget::instance()->reload();
 		}
 		// the code above can change the correct uuid for the displayed dive site - and the
