@@ -156,6 +156,7 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 		      *compl_buffer,
 		      *membuf = runner;
 	char buffer[1024];
+	struct dive_site *ds;
 	device_data_t *devdata = calloc(1, sizeof(device_data_t));
 
 	/*
@@ -200,7 +201,8 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 	 * Locality and Dive points.
 	 */
 	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
-	dt_dive->dive_site_uuid = get_dive_site_uuid_by_name(buffer, NULL);
+	ds = get_dive_site_by_name(buffer);
+	dt_dive->dive_site_uuid = ds ? ds->uuid : 0;
 	if (dt_dive->dive_site_uuid == 0)
 		dt_dive->dive_site_uuid = create_dive_site(buffer, dt_dive->when);
 	free(locality);

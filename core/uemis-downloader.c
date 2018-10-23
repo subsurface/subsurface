@@ -124,15 +124,15 @@ static bool is_divespot_mappable(int divespot_id)
 	return false;
 }
 
-static uint32_t get_dive_site_uuid_by_divespot_id(int divespot_id)
+static struct dive_site *get_dive_site_by_divespot_id(int divespot_id)
 {
 	struct divespot_mapping *dm = divespot_mapping;
 	while (dm) {
 		if (dm->divespot_id == divespot_id)
-			return dm->dive_site_uuid;
+			return get_dive_site_by_uuid(dm->dive_site_uuid);
 		dm = dm->next;
 	}
-	return 0;
+	return NULL;
 }
 
 /* helper function to parse the Uemis data structures */
@@ -1177,18 +1177,19 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 	struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
 	
 	if (is_divespot_mappable(divespot_id)) {
-		dive->dive_site_uuid = get_dive_site_uuid_by_divespot_id(divespot_id);
+		struct dive_site *ds = get_dive_site_by_divespot_id(divespot_id);
+		dive->dive_site_uuid = ds ? ds->uuid : 0;
 	} else if (nds && nds->name && strstr(nds->name,"from Uemis")) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
 			* the newly created site
 			*/
-			struct dive_site *ods = NULL;
+			struct dive_site *ods;
 			/* with the divesite name we got from parse_dive, that is called on load_uemis_divespot
 			 * we search all existing divesites if we have one with the same name already. The function
 			 * returns the first found which is luckily not the newly created.
 			 */
-			(void)get_dive_site_uuid_by_name(nds->name, &ods);
+			ods = get_dive_site_by_name(nds->name);
 			if (ods) {
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {

@@ -968,6 +968,7 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 static void divinglog_place(char *place, uint32_t *uuid, struct parser_state *state)
 {
 	char buffer[1024];
+	struct dive_site *ds;
 
 	snprintf(buffer, sizeof(buffer),
 		 "%s%s%s%s%s",
@@ -976,8 +977,10 @@ static void divinglog_place(char *place, uint32_t *uuid, struct parser_state *st
 		 state->city ? state->city : "",
 		 state->country ? ", " : "",
 		 state->country ? state->country : "");
-	*uuid = get_dive_site_uuid_by_name(buffer, NULL);
-	if (*uuid == 0)
+	ds = get_dive_site_by_name(buffer);
+	if (ds)
+		*uuid = ds->uuid;
+	else
 		*uuid = create_dive_site(buffer, state->cur_dive->when);
 
 	// TODO: capture the country / city info in the taxonomy instead
@@ -1178,16 +1181,15 @@ static void gps_in_dive(char *buffer, struct dive *dive, struct parser_state *st
 	parse_location(buffer, &location);
 	if (uuid == 0) {
 		// check if we have a dive site within 20 meters of that gps fix
-		uuid = get_dive_site_uuid_by_gps_proximity(&location, 20, &ds);
+		ds = get_dive_site_by_gps_proximity(&location, 20);
 
 		if (ds) {
 			// found a site nearby; in case it turns out this one had a different name let's
 			// remember the original coordinates so we can create the correct dive site later
 			state->cur_location = location;
-			dive->dive_site_uuid = uuid;
+			dive->dive_site_uuid = ds->uuid;
 		} else {
 			dive->dive_site_uuid = create_dive_site_with_gps("", &location, dive->when);
-			ds = get_dive_site_by_uuid(dive->dive_site_uuid);
 		}
 	} else {
 		ds = get_dive_site_by_uuid(uuid);
