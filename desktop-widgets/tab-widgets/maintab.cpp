@@ -419,6 +419,12 @@ void MainTab::updateDiveInfo(bool clear)
 		if (ds) {
 			ui.location->setCurrentDiveSiteUuid(ds->uuid);
 			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
+
+			if (ui.locationTags->text().isEmpty() && has_location(&ds->location)) {
+				const char *coords = printGPSCoords(&ds->location);
+				ui.locationTags->setText(coords);
+				free((void *)coords);
+			}
 		} else {
 			ui.location->clear();
 			ui.locationTags->clear();
