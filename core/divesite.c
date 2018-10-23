@@ -309,26 +309,26 @@ void clear_dive_site(struct dive_site *ds)
 	free_taxonomy(&ds->taxonomy);
 }
 
-void merge_dive_sites(uint32_t ref, uint32_t* uuids, int count)
+void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int count)
 {
 	int curr_dive, i;
 	struct dive *d;
 	for(i = 0; i < count; i++){
-		if (uuids[i] == ref)
+		if (dive_sites[i] == ref)
 			continue;
 
 		for_each_dive(curr_dive, d) {
-			if (d->dive_site_uuid != uuids[i] )
+			if (d->dive_site_uuid != dive_sites[i]->uuid )
 				continue;
-			d->dive_site_uuid = ref;
+			d->dive_site_uuid = ref->uuid;
 			invalidate_dive_cache(d);
 		}
 	}
 
 	for(i = 0; i < count; i++) {
-		if (uuids[i] == ref)
+		if (dive_sites[i] == ref)
 			continue;
-		delete_dive_site(get_dive_site_by_uuid(uuids[i]));
+		delete_dive_site(dive_sites[i]);
 	}
 	mark_divelist_changed(true);
 }
