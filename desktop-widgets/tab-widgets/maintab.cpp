@@ -688,7 +688,7 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 
 	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
 		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
-		pickedUuid = create_dive_site(qPrintable(name), displayed_dive.when);
+		pickedUuid = create_dive_site(qPrintable(name), displayed_dive.when)->uuid;
 		createdNewDive = true;
 		LocationFilterModel::instance()->addName(name);
 	}

@@ -376,9 +376,9 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 	ds = get_dive_site_by_name(str);
 	if (!ds) {
 		if (!has_location(&loc))
-			*location = create_dive_site(str, when);
+			*location = create_dive_site(str, when)->uuid;
 		else
-			*location = create_dive_site_with_gps(str, &loc, when);
+			*location = create_dive_site_with_gps(str, &loc, when)->uuid;
 		ds = get_dive_site_by_uuid(*location);
 	} else {
 		*location = ds->uuid;

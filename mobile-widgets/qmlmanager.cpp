@@ -760,7 +760,7 @@ static void setupDivesite(struct dive *d, struct dive_site *ds, double lat, doub
 	if (ds) {
 		ds->location = location;
 	} else {
-		d->dive_site_uuid = create_dive_site_with_gps(locationtext, &location, d->when);
+		d->dive_site_uuid = create_dive_site_with_gps(locationtext, &location, d->when)->uuid;
 	}
 }
 
@@ -879,8 +879,7 @@ bool QMLManager::checkLocation(DiveObjectHelper *myDive, struct dive *d, QString
 		if (!ds)
 			ds = get_dive_site_by_name(qPrintable(location));
 		if (!ds && !location.isEmpty()) {
-			uint32_t uuid = create_dive_site(qPrintable(location), d->when);
-			ds = get_dive_site_by_uuid(uuid);
+			ds = create_dive_site(qPrintable(location), d->when);
 		}
 		d->dive_site_uuid = ds ? ds->uuid : 0;
 	}

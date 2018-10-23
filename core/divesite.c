@@ -203,16 +203,16 @@ uint32_t create_divesite_uuid(const char *name, timestamp_t divetime)
 }
 
 /* allocate a new site and add it to the table */
-uint32_t create_dive_site(const char *name, timestamp_t divetime)
+struct dive_site *create_dive_site(const char *name, timestamp_t divetime)
 {
 	uint32_t uuid = create_divesite_uuid(name, divetime);
 	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
-	return uuid;
+	return ds;
 }
 
 /* same as before, but with current time if no current_dive is present */
-uint32_t create_dive_site_from_current_dive(const char *name)
+struct dive_site *create_dive_site_from_current_dive(const char *name)
 {
 	if (current_dive != NULL) {
 		return create_dive_site(name, current_dive->when);
@@ -225,14 +225,14 @@ uint32_t create_dive_site_from_current_dive(const char *name)
 }
 
 /* same as before, but with GPS data */
-uint32_t create_dive_site_with_gps(const char *name, const location_t *loc, timestamp_t divetime)
+struct dive_site *create_dive_site_with_gps(const char *name, const location_t *loc, timestamp_t divetime)
 {
 	uint32_t uuid = create_divesite_uuid(name, divetime);
 	struct dive_site *ds = alloc_or_get_dive_site(uuid);
 	ds->name = copy_string(name);
 	ds->location = *loc;
 
-	return ds->uuid;
+	return ds;
 }
 
 /* a uuid is always present - but if all the other fields are empty, the dive site is pointless */
@@ -330,7 +330,7 @@ void merge_dive_sites(uint32_t ref, uint32_t* uuids, int count)
 	mark_divelist_changed(true);
 }
 
-uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t divetime)
+struct dive_site *find_or_create_dive_site_with_name(const char *name, timestamp_t divetime)
 {
 	int i;
 	struct dive_site *ds;
@@ -339,7 +339,7 @@ uint32_t find_or_create_dive_site_with_name(const char *name, timestamp_t diveti
 			break;
 	}
 	if (ds)
-		return ds->uuid;
+		return ds;
 	return create_dive_site(name, divetime);
 }
 
