@@ -58,8 +58,9 @@ Kirigami.ApplicationWindow {
 	BusyIndicator {
 		id: busy
 		running: false
-		anchors.fill: parent
-		anchors.margins: Kirigami.Units.gridUnit
+		height: 6 * Kirigami.Units.gridUnit
+		width: 6 * Kirigami.Units.gridUnit
+		anchors.centerIn: parent
 	}
 
 	function showBusy() {
