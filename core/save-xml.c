@@ -600,7 +600,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 		int j;
 		struct dive *d;
 		struct dive_site *ds = get_dive_site(i);
-		if (dive_site_is_empty(ds) || !is_dive_site_used(ds->uuid, false)) {
+		if (dive_site_is_empty(ds) || !is_dive_site_used(ds, false)) {
 			for_each_dive(j, d) {
 				if (d->dive_site_uuid == ds->uuid)
 					d->dive_site_uuid = 0;
@@ -614,7 +614,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 			// these are the two default names for sites from
 			// the web service; if the site isn't used in any
 			// dive (really? you didn't rename it?), delete it
-			if (!is_dive_site_used(ds->uuid, false)) {
+			if (!is_dive_site_used(ds, false)) {
 				if (verbose)
 					fprintf(stderr, "Deleted unused auto-created dive site %s\n", ds->name);
 				delete_dive_site(ds->uuid);
@@ -622,7 +622,7 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 				continue;
 			}
 		}
-		if (select_only && !is_dive_site_used(ds->uuid, true))
+		if (select_only && !is_dive_site_used(ds, true))
 				continue;
 
 		put_format(b, "<site uuid='%8x'", ds->uuid);
