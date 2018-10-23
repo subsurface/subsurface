@@ -80,17 +80,18 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 		return;
 
 	QModelIndexList selection = ui.diveSiteListView->selectionModel()->selectedIndexes();
-	uint32_t *selected_dive_sites = (uint32_t *)malloc(sizeof(uint32_t) * selection.count());
-	int i = 0;
+	// std::vector guarantees contiguous storage and can therefore be passed to C-code
+	std::vector<struct dive_site *> selected_dive_sites;
+	selected_dive_sites.reserve(selection.count());
 	Q_FOREACH (const QModelIndex &idx, selection) {
-		selected_dive_sites[i] = (uint32_t)idx.data(LocationInformationModel::UUID_ROLE).toInt();
-		i++;
+		struct dive_site *ds = get_dive_site_by_uuid(idx.data(LocationInformationModel::UUID_ROLE).toUInt());
+		if (ds)
+			selected_dive_sites.push_back(ds);
 	}
-	merge_dive_sites(diveSite->uuid, selected_dive_sites, i);
+	merge_dive_sites(diveSite, selected_dive_sites.data(), (int)selected_dive_sites.size());
 	LocationInformationModel::instance()->update();
 	QSortFilterProxyModel *m = (QSortFilterProxyModel *)ui.diveSiteListView->model();
 	m->invalidate();
-	free(selected_dive_sites);
 }
 
 void LocationInformationWidget::updateLabels()
