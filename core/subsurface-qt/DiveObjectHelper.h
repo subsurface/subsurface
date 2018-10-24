@@ -56,6 +56,7 @@ public:
 	~DiveObjectHelper();
 	int number() const;
 	int id() const;
+	struct dive *getDive() const;
 	int rating() const;
 	int visibility() const;
 	QString date() const;
