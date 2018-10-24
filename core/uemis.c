@@ -101,7 +101,7 @@ struct uemis_helper {
 	uint32_t diveid;
 	int lbs;
 	int divespot;
-	int dive_site_uuid;
+	struct dive_site *dive_site;
 	struct uemis_helper *next;
 };
 static struct uemis_helper *uemis_helper = NULL;
@@ -146,11 +146,11 @@ int uemis_get_weight_unit(uint32_t diveid)
 	return 0;
 }
 
-void uemis_mark_divelocation(int diveid, int divespot, uint32_t dive_site_uuid)
+void uemis_mark_divelocation(int diveid, int divespot, struct dive_site *ds)
 {
 	struct uemis_helper *hp = uemis_get_helper(diveid);
 	hp->divespot = divespot;
-	hp->dive_site_uuid = dive_site_uuid;
+	hp->dive_site = ds;
 }
 
 /* support finding a dive spot based on the diveid */
@@ -170,7 +170,7 @@ void uemis_set_divelocation(int divespot, char *text, double longitude, double l
 	struct uemis_helper *hp = uemis_helper;
 	while (hp) {
 		if (hp->divespot == divespot) {
-			struct dive_site *ds = get_dive_site_by_uuid(hp->dive_site_uuid);
+			struct dive_site *ds = hp->dive_site;
 			if (ds) {
 				ds->name = strdup(text);
 				ds->location = create_location(latitude, longitude);
