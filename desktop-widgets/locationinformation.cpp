@@ -84,7 +84,7 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 	std::vector<struct dive_site *> selected_dive_sites;
 	selected_dive_sites.reserve(selection.count());
 	Q_FOREACH (const QModelIndex &idx, selection) {
-		struct dive_site *ds = get_dive_site_by_uuid(idx.data(LocationInformationModel::UUID_ROLE).toUInt());
+		struct dive_site *ds = (struct dive_site *)idx.data(LocationInformationModel::DIVESITE_ROLE).value<void *>();
 		if (ds)
 			selected_dive_sites.push_back(ds);
 	}
