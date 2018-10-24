@@ -992,8 +992,9 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 		} else if (!is_log && dive && !strcmp(tag, "divespot_id")) {
 			int divespot_id = atoi(val);
 			if (divespot_id != -1) {
-				dive->dive_site_uuid = create_dive_site("from Uemis", dive->when)->uuid;
-				uemis_mark_divelocation(dive->dc.diveid, divespot_id, dive->dive_site_uuid);
+				struct dive_site *ds = create_dive_site("from Uemis", dive->when);
+				dive->dive_site_uuid = ds->uuid;
+				uemis_mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
 #if UEMIS_DEBUG & 2
 			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site_uuid, dive->dc.diveid);
