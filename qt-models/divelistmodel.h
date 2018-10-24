@@ -21,6 +21,7 @@ public slots:
 	void setFilter(QString f);
 	void resetFilter();
 	int shown();
+	void updateDivesShownInTrips();
 protected:
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 private:

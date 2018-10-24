@@ -27,6 +27,7 @@ void DiveListSortModel::updateFilterState()
 		QString fullText = includeNotes? mySourceModel->at(i)->fullText() : mySourceModel->at(i)->fullTextNoNotes();
 		filteredRows.at(i) = fullText.contains(filterString, cs);
 	}
+	updateDivesShownInTrips();
 }
 
 void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -38,6 +39,7 @@ void DiveListSortModel::setFilter(QString f)
 	filterString = f;
 	updateFilterState();
 	invalidateFilter();
+	updateDivesShownInTrips();
 }
 
 void DiveListSortModel::resetFilter()
@@ -45,6 +47,7 @@ void DiveListSortModel::resetFilter()
 	filterString = "";
 	filteredRows.clear();
 	invalidateFilter();
+	updateDivesShownInTrips();
 }
 
 // filtering is way too slow on mobile. Maybe we should roll our own?
@@ -89,6 +92,24 @@ void DiveListSortModel::addAllDives()
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
 	mySourceModel->addAllDives();
 	updateFilterState();
+}
+
+void DiveListSortModel::updateDivesShownInTrips()
+{
+	// if filtering is active, reset all the counts to zero, otherwise set them to the full count
+	struct dive_trip *dt = dive_trip_list;
+	int rc = rowCount();
+	while (dt) {
+		dt->showndives = rc ? 0 : dt->nrdives;
+		dt = dt->next;
+	}
+	for (int i = 0; i < rowCount(); i++) {
+		QVariant v = data(index(i, 0), DiveListModel::DiveRole);
+		DiveObjectHelper *d = v.value<DiveObjectHelper *>();
+		dt = d->getDive()->divetrip;
+		if (dt)
+			dt->showndives++;
+	}
 }
 
 DiveListModel *DiveListModel::m_instance = NULL;
