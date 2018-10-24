@@ -521,7 +521,7 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 		qDebug() << "Setting a Existing dive site";
 	if (view->isVisible())
 		view->hide();
-	emit diveSiteSelected(currUuid);
+	emit diveSiteSelected();
 }
 
 void DiveLocationLineEdit::refreshDiveSiteCache()
