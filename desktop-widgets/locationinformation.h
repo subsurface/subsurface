@@ -101,7 +101,7 @@ public:
 	void setCurrentDiveSiteUuid(uint32_t uuid);
 
 signals:
-	void diveSiteSelected(uint32_t uuid);
+	void diveSiteSelected();
 	void entered(const QModelIndex& index);
 	void currentChanged(const QModelIndex& index);
 
