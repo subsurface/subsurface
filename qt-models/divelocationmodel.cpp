@@ -59,8 +59,8 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 		else
 			return QVariant();
 	}
-	case UUID_ROLE:
-		return ds->uuid;
+	case DIVESITE_ROLE:
+		return QVariant::fromValue<void *>((void *)ds); // Not nice: casting away const
 	}
 	return QVariant();
 }

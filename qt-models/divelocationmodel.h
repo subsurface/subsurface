@@ -16,7 +16,7 @@ public:
 	// Common columns, roles and accessor function for all dive-site models.
 	// Thus, different views can connect to different models.
 	enum Columns { UUID, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
-	enum Roles { UUID_ROLE = Qt::UserRole + 1 };
+	enum Roles { DIVESITE_ROLE = Qt::UserRole + 1 };
 	static QVariant getDiveSiteData(const struct dive_site *ds, int column, int role);
 
 	LocationInformationModel(QObject *obj = 0);
