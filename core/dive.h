@@ -292,7 +292,7 @@ typedef struct dive_trip
 	char *location;
 	char *notes;
 	struct dive *dives;
-	int nrdives;
+	int nrdives, showndives;
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved;
 	unsigned expanded : 1, selected : 1, autogen : 1, fixup : 1;
