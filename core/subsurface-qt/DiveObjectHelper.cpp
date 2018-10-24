@@ -341,7 +341,7 @@ QString DiveObjectHelper::tripMeta() const
 	QString ret = EMPTY_DIVE_STRING;
 	struct dive_trip *dt = m_dive->divetrip;
 	if (dt) {
-		QString numDives = tr("(%n dive(s))", "", dt->nrdives);
+		QString numDives = tr("(%n dive(s))", "", dt->showndives);
 		QString title(dt->location);
 		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
 		QString firstMonth = firstTime.toString("MMM");
