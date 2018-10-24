@@ -2,7 +2,6 @@
 #ifndef QPREF_H
 #define QPREF_H
 #include "core/pref.h"
-#include "ssrf-version.h"
 
 #include <QObject>
 #include <QQmlEngine>
@@ -24,8 +23,8 @@ public:
 	void registerQML(QQmlEngine *engine);
 
 public:
-	static const QString canonical_version() { return QString(CANONICAL_VERSION_STRING); }
-	static const QString mobile_version() { return QString(MOBILE_VERSION_STRING); }
+	static const QString canonical_version();
+	static const QString mobile_version();
 
 private:
 	static void loadSync(bool doSync);
