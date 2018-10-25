@@ -120,7 +120,7 @@ void MapWidgetHelper::reloadMapLocations()
 	m_mapLocationModel->clear();
 	MapLocation *location;
 	QVector<MapLocation *> locationList;
-	QVector<uint32_t> locationUuids;
+	QVector<struct dive_site *> locations;
 	qreal latitude, longitude;
 
 	for_each_dive(idx, dive) {
@@ -129,7 +129,7 @@ void MapWidgetHelper::reloadMapLocations()
 		if (dive->hidden_by_filter && dive != current_dive)
 			continue;
 		struct dive_site *ds = get_dive_site_for_dive(dive);
-		if (!dive_site_has_gps_location(ds) || locationUuids.contains(ds->uuid))
+		if (!dive_site_has_gps_location(ds) || locations.contains(ds))
 			continue;
 		latitude = ds->location.lat.udeg * 0.000001;
 		longitude = ds->location.lon.udeg * 0.000001;
@@ -145,7 +145,7 @@ void MapWidgetHelper::reloadMapLocations()
 		}
 		location = new MapLocation(ds->uuid, dsCoord, name);
 		locationList.append(location);
-		locationUuids.append(ds->uuid);
+		locations.append(ds);
 		locationNameMap[name] = location;
 	}
 	m_mapLocationModel->addList(locationList);
