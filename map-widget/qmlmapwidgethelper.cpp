@@ -22,19 +22,17 @@ MapWidgetHelper::MapWidgetHelper(QObject *parent) : QObject(parent)
 	        this, SLOT(selectedLocationChanged(MapLocation *)));
 }
 
-QGeoCoordinate MapWidgetHelper::getCoordinatesForUUID(QVariant dive_site_uuid)
+QGeoCoordinate MapWidgetHelper::getCoordinates(QVariant dive_site)
 {
-	const uint32_t uuid = qvariant_cast<uint32_t>(dive_site_uuid);
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
+	struct dive_site *ds = (struct dive_site *)dive_site.value<uintptr_t>();
 	if (!ds || !dive_site_has_gps_location(ds))
 		return QGeoCoordinate(0.0, 0.0);
 	return QGeoCoordinate(ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 }
 
-void MapWidgetHelper::centerOnDiveSiteUUID(QVariant dive_site_uuid)
+void MapWidgetHelper::centerOnDiveSite(QVariant dive_site)
 {
-	const uint32_t uuid = qvariant_cast<uint32_t>(dive_site_uuid);
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
+	struct dive_site *ds = (struct dive_site *)dive_site.value<uintptr_t>();
 	if (ds)
 		centerOnDiveSite(ds);
 }

@@ -127,9 +127,9 @@ QString DiveObjectHelper::gps_decimal() const
 	return val;
 }
 
-QVariant DiveObjectHelper::dive_site_uuid() const
+QVariant DiveObjectHelper::dive_site() const
 {
-	return QVariant::fromValue(m_dive->dive_site_uuid);
+	return QVariant::fromValue((void *)get_dive_site_by_uuid(m_dive->dive_site_uuid));
 }
 
 QString DiveObjectHelper::duration() const

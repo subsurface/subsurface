@@ -180,7 +180,7 @@ Kirigami.Page {
 		}
 		onTriggered: {
 			showMap()
-			mapPage.centerOnDiveSiteUUID(currentItem.modelData.dive.dive_site_uuid)
+			mapPage.centerOnDiveSite(currentItem.modelData.dive.dive_site)
 		}
 	}
 

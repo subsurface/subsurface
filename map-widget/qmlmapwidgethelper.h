@@ -29,8 +29,8 @@ public:
 
 	void centerOnDiveSite(struct dive_site *);
 	void centerOnSelectedDiveSite();
-	Q_INVOKABLE QGeoCoordinate getCoordinatesForUUID(QVariant dive_site_uuid);
-	Q_INVOKABLE void centerOnDiveSiteUUID(QVariant dive_site_uuid);
+	Q_INVOKABLE QGeoCoordinate getCoordinates(QVariant dive_site);
+	Q_INVOKABLE void centerOnDiveSite(QVariant dive_site);
 	Q_INVOKABLE void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
