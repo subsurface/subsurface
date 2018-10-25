@@ -14,6 +14,7 @@ set(TRANSLATION_FILES
 	subsurface_el_GR.ts
 	subsurface_en_GB.ts
 	subsurface_en_US.ts
+	subsurface_en_ZA.ts
 	subsurface_es_ES.ts
 	subsurface_et_EE.ts
 	subsurface_fi_FI.ts
