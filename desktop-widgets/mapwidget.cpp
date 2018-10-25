@@ -116,10 +116,10 @@ void MapWidget::coordinatesChangedLocal(const location_t &location)
 	emit coordinatesChanged(location);
 }
 
-void MapWidget::updateDiveSiteCoordinates(uint32_t uuid, const location_t &location)
+void MapWidget::updateDiveSiteCoordinates(struct dive_site *ds, const location_t &location)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	m_mapHelper->updateDiveSiteCoordinates(uuid, location);
+	m_mapHelper->updateDiveSiteCoordinates(ds, location);
 }
 
 MapWidget::~MapWidget()

@@ -36,7 +36,7 @@ public:
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
-	void updateDiveSiteCoordinates(uint32_t uuid, const location_t &);
+	void updateDiveSiteCoordinates(struct dive_site *ds, const location_t &);
 	void enterEditMode(struct dive_site *ds);
 	void exitEditMode();
 	QString pluginObject();
