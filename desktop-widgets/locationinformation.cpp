@@ -341,7 +341,7 @@ void LocationInformationWidget::updateLocationOnMap()
 	location_t location;
 	if (!parseGpsText(ui.diveSiteCoordinates->text(), location))
 		return;
-	MapWidget::instance()->updateDiveSiteCoordinates(diveSite->uuid, location);
+	MapWidget::instance()->updateDiveSiteCoordinates(diveSite, location);
 	filter_model.setCoordinates(location);
 }
 
