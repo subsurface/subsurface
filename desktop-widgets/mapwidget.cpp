@@ -8,6 +8,7 @@
 #include "core/divesite.h"
 #include "map-widget/qmlmapwidgethelper.h"
 #include "qt-models/maplocationmodel.h"
+#include "qt-models/divelocationmodel.h"
 #include "mainwindow.h"
 #include "divelistview.h"
 
@@ -66,8 +67,8 @@ void MapWidget::centerOnDiveSite(struct dive_site *ds)
 void MapWidget::centerOnIndex(const QModelIndex& idx)
 {
 	CHECK_IS_READY_RETURN_VOID();
-	struct dive_site *ds = get_dive_site_by_uuid(idx.model()->index(idx.row(), 0).data().toUInt());
-	if (!ds || !dive_site_has_gps_location(ds))
+	struct dive_site *ds = (struct dive_site *)idx.model()->index(idx.row(), LocationInformationModel::DIVESITE).data().value<void *>();
+	if (!ds || ds == RECENTLY_ADDED_DIVESITE || !dive_site_has_gps_location(ds))
 		centerOnSelectedDiveSite();
 	else
 		centerOnDiveSite(ds);

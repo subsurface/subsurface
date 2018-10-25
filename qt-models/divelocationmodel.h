@@ -8,14 +8,14 @@
 #include <stdint.h>
 #include "core/units.h"
 
-#define RECENTLY_ADDED_DIVESITE 1
+#define RECENTLY_ADDED_DIVESITE ((struct dive_site *)~0)
 
 class LocationInformationModel : public QAbstractTableModel {
 Q_OBJECT
 public:
 	// Common columns, roles and accessor function for all dive-site models.
 	// Thus, different views can connect to different models.
-	enum Columns { UUID, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
+	enum Columns { DIVESITE, NAME, LATITUDE, LONGITUDE, COORDS, DESCRIPTION, NOTES, TAXONOMY_1, TAXONOMY_2, TAXONOMY_3, COLUMNS};
 	enum Roles { DIVESITE_ROLE = Qt::UserRole + 1 };
 	static QVariant getDiveSiteData(const struct dive_site *ds, int column, int role);
 
@@ -37,12 +37,12 @@ private:
 class GPSLocationInformationModel : public QSortFilterProxyModel {
 Q_OBJECT
 private:
-	uint32_t ignoreUuid;
+	const struct dive_site *ignoreDs;
 	location_t location;
 	bool filterAcceptsRow(int sourceRow, const QModelIndex &source_parent) const override;
 public:
 	GPSLocationInformationModel(QObject *parent = nullptr);
-	void set(uint32_t ignoreUuid, const location_t &);
+	void set(const struct dive_site *ignoreDs, const location_t &);
 	void setCoordinates(const location_t &);
 };
 

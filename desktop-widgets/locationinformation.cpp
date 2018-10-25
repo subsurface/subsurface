@@ -225,7 +225,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 	diveSite = ds;
 	if (ds) {
 		copy_taxonomy(&ds->taxonomy, &taxonomy);
-		filter_model.set(ds->uuid, ds->location);
+		filter_model.set(ds, ds->location);
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
@@ -382,9 +382,8 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 	static const QIcon geoCode(":geotag-icon");
 
 	if (index.row() <= 1) { // two special cases.
-		if (index.column() == LocationInformationModel::UUID) {
-			return RECENTLY_ADDED_DIVESITE;
-		}
+		if (index.column() == LocationInformationModel::DIVESITE)
+			return QVariant::fromValue<void *>(RECENTLY_ADDED_DIVESITE);
 		switch (role) {
 		case Qt::DisplayRole:
 			return new_ds_value[index.row()];
@@ -429,9 +428,9 @@ DiveLocationLineEdit::DiveLocationLineEdit(QWidget *parent) : QLineEdit(parent),
 							      proxy(new DiveLocationFilterProxyModel()),
 							      model(new DiveLocationModel()),
 							      view(new DiveLocationListView()),
-							      currType(NO_DIVE_SITE)
+							      currType(NO_DIVE_SITE),
+							      currDs(nullptr)
 {
-	currUuid = 0;
 	location_line_edit = this;
 
 	proxy->setSourceModel(model);
@@ -507,15 +506,14 @@ void DiveLocationLineEdit::focusOutEvent(QFocusEvent *ev)
 void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 {
 	QModelIndex idx = index;
-	if (index.column() == LocationInformationModel::UUID)
+	if (index.column() == LocationInformationModel::DIVESITE)
 		idx = index.model()->index(index.row(), LocationInformationModel::NAME);
 
-	QModelIndex uuidIndex = index.model()->index(index.row(), LocationInformationModel::UUID);
-	uint32_t uuid = uuidIndex.data().toInt();
-	currType = uuid == 1 ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
-	currUuid = uuid;
+	dive_site *ds = (dive_site *)index.model()->index(index.row(), LocationInformationModel::DIVESITE).data().value<void *>();
+	currType = ds == RECENTLY_ADDED_DIVESITE ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
+	currDs = ds;
 	setText(idx.data().toString());
-	if (currUuid == NEW_DIVE_SITE)
+	if (currType == NEW_DIVE_SITE)
 		qDebug() << "Setting a New dive site";
 	else
 		qDebug() << "Setting a Existing dive site";
@@ -580,7 +578,7 @@ void DiveLocationLineEdit::keyPressEvent(QKeyEvent *ev)
 
 		if (ev->key() != Qt::Key_Up && ev->key() != Qt::Key_Down) {
 			currType = NEW_DIVE_SITE;
-			currUuid = RECENTLY_ADDED_DIVESITE;
+			currDs = RECENTLY_ADDED_DIVESITE;
 		} else {
 			showPopup();
 		}
@@ -626,17 +624,15 @@ void DiveLocationLineEdit::fixPopupPosition()
 	}
 }
 
-void DiveLocationLineEdit::setCurrentDiveSiteUuid(uint32_t uuid)
+void DiveLocationLineEdit::setCurrentDiveSite(struct dive_site *ds)
 {
-	currUuid = uuid;
-	if (uuid == 0) {
+	currDs = ds;
+	if (!currDs) {
 		currType = NO_DIVE_SITE;
-	}
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
-	if (!ds)
 		clear();
-	else
+	} else {
 		setText(ds->name);
+	}
 }
 
 void DiveLocationLineEdit::showPopup()
@@ -654,9 +650,9 @@ DiveLocationLineEdit::DiveSiteType DiveLocationLineEdit::currDiveSiteType() cons
 	return currType;
 }
 
-uint32_t DiveLocationLineEdit::currDiveSiteUuid() const
+struct dive_site *DiveLocationLineEdit::currDiveSite() const
 {
-	return currUuid;
+	return currDs;
 }
 
 DiveLocationListView::DiveLocationListView(QWidget*)
