@@ -37,7 +37,7 @@ public:
 	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
 	void updateDiveSiteCoordinates(uint32_t uuid, const location_t &);
-	void enterEditMode(uint32_t uuid);
+	void enterEditMode(struct dive_site *ds);
 	void exitEditMode();
 	QString pluginObject();
 

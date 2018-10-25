@@ -288,24 +288,23 @@ void MapWidgetHelper::exitEditMode()
 	emit editModeChanged();
 }
 
-void MapWidgetHelper::enterEditMode(quint32 uuid)
+void MapWidgetHelper::enterEditMode(struct dive_site *ds)
 {
 	// We don't support editing of a dive site that doesn't exist
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 	if (!ds)
 		return;
 
 	m_editMode = true;
-	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(uuid);
+	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(ds->uuid);
 	QGeoCoordinate coord;
 	// if divesite doesn't exist in the model, add a new MapLocation.
 	if (!exists) {
 		coord = m_map->property("center").value<QGeoCoordinate>();
-		m_mapLocationModel->add(new MapLocation(uuid, coord, QString(ds->name)));
+		m_mapLocationModel->add(new MapLocation(ds->uuid, coord, QString(ds->name)));
 	} else {
 		coord = exists->coordinate();
 	}
-	centerOnDiveSiteUUID(uuid);
+	centerOnDiveSite(ds);
 	location_t location = mk_location(coord);
 	emit coordinatesChanged(location);
 	emit editModeChanged();

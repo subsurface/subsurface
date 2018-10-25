@@ -237,7 +237,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		filter_model.set(0, location_t { degrees_t{ 0 }, degrees_t{ 0 } });
 		clearLabels();
 	}
-	MapWidget::instance()->prepareForGetDiveCoordinates(ds ? ds->uuid : 0);
+	MapWidget::instance()->prepareForGetDiveCoordinates(ds);
 }
 
 void LocationInformationWidget::markChangedWidget(QWidget *w)
