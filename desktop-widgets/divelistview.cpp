@@ -1062,6 +1062,7 @@ void DiveListView::filterFinished()
 	// If there are no more selected dives, select the first visible dive
 	if (!selectionModel()->hasSelection())
 		selectFirstDive();
+	emit diveListNotifier.selectionChanged();
 }
 
 QString DiveListView::lastUsedImageDir()
