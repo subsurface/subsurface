@@ -84,7 +84,7 @@ void PreferencesDefaults::refreshSettings()
 	ui->localDefaultFile->setChecked(qPrefGeneral::default_file_behavior() == LOCAL_DEFAULT_FILE);
 
 	ui->default_cylinder->clear();
-	for (int i = 0; tank_info[i].name != NULL && i < MAX_TANK_INFO; i++) {
+	for (int i = 0; i < MAX_TANK_INFO && tank_info[i].name != NULL; i++) {
 		ui->default_cylinder->addItem(tank_info[i].name);
 		if (qPrefGeneral::default_cylinder() == tank_info[i].name)
 			ui->default_cylinder->setCurrentIndex(i);
