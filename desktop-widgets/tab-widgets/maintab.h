@@ -123,7 +123,7 @@ private:
 	dive_trip_t *currentTrip;
 	dive_trip_t displayedTrip;
 	bool acceptingEdit;
-	uint32_t updateDiveSite(uint32_t pickedUuid, dive *d);
+	struct dive_site *updateDiveSite(struct dive_site *pickedDs, dive *d);
 	QList<TabBase*> extraWidgets;
 };
 

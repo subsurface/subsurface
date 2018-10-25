@@ -41,7 +41,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 	case Qt::EditRole:
 	case Qt::DisplayRole :
 		switch(column) {
-		case UUID: return ds->uuid;
+		case DIVESITE: return QVariant::fromValue<void*>((void *)ds); // Not nice: casting away const
 		case NAME: return ds->name;
 		case LATITUDE: return ds->location.lat.udeg;
 		case LONGITUDE: return ds->location.lon.udeg;
@@ -102,7 +102,8 @@ bool LocationInformationModel::removeRows(int row, int, const QModelIndex&)
 	return true;
 }
 
-GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance() {
+GeoReferencingOptionsModel *GeoReferencingOptionsModel::instance()
+{
 	static GeoReferencingOptionsModel *self = new GeoReferencingOptionsModel();
 	return self;
 }
@@ -118,24 +119,23 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 
 bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const
 {
-	uint32_t uuid = sourceModel()->index(sourceRow, LocationInformationModel::UUID, parent).data().toUInt();
-	if (uuid == ignoreUuid || uuid == RECENTLY_ADDED_DIVESITE)
+	struct dive_site *ds = (struct dive_site *)sourceModel()->index(sourceRow, LocationInformationModel::DIVESITE, parent).data().value<void *>();
+	if (ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE)
 		return false;
-	struct dive_site *ds = get_dive_site_by_uuid(uuid);
 
 	return ds && same_location(&ds->location, &location);
 }
 
 GPSLocationInformationModel::GPSLocationInformationModel(QObject *parent) : QSortFilterProxyModel(parent),
-	ignoreUuid(0),
+	ignoreDs(nullptr),
 	location({{0},{0}})
 {
 	setSourceModel(LocationInformationModel::instance());
 }
 
-void GPSLocationInformationModel::set(uint32_t ignoreUuidIn, const location_t &locationIn)
+void GPSLocationInformationModel::set(const struct dive_site *ignoreDsIn, const location_t &locationIn)
 {
-	ignoreUuid = ignoreUuidIn;
+	ignoreDs = ignoreDsIn;
 	location = locationIn;
 	invalidate();
 }

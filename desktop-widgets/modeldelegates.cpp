@@ -11,6 +11,7 @@
 #include "qt-models/weightsysteminfomodel.h"
 #include "qt-models/weightmodel.h"
 #include "qt-models/divetripmodel.h"
+#include "qt-models/divelocationmodel.h"
 #include "core/qthelper.h"
 
 #include <QCompleter>
@@ -452,9 +453,8 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QString diveSiteName = index.data().toString();
 	QString bottomText;
 	QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
-	struct dive_site *ds = get_dive_site_by_uuid(
-		index.model()->data(index.model()->index(index.row(),0)).toInt()
-	);
+	struct dive_site *ds = (struct dive_site *)
+		index.model()->data(index.model()->index(index.row(), LocationInformationModel::DIVESITE)).value<void *>();
 	struct dive_site *currentDiveSite = current_dive ? get_dive_site_for_dive(current_dive) : nullptr;
 	bool currentDiveSiteHasGPS = currentDiveSite && dive_site_has_gps_location(currentDiveSite);
 	//Special case: do not show name, but instead, show

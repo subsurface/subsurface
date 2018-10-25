@@ -96,9 +96,9 @@ public:
 	bool eventFilter(QObject*, QEvent*);
 	void itemActivated(const QModelIndex& index);
 	DiveSiteType currDiveSiteType() const;
-	uint32_t currDiveSiteUuid() const;
+	struct dive_site *currDiveSite() const;
 	void fixPopupPosition();
-	void setCurrentDiveSiteUuid(uint32_t uuid);
+	void setCurrentDiveSite(struct dive_site *ds);
 
 signals:
 	void diveSiteSelected();
@@ -116,7 +116,7 @@ private:
 	DiveLocationModel *model;
 	DiveLocationListView *view;
 	DiveSiteType currType;
-	uint32_t currUuid;
+	struct dive_site *currDs;
 };
 
 #endif

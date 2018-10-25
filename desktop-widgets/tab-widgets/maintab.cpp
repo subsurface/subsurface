@@ -224,7 +224,7 @@ void MainTab::setCurrentLocationIndex()
 	if (current_dive) {
 		struct dive_site *ds = get_dive_site_by_uuid(current_dive->dive_site_uuid);
 		if (ds)
-			ui.location->setCurrentDiveSiteUuid(ds->uuid);
+			ui.location->setCurrentDiveSite(ds);
 		else
 			ui.location->clear();
 	}
@@ -417,7 +417,7 @@ void MainTab::updateDiveInfo(bool clear)
 		struct dive_site *ds = NULL;
 		ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
 		if (ds) {
-			ui.location->setCurrentDiveSiteUuid(ds->uuid);
+			ui.location->setCurrentDiveSite(ds);
 			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
 
 			if (ui.locationTags->text().isEmpty() && has_location(&ds->location)) {
@@ -662,12 +662,12 @@ void MainTab::refreshDisplayedDiveSite()
 {
 	struct dive_site *ds = get_dive_site_for_dive(&displayed_dive);
 	if (ds)
-		ui.location->setCurrentDiveSiteUuid(ds->uuid);
+		ui.location->setCurrentDiveSite(ds);
 }
 
 // when this is called we already have updated the current_dive and know that it exists
 // there is no point in calling this function if there is no current dive
-uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
+struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 {
 	if (!d)
 		return 0;
@@ -675,42 +675,40 @@ uint32_t MainTab::updateDiveSite(uint32_t pickedUuid, dive *d)
 	if (ui.location->text().isEmpty())
 		return 0;
 
-	if (pickedUuid == 0)
+	if (!pickedDs)
 		return 0;
 
 	const uint32_t origUuid = d->dive_site_uuid;
 	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
-	struct dive_site *newDs = NULL;
 	bool createdNewDive = false;
 
-	if (pickedUuid == origUuid)
-		return origUuid;
+	if (pickedDs == origDs)
+		return origDs;
 
-	if (pickedUuid == RECENTLY_ADDED_DIVESITE) {
+	if (pickedDs == RECENTLY_ADDED_DIVESITE) {
 		QString name = ui.location->text().isEmpty() ? tr("New dive site") : ui.location->text();
-		pickedUuid = create_dive_site(qPrintable(name), displayed_dive.when)->uuid;
+		pickedDs = create_dive_site(qPrintable(name), displayed_dive.when);
 		createdNewDive = true;
 		LocationFilterModel::instance()->addName(name);
 	}
 
-	newDs = get_dive_site_by_uuid(pickedUuid);
-
 	if (origDs) {
 		if(createdNewDive) {
-			copy_dive_site(origDs, newDs);
-			free(newDs->name);
-			newDs->name = copy_qstring(ui.location->text());
-			newDs->uuid = pickedUuid;
+			uint32_t pickedUuid = pickedDs->uuid;
+			copy_dive_site(origDs, pickedDs);
+			free(pickedDs->name);
+			pickedDs->name = copy_qstring(ui.location->text());
+			pickedDs->uuid = pickedUuid;
 			qDebug() << "Creating and copying dive site";
-		} else if (!has_location(&newDs->location)) {
-			newDs->location = origDs->location;
+		} else if (!has_location(&pickedDs->location)) {
+			pickedDs->location = origDs->location;
 			qDebug() << "Copying GPS information";
 		}
 	}
 
-	d->dive_site_uuid = pickedUuid;
-	qDebug() << "Setting the dive site id on the dive:" << pickedUuid;
-	return pickedUuid;
+	d->dive_site_uuid = pickedDs->uuid;
+	qDebug() << "Setting the dive site id on the dive:" << pickedDs->uuid;
+	return pickedDs;
 }
 
 // Get the list of selected dives, but put the current dive at the last position of the vector
@@ -745,7 +743,7 @@ void MainTab::acceptChanges()
 	ui.equipmentTab->setEnabled(true);
 	if (editMode == ADD) {
 		// make sure that the dive site is handled as well
-		updateDiveSite(ui.location->currDiveSiteUuid(), &displayed_dive);
+		updateDiveSite(ui.location->currDiveSite(), &displayed_dive);
 		copyTagsToDisplayedDive();
 
 		Command::addDive(&displayed_dive, autogroup, true);
@@ -880,10 +878,10 @@ void MainTab::acceptChanges()
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
 		struct dive_site *oldDs = get_dive_site_by_uuid(cd->dive_site_uuid);
-		uint32_t newUuid = 0;
+		struct dive_site *newDs = 0;
 		MODIFY_DIVES(selectedDives,
 			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
-				newUuid = updateDiveSite(newUuid == 0 ? ui.location->currDiveSiteUuid() : newUuid, mydive);
+				newDs = updateDiveSite(!newDs ? ui.location->currDiveSite() : newDs, mydive);
 		);
 		if (oldDs && !is_dive_site_used(oldDs, false)) {
 			if (verbose)
@@ -1345,7 +1343,7 @@ void MainTab::on_location_diveSiteSelected()
 		emit diveSiteChanged();
 		return;
 	} else {
-		if (ui.location->currDiveSiteUuid() != displayed_dive.dive_site_uuid) {
+		if (ui.location->currDiveSite() != get_dive_site_by_uuid(displayed_dive.dive_site_uuid)) {
 			markChangedWidget(ui.location);
 		} else {
 			QPalette p;
@@ -1482,7 +1480,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
 	if (what.divesite)
-		ui.location->setCurrentDiveSiteUuid(displayed_dive.dive_site_uuid);
+		ui.location->setCurrentDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
 	if (what.tags) {
 		ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
 	}
