@@ -52,7 +52,7 @@ Item {
 				enabled: dive.gps_decimal !== ""
 				onClicked: {
 					showMap()
-					mapPage.centerOnDiveSiteUUID(dive.dive_site_uuid)
+					mapPage.centerOnDiveSite(dive.dive_site)
 				}
 			}
 		}
@@ -63,7 +63,7 @@ Item {
 			text: qsTr("Map it")
 			onClicked: {
 				showMap()
-				mapPage.centerOnDiveSiteUUID(dive.dive_site_uuid)
+				mapPage.centerOnDiveSite(dive.dive_site)
 			}
 		}
 		Row {

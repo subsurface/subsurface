@@ -40,19 +40,19 @@ Kirigami.Page {
 		mapWidget.mapHelper.reloadMapLocations()
 	}
 
-	function centerOnDiveSiteUUID(uuid) {
-		if (!uuid) {
-			console.warn("main.qml: centerOnDiveSiteUUI(): uuid is undefined!")
+	function centerOnDiveSite(ds) {
+		if (!ds) {
+			console.warn("main.qml: centerOnDiveSite(): dive site is undefined!")
 			return
 		}
 		// on firstRun, hard pan/center the map to the desired location so that
 		// we don't start at an arbitrary location such as [0,0] or London.
 		if (firstRun) {
-			var coord = mapWidget.mapHelper.getCoordinatesForUUID(uuid)
+			var coord = mapWidget.mapHelper.getCoordinates(ds)
 			centerOnLocationHard(coord.latitude, coord.longitude)
 			firstRun = false
-		} // continue here as centerOnDiveSiteUUID() also does marker selection.
-		mapWidget.mapHelper.centerOnDiveSiteUUID(uuid)
+		} // continue here as centerOnDiveSite() also does marker selection.
+		mapWidget.mapHelper.centerOnDiveSite(ds)
 	}
 
 	function centerOnLocation(lat, lon) {
