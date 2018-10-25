@@ -33,7 +33,7 @@ public slots:
 	void centerOnIndex(const QModelIndex& idx);
 	void endGetDiveCoordinates();
 	void repopulateLabels();
-	void prepareForGetDiveCoordinates(uint32_t uuid);
+	void prepareForGetDiveCoordinates(struct dive_site *ds);
 	void selectedDivesChanged(QList<int>);
 	void coordinatesChangedLocal(const location_t &);
 	void doneLoading(QQuickWidget::Status status);
