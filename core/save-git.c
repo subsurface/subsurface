@@ -431,16 +431,14 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	SAVE("visibility", visibility);
 	cond_put_format(dive->tripflag == NO_TRIP, b, "notrip\n");
 	save_tags(b, dive->tag_list);
-	cond_put_format(dive->dive_site_uuid && get_dive_site_by_uuid(dive->dive_site_uuid),
-			b, "divesiteid %08x\n", dive->dive_site_uuid);
-	if (verbose && dive->dive_site_uuid && !get_dive_site_by_uuid(dive->dive_site_uuid))
-		fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site_uuid);
+	cond_put_format(!!dive->dive_site, b, "divesiteid %08x\n", dive->dive_site->uuid);
+	if (verbose && dive->dive_site)
+		fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
 	save_overview(b, dive);
 	save_cylinder_info(b, dive);
 	save_weightsystem_info(b, dive);
 	save_dive_temperature(b, dive);
 }
-
 
 /*
  * libgit2 has a "git_treebuilder" concept, but it's broken, and can not
@@ -887,8 +885,8 @@ static void save_divesites(git_repository *repo, struct dir *tree)
 			int j;
 			struct dive *d;
 			for_each_dive(j, d) {
-				if (d->dive_site_uuid == ds->uuid)
-					d->dive_site_uuid = 0;
+				if (d->dive_site == ds)
+					d->dive_site = NULL;
 			}
 			delete_dive_site(ds);
 			i--; // since we just deleted that one

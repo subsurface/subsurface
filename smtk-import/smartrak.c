@@ -315,7 +315,7 @@ static void smtk_wreck_site(MdbHandle *mdb, char *site_idx, struct dive_site *ds
  * Location format:
  * | Idx | Text | Province | Country | Depth |
  */
-static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uint32_t *location)
+static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, struct dive_site **location)
 {
 	MdbTableDef *table;
 	MdbColumn *col[MDB_MAX_COLS];
@@ -376,13 +376,11 @@ static void smtk_build_location(MdbHandle *mdb, char *idx, timestamp_t when, uin
 	ds = get_dive_site_by_name(str);
 	if (!ds) {
 		if (!has_location(&loc))
-			*location = create_dive_site(str, when)->uuid;
+			ds = create_dive_site(str, when);
 		else
-			*location = create_dive_site_with_gps(str, &loc, when)->uuid;
-		ds = get_dive_site_by_uuid(*location);
-	} else {
-		*location = ds->uuid;
+			ds = create_dive_site_with_gps(str, &loc, when);
 	}
+	*location = ds;
 	smtk_free(bound_values, table->num_cols);
 
 	/* Insert site notes */
@@ -1065,7 +1063,7 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 		smtkdive->visibility = strtod(col[coln(VISIBILITY)]->bind_ptr, NULL) > 25 ? 5 : lrint(strtod(col[13]->bind_ptr, NULL) / 5);
 		smtkdive->weightsystem[0].weight.grams = lrint(strtod(col[coln(WEIGHT)]->bind_ptr, NULL) * 1000);
 		smtkdive->suit = copy_string(suit_list[atoi(col[coln(SUITIDX)]->bind_ptr) - 1]);
-		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, smtkdive->when, &smtkdive->dive_site_uuid);
+		smtk_build_location(mdb_clon, col[coln(SITEIDX)]->bind_ptr, smtkdive->when, &smtkdive->dive_site);
 		smtkdive->buddy = smtk_locate_buddy(mdb_clon, col[0]->bind_ptr, buddy_list);
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Type", "TypeRelation", type_list, true);
 		smtk_parse_relations(mdb_clon, smtkdive, col[0]->bind_ptr, "Activity", "ActivityRelation", activity_list, false);

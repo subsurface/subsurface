@@ -558,6 +558,13 @@ static void hex_value(char *buffer, uint32_t *i)
 	*i = strtoul(buffer, NULL, 16);
 }
 
+static void dive_site(char *buffer, struct dive_site **ds)
+{
+	uint32_t uuid;
+	hex_value(buffer, &uuid);
+	*ds = get_dive_site_by_uuid(uuid);
+}
+
 static void get_tripflag(char *buffer, tripflag_t *tf)
 {
 	*tf = strcmp(buffer, "NOTRIP") ? TF_NONE : NO_TRIP;
@@ -965,10 +972,9 @@ static void try_to_fill_sample(struct sample *sample, const char *name, char *bu
 	nonmatch("sample", name, buf);
 }
 
-static void divinglog_place(char *place, uint32_t *uuid, struct parser_state *state)
+static void divinglog_place(char *place, struct dive_site **ds, struct parser_state *state)
 {
 	char buffer[1024];
-	struct dive_site *ds;
 
 	snprintf(buffer, sizeof(buffer),
 		 "%s%s%s%s%s",
@@ -977,11 +983,9 @@ static void divinglog_place(char *place, uint32_t *uuid, struct parser_state *st
 		 state->city ? state->city : "",
 		 state->country ? ", " : "",
 		 state->country ? state->country : "");
-	ds = get_dive_site_by_name(buffer);
-	if (ds)
-		*uuid = ds->uuid;
-	else
-		*uuid = create_dive_site(buffer, state->cur_dive->when)->uuid;
+	*ds = get_dive_site_by_name(buffer);
+	if (!*ds)
+		*ds = create_dive_site(buffer, state->cur_dive->when);
 
 	// TODO: capture the country / city info in the taxonomy instead
 	free(state->city);
@@ -1006,7 +1010,7 @@ static int divinglog_dive_match(struct dive *dive, const char *name, char *buf, 
 	       MATCH("names.buddy", utf8_string, &dive->buddy) ||
 	       MATCH("name.country", utf8_string, &state->country) ||
 	       MATCH("name.city", utf8_string, &state->city) ||
-	       MATCH_STATE("name.place", divinglog_place, &dive->dive_site_uuid) ||
+	       MATCH_STATE("name.place", divinglog_place, &dive->dive_site) ||
 	       0;
 }
 
@@ -1133,7 +1137,7 @@ static void gps_lat(char *buffer, struct dive *dive)
 
 	location.lat = parse_degrees(buffer, &end);
 	if (!ds) {
-		dive->dive_site_uuid = create_dive_site_with_gps(NULL, &location, dive->when)->uuid;
+		dive->dive_site = create_dive_site_with_gps(NULL, &location, dive->when);
 	} else {
 		if (ds->location.lat.udeg && ds->location.lat.udeg != location.lat.udeg)
 			fprintf(stderr, "Oops, changing the latitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
@@ -1149,7 +1153,7 @@ static void gps_long(char *buffer, struct dive *dive)
 
 	location.lon = parse_degrees(buffer, &end);
 	if (!ds) {
-		dive->dive_site_uuid = create_dive_site_with_gps(NULL, &location, dive->when)->uuid;
+		dive->dive_site = create_dive_site_with_gps(NULL, &location, dive->when);
 	} else {
 		if (ds->location.lon.udeg && ds->location.lon.udeg != location.lon.udeg)
 			fprintf(stderr, "Oops, changing the longitude of existing dive site id %8x name %s; not good\n", ds->uuid, ds->name ?: "(unknown)");
@@ -1174,12 +1178,11 @@ static void gps_location(char *buffer, struct dive_site *ds)
 
 static void gps_in_dive(char *buffer, struct dive *dive, struct parser_state *state)
 {
-	struct dive_site *ds = NULL;
+	struct dive_site *ds = dive->dive_site;
 	location_t location;
-	uint32_t uuid = dive->dive_site_uuid;
 
 	parse_location(buffer, &location);
-	if (uuid == 0) {
+	if (!ds) {
 		// check if we have a dive site within 20 meters of that gps fix
 		ds = get_dive_site_by_gps_proximity(&location, 20);
 
@@ -1187,12 +1190,11 @@ static void gps_in_dive(char *buffer, struct dive *dive, struct parser_state *st
 			// found a site nearby; in case it turns out this one had a different name let's
 			// remember the original coordinates so we can create the correct dive site later
 			state->cur_location = location;
-			dive->dive_site_uuid = ds->uuid;
+			dive->dive_site = ds;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", &location, dive->when)->uuid;
+			dive->dive_site = create_dive_site_with_gps("", &location, dive->when);
 		}
 	} else {
-		ds = get_dive_site_by_uuid(uuid);
 		if (dive_site_has_gps_location(ds) &&
 		    has_location(&location) && !same_location(&ds->location, &location)) {
 			// Houston, we have a problem
@@ -1233,7 +1235,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 	default:
 		break;
 	}
-	if (MATCH("divesiteid", hex_value, &dive->dive_site_uuid))
+	if (MATCH("divesiteid", dive_site, &dive->dive_site))
 		return;
 	if (MATCH("number", get_index, &dive->number))
 		return;
@@ -2120,7 +2122,7 @@ int parse_dlf_buffer(unsigned char *buffer, size_t size, struct dive_table *tabl
 				/* Measure GPS */
 				state.cur_location.lat.udeg =  (int)((ptr[7]  << 24) + (ptr[6]  << 16) + (ptr[5] << 8) + (ptr[4] << 0));
 				state.cur_location.lon.udeg = (int)((ptr[11] << 24) + (ptr[10] << 16) + (ptr[9] << 8) + (ptr[8] << 0));
-				state.cur_dive->dive_site_uuid = create_dive_site_with_gps("DLF imported", &state.cur_location, state.cur_dive->when)->uuid;
+				state.cur_dive->dive_site = create_dive_site_with_gps("DLF imported", &state.cur_location, state.cur_dive->when);
 				break;
 			default:
 				break;

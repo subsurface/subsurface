@@ -286,7 +286,7 @@ void DiveLogExportDialog::export_TeX(const char *filename, const bool selected_o
 		struct tm tm;
 		utc_mkdate(dive->when, &tm);
 
-		dive_site *site = get_dive_site_by_uuid(dive->dive_site_uuid);
+		dive_site *site = dive->dive_site;
 		QRegExp ct("countrytag: (\\w+)");
 		QString country;
 		if (ct.indexIn(site->notes) >= 0)

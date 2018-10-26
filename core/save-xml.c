@@ -483,11 +483,8 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	if (dive->visibility)
 		put_format(b, " visibility='%d'", dive->visibility);
 	save_tags(b, dive->tag_list);
-	if (dive->dive_site_uuid) {
-		if (get_dive_site_by_uuid(dive->dive_site_uuid) != NULL)
-			put_format(b, " divesiteid='%8x'", dive->dive_site_uuid);
-		else if (verbose)
-			fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site_uuid);
+	if (dive->dive_site) {
+		put_format(b, " divesiteid='%8x'", dive->dive_site->uuid);
 	}
 	show_date(b, dive->when);
 	if (dive->dc.duration.seconds > 0)
@@ -602,8 +599,8 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 		struct dive_site *ds = get_dive_site(i);
 		if (dive_site_is_empty(ds) || !is_dive_site_used(ds, false)) {
 			for_each_dive(j, d) {
-				if (d->dive_site_uuid == ds->uuid)
-					d->dive_site_uuid = 0;
+				if (d->dive_site == ds)
+					d->dive_site = NULL;
 			}
 			delete_dive_site(ds);
 			i--; // since we just deleted that one

@@ -45,7 +45,7 @@ static void copy_gps_location(struct dive *from, struct dive *to)
 		struct dive_site *gds = get_dive_site_for_dive(from);
 		if (!ds) {
 			// simply link to the one created for the fake dive
-			to->dive_site_uuid = gds->uuid;
+			to->dive_site = gds;
 		} else {
 			ds->latitude = gds->latitude;
 			ds->longitude = gds->longitude;
@@ -198,10 +198,10 @@ bool DivelogsDeWebServices::prepare_dives_for_divelogs(const QString &tempfile, 
 		/* make sure the buffer is empty and add the dive */
 		mb.len = 0;
 
-		struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+		struct dive_site *ds = dive->dive_site;
 
 		if (ds) {
-			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", dive->dive_site_uuid);
+			put_format(&mb, "<divelog><divesites><site uuid='%8x' name='", dive->dive_site->uuid);
 			put_quoted(&mb, ds->name, 1, 0);
 			put_format(&mb, "'");
 			put_location(&mb, &ds->location, " gps='", "'");

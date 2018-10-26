@@ -209,10 +209,10 @@ int GpsLocation::getGpsNum() const
 
 static void copy_gps_location(struct gpsTracker &gps, struct dive *d)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+	struct dive_site *ds = d->dive_site;
 	if (!ds) {
 		ds = create_dive_site(qPrintable(gps.name), gps.when);
-		d->dive_site_uuid = ds->uuid;
+		d->dive_site = ds;
 	}
 	ds->location = gps.location;
 }

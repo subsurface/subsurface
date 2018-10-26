@@ -163,7 +163,7 @@ void event_end(struct parser_state *state)
 bool is_dive(struct parser_state *state)
 {
 	return state->cur_dive &&
-		(state->cur_dive->dive_site_uuid || state->cur_dive->when || state->cur_dive->dc.samples);
+		(state->cur_dive->dive_site || state->cur_dive->when || state->cur_dive->dc.samples);
 }
 
 void reset_dc_info(struct divecomputer *dc, struct parser_state *state)
@@ -417,7 +417,7 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 	char *to_free = NULL;
 	int size = trimspace(buffer);
 	if(size) {
-		struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+		struct dive_site *ds = dive->dive_site;
 		if (!ds) {
 			// if the dive doesn't have a uuid, check if there's already a dive site by this name
 			ds = get_dive_site_by_name(buffer);
@@ -433,10 +433,10 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				// way around
 				struct dive_site *exact_match = get_dive_site_by_gps_and_name(buffer, &ds->location);
 				if (exact_match) {
-					dive->dive_site_uuid = exact_match->uuid;
+					dive->dive_site = exact_match;
 				} else {
 					struct dive_site *newds = create_dive_site(buffer, dive->when);
-					dive->dive_site_uuid = newds->uuid;
+					dive->dive_site = newds;
 					if (has_location(&state->cur_location)) {
 						// we started this uuid with GPS data, so lets use those
 						newds->location = state->cur_location;
@@ -447,10 +447,10 @@ void add_dive_site(char *ds_name, struct dive *dive, struct parser_state *state)
 				}
 			} else {
 				// add the existing dive site to the current dive
-				dive->dive_site_uuid = ds->uuid;
+				dive->dive_site = ds;
 			}
 		} else {
-			dive->dive_site_uuid = create_dive_site(buffer, dive->when)->uuid;
+			dive->dive_site = create_dive_site(buffer, dive->when);
 		}
 	}
 	free(to_free);

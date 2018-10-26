@@ -41,11 +41,11 @@ void MapWidgetHelper::centerOnDiveSite(struct dive_site *ds)
 {
 	if (!ds || !dive_site_has_gps_location(ds)) {
 		// dive site with no GPS
-		m_mapLocationModel->setSelectedUuid(ds ? ds->uuid : 0, false);
+		m_mapLocationModel->setSelected(ds, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
 	} else {
 		// dive site with GPS
-		m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+		m_mapLocationModel->setSelected(ds, false);
 		QGeoCoordinate dsCoord (ds->location.lat.udeg * 0.000001, ds->location.lon.udeg * 0.000001);
 		QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(dsCoord)));
 	}
@@ -72,15 +72,14 @@ void MapWidgetHelper::centerOnSelectedDiveSite()
 
 	if (selDS.isEmpty()) {
 		// no selected dives with GPS coordinates
-		m_mapLocationModel->setSelectedUuid(0, false);
+		m_mapLocationModel->setSelected(nullptr, false);
 		QMetaObject::invokeMethod(m_map, "deselectMapLocation");
-
 	} else if (selDS.size() == 1) {
 		centerOnDiveSite(selDS[0]);
 	} else if (selDS.size() > 1) {
 		/* more than one dive sites with GPS selected.
 		 * find the most top-left and bottom-right dive sites on the map coordinate system. */
-		m_mapLocationModel->setSelectedUuid(selDS[0]->uuid, false);
+		m_mapLocationModel->setSelected(selDS[0], false);
 		qreal minLat = 0.0, minLon = 0.0, maxLat = 0.0, maxLon = 0.0;
 		bool start = true;
 		for(struct dive_site *dss: selDS) {
@@ -143,7 +142,7 @@ void MapWidgetHelper::reloadMapLocations()
 			if (dsCoord.distanceTo(coord) < MIN_DISTANCE_BETWEEN_DIVE_SITES_M)
 				continue;
 		}
-		location = new MapLocation(ds->uuid, dsCoord, name);
+		location = new MapLocation(ds, dsCoord, name);
 		locationList.append(location);
 		locations.append(ds);
 		locationNameMap[name] = location;
@@ -169,7 +168,7 @@ void MapWidgetHelper::selectedLocationChanged(MapLocation *location)
 			m_selectedDiveIds.append(idx);
 	}
 #else // the mobile version doesn't support multi-dive selection
-		if (ds->uuid == location->uuid())
+		if (ds == location->divesite())
 			m_selectedDiveIds.append(dive->id); // use id here instead of index
 	}
 	int last; // get latest dive chronologically
@@ -200,7 +199,7 @@ void MapWidgetHelper::selectVisibleLocations()
 		                          Q_ARG(QGeoCoordinate, dsCoord));
 		if (!qIsNaN(point.x())) {
 			if (!selectedFirst) {
-				m_mapLocationModel->setSelectedUuid(ds->uuid, false);
+				m_mapLocationModel->setSelected(ds, false);
 				selectedFirst = true;
 			}
 #ifndef SUBSURFACE_MOBILE // indexes on desktop
@@ -262,9 +261,9 @@ void MapWidgetHelper::copyToClipboardCoordinates(QGeoCoordinate coord, bool form
 	prefs.coordinates_traditional = savep;
 }
 
-void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord)
+void MapWidgetHelper::updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *ds, QGeoCoordinate coord)
 {
-	MapLocation *loc = m_mapLocationModel->getMapLocationForUuid(uuid);
+	MapLocation *loc = m_mapLocationModel->getMapLocation(ds);
 	if (loc)
 		loc->setCoordinate(coord);
 	location_t location = mk_location(coord);
@@ -278,7 +277,7 @@ void MapWidgetHelper::updateDiveSiteCoordinates(struct dive_site *ds, const loca
 	const qreal latitude_r = location.lat.udeg * 0.000001;
 	const qreal longitude_r = location.lon.udeg * 0.000001;
 	QGeoCoordinate coord(latitude_r, longitude_r);
-	m_mapLocationModel->updateMapLocationCoordinates(ds->uuid, coord);
+	m_mapLocationModel->updateMapLocationCoordinates(ds, coord);
 	QMetaObject::invokeMethod(m_map, "centerOnCoordinate", Q_ARG(QVariant, QVariant::fromValue(coord)));
 }
 
@@ -295,12 +294,12 @@ void MapWidgetHelper::enterEditMode(struct dive_site *ds)
 		return;
 
 	m_editMode = true;
-	MapLocation *exists = m_mapLocationModel->getMapLocationForUuid(ds->uuid);
+	MapLocation *exists = m_mapLocationModel->getMapLocation(ds);
 	QGeoCoordinate coord;
 	// if divesite doesn't exist in the model, add a new MapLocation.
 	if (!exists) {
 		coord = m_map->property("center").value<QGeoCoordinate>();
-		m_mapLocationModel->add(new MapLocation(ds->uuid, coord, QString(ds->name)));
+		m_mapLocationModel->add(new MapLocation(ds, coord, QString(ds->name)));
 	} else {
 		coord = exists->coordinate();
 	}

@@ -310,7 +310,7 @@ struct dive {
 	bool selected;
 	bool hidden_by_filter;
 	timestamp_t when;
-	uint32_t dive_site_uuid;
+	struct dive_site *dive_site;
 	char *notes;
 	char *divemaster, *buddy;
 	int rating;

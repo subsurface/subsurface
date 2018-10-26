@@ -56,26 +56,26 @@ Item {
 				anchorPoint.x: 0
 				anchorPoint.y: mapItemImage.height
 				coordinate:  model.coordinate
-				z: mapHelper.model.selectedUuid === model.uuid ? mapHelper.model.count - 1 : 0
+				z: mapHelper.model.selectedDs === model.divesite ? mapHelper.model.count - 1 : 0
 				sourceItem: Image {
 					id: mapItemImage
-					source: "qrc:///dive-location-marker" + (mapHelper.model.selectedUuid === model.uuid ? "-selected" : (mapHelper.editMode ? "-inactive" : "")) + "-icon"
+					source: "qrc:///dive-location-marker" + (mapHelper.model.selectedDs === model.divesite ? "-selected" : (mapHelper.editMode ? "-inactive" : "")) + "-icon"
 					SequentialAnimation {
 						id: mapItemImageAnimation
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 1.0; to: 0.7; duration: 120 }
 						PropertyAnimation { target: mapItemImage; property: "scale"; from: 0.7; to: 1.0; duration: 80 }
 					}
 					MouseArea {
-						drag.target: (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) ? mapItem : undefined
+						drag.target: (mapHelper.editMode && mapHelper.model.selectedDs === model.divesite) ? mapItem : undefined
 						anchors.fill: parent
 						onClicked: {
 							if (!mapHelper.editMode)
-								mapHelper.model.setSelectedUuid(model.uuid, true)
+								mapHelper.model.setSelected(model.divesite, true)
 						}
 						onDoubleClicked: map.doubleClickHandler(mapItem.coordinate)
 						onReleased: {
-							if (mapHelper.editMode && mapHelper.model.selectedUuid === model.uuid) {
-								mapHelper.updateCurrentDiveSiteCoordinatesFromMap(mapHelper.model.selectedUuid, mapItem.coordinate)
+							if (mapHelper.editMode && mapHelper.model.selectedDs === model.divesite) {
+								mapHelper.updateCurrentDiveSiteCoordinatesFromMap(mapHelper.model.selectedDs, mapItem.coordinate)
 							}
 						}
 					}
@@ -94,7 +94,7 @@ Item {
 							id: mapItemText
 							text: model.name
 							font.pointSize: 11.0
-							color: mapHelper.model.selectedUuid === model.uuid ? "white" : "lightgrey"
+							color: mapHelper.model.selectedDs === model.divesite ? "white" : "lightgrey"
 						}
 					}
 				}

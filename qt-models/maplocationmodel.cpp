@@ -1,26 +1,31 @@
 // SPDX-License-Identifier: GPL-2.0
 #include <QDebug>
 #include "maplocationmodel.h"
+#include "core/divesite.h"
 
 const char *MapLocation::PROPERTY_NAME_COORDINATE = "coordinate";
-const char *MapLocation::PROPERTY_NAME_UUID       = "uuid";
+const char *MapLocation::PROPERTY_NAME_DIVESITE   = "divesite";
 const char *MapLocation::PROPERTY_NAME_NAME       = "name";
 
-MapLocation::MapLocation()
+MapLocation::MapLocation() : m_ds(nullptr)
 {
-	m_uuid = 0;
 }
 
-MapLocation::MapLocation(quint32 uuid, QGeoCoordinate coord, QString name) :
-    m_uuid(uuid), m_coordinate(coord), m_name(name)
+MapLocation::MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name) :
+    m_ds(ds), m_coordinate(coord), m_name(name)
 {
 }
 
 QVariant MapLocation::getRole(int role) const
 {
 	switch (role) {
-	case Roles::RoleUuid:
-		return QVariant::fromValue(m_uuid);
+	case Roles::RoleDivesite:
+		// To pass the dive site as an opaque object to QML, we convert it to uintptr_t.
+		// This type is guaranteed to hold a full pointer, therefore false equivalence
+		// owing to truncation can happen. The more logical type would of course be void *,
+		// but in tests all QVariant<void *> compared equal. It is unclear whether this is
+		// a bug in a certain version of QML or QML is inredibly broken by design.
+		return QVariant::fromValue((uintptr_t)m_ds);
 	case Roles::RoleCoordinate:
 		return QVariant::fromValue(m_coordinate);
 	case Roles::RoleName:
@@ -46,17 +51,23 @@ void MapLocation::setCoordinateNoEmit(QGeoCoordinate coord)
 	m_coordinate = coord;
 }
 
-quint32 MapLocation::uuid()
+struct dive_site *MapLocation::divesite()
 {
-	return m_uuid;
+	return m_ds;
 }
 
-MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent)
+QVariant MapLocation::divesiteVariant()
 {
-	m_roles[MapLocation::Roles::RoleUuid] = MapLocation::PROPERTY_NAME_UUID;
+	// See comment on uintptr_t above
+	return QVariant::fromValue((uintptr_t)m_ds);
+}
+
+MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent),
+	m_selectedDs(nullptr)
+{
+	m_roles[MapLocation::Roles::RoleDivesite] = MapLocation::PROPERTY_NAME_DIVESITE;
 	m_roles[MapLocation::Roles::RoleCoordinate] = MapLocation::PROPERTY_NAME_COORDINATE;
 	m_roles[MapLocation::Roles::RoleName] = MapLocation::PROPERTY_NAME_NAME;
-	m_selectedUuid = 0;
 }
 
 MapLocationModel::~MapLocationModel()
@@ -120,36 +131,44 @@ void MapLocationModel::clear()
 	endRemoveRows();
 }
 
-void MapLocationModel::setSelectedUuid(QVariant uuid, QVariant fromClick)
+void MapLocationModel::setSelected(struct dive_site *ds, bool fromClick)
 {
-	m_selectedUuid = qvariant_cast<quint32>(uuid);
+	m_selectedDs = ds;
+	emit selectedDsChanged();
+	if (fromClick)
+		emit selectedLocationChanged(getMapLocation(m_selectedDs));
+}
+
+void MapLocationModel::setSelected(QVariant divesite, QVariant fromClick)
+{
+	// See comment on uintptr_t above
+	struct dive_site *ds = (struct dive_site *)qvariant_cast<uintptr_t>(divesite);
 	const bool fromClickBool = qvariant_cast<bool>(fromClick);
-	emit selectedUuidChanged();
-	if (fromClickBool)
-		emit selectedLocationChanged(getMapLocationForUuid(m_selectedUuid));
+	setSelected(ds, fromClickBool);
 }
 
-quint32 MapLocationModel::selectedUuid()
+QVariant MapLocationModel::selectedDs()
 {
-	return m_selectedUuid;
+	// See comment on uintptr_t above
+	return QVariant::fromValue((uintptr_t)m_selectedDs);
 }
 
-MapLocation *MapLocationModel::getMapLocationForUuid(quint32 uuid)
+MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
 {
 	MapLocation *location;
 	foreach(location, m_mapLocations) {
-		if (uuid == location->uuid())
+		if (ds == location->divesite())
 			return location;
 	}
 	return NULL;
 }
 
-void MapLocationModel::updateMapLocationCoordinates(quint32 uuid, QGeoCoordinate coord)
+void MapLocationModel::updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord)
 {
 	MapLocation *location;
 	int row = 0;
 	foreach(location, m_mapLocations) {
-		if (uuid == location->uuid()) {
+		if (ds == location->divesite()) {
 			location->setCoordinateNoEmit(coord);
 			emit dataChanged(createIndex(0, row), createIndex(0, row));
 			return;
@@ -157,5 +176,5 @@ void MapLocationModel::updateMapLocationCoordinates(quint32 uuid, QGeoCoordinate
 		row++;
 	}
 	// should not happen, as this should be called only when editing an existing marker
-	qWarning() << "MapLocationModel::updateMapLocationCoordinates(): cannot find MapLocation for uuid:" << uuid;
+	qWarning() << "MapLocationModel::updateMapLocationCoordinates(): cannot find MapLocation for uuid:" << (ds ? ds->uuid : 0);
 }

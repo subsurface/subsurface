@@ -227,7 +227,7 @@ static void parse_dives (int log_version, const unsigned char *buf, unsigned int
 		// now that we have the dive time we can store the divesite
 		// (we need the dive time to create deterministic uuids)
 		if (found_divesite) {
-			dive->dive_site_uuid = find_or_create_dive_site_with_name(location, dive->when)->uuid;
+			dive->dive_site = find_or_create_dive_site_with_name(location, dive->when);
 			free(location);
 		}
 		//unsigned int end_time = array_uint32_le(buf + ptr);
