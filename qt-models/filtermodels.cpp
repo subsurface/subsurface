@@ -684,9 +684,9 @@ void MultiFilterSortModel::clearFilter()
 	myInvalidate();
 }
 
-void MultiFilterSortModel::startFilterDiveSite(uint32_t uuid)
+void MultiFilterSortModel::startFilterDiveSite(struct dive_site *ds)
 {
-	curr_dive_site = get_dive_site_by_uuid(uuid);
+	curr_dive_site = ds;
 	myInvalidate();
 }
 

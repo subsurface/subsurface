@@ -33,8 +33,6 @@ LocationInformationWidget::LocationInformationWidget(QWidget *parent) : QGroupBo
 	ui.diveSiteMessage->addAction(acceptAction);
 	ui.diveSiteMessage->addAction(rejectAction);
 
-	connect(this, SIGNAL(startFilterDiveSite(uint32_t)), MultiFilterSortModel::instance(), SLOT(startFilterDiveSite(uint32_t)));
-	connect(this, SIGNAL(stopFilterDiveSite()), MultiFilterSortModel::instance(), SLOT(stopFilterDiveSite()));
 	connect(ui.geoCodeButton, SIGNAL(clicked()), this, SLOT(reverseGeocode()));
 	connect(this, SIGNAL(nameChanged(const QString &, const QString &)),
 		LocationFilterModel::instance(), SLOT(changeName(const QString &, const QString &)));
@@ -229,7 +227,7 @@ void LocationInformationWidget::initFields(dive_site *ds)
 		updateLabels();
 		enableLocationButtons(dive_site_has_gps_location(ds));
 		QSortFilterProxyModel *m = qobject_cast<QSortFilterProxyModel *>(ui.diveSiteListView->model());
-		emit startFilterDiveSite(ds->uuid);
+		MultiFilterSortModel::instance()->startFilterDiveSite(ds);
 		if (m)
 			m->invalidate();
 	} else {
@@ -261,7 +259,7 @@ void LocationInformationWidget::resetState()
 	ui.diveSiteMessage->setText(tr("Dive site management"));
 	MapWidget::instance()->endGetDiveCoordinates();
 	MapWidget::instance()->repopulateLabels();
-	emit stopFilterDiveSite();
+	MultiFilterSortModel::instance()->stopFilterDiveSite();
 	emit endEditDiveSite();
 	updateLocationOnMap();
 }

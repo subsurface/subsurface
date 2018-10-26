@@ -129,7 +129,7 @@ public
 slots:
 	void myInvalidate();
 	void clearFilter();
-	void startFilterDiveSite(uint32_t uuid);
+	void startFilterDiveSite(struct dive_site *ds);
 	void stopFilterDiveSite();
 	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
 
