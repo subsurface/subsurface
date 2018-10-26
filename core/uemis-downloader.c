@@ -993,11 +993,11 @@ static bool process_raw_buffer(device_data_t *devdata, uint32_t deviceid, char *
 			int divespot_id = atoi(val);
 			if (divespot_id != -1) {
 				struct dive_site *ds = create_dive_site("from Uemis", dive->when);
-				dive->dive_site_uuid = ds->uuid;
+				dive->dive_site = ds;
 				uemis_mark_divelocation(dive->dc.diveid, divespot_id, ds);
 			}
 #if UEMIS_DEBUG & 2
-			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site_uuid, dive->dc.diveid);
+			fprintf(debugfile, "Created divesite %d for diveid : %d\n", dive->dive_site->uuid, dive->dc.diveid);
 #endif
 		} else if (dive) {
 			parse_tag(dive, tag, val);
@@ -1175,11 +1175,11 @@ static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 
 static void get_uemis_divespot(const char *mountpath, int divespot_id, struct dive *dive)
 {
-	struct dive_site *nds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	struct dive_site *nds = dive->dive_site;
 	
 	if (is_divespot_mappable(divespot_id)) {
 		struct dive_site *ds = get_dive_site_by_divespot_id(divespot_id);
-		dive->dive_site_uuid = ds ? ds->uuid : 0;
+		dive->dive_site = ds;
 	} else if (nds && nds->name && strstr(nds->name,"from Uemis")) {
 		if (load_uemis_divespot(mountpath, divespot_id)) {
 			/* get the divesite based on the diveid, this should give us
@@ -1195,15 +1195,15 @@ static void get_uemis_divespot(const char *mountpath, int divespot_id, struct di
 				/* if the uuid's are the same, the new site is a duplicate and can be deleted */
 				if (nds->uuid != ods->uuid) {
 					delete_dive_site(nds);
-					dive->dive_site_uuid = ods->uuid;
+					dive->dive_site = ods;
 				}
 			}
-			add_to_divespot_mapping(divespot_id, get_dive_site_by_uuid(dive->dive_site_uuid));
+			add_to_divespot_mapping(divespot_id, dive->dive_site);
 		} else {
 			/* if we can't load the dive site details, delete the site we
 			* created in process_raw_buffer
 			*/
-			delete_dive_site(get_dive_site_by_uuid(dive->dive_site_uuid));
+			delete_dive_site(dive->dive_site);
 		}
 	}
 }

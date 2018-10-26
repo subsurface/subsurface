@@ -12,32 +12,33 @@
 class MapLocation : public QObject
 {
 	Q_OBJECT
-	Q_PROPERTY(quint32 uuid READ uuid)
+	Q_PROPERTY(QVariant divesite READ divesiteVariant)
 	Q_PROPERTY(QGeoCoordinate coordinate READ coordinate WRITE setCoordinate NOTIFY coordinateChanged)
 	Q_PROPERTY(QString name MEMBER m_name)
 
 public:
 	static const char *PROPERTY_NAME_COORDINATE;
-	static const char *PROPERTY_NAME_UUID;
+	static const char *PROPERTY_NAME_DIVESITE;
 	static const char *PROPERTY_NAME_NAME;
 
 	explicit MapLocation();
-	explicit MapLocation(quint32 uuid, QGeoCoordinate coord, QString name);
+	explicit MapLocation(struct dive_site *ds, QGeoCoordinate coord, QString name);
 
 	QVariant getRole(int role) const;
 	QGeoCoordinate coordinate();
 	void setCoordinate(QGeoCoordinate coord);
 	void setCoordinateNoEmit(QGeoCoordinate coord);
-	quint32 uuid();
+	QVariant divesiteVariant();
+	struct dive_site *divesite();
 
 	enum Roles {
-		RoleUuid = Qt::UserRole + 1,
+		RoleDivesite = Qt::UserRole + 1,
 		RoleCoordinate,
 		RoleName
 	};
 
 private:
-	quint32 m_uuid;
+	struct dive_site *m_ds;
 	QGeoCoordinate m_coordinate;
 	QString m_name;
 
@@ -49,7 +50,7 @@ class MapLocationModel : public QAbstractListModel
 {
 	Q_OBJECT
 	Q_PROPERTY(int count READ count NOTIFY countChanged)
-	Q_PROPERTY(quint32 selectedUuid READ selectedUuid NOTIFY selectedUuidChanged)
+	Q_PROPERTY(QVariant selectedDs READ selectedDs NOTIFY selectedDsChanged)
 
 public:
 	MapLocationModel(QObject *parent = NULL);
@@ -62,10 +63,11 @@ public:
 	void add(MapLocation *);
 	void addList(QVector<MapLocation *>);
 	void clear();
-	MapLocation *getMapLocationForUuid(quint32 uuid);
-	void updateMapLocationCoordinates(quint32 uuid, QGeoCoordinate coord);
-	Q_INVOKABLE void setSelectedUuid(QVariant uuid, QVariant fromClick = true);
-	quint32 selectedUuid();
+	MapLocation *getMapLocation(const struct dive_site *ds);
+	void updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord);
+	void setSelected(struct dive_site *ds, bool fromClick = true);
+	Q_INVOKABLE void setSelected(QVariant divesite, QVariant fromClick = true);
+	QVariant selectedDs();
 
 protected:
 	QHash<int, QByteArray> roleNames() const override;
@@ -73,11 +75,11 @@ protected:
 private:
 	QVector<MapLocation *> m_mapLocations;
 	QHash<int, QByteArray> m_roles;
-	quint32 m_selectedUuid;
+	struct dive_site *m_selectedDs;
 
 signals:
 	void countChanged(int c);
-	void selectedUuidChanged();
+	void selectedDsChanged();
 	void selectedLocationChanged(MapLocation *);
 };
 

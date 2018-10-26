@@ -202,9 +202,9 @@ unsigned char *dt_dive_parser(unsigned char *runner, struct dive *dt_dive)
 	 */
 	snprintf(buffer, sizeof(buffer), "%s, %s", locality, dive_point);
 	ds = get_dive_site_by_name(buffer);
-	dt_dive->dive_site_uuid = ds ? ds->uuid : 0;
-	if (dt_dive->dive_site_uuid == 0)
-		dt_dive->dive_site_uuid = create_dive_site(buffer, dt_dive->when)->uuid;
+	dt_dive->dive_site = ds;
+	if (!dt_dive->dive_site)
+		dt_dive->dive_site = create_dive_site(buffer, dt_dive->when);
 	free(locality);
 	locality = NULL;
 	free(dive_point);

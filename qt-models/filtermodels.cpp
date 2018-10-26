@@ -589,7 +589,7 @@ void MultiFilterSortModel::divesDeleted(const QVector<dive *> &dives)
 bool MultiFilterSortModel::showDive(const struct dive *d) const
 {
 	if (curr_dive_site) {
-		dive_site *ds = get_dive_site_by_uuid(d->dive_site_uuid);
+		dive_site *ds = d->dive_site;
 		if (!ds)
 			return false;
 		return same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid;

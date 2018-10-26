@@ -222,7 +222,7 @@ MainTab::~MainTab()
 void MainTab::setCurrentLocationIndex()
 {
 	if (current_dive) {
-		struct dive_site *ds = get_dive_site_by_uuid(current_dive->dive_site_uuid);
+		struct dive_site *ds = current_dive->dive_site;
 		if (ds)
 			ui.location->setCurrentDiveSite(ds);
 		else
@@ -415,7 +415,7 @@ void MainTab::updateDiveInfo(bool clear)
 
 	if (!clear) {
 		struct dive_site *ds = NULL;
-		ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+		ds = displayed_dive.dive_site;
 		if (ds) {
 			ui.location->setCurrentDiveSite(ds);
 			ui.locationTags->setText(constructLocationTags(&ds->taxonomy, true));
@@ -605,7 +605,7 @@ void MainTab::updateDiveInfo(bool clear)
 		ui.cylinders->view()->hideColumn(CylindersModel::USE);
 
 	if (verbose)
-		qDebug() << "Set the current dive site:" << displayed_dive.dive_site_uuid;
+		qDebug() << "Set the current dive site:" << displayed_dive.dive_site->uuid;
 	emit diveSiteChanged();
 }
 
@@ -678,8 +678,7 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 	if (!pickedDs)
 		return 0;
 
-	const uint32_t origUuid = d->dive_site_uuid;
-	struct dive_site *origDs = get_dive_site_by_uuid(origUuid);
+	struct dive_site *origDs = d->dive_site;
 	bool createdNewDive = false;
 
 	if (pickedDs == origDs)
@@ -706,7 +705,7 @@ struct dive_site *MainTab::updateDiveSite(struct dive_site *pickedDs, dive *d)
 		}
 	}
 
-	d->dive_site_uuid = pickedDs->uuid;
+	d->dive_site = pickedDs;
 	qDebug() << "Setting the dive site id on the dive:" << pickedDs->uuid;
 	return pickedDs;
 }
@@ -808,8 +807,8 @@ void MainTab::acceptChanges()
 		if (displayed_dive.watertemp.mkelvin != cd->watertemp.mkelvin)
 			MODIFY_DIVES(selectedDives, EDIT_VALUE(watertemp.mkelvin));
 
-		if (displayed_dive.dive_site_uuid != cd->dive_site_uuid)
-			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site_uuid));
+		if (displayed_dive.dive_site != cd->dive_site)
+			MODIFY_DIVES(selectedDives, EDIT_VALUE(dive_site));
 
 		// three text fields are somewhat special and are represented as tags
 		// in the UI - they need somewhat smarter handling
@@ -877,10 +876,10 @@ void MainTab::acceptChanges()
 		}
 
 		// update the dive site for the selected dives that had the same dive site as the current dive
-		struct dive_site *oldDs = get_dive_site_by_uuid(cd->dive_site_uuid);
-		struct dive_site *newDs = 0;
+		struct dive_site *oldDs = cd->dive_site;
+		struct dive_site *newDs = nullptr;
 		MODIFY_DIVES(selectedDives,
-			if (mydive->dive_site_uuid == current_dive->dive_site_uuid)
+			if (mydive->dive_site == current_dive->dive_site)
 				newDs = updateDiveSite(!newDs ? ui.location->currDiveSite() : newDs, mydive);
 		);
 		if (oldDs && !is_dive_site_used(oldDs, false)) {
@@ -893,7 +892,7 @@ void MainTab::acceptChanges()
 		// code below triggers an update of the display without re-initializing displayed_dive
 		// so let's make sure here that our data is consistent now that we have handled the
 		// dive sites
-		displayed_dive.dive_site_uuid = current_dive->dive_site_uuid;
+		displayed_dive.dive_site = current_dive->dive_site;
 
 		// each dive that was selected might have had the temperatures in its active divecomputer changed
 		// so re-populate the temperatures - easiest way to do this is by calling fixup_dive
@@ -1009,7 +1008,7 @@ void MainTab::rejectChanges()
 	}
 	// the user could have edited the location and then canceled the edit
 	// let's get the correct location back in view
-	MapWidget::instance()->centerOnDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
+	MapWidget::instance()->centerOnDiveSite(displayed_dive.dive_site);
 	// show the profile and dive info
 	MainWindow::instance()->graphics->replot();
 	MainWindow::instance()->setEnabledToolbar(true);
@@ -1325,7 +1324,7 @@ void MainTab::on_location_textChanged()
 	// we don't want to act on the edit until editing is finished,
 	// but we want to mark the field so it's obvious it is being edited
 	QString currentLocation;
-	struct dive_site *ds = get_dive_site_by_uuid(displayed_dive.dive_site_uuid);
+	struct dive_site *ds = displayed_dive.dive_site;
 	if (ds)
 		currentLocation = ds->name;
 	if (ui.location->text() != currentLocation)
@@ -1338,12 +1337,12 @@ void MainTab::on_location_diveSiteSelected()
 		return;
 
 	if (ui.location->text().isEmpty()) {
-		displayed_dive.dive_site_uuid = 0;
+		displayed_dive.dive_site = nullptr;
 		markChangedWidget(ui.location);
 		emit diveSiteChanged();
 		return;
 	} else {
-		if (ui.location->currDiveSite() != get_dive_site_by_uuid(displayed_dive.dive_site_uuid)) {
+		if (ui.location->currDiveSite() != displayed_dive.dive_site) {
 			markChangedWidget(ui.location);
 		} else {
 			QPalette p;
@@ -1480,7 +1479,7 @@ void MainTab::showAndTriggerEditSelective(struct dive_components what)
 	if (what.visibility)
 		ui.visibility->setCurrentStars(displayed_dive.visibility);
 	if (what.divesite)
-		ui.location->setCurrentDiveSite(get_dive_site_by_uuid(displayed_dive.dive_site_uuid));
+		ui.location->setCurrentDiveSite(displayed_dive.dive_site);
 	if (what.tags) {
 		ui.tagWidget->setText(get_taglist_string(displayed_dive.tag_list));
 	}

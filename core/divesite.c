@@ -138,7 +138,7 @@ int nr_of_dives_at_dive_site(struct dive_site *ds, bool select_only)
 	if (!ds)
 		return 0;
 	for_each_dive(j, d) {
-		if (d->dive_site_uuid == ds->uuid && (!select_only || d->selected)) {
+		if (d->dive_site == ds && (!select_only || d->selected)) {
 			nr++;
 		}
 	}
@@ -153,7 +153,7 @@ bool is_dive_site_used(struct dive_site *ds, bool select_only)
 	if (!ds)
 		return false;
 	for_each_dive(j, d) {
-		if (d->dive_site_uuid == ds->uuid && (!select_only || d->selected)) {
+		if (d->dive_site == ds && (!select_only || d->selected)) {
 			found = true;
 			break;
 		}
@@ -318,9 +318,9 @@ void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int
 			continue;
 
 		for_each_dive(curr_dive, d) {
-			if (d->dive_site_uuid != dive_sites[i]->uuid )
+			if (d->dive_site != dive_sites[i] )
 				continue;
-			d->dive_site_uuid = ref->uuid;
+			d->dive_site = ref;
 			invalidate_dive_cache(d);
 		}
 	}

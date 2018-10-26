@@ -650,7 +650,7 @@ void selective_copy_dive(const struct dive *s, struct dive *d, struct dive_compo
 	if (what.visibility)
 		d->visibility = s->visibility;
 	if (what.divesite)
-		d->dive_site_uuid = s->dive_site_uuid;
+		d->dive_site = s->dive_site;
 	if (what.tags)
 		STRUCTURED_LIST_COPY(struct tag_entry, s->tag_list, d->tag_list, copy_tl);
 	if (what.cylinders)
@@ -3503,10 +3503,10 @@ struct dive *merge_dives(const struct dive *a, const struct dive *b, int offset,
 		join_dive_computers(res, &res->dc, &a->dc, &b->dc, cylinders_map_a, cylinders_map_b, 0);
 
 	/* we take the first dive site, unless it's empty */
-	if (a->dive_site_uuid && !dive_site_is_empty(get_dive_site_by_uuid(a->dive_site_uuid)))
-		res->dive_site_uuid = a->dive_site_uuid;
+	if (a->dive_site && !dive_site_is_empty(a->dive_site))
+		res->dive_site = a->dive_site;
 	else
-		res->dive_site_uuid = b->dive_site_uuid;
+		res->dive_site = b->dive_site;
 	fixup_dive(res);
 	return res;
 }
@@ -4075,12 +4075,12 @@ unsigned int dive_get_picture_count(struct dive *dive)
 
 void dive_set_geodata_from_picture(struct dive *dive, struct picture *picture)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	struct dive_site *ds = dive->dive_site;
 	if (!dive_site_has_gps_location(ds) && has_location(&picture->location)) {
 		if (ds) {
 			ds->location = picture->location;
 		} else {
-			dive->dive_site_uuid = create_dive_site_with_gps("", &picture->location, dive->when)->uuid;
+			dive->dive_site = create_dive_site_with_gps("", &picture->location, dive->when);
 			invalidate_dive_cache(dive);
 		}
 	}
@@ -4333,14 +4333,12 @@ struct dive *get_dive_from_table(int nr, struct dive_table *dt)
 
 struct dive_site *get_dive_site_for_dive(const struct dive *dive)
 {
-	if (dive)
-		return get_dive_site_by_uuid(dive->dive_site_uuid);
-	return NULL;
+	return dive->dive_site;
 }
 
 const char *get_dive_country(const struct dive *dive)
 {
-	struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	struct dive_site *ds = dive->dive_site;
 	if (ds) {
 		int idx = taxonomy_index_for_category(&ds->taxonomy, TC_COUNTRY);
 		if (idx >= 0)
@@ -4351,7 +4349,7 @@ const char *get_dive_country(const struct dive *dive)
 
 const char *get_dive_location(const struct dive *dive)
 {
-	const struct dive_site *ds = get_dive_site_by_uuid(dive->dive_site_uuid);
+	const struct dive_site *ds = dive->dive_site;
 	if (ds && ds->name)
 		return ds->name;
 	return NULL;
@@ -4432,7 +4430,7 @@ int dive_has_gps_location(const struct dive *dive)
 {
 	if (!dive)
 		return false;
-	return dive_site_has_gps_location(get_dive_site_by_uuid(dive->dive_site_uuid));
+	return dive_site_has_gps_location(dive->dive_site);
 }
 
 struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix)

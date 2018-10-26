@@ -34,7 +34,7 @@ public:
 	Q_INVOKABLE void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
-	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(quint32 uuid, QGeoCoordinate coord);
+	Q_INVOKABLE void updateCurrentDiveSiteCoordinatesFromMap(struct dive_site *ds, QGeoCoordinate coord);
 	Q_INVOKABLE void selectVisibleLocations();
 	void updateDiveSiteCoordinates(struct dive_site *ds, const location_t &);
 	void enterEditMode(struct dive_site *ds);
