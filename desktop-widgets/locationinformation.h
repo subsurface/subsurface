@@ -40,7 +40,6 @@ private slots:
 	void updateLabels();
 	void updateLocationOnMap();
 signals:
-	void startEditDiveSite(uint32_t uuid);
 	void endEditDiveSite();
 	void startFilterDiveSite(uint32_t uuid);
 	void stopFilterDiveSite();
