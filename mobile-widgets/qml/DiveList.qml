@@ -118,12 +118,12 @@ Kirigami.ScrollablePage {
 			}
 
 			property bool deleteButtonVisible: false
-			property bool copyButtonVisible: true	// TODO: false
+			property bool copyButtonVisible: false
 			property bool pasteButtonVisible: false
 
 			onPressAndHold: {
-				deleteButtonVisible = false	// TODO: true
-				copyButtonVisible = false	// TODO: true
+				deleteButtonVisible = true
+				copyButtonVisible = true
 				pasteButtonVisible = true
 				timer.restart()
 			}
@@ -143,7 +143,7 @@ Kirigami.ScrollablePage {
 				}
 				Item {
 					id: diveListEntry
-					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
+					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 * 3 : 1)
 					height: Math.ceil(childrenRect.height + Kirigami.Units.smallSpacing)
 					anchors.left: leftBarDive.right
 					Controls.Label {
@@ -202,15 +202,16 @@ Kirigami.ScrollablePage {
 					id: copyButton
 					visible: copyButtonVisible
 					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
-					width: height - 3 * Kirigami.Units.smallSpacing
+					width: height
 					color: subsurfaceTheme.lightDrawerColor
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
 					anchors {
 						left: diveListEntry.right
-						right: parent.right
 						verticalCenter: diveListEntry.verticalCenter
 						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+						rightMargin: horizontalPadding * 2
+						leftMargin: horizontalPadding * 2
 					}
 					Kirigami.Icon {
 						anchors {
@@ -237,15 +238,16 @@ Kirigami.ScrollablePage {
 					id: pasteButton
 					visible: pasteButtonVisible
 					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
-					width: height - 3 * Kirigami.Units.smallSpacing
-					color: subsurfaceTheme.contrastAccentColor
+					width: height
+					color: subsurfaceTheme.lightDrawerColor
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
 					anchors {
-						left: diveListEntry.right
-						right: parent.right
+						left: copyButton.right
 						verticalCenter: diveListEntry.verticalCenter
 						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+						rightMargin: horizontalPadding * 2
+						leftMargin: horizontalPadding * 2
 					}
 					Kirigami.Icon {
 						anchors {
@@ -272,15 +274,17 @@ Kirigami.ScrollablePage {
 					id: deleteButton
 					visible: deleteButtonVisible
 					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
-					width: height - 3 * Kirigami.Units.smallSpacing
+					width: height
 					color: subsurfaceTheme.contrastAccentColor
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
 					anchors {
-						left: diveListEntry.right
+						left: pasteButton.right
 						right: parent.right
 						verticalCenter: diveListEntry.verticalCenter
 						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+						rightMargin: horizontalPadding * 2
+						leftMargin: horizontalPadding * 2
 					}
 					Kirigami.Icon {
 						anchors {
