@@ -592,7 +592,7 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 		dive_site *ds = d->dive_site;
 		if (!ds)
 			return false;
-		return same_string(ds->name, curr_dive_site->name) || ds->uuid == curr_dive_site->uuid;
+		return ds == curr_dive_site || same_string(ds->name, curr_dive_site->name);
 	}
 
 	if (models.isEmpty())
