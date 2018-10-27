@@ -118,9 +118,13 @@ Kirigami.ScrollablePage {
 			}
 
 			property bool deleteButtonVisible: false
+			property bool copyButtonVisible: true	// TODO: false
+			property bool pasteButtonVisible: false
 
 			onPressAndHold: {
-				deleteButtonVisible = true
+				deleteButtonVisible = false	// TODO: true
+				copyButtonVisible = false	// TODO: true
+				pasteButtonVisible = true
 				timer.restart()
 			}
 			Item {
@@ -195,6 +199,77 @@ Kirigami.ScrollablePage {
 					}
 				}
 				Rectangle {
+					id: copyButton
+					visible: copyButtonVisible
+					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
+					width: height - 3 * Kirigami.Units.smallSpacing
+					color: subsurfaceTheme.lightDrawerColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing
+					anchors {
+						left: diveListEntry.right
+						right: parent.right
+						verticalCenter: diveListEntry.verticalCenter
+						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+					}
+					Kirigami.Icon {
+						anchors {
+							horizontalCenter: parent.horizontalCenter
+							verticalCenter: parent.verticalCenter
+						}
+						source: ":/icons/edit-copy"
+						width: parent.height
+						height: width
+					}
+					MouseArea {
+						anchors.fill: parent
+						enabled: parent.visible
+						onClicked: {
+							deleteButtonVisible = false
+							copyButtonVisible = false
+							pasteButtonVisible = false
+							timer.stop()
+							manager.copyDiveData(dive.id)
+						}
+					}
+				}
+				Rectangle {
+					id: pasteButton
+					visible: pasteButtonVisible
+					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
+					width: height - 3 * Kirigami.Units.smallSpacing
+					color: subsurfaceTheme.contrastAccentColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing
+					anchors {
+						left: diveListEntry.right
+						right: parent.right
+						verticalCenter: diveListEntry.verticalCenter
+						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+					}
+					Kirigami.Icon {
+						anchors {
+							horizontalCenter: parent.horizontalCenter
+							verticalCenter: parent.verticalCenter
+						}
+						source: ":/icons/edit-paste"
+						width: parent.height
+						height: width
+					}
+					MouseArea {
+						anchors.fill: parent
+						enabled: parent.visible
+						onClicked: {
+							deleteButtonVisible = false
+							copyButtonVisible = false
+							pasteButtonVisible = false
+							timer.stop()
+							manager.pasteDiveData(dive.id)
+						}
+					}
+				}
+				Rectangle {
+					id: deleteButton
 					visible: deleteButtonVisible
 					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
 					width: height - 3 * Kirigami.Units.smallSpacing
@@ -221,6 +296,8 @@ Kirigami.ScrollablePage {
 						enabled: parent.visible
 						onClicked: {
 							deleteButtonVisible = false
+							copyButtonVisible = false
+							pasteButtonVisible = false
 							timer.stop()
 							manager.deleteDive(dive.id)
 						}
@@ -231,6 +308,8 @@ Kirigami.ScrollablePage {
 					interval: 4000
 					onTriggered: {
 						deleteButtonVisible = false
+						copyButtonVisible = false
+						pasteButtonVisible = false
 					}
 				}
 			}

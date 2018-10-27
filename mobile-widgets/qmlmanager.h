@@ -163,6 +163,8 @@ public slots:
 	void saveChangesLocal();
 	void saveChangesCloud(bool forceRemoteSync);
 	void deleteDive(int id);
+	void copyDiveData(int id);
+	void pasteDiveData(int id);
 	bool undoDelete(int id);
 	QString addDive();
 	void addDiveAborted(int id);
@@ -224,6 +226,8 @@ private:
 	bool m_btEnabled;
 	void updateAllGlobalLists();
 	QString m_pluggedInDeviceName;
+	struct dive *m_copyPasteDive;
+	struct dive_components what;
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
 	QString appLogFileName;
