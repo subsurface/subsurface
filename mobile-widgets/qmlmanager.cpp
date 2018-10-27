@@ -1343,6 +1343,10 @@ void QMLManager::pasteDiveData(int id)
 		appendTextToLog("trying to paste to non-existing dive");
 		return;
 	}
+	if (!m_copyPasteDive) {
+		appendTextToLog("dive to paste is not selected");
+		return;
+	}
 	selective_copy_dive(m_copyPasteDive, d, what, false);
 	changesNeedSaving();
 }
