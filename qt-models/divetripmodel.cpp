@@ -633,11 +633,6 @@ void DiveTripModel::setupModelData()
 	endResetModel();
 }
 
-DiveTripModel::Layout DiveTripModel::layout() const
-{
-	return currentLayout;
-}
-
 void DiveTripModel::setLayout(DiveTripModel::Layout layout)
 {
 	currentLayout = layout;
