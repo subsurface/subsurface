@@ -1319,6 +1319,34 @@ void QMLManager::deleteDive(int id)
 	changesNeedSaving();
 }
 
+void QMLManager::copyDiveData(int id)
+{
+	m_copyPasteDive = get_dive_by_uniq_id(id);
+	if (!m_copyPasteDive) {
+		appendTextToLog("trying to copy non-existing dive");
+		return;
+	}
+
+	// TODO: selection dialog for the data to be copied
+	what.divemaster = true;
+	what.buddy = true;
+	what.suit = true;
+	what.tags = true;
+	what.cylinders = true;
+	what.weights = true;
+}
+
+void QMLManager::pasteDiveData(int id)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		appendTextToLog("trying to paste to non-existing dive");
+		return;
+	}
+	selective_copy_dive(m_copyPasteDive, d, what, false);
+	changesNeedSaving();
+}
+
 void QMLManager::cancelDownloadDC()
 {
 	import_thread_cancelled = true;

@@ -75,6 +75,8 @@
 		<file alias="icons/list-add.svg">kirigami/icons/list-add.svg</file>
 		<file alias="icons/overflow-menu.svg">kirigami/icons/overflow-menu.svg</file>
 		<file alias="icons/trash-empty.svg">kirigami/icons/trash-empty.svg</file>
+		<file alias="icons/edit-copy.svg">kirigami/icons/edit-copy.svg</file>
+		<file alias="icons/edit-paste.svg">kirigami/icons/edit-paste.svg</file>
 		<file alias="icons/view-readermode.svg">kirigami/icons/view-readermode.svg</file>
 	</qresource>
 
