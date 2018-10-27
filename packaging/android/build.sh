@@ -354,14 +354,7 @@ if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -e "$PKG_CONFIG_LIBDIR/libdivec
 	echo "$CURRENT_SHA" > "libdivecomputer-${ARCH}.SHA"
 fi
 
-if [ ! -e qt-android-cmake ] ; then
-	git clone https://github.com/dirkhh/qt-android-cmake.git
-else
-	pushd qt-android-cmake
-	git checkout QMLfix
-	git pull
-	popd
-fi
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . qt-android-cmake
 # the Qt Android cmake addon runs androiddeployqt with '--verbose' which
 # is, err, rather verbose. Let's not do that.
 sed -i -e 's/--verbose//' qt-android-cmake/AddQtAndroidApk.cmake

@@ -17,6 +17,7 @@ CURRENT_KIRIGAMI="8691651c1f0d09430416ba5fe2130647554b06a9"
 CURRENT_BREEZE_ICONS=""
 CURRENT_GRANTLEE="v5.0.0"
 CURRENT_MDBTOOLS="master"
+CURRENT_QT_ANDROID_CMAKE="master"
 
 # Checkout library from git
 # Ensure specified version is checked out,
@@ -190,6 +191,9 @@ for package in "${PACKAGES[@]}" ; do
 			;;
 		mdbtools)
 			git_checkout_library mdbtools $CURRENT_MDBTOOLS https://github.com/brianb/mdbtools.git
+			;;
+		qt-android-cmake)
+			git_checkout_library qt-android-cmake $CURRENT_QT_ANDROID_CMAKE https://github.com/LaurentGomila/qt-android-cmake.git
 			;;
 		*)
 			echo "unknown package \"$package\""
