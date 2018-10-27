@@ -51,6 +51,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &DiveListView::filterFinished);
 
 	header()->setStretchLastSection(true);
+	header()->setSortIndicatorShown(true);
 
 	installEventFilter(this);
 
