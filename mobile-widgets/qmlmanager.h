@@ -226,7 +226,7 @@ private:
 	bool m_btEnabled;
 	void updateAllGlobalLists();
 	QString m_pluggedInDeviceName;
-	struct dive *m_copyPasteDive;
+	struct dive *m_copyPasteDive = NULL;
 	struct dive_components what;
 
 #if defined(Q_OS_ANDROID) || defined(Q_OS_IOS)
