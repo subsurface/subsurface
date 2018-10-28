@@ -82,7 +82,7 @@ void LocationInformationWidget::mergeSelectedDiveSites()
 	std::vector<struct dive_site *> selected_dive_sites;
 	selected_dive_sites.reserve(selection.count());
 	Q_FOREACH (const QModelIndex &idx, selection) {
-		struct dive_site *ds = (struct dive_site *)idx.data(LocationInformationModel::DIVESITE_ROLE).value<void *>();
+		dive_site *ds = idx.data(LocationInformationModel::DIVESITE_ROLE).value<dive_site *>();
 		if (ds)
 			selected_dive_sites.push_back(ds);
 	}
@@ -507,7 +507,7 @@ void DiveLocationLineEdit::itemActivated(const QModelIndex &index)
 	if (index.column() == LocationInformationModel::DIVESITE)
 		idx = index.model()->index(index.row(), LocationInformationModel::NAME);
 
-	dive_site *ds = (dive_site *)index.model()->index(index.row(), LocationInformationModel::DIVESITE).data().value<void *>();
+	dive_site *ds = index.model()->index(index.row(), LocationInformationModel::DIVESITE).data().value<dive_site *>();
 	currType = ds == RECENTLY_ADDED_DIVESITE ? NEW_DIVE_SITE : EXISTING_DIVE_SITE;
 	currDs = ds;
 	setText(idx.data().toString());
