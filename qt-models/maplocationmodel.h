@@ -65,8 +65,7 @@ public:
 	void clear();
 	MapLocation *getMapLocation(const struct dive_site *ds);
 	void updateMapLocationCoordinates(const struct dive_site *ds, QGeoCoordinate coord);
-	void setSelected(struct dive_site *ds, bool fromClick = true);
-	Q_INVOKABLE void setSelected(QVariant divesite, QVariant fromClick = true);
+	Q_INVOKABLE void setSelected(struct dive_site *ds, bool fromClick = true);
 	QVariant selectedDs();
 
 protected:

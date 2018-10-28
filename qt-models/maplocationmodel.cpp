@@ -20,12 +20,7 @@ QVariant MapLocation::getRole(int role) const
 {
 	switch (role) {
 	case Roles::RoleDivesite:
-		// To pass the dive site as an opaque object to QML, we convert it to uintptr_t.
-		// This type is guaranteed to hold a full pointer, therefore false equivalence
-		// owing to truncation can happen. The more logical type would of course be void *,
-		// but in tests all QVariant<void *> compared equal. It is unclear whether this is
-		// a bug in a certain version of QML or QML is inredibly broken by design.
-		return QVariant::fromValue((uintptr_t)m_ds);
+		return QVariant::fromValue((dive_site *)m_ds);
 	case Roles::RoleCoordinate:
 		return QVariant::fromValue(m_coordinate);
 	case Roles::RoleName:
@@ -58,8 +53,7 @@ struct dive_site *MapLocation::divesite()
 
 QVariant MapLocation::divesiteVariant()
 {
-	// See comment on uintptr_t above
-	return QVariant::fromValue((uintptr_t)m_ds);
+	return QVariant::fromValue(m_ds);
 }
 
 MapLocationModel::MapLocationModel(QObject *parent) : QAbstractListModel(parent),
@@ -139,18 +133,9 @@ void MapLocationModel::setSelected(struct dive_site *ds, bool fromClick)
 		emit selectedLocationChanged(getMapLocation(m_selectedDs));
 }
 
-void MapLocationModel::setSelected(QVariant divesite, QVariant fromClick)
-{
-	// See comment on uintptr_t above
-	struct dive_site *ds = (struct dive_site *)qvariant_cast<uintptr_t>(divesite);
-	const bool fromClickBool = qvariant_cast<bool>(fromClick);
-	setSelected(ds, fromClickBool);
-}
-
 QVariant MapLocationModel::selectedDs()
 {
-	// See comment on uintptr_t above
-	return QVariant::fromValue((uintptr_t)m_selectedDs);
+	return QVariant::fromValue(m_selectedDs);
 }
 
 MapLocation *MapLocationModel::getMapLocation(const struct dive_site *ds)
