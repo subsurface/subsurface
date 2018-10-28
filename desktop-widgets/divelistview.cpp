@@ -462,15 +462,9 @@ bool DiveListView::eventFilter(QObject *, QEvent *event)
 	return true;
 }
 
-// NOTE! This loses trip selection, because while we remember the
-// dives, we don't remember the trips (see the "currentSelectedDives"
-// list). I haven't figured out how to look up the trip from the
-// index. TRIP_ROLE vs DIVE_ROLE?
 void DiveListView::headerClicked(int i)
 {
 	DiveTripModel::Layout newLayout = i == (int)DiveTripModel::NR ? DiveTripModel::TREE : DiveTripModel::LIST;
-	rememberSelection();
-	unselectDives();
 	/* No layout change? Just re-sort, and scroll to first selection, making sure all selections are expanded */
 	if (currentLayout == newLayout) {
 		// If this is the same column as before, change sort order. Otherwise, choose a default
@@ -484,17 +478,17 @@ void DiveListView::headerClicked(int i)
 		sortByColumn(i, currentOrder);
 	} else {
 		// clear the model, repopulate with new indexes.
-		if (currentLayout == DiveTripModel::TREE) {
+		rememberSelection();
+		unselectDives();
+		if (currentLayout == DiveTripModel::TREE)
 			backupExpandedRows();
-		}
 		reload(newLayout, false);
 		currentOrder = Qt::DescendingOrder;
 		sortByColumn(i, currentOrder);
-		if (newLayout == DiveTripModel::TREE) {
+		if (newLayout == DiveTripModel::TREE)
 			restoreExpandedRows();
-		}
+		restoreSelection();
 	}
-	restoreSelection();
 	// remember the new sort column
 	sortColumn = i;
 }
