@@ -780,7 +780,6 @@ void DiveListView::newTripAbove()
 		return;
 	//TODO: port to c-code.
 	int idx;
-	rememberSelection();
 	QVector<dive *> dives;
 	for_each_dive (idx, d) {
 		if (d->selected)
@@ -820,8 +819,6 @@ void DiveListView::addToTrip(int delta)
 		// no dive, no trip? get me out of here
 		return;
 
-	rememberSelection();
-
 	QVector<dive *> dives;
 	if (d->selected) { // there are possibly other selected dives that we should add
 		int idx;
@@ -850,8 +847,6 @@ void DiveListView::markDiveInvalid()
 	MainWindow::instance()->refreshDisplay();
 	if (prefs.display_invalid_dives == false) {
 		clearSelection();
-		// select top dive that isn't marked invalid
-		rememberSelection();
 	}
 }
 
