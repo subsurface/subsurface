@@ -72,7 +72,7 @@ add_definitions(-DSUBSURFACE_SOURCE="${SUBSURFACE_SOURCE}")
 #
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu99 ")
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu99 -Wno-inconsistent-missing-override")
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
 	if((${CMAKE_SYSTEM_NAME} MATCHES "Darwin") AND
 	   ((${CMAKE_SYSTEM_VERSION} MATCHES "11.4.") OR
 	    (${CMAKE_OSX_DEPLOYMENT_TARGET} MATCHES "10.7") OR
