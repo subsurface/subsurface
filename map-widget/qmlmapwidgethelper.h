@@ -5,7 +5,6 @@
 #include "core/units.h"
 #include <QObject>
 #include <QGeoCoordinate>
-#include <QVariant>
 
 #if defined(Q_OS_IOS)
 #include <QtPlugin>
@@ -27,10 +26,9 @@ class MapWidgetHelper : public QObject {
 public:
 	explicit MapWidgetHelper(QObject *parent = NULL);
 
-	void centerOnDiveSite(struct dive_site *);
 	void centerOnSelectedDiveSite();
-	Q_INVOKABLE QGeoCoordinate getCoordinates(QVariant dive_site);
-	Q_INVOKABLE void centerOnDiveSite(QVariant dive_site);
+	Q_INVOKABLE QGeoCoordinate getCoordinates(struct dive_site *ds);
+	Q_INVOKABLE void centerOnDiveSite(struct dive_site *ds);
 	Q_INVOKABLE void reloadMapLocations();
 	Q_INVOKABLE void copyToClipboardCoordinates(QGeoCoordinate coord, bool formatTraditional);
 	Q_INVOKABLE void calculateSmallCircleRadius(QGeoCoordinate coord);
