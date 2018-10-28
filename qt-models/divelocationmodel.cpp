@@ -41,7 +41,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 	case Qt::EditRole:
 	case Qt::DisplayRole :
 		switch(column) {
-		case DIVESITE: return QVariant::fromValue<void*>((void *)ds); // Not nice: casting away const
+		case DIVESITE: return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
 		case NAME: return ds->name;
 		case LATITUDE: return ds->location.lat.udeg;
 		case LONGITUDE: return ds->location.lon.udeg;
@@ -60,7 +60,7 @@ QVariant LocationInformationModel::getDiveSiteData(const struct dive_site *ds, i
 			return QVariant();
 	}
 	case DIVESITE_ROLE:
-		return QVariant::fromValue<void *>((void *)ds); // Not nice: casting away const
+		return QVariant::fromValue<dive_site *>((dive_site *)ds); // Not nice: casting away const
 	}
 	return QVariant();
 }
@@ -119,7 +119,7 @@ GeoReferencingOptionsModel::GeoReferencingOptionsModel(QObject *parent) : QStrin
 
 bool GPSLocationInformationModel::filterAcceptsRow(int sourceRow, const QModelIndex &parent) const
 {
-	struct dive_site *ds = (struct dive_site *)sourceModel()->index(sourceRow, LocationInformationModel::DIVESITE, parent).data().value<void *>();
+	struct dive_site *ds = sourceModel()->index(sourceRow, LocationInformationModel::DIVESITE, parent).data().value<dive_site *>();
 	if (ds == ignoreDs || ds == RECENTLY_ADDED_DIVESITE)
 		return false;
 

@@ -78,6 +78,9 @@ void merge_dive_sites(struct dive_site *ref, struct dive_site *dive_sites[], int
 }
 QString constructLocationTags(struct taxonomy_data *taxonomy, bool for_maintab);
 
+/* Make pointer-to-dive_site a "Qt metatype" so that we can pass it through QVariants */
+Q_DECLARE_METATYPE(dive_site *);
+
 #endif
 
 #endif // DIVESITE_H

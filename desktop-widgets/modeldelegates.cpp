@@ -453,8 +453,8 @@ void LocationFilterDelegate::paint(QPainter *painter, const QStyleOptionViewItem
 	QString diveSiteName = index.data().toString();
 	QString bottomText;
 	QIcon icon = index.data(Qt::DecorationRole).value<QIcon>();
-	struct dive_site *ds = (struct dive_site *)
-		index.model()->data(index.model()->index(index.row(), LocationInformationModel::DIVESITE)).value<void *>();
+	struct dive_site *ds =
+		index.model()->data(index.model()->index(index.row(), LocationInformationModel::DIVESITE)).value<dive_site *>();
 	struct dive_site *currentDiveSite = current_dive ? get_dive_site_for_dive(current_dive) : nullptr;
 	bool currentDiveSiteHasGPS = currentDiveSite && dive_site_has_gps_location(currentDiveSite);
 	//Special case: do not show name, but instead, show
