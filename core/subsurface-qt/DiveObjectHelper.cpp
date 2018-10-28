@@ -129,7 +129,7 @@ QString DiveObjectHelper::gps_decimal() const
 
 QVariant DiveObjectHelper::dive_site() const
 {
-	return QVariant::fromValue((uintptr_t)m_dive->dive_site);
+	return QVariant::fromValue(m_dive->dive_site);
 }
 
 QString DiveObjectHelper::duration() const
