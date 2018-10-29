@@ -4447,7 +4447,7 @@ struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc,
 		res = gasmix;
 	}
 
-	while (ev && ev->time.seconds < time) {
+	while (ev && ev->time.seconds <= time) {
 		res = get_gasmix_from_event(dive, ev);
 		ev = get_next_event(ev->next, "gaschange");
 	}

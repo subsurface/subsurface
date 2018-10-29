@@ -1,3 +1,4 @@
+- Fix a bug in planner for dives with manual gas changes.
 - Mobile: add full text filtering of the dive list
 - Desktop: don't add dive-buddy or dive-master when tabbing through fields
 - Filter: don't recalculate all filters on dive list-modifying operations
