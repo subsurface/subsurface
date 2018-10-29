@@ -2,6 +2,8 @@
 #ifndef FILTERMODELS_H
 #define FILTERMODELS_H
 
+#include "divetripmodel.h" // For DiveTripModel::Layout. TODO: remove in due course
+
 #include <QStringListModel>
 #include <QSortFilterProxyModel>
 #include <stdint.h>
@@ -132,6 +134,7 @@ slots:
 	void startFilterDiveSite(struct dive_site *ds);
 	void stopFilterDiveSite();
 	void filterChanged(const QModelIndex &from, const QModelIndex &to, const QVector<int> &roles);
+	void setLayout(DiveTripModel::Layout layout);
 
 signals:
 	void filterFinished();

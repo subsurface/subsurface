@@ -33,12 +33,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegate(new DiveListDelegate(this));
 	setUniformRowHeights(true);
 	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate(this));
-	MultiFilterSortModel *model = MultiFilterSortModel::instance();
-	model->setSortRole(DiveTripModel::SORT_ROLE);
-	model->setFilterKeyColumn(-1); // filter all columns
-	model->setFilterCaseSensitivity(Qt::CaseInsensitive);
-	model->setSourceModel(DiveTripModel::instance());
-	setModel(model);
+	setModel(MultiFilterSortModel::instance());
 
 	setSortingEnabled(false);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
@@ -503,8 +498,7 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 	header()->setSectionsClickable(true);
 	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
 
-	DiveTripModel *tripModel = DiveTripModel::instance();
-	tripModel->setLayout(layout);	// Note: setLayout() resets the whole model
+	MultiFilterSortModel::instance()->setLayout(layout);
 
 	if (!forceSort)
 		return;

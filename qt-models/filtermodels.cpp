@@ -562,6 +562,16 @@ MultiFilterSortModel::MultiFilterSortModel(QObject *parent) : QSortFilterProxyMo
 	divesDisplayed(0),
 	curr_dive_site(NULL)
 {
+	setSortRole(DiveTripModel::SORT_ROLE);
+	setFilterKeyColumn(-1); // filter all columns
+	setFilterCaseSensitivity(Qt::CaseInsensitive);
+	setSourceModel(DiveTripModel::instance());
+}
+
+void MultiFilterSortModel::setLayout(DiveTripModel::Layout layout)
+{
+	DiveTripModel *tripModel = DiveTripModel::instance();
+	tripModel->setLayout(layout);	// Note: setLayout() resets the whole model
 }
 
 void MultiFilterSortModel::divesAdded(const QVector<dive *> &dives)
@@ -656,6 +666,8 @@ void MultiFilterSortModel::myInvalidate()
 
 	invalidateFilter();
 
+	// Tell the dive trip model to update the displayed-counts
+	DiveTripModel::instance()->filterFinished();
 	emit filterFinished();
 
 #if !defined(SUBSURFACE_MOBILE)

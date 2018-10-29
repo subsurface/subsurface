@@ -320,9 +320,6 @@ DiveTripModel::DiveTripModel(QObject *parent) :
 	connect(&diveListNotifier, &DiveListNotifier::divesSelected, this, &DiveTripModel::divesSelected);
 	connect(&diveListNotifier, &DiveListNotifier::divesDeselected, this, &DiveTripModel::divesDeselected);
 	connect(&diveListNotifier, &DiveListNotifier::currentDiveChanged, this, &DiveTripModel::currentDiveChanged);
-
-	// Update trip headers if filter finished
-	connect(MultiFilterSortModel::instance(), &MultiFilterSortModel::filterFinished, this, &DiveTripModel::filterFinished);
 }
 
 int DiveTripModel::columnCount(const QModelIndex&) const
