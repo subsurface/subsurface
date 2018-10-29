@@ -1348,6 +1348,9 @@ void QMLManager::pasteDiveData(int id)
 		return;
 	}
 	selective_copy_dive(m_copyPasteDive, d, what, false);
+
+	invalidate_dive_cache(d);
+	mark_divelist_changed(true);
 	changesNeedSaving();
 }
 
