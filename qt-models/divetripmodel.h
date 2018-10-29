@@ -55,6 +55,7 @@ public:
 	int rowCount(const QModelIndex &parent) const;
 	QModelIndex index(int row, int column, const QModelIndex &parent) const;
 	QModelIndex parent(const QModelIndex &index) const;
+	void filterFinished();
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of dive-selection goes:
@@ -74,7 +75,6 @@ private slots:
 	void divesSelected(dive_trip *trip, const QVector<dive *> &dives);
 	void divesDeselected(dive_trip *trip, const QVector<dive *> &dives);
 	void currentDiveChanged();
-	void filterFinished();
 private:
 	// The model has up to two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
