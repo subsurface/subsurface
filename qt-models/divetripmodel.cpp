@@ -53,9 +53,6 @@ QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 	if (role == TRIP_ROLE)
 		return QVariant::fromValue<void *>((void *)trip); // Not nice: casting away a const
 
-	if (role == SORT_ROLE)
-		return (qulonglong)trip->when;
-
 	if (role == Qt::DisplayRole) {
 		switch (column) {
 		case DiveTripModel::NR:
@@ -143,46 +140,6 @@ QVariant DiveTripModel::diveData(const struct dive *d, int column, int role)
 	switch (role) {
 	case Qt::TextAlignmentRole:
 		return dive_table_alignment(column);
-	case SORT_ROLE:
-		switch (column) {
-		case NR:
-			return (qlonglong)d->when;
-		case DATE:
-			return (qlonglong)d->when;
-		case RATING:
-			return d->rating;
-		case DEPTH:
-			return d->maxdepth.mm;
-		case DURATION:
-			return d->duration.seconds;
-		case TEMPERATURE:
-			return d->watertemp.mkelvin;
-		case TOTALWEIGHT:
-			return total_weight(d);
-		case SUIT:
-			return QString(d->suit);
-		case CYLINDER:
-			return QString(d->cylinder[0].type.description);
-		case GAS:
-			return nitrox_sort_value(d);
-		case SAC:
-			return d->sac;
-		case OTU:
-			return d->otu;
-		case MAXCNS:
-			return d->maxcns;
-		case TAGS:
-			return get_taglist_string(d->tag_list);
-		case PHOTOS:
-			return countPhotos(d);
-		case COUNTRY:
-			return QString(get_dive_country(d));
-		case BUDDIES:
-			return QString(d->buddy);
-		case LOCATION:
-			return QString(get_dive_location(d));
-		}
-		break;
 	case Qt::DisplayRole:
 		switch (column) {
 		case NR:
@@ -1101,5 +1058,86 @@ void DiveTripModel::filterFinished()
 	for (int idx = 0; idx < (int)items.size(); ++idx) {
 		QModelIndex tripIndex = createIndex(idx, 0, noParent);
 		dataChanged(tripIndex, tripIndex);
+	}
+}
+
+// Simple sorting helper for sorting against a criterium and if
+// that is undefined against a different criterium.
+// Return true if diff1 < 0, false if diff1 > 0.
+// If diff1 == 0 return true if diff2 < 0;
+static bool lessThanHelper(int diff1, int diff2)
+{
+	return diff1 < 0 || (diff1 == 0 && diff2 < 0);
+}
+
+static int strCmp(const char *s1, const char *s2)
+{
+	if (!s1)
+		return !s2 ? 0 : -1;
+	if (!s2)
+		return 1;
+	return QString::localeAwareCompare(QString(s1), QString(s2)); // TODO: avoid copy
+}
+
+bool DiveTripModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
+{
+	if (currentLayout != LIST) {
+		// In tree mode we don't support any sorting!
+		// Simply keep the original position.
+		return i1.row() < i2.row();
+	}
+
+	// We assume that i1.column() == i2.column().
+	// We are in list mode, so we know that we only have dives.
+	int row1 = i1.row();
+	int row2 = i2.row();
+	if (row1 < 0 || row1 >= (int)items.size() || row2 < 0 || row2 >= (int)items.size())
+		return false;
+	const dive *d1 = items[i1.row()].dives[0];
+	const dive *d2 = items[i2.row()].dives[0];
+	int row_diff = row1 - row2;
+	switch (i1.column()) {
+	case NR:
+	case DATE:
+	default:
+		return row1 < row2;
+	case RATING:
+		return lessThanHelper(d1->rating - d2->rating, row_diff);
+	case DEPTH:
+		return lessThanHelper(d1->maxdepth.mm - d2->maxdepth.mm, row_diff);
+	case DURATION:
+		return lessThanHelper(d1->duration.seconds - d2->duration.seconds, row_diff);
+	case TEMPERATURE:
+		return lessThanHelper(d1->watertemp.mkelvin - d2->watertemp.mkelvin, row_diff);
+	case TOTALWEIGHT:
+		return lessThanHelper(total_weight(d1) - total_weight(d2), row_diff);
+	case SUIT:
+		return lessThanHelper(strCmp(d1->suit, d2->suit), row_diff);
+	case CYLINDER:
+		return lessThanHelper(strCmp(d1->cylinder[0].type.description, d2->cylinder[0].type.description), row_diff);
+	case GAS:
+		return lessThanHelper(nitrox_sort_value(d1) - nitrox_sort_value(d2), row_diff);
+	case SAC:
+		return lessThanHelper(d1->sac - d2->sac, row_diff);
+	case OTU:
+		return lessThanHelper(d1->otu - d2->otu, row_diff);
+	case MAXCNS:
+		return lessThanHelper(d1->maxcns - d2->maxcns, row_diff);
+	case TAGS: {
+		char *s1 = taglist_get_tagstring(d1->tag_list);
+		char *s2 = taglist_get_tagstring(d2->tag_list);
+		int diff = strCmp(s1, s2);
+		free(s1);
+		free(s2);
+		return lessThanHelper(diff, row_diff);
+	}
+	case PHOTOS:
+		return lessThanHelper(countPhotos(d1) - countPhotos(d2), row_diff);
+	case COUNTRY:
+		return lessThanHelper(strCmp(get_dive_country(d1), get_dive_country(d2)), row_diff);
+	case BUDDIES:
+		return lessThanHelper(strCmp(d1->buddy, d2->buddy), row_diff);
+	case LOCATION:
+		return lessThanHelper(strCmp(get_dive_location(d1), get_dive_location(d2)), row_diff);
 	}
 }

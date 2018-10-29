@@ -34,7 +34,6 @@ public:
 		STAR_ROLE = Qt::UserRole + 1,
 		DIVE_ROLE,
 		TRIP_ROLE,
-		SORT_ROLE,
 		DIVE_IDX,
 		SELECTED_ROLE
 	};
@@ -56,6 +55,10 @@ public:
 	QModelIndex index(int row, int column, const QModelIndex &parent) const;
 	QModelIndex parent(const QModelIndex &index) const;
 	void filterFinished();
+
+	// Used for sorting. This is a bit of a layering violation, as sorting should be performed
+	// by the higher-up QSortFilterProxyModel, but it makes things so much easier!
+	bool lessThan(const QModelIndex &i1, const QModelIndex &i2) const;
 signals:
 	// The propagation of selection changes is complex.
 	// The control flow of dive-selection goes:
