@@ -11,6 +11,7 @@
 
 struct dive;
 struct dive_trip;
+class DiveTripModel;
 
 class FilterModelBase : public QAbstractListModel {
 	Q_OBJECT
@@ -127,6 +128,7 @@ public:
 	void divesDeleted(const QVector<dive *> &dives);
 	bool showDive(const struct dive *d) const;
 	int divesDisplayed;
+	bool lessThan(const QModelIndex &, const QModelIndex &) const override;
 public
 slots:
 	void myInvalidate();
@@ -142,6 +144,7 @@ private:
 	MultiFilterSortModel(QObject *parent = 0);
 	QList<FilterModelBase *> models;
 	struct dive_site *curr_dive_site;
+	DiveTripModel *model;
 };
 
 #endif
