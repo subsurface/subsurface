@@ -47,6 +47,8 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 
 	header()->setStretchLastSection(true);
 	header()->setSortIndicatorShown(true);
+	header()->setSectionsClickable(true);
+	connect(header(), &QHeaderView::sectionPressed, this, &DiveListView::headerClicked);
 
 	installEventFilter(this);
 
@@ -494,9 +496,6 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		layout = currentLayout;
 	else
 		currentLayout = layout;
-
-	header()->setSectionsClickable(true);
-	connect(header(), SIGNAL(sectionPressed(int)), this, SLOT(headerClicked(int)), Qt::UniqueConnection);
 
 	MultiFilterSortModel::instance()->setLayout(layout);
 
