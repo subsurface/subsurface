@@ -926,7 +926,7 @@ void MainTab::acceptChanges()
 	int scrolledBy = MainWindow::instance()->diveList->verticalScrollBar()->sliderPosition();
 	resetPallete();
 	if (editMode == MANUALLY_ADDED_DIVE) {
-		MainWindow::instance()->diveList->reload(DiveTripModel::CURRENT, true);
+		MainWindow::instance()->diveList->reload(DiveTripModel::CURRENT);
 		int newDiveNr = get_divenr(get_dive_by_uniq_id(addedId));
 		MainWindow::instance()->diveList->unselectDives();
 		MainWindow::instance()->diveList->selectDive(newDiveNr, true);

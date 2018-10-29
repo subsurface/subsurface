@@ -25,7 +25,7 @@ public:
 	void mouseDoubleClickEvent(QMouseEvent * event);
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 	void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-	void reload(DiveTripModel::Layout layout, bool forceSort = true);
+	void reload(DiveTripModel::Layout layout);
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
 	void clearTripSelection();

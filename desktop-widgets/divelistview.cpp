@@ -479,8 +479,9 @@ void DiveListView::headerClicked(int i)
 		unselectDives();
 		if (currentLayout == DiveTripModel::TREE)
 			backupExpandedRows();
-		reload(newLayout, false);
+		currentLayout = newLayout;
 		currentOrder = Qt::DescendingOrder;
+		MultiFilterSortModel::instance()->setLayout(newLayout);
 		sortByColumn(i, currentOrder);
 		if (newLayout == DiveTripModel::TREE)
 			restoreExpandedRows();
@@ -490,7 +491,7 @@ void DiveListView::headerClicked(int i)
 	sortColumn = i;
 }
 
-void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
+void DiveListView::reload(DiveTripModel::Layout layout)
 {
 	if (layout == DiveTripModel::CURRENT)
 		layout = currentLayout;
@@ -498,9 +499,6 @@ void DiveListView::reload(DiveTripModel::Layout layout, bool forceSort)
 		currentLayout = layout;
 
 	MultiFilterSortModel::instance()->setLayout(layout);
-
-	if (!forceSort)
-		return;
 
 	sortByColumn(sortColumn, currentOrder);
 	if (amount_selected && current_dive != NULL)
