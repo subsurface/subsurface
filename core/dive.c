@@ -4433,6 +4433,7 @@ int dive_has_gps_location(const struct dive *dive)
 	return dive_site_has_gps_location(dive->dive_site);
 }
 
+/* When evaluated at the time of a gasswitch, this returns the new gas */
 struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc, int time, const struct event **evp, struct gasmix gasmix)
 {
 	const struct event *ev = *evp;
@@ -4456,6 +4457,7 @@ struct gasmix get_gasmix(const struct dive *dive, const struct divecomputer *dc,
 }
 
 /* get the gas at a certain time during the dive */
+/* If there is a gasswitch at that time, it returns the new gasmix */
 struct gasmix get_gasmix_at_time(const struct dive *d, const struct divecomputer *dc, duration_t time)
 {
 	const struct event *ev = NULL;
