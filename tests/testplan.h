@@ -18,6 +18,7 @@ private slots:
 	void testVpmbMetricMultiLevelAir();
 	void testVpmbMetric100m10min();
 	void testVpmbMetricRepeat();
+	void testMultipleGases();
 };
 
 #endif // TESTPLAN_H
