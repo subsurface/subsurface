@@ -316,6 +316,32 @@ void setupPlanVpmb100mTo70m30min(struct diveplan *dp)
 	plan_add_segment(dp, (30 - 20 - 3) * 60, M_OR_FT(70, 230), 0, 0, 1, OC);
 }
 
+/* This tests handling different gases in the manually entered part of the dive */
+
+void setupPlanSeveralGases(struct diveplan *dp)
+{
+	dp->salinity = 10300;
+	dp->surface_pressure = 1013;
+	dp->bottomsac = prefs.bottomsac;
+	dp->decosac = prefs.decosac;
+
+	struct gasmix ean36 = {{360}, {0}};
+	struct gasmix tx11_50 = {{110}, {500}};
+
+	displayed_dive.cylinder[0].gasmix = ean36;
+	displayed_dive.cylinder[0].type.size.mliter = 36000;
+	displayed_dive.cylinder[0].type.workingpressure.mbar = 232000;
+	displayed_dive.cylinder[1].gasmix = tx11_50;
+	displayed_dive.surface_pressure.mbar = 1013;
+	reset_cylinders(&displayed_dive, true);
+	free_dps(dp);
+
+	plan_add_segment(dp, 120, 40000, 0, 0, true, OC);
+	plan_add_segment(dp, 18 * 60, 40000, 0, 0, true, OC);
+	plan_add_segment(dp, 10 * 60, 10000, 1, 0, true, OC);
+	plan_add_segment(dp, 5 * 60, 10000, 0, 0, true, OC);
+}
+
 /* We compare the calculated runtimes against two values:
  * - Known runtime calculated by Subsurface previously (to detect if anything has changed)
  * - Benchmark runtime (we should be close, but not always exactly the same)
@@ -641,6 +667,33 @@ void TestPlan::testVpmbMetric100m60min()
 	QCOMPARE(get_depth_at_time(&displayed_dive.dc, ev->time.seconds), 6000);
 	// check benchmark run time of 311 minutes, and known Subsurface runtime of 314 minutes
 	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 311u * 60u + 20u, 315u * 60u + 20u));
+}
+
+void TestPlan::testMultipleGases()
+{
+	struct deco_state *cache = NULL;
+
+	setupPrefsVpmb();
+	prefs.unit_system = METRIC;
+	prefs.units.length = units::METERS;
+
+	struct diveplan testPlan = {};
+
+	setupPlanSeveralGases(&testPlan);
+	setCurrentAppState("PlanDive");
+
+	plan(&test_deco_state, &testPlan, &displayed_dive, 60, stoptable, &cache, 1, 0);
+
+#if DEBUG
+	free(displayed_dive.notes);
+	displayed_dive.notes = NULL;
+	save_dive(stdout, &displayed_dive, false);
+#endif
+
+	gasmix gas;
+	gas = get_gasmix_at_time(&displayed_dive, &displayed_dive.dc, {20 * 60 + 1});
+	QCOMPARE(get_o2(gas), 110);
+	QVERIFY(compareDecoTime(displayed_dive.dc.duration.seconds, 2480u, 2480u));
 }
 
 void TestPlan::testVpmbMetricMultiLevelAir()
