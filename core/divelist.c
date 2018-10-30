@@ -173,7 +173,7 @@ static int calculate_otu(const struct dive *dive)
 		if (sample->setpoint.mbar) {
 			po2 = sample->setpoint.mbar;
 		} else {
-			int o2 = active_o2(dive, dc, sample->time);
+			int o2 = active_o2(dive, dc, psample->time);
 			po2 = lrint(o2 * depth_to_atm(sample->depth.mm, dive));
 		}
 		if (po2 >= 500)
