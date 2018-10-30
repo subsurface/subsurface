@@ -381,7 +381,7 @@ QVariant DiveLocationModel::data(const QModelIndex &index, int role) const
 
 	if (index.row() <= 1) { // two special cases.
 		if (index.column() == LocationInformationModel::DIVESITE)
-			return QVariant::fromValue<void *>(RECENTLY_ADDED_DIVESITE);
+			return QVariant::fromValue<dive_site *>(RECENTLY_ADDED_DIVESITE);
 		switch (role) {
 		case Qt::DisplayRole:
 			return new_ds_value[index.row()];
