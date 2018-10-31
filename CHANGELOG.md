@@ -1,3 +1,8 @@
+- Import: Fix import of CSV files containing quotes
+- Desktop: Show coordinates if no tags from reverse geo lookup
+- Desktop: Sort on date in case of equal fields
+- Desktop: Indicate sort direction in list header
+- Desktop: Use defined sort-order when switching sort column
 - Fix a bug in planner for dives with manual gas changes.
 - Mobile: add full text filtering of the dive list
 - Desktop: don't add dive-buddy or dive-master when tabbing through fields
