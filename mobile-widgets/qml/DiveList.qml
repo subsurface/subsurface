@@ -367,7 +367,7 @@ Kirigami.ScrollablePage {
 		id: filterHeader
 		Rectangle {
 			id: filterRectangle
-			default property alias data: filterBar.data
+			visible: filterBar.height > 0
 			implicitHeight: filterBar.implicitHeight
 			implicitWidth: filterBar.implicitWidth
 			height: filterBar.height
