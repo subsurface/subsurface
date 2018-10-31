@@ -431,7 +431,8 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 	SAVE("visibility", visibility);
 	cond_put_format(dive->tripflag == NO_TRIP, b, "notrip\n");
 	save_tags(b, dive->tag_list);
-	cond_put_format(!!dive->dive_site, b, "divesiteid %08x\n", dive->dive_site->uuid);
+	if (dive->dive_site)
+		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);
 	if (verbose && dive->dive_site)
 		fprintf(stderr, "removed reference to non-existant dive site with uuid %08x\n", dive->dive_site->uuid);
 	save_overview(b, dive);
