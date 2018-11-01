@@ -1,3 +1,6 @@
+- Windows: add experimental support for BTLE dive computers.
+  For more information have a look at section 5.2.2 of the user
+  manual ("On Windows").
 - Import: Fix import of CSV files containing quotes
 - Desktop: Show coordinates if no tags from reverse geo lookup
 - Desktop: Sort on date in case of equal fields
