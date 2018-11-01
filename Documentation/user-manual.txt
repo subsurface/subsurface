@@ -613,6 +613,15 @@ press the three-dots button from the _"Choose Bluetooth download mode"_ option.
 
 [icon="images/icons/important.png"]
 [IMPORTANT]
+The Subsurface support for BLTE dive computers on Windows is *EXPERIMENTAL* and only
+supported on Windows 10.
+Please make sure that you have the latest version of Windows 10.
+link:https://en.wikipedia.org/wiki/Windows_10_version_history#Version_1803_(April_2018_Update)[Version 1803] is a minimum
+requirement. Also make sure that you have installed the latest drivers for your
+motherboard and/or BTLE dongle.
+
+[icon="images/icons/important.png"]
+[IMPORTANT]
 
 *IN CASE OF PROBLEMS*:  If the Bluetooth adapter from the _Subsurface_ computer
 gets stuck and the _Download_ process fails repeatedly,
