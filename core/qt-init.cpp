@@ -51,11 +51,17 @@ void init_qt_late()
 #if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
 	QCoreApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
 #endif
-	// find plugins installed in the application directory (without this SVGs don't work on Windows)
 	qPref::load();
 
+	// find plugins installed in the application directory (without this SVGs don't work on Windows)
 	QCoreApplication::addLibraryPath(QCoreApplication::applicationDirPath());
 	QLocale loc;
+
+	// assign en_GB for use in South African locale
+	if (loc.country() == QLocale::SouthAfrica) {
+		loc.setDefault(QLocale("en_GB"));
+		loc = QLocale();
+	}
 	QString uiLang = uiLanguage(&loc);
 	QLocale::setDefault(loc);
 
