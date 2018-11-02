@@ -27,7 +27,7 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(DiveTripModel::NR),
-	currentOrder(Qt::DescendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false),
+	currentOrder(Qt::AscendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false),
 	initialColumnWidths(DiveTripModel::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
@@ -465,11 +465,9 @@ void DiveListView::headerClicked(int i)
 	/* No layout change? Just re-sort, and scroll to first selection, making sure all selections are expanded */
 	if (currentLayout == newLayout) {
 		// If this is the same column as before, change sort order. Otherwise, choose a default
-		// sort order (descending for NR and DATE, ascending elsewise).
+		// sort order (ascending).
 		if (sortColumn == i)
 			currentOrder = (currentOrder == Qt::DescendingOrder) ? Qt::AscendingOrder : Qt::DescendingOrder;
-		else if (i == DiveTripModel::NR || i == DiveTripModel::DATE)
-			currentOrder = Qt::DescendingOrder;
 		else
 			currentOrder = Qt::AscendingOrder;
 		sortByColumn(i, currentOrder);
@@ -480,7 +478,7 @@ void DiveListView::headerClicked(int i)
 		if (currentLayout == DiveTripModel::TREE)
 			backupExpandedRows();
 		currentLayout = newLayout;
-		currentOrder = Qt::DescendingOrder;
+		currentOrder = Qt::AscendingOrder;
 		MultiFilterSortModel::instance()->setLayout(newLayout);
 		sortByColumn(i, currentOrder);
 		if (newLayout == DiveTripModel::TREE)
