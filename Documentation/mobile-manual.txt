@@ -233,6 +233,27 @@ instruction to delete the dive.
 
 image::mobile-images/RedDustbin.jpg["FIGURE: delete dive from list",align="center"]
 
+== Copying dive details
+
+To copy selected dive details over to another dive, long-press a dive in the
+divelist. This will show a three icons on the right side of the selected dive
+as shown on the image below. The left image will copy details from the selected
+dive and middle button will paste what has been copied before. Naturally you
+should long-press a different dive after copying the details to perform the
+paste operation.
+
+image::mobile-images/CopyPaste.jpg["FIGURE: copy dive details in list",align="center"]
+
+Currently the details to be copied are hard-coded and include the following
+information:
+
+- divemaster
+- buddy
+- suit
+- tags
+- cylinders
+- weights
+
 [[S_Download]]
 == Download dives from a dive computer
 
