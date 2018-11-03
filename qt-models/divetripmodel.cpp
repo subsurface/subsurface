@@ -717,7 +717,7 @@ void addInBatches(Vector1 &v1, const Vector2 &v2, Comparator comp, Inserter inse
 			// We were at end -> insert the remaining items
 			j = v2.size();
 		} else {
-			for (j = i + 1; j < (int)v2.size() && comp(v2[i], v1[idx]); ++j)
+			for (j = i + 1; j < (int)v2.size() && comp(v2[j], v1[idx]); ++j)
 				; // Pass
 		}
 
