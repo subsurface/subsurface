@@ -1337,6 +1337,8 @@ void QMLManager::copyDiveData(int id)
 	what.tags = true;
 	what.cylinders = true;
 	what.weights = true;
+
+	setNotificationText("Copy");
 }
 
 void QMLManager::pasteDiveData(int id)
@@ -1355,6 +1357,7 @@ void QMLManager::pasteDiveData(int id)
 	invalidate_dive_cache(d);
 	mark_divelist_changed(true);
 	changesNeedSaving();
+	setNotificationText("Paste");
 }
 
 void QMLManager::cancelDownloadDC()
