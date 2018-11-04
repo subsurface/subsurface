@@ -705,7 +705,7 @@ void MainWindow::cleanUpEmpty()
 	mainTab->updateDiveInfo(true);
 	graphics->setEmptyState();
 	diveList->reload();
-	diveList->setSortOrder(DiveTripModel::NR, Qt::AscendingOrder);
+	diveList->setSortOrder(DiveTripModel::NR, Qt::DescendingOrder);
 	MapWidget::instance()->reload();
 	if (!existing_filename)
 		setTitle();
