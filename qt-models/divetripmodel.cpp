@@ -753,9 +753,9 @@ void DiveTripModel::addDivesToTrip(int trip, const QVector<dive *> &dives)
 // before the trip in the case of equal timestamps.
 bool DiveTripModel::dive_before_entry(const dive *d, const Item &entry)
 {
-	// Dives at the same time come before trips, therefore use the "<=" operator.
+	// Dives at the same time come before trips, therefore use the ">=" operator.
 	if (entry.trip)
-		return d->when <= entry.trip->when;
+		return d->when >= entry.trip->when;
 	return !dive_less_than(d, entry.getDive());
 }
 
