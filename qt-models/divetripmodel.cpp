@@ -350,6 +350,9 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 		return dive_table_alignment(section);
 	case Qt::FontRole:
 		return defaultModelFont();
+	case Qt::InitialSortOrderRole:
+		// By default, sort NR and DATE descending, everything else ascending.
+		return section == NR || section == DATE ? Qt::DescendingOrder : Qt::AscendingOrder;
 	case Qt::DisplayRole:
 		switch (section) {
 		case NR:
@@ -1084,7 +1087,9 @@ bool DiveTripModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 	if (currentLayout != LIST) {
 		// In tree mode we don't support any sorting!
 		// Simply keep the original position.
-		return i1.row() < i2.row();
+		// Note that the model is filled in reverse order, therefore
+		// ascending means sorting in descending order. TODO: fix.
+		return i1.row() > i2.row();
 	}
 
 	// We assume that i1.column() == i2.column().
@@ -1100,7 +1105,9 @@ bool DiveTripModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 	case NR:
 	case DATE:
 	default:
-		return row1 < row2;
+		// Note that the model is filled in reverse order, therefore
+		// ascending means sorting in descending order. TODO: fix.
+		return row1 > row2;
 	case RATING:
 		return lessThanHelper(d1->rating - d2->rating, row_diff);
 	case DEPTH:
