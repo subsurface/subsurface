@@ -25,7 +25,8 @@ public:
 	void mouseDoubleClickEvent(QMouseEvent * event);
 	void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
 	void currentChanged(const QModelIndex &current, const QModelIndex &previous);
-	void reload(DiveTripModel::Layout layout);
+	void setSortOrder(int i, Qt::SortOrder order); // Call to set sort order
+	void reload(); // Call to reload model data
 	bool eventFilter(QObject *, QEvent *);
 	void unselectDives();
 	void clearTripSelection();
@@ -44,7 +45,7 @@ public
 slots:
 	void toggleColumnVisibilityByIndex();
 	void reloadHeaderActions();
-	void headerClicked(int);
+	void sortIndicatorChanged(int index, Qt::SortOrder order);
 	void removeFromTrip();
 	void deleteDive();
 	void markDiveInvalid();
