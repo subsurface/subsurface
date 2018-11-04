@@ -26,8 +26,8 @@
 #include "core/metrics.h"
 #include "core/subsurface-qt/DiveListNotifier.h"
 
-DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(DiveTripModel::NR),
-	currentOrder(Qt::AscendingOrder), currentLayout(DiveTripModel::TREE), dontEmitDiveChangedSignal(false), selectionSaved(false),
+DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false),
+	currentLayout(DiveTripModel::TREE), dontEmitDiveChangedSignal(false), selectionSaved(false),
 	initialColumnWidths(DiveTripModel::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
@@ -478,9 +478,6 @@ void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 			restoreExpandedRows();
 		restoreSelection();
 	}
-	// remember the new sort column
-	sortColumn = i;
-	currentOrder = order;
 }
 
 void DiveListView::setSortOrder(int i, Qt::SortOrder order)
@@ -890,6 +887,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 			if (!d->divetrip) {
 				struct dive *top = d;
 				struct dive *bottom = d;
+				Qt::SortOrder currentOrder = header()->sortIndicatorOrder();
 				if (d->selected) {
 					if (currentOrder == Qt::AscendingOrder) {
 						top = first_selected_dive();
