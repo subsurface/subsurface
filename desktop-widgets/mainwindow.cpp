@@ -245,7 +245,7 @@ MainWindow::MainWindow() : QMainWindow(),
 	graphics->setEmptyState();
 	initialUiSetup();
 	readSettings();
-	diveList->reload(DiveTripModel::TREE);
+	diveList->reload();
 	diveList->reloadHeaderActions();
 	diveList->setFocus();
 	MapWidget::instance()->reload();
@@ -494,7 +494,7 @@ void MainWindow::refreshDisplay(bool doRecreateDiveList)
 
 void MainWindow::recreateDiveList()
 {
-	diveList->reload(DiveTripModel::CURRENT);
+	diveList->reload();
 	TagFilterModel::instance()->repopulate();
 	BuddyFilterModel::instance()->repopulate();
 	LocationFilterModel::instance()->repopulate();
@@ -704,7 +704,8 @@ void MainWindow::cleanUpEmpty()
 	mainTab->clearTabs();
 	mainTab->updateDiveInfo(true);
 	graphics->setEmptyState();
-	diveList->reload(DiveTripModel::TREE);
+	diveList->reload();
+	diveList->setSortOrder(DiveTripModel::NR, Qt::AscendingOrder);
 	MapWidget::instance()->reload();
 	if (!existing_filename)
 		setTitle();

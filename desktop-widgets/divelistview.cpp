@@ -27,7 +27,7 @@
 #include "core/subsurface-qt/DiveListNotifier.h"
 
 DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelection(false), sortColumn(DiveTripModel::NR),
-	currentOrder(Qt::AscendingOrder), dontEmitDiveChangedSignal(false), selectionSaved(false),
+	currentOrder(Qt::AscendingOrder), currentLayout(DiveTripModel::TREE), dontEmitDiveChangedSignal(false), selectionSaved(false),
 	initialColumnWidths(DiveTripModel::COLUMNS, 50)	// Set up with default length 50
 {
 	setItemDelegate(new DiveListDelegate(this));
@@ -48,7 +48,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	header()->setStretchLastSection(true);
 	header()->setSortIndicatorShown(true);
 	header()->setSectionsClickable(true);
-	connect(header(), &QHeaderView::sectionPressed, this, &DiveListView::headerClicked);
+	connect(header(), &QHeaderView::sortIndicatorChanged, this, &DiveListView::sortIndicatorChanged);
 
 	installEventFilter(this);
 
@@ -459,18 +459,12 @@ bool DiveListView::eventFilter(QObject *, QEvent *event)
 	return true;
 }
 
-void DiveListView::headerClicked(int i)
+void DiveListView::sortIndicatorChanged(int i, Qt::SortOrder order)
 {
 	DiveTripModel::Layout newLayout = i == (int)DiveTripModel::NR ? DiveTripModel::TREE : DiveTripModel::LIST;
 	/* No layout change? Just re-sort, and scroll to first selection, making sure all selections are expanded */
 	if (currentLayout == newLayout) {
-		// If this is the same column as before, change sort order. Otherwise, choose a default
-		// sort order (ascending).
-		if (sortColumn == i)
-			currentOrder = (currentOrder == Qt::DescendingOrder) ? Qt::AscendingOrder : Qt::DescendingOrder;
-		else
-			currentOrder = Qt::AscendingOrder;
-		sortByColumn(i, currentOrder);
+		sortByColumn(i, order);
 	} else {
 		// clear the model, repopulate with new indexes.
 		rememberSelection();
@@ -478,27 +472,28 @@ void DiveListView::headerClicked(int i)
 		if (currentLayout == DiveTripModel::TREE)
 			backupExpandedRows();
 		currentLayout = newLayout;
-		currentOrder = Qt::AscendingOrder;
 		MultiFilterSortModel::instance()->setLayout(newLayout);
-		sortByColumn(i, currentOrder);
+		sortByColumn(i, order);
 		if (newLayout == DiveTripModel::TREE)
 			restoreExpandedRows();
 		restoreSelection();
 	}
 	// remember the new sort column
 	sortColumn = i;
+	currentOrder = order;
 }
 
-void DiveListView::reload(DiveTripModel::Layout layout)
+void DiveListView::setSortOrder(int i, Qt::SortOrder order)
 {
-	if (layout == DiveTripModel::CURRENT)
-		layout = currentLayout;
-	else
-		currentLayout = layout;
+	// The QHeaderView will call our signal if the sort order changed
+	header()->setSortIndicator(i, order);
+}
 
-	MultiFilterSortModel::instance()->setLayout(layout);
+void DiveListView::reload()
+{
+	// A side-effect of setting the layout is reloading the model data
+	MultiFilterSortModel::instance()->setLayout(currentLayout);
 
-	sortByColumn(sortColumn, currentOrder);
 	if (amount_selected && current_dive != NULL)
 		selectDive(get_divenr(current_dive), true);
 	else
