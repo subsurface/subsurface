@@ -68,8 +68,6 @@ slots:
 private:
 	bool mouseClickSelection;
 	QList<int> expandedRows;
-	int sortColumn;
-	Qt::SortOrder currentOrder;
 	DiveTripModel::Layout currentLayout;
 	QModelIndex contextMenuIndex;
 	bool dontEmitDiveChangedSignal;
