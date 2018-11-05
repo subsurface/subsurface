@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
     "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
 <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-<meta name="generator" content="AsciiDoc 8.6.10" />
+<meta name="generator" content="AsciiDoc 8.6.9" />
 <title></title>
 <style type="text/css">
 /*
@@ -446,7 +445,7 @@ asciidoc.install(3);
 <div class="paragraph"><p><strong>Auteurs du manuel</strong> : Willem Ferguson, Jacco van Koll, Dirk Hohndel, Reinout Hoornweg,
 Linus Torvalds, Miika Turkia, Amit Chaudhuri, Jan Schubert, Salvador Cuñat, Pedro Neves,
 Stefan Fuchs</p></div>
-<div class="paragraph"><p><span class="blue"><em>Version 4.7, Mai 2018</em></span></p></div>
+<div class="paragraph"><p><span class="blue"><em>Version 4.8, Septembre 2018</em></span></p></div>
 <div class="paragraph"><p>Bienvenue en tant qu&#8217;utilisateur de <em>Subsurface</em>, un programme avancé
 d&#8217;enregistrement de plongées (carnet de plongées) avec une bonne
 infrastructure pour décrire, organiser, interpréter et imprimer des plongées
@@ -540,40 +539,28 @@ professionnels</p></div>
 <div class="paragraph"><p>Lorsqu&#8217;il est ouvert depuis <em>Subsurface</em>, ce manuel ne dispose pas de
 contrôles externes pour la pagination ou la sélection des pages
 précédentes. Cependant, deux options sont disponibles:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-La fonction <em>RECHERCHE</em> est activée avec le raccourci clavier Contrôle-F ou
-  Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir
-  image ci-dessous). Par exemple, entrer le mot "<em>weights</em>" dans la boîte de
-  texte de recherche lancera  la recherche dans tout le manuel utilisateur. À
-  droite de la boîte de recherche se trouvent deux flèches, l&#8217;une vers le haut
-  l&#8217;autre vers le bas. Elles mènent respectivement vers l&#8217;occurence précédente
-  et suivante du terme recherché.
-</p>
-</li>
-</ul></div>
+<div class="paragraph"><p>La fonction <em>RECHERCHE</em> est activée avec le raccourci clavier Contrôle-F ou
+Commande-F. Une boîte de texte apparaît en bas à droite de la fenêtre (voir
+image ci-dessous). Par exemple, entrer le mot "<em>weights</em>" dans la boîte de
+texte de recherche lancera  la recherche dans tout le manuel utilisateur. À
+droite de la boîte de recherche se trouvent deux flèches, l&#8217;une vers le haut
+l&#8217;autre vers le bas. Elles mènent respectivement vers l&#8217;occurence précédente
+et suivante du terme recherché.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/UserManualSearch.jpg" alt="User manual functions" />
 </div>
 </div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>LIEN PRÉCÉDENT/SUIVANT</em>. Naviguez entre les liens (les mots soulignés qui
-  vous conduisent vers des sections précises du manuel utilisateur) en
-  cliquant-droit sur le texte du manuel. Cela fera apparaître un menu
-  contextuel vers les liens PRÉCÉDENTS sélectionnés (voir image
-  ci-dessous). Par exemple, si un lien a été sélectionné, l&#8217;option <em>Retour
-  lien précédent</em> affiche le texte au lien précédent sélectionné (comme le
-  fait le bouton Page Précédente d&#8217;un navigateur). Inversement, l&#8217;option
-  <em>Aller au lien suivant</em> navigue vers le texte vu avant l&#8217;utilisation de
-  l&#8217;option <em>Retour lien précédent</em>. L&#8217;option <em>Recharger</em> recharge le manuel
-  utilisateur complet dans la fenêtre.
-</p>
-</li>
-</ul></div>
+<div class="paragraph"><p><em>LIEN PRÉCÉDENT/SUIVANT</em>. Naviguez entre les liens (les mots soulignés qui
+vous conduisent vers des sections précises du manuel utilisateur) en
+cliquant-droit sur le texte du manuel. Cela fera apparaître un menu
+contextuel vers les liens PRÉCÉDENTS sélectionnés (voir image
+ci-dessous). Par exemple, si un lien a été sélectionné, l&#8217;option <em>Retour
+lien précédent</em> affiche le texte au lien précédent sélectionné (comme le
+fait le bouton Page Précédente d&#8217;un navigateur). Inversement, l&#8217;option
+<em>Aller au lien suivant</em> navigue vers le texte vu avant l&#8217;utilisation de
+l&#8217;option <em>Retour lien précédent</em>. L&#8217;option <em>Recharger</em> recharge le manuel
+utilisateur complet dans la fenêtre.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/UserManualLinksBack.jpg" alt="User manual functions" />
@@ -607,41 +594,23 @@ envoyer un nouveau sondage en démarrant <em>Subsurface</em> avec l&#8217;option
 principal</strong> (Fichier Édition Importer Journal Vue Partager Aide) en haut de
 la fenêtre (pour Windows et Linux) ou en haut de l'écran (pour Mac et Ubuntu
 Unity). Les quatre panneaux sont :</p></div>
-<div class="olist arabic"><ol class="arabic">
-<li>
-<p>
-La <strong>liste des plongées</strong> en bas à gauche, affichant toutes les plongées du
-   journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut être
-   sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans
-   la plupart des cas, les touches haut/bas peuvent être utilisées pour passer
-   d&#8217;une plongée à l&#8217;autre. La <strong>liste des plongées</strong> est un outil important pour
-   manipuler un journal (carnet) de plongée.
-</p>
-</li>
-<li>
-<p>
-La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
-   l&#8217;utilisateur, sur une carte mondiale et centrée sur le site de la dernière
-   plongée sélectionnée dans la <strong>liste des plongées</strong>. L'échelle de la carte
-   peut être augmentée ou réduite.
-</p>
-</li>
-<li>
-<p>
-Les <strong>informations</strong> en haut à gauche, fournissent des informations détaillées
-   sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont des
-   statistiques pour la plongée sélectionnée ou pour toutes les plongées mises
-   en surbrillance.
-</p>
-</li>
-<li>
-<p>
-Le <strong>profil de plongée</strong> en haut à droite, affiche un profil de plongée
-   graphique de la plongée sélectionnée dans la <strong>liste des plongées</strong>. Vous
-   pouvez zoomer sur le profil de plongée pour une vue plus détaillée.
-</p>
-</li>
-</ol></div>
+<div class="paragraph"><p>La <strong>liste des plongées</strong> en bas à gauche, affichant toutes les plongées du
+journal (carnet) de plongées de l&#8217;utilisateur. Une plongée peut être
+sélectionnée et mise en surbrillance dans la liste en cliquant dessus. Dans
+la plupart des cas, les touches haut/bas peuvent être utilisées pour passer
+d&#8217;une plongée à l&#8217;autre. La <strong>liste des plongées</strong> est un outil important pour
+manipuler un journal (carnet) de plongée.</p></div>
+<div class="paragraph"><p>La <strong>carte de plongée</strong> en bas à droite, affiche les sites de plongées de
+l&#8217;utilisateur, sur une carte mondiale et centrée sur le site de la dernière
+plongée sélectionnée dans la <strong>liste des plongées</strong>. L'échelle de la carte
+peut être augmentée ou réduite.</p></div>
+<div class="paragraph"><p>Les <strong>informations</strong> en haut à gauche, fournissent des informations détaillées
+sur la plongée sélectionnée dans la <strong>liste des plongées</strong>, dont des
+statistiques pour la plongée sélectionnée ou pour toutes les plongées mises
+en surbrillance.</p></div>
+<div class="paragraph"><p>Le <strong>profil de plongée</strong> en haut à droite, affiche un profil de plongée
+graphique de la plongée sélectionnée dans la <strong>liste des plongées</strong>. Vous
+pouvez zoomer sur le profil de plongée pour une vue plus détaillée.</p></div>
 <div class="paragraph"><p>Les séparateurs entre ces panneaux peuvent être déplacés pour modifier la
 taille de chaque panneau. <em>Subsurface</em> mémorise la position de ces
 séparateurs, pour qu&#8217;au prochain lancement <em>Subsurface</em> utilise ces
@@ -657,12 +626,12 @@ températures de l&#8217;eau et le SAC (air consommé); temps total et nombre de
 plongées sélectionnées).</p></div>
 <div class="imageblock" id="S_ViewPanels" style="text-align:center;">
 <div class="content">
-<img src="images/main_window_f22.jpg" alt="La fenêtre principale" />
+<img src="images/main_window_f22.jpg" alt="The Main Window" />
 </div>
 </div>
-<div class="paragraph"><p>L&#8217;utilisateur décide quels panneaux sont affichés, parmi les 4, en
-sélectionnant l&#8217;option <strong>Vue</strong> dans le menu principal. Cette fonctionnalité
-permet plusieurs choix d&#8217;affichage :</p></div>
+<div class="paragraph"><p>Décider quels panneaux sont affichés, parmi les 4, en sélectionnant l&#8217;option
+<strong>Vue</strong> dans le menu principal. Cette fonctionnalité permet plusieurs choix
+d&#8217;affichage :</p></div>
 <div class="paragraph"><p><strong>Tout</strong> : affiche les quatre panneaux tels que sur la capture d'écran ci-dessus.</p></div>
 <div class="paragraph"><p><strong>Liste des plongées</strong> : affiche uniquement la liste des plongées.</p></div>
 <div class="paragraph"><p><strong>Profil</strong> : affiche uniquement le profile de plongée de la plongée sélectionnée.</p></div>
@@ -721,9 +690,9 @@ Importer les informations de plongée qui ont été maintenues soit dans un
 </p>
 </li>
 </ul></div>
-<div class="paragraph"><p>2) Si une plongée est enregistrée par un ordinateur de plongée, le profil de
-   profondeur et de nombreuses informations supplémentaires peuvent être
-   obtenues. Ces plongées peuvent être importées à partir de :</p></div>
+<div class="paragraph"><p>Si une plongée est enregistrée par un ordinateur de plongée, le profil de
+profondeur et de nombreuses informations supplémentaires peuvent être
+obtenues. Ces plongées peuvent être importées à partir de :</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -882,7 +851,8 @@ cette communication, les utilisateurs doivent trouver l&#8217;information
 appropriée pour renseigner à <em>Subsurface</em> d&#8217;où et comment importer les
 informations de
 plongée.
-<a href="#S_Appendix_A">Annexe A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+A</a> donne les informations techniques pour aider l&#8217;utilisateur à configurer
 ceci pour les différents systèmes d&#8217;exploitation et
 <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
 B</a> contient des informations spécifiques à chaque ordinateur de plongée.</p></div>
@@ -938,12 +908,25 @@ La boîte de dialogue propose deux menus déroulants, <strong>Fournisseur</stron
 Le menu déroulant <strong>Périphérique ou point de montage</strong> le nom du port USB ou
    Bluetooth dont <em>Subsurface</em> a besoin pour communiquer avec l&#8217;ordinateur de
    plongée. Le port approprié doit être sélectionné. Consultez
-   <a href="#S_Appendix_A">Annexe A</a> et
+   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+   A</a> et
    <a href="#_appendix_b_dive_computer_specific_information_for_importing_dive_information">Annexe
    B</a> pour obtenir des détails techniques sur la façon de trouver des
    informations sur le port approprié à chaque ordinateur de plongée et, dans
    certains cas, sur les réglages requis pour le système d&#8217;exploitation de
-   l&#8217;ordinateur sur lequel <em>Subsurface</em> fonctionne.
+   l&#8217;ordinateur sur lequel <em>Subsurface</em> fonctionne. Certains ordinateurs de
+   plongée désactivent ce menu déroulant puisqu&#8217;ils utilisent d&#8217;autres moyens
+   pour trouver et se connecter au périphérique. Pour certains, les données
+   entrées ici sont en fait le point de montage USB tel que s&#8217;identifie
+   l&#8217;ordinateur de plongée lui-même.
+</p>
+</li>
+<li>
+<p>
+Below the three drop downs are up to four shortcut buttons that allow you to
+   easily switch between multiple dive computers that you are frequently
+   downloading from. These buttons only appear once you have downloaded from
+   different dive computers.
 </p>
 </li>
 <li>
@@ -1052,14 +1035,17 @@ Le câble de connexion est-il fautif ? Le câble fonctionne-t-il avec d&#8217;au
 <li>
 <p>
 Consultez
-   <a href="#S_Appendix_A">Annexe A</a> pour être certain que le point de montage correct a été spécifié (voir
+   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+   A</a> pour être certain que le point de montage correct a été spécifié (voir
    ci-dessus).
 </p>
 </li>
 <li>
 <p>
 Sur les systèmes d&#8217;exploitation de type Unix, l&#8217;utilisateur a-t-il les
-   droits d'écriture sur le port USB? Si non, consultez <a href="#S_Appendix_A">Annexe A</a>
+   droits d'écriture sur le port USB? Si non, consultez
+   <a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">Annexe
+   A</a>
 </p>
 </li>
 </ul></div>
@@ -1267,6 +1253,19 @@ Bluetooth"</em>.</p></div>
 <td class="icon">
 <img src="images/icons/important.png" alt="Important" />
 </td>
+<td class="content">The Subsurface support for BLTE dive computers on Windows is <strong>EXPERIMENTAL</strong>
+and only supported on Windows 10.  Please make sure that you have the latest
+version of Windows 10.
+<a href="https://en.wikipedia.org/wiki/Windows_10_version_history#Version_1803_(April_2018_Update)">Version
+1803</a> is a minimum requirement. Also make sure that you have installed the
+latest drivers for your motherboard and/or BTLE dongle.</td>
+</tr></table>
+</div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
 <td class="content"><strong>EN CAS DE PROBLÈMES</strong>: si l&#8217;adaptateur Bluetooth de l&#8217;ordinateur utilisant <em>Subsurface</em>
 se bloque et que le processus de <em>téléchargement</em> échoue de façon répétée,
  <em>dissociez</em> les périphériques et répétez les étapes ci-dessus. Si cela ne fonctionne pas,
@@ -1445,10 +1444,9 @@ dive site name in the <strong>Notes tab</strong>.</p></div>
 <div class="paragraph"><p>Once the dive location data have been saved, the dive on the Dive List has a
 globe icon immediately to the left of the location name of a particular
 dive.</p></div>
-<div class="paragraph"><p><strong>(3):</strong> Obtenir les coordonnées en utilisant soit l&#8217;application Subsurface-Mobile, soit l&#8217;application <em>Subsurface</em> Companion avec un
-périphérique Android ou un iPhone avec GPS si les coordonnées du site de plongée ont été stockées
-en utilisant une de ces applications.
-<a href="#S_Companion">Cliquez ici pour plus d&#8217;information</a></p></div>
+<div class="paragraph"><p><strong>(3):</strong> Obtenir les coordonnées en utilisant l&#8217;application <em>Subsurface-Mobile</em> avec un
+périphérique Android ou un iPhone avec GPS et si les coordonnées du site de plongée ont été stockées
+en utilisant une de ces applications.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -1886,9 +1884,12 @@ Windows-based propietary software by Uwatec (today Scubapro)  using
 Microsoft Access databases, preventing the integration the importer into the
 <em>Subsurface</em> core application.</p></div>
 <div class="paragraph"><p>A stand alone tool for Linux has been developed to import the <em>.slg</em> files
-generated by SmartTrak to Subsurface&#8217;s <em>.xml</em> format. It can be built
-together with <em>Subsurface</em> for Linux systems. Two dependencies need to be
-installed in your system before building: <em>libglib2.0</em> and <em>libmdb2</em>.</p></div>
+generated by SmartTrak to Subsurface&#8217;s <em>.xml</em> format. It can be downloaded
+from <a href="https://subsurface-divelog.org/downloads">the usual <em>Subsurface</em>
+repository</a>, as a Windows installer or a Linux AppImage.  The application is
+not currently supported on Mac.</p></div>
+<div class="paragraph"><p>It can also be built for Linux systems. Two dependencies need to be met in
+your system before building: <em>glib2.0</em> and <em>mdbtools</em> (see below).</p></div>
 <div class="paragraph"><p>In addition, a web service is available for divelog convertions from
 SmartTrak to <em>Subsurface</em> (see below).</p></div>
 <div class="paragraph"><p>N&#8217;hésitez pas à contacter l'équipe de développement de <em>Subsurface</em> via
@@ -1901,31 +1902,35 @@ source tree is in the directory <em>~/src/subsurface</em>, then:</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
-Move to the source tree directory.
+Move to the source tree directory out of <em>Subsurface</em> (e.g. ~/src)
 </p>
 </li>
 <li>
 <p>
-Run " $ ccmake build " and set SMARTTRAK_IMPORT option to <strong>on</strong> (off by
-  default).
+Run " $ ./subsurface/scripts/smtk2ssrf-build.sh ", if every thing has gone
+  fine, you will now have an executable named smtk2ssrf in
+  ~/src/subsurface/smtk-import/build
 </p>
 </li>
 <li>
 <p>
-Generate with [c] and save and exit with [g].
+You can run it from this directory, copy it to another one, e.g. <em>~/bin</em> or
+  simply run "sudo make install", and the binary will be installed in
+  /usr/local/bin (which is commonly included in every $PATH).
 </p>
 </li>
 <li>
 <p>
-Build as you prefer, using the <em>build.sh</em> script (recomended) or moving to
-  build directory and running <em>make</em>.
+The script has some options mostly useful for development pourposes. If you
+  think you may need them, please read comments on script header itself.
 </p>
 </li>
 <li>
 <p>
-After a successful build, there will be an executable named <em>smtk2ssrf</em> in
-  the <em>subsurface/build</em> directory.  Copy or move it to a directory in your
-  $PATH, e.g. <em>~/bin</em>.
+<strong>WARNING</strong>: While building smtk2ssrf, a light version of <em>Subsurface</em> is
+  built (usable but lacking a lot of features). So, if you commonly use the
+  built executable placed at ~/subsurface/build/, you will need to rebuild it as
+  explained in this manual above.
 </p>
 </li>
 </ul></div>
@@ -2005,7 +2010,7 @@ should then be selected, after which the imported dives appear in the
 <em>Subsurface</em> <strong>Dive List</strong> panel.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Divelogs1.jpg" alt="FIGURE: Télécharger depuis Divelogs.de" />
+<img src="images/Divelogs1.jpg" alt="FIGURE:Download from Divelogs.de" />
 </div>
 </div>
 </div>
@@ -2227,36 +2232,19 @@ smaller file to make sure everything works.</td>
 <h3 id="_importation_des_coordonnées_de_plongée_depuis_un_appareil_mobile_avec_gps">5.4. Importation des coordonnées de plongée depuis un appareil mobile avec GPS.</h3>
 <div class="paragraph"><p>Un smartphone avec GPS peut être utilisé pour stocker les lieux de
 plongées. Ceci est réalisé comme suit:</p></div>
-<div class="paragraph"><p>1) Taking the mobile device along on the dive boat / liveabord while
-   automatically collecting dive site coordinate information.</p></div>
-<div class="paragraph"><p>2) Uploading the coordinates from the mobile device to the <em>Subsurface</em>
-   Internet server.</p></div>
-<div class="paragraph"><p>3) Syncronising the dives in the <em>Subsurface</em> dive list with the coordinates
-   stored on the <em>Subsurface</em> Internet server.</p></div>
-<div class="paragraph"><p><em>Subsurface</em> comporte deux outils pour réaliser cela :</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-L&#8217;application <em>Subsurface Companion</em> (Android et iOS).
-</p>
-</li>
-<li>
-<p>
-L&#8217;application <em>Subsurface-mobile</em> (Android et iOS)
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p>Both of these applications perform the collection of dive site coordinates
-and the synchronisation with dives in the <em>Subsurface</em> dive list. However,
-the Companion App is not being further developed and has largely been
-replaced by the <em>Subsurface-mobile</em> app. While the <em>Companion app</em> serves
-exclusively to collect dive site coordinates and to make these available to
-the <em>Subsurface</em> desktop version, <em>Subsurface-mobile</em> performs many of the
-functions of the desktop version, including the management and viewing of
-dive information. Below, we describe how to perform the above three steps
-using each of the two mobile apps.</p></div>
-<div class="paragraph"><p>Pour plus d&#8217;information sur l&#8217;utilisation de l&#8217;application <em>Subsurface
-Companion</em>, cliquez <a href="#S_Companion"><em>ici</em></a>.</p></div>
+<div class="paragraph"><p>Taking the mobile device along on the dive boat / liveabord while
+automatically collecting dive site coordinate information.</p></div>
+<div class="paragraph"><p>2) Adding collected coordinate information to the dives using the
+   <em>Subsurface-mobile</em> app.</p></div>
+<div class="paragraph"><p>3) Syncronising the logbook with the <em>Subsurface</em> cloud using the
+   <em>Subsurface-mobile</em> app.</p></div>
+<div class="paragraph"><p>Existing users might still be using the legacy <em>Companion app</em>. However, the
+Companion App hasn&#8217;t been under development in several years and has now
+been removed from both Android and iOS app stores. The functionality is
+fully integrated into <em>Subsurface-mobile</em>.  Please note that the old GPS fix
+internet service will be shut down by the end 2018 at which point the
+<em>Companion app</em> will no longer be usable. Please switch to
+<em>Subsurface-mobile</em> instead.</p></div>
 <div class="sect3">
 <h4 id="_storing_and_and_using_gps_locations_using_em_subsurface_mobile_em">5.4.1. Storing and and using GPS locations using  <em>Subsurface-mobile</em></h4>
 <div class="sect4">
@@ -2330,16 +2318,6 @@ recording of GPS positions.</p></div>
 <em>Subsurface-mobile</em> GPS menu.</p></div>
 </div>
 <div class="sect4">
-<h5 id="_upload_the_gps_locations_onto_the_em_subsurface_em_internet_server">Upload the GPS locations onto the <em>Subsurface</em> Internet server.</h5>
-<div class="paragraph"><p><strong>N.B.:</strong> Uploading the GPS locations to the Internet can only take place if the mobile
-device has reliable access to the Internet, either via a cellular network or
-via a wifi connection. If the Internet is not accessible from the dive site(s),
-then GPS uploading can only take place after the dive or after the dive trip,
-when an Internet connection has been re-established.</p></div>
-<div class="paragraph"><p>From the <em>Subsurface-mobile</em> main menu, select <em>GPS</em> &#8594; <em>Upload GPS
-data</em>. The locations are uploaded.</p></div>
-</div>
-<div class="sect4">
 <h5 id="_apply_the_stored_gps_locations_to_dives_on_the_em_subsurface_em_dive_list">Apply the stored GPS locations to dives on the <em>Subsurface</em> dive list.</h5>
 <div class="paragraph"><p><em>Subsurface</em> collects the first GPS location recorded after the start of a
 dive (obtained within <em>Subsurface</em> from either the dive computer or from the
@@ -2355,396 +2333,42 @@ detailed instructions for performing the collection of GPS data and for
 managing, uploading and synchronising this information.</p></div>
 </div>
 </div>
-<div class="sect3">
-<h4 id="S_Companion">5.4.2. Importing GPS coordinates with the <em>Subsurface Companion App</em> for mobile phones</h4>
-<div class="paragraph"><p>Using the <strong>Subsurface Companion App</strong> on an <em>Android device</em>   or
-<a href="#S_iphone"><em>iPhone</em></a> with GPS, the coordinates
-for the diving
-location can be automatically passed to the <em>Subsurface</em> dive log. The Companion App
-stores dive locations on a dedicated Internet server. <em>Subsurface</em> can collect
-the locations from the server.
-To do this:</p></div>
-<div class="sect4">
-<h5 id="_create_a_companion_app_account">Create a Companion App account</h5>
-<div class="ulist"><ul>
-<li>
-<p>
-Register on the <a href="http://api.hohndel.org/login/"><em>Subsurface companion web
-  page</em></a>.  A confirmation email with instructions and a personal <strong>DIVERID</strong>
-  will be sent, a long number enabling access to the file server and Companion
-  App capabilities.
-</p>
-</li>
-<li>
-<p>
-Download the app from
-  <a href="https://play.google.com/store/apps/details?id=org.subsurface">Google Play
-  Store</a> or from
-  <a href="https://f-droid.org/repository/browse/?fdfilter=subsurface&amp;fdid=org.subsurface">F-Droid</a>.
-</p>
-</li>
-</ul></div>
-</div>
-<div class="sect4">
-<h5 id="_using_the_subsurface_companion_app_on_an_android_smartphone">Using the Subsurface companion app on an Android smartphone</h5>
-<div class="paragraph"><p>On first use the app has three options:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Create a new account.</em> Equivalent to registering in the <em>Subsurface</em>
-  companion page using an Internet browser. You can request a <strong>DIVERID</strong> using
-  this option, but it’s supplied via email and followed up by interaction with
-  the <a href="http://api.hohndel.org/login/"><em>Subsurface companion web page</em></a> to
-  activate the account.
-</p>
-</li>
-<li>
-<p>
-<em>Retrieve an account.</em> If you forget your <strong>DIVERID</strong> you will receive an
-  email to recover the ID string.
-</p>
-</li>
-<li>
-<p>
-<em>Use an existing account.</em> You are prompted for your <strong>DIVERID</strong>. The app
-  saves this <strong>DIVERID</strong> and doesn’t ask for it again unless you use the
-  <em>Disconnect</em> menu option (see below).
-</p>
-</li>
-</ul></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content">In the <em>Subsurface</em> main program, the <strong>DIVERID</strong> should also be entered on
-the Default Preferences panel, by selecting <em>File &#8594; Preferences &#8594; General</em>
-from the main menu in <em>Subsurface</em> itself.  This helps synchronization
-between <em>Subsurface</em> and the Companion App.</td>
-</tr></table>
-</div>
-<div class="paragraph"><p><strong>Créer de nouveaux emplacements de plongée</strong></p></div>
-<div class="paragraph"><p>Now you are ready to get a dive position and send it to the server. The
-Android display looks like the left hand image (<strong>A</strong>) below, but without any
-dives.</p></div>
-<div class="paragraph"><p>Touch the + icon at the top right to add a new dive site. A menu with 3
-options shows:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Current: A prompt for a place name is shown (or a request to activate the
-  GPS if it is turned off), after which the current location is saved.
-</p>
-</li>
-<li>
-<p>
-Use Map: This option allows you to fix a position by searching a world
-  map. A world map is shown (see <strong>B</strong> below). Specify the desired position with
-  a <em>long press</em> on the touch sensitive screen (if the marked location is
-  wrong, simply choose a new location)  and select the check symbol in the
-  upper right. A dialog is shown allowing you to enter the name of the dive
-  location and the date and time of the dive (see <strong>C</strong> below). In order to
-  import this dive location in <em>Subsurface</em>, set the time to agree with the
-  time of that dive on the dive computer.
-</p>
-</li>
-</ul></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion_5.jpg" alt="FIGURE: Companion App, add location using map" />
-</div>
-</div>
-<div class="ulist"><ul>
-<li>
-<p>
-Import local GPX file: The Android device searches for .gpx files and
-  located archives will be shown. The selected .gpx file is opened and its
-  locations shown. Now select the appropriate locations, and select the check
-  symbol in the upper right to add them.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Liste des emplacements de plongée</strong></p></div>
-<div class="paragraph"><p>The main screen shows a list of dive locations, each with a name, date and
-time (see <strong>A</strong> below). Some locations may have an arrow-up icon over the
-selection box to the left showing they need to be uploaded to the
-server. You can select individual dive locations from the list. A selected
-location has a check mark in the selection box on the left. Group operations
-(like <em>Delete</em> or <em>Send</em>)  are performed on several selected locations.</p></div>
-<div class="paragraph"><p>Dive locations in this list can be viewed in two ways: a list of locations
-or a map showing them. The display mode (List or Map) is changed by
-selecting <em>Dives</em> at the top left of the screen (see <strong>A</strong> below) and then
-selecting the display mode. The display mode can be changed either from the
-list of locations or from the map (see <strong>B</strong> below). Upon selecting a location
-(on the list or on the map), an editing panel opens (see <strong>C</strong> below) where
-the dive description or other details may be changed.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion_4.jpg" alt="FIGURE: Companion App, add location using map" />
-</div>
-</div>
-<div class="paragraph"><p>Upon selecting a dive (<strong>not</strong> selecting the check box), the name given to it,
-date/time and GPS coordinates are shown with two options at the top of the
-screen:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-Edit (pencil): Change the name of the dive location.
-</p>
-</li>
-<li>
-<p>
-Maps: Display a map showing the dive location.  After editing and saving a
-  dive location (see <strong>C</strong> above), upload it to the web service, as explained
-  below.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><strong>Uploading dive locations</strong></p></div>
-<div class="paragraph"><p>There are several ways to send locations to the server.  The easiest is
-simply selecting the locations (See <strong>A</strong> below) and then touching the right
-arrow at the top right of the screen.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content">Be careful! The trash icon on the right means exactly what it should; it
-deletes the selected dive location(s).</td>
-</tr></table>
-</div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/Companion_1.jpg" alt="FIGURE: Screen shots (A-B) of companion app" />
-</div>
-</div>
-<div class="paragraph"><p>After a dive trip using the Companion App, all dive locations are ready to
-be downloaded to a <em>Subsurface</em> dive log (see below).</p></div>
-<div class="paragraph"><p><strong>Settings on the Companion App</strong></p></div>
-<div class="paragraph"><p>Selecting the <em>Settings</em> menu option results in the right hand image above
-(<strong>B</strong>).</p></div>
-<div class="paragraph"><p><em>Server and account</em></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Web-service URL.</em> This is predefined (<a href="http://api.hohndel.org/">http://api.hohndel.org/</a>)
-</p>
-</li>
-<li>
-<p>
-<em>User ID.</em> The DIVERID obtained by registering as described above. The
-  easiest way to get it is to copy and paste from the confirmation email or
-  just type it in.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Synchronisation</em></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Synchronize on startup</em>. If selected, dive locations in the Android device
-  and those on the web service synchronize each time the app is started.
-</p>
-</li>
-<li>
-<p>
-<em>Upload new dives.</em> If selected, each time the user adds a dive location it
-  is automatically sent to the server.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Background service</em></p></div>
-<div class="paragraph"><p>Instead of entering an unique dive location, you can leave the service
-running in the background, allowing a continuous collection of GPS
-locations.</p></div>
-<div class="paragraph"><p>The settings below define the behavior of the service:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Min duration.</em> In minutes. The app will try to get a location every X
-  minutes until stopped by the user.
-</p>
-</li>
-<li>
-<p>
-<em>Min distance.</em> In meters. Minimum distance between two locations.
-</p>
-</li>
-<li>
-<p>
-<em>Name template.</em> The name the app will use when saving the locations.
-</p>
-</li>
-</ul></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/info.jpg" alt="Tip" />
-</td>
-<td class="content"><em>How does the background service work?</em> Assuming the diver sets 5 minutes
-and 50 meters in the settings above, the app will start by recording a
-location at the current location, followed by another one at every 5 minutes
-<strong>or</strong> every time one moves 50 m from previous location.  If subsequent
-locations are within a radius of 50 meters from the previous one, a new
-location is not saved. If the diver is not moving, only one location is
-saved.  If the diver is moving, a trace of the route is obtained by saving a
-location every 50 meters.</td>
-</tr></table>
-</div>
-<div class="paragraph"><p><em>Other</em></p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Mailing List.</em> The mail box for <em>Subsurface</em>. Users can send an email to
-  the Subsurface mailing list.
-</p>
-</li>
-<li>
-<p>
-<em>Subsurface website.</em> A link to the URL of Subsurface web
-</p>
-</li>
-<li>
-<p>
-<em>Version.</em> Displays the current version of the Companion App.
-</p>
-</li>
-</ul></div>
-<div class="paragraph"><p><em>Search</em></p></div>
-<div class="paragraph"><p>Search the saved dive locations by name or by date and time.</p></div>
-<div class="paragraph"><p><em>Start service</em></p></div>
-<div class="paragraph"><p>Starts the <em>background service</em> following the previously defined settings.</p></div>
-<div class="paragraph"><p><em>Disconnect</em></p></div>
-<div class="paragraph"><p>This is admittedly a badly named option that disconnects the app from the
-server.  It resets the user ID in the app, showing the first screen where an
-account can be created, retrieve the ID for an existing account or use the
-users own ID. The <em>Disconnect</em> option is useful if the Android device was
-used to download the dive locations of another registered diver.</p></div>
-<div class="paragraph"><p><em>Send all locations</em></p></div>
-<div class="paragraph"><p>This option sends all locations stored in the Android device to the server.</p></div>
-</div>
-<div class="sect4">
-<h5 id="S_iphone">Using the Subsurface companion app on an <em>iPhone</em> to record dive locations</h5>
-<div class="paragraph"><p>The iPhone interface is quite simple. Type the user ID (obtained during
-registration) into the space reserved for it, then select "Dive in" (see
-left part of the image below) and start collecting dive location
-information.</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/iphone.jpg" alt="FIGURE: Using iPhone companion application" width="640" />
-</div>
-</div>
-<div class="paragraph"><p>Dives can be added automatically or manually. In manual mode, a dive
-location or waypoint is added to the GPS input stream. In automatic mode, a
-continuous path of GPS locations is created from which, after import,
-Subsurface can select the appropriate GPS locations based on the times of
-dives. The default mode for the <em>iphone</em> is automatic. When adding a dive,
-the location service is started automatically and a red bar appears at the
-bottom of the screen. After the dive, click on the red bar to end the
-location service. While the location service is running you can only add
-dives manually.</p></div>
-<div class="paragraph"><p>You can edit the site name afterwards by selecting the dive from the dive
-list and clicking on the site name. There are no other editable fields. The
-dive list is automatically uploaded from the iPhone to the web
-service. There is no option to trigger upload manually.</p></div>
-<div class="paragraph"><p><strong>Downloading dive locations to the <em>Subsurface</em> divelog</strong></p></div>
-<div class="paragraph"><p>Download dive(s) from a dive computer or enter them manually into
-<em>Subsurface</em> before obtaining the GPS coordinates from the server. The
-download dialog can be reached via <em>Ctrl+G</em> or from the <em>Subsurface</em> Main
-Menu <em>Import &#8594; Import GPS data from Subsurface Service</em>, resulting in the
-image on the left (<strong>A</strong>), below. On first use the DIVERID text box is
-blank. Provide a DIVERID, then select the <em>Download</em> button to start the
-download process, after which the screen on the right (<strong>B</strong>) below appears:</p></div>
-<div class="imageblock" style="text-align:center;">
-<div class="content">
-<img src="images/DownloadGPS.jpg" alt="FIGURE: Downloading Companion app GPS data" />
-</div>
-</div>
-<div class="paragraph"><p>Note that the <em>Apply</em> button is now active: selecting it updates the
-locations of the newly entered or uploaded dives in <em>Subsurface</em>, i.e. it
-applies the coordinates and names entered on the app to all the new dives
-that match the date-times of the uploaded GPS localities. The names of dive
-locations entered within <em>Subsurface</em> (i.e. before downloading the GPS
-coordinates) have precedence over downloaded dive locations.</p></div>
-<div class="paragraph"><p>Since <em>Subsurface</em> matches GPS locations from the mobile device and dive
-information from the dive computer based on date-time data, automatic
-assignment of GPS data to dives depends on agreeing date-time information
-between the two devices. Although <em>Subsurface</em> has a wide range tolerance,
-it may not be able to identify the appropriate dive if there is a large
-difference between the time in the dive computer and that of the Android
-device.  This results in no updates.</p></div>
-<div class="paragraph"><p>Similar date-times may not always be possible and there may be many reasons
-for this (e.g. time zones).  <em>Subsurface</em> may also be unable to decide which
-is the correct position for a dive (e.g. on repetitive dives while running
-<em>background service</em> there may be several locations that would be included
-in the time range that fit not only the first dive, but one or more
-subsequent dives as well).  A workaround to manually edit the date-time of a
-dive in the <em>Subsurface</em> Dive List <strong>before</strong> downloading the GPS data and
-then to change the date-time back again <strong>after</strong> downloading GPS data.</p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/info.jpg" alt="Note" />
-</td>
-<td class="content">CONSEILS:</td>
-</tr></table>
-</div>
-<div class="ulist"><ul>
-<li>
-<p>
-<em>Background service</em> may fill the location list with unnecessary locations
-  that don’t correspond to the exact dive point but do correspond to the
-  boat&#8217;s route.
-   Right now, these locations are difficult to delete from the server. In some
-   situations it
-  is better to clean up the list on the mobile device before sending the dive
-  points to the web server by simply deleting the inappropriate
-  locations. This might be necessary, for instance, to keep the location list
-  clear to see dives in the web service map display (see above).
-</p>
-</li>
-<li>
-<p>
-It may also be useful to give informative names to the locations sent to the
-  web server, or at least to use an informative name in the <em>Name Template</em>
-  setting while running the <em>background service</em>, especially on a dive trip
-  with many dives and dive locations.
-</p>
-</li>
-</ul></div>
-</div>
-</div>
 </div>
 <div class="sect2">
-<h3 id="S_LoadImage">5.5. Ajouter des photos aux plongées</h3>
-<div class="paragraph"><p>Many (if not most) divers take photographs during a dive. <em>Subsurface</em>
-allows the storage and display of photographs for each dive. Photos are
-superimposed on the dive profile at the times during the dive when they were
-taken. They can also be viewed from the dive profile.</p></div>
+<h3 id="S_LoadImage">5.5. Ajouter des photos ou des vidéos aux plongées</h3>
+<div class="paragraph"><p>Many (if not most) divers take photographs or videos during a dive. We term
+these as <em>media</em>, meaning either photos or videos. <em>Subsurface</em> allows the
+storage and display of these media for each dive. Images are superimposed on
+the dive profile at the times during the dive when they were taken. Media
+can be viewed either from the dive profile or from the <em>Media</em> tab in the
+<strong>Notes Panel</strong>. <em>Subsurface</em> allows viewing of photographs as well as video
+files in a unified interface.</p></div>
 <div class="sect3">
-<h4 id="_chargement_des_photos_et_synchronisation_entre_l_8217_ordinateur_de_plongée_et_l_8217_appareil_photo">5.5.1. Chargement des photos et synchronisation entre l&#8217;ordinateur de plongée et l&#8217;appareil photo</h4>
+<h4 id="_chargement_des_médias_et_synchronisation_entre_l_8217_ordinateur_de_plongée_et_l_8217_appareil_photo">5.5.1. Chargement des médias et synchronisation entre l&#8217;ordinateur de plongée et l&#8217;appareil photo</h4>
 <div class="paragraph"><p>Right-click on a dive or on a group of dives on the dive list, bringing up
 the <a href="#S_DiveListContextMenu">Dive list context Menu</a>.  Select the
-appropriate option to import images either from file or from the
-Internet. The system file browser appears. Select the folder and photographs
-that need to be loaded into <em>Subsurface</em> and click the <em>Open</em> button.</p></div>
+appropriate option to import media either from file or from the
+Internet. The system file browser appears. Select the folder and media that
+need to be loaded into <em>Subsurface</em> and click the <em>Open</em> button. Towards the
+bottom of the file browser is a filter that allows showing media (photos and
+videos), only photographs, only videos, or all files. Choose the appropriate
+option.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage2_f20.jpg" alt="FIGURE: Load images option" />
 </div>
 </div>
-<div class="paragraph"><p>If photos are imported from the Internet, provide a URL pointing to a single
-photograph.  If the URL points to a directory, no images are imported:
-photos from the Internet need to be imported one at a time. If photos are
-loaded from the Internet, <em>Subsurface</em> assumes there is an Internet
-connection each time this photo is viewed within <em>Subsurface</em>.</p></div>
+<div class="paragraph"><p>If media are imported from the Internet, provide a URL pointing to a single
+media.  If the URL points to a directory, no images are imported: images
+from the Internet need to be imported one at a time. If media are loaded
+from the Internet, <em>Subsurface</em> assumes there is an Internet connection each
+time this item is viewed within <em>Subsurface</em>.</p></div>
 <div class="paragraph"><p>Having selected the local folder or Internet image to be imported, the time
 synchronization dialog appears (see image below). The time synchronization
 is not perfect between the dive computer used during a dive and the camera
 used during that same dive. These two devices often differ by several
-minutes. <em>Subsurface</em> attempts to synchronize these two devices so that the
-exact times of photographs can be used to position photographs on the dive
-profile.</p></div>
+minutes. <em>Subsurface</em> attempts to synchronize them so that the exact times
+of media can be used to position media on the dive profile.</p></div>
 <div class="paragraph"><p><em>Subsurface</em> synchronise l&#8217;appareil photo avec l&#8217;ordinateur de plongée de
 trois façons:</p></div>
 <div class="ulist"><ul>
@@ -2764,7 +2388,7 @@ trois façons:</p></div>
   setting tool immediately under the heading <em>Shift times of image(s) by</em>, in the image below.
   If the camera time is 7 minutes later than that of the dive computer, set the time setting
   tool to a value of 00:07 and select the <em>Earlier</em> radio button.
-  This is appropriate, since the photos need to be shifted
+  This is appropriate, since the media need to be shifted
   7 minutes earlier (camera is 7 minutes ahead of dive computer). Ignore any "AM" or "PM" suffix
   in that tool. Click the <em>OK</em> button and synchronization is done.
 </p>
@@ -2801,28 +2425,59 @@ trois façons:</p></div>
 <img src="images/LoadImage3c_f23.jpg" alt="FIGURE: Synchronization dialog" />
 </div>
 </div>
-<div class="paragraph"><p>If the timestamp of a photograph is more than 30 minutes before or after the
-dive, it is not placed on the dive profile (see the red warning in the image
-above). However, If the appropriate checkbox is selected (see image above)
-these images can still be placed on the <em>Photos</em> tab of the <strong>Notes</strong> panel so
-that all photos associated with a dive are visible, including photos taken
-before or after the dive.</p></div>
+<div class="paragraph"><p>If the timestamp of a photograph or video is more than 30 minutes before or
+after the dive, it is not placed on the dive profile (see the red warning in
+the image above). However, If the appropriate checkbox is selected (see
+image above) these images can still be placed on the <em>Media</em> tab of the
+<strong>Notes</strong> panel so that all media associated with a dive are visible,
+including images taken before or after the dive.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_visualiser_les_photos">5.5.2. Visualiser les photos</h4>
-<div class="paragraph"><p>Après avoir été chargées, les images apparaissent à deux endroits:</p></div>
+<h4 id="S_ViewMedia">5.5.2. Visualiser les médias</h4>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph"><p><strong>Ensuring that thumbnails are created for video files</strong></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img src="images/icons/important.png" alt="Important" />
+</td>
+<td class="content">Within a panel <em>Subsurface</em> represents media by means of thumbnails
+(i.e. small versions of images that allows listing many images. For a
+photograph, a thumbnail can easily be created because the image is well
+defined. But, since a video comprises many images, the question arises of
+which image should be used for the thumbnail. Two actions are required to
+create thumbnails of videos:</td>
+</tr></table>
+</div>
 <div class="ulist"><ul>
 <li>
 <p>
-the <em>Photos</em> tab of the <strong>Notes</strong> panel (left part of image below).
+The appropriate settings need to be set in the <em>Preferences</em>.
+</p>
+</li>
+<li>
+<p>
+The program <em>ffmpeg</em> needs to be installed in the computer that runs
+  Subsurface.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>Full details are provided in <a href="#S_APPENDIX_F">APPENDIX F</a>.</p></div>
+</div></div>
+<div class="paragraph"><p>Après avoir été chargées, les médias apparaissent à deux endroits:</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+the <em>Media</em> tab of the <strong>Notes Panel</strong> (left part of image below).
 </p>
 </li>
 <li>
 <p>
 as tiny icons (stubs) on the dive profile at the appropriate positions
-   reflecting the time each photograph was taken.  To view the photos on the
-   dive profile, activate the <em>show-photos</em> button in the tool bar to the left
-   of the dive profile:
+   reflecting the time each photograph or video was taken.  To view the media
+   on the dive profile, activate the <em>Toggle media</em> button in the tool bar to
+   the left of the dive profile:
 </p>
 </li>
 </ul></div>
@@ -2834,22 +2489,23 @@ as tiny icons (stubs) on the dive profile at the appropriate positions
 <div class="paragraph"><p>This results in a profile display as in the image below:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/LoadImage4_f20.jpg" alt="FIGURE: Photos on dive profile" />
+<img src="images/LoadImage4.jpg" alt="FIGURE: Media on dive profile" />
 </div>
 </div>
-<div class="paragraph"><p>Hover the mouse over any of the photo stubs. A thumbnail photo is shown of
-the appropriate photo. See the image below:</p></div>
+<div class="paragraph"><p>Hover the mouse over any of the media stubs. A thumbnail image is shown of
+the appropriate media. See the image below:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/LoadImage5_f20.jpg" alt="FIGURE:Thumbnail photo on dive profile" />
+<img src="images/LoadImage5.jpg" alt="FIGURE:Thumbnail photo on dive profile" />
 </div>
 </div>
-<div class="paragraph"><p>Clicking on the thumbnail brings up a full size photo overlaid on the
-<em>Subsurface</em> window, allowing a good view of the photographs (see the image
-below). <strong>Note</strong> that the thumbnail has a small dustbin icon in the bottom
-right hand corner (see image above). Selecting the dustbin removes the image
-from the dive. Be careful when clicking on a thumbnail. Images can also be
-deleted using the <em>Photos</em> tab (see text below).</p></div>
+<div class="paragraph"><p>Clicking on the thumbnail brings up a full size photo or video overlaid on
+the <em>Subsurface</em> window, allowing a good view of the media (see the image
+below). <strong>Note</strong> that the thumbnail on the dive profile has a small dustbin
+icon in the bottom right hand corner (see image above). Selecting the
+dustbin removes the image from the dive. Be careful when clicking on a
+thumbnail. Images can also be deleted using the <em>Media</em> tab (see text
+below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/LoadImage6_f20.jpg" alt="FIGURE: Full-screen photo on dive profile" />
@@ -2857,113 +2513,70 @@ deleted using the <em>Photos</em> tab (see text below).</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_l_8217_onglet_em_photos_em">5.5.3. L&#8217;onglet <em>Photos</em></h4>
-<div class="paragraph"><p>Photographs associated with a dive are shown as thumbnails in the <em>Photos</em>
-tab of the <em>Notes</em> panel. Photos taken in rapid succession during a dive
-(therefore sometimes with large overlap on the dive profile) can easily be
-accessed in the <em>Photos</em> tab. This tab serves as a tool for individually
-accessing the photos of a dive, while the stubs on the dive profile show
-when during a dive a photo was taken. The size of the thumbnails in the
-<em>Photos</em> tab can be changed using the <em>Zoom level</em> slider at the bottom of
-the panel. Single-click a thumbnail in the <em>Photos</em> panel to select a
-photo. Double-click a thumbnail to view the full-sized image, overlaying the
-<em>Subsurface</em> window. Delete a photo from the <em>Photos</em> panel by selecting it
-(single-click) and then by pressing the <em>Del</em> key on the keyboard. This
-removes the photo BOTH from the <em>Photos</em> tab as well as the dive profile.</p></div>
+<h4 id="_l_8217_onglet_em_media_em">5.5.3. L&#8217;onglet <em>Media</em></h4>
+<div class="paragraph"><p>Media associated with a dive are shown as thumbnails in the <em>Media</em> tab of
+the <strong>Notes Panel</strong>. Media taken in rapid succession during a dive (therefore
+sometimes with large overlap on the dive profile) can easily be accessed in
+the <em>Media</em> tab. This tab serves as a tool for individually accessing the
+media of a dive, while the stubs on the dive profile show when during a dive
+when a photo/video was taken. The size of the thumbnails in the <em>Media</em> tab
+can be changed using the <em>Zoom level</em> slider at the bottom of the
+panel. Single-click a thumbnail in the <em>Media</em> panel to select a
+photo/video. Double-click a thumbnail to view the full-sized image or play
+the video, overlaying the <em>Subsurface</em> window. Delete media from the <em>Media</em>
+panel by selecting it (single-click) and then by pressing the <em>Del</em> key on
+the keyboard. This removes it BOTH from the <em>Media</em> tab as well as the dive
+profile.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_photos_stockées_sur_un_disque_dur_externe">5.5.4. Photos stockées sur un disque dur externe</h4>
-<div class="paragraph"><p>Most underwater photographers store photos on an external drive. If such a
+<h4 id="_médias_stockés_sur_un_disque_dur_externe">5.5.4. Médias stockés sur un disque dur externe</h4>
+<div class="paragraph"><p>Most underwater photographers store media on an external drive. If such a
 drive can be mapped by the operating system (almost always the case) the
-photos can be directly accessed by <em>Subsurface</em>. This eases the interaction
-between <em>Subsurface</em> and an external repository of photos. When associating
-a dive profile with photos from an external drive, the normal procedure of
+media can be directly accessed by <em>Subsurface</em>. This eases the interaction
+between <em>Subsurface</em> and an external repository of media. When associating a
+dive profile with media from an external drive, the normal procedure of
 selection and synchronization (see text above) is used.  After the external
-drive has been disconnected, <em>Subsurface</em> cannot access these photos any
-more.  If the display of photos is activated (using the toolbox icon to the
-left of the <em>Dive Profile</em>), the program shows a small white dot where each
-photo should be on the dive profile.  In addition the <em>Photos</em> tab shows
-only the file names of the photos.  If the external drive with the photos is
-re-connected, the photos can be seen in the normal way.</p></div>
+drive has been disconnected, <em>Subsurface</em> cannot access these media any
+more.  If the display of media is activated (using the toolbox icon to the
+left of the <em>Dive Profile</em>), the program shows only the thumbnails and the
+images cannot be viewed at full-screen size.  If the external drive with the
+media is re-connected, the media can be seen in the normal way.</p></div>
 </div>
 <div class="sect3">
-<h4 id="_trouver_quelles_plongées_ont_des_photos_associées">5.5.5. Trouver quelles plongées ont des photos associées.</h4>
+<h4 id="_trouver_quelles_plongées_ont_des_médias_associés">5.5.5. Trouver quelles plongées ont des médias associés.</h4>
 <div class="paragraph"><p>Inspecting each individual dive in order to determine whether there are
-associated photos can be time consuming. There is a rapid way of seeing
-which dives have associated photos and which not: activate the <em>Photos</em>
-checkbox in the dropdown list obtained by right-clicking on the header bar
-of the <strong>Divelist</strong>. In the <strong>Divelist</strong>, all dives with associated photographs
-have an icon indicating whether the photographs were taken during the dive,
-just before/after the dive or both during and before/after the dive.  More
-information is provided in the section dealing with <a href="#S_Divelist_columns">photo icons on the <strong>Divelist</strong></a>.</p></div>
+associated media can be time consuming. There is a rapid way of seeing which
+dives have associated media and which not: activate the <em>Media</em> checkbox in
+the dropdown list obtained by right-clicking on the header bar of the
+<strong>Divelist</strong>. In the <strong>Divelist</strong>, all dives with associated media have an icon
+indicating whether the media were taken during the dive, just before/after
+the dive or both during and before/after the dive.  More information is
+provided in the section dealing with <a href="#S_Divelist_columns">photo icons on the <strong>Divelist</strong></a>.</p></div>
 </div>
 <div class="sect3">
-<h4 id="S_FindMovedImages">5.5.6. Déplacer des photos entre dossiers, disques durs ou ordinateurs</h4>
-<div class="paragraph"><p>After a photograph has been loaded into <em>Subsurface</em> and associated with a specific dive,
-<em>Subsurface</em> saves the directory path where the photo lies as well as the file name of the photo,
+<h4 id="S_FindMovedImages">5.5.6. Déplacer des médias entre dossiers, disques durs ou ordinateurs</h4>
+<div class="paragraph"><p>After a photograph or video has been loaded into <em>Subsurface</em> and associated with a specific dive,
+<em>Subsurface</em> saves the path to the directory where the media lie as well as the file name of the each photo/video,
 in order to find it when the dive is opened again.
-If the photo or the whole photo collection is moved to another drive or to a different
- machine, the path to the photo changes. Now, <em>Subsurface</em> looks for the photos at their original location before they were moved,
- cannot find them and cannot display them. Because, after moving photos, large numbers of photos
- may need to be deleted and re-imported from the new location, <em>Subsurface</em> has a mechanism to ease this inconvenience: automatic updates using fingerprints.</p></div>
-<div class="paragraph"><p>When a photo is loaded into <em>Subsurface</em>, a fingerprint for the image is calculated and stored with the
- other reference information for that photo. After moving a photo collection (that has already been loaded
- into <em>Subsurface</em>) to a different directory, disk or computer, <em>Subsurface</em> can:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-look through a particular directory (and all its subdirectories recursively)
-  where photos have been moved to,
-</p>
-</li>
-<li>
-<p>
-calculate fingerprints for all photos in this directory, and
-</p>
-</li>
-<li>
-<p>
-if there is a match between a calculated fingerprint and the one calculated
-  when a photo was originally loaded into <em>Subsurface</em> (even if the original
-  file name has changed), automatically update the directory information so
-  that <em>Subsurface</em> can find the photo in the new moved directory.
-</p>
-</li>
-</ul></div>
+If the media or the whole media collection is moved to another drive or to a different
+ machine, the path to the media changes. Now, <em>Subsurface</em> looks for the photos/videos at their original location before they were moved,
+cannot find them and cannot display them. Because, after moving media, large numbers of files
+ may need to be deleted and re-imported from the new disk, <em>Subsurface</em> can locate the media based on their filename and path.</p></div>
 <div class="paragraph"><p>This is done by selecting from the Main Menu: <em>File &#8594;      Find moved images</em>. This brings up a window within
- which the NEW directory of the photos needs to be specified. Select the appropriate directory and click
- the <em>Scan</em> button towards the bottom right of the panel. The process may require several minutes to
- complete, after which <em>Subsurface</em> will show the appropriate photographs when a particular dive is opened.</p></div>
-<div class="sidebarblock" id="Image_fingerprint_upgrade">
+which the searching of the images can be controlled. The search is started by clicking on <em>Select folder and scan</em>.
+Since recorded during different dive trips might have the same filename, the names of the parent folders are likewise compared.
+Therefore, the root folder of the NEW picture collection should be chosen. For finer control, it is possible to search
+only for media of the currently selected dive(s) by selecting the appropriate option.</p></div>
+<div class="paragraph"><p>After the searching has completed, the original filenames and the new
+locations of the photographs will be shown.  The matching parts of the paths
+are emphasized. Media that are found at their known positions are not
+listed. The proposed changes can be applied by clicking <em>Apply</em> or rejected
+by clicking <em>Cancel</em>.</p></div>
+<div class="imageblock" style="text-align:center;">
 <div class="content">
-<div class="paragraph"><p><strong>Upgrading legacy photo collections without fingerprints</strong></p></div>
-<div class="admonitionblock">
-<table><tr>
-<td class="icon">
-<img src="images/icons/important.png" alt="Important" />
-</td>
-<td class="content"><em>Subsurface</em> automatically calculates fingerprints for all images that it
-can access.  When manipulating images, ensure that all the images associated
-with the dive log can be accessed by <em>Subsurface</em>.</td>
-</tr></table>
+<img src="images/FindMovedImages1.jpg" alt="FIGURE:Find moved images" />
 </div>
-<div class="paragraph"><p><em>Subsurface</em> automatically checks and, if necessary, updates the
-fingerprints associated with a single dive if:</p></div>
-<div class="ulist"><ul>
-<li>
-<p>
-The images associated with that dive are visible as thumbnails on the <strong>Dive
-  Profile</strong>.
-</p>
-</li>
-<li>
-<p>
-If you edit anything in the <strong>Notes</strong> panel and save the edits by selecting
-  <em>Apply changes</em>.
-</p>
-</li>
-</ul></div>
-</div></div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3082,7 +2695,7 @@ three steps, exactly as with multi-cylinder dives above:</p></div>
 </ul></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/sidemount1.jpg" alt="FIGURE: Profil Sidemount" />
+<img src="images/sidemount1.jpg" alt="FIGURE: Sidemount profile" />
 </div>
 </div>
 </div>
@@ -3194,18 +2807,18 @@ section, the pO<sub>2</sub> (green line)  differs from the OC-pO<sub>2</sub> (or
 breathed. However, they use advanced technology to maintain a breathable
 oxygen concentration:
 a) remove carbon dioxide from the exhaled gas.
-b) regulate the oxygen concentration to remain within safe diving limits.  The
-   CCR interface of <em>Subsurface</em> is currently experimental and under active
-   development. Subsurface currently supports Poseidon MkVI and APD
-   Discovery/Evolution dive computers, as well as Shearwater dive computers
-   connected to CCR systems. In contrast to a conventional recreational dive
-   computer, a CCR system computer usually does not allow the download of a log
-   containing multiple dives. Rather, each dive is stored independently. This
-   means that <em>Subsurface</em> cannot download a dive log directly from a CCR dive
-   computer, but that it imports individual CCR dive profiles in the same way
-   it imports dive log data from other digital databases: one dive at a
-   time. However, the Shearwater based CCR systems are different in this
-   respect and allow multi-dive downloads.</td>
+regulate the oxygen concentration to remain within safe diving limits.  The
+CCR interface of <em>Subsurface</em> is currently experimental and under active
+development. Subsurface currently supports Poseidon MkVI and APD
+Discovery/Evolution dive computers, as well as Shearwater dive computers
+connected to CCR systems. In contrast to a conventional recreational dive
+computer, a CCR system computer usually does not allow the download of a log
+containing multiple dives. Rather, each dive is stored independently. This
+means that <em>Subsurface</em> cannot download a dive log directly from a CCR dive
+computer, but that it imports individual CCR dive profiles in the same way
+it imports dive log data from other digital databases: one dive at a
+time. However, the Shearwater based CCR systems are different in this
+respect and allow multi-dive downloads.</td>
 </tr></table>
 </div>
 <div class="sect4">
@@ -3514,7 +3127,7 @@ plus petite et la plus grande profondeur atteinte pour ces plongées.</p></div>
 <h3 id="S_DiveProfile">6.5. Le <strong>Profil de plongée</strong></h3>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Profile2.jpg" alt="Profil de plongée typique" />
+<img src="images/Profile2.jpg" alt="Typical dive profile" />
 </div>
 </div>
 <div class="paragraph"><p>Parmi toutes les panneaux de <em>Subsurface</em>, le profil de plongée contient les
@@ -3597,7 +3210,7 @@ position de la boîte Information est enregistrée ré-utilisée pour les
 analyses de plongée suivantes.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/InfoBox2.jpg" alt="FIGURE: La boîte Information" />
+<img src="images/InfoBox2.jpg" alt="Figure: Information Box" />
 </div>
 </div>
 <div class="paragraph"><p>When the mouse points inside the <strong>Dive Profile</strong> panel, the information box
@@ -3624,8 +3237,8 @@ panel. These are:</p></div>
 <td class="content">Affiche la <strong>Profondeur maximale d&#8217;utilisation (MOD)</strong> d&#8217;une plongée, en
 fonction du mélange gazeux utilisé. La MOD dépend de la concentration en
 oxygène du gaz respiré. Pour l&#8217;air (21% d&#8217;oxygène), il vaut envuron 57m si
-une pO<sub>2</sub> maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
-(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO~2
+une pO<sub>2 maximale de 1.4 est choisie dans la section <strong>Préférences</strong>
+(sélectionnez <em>Fichier &#8594; Préférences &#8594; Profil</em> et éditez le champ <em>pO</sub>2
 dans le calcul de MOD</em>).  En plongeant sous la MOD, il y a un risque
 important d&#8217;exposition aux dangers liés à la toxicité de l&#8217;oxygène.</td>
 </tr></table>
@@ -3697,7 +3310,7 @@ drawing on the left below indicates the meaning of the different parts of
 the Gas Pressure Bar Graph.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/GasPressureBarGraph.jpg" alt="FIGURE: Le graphique de pression gazeuse" />
+<img src="images/GasPressureBarGraph.jpg" alt="FIGURE:Gas Pressure bar Graph" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -3910,10 +3523,12 @@ underneath the two red dots.</td>
 <td class="icon">
 <img src="images/icons/ShowPhotos.png" alt="Note" />
 </td>
-<td class="content">Les photos qui ont été ajoutées à une plongée peuvent être affichées sur le
-profil en sélectionnant le bouton <strong>Communer l&#8217;affichage des images</strong>. La
-position d&#8217;une photo sur le profil indique le moment exact où la photo a été
-prise. Si le bouton n&#8217;est pas actif, les photos sont masquées.</td>
+<td class="content">Les photos et vidéos qui ont été ajoutées à une plongée peuvent être
+affichées sur le profil en sélectionnant le bouton <strong>Afficher les médias</strong>. La
+position d&#8217;une photo ou vidéo sur le profil indique le moment exact où elle
+a été prise. La durée de la vidéo est représentée par une bar si
+<em>Subsurface</em> a pu extraire cette information du fichier vidéo. Si le bouton
+n&#8217;est pas actif, les photos sont masquées.</td>
 </tr></table>
 </div>
 <div class="paragraph"><p>The profile can also include the dive computer reported <strong>ceiling</strong> (more
@@ -4181,7 +3796,7 @@ performed using the Dive List Context Menu.  It is found by selecting either
 a single dive or a group of dives and then right-clicking.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/ContextMenu.jpg" alt="Figure: Menu contextuel" />
+<img src="images/ContextMenu.jpg" alt="Figure: Context Menu" />
 </div>
 </div>
 <div class="paragraph"><p>Le menu contextuel est utilisé pour de nombreuses fonctions décrites
@@ -4200,16 +3815,16 @@ bar of the <strong>Dive List</strong>, bringing up a list of columns that can be
 the dive list (see above). Check an items to be included in the <strong>Dive
 List</strong>.  The list is immediately updated. Preferences for information shown
 in the <strong>Dive List</strong> are saved and used when <em>Subsurface</em> is re-opened.</p></div>
-<div class="paragraph" id="S_Photos_divelist"><p>By selecting the <em>Photos</em> checkbox in the dropdown list, an icon is shown
-indicating whether any photos are associated with a particular dive. There
+<div class="paragraph" id="S_Photos_divelist"><p>By selecting the <em>Media</em> checkbox in the dropdown list, an icon is shown
+indicating whether any media are associated with a particular dive. There
 are three icons:</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
 <img src="images/icons/duringPhoto.png" alt="Note" />
 </td>
-<td class="content">Cette plongée contient des photos prises durant la plongée, généralement
-prises avec un appareil ou caméra submersible.</td>
+<td class="content">Cette plongée contient des photos ou vidéos prises durant la plongée,
+généralement prises avec un appareil ou caméra submersible.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -4217,10 +3832,10 @@ prises avec un appareil ou caméra submersible.</td>
 <td class="icon">
 <img src="images/icons/outsidePhoto.png" alt="Note" />
 </td>
-<td class="content">This dive has photographs taken immediately before or immediately after the
-dive. This is useful for finding photos of dive teams or boats just
-before/after the dive, whales or other surface animals seen just before or
-after the dive, or of landscapes as seen from the boat.</td>
+<td class="content">This dive has photographs or videos taken immediately before or immediately
+after the dive. This is useful for finding photos/media of dive teams or
+boats just before/after the dive, whales or other surface animals seen just
+before or after the dive, or of landscapes as seen from the boat.</td>
 </tr></table>
 </div>
 <div class="admonitionblock">
@@ -4228,8 +3843,8 @@ after the dive, or of landscapes as seen from the boat.</td>
 <td class="icon">
 <img src="images/icons/inAndOutPhoto.png" alt="Note" />
 </td>
-<td class="content">Cette plongée contient à la fois des photos prises pendant la plongée, et
-juste avant ou juste après la plongée.</td>
+<td class="content">Cette plongée contient à la fois des photos ou vidéos prises pendant la
+plongée, et juste avant ou juste après la plongée.</td>
 </tr></table>
 </div>
 </div>
@@ -4372,12 +3987,12 @@ the dive where the depth is less than a metre.</p></div>
 <div class="sect3">
 <h4 id="_load_image_s_from_file_s">7.4.7. Load image(s) from file(s)</h4>
 <div class="paragraph"><p>This topic is discussed in the section: <a href="#S_LoadImage">Adding photographs
-to dives</a>.</p></div>
+or videos to dives</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_load_image_from_web">7.4.8. Load image from web</h4>
 <div class="paragraph"><p>This topic is discussed in the section: <a href="#S_LoadImage">Adding photographs
-to dives</a>.</p></div>
+or videos to dives</a>.</p></div>
 </div>
 <div class="sect3">
 <h4 id="_annuler_les_manipuations_sur_les_plongées">7.4.9. Annuler les manipuations sur les plongées</h4>
@@ -4406,7 +4021,7 @@ it. The filter may also be reset and closed by selecting the <strong>red button<
 with the white cross.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Filterpanel.jpg" alt="Figure: panneau des filtres" />
+<img src="images/Filterpanel.jpg" alt="Figure: Filter panel" />
 </div>
 </div>
 <div class="paragraph"><p>Four filter criteria may be used to filter the dive list: dive tags, person
@@ -4602,11 +4217,20 @@ Universal Dive Data Format (<em>UDDF</em>). Refer to <em>http://uddf.org</em> fo
 <li>
 <p>
 <em>Image depths</em>, which creates a text file that contains the file names of
-  all photos or images attached to any of the selected dives in the <em>Dive
-  List</em>, together with the depth underwater where of each of those photos was
-  taken.
+  all photos or videos attached to any of the selected dives in the <em>Dive
+  List</em>, together with the depth underwater where of each of those
+  photos/videos was taken.
 </p>
 </li>
+</ul></div>
+<div class="paragraph"><p>When the "Anonymize" option is selected for xml-based file formats, the
+letters A-Z are all replaced by the letter <em>X</em> in the notes, buddy,
+divemaster, divesite name and divesite description fields. This way, you can
+share dive log files for debugging purposes without revealing personal
+information. Please note, though, that other characters are not replaced, so
+this is not useful for languages with non-latin characters and GPS
+coordinates of dive sites are preserved as well.</p></div>
+<div class="ulist"><ul>
 <li>
 <p>
 <em>General Settings</em>, under the HTML tab, provides the following options:
@@ -4784,7 +4408,7 @@ members/friends. There are two approaches for doing this.</p></div>
   the appropriate dive log by selecting, from the <strong>Main Menu</strong>, <em>File &#8594; Open logbook</em> and then select your own
   dive log file from the list of files lower down in the menu. However, a problem arises if the users
   prefer different settings for <em>Subsurface</em>. For instance, one diver may prefer to see the dive ceiling in the
-  <strong>Profile Panel</strong> and photos icons in the <strong>Dive List</strong>, while the other may not have these preferences. In addition,
+  <strong>Profile Panel</strong> and media icons in the <strong>Dive List</strong>, while the other may not have these preferences. In addition,
   the cloud connection is normally unique for each <em>Subsurface</em> installation and if more than one user wishes to save
   dive data on the cloud, it is inconvenient to open the <strong>Preferences</strong> and change the user-ID data every time
   the cloud is accessed. To solve these problems, launch <em>Subsurface</em> with a <em>--user=&lt;user name&gt;</em> command-line option.
@@ -4878,11 +4502,9 @@ Printing in color, done by checking the box with <em>Print in color</em>. If thi
 </li>
 </ul></div>
 </li>
-<li>
-<p>
-Under <em>Template</em> select a template to be used as the page layout. There are
-   several choices.  (see image <strong>B</strong>, above).
-</p>
+</ol></div>
+<div class="paragraph"><p>Under <em>Template</em> select a template to be used as the page layout. There are
+several choices.  (see image <strong>B</strong>, above).</p></div>
 <div class="ulist"><ul>
 <li>
 <p>
@@ -4890,8 +4512,6 @@ Under <em>Template</em> select a template to be used as the page layout. There a
 </p>
 </li>
 </ul></div>
-</li>
-</ol></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Print_summarylist_f22.jpg" alt="FIGURE: Print summary table" />
@@ -4980,7 +4600,7 @@ ces ordinateurs de plongée peuvent être lues et modifiées. Pour commencer,
 assurez vous que les pilotes pour votre ordinateur de plongée sont installés
 (également nécessaire pour télécharger les plongées) et que le nom de
 périphérique de l&#8217;ordinateur de plongée est connu. Voir
-<a href="#S_Appendix_A">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
+<a href="#_appendix_a_operating_system_specific_information_for_importing_dive_information_from_a_dive_computer">ANNEXE A</a> pour plus d&#8217;informations sur la manière de procéder.</p></div>
 <div class="paragraph"><p>Une fois que l&#8217;ordinateur de plongée est connecté à <em>Subsurface</em>,
 sélectionner <em>Fichier &#8594; Configurer l&#8217;ordinateur de plongée</em>, à partir du
 menu principal. Sélectionner le nom du périphérique (ou le point de montage)
@@ -4989,7 +4609,7 @@ sélectionner le bon modèle d&#8217;ordinateur de plongée à partir du panneau
 gauche (voir l&#8217;image ci-dessous).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Configure_dc_f20.jpg" alt="FIGURE: Configurer un ordinateur de plongée" />
+<img src="images/Configure_dc_f20.jpg" alt="FIGURE: Configure dive computer" />
 </div>
 </div>
 <div class="paragraph"><p>En utilisant les boutons appropriés du panneau de configuration, les actions
@@ -5046,7 +4666,7 @@ and are not saved. In order to apply new settings permanently, select the
 <div class="paragraph"><p>There are several headings in the <strong>General</strong> panel:</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Pref1_f23.jpg" alt="FIGURE: Preferences general page" />
+<img src="images/Pref1.jpg" alt="FIGURE: Preferences general page" />
 </div>
 </div>
 <div class="ulist"><ul>
@@ -5109,6 +4729,15 @@ and are not saved. In order to apply new settings permanently, select the
 </li>
 <li>
 <p>
+<strong>Video thumbnails</strong>: In generating thumbnails for videos associated with dives, <em>Subsurface</em>
+     needs to have the appropriate information (see section on <a href="#S_ViewMedia">View Images</a>). Three preferences need to be set
+     as explained in <a href="#S_APPENDIX_F">APPENDIX F</a>. These are: a) switch on thumbnails, b) specify
+     the location of the <em>ffmpeg</em> program and c) set the place within video where the thumbnail needs
+     to be obtained from.
+</p>
+</li>
+<li>
+<p>
 <strong>Clear all settings</strong>: As indicated in the button below this heading, all settings are
      cleared and set to default values.
 </p>
@@ -5141,29 +4770,17 @@ as decimal degrees Choose the appropriate option.</p></div>
 <img src="images/Pref4_f23.jpg" alt="FIGURE: Preferences Graph page" />
 </div>
 </div>
-<div class="ulist" id="S_GradientFactors"><ul>
-<li>
-<p>
-<strong>Gas pressure display setup</strong>. Even though nitrogen and helium pressures are also included here, these items mainly pertain to oxygen management:
-</p>
+<div class="paragraph" id="S_GradientFactors"><p><strong>Gas pressure display setup</strong>. Even though nitrogen and helium pressures are also included here, these items mainly pertain to oxygen management:
+<strong> <em>Thresholds</em>: <em>Subsurface</em> can display graphs of the nitrogen, oxygen and the helium
+   partial pressures during
+   the dive, activated using the toolbar on the left of the <strong>Dive Profile</strong>
+   panel. For each of these graphs, specify a threshold value. If any of the graphs go
+   above the specified threshold, the graph is
+   highlighted in red, indicating the particular partial pressure threshold has been exceeded.
+   The pO<sub>2</sub> threshold is probably the most important one and a value of 1.6 is commonly used.
+</strong> <em>pO<sub>2</sub> in calculating MOD</em> is used for calculating the maximum operative depth for a particular
+   nitrox or trimix gas mixture. A value of 1.4 is commonly used.</p></div>
 <div class="ulist"><ul>
-<li>
-<p>
-<em>Thresholds</em>: <em>Subsurface</em> can display graphs of the nitrogen, oxygen and the helium
-partial pressures during
-the dive, activated using the toolbar on the left of the <strong>Dive Profile</strong>
-panel. For each of these graphs, specify a threshold value. If any of the graphs go
-above the specified threshold, the graph is
-highlighted in red, indicating the particular partial pressure threshold has been exceeded.
-The pO<sub>2</sub> threshold is probably the most important one and a value of 1.6 is commonly used.
-</p>
-</li>
-<li>
-<p>
-<em>pO<sub>2</sub> in calculating MOD</em> is used for calculating the maximum operative depth for a particular
-   nitrox or trimix gas mixture. A value of 1.4 is commonly used.
-</p>
-</li>
 <li>
 <p>
 CCR Options: These options determine oxygen management for CCR dives:
@@ -5218,17 +4835,17 @@ CCR Options: These options determine oxygen management for CCR dives:
     pO<sub>2</sub> of the fresh gas from the cylinder. Activating this checkbox allows the pO<sub>2</sub> graph
     in the dive profile to also show the pO<sub>2</sub> of the fresh gas entering the loop.
 </p>
-</li>
-</ul></div>
-</li>
-</ul></div>
-</li>
+<div class="ulist"><ul>
 <li>
 <p>
 <strong>Ceiling display setup</strong>. These settings mostly deal with nitrogen and helium management
    by determining how the decompression ceiling (ascent ceiling) is calculated and displayed:
 </p>
-<div class="ulist"><ul>
+</li>
+</ul></div>
+</li>
+</ul></div>
+</li>
 <li>
 <p>
 <em>Draw dive computer reported ceiling red</em>: This checkbox does exactly what it says. By default
@@ -5274,16 +4891,16 @@ Bühlmann: Set the <em>gradient factors</em> (GFLow and GFHigh) for calculcating
 <p>
 <a href="http://www.rebreatherworld.com/general-and-new-to-rebreather-articles/5037-gradient-factors-for-dummies.html">Gradient factors for dummies, by Kevin Watts</a>
 </p>
-</li>
-</ul></div>
-</li>
-</ul></div>
-</li>
+<div class="ulist" id="GradientFactors_Ref"><ul>
 <li>
 <p>
 <strong>Misc</strong>
 </p>
-<div class="ulist" id="GradientFactors_Ref"><ul>
+</li>
+</ul></div>
+</li>
+</ul></div>
+</li>
 <li>
 <p>
 <em>Show unused cylinders in Equipment Tab</em>: This checkbox allows display of information about unused cylinders when viewing the
@@ -5297,8 +4914,6 @@ was no gas switch to such a cylinder), then these cylinders are omitted from tha
     the mean depth of the dive, up to any time instant during the dive. Normally this is a u-shaped line indicating the deepest mean depth just before
    ascent.
 </p>
-</li>
-</ul></div>
 </li>
 </ul></div>
 </div>
@@ -5324,9 +4939,8 @@ l&#8217;affiche des détails de plongée.</p></div>
 <h3 id="_réseau">13.5. Réseau</h3>
 <div class="paragraph"><p>This panel facilitates communication between <em>Subsurface</em> and data sources
 on the Internet.  This is important, for instance, when <em>Subsurface</em> needs
-to communicate with web services such as Cloud storage, the
-<a href="#S_Companion"><em>Subsurface Companion app</em></a> or when you want to communicate
-through a proxy.</p></div>
+to communicate with web services such as Cloud storage, or when you want to
+communicate through a proxy.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
 <img src="images/Pref5_f23.jpg" alt="FIGURE: Preferences Network page" />
@@ -5367,13 +4981,6 @@ from your ISP.
 </li>
 </ul></div>
 </li>
-<li>
-<p>
-<em>Subsurface web service</em>: When you subscribe to the <a href="#S_Companion">Subsurface web service</a>, a very
-     long and hard-to-remember userID is issued. This is the place to save that userID. By
-     checking the option <em>Save User ID locally?</em>, you ensure a local copy of that userID is saved.
-</p>
-</li>
 </ul></div>
 </div>
 <div class="sect2">
@@ -5381,14 +4988,14 @@ from your ISP.
 <div class="paragraph"><p><em>Subsurface</em> provides a geo-lookup service (that is, given the coordinates
 of a dive site) derived from a click on the <strong>Dive Map panel</strong> at the bottom
 right of the <em>Subsurface</em> window, or from a GPS instrument or from the
-<em>Subsurface</em> Companion app). A search on the Internet is done to find the
-name of the closest known location. This function only works if <em>Subsurface</em>
-has an Internet connection. The preference of the dive site name can be
+<em>Subsurface-Mobile</em> app). A search on the Internet is done to find the name
+of the closest known location. This function only works if <em>Subsurface</em> has
+an Internet connection. The preference of the dive site name can be
 configured, e.g. <em>Country/State/City</em> or <em>City/State/Country</em> (see image
 below).</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Pref7_f23.jpg" alt="FIGURE: panneau de géoréférencement" />
+<img src="images/Pref7_f23.jpg" alt="FIGURE: Georeference panel" />
 </div>
 </div>
 </div>
@@ -5614,13 +5221,9 @@ dive plan, preventing recreational divers from getting close to the limits
 of getting a DCS hit. This is performed by specifying appropriate gradient
 factors for a dive plan, as explained below.</p></div>
 <div class="paragraph"><p>To plan a dive, the appropriate settings need to be defined.</p></div>
+<div class="paragraph"><p>Ensure the date and time is set to that of the intended dive. This allows
+calculation of the nitrogen load incurred during previous dives.</p></div>
 <div class="ulist"><ul>
-<li>
-<p>
-Ensure the date and time is set to that of the intended dive. This allows
-  calculation of the nitrogen load incurred during previous dives.
-</p>
-</li>
 <li>
 <p>
 Immediately under the heading <em>Planning</em> are two checkboxes <em>Recreational</em>
@@ -5699,7 +5302,7 @@ there remains a significant amount of air in the cylinder at the end of the
 dive.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: une planification de plongée loisir : configuration" />
+<img src="images/Planner_OC_rec1.jpg" alt="FIGURE: A recreational dive plan: setup" />
 </div>
 </div>
 <div class="paragraph"><p>The dive profile in the planner shows the maximum dive time within no-deco
@@ -5884,7 +5487,7 @@ utilisant du Tx20/30 et l&#8217;algorithme Bühlmann, suivie d&#8217;une remont�
 utilisant du EAN50 et utilisant les réglages décrits ci-dessous.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_OC_deco.jpg" alt="FIGURE: Planifier des plongées : configuration" />
+<img src="images/Planner_OC_deco.jpg" alt="FIGURE: Planning a dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Once the above steps have been completed, save by clicking the <em>Save</em> button
@@ -6043,7 +5646,7 @@ to that of the CCR dive below, but note the longer ascent duration due to the lo
 in the loop due to the oxygen drop across the mouthpiece of the pSCR equipment.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planifier des plongées pSCR : configuration" />
+<img src="images/Planner_pSCR.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
 </div>
 </div>
 <div class="sect3">
@@ -6085,7 +5688,7 @@ gas required can be obtained at the bottom of the <strong>Dive plan details</str
 </div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/pscr_b2.jpg" alt="FIGURE: Planifier des plongées pSCR : configuration" />
+<img src="images/pscr_b2.jpg" alt="FIGURE: Planning a pSCR dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>In the case of a pSCR dive plan for open water, the worst-case scenario is
@@ -6116,7 +5719,7 @@ this is calculated for bail out ascents.</p></div>
 <div class="paragraph"><p>The dive profile for a CCR dive may look something like the image below.</p></div>
 <div class="imageblock" style="text-align:center;">
 <div class="content">
-<img src="images/Planner_CCR.jpg" alt="FIGURE: Planifier des plongées CCR : configuration" />
+<img src="images/Planner_CCR.jpg" alt="FIGURE: Planning a CCR dive: setup" />
 </div>
 </div>
 <div class="paragraph"><p>Note that, in the <em>Dive plan details</em>, the gas consumption for a CCR segment
@@ -6358,8 +5961,8 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
-<em>Take cloud storage online</em> -
-  <strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong><strong><strong></strong></strong>
+<em>Cloud storage online</em> - Switch between the online version of the logbook,
+  and the locally stored one.
 </p>
 </li>
 <li>
@@ -6387,8 +5990,8 @@ des sections de ce manuel traitant des opérations relatives.</p></div>
 </li>
 <li>
 <p>
-<a href="#S_FindMovedImages"><em>Find moved images</em></a> - If photos taken during dives
-  have been moved to
+<a href="#S_FindMovedImages"><em>Find moved media</em></a> - If photos/videos taken during
+  dives have been moved to
       a different disk or directory, locate them and link them to the appropriate
       dives.
 </p>
@@ -6434,13 +6037,6 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 </li>
 <li>
 <p>
-<a href="#S_Companion"><em>Importer les données GPS depis le service web Subsurface</em></a> -
-  Charge les coordonnées GPS à partir de l&#8217;application mobile <em>Subsurface</em>
-  (téléphones et tablettes).
-</p>
-</li>
-<li>
-<p>
 <a href="#S_ImportingDivelogsDe"><em>Importer depuis Divelogs.de</em></a> - Importer des
   informations de plongées à partir de <em>www.Divelogs.de</em>.
 </p>
@@ -6454,12 +6050,6 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 <p>
 <a href="#S_EnterData"><em>Ajouter une plongée</em></a> -  Ajouter manuellement une nouvelle
   plongée au panneau de la <strong>liste des plongées</strong>.
-</p>
-</li>
-<li>
-<p>
-<em>Edit dive</em> - Edit a dive where the profile was entered by hand and not from
-  a dive computer.
 </p>
 </li>
 <li>
@@ -6618,7 +6208,7 @@ The Edit option allows one to undo or redo an action, e.g. deleting dives.
 <h2 id="_annexe_a_informations_spécifiques_au_système_d_8217_exploitation_utilisé_pour_importer_les_informations_de_plongées_depuis_un_ordinateur_de_plongée">17. ANNEXE A : informations spécifiques au système d&#8217;exploitation utilisé pour importer les informations de plongées depuis un ordinateur de plongée.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_Appendix_A">17.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
+<h3 id="_assurez_vous_que_les_pilotes_drivers_nécessaires_sont_installés">17.1. Assurez-vous que les pilotes (drivers) nécessaires sont installés</h3>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -7243,13 +6833,10 @@ Within <em>Subsurface</em>, select <em>Import &#8594; Import log files</em> to o
 <p>
 In the dropdown list towards the bottom right of the dialogue (labeled
   <em>Filter:</em>), select "APD log viewer".
-</p>
-</li>
-<li>
-<p>
-On the list of file names select the <em>.apd</em> file created. An import dialogue
-  opens showing the default settings for the data in the <em>.apd</em> file. If
-  changes are required, do this as for <a href="#S_ImportingCSVDives">CSV imports</a>.
+On the list of file names select the <em>.apd</em> file  created. An import
+dialogue opens showing the default settings for the data in the
+<em>.apd</em> file. If changes are required,
+  do this as for <a href="#S_ImportingCSVDives">CSV imports</a>.
 </p>
 </li>
 </ul></div>
@@ -8134,10 +7721,67 @@ page size.</td>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_annexe_f_faqs">22. ANNEXE F: FAQs.</h2>
+<h2 id="S_APPENDIX_F">22. APPENDIX F: Setting up video thumbnails.</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="S_APPENDIX_F">22.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
+<h3 id="_setting_up_the_appropriate_thumbnails_for_videos_that_are_associated_with_dives">22.1. Setting up the appropriate thumbnails for videos that are associated with dives.</h3>
+<div class="paragraph"><p>In handling video associated with dives, <em>Subsurface</em> needs to create a
+thumbnail for each video that can be shown either on the dive profile or in
+the <em>Media</em> tab. By default this is a nonspecific placeholder thumbnail.  To
+see thumbnails that represent individual videos, <em>Subsurface</em> uses an
+external program calle <em>FFmpeg</em>.  To create thumbnails for videos, do two
+things:</p></div>
+<div class="paragraph"><p>Install <em>FFmpeg</em> on the computer that runs <em>Subsurface</em>. The program can be
+downloaded from the FFmpeg web site:
+<a href="https://www.ffmpeg.org/download.html">https://www.ffmpeg.org/download.html</a>. Most Linux distributions ship with an
+<em>ffmpeg</em> package and therefore do not need an additional download.</p></div>
+<div class="ulist"><ul>
+<li>
+<p>
+On Windows, put the <em>ffmpeg.exe</em> file in the directory containing the <em>Subsurface</em> executable.
+On Mac and Linux, make sure the <em>ffmpeg</em> command is in the path. This should be the case for
+<em>FFmpeg</em> installed from official packages.
+</p>
+<div class="olist arabic"><ol class="arabic">
+<li>
+<p>
+In the <em>General</em> tab of the <a href="#S_Preferences"><em>Preferences</em></a>, set the
+   preferences for generating video thumbnails. This is achieved by:
+</p>
+</li>
+</ol></div>
+</li>
+<li>
+<p>
+Checking the <em>Extract video thumbnails</em> box. If <em>Subsurface</em> fails to load the <em>FFmpeg</em> executable,
+this option will be turned off. Re-enable it after successfully installing <em>FFmpeg</em>.
+</p>
+</li>
+<li>
+<p>
+Specifying the path to the <em>FFmpeg</em> executable.
+</p>
+</li>
+<li>
+<p>
+Choose the position in the video where <em>Subsurface</em>
+should try to extract the thumbnail. The left-most and right-most positions of the <em>Extract at position</em>
+slider signify the beginning and the end of the video, respectively. Note that if <em>Subsurface</em> cannot
+determine the length of the video (this can be the case for AVI files), the first frame
+of the video will be used.
+</p>
+</li>
+</ul></div>
+<div class="paragraph"><p>This should complete the setup of video thumbnails and they should now
+appear on the dive profile and in the <em>Media</em> tab.</p></div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_appendix_g_faqs">23. APPENDIX G: FAQs.</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="S_APPENDIX_G">23.1. Subsurface appears to miscalculate gas consumption and SAC</h3>
 <div class="paragraph" id="SAC_CALCULATION"><p><em>Question</em>: I dived with a 12.2 l tank, starting with 220 bar and ending
 with 100 bar, and I calculate a different SAC compared what <em>Subsurface</em>
 calculates. Is <em>Subsurface</em> miscalculating?</p></div>
@@ -8172,7 +7816,7 @@ contain twice as much air as a 200 bar one. At lower pressures, air acts
 pretty much like an ideal gas.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">22.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
+<h3 id="_some_dive_profiles_have_time_discrepancies_with_the_recorded_samples_from_my_dive_computer_8230">23.2. Some dive profiles have time discrepancies with the recorded samples from my dive computer&#8230;</h3>
 <div class="paragraph"><p><em>Subsurface</em> ends up ignoring surface time for many things (average depth,
 divetime, SAC, etc).  <em>Question</em>: Why do dive durations in my dive computer
 differ from that given by <em>Subsurface</em>?</p></div>
@@ -8187,7 +7831,7 @@ at the surface. And then you don&#8217;t want that to count as some kind of long
 dive”.</p></div>
 </div>
 <div class="sect2">
-<h3 id="_some_dive_profiles_are_missing_from_the_download">22.3. Some dive profiles are missing from the download</h3>
+<h3 id="_some_dive_profiles_are_missing_from_the_download">23.3. Some dive profiles are missing from the download</h3>
 <div class="paragraph" id="DC_HISTORY"><p><em>Question</em>: I cannot download all my dives, only the most recent ones, even
 though my dive computer&#8217;s manual states that it records history of e.g. 999
 dives? <em>Answer</em>: Dive history is different than the dive profiles on the
@@ -8210,7 +7854,7 @@ salvaged after being overwritten by new dives.</p></div>
 <div id="footer">
 <div id="footer-text">
 Last updated
- 2018-09-15 10:07:35 PDT
+ 2018-11-05 09:24:27 CET
 </div>
 </div>
 </body>
