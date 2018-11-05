@@ -109,24 +109,24 @@ explicit permission to do so, the data are not used for any purpose other
 than providing them to the user who created them. There are no ads and no
 harvesting / analysis of the data stored in the Subsurface cloud storage.
 
-1) Enter an e-mail address and a password in the fields indicated on the
-   screen.  The e-mail address should be in lower case and the password should
-   contain a combination of letters from the alphabet (upper and lower case)
-   and/or numbers.  Tap the "Sign-in or Register" button. If you have already
-   set up an account from the _Subsurface_ desktop application, enter the same
-   credentials here.  Once the dive list has been downloaded from the cloud,
-   _Subsurface-mobile_ usually works only with the the local copy on the mobile
-   device. This avoids long delays or even failure of operations if there is a
-   bad (or no) internet connection, a situation fairly common at many dive
-   sites.
+Enter an e-mail address and a password in the fields indicated on the
+screen.  The e-mail address should be in lower case and the password should
+contain a combination of letters from the alphabet (upper and lower case)
+and/or numbers.  Tap the "Sign-in or Register" button. If you have already
+set up an account from the _Subsurface_ desktop application, enter the same
+credentials here.  Once the dive list has been downloaded from the cloud,
+_Subsurface-mobile_ usually works only with the the local copy on the mobile
+device. This avoids long delays or even failure of operations if there is a
+bad (or no) internet connection, a situation fairly common at many dive
+sites.
 
-3) If this is a new account, a PIN screen will open (see image on right,
-   above). A PIN is e-mailed to the email address entered in the previous
-   step. Enter this PIN into the field indicated and tap the _Register_
-   button. The user information is stored on the cloud server and access to the
-   cloud is enabled. In this case the dive list is initially empty. Start
-   entering dives in the dive log or download dive information from a supported
-   dive computer.
+If this is a new account, a PIN screen will open (see image on right,
+above). A PIN is e-mailed to the email address entered in the previous
+step. Enter this PIN into the field indicated and tap the _Register_
+button. The user information is stored on the cloud server and access to the
+cloud is enabled. In this case the dive list is initially empty. Start
+entering dives in the dive log or download dive information from a supported
+dive computer.
 
 The dive log can be updated automatically. If there is Internet
 connectivity, _Subsurface-mobile_ accesses the cloud-based dive log to
@@ -262,6 +262,11 @@ settings). Android devices also support all Bluetooth dive computers that
 are supported in Subsurface. And both Android and iOS devices allow direct
 download of dive data from a hand full of Bluetooth LE enabled dive
 computers.
+
+Use the _Vendor name_ and _Dive Computer_ drop-downs to pick the correct
+dive computer. When downloading from multiple different dive computers,
+shortcut buttons to easily switch between them will appear below the
+drop-downs.
 
 The process for download is slightly different between the two OSs.  In our
 testing we got the best results on iOS when the dive computer was in
@@ -474,7 +479,7 @@ button. This opens the _Cloud credentials_ screen.  change the credential
 information, then tap the button _Sign-in or register_. The appropriate dive
 list is shown.
 
-image::mobile-images/SettingsCloudTheme.jpg["FIGURE: Settings: Cloud & Theme", align="center"]
+image::mobile-images/SettingsCloudTheme.jpg["FIGURE: Settings: Cloud &amp; Theme", align="center"]
 
 === Changing the color theme of _Subsurface-mobile_
 

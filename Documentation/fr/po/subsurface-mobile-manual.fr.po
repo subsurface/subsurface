@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: subsurface-manual VERSION\n"
 "Report-Msgid-Bugs-To: subsurface@subsurface-divelog.org\n"
-"POT-Creation-Date: 2018-06-26 10:10+0200\n"
+"POT-Creation-Date: 2018-11-05 09:14+0100\n"
 "PO-Revision-Date: 2018-02-07 17:48+0100\n"
 "Last-Translator: Guillaume GARDET <guillaume.gardet@free.fr>\n"
 "Language-Team: French <kde-i18n-doc@kde.org>\n"
@@ -17,13 +17,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Lokalize 2.0\n"
-
-#.  :website: http://subsurface-divelog.org
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:13
-#, no-wrap
-msgid "Banner"
-msgstr ""
 
 #.  :website: http://subsurface-divelog.org
 #. type: Target for macro image
@@ -219,12 +212,6 @@ msgstr ""
 "l'_écran d'informations de connexion au cloud_ apparait (voir l'image ci-"
 "dessous, à gauche)."
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:81
-#, no-wrap
-msgid "FIGURE: Mobile credentials screen"
-msgstr ""
-
 #. type: Target for macro image
 #: mobile-manual.txt:81
 #, no-wrap
@@ -354,12 +341,6 @@ msgid ""
 "is shown in the top left corner of the screen."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:139
-#, no-wrap
-msgid "FIGURE: Action Button"
-msgstr ""
-
 #. type: Target for macro image
 #: mobile-manual.txt:139
 #, no-wrap
@@ -392,12 +373,6 @@ msgstr ""
 #. type: Plain text
 #: mobile-manual.txt:153
 msgid "Drag the action button visible on most screens to the right"
-msgstr ""
-
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:154
-#, no-wrap
-msgid "FIGURE: Dive management sub-panel"
 msgstr ""
 
 #. type: Target for macro image
@@ -440,12 +415,6 @@ msgid ""
 "dive on the list brings up a display of _Details View_ for that dive (see "
 "image on right below). This includes the dive profile as well as additional "
 "information and notes."
-msgstr ""
-
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:176
-#, no-wrap
-msgid "FIGURE: Dive list screen"
 msgstr ""
 
 #. type: Target for macro image
@@ -492,12 +461,6 @@ msgid ""
 "button is hidden.  Once you close the keyboard it is drawn again."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:201
-#, no-wrap
-msgid "FIGURE: Dive edit screen"
-msgstr ""
-
 #. type: Target for macro image
 #: mobile-manual.txt:201
 #, no-wrap
@@ -526,12 +489,6 @@ msgid ""
 "dive in _Details View_."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:217
-#, no-wrap
-msgid "FIGURE: Manual dive entry screen"
-msgstr ""
-
 #. type: Target for macro image
 #: mobile-manual.txt:217
 #, no-wrap
@@ -553,12 +510,6 @@ msgid ""
 "message that appears at the bottom of the screen (see image below)."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:226
-#, no-wrap
-msgid "FIGURE: Undo delete dive"
-msgstr ""
-
 #. type: Target for macro image
 #: mobile-manual.txt:226
 #, no-wrap
@@ -574,12 +525,6 @@ msgid ""
 "_Subsurface-mobile_ assumes that the combination of a long tap on the dive "
 "with another tap on the red dustbin is an unambiguous instruction to delete "
 "the dive."
-msgstr ""
-
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:234
-#, no-wrap
-msgid "FIGURE: delete dive from list"
 msgstr ""
 
 #. type: Target for macro image
@@ -607,7 +552,16 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:252
+#: mobile-manual.txt:250
+msgid ""
+"Use the _Vendor name_ and _Dive Computer_ drop-downs to pick the correct "
+"dive computer. When downloading from multiple different dive computers, "
+"shortcut buttons to easily switch between them will appear below the drop-"
+"downs."
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:256
 msgid ""
 "The process for download is slightly different between the two OSs.  In our "
 "testing we got the best results on iOS when the dive computer was in "
@@ -617,7 +571,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:256
+#: mobile-manual.txt:260
 msgid ""
 "On Android devices, you should first establish a link between the Bluetooth "
 "or Bluetooth LE dive computer and the mobile device using Android utilities. "
@@ -625,7 +579,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:265
+#: mobile-manual.txt:269
 msgid ""
 "For USB dive computers, USB cables \"normally\" used for uploading dives to "
 "a desktop/laptop computer do NOT work: these cables usually have a full-"
@@ -641,27 +595,21 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:267
+#: mobile-manual.txt:271
 msgid ""
 "Please note that not all Android devices support OTG cables. And even on "
 "some devices that do support those cables in general, _Subsurface-mobile_ "
 "still in some cases cannot access a dive computer through a serial port."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:268
-#, no-wrap
-msgid "FIGURE: USB-OTG cable"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:268
+#: mobile-manual.txt:272
 #, no-wrap
 msgid "mobile-images/USB-OTG.jpg"
 msgstr "mobile-images/USB-OTG.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:276
+#: mobile-manual.txt:280
 msgid ""
 "For Bluetooth-equipped dive computers and Android devices, establish a "
 "Bluetooth connection between the dive computer and the mobile device. Use "
@@ -675,7 +623,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:282
+#: mobile-manual.txt:286
 msgid ""
 "With pairing between dive computer and _Subsurface-mobile_ having been set "
 "up, dive download is simple.  From the main menu, tap _Manage dives -> "
@@ -688,7 +636,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:286
+#: mobile-manual.txt:290
 msgid ""
 "Now tap the button labeled _Download_. The downloaded dives appear in the "
 "bottom part of the screen, the most recent dive at the top (see image on "
@@ -698,7 +646,7 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:292
+#: mobile-manual.txt:296
 msgid ""
 "After the download, each dive has a check-box on the left hand side, used "
 "for selecting which dives you want to be added to the _Subsurface-mobile_ "
@@ -709,26 +657,20 @@ msgid ""
 "the section above xref:S_Edit_Dive[Edit a dive]."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:293
-#, no-wrap
-msgid "FIGURE: DC download screen"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:293
+#: mobile-manual.txt:297
 #, no-wrap
 msgid "mobile-images/DC-Download.jpg"
 msgstr "mobile-images/DC-Download.jpg"
 
 #. type: Title ==
-#: mobile-manual.txt:295
+#: mobile-manual.txt:299
 #, no-wrap
 msgid "Viewing the dive location on Google Maps"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:300
+#: mobile-manual.txt:304
 msgid ""
 "In the _Details View_, the Action Bar at the bottom has a GPS pin on the "
 "left hand side. Tap that pin and the dive site is shown in Google Maps. "
@@ -737,33 +679,27 @@ msgid ""
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:303
+#: mobile-manual.txt:307
 msgid ""
 "Alternatively, the _Details View_ has a button at the top right hand marked "
 "_Map it_. Tap this button to open Google Maps showing the dive site (image "
 "below)."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:304
-#, no-wrap
-msgid "FIGURE: Map of dive site"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:304
+#: mobile-manual.txt:308
 #, no-wrap
 msgid "mobile-images/Map.jpg"
 msgstr "mobile-images/Map.jpg"
 
 #. type: Title ==
-#: mobile-manual.txt:306
+#: mobile-manual.txt:310
 #, no-wrap
 msgid "Dive log management"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:316
+#: mobile-manual.txt:320
 msgid ""
 "A central part of _Subsurface-mobile_ is the ability to store the dive log "
 "using the _Subsurface_ cloud storage.  This provides security against loss "
@@ -775,50 +711,50 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:317
-#, no-wrap
-msgid "Add new dive manually"
-msgstr ""
-
-#. type: Plain text
-#: mobile-manual.txt:320
-msgid ""
-"This is described above under the section dealing with xref:"
-"S_Add_Dive[Manually adding a new dive to the dive list]."
-msgstr ""
-
-#. type: Title ===
 #: mobile-manual.txt:321
 #, no-wrap
-msgid "Download from DC"
+msgid "Add new dive manually"
 msgstr ""
 
 #. type: Plain text
 #: mobile-manual.txt:324
 msgid ""
 "This is described above under the section dealing with xref:"
-"S_Download[Download dives from a dive computer]."
+"S_Add_Dive[Manually adding a new dive to the dive list]."
 msgstr ""
 
 #. type: Title ===
 #: mobile-manual.txt:325
 #, no-wrap
-msgid "Apply GPS fixes"
+msgid "Download from DC"
 msgstr ""
 
 #. type: Plain text
 #: mobile-manual.txt:328
-msgid "This is described in the following main section, below."
+msgid ""
+"This is described above under the section dealing with xref:"
+"S_Download[Download dives from a dive computer]."
 msgstr ""
 
 #. type: Title ===
 #: mobile-manual.txt:329
 #, no-wrap
+msgid "Apply GPS fixes"
+msgstr ""
+
+#. type: Plain text
+#: mobile-manual.txt:332
+msgid "This is described in the following main section, below."
+msgstr ""
+
+#. type: Title ===
+#: mobile-manual.txt:333
+#, no-wrap
 msgid "Manually sync the dive log with the _Subsurface_ cloud storage"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:336
+#: mobile-manual.txt:340
 msgid ""
 "Upload the dives contained on the mobile device to the _Subsurface_ cloud "
 "storage by tapping the option _Manual sync with cloud_.  This synchronizes "
@@ -828,13 +764,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:337
+#: mobile-manual.txt:341
 #, no-wrap
 msgid "Enable cloud auto sync"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:349
+#: mobile-manual.txt:353
 msgid ""
 "By default _Subsurface-mobile_ runs offline and only syncs the dive list "
 "with cloud storage when explicitly told to do so (see above).  You can "
@@ -849,13 +785,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:350
+#: mobile-manual.txt:354
 #, no-wrap
 msgid "Recording dive locations using GPS"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:357
+#: mobile-manual.txt:361
 msgid ""
 "The fact that most smartphones have GPS facilities allows _Subsurface-"
 "mobile_ to record the locations of dives. If the smartphone is taken on the "
@@ -865,13 +801,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:359
+#: mobile-manual.txt:363
 #, no-wrap
 msgid "Configuring the GPS service"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:367
+#: mobile-manual.txt:371
 msgid ""
 "From the Main menu, select _Settings_. The Settings screen has a section for "
 "configuring the GPS service (image below). GPS location data are collected "
@@ -881,26 +817,20 @@ msgid ""
 "The program is now ready to collect GPS positions."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:368
-#, no-wrap
-msgid "FIGURE: GPS configure"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:368
+#: mobile-manual.txt:372
 #, no-wrap
 msgid "mobile-images/GPS-config.jpg"
 msgstr "mobile-images/GPS-config.jpg"
 
 #. type: Title ===
-#: mobile-manual.txt:370
+#: mobile-manual.txt:374
 #, no-wrap
 msgid "Collecting GPS positions"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:376
+#: mobile-manual.txt:380
 msgid ""
 "Ensure that the GPS on the mobile device has been activated and that you "
 "have given the app permission to access your location data.  Open the Main "
@@ -908,20 +838,14 @@ msgid ""
 "of GPS locations."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:377
-#, no-wrap
-msgid "FIGURE: GPS start"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:377
+#: mobile-manual.txt:381
 #, no-wrap
 msgid "mobile-images/GPSstart.jpg"
 msgstr "mobile-images/GPSstart.jpg"
 
 #. type: Plain text
-#: mobile-manual.txt:386
+#: mobile-manual.txt:390
 msgid ""
 "_Subsurface-mobile_ starts to collect GPS locations automatically, following "
 "the preferences specified as described above. While the GPS location service "
@@ -932,13 +856,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:387
+#: mobile-manual.txt:391
 #, no-wrap
 msgid "Storing the GPS data on the _Subsurface_ cloud"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:394
+#: mobile-manual.txt:398
 msgid ""
 "Activate the main menu and select the _GPS_ option that brings up the "
 "submenu of GPS-related actions. Tap _Upload GPS data_ that saves the GPS "
@@ -948,26 +872,26 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:395
+#: mobile-manual.txt:399
 #, no-wrap
 msgid "Downloading GPS data from the _Subsurface_ cloud"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:400
+#: mobile-manual.txt:404
 msgid ""
 "Download the GPS data that have been saved on the cloud (possibly by a "
 "different device) by selecting _Download GPS Data_ from the GPS sub-panel."
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:401
+#: mobile-manual.txt:405
 #, no-wrap
 msgid "Viewing GPS data"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:411
+#: mobile-manual.txt:415
 msgid ""
 "From the GPS submenu select _Show GPS fixes_. This brings up a list of GPS "
 "positions obtained by the location service (image below). Two actions are "
@@ -980,26 +904,20 @@ msgid ""
 "again using the handle."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:412
-#, no-wrap
-msgid "FIGURE: GPS management"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:412
+#: mobile-manual.txt:416
 #, no-wrap
 msgid "mobile-images/gpsmanagement.jpg"
 msgstr "mobile-images/gpsmanagement.jpg"
 
 #. type: Title ===
-#: mobile-manual.txt:414
+#: mobile-manual.txt:418
 #, no-wrap
 msgid "Applying GPS data to dives in the dive log"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:423
+#: mobile-manual.txt:427
 msgid ""
 "Assuming that all the dives have been entered into the dive log or have been "
 "downloaded from the _Subsurface_ cloud, apply the GPS positions to these "
@@ -1012,13 +930,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:424
+#: mobile-manual.txt:428
 #, no-wrap
 msgid "Using the settings for _Subsurface-mobile_."
 msgstr "Utilisation des paramètres pour _Subsurface-mobile_."
 
 #. type: Plain text
-#: mobile-manual.txt:427
+#: mobile-manual.txt:431
 msgid ""
 "The Settings screen allows the customization of _Subsurface-mobile_. Many of "
 "the settings involve dragging a slider switch to activate or deactivate a "
@@ -1026,13 +944,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:429
+#: mobile-manual.txt:433
 #, no-wrap
 msgid "Changing to a different _Subsurface_ cloud account"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:434
+#: mobile-manual.txt:438
 msgid ""
 "Some users have more than one _Subsurface_ cloud account and with a need to "
 "switch between accounts. Tap _Settings_ on the Main menu and scroll to the "
@@ -1042,26 +960,20 @@ msgid ""
 "list is shown."
 msgstr ""
 
-#. type: Positional ($1) AttributeList argument for macro 'image'
-#: mobile-manual.txt:435
-#, no-wrap
-msgid "FIGURE: Settings: Cloud & Theme"
-msgstr ""
-
 #. type: Target for macro image
-#: mobile-manual.txt:435
+#: mobile-manual.txt:439
 #, no-wrap
 msgid "mobile-images/SettingsCloudTheme.jpg"
 msgstr "mobile-images/SettingsCloudTheme.jpg"
 
 #. type: Title ===
-#: mobile-manual.txt:437
+#: mobile-manual.txt:441
 #, no-wrap
 msgid "Changing the color theme of _Subsurface-mobile_"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:444
+#: mobile-manual.txt:448
 msgid ""
 "_Subsurface-mobile_ has three color schemes to please users with different "
 "tastes. This user manual shows the default color scheme, comprising blue "
@@ -1072,13 +984,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:445
+#: mobile-manual.txt:449
 #, no-wrap
 msgid "Configuring the GPS webservice"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:448
+#: mobile-manual.txt:452
 msgid ""
 "The Settings screen allows one to set up the way in which GPS positions are "
 "collected during dives. See the section on xref:S_ConfigureGPS[Configuring "
@@ -1086,13 +998,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:449
+#: mobile-manual.txt:453
 #, no-wrap
 msgid "Saving a detailed dive computer dive log"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:452
+#: mobile-manual.txt:456
 msgid ""
 "Under the heading _Dive computer_, you will find a switch to save a detailed "
 "log each time dives are downloaded from a dive computer. This is important "
@@ -1106,13 +1018,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:453
+#: mobile-manual.txt:457
 #, no-wrap
 msgid "Activating the Developer submenu"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:456
+#: mobile-manual.txt:460
 msgid ""
 "The information in subsurface.log plus some additional information for "
 "understanding the screen rendering of dive information as well as the way in "
@@ -1123,13 +1035,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ==
-#: mobile-manual.txt:457
+#: mobile-manual.txt:461
 #, no-wrap
 msgid "Developer submenu"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:461
+#: mobile-manual.txt:465
 msgid ""
 "If the Developer submenu has been activated in the Settings screen, the Main "
 "menu has a _Developer_ item. By tapping this one has two options that are "
@@ -1137,13 +1049,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:462
+#: mobile-manual.txt:466
 #, no-wrap
 msgid "App log"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:467
+#: mobile-manual.txt:471
 msgid ""
 "This option shows the messages that _Subsurface-mobile_ generates while "
 "running. While most users are not aware of these messages, they are often "
@@ -1152,13 +1064,13 @@ msgid ""
 msgstr ""
 
 #. type: Title ===
-#: mobile-manual.txt:468
+#: mobile-manual.txt:472
 #, no-wrap
 msgid "Theme information"
 msgstr ""
 
 #. type: Plain text
-#: mobile-manual.txt:472
+#: mobile-manual.txt:476
 msgid ""
 "This option provides a wealth of information about the screen "
 "characteristics of the mobile device and the font characteristics used by "
