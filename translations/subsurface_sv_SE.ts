@@ -41,7 +41,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="700"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>lägg till %n dyk till resa</numerusform><numerusform>lägg till %n dyk till resa</numerusform></translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="720"/>
         <source>autogroup dives</source>
-        <translation type="unfinished"/>
+        <translation>autogruppera dyk</translation>
     </message>
 </context>
 <context>
@@ -434,7 +434,7 @@
     <message>
         <location filename="../core/cloudstorage.cpp" line="65"/>
         <source>Cloud account verification required, enter PIN in preferences</source>
-        <translation>Verifikation av konto för molntjänst krävs, ange PIN under inställningar</translation>
+        <translation>Verifiering av molntjänstkonto krävs, ange PIN under inställningar</translation>
     </message>
 </context>
 <context>
@@ -562,27 +562,27 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="69"/>
         <source>Sample pO₂</source>
-        <translation>Samplings pO₂</translation>
+        <translation>Sampling pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="69"/>
         <source>Sample CNS</source>
-        <translation>Samplings CNS</translation>
+        <translation>Sampling CNS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="69"/>
         <source>Sample NDL</source>
-        <translation>Samplings NDL</translation>
+        <translation>Sampling NDL</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <source>Sample TTS</source>
-        <translation>Sampings TTS</translation>
+        <translation>Sampling TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
         <source>Sample stopdepth</source>
-        <translation>Samplingsstopdjup</translation>
+        <translation>Samplingsstoppdjup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="70"/>
@@ -592,17 +592,17 @@
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Sample sensor1 pO₂</source>
-        <translation>Samplings sensor1 pO₂</translation>
+        <translation>Sampling sensor1 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Sample sensor2 pO₂</source>
-        <translation>Samplings sensor2 pO₂</translation>
+        <translation>Sampling sensor2 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="71"/>
         <source>Sample sensor3 pO₂</source>
-        <translation>Samplings sensor3 pO₂</translation>
+        <translation>Sampling sensor3 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="72"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="488"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>lägg till dyk</translation>
     </message>
 </context>
 <context>
@@ -646,7 +646,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="558"/>
         <source>delete %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ta bort %n dyk</numerusform><numerusform>ta bort %n dyk</numerusform></translation>
     </message>
 </context>
 <context>
@@ -669,7 +669,7 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="594"/>
         <source>Setting successfully written to device</source>
-        <translation>Inställningarna sparade till enheten</translation>
+        <translation>Inställningarna sparades till enheten</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="603"/>
@@ -722,7 +722,7 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="64"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2539"/>
         <source>Disconnect</source>
-        <translation>Koppla ner</translation>
+        <translation>Koppla från</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="80"/>
@@ -2195,7 +2195,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="707"/>
         <source>create trip</source>
-        <translation type="unfinished"/>
+        <translation>skapa resa</translation>
     </message>
 </context>
 <context>
@@ -2436,7 +2436,7 @@ radera den valda dykdatorn?</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="192"/>
         <source>Save edits</source>
-        <translation type="unfinished"/>
+        <translation>Spara förändringar</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="192"/>
@@ -2733,12 +2733,12 @@ GPS-position:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="363"/>
         <source>Please wait, filtering dive list</source>
-        <translation type="unfinished"/>
+        <translation>Vänligen vänta, filtrerar dyklista</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="478"/>
         <source>Download dives</source>
-        <translation type="unfinished"/>
+        <translation>Ladda ner dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="488"/>
@@ -2748,7 +2748,7 @@ GPS-position:</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="498"/>
         <source>Filter dives</source>
-        <translation type="unfinished"/>
+        <translation>Filtrera dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="342"/>
@@ -2884,7 +2884,7 @@ GPS-position:</translation>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="390"/>
         <source>Create a new dive site, copying relevant information from the current dive.</source>
-        <translation>Skapa en ny dykplats, kopiera relevant information från detta dyk.</translation>
+        <translation>Skapa en ny dykplats, kopiera relevant information från nuvarande dyk.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/locationinformation.cpp" line="391"/>
@@ -2952,7 +2952,7 @@ GPS-position:</translation>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="187"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="381"/>
         <source>Worldmap</source>
-        <translation>Värdskarta</translation>
+        <translation>Världskarta</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="197"/>
@@ -3341,55 +3341,55 @@ GPS-position:</translation>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="689"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="813"/>
         <source>Sample temperature</source>
-        <translation>Samnplingstemperatur</translation>
+        <translation>Samplingstemperatur</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="691"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="815"/>
         <source>Sample pO₂</source>
-        <translation>Samplings pO₂</translation>
+        <translation>Sampling pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="693"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="817"/>
         <source>Sample sensor1 pO₂</source>
-        <translation>Samplings sensor1 pO₂</translation>
+        <translation>Sampling sensor1 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="695"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="819"/>
         <source>Sample sensor2 pO₂</source>
-        <translation>Samplings sensor2 pO₂</translation>
+        <translation>Sampling sensor2 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="697"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="821"/>
         <source>Sample sensor3 pO₂</source>
-        <translation>Samplings sensor3 pO₂</translation>
+        <translation>Sampling sensor3 pO₂</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="699"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="823"/>
         <source>Sample CNS</source>
-        <translation>Samplings CNS</translation>
+        <translation>Sampling CNS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="701"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="825"/>
         <source>Sample NDL</source>
-        <translation>Samplings NDL</translation>
+        <translation>Sampling NDL</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="703"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="827"/>
         <source>Sample TTS</source>
-        <translation>Samplings TTS</translation>
+        <translation>Sampling TTS</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="705"/>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="829"/>
         <source>Sample stopdepth</source>
-        <translation>Samplingsstopdjup</translation>
+        <translation>Samplingsstoppdjup</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.cpp" line="707"/>
@@ -4442,7 +4442,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="314"/>
         <source> Downloaded dives</source>
-        <translation>Nerladdade dyk:</translation>
+        <translation>Nerladdade dyk</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="315"/>
@@ -5947,7 +5947,7 @@ QML modulerna för QtPositioning samt QtLocation kan saknas!</translation>
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="804"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>sammanfoga dyk</translation>
     </message>
 </context>
 <context>
@@ -6444,7 +6444,7 @@ On din enhet använder Bluetooth, genomför samma förberedelser som vid nedladd
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="229"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="360"/>
         <source>Show warnings for isobaric counterdiffusion</source>
-        <translation>Visa varningar för isobarisk motdiffusion (ICD)</translation>
+        <translation>Visa varningar för isobar motdiffusion (ICD)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="288"/>
@@ -7375,17 +7375,17 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="676"/>
         <source>Loading dives from local storage (&apos;no cloud&apos; mode)</source>
-        <translation>Läser in dyk från lokal lagring (&apos;molnfritt&apos; läge)</translation>
+        <translation>Läser in dyk från lokal lagring (&apos;lokalt läge&apos;)</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="722"/>
         <source>Failed to connect to cloud server, reverting to no cloud status</source>
-        <translation>Misslyckades med att ansluta till molntjänst, återgår till molnfritt läge</translation>
+        <translation>Misslyckades med att ansluta till molntjänsten, återgår till lokalt läge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="747"/>
         <source>Cloud storage open successfully. No dives in dive list.</source>
-        <translation>Molnlagring öppnades framgångsrikt. Inga dyk i dyklistan</translation>
+        <translation>Lyckades öppna molnlagrinstjänsten. Inga dyk i dyklistan.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="921"/>
@@ -7398,7 +7398,7 @@ Vänligen exportera mallen till en ny fil.</translation>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="922"/>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="923"/>
         <source>min</source>
-        <translation>Min</translation>
+        <translation>min</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="921"/>
@@ -7440,7 +7440,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="688"/>
         <source>remove autogenerated trips</source>
-        <translation type="unfinished"/>
+        <translation>ta bort autogenererade resor</translation>
     </message>
 </context>
 <context>
@@ -7448,7 +7448,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="680"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ta bort %n dyk från resan</numerusform><numerusform>ta bort %n dyk från resan</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7493,7 +7493,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="640"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>uppdatera numrering för %n dyk</numerusform><numerusform>uppdatera numrering för %n dyk</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7564,7 +7564,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="24"/>
         <source>No cloud mode</source>
-        <translation>Molnfritt läge</translation>
+        <translation>Lokalt läge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="33"/>
@@ -7678,12 +7678,12 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="404"/>
         <source>Forget remembered dive computers</source>
-        <translation>Ta bort använda dykdatorer</translation>
+        <translation>Rensa ihågkomna dykdatorer</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="410"/>
         <source>Forget</source>
-        <translation>Ta bort</translation>
+        <translation>Rensa</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="432"/>
@@ -7698,22 +7698,22 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="458"/>
         <source>Use Metric Units</source>
-        <translation>Använd Meter</translation>
+        <translation>Använd Metersystemet</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="486"/>
         <source>Filter preferences</source>
-        <translation type="unfinished"/>
+        <translation>Filtreringsinställningar</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="495"/>
         <source>Include notes in full text filtering</source>
-        <translation type="unfinished"/>
+        <translation>Inkludera anteckningar vid textfiltrering</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
         <source>Match filter case sensitive</source>
-        <translation type="unfinished"/>
+        <translation>Skiftlägeskänslig filtrering</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="537"/>
@@ -7841,7 +7841,7 @@ Filer med felaktig datum/tid</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="597"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>skifta tider på %n dyk</numerusform><numerusform>skifta tider på %n dyk</numerusform></translation>
     </message>
 </context>
 <context>
@@ -8122,7 +8122,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="748"/>
         <source>split dive</source>
-        <translation type="unfinished"/>
+        <translation>dela dyk</translation>
     </message>
 </context>
 <context>
@@ -8135,7 +8135,7 @@ Filer med felaktig datum/tid</translation>
     <message>
         <location filename="../mobile-widgets/qml/StartPage.qml" line="50"/>
         <source>Thank you for registering with Subsurface. We sent &lt;b&gt;%1&lt;/b&gt; a PIN code to complete the registration. If you do not receive an email from us within 15 minutes, please check the correct spelling of your email address and your spam box first.&lt;br/&gt;&lt;br/&gt;In case of any problems regarding cloud account setup, please contact us at our user forum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</source>
-        <translation>Tack för att du registrerade dig med Subsurface. Vi skickade &lt;b&gt;%1&lt;/b&gt; en PIN-kod för att avsluta registreringen. Om du inte får ett e-postmeddelande från oss inom 15 minuter, vänligen kontrollera stavningen av din e-postadress samt din mapp för skräppost. &lt;br/&gt;&lt;br/&gt;Om du har några problem gällande ditt konto, vänligen kontakta oss på vårat användarforum (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</translation>
+        <translation>Tack för att du registrerade dig med Subsurface. Vi skickade &lt;b&gt;%1&lt;/b&gt; en PIN-kod för att avsluta registreringen. Om du inte får ett e-postmeddelande från oss inom 15 minuter, vänligen kontrollera stavningen av din e-postadress samt din mapp för skräppost. &lt;br/&gt;&lt;br/&gt;Om du har några problem gällande ditt konto, vänligen kontakta oss via användarforumet (https://subsurface-divelog.org/user-forum/).&lt;br/&gt;&lt;br/&gt;</translation>
     </message>
 </context>
 <context>
@@ -8938,7 +8938,7 @@ Om du inte vill att Subsurface skall göra det, vänligen klicka på Avstå</tra
         <location filename="../desktop-widgets/usersurvey.ui" line="20"/>
         <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="193"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;We would love to learn more about our users, their preferences and their usage habits. Please spare a minute to fill out this form and submit it to the Subsurface team.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vi skulle väldigt gärna vilja lära oss mer om våra användare, era erfarenheter, vad ni föredrar, vad som kan förbättras och hur ni använder programmet. Avsätt gärna en minut och fyll i detta formulär och skicka in det till utvecklarna bakom Subsurface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Vi skulle väldigt gärna vilja lära oss mer om våra användare och era erfarenheter, vad som kan förbättras och hur ni använder programmet. Avsätt gärna en minut och fyll i detta formulär och skicka in det till utvecklarna bakom Subsurface.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="47"/>
@@ -8986,7 +8986,7 @@ Om du inte vill att Subsurface skall göra det, vänligen klicka på Avstå</tra
         <location filename="../desktop-widgets/usersurvey.ui" line="117"/>
         <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="203"/>
         <source>Any suggestions? (in English)</source>
-        <translation>Några förslag? (skriv på engelska)</translation>
+        <translation>Har du några förslag? (skriv på engelska)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.ui" line="127"/>
@@ -9004,7 +9004,7 @@ Om du inte vill att Subsurface skall göra det, vänligen klicka på Avstå</tra
         <location filename="../desktop-widgets/usersurvey.ui" line="75"/>
         <location filename="../subsurface/desktop-widgets/ui_usersurvey.h" line="198"/>
         <source>Where are you importing data from?</source>
-        <translation>Var importerar du dykdata ifrån?</translation>
+        <translation>Var importerar du dykinformation från?</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="19"/>
@@ -9082,7 +9082,7 @@ Språk: %1</translation>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="118"/>
         <source>Survey successfully submitted.</source>
-        <translation>Undersökningen har blivit inskickad.</translation>
+        <translation>Användarundersökningen har skickats in.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/usersurvey.cpp" line="123"/>
@@ -9453,7 +9453,7 @@ Medel</translation>
     <message>
         <location filename="../core/datatrak.c" line="371"/>
         <source>no stop</source>
-        <translation>no stop</translation>
+        <translation>inget stopp</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="373"/>
@@ -10307,7 +10307,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="152"/>
         <source>Runtime: %dmin&lt;br&gt;&lt;/div&gt;</source>
-        <translation>Dyktid: %dmin&lt;br&gt;&lt;/div&gt;</translation>
+        <translation>Körtid: %dmin&lt;br&gt;&lt;/div&gt;</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="156"/>
@@ -10323,7 +10323,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
         <location filename="../core/plannernotes.c" line="49"/>
         <location filename="../core/plannernotes.c" line="160"/>
         <source>runtime</source>
-        <translation>dyktid</translation>
+        <translation>körtid</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="162"/>
@@ -10333,7 +10333,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="48"/>
         <source>Isobaric counterdiffusion information</source>
-        <translation>Information isobarisk motdiffusion</translation>
+        <translation>Information isobar motdiffusion</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="51"/>
@@ -10446,12 +10446,12 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="149"/>
         <source>Runtime: %dmin%s</source>
-        <translation>Dyktid: %dmin%2</translation>
+        <translation>Körtid: %dmin%2</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="213"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar)</source>
-        <translation>%s till %.*f %s på %d:%02d min - dyktid %d:%02u med %s (SP = %.1fbar)</translation>
+        <translation>%s till %.*f %s på %d:%02d min - körtid %d:%02u med %s (SP = %.1fbar)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="214"/>
@@ -10468,17 +10468,17 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="221"/>
         <source>%s to %.*f %s in %d:%02d min - runtime %d:%02u on %s</source>
-        <translation>%s till %.*f %s på %d:%02d min - dyktid %d:%02u med %s</translation>
+        <translation>%s till %.*f %s på %d:%02d min - körtid %d:%02u med %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="236"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s (SP = %.1fbar CCR)</source>
-        <translation>Stanna vid %.*f %s under %d:%02d min - dyktid %d:%02u med %s (SP = %.1fbar CCR)</translation>
+        <translation>Stanna vid %.*f %s under %d:%02d min - körtid %d:%02u med %s (SP = %.1fbar CCR)</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="243"/>
         <source>Stay at %.*f %s for %d:%02d min - runtime %d:%02u on %s %s</source>
-        <translation>Stanna vid %.*f %s under %d:%02d min - dyktid %d:%02u med %s %s</translation>
+        <translation>Stanna vid %.*f %s under %d:%02d min - körtid %d:%02u med %s %s</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="309"/>
@@ -10539,7 +10539,7 @@ Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogf�
     <message>
         <location filename="../core/plannernotes.c" line="543"/>
         <source>Isobaric counterdiffusion conditions exceeded</source>
-        <translation>Tillstånd för isobarisk motdiffusion (ICD) har överskridits</translation>
+        <translation>Tillstånd för isobar motdiffusion (ICD) har överskridits</translation>
     </message>
     <message>
         <location filename="../core/plannernotes.c" line="574"/>
@@ -11791,12 +11791,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="295"/>
         <source>Disable auto cloud sync</source>
-        <translation>Stäng av automatisk molnsynkronisering</translation>
+        <translation>Stäng av molnsynkronisering</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="295"/>
         <source>Enable auto cloud sync</source>
-        <translation>Aktivera automatisk molnsynkronisering</translation>
+        <translation>Automatisk molnsynkronisering</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="343"/>
@@ -11821,12 +11821,12 @@ Is the Uemis Zurich plugged in correctly?</source>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="273"/>
         <source>Manual sync with cloud</source>
-        <translation>Manuell synkronisering till molntjänst</translation>
+        <translation>Manuell molnsynkronisering</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="301"/>
         <source>Turning off automatic sync to cloud causes all data to only be stored locally. This can be very useful in situations with limited or no network access. Please choose &apos;Manual sync with cloud&apos; if you have network connectivity and want to sync your data to cloud storage.</source>
-        <translation>Att stänga av automatisk synkronisering till molntjänsten gör att all data lagras lokalt. Detta kan vara användbart i situationer med begränsad eller ingen nätverksåtkomst. Vänligen välj &apos;Manuell synkronisering till molntjänst&apos; om du har en internetuppkoppling och vill synkronisera din data till molntjänsten.</translation>
+        <translation>Att stänga av automatisk molnsynkronisering medför att data sparas lokalt. Det är användbart i situationer med begränsad eller ingen nätverksåtkomst. Välj &apos;Manuell molnsynkronisering&apos; om du har en internetuppkoppling och vill synkronisera din data till molntjänsten.</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/main.qml" line="312"/>
@@ -12043,7 +12043,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="293"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="578"/>
         <source>Postpone gas change if a stop is not required</source>
-        <translation>Fördröj gasbyte om stopp ej krävs</translation>
+        <translation>Senarelägg gasbyte om ett stopp ej krävs</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="296"/>
@@ -12093,7 +12093,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="449"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="598"/>
         <source>Safety stop</source>
-        <translation>säkerhetsstopp</translation>
+        <translation>Säkerhetsstopp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="485"/>
@@ -12215,13 +12215,13 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/plannerSettings.ui" line="715"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="623"/>
         <source>In dive plan, show runtime (absolute time) of stops</source>
-        <translation>I dykplanen, visa dyktid (absolut tid) av stopp</translation>
+        <translation>I dykplanen, visa körtid (absolut tid) av stopp</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="718"/>
         <location filename="../subsurface/desktop-widgets/ui_plannerSettings.h" line="625"/>
         <source>Display runtime</source>
-        <translation>Visa dyktid</translation>
+        <translation>Visa körtid</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/plannerSettings.ui" line="728"/>
