@@ -1712,8 +1712,12 @@ void clear_table(struct dive_table *table)
  * probably want to unify the models.
  * After editing a key used in this sort-function, the order of
  * the dives must be re-astablished.
- * Currently, this does a lexicographic sort on the (start-time, id)
- * tuple. "id" is a stable, strictly increasing unique number, that
+ * Currently, this does a lexicographic sort on the
+ * (start-time, trip-time, id) tuple.
+ * trip-time is defined such that dives that do not belong to
+ * a trip are sorted *after* dives that do. Thus, in the default
+ * chronologically-descending sort order, they are shown *before*.
+ * "id" is a stable, strictly increasing unique number, that
  * is handed out when a dive is added to the system.
  * We might also consider sorting by end-time and other criteria,
  * but see the caveat above (editing means rearrangement of the dives).
@@ -1724,6 +1728,16 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 		return -1;
 	if (a->when > b->when)
 		return 1;
+	if (a->divetrip != b->divetrip) {
+		if (!b->divetrip)
+			return -1;
+		if (!a->divetrip)
+			return 1;
+		if (a->divetrip->when < b->divetrip->when)
+			return -1;
+		if (a->divetrip->when > b->divetrip->when)
+			return 1;
+	}
 	if (a->id < b->id)
 		return -1;
 	if (a->id > b->id)
