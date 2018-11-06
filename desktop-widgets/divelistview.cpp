@@ -35,7 +35,7 @@ DiveListView::DiveListView(QWidget *parent) : QTreeView(parent), mouseClickSelec
 	setItemDelegateForColumn(DiveTripModel::RATING, new StarWidgetsDelegate(this));
 	setModel(MultiFilterSortModel::instance());
 
-	setSortingEnabled(false);
+	setSortingEnabled(true);
 	setContextMenuPolicy(Qt::DefaultContextMenu);
 	setSelectionMode(ExtendedSelection);
 	header()->setContextMenuPolicy(Qt::ActionsContextMenu);
