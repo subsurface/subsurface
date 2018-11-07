@@ -346,7 +346,7 @@ QString DiveObjectHelper::tripMeta() const
 		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
 		QString firstMonth = firstTime.toString("MMM");
 		QString tripDate = QStringLiteral("%1@%2").arg(firstMonth,firstTime.toString("yy"));
-;
+
 		if (title.isEmpty()) {
 			// so use the date range
 			QString firstYear = firstTime.toString("yyyy");
