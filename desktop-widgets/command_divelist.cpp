@@ -511,7 +511,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 			allocTrip.reset(trip);
 	}
 
-	int idx = dive_get_insertion_index(divePtr.get());
+	int idx = dive_get_insertion_index(&dive_table, divePtr.get());
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 

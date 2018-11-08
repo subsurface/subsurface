@@ -30,6 +30,7 @@
  * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * struct dive *unregister_dive(int idx)
  * void delete_single_dive(int idx)
+ * void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
  * void add_single_dive(int idx, struct dive *dive)
  * struct dive *merge_two_dives(struct dive *a, struct dive *b)
  * void select_dive(struct dive *dive)
@@ -1111,34 +1112,42 @@ struct dive **grow_dive_table(struct dive_table *table)
 }
 
 /* get the index where we want to insert the dive so that everything stays
- * ordered reverse-chronologically */
-int dive_get_insertion_index(struct dive *dive)
+ * ordered according to dive_less_than() */
+int dive_get_insertion_index(struct dive_table *table, struct dive *dive)
 {
 	/* we might want to use binary search here */
-	for (int i = 0; i < dive_table.nr; i++) {
-		if (dive->when <= dive_table.dives[i]->when)
+	for (int i = 0; i < table->nr; i++) {
+		if (dive_less_than(dive, table->dives[i]))
 			return i;
 	}
-	return dive_table.nr;
+	return table->nr;
 }
 
-/* add a dive at the given index. if the index is negative, the dive will
- * be added according to reverse chronological order */
-void add_single_dive(int idx, struct dive *dive)
+/* add a dive at the given index to a dive table. if the index is negative,
+ * the dive will be added according to dive_less_than() order */
+void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
 {
 	int i;
 	if (idx < 0)
-		idx = dive_get_insertion_index(dive);
-	grow_dive_table(&dive_table);
-	dive_table.nr++;
-	if (dive->selected)
-		amount_selected++;
+		idx = dive_get_insertion_index(table, dive);
+	grow_dive_table(table);
+	table->nr++;
 
-	for (i = idx; i < dive_table.nr; i++) {
-		struct dive *tmp = dive_table.dives[i];
-		dive_table.dives[i] = dive;
+	for (i = idx; i < table->nr; i++) {
+		struct dive *tmp = table->dives[i];
+		table->dives[i] = dive;
 		dive = tmp;
 	}
+}
+
+/* add a dive at the given index in the global dive table and keep track
+ * of the number of selected dives. if the index is negative, the dive will
+ * be added according to dive_less_than() order */
+void add_single_dive(int idx, struct dive *dive)
+{
+	add_dive_to_table(&dive_table, idx, dive);
+	if (dive->selected)
+		amount_selected++;
 }
 
 bool consecutive_selected()
