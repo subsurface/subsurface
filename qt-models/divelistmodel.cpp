@@ -100,7 +100,7 @@ void DiveListSortModel::updateDivesShownInTrips()
 	struct dive_trip *dt = dive_trip_list;
 	int rc = rowCount();
 	while (dt) {
-		dt->showndives = rc ? 0 : dt->nrdives;
+		dt->showndives = rc ? 0 : dt->dives.nr;
 		dt = dt->next;
 	}
 	for (int i = 0; i < rowCount(); i++) {

@@ -286,13 +286,18 @@ typedef enum {
 	NUM_TRIPFLAGS
 } tripflag_t;
 
+struct dive_table {
+	int nr, allocated;
+	struct dive **dives;
+};
+
 typedef struct dive_trip
 {
 	timestamp_t when;
 	char *location;
 	char *notes;
-	struct dive *dives;
-	int nrdives, showndives;
+	struct dive_table dives;
+	int showndives;
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved;
 	bool autogen;
@@ -306,7 +311,6 @@ struct dive {
 	int number;
 	tripflag_t tripflag;
 	dive_trip_t *divetrip;
-	struct dive *next, **pprev;
 	bool selected;
 	bool hidden_by_filter;
 	timestamp_t when;
@@ -427,11 +431,6 @@ extern const struct units SI_units, IMPERIAL_units;
 
 extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
-
-struct dive_table {
-	int nr, allocated;
-	struct dive **dives;
-};
 
 extern struct dive_table dive_table, downloadTable;
 extern struct dive displayed_dive;

@@ -634,8 +634,8 @@ bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &s
 		return false; // Oops. Neither dive nor trip, something is seriously wrong.
 
 	// Show the trip if any dive is visible
-	for (d = trip->dives; d; d = d->next) {
-		if (!d->hidden_by_filter)
+	for (int i = 0; i < trip->dives.nr; ++i) {
+		if (!trip->dives.dives[i]->hidden_by_filter)
 			return true;
 	}
 	return false;

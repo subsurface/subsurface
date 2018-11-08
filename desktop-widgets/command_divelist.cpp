@@ -66,7 +66,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 	// remove dive from trip - if this is the last dive in the trip
 	// remove the whole trip.
 	res.trip = unregister_dive_from_trip(d, false);
-	if (res.trip && res.trip->nrdives == 0) {
+	if (res.trip && res.trip->dives.nr == 0) {
 		unregister_trip(res.trip);		// Remove trip from backend
 		res.tripToAdd.reset(res.trip);		// Take ownership of trip
 	}
@@ -231,7 +231,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive, false);
-	if (trip && trip->nrdives == 0) {
+	if (trip && trip->dives.nr == 0) {
 		unregister_trip(trip);		// Remove trip from backend
 		res.reset(trip);
 	}
@@ -737,10 +737,10 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 		return;
 	dive_trip *newTrip = combine_trips_create(trip1, trip2);
 	divesToMove.tripsToAdd.emplace_back(newTrip);
-	for (dive *d = trip1->dives; d; d = d->next)
-		divesToMove.divesToMove.push_back( { d, newTrip } );
-	for (dive *d = trip2->dives; d; d = d->next)
-		divesToMove.divesToMove.push_back( { d, newTrip } );
+	for (int i = 0; i < trip1->dives.nr; ++i)
+		divesToMove.divesToMove.push_back( { trip1->dives.dives[i], newTrip } );
+	for (int i = 0; i < trip2->dives.nr; ++i)
+		divesToMove.divesToMove.push_back( { trip2->dives.dives[i], newTrip } );
 }
 
 SplitDives::SplitDives(dive *d, duration_t time)

@@ -57,20 +57,19 @@ QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 		switch (column) {
 		case DiveTripModel::NR:
 			QString shownText;
-			struct dive *d = trip->dives;
 			int countShown = 0;
-			while (d) {
+			for (int i = 0; i < trip->dives.nr; ++i) {
+				struct dive *d = trip->dives.dives[i];
 				if (!d->hidden_by_filter)
 					countShown++;
 				oneDayTrip &= is_same_day (trip->when,  d->when);
-				d = d->next;
 			}
-			if (countShown < trip->nrdives)
+			if (countShown < trip->dives.nr)
 				shownText = tr("(%1 shown)").arg(countShown);
 			if (!empty_string(trip->location))
-				return QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->nrdives, oneDayTrip) + " "+ shownText;
+				return QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->dives.nr, oneDayTrip) + " "+ shownText;
 			else
-				return get_trip_date_string(trip->when, trip->nrdives, oneDayTrip) + shownText;
+				return get_trip_date_string(trip->when, trip->dives.nr, oneDayTrip) + shownText;
 		}
 	}
 
