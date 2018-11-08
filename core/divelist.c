@@ -476,6 +476,15 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	}
 }
 
+static int get_idx_in_table(const struct dive_table *table, const struct dive *dive)
+{
+	for (int i = 0; i < table->nr; ++i) {
+		if (table->dives[i] == dive)
+			return i;
+	}
+	return -1;
+}
+
 int get_divenr(const struct dive *dive)
 {
 	int i;
@@ -735,7 +744,7 @@ void dump_trip_list(void)
 		       trip->autogen ? "autogen " : "",
 		       ++i, trip->location,
 		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
-		       trip->nrdives, trip);
+		       trip->dives.nr, trip);
 		last_time = trip->when;
 	}
 	printf("-----\n");
@@ -775,7 +784,7 @@ void unregister_trip(dive_trip_t *trip)
 {
 	dive_trip_t **p, *tmp;
 
-	assert(!trip->dives);
+	assert(!trip->dives.nr);
 
 	/* Remove the trip from the list of trips */
 	p = &dive_trip_list;
@@ -796,14 +805,7 @@ static void delete_trip(dive_trip_t *trip)
 
 void find_new_trip_start_time(dive_trip_t *trip)
 {
-	struct dive *dive = trip->dives;
-	timestamp_t when = dive->when;
-
-	while ((dive = dive->next) != NULL) {
-		if (dive->when < when)
-			when = dive->when;
-	}
-	trip->when = when;
+	trip->when = trip->dives.nr > 0 ? trip->dives.dives[0]->when : 0;
 }
 
 /* check if we have a trip right before / after this dive */
@@ -844,33 +846,35 @@ struct dive *last_selected_dive()
 	return ret;
 }
 
+static void unregister_dive_from_table(struct dive_table *table, int idx)
+{
+	int i;
+	for (i = idx; i < table->nr - 1; i++)
+		table->dives[i] = table->dives[i + 1];
+	table->dives[--table->nr] = NULL;
+}
+
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
- * for removing the trip, if the trip->nrdives went to 0.
+ * for removing the trip, if the trip->dives.nr went to 0.
  */
 struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen)
 {
-	struct dive *next, **pprev;
 	dive_trip_t *trip = dive->divetrip;
+	int idx;
 
 	if (!trip)
 		return NULL;
 
-	/* Remove the dive from the trip's list of dives */
-	next = dive->next;
-	pprev = dive->pprev;
-	*pprev = next;
-	if (next)
-		next->pprev = pprev;
-
+	idx = get_idx_in_table(&trip->dives, dive);
+	if (idx)
+		unregister_dive_from_table(&trip->dives, idx);
 	dive->divetrip = NULL;
 	if (was_autogen)
 		dive->tripflag = TF_NONE;
 	else
 		dive->tripflag = NO_TRIP;
-	assert(trip->nrdives > 0);
-	--trip->nrdives;
-	if (trip->nrdives > 0 && trip->when == dive->when)
+	if (trip->dives.nr > 0 && trip->when == dive->when)
 		find_new_trip_start_time(trip);
 	return trip;
 }
@@ -878,7 +882,7 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen
 void remove_dive_from_trip(struct dive *dive, short was_autogen)
 {
 	struct dive_trip *trip = unregister_dive_from_trip(dive, was_autogen);
-	if (trip && trip->nrdives == 0)
+	if (trip && trip->dives.nr == 0)
 		delete_trip(trip);
 }
 
@@ -887,20 +891,9 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	if (dive->divetrip == trip)
 		return;
 	remove_dive_from_trip(dive, false);
-	trip->nrdives++;
-	trip->showndives++;
+	add_dive_to_table(&trip->dives, -1, dive);
 	dive->divetrip = trip;
 	dive->tripflag = ASSIGNED_TRIP;
-
-	/* Add it to the trip's list of dives*/
-	dive->next = trip->dives;
-	if (dive->next)
-		dive->next->pprev = &dive->next;
-	trip->dives = dive;
-	dive->pprev = &trip->dives;
-
-	if (dive->when && trip->when > dive->when)
-		trip->when = dive->when;
 }
 
 dive_trip_t *alloc_trip(void)
@@ -1036,7 +1029,7 @@ void autogroup_dives(void)
 	if (!autogroup)
 		return;
 
-	for(i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
+	for (i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
 			insert_trip(trip);
@@ -1046,14 +1039,6 @@ void autogroup_dives(void)
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
-}
-
-static void unregister_dive_from_table(struct dive_table *table, int idx)
-{
-	int i;
-	for (i = idx; i < table->nr - 1; i++)
-		table->dives[i] = table->dives[i + 1];
-	table->dives[--table->nr] = NULL;
 }
 
 /* Remove a dive from a dive table. This assumes that the
@@ -1298,11 +1283,10 @@ void deselect_dive(struct dive *dive)
 
 void deselect_dives_in_trip(struct dive_trip *trip)
 {
-	struct dive *dive;
 	if (!trip)
 		return;
-	for (dive = trip->dives; dive; dive = dive->next)
-		deselect_dive(dive);
+	for (int i = 0; i < trip->dives.nr; ++i)
+		deselect_dive(trip->dives.dives[i]);
 }
 
 void select_dives_in_trip(struct dive_trip *trip)
@@ -1310,9 +1294,11 @@ void select_dives_in_trip(struct dive_trip *trip)
 	struct dive *dive;
 	if (!trip)
 		return;
-	for (dive = trip->dives; dive; dive = dive->next)
+	for (int i = 0; i < trip->dives.nr; ++i) {
+		dive = trip->dives.dives[i];
 		if (!dive->hidden_by_filter)
 			select_dive(dive);
+	}
 }
 
 void filter_dive(struct dive *d, bool shown)
@@ -1340,8 +1326,8 @@ void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 	}
 	/* this also removes the dives from trip_b and eventually
 	 * calls delete_trip(trip_b) when the last dive has been moved */
-	while (trip_b->dives)
-		add_dive_to_trip(trip_b->dives, trip_a);
+	while (trip_b->dives.nr > 0)
+		add_dive_to_trip(trip_b->dives.dives[0], trip_a);
 }
 
 /* Out of two strings, copy the string that is not empty (if any). */
