@@ -16,8 +16,7 @@
  * int init_decompression(struct dive *dive)
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
- * void insert_trip(dive_trip_t **dive_trip_p)
- * void insert_trip_dont_merge(dive_trip_t *dive_trip_p)
+ * void insert_trip(dive_trip_t *dive_trip_p)
  * void unregister_trip(dive_trip_t *trip)
  * void free_trip(dive_trip_t *trip)
  * void remove_dive_from_trip(struct dive *dive)
@@ -742,44 +741,8 @@ void dump_trip_list(void)
 }
 #endif
 
-/* insert the trip into the dive_trip_list - but ensure you don't have
- * two trips for the same date; but if you have, make sure you don't
- * keep the one with less information */
-void insert_trip(dive_trip_t **dive_trip_p)
-{
-	dive_trip_t *dive_trip = *dive_trip_p;
-	dive_trip_t **p = &dive_trip_list;
-	dive_trip_t *trip;
-	struct dive *divep;
-
-	/* Walk the dive trip list looking for the right location.. */
-	while ((trip = *p) != NULL && trip->when < dive_trip->when)
-		p = &trip->next;
-
-	if (trip && trip->when == dive_trip->when) {
-		if (!trip->location)
-			trip->location = dive_trip->location;
-		if (!trip->notes)
-			trip->notes = dive_trip->notes;
-		divep = dive_trip->dives;
-		while (divep) {
-			add_dive_to_trip(divep, trip);
-			divep = divep->next;
-		}
-		*dive_trip_p = trip;
-	} else {
-		dive_trip->next = trip;
-		*p = dive_trip;
-	}
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
-
-/* same as insert_trip, but don't merge trips with the same date.
- * this is cruical for the merge undo-command, because there we
- * add a new trip with the same date and then remove the old one. */
-void insert_trip_dont_merge(dive_trip_t *dive_trip)
+/* insert the trip into the dive_trip_list */
+void insert_trip(dive_trip_t *dive_trip)
 {
 	dive_trip_t **p = &dive_trip_list;
 	dive_trip_t *trip;
@@ -790,6 +753,9 @@ void insert_trip_dont_merge(dive_trip_t *dive_trip)
 
 	dive_trip->next = trip;
 	*p = dive_trip;
+#ifdef DEBUG_TRIP
+	dump_trip_list();
+#endif
 }
 
 /* free resources associated with a trip structure */
@@ -957,7 +923,7 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 	dive_trip_t *dive_trip = alloc_trip();
 
 	dive_trip = create_trip_from_dive(dive);
-	insert_trip(&dive_trip);
+	insert_trip(dive_trip);
 
 	dive->tripflag = IN_TRIP;
 	add_dive_to_trip(dive, dive_trip);
@@ -1072,7 +1038,7 @@ void autogroup_dives(void)
 	for(i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
-			insert_trip(&trip);
+			insert_trip(trip);
 		for (j = from; j < to; ++j)
 			add_dive_to_trip(get_dive(j), trip);
 	}

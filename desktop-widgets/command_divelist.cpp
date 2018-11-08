@@ -82,7 +82,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.tripToAdd)
-		insert_trip_dont_merge(d.tripToAdd.release()); // Return ownership to backend
+		insert_trip(d.tripToAdd.release()); // Return ownership to backend
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
 	dive *res = d.dive.release();		// Give up ownership of dive
@@ -259,7 +259,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	for (OwningTripPtr &trip: dives.tripsToAdd) {
 		dive_trip *t = trip.release();	// Give up ownership
 		createdTrips.push_back(t);
-		insert_trip_dont_merge(t);	// Return ownership to backend
+		insert_trip(t);	// Return ownership to backend
 	}
 	dives.tripsToAdd.clear();
 
