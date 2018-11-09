@@ -605,15 +605,17 @@ void ShiftTime::redoit()
 	// Changing times may have unsorted the dive table
 	sort_table(&dive_table);
 
-	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
-	// Therefore, collect all dives in a array and sort by trip.
+	// We send one time changed signal per trip (see comments in DiveListNotifier.h).
+	// Therefore, collect all dives in an array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
 	dives.reserve(diveList.size());
 	for (dive *d: diveList)
 		dives.push_back({ d->divetrip, d });
 
-	// Send signals.
+	// Send signals and sort tables.
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		if (trip)
+			sort_table(&trip->dives); // Keep the trip-table in order
 		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
 	});
 
