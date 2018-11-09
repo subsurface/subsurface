@@ -39,6 +39,7 @@
  * int unsaved_changes()
  * void remove_autogen_trips()
  * bool dive_less_than(const struct dive *a, const struct dive *b)
+ * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
  * void delete_dive_from_table(struct dive_table *table, int idx)
@@ -758,7 +759,7 @@ void insert_trip(dive_trip_t *dive_trip)
 	dive_trip_t *trip;
 
 	/* Walk the dive trip list looking for the right location.. */
-	while ((trip = *p) != NULL && trip->when < dive_trip->when)
+	while ((trip = *p) != NULL && trip_less_than(trip, dive_trip))
 		p = &trip->next;
 
 	dive_trip->next = trip;
@@ -1739,6 +1740,25 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 bool dive_less_than(const struct dive *a, const struct dive *b)
 {
 	return comp_dives(a, b) < 0;
+}
+
+/* Trips are compared according to the first dive in the trip.
+ * Even though it shouldn't happen, take care about "empty" trips.
+ * Since a dive can only belong to one trip, no two trips should
+ * compare as equal
+ */
+static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
+{
+	if (a->dives.nr <= 0)
+		return b->dives.nr <= 0 ? 0 : -1;
+	if (b->dives.nr <= 0)
+		return 1;
+	return comp_dives(a->dives.dives[0], b->dives.dives[0]);
+}
+
+bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
+{
+	return comp_trips(a, b) < 0;
 }
 
 static int sortfn(const void *_a, const void *_b)
