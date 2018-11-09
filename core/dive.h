@@ -556,6 +556,7 @@ extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 
 extern bool dive_less_than(const struct dive *a, const struct dive *b);
+extern bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b);
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);
