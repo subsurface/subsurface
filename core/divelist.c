@@ -181,54 +181,84 @@ static int calculate_otu(const struct dive *dive)
 	}
 	return lrint(otu);
 }
-/* calculate CNS for a dive - this only takes the first divecomputer into account */
-int const cns_table[][3] = {
-	/* po2, Maximum Single Exposure, Maximum 24 hour Exposure */
-	{ 1600, 45 * 60, 150 * 60 },
-	{ 1500, 120 * 60, 180 * 60 },
-	{ 1400, 150 * 60, 180 * 60 },
-	{ 1300, 180 * 60, 210 * 60 },
-	{ 1200, 210 * 60, 240 * 60 },
-	{ 1100, 240 * 60, 270 * 60 },
-	{ 1000, 300 * 60, 300 * 60 },
-	{ 900, 360 * 60, 360 * 60 },
-	{ 800, 450 * 60, 450 * 60 },
-	{ 700, 570 * 60, 570 * 60 },
-	{ 600, 720 * 60, 720 * 60 }
+/* Table of maximum oxygen exposure durations, used in CNS calulations.
+   This table shows the official NOAA maximum O2 exposure limits (in seconds) for different PO2 values. It also gives
+   slope values for linear interpolation for intermediate PO2 values between the tabulated PO2 values in the 1st column.
+   Top & bottom rows are inserted that are not in the NOAA table: (1) For PO2 > 1.6 the same slope value as between
+   1.5 & 1.6 is used. This exptrapolation for PO2 > 1.6 likely gives an underestimate above 1.6 but is better than the
+   value for PO2=1.6 (45 min). (2) The NOAA table only tabulates values for PO2 >= 0.6. Since O2-uptake occurs down to
+   PO2=0.5, the same slope is used as for 0.7 > PO2 > 0.6. This gives a conservative estimate for 0.6 > PO2 > 0.5. To
+   preserve the integer structure of the table, all slopes are given as slope*10: divide by 10 to get the valid slope.
+   The columns below are: 
+   po2 (mbar), Maximum Single Exposure (seconds), single_slope, Maximum 24 hour Exposure (seconds), 24h_slope */
+int const cns_table[][5] = {
+	{ 1600,  45 * 60, 456, 150 * 60, 180 },
+	{ 1550,  83 * 60, 456, 165 * 60, 180 },
+	{ 1500, 120 * 60, 444, 180 * 60, 180 },
+	{ 1450, 135 * 60, 180, 180 * 60,  00 },
+	{ 1400, 150 * 60, 180, 180 * 60,  00 },
+	{ 1350, 165 * 60, 180, 195 * 60, 180 },
+	{ 1300, 180 * 60, 180, 210 * 60, 180 },
+	{ 1250, 195 * 60, 180, 225 * 60, 180 },
+	{ 1200, 210 * 60, 180, 240 * 60, 180 },
+	{ 1100, 240 * 60, 180, 270 * 60, 180 },
+	{ 1000, 300 * 60, 360, 300 * 60, 180 },
+	{ 900,  360 * 60, 360, 360 * 60, 360 },
+	{ 800,  450 * 60, 540, 450 * 60, 540 },
+	{ 700,  570 * 60, 720, 570 * 60, 720 },
+	{ 600,  720 * 60, 900, 720 * 60, 900 },
+	{ 500,  870 * 60, 900, 870 * 60, 900 }
 };
 
-/* Calculate the CNS for a single dive */
+/* Calculate the CNS for a single dive  - this only takes the first divecomputer into account.
+   The CNS contributions are summed for dive segments defined by samples. The maximum O2 exposure duration for each
+   segment is calculated based on the mean depth of the two samples (start & end) that define each segment. The CNS
+   contribution of each segment is found by dividing the time duration of the segment by its maximum exposure duration.
+   The contributions of all segments of the dive are summed to get the total CNS% value. This is a partial implementation
+   of the proposals in Erik Baker's document "Oxygen Toxicity Calculations" using fixed-depth calculations for the mean
+   po2 for each segment. Empirical testing showed that, for large changes in depth, the cns calculation for the mean po2
+   value is extremely close, if not identical to the additive calculations for 0.1 bar increments in po2 from the start
+   to the end of the segment, assuming a constant rate of change in po2 (i.e. depth) with time. */
 static double calculate_cns_dive(const struct dive *dive)
 {
 	int n;
 	size_t j;
 	const struct divecomputer *dc = &dive->dc;
 	double cns = 0.0;
-
-	/* Caclulate the CNS for each sample in this dive and sum them */
+	/* Calculate the CNS for each sample in this dive and sum them */
 	for (n = 1; n < dc->samples; n++) {
 		int t;
-		int po2;
+		int po2i, po2f;
+		bool trueo2 = false;
 		struct sample *sample = dc->sample + n;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->setpoint.mbar) {
-			po2 = sample->setpoint.mbar;
-		} else {
-			int o2 = active_o2(dive, dc, sample->time);
-			po2 = lrint(o2 * depth_to_atm(sample->depth.mm, dive));
+		if (sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR)
+			po2i = psample->o2sensor[0].mbar;
+			po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
+			trueo2 = true;
 		}
-		/* CNS don't increse when below 500 matm */
-		if (po2 < 500)
+		if ((dc->divemode == CCR) && (!trueo2)) {
+			po2i = psample->setpoint.mbar;		// if CCR has no o2 sensors then use setpoint
+			po2f = sample->setpoint.mbar;
+			trueo2 = true;
+		}
+		if (!trueo2) {
+			int o2 = active_o2(dive, dc, psample->time);			// For OC and rebreather without o2 sensor:
+			po2i = lrint(o2 * depth_to_atm(psample->depth.mm, dive));	// (initial) po2 at start of segment
+			po2f = lrint(o2 * depth_to_atm(sample->depth.mm, dive));	// (final) po2 at end of segment
+		}
+		po2i = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
+		/* Don't increase CNS when po2 below 500 matm */
+		if (po2i <= 500)
 			continue;
-		/* Find what table-row we should calculate % for */
-		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * 3); j++)
-			if (po2 > cns_table[j][0])
+		/* Find the table-row for calculating the maximum exposure at this PO2 */
+		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * NO_COLUMNS); j++)
+			if (po2i > cns_table[j][PO2VAL])
 				break;
-		j--;
-		cns += ((double)t) / ((double)cns_table[j][1]) * 100;
+		/* Increment CNS with simple linear interpolation: 100 * time / (single-exposure-time + delta-PO2 * single-slope) */
+		cns += (double)t / ((double)cns_table[j][SINGLE_EXP] - ((double)po2i - (double)cns_table[j][PO2VAL]) * (double)cns_table[j][SINGLE_SLOPE] / 10.0) * 100;
 	}
-
 	return cns;
 }
 
