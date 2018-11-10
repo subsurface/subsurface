@@ -300,7 +300,7 @@ int DiveTripModel::rowCount(const QModelIndex &parent) const
 
 	// Only trips have items
 	const Item &entry =  items[parent.row()];
-	return entry.trip ? entry.dives.size() : 0;
+	return entry.d_or_t.trip ? entry.dives.size() : 0;
 }
 
 static const quintptr noParent = ~(quintptr)0; // This is the "internalId" marker for top-level item
@@ -437,34 +437,33 @@ QVariant DiveTripModel::headerData(int section, Qt::Orientation orientation, int
 	return QVariant();
 }
 
-DiveTripModel::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : trip(t),
+DiveTripModel::Item::Item(dive_trip *t, const QVector<dive *> &divesIn) : d_or_t{nullptr, t},
 	dives(divesIn.toStdVector())
 {
 }
 
-DiveTripModel::Item::Item(dive_trip *t, dive *d) : trip(t),
+DiveTripModel::Item::Item(dive_trip *t, dive *d) : d_or_t{nullptr, t},
 	dives({ d })
 {
 }
 
-DiveTripModel::Item::Item(dive *d) : trip(nullptr),
-	dives({ d })
+DiveTripModel::Item::Item(dive *d) : d_or_t{d, nullptr}
 {
 }
 
 bool DiveTripModel::Item::isDive(const dive *d) const
 {
-	return !trip && dives.size() == 1 && dives[0] == d;
+	return d_or_t.dive == d;
 }
 
 dive *DiveTripModel::Item::getDive() const
 {
-	return !trip && dives.size() == 1 ? dives[0] : nullptr;
+	return d_or_t.dive;
 }
 
 timestamp_t DiveTripModel::Item::when() const
 {
-	return trip ? trip->when : dives[0]->when;
+	return d_or_t.trip ? d_or_t.trip->when : d_or_t.dive->when;
 }
 
 // Find a range of matching elements in a vector.
@@ -572,9 +571,9 @@ void DiveTripModel::setupModelData()
 		}
 
 		// Check if that trip is already known to us: search for the first item
-		// where item->trip is equal to trip.
+		// that corresponds to that trip
 		auto it = std::find_if(items.begin(), items.end(), [trip](const Item &item)
-				       { return item.trip == trip; });
+				       { return item.d_or_t.trip == trip; });
 		if (it == items.end()) {
 			// We didn't find an entry for this trip -> add one
 			items.emplace_back(trip, d);
@@ -593,28 +592,23 @@ void DiveTripModel::setLayout(DiveTripModel::Layout layout)
 	setupModelData();
 }
 
-QPair<dive_trip *, dive *> DiveTripModel::tripOrDive(const QModelIndex &index) const
+dive_or_trip DiveTripModel::tripOrDive(const QModelIndex &index) const
 {
 	if (!index.isValid())
 		return { nullptr, nullptr };
 
 	QModelIndex parent = index.parent();
 	// An invalid parent means that we're at the top-level
-	if (!parent.isValid()) {
-		const Item &entry = items[index.row()];
-		if (entry.trip)
-			return { entry.trip, nullptr };		// A trip
-		else
-			return { nullptr, entry.dives[0] };	// A dive
-	}
+	if (!parent.isValid())
+		return items[index.row()].d_or_t;
 
 	// Otherwise, we're at a leaf -> thats a dive
-	return { nullptr, items[parent.row()].dives[index.row()] };
+	return { items[parent.row()].dives[index.row()], nullptr };
 }
 
 dive *DiveTripModel::diveOrNull(const QModelIndex &index) const
 {
-	return tripOrDive(index).second;
+	return tripOrDive(index).dive;
 }
 
 QVariant DiveTripModel::data(const QModelIndex &index, int role) const
@@ -623,11 +617,11 @@ QVariant DiveTripModel::data(const QModelIndex &index, int role) const
 	if (role == Qt::FontRole)
 		return defaultModelFont();
 
-	auto entry = tripOrDive(index);
-	if (entry.first)
-		return tripData(entry.first, index.column(), role);
-	else if (entry.second)
-		return diveData(entry.second, index.column(), role);
+	dive_or_trip entry = tripOrDive(index);
+	if (entry.trip)
+		return tripData(entry.trip, index.column(), role);
+	else if (entry.dive)
+		return diveData(entry.dive, index.column(), role);
 	else
 		return QVariant();
 }
@@ -662,7 +656,7 @@ bool DiveTripModel::setData(const QModelIndex &index, const QVariant &value, int
 int DiveTripModel::findTripIdx(const dive_trip *trip) const
 {
 	for (int i = 0; i < (int)items.size(); ++i)
-		if (items[i].trip == trip)
+		if (items[i].d_or_t.trip == trip)
 			return i;
 	return -1;
 }
@@ -753,11 +747,8 @@ void DiveTripModel::addDivesToTrip(int trip, const QVector<dive *> &dives)
 // before the trip in the case of equal timestamps.
 bool DiveTripModel::dive_before_entry(const dive *d, const Item &entry)
 {
-	// Dives at the same time come afer trips in ascending mode, therefore use the "<" operator.
-	// This makes them appear as before trips in descending mode.
-	if (entry.trip)
-		return d->when < entry.trip->when;
-	return dive_less_than(d, entry.getDive());
+	dive_or_trip d_or_t { (dive *)d, nullptr };
+	return dive_or_trip_less_than(d_or_t, entry.d_or_t);
 }
 
 void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive *> &dives)
@@ -1073,8 +1064,8 @@ bool DiveTripModel::lessThan(const QModelIndex &i1, const QModelIndex &i2) const
 	int row2 = i2.row();
 	if (row1 < 0 || row1 >= (int)items.size() || row2 < 0 || row2 >= (int)items.size())
 		return false;
-	const dive *d1 = items[i1.row()].dives[0];
-	const dive *d2 = items[i2.row()].dives[0];
+	const dive *d1 = items[i1.row()].d_or_t.dive;
+	const dive *d2 = items[i2.row()].d_or_t.dive;
 	// This is used as a second sort criterion: For equal values, sorting is chronologically *descending*.
 	int row_diff = row2 - row1;
 	switch (i1.column()) {
