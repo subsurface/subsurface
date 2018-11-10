@@ -726,18 +726,18 @@ void addInBatches(Vector1 &v1, const Vector2 &v2, Comparator comp, Inserter inse
 
 void DiveTripModel::addDivesToTrip(int trip, const QVector<dive *> &dives)
 {
-		// Construct the parent index, ie. the index of the trip.
-		QModelIndex parent = createIndex(trip, 0, noParent);
+	// Construct the parent index, ie. the index of the trip.
+	QModelIndex parent = createIndex(trip, 0, noParent);
 
-		// Either this is outside of a trip or we're in list mode.
-		// Thus, add dives at the top-level in batches
-		addInBatches(items[trip].dives, dives,
-			     [](dive *d, dive *d2) { return dive_less_than(d, d2); }, // comp
-			     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
-				beginInsertRows(parent, idx, idx + to - from - 1);
-				items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
-				endInsertRows();
-			     });
+	// Either this is outside of a trip or we're in list mode.
+	// Thus, add dives at the top-level in batches
+	addInBatches(items[trip].dives, dives,
+		     [](dive *d, dive *d2) { return dive_less_than(d, d2); }, // comp
+		     [&](std::vector<dive *> &items, const QVector<dive *> &dives, int idx, int from, int to) { // inserter
+			beginInsertRows(parent, idx, idx + to - from - 1);
+			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
+			endInsertRows();
+		     });
 }
 
 // This function is used to compare a dive to an arbitrary entry (dive or trip).
