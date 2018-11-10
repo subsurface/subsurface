@@ -40,6 +40,7 @@
  * void remove_autogen_trips()
  * bool dive_less_than(const struct dive *a, const struct dive *b)
  * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
+ * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
  * void delete_dive_from_table(struct dive_table *table, int idx)
@@ -1559,7 +1560,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 		struct dive *dive_to_add = import_table->dives[i];
 
 		/* Find insertion point. */
-		while (j < dive_table.nr && dive_table.dives[j]->when < dive_to_add->when)
+		while (j < dive_table.nr && dive_less_than(dive_table.dives[j], dive_to_add))
 			j++;
 
 		/* Try to merge into previous dive. */
@@ -1742,13 +1743,11 @@ bool dive_less_than(const struct dive *a, const struct dive *b)
 	return comp_dives(a, b) < 0;
 }
 
-/* Trips are compared according to the first dive in the trip.
- * Even though it shouldn't happen, take care about "empty" trips.
- * Since a dive can only belong to one trip, no two trips should
- * compare as equal
- */
+/* Trips are compared according to the first dive in the trip. */
 static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
 {
+	/* This should never happen, nevertheless don't crash on trips
+	 * with no (or worse a negative number of) dives. */
 	if (a->dives.nr <= 0)
 		return b->dives.nr <= 0 ? 0 : -1;
 	if (b->dives.nr <= 0)
@@ -1759,6 +1758,33 @@ static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
 bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
 {
 	return comp_trips(a, b) < 0;
+}
+
+/* When comparing a dive to a trip, use the first dive of the trip. */
+static int comp_dive_to_trip(struct dive *a, struct dive_trip *b)
+{
+	/* This should never happen, nevertheless don't crash on trips
+	 * with no (or worse a negative number of) dives. */
+	if (b->dives.nr <= 0)
+		return -1;
+	return comp_dives(a, b->dives.dives[0]);
+}
+
+static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
+{
+	if (a.dive && b.dive)
+		return comp_dives(a.dive, b.dive);
+	if (a.trip && b.trip)
+		return comp_trips(a.trip, b.trip);
+	if (a.dive)
+		return comp_dive_to_trip(a.dive, b.trip);
+	else
+		return -comp_dive_to_trip(b.dive, a.trip);
+}
+
+bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
+{
+	return comp_dive_or_trip(a, b) < 0;
 }
 
 static int sortfn(const void *_a, const void *_b)
