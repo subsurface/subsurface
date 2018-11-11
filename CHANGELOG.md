@@ -1,3 +1,5 @@
+- Dive: Perform more accurate CNS and OTU calculations, and include
+  CNS & OTU calculations for rebreather dives [#1850 & #1851].
 - Windows: add experimental support for BTLE dive computers.
   For more information have a look at section 5.2.2 of the user
   manual ("On Windows").
