@@ -62,14 +62,14 @@ QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 				struct dive *d = trip->dives.dives[i];
 				if (!d->hidden_by_filter)
 					countShown++;
-				oneDayTrip &= is_same_day (trip->when,  d->when);
+				oneDayTrip &= is_same_day(trip_date(trip),  d->when);
 			}
 			if (countShown < trip->dives.nr)
 				shownText = tr("(%1 shown)").arg(countShown);
 			if (!empty_string(trip->location))
-				return QString(trip->location) + ", " + get_trip_date_string(trip->when, trip->dives.nr, oneDayTrip) + " "+ shownText;
+				return QString(trip->location) + ", " + get_trip_date_string(trip_date(trip), trip->dives.nr, oneDayTrip) + " "+ shownText;
 			else
-				return get_trip_date_string(trip->when, trip->dives.nr, oneDayTrip) + shownText;
+				return get_trip_date_string(trip_date(trip), trip->dives.nr, oneDayTrip) + shownText;
 		}
 	}
 
@@ -463,7 +463,7 @@ dive *DiveTripModel::Item::getDive() const
 
 timestamp_t DiveTripModel::Item::when() const
 {
-	return d_or_t.trip ? d_or_t.trip->when : d_or_t.dive->when;
+	return d_or_t.trip ? trip_date(d_or_t.trip) : d_or_t.dive->when;
 }
 
 // Find a range of matching elements in a vector.
@@ -678,10 +678,11 @@ int DiveTripModel::findDiveInTrip(int tripIdx, const dive *d) const
 	return -1;
 }
 
-int DiveTripModel::findInsertionIndex(timestamp_t when) const
+int DiveTripModel::findInsertionIndex(const dive_trip *trip) const
 {
+	dive_or_trip d_or_t{ nullptr, (dive_trip *)trip };
 	for (int i = 0; i < (int)items.size(); ++i) {
-		if (when <= items[i].when())
+		if (dive_or_trip_less_than(d_or_t, items[i].d_or_t))
 			return i;
 	}
 	return items.size();
@@ -765,7 +766,7 @@ void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive
 			     });
 	} else if (addTrip) {
 		// We're supposed to add the whole trip. Just insert the trip.
-		int idx = findInsertionIndex(trip->when); // Find the place where we have to insert the thing
+		int idx = findInsertionIndex(trip); // Find the place where to insert the trip
 		beginInsertRows(QModelIndex(), idx, idx);
 		items.insert(items.begin() + idx, { trip, dives });
 		endInsertRows();

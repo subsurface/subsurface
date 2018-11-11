@@ -343,7 +343,7 @@ QString DiveObjectHelper::tripMeta() const
 	if (dt) {
 		QString numDives = tr("(%n dive(s))", "", dt->showndives);
 		QString title(dt->location);
-		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
+		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
 		QString firstMonth = firstTime.toString("MMM");
 		QString tripDate = QStringLiteral("%1@%2").arg(firstMonth,firstTime.toString("yy"));
 

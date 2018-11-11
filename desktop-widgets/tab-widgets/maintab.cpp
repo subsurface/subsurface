@@ -909,10 +909,6 @@ void MainTab::acceptChanges()
 				Command::shiftTime(selectedDives, (int)offset);
 		}
 	}
-	if (editMode != TRIP && current_dive->divetrip) {
-		current_dive->divetrip->when = current_dive->when;
-		find_new_trip_start_time(current_dive->divetrip);
-	}
 	if (editMode == MANUALLY_ADDED_DIVE) {
 		// we just added or edited the dive, let fixup_dive() make
 		// sure we get the max. depth right

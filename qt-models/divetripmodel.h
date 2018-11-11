@@ -104,7 +104,7 @@ private:
 	int findTripIdx(const dive_trip *trip) const;
 	int findDiveIdx(const dive *d) const;			// Find _top_level_ dive
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
-	int findInsertionIndex(timestamp_t when) const;		// Where to insert item with timestamp "when"
+	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
 
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);

@@ -293,7 +293,6 @@ struct dive_table {
 
 typedef struct dive_trip
 {
-	timestamp_t when;
 	char *location;
 	char *notes;
 	struct dive_table dives;
@@ -432,6 +431,7 @@ extern void delete_single_dive(int idx);
 extern void insert_trip(dive_trip_t *trip);
 extern void unregister_trip(dive_trip_t *trip);
 extern void free_trip(dive_trip_t *trip);
+extern timestamp_t trip_date(const struct dive_trip *trip);
 
 extern const struct units SI_units, IMPERIAL_units;
 

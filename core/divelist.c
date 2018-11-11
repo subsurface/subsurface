@@ -739,7 +739,7 @@ void dump_trip_list(void)
 
 	for (trip = dive_trip_list; trip; trip = trip->next) {
 		struct tm tm;
-		utc_mkdate(trip->when, &tm);
+		utc_mkdate(trip_date(trip), &tm);
 		if (trip->when < last_time)
 			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
@@ -805,9 +805,12 @@ static void delete_trip(dive_trip_t *trip)
 	free_trip(trip);
 }
 
-void find_new_trip_start_time(dive_trip_t *trip)
+
+timestamp_t trip_date(const struct dive_trip *trip)
 {
-	trip->when = trip->dives.nr > 0 ? trip->dives.dives[0]->when : 0;
+	if (!trip || trip->dives.nr == 0)
+		return 0;
+	return trip->dives.dives[0]->when;
 }
 
 /* check if we have a trip right before / after this dive */
@@ -876,8 +879,6 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen
 		dive->tripflag = TF_NONE;
 	else
 		dive->tripflag = NO_TRIP;
-	if (trip->dives.nr > 0 && trip->when == dive->when)
-		find_new_trip_start_time(trip);
 	return trip;
 }
 
@@ -908,7 +909,6 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 	dive_trip_t *trip;
 
 	trip = alloc_trip();
-	trip->when = dive->when;
 	trip->location = copy_string(get_dive_location(dive));
 
 	return trip;
@@ -1345,7 +1345,6 @@ dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *tr
 	dive_trip_t *trip;
 
 	trip = alloc_trip();
-	trip->when = trip_a->when;
 	trip->location = copy_non_empty_string(trip_a->location, trip_b->location);
 	trip->notes = copy_non_empty_string(trip_a->notes, trip_b->notes);
 
@@ -1726,9 +1725,9 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 			return -1;
 		if (!a->divetrip)
 			return 1;
-		if (a->divetrip->when < b->divetrip->when)
+		if (trip_date(a->divetrip) < trip_date(b->divetrip))
 			return -1;
-		if (a->divetrip->when > b->divetrip->when)
+		if (trip_date(a->divetrip) > trip_date(b->divetrip))
 			return 1;
 	}
 	if (a->id < b->id)
