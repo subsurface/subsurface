@@ -799,12 +799,6 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	}
 }
 
-static void parse_trip_date(char *line, struct membuffer *str, void *_trip)
-{ UNUSED(str); dive_trip_t *trip = _trip; update_date(&trip->when, line); }
-
-static void parse_trip_time(char *line, struct membuffer *str, void *_trip)
-{ UNUSED(str); dive_trip_t *trip = _trip; update_time(&trip->when, line); }
-
 static void parse_trip_location(char *line, struct membuffer *str, void *_trip)
 { UNUSED(line); dive_trip_t *trip = _trip; trip->location = get_utf8(str); }
 
@@ -1007,7 +1001,7 @@ static void site_parser(char *line, struct membuffer *str, void *_ds)
 struct keyword_action trip_action[] = {
 #undef D
 #define D(x) { #x, parse_trip_ ## x }
-	D(date), D(location), D(notes), D(time),
+	D(location), D(notes),
 };
 
 static void trip_parser(char *line, struct membuffer *str, void *_trip)
@@ -1202,20 +1196,6 @@ static struct dive *create_new_dive(timestamp_t when)
 	return dive;
 }
 
-static dive_trip_t *create_new_trip(int yyyy, int mm, int dd)
-{
-	dive_trip_t *trip = alloc_trip();
-	struct tm tm = { 0 };
-
-	/* We'll fill in the real data from the trip descriptor file */
-	tm.tm_year = yyyy;
-	tm.tm_mon = mm-1;
-	tm.tm_mday = dd;
-	trip->when = utc_mktime(&tm);
-
-	return trip;
-}
-
 static bool validate_date(int yyyy, int mm, int dd)
 {
 	return yyyy > 1930 && yyyy < 3000 &&
@@ -1243,7 +1223,7 @@ static int dive_trip_directory(const char *root, const char *name)
 	if (!validate_date(yyyy, mm, dd))
 		return GIT_WALK_SKIP;
 	finish_active_trip();
-	active_trip = create_new_trip(yyyy, mm, dd);
+	active_trip = alloc_trip();
 	return GIT_WALK_OK;
 }
 
