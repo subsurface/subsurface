@@ -159,27 +159,52 @@ static int active_o2(const struct dive *dive, const struct divecomputer *dc, dur
 	return get_o2(gas);
 }
 
-/* calculate OTU for a dive - this only takes the first divecomputer into account */
+/* Calculate OTU for a dive - this only takes the first divecomputer into account.
+   Implement the protocol in Erik Baker's document "Oxygen Toxicity Calculations". This code
+   implements a third-order continuous approximation of Baker's Eq. 2 and enables OTU
+   calculation for rebreathers. Baker obtained his information from:
+   Comroe Jr. JH et al. (1945)  Oxygen toxicity. J. Am. Med. Assoc. 128,710-717
+   Clark JM & CJ Lambertsen (1970) Pulmonary oxygen tolerance in man and derivation of pulmonary
+      oxygen tolerance curves. Inst. env. Med. Report 1-70, University of Pennsylvania, Philadelphia, USA. */
 static int calculate_otu(const struct dive *dive)
 {
 	int i;
 	double otu = 0.0;
 	const struct divecomputer *dc = &dive->dc;
-
 	for (i = 1; i < dc->samples; i++) {
 		int t;
-		int po2;
+		int po2i, po2f;
+		double pm;
 		struct sample *sample = dc->sample + i;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->setpoint.mbar) {
-			po2 = sample->setpoint.mbar;
+		if (sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR) ..
+			po2i = psample->o2sensor[0].mbar;
+			po2f = sample->o2sensor[0].mbar;	// ... use data from the first o2 sensor
 		} else {
-			int o2 = active_o2(dive, dc, psample->time);
-			po2 = lrint(o2 * depth_to_atm(sample->depth.mm, dive));
+			if (dc->divemode == CCR) {
+				po2i = psample->setpoint.mbar;		// if CCR has no o2 sensors then use setpoint
+				po2f = sample->setpoint.mbar;
+			} else {						// For OC and rebreather without o2 sensor/setpoint
+				int o2 = active_o2(dive, dc, psample->time);	// 	... calculate po2 from depth and FiO2.
+				po2i = lrint(o2 * depth_to_atm(psample->depth.mm, dive));	// (initial) po2 at start of segment
+				po2f = lrint(o2 * depth_to_atm(sample->depth.mm, dive));	// (final) po2 at end of segment
+			}
 		}
-		if (po2 >= 500)
-			otu += pow((po2 - 500) / 1000.0, 0.83) * t / 30.0;
+		if ((po2i > 500) || (po2f > 500)) {			// If PO2 in segment is above 500 mbar then calculate otu
+			if (po2i <= 500) {				// For descent segment with po2i <= 500 mbar ..
+				t = t * (po2f - 500) / (po2f - po2i);	// .. only consider part with PO2 > 500 mbar
+				po2i = 501;				// Mostly important for the dive planner with long segments
+			} else {
+				if (po2f <= 500){
+					t = t * (po2i - 500) / (po2i - po2f);	// For ascent segment with po2f <= 500 mbar ..
+					po2f = 501;				// .. only consider part with PO2 > 500 mbar
+				}
+			}
+			pm = (po2f + po2i)/1000.0 - 1.0;
+			// This is a 3rd order continuous approximation of Baker's eq. 2, therefore Baker's eq. 1 is not used:
+			otu += t / 60.0 * pow(pm, 5.0/6.0) * (1.0 - 5.0 * (po2f - po2i) * (po2f - po2i) / 216000000.0 / (pm * pm));
+		}
 	}
 	return lrint(otu);
 }
