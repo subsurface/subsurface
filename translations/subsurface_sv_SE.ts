@@ -4545,7 +4545,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="517"/>
         <source>Select All</source>
-        <translation>Markera Samtliga</translation>
+        <translation>Markera alla</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="518"/>
@@ -7289,7 +7289,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="395"/>
         <source>working in no-cloud mode</source>
-        <translation>Arbetar i molnfritt läge</translation>
+        <translation>använder lokalt läge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
@@ -7584,7 +7584,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="53"/>
         <source>Change</source>
-        <translation>Ändring</translation>
+        <translation>Ändra</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="60"/>
@@ -7698,7 +7698,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="458"/>
         <source>Use Metric Units</source>
-        <translation>Använd Metersystemet</translation>
+        <translation>Använd metersystemet</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="486"/>
