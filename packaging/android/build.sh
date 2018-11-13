@@ -402,6 +402,7 @@ cmake $MOBILE_CMAKE \
 	-DANDROID_PLATFORM="android-16" \
 	-DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_ROOT"/build/cmake/android.toolchain.cmake \
 	-DQT_ANDROID_CMAKE="$BUILDROOT"/qt-android-cmake/AddQtAndroidApk.cmake \
+	-DANDROID_STL="gnustl_shared" \
 	-DFORCE_LIBSSH=OFF \
 	-DLIBDC_FROM_PKGCONFIG=ON \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
