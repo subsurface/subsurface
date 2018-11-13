@@ -115,6 +115,7 @@ private:
 
 	// Addition and deletion of dives
 	void addDivesToTrip(int idx, const QVector<dive *> &dives);
+	void topLevelChanged(int idx);
 
 	dive *diveOrNull(const QModelIndex &index) const;	// Returns a dive if this index represents a dive, null otherwise
 	dive_or_trip tripOrDive(const QModelIndex &index) const;

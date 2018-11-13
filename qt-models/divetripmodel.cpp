@@ -688,6 +688,36 @@ int DiveTripModel::findInsertionIndex(const dive_trip *trip) const
 	return items.size();
 }
 
+// After a top-level item changed (notably a trip), it might
+// need to be reordered. Move the item and send a "data-changed" signal.
+void DiveTripModel::topLevelChanged(int idx)
+{
+	if (idx < 0 || idx >= (int)items.size())
+		return;
+
+	// First, try to move backwards
+	int newIdx = idx;
+	while (newIdx > 0 && dive_or_trip_less_than(items[idx].d_or_t, items[newIdx - 1].d_or_t))
+		--newIdx;
+
+	// If that didn't change, try to move forward
+	if (newIdx == idx) {
+		while (newIdx <= (int)items.size() && !dive_or_trip_less_than(items[idx].d_or_t, items[newIdx + 1].d_or_t))
+			++newIdx;
+	}
+
+	// If index changed, move items
+	if (newIdx != idx) {
+		beginMoveRows(QModelIndex(), idx, idx, QModelIndex(), newIdx);
+		moveInVector(items, idx, idx + 1, newIdx);
+		endMoveRows();
+	}
+
+	// Finally, inform UI of changed trip header
+	QModelIndex tripIdx = createIndex(newIdx, 0, noParent);
+	dataChanged(tripIdx, tripIdx);
+}
+
 // Add items from vector "v2" to vector "v1" in batches of contiguous objects.
 // The items are inserted at places according to a sort order determined by "comp".
 // "v1" and "v2" are supposed to be ordered accordingly.
@@ -739,6 +769,9 @@ void DiveTripModel::addDivesToTrip(int trip, const QVector<dive *> &dives)
 			items.insert(items.begin() + idx, dives.begin() + from, dives.begin() + to);
 			endInsertRows();
 		     });
+
+	// If necessary, move the trip
+	topLevelChanged(trip);
 }
 
 // This function is used to compare a dive to an arbitrary entry (dive or trip).
@@ -783,10 +816,6 @@ void DiveTripModel::divesAdded(dive_trip *trip, bool addTrip, const QVector<dive
 
 		// ...and add dives.
 		addDivesToTrip(idx, dives);
-
-		// We have to signal that the trip changed, so that the number of dives in th header is updated
-		QModelIndex tripIndex = createIndex(idx, 0, noParent);
-		dataChanged(tripIndex, tripIndex);
 	}
 }
 
@@ -833,9 +862,8 @@ void DiveTripModel::divesDeleted(dive_trip *trip, bool deleteTrip, const QVector
 						return from - to; // Delta: negate the number of items deleted
 					 });
 
-			// We have to signal that the trip changed, so that the number of dives in th header is updated
-			QModelIndex tripIndex = createIndex(idx, 0, noParent);
-			dataChanged(tripIndex, tripIndex);
+			// If necessary, move the trip
+			topLevelChanged(idx);
 		}
 	}
 }
@@ -874,6 +902,9 @@ void DiveTripModel::divesChanged(dive_trip *trip, const QVector<dive *> &dives)
 					dataChanged(createIndex(from, 0, idx), createIndex(to - 1, COLUMNS - 1, idx));
 					return 0; // No items added or deleted
 				 });
+
+		// If necessary, move the trip
+		topLevelChanged(idx);
 	}
 }
 
