@@ -1093,6 +1093,9 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		d->buddy = copy_qstring(buddy);
 	}
 	if (myDive->divemaster() != diveMaster) {
+		if (diveMaster.contains(",")){
+			diveMaster = diveMaster.replace(QRegExp("\\s*,\\s*"), ", ");
+		}
 		diveChanged = true;
 		free(d->divemaster);
 		d->divemaster = copy_qstring(diveMaster);
