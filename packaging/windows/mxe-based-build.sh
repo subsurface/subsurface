@@ -101,7 +101,7 @@ EXECDIR=`pwd`
 BASEDIR=$(cd "$EXECDIR/.."; pwd)
 BUILDDIR=$(cd "$EXECDIR"; pwd)
 MXEDIR=${MXEDIR:-mxe}
-MXEBUILDTYPE="i686-w64-mingw32.shared.posix.dw2"
+MXEBUILDTYPE=${MXEBUILDTYPE:-i686-w64-mingw32.shared.posix.dw2}
 
 echo $BUILDDIR
 

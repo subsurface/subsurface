@@ -13,6 +13,9 @@ mkdir win32
 ls -l
 cd win32
 
+# make sure we use the pre-installed version of MXE
+export MXEBUILDTYPE=i686-w64-mingw32.shared
+
 # the MXE build used in this VM doesn't support FTDI
 bash -ex ${TRAVIS_BUILD_DIR}/packaging/windows/mxe-based-build.sh -noftdi installer
 bash -ex ${TRAVIS_BUILD_DIR}/packaging/windows/smtk2ssrf-mxe-build.sh -i
