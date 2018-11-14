@@ -492,6 +492,13 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 	install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib/grantlee DESTINATION ${WINDOWSSTAGING})
+
+	if(NOT Qt5Core_VERSION VERSION_LESS 5.11.0)
+		# hack to work around the fact that we don't process the dependencies of plugins
+		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
+		install(FILES ${_qt5Core_install_prefix}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+	endif()
+
 	if(NOT DEFINED MAKENSIS)
 		set(MAKENSIS makensis)
 	endif()
