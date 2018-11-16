@@ -2,6 +2,8 @@
 #define FILTERWIDGET_2_H
 
 #include <QWidget>
+#include <QHideEvent>
+#include <QShowEvent>
 
 #include <memory>
 
@@ -18,12 +20,16 @@ class FilterWidget2 : public QWidget {
 public:
 	explicit FilterWidget2(QWidget *parent = 0);
 	void updateFilter();
+protected:
+	void hideEvent(QHideEvent *event) override;
+	void showEvent(QShowEvent *event) override;
 
 signals:
 	void filterDataChanged(const FilterData& data);
 
 private:
 	std::unique_ptr<Ui::FilterWidget2> ui;
+	FilterData filterData;
 };
 
 #endif
