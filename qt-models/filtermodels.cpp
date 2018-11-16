@@ -68,6 +68,12 @@ namespace {
 		}
 		return true;
 	}
+
+	// TODO: Finish this iimplementation.
+	bool hasEquipment(const QStringList& equipment, const struct dive *d)
+	{
+		return true;
+	}
 }
 
 MultiFilterSortModel *MultiFilterSortModel::instance()
@@ -127,6 +133,9 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 
 	// Location
 	if (!hasLocation(filterData.location, d))
+		return false;
+
+	if (!hasEquipment(filterData.equipment, d))
 		return false;
 
 	return true;

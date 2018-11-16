@@ -141,7 +141,7 @@
     <widget class="QDoubleSpinBox" name="maxWaterTemp"/>
    </item>
    <item row="10" column="0">
-    <widget class="QLabel" name="label_10">
+    <widget class="QLabel" name="labelEquipment">
      <property name="text">
       <string>Equipment</string>
      </property>
