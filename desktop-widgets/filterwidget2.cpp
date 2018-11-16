@@ -81,5 +81,19 @@ void FilterWidget2::updateFilter()
 	data.equipment = ui->equipment->text().split(",", QString::SkipEmptyParts);
 	data.invertFilter = ui->invertFilter->isChecked();
 
+	filterData = data;
+	emit filterDataChanged(data);
+}
+
+void FilterWidget2::showEvent(QShowEvent *event)
+{
+	QWidget::showEvent(event);
+	emit filterDataChanged(filterData);
+}
+
+void FilterWidget2::hideEvent(QHideEvent *event)
+{
+	QWidget::hideEvent(event);
+	FilterData data;
 	emit filterDataChanged(data);
 }
