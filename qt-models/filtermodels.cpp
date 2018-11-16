@@ -15,6 +15,61 @@
 #include <QDebug>
 #include <algorithm>
 
+namespace {
+	bool hasTag(const QStringList tags, const struct dive *d)
+	{
+		if (!tags.isEmpty()) {
+			auto dive_tags = get_taglist_string(d->tag_list).split(",");
+			bool found_tag = false;
+			for (const auto& filter_tag : tags)
+				for (const auto& dive_tag : dive_tags)
+					if (dive_tag.trimmed().toUpper().contains(filter_tag.trimmed().toUpper()))
+						found_tag = true;
+
+			return found_tag;
+		}
+		return true;
+	}
+
+	bool hasPerson(const QStringList people, const struct dive *d)
+	{
+		if (!people.isEmpty()) {
+			QStringList dive_people = QString(d->buddy).split(",", QString::SkipEmptyParts)
+				+ QString(d->divemaster).split(",", QString::SkipEmptyParts);
+
+			bool found_person = false;
+			for(const auto& filter_person : people)
+				for(const auto& dive_person : dive_people)
+					if (dive_person.trimmed().toUpper().contains(filter_person.trimmed().toUpper()))
+						found_person = true;
+
+			return found_person;
+		}
+		return true;
+	}
+
+	bool hasLocation(const QStringList locations, const struct dive *d)
+	{
+		if (!locations.isEmpty()) {
+			QStringList diveLocations;
+			if (d->divetrip)
+				diveLocations.push_back(QString(d->divetrip->location));
+
+			if (d->dive_site)
+				diveLocations.push_back(QString(d->dive_site->name));
+
+			bool found_location = false;
+			for (const auto& filter_location : locations)
+				for (const auto& dive_location : diveLocations)
+					if (dive_location.trimmed().toUpper().contains(filter_location.trimmed().toUpper()))
+						found_location = true;
+
+			return found_location;
+		}
+		return true;
+	}
+}
+
 MultiFilterSortModel *MultiFilterSortModel::instance()
 {
 	static MultiFilterSortModel self;
@@ -39,12 +94,40 @@ void MultiFilterSortModel::setLayout(DiveTripModel::Layout layout)
 
 bool MultiFilterSortModel::showDive(const struct dive *d) const
 {
-	if (curr_dive_site) {
-		dive_site *ds = d->dive_site;
-		if (!ds)
-			return false;
-		return ds == curr_dive_site || same_string(ds->name, curr_dive_site->name);
-	}
+	if (!filterData.validFilter)
+		return true;
+
+	if (d->visibility < filterData.minVisibility || d->visibility > filterData.maxVisibility)
+		return false;
+
+	if (d->rating < filterData.minRating || d->rating > filterData.maxRating)
+		return false;
+
+	// TODO: get the preferences for the imperial vs metric data.
+	// ignore the check if it doesn't makes sense.
+	if (d->watertemp.mkelvin < C_to_mkelvin(filterData.minWaterTemp) || d->watertemp.mkelvin > C_to_mkelvin((filterData.maxWaterTemp)))
+		return false;
+
+	if (d->airtemp.mkelvin < C_to_mkelvin(filterData.minAirTemp) || d->airtemp.mkelvin > C_to_mkelvin(filterData.maxAirTemp))
+		return false;
+
+	if (filterData.from.isValid() && d->when < filterData.from.toTime_t())
+		return false;
+
+	if (filterData.to.isValid() && d->when > filterData.to.toTime_t())
+		return false;
+
+	// tags.
+	if (!hasTag(filterData.tags, d))
+		return false;
+
+	// people
+	if (!hasPerson(filterData.people, d))
+		return false;
+
+	// Location
+	if (!hasLocation(filterData.location, d))
+		return false;
 
 	return true;
 }
