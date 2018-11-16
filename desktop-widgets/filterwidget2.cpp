@@ -18,6 +18,12 @@ FilterWidget2::FilterWidget2(QWidget* parent)
 	ui->maxAirTemp->setValue(data.maxAirTemp);
 	ui->minWaterTemp->setValue(data.minWaterTemp);
 	ui->maxWaterTemp->setValue(data.maxWaterTemp);
+
+	// TODO: unhide this when we discover how to search for equipment.
+	ui->equipment->hide();
+	ui->labelEquipment->hide();
+	ui->invertFilter->hide();
+
 	ui->to->setDate(data.to.date());
 
 	connect(ui->maxRating, &StarWidget::valueChanged,
