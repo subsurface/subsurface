@@ -972,16 +972,12 @@ QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 	utc_mkdate(when, &tm);
 	QDateTime localTime = QDateTime::fromMSecsSinceEpoch(1000*when,Qt::UTC);
 	localTime.setTimeSpec(Qt::UTC);
-	QString ret ;
 
 	QString suffix = " " + gettextFromC::tr("(%n dive(s))", "", nr);
-	if (getday) {
-		ret = localTime.date().toString(prefs.date_format) + suffix;
-	} else {
-		ret = localTime.date().toString("MMM yyyy") + suffix;
-	}
-	return ret;
-
+	if (getday)
+		return loc.toString(localTime, prefs.date_format) + suffix;
+	else
+		return loc.toString(localTime, "MMM yyyy") + suffix;
 }
 
 static QMutex hashOfMutex;
