@@ -516,6 +516,22 @@ static void uemis_increased_timeout(int *timeout)
 	usleep(*timeout);
 }
 
+static char *build_ans_path(const char *path, int filenr)
+{
+	char *intermediate, *ans_path, fl[13];
+
+	/* Clamp filenr into the 0..9999 range. This is never necessary,
+	 * as filenr can never go above UEMIS_MAX_FILES, but gcc doesn't
+	 * recognize that and produces very noisy warnings. */
+	filenr = filenr < 0 ? 0 : filenr % 10000;
+
+	snprintf(fl, 13, "ANS%d.TXT", filenr);
+	intermediate = build_filename(path, "ANS");
+	ans_path = build_filename(intermediate, fl);
+	free(intermediate);
+	return ans_path;
+}
+
 /* send a request to the dive computer and collect the answer */
 static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 			     int n_param_out, const char **error_text)
@@ -583,8 +599,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		if (import_thread_cancelled)
 			return false;
 		progress_bar_fraction = filenr / (double)UEMIS_MAX_FILES;
-		snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
-		ans_path = build_filename(build_filename(path, "ANS"), fl);
+		ans_path = build_ans_path(path, filenr - 1);
 		ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 		if (ans_file < 0) {
 			*error_text = "can't open Uemis response file";
@@ -648,10 +663,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		}
 		if (ismulti && more_files && tmp[0] == '1') {
 			int size;
-			snprintf(fl, 13, "ANS%d.TXT", assembling_mbuf ? filenr - 2 : filenr - 1);
-			char *intermediate = build_filename(path, "ANS");
-			ans_path = build_filename(intermediate, fl);
-			free(intermediate);
+			ans_path = build_ans_path(path, assembling_mbuf ? filenr - 2 : filenr - 1);
 			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			if (ans_file < 0) {
 				*error_text = "can't open Uemis response file";
@@ -688,10 +700,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 		char *buf = NULL;
 
 		if (!ismulti) {
-			snprintf(fl, 13, "ANS%d.TXT", filenr - 1);
-			char *intermediate = build_filename(path, "ANS");
-			ans_path = build_filename(intermediate, fl);
-			free(intermediate);
+			ans_path = build_ans_path(path, filenr - 1);
 			ans_file = subsurface_open(ans_path, O_RDONLY, 0666);
 			if (ans_file < 0) {
 				*error_text = "can't open Uemis response file";
@@ -701,7 +710,6 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				return false;
 			}
 
-			free(ans_path);
 			size = bytes_available(ans_file);
 			if (size > 3) {
 				int r;
@@ -716,10 +724,11 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 				buffer_add(&mbuf, &mbuf_size, buf);
 				show_progress(buf, what);
 #if UEMIS_DEBUG & 8
-				fprintf(debugfile, "::r %s \"%s\"\n", fl, buf);
+				fprintf(debugfile, "::r %s \"%s\"\n", ans_path, buf);
 #endif
 			}
 			size -= 3;
+			free(ans_path);
 			close(ans_file);
 		} else {
 			ismulti = false;
@@ -1157,7 +1166,7 @@ static void do_delete_dives(struct dive_table *td, int idx)
 
 static bool load_uemis_divespot(const char *mountpath, int divespot_id)
 {
-	char divespotnr[10];
+	char divespotnr[32];
 	snprintf(divespotnr, sizeof(divespotnr), "%d", divespot_id);
 	param_buff[2] = divespotnr;
 #if UEMIS_DEBUG & 2
