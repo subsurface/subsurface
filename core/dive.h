@@ -278,13 +278,6 @@ struct divecomputer {
 #define W_IDX_PRIMARY 0
 #define W_IDX_SECONDARY 1
 
-typedef enum {
-	TF_NONE,
-	NO_TRIP,
-	IN_TRIP,
-	NUM_TRIPFLAGS
-} tripflag_t;
-
 struct dive_table {
 	int nr, allocated;
 	struct dive **dives;
@@ -307,7 +300,7 @@ extern dive_trip_t *dive_trip_list;
 struct picture;
 struct dive {
 	int number;
-	tripflag_t tripflag;
+	bool notrip; /* Don't autogroup this dive to a trip */
 	dive_trip_t *divetrip;
 	bool selected;
 	bool hidden_by_filter;
@@ -417,8 +410,6 @@ extern bool autogroup;
  * this works very well for people who usually dive as part of a trip and don't
  * regularly dive at a local facility; this is why trips are an optional feature */
 #define TRIP_THRESHOLD 3600 * 24 * 3
-
-#define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
 
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 

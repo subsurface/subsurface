@@ -2564,10 +2564,9 @@ static void merge_temperatures(struct dive *res, const struct dive *a, const str
  */
 static void pick_trip(struct dive *res, const struct dive *pick)
 {
-	tripflag_t tripflag = pick->tripflag;
 	dive_trip_t *trip = pick->divetrip;
 
-	res->tripflag = tripflag;
+	res->notrip = pick->notrip;
 	add_dive_to_trip(res, trip);
 }
 

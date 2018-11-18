@@ -261,7 +261,7 @@ static void parse_dive_notrip(char *line, struct membuffer *str, void *_dive)
 {
 	UNUSED(str);
 	UNUSED(line);
-	struct dive *dive = _dive; dive->tripflag = NO_TRIP;
+	struct dive *dive = _dive; dive->notrip = true;
 }
 
 static void parse_site_description(char *line, struct membuffer *str, void *_ds)

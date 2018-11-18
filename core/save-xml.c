@@ -476,7 +476,7 @@ void save_one_dive_to_mb(struct membuffer *b, struct dive *dive, bool anonymize)
 	put_string(b, "<dive");
 	if (dive->number)
 		put_format(b, " number='%d'", dive->number);
-	if (dive->tripflag == NO_TRIP)
+	if (dive->notrip)
 		put_format(b, " tripflag='NOTRIP'");
 	if (dive->rating)
 		put_format(b, " rating='%d'", dive->rating);

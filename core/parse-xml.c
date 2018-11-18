@@ -565,9 +565,9 @@ static void dive_site(char *buffer, struct dive_site **ds)
 	*ds = get_dive_site_by_uuid(uuid);
 }
 
-static void get_tripflag(char *buffer, tripflag_t *tf)
+static void get_notrip(char *buffer, bool *notrip)
 {
-	*tf = strcmp(buffer, "NOTRIP") ? TF_NONE : NO_TRIP;
+	*notrip = !strcmp(buffer, "NOTRIP");
 }
 
 /*
@@ -1241,7 +1241,7 @@ static void try_to_fill_dive(struct dive *dive, const char *name, char *buf, str
 		return;
 	if (MATCH("tags", divetags, &dive->tag_list))
 		return;
-	if (MATCH("tripflag", get_tripflag, &dive->tripflag))
+	if (MATCH("tripflag", get_notrip, &dive->notrip))
 		return;
 	if (MATCH_STATE("date", divedate, &dive->when))
 		return;
