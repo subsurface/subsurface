@@ -1318,6 +1318,86 @@ void QMLManager::deleteDive(int id)
 	changesNeedSaving();
 }
 
+bool QMLManager::toggleDiveSite(bool toggle)
+{
+	if (toggle)
+		what.divesite = what.divesite ? false : true;
+
+	return what.divesite;
+}
+
+bool QMLManager::toggleNotes(bool toggle)
+{
+	if (toggle)
+		what.notes = what.notes ? false : true;
+
+	return what.notes;
+}
+
+bool QMLManager::toggleDiveMaster(bool toggle)
+{
+	if (toggle)
+		what.divemaster = what.divemaster ? false : true;
+
+	return what.divemaster;
+}
+
+bool QMLManager::toggleBuddy(bool toggle)
+{
+	if (toggle)
+		what.buddy = what.buddy ? false : true;
+
+	return what.buddy;
+}
+
+bool QMLManager::toggleSuit(bool toggle)
+{
+	if (toggle)
+		what.suit = what.suit ? false : true;
+
+	return what.suit;
+}
+
+bool QMLManager::toggleRating(bool toggle)
+{
+	if (toggle)
+		what.rating = what.rating ? false : true;
+
+	return what.rating;
+}
+
+bool QMLManager::toggleVisibility(bool toggle)
+{
+	if (toggle)
+		what.visibility = what.visibility ? false : true;
+
+	return what.visibility;
+}
+
+bool QMLManager::toggleTags(bool toggle)
+{
+	if (toggle)
+		what.tags = what.tags ? false : true;
+
+	return what.tags;
+}
+
+bool QMLManager::toggleCylinders(bool toggle)
+{
+	if (toggle)
+		what.cylinders = what.cylinders ? false : true;
+
+	return what.cylinders;
+}
+
+bool QMLManager::toggleWeights(bool toggle)
+{
+	if (toggle)
+		what.weights = what.weights ? false : true;
+
+	return what.weights;
+}
+
 void QMLManager::copyDiveData(int id)
 {
 	m_copyPasteDive = get_dive_by_uniq_id(id);
@@ -1325,14 +1405,6 @@ void QMLManager::copyDiveData(int id)
 		appendTextToLog("trying to copy non-existing dive");
 		return;
 	}
-
-	// TODO: selection dialog for the data to be copied
-	what.divemaster = true;
-	what.buddy = true;
-	what.suit = true;
-	what.tags = true;
-	what.cylinders = true;
-	what.weights = true;
 
 	setNotificationText("Copy");
 }
