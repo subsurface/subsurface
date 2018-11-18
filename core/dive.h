@@ -419,8 +419,6 @@ extern bool autogroup;
  * regularly dive at a local facility; this is why trips are an optional feature */
 #define TRIP_THRESHOLD 3600 * 24 * 3
 
-#define UNGROUPED_DIVE(_dive) ((_dive)->tripflag == NO_TRIP)
-#define DIVE_IN_TRIP(_dive) ((_dive)->tripflag == IN_TRIP || (_dive)->tripflag == ASSIGNED_TRIP)
 #define DIVE_NEEDS_TRIP(_dive) ((_dive)->tripflag == TF_NONE)
 
 extern void add_dive_to_trip(struct dive *, dive_trip_t *);
