@@ -244,8 +244,9 @@ paste operation.
 
 image::mobile-images/CopyPaste.jpg["FIGURE: copy dive details in list",align="center"]
 
-Currently the details to be copied are hard-coded and include the following
-information:
+To choose what dive details to copy, long-press the copy button. This will open
+up a configuration page where you can toggle the details you want to copy over
+to the destination. By default, the following fields are copied:
 
 - divemaster
 - buddy
