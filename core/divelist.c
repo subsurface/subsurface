@@ -896,7 +896,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	remove_dive_from_trip(dive, false);
 	add_dive_to_table(&trip->dives, -1, dive);
 	dive->divetrip = trip;
-	dive->tripflag = ASSIGNED_TRIP;
+	dive->tripflag = IN_TRIP;
 }
 
 dive_trip_t *alloc_trip(void)
@@ -921,7 +921,6 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 	dive_trip = create_trip_from_dive(dive);
 	insert_trip(dive_trip);
 
-	dive->tripflag = IN_TRIP;
 	add_dive_to_trip(dive, dive_trip);
 	return dive_trip;
 }

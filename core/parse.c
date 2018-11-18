@@ -254,10 +254,8 @@ void dive_end(struct parser_state *state)
 		free_dive(state->cur_dive);
 	else
 		record_dive_to_table(state->cur_dive, state->target_table);
-	if (state->cur_trip) {
+	if (state->cur_trip)
 		add_dive_to_trip(state->cur_dive, state->cur_trip);
-		state->cur_dive->tripflag = IN_TRIP;
-	}
 	state->cur_dive = NULL;
 	state->cur_dc = NULL;
 	state->cur_location.lat.udeg = 0;
