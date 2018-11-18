@@ -592,6 +592,11 @@ if you have network connectivity and want to sync your data to cloud storage."),
 		visible: false
 	}
 
+	CopySettings {
+		id: settingsCopyWindow
+		visible: false
+	}
+
 	About {
 		id: aboutWindow
 		visible: false
