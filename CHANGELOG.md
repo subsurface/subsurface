@@ -3,6 +3,7 @@
 - Fix bug in cloud save after removing dives from a trip
 - Dive: Perform more accurate OTU calculations, and include
   OTU calculations for rebreather dives [#1851 & #1865].
+- Mobile: UI for copy-paste
 - Mobile: add initial copy-paste support
 - Desktop: translate trip date
 ---
