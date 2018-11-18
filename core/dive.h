@@ -282,7 +282,6 @@ typedef enum {
 	TF_NONE,
 	NO_TRIP,
 	IN_TRIP,
-	ASSIGNED_TRIP,
 	NUM_TRIPFLAGS
 } tripflag_t;
 
