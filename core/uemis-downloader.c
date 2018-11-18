@@ -858,7 +858,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 	}
 	if (dive) {
 		devdata->download_table->dives[--devdata->download_table->nr] = NULL;
-		if (dive->tripflag != TF_NONE)
+		if (dive->notrip)
 			remove_dive_from_trip(dive, false);
 
 		free(dive->dc.sample);

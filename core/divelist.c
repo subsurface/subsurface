@@ -875,10 +875,6 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen
 	if (idx)
 		unregister_dive_from_table(&trip->dives, idx);
 	dive->divetrip = NULL;
-	if (was_autogen)
-		dive->tripflag = TF_NONE;
-	else
-		dive->tripflag = NO_TRIP;
 	return trip;
 }
 
@@ -896,7 +892,6 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	remove_dive_from_trip(dive, false);
 	add_dive_to_table(&trip->dives, -1, dive);
 	dive->divetrip = trip;
-	dive->tripflag = IN_TRIP;
 }
 
 dive_trip_t *alloc_trip(void)
@@ -981,7 +976,9 @@ dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocat
 			continue;
 		}
 
-		if (!DIVE_NEEDS_TRIP(dive)) {
+		/* Only consider dives that have not been explicitly removed from
+		 * a dive trip by the user.  */
+		if (dive->notrip) {
 			lastdive = NULL;
 			continue;
 		}
@@ -1002,7 +999,7 @@ dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocat
 		lastdive = dive;
 		*from = i;
 		for (*to = *from + 1; (dive = get_dive(*to)) != NULL; (*to)++) {
-			if (dive->divetrip || !DIVE_NEEDS_TRIP(dive) ||
+			if (dive->divetrip || dive->notrip ||
 			    dive->when >= lastdive->when + TRIP_THRESHOLD)
 				break;
 			if (get_dive_location(dive) && !trip->location)

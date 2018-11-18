@@ -429,7 +429,7 @@ static void create_dive_buffer(struct dive *dive, struct membuffer *b)
 		put_format(b, "duration %u:%02u min\n", FRACTION(dive->dc.duration.seconds, 60));
 	SAVE("rating", rating);
 	SAVE("visibility", visibility);
-	cond_put_format(dive->tripflag == NO_TRIP, b, "notrip\n");
+	cond_put_format(dive->notrip, b, "notrip\n");
 	save_tags(b, dive->tag_list);
 	if (dive->dive_site)
 		put_format(b, "divesiteid %08x\n", dive->dive_site->uuid);

@@ -1273,10 +1273,8 @@ bool QMLManager::undoDelete(int id)
 		insert_trip(deletedTrip);
 	if (deletedDive->divetrip) {
 		struct dive_trip *trip = deletedDive->divetrip;
-		tripflag_t tripflag = deletedDive->tripflag; // this gets overwritten in add_dive_to_trip()
 		deletedDive->divetrip = NULL;
 		add_dive_to_trip(deletedDive, trip);
-		deletedDive->tripflag = tripflag;
 	}
 	record_dive(deletedDive);
 	QList<dive *>diveAsList;
