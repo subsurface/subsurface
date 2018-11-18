@@ -147,7 +147,7 @@ void TemplateEdit::saveSettings()
 		msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Cancel);
 		if (msgBox.exec() == QMessageBox::Save) {
-			memcpy(templateOptions, &newTemplateOptions, sizeof(struct template_options));
+			*templateOptions = newTemplateOptions;
 			if (templateChanged) {
 				TemplateLayout::writeTemplate(printOptions->p_template, ui->plainTextEdit->toPlainText());
 				if (printOptions->type == print_options::DIVELIST)
