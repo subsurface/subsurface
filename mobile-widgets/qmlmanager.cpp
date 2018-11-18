@@ -224,6 +224,18 @@ QMLManager::QMLManager() : m_locationServiceEnabled(false),
 	// make sure we know if the current cloud repo has been successfully synced
 	syncLoadFromCloud();
 	LOG_STP("qmlmgr sync load cloud");
+
+	memset(&m_copyPasteDive, 0, sizeof(m_copyPasteDive));
+	memset(&what, 0, sizeof(what));
+
+	// Let's set some defaults to be copied so users don't necessarily need
+	// to know how to configure this
+	what.divemaster = true;
+	what.buddy = true;
+	what.suit = true;
+	what.tags = true;
+	what.cylinders = true;
+	what.weights = true;
 }
 
 void QMLManager::applicationStateChanged(Qt::ApplicationState state)
