@@ -606,10 +606,13 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #ifdef UEMIS_DEBUG
 			fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
 #endif
+			free(ans_path);
 			return false;
 		}
-		if (read(ans_file, tmp, 100) < 0)
+		if (read(ans_file, tmp, 100) < 0) {
+			free(ans_path);
 			return false;
+		}
 		close(ans_file);
 #if UEMIS_DEBUG & 8
 		tmp[100] = '\0';
@@ -670,6 +673,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #ifdef UEMIS_DEBUG
 				fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
 #endif
+				free(ans_path);
 				return false;
 			}
 			free(ans_path);
@@ -707,6 +711,7 @@ static bool uemis_get_answer(const char *path, char *request, int n_param_in,
 #ifdef UEMIS_DEBUG
 				fprintf(debugfile, "open %s failed with errno %d\n", ans_path, errno);
 #endif
+				free(ans_path);
 				return false;
 			}
 
