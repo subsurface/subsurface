@@ -22,7 +22,10 @@ extern void process_loaded_dives();
 extern void process_imported_dives(struct dive_table *import_table, bool prefer_imported, bool downloaded);
 extern char *get_dive_gas_string(const struct dive *dive);
 
-struct dive **grow_dive_table(struct dive_table *table);
+extern struct dive **grow_dive_table(struct dive_table *table);
+extern int dive_get_insertion_index(struct dive_table *table, struct dive *dive);
+extern void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive);
+extern void add_single_dive(int idx, struct dive *dive);
 extern void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p);
 extern int get_divenr(const struct dive *dive);
 extern int get_divesite_idx(const struct dive_site *ds);
@@ -43,7 +46,6 @@ extern void deselect_dives_in_trip(struct dive_trip *trip);
 extern void filter_dive(struct dive *d, bool shown);
 extern void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b);
 extern dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b);
-extern void find_new_trip_start_time(dive_trip_t *trip);
 extern struct dive *first_selected_dive();
 extern struct dive *last_selected_dive();
 extern bool is_trip_before_after(const struct dive *dive, bool before);
@@ -59,6 +61,8 @@ void report_datafile_version(int version);
 int get_dive_id_closest_to(timestamp_t when);
 void clear_dive_file_data();
 void clear_table(struct dive_table *table);
+
+typedef enum {PO2VAL, SINGLE_EXP, SINGLE_SLOPE, DAILY_EXP, DAILY_SLOPE, NO_COLUMNS} cns_table_headers;
 
 #ifdef DEBUG_TRIP
 extern void dump_selection(void);

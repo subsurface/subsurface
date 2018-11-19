@@ -118,9 +118,13 @@ Kirigami.ScrollablePage {
 			}
 
 			property bool deleteButtonVisible: false
+			property bool copyButtonVisible: false
+			property bool pasteButtonVisible: false
 
 			onPressAndHold: {
 				deleteButtonVisible = true
+				copyButtonVisible = true
+				pasteButtonVisible = true
 				timer.restart()
 			}
 			Item {
@@ -139,7 +143,7 @@ Kirigami.ScrollablePage {
 				}
 				Item {
 					id: diveListEntry
-					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 : 1)
+					width: parent.width - Kirigami.Units.gridUnit * (innerListItem.deleteButtonVisible ? 3 * 3 : 1)
 					height: Math.ceil(childrenRect.height + Kirigami.Units.smallSpacing)
 					anchors.left: leftBarDive.right
 					Controls.Label {
@@ -195,17 +199,92 @@ Kirigami.ScrollablePage {
 					}
 				}
 				Rectangle {
-					visible: deleteButtonVisible
+					id: copyButton
+					visible: copyButtonVisible
 					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
-					width: height - 3 * Kirigami.Units.smallSpacing
-					color: subsurfaceTheme.contrastAccentColor
+					width: height
+					color: subsurfaceTheme.lightDrawerColor
 					antialiasing: true
 					radius: Kirigami.Units.smallSpacing
 					anchors {
 						left: diveListEntry.right
+						verticalCenter: diveListEntry.verticalCenter
+						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+						rightMargin: horizontalPadding * 2
+						leftMargin: horizontalPadding * 2
+					}
+					Kirigami.Icon {
+						anchors {
+							horizontalCenter: parent.horizontalCenter
+							verticalCenter: parent.verticalCenter
+						}
+						source: ":/icons/edit-copy"
+						width: parent.height
+						height: width
+					}
+					MouseArea {
+						anchors.fill: parent
+						enabled: parent.visible
+						onClicked: {
+							deleteButtonVisible = false
+							copyButtonVisible = false
+							pasteButtonVisible = false
+							timer.stop()
+							manager.copyDiveData(dive.id)
+						}
+					}
+				}
+				Rectangle {
+					id: pasteButton
+					visible: pasteButtonVisible
+					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
+					width: height
+					color: subsurfaceTheme.lightDrawerColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing
+					anchors {
+						left: copyButton.right
+						verticalCenter: diveListEntry.verticalCenter
+						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+						rightMargin: horizontalPadding * 2
+						leftMargin: horizontalPadding * 2
+					}
+					Kirigami.Icon {
+						anchors {
+							horizontalCenter: parent.horizontalCenter
+							verticalCenter: parent.verticalCenter
+						}
+						source: ":/icons/edit-paste"
+						width: parent.height
+						height: width
+					}
+					MouseArea {
+						anchors.fill: parent
+						enabled: parent.visible
+						onClicked: {
+							deleteButtonVisible = false
+							copyButtonVisible = false
+							pasteButtonVisible = false
+							timer.stop()
+							manager.pasteDiveData(dive.id)
+						}
+					}
+				}
+				Rectangle {
+					id: deleteButton
+					visible: deleteButtonVisible
+					height: diveListEntry.height - 2 * Kirigami.Units.smallSpacing
+					width: height
+					color: subsurfaceTheme.contrastAccentColor
+					antialiasing: true
+					radius: Kirigami.Units.smallSpacing
+					anchors {
+						left: pasteButton.right
 						right: parent.right
 						verticalCenter: diveListEntry.verticalCenter
 						verticalCenterOffset: Kirigami.Units.smallSpacing / 2
+						rightMargin: horizontalPadding * 2
+						leftMargin: horizontalPadding * 2
 					}
 					Kirigami.Icon {
 						anchors {
@@ -221,6 +300,8 @@ Kirigami.ScrollablePage {
 						enabled: parent.visible
 						onClicked: {
 							deleteButtonVisible = false
+							copyButtonVisible = false
+							pasteButtonVisible = false
 							timer.stop()
 							manager.deleteDive(dive.id)
 						}
@@ -231,6 +312,8 @@ Kirigami.ScrollablePage {
 					interval: 4000
 					onTriggered: {
 						deleteButtonVisible = false
+						copyButtonVisible = false
+						pasteButtonVisible = false
 					}
 				}
 			}

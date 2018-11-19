@@ -1093,6 +1093,9 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 		d->buddy = copy_qstring(buddy);
 	}
 	if (myDive->divemaster() != diveMaster) {
+		if (diveMaster.contains(",")){
+			diveMaster = diveMaster.replace(QRegExp("\\s*,\\s*"), ", ");
+		}
 		diveChanged = true;
 		free(d->divemaster);
 		d->divemaster = copy_qstring(diveMaster);
@@ -1267,13 +1270,11 @@ bool QMLManager::undoDelete(int id)
 		return false;
 	}
 	if (deletedTrip)
-		insert_trip(&deletedTrip);
+		insert_trip(deletedTrip);
 	if (deletedDive->divetrip) {
 		struct dive_trip *trip = deletedDive->divetrip;
 		tripflag_t tripflag = deletedDive->tripflag; // this gets overwritten in add_dive_to_trip()
 		deletedDive->divetrip = NULL;
-		deletedDive->next = NULL;
-		deletedDive->pprev = NULL;
 		add_dive_to_trip(deletedDive, trip);
 		deletedDive->tripflag = tripflag;
 	}
@@ -1306,17 +1307,55 @@ void QMLManager::deleteDive(int id)
 		memset(deletedTrip, 0, sizeof(struct dive_trip));
 	}
 	// if this is the last dive in that trip, remember the trip as well
-	if (d->divetrip && d->divetrip->nrdives == 1) {
+	if (d->divetrip && d->divetrip->dives.nr == 1) {
 		*deletedTrip = *d->divetrip;
 		deletedTrip->location = copy_string(d->divetrip->location);
 		deletedTrip->notes = copy_string(d->divetrip->notes);
-		deletedTrip->nrdives = 0;
+		deletedTrip->dives.nr = 0;
 		deletedDive->divetrip = deletedTrip;
 	}
 	DiveListModel::instance()->removeDiveById(id);
 	delete_single_dive(get_idx_by_uniq_id(id));
 	DiveListModel::instance()->resetInternalData();
 	changesNeedSaving();
+}
+
+void QMLManager::copyDiveData(int id)
+{
+	m_copyPasteDive = get_dive_by_uniq_id(id);
+	if (!m_copyPasteDive) {
+		appendTextToLog("trying to copy non-existing dive");
+		return;
+	}
+
+	// TODO: selection dialog for the data to be copied
+	what.divemaster = true;
+	what.buddy = true;
+	what.suit = true;
+	what.tags = true;
+	what.cylinders = true;
+	what.weights = true;
+
+	setNotificationText("Copy");
+}
+
+void QMLManager::pasteDiveData(int id)
+{
+	struct dive *d = get_dive_by_uniq_id(id);
+	if (!d) {
+		appendTextToLog("trying to paste to non-existing dive");
+		return;
+	}
+	if (!m_copyPasteDive) {
+		appendTextToLog("dive to paste is not selected");
+		return;
+	}
+	selective_copy_dive(m_copyPasteDive, d, what, false);
+
+	invalidate_dive_cache(d);
+	mark_divelist_changed(true);
+	changesNeedSaving();
+	setNotificationText("Paste");
 }
 
 void QMLManager::cancelDownloadDC()

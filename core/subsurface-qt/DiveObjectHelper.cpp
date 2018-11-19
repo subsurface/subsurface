@@ -343,14 +343,14 @@ QString DiveObjectHelper::tripMeta() const
 	if (dt) {
 		QString numDives = tr("(%n dive(s))", "", dt->showndives);
 		QString title(dt->location);
-		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*dt->when, Qt::UTC);
+		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
 		QString firstMonth = firstTime.toString("MMM");
 		QString tripDate = QStringLiteral("%1@%2").arg(firstMonth,firstTime.toString("yy"));
-;
+
 		if (title.isEmpty()) {
 			// so use the date range
 			QString firstYear = firstTime.toString("yyyy");
-			QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives->when, Qt::UTC);
+			QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives.dives[0]->when, Qt::UTC);
 			QString lastMonth = lastTime.toString("MMM");
 			QString lastYear = lastTime.toString("yyyy");
 			if (lastMonth == firstMonth && lastYear == firstYear)
@@ -368,7 +368,7 @@ QString DiveObjectHelper::tripMeta() const
 int DiveObjectHelper::tripNrDives() const
 {
 	struct dive_trip *dt = m_dive->divetrip;
-	return dt ? dt->nrdives : 0;
+	return dt ? dt->dives.nr : 0;
 }
 
 int DiveObjectHelper::maxcns() const

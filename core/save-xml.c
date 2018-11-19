@@ -520,7 +520,7 @@ static void save_trip(struct membuffer *b, dive_trip_t *trip, bool anonymize)
 	struct dive *dive;
 
 	put_format(b, "<trip");
-	show_date(b, trip->when);
+	show_date(b, trip_date(trip));
 	show_utf8(b, trip->location, " location=\'", "\'", 1);
 	put_format(b, ">\n");
 	show_utf8(b, trip->notes, "<notes>", "</notes>\n", 0);

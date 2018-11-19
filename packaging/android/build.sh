@@ -398,8 +398,11 @@ cmake $MOBILE_CMAKE \
 	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
 	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
 	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \
-	-DCMAKE_TOOLCHAIN_FILE="$BUILDROOT"/qt-android-cmake/toolchain/android.toolchain.cmake \
+	-DANDROID_TOOLCHAIN="gcc" \
+	-DANDROID_PLATFORM="android-16" \
+	-DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_ROOT"/build/cmake/android.toolchain.cmake \
 	-DQT_ANDROID_CMAKE="$BUILDROOT"/qt-android-cmake/AddQtAndroidApk.cmake \
+	-DANDROID_STL="gnustl_shared" \
 	-DFORCE_LIBSSH=OFF \
 	-DLIBDC_FROM_PKGCONFIG=ON \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \

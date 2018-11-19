@@ -225,6 +225,12 @@ if(BTSUPPORT)
 	list(APPEND QT_EXTRA_LIBRARIES Qt5::Bluetooth)
 endif()
 
+if(ANDROID)
+	# when building for Android, the toolchain file requires all cmake modules
+	# to be inside the CMAKE_FIND_ROOT_PATH - which prevents cmake from finding
+	# our Qt installation. This is ugly, but it works.
+	set(CMAKE_FIND_ROOT_PATH "/;${CMAKE_FIND_ROOT_PATH}")
+endif()
 find_package(Qt5 REQUIRED COMPONENTS Core Concurrent Widgets Network Svg Test QuickTest LinguistTools Positioning Quick Location ${QT_EXTRA_COMPONENTS})
 set(QT_LIBRARIES Qt5::Core Qt5::Concurrent Qt5::Widgets Qt5::Network Qt5::Svg  Qt5::Positioning Qt5::Quick Qt5::Location ${QT_EXTRA_LIBRARIES})
 set(QT_TEST_LIBRARIES ${QT_LIBRARIES} Qt5::Test Qt5::QuickTest)
@@ -486,6 +492,13 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 	install(TARGETS ${SUBSURFACE_TARGET} DESTINATION ${WINDOWSSTAGING})
 	install(FILES ${CMAKE_BINARY_DIR}/qt.conf DESTINATION ${WINDOWSSTAGING})
 	install(DIRECTORY ${CMAKE_INSTALL_PREFIX}/lib/grantlee DESTINATION ${WINDOWSSTAGING})
+
+	if(NOT Qt5Core_VERSION VERSION_LESS 5.11.0)
+		# hack to work around the fact that we don't process the dependencies of plugins
+		# as of Qt 5.11 this additional DLL is needed and it's only referenced in the qml DLLs
+		install(FILES ${_qt5Core_install_prefix}/bin/Qt5PositioningQuick.dll DESTINATION ${WINDOWSSTAGING})
+	endif()
+
 	if(NOT DEFINED MAKENSIS)
 		set(MAKENSIS makensis)
 	endif()

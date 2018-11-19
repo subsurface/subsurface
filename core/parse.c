@@ -243,10 +243,6 @@ void dive_start(struct parser_state *state)
 	state->cur_dive = alloc_dive();
 	reset_dc_info(&state->cur_dive->dc, state);
 	memset(&state->cur_tm, 0, sizeof(state->cur_tm));
-	if (state->cur_trip) {
-		add_dive_to_trip(state->cur_dive, state->cur_trip);
-		state->cur_dive->tripflag = IN_TRIP;
-	}
 	state->o2pressure_sensor = 1;
 }
 
@@ -258,6 +254,10 @@ void dive_end(struct parser_state *state)
 		free_dive(state->cur_dive);
 	else
 		record_dive_to_table(state->cur_dive, state->target_table);
+	if (state->cur_trip) {
+		add_dive_to_trip(state->cur_dive, state->cur_trip);
+		state->cur_dive->tripflag = IN_TRIP;
+	}
 	state->cur_dive = NULL;
 	state->cur_dc = NULL;
 	state->cur_location.lat.udeg = 0;
@@ -279,7 +279,7 @@ void trip_end(struct parser_state *state)
 {
 	if (!state->cur_trip)
 		return;
-	insert_trip(&state->cur_trip);
+	insert_trip(state->cur_trip);
 	state->cur_trip = NULL;
 }
 

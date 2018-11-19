@@ -156,7 +156,7 @@ static int serial_ftdi_open_device (struct ftdi_context *ftdi_ctx)
 		0xF680, // Suunto
 		0x87D0, // Cressi (Leonardo)
 	};
-	int num_accepted_pids = 6;
+	int num_accepted_pids = sizeof(accepted_pids) / sizeof(accepted_pids[0]);
 	int i, pid, ret;
 	for (i = 0; i < num_accepted_pids; i++) {
 		pid = accepted_pids[i];

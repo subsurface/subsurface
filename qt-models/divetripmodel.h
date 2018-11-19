@@ -81,24 +81,15 @@ private slots:
 private:
 	// The model has up to two levels. At the top level, we have either trips or dives
 	// that do not belong to trips. Such a top-level item is represented by the "Item"
-	// struct. Two cases two consider:
-	// 1) If "trip" is non-null, then this is a dive-trip and the dives are collected
-	// in the dives vector.  Note that in principle we could also get the dives in a
-	// trip from the backend, but there they are collected in a linked-list, which is
-	// quite inconvenient to access.
-	// 2) If "trip" is null, this is a dive and dives is supposed to contain exactly
-	// one element, which is the corresponding dive.
-	//
-	// Top-level items are ordered by timestamp. For dives, the core function
-	// dive_less_than is used, which guarantees a stable ordering even in the
-	// case of equal timestamps. For dives and trips, place dives before trips
-	// in the case of an equal timestamp. For trips with equal timestamps, the
-	// order is currently undefined. This is currently not a problem, because
-	// the core doesn't have a list of sorted trips. But nevertheless something
-	// to keep in mind.
+	// struct, which is based on the dive_or_trip structure.
+	// If it is a trip, additionally, the dives are collected in a vector.
+	// The items are ordered chronologically according to the dive_or_trip_less_than()
+	// function, which guarantees a stable ordering even in the case of equal timestamps.
+	// For dives and trips, it place dives chronologically after trips, so that in
+	// the default-descending view they are shown before trips.
 	struct Item {
-		dive_trip		*trip;
-		std::vector<dive *>	 dives;			// std::vector<> instead of QVector for insert() with three iterators
+		dive_or_trip		d_or_t;
+		std::vector<dive *>	dives;			// std::vector<> instead of QVector for insert() with three iterators
 		Item(dive_trip *t, const QVector<dive *> &dives);
 		Item(dive_trip *t, dive *d);			// Initialize a trip with one dive
 		Item(dive *d);					// Initialize a top-level dive
@@ -113,7 +104,7 @@ private:
 	int findTripIdx(const dive_trip *trip) const;
 	int findDiveIdx(const dive *d) const;			// Find _top_level_ dive
 	int findDiveInTrip(int tripIdx, const dive *d) const;	// Find dive inside trip. Second parameter is index of trip
-	int findInsertionIndex(timestamp_t when) const;		// Where to insert item with timestamp "when"
+	int findInsertionIndex(const dive_trip *trip) const;	// Where to insert trip
 
 	// Access trip and dive data
 	static QVariant diveData(const struct dive *d, int column, int role);
@@ -124,9 +115,10 @@ private:
 
 	// Addition and deletion of dives
 	void addDivesToTrip(int idx, const QVector<dive *> &dives);
+	void topLevelChanged(int idx);
 
 	dive *diveOrNull(const QModelIndex &index) const;	// Returns a dive if this index represents a dive, null otherwise
-	QPair<dive_trip *, dive *> tripOrDive(const QModelIndex &index) const;
+	dive_or_trip tripOrDive(const QModelIndex &index) const;
 								// Returns either a pointer to a trip or a dive, or twice null of index is invalid
 								// null, something is really wrong
 	void setupModelData();

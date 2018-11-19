@@ -17,7 +17,7 @@
 # JOBS := 1
 #
 # # This variable controls the targets that will build.
-# MXE_TARGETS :=  i686-w64-mingw32.shared
+# MXE_TARGETS :=  i686-w64-mingw32.shared.posix.dw2
 #
 # # Uncomment the next line if you want to do debug builds later
 # # qtbase_CONFIGURE_OPTS=-debug-and-release
@@ -101,6 +101,7 @@ EXECDIR=`pwd`
 BASEDIR=$(cd "$EXECDIR/.."; pwd)
 BUILDDIR=$(cd "$EXECDIR"; pwd)
 MXEDIR=${MXEDIR:-mxe}
+MXEBUILDTYPE=${MXEBUILDTYPE:-i686-w64-mingw32.shared.posix.dw2}
 
 echo $BUILDDIR
 
@@ -112,7 +113,7 @@ fi
 
 echo "Building in $BUILDDIR ..."
 
-export PATH="$BASEDIR"/"$MXEDIR"/usr/bin:$PATH:"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/
+export PATH="$BASEDIR"/"$MXEDIR"/usr/bin:$PATH:"$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/
 export CXXFLAGS=-std=c++11
 
 if [[ "$1" == "debug" ]] ; then
@@ -143,7 +144,7 @@ if [[ ! -d grantlee || -f build.grantlee ]] ; then
 	rm -f build.grantlee
 	mkdir -p grantlee
 	cd grantlee
-	i686-w64-mingw32.shared-cmake \
+	"$MXEBUILDTYPE"-cmake \
 		-DCMAKE_BUILD_TYPE=$RELEASE \
 		-DBUILD_TESTS=OFF \
 		"$BASEDIR"/grantlee
@@ -175,10 +176,10 @@ if [ ! "$CURRENT_SHA" = "$PREVIOUS_SHA" ] || [ ! -d libdivecomputer ] || [ -f bu
 	cd libdivecomputer
 
 	"$BASEDIR"/subsurface/libdivecomputer/configure \
-		CC=i686-w64-mingw32.shared-gcc \
-		--host=i686-w64-mingw32.shared \
+		CC="$MXEBUILDTYPE"-gcc \
+		--host="$MXEBUILDTYPE" \
 		--enable-shared \
-		--prefix="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared
+		--prefix="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"
 	make $JOBS
 	make install
 else
@@ -199,7 +200,7 @@ if [[ ! -d googlemaps || -f build.googlemaps ]] ; then
 	cd "$BUILDDIR"
 	mkdir -p googlemaps
 	cd googlemaps
-	"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/qmake PREFIX=$"$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared "$BASEDIR"/googlemaps/googlemaps.pro
+	"$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/qmake PREFIX=$"$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE" "$BASEDIR"/googlemaps/googlemaps.pro
 	make $JOBS $RELEASE_GM
 	make "$RELEASE_GM"-install
 fi
@@ -215,11 +216,11 @@ echo "Starting Subsurface Build"
 rm -rf subsurface
 
 # first copy the Qt plugins in place
-QT_PLUGIN_DIRECTORIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/iconengines \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/imageformats \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/platforms \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/geoservices \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/plugins/printsupport"
+QT_PLUGIN_DIRECTORIES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/iconengines \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/imageformats \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/platforms \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/geoservices \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/plugins/printsupport"
 
 STAGING_DIR=$BUILDDIR/subsurface/staging
 STAGING_TESTS_DIR=$BUILDDIR/subsurface/staging_tests
@@ -247,9 +248,9 @@ do
 done
 
 # next we need the QML modules
-QT_QML_MODULES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtQuick.2 \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtLocation \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/qml/QtPositioning"
+QT_QML_MODULES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtQuick.2 \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtLocation \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/qml/QtPositioning"
 
 mkdir -p $STAGING_DIR/qml
 
@@ -260,8 +261,8 @@ done
 
 # for some reason we aren't installing Qt5Xml.dll and Qt5Location.dll
 # I need to figure out why and fix that, but for now just manually copy that as well
-EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
-$BASEDIR/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/bin/Qt5Location$DLL_SUFFIX.dll"
+EXTRA_MANUAL_DEPENDENCIES="$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Xml$DLL_SUFFIX.dll \
+$BASEDIR/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/bin/Qt5Location$DLL_SUFFIX.dll"
 
 for f in $EXTRA_MANUAL_DEPENDENCIES
 do
@@ -271,13 +272,13 @@ done
 
 cd "$BUILDDIR"/subsurface
 
-i686-w64-mingw32.shared-cmake \
-	-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5 \
+"$MXEBUILDTYPE"-cmake \
+	-DCMAKE_PREFIX_PATH="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5 \
 	-DCMAKE_BUILD_TYPE=$RELEASE_MAIN \
-	-DQT_TRANSLATION_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/qt5/translations \
-	-DMAKENSIS=i686-w64-mingw32.shared-makensis \
-	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/include \
-	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/i686-w64-mingw32.shared/lib/libdivecomputer.dll.a \
+	-DQT_TRANSLATION_DIR="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/qt5/translations \
+	-DMAKENSIS="$MXEBUILDTYPE"-makensis \
+	-DLIBDIVECOMPUTER_INCLUDE_DIR="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/include \
+	-DLIBDIVECOMPUTER_LIBRARIES="$BASEDIR"/"$MXEDIR"/usr/"$MXEBUILDTYPE"/lib/libdivecomputer.dll.a \
 	-DMAKE_TESTS=OFF \
 	-DBTSUPPORT=ON -DBLESUPPORT=ON \
 	-DFTDISUPPORT=$FTDI \

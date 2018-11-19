@@ -408,7 +408,8 @@ void write_trip(struct membuffer *b, dive_trip_t *trip, int *dive_no, bool selec
 	char *separator = "";
 	bool found_sel_dive = 0;
 
-	for (dive = trip->dives; dive != NULL; dive = dive->next) {
+	for (int i = 0; i < trip->dives.nr; i++) {
+		dive = trip->dives.dives[i];
 		if (!dive->selected && selected_only)
 			continue;
 

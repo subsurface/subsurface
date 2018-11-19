@@ -258,7 +258,12 @@ Kirigami.Page {
 			buddyIndex = manager.buddyList.indexOf(currentItem.modelData.dive.buddy)
 		}
 		buddyText = currentItem.modelData.dive.buddy;
-		divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
+		if (currentItem.modelData.dive.divemaster.indexOf(",") > 0) {
+			divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster.split(",", 1).toString())
+		} else {
+			divemasterIndex = manager.divemasterList.indexOf(currentItem.modelData.dive.divemaster)
+		}
+		divemasterText = currentItem.modelData.dive.divemaster
 		notes = currentItem.modelData.dive.notes
 		if (currentItem.modelData.dive.singleWeight) {
 			// we have only one weight, go ahead, have fun and edit it

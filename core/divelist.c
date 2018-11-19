@@ -16,8 +16,7 @@
  * int init_decompression(struct dive *dive)
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
- * void insert_trip(dive_trip_t **dive_trip_p)
- * void insert_trip_dont_merge(dive_trip_t *dive_trip_p)
+ * void insert_trip(dive_trip_t *dive_trip_p)
  * void unregister_trip(dive_trip_t *trip)
  * void free_trip(dive_trip_t *trip)
  * void remove_dive_from_trip(struct dive *dive)
@@ -31,6 +30,7 @@
  * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * struct dive *unregister_dive(int idx)
  * void delete_single_dive(int idx)
+ * void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
  * void add_single_dive(int idx, struct dive *dive)
  * struct dive *merge_two_dives(struct dive *a, struct dive *b)
  * void select_dive(struct dive *dive)
@@ -39,6 +39,8 @@
  * int unsaved_changes()
  * void remove_autogen_trips()
  * bool dive_less_than(const struct dive *a, const struct dive *b)
+ * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
+ * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
  * void sort_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
  * void delete_dive_from_table(struct dive_table *table, int idx)
@@ -207,54 +209,84 @@ static int calculate_otu(const struct dive *dive)
 	return lrint(otu);
 }
 
-/* calculate CNS for a dive - this only takes the first divecomputer into account */
-int const cns_table[][3] = {
-	/* po2, Maximum Single Exposure, Maximum 24 hour Exposure */
-	{ 1600, 45 * 60, 150 * 60 },
-	{ 1500, 120 * 60, 180 * 60 },
-	{ 1400, 150 * 60, 180 * 60 },
-	{ 1300, 180 * 60, 210 * 60 },
-	{ 1200, 210 * 60, 240 * 60 },
-	{ 1100, 240 * 60, 270 * 60 },
-	{ 1000, 300 * 60, 300 * 60 },
-	{ 900, 360 * 60, 360 * 60 },
-	{ 800, 450 * 60, 450 * 60 },
-	{ 700, 570 * 60, 570 * 60 },
-	{ 600, 720 * 60, 720 * 60 }
+/* Table of maximum oxygen exposure durations, used in CNS calulations.
+   This table shows the official NOAA maximum O2 exposure limits (in seconds) for different PO2 values. It also gives
+   slope values for linear interpolation for intermediate PO2 values between the tabulated PO2 values in the 1st column.
+   Top & bottom rows are inserted that are not in the NOAA table: (1) For PO2 > 1.6 the same slope value as between
+   1.5 & 1.6 is used. This exptrapolation for PO2 > 1.6 likely gives an underestimate above 1.6 but is better than the
+   value for PO2=1.6 (45 min). (2) The NOAA table only tabulates values for PO2 >= 0.6. Since O2-uptake occurs down to
+   PO2=0.5, the same slope is used as for 0.7 > PO2 > 0.6. This gives a conservative estimate for 0.6 > PO2 > 0.5. To
+   preserve the integer structure of the table, all slopes are given as slope*10: divide by 10 to get the valid slope.
+   The columns below are: 
+   po2 (mbar), Maximum Single Exposure (seconds), single_slope, Maximum 24 hour Exposure (seconds), 24h_slope */
+int const cns_table[][5] = {
+	{ 1600,  45 * 60, 456, 150 * 60, 180 },
+	{ 1550,  83 * 60, 456, 165 * 60, 180 },
+	{ 1500, 120 * 60, 444, 180 * 60, 180 },
+	{ 1450, 135 * 60, 180, 180 * 60,  00 },
+	{ 1400, 150 * 60, 180, 180 * 60,  00 },
+	{ 1350, 165 * 60, 180, 195 * 60, 180 },
+	{ 1300, 180 * 60, 180, 210 * 60, 180 },
+	{ 1250, 195 * 60, 180, 225 * 60, 180 },
+	{ 1200, 210 * 60, 180, 240 * 60, 180 },
+	{ 1100, 240 * 60, 180, 270 * 60, 180 },
+	{ 1000, 300 * 60, 360, 300 * 60, 180 },
+	{ 900,  360 * 60, 360, 360 * 60, 360 },
+	{ 800,  450 * 60, 540, 450 * 60, 540 },
+	{ 700,  570 * 60, 720, 570 * 60, 720 },
+	{ 600,  720 * 60, 900, 720 * 60, 900 },
+	{ 500,  870 * 60, 900, 870 * 60, 900 }
 };
 
-/* Calculate the CNS for a single dive */
+/* Calculate the CNS for a single dive  - this only takes the first divecomputer into account.
+   The CNS contributions are summed for dive segments defined by samples. The maximum O2 exposure duration for each
+   segment is calculated based on the mean depth of the two samples (start & end) that define each segment. The CNS
+   contribution of each segment is found by dividing the time duration of the segment by its maximum exposure duration.
+   The contributions of all segments of the dive are summed to get the total CNS% value. This is a partial implementation
+   of the proposals in Erik Baker's document "Oxygen Toxicity Calculations" using fixed-depth calculations for the mean
+   po2 for each segment. Empirical testing showed that, for large changes in depth, the cns calculation for the mean po2
+   value is extremely close, if not identical to the additive calculations for 0.1 bar increments in po2 from the start
+   to the end of the segment, assuming a constant rate of change in po2 (i.e. depth) with time. */
 static double calculate_cns_dive(const struct dive *dive)
 {
 	int n;
 	size_t j;
 	const struct divecomputer *dc = &dive->dc;
 	double cns = 0.0;
-
-	/* Caclulate the CNS for each sample in this dive and sum them */
+	/* Calculate the CNS for each sample in this dive and sum them */
 	for (n = 1; n < dc->samples; n++) {
 		int t;
-		int po2;
+		int po2i, po2f;
+		bool trueo2 = false;
 		struct sample *sample = dc->sample + n;
 		struct sample *psample = sample - 1;
 		t = sample->time.seconds - psample->time.seconds;
-		if (sample->setpoint.mbar) {
-			po2 = sample->setpoint.mbar;
-		} else {
-			int o2 = active_o2(dive, dc, sample->time);
-			po2 = lrint(o2 * depth_to_atm(sample->depth.mm, dive));
+		if (sample->o2sensor[0].mbar) {			// if dive computer has o2 sensor(s) (CCR & PSCR)
+			po2i = psample->o2sensor[0].mbar;
+			po2f = sample->o2sensor[0].mbar;	// then use data from the first o2 sensor
+			trueo2 = true;
 		}
-		/* CNS don't increse when below 500 matm */
-		if (po2 < 500)
+		if ((dc->divemode == CCR) && (!trueo2)) {
+			po2i = psample->setpoint.mbar;		// if CCR has no o2 sensors then use setpoint
+			po2f = sample->setpoint.mbar;
+			trueo2 = true;
+		}
+		if (!trueo2) {
+			int o2 = active_o2(dive, dc, psample->time);			// For OC and rebreather without o2 sensor:
+			po2i = lrint(o2 * depth_to_atm(psample->depth.mm, dive));	// (initial) po2 at start of segment
+			po2f = lrint(o2 * depth_to_atm(sample->depth.mm, dive));	// (final) po2 at end of segment
+		}
+		po2i = (po2i + po2f) / 2;	// po2i now holds the mean po2 of initial and final po2 values of segment.
+		/* Don't increase CNS when po2 below 500 matm */
+		if (po2i <= 500)
 			continue;
-		/* Find what table-row we should calculate % for */
-		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * 3); j++)
-			if (po2 > cns_table[j][0])
+		/* Find the table-row for calculating the maximum exposure at this PO2 */
+		for (j = 1; j < sizeof(cns_table) / (sizeof(int) * NO_COLUMNS); j++)
+			if (po2i > cns_table[j][PO2VAL])
 				break;
-		j--;
-		cns += ((double)t) / ((double)cns_table[j][1]) * 100;
+		/* Increment CNS with simple linear interpolation: 100 * time / (single-exposure-time + delta-PO2 * single-slope) */
+		cns += (double)t / ((double)cns_table[j][SINGLE_EXP] - ((double)po2i - (double)cns_table[j][PO2VAL]) * (double)cns_table[j][SINGLE_SLOPE] / 10.0) * 100;
 	}
-
 	return cns;
 }
 
@@ -470,6 +502,15 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 				get_current_divemode(&dive->dc, j, &evd, &current_divemode), dive->sac);
 		}
 	}
+}
+
+static int get_idx_in_table(const struct dive_table *table, const struct dive *dive)
+{
+	for (int i = 0; i < table->nr; ++i) {
+		if (table->dives[i] == dive)
+			return i;
+	}
+	return -1;
 }
 
 int get_divenr(const struct dive *dive)
@@ -724,68 +765,35 @@ void dump_trip_list(void)
 
 	for (trip = dive_trip_list; trip; trip = trip->next) {
 		struct tm tm;
-		utc_mkdate(trip->when, &tm);
+		utc_mkdate(trip_date(trip), &tm);
 		if (trip->when < last_time)
 			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
 		       trip->autogen ? "autogen " : "",
 		       ++i, trip->location,
 		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
-		       trip->nrdives, trip);
+		       trip->dives.nr, trip);
 		last_time = trip->when;
 	}
 	printf("-----\n");
 }
 #endif
 
-/* insert the trip into the dive_trip_list - but ensure you don't have
- * two trips for the same date; but if you have, make sure you don't
- * keep the one with less information */
-void insert_trip(dive_trip_t **dive_trip_p)
-{
-	dive_trip_t *dive_trip = *dive_trip_p;
-	dive_trip_t **p = &dive_trip_list;
-	dive_trip_t *trip;
-	struct dive *divep;
-
-	/* Walk the dive trip list looking for the right location.. */
-	while ((trip = *p) != NULL && trip->when < dive_trip->when)
-		p = &trip->next;
-
-	if (trip && trip->when == dive_trip->when) {
-		if (!trip->location)
-			trip->location = dive_trip->location;
-		if (!trip->notes)
-			trip->notes = dive_trip->notes;
-		divep = dive_trip->dives;
-		while (divep) {
-			add_dive_to_trip(divep, trip);
-			divep = divep->next;
-		}
-		*dive_trip_p = trip;
-	} else {
-		dive_trip->next = trip;
-		*p = dive_trip;
-	}
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
-
-/* same as insert_trip, but don't merge trips with the same date.
- * this is cruical for the merge undo-command, because there we
- * add a new trip with the same date and then remove the old one. */
-void insert_trip_dont_merge(dive_trip_t *dive_trip)
+/* insert the trip into the dive_trip_list */
+void insert_trip(dive_trip_t *dive_trip)
 {
 	dive_trip_t **p = &dive_trip_list;
 	dive_trip_t *trip;
 
 	/* Walk the dive trip list looking for the right location.. */
-	while ((trip = *p) != NULL && trip->when < dive_trip->when)
+	while ((trip = *p) != NULL && trip_less_than(trip, dive_trip))
 		p = &trip->next;
 
 	dive_trip->next = trip;
 	*p = dive_trip;
+#ifdef DEBUG_TRIP
+	dump_trip_list();
+#endif
 }
 
 /* free resources associated with a trip structure */
@@ -804,7 +812,7 @@ void unregister_trip(dive_trip_t *trip)
 {
 	dive_trip_t **p, *tmp;
 
-	assert(!trip->dives);
+	assert(!trip->dives.nr);
 
 	/* Remove the trip from the list of trips */
 	p = &dive_trip_list;
@@ -823,16 +831,12 @@ static void delete_trip(dive_trip_t *trip)
 	free_trip(trip);
 }
 
-void find_new_trip_start_time(dive_trip_t *trip)
-{
-	struct dive *dive = trip->dives;
-	timestamp_t when = dive->when;
 
-	while ((dive = dive->next) != NULL) {
-		if (dive->when < when)
-			when = dive->when;
-	}
-	trip->when = when;
+timestamp_t trip_date(const struct dive_trip *trip)
+{
+	if (!trip || trip->dives.nr == 0)
+		return 0;
+	return trip->dives.dives[0]->when;
 }
 
 /* check if we have a trip right before / after this dive */
@@ -873,41 +877,41 @@ struct dive *last_selected_dive()
 	return ret;
 }
 
+static void unregister_dive_from_table(struct dive_table *table, int idx)
+{
+	int i;
+	for (i = idx; i < table->nr - 1; i++)
+		table->dives[i] = table->dives[i + 1];
+	table->dives[--table->nr] = NULL;
+}
+
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
- * for removing the trip, if the trip->nrdives went to 0.
+ * for removing the trip, if the trip->dives.nr went to 0.
  */
 struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen)
 {
-	struct dive *next, **pprev;
 	dive_trip_t *trip = dive->divetrip;
+	int idx;
 
 	if (!trip)
 		return NULL;
 
-	/* Remove the dive from the trip's list of dives */
-	next = dive->next;
-	pprev = dive->pprev;
-	*pprev = next;
-	if (next)
-		next->pprev = pprev;
-
+	idx = get_idx_in_table(&trip->dives, dive);
+	if (idx)
+		unregister_dive_from_table(&trip->dives, idx);
 	dive->divetrip = NULL;
 	if (was_autogen)
 		dive->tripflag = TF_NONE;
 	else
 		dive->tripflag = NO_TRIP;
-	assert(trip->nrdives > 0);
-	--trip->nrdives;
-	if (trip->nrdives > 0 && trip->when == dive->when)
-		find_new_trip_start_time(trip);
 	return trip;
 }
 
 void remove_dive_from_trip(struct dive *dive, short was_autogen)
 {
 	struct dive_trip *trip = unregister_dive_from_trip(dive, was_autogen);
-	if (trip && trip->nrdives == 0)
+	if (trip && trip->dives.nr == 0)
 		delete_trip(trip);
 }
 
@@ -916,20 +920,9 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 	if (dive->divetrip == trip)
 		return;
 	remove_dive_from_trip(dive, false);
-	trip->nrdives++;
-	trip->showndives++;
+	add_dive_to_table(&trip->dives, -1, dive);
 	dive->divetrip = trip;
 	dive->tripflag = ASSIGNED_TRIP;
-
-	/* Add it to the trip's list of dives*/
-	dive->next = trip->dives;
-	if (dive->next)
-		dive->next->pprev = &dive->next;
-	trip->dives = dive;
-	dive->pprev = &trip->dives;
-
-	if (dive->when && trip->when > dive->when)
-		trip->when = dive->when;
 }
 
 dive_trip_t *alloc_trip(void)
@@ -942,7 +935,6 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 	dive_trip_t *trip;
 
 	trip = alloc_trip();
-	trip->when = dive->when;
 	trip->location = copy_string(get_dive_location(dive));
 
 	return trip;
@@ -953,7 +945,7 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 	dive_trip_t *dive_trip = alloc_trip();
 
 	dive_trip = create_trip_from_dive(dive);
-	insert_trip(&dive_trip);
+	insert_trip(dive_trip);
 
 	dive->tripflag = IN_TRIP;
 	add_dive_to_trip(dive, dive_trip);
@@ -1065,24 +1057,16 @@ void autogroup_dives(void)
 	if (!autogroup)
 		return;
 
-	for(i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
+	for (i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
-			insert_trip(&trip);
+			insert_trip(trip);
 		for (j = from; j < to; ++j)
 			add_dive_to_trip(get_dive(j), trip);
 	}
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
-}
-
-static void unregister_dive_from_table(struct dive_table *table, int idx)
-{
-	int i;
-	for (i = idx; i < table->nr - 1; i++)
-		table->dives[i] = table->dives[i + 1];
-	table->dives[--table->nr] = NULL;
 }
 
 /* Remove a dive from a dive table. This assumes that the
@@ -1141,34 +1125,42 @@ struct dive **grow_dive_table(struct dive_table *table)
 }
 
 /* get the index where we want to insert the dive so that everything stays
- * ordered reverse-chronologically */
-int dive_get_insertion_index(struct dive *dive)
+ * ordered according to dive_less_than() */
+int dive_get_insertion_index(struct dive_table *table, struct dive *dive)
 {
 	/* we might want to use binary search here */
-	for (int i = 0; i < dive_table.nr; i++) {
-		if (dive->when <= dive_table.dives[i]->when)
+	for (int i = 0; i < table->nr; i++) {
+		if (dive_less_than(dive, table->dives[i]))
 			return i;
 	}
-	return dive_table.nr;
+	return table->nr;
 }
 
-/* add a dive at the given index. if the index is negative, the dive will
- * be added according to reverse chronological order */
-void add_single_dive(int idx, struct dive *dive)
+/* add a dive at the given index to a dive table. if the index is negative,
+ * the dive will be added according to dive_less_than() order */
+void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
 {
 	int i;
 	if (idx < 0)
-		idx = dive_get_insertion_index(dive);
-	grow_dive_table(&dive_table);
-	dive_table.nr++;
-	if (dive->selected)
-		amount_selected++;
+		idx = dive_get_insertion_index(table, dive);
+	grow_dive_table(table);
+	table->nr++;
 
-	for (i = idx; i < dive_table.nr; i++) {
-		struct dive *tmp = dive_table.dives[i];
-		dive_table.dives[i] = dive;
+	for (i = idx; i < table->nr; i++) {
+		struct dive *tmp = table->dives[i];
+		table->dives[i] = dive;
 		dive = tmp;
 	}
+}
+
+/* add a dive at the given index in the global dive table and keep track
+ * of the number of selected dives. if the index is negative, the dive will
+ * be added according to dive_less_than() order */
+void add_single_dive(int idx, struct dive *dive)
+{
+	add_dive_to_table(&dive_table, idx, dive);
+	if (dive->selected)
+		amount_selected++;
 }
 
 bool consecutive_selected()
@@ -1319,11 +1311,10 @@ void deselect_dive(struct dive *dive)
 
 void deselect_dives_in_trip(struct dive_trip *trip)
 {
-	struct dive *dive;
 	if (!trip)
 		return;
-	for (dive = trip->dives; dive; dive = dive->next)
-		deselect_dive(dive);
+	for (int i = 0; i < trip->dives.nr; ++i)
+		deselect_dive(trip->dives.dives[i]);
 }
 
 void select_dives_in_trip(struct dive_trip *trip)
@@ -1331,9 +1322,11 @@ void select_dives_in_trip(struct dive_trip *trip)
 	struct dive *dive;
 	if (!trip)
 		return;
-	for (dive = trip->dives; dive; dive = dive->next)
+	for (int i = 0; i < trip->dives.nr; ++i) {
+		dive = trip->dives.dives[i];
 		if (!dive->hidden_by_filter)
 			select_dive(dive);
+	}
 }
 
 void filter_dive(struct dive *d, bool shown)
@@ -1361,8 +1354,8 @@ void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
 	}
 	/* this also removes the dives from trip_b and eventually
 	 * calls delete_trip(trip_b) when the last dive has been moved */
-	while (trip_b->dives)
-		add_dive_to_trip(trip_b->dives, trip_a);
+	while (trip_b->dives.nr > 0)
+		add_dive_to_trip(trip_b->dives.dives[0], trip_a);
 }
 
 /* Out of two strings, copy the string that is not empty (if any). */
@@ -1378,7 +1371,6 @@ dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *tr
 	dive_trip_t *trip;
 
 	trip = alloc_trip();
-	trip->when = trip_a->when;
 	trip->location = copy_non_empty_string(trip_a->location, trip_b->location);
 	trip->notes = copy_non_empty_string(trip_a->notes, trip_b->notes);
 
@@ -1593,7 +1585,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 		struct dive *dive_to_add = import_table->dives[i];
 
 		/* Find insertion point. */
-		while (j < dive_table.nr && dive_table.dives[j]->when < dive_to_add->when)
+		while (j < dive_table.nr && dive_less_than(dive_table.dives[j], dive_to_add))
 			j++;
 
 		/* Try to merge into previous dive. */
@@ -1738,8 +1730,12 @@ void clear_table(struct dive_table *table)
  * probably want to unify the models.
  * After editing a key used in this sort-function, the order of
  * the dives must be re-astablished.
- * Currently, this does a lexicographic sort on the (start-time, id)
- * tuple. "id" is a stable, strictly increasing unique number, that
+ * Currently, this does a lexicographic sort on the
+ * (start-time, trip-time, id) tuple.
+ * trip-time is defined such that dives that do not belong to
+ * a trip are sorted *after* dives that do. Thus, in the default
+ * chronologically-descending sort order, they are shown *before*.
+ * "id" is a stable, strictly increasing unique number, that
  * is handed out when a dive is added to the system.
  * We might also consider sorting by end-time and other criteria,
  * but see the caveat above (editing means rearrangement of the dives).
@@ -1750,6 +1746,16 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 		return -1;
 	if (a->when > b->when)
 		return 1;
+	if (a->divetrip != b->divetrip) {
+		if (!b->divetrip)
+			return -1;
+		if (!a->divetrip)
+			return 1;
+		if (trip_date(a->divetrip) < trip_date(b->divetrip))
+			return -1;
+		if (trip_date(a->divetrip) > trip_date(b->divetrip))
+			return 1;
+	}
 	if (a->id < b->id)
 		return -1;
 	if (a->id > b->id)
@@ -1760,6 +1766,50 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 bool dive_less_than(const struct dive *a, const struct dive *b)
 {
 	return comp_dives(a, b) < 0;
+}
+
+/* Trips are compared according to the first dive in the trip. */
+static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
+{
+	/* This should never happen, nevertheless don't crash on trips
+	 * with no (or worse a negative number of) dives. */
+	if (a->dives.nr <= 0)
+		return b->dives.nr <= 0 ? 0 : -1;
+	if (b->dives.nr <= 0)
+		return 1;
+	return comp_dives(a->dives.dives[0], b->dives.dives[0]);
+}
+
+bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
+{
+	return comp_trips(a, b) < 0;
+}
+
+/* When comparing a dive to a trip, use the first dive of the trip. */
+static int comp_dive_to_trip(struct dive *a, struct dive_trip *b)
+{
+	/* This should never happen, nevertheless don't crash on trips
+	 * with no (or worse a negative number of) dives. */
+	if (b->dives.nr <= 0)
+		return -1;
+	return comp_dives(a, b->dives.dives[0]);
+}
+
+static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
+{
+	if (a.dive && b.dive)
+		return comp_dives(a.dive, b.dive);
+	if (a.trip && b.trip)
+		return comp_trips(a.trip, b.trip);
+	if (a.dive)
+		return comp_dive_to_trip(a.dive, b.trip);
+	else
+		return -comp_dive_to_trip(b.dive, a.trip);
+}
+
+bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
+{
+	return comp_dive_or_trip(a, b) < 0;
 }
 
 static int sortfn(const void *_a, const void *_b)

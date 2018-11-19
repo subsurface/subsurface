@@ -309,7 +309,7 @@
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="367"/>
         <source>Pairing error. If the remote device requires a custom PIN code, please try to pair the devices using your operating system. </source>
-        <translation>Parkopplingsfel. Om enheten kräver en speciell PIN kod, försök istället att para ihop enheterna via operativsystemet.</translation>
+        <translation>Parkopplingsfel. Om enheten kräver en speciell PIN-kod, försök istället att para ihop enheterna via operativsystemet.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/btdeviceselectiondialog.cpp" line="369"/>
@@ -679,7 +679,7 @@
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="612"/>
         <source>Device settings successfully reset</source>
-        <translation>Enhetens inställningar återställdes</translation>
+        <translation>Lyckades återställa enhetens inställningar</translation>
     </message>
     <message>
         <location filename="../core/configuredivecomputer.cpp" line="628"/>
@@ -1296,7 +1296,7 @@
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2590"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="2754"/>
         <source>Alt GF can be selected underwater</source>
-        <translation>Alt. GF kan väljas under vatten</translation>
+        <translation>Alt GF kan väljas under dyk</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="596"/>
@@ -1959,13 +1959,13 @@
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3864"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3047"/>
         <source>Imperial</source>
-        <translation>Brittisk</translation>
+        <translation>Brittiska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="3869"/>
         <location filename="../subsurface/desktop-widgets/ui_configuredivecomputerdialog.h" line="3048"/>
         <source>Metric</source>
-        <translation>Meter</translation>
+        <translation>Metriska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.ui" line="487"/>
@@ -2112,7 +2112,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1375"/>
         <source>Backup succeeded</source>
-        <translation>Backup sparad</translation>
+        <translation>Backup lyckades</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1376"/>
@@ -2179,7 +2179,7 @@
     <message>
         <location filename="../desktop-widgets/configuredivecomputerdialog.cpp" line="1464"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation>Välj fil som loggfil för nerladdningen ifrån dykdatorn</translation>
+        <translation>Välj fil att spara logg från dykdatorn till</translation>
     </message>
 </context>
 <context>
@@ -2996,13 +2996,13 @@ GPS-position:</translation>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="388"/>
         <source>Metric</source>
-        <translation>Meter</translation>
+        <translation>Metriska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="306"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="389"/>
         <source>Imperial</source>
-        <translation>Brittisk</translation>
+        <translation>Brittiska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
@@ -3299,13 +3299,13 @@ GPS-position:</translation>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="127"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="166"/>
         <source>Metric</source>
-        <translation>Meter</translation>
+        <translation>Metriska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="132"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogimportdialog.h" line="167"/>
         <source>Imperial</source>
-        <translation>Brittisk</translation>
+        <translation>Brittiska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogimportdialog.ui" line="155"/>
@@ -4110,7 +4110,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="274"/>
         <source>error writing zip file: %s zip error %d system error %d - %s</source>
-        <translation>fel vid skrivning av zip fil: %s zip fel %d system fel %d - %s</translation>
+        <translation>fel vid skrivning av zip-fil: %s zip-fel %d systemfel %d - %s</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/subsurfacewebservices.cpp" line="519"/>
@@ -4234,7 +4234,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="438"/>
         <source>Choose file for dive computer download logfile</source>
-        <translation>Välj fil som loggfil för nerladdningen ifrån dykdatorn</translation>
+        <translation>Välj fil att spara logg från dykdatorn till</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="439"/>
@@ -4545,7 +4545,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="517"/>
         <source>Select All</source>
-        <translation>Markera Samtliga</translation>
+        <translation>Markera alla</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="518"/>
@@ -6773,7 +6773,7 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="20"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="347"/>
         <source>Unit system</source>
-        <translation>Enhetssystem</translation>
+        <translation>Måttenheter</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="26"/>
@@ -6785,13 +6785,13 @@ Se https://doc.qt.io/qt-5/qdatetime.html#toString</translation>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="33"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="349"/>
         <source>&amp;Metric</source>
-        <translation>&amp;Meter</translation>
+        <translation>&amp;Metriska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="40"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_units.h" line="350"/>
         <source>Imperial</source>
-        <translation>Brittisk</translation>
+        <translation>Brittiska</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_units.ui" line="47"/>
@@ -7289,7 +7289,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="395"/>
         <source>working in no-cloud mode</source>
-        <translation>Arbetar i molnfritt läge</translation>
+        <translation>använder lokalt läge</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qmlmanager.cpp" line="399"/>
@@ -7584,7 +7584,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="53"/>
         <source>Change</source>
-        <translation>Ändring</translation>
+        <translation>Ändra</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="60"/>
@@ -7698,7 +7698,7 @@ Vänligen exportera mallen till en ny fil.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="458"/>
         <source>Use Metric Units</source>
-        <translation>Använd Metersystemet</translation>
+        <translation>Använd metersystemet</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="486"/>
@@ -8841,7 +8841,7 @@ mixas av luft och:
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="60"/>
         <source>Subsurface was unable to check for updates.</source>
-        <translation>Subsurface kunde inte kolla efter uppdateringar.</translation>
+        <translation>Subsurface kunde inte söka efter uppdateringar.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/updatemanager.cpp" line="65"/>
@@ -9500,12 +9500,12 @@ Medel</translation>
         <location filename="../core/datatrak.c" line="410"/>
         <location filename="../core/dive.c" line="30"/>
         <source>instructor</source>
-        <translation>Instruktör</translation>
+        <translation>instruktör</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="412"/>
         <source>instruction</source>
-        <translation>instruktion</translation>
+        <translation>undervisning</translation>
     </message>
     <message>
         <location filename="../core/datatrak.c" line="414"/>
@@ -9629,7 +9629,7 @@ Medel</translation>
     <message>
         <location filename="../core/dive.c" line="29"/>
         <source>student</source>
-        <translation>student</translation>
+        <translation>elev</translation>
     </message>
     <message>
         <location filename="../core/dive.c" line="30"/>
@@ -10200,7 +10200,7 @@ För att felsöka problemet kan det vara bra att skicka loggfiler till utvecklar
 In most cases, in order to debug this issue, a libdivecomputer logfile will be useful.
 You can create this logfile by selecting the corresponding checkbox in the download dialog.</source>
         <translation>Misslyckades med att öppna enheten %s %s (%s).
-I många fall, för att avhjälpa och analysera problemet, kan en loggfil från libdivecomputer vara användningsbar.
+För att analysera och avhjälpa problemet kan en loggfil från libdivecomputer vara användningsbar.
 Du kan skapa en sådan loggfil genom att välja motsvarande kryssruta i dialogfönstret.</translation>
     </message>
     <message>

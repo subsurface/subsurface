@@ -1,3 +1,5 @@
+- Mobile: add initial copy-paste support
+- Desktop: translate trip date
 - Dive: Perform more accurate CNS and OTU calculations, and include
   CNS & OTU calculations for rebreather dives [#1850 & #1851].
 - Windows: add experimental support for BTLE dive computers.
@@ -21,6 +23,6 @@
 - HTML export: write statistics of exported dives only
 - Desktop: fix calculation of surface interval in the case of overlappimg dives
 - Desktop: import Poseidon MkIV via dive log import dialog
----
+
 * Always add new entries at the very top of this file above other existing entries and this note.
 * Use this layout for new entries: `[Area]: [Details about the change] [reference thread / issue]`

@@ -286,16 +286,20 @@ typedef enum {
 	NUM_TRIPFLAGS
 } tripflag_t;
 
+struct dive_table {
+	int nr, allocated;
+	struct dive **dives;
+};
+
 typedef struct dive_trip
 {
-	timestamp_t when;
 	char *location;
 	char *notes;
-	struct dive *dives;
-	int nrdives, showndives;
+	struct dive_table dives;
+	int showndives;
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved;
-	unsigned expanded : 1, selected : 1, autogen : 1, fixup : 1;
+	bool autogen;
 	struct dive_trip *next;
 } dive_trip_t;
 
@@ -306,7 +310,6 @@ struct dive {
 	int number;
 	tripflag_t tripflag;
 	dive_trip_t *divetrip;
-	struct dive *next, **pprev;
 	bool selected;
 	bool hidden_by_filter;
 	timestamp_t when;
@@ -332,6 +335,12 @@ struct dive {
 	int id; // unique ID for this dive
 	struct picture *picture_list;
 	unsigned char git_id[20];
+};
+
+/* For the top-level list: an entry is either a dive or a trip */
+struct dive_or_trip {
+	struct dive *dive;
+	struct dive_trip *trip;
 };
 
 extern void invalidate_dive_cache(struct dive *dive);
@@ -418,23 +427,16 @@ extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
-extern int dive_get_insertion_index(struct dive *dive);
-extern void add_single_dive(int idx, struct dive *dive);
 
-extern void insert_trip(dive_trip_t **trip);
-extern void insert_trip_dont_merge(dive_trip_t *trip);
+extern void insert_trip(dive_trip_t *trip);
 extern void unregister_trip(dive_trip_t *trip);
 extern void free_trip(dive_trip_t *trip);
+extern timestamp_t trip_date(const struct dive_trip *trip);
 
 extern const struct units SI_units, IMPERIAL_units;
 
 extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
-
-struct dive_table {
-	int nr, allocated;
-	struct dive **dives;
-};
 
 extern struct dive_table dive_table, downloadTable;
 extern struct dive displayed_dive;
@@ -560,6 +562,8 @@ extern void add_sample_pressure(struct sample *sample, int sensor, int mbar);
 extern int legacy_format_o2pressures(const struct dive *dive, const struct divecomputer *dc);
 
 extern bool dive_less_than(const struct dive *a, const struct dive *b);
+extern bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b);
+extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
 extern void sort_table(struct dive_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);

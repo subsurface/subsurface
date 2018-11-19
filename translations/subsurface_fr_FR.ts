@@ -41,7 +41,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="700"/>
         <source>add %n dives to trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>ajouter %n plongée au voyage</numerusform><numerusform>ajouter %n plongées au voyage</numerusform></translation>
     </message>
 </context>
 <context>
@@ -49,7 +49,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="720"/>
         <source>autogroup dives</source>
-        <translation type="unfinished"/>
+        <translation>grouper automatiquement les plongées</translation>
     </message>
 </context>
 <context>
@@ -357,7 +357,7 @@
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="542"/>
         <source>Person</source>
-        <translation type="unfinished"/>
+        <translation>Personne</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="543"/>
@@ -638,7 +638,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="488"/>
         <source>add dive</source>
-        <translation type="unfinished"/>
+        <translation>Ajouter une plongée</translation>
     </message>
 </context>
 <context>
@@ -646,7 +646,7 @@
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="558"/>
         <source>delete %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>supprimer %n plongée</numerusform><numerusform>supprimer %n plongées</numerusform></translation>
     </message>
 </context>
 <context>
@@ -2195,7 +2195,7 @@
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="707"/>
         <source>create trip</source>
-        <translation type="unfinished"/>
+        <translation>créer un voyage</translation>
     </message>
 </context>
 <context>
@@ -2436,7 +2436,7 @@
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="192"/>
         <source>Save edits</source>
-        <translation type="unfinished"/>
+        <translation>Enregistrer les modifications</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetails.qml" line="192"/>
@@ -2516,7 +2516,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="360"/>
         <source>Cylinder1:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc1:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="374"/>
@@ -2548,22 +2548,22 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="418"/>
         <source>Cylinder2:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc2:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="483"/>
         <source>Cylinder3:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc3:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="549"/>
         <source>Cylinder4:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc4:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="615"/>
         <source>Cylinder5:</source>
-        <translation type="unfinished"/>
+        <translation>Bloc5:</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveDetailsEdit.qml" line="680"/>
@@ -2733,12 +2733,12 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="363"/>
         <source>Please wait, filtering dive list</source>
-        <translation type="unfinished"/>
+        <translation>Veuillez patienter, filtrage de la liste des plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="478"/>
         <source>Download dives</source>
-        <translation type="unfinished"/>
+        <translation>Télécharger les plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="488"/>
@@ -2748,7 +2748,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="498"/>
         <source>Filter dives</source>
-        <translation type="unfinished"/>
+        <translation>Filtrer les plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DiveList.qml" line="342"/>
@@ -2841,22 +2841,22 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="932"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Charger le(s) média(s) à partir du(des) fichier(s)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="933"/>
         <source>Load media from web</source>
-        <translation type="unfinished"/>
+        <translation>Charger les médias depuis le web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="959"/>
         <source>Open media files</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir les fichiers médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="962"/>
         <source>Media files</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="963"/>
@@ -2866,7 +2866,7 @@ GPS actuelle :</translation>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="964"/>
         <source>Video files</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers vidéos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelistview.cpp" line="965"/>
@@ -2990,7 +2990,7 @@ GPS actuelle :</translation>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="285"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="387"/>
         <source>Options</source>
-        <translation type="unfinished"/>
+        <translation>Options</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="301"/>
@@ -3008,7 +3008,7 @@ GPS actuelle :</translation>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="320"/>
         <location filename="../subsurface/desktop-widgets/ui_divelogexportdialog.h" line="391"/>
         <source>Anonymize</source>
-        <translation type="unfinished"/>
+        <translation>Anonymiser</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/divelogexportdialog.ui" line="332"/>
@@ -3987,7 +3987,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="384"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Média</translation>
     </message>
     <message>
         <location filename="../qt-models/divetripmodel.cpp" line="242"/>
@@ -4077,7 +4077,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../qt-models/divetripmodel.cpp" line="240"/>
         <location filename="../qt-models/divetripmodel.cpp" line="426"/>
         <source>Media before/during/after dive</source>
-        <translation type="unfinished"/>
+        <translation>Médias avant/pendant/après la plongée</translation>
     </message>
 </context>
 <context>
@@ -4224,7 +4224,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="331"/>
         <source>Find Garmin dive computer</source>
-        <translation type="unfinished"/>
+        <translation>Trouver l&apos;ordinateur de plongée Garmin</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/downloadfromdivecomputer.cpp" line="358"/>
@@ -4407,7 +4407,7 @@ p, li { white-space: pre-wrap; }
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="93"/>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="282"/>
         <source>USB device</source>
-        <translation type="unfinished"/>
+        <translation>Périphérique USB</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="101"/>
@@ -4422,7 +4422,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="207"/>
         <source> Previously used dive computers: </source>
-        <translation type="unfinished"/>
+        <translation>Ordinateur de plongée utilisé précédemment :</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/DownloadFromDiveComputer.qml" line="279"/>
@@ -4618,19 +4618,19 @@ p, li { white-space: pre-wrap; }
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="23"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="154"/>
         <source>Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>Trouver les médias déplacés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="37"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="155"/>
         <source>Found media files</source>
-        <translation type="unfinished"/>
+        <translation>Fichiers média trouvés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="71"/>
         <location filename="../subsurface/desktop-widgets/ui_findmovedimagesdialog.h" line="157"/>
         <source>Match only media files in selected dive(s)</source>
-        <translation type="unfinished"/>
+        <translation>Ne faire correspondre que les médias des plongées sélectionnées</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.ui" line="95"/>
@@ -4648,7 +4648,7 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="173"/>
         <source>Traverse media directories</source>
-        <translation type="unfinished"/>
+        <translation>Traverser les dossiers de médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="179"/>
@@ -4663,17 +4663,17 @@ p, li { white-space: pre-wrap; }
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="254"/>
         <source>No matching media files found</source>
-        <translation type="unfinished"/>
+        <translation>Pas de média correspondant trouvé</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="266"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at their current place.</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; médias trouvés à leur emplacement actuel.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/findmovedimagesdialog.cpp" line="268"/>
         <source>Found &lt;b&gt;%1&lt;/b&gt; media files at new locations:</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;%1&lt;/b&gt; médias trouvés à leur nouvel emplacement:</translation>
     </message>
 </context>
 <context>
@@ -5070,7 +5070,7 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="61"/>
         <source>Media</source>
-        <translation type="unfinished"/>
+        <translation>Média</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/maintab.cpp" line="85"/>
@@ -5528,13 +5528,13 @@ cette opération. Voulez-vous vraiment continuer ?</translation>
         <location filename="../desktop-widgets/mainwindow.ui" line="613"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="600"/>
         <source>Toggle media</source>
-        <translation type="unfinished"/>
+        <translation>Commuter les médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="674"/>
         <location filename="../subsurface/desktop-widgets/ui_mainwindow.h" line="607"/>
         <source>&amp;Find moved media files</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Trouver les médias déplacés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/mainwindow.ui" line="625"/>
@@ -5947,7 +5947,7 @@ Les modules QML QtPositionning et QtLocation pourrait être manquant !</translat
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="804"/>
         <source>merge dive</source>
-        <translation type="unfinished"/>
+        <translation>Fusionner les plongées</translation>
     </message>
 </context>
 <context>
@@ -6141,7 +6141,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="76"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="335"/>
         <source>&amp;No default file</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Aucun fichier par défaut</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="83"/>
@@ -6209,37 +6209,37 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="215"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="347"/>
         <source>Video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Miniatures des vidéos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="230"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="348"/>
         <source>ffmpeg executable</source>
-        <translation type="unfinished"/>
+        <translation>Exécutable ffmpeg</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="251"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="350"/>
         <source>Extract at position</source>
-        <translation type="unfinished"/>
+        <translation>Extraire à la position</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="271"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="351"/>
         <source>Extract video thumbnails</source>
-        <translation type="unfinished"/>
+        <translation>Extraire les miniatures des vidéos</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="288"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="353"/>
         <source>Clear settings</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les paramètres</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="294"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_defaults.h" line="354"/>
         <source>Reset remembered dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Remettre à zéro l&apos;historique des ordinateurs de plongées</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.ui" line="301"/>
@@ -6265,7 +6265,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
     <message>
         <location filename="../desktop-widgets/preferences/preferences_defaults.cpp" line="51"/>
         <source>Select ffmpeg executable</source>
-        <translation type="unfinished"/>
+        <translation>Sélectionner l&apos;exécutable ffmpeg</translation>
     </message>
 </context>
 <context>
@@ -6456,7 +6456,7 @@ Si votre périphérique utilise le Bluetooth, effectuez la même préparation qu
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="374"/>
         <location filename="../subsurface/desktop-widgets/preferences/ui_preferences_graph.h" line="375"/>
         <source>Recalculate thumbnails if older than media file</source>
-        <translation type="unfinished"/>
+        <translation>Recalculer les miniatures si plus ancienne que le média</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/preferences/preferences_graph.ui" line="255"/>
@@ -7440,7 +7440,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="688"/>
         <source>remove autogenerated trips</source>
-        <translation type="unfinished"/>
+        <translation>supprimer les voyages auto-générés</translation>
     </message>
 </context>
 <context>
@@ -7448,7 +7448,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="680"/>
         <source>remove %n dive(s) from trip</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>supprimer %n plongée du voyage</numerusform><numerusform>supprimer %n plongées du voyage</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7493,7 +7493,7 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="640"/>
         <source>renumber %n dive(s)</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>renuméroter %n plongée</numerusform><numerusform>renuméroter %n plongées</numerusform></translation>
     </message>
 </context>
 <context>
@@ -7628,27 +7628,27 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="255"/>
         <source>Scaling</source>
-        <translation type="unfinished"/>
+        <translation>Mise à l&apos;échelle</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="268"/>
         <source>smaller</source>
-        <translation type="unfinished"/>
+        <translation>plus petit</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="276"/>
         <source>regular</source>
-        <translation type="unfinished"/>
+        <translation>normal</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="284"/>
         <source>larger</source>
-        <translation type="unfinished"/>
+        <translation>plus grand</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="306"/>
         <source>GPS location service</source>
-        <translation type="unfinished"/>
+        <translation>Service de localisation GPS</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="316"/>
@@ -7673,17 +7673,17 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="395"/>
         <source>Dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Ordinateurs de plongée</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="404"/>
         <source>Forget remembered dive computers</source>
-        <translation type="unfinished"/>
+        <translation>Oublier l&apos;historique des ordinateurs de plongées</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="410"/>
         <source>Forget</source>
-        <translation type="unfinished"/>
+        <translation>Oublier</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="432"/>
@@ -7693,27 +7693,27 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="442"/>
         <source>Use Imperial Units</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser les unités impériales</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="458"/>
         <source>Use Metric Units</source>
-        <translation type="unfinished"/>
+        <translation>Utiliser les unités métriques</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="486"/>
         <source>Filter preferences</source>
-        <translation type="unfinished"/>
+        <translation>Filtrer les préférences</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="495"/>
         <source>Include notes in full text filtering</source>
-        <translation type="unfinished"/>
+        <translation>Inclure les notes dans le filtrage texte</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="510"/>
         <source>Match filter case sensitive</source>
-        <translation type="unfinished"/>
+        <translation>Filtre sensible à la casse</translation>
     </message>
     <message>
         <location filename="../mobile-widgets/qml/Settings.qml" line="537"/>
@@ -7764,13 +7764,15 @@ Merci d&apos;exporter ce modèle vers un fichier différent.</translation>
         <source>Warning!
 Not all media files have timestamps in the range between
 30 minutes before the start and 30 minutes after the end of any selected dive.</source>
-        <translation type="unfinished"/>
+        <translation>Attention !
+Tous les médias ne possèdent pas un horodatage situé dans un intervalle
+de 30 minutes avant le début de la plongée et 30 minutes après la fin des plongées sélectionnées.</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="137"/>
         <location filename="../subsurface/desktop-widgets/ui_shiftimagetimes.h" line="202"/>
         <source>Load media files even if the time does not match the dive time</source>
-        <translation type="unfinished"/>
+        <translation>Charger les médias même si l&apos;heure ne correspond pas à l&apos;heure de la plongée</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/shiftimagetimes.ui" line="186"/>
@@ -7839,7 +7841,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message numerus="yes">
         <location filename="../desktop-widgets/command_divelist.cpp" line="597"/>
         <source>shift time of %n dives</source>
-        <translation type="unfinished"><numerusform></numerusform><numerusform></numerusform></translation>
+        <translation><numerusform>Décaler les heures d&apos;%n plongée</numerusform><numerusform>Décaler les heures des %n plongées</numerusform></translation>
     </message>
 </context>
 <context>
@@ -8120,7 +8122,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/command_divelist.cpp" line="748"/>
         <source>split dive</source>
-        <translation type="unfinished"/>
+        <translation>diviser la plongée</translation>
     </message>
 </context>
 <context>
@@ -8179,7 +8181,7 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/simplewidgets.cpp" line="553"/>
         <source>Suits</source>
-        <translation type="unfinished"/>
+        <translation>Combinaisons</translation>
     </message>
 </context>
 <context>
@@ -8336,27 +8338,27 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="53"/>
         <source>Load media from file(s)</source>
-        <translation type="unfinished"/>
+        <translation>Charger le(s) média(s) à partir du(des) fichier(s)</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="54"/>
         <source>Load media file(s) from web</source>
-        <translation type="unfinished"/>
+        <translation>Charger le(s) média(s) depuis le web</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="56"/>
         <source>Delete selected media files</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer les médias sélectionnés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="57"/>
         <source>Delete all media files</source>
-        <translation type="unfinished"/>
+        <translation>Supprimer tous les médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="58"/>
         <source>Open folder of selected media files</source>
-        <translation type="unfinished"/>
+        <translation>Ouvrir le dossier des médias sélectionnés</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="59"/>
@@ -8366,12 +8368,12 @@ Fichiers avec dates/heures incorrectes</translation>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="122"/>
         <source>Deleting media files</source>
-        <translation type="unfinished"/>
+        <translation>Suppression des médias</translation>
     </message>
     <message>
         <location filename="../desktop-widgets/tab-widgets/TabDivePhotos.cpp" line="122"/>
         <source>Are you sure you want to delete all media files?</source>
-        <translation type="unfinished"/>
+        <translation>Voulez-vous vraiment supprimer toutes les médias ?</translation>
     </message>
 </context>
 <context>
@@ -8826,7 +8828,7 @@ mélangés à partir de l&apos;air et en utilisant :
         <location filename="../desktop-widgets/urldialog.ui" line="52"/>
         <location filename="../subsurface/desktop-widgets/ui_urldialog.h" line="58"/>
         <source>Enter URL for media files</source>
-        <translation type="unfinished"/>
+        <translation>Entrez l&apos;URL pour les médias</translation>
     </message>
 </context>
 <context>
@@ -9094,12 +9096,12 @@ Langue : %1</translation>
     <message>
         <location filename="../core/videoframeextractor.cpp" line="93"/>
         <source>ffmpeg failed to start - video thumbnail creation suspended</source>
-        <translation type="unfinished"/>
+        <translation>échec du démarrage de ffmpeg - création des miniatures des vidéos suspendue</translation>
     </message>
     <message>
         <location filename="../core/videoframeextractor.cpp" line="99"/>
         <source>failed waiting for ffmpeg - video thumbnail creation suspended</source>
-        <translation type="unfinished"/>
+        <translation>échec de l&apos;attente de ffmpeg - création des miniatures des vidéos suspendue</translation>
     </message>
 </context>
 <context>
@@ -11551,7 +11553,7 @@ Est-ce que l&apos;Uemis Zurich est branché correctement  ?</translation>
     <message>
         <location filename="../core/divelogexportlogic.cpp" line="154"/>
         <source>Cannot find a folder called &apos;theme&apos; in the standard locations</source>
-        <translation type="unfinished"/>
+        <translation>Impossible de trouver un dossier nommé &apos;theme&apos; dans les emplacements standards</translation>
     </message>
     <message>
         <location filename="../core/worldmap-save.c" line="49"/>

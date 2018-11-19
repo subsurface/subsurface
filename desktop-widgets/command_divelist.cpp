@@ -66,7 +66,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 	// remove dive from trip - if this is the last dive in the trip
 	// remove the whole trip.
 	res.trip = unregister_dive_from_trip(d, false);
-	if (res.trip && res.trip->nrdives == 0) {
+	if (res.trip && res.trip->dives.nr == 0) {
 		unregister_trip(res.trip);		// Remove trip from backend
 		res.tripToAdd.reset(res.trip);		// Take ownership of trip
 	}
@@ -82,7 +82,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 dive *DiveListBase::addDive(DiveToAdd &d)
 {
 	if (d.tripToAdd)
-		insert_trip_dont_merge(d.tripToAdd.release()); // Return ownership to backend
+		insert_trip(d.tripToAdd.release()); // Return ownership to backend
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
 	dive *res = d.dive.release();		// Give up ownership of dive
@@ -231,7 +231,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive, false);
-	if (trip && trip->nrdives == 0) {
+	if (trip && trip->dives.nr == 0) {
 		unregister_trip(trip);		// Remove trip from backend
 		res.reset(trip);
 	}
@@ -259,7 +259,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	for (OwningTripPtr &trip: dives.tripsToAdd) {
 		dive_trip *t = trip.release();	// Give up ownership
 		createdTrips.push_back(t);
-		insert_trip_dont_merge(t);	// Return ownership to backend
+		insert_trip(t);	// Return ownership to backend
 	}
 	dives.tripsToAdd.clear();
 
@@ -511,7 +511,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 			allocTrip.reset(trip);
 	}
 
-	int idx = dive_get_insertion_index(divePtr.get());
+	int idx = dive_get_insertion_index(&dive_table, divePtr.get());
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 
@@ -605,15 +605,17 @@ void ShiftTime::redoit()
 	// Changing times may have unsorted the dive table
 	sort_table(&dive_table);
 
-	// We send one dives-deleted signal per trip (see comments in DiveListNotifier.h).
-	// Therefore, collect all dives in a array and sort by trip.
+	// We send one time changed signal per trip (see comments in DiveListNotifier.h).
+	// Therefore, collect all dives in an array and sort by trip.
 	std::vector<std::pair<dive_trip *, dive *>> dives;
 	dives.reserve(diveList.size());
 	for (dive *d: diveList)
 		dives.push_back({ d->divetrip, d });
 
-	// Send signals.
+	// Send signals and sort tables.
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
+		if (trip)
+			sort_table(&trip->dives); // Keep the trip-table in order
 		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
 	});
 
@@ -737,10 +739,10 @@ MergeTrips::MergeTrips(dive_trip *trip1, dive_trip *trip2)
 		return;
 	dive_trip *newTrip = combine_trips_create(trip1, trip2);
 	divesToMove.tripsToAdd.emplace_back(newTrip);
-	for (dive *d = trip1->dives; d; d = d->next)
-		divesToMove.divesToMove.push_back( { d, newTrip } );
-	for (dive *d = trip2->dives; d; d = d->next)
-		divesToMove.divesToMove.push_back( { d, newTrip } );
+	for (int i = 0; i < trip1->dives.nr; ++i)
+		divesToMove.divesToMove.push_back( { trip1->dives.dives[i], newTrip } );
+	for (int i = 0; i < trip2->dives.nr; ++i)
+		divesToMove.divesToMove.push_back( { trip2->dives.dives[i], newTrip } );
 }
 
 SplitDives::SplitDives(dive *d, duration_t time)

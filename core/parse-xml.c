@@ -1352,10 +1352,6 @@ static void try_to_fill_trip(dive_trip_t **dive_trip_p, const char *name, char *
 
 	dive_trip_t *dive_trip = *dive_trip_p;
 
-	if (MATCH_STATE("date", divedate, &dive_trip->when))
-		return;
-	if (MATCH_STATE("time", divetime, &dive_trip->when))
-		return;
 	if (MATCH("location", utf8_string, &dive_trip->location))
 		return;
 	if (MATCH("notes", utf8_string, &dive_trip->notes))

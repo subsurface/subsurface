@@ -2,6 +2,30 @@
 
 = _Subsurface_ Release Notes
 
+New in _Subsurface_ 4.8.4
+~~~~~~~~~~~~~~~~~~~~~~~~~
+- Windows: add experimental support for BTLE dive computers.
+  For more information have a look at section 5.2.2 of the user manual ("On Windows").
+- Desktop: Import: Fix import of CSV files containing quotes
+- Desktop: Show coordinates if no tags from reverse geo lookup
+- Desktop: Sort on date in case of equal fields
+- Desktop: Indicate sort direction in list header
+- Desktop: Use defined sort-order when switching sort column
+- Desktop: Fix a bug in planner for dives with manual gas changes.
+- Desktop: don't add dive-buddy or dive-master when tabbing through fields
+- Desktop: don't recalculate all filters on dive list-modifying operations
+- Desktop: don't recalculate full dive list on dive list-modifying operations
+- Desktop: implement undo/redo for all dive list-modifying operations
+- Desktop: don't show "invalid dive site" debugging message
+- Desktop: HTML export: write statistics of exported dives only
+- Desktop: fix calculation of surface interval in the case of overlappimg dives
+- Desktop: import Poseidon MkIV via dive log import dialog
+- Performance: calculate full statistics only when needed
+- Map: zoom on dive site when selecting items in dive site list
+- Mobile: add full text filtering of the dive list
+- Mobile: allow multiple dive masters [#1853]
+- Mobile: preserve manual/auto sync with cloud [#1725]
+
 New in _Subsurface_ 4.8.3
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 - Desktop: enable GPU switching on macOS
