@@ -799,6 +799,14 @@ static void parse_dc_event(char *line, struct membuffer *str, void *_dc)
 	}
 }
 
+/* Not needed anymore - trip date calculated implicitly from first dive */
+static void parse_trip_date(char *line, struct membuffer *str, void *trip)
+{ UNUSED(line); UNUSED(str); UNUSED(trip); }
+
+/* Not needed anymore - trip date calculated implicitly from first dive */
+static void parse_trip_time(char *line, struct membuffer *str, void *trip)
+{ UNUSED(line); UNUSED(str); UNUSED(trip); }
+
 static void parse_trip_location(char *line, struct membuffer *str, void *_trip)
 { UNUSED(line); dive_trip_t *trip = _trip; trip->location = get_utf8(str); }
 
@@ -1001,7 +1009,7 @@ static void site_parser(char *line, struct membuffer *str, void *_ds)
 struct keyword_action trip_action[] = {
 #undef D
 #define D(x) { #x, parse_trip_ ## x }
-	D(location), D(notes),
+	D(date), D(location), D(notes), D(time),
 };
 
 static void trip_parser(char *line, struct membuffer *str, void *_trip)
