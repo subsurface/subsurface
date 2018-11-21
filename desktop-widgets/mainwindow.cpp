@@ -1062,8 +1062,6 @@ void MainWindow::on_actionAutoGroup_triggered()
 		Command::autogroupDives();
 	else
 		Command::removeAutogenTrips();
-	refreshDisplay();
-	mark_divelist_changed(true);
 }
 
 void MainWindow::on_actionYearlyStatistics_triggered()
