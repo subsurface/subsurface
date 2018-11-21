@@ -872,7 +872,7 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive, short was_autogen
 		return NULL;
 
 	idx = get_idx_in_table(&trip->dives, dive);
-	if (idx)
+	if (idx >= 0)
 		unregister_dive_from_table(&trip->dives, idx);
 	dive->divetrip = NULL;
 	return trip;
