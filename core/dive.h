@@ -461,10 +461,6 @@ extern void delete_current_divecomputer(void);
 #define for_each_gps_location(_i, _x) \
 	for ((_i) = 0; ((_x) = get_gps_location(_i, &gps_location_table)) != NULL; (_i)++)
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern struct dive *get_dive_by_uniq_id(int id);
 extern int get_idx_by_uniq_id(int id);
 extern bool dive_site_has_gps_location(const struct dive_site *ds);
@@ -600,10 +596,6 @@ extern void clear_events(void);
 extern void set_dc_nickname(struct dive *dive);
 extern void set_autogroup(bool value);
 extern int total_weight(const struct dive *);
-
-#ifdef __cplusplus
-}
-#endif
 
 #define DIVE_ERROR_PARSE 1
 #define DIVE_ERROR_PLAN 2
