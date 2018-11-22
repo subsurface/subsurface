@@ -51,7 +51,7 @@ QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 	bool oneDayTrip=true;
 
 	if (role == TRIP_ROLE)
-		return QVariant::fromValue<void *>((void *)trip); // Not nice: casting away a const
+		return QVariant::fromValue(const_cast<dive_trip *>(trip)); // Not nice: casting away a const
 
 	if (role == Qt::DisplayRole) {
 		switch (column) {
@@ -248,7 +248,7 @@ QVariant DiveTripModel::diveData(const struct dive *d, int column, int role)
 	case STAR_ROLE:
 		return d->rating;
 	case DIVE_ROLE:
-		return QVariant::fromValue<void *>((void *)d);  // Not nice: casting away a const
+		return QVariant::fromValue(const_cast<dive *>(d));  // Not nice: casting away a const
 	case DIVE_IDX:
 		return get_divenr(d);
 	case SELECTED_ROLE:

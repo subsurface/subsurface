@@ -248,11 +248,11 @@ void DiveListView::rememberSelection()
 	Q_FOREACH (const QModelIndex &index, selection.indexes()) {
 		if (index.column() != 0) // We only care about the dives, so, let's stick to rows and discard columns.
 			continue;
-		struct dive *d = (struct dive *)index.data(DiveTripModel::DIVE_ROLE).value<void *>();
+		struct dive *d = index.data(DiveTripModel::DIVE_ROLE).value<struct dive *>();
 		if (d) {
 			selectedDives.insert(d->divetrip, get_divenr(d));
 		} else {
-			struct dive_trip *t = (struct dive_trip *)index.data(DiveTripModel::TRIP_ROLE).value<void *>();
+			struct dive_trip *t = index.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 			if (t)
 				selectedDives.insert(t, -1);
 		}
@@ -288,7 +288,7 @@ void DiveListView::selectTrip(dive_trip_t *trip)
 		return;
 
 	QAbstractItemModel *m = model();
-	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::TRIP_ROLE, QVariant::fromValue<void *>(trip), 2, Qt::MatchRecursive);
+	QModelIndexList match = m->match(m->index(0, 0), DiveTripModel::TRIP_ROLE, QVariant::fromValue(trip), 2, Qt::MatchRecursive);
 	QItemSelectionModel::SelectionFlags flags;
 	if (!match.count())
 		return;
@@ -313,7 +313,7 @@ void DiveListView::clearTripSelection()
 
 	// we want to make sure no trips are selected
 	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
-		dive_trip_t *trip = static_cast<dive_trip_t *>(index.data(DiveTripModel::TRIP_ROLE).value<void *>());
+		dive_trip_t *trip = index.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 		if (!trip)
 			continue;
 		selectionModel()->select(index, QItemSelectionModel::Deselect);
@@ -342,7 +342,7 @@ QList<dive_trip_t *> DiveListView::selectedTrips()
 {
 	QList<dive_trip_t *> ret;
 	Q_FOREACH (const QModelIndex &index, selectionModel()->selectedRows()) {
-		dive_trip_t *trip = static_cast<dive_trip_t *>(index.data(DiveTripModel::TRIP_ROLE).value<void *>());
+		dive_trip_t *trip = index.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 		if (!trip)
 			continue;
 		ret.push_back(trip);
@@ -607,9 +607,9 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 		if (index.column() != 0)
 			continue;
 		const QAbstractItemModel *model = index.model();
-		struct dive *dive = (struct dive *)model->data(index, DiveTripModel::DIVE_ROLE).value<void *>();
+		struct dive *dive = model->data(index, DiveTripModel::DIVE_ROLE).value<struct dive *>();
 		if (!dive) // it's a trip!
-			deselect_dives_in_trip((dive_trip_t *)model->data(index, DiveTripModel::TRIP_ROLE).value<void *>());
+			deselect_dives_in_trip(model->data(index, DiveTripModel::TRIP_ROLE).value<dive_trip *>());
 		else
 			deselect_dive(dive);
 	}
@@ -618,11 +618,11 @@ void DiveListView::selectionChanged(const QItemSelection &selected, const QItemS
 			continue;
 
 		const QAbstractItemModel *model = index.model();
-		struct dive *dive = (struct dive *)model->data(index, DiveTripModel::DIVE_ROLE).value<void *>();
+		struct dive *dive = model->data(index, DiveTripModel::DIVE_ROLE).value<struct dive *>();
 		if (!dive) { // it's a trip!
 			if (model->rowCount(index)) {
 				QItemSelection selection;
-				select_dives_in_trip((dive_trip_t *)model->data(index, DiveTripModel::TRIP_ROLE).value<void *>());
+				select_dives_in_trip(model->data(index, DiveTripModel::TRIP_ROLE).value<dive_trip *>());
 				selection.select(index.child(0, 0), index.child(model->rowCount(index) - 1, 0));
 				selectionModel()->select(selection, QItemSelectionModel::Select | QItemSelectionModel::Rows);
 				selectionModel()->setCurrentIndex(index, QItemSelectionModel::Select | QItemSelectionModel::NoUpdate);
@@ -724,8 +724,8 @@ void DiveListView::merge_trip(const QModelIndex &a, int offset)
 	int i = a.row() + offset;
 	QModelIndex b = a.sibling(i, 0);
 
-	dive_trip_t *trip_a = (dive_trip_t *)a.data(DiveTripModel::TRIP_ROLE).value<void *>();
-	dive_trip_t *trip_b = (dive_trip_t *)b.data(DiveTripModel::TRIP_ROLE).value<void *>();
+	dive_trip_t *trip_a = a.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
+	dive_trip_t *trip_b = b.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 	if (trip_a == trip_b || !trip_a || !trip_b)
 		return;
 	Command::mergeTrips(trip_a, trip_b);
@@ -756,7 +756,7 @@ void DiveListView::removeFromTrip()
 
 void DiveListView::newTripAbove()
 {
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
+	struct dive *d = contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<struct dive *>();
 	if (!d) // shouldn't happen as we only are setting up this action if this is a dive
 		return;
 	//TODO: port to c-code.
@@ -782,7 +782,7 @@ void DiveListView::addToTripAbove()
 void DiveListView::addToTrip(int delta)
 {
 	// d points to the row that has (mouse-)pointer focus, and there are nr rows selected
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
+	struct dive *d = contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<struct dive *>();
 	int nr = selectionModel()->selectedRows().count();
 	QModelIndex t;
 	dive_trip_t *trip = NULL;
@@ -791,7 +791,7 @@ void DiveListView::addToTrip(int delta)
 	// check if its sibling is a trip.
 	for (int i = 1; i <= nr; i++) {
 		t = contextMenuIndex.sibling(contextMenuIndex.row() + (delta > 0 ? i: i * -1), 0);
-		trip = (dive_trip_t *)t.data(DiveTripModel::TRIP_ROLE).value<void *>();
+		trip = t.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 		if (trip)
 			break;
 	}
@@ -814,7 +814,7 @@ void DiveListView::addToTrip(int delta)
 void DiveListView::markDiveInvalid()
 {
 	int i;
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
+	struct dive *d = contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<struct dive *>();
 	if (!d)
 		return;
 	for_each_dive (i, d) {
@@ -833,7 +833,7 @@ void DiveListView::markDiveInvalid()
 
 void DiveListView::deleteDive()
 {
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
+	struct dive *d = contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<struct dive *>();
 	if (!d)
 		return;
 
@@ -851,8 +851,8 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 	QAction *collapseAction = NULL;
 	// let's remember where we are
 	contextMenuIndex = indexAt(event->pos());
-	struct dive *d = (struct dive *)contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<void *>();
-	dive_trip_t *trip = (dive_trip_t *)contextMenuIndex.data(DiveTripModel::TRIP_ROLE).value<void *>();
+	struct dive *d = contextMenuIndex.data(DiveTripModel::DIVE_ROLE).value<struct dive *>();
+	dive_trip_t *trip = contextMenuIndex.data(DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 	QMenu popup(this);
 	if (currentLayout == DiveTripModel::TREE) {
 		// verify if there is a node that`s not expanded.
@@ -861,7 +861,7 @@ void DiveListView::contextMenuEvent(QContextMenuEvent *event)
 		uint expanded_nodes = 0;
 		for(int i = 0, end = model()->rowCount(); i < end; i++) {
 			QModelIndex idx = model()->index(i, 0);
-			if (idx.data(DiveTripModel::DIVE_ROLE).value<void *>())
+			if (idx.data(DiveTripModel::DIVE_ROLE).value<struct dive *>())
 				continue;
 
 			if (!isExpanded(idx)) {
