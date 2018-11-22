@@ -15,6 +15,9 @@ public:
 	void setSourceModel(QAbstractItemModel *sourceModel);
 	Q_INVOKABLE void addAllDives();
 	Q_INVOKABLE void clear();
+	Q_INVOKABLE QVariant tripIdToObject(const QString &s);
+	Q_INVOKABLE QString tripTitle(const QVariant &trip);
+	Q_INVOKABLE QString tripShortDate(const QVariant &trip);
 public slots:
 	int getDiveId(int idx);
 	int getIdxForId(int id);

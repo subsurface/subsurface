@@ -324,40 +324,9 @@ QList<CylinderObjectHelper*> DiveObjectHelper::cylinderObjects() const
 	return m_cyls;
 }
 
-// combine the pointer address with the trip title so that
-// we detect multiple, destinct trips with the same title
-// the trip title is designed to be
-// location (# dives)
-// or, if there is no location name
-// date range (# dives)
-// where the date range is given as "month year" or "month-month year" or "month year - month year"
-QString DiveObjectHelper::tripMeta() const
+QString DiveObjectHelper::tripId() const
 {
-	QString ret = EMPTY_DIVE_STRING;
-	struct dive_trip *dt = m_dive->divetrip;
-	if (dt) {
-		QString numDives = tr("(%n dive(s))", "", dt->showndives);
-		QString title(dt->location);
-		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
-		QString firstMonth = firstTime.toString("MMM");
-		QString tripDate = QStringLiteral("%1@%2").arg(firstMonth,firstTime.toString("yy"));
-
-		if (title.isEmpty()) {
-			// so use the date range
-			QString firstYear = firstTime.toString("yyyy");
-			QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives.dives[0]->when, Qt::UTC);
-			QString lastMonth = lastTime.toString("MMM");
-			QString lastYear = lastTime.toString("yyyy");
-			if (lastMonth == firstMonth && lastYear == firstYear)
-				title = firstMonth + " " + firstYear;
-			else if (lastMonth != firstMonth && lastYear == firstYear)
-				title = firstMonth + "-" + lastMonth + " " + firstYear;
-			else
-				title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
-		}
-		ret = QString::number((quint64)m_dive->divetrip, 16) + QLatin1Literal("++") +  tripDate + QLatin1Literal("::") + QStringLiteral("%1 %2").arg(title, numDives);
-	}
-	return ret;
+	return m_dive->divetrip ? QString::number((quint64)m_dive->divetrip, 16) : QString();
 }
 
 int DiveObjectHelper::tripNrDives() const
