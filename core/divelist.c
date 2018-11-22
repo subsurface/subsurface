@@ -891,6 +891,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 		return;
 	remove_dive_from_trip(dive, false);
 	add_dive_to_table(&trip->dives, -1, dive);
+	trip->showndives++;
 	dive->divetrip = trip;
 }
 
