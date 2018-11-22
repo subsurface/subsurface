@@ -77,7 +77,6 @@ QString get_dive_duration_string(timestamp_t when, QString hoursText, QString mi
 QString get_dive_surfint_string(timestamp_t when, QString daysText, QString hoursText, QString minutesText, QString separator = " ", int maxdays = 4);
 QString get_dive_date_string(timestamp_t when);
 QString get_short_dive_date_string(timestamp_t when);
-bool is_same_day (timestamp_t trip_when, timestamp_t dive_when);
 QString get_trip_date_string(timestamp_t when, int nr, bool getday);
 QString uiLanguage(QLocale *callerLoc);
 QLocale getLocale();
