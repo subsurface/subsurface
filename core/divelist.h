@@ -54,6 +54,8 @@ extern void set_dive_nr_for_current_dive();
 extern timestamp_t get_surface_interval(timestamp_t when);
 extern void delete_dive_from_table(struct dive_table *table, int idx);
 extern struct dive *find_next_visible_dive(timestamp_t when);
+extern bool trip_is_single_day(const struct dive_trip *trip);
+extern int trip_shown_dives(const struct dive_trip *trip);
 
 int get_min_datafile_version();
 void reset_min_datafile_version();

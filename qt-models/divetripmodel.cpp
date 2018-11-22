@@ -48,7 +48,6 @@ static QVariant dive_table_alignment(int column)
 
 QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 {
-	bool oneDayTrip=true;
 
 	if (role == TRIP_ROLE)
 		return QVariant::fromValue(const_cast<dive_trip *>(trip)); // Not nice: casting away a const
@@ -57,13 +56,8 @@ QVariant DiveTripModel::tripData(const dive_trip *trip, int column, int role)
 		switch (column) {
 		case DiveTripModel::NR:
 			QString shownText;
-			int countShown = 0;
-			for (int i = 0; i < trip->dives.nr; ++i) {
-				struct dive *d = trip->dives.dives[i];
-				if (!d->hidden_by_filter)
-					countShown++;
-				oneDayTrip &= is_same_day(trip_date(trip),  d->when);
-			}
+			bool oneDayTrip = trip_is_single_day(trip);
+			int countShown = trip_shown_dives(trip);
 			if (countShown < trip->dives.nr)
 				shownText = tr("(%1 shown)").arg(countShown);
 			if (!empty_string(trip->location))

@@ -950,22 +950,6 @@ extern "C" char *get_current_date()
 	return copy_qstring(current_date);
 }
 
-bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
-{
-	static timestamp_t twhen = (timestamp_t) 0;
-	static struct tm tmt;
-	struct tm tmd;
-
-	utc_mkdate(dive_when, &tmd);
-
-	if (twhen != trip_when) {
-		twhen = trip_when;
-		utc_mkdate(twhen, &tmt);
-	}
-
-	return (tmd.tm_mday == tmt.tm_mday) && (tmd.tm_mon == tmt.tm_mon) && (tmd.tm_year == tmt.tm_year);
-}
-
 QString get_trip_date_string(timestamp_t when, int nr, bool getday)
 {
 	struct tm tm;

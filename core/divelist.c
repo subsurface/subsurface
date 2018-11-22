@@ -47,6 +47,8 @@
  * int find_next_visible_dive(timestamp_t when);
  * void clear_dive_file_data()
  * void clear_table(struct dive_table *table)
+ * bool trip_is_single_day(const struct dive_trip *trip)
+ * int trip_shown_dives(const struct dive_trip *trip)
  */
 #include <unistd.h>
 #include <stdio.h>
@@ -1849,4 +1851,38 @@ struct dive *find_next_visible_dive(timestamp_t when)
 	}
 
 	return NULL;
+}
+
+static bool is_same_day(timestamp_t trip_when, timestamp_t dive_when)
+{
+	static timestamp_t twhen = (timestamp_t) 0;
+	static struct tm tmt;
+	struct tm tmd;
+
+	utc_mkdate(dive_when, &tmd);
+
+	if (twhen != trip_when) {
+		twhen = trip_when;
+		utc_mkdate(twhen, &tmt);
+	}
+
+	return (tmd.tm_mday == tmt.tm_mday) && (tmd.tm_mon == tmt.tm_mon) && (tmd.tm_year == tmt.tm_year);
+}
+
+bool trip_is_single_day(const struct dive_trip *trip)
+{
+	if (trip->dives.nr <= 1)
+		return true;
+	return is_same_day(trip->dives.dives[0]->when,
+			   trip->dives.dives[trip->dives.nr - 1]->when);
+}
+
+int trip_shown_dives(const struct dive_trip *trip)
+{
+	int res = 0;
+	for (int i = 0; i < trip->dives.nr; ++i) {
+		if (!trip->dives.dives[i]->hidden_by_filter)
+			res++;
+	}
+	return res;
 }
