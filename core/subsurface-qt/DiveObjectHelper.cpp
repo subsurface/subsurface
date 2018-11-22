@@ -324,11 +324,6 @@ QList<CylinderObjectHelper*> DiveObjectHelper::cylinderObjects() const
 	return m_cyls;
 }
 
-QString DiveObjectHelper::trip() const
-{
-	return m_dive->divetrip ? m_dive->divetrip->location : EMPTY_DIVE_STRING;
-}
-
 // combine the pointer address with the trip title so that
 // we detect multiple, destinct trips with the same title
 // the trip title is designed to be
@@ -448,5 +443,6 @@ QString DiveObjectHelper::fullText() const
 
 QString DiveObjectHelper::fullTextNoNotes() const
 {
-	return trip() + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags();
+	QString tripLocation = m_dive->divetrip ? m_dive->divetrip->location : EMPTY_DIVE_STRING;
+	return tripLocation + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags();
 }
