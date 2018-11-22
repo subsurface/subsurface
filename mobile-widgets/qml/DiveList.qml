@@ -58,7 +58,7 @@ Kirigami.ScrollablePage {
 			states: [
 				State {
 					name: "isHidden";
-					when: dive.tripMeta !== activeTrip && ! diveOutsideTrip
+					when: dive.tripId !== activeTrip && ! diveOutsideTrip
 					PropertyChanges {
 						target: innerListItem
 						height: 0
@@ -67,7 +67,7 @@ Kirigami.ScrollablePage {
 				},
 				State {
 					name: "isVisible";
-					when: dive.tripMeta === activeTrip || diveOutsideTrip
+					when: dive.tripId === activeTrip || diveOutsideTrip
 					PropertyChanges {
 						target: innerListItem
 						height: diveListEntry.height + Kirigami.Units.smallSpacing
@@ -130,7 +130,7 @@ Kirigami.ScrollablePage {
 			Item {
 				Rectangle {
 					id: leftBarDive
-					width: dive.tripMeta == "" ? 0 : Kirigami.Units.smallSpacing
+					width: dive.tripId == "" ? 0 : Kirigami.Units.smallSpacing
 					height: diveListEntry.height * 0.8
 					color: subsurfaceTheme.lightPrimaryColor
 					anchors {
@@ -348,7 +348,10 @@ Kirigami.ScrollablePage {
 						leftMargin: Kirigami.Units.smallSpacing
 					}
 					Controls.Label {
-						text: {	section.replace(/.*\+\+/, "").replace(/::.*/, "").replace("@", "\n'") }
+						text: {
+							var trip = diveListView.model.tripIdToObject(section);
+							diveListView.model.tripShortDate(trip);
+						}
 						color: subsurfaceTheme.primaryTextColor
 						font.pointSize: subsurfaceTheme.smallPointSize
 						lineHeightMode: Text.FixedHeight
@@ -372,17 +375,8 @@ Kirigami.ScrollablePage {
 				Controls.Label {
 					id: sectionText
 					text: {
-						// if the tripMeta (which we get as "section") ends in ::-- we know
-						// that there's no trip -- otherwise strip the meta information before
-						// the :: and show the trip location
-						var shownText
-						var endsWithDoubleDash = /::--$/;
-						if (endsWithDoubleDash.test(section) || section === "--") {
-							shownText = ""
-						} else {
-							shownText = section.replace(/.*::/, "")
-						}
-						shownText
+						var trip = diveListView.model.tripIdToObject(section);
+						diveListView.model.tripTitle(trip);
 					}
 					wrapMode: Text.WrapAtWordBoundaryOrAnywhere
 					visible: text !== ""
@@ -526,7 +520,7 @@ Kirigami.ScrollablePage {
 		maximumFlickVelocity: parent.height * 5
 		bottomMargin: Kirigami.Units.iconSizes.medium + Kirigami.Units.gridUnit
 		cacheBuffer: 40 // this will increase memory use, but should help with scrolling
-		section.property: "dive.tripMeta"
+		section.property: "dive.tripId"
 		section.criteria: ViewSection.FullString
 		section.delegate: tripHeading
 		section.labelPositioning: ViewSection.CurrentLabelAtStart | ViewSection.InlineLabels

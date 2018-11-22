@@ -112,6 +112,56 @@ void DiveListSortModel::updateDivesShownInTrips()
 	}
 }
 
+// In QML, section headings can only be strings. To identify dives that
+// belong to the same trip, a string containing the trip-pointer in hexadecimal
+// encoding is passed in. To format the trip heading, the string is then
+// converted back with this function.
+QVariant DiveListSortModel::tripIdToObject(const QString &s)
+{
+	if (s.isEmpty())
+		return QVariant();
+	return QVariant::fromValue((dive_trip *)s.toULongLong(nullptr, 16));
+}
+
+// the trip title is designed to be location (# dives)
+// or, if there is no location name date range (# dives)
+// where the date range is given as "month year" or "month-month year" or "month year - month year"
+QString DiveListSortModel::tripTitle(const QVariant &tripIn)
+{
+	dive_trip *dt = tripIn.value<dive_trip *>();
+	if (!dt)
+		return QString();
+	QString numDives = tr("(%n dive(s))", "", dt->showndives);
+	QString title(dt->location);
+
+	if (title.isEmpty()) {
+		// so use the date range
+		QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
+		QString firstMonth = firstTime.toString("MMM");
+		QString firstYear = firstTime.toString("yyyy");
+		QDateTime lastTime = QDateTime::fromMSecsSinceEpoch(1000*dt->dives.dives[0]->when, Qt::UTC);
+		QString lastMonth = lastTime.toString("MMM");
+		QString lastYear = lastTime.toString("yyyy");
+		if (lastMonth == firstMonth && lastYear == firstYear)
+			title = firstMonth + " " + firstYear;
+		else if (lastMonth != firstMonth && lastYear == firstYear)
+			title = firstMonth + "-" + lastMonth + " " + firstYear;
+		else
+			title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
+	}
+	return QStringLiteral("%1 %2").arg(title, numDives);
+}
+
+QString DiveListSortModel::tripShortDate(const QVariant &tripIn)
+{
+	dive_trip *dt = tripIn.value<dive_trip *>();
+	if (!dt)
+		return QString();
+	QDateTime firstTime = QDateTime::fromMSecsSinceEpoch(1000*trip_date(dt), Qt::UTC);
+	QString firstMonth = firstTime.toString("MMM");
+	return QStringLiteral("%1\n'%2").arg(firstMonth,firstTime.toString("yy"));
+}
+
 DiveListModel *DiveListModel::m_instance = NULL;
 
 DiveListModel::DiveListModel(QObject *parent) : QAbstractListModel(parent)
