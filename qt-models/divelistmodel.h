@@ -24,11 +24,9 @@ public slots:
 	void setFilter(QString f);
 	void resetFilter();
 	int shown();
-	void updateDivesShownInTrips();
 protected:
 	bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const;
 private:
-	std::vector<unsigned char> filteredRows; // using unsigned char because using 'bool' turns this into a bitfield
 	QString filterString;
 	void updateFilterState();
 };

@@ -288,7 +288,6 @@ typedef struct dive_trip
 	char *location;
 	char *notes;
 	struct dive_table dives;
-	int showndives;
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved;
 	bool autogen;

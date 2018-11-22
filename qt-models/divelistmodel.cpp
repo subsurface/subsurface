@@ -12,7 +12,7 @@ DiveListSortModel::DiveListSortModel(QObject *parent) : QSortFilterProxyModel(pa
 void DiveListSortModel::updateFilterState()
 {
 	if (filterString.isEmpty()) {
-		filteredRows.clear();
+		resetFilter();
 		return;
 	}
 	// store this in local variables to avoid having to call these methods over and over
@@ -21,13 +21,11 @@ void DiveListSortModel::updateFilterState()
 
 	// get the underlying model and re-calculate the filter value for each dive
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
-	filteredRows.clear();
-	filteredRows.resize(mySourceModel->rowCount());
 	for (int i = 0; i < mySourceModel->rowCount(); i++) {
-		QString fullText = includeNotes? mySourceModel->at(i)->fullText() : mySourceModel->at(i)->fullTextNoNotes();
-		filteredRows.at(i) = fullText.contains(filterString, cs);
+		DiveObjectHelper *d = mySourceModel->at(i);
+		QString fullText = includeNotes? d->fullText() : d->fullTextNoNotes();
+		d->getDive()->hidden_by_filter = !fullText.contains(filterString, cs);
 	}
-	updateDivesShownInTrips();
 }
 
 void DiveListSortModel::setSourceModel(QAbstractItemModel *sourceModel)
@@ -39,23 +37,23 @@ void DiveListSortModel::setFilter(QString f)
 	filterString = f;
 	updateFilterState();
 	invalidateFilter();
-	updateDivesShownInTrips();
 }
 
 void DiveListSortModel::resetFilter()
 {
-	filterString = "";
-	filteredRows.clear();
+	int i;
+	struct dive *d;
+	for_each_dive(i, d)
+		d->hidden_by_filter = false;
 	invalidateFilter();
-	updateDivesShownInTrips();
 }
 
 // filtering is way too slow on mobile. Maybe we should roll our own?
-bool DiveListSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool DiveListSortModel::filterAcceptsRow(int source_row, const QModelIndex &) const
 {
-	Q_UNUSED(source_parent)
-
-	return filteredRows.size() > source_row ? filteredRows[source_row] : true;
+	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
+	DiveObjectHelper *d = mySourceModel->at(source_row);
+	return d && !d->getDive()->hidden_by_filter;
 }
 
 int DiveListSortModel::shown()
@@ -84,7 +82,6 @@ void DiveListSortModel::clear()
 {
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
 	mySourceModel->clear();
-	filteredRows.clear();
 }
 
 void DiveListSortModel::addAllDives()
@@ -92,24 +89,6 @@ void DiveListSortModel::addAllDives()
 	DiveListModel *mySourceModel = qobject_cast<DiveListModel *>(sourceModel());
 	mySourceModel->addAllDives();
 	updateFilterState();
-}
-
-void DiveListSortModel::updateDivesShownInTrips()
-{
-	// if filtering is active, reset all the counts to zero, otherwise set them to the full count
-	struct dive_trip *dt = dive_trip_list;
-	int rc = rowCount();
-	while (dt) {
-		dt->showndives = rc ? 0 : dt->dives.nr;
-		dt = dt->next;
-	}
-	for (int i = 0; i < rowCount(); i++) {
-		QVariant v = data(index(i, 0), DiveListModel::DiveRole);
-		DiveObjectHelper *d = v.value<DiveObjectHelper *>();
-		dt = d->getDive()->divetrip;
-		if (dt)
-			dt->showndives++;
-	}
 }
 
 // In QML, section headings can only be strings. To identify dives that
@@ -131,7 +110,9 @@ QString DiveListSortModel::tripTitle(const QVariant &tripIn)
 	dive_trip *dt = tripIn.value<dive_trip *>();
 	if (!dt)
 		return QString();
-	QString numDives = tr("(%n dive(s))", "", dt->showndives);
+	QString numDives = tr("(%n dive(s))", "", dt->dives.nr);
+	int shown = trip_shown_dives(dt);
+	QString shownDives = shown != dt->dives.nr ? QStringLiteral(" ") + tr("(%L1 shown)").arg(shown) : QString();
 	QString title(dt->location);
 
 	if (title.isEmpty()) {
@@ -149,7 +130,7 @@ QString DiveListSortModel::tripTitle(const QVariant &tripIn)
 		else
 			title = firstMonth + " " + firstYear + " - " + lastMonth + " " + lastYear;
 	}
-	return QStringLiteral("%1 %2").arg(title, numDives);
+	return QStringLiteral("%1 %2%3").arg(title, numDives, shownDives);
 }
 
 QString DiveListSortModel::tripShortDate(const QVariant &tripIn)
