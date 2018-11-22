@@ -758,16 +758,22 @@ extern void set_git_prefs(const char *prefs);
 extern char *get_dive_date_c_string(timestamp_t when);
 extern void update_setpoint_events(const struct dive *dive, struct divecomputer *dc);
 
-#ifdef __cplusplus
-}
-#endif
-
 extern weight_t string_to_weight(const char *str);
 extern depth_t string_to_depth(const char *str);
 extern pressure_t string_to_pressure(const char *str);
 extern volume_t string_to_volume(const char *str, pressure_t workp);
 extern fraction_t string_to_fraction(const char *str);
 extern void average_max_depth(struct diveplan *dive, int *avg_depth, int *max_depth);
+
+#ifdef __cplusplus
+}
+
+/* Make pointers to dive and dive_trip "Qt metatypes" so that they can
+ * be passed through QVariants. */
+Q_DECLARE_METATYPE(struct dive *);
+Q_DECLARE_METATYPE(struct dive_trip *);
+
+#endif
 
 #include "pref.h"
 

@@ -619,16 +619,14 @@ bool MultiFilterSortModel::showDive(const struct dive *d) const
 bool MultiFilterSortModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
 	QModelIndex index0 = sourceModel()->index(source_row, 0, source_parent);
-	QVariant diveVariant = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE);
-	struct dive *d = (struct dive *)diveVariant.value<void *>();
+	struct dive *d = sourceModel()->data(index0, DiveTripModel::DIVE_ROLE).value<struct dive *>();
 
 	// For dives, simply check the hidden_by_filter flag
 	if (d)
 		return !d->hidden_by_filter;
 
 	// Since this is not a dive, it must be a trip
-	QVariant tripVariant = sourceModel()->data(index0, DiveTripModel::TRIP_ROLE);
-	dive_trip *trip = (dive_trip *)tripVariant.value<void *>();
+	dive_trip *trip = sourceModel()->data(index0, DiveTripModel::TRIP_ROLE).value<dive_trip *>();
 
 	if (!trip)
 		return false; // Oops. Neither dive nor trip, something is seriously wrong.
