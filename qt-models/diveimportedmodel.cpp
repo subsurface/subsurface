@@ -157,7 +157,6 @@ void DiveImportedModel::recordDives()
 	}
 
 	process_imported_dives(diveTable, true, true);
-	autogroup_dives();
 }
 
 QHash<int, QByteArray> DiveImportedModel::roleNames() const {
