@@ -25,7 +25,6 @@
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
  * dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
  * dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
- * void autogroup_dives(void)
  * void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * struct dive *unregister_dive(int idx)
@@ -1042,7 +1041,7 @@ dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocat
  * Walk the dives from the oldest dive, and see if we can autogroup them.
  * But only do this when the user selected autogrouping.
  */
-void autogroup_dives(void)
+static void autogroup_dives(void)
 {
 	int from, to;
 	dive_trip_t *trip;
@@ -1354,6 +1353,9 @@ void process_loaded_dives()
 		set_dc_nickname(dive);
 
 	sort_table(&dive_table);
+
+	/* Autogroup dives if desired by user. */
+	autogroup_dives();
 }
 
 /*
@@ -1501,6 +1503,9 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	/* If the sequence wasn't changed, renumber */
 	if (!sequence_changed)
 		try_to_renumber(preexisting);
+
+	/* Autogroup dives if desired by user. */
+	autogroup_dives();
 
 	/* We might have deleted the old selected dive.
 	 * Choose the newest dive as selected (if any) */

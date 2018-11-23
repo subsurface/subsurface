@@ -1011,7 +1011,6 @@ void DiveLogImportDialog::on_buttonBox_accepted()
 	}
 
 	process_imported_dives(&table, false, false);
-	autogroup_dives();
 	Command::clear();
 	MainWindow::instance()->refreshDisplay();
 }
