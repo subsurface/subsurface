@@ -83,7 +83,7 @@
         </activity>
     </application>
 
-    <uses-sdk android:minSdkVersion="16"
+    <uses-sdk android:minSdkVersion="21"
 	      android:targetSdkVersion="26" />
 
     <supports-screens
