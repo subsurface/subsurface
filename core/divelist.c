@@ -29,7 +29,6 @@
  * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * struct dive *unregister_dive(int idx)
  * void delete_single_dive(int idx)
- * void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
  * void add_single_dive(int idx, struct dive *dive)
  * void select_dive(struct dive *dive)
  * void deselect_dive(struct dive *dive)
@@ -872,6 +871,20 @@ struct dive *last_selected_dive()
 	return ret;
 }
 
+/* add a dive at the given index to a dive table. */
+static void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive)
+{
+	int i;
+	grow_dive_table(table);
+	table->nr++;
+
+	for (i = idx; i < table->nr; i++) {
+		struct dive *tmp = table->dives[i];
+		table->dives[i] = dive;
+		dive = tmp;
+	}
+}
+
 static void unregister_dive_from_table(struct dive_table *table, int idx)
 {
 	int i;
@@ -910,11 +923,13 @@ void remove_dive_from_trip(struct dive *dive)
  * from trip beforehand. */
 void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 {
+	int idx;
 	if (dive->divetrip == trip)
 		return;
 	if (dive->divetrip)
 		fprintf(stderr, "Warning: adding dive to trip that has trip set\n");
-	add_dive_to_table(&trip->dives, -1, dive);
+	idx = dive_get_insertion_index(&trip->dives, dive);
+	add_to_dive_table(&trip->dives, idx, dive);
 	dive->divetrip = trip;
 }
 
@@ -1131,29 +1146,12 @@ int dive_get_insertion_index(struct dive_table *table, struct dive *dive)
 	return table->nr;
 }
 
-/* add a dive at the given index to a dive table. if the index is negative,
- * the dive will be added according to dive_less_than() order */
-void add_dive_to_table(struct dive_table *table, int idx, struct dive *dive)
-{
-	int i;
-	if (idx < 0)
-		idx = dive_get_insertion_index(table, dive);
-	grow_dive_table(table);
-	table->nr++;
-
-	for (i = idx; i < table->nr; i++) {
-		struct dive *tmp = table->dives[i];
-		table->dives[i] = dive;
-		dive = tmp;
-	}
-}
-
 /* add a dive at the given index in the global dive table and keep track
  * of the number of selected dives. if the index is negative, the dive will
  * be added according to dive_less_than() order */
 void add_single_dive(int idx, struct dive *dive)
 {
-	add_dive_to_table(&dive_table, idx, dive);
+	add_to_dive_table(&dive_table, idx, dive);
 	if (dive->selected)
 		amount_selected++;
 }
