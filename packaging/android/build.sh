@@ -254,10 +254,9 @@ if [ "$QUICK" = "" ] ; then
 	fi
 
 	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
-	if [ ! -e openssl-build-"$ARCH" ] ; then
-		mv openssl openssl-build-"$ARCH"
-	fi
 	if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
+		mkdir -p openssl-build-"$ARCH"
+		cp -r openssl/* openssl-build-"$ARCH"
 		pushd openssl-build-"$ARCH"
 		perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
 		# Use env to make all these temporary, so they don't pollute later builds.
