@@ -23,7 +23,7 @@
  * struct dive_trip *unregister_dive_from_trip(struct dive *dive)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
  * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
- * dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
+ * dive_trip_t *get_dives_to_autogroup(sruct dive_table *table, int start, int *from, int *to, bool *allocated)
  * dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
  * void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
  * dive_trip_t *combine_trips_create(struct dive_trip *trip_a, struct dive_trip *trip_b)
@@ -984,15 +984,16 @@ dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
  * manually injects the new trips. If there are no dives to be autogrouped,
  * return NULL.
  */
-dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated)
+dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *from, int *to, bool *allocated)
 {
 	int i;
-	struct dive *dive, *lastdive = NULL;
+	struct dive *lastdive = NULL;
 
 	/* Find first dive that should be merged and remember any previous
 	 * dive that could be merged into.
 	 */
-	for (i = start; (dive = get_dive(i)) != NULL; i++) {
+	for (i = start; i < table->nr; i++) {
+		struct dive *dive = table->dives[i];
 		dive_trip_t *trip;
 
 		if (dive->divetrip) {
@@ -1022,7 +1023,8 @@ dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocat
 		// Now, find all dives that will be added to this trip
 		lastdive = dive;
 		*from = i;
-		for (*to = *from + 1; (dive = get_dive(*to)) != NULL; (*to)++) {
+		for (*to = *from + 1; *to < table->nr; (*to)++) {
+			dive = table->dives[*to];
 			if (dive->divetrip || dive->notrip ||
 			    dive->when >= lastdive->when + TRIP_THRESHOLD)
 				break;
@@ -1038,10 +1040,10 @@ dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocat
 }
 
 /*
- * Walk the dives from the oldest dive, and see if we can autogroup them.
- * But only do this when the user selected autogrouping.
+ * Walk the dives from the oldest dive in the given tabe, and see if we
+ * can autogroup them. But only do this when the user selected autogrouping.
  */
-static void autogroup_dives(void)
+static void autogroup_dives(struct dive_table *table)
 {
 	int from, to;
 	dive_trip_t *trip;
@@ -1051,7 +1053,7 @@ static void autogroup_dives(void)
 	if (!autogroup)
 		return;
 
-	for (i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
+	for (i = 0; (trip = get_dives_to_autogroup(&dive_table, i, &from, &to, &alloc)) != NULL; i = to) {
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
 			insert_trip(trip);
@@ -1355,7 +1357,7 @@ void process_loaded_dives()
 	sort_table(&dive_table);
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives();
+	autogroup_dives(&dive_table);
 }
 
 /*
@@ -1505,7 +1507,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 		try_to_renumber(preexisting);
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives();
+	autogroup_dives(&dive_table);
 
 	/* We might have deleted the old selected dive.
 	 * Choose the newest dive as selected (if any) */

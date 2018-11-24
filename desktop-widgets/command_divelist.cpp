@@ -724,7 +724,7 @@ AutogroupDives::AutogroupDives()
 	dive_trip *trip;
 	bool alloc;
 	int from, to;
-	for(int i = 0; (trip = get_dives_to_autogroup(i, &from, &to, &alloc)) != NULL; i = to) {
+	for(int i = 0; (trip = get_dives_to_autogroup(&dive_table, i, &from, &to, &alloc)) != NULL; i = to) {
 		// If this is an allocated trip, take ownership
 		if (alloc)
 			divesToMove.tripsToAdd.emplace_back(trip);

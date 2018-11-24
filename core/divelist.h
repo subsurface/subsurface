@@ -33,7 +33,7 @@ extern void remove_dive_from_trip(struct dive *dive);
 extern dive_trip_t *alloc_trip(void);
 extern dive_trip_t *create_trip_from_dive(struct dive *dive);
 extern dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive);
-extern dive_trip_t *get_dives_to_autogroup(int start, int *from, int *to, bool *allocated);
+extern dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *from, int *to, bool *allocated);
 extern dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated);
 extern bool consecutive_selected();
 extern void select_dive(struct dive *dive);
