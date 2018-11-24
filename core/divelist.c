@@ -498,15 +498,6 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	}
 }
 
-static int get_idx_in_dive_table(const struct dive_table *table, const struct dive *dive)
-{
-	for (int i = 0; i < table->nr; ++i) {
-		if (table->dives[i] == dive)
-			return i;
-	}
-	return -1;
-}
-
 int get_divenr(const struct dive *dive)
 {
 	int i;
@@ -871,27 +862,134 @@ struct dive *last_selected_dive()
 	return ret;
 }
 
-/* add a dive at the given index to a dive table. */
-static void add_to_dive_table(struct dive_table *table, int idx, struct dive *dive)
+/* This function defines the sort ordering of dives. The core
+ * and the UI models should use the same sort function, which
+ * should be stable. This is not crucial at the moment, as the
+ * indices in core and UI are independent, but ultimately we
+ * probably want to unify the models.
+ * After editing a key used in this sort-function, the order of
+ * the dives must be re-astablished.
+ * Currently, this does a lexicographic sort on the
+ * (start-time, trip-time, id) tuple.
+ * trip-time is defined such that dives that do not belong to
+ * a trip are sorted *after* dives that do. Thus, in the default
+ * chronologically-descending sort order, they are shown *before*.
+ * "id" is a stable, strictly increasing unique number, that
+ * is handed out when a dive is added to the system.
+ * We might also consider sorting by end-time and other criteria,
+ * but see the caveat above (editing means rearrangement of the dives).
+ */
+static int comp_dives(const struct dive *a, const struct dive *b)
 {
-	int i;
-	grow_dive_table(table);
-	table->nr++;
-
-	for (i = idx; i < table->nr; i++) {
-		struct dive *tmp = table->dives[i];
-		table->dives[i] = dive;
-		dive = tmp;
+	if (a->when < b->when)
+		return -1;
+	if (a->when > b->when)
+		return 1;
+	if (a->divetrip != b->divetrip) {
+		if (!b->divetrip)
+			return -1;
+		if (!a->divetrip)
+			return 1;
+		if (trip_date(a->divetrip) < trip_date(b->divetrip))
+			return -1;
+		if (trip_date(a->divetrip) > trip_date(b->divetrip))
+			return 1;
 	}
+	if (a->id < b->id)
+		return -1;
+	if (a->id > b->id)
+		return 1;
+	return 0; /* this should not happen for a != b */
 }
 
-static void remove_from_dive_table(struct dive_table *table, int idx)
-{
-	int i;
-	for (i = idx; i < table->nr - 1; i++)
-		table->dives[i] = table->dives[i + 1];
-	table->dives[--table->nr] = NULL;
-}
+#define MAKE_GROW_TABLE(table_type, item_type, array_name) \
+	item_type *grow_##table_type(struct table_type *table)				\
+	{										\
+		int nr = table->nr, allocated = table->allocated;			\
+		item_type *items = table->array_name;					\
+											\
+		if (nr >= allocated) {							\
+			allocated = (nr + 32) * 3 / 2;					\
+			items = realloc(items, allocated * sizeof(item_type));		\
+			if (!items)							\
+				exit(1);						\
+			table->array_name = items;					\
+			table->allocated = allocated;					\
+		}									\
+		return items;								\
+	}
+
+MAKE_GROW_TABLE(dive_table, struct dive *, dives)
+
+/* get the index where we want to insert an object so that everything stays
+ * ordered according to a comparison function() */
+#define MAKE_GET_INSERTION_INDEX(table_type, item_type, array_name, fun)		\
+	int table_type##_get_insertion_index(struct table_type *table, item_type item)	\
+	{										\
+		/* we might want to use binary search here */				\
+		for (int i = 0; i < table->nr; i++) {					\
+			if (fun(item, table->array_name[i]))				\
+				return i;						\
+		}									\
+		return table->nr;							\
+	}
+
+MAKE_GET_INSERTION_INDEX(dive_table, struct dive *, dives, dive_less_than)
+
+/* add object at the given index to a table. */
+#define MAKE_ADD_TO(table_type, item_type, array_name)					\
+	void add_to_##table_type(struct table_type *table, int idx, item_type item)	\
+	{										\
+		int i;									\
+		grow_##table_type(table);						\
+		table->nr++;								\
+											\
+		for (i = idx; i < table->nr; i++) {					\
+			item_type tmp = table->array_name[i];				\
+			table->array_name[i] = item;					\
+			item = tmp;							\
+		}									\
+	}
+
+static MAKE_ADD_TO(dive_table, struct dive *, dives)
+
+#define MAKE_REMOVE_FROM(table_type, array_name)				\
+	void remove_from_##table_type(struct table_type *table, int idx)	\
+	{									\
+		int i;								\
+		for (i = idx; i < table->nr - 1; i++)				\
+			table->array_name[i] = table->array_name[i + 1];	\
+		table->array_name[--table->nr] = NULL;				\
+	}
+
+static MAKE_REMOVE_FROM(dive_table, dives)
+
+#define MAKE_GET_IDX(table_type, item_type, array_name)						\
+	int get_idx_in_##table_type(const struct table_type *table, const item_type item)	\
+	{											\
+		for (int i = 0; i < table->nr; ++i) {						\
+			if (table->array_name[i] == item)					\
+				return i;							\
+		}										\
+		return -1;									\
+	}
+
+static MAKE_GET_IDX(dive_table, struct dive *, dives)
+
+#define MAKE_SORT(table_type, item_type, array_name, fun)					\
+	static int sortfn_##table_type(const void *_a, const void *_b)				\
+	{											\
+		const item_type a = (const item_type)*(const void **)_a;			\
+		const item_type b = (const item_type)*(const void **)_b;			\
+		return fun(a, b);								\
+	}											\
+												\
+	void sort_##table_type(struct table_type *table)					\
+	{											\
+		qsort(table->array_name, table->nr, sizeof(item_type), sortfn_##table_type);	\
+	}
+
+MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
 
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
@@ -1116,34 +1214,6 @@ void delete_single_dive(int idx)
 		deselect_dive(dive);
 	remove_dive_from_trip(dive);
 	delete_dive_from_table(&dive_table, idx);
-}
-
-struct dive **grow_dive_table(struct dive_table *table)
-{
-	int nr = table->nr, allocated = table->allocated;
-	struct dive **dives = table->dives;
-
-	if (nr >= allocated) {
-		allocated = (nr + 32) * 3 / 2;
-		dives = realloc(dives, allocated * sizeof(struct dive *));
-		if (!dives)
-			exit(1);
-		table->dives = dives;
-		table->allocated = allocated;
-	}
-	return dives;
-}
-
-/* get the index where we want to insert the dive so that everything stays
- * ordered according to dive_less_than() */
-int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive)
-{
-	/* we might want to use binary search here */
-	for (int i = 0; i < table->nr; i++) {
-		if (dive_less_than(dive, table->dives[i]))
-			return i;
-	}
-	return table->nr;
 }
 
 /* add a dive at the given index in the global dive table and keep track
@@ -1607,46 +1677,6 @@ void clear_table(struct dive_table *table)
 	table->nr = 0;
 }
 
-/* This function defines the sort ordering of dives. The core
- * and the UI models should use the same sort function, which
- * should be stable. This is not crucial at the moment, as the
- * indices in core and UI are independent, but ultimately we
- * probably want to unify the models.
- * After editing a key used in this sort-function, the order of
- * the dives must be re-astablished.
- * Currently, this does a lexicographic sort on the
- * (start-time, trip-time, id) tuple.
- * trip-time is defined such that dives that do not belong to
- * a trip are sorted *after* dives that do. Thus, in the default
- * chronologically-descending sort order, they are shown *before*.
- * "id" is a stable, strictly increasing unique number, that
- * is handed out when a dive is added to the system.
- * We might also consider sorting by end-time and other criteria,
- * but see the caveat above (editing means rearrangement of the dives).
- */
-static int comp_dives(const struct dive *a, const struct dive *b)
-{
-	if (a->when < b->when)
-		return -1;
-	if (a->when > b->when)
-		return 1;
-	if (a->divetrip != b->divetrip) {
-		if (!b->divetrip)
-			return -1;
-		if (!a->divetrip)
-			return 1;
-		if (trip_date(a->divetrip) < trip_date(b->divetrip))
-			return -1;
-		if (trip_date(a->divetrip) > trip_date(b->divetrip))
-			return 1;
-	}
-	if (a->id < b->id)
-		return -1;
-	if (a->id > b->id)
-		return 1;
-	return 0; /* this should not happen for a != b */
-}
-
 bool dive_less_than(const struct dive *a, const struct dive *b)
 {
 	return comp_dives(a, b) < 0;
@@ -1694,18 +1724,6 @@ static int comp_dive_or_trip(struct dive_or_trip a, struct dive_or_trip b)
 bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
 {
 	return comp_dive_or_trip(a, b) < 0;
-}
-
-static int sortfn(const void *_a, const void *_b)
-{
-	const struct dive *a = (const struct dive *)*(const void **)_a;
-	const struct dive *b = (const struct dive *)*(const void **)_b;
-	return comp_dives(a, b);
-}
-
-void sort_dive_table(struct dive_table *table)
-{
-	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
 }
 
 /*
