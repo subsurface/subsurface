@@ -235,28 +235,6 @@ if [ "$QUICK" = "" ] ; then
 		popd
 	fi
 	
-	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
-	if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
-		# libzip expects a predefined macro that isn't there for our compiler
-		pushd libzip
-		git reset --hard
-		sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
-		# also, don't deal with manuals and bzip2
-		sed -i 's/ADD_SUBDIRECTORY(man)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
-		popd
-		mkdir -p libzip-build-"$ARCH"
-		pushd libzip-build-"$ARCH"
-		cmake \
-			-DCMAKE_C_COMPILER="$CC" \
-			-DCMAKE_LINKER="$CC" \
-			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
-			-DCMAKE_INSTALL_LIBDIR="lib" \
-			-DBUILD_SHARED_LIBS=OFF \
-			../libzip/
-		make
-		make install
-		popd
-	fi
 
 	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . openssl
 	if [ ! -e "$PKG_CONFIG_LIBDIR/libssl.pc" ] ; then
@@ -279,6 +257,29 @@ if [ "$QUICK" = "" ] ; then
 		# now fix the reference to libcrypto.so.1.0.0 to be just to libcrypto.so
 		perl -pi -e 's/libcrypto.so.1.0.0/libcrypto.so\x00\x00\x00\x00\x00\x00/' libssl.so.1.0.0
 		make install_sw
+		popd
+	fi
+
+"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
+	if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
+		# libzip expects a predefined macro that isn't there for our compiler
+		pushd libzip
+		git reset --hard
+		sed -i 's/SIZEOF_SIZE_T/__SIZEOF_SIZE_T__/g' lib/compat.h
+		# also, don't deal with manuals and bzip2
+		sed -i 's/ADD_SUBDIRECTORY(man)//;s/FIND_PACKAGE(BZip2)/# FIND_PACKAGE(BZip2)/' CMakeLists.txt
+		popd
+		mkdir -p libzip-build-"$ARCH"
+		pushd libzip-build-"$ARCH"
+		cmake \
+			-DCMAKE_C_COMPILER="$CC" \
+			-DCMAKE_LINKER="$CC" \
+			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCMAKE_INSTALL_LIBDIR="lib" \
+			-DBUILD_SHARED_LIBS=OFF \
+			../libzip/
+		make
+		make install
 		popd
 	fi
 
