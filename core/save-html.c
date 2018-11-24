@@ -439,8 +439,8 @@ void write_trips(struct membuffer *b, const char *photos_dir, bool selected_only
 	char sep_ = ' ';
 	char *sep = &sep_;
 
-	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->saved = 0;
+	for (i = 0; i < trip_table.nr; ++i)
+		trip_table.trips[i]->saved = 0;
 
 	for_each_dive (i, dive) {
 		trip = dive->divetrip;

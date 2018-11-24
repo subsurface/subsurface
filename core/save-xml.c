@@ -637,8 +637,8 @@ void save_dives_buffer(struct membuffer *b, const bool select_only, bool anonymi
 		put_format(b, "</site>\n");
 	}
 	put_format(b, "</divesites>\n<dives>\n");
-	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->saved = 0;
+	for (i = 0; i < trip_table.nr; ++i)
+		trip_table.trips[i]->saved = 0;
 
 	/* save the dives */
 	for_each_dive(i, dive) {

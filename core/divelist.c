@@ -3,10 +3,10 @@
 /* core logic for the dive list -
  * accessed through the following interfaces:
  *
- * void process_loaded_dives();
- * void process_imported_dives(bool prefer_imported);
- * dive_trip_t *dive_trip_list;
- * unsigned int amount_selected;
+ * struct trip_table trip_table
+ * void process_loaded_dives()
+ * void process_imported_dives(bool prefer_imported)
+ * unsigned int amount_selected
  * void dump_selection(void)
  * void get_dive_gas(const struct dive *dive, int *o2_p, int *he_p, int *o2low_p)
  * char *get_dive_gas_string(const struct dive *dive)
@@ -38,6 +38,7 @@
  * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
  * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
  * void sort_dive_table(struct dive_table *table)
+ * void sort_trip_table(struct trip_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
  * void delete_dive_from_table(struct dive_table *table, int idx)
  * int find_next_visible_dive(timestamp_t when);
@@ -69,7 +70,7 @@ static bool dive_list_changed = false;
 
 bool autogroup = false;
 
-dive_trip_t *dive_trip_list;
+struct trip_table trip_table;
 
 unsigned int amount_selected;
 
@@ -748,14 +749,15 @@ void dump_trip_list(void)
 	int i = 0;
 	timestamp_t last_time = 0;
 
-	for (trip = dive_trip_list; trip; trip = trip->next) {
+	for (i = 0; i < trip_table.nr; ++i) {
 		struct tm tm;
+		trip = trip_table.trips[i];
 		utc_mkdate(trip_date(trip), &tm);
 		if (trip_date(trip) < last_time)
-			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
+			printf("\n\ntrip_table OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
 		       trip->autogen ? "autogen " : "",
-		       ++i, trip->location,
+		       i + 1, trip->location,
 		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 		       trip->dives.nr, trip);
 		last_time = trip_date(trip);
@@ -763,23 +765,6 @@ void dump_trip_list(void)
 	printf("-----\n");
 }
 #endif
-
-/* insert the trip into the dive_trip_list */
-void insert_trip(dive_trip_t *dive_trip)
-{
-	dive_trip_t **p = &dive_trip_list;
-	dive_trip_t *trip;
-
-	/* Walk the dive trip list looking for the right location.. */
-	while ((trip = *p) != NULL && trip_less_than(trip, dive_trip))
-		p = &trip->next;
-
-	dive_trip->next = trip;
-	*p = dive_trip;
-#ifdef DEBUG_TRIP
-	dump_trip_list();
-#endif
-}
 
 /* free resources associated with a trip structure */
 void free_trip(dive_trip_t *trip)
@@ -790,32 +775,6 @@ void free_trip(dive_trip_t *trip)
 		free(trip);
 	}
 }
-
-/* remove trip from the trip-list, but don't free its memory.
- * caller takes ownership of the trip. */
-void unregister_trip(dive_trip_t *trip)
-{
-	dive_trip_t **p, *tmp;
-
-	assert(!trip->dives.nr);
-
-	/* Remove the trip from the list of trips */
-	p = &dive_trip_list;
-	while ((tmp = *p) != NULL) {
-		if (tmp == trip) {
-			*p = trip->next;
-			break;
-		}
-		p = &tmp->next;
-	}
-}
-
-static void delete_trip(dive_trip_t *trip)
-{
-	unregister_trip(trip);
-	free_trip(trip);
-}
-
 
 timestamp_t trip_date(const struct dive_trip *trip)
 {
@@ -902,6 +861,18 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 	return 0; /* this should not happen for a != b */
 }
 
+/* Trips are compared according to the first dive in the trip. */
+static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
+{
+	/* This should never happen, nevertheless don't crash on trips
+	 * with no (or worse a negative number of) dives. */
+	if (a->dives.nr <= 0)
+		return b->dives.nr <= 0 ? 0 : -1;
+	if (b->dives.nr <= 0)
+		return 1;
+	return comp_dives(a->dives.dives[0], b->dives.dives[0]);
+}
+
 #define MAKE_GROW_TABLE(table_type, item_type, array_name) \
 	item_type *grow_##table_type(struct table_type *table)				\
 	{										\
@@ -920,6 +891,7 @@ static int comp_dives(const struct dive *a, const struct dive *b)
 	}
 
 MAKE_GROW_TABLE(dive_table, struct dive *, dives)
+static MAKE_GROW_TABLE(trip_table, struct dive_trip *, trips)
 
 /* get the index where we want to insert an object so that everything stays
  * ordered according to a comparison function() */
@@ -935,6 +907,7 @@ MAKE_GROW_TABLE(dive_table, struct dive *, dives)
 	}
 
 MAKE_GET_INSERTION_INDEX(dive_table, struct dive *, dives, dive_less_than)
+static MAKE_GET_INSERTION_INDEX(trip_table, struct dive_trip *, trips, trip_less_than)
 
 /* add object at the given index to a table. */
 #define MAKE_ADD_TO(table_type, item_type, array_name)					\
@@ -952,6 +925,7 @@ MAKE_GET_INSERTION_INDEX(dive_table, struct dive *, dives, dive_less_than)
 	}
 
 static MAKE_ADD_TO(dive_table, struct dive *, dives)
+static MAKE_ADD_TO(trip_table, struct dive_trip *, trips)
 
 #define MAKE_REMOVE_FROM(table_type, array_name)				\
 	void remove_from_##table_type(struct table_type *table, int idx)	\
@@ -963,6 +937,7 @@ static MAKE_ADD_TO(dive_table, struct dive *, dives)
 	}
 
 static MAKE_REMOVE_FROM(dive_table, dives)
+static MAKE_REMOVE_FROM(trip_table, trips)
 
 #define MAKE_GET_IDX(table_type, item_type, array_name)						\
 	int get_idx_in_##table_type(const struct table_type *table, const item_type item)	\
@@ -975,6 +950,7 @@ static MAKE_REMOVE_FROM(dive_table, dives)
 	}
 
 static MAKE_GET_IDX(dive_table, struct dive *, dives)
+static MAKE_GET_IDX(trip_table, struct dive_trip *, trips)
 
 #define MAKE_SORT(table_type, item_type, array_name, fun)					\
 	static int sortfn_##table_type(const void *_a, const void *_b)				\
@@ -990,6 +966,7 @@ static MAKE_GET_IDX(dive_table, struct dive *, dives)
 	}
 
 MAKE_SORT(dive_table, struct dive *, dives, comp_dives)
+MAKE_SORT(trip_table, struct dive_trip *, trips, comp_trips)
 
 /* remove a dive from the trip it's associated to, but don't delete the
  * trip if this was the last dive in the trip. the caller is responsible
@@ -1008,6 +985,12 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 		remove_from_dive_table(&trip->dives, idx);
 	dive->divetrip = NULL;
 	return trip;
+}
+
+static void delete_trip(dive_trip_t *trip)
+{
+	unregister_trip(trip);
+	free_trip(trip);
 }
 
 void remove_dive_from_trip(struct dive *dive)
@@ -1036,6 +1019,16 @@ dive_trip_t *alloc_trip(void)
 	return calloc(1, sizeof(dive_trip_t));
 }
 
+/* insert the trip into the trip table */
+void insert_trip(dive_trip_t *dive_trip)
+{
+	int idx = trip_table_get_insertion_index(&trip_table, dive_trip);
+	add_to_trip_table(&trip_table, idx, dive_trip);
+#ifdef DEBUG_TRIP
+	dump_trip_list();
+#endif
+}
+
 dive_trip_t *create_trip_from_dive(struct dive *dive)
 {
 	dive_trip_t *trip;
@@ -1051,10 +1044,20 @@ dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
 	dive_trip_t *dive_trip = alloc_trip();
 
 	dive_trip = create_trip_from_dive(dive);
-	insert_trip(dive_trip);
 
 	add_dive_to_trip(dive, dive_trip);
+	insert_trip(dive_trip);
 	return dive_trip;
+}
+
+/* remove trip from the trip-list, but don't free its memory.
+ * caller takes ownership of the trip. */
+void unregister_trip(dive_trip_t *trip)
+{
+	int idx = get_idx_in_trip_table(&trip_table, trip);
+	assert(!trip->dives.nr);
+	if (idx >= 0)
+		remove_from_trip_table(&trip_table, idx);
 }
 
 /*
@@ -1153,7 +1156,7 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
 }
 
 /*
- * Walk the dives from the oldest dive in the given tabe, and see if we
+ * Walk the dives from the oldest dive in the given table, and see if we
  * can autogroup them. But only do this when the user selected autogrouping.
  */
 static void autogroup_dives(struct dive_table *table)
@@ -1167,12 +1170,13 @@ static void autogroup_dives(struct dive_table *table)
 		return;
 
 	for (i = 0; (trip = get_dives_to_autogroup(&dive_table, i, &from, &to, &alloc)) != NULL; i = to) {
+		for (j = from; j < to; ++j)
+			add_dive_to_trip(get_dive(j), trip);
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
 			insert_trip(trip);
-		for (j = from; j < to; ++j)
-			add_dive_to_trip(get_dive(j), trip);
 	}
+	sort_trip_table(&trip_table);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -1423,6 +1427,7 @@ void process_loaded_dives()
 		set_dc_nickname(dive);
 
 	sort_dive_table(&dive_table);
+	sort_trip_table(&trip_table);
 
 	/* Autogroup dives if desired by user. */
 	autogroup_dives(&dive_table);
@@ -1577,6 +1582,9 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 	/* Autogroup dives if desired by user. */
 	autogroup_dives(&dive_table);
 
+	/* Trips may have changed - make sure that they are still ordered */
+	sort_trip_table(&trip_table);
+
 	/* We might have deleted the old selected dive.
 	 * Choose the newest dive as selected (if any) */
 	current_dive = dive_table.nr > 0 ? dive_table.dives[dive_table.nr - 1] : NULL;
@@ -1660,6 +1668,10 @@ void clear_dive_file_data()
 		delete_single_dive(0);
 	while (dive_site_table.nr)
 		delete_dive_site(get_dive_site(0));
+	if (trip_table.nr != 0) {
+		fprintf(stderr, "Warning: trip table not empty in clear_dive_file_data()!\n");
+		trip_table.nr = 0;
+	}
 
 	clear_dive(&displayed_dive);
 
@@ -1680,18 +1692,6 @@ void clear_table(struct dive_table *table)
 bool dive_less_than(const struct dive *a, const struct dive *b)
 {
 	return comp_dives(a, b) < 0;
-}
-
-/* Trips are compared according to the first dive in the trip. */
-static int comp_trips(const struct dive_trip *a, const struct dive_trip *b)
-{
-	/* This should never happen, nevertheless don't crash on trips
-	 * with no (or worse a negative number of) dives. */
-	if (a->dives.nr <= 0)
-		return b->dives.nr <= 0 ? 0 : -1;
-	if (b->dives.nr <= 0)
-		return 1;
-	return comp_dives(a->dives.dives[0], b->dives.dives[0]);
 }
 
 bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)

@@ -81,10 +81,10 @@ DiveToAdd DiveListBase::removeDive(struct dive *d)
 // Returns pointer to added dive (which is owned by the backend!)
 dive *DiveListBase::addDive(DiveToAdd &d)
 {
-	if (d.tripToAdd)
-		insert_trip(d.tripToAdd.release()); // Return ownership to backend
 	if (d.trip)
 		add_dive_to_trip(d.dive.get(), d.trip);
+	if (d.tripToAdd)
+		insert_trip(d.tripToAdd.release()); // Return ownership to backend
 	dive *res = d.dive.release();		// Give up ownership of dive
 
 	// Set the filter flag according to current filter settings
@@ -530,6 +530,7 @@ void AddDive::redoit()
 	currentDive = current_dive;
 
 	divesToRemove = addDives(divesToAdd);
+	sort_trip_table(&trip_table); // Though unlikely, adding a dive may reorder trips
 	mark_divelist_changed(true);
 
 	// Select the newly added dive
@@ -544,6 +545,7 @@ void AddDive::undoit()
 {
 	// Simply remove the dive that was previously added...
 	divesToAdd = removeDives(divesToRemove);
+	sort_trip_table(&trip_table); // Though unlikely, removing a dive may reorder trips
 
 	// ...and restore the selection
 	restoreSelection(selection, currentDive);
@@ -566,6 +568,7 @@ bool DeleteDive::workToBeDone()
 void DeleteDive::undoit()
 {
 	divesToDelete = addDives(divesToAdd);
+	sort_trip_table(&trip_table); // Though unlikely, removing a dive may reorder trips
 	mark_divelist_changed(true);
 
 	// Select all re-added dives and make the first one current
@@ -576,6 +579,7 @@ void DeleteDive::undoit()
 void DeleteDive::redoit()
 {
 	divesToAdd = removeDives(divesToDelete);
+	sort_trip_table(&trip_table); // Though unlikely, adding a dive may reorder trips
 	mark_divelist_changed(true);
 
 	// Deselect all dives and select dive that was close to the first deleted dive
@@ -604,6 +608,7 @@ void ShiftTime::redoit()
 
 	// Changing times may have unsorted the dive table
 	sort_dive_table(&dive_table);
+	sort_trip_table(&trip_table);
 
 	// We send one time changed signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in an array and sort by trip.
@@ -667,6 +672,7 @@ bool TripBase::workToBeDone()
 void TripBase::redoit()
 {
 	moveDivesBetweenTrips(divesToMove);
+	sort_trip_table(&trip_table); // Though unlikely, moving dives may reorder trips
 
 	mark_divelist_changed(true);
 }

@@ -286,11 +286,13 @@ typedef struct dive_trip
 	/* Used by the io-routines to mark trips that have already been written. */
 	bool saved;
 	bool autogen;
-	struct dive_trip *next;
 } dive_trip_t;
 
-/* List of dive trips (sorted by date) */
-extern dive_trip_t *dive_trip_list;
+struct trip_table {
+	int nr, allocated;
+	struct dive_trip **trips;
+};
+
 struct picture;
 struct dive {
 	int number;
@@ -420,6 +422,7 @@ extern const struct units *get_units(void);
 extern int run_survey, verbose, quit, force_root;
 
 extern struct dive_table dive_table;
+extern struct trip_table trip_table;
 extern struct dive displayed_dive;
 extern unsigned int dc_number;
 extern struct dive *current_dive;
@@ -543,6 +546,7 @@ extern bool dive_less_than(const struct dive *a, const struct dive *b);
 extern bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b);
 extern bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b);
 extern void sort_dive_table(struct dive_table *table);
+extern void sort_trip_table(struct trip_table *table);
 extern struct dive *fixup_dive(struct dive *dive);
 extern void fixup_dc_duration(struct divecomputer *dc);
 extern int dive_getUniqID();
