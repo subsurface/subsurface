@@ -159,7 +159,8 @@ else
 fi
 
 # find qmake
-QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
+QMAKE=$QT5_ANDROID/android_$QT_ARCH/bin/qmake
+echo $QMAKE
 $QMAKE -query
 
 # if we are just doing a quick rebuild, don't bother with any of the dependencies
@@ -170,7 +171,7 @@ if [ "$QUICK" = "" ] ; then
 	# build google maps plugin
 	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . googlemaps
 	# find qmake
-	QMAKE=$QT5_ANDROID/android_armv7/bin/qmake
+	QMAKE=$QT5_ANDROID/android_$QT_ARCH/bin/qmake
 	$QMAKE -query
 	QT_PLUGINS_PATH=$($QMAKE -query QT_INSTALL_PLUGINS)
 	GOOGLEMAPS_BIN=libqtgeoservices_googlemaps.so
