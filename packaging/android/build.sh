@@ -136,7 +136,7 @@ else
 fi
 
 if [ ! -e ndk-"$ARCH" ] ; then
-	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=16
+	"$ANDROID_NDK_ROOT/build/tools/make_standalone_toolchain.py" --arch="$ARCH" --install-dir=ndk-"$ARCH" --api=$ANDROID_PLATFORM_LEVEL
 fi
 export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
@@ -228,7 +228,7 @@ if [ "$QUICK" = "" ] ; then
 		make install
 		popd
 	fi
-
+	
 	"${SUBSURFACE_SOURCE}"/scripts/get-dep-lib.sh singleAndroid . libzip
 	if [ ! -e "$PKG_CONFIG_LIBDIR/libzip.pc" ] ; then
 		# libzip expects a predefined macro that isn't there for our compiler
@@ -399,7 +399,7 @@ cmake $MOBILE_CMAKE \
 	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
 	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \
 	-DANDROID_TOOLCHAIN="gcc" \
-	-DANDROID_PLATFORM="android-16" \
+	-DANDROID_PLATFORM="$ANDROID_PLATFORM" \
 	-DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_ROOT"/build/cmake/android.toolchain.cmake \
 	-DQT_ANDROID_CMAKE="$BUILDROOT"/qt-android-cmake/AddQtAndroidApk.cmake \
 	-DANDROID_STL="gnustl_shared" \
