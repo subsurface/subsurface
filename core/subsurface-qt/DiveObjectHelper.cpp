@@ -8,14 +8,13 @@
 #include "core/subsurface-string.h"
 #include "qt-models/tankinfomodel.h"
 
-static QString EMPTY_DIVE_STRING = QStringLiteral("");
 enum returnPressureSelector {START_PRESSURE, END_PRESSURE};
 
 static QString getFormattedWeight(struct dive *dive, unsigned int idx)
 {
 	weightsystem_t *weight = &dive->weightsystem[idx];
 	if (!weight->description)
-		return QString(EMPTY_DIVE_STRING);
+		return QString();
 	QString fmt = QString(weight->description);
 	fmt += ", " + get_weight_string(weight->weight, true);
 	return fmt;
@@ -26,7 +25,7 @@ static QString getFormattedCylinder(struct dive *dive, unsigned int idx)
 	cylinder_t *cyl = &dive->cylinder[idx];
 	const char *desc = cyl->type.description;
 	if (!desc && idx > 0)
-		return QString(EMPTY_DIVE_STRING);
+		return QString();
 	QString fmt = desc ? QString(desc) : gettextFromC::tr("unknown");
 	fmt += ", " + get_volume_string(cyl->type.size, true);
 	fmt += ", " + get_pressure_string(cyl->type.workingpressure, true);
@@ -107,7 +106,7 @@ QString DiveObjectHelper::time() const
 
 QString DiveObjectHelper::location() const
 {
-	return get_dive_location(m_dive) ? QString::fromUtf8(get_dive_location(m_dive)) : EMPTY_DIVE_STRING;
+	return get_dive_location(m_dive) ? QString::fromUtf8(get_dive_location(m_dive)) : QString();
 }
 
 QString DiveObjectHelper::gps() const
@@ -149,35 +148,27 @@ QString DiveObjectHelper::depth() const
 
 QString DiveObjectHelper::divemaster() const
 {
-	return m_dive->divemaster ? m_dive->divemaster : EMPTY_DIVE_STRING;
+	return m_dive->divemaster ? m_dive->divemaster : QString();
 }
 
 QString DiveObjectHelper::buddy() const
 {
-	return m_dive->buddy ? m_dive->buddy : EMPTY_DIVE_STRING;
+	return m_dive->buddy ? m_dive->buddy : QString();
 }
 
 QString DiveObjectHelper::airTemp() const
 {
-	QString temp = get_temperature_string(m_dive->airtemp, true);
-	if (temp.isEmpty()) {
-		temp = EMPTY_DIVE_STRING;
-	}
-	return temp;
+	return get_temperature_string(m_dive->airtemp, true);
 }
 
 QString DiveObjectHelper::waterTemp() const
 {
-	QString temp = get_temperature_string(m_dive->watertemp, true);
-	if (temp.isEmpty()) {
-		temp = EMPTY_DIVE_STRING;
-	}
-	return temp;
+	return get_temperature_string(m_dive->watertemp, true);
 }
 
 QString DiveObjectHelper::notes() const
 {
-	QString tmp = m_dive->notes ? QString::fromUtf8(m_dive->notes) : EMPTY_DIVE_STRING;
+	QString tmp = m_dive->notes ? QString::fromUtf8(m_dive->notes) : QString();
 	if (same_string(m_dive->dc.model, "planned dive")) {
 		QTextDocument notes;
 	#define _NOTES_BR "&#92n"
@@ -238,7 +229,7 @@ QString DiveObjectHelper::weightList() const
 	QString weights;
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 		QString w = getFormattedWeight(m_dive, i);
-		if (w == EMPTY_DIVE_STRING)
+		if (w.isEmpty())
 			continue;
 		weights += w + "; ";
 	}
@@ -250,7 +241,7 @@ QStringList DiveObjectHelper::weights() const
 	QStringList weights;
 	for (int i = 0; i < MAX_WEIGHTSYSTEMS; i++) {
 		QString w = getFormattedWeight(m_dive, i);
-		if (w == EMPTY_DIVE_STRING)
+		if (w.isEmpty())
 			continue;
 		weights << w;
 	}
@@ -265,13 +256,13 @@ bool DiveObjectHelper::singleWeight() const
 QString DiveObjectHelper::weight(int idx) const
 {
 	if ( (idx < 0) || idx > MAX_WEIGHTSYSTEMS )
-		return QString(EMPTY_DIVE_STRING);
+		return QString();
 	return getFormattedWeight(m_dive, idx);
 }
 
 QString DiveObjectHelper::suit() const
 {
-	return m_dive->suit ? m_dive->suit : EMPTY_DIVE_STRING;
+	return m_dive->suit ? m_dive->suit : QString();
 }
 
 QStringList DiveObjectHelper::cylinderList() const
@@ -282,7 +273,7 @@ QStringList DiveObjectHelper::cylinderList() const
 	for_each_dive (i, d) {
 		for (int j = 0; j < MAX_CYLINDERS; j++) {
 			QString cyl = d->cylinder[j].type.description;
-			if (cyl == EMPTY_DIVE_STRING)
+			if (cyl.isEmpty())
 				continue;
 			cylinders << cyl;
 		}
@@ -290,7 +281,7 @@ QStringList DiveObjectHelper::cylinderList() const
 
 	for (unsigned long ti = 0; ti < MAX_TANK_INFO && tank_info[ti].name != NULL; ti++) {
 		QString cyl = tank_info[ti].name;
-		if (cyl == EMPTY_DIVE_STRING)
+		if (cyl.isEmpty())
 			continue;
 		cylinders << cyl;
 	}
@@ -305,7 +296,7 @@ QStringList DiveObjectHelper::cylinders() const
 	QStringList cylinders;
 	for (int i = 0; i < MAX_CYLINDERS; i++) {
 		QString cyl = getFormattedCylinder(m_dive, i);
-		if (cyl == EMPTY_DIVE_STRING)
+		if (cyl.isEmpty())
 			continue;
 		cylinders << cyl;
 	}
@@ -315,7 +306,7 @@ QStringList DiveObjectHelper::cylinders() const
 QString DiveObjectHelper::cylinder(int idx) const
 {
 	if ( (idx < 0) || idx > MAX_CYLINDERS)
-		return QString(EMPTY_DIVE_STRING);
+		return QString();
 	return getFormattedCylinder(m_dive, idx);
 }
 
@@ -412,6 +403,6 @@ QString DiveObjectHelper::fullText() const
 
 QString DiveObjectHelper::fullTextNoNotes() const
 {
-	QString tripLocation = m_dive->divetrip ? m_dive->divetrip->location : EMPTY_DIVE_STRING;
+	QString tripLocation = m_dive->divetrip ? m_dive->divetrip->location : QString();
 	return tripLocation + ":-:" + location() + ":-:" + buddy() + ":-:" + divemaster() + ":-:" + suit() + ":-:" + tags();
 }
