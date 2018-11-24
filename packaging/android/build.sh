@@ -272,7 +272,7 @@ if [ "$QUICK" = "" ] ; then
 			HOSTCC=clang \
 			CC=clang \
 			ANDROID_DEV="$PREFIX" \
-			bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
+			bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine no-asm --openssldir="$PREFIX"
 	#	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
 		make depend
 		make
