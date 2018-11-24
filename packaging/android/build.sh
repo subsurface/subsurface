@@ -245,6 +245,7 @@ if [ "$QUICK" = "" ] ; then
 			-DCMAKE_C_COMPILER="$CC" \
 			-DCMAKE_LINKER="$CC" \
 			-DCMAKE_INSTALL_PREFIX="$PREFIX" \
+			-DCMAKE_INSTALL_LIBDIR="lib" \
 			-DBUILD_SHARED_LIBS=OFF \
 			../libzip/
 		make
