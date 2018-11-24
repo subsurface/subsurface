@@ -930,8 +930,8 @@ static int create_git_tree(git_repository *repo, struct dir *root, bool select_o
 
 	save_divesites(repo, root);
 
-	for (trip = dive_trip_list; trip != NULL; trip = trip->next)
-		trip->saved = 0;
+	for (i = 0; i < trip_table.nr; ++i)
+		trip_table.trips[i]->saved = 0;
 
 	/* save the dives */
 	git_storage_update_progress(translate("gettextFromC", "Start saving dives"));
