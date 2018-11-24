@@ -153,9 +153,10 @@ export CC=${BUILDROOT}/ndk-$ARCH/bin/clang
 export CXX=${BUILDROOT}/ndk-$ARCH/bin/clang++
 # autoconf seems to get lost without this
 export SYSROOT=${BUILDROOT}/ndk-$ARCH/sysroot
-export CFLAGS=--sysroot=${SYSROOT}
-export CPPFLAGS=--sysroot=${SYSROOT}
-export CXXFLAGS=--sysroot=${SYSROOT}
+export CFLAGS="--sysroot=${SYSROOT} -fPIC"
+export CPPFLAGS="--sysroot=${SYSROOT} -fPIC"
+export CXXFLAGS="--sysroot=${SYSROOT} -fPIC"
+
 if [ "$PLATFORM" = "Darwin" ] ; then
 	JAVA_HOME=$(/usr/libexec/java_home)
 	export JAVA_HOME
