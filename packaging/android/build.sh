@@ -63,7 +63,7 @@ while [ "$#" -gt 0 ] ; do
 			SUBSURFACE_DESKTOP=ON
 			shift
 			;;
-		arm|x86)
+		arm|arm64|x86)
 			ARCH=$1
 			shift
 			;;
@@ -117,10 +117,17 @@ if [ "$ARCH" = "arm" ] ; then
 	QT_ARCH=armv7
 	BUILDCHAIN=arm-linux-androideabi
 	OPENSSL_MACHINE=armv7
+	ANDROID_ABI=armeabi-v7a
+elif [ "$ARCH" = "arm64" ] ; then # requires Qt 5.12
+	QT_ARCH=arm64_v8a
+	BUILDCHAIN=aarch64-linux-android
+	ANDROID_ABI=arm64-v8a
+	OPENSSL_MACHINE=aarch64
 elif [ "$ARCH" = "x86" ] ; then
 	QT_ARCH=$ARCH
 	BUILDCHAIN=i686-linux-android
 	OPENSSL_MACHINE=i686
+	ANDROID_ABI=x86
 fi
 
 # Verify Qt install and adjust for single-arch Qt install layout
@@ -142,15 +149,13 @@ export BUILDROOT=$PWD
 export PATH=${BUILDROOT}/ndk-$ARCH/bin:$PATH
 export PREFIX=${BUILDROOT}/ndk-$ARCH/sysroot/usr
 export PKG_CONFIG_LIBDIR=$PREFIX/lib/pkgconfig
-export CC=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-gcc
-export CXX=${BUILDROOT}/ndk-$ARCH/bin/${BUILDCHAIN}-g++
+export CC=${BUILDROOT}/ndk-$ARCH/bin/clang
+export CXX=${BUILDROOT}/ndk-$ARCH/bin/clang++
 # autoconf seems to get lost without this
 export SYSROOT=${BUILDROOT}/ndk-$ARCH/sysroot
 export CFLAGS=--sysroot=${SYSROOT}
 export CPPFLAGS=--sysroot=${SYSROOT}
 export CXXFLAGS=--sysroot=${SYSROOT}
-# Junk needed for qt-android-cmake
-export ANDROID_STANDALONE_TOOLCHAIN=${BUILDROOT}/ndk-$ARCH
 if [ "$PLATFORM" = "Darwin" ] ; then
 	JAVA_HOME=$(/usr/libexec/java_home)
 	export JAVA_HOME
@@ -259,12 +264,13 @@ if [ "$QUICK" = "" ] ; then
 		cp -r openssl/* openssl-build-"$ARCH"
 		pushd openssl-build-"$ARCH"
 		perl -pi -e 's/install: all install_docs install_sw/install: install_docs install_sw/g' Makefile.org
+		perl -pi -e 's/-mandroid//g' Configure
 		# Use env to make all these temporary, so they don't pollute later builds.
 		env SYSTEM=android \
 			CROSS_COMPILE=${BUILDCHAIN}- \
 			MACHINE=$OPENSSL_MACHINE \
-			HOSTCC=gcc \
-			CC=gcc \
+			HOSTCC=clang \
+			CC=clang \
 			ANDROID_DEV="$PREFIX" \
 			bash -x ./config shared no-ssl2 no-ssl3 no-comp no-hw no-engine --openssldir="$PREFIX"
 	#	sed -i.bak -e 's/soname=\$\$SHLIB\$\$SHLIB_SOVER\$\$SHLIB_SUFFIX/soname=\$\$SHLIB/g' Makefile.shared
@@ -396,14 +402,15 @@ fi
 
 PKGCONF=$(which pkg-config)
 cmake $MOBILE_CMAKE \
-	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
+	-DCMAKE_SYSTEM_NAME="Android" \
+	-DANDROID_ABI=$ANDROID_ABI \
+	-DANDROID_PLATFORM="$ANDROID_PLATFORM" \
 	-DQT_ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" \
 	-DQT_ANDROID_NDK_ROOT="$ANDROID_NDK_ROOT" \
-	-DANDROID_TOOLCHAIN="gcc" \
-	-DANDROID_PLATFORM="$ANDROID_PLATFORM" \
+	-DPKG_CONFIG_EXECUTABLE="$PKGCONF" \
 	-DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK_ROOT"/build/cmake/android.toolchain.cmake \
 	-DQT_ANDROID_CMAKE="$BUILDROOT"/qt-android-cmake/AddQtAndroidApk.cmake \
-	-DANDROID_STL="gnustl_shared" \
+	-DANDROID_STL="c++_shared" \
 	-DFORCE_LIBSSH=OFF \
 	-DLIBDC_FROM_PKGCONFIG=ON \
 	-DLIBGIT2_FROM_PKGCONFIG=ON \
