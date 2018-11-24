@@ -188,7 +188,7 @@ void ostctools_import(const char *file, struct dive_table *divetable)
 	}
 	record_dive_to_table(ostcdive, divetable);
 	mark_divelist_changed(true);
-	sort_table(divetable);
+	sort_dive_table(divetable);
 
 close_out:
 	fclose(archive);

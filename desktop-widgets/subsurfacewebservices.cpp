@@ -69,7 +69,7 @@ static bool merge_locations_into_dives(void)
 	int i, j, tracer=0, changed=0;
 	struct dive *gpsfix, *nextgpsfix, *dive;
 
-	sort_table(&gps_location_table);
+	sort_dive_table(&gps_location_table);
 
 	for_each_dive (i, dive) {
 		if (!dive_has_gps_location(dive)) {

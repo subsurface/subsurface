@@ -37,7 +37,7 @@
  * bool dive_less_than(const struct dive *a, const struct dive *b)
  * bool trip_less_than(const struct dive_trip *a, const struct dive_trip *b)
  * bool dive_or_trip_less_than(struct dive_or_trip a, struct dive_or_trip b)
- * void sort_table(struct dive_table *table)
+ * void sort_dive_table(struct dive_table *table)
  * bool is_trip_before_after(const struct dive *dive, bool before)
  * void delete_dive_from_table(struct dive_table *table, int idx)
  * int find_next_visible_dive(timestamp_t when);
@@ -498,7 +498,7 @@ static void add_dive_to_deco(struct deco_state *ds, struct dive *dive)
 	}
 }
 
-static int get_idx_in_table(const struct dive_table *table, const struct dive *dive)
+static int get_idx_in_dive_table(const struct dive_table *table, const struct dive *dive)
 {
 	for (int i = 0; i < table->nr; ++i) {
 		if (table->dives[i] == dive)
@@ -885,7 +885,7 @@ static void add_to_dive_table(struct dive_table *table, int idx, struct dive *di
 	}
 }
 
-static void unregister_dive_from_table(struct dive_table *table, int idx)
+static void remove_from_dive_table(struct dive_table *table, int idx)
 {
 	int i;
 	for (i = idx; i < table->nr - 1; i++)
@@ -905,9 +905,9 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 	if (!trip)
 		return NULL;
 
-	idx = get_idx_in_table(&trip->dives, dive);
+	idx = get_idx_in_dive_table(&trip->dives, dive);
 	if (idx >= 0)
-		unregister_dive_from_table(&trip->dives, idx);
+		remove_from_dive_table(&trip->dives, idx);
 	dive->divetrip = NULL;
 	return trip;
 }
@@ -928,7 +928,7 @@ void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
 		return;
 	if (dive->divetrip)
 		fprintf(stderr, "Warning: adding dive to trip that has trip set\n");
-	idx = dive_get_insertion_index(&trip->dives, dive);
+	idx = dive_table_get_insertion_index(&trip->dives, dive);
 	add_to_dive_table(&trip->dives, idx, dive);
 	dive->divetrip = trip;
 }
@@ -1086,7 +1086,7 @@ static void autogroup_dives(struct dive_table *table)
 void delete_dive_from_table(struct dive_table *table, int idx)
 {
 	free_dive(table->dives[idx]);
-	unregister_dive_from_table(table, idx);
+	remove_from_dive_table(table, idx);
 }
 
 /* This removes a dive from the global dive table but doesn't free the
@@ -1098,7 +1098,7 @@ struct dive *unregister_dive(int idx)
 	struct dive *dive = get_dive(idx);
 	if (!dive)
 		return NULL; /* this should never happen */
-	unregister_dive_from_table(&dive_table, idx);
+	remove_from_dive_table(&dive_table, idx);
 	if (dive->selected)
 		amount_selected--;
 	dive->selected = false;
@@ -1136,7 +1136,7 @@ struct dive **grow_dive_table(struct dive_table *table)
 
 /* get the index where we want to insert the dive so that everything stays
  * ordered according to dive_less_than() */
-int dive_get_insertion_index(struct dive_table *table, struct dive *dive)
+int dive_table_get_insertion_index(struct dive_table *table, struct dive *dive)
 {
 	/* we might want to use binary search here */
 	for (int i = 0; i < table->nr; i++) {
@@ -1352,7 +1352,7 @@ void process_loaded_dives()
 	for_each_dive(i, dive)
 		set_dc_nickname(dive);
 
-	sort_table(&dive_table);
+	sort_dive_table(&dive_table);
 
 	/* Autogroup dives if desired by user. */
 	autogroup_dives(&dive_table);
@@ -1448,7 +1448,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 			set_dc_nickname(import_table->dives[i]);
 
 	/* Sort the table of dives to be imported and combine mergable dives */
-	sort_table(import_table);
+	sort_dive_table(import_table);
 	merge_imported_dives(import_table);
 
 	/* Merge newly imported dives into the dive table.
@@ -1703,7 +1703,7 @@ static int sortfn(const void *_a, const void *_b)
 	return comp_dives(a, b);
 }
 
-void sort_table(struct dive_table *table)
+void sort_dive_table(struct dive_table *table)
 {
 	qsort(table->dives, table->nr, sizeof(struct dive *), sortfn);
 }

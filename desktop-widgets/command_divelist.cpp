@@ -511,7 +511,7 @@ AddDive::AddDive(dive *d, bool autogroup, bool newNumber)
 			allocTrip.reset(trip);
 	}
 
-	int idx = dive_get_insertion_index(&dive_table, divePtr.get());
+	int idx = dive_table_get_insertion_index(&dive_table, divePtr.get());
 	if (newNumber)
 		divePtr->number = get_dive_nr_at_idx(idx);
 
@@ -603,7 +603,7 @@ void ShiftTime::redoit()
 		d->when += timeChanged;
 
 	// Changing times may have unsorted the dive table
-	sort_table(&dive_table);
+	sort_dive_table(&dive_table);
 
 	// We send one time changed signal per trip (see comments in DiveListNotifier.h).
 	// Therefore, collect all dives in an array and sort by trip.
@@ -615,7 +615,7 @@ void ShiftTime::redoit()
 	// Send signals and sort tables.
 	processByTrip(dives, [&](dive_trip *trip, const QVector<dive *> &divesInTrip) {
 		if (trip)
-			sort_table(&trip->dives); // Keep the trip-table in order
+			sort_dive_table(&trip->dives); // Keep the trip-table in order
 		emit diveListNotifier.divesTimeChanged(trip, timeChanged, divesInTrip);
 	});
 

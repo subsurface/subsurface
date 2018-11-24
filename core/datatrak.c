@@ -610,7 +610,7 @@ int datatrak_import(struct memblock *mem, struct dive_table *table)
 	}
 out:
 	taglist_cleanup(&g_tag_list);
-	sort_table(table);
+	sort_dive_table(table);
 	return rc;
 bail:
 	return 1;
