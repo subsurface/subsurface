@@ -1130,7 +1130,7 @@ void QMLManager::commitChanges(QString diveId, QString date, QString location, Q
 	if (needResort) {
 		// we know that the only thing that might happen in a resort is that
 		// this one dive moves to a different spot in the dive list
-		sort_table(&dive_table);
+		sort_dive_table(&dive_table);
 		int newIdx = get_idx_by_uniq_id(d->id);
 		if (newIdx != oldIdx) {
 			DiveListModel::instance()->removeDive(modelIdx);

@@ -1083,5 +1083,5 @@ void smartrak_import(const char *file, struct dive_table *divetable)
 	mdb->catalog = NULL;
 	mdb_close(mdb_clon);
 	mdb_close(mdb);
-	sort_table(divetable);
+	sort_dive_table(divetable);
 }
