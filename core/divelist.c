@@ -751,14 +751,14 @@ void dump_trip_list(void)
 	for (trip = dive_trip_list; trip; trip = trip->next) {
 		struct tm tm;
 		utc_mkdate(trip_date(trip), &tm);
-		if (trip->when < last_time)
+		if (trip_date(trip) < last_time)
 			printf("\n\ndive_trip_list OUT OF ORDER!!!\n\n\n");
 		printf("%s trip %d to \"%s\" on %04u-%02u-%02u %02u:%02u:%02u (%d dives - %p)\n",
 		       trip->autogen ? "autogen " : "",
 		       ++i, trip->location,
 		       tm.tm_year, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec,
 		       trip->dives.nr, trip);
-		last_time = trip->when;
+		last_time = trip_date(trip);
 	}
 	printf("-----\n");
 }
