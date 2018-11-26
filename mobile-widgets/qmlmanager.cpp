@@ -1280,7 +1280,7 @@ bool QMLManager::undoDelete(int id)
 		return false;
 	}
 	if (deletedTrip)
-		insert_trip(deletedTrip);
+		insert_trip(deletedTrip, &trip_table);
 	if (deletedDive->divetrip) {
 		struct dive_trip *trip = deletedDive->divetrip;
 		deletedDive->divetrip = NULL;
