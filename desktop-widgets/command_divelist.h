@@ -15,9 +15,14 @@ namespace Command {
 // Potentially it also adds a trip (if deletion of the dive resulted in deletion of the trip)
 struct DiveToAdd {
 	OwningDivePtr	 dive;		// Dive to add
-	OwningTripPtr	 tripToAdd;	// Not-null if we also have to add a dive
 	dive_trip	*trip;		// Trip the dive belongs to, may be null
 	int		 idx;		// Position in divelist
+};
+
+// Multiple trips and dives that have to be added for a command
+struct DivesAndTripsToAdd {
+	std::vector<DiveToAdd> dives;
+	std::vector<OwningTripPtr> trips;
 };
 
 // This helper structure describes a dive that should be moved to / removed from
@@ -29,7 +34,7 @@ struct DiveToTrip
 	dive_trip	*trip;
 };
 
-// This helper structure describes a number of dives to add to /remove from /
+// This helper structure describes a number of dives to add to / remove from /
 // move between trips.
 // It has ownership of the trips (if any) that have to be added before hand.
 struct DivesToTrip
@@ -51,10 +56,10 @@ protected:
 
 	// These are helper functions to add / remove dive from the C-core structures,
 	// which set the selectionChanged flag if the added / removed dive was selected.
-	DiveToAdd removeDive(struct dive *d);
+	DiveToAdd removeDive(struct dive *d, std::vector<OwningTripPtr> &tripsToAdd);
 	dive *addDive(DiveToAdd &d);
-	std::vector<DiveToAdd> removeDives(std::vector<dive *> &divesToDelete);
-	std::vector<dive *> addDives(std::vector<DiveToAdd> &divesToAdd);
+	DivesAndTripsToAdd removeDives(std::vector<dive *> &divesToDelete);
+	std::vector<dive *> addDives(DivesAndTripsToAdd &toAdd);
 
 	// Set the selection to a given state. Set the selectionChanged flag if anything changed.
 	void restoreSelection(const std::vector<dive *> &selection, dive *currentDive);
@@ -89,9 +94,9 @@ private:
 	bool workToBeDone() override;
 
 	// For redo
-	// Note: we use a vector even though we add only a single dive, so
+	// Note: we a multi-dive structure even though we add only a single dive, so
 	// that we can reuse the multi-dive functions of the other commands.
-	std::vector<DiveToAdd>	divesToAdd;
+	DivesAndTripsToAdd	divesToAdd;
 
 	// For undo
 	std::vector<dive *>	divesToRemove;
@@ -111,7 +116,7 @@ private:
 	std::vector<struct dive*> divesToDelete;
 
 	std::vector<OwningTripPtr> tripsToAdd;
-	std::vector<DiveToAdd> divesToAdd;
+	DivesAndTripsToAdd divesToAdd;
 };
 
 class ShiftTime : public DiveListBase {
@@ -185,13 +190,13 @@ private:
 	// Note: we use a vector even though we split only a single dive, so
 	// that we can reuse the multi-dive functions of the other commands.
 	std::vector<dive *>	diveToSplit;
-	std::vector<DiveToAdd>	splitDives;
+	DivesAndTripsToAdd	splitDives;
 
 	// For undo
 	// For each dive to unsplit, we remove two dives from and add one into the backend
-	// Note: we use a vector even though we unsplit only a single dive, so
+	// Note: we use a multi-dive structure even though we unsplit only a single dive, so
 	// that we can reuse the multi-dive functions of the other commands.
-	std::vector<DiveToAdd>	unsplitDive;
+	DivesAndTripsToAdd	unsplitDive;
 	std::vector<dive *>	divesToUnsplit;
 };
 
@@ -205,9 +210,9 @@ private:
 
 	// For redo
 	// Add one and remove a batch of dives
-	// Note: we use a vector even though we add only a single dive, so
+	// Note: we use a multi-dives structure even though we add only a single dive, so
 	// that we can reuse the multi-dive functions of the other commands.
-	std::vector<DiveToAdd>	mergedDive;
+	DivesAndTripsToAdd	mergedDive;
 	std::vector<dive *>	divesToMerge;
 
 	// For undo
@@ -215,7 +220,7 @@ private:
 	// Note: we use a vector even though we remove only a single dive, so
 	// that we can reuse the multi-dive functions of the other commands.
 	std::vector<dive *>	diveToUnmerge;
-	std::vector<DiveToAdd>	unmergedDives;
+	DivesAndTripsToAdd	unmergedDives;
 
 	// For undo and redo
 	QVector<QPair<dive *, int>> divesToRenumber;
