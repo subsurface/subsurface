@@ -68,7 +68,7 @@ DiveToAdd DiveListBase::removeDive(struct dive *d, std::vector<OwningTripPtr> &t
 	// remove the whole trip.
 	res.trip = unregister_dive_from_trip(d);
 	if (res.trip && res.trip->dives.nr == 0) {
-		unregister_trip(res.trip);		// Remove trip from backend
+		unregister_trip(res.trip, &trip_table);	// Remove trip from backend
 		tripsToAdd.emplace_back(res.trip);	// Take ownership of trip
 	}
 
@@ -164,7 +164,7 @@ std::vector<dive *> DiveListBase::addDives(DivesAndTripsToAdd &toAdd)
 	addedTrips.reserve(toAdd.trips.size());
 	for (OwningTripPtr &trip: toAdd.trips) {
 		addedTrips.push_back(trip.get());
-		insert_trip(trip.release()); // Return ownership to backend
+		insert_trip(trip.release(), &trip_table); // Return ownership to backend
 	}
 	toAdd.trips.clear();
 
@@ -229,7 +229,7 @@ static OwningTripPtr moveDiveToTrip(DiveToTrip &diveToTrip)
 	// Remove dive from trip - if this is the last dive in the trip, remove the whole trip.
 	dive_trip *trip = unregister_dive_from_trip(diveToTrip.dive);
 	if (trip && trip->dives.nr == 0) {
-		unregister_trip(trip);		// Remove trip from backend
+		unregister_trip(trip, &trip_table);	// Remove trip from backend
 		res.reset(trip);
 	}
 
@@ -257,7 +257,7 @@ static void moveDivesBetweenTrips(DivesToTrip &dives)
 	for (OwningTripPtr &trip: dives.tripsToAdd) {
 		dive_trip *t = trip.release();	// Give up ownership
 		createdTrips.push_back(t);
-		insert_trip(t);	// Return ownership to backend
+		insert_trip(t, &trip_table);	// Return ownership to backend
 	}
 	dives.tripsToAdd.clear();
 

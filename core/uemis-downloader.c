@@ -215,7 +215,7 @@ static void record_uemis_dive(device_data_t *devdata, struct dive *dive)
 {
 	if (devdata->create_new_trip) {
 		if (!devdata->trip)
-			devdata->trip = create_and_hookup_trip_from_dive(dive);
+			devdata->trip = create_and_hookup_trip_from_dive(dive, &trip_table);
 		else
 			add_dive_to_trip(dive, devdata->trip);
 	}
@@ -859,7 +859,7 @@ static bool uemis_delete_dive(device_data_t *devdata, uint32_t diveid)
 	if (dive) {
 		devdata->download_table->dives[--devdata->download_table->nr] = NULL;
 		if (dive->notrip)
-			remove_dive_from_trip(dive);
+			remove_dive_from_trip(dive, &trip_table);
 
 		free(dive->dc.sample);
 		free((void *)dive->notes);

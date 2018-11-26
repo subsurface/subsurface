@@ -16,13 +16,13 @@
  * int init_decompression(struct dive *dive)
  * void update_cylinder_related_info(struct dive *dive)
  * void dump_trip_list(void)
- * void insert_trip(dive_trip_t *dive_trip_p)
- * void unregister_trip(dive_trip_t *trip)
+ * void insert_trip(dive_trip_t *dive_trip_p, struct trip_table *trip_table)
+ * void unregister_trip(dive_trip_t *trip, struct trip_table *table)
  * void free_trip(dive_trip_t *trip)
- * void remove_dive_from_trip(struct dive *dive)
- * struct dive_trip *unregister_dive_from_trip(struct dive *dive)
+ * void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table)
+ * struct dive_trip *unregister_dive_from_trip(struct dive *dive, struct trip_table *trip_table)
  * void add_dive_to_trip(struct dive *dive, dive_trip_t *trip)
- * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
+ * dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table)
  * dive_trip_t *get_dives_to_autogroup(sruct dive_table *table, int start, int *from, int *to, bool *allocated)
  * dive_trip_t *get_trip_for_new_dive(struct dive *new_dive, bool *allocated)
  * void combine_trips(struct dive_trip *trip_a, struct dive_trip *trip_b)
@@ -987,17 +987,17 @@ struct dive_trip *unregister_dive_from_trip(struct dive *dive)
 	return trip;
 }
 
-static void delete_trip(dive_trip_t *trip)
+static void delete_trip(dive_trip_t *trip, struct trip_table *trip_table)
 {
-	unregister_trip(trip);
+	unregister_trip(trip, trip_table);
 	free_trip(trip);
 }
 
-void remove_dive_from_trip(struct dive *dive)
+void remove_dive_from_trip(struct dive *dive, struct trip_table *trip_table)
 {
 	struct dive_trip *trip = unregister_dive_from_trip(dive);
 	if (trip && trip->dives.nr == 0)
-		delete_trip(trip);
+		delete_trip(trip, trip_table);
 }
 
 /* Add dive to a trip. Caller is responsible for removing dive
@@ -1020,10 +1020,10 @@ dive_trip_t *alloc_trip(void)
 }
 
 /* insert the trip into the trip table */
-void insert_trip(dive_trip_t *dive_trip)
+void insert_trip(dive_trip_t *dive_trip, struct trip_table *trip_table)
 {
-	int idx = trip_table_get_insertion_index(&trip_table, dive_trip);
-	add_to_trip_table(&trip_table, idx, dive_trip);
+	int idx = trip_table_get_insertion_index(trip_table, dive_trip);
+	add_to_trip_table(trip_table, idx, dive_trip);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -1039,25 +1039,25 @@ dive_trip_t *create_trip_from_dive(struct dive *dive)
 	return trip;
 }
 
-dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive)
+dive_trip_t *create_and_hookup_trip_from_dive(struct dive *dive, struct trip_table *trip_table)
 {
 	dive_trip_t *dive_trip = alloc_trip();
 
 	dive_trip = create_trip_from_dive(dive);
 
 	add_dive_to_trip(dive, dive_trip);
-	insert_trip(dive_trip);
+	insert_trip(dive_trip, trip_table);
 	return dive_trip;
 }
 
 /* remove trip from the trip-list, but don't free its memory.
  * caller takes ownership of the trip. */
-void unregister_trip(dive_trip_t *trip)
+void unregister_trip(dive_trip_t *trip, struct trip_table *trip_table)
 {
-	int idx = get_idx_in_trip_table(&trip_table, trip);
+	int idx = get_idx_in_trip_table(trip_table, trip);
 	assert(!trip->dives.nr);
 	if (idx >= 0)
-		remove_from_trip_table(&trip_table, idx);
+		remove_from_trip_table(trip_table, idx);
 }
 
 /*
@@ -1159,7 +1159,7 @@ dive_trip_t *get_dives_to_autogroup(struct dive_table *table, int start, int *fr
  * Walk the dives from the oldest dive in the given table, and see if we
  * can autogroup them. But only do this when the user selected autogrouping.
  */
-static void autogroup_dives(struct dive_table *table)
+static void autogroup_dives(struct dive_table *table, struct trip_table *trip_table)
 {
 	int from, to;
 	dive_trip_t *trip;
@@ -1169,14 +1169,14 @@ static void autogroup_dives(struct dive_table *table)
 	if (!autogroup)
 		return;
 
-	for (i = 0; (trip = get_dives_to_autogroup(&dive_table, i, &from, &to, &alloc)) != NULL; i = to) {
+	for (i = 0; (trip = get_dives_to_autogroup(table, i, &from, &to, &alloc)) != NULL; i = to) {
 		for (j = from; j < to; ++j)
-			add_dive_to_trip(get_dive(j), trip);
+			add_dive_to_trip(table->dives[j], trip);
 		/* If this was newly allocated, add trip to list */
 		if (alloc)
-			insert_trip(trip);
+			insert_trip(trip, trip_table);
 	}
-	sort_trip_table(&trip_table);
+	sort_trip_table(trip_table);
 #ifdef DEBUG_TRIP
 	dump_trip_list();
 #endif
@@ -1216,7 +1216,7 @@ void delete_single_dive(int idx)
 		return; /* this should never happen */
 	if (dive->selected)
 		deselect_dive(dive);
-	remove_dive_from_trip(dive);
+	remove_dive_from_trip(dive, &trip_table);
 	delete_dive_from_table(&dive_table, idx);
 }
 
@@ -1430,7 +1430,7 @@ void process_loaded_dives()
 	sort_trip_table(&trip_table);
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives(&dive_table);
+	autogroup_dives(&dive_table, &trip_table);
 }
 
 /*
@@ -1472,10 +1472,10 @@ static void merge_imported_dives(struct dive_table *table)
  * will be deleted. On failure, they are untouched.
  * If "prefer_imported" is true, use data of the new dive.
  */
-static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imported)
+static bool try_to_merge_into(struct dive *dive_to_add, struct trip_table *dive_to_add_trip_table,
+			      int idx, bool prefer_imported)
 {
 	struct dive *old_dive = dive_table.dives[idx];
-	struct dive_trip *trip = old_dive->divetrip;
 	struct dive *merged = try_to_merge(old_dive, dive_to_add, prefer_imported);
 	if (!merged)
 		return false;
@@ -1483,10 +1483,9 @@ static bool try_to_merge_into(struct dive *dive_to_add, int idx, bool prefer_imp
 	merged->id = old_dive->id;
 	merged->selected = old_dive->selected;
 	dive_table.dives[idx] = merged;
-	if (trip)
-		remove_dive_from_trip(old_dive);
+	remove_dive_from_trip(old_dive, &trip_table);
 	free_dive(old_dive);
-	remove_dive_from_trip(dive_to_add);
+	remove_dive_from_trip(dive_to_add, dive_to_add_trip_table);
 	free_dive(dive_to_add);
 
 	return true;
@@ -1546,7 +1545,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 
 		/* Try to merge into previous dive. */
 		if (j > 0 && dive_endtime(dive_table.dives[j - 1]) > dive_to_add->when) {
-			if (try_to_merge_into(dive_to_add, j - 1, prefer_imported))
+			if (try_to_merge_into(dive_to_add, &trip_table, j - 1, prefer_imported))
 				continue;
 		}
 
@@ -1558,7 +1557,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 
 		/* Try to merge into next dive. */
 		if (dive_endtime(dive_to_add) > dive_table.dives[j]->when) {
-			if (try_to_merge_into(dive_to_add, j, prefer_imported))
+			if (try_to_merge_into(dive_to_add, &trip_table, j, prefer_imported))
 				continue;
 		}
 
@@ -1580,7 +1579,7 @@ void process_imported_dives(struct dive_table *import_table, bool prefer_importe
 		try_to_renumber(preexisting);
 
 	/* Autogroup dives if desired by user. */
-	autogroup_dives(&dive_table);
+	autogroup_dives(&dive_table, &trip_table);
 
 	/* Trips may have changed - make sure that they are still ordered */
 	sort_trip_table(&trip_table);

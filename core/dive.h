@@ -411,8 +411,8 @@ extern void add_dive_to_trip(struct dive *, dive_trip_t *);
 struct dive *unregister_dive(int idx);
 extern void delete_single_dive(int idx);
 
-extern void insert_trip(dive_trip_t *trip);
-extern void unregister_trip(dive_trip_t *trip);
+extern void insert_trip(dive_trip_t *trip, struct trip_table *trip_table);
+extern void unregister_trip(dive_trip_t *trip, struct trip_table *trip_table);
 extern void free_trip(dive_trip_t *trip);
 extern timestamp_t trip_date(const struct dive_trip *trip);
 

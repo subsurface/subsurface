@@ -826,7 +826,7 @@ static int dive_cb(const unsigned char *data, unsigned int size,
 
 	if (devdata->create_new_trip) {
 		if (!devdata->trip)
-			devdata->trip = create_and_hookup_trip_from_dive(dive);
+			devdata->trip = create_and_hookup_trip_from_dive(dive, &trip_table);
 		else
 			add_dive_to_trip(dive, devdata->trip);
 	}

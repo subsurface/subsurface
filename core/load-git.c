@@ -1178,7 +1178,7 @@ static void finish_active_trip(void)
 
 	if (trip) {
 		active_trip = NULL;
-		insert_trip(trip);
+		insert_trip(trip, &trip_table);
 	}
 }
 
